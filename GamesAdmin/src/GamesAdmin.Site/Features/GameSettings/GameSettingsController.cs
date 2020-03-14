@@ -18,5 +18,23 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<IActionResult> Games()
         => View(await mediator.Send(new GamesRequest()));
+
+        [HttpPost]  
+        [Route("{id}")]
+        public async Task<IActionResult> Enable(string id)
+        {
+            await mediator.Send(new UpdateEnableRequest(id, true));
+
+            return RedirectToAction(nameof(Games));
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<IActionResult> Disable(string id)
+        {
+            await mediator.Send(new UpdateEnableRequest(id, false));
+
+            return RedirectToAction(nameof(Games));
+        }
     }
 }

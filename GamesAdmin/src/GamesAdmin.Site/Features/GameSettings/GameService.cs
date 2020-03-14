@@ -5,31 +5,46 @@ using Refit;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    public interface IGameApi 
+    public interface IGameApi
     {
         [Get("/games")]
         Task<IList<Game>> GetGames();
+
+        [Get("/games/get/{id}")]
+        Task<Game> GetGame(string id);
+
+        [Get("/games/add/")]
+        Task<bool> Add([Body] Game game);
+
+        [Get("/games/update/{id}")]
+        Task<bool> Update(string id, [Body] Game game);
     }
-    
+
     public interface IGameService
     {
         Task<IList<Game>> GetGames();
+
+        Task<bool> Update(string id, Game game);
+
+        Task<Game> Get(string id);
     }
 
     public class GameService : IGameService
     {
         private readonly IGameApi gameApi;
 
-        public GameService(IGameApi gameApi) 
+        public GameService(IGameApi gameApi)
         {
             this.gameApi = gameApi;
         }
 
-        public async Task<IList<Game>> GetGames()
-        {
-            var games = await gameApi.GetGames();
+        public Task<Game> Get(string id)
+        => gameApi.GetGame(id);
 
-            return games;
-        }
+        public Task<IList<Game>> GetGames()
+        => gameApi.GetGames();
+
+        public Task<bool> Update(string id, Game game)
+        => gameApi.Update(id, game);
     }
 }

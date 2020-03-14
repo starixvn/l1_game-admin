@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -8,7 +9,8 @@ using MediatR;
 namespace GamesAdmin.Site.Features.GameSettings
 {
     public class GamesHandler
-        : IRequestHandler<GamesRequest, GamesViewModel>
+        : IRequestHandler<GamesRequest, GamesViewModel>,
+        IRequestHandler<UpdateEnableRequest, bool>
     {
         private readonly IGameService gameService;
 
@@ -19,5 +21,14 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<GamesViewModel> Handle(GamesRequest request, CancellationToken cancellationToken)
         => new GamesViewModel((await gameService.GetGames()).ToList());
+
+        public async Task<bool> Handle(UpdateEnableRequest request, CancellationToken cancellationToken)
+        {
+            var game = await gameService.Get(request.Id);
+
+            var updatedGame = new Game(game.ObjectId, game.Id, game.Name, request.Enabled);
+
+            return await gameService.Update(request.Id, updatedGame);
+        }
     }
 }

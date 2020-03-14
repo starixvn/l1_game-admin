@@ -23,7 +23,16 @@
                 <td>@item.Name</td>
                 <td>@item.Enabled</td>
                 <td>
-                    <a asp-action="Disable" asp-route-id="@item.Id">Disable</a>
+                    <form method="post" asp-route-id="@item.ObjectId">
+                        @if (item.Enabled)
+                        {
+                            <a asp-action="Disable">Disable</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Enable">Enable</a>
+                        }
+                    </form>
                 </td>
             </tr>
         }

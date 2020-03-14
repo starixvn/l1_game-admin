@@ -30,9 +30,9 @@ namespace GamesAdmin.Api.Games
         [HttpPut("{id:length(24)}")]
         public bool Update(string id, Game game)
         {
-            var book = gamesService.Get(id);
+            var gameEntity = gamesService.Get(id);
 
-            if (book == null)
+            if (gameEntity == null)
             {
                 return false;
             }
