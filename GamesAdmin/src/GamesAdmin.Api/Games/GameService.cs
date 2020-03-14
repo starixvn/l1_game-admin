@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace GamesAdmin.Api.Games
 {
-    public interface IGameService 
+    public interface IGameService
     {
         IList<Game> Get();
     }
@@ -16,10 +16,9 @@ namespace GamesAdmin.Api.Games
     {
         private readonly IMongoCollection<GameEntity> games;
 
-        public GameService(IDatabaseSettings settings)
+        public GameService(IDatabaseSettings settings, MongoClient mongoClient)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            var database = mongoClient.GetDatabase(settings.DatabaseName);
 
             games = database.GetCollection<GameEntity>(settings.GamesCollectionName);
         }
@@ -28,8 +27,13 @@ namespace GamesAdmin.Api.Games
         {
             var gameEntities = games.Find(game => true).ToList();
 
-            return gameEntities.Select(entity => new Game(entity.Id, entity.Name, entity.Enabled)).ToList();
+            return gameEntities
+                .Select(entity => new Game(
+                    entity.ObjectId,
+                    entity.Id,
+                    entity.Name,
+                    entity.Enabled))
+                .ToList();
         }
-        
     }
 }

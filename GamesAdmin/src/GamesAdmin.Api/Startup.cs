@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Api
 {
@@ -21,11 +22,14 @@ namespace GamesAdmin.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<DatabaseSettings>(
-            Configuration.GetSection(nameof(DatabaseSettings)));
+            var dbSettings = Configuration.GetSection(nameof(DatabaseSettings));
+
+            services.Configure<DatabaseSettings>(dbSettings);
 
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+
+            services.AddSingleton(new MongoClient(dbSettings["ConnectionString"]));
 
             services.AddScoped<IGameService, GameService>();
             services.AddControllers();
