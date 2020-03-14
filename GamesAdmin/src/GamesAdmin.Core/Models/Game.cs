@@ -1,7 +1,10 @@
-﻿namespace GamesAdmin.Core.Models
+﻿using Newtonsoft.Json;
+
+namespace GamesAdmin.Core.Models
 {
     public class Game
     {
+        [JsonConstructor]
         public Game(string objectId, int id, string name, bool enabled) 
         {
             ObjectId = objectId;

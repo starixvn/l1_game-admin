@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Api
@@ -32,7 +33,14 @@ namespace GamesAdmin.Api
             services.AddSingleton(new MongoClient(dbSettings["ConnectionString"]));
 
             services.AddScoped<IGameService, GameService>();
-            services.AddControllers();
+
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options => options.UseMemberCasing());
+
+            services.AddSwaggerGen(c=> {
+                c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "GamesAdmin APIs", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +50,11 @@ namespace GamesAdmin.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "GamesAdmin APIs v1");
+            });
 
             app.UseHttpsRedirection();
 

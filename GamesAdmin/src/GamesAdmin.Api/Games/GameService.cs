@@ -10,6 +10,12 @@ namespace GamesAdmin.Api.Games
     public interface IGameService
     {
         IList<Game> Get();
+
+        Game Get(string id);
+
+        bool Create(Game game);
+
+        void Update(string id, Game game);
     }
 
     public class GameService : IGameService
@@ -35,5 +41,36 @@ namespace GamesAdmin.Api.Games
                     entity.Enabled))
                 .ToList();
         }
+
+        public Game Get(string id)
+        {
+            var gameEntity = games
+            .Find(entity => entity.ObjectId == id)
+            .FirstOrDefault();
+
+            return new Game(
+                    gameEntity.ObjectId,
+                    gameEntity.Id,
+                    gameEntity.Name,
+                    gameEntity.Enabled);
+        }
+       
+
+        public bool Create(Game game)
+        {
+            games.InsertOne(new GameEntity 
+            { 
+                Id = game.Id, 
+                Name = game.Name, 
+                Enabled = game.Enabled 
+            });
+            
+            return true;
+        }
+
+        public void Update(string id, Game game) =>
+            games
+            .ReplaceOne(entity => entity.ObjectId == id, 
+                new GameEntity { ObjectId = id, Id = game.Id, Name = game.Name, Enabled = game.Enabled });
     }
 }
