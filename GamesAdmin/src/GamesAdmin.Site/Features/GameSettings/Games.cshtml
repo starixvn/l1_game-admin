@@ -1,0 +1,31 @@
+﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model GamesViewModel;
+
+@{
+    ViewData["Title"] = "Games";
+}
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th>Name</th>
+            <th>Enabled</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.GameList)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Enabled</td>
+                <td>
+                    <a asp-action="Disable" asp-route-id="@item.Id">Disable</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
