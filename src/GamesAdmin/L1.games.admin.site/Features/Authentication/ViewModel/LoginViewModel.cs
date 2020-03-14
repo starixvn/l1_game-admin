@@ -1,9 +1,0 @@
-﻿namespace L1.games.admin.site.Features.Authentication.ViewModel
-{
-    public class LoginViewModel
-    {
-        public string UserName { get; set; }
-
-        public string Password { get; set; }
-    }
-}
