@@ -1,3 +1,5 @@
+using L1.games.admin.site.Features.GameSettings;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +30,9 @@ namespace L1.games.admin.site
             services.AddControllersWithViews()
                 .AddFeatureFolders();
 
-            //services.AddRazorPages();
+            services.AddMediatR(typeof(Startup));
+
+            services.AddScoped<IGameService, GameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +60,7 @@ namespace L1.games.admin.site
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Authentication}/{action=UserLogin}/");
+                    pattern: "{controller=GameSettings}/{action=Games}/");
             });
         }
     }
