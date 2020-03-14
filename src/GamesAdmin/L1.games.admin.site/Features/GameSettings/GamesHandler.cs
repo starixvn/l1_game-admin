@@ -17,7 +17,7 @@ namespace L1.games.admin.site.Features.GameSettings
             this.gameService = gameService;
         }
 
-        public Task<GamesViewModel> Handle(GamesRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new GamesViewModel(gameService.GetGames().ToList()));
+        public async Task<GamesViewModel> Handle(GamesRequest request, CancellationToken cancellationToken)
+        => new GamesViewModel((await gameService.GetGames()).ToList());
     }
 }

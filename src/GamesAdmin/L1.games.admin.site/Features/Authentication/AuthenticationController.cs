@@ -32,7 +32,7 @@ namespace L1.games.admin.site.Features.Authentication
                 var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
                 HttpContext.SignInAsync(userPrincipal);
 
-                return RedirectToAction("Account", "GameSettings");
+                return RedirectToAction("Games", "GameSettings");
             }
             return View();
         }

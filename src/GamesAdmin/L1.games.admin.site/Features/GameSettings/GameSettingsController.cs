@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using L1.games.admin.core.Models;
-using L1.games.admin.site.Features.GameSettings.ViewModels;
+﻿using System.Threading.Tasks;
+using L1.games.admin.site.Features.GameSettings.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,20 +9,14 @@ namespace L1.games.admin.site.Features.GameSettings
     [Authorize]
     public class GameSettingsController : Controller
     {
-        public IActionResult Account()
+        protected readonly IMediator mediator;
+
+        public GameSettingsController(IMediator mediator)
         {
-            return View();
+            this.mediator = mediator;
         }
 
-        public IActionResult Games()
-        {
-            var gameViewModel = new GamesViewModel(new List<Game> 
-            {
-                new Game(1, "Cannon", true),
-                new Game(2, "Clan Castle", false)
-            }); 
-
-            return View(gameViewModel);
-        }
+        public async Task<IActionResult> Games()
+        => View(await mediator.Send(new GamesRequest()));
     }
 }

@@ -1,10 +1,13 @@
+using System.Reflection;
 using L1.games.admin.site.Features.GameSettings;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Refit;
 
 namespace L1.games.admin.site
 {
@@ -20,6 +23,11 @@ namespace L1.games.admin.site
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.AddSingleton(RestService.For<IGameApi>("https://localhost:44334"));
+            services.AddScoped<IGameService, GameService>();
+
             services.AddAuthentication("CookieAuthentication")
                   .AddCookie("CookieAuthentication", config =>
                   {
@@ -28,11 +36,8 @@ namespace L1.games.admin.site
                   });
 
             services.AddControllersWithViews()
-                .AddFeatureFolders();
-
-            services.AddMediatR(typeof(Startup));
-
-            services.AddScoped<IGameService, GameService>();
+                .AddFeatureFolders()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
