@@ -19,18 +19,18 @@
         @foreach (var item in Model.GameList)
         {
             <tr>
-                <td>@item.ObjectId</td>
+                <td>@item.Id</td>
                 <td>@item.Name</td>
                 <td>@item.Enabled</td>
                 <td>
-                    <form method="post" asp-route-id="@item.ObjectId">
+                    <form method="post" asp-route-id="@item.Id" asp-action="ToogleOnOff">
                         @if (item.Enabled)
                         {
-                            <a asp-action="Disable">Disable</a>
+                            <button>Disable</button>
                         }
                         else
                         {
-                            <a asp-action="Enable">Enable</a>
+                            <button>Enable</button>
                         }
                     </form>
                 </td>

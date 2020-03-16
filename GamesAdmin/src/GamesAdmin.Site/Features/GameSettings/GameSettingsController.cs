@@ -21,18 +21,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]  
         [Route("{id}")]
-        public async Task<IActionResult> Enable(string id)
+        public async Task<IActionResult> ToogleOnOff(string id)
         {
-            await mediator.Send(new UpdateEnableRequest(id, true));
-
-            return RedirectToAction(nameof(Games));
-        }
-
-        [HttpPost]
-        [Route("{id}")]
-        public async Task<IActionResult> Disable(string id)
-        {
-            await mediator.Send(new UpdateEnableRequest(id, false));
+            await mediator.Send(new ToogleOnOffRequest(id));
 
             return RedirectToAction(nameof(Games));
         }

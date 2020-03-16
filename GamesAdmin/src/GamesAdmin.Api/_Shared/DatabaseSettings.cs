@@ -2,7 +2,7 @@
 {
     public interface IDatabaseSettings
     {
-        string GamesCollectionName { get; set; }
+        string GameConfigsCollectionName { get; set; }
 
         string ConnectionString { get; set; }
 
@@ -11,7 +11,7 @@
 
     public class DatabaseSettings : IDatabaseSettings
     {
-        public string GamesCollectionName { get; set; }
+        public string GameConfigsCollectionName { get; set; }
 
         public string ConnectionString { get; set; }
 

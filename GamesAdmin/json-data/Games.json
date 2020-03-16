@@ -1,4 +1,1 @@
-{"Id":1,"Name":"Cannon","Enabled": true}
-{"Id":2,"Name":"Plants and Zoomibes","Enabled": true}
-{"Id":3,"Name":"Clan Castle","Enabled": false}
-{"Id":4,"Name":"Corona","Enabled": false}
+{"name":"taixiu","enabled": true,"bot":true}

@@ -26,7 +26,7 @@ namespace GamesAdmin.Api.Games
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
 
-            games = database.GetCollection<GameEntity>(settings.GamesCollectionName);
+            games = database.GetCollection<GameEntity>(settings.GameConfigsCollectionName);
         }
 
         public IList<Game> Get()
@@ -35,24 +35,22 @@ namespace GamesAdmin.Api.Games
 
             return gameEntities
                 .Select(entity => new Game(
-                    entity.ObjectId,
                     entity.Id,
-                    entity.Name,
-                    entity.Enabled))
+                    entity.name,
+                    entity.enabled))
                 .ToList();
         }
 
         public Game Get(string id)
         {
             var gameEntity = games
-            .Find(entity => entity.ObjectId == id)
+            .Find(entity => entity.Id == id)
             .FirstOrDefault();
 
             return new Game(
-                    gameEntity.ObjectId,
                     gameEntity.Id,
-                    gameEntity.Name,
-                    gameEntity.Enabled);
+                    gameEntity.name,
+                    gameEntity.enabled);
         }
        
 
@@ -61,8 +59,8 @@ namespace GamesAdmin.Api.Games
             games.InsertOne(new GameEntity 
             { 
                 Id = game.Id, 
-                Name = game.Name, 
-                Enabled = game.Enabled 
+                name = game.Name, 
+                enabled = game.Enabled 
             });
             
             return true;
@@ -70,7 +68,7 @@ namespace GamesAdmin.Api.Games
 
         public void Update(string id, Game game) =>
             games
-            .ReplaceOne(entity => entity.ObjectId == id, 
-                new GameEntity { ObjectId = id, Id = game.Id, Name = game.Name, Enabled = game.Enabled });
+            .ReplaceOne(entity => entity.Id == id, 
+                new GameEntity {Id = game.Id, name = game.Name, enabled = game.Enabled });
     }
 }

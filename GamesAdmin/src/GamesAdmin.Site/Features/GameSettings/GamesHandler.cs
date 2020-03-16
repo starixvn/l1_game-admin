@@ -10,7 +10,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 {
     public class GamesHandler
         : IRequestHandler<GamesRequest, GamesViewModel>,
-        IRequestHandler<UpdateEnableRequest, bool>
+        IRequestHandler<ToogleOnOffRequest, bool>
     {
         private readonly IGameService gameService;
 
@@ -22,11 +22,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<GamesViewModel> Handle(GamesRequest request, CancellationToken cancellationToken)
         => new GamesViewModel((await gameService.GetGames()).ToList());
 
-        public async Task<bool> Handle(UpdateEnableRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ToogleOnOffRequest request, CancellationToken cancellationToken)
         {
             var game = await gameService.Get(request.Id);
 
-            var updatedGame = new Game(game.ObjectId, game.Id, game.Name, request.Enabled);
+            var updatedGame = new Game(game.Id, game.Name, !game.Enabled);
 
             return await gameService.Update(request.Id, updatedGame);
         }

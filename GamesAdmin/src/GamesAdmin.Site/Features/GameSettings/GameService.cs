@@ -10,13 +10,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Get("/games")]
         Task<IList<Game>> GetGames();
 
-        [Get("/games/get/{id}")]
+        [Get("/games/{id}")]
         Task<Game> GetGame(string id);
 
-        [Get("/games/add/")]
+        [Post("/games/")]
         Task<bool> Add([Body] Game game);
 
-        [Get("/games/update/{id}")]
+        [Put("/games/{id}")]
         Task<bool> Update(string id, [Body] Game game);
     }
 

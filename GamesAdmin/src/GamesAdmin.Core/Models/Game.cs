@@ -5,17 +5,14 @@ namespace GamesAdmin.Core.Models
     public class Game
     {
         [JsonConstructor]
-        public Game(string objectId, int id, string name, bool enabled) 
+        public Game(string Id, string name, bool enabled) 
         {
-            ObjectId = objectId;
-            Id = id;
+            this.Id = Id;
             Name = name;
             Enabled = enabled;
         }
 
-        public string ObjectId { get; }
-
-        public int Id { get; }
+        public string Id { get; }
 
         public string Name { get; }
 
