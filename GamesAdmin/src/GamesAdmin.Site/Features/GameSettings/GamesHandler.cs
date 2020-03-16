@@ -26,9 +26,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var game = await gameService.Get(request.Id);
 
-            var updatedGame = new Game(game.Id, game.Name, !game.Enabled);
+            var updatedGame = new Game(game.Id, game.Name, game.MinBet, game.MaxBet, !game.Enabled);
 
-            return await gameService.Update(request.Id, updatedGame);
+            return await gameService.Update(updatedGame);
         }
     }
 }

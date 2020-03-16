@@ -9,7 +9,7 @@ namespace GamesAdmin.Site.Features.GameSettings
     [Authorize]
     public class GameSettingsController : Controller
     {
-        protected readonly IMediator mediator;
+        private readonly IMediator mediator;
 
         public GameSettingsController(IMediator mediator)
         {

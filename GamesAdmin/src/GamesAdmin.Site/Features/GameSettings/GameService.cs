@@ -16,15 +16,15 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/games/")]
         Task<bool> Add([Body] Game game);
 
-        [Put("/games/{id}")]
-        Task<bool> Update(string id, [Body] Game game);
+        [Put("/games/")]
+        Task<bool> Update([Body] Game game);
     }
 
     public interface IGameService
     {
         Task<IList<Game>> GetGames();
 
-        Task<bool> Update(string id, Game game);
+        Task<bool> Update(Game game);
 
         Task<Game> Get(string id);
     }
@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<IList<Game>> GetGames()
         => gameApi.GetGames();
 
-        public Task<bool> Update(string id, Game game)
-        => gameApi.Update(id, game);
+        public Task<bool> Update(Game game)
+        => gameApi.Update(game);
     }
 }

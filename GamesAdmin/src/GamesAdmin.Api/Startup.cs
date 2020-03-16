@@ -1,5 +1,7 @@
+using System.Reflection;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Games;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +26,9 @@ namespace GamesAdmin.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var dbSettings = Configuration.GetSection(nameof(DatabaseSettings));
-
             services.Configure<DatabaseSettings>(dbSettings);
+
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);

@@ -5,10 +5,12 @@ namespace GamesAdmin.Core.Models
     public class Game
     {
         [JsonConstructor]
-        public Game(string Id, string name, bool enabled) 
+        public Game(string Id, string name, double minBet, double maxBet, bool enabled) 
         {
             this.Id = Id;
             Name = name;
+            MinBet = minBet;
+            MaxBet = maxBet;
             Enabled = enabled;
         }
 
@@ -17,5 +19,9 @@ namespace GamesAdmin.Core.Models
         public string Name { get; }
 
         public bool Enabled { get; }
+
+        public double MinBet { get; set; }
+        
+        public double MaxBet { get; set; }
     }
 }

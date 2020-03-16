@@ -1,18 +1,22 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace GamesAdmin.Api.Games.Entities
+namespace GamesAdmin.Database.Entities.Game
 {
-    public class GameEntity
+    public class GameConfig
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string id { get; set; }
 
         public string name { get; set; }
 
         public bool enabled { get; set; }
 
         public bool bot { get; set; }
+
+        public double minbet { get; set; }
+
+        public double maxbet { get; set; }
     }
 }

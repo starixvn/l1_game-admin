@@ -1,1 +1,1 @@
-{"name":"taixiu","enabled": true,"bot":true}
+{"name":"poker","enabled": true, "bot":true, "minbet": 0.01, "maxbet": 999.98}
