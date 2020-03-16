@@ -1,0 +1,45 @@
+﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model AddViewModel;
+
+@{
+    ViewData["Title"] = "Games";
+}
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" asp-controller="GameConfigs" method="post">
+            <h2>Add New Game</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MinBet" class="control-label"></label>
+                <input type="number" asp-for="MinBet" class="form-control" />
+                <span asp-validation-for="MinBet" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaxBet" class="control-label"></label>
+                <input type="number" asp-for="MaxBet" class="form-control" />
+                <span asp-validation-for="MaxBet" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Enabled" class="control-label"></label>
+                <input type="checkbox" asp-for="Enabled" />
+                <span asp-validation-for="Enabled" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-default btn-primary" />
+            </div>
+        </form>
+    </div>
+</div> 

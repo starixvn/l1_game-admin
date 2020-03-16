@@ -18,6 +18,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Put("/games/")]
         Task<bool> Update([Body] Game game);
+
+        [Post("/games/{id}/delete")]
+        Task<bool> Delete(string id);
     }
 
     public interface IGameService
@@ -27,6 +30,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> Update(Game game);
 
         Task<Game> Get(string id);
+
+        Task<bool> Add(Game game);
+
+        Task<bool> Delete(string id);
     }
 
     public class GameService : IGameService
@@ -38,6 +45,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.gameApi = gameApi;
         }
 
+        public Task<bool> Add(Game game)
+        => gameApi.Add(game);
+
         public Task<Game> Get(string id)
         => gameApi.GetGame(id);
 
@@ -46,5 +56,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Update(Game game)
         => gameApi.Update(game);
+
+        public Task<bool> Delete(string id)
+        => gameApi.Delete(id);
+
     }
 }

@@ -18,6 +18,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> Create(Game game);
 
         Task<bool> Update(Game game);
+
+        Task<bool> Delete(string id);
     }
 
     public class GameService : IGameService
@@ -84,6 +86,22 @@ namespace GamesAdmin.Api.Games
                                 maxbet = game.MaxBet,
                                 enabled = game.Enabled
                             });
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var errMsg = ex.Message;
+
+                return false;
+            }
+        }
+
+        public async Task<bool> Delete(string id)
+        {
+            try
+            {
+                await games.FindOneAndDeleteAsync(entity => entity.id == id);
 
                 return true;
             }

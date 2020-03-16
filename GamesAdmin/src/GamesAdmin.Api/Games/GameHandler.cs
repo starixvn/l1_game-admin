@@ -12,6 +12,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<GetByIdRequest, Game>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
+        , IRequestHandler<DeleteRequest, bool>
     {
         private readonly IGameService gameService;
 
@@ -31,5 +32,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(request.Game);
+
+        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
+        => gameService.Delete(request.Id);
     }
 }

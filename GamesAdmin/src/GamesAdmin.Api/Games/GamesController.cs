@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamesAdmin.Api.Games
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("games")]
     public class GamesController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -36,5 +36,9 @@ namespace GamesAdmin.Api.Games
         [HttpPut]
         public Task<bool> Update(Game game)
             => mediator.Send(new UpdateRequest(game));
+
+        [HttpPost("{id:length(24)}/delete")]
+        public Task<bool> Delete(string id)
+            => mediator.Send(new DeleteRequest(id));
     }
 }

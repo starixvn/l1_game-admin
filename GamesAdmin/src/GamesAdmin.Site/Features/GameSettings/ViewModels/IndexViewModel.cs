@@ -3,9 +3,9 @@ using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
-    public class GamesViewModel
+    public class IndexViewModel
     {
-        public GamesViewModel(List<Game> games) 
+        public IndexViewModel(List<Game> games) 
         {
             GameList = games;
         }

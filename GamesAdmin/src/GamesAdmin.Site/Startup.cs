@@ -1,5 +1,6 @@
 using System.Reflection;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.GameSettings;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,8 @@ namespace GamesAdmin.Site
 
             services.AddSingleton(RestService.For<IGameApi>(appSettings.ApiHost));
             services.AddScoped<IGameService, GameService>();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             services.AddAuthentication("CookieAuthentication")
                   .AddCookie("CookieAuthentication", config =>
@@ -69,7 +72,7 @@ namespace GamesAdmin.Site
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=GameSettings}/{action=Games}/");
+                    pattern: "{controller=GameConfigs}/{action=Index}/");
             });
         }
     }

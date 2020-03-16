@@ -1,10 +1,20 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
-@model GamesViewModel;
+@model IndexViewModel;
 
 @{
     ViewData["Title"] = "Games";
 }
 <h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" asp-controller="GameConfigs" method="get">
+            <div class="form-group">
+                <input type="submit" value="Add New" class="btn btn-default btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 
 <table class="table">
     <thead>
@@ -14,6 +24,7 @@
             <th>MinBet</th>
             <th>MaxBet</th>
             <th>Enabled</th>
+            <th>&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -27,16 +38,8 @@
                 <td>@item.MaxBet</td>
                 <td>@item.Enabled</td>
                 <td>
-                    <form method="post" asp-route-id="@item.Id" asp-action="ToogleOnOff">
-                        @if (item.Enabled)
-                        {
-                            <button>Disable</button>
-                        }
-                        else
-                        {
-                            <button>Enable</button>
-                        }
-                    </form>
+                    <a asp-route-id="@item.Id" asp-action="Edit">Edit</a> |
+                    <a asp-route-id="@item.Id" asp-action="Delete">Delete</a>
                 </td>
             </tr>
         }
