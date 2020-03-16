@@ -1,4 +1,5 @@
 using System.Reflection;
+using AutoMapper;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.GameSettings;
@@ -26,6 +27,7 @@ namespace GamesAdmin.Site
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(Startup));
 
             var appSettings = new AppSettings(Configuration);
             services.AddSingleton<IAppSettings>(appSettings);

@@ -30,15 +30,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Route("{id}/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                await mediator.Send(new UpdateRequest(new Game(
-                    editViewModel.Id,
-                    editViewModel.Name,
-                    editViewModel.MinBet,
-                    editViewModel.MaxBet,
-                    editViewModel.Enabled)));
-            }
+            await mediator.Send(new UpdateRequest(new Game(
+                editViewModel.Id,
+                editViewModel.Name,
+                editViewModel.MinBet,
+                editViewModel.MaxBet,
+                editViewModel.Enabled)));
 
             return RedirectToAction(nameof(Index));
         }
@@ -50,15 +47,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel editViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                await mediator.Send(new CreateRequest(new Game(
-                    null,
-                    editViewModel.Name,
-                    editViewModel.MinBet,
-                    editViewModel.MaxBet,
-                    editViewModel.Enabled)));
-            }
+            await mediator.Send(new CreateRequest(new Game(
+                null,
+                editViewModel.Name,
+                editViewModel.MinBet,
+                editViewModel.MaxBet,
+                editViewModel.Enabled)));
 
             return RedirectToAction(nameof(Index));
         }

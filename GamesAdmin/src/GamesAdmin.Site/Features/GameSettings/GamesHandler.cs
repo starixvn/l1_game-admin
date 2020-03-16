@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+using AutoMapper;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -10,7 +10,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 {
     public class GamesHandler
         : IRequestHandler<IndexRequest, IndexViewModel>,
-        IRequestHandler<ToogleOnOffRequest, bool>,
         IRequestHandler<EditRequest, EditViewModel>,
         IRequestHandler<UpdateRequest, bool>,
         IRequestHandler<AddRequest, AddViewModel>,
@@ -18,37 +17,22 @@ namespace GamesAdmin.Site.Features.GameSettings
         IRequestHandler<DeleteRequest, bool>
     {
         private readonly IGameService gameService;
+        private readonly IMapper mapper;
 
-        public GamesHandler(IGameService gameService)
+        public GamesHandler(IMapper mapper, IGameService gameService)
         {
+            this.mapper = mapper;
             this.gameService = gameService;
         }
 
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         => new IndexViewModel((await gameService.GetGames()).ToList());
 
-        public async Task<bool> Handle(ToogleOnOffRequest request, CancellationToken cancellationToken)
-        {
-            //TODO remove
-            var game = await gameService.Get(request.Id);
-
-            var updatedGame = new Game(game.Id, game.Name, game.MinBet, game.MaxBet, !game.Enabled);
-
-            return await gameService.Update(updatedGame);
-        }
-
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {
             var game = await gameService.Get(request.Id);
 
-            return new EditViewModel
-            {
-                Id = game.Id,
-                Name = game.Name,
-                MinBet = game.MinBet,
-                MaxBet = game.MaxBet,
-                Enabled = game.Enabled
-            };
+            return mapper.Map<EditViewModel>(game);
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
