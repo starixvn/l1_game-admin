@@ -22,19 +22,19 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpGet]
-        public async Task<IList<Game>> Get()
+        public async Task<IList<GameConfig>> Get()
            => (await mediator.Send(new GetAllRequest())).ToList();
 
         [HttpGet("{id:length(24)}")]
-        public Task<Game> Get(string id)
+        public Task<GameConfig> Get(string id)
             => mediator.Send(new GetByIdRequest(id));
 
         [HttpPost]
-        public Task<bool> Create(Game game)
+        public Task<bool> Create(GameConfig game)
             => mediator.Send(new CreateRequest(game));
 
         [HttpPut]
-        public Task<bool> Update(Game game)
+        public Task<bool> Update(GameConfig game)
             => mediator.Send(new UpdateRequest(game));
 
         [HttpPost("{id:length(24)}/delete")]

@@ -5,11 +5,11 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class UpdateRequest : IRequest<bool>
     {
-        public UpdateRequest(Game game)
+        public UpdateRequest(GameConfig game)
         {
             Game = game;
         }
 
-        public Game Game { get; }
+        public GameConfig Game { get; }
     }
 }

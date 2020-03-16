@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Route("{id}/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
         {
-            await mediator.Send(new UpdateRequest(new Game(
+            await mediator.Send(new UpdateRequest(new GameConfig(
                 editViewModel.Id,
                 editViewModel.Name,
                 editViewModel.MinBet,
@@ -47,7 +47,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel editViewModel)
         {
-            await mediator.Send(new CreateRequest(new Game(
+            await mediator.Send(new CreateRequest(new GameConfig(
                 null,
                 editViewModel.Name,
                 editViewModel.MinBet,

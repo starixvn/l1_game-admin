@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Games.Requests
 {
-    public class GetByIdRequest : IRequest<Game>
+    public class GetByIdRequest : IRequest<GameConfig>
     {
         public GetByIdRequest(string id) 
         {

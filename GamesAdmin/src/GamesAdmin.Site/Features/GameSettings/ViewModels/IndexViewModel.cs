@@ -5,11 +5,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class IndexViewModel
     {
-        public IndexViewModel(List<Game> games) 
+        public IndexViewModel(List<GameConfig> games) 
         {
             GameList = games;
         }
 
-        public List<Game> GameList { get;}
+        public List<GameConfig> GameList { get;}
     }
 }

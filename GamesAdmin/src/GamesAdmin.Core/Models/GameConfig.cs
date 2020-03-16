@@ -2,10 +2,10 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public class Game
+    public class GameConfig
     {
         [JsonConstructor]
-        public Game(string Id, string name, double minBet, double maxBet, bool enabled)
+        public GameConfig(string Id, string name, double minBet, double maxBet, bool enabled)
         {
             this.Id = Id;
             Name = name;

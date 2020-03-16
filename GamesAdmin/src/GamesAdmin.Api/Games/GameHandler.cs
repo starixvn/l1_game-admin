@@ -8,8 +8,8 @@ using MediatR;
 namespace GamesAdmin.Api.Games
 {
     public class GameHandler
-        : IRequestHandler<GetAllRequest, IEnumerable<Game>>
-        , IRequestHandler<GetByIdRequest, Game>
+        : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
+        , IRequestHandler<GetByIdRequest, GameConfig>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
@@ -21,10 +21,10 @@ namespace GamesAdmin.Api.Games
             this.gameService = gamesService;
         }
 
-        public Task<IEnumerable<Game>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
 
-        public Task<Game> Handle(GetByIdRequest request, CancellationToken cancellationToken)
+        public Task<GameConfig> Handle(GetByIdRequest request, CancellationToken cancellationToken)
          => gameService.Get(request.Id);
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)

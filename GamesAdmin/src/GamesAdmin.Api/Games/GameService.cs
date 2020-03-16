@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities.Game;
@@ -11,81 +12,63 @@ namespace GamesAdmin.Api.Games
 {
     public interface IGameService
     {
-        Task<IEnumerable<Game>> Get();
+        Task<IEnumerable<GameConfig>> Get();
 
-        Task<Game> Get(string id);
+        Task<GameConfig> Get(string id);
 
-        Task<bool> Create(Game game);
+        Task<bool> Create(GameConfig game);
 
-        Task<bool> Update(Game game);
+        Task<bool> Update(GameConfig game);
 
         Task<bool> Delete(string id);
     }
 
     public class GameService : IGameService
     {
-        private readonly IMongoCollection<GameConfig> games;
+        private readonly IMongoCollection<GameConfigEntity> games;
+        private readonly IMapper mapper;
 
-        public GameService(IDatabaseSettings settings, MongoClient mongoClient)
+        public GameService(
+            IDatabaseSettings settings, 
+            MongoClient mongoClient,
+            IMapper mapper)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
+            games = database.GetCollection<GameConfigEntity>(settings.GameConfigsCollection);
 
-            games = database.GetCollection<GameConfig>(settings.GameConfigsCollection);
+            this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<Game>> Get()
+        public async Task<IEnumerable<GameConfig>> Get()
         {
             var gameEntities = await (games.AsQueryable()).ToListAsync();
 
             return gameEntities
-                .Select(entity => new Game(
-                    entity.id,
-                    entity.name,
-                    entity.minbet,
-                    entity.maxbet,
-                    entity.enabled));
+                .Select(entity => mapper.Map<GameConfig>(entity));
         }
 
-        public async Task<Game> Get(string id)
+        public async Task<GameConfig> Get(string id)
         {
             var gameEntity = (await games
             .FindAsync(entity => entity.id == id))
             .FirstOrDefault();
 
-            return new Game(
-                    gameEntity.id,
-                    gameEntity.name,
-                    gameEntity.minbet,
-                    gameEntity.maxbet,
-                    gameEntity.enabled);
+            return mapper.Map<GameConfig>(gameEntity);
         }
 
-        public async Task<bool> Create(Game game)
+        public async Task<bool> Create(GameConfig game)
         {
-            await games.InsertOneAsync(new GameConfig
-            {
-                name = game.Name,
-                minbet = game.MinBet,
-                maxbet = game.MaxBet,
-                enabled = game.Enabled
-            });
+            await games.InsertOneAsync(mapper.Map<GameConfigEntity>(game));
 
             return true;
         }
 
-        public async Task<bool> Update(Game game)
+        public async Task<bool> Update(GameConfig game)
         {
             try
             {
                 await games.FindOneAndReplaceAsync(entity => entity.id == game.Id,
-                            new GameConfig
-                            {
-                                id = game.Id,
-                                name = game.Name,
-                                minbet = game.MinBet,
-                                maxbet = game.MaxBet,
-                                enabled = game.Enabled
-                            });
+                    mapper.Map<GameConfigEntity>(game));
 
                 return true;
             }

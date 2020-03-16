@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Games.Requests
 {
-    public class GetAllRequest: IRequest<IEnumerable<Game>>
+    public class GetAllRequest: IRequest<IEnumerable<GameConfig>>
     {
     }
 }

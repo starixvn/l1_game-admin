@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities.Game
 {
-    public class GameConfig
+    public class GameConfigEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

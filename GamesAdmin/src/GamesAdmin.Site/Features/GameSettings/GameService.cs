@@ -8,16 +8,16 @@ namespace GamesAdmin.Site.Features.GameSettings
     public interface IGameApi
     {
         [Get("/games")]
-        Task<IList<Game>> GetGames();
+        Task<IList<GameConfig>> GetGames();
 
         [Get("/games/{id}")]
-        Task<Game> GetGame(string id);
+        Task<GameConfig> GetGame(string id);
 
         [Post("/games/")]
-        Task<bool> Add([Body] Game game);
+        Task<bool> Add([Body] GameConfig game);
 
         [Put("/games/")]
-        Task<bool> Update([Body] Game game);
+        Task<bool> Update([Body] GameConfig game);
 
         [Post("/games/{id}/delete")]
         Task<bool> Delete(string id);
@@ -25,13 +25,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
     public interface IGameService
     {
-        Task<IList<Game>> GetGames();
+        Task<IList<GameConfig>> GetGames();
 
-        Task<bool> Update(Game game);
+        Task<bool> Update(GameConfig game);
 
-        Task<Game> Get(string id);
+        Task<GameConfig> Get(string id);
 
-        Task<bool> Add(Game game);
+        Task<bool> Add(GameConfig game);
 
         Task<bool> Delete(string id);
     }
@@ -45,16 +45,16 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.gameApi = gameApi;
         }
 
-        public Task<bool> Add(Game game)
+        public Task<bool> Add(GameConfig game)
         => gameApi.Add(game);
 
-        public Task<Game> Get(string id)
+        public Task<GameConfig> Get(string id)
         => gameApi.GetGame(id);
 
-        public Task<IList<Game>> GetGames()
+        public Task<IList<GameConfig>> GetGames()
         => gameApi.GetGames();
 
-        public Task<bool> Update(Game game)
+        public Task<bool> Update(GameConfig game)
         => gameApi.Update(game);
 
         public Task<bool> Delete(string id)

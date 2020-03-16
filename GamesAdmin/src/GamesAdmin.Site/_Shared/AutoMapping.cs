@@ -8,7 +8,7 @@ namespace GamesAdmin.Site._Shared
     {
         public AutoMapping()
         {
-            CreateMap<Game, EditViewModel>(); 
+            CreateMap<GameConfig, EditViewModel>(); 
         }
     }
 }

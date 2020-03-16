@@ -1,4 +1,5 @@
 using System.Reflection;
+using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Games;
 using MediatR;
@@ -29,6 +30,7 @@ namespace GamesAdmin.Api
             services.Configure<DatabaseSettings>(dbSettings);
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
