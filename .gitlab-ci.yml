@@ -9,7 +9,7 @@ build_job:
     - dotnet restore .\GamesAdmin\GamesAdmin.sln
     - dotnet build .\GamesAdmin\GamesAdmin.sln
     - dotnet publish .\GamesAdmin\GamesAdmin.sln
-    - scp -r -P 2201 C:/GitLab-Runner/builds/F9zMyPbS/0/l110/games-admin/GamesAdmin/src/GamesAdmin.Api/bin/Debug/netcoreapp3.1/publish/* root@35.194.253.55:/var/www/l1/game-admin-api
+    - 'scp -r -P 2201 C:/GitLab-Runner/builds/F9zMyPbS/0/l110/games-admin/GamesAdmin/src/GamesAdmin.Api/bin/Debug/netcoreapp3.1/publish/* root@35.194.253.55:/var/www/l1/game-admin-api'
   artifacts:
     expire_in: 2 days
     paths:
