@@ -1,0 +1,22 @@
+variables:
+  NUGET_PATH: 'C:\Tools\Nuget\nuget.exe'
+  MSBUILD_PATH: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\msbuild.exe'
+
+stages:
+  - build
+
+build_job:
+  stage: build
+  only:
+    - branches
+  script:
+    - '& "$env:NUGET_PATH" restore'
+    - '& "$env:MSBUILD_PATH" /p:Configuration=Debug /clp:ErrorsOnly'
+    - '& "$env:MSBUILD_PATH" GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj /p:DeployOnBuild=true /p:Configuration=Debug /P:PublishProfile=FolderProfile.pubxml'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - '.\GamesAdmin\src\GamesAdmin.Api\bin\Debug\Publish\'
+      - '$env:UNITTEST_FOLDER'
+      - '.\$env:XUNIT_PATH\*.*'
+
