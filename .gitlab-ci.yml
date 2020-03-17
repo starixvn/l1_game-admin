@@ -10,13 +10,9 @@ build_job:
   only:
     - branches
   script:
-    - '& "$env:NUGET_PATH" restore'
-    - '& "$env:MSBUILD_PATH" /p:Configuration=Debug /clp:ErrorsOnly'
-    - '& "$env:MSBUILD_PATH" GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj /p:DeployOnBuild=true /p:Configuration=Debug /P:PublishProfile=FolderProfile.pubxml'
+    - '& "$env:MSBUILD_PATH"  /t:Restore;Build GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
   artifacts:
     expire_in: 2 days
     paths:
       - '.\GamesAdmin\src\GamesAdmin.Api\bin\Debug\Publish\'
-      - '$env:UNITTEST_FOLDER'
-      - '.\$env:XUNIT_PATH\*.*'
 
