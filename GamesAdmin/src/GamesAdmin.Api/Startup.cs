@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Api
@@ -36,6 +37,8 @@ namespace GamesAdmin.Api
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             services.AddSingleton(new MongoClient(dbSettings["ConnectionString"]));
+
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
 
             services.AddScoped<IGameService, GameService>();
 

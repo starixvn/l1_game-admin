@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
@@ -48,7 +49,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IActionResult> Add([Bind] AddViewModel editViewModel)
         {
             await mediator.Send(new CreateRequest(new GameConfig(
-                null,
+                Guid.Empty,
                 editViewModel.Name,
                 editViewModel.MinBet,
                 editViewModel.MaxBet,

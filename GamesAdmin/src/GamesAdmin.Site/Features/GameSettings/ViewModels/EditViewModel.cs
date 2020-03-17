@@ -1,15 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel
     {
-       
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
-        
+
         public bool Enabled { get; set; }
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]

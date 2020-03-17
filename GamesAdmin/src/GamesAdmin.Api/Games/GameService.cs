@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Database.Entities.Game;
-using MongoDB.Driver;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.Games
 {
@@ -14,51 +14,66 @@ namespace GamesAdmin.Api.Games
     {
         Task<IEnumerable<GameConfig>> Get();
 
-        Task<GameConfig> Get(string id);
+        Task<GameConfig> Get(Guid id);
 
         Task<bool> Create(GameConfig game);
 
         Task<bool> Update(GameConfig game);
 
-        Task<bool> Delete(string id);
+        Task<bool> Delete(Guid id);
     }
 
     public class GameService : IGameService
     {
-        private readonly IMongoCollection<GameConfigEntity> games;
         private readonly IMapper mapper;
+        private readonly GenericRepository repository;
 
         public GameService(
-            IDatabaseSettings settings, 
-            MongoClient mongoClient,
+            IDatabaseSettings settings,
             IMapper mapper)
         {
-            var database = mongoClient.GetDatabase(settings.DatabaseName);
-            games = database.GetCollection<GameConfigEntity>(settings.GameConfigsCollection);
+            //var database = mongoClient.GetDatabase(settings.DatabaseName);
+
+            repository = new GenericRepository(settings.ConnectionString, settings.DatabaseName);
 
             this.mapper = mapper;
         }
 
         public async Task<IEnumerable<GameConfig>> Get()
         {
-            var gameEntities = await (games.AsQueryable()).ToListAsync();
+            try {
+                var gameEntities = await repository.GetAllAsync<GameConfigEntity>(config => true);
 
-            return gameEntities
-                .Select(entity => mapper.Map<GameConfig>(entity));
+                return gameEntities
+                    .Select(entity => mapper.Map<GameConfig>(entity));
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+
+                return await Task.FromResult(Enumerable.Empty<GameConfig>());
+            }
         }
 
-        public async Task<GameConfig> Get(string id)
+        public async Task<GameConfig> Get(Guid id)
         {
-            var gameEntity = (await games
-            .FindAsync(entity => entity.id == id))
-            .FirstOrDefault();
+            var gameEntity = await repository.GetOneAsync<GameConfigEntity>(entity => entity.Id == id);
 
             return mapper.Map<GameConfig>(gameEntity);
         }
 
         public async Task<bool> Create(GameConfig game)
         {
-            await games.InsertOneAsync(mapper.Map<GameConfigEntity>(game));
+            try
+            {
+                await repository.AddOneAsync(mapper.Map<GameConfigEntity>(game));
+            }
+            catch (Exception ex)
+            {
+                var errMsg = ex.Message;
+
+                return false;
+            }
 
             return true;
         }
@@ -67,8 +82,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                await games.FindOneAndReplaceAsync(entity => entity.id == game.Id,
-                    mapper.Map<GameConfigEntity>(game));
+                await repository.UpdateOneAsync(mapper.Map<GameConfigEntity>(game));
 
                 return true;
             }
@@ -80,11 +94,11 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
             try
             {
-                await games.FindOneAndDeleteAsync(entity => entity.id == id);
+                await repository.DeleteOneAsync<GameConfigEntity>(entity => entity.Id == id);
 
                 return true;
             }

@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models
 {
     public class GameConfig
     {
         [JsonConstructor]
-        public GameConfig(string Id, string name, double minBet, double maxBet, bool enabled)
+        public GameConfig(Guid Id, string name, double minBet, double maxBet, bool enabled)
         {
             this.Id = Id;
             Name = name;
@@ -14,7 +15,7 @@ namespace GamesAdmin.Core.Models
             Enabled = enabled;
         }
 
-        public string Id { get; }
+        public Guid Id { get; }
 
         public string Name { get; }
 

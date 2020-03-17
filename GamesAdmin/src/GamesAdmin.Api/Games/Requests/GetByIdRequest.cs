@@ -1,15 +1,16 @@
-﻿using GamesAdmin.Core.Models;
+﻿using System;
+using GamesAdmin.Core.Models;
 using MediatR;
 
 namespace GamesAdmin.Api.Games.Requests
 {
     public class GetByIdRequest : IRequest<GameConfig>
     {
-        public GetByIdRequest(string id) 
+        public GetByIdRequest(Guid id) 
         {
             Id = id;
         }
 
-        public string Id { get; }
+        public Guid Id { get; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Database.Entities.Game;
+using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api._Shared
 {
