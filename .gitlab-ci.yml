@@ -10,9 +10,8 @@ build_job:
   only:
     - branches
   script:      
-    - '& "$env:MSBUILD_PATH" /t:Restore .\GamesAdmin\GamesAdmin.sln'
-    - '& "$env:MSBUILD_PATH" /t:Build -p:Configuration=Debug /verbosity:diag .\GamesAdmin\src\GamesAdmin.Core\GamesAdmin.Core.csproj'
-    - '& "$env:MSBUILD_PATH" /t:Build .\GamesAdmin\GamesAdmin.sln'
+    - dotnet restore .\GamesAdmin\GamesAdmin.sln
+    - dotnet build .\GamesAdmin\GamesAdmin.sln
   artifacts:
     expire_in: 2 days
     paths:
