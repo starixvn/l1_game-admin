@@ -8,7 +8,7 @@ build_job:
   script:      
     - dotnet restore .\GamesAdmin\GamesAdmin.sln
     - dotnet build .\GamesAdmin\GamesAdmin.sln
-    - dotnet publish --self-contained .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj
+    - dotnet publish .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj
   artifacts:
     expire_in: 2 days
     paths:
