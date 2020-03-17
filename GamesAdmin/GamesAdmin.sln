@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAdmin.Site", "src\Game
 		{98A7DDA9-9643-4EEE-809C-7AD0A171E234} = {98A7DDA9-9643-4EEE-809C-7AD0A171E234}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesAdmin.Database", "src\GamesAdmin.Database\GamesAdmin.Database.csproj", "{4176C422-D330-4292-912F-3C58A4B3C260}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAdmin.Database", "src\GamesAdmin.Database\GamesAdmin.Database.csproj", "{4176C422-D330-4292-912F-3C58A4B3C260}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
