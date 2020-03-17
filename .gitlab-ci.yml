@@ -9,9 +9,8 @@ build_job:
   stage: build
   only:
     - branches
-  script:
-    - '& "$env:MSBUILD_PATH" /t:Restore .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
-    - '& "$env:MSBUILD_PATH" /t:Build .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
+  script:    
+    - '& "$env:MSBUILD_PATH" /t:Rebuild  .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
   artifacts:
     expire_in: 2 days
     paths:
