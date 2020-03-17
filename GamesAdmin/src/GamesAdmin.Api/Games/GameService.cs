@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Api._Shared;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -29,10 +28,10 @@ namespace GamesAdmin.Api.Games
         private readonly GenericRepository repository;
 
         public GameService(
-            IDatabaseSettings settings,
-            IMapper mapper)
+            IMapper mapper,
+            GenericRepository repository)
         {
-            repository = new GenericRepository(settings.ConnectionString, settings.DatabaseName);
+            this.repository = repository;
 
             this.mapper = mapper;
         }

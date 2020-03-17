@@ -2,6 +2,7 @@ using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Games;
+using GamesAdmin.Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace GamesAdmin.Api
 {
@@ -36,9 +35,7 @@ namespace GamesAdmin.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton(new MongoClient(dbSettings["ConnectionString"]));
-
-            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+            services.AddSingleton(new GenericRepository(dbSettings["ConnectionString"], dbSettings["DatabaseName"]));
 
             services.AddScoped<IGameService, GameService>();
 
