@@ -9,11 +9,9 @@ build_job:
   stage: build
   only:
     - branches
-  script:  
-    - echo "Restoring NuGet Packages..."
-    - '"$env:MSBUILD_PATH" /t:Restore .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
-    - echo "Building project..."
-    - '"$env:MSBUILD_PATH" /t:Build .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
+  script:      
+    - '& "$env:MSBUILD_PATH" /t:Restore .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
+    - '& "$env:MSBUILD_PATH" /t:Build .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj'
   artifacts:
     expire_in: 2 days
     paths:
