@@ -1,4 +1,7 @@
+using System.IO;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace GamesAdmin.Site
@@ -7,14 +10,19 @@ namespace GamesAdmin.Site
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                   .Build();
+
+            return WebHost.CreateDefaultBuilder(args)
+               .UseStartup<Startup>()
+               .UseUrls($"http://localhost:{configuration["HostingPort"]}");
+        }
     }
 }
