@@ -6,10 +6,6 @@ namespace GamesAdmin.Database.Entities
     [CollectionName("game_configs")]
     public class GameConfigEntity: Document
     {
-        //[BsonId]
-        //[BsonRepresentation(BsonType.ObjectId)]
-        //public string id { get; set; }
-
         public string name { get; set; }
 
         public bool enabled { get; set; }

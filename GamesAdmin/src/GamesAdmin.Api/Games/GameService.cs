@@ -32,8 +32,6 @@ namespace GamesAdmin.Api.Games
             IDatabaseSettings settings,
             IMapper mapper)
         {
-            //var database = mongoClient.GetDatabase(settings.DatabaseName);
-
             repository = new GenericRepository(settings.ConnectionString, settings.DatabaseName);
 
             this.mapper = mapper;
