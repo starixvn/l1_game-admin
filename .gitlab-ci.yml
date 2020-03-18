@@ -1,5 +1,5 @@
 variables:
-  SCP_PATH: 'C:\Windows\System32\OpenSSH\scp.exe'
+  SCP_PATH: 'C:\Windows\System32\OpenSSH\scp'
   
 stages:
   - build
