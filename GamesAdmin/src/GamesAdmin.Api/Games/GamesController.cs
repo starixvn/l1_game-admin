@@ -14,12 +14,10 @@ namespace GamesAdmin.Api.Games
     public class GamesController : ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly IGameService gamesService;
 
-        public GamesController(IMediator mediator, IGameService gamesService)
+        public GamesController(IMediator mediator)
         {
             this.mediator = mediator;
-            this.gamesService = gamesService;
         }
 
         [HttpGet]

@@ -2,7 +2,6 @@ using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace GamesAdmin.Site
 {
@@ -20,14 +19,9 @@ namespace GamesAdmin.Site
                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                    .Build();
 
-            Host.CreateDefaultBuilder(args)
-           .ConfigureWebHostDefaults(webBuilder =>
-           {
-               webBuilder.UseSentry();
-           });
-
             return WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>()
+               .UseSentry()
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
         }
     }

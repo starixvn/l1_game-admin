@@ -6,6 +6,7 @@ using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using Sentry;
 
 namespace GamesAdmin.Api.Games
 {
@@ -27,14 +28,16 @@ namespace GamesAdmin.Api.Games
     public class GameService : IGameService
     {
         private readonly IMapper mapper;
+        private readonly ISentryClient sentryClient;
         private readonly GenericRepository repository;
 
         public GameService(
             IMapper mapper,
+            ISentryClient sentryClient,
             GenericRepository repository)
         {
             this.repository = repository;
-
+            this.sentryClient = sentryClient;
             this.mapper = mapper;
         }
 
@@ -48,7 +51,7 @@ namespace GamesAdmin.Api.Games
             }
             catch (Exception ex)
             {
-                var message = ex.Message;
+                sentryClient.CaptureException(ex);
 
                 return await Task.FromResult(Enumerable.Empty<GameConfig>());
             }
@@ -69,7 +72,7 @@ namespace GamesAdmin.Api.Games
             }
             catch (Exception ex)
             {
-                var errMsg = ex.Message;
+                sentryClient.CaptureException(ex);
 
                 return false;
             }
@@ -87,7 +90,7 @@ namespace GamesAdmin.Api.Games
             }
             catch (Exception ex)
             {
-                var errMsg = ex.Message;
+                sentryClient.CaptureException(ex);
 
                 return false;
             }
@@ -103,7 +106,7 @@ namespace GamesAdmin.Api.Games
             }
             catch (Exception ex)
             {
-                var errMsg = ex.Message;
+                sentryClient.CaptureException(ex);
 
                 return false;
             }

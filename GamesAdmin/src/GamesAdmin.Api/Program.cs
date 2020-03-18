@@ -2,7 +2,6 @@ using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace GamesAdmin.Api
 {
@@ -22,6 +21,7 @@ namespace GamesAdmin.Api
 
             return WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>()
+               .UseSentry()
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
         }
     }

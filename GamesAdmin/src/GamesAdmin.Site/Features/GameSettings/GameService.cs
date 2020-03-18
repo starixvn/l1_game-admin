@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using Refit;
+using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -48,10 +48,12 @@ namespace GamesAdmin.Site.Features.GameSettings
     public class GameService : IGameService
     {
         private readonly IGameApi gameApi;
+        private readonly ISentryClient sentryClient;
 
-        public GameService(IGameApi gameApi)
+        public GameService(IGameApi gameApi, ISentryClient sentryClient)
         {
             this.gameApi = gameApi;
+            this.sentryClient = sentryClient;
         }
 
         public Task<bool> Add(GameConfig game)
@@ -68,7 +70,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
+                sentryClient.CaptureException(ex);
 
                 return Task.FromResult(new List<GameConfig>() as IList<GameConfig>);
             }
