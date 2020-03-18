@@ -11,9 +11,10 @@ build_job:
   script:      
     - dotnet restore .\GamesAdmin\GamesAdmin.sln
     - dotnet build .\GamesAdmin\GamesAdmin.sln
-    - dotnet publish .\GamesAdmin\GamesAdmin.sln -o D:\games-admin-publish
-    - scp -r -P 2201 C:/GitLab-Runner/builds/F9zMyPbS/0/l110/games-admin/GamesAdmin/src/GamesAdmin.Api/bin/Debug/netcoreapp3.1/publish/* root@35.194.253.55:/var/www/l1/game-admin-api
+    - dotnet publish .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj -o D:\games-admin-publish\api
+    - dotnet publish .\GamesAdmin\src\GamesAdmin.Site\GamesAdmin.Site.csproj -o D:\games-admin-publish\site
   artifacts:
     expire_in: 2 days
     paths:
-      - '.\GamesAdmin\src\GamesAdmin.Api\bin\Debug\'
+      - 'D:\games-admin-publish\api'
+      - 'D:\games-admin-publish\site'
