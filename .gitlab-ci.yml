@@ -1,5 +1,5 @@
 variables:
-  SCP_PATH: 'C:\Tools\pscp.exe'
+  PATH: "C:\\Windows\\System32\\OpenSSH"
   
 stages:
   - build
@@ -8,9 +8,6 @@ build_job:
   stage: build
   only:
     - branches
-  before_script:
-  # set environment for both Linux (first half) and Windows (second half)
-    - set "PATH=C:\Windows\System32\OpenSSH"
   script:      
     - dotnet clean .\GamesAdmin\GamesAdmin.sln
     - dotnet restore .\GamesAdmin\GamesAdmin.sln
