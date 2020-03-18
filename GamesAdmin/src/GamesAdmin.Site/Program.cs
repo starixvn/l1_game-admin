@@ -20,6 +20,12 @@ namespace GamesAdmin.Site
                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                    .Build();
 
+            Host.CreateDefaultBuilder(args)
+           .ConfigureWebHostDefaults(webBuilder =>
+           {
+               webBuilder.UseSentry();
+           });
+
             return WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>()
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
