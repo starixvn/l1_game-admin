@@ -9,6 +9,7 @@ build_job:
   only:
     - branches
   script:      
+    - dotnet clean .\GamesAdmin\GamesAdmin.sln
     - dotnet restore .\GamesAdmin\GamesAdmin.sln
     - dotnet build .\GamesAdmin\GamesAdmin.sln
     - dotnet publish .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj -o D:\games-admin-publish\api
