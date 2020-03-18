@@ -13,6 +13,7 @@ build_job:
     - dotnet build .\GamesAdmin\GamesAdmin.sln
     - dotnet publish .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj -o D:\games-admin-publish\api
     - dotnet publish .\GamesAdmin\src\GamesAdmin.Site\GamesAdmin.Site.csproj -o D:\games-admin-publish\site
+    - scp -r -P 2201 D:/games-admin-publish/api root@35.194.253.55:/var/www/l1/game-admin-api
   artifacts:
     expire_in: 2 days
     paths:
