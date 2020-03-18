@@ -20,6 +20,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> Update(GameConfig game);
 
         Task<bool> Delete(Guid id);
+
+        Task<GameConfig> GetByName(string name);
     }
 
     public class GameService : IGameService
@@ -105,6 +107,13 @@ namespace GamesAdmin.Api.Games
 
                 return false;
             }
+        }
+
+        public async Task<GameConfig> GetByName(string name)
+        {
+            var gameEntity = await repository.GetOneAsync<GameConfigEntity>(entity => entity.name == name);
+
+            return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
         }
     }
 }

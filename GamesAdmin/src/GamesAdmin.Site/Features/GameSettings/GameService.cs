@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using Refit;
@@ -21,6 +23,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/games/{id}/delete")]
         Task<bool> Delete(string id);
+
+        [Get("/games/{name}")]
+        Task<GameConfig> GetByName(string name);
     }
 
     public interface IGameService
@@ -34,6 +39,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> Add(GameConfig game);
 
         Task<bool> Delete(string id);
+
+        Task<GameConfig> GetByName(string name);
+
+        Task<bool> IsExistName(string name);
     }
 
     public class GameService : IGameService
@@ -52,7 +61,18 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameApi.GetGame(id);
 
         public Task<IList<GameConfig>> GetGames()
-        => gameApi.GetGames();
+        {
+            try
+            {
+                return gameApi.GetGames();
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+
+                return Task.FromResult(new List<GameConfig>() as IList<GameConfig>);
+            }
+        }
 
         public Task<bool> Update(GameConfig game)
         => gameApi.Update(game);
@@ -60,5 +80,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Delete(string id)
         => gameApi.Delete(id);
 
+        public Task<GameConfig> GetByName(string name)
+        => gameApi.GetByName(name);
+
+        public async Task<bool> IsExistName(string name)
+        {
+            var gameConfig = await GetByName(name);
+
+            return gameConfig != default;
+        }
     }
 }

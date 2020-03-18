@@ -41,5 +41,9 @@ namespace GamesAdmin.Api.Games
         [HttpPost("{id:length(36)}/delete")]
         public Task<bool> Delete(Guid id)
             => mediator.Send(new DeleteRequest(id));
+
+        [HttpGet("{name}")]
+        public Task<GameConfig> GetByName(string name)
+        => mediator.Send(new GetByNameRequest(name));
     }
 }

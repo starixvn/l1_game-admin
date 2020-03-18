@@ -8,7 +8,9 @@ namespace GamesAdmin.Api._Shared
     {
         public AutoMapping()
         {
-            CreateMap<GameConfigEntity, GameConfig>();
+            CreateMap<GameConfigEntity, GameConfig>()
+                 .ForMember(dest => dest.DisabledRound, opt => opt.MapFrom(src => src.disabledround)); 
+
             CreateMap<GameConfig, GameConfigEntity>();
         }
     }

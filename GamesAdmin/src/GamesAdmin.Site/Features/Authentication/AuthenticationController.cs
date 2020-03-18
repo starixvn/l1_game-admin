@@ -26,6 +26,11 @@ namespace GamesAdmin.Site.Features.Authentication
                 return RedirectToAction("Index", "GameConfigs");
             }
 
+            return RedirectToAction(nameof(LoginError));
+        }
+
+        public IActionResult LoginError()
+        {
             return View();
         }
     }

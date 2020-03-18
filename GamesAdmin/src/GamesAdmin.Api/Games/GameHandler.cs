@@ -13,6 +13,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
+        , IRequestHandler<GetByNameRequest, GameConfig>
     {
         private readonly IGameService gameService;
 
@@ -35,5 +36,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
+
+        public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
+        => gameService.GetByName(request.Name);
     }
 }

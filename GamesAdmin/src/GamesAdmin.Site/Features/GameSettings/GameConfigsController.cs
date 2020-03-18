@@ -36,7 +36,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.Name,
                 editViewModel.MinBet,
                 editViewModel.MaxBet,
-                editViewModel.Enabled)));
+                editViewModel.Enabled,
+                null)));
 
             return RedirectToAction(nameof(Index));
         }
@@ -53,7 +54,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.Name,
                 editViewModel.MinBet,
                 editViewModel.MaxBet,
-                editViewModel.Enabled)));
+                editViewModel.Enabled,
+                null)));
 
             return RedirectToAction(nameof(Index));
         }
@@ -65,6 +67,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             await mediator.Send(new DeleteRequest(id));
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [AcceptVerbs("GET")]
+        public async Task<IActionResult> VerifyName(string name)
+        {
+            var isExist = await mediator.Send(new IsExistRequest(name));
+
+            return isExist ? Json($"A config named {name} already exists.") : Json(true);
         }
     }
 }

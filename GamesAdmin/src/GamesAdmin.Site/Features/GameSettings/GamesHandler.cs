@@ -9,12 +9,13 @@ using MediatR;
 namespace GamesAdmin.Site.Features.GameSettings
 {
     public class GamesHandler
-        : IRequestHandler<IndexRequest, IndexViewModel>,
-        IRequestHandler<EditRequest, EditViewModel>,
-        IRequestHandler<UpdateRequest, bool>,
-        IRequestHandler<AddRequest, AddViewModel>,
-        IRequestHandler<CreateRequest, bool>,
-        IRequestHandler<DeleteRequest, bool>
+        : IRequestHandler<IndexRequest, IndexViewModel>
+        , IRequestHandler<EditRequest, EditViewModel>
+        , IRequestHandler<UpdateRequest, bool>
+        , IRequestHandler<AddRequest, AddViewModel>
+        , IRequestHandler<CreateRequest, bool>
+        , IRequestHandler<DeleteRequest, bool>
+        , IRequestHandler<IsExistRequest, bool>
     {
         private readonly IGameService gameService;
         private readonly IMapper mapper;
@@ -46,5 +47,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
+
+        public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
+        => gameService.IsExistName(request.Name);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -8,6 +9,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Required(ErrorMessage = "Name could not empty")]
         [MinLength(2)]
         [MaxLength(50)]
+        [Remote(action: "VerifyName", controller: "GameConfigs", AdditionalFields = nameof(Name))]
         public string Name { get; set; }
 
         public bool Enabled { get; set; }
