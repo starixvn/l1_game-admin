@@ -15,5 +15,7 @@ namespace GamesAdmin.Database.Entities
         public double minbet { get; set; }
 
         public double maxbet { get; set; }
+
+        public int? round { get; set; }
     }
 }

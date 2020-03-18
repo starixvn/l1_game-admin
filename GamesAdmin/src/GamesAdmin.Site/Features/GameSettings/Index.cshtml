@@ -24,6 +24,7 @@
             <th>MinBet</th>
             <th>MaxBet</th>
             <th>Enabled</th>
+            <th>Round</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -36,6 +37,7 @@
                 <td>@item.MinBet</td>
                 <td>@item.MaxBet</td>
                 <td>@item.Enabled</td>
+                <td>@item.Round</td>
                 <td>
                     <a asp-route-id="@item.Id" asp-action="Edit">Edit</a> |
                     <a asp-route-id="@item.Id" asp-action="Delete">Delete</a>
