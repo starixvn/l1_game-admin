@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double MinBet { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(0.01, 100, ErrorMessage = "Enter number between 0 to 1000")]
+        [Range(0.01, 1000, ErrorMessage = "Enter number between 0 to 1000")]
         [DisplayName("Maximum Bet Limit")]
         public double MaxBet { get; set; }
     }
