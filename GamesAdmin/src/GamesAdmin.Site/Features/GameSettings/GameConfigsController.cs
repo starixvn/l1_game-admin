@@ -4,12 +4,10 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    [Authorize]
     public class GameConfigsController : Controller
     {
         private readonly IMediator mediator;
