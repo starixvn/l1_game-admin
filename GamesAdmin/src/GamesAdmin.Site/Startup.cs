@@ -4,9 +4,11 @@ using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.GameSettings;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,8 +39,8 @@ namespace GamesAdmin.Site
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
-            services.AddAuthentication("CookieAuthentication")
-                  .AddCookie("CookieAuthentication", config =>
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                  .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
                   {
                       config.Cookie.Name = "UserLoginCookie";
                       config.LoginPath = "/Authentication/UserLogin";
