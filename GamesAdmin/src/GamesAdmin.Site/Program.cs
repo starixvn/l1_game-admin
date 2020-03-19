@@ -20,10 +20,10 @@ namespace GamesAdmin.Site
                    .Build();
 
             return WebHost.CreateDefaultBuilder(args)
+               .UseKestrel()
                .UseStartup<Startup>()
                .UseSentry()
-               .UseIISIntegration()
-               .UseKestrel()
+               .UseIISIntegration()               
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
         }
     }

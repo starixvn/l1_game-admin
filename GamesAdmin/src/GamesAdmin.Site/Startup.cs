@@ -68,8 +68,6 @@ namespace GamesAdmin.Site
 
             app.UseAuthentication();
 
-            app.UseCookiePolicy();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
