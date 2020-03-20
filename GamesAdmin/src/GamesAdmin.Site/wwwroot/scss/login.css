@@ -1,0 +1,56 @@
+﻿body {
+  font-family: 'Open Sans', sans-serif;
+  color: #535353; }
+
+.container {
+  padding-top: 60px; }
+
+.logo {
+  margin-bottom: 32px;
+  text-align: center; }
+  .logo .img {
+    width: 200px; }
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  max-width: 380px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.1); }
+
+.form-box {
+  position: relative;
+  margin-bottom: 30px; }
+
+.input-text {
+  width: 100%;
+  padding: 0 0 10px 0;
+  font-size: 15px;
+  outline: none;
+  background: transparent !important;
+  color: #616161;
+  font-weight: 500;
+  border-radius: 0;
+  border: none;
+  border-bottom: solid 2px #bdbdbd; }
+
+.btn-submit {
+  width: 100%;
+  padding: 12px 50px 11px 50px;
+  letter-spacing: 1px;
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 3px;
+  background: #0f96f9;
+  border: none;
+  color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+
+.text-danger {
+  display: block;
+  margin: 10px 0;
+  color: #db4437;
+  font-size: 14px; }
