@@ -4,13 +4,12 @@
 @{
     ViewData["Title"] = "Games";
 }
-<h1>@ViewData["Title"]</h1>
-
-<hr />
+<h1 class="page-title">@ViewData["Title"]</h1>
+<h2 class="sub-title">Edit Game</h2>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Update" asp-route-id="Id" asp-controller="GameConfigs" method="post">
-            <h2>Edit Game</h2>
+    <div class="col-md-6 card">
+        <form class="card-body form-add" asp-action="Update" asp-route-id="Id" asp-controller="GameConfigs" method="post">
+            
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -36,13 +35,15 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Enabled" class="control-label"></label>
-                <input type="checkbox" asp-for="Enabled" />
+                <div>
+                    <input type="checkbox" asp-for="Enabled" />
+                    <label asp-for="Enabled" class="control-label"></label>
+                </div>                
                 <span asp-validation-for="Enabled" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-default btn-primary" />
+                <input type="submit" value="Update" class="btn-submit" />
             </div>
         </form>
     </div>

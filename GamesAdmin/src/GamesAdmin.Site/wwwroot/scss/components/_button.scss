@@ -1,0 +1,25 @@
+﻿
+%btn {
+    min-width: 9rem;
+    padding: .75rem 1.3rem .6rem;
+    border-radius: 5rem;
+    box-shadow: none !important;
+    font-size: 1.3rem;
+    border-width: 1px;
+    border-style: solid;
+    outline: none;
+}
+
+.btn-submit {
+    @extend %btn;
+    background-color: #2a93d5;
+    border-color: #2a93d5;
+    color: #fff;
+}
+
+.btn-add {
+    @extend %btn;
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}

@@ -1,4 +1,7 @@
 ﻿@import "variables";
+@import "components/button";
+@import "components/table";
+@import "components/forms";
 
 html {
     font-size: 10px;
@@ -15,15 +18,14 @@ header {
     display: flex;
     align-items: center;
     background: #fff;
-    height: 100px;
+    height: 10rem;
     padding: 1.5rem 0;
-    box-shadow: 0 1px 15px rgba(0,0,0,.04), 0 1px 6px rgba(0,0,0,.04);
+    box-shadow: 0 0.1rem 1.5rem rgba(0,0,0,.04), 0 0.1rem 0.6rem rgba(0,0,0,.04);
 
     .logo {
-        width: 80px;
+        width: 8rem;
     }
 }
-
 
 .btn-hamburger {
     height: 3rem;
@@ -38,16 +40,22 @@ header {
 }
 
 .site-name {
-    font-size: 24px;
+    font-size: 2.4rem;
     text-transform: uppercase;
+    color: #3a3a3a;
+
+    &:hover, &:focus {
+        text-decoration: none;
+        color: #3a3a3a;
+    }
 }
 
 .navbar {
-    padding: 15px 10px;
+    padding: 1.5rem 1rem;
     background: #fff;
     border: none;
     border-radius: 0;
-    margin-bottom: 40px;
+    margin-bottom: 4rem;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -75,23 +83,23 @@ header {
 }
 
 #sidebar {
-    width: 120px;
-    height: calc(100vh - 100px);
+    width: 12rem;
+    height: calc(100vh - 10rem);
     background: #fff;
-    max-width: 120px;
+    max-width: 12rem;
     transition: all 0.3s;
     border-radius: 0 .75rem .75rem 0;
 }
 
 #sidebar.active {
-    margin-left: -250px;
+    margin-left: -12rem;
 }
 
 #sidebar ul li {
     position: relative;
 }
 #sidebar ul li a {
-    height: 60px;
+    height: 6rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -112,10 +120,10 @@ a[aria-expanded="true"] {
     &:after {
         content: " ";
         background: #00365a;
-        border-radius: 10px;
+        border-radius: 1rem;
         position: absolute;
-        width: 6px;
-        height: 90px;
+        width: 0.6rem;
+        height: 9rem;
         top: 50%;
         -webkit-transform: translateY(-50%);
         transform: translateY(-50%);
@@ -131,57 +139,53 @@ a[data-toggle="collapse"] {
     display: block;
     position: absolute;
     top: 50%;
-    right: 20px;
+    right: 2rem;
     transform: translateY(-50%);
-}
-
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #6d7fcc;
 }
 
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
 
-.text-highlight {
-    color: $highlight-color;
-}
-
-
 #content {
     width: 100%;
-    padding: 30px 60px;
+    padding: 3rem 6rem;
     min-height: 100vh;
     transition: all 0.3s;
+
+    .row {
+        margin: 0;
+    }
 }
 
-
 .page-title {
-    padding-bottom: 26px;
+    padding-bottom: 2.6rem;
+    margin-bottom: 3rem;
     border-bottom: 1px solid #d7d7d7;
-    font-size: 1.75rem;
+    font-size: 3rem;
+}
+
+.sub-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+.list-action {
+    margin-bottom: 3rem;
 }
 
 .card {
-    padding: 1.75rem;
+    padding: 0;
     border: initial;
     background: #fff;
-    border-radius: calc(.15rem - 1px);
-    box-shadow: 0 1px 15px rgba(0,0,0,.04), 0 1px 6px rgba(0,0,0,.04);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.1rem 1.5rem rgba(0,0,0,.04), 0 0.1rem 0.6rem rgba(0,0,0,.04);
+
+    .card-body {
+        padding: 3rem;
+    }
 }
 
-.btn-primary {
-    box-shadow: none !important;
-    font-size: .8rem;
-    padding: .75rem 1.3rem .6rem;
-    border-radius: 50px;
-    background-color: #00365a;
-    border-color: #00365a;
-    color: #fff;
-    font-size: 1.3rem;
-}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -189,7 +193,7 @@ ul ul a {
 
 @media (max-width: 768px) {
     #sidebar {
-        margin-left: -250px;
+        margin-left: -12rem;
     }
 
     #sidebar.active {
