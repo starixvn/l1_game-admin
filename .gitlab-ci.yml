@@ -26,7 +26,8 @@ deploy_game_admin_api:
   script:   
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api
-    - rsync -az -e ssh ./build/game-admin-api root@124.158.13.228:/var/www/l1/game-admin-api
+    #- rsync -az -e ssh ./build/game-admin-api/* root@124.158.13.228:/var/www/l1/game-admin-api
+    - tar -C ./build/game-admin-api/ -jcf - ./ | ssh root@124.158.13.228 'tar -C /var/www/l1/game-admin-api/ -jxf -'
   artifacts:
     expire_in: 2 days
     paths:
@@ -45,7 +46,7 @@ deploy_game_admin_site:
   script:      
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/game-admin-site
-    - tar -C ./build/game-admin-site cvf - game-admin-site.tar | ssh root@124.158.13.228 "cd /var/www/l1/game-admin-site && tar xvzf -"
+    - tar -C ./build/game-admin-site/ -jcf - ./ | ssh root@124.158.13.228 'tar -C /var/www/l1/game-admin-site/ -jxf -'
   artifacts:
     expire_in: 2 days
     paths:
