@@ -34,6 +34,9 @@ deploy_game_admin_api:
       - './build/game-admin-api'
   tags:
     - deploy-dotnet
+  only:
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-api-\d{8}-\d+.*$/
     
 deploy_game_admin_site:
   stage: deploy-game-admin-site
@@ -54,3 +57,6 @@ deploy_game_admin_site:
       - './build/game-admin-site'
   tags:
     - deploy-dotnet
+  only:
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-site\d{8}-\d+.*$/
