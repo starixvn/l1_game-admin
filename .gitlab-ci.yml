@@ -19,5 +19,5 @@ build_job:
     paths:
       - './build/dotnet/l1/game-admin-api'
       - './build/dotnet/l1/game-admin-api'
-tags:
+  tags:
     - deploy-dotnet
