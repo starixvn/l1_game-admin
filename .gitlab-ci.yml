@@ -12,8 +12,8 @@ build_job:
     - dotnet clean ./GamesAdmin/GamesAdmin.sln
     - dotnet restore ./GamesAdmin/GamesAdmin.sln
     - dotnet build ./GamesAdmin/GamesAdmin.sln
-    - dotnet publish -c Local .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj -o ./build/dotnet/l1/game-admin-api
-    - dotnet publish -c Local .\GamesAdmin\src\GamesAdmin.Site\GamesAdmin.Site.csproj -o ./build/dotnet/l1/game-admin-site
+    - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/dotnet/l1/game-admin-api
+    - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/dotnet/l1/game-admin-site
   artifacts:
     expire_in: 2 days
     paths:
