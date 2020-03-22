@@ -26,7 +26,7 @@ deploy_game_admin_api:
   script:   
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api
-    - tar -C ./build/game-admin-api cvf - game-admin-api.tar | ssh root@124.158.13.228 "cd /var/www/l1/game-admin-api && tar xvzf -"
+    - rsync -az -e ssh ./build/game-admin-api root@124.158.13.228:/var/www/l1/game-admin-api
   artifacts:
     expire_in: 2 days
     paths:
