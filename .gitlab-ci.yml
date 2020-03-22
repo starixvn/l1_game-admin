@@ -26,8 +26,8 @@ deploy_game_admin_api:
   script:   
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api
-    - tar -C ./build/game-admin-api/ -jcf - ./ | ssh root@124.158.13.228 'tar -C /var/www/l1/game-admin-api/ -jxf -'
-    - ssh root@124.158.13.228 'sudo service l1-game-admin-api restart'
+    - tar -C ./build/game-admin-api/ -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-api/ -jxf -'
+    - ssh root@$HOST 'sudo service l1-game-admin-api restart'
   artifacts:
     expire_in: 2 days
     paths:
@@ -49,8 +49,8 @@ deploy_game_admin_site:
   script:      
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/game-admin-site
-    - tar -C ./build/game-admin-site/ -jcf - ./ | ssh root@124.158.13.228 'tar -C /var/www/l1/game-admin-site/ -jxf -'
-    - ssh root@124.158.13.228 'sudo service l1-game-admin-site restart'
+    - tar -C ./build/game-admin-site/ -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-site/ -jxf -'
+    - ssh root@$HOST 'sudo service l1-game-admin-site restart'
   artifacts:
     expire_in: 2 days
     paths:
