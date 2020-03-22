@@ -14,10 +14,10 @@ build_job:
     - dotnet build .\GamesAdmin\GamesAdmin.sln
     - dotnet publish -c Local .\GamesAdmin\src\GamesAdmin.Api\GamesAdmin.Api.csproj -o ./build/dotnet/l1/game-admin-api
     - dotnet publish -c Local .\GamesAdmin\src\GamesAdmin.Site\GamesAdmin.Site.csproj -o ./build/dotnet/l1/game-admin-site
-tags:
-    - deploy-dotnet
   artifacts:
     expire_in: 2 days
     paths:
       - './build/dotnet/l1/game-admin-api'
       - './build/dotnet/l1/game-admin-api'
+tags:
+    - deploy-dotnet
