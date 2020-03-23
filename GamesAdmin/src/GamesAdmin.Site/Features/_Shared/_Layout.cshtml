@@ -19,28 +19,9 @@
     </header>
     <div class="wrapper">
         <!-- Sidebar  -->
-        @*<nav id="sidebar">
-            <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="#">Tài Xỉu</a>
-                </li>
-                <li>
-                    <a href="#">Bầu Cua</a>
-                </li>
-                <li>
-                    <a href="#">Xóc Đĩa</a>
-                </li>
-                <li>
-                    <a href="#">Mini Ba Cây</a>
-                </li>
-                <li>
-                    <a href="#">MiniPocker</a>
-                </li>
-                <li>
-                    <a href="#">Cao Thấp</a>
-                </li>
-            </ul>
-        </nav>*@
+        <nav id="sidebar">
+            @await Component.InvokeAsync("GameMenu", new { })
+        </nav>
 
         <!-- Page Content  -->
         <div id="content">            

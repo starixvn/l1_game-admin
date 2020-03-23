@@ -1,0 +1,11 @@
+﻿@using GamesAdmin.Site.Features._Shared.Components.ViewModels;
+@model MenuViewModel;
+
+<ul class="list-unstyled components">
+    @foreach (var item in Model.GameList)
+    {
+        <li>
+            <a href="#">@item.Name</a>
+        </li>
+    }
+</ul>
