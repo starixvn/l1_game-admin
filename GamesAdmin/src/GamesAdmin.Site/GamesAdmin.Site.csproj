@@ -36,6 +36,7 @@
 
 
   <ItemGroup>
+    <Folder Include="wwwroot\scss\fonts\" />
     <Folder Include="_Shared\Midlewares\" />
   </ItemGroup>
 
