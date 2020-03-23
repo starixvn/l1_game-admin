@@ -20,8 +20,7 @@ namespace GamesAdmin.Site._Shared
                 throw new ArgumentNullException(nameof(viewLocations));
             }
 
-            var controllerActionDescriptor = context.ActionContext.ActionDescriptor as ControllerActionDescriptor;
-            if (controllerActionDescriptor == null)
+            if (!(context.ActionContext.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor))
             {
                 throw new NullReferenceException("ControllerActionDescriptor cannot be null.");
             }
