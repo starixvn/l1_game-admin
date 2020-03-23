@@ -36,13 +36,14 @@
 
 
   <ItemGroup>
-    <Folder Include="wwwroot\scss\fonts\" />
     <Folder Include="_Shared\Midlewares\" />
   </ItemGroup>
 
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\scss\fonts\Awsome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\scss\fonts\Awsome\fonts\fontawesome-webfont.woff2" />
   </ItemGroup>
 
 </Project>

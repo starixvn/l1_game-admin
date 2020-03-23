@@ -72,8 +72,10 @@ body {
 
 .site-name {
   font-size: 1.6rem;
-  color: #f8715f;
-  text-transform: uppercase; }
+  font-weight: bold;
+  color: #f8715f; }
+  .site-name .highlight {
+    color: #da624a; }
   .site-name:hover, .site-name:focus {
     text-decoration: none;
     color: #f8715f; }
@@ -103,13 +105,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem;
+    padding: 2rem;
     border-bottom: rgba(0, 0, 0, 0.04) solid 1px;
     background: rgba(0, 0, 0, 0.01); }
 
 .vertical-nav-menu {
   margin: 0;
-  padding: 2px 2rem calc((2rem) + 70px);
+  padding: 2px 2.5rem calc((2rem) + 70px);
   position: relative;
   list-style: none; }
   .vertical-nav-menu .nav-heading {
@@ -124,7 +126,7 @@ body {
     display: block;
     line-height: 4.5rem;
     height: 4.5rem;
-    padding: 0 1.5rem 0 1.95rem;
+    padding: 0 1.5rem 0 2.4rem;
     position: relative;
     border-radius: .5rem;
     color: #6c757d;

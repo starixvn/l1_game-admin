@@ -5,11 +5,52 @@
         <li class="nav-heading">Game</li>
         @foreach (var item in Model.GameList)
         {
-            <li class="active">
+            <li>
                 <a asp-route-id="@item.Id" asp-action="Edit" asp-controller="GameConfigs">
-                    <i class="fas fa-dice-six menu-icon"></i>
+                    <i class="fa fa-cubes menu-icon"></i>
                     @item.Name
                 </a>
             </li>
         }
+        <li class="nav-heading">Reports</li>
+        <li>
+            <a>
+                <i class="fa fa-area-chart menu-icon"></i>
+                Win/Loss by Game
+            </a>
+        </li>
+        <li class="nav-heading">Events</li>
+        <li>
+            <a>
+                <i class="fa fa-stumbleupon-circle menu-icon"></i>
+                Đu dây thắng thua
+            </a>
+        </li>
+        <li class="nav-heading">Players</li>
+        <li>
+            <a>
+                <i class="fa fa-sort-amount-asc menu-icon"></i>
+                Top player win
+            </a>
+        </li>
+        <li class="nav-heading">Users</li>
+        <li>
+            <a>
+                <i class="fa fa-users menu-icon"></i>
+                Management
+            </a>
+        </li>
+        <li>
+            <a>
+                <i class="fa fa-list-alt menu-icon"></i>
+                List
+            </a>
+        </li>
+        <li class="nav-heading">Banks</li>
+        <li>
+            <a>
+                <i class="fa fa-id-card menu-icon"></i>
+                Banks
+            </a>
+        </li>
     </ul>
