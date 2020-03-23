@@ -1,11 +1,15 @@
 ﻿@using GamesAdmin.Site.Features._Shared.Components.ViewModels;
 @model MenuViewModel;
 
-<ul class="list-unstyled components">
-    @foreach (var item in Model.GameList)
-    {
-        <li>            
-            <a asp-route-id="@item.Id" asp-action="Edit" asp-controller="GameConfigs">@item.Name</a>
-        </li>
-    }
-</ul>
+    <ul class="vertical-nav-menu">
+        <li class="nav-heading">Game</li>
+        @foreach (var item in Model.GameList)
+        {
+            <li class="active">
+                <a asp-route-id="@item.Id" asp-action="Edit" asp-controller="GameConfigs">
+                    <i class="fas fa-dice-six menu-icon"></i>
+                    @item.Name
+                </a>
+            </li>
+        }
+    </ul>

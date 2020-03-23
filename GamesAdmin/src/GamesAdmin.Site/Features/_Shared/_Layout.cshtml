@@ -21,27 +21,9 @@
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
-                    <ul class="vertical-nav-menu">
-                        <li class="nav-heading">Game</li>
-                        <li class="active">
-                            <a href="#">
-                                <i class="fas fa-dice-six menu-icon"></i>
-                                Tài xỉu
-                            </a>
-                        </li>
-                        <li class="mm-active">
-                            <a href="#">
-                                <i class="fas fa-dice-d6 menu-icon"></i>
-                                Bầu cua
-                            </a>
-                        </li>
-                        <li class="mm-active">
-                            <a href="#">
-                                <i class="fas fa-dice-six menu-icon"></i>
-                                Bầu cua
-                            </a>
-                        </li>
-                    </ul>
+                    
+                        @await Component.InvokeAsync("GameMenu", new { })
+                    
                 </div>
             </div>
         </div>
