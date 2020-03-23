@@ -58,6 +58,7 @@ namespace GamesAdmin.Site
                       options.ViewLocationFormats.Clear();
                       options.ViewLocationFormats.Add("/Features/{3}/{1}/{0}.cshtml");
                       options.ViewLocationFormats.Add("/Features/{3}/Views/{0}.cshtml");
+                      options.ViewLocationFormats.Add("/Features/{3}/{0}.cshtml");
                       options.ViewLocationFormats.Add("/Features/_Shared/{0}.cshtml");
                       options.ViewLocationFormats.Add("/Features/_Shared/Components/{0}.cshtml");
                       options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());

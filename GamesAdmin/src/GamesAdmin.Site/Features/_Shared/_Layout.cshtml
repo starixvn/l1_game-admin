@@ -36,8 +36,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a role="tab" data-toggle="tab" class="nav-link" href="#focast">
-                            <span>Focast</span>
+                        <a role="tab" data-toggle="tab" class="nav-link" href="#forecast">
+                            <span>Forecast</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -49,9 +49,16 @@
             </div>
 
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">...</div>
-                <div class="tab-pane fade" id="focast" role="tabpanel" aria-labelledby="focast-tab">...</div>
-                <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">...</div>
+                <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                    <p>dashboard page</p>
+                </div>
+
+                <div class="tab-pane fade" id="forecast" role="tabpanel" aria-labelledby="forecast-tab">
+                    @await Component.InvokeAsync("Forecast", new { })
+                </div>
+                <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
+                    <p>Setting page</p>
+                </div>
             </div>
             @RenderBody()
         </div>
