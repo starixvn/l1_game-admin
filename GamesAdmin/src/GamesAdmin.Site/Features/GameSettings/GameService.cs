@@ -9,22 +9,22 @@ namespace GamesAdmin.Site.Features.GameSettings
 {
     public interface IGameApi
     {
-        [Get("/games")]
+        [Get("/game-settings")]
         Task<IList<GameConfig>> GetGames();
 
-        [Get("/games/{id}")]
+        [Get("/game-settings/{id}")]
         Task<GameConfig> GetGame(string id);
 
-        [Post("/games/")]
+        [Post("/game-settings/")]
         Task<bool> Add([Body] GameConfig game);
 
-        [Put("/games/")]
+        [Put("/game-settings/")]
         Task<bool> Update([Body] GameConfig game);
 
-        [Post("/games/{id}/delete")]
+        [Post("/game-settings/{id}/delete")]
         Task<bool> Delete(string id);
 
-        [Get("/games/{name}")]
+        [Get("/game-settings/{name}")]
         Task<GameConfig> GetByName(string name);
     }
 

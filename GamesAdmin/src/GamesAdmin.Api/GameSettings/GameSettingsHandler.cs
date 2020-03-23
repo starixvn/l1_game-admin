@@ -7,7 +7,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Games
 {
-    public class GameHandler
+    public class GameSettingsHandler
         : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
         , IRequestHandler<GetByIdRequest, GameConfig>
         , IRequestHandler<CreateRequest, bool>
@@ -17,7 +17,7 @@ namespace GamesAdmin.Api.Games
     {
         private readonly IGameService gameService;
 
-        public GameHandler(IGameService gamesService)
+        public GameSettingsHandler(IGameService gamesService)
         {
             this.gameService = gamesService;
         }

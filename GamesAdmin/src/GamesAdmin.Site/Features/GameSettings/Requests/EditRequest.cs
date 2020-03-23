@@ -5,11 +5,11 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class EditRequest : IRequest<EditViewModel>
     {
-        public EditRequest(string id) 
+        public EditRequest(string name) 
         {
-            Id = id;
+            Name = name;
         }
 
-        public string Id { get; }
+        public string Name { get; }
     }
 }

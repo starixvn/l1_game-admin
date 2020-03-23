@@ -25,13 +25,13 @@ namespace GamesAdmin.Api.Games
         Task<GameConfig> GetByName(string name);
     }
 
-    public class GameService : IGameService
+    public class GameSettingsService : IGameService
     {
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly GenericRepository repository;
 
-        public GameService(
+        public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
             GenericRepository repository)

@@ -37,7 +37,7 @@ namespace GamesAdmin.Api
 
             services.AddSingleton(new GenericRepository(dbSettings["ConnectionString"], dbSettings["DatabaseName"]));
 
-            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IGameService, GameSettingsService>();
 
             services
                 .AddControllers()

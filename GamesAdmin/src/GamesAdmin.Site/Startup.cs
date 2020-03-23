@@ -93,7 +93,7 @@ namespace GamesAdmin.Site
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=GameConfigs}/{action=Edit}/");
+                    pattern: "{controller=GameSettings}/{action=Edit}/");
             });
         }
     }

@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamesAdmin.Api.Games
 {
     [ApiController]
-    [Route("games")]
-    public class GamesController : ControllerBase
+    [Route("game-settings")]
+    public class GameSettingsController : ControllerBase
     {
         private readonly IMediator mediator;
 
-        public GamesController(IMediator mediator)
+        public GameSettingsController(IMediator mediator)
         {
             this.mediator = mediator;
         }

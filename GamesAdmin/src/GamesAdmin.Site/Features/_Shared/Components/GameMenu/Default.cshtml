@@ -6,7 +6,7 @@
         @foreach (var item in Model.GameList)
         {
             <li>
-                <a asp-route-id="@item.Id" asp-action="Edit" asp-controller="GameConfigs">
+                <a asp-route-name="@item.Name" asp-action="Edit" asp-controller="GameSettings">
                     <i class="material-icons menu-icon">bubble_chart</i>
                     @item.Name
                 </a>

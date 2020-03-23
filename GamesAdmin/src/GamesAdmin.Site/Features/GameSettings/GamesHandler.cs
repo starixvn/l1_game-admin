@@ -30,13 +30,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             GameConfig game;
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(request.Name))
             {
                 game = (await gameService.GetGames()).FirstOrDefault();
             }
             else
             {
-                game = await gameService.Get(request.Id);
+                game = await gameService.GetByName(request.Name);
             }
 
             return mapper.Map<EditViewModel>(game);

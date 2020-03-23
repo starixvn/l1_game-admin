@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Routing;
 namespace GamesAdmin.Site.Features.GameSettings
 {
     [Authorize]
-    public class GameConfigsController : Controller
+    public class GameSettingsController : Controller
     {
         private readonly IMediator mediator;
 
-        public GameConfigsController(IMediator mediator)
+        public GameSettingsController(IMediator mediator)
         {
             this.mediator = mediator;
         }
@@ -25,9 +25,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new EditRequest(string.Empty)));
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> Edit(string id)
-        => View(await mediator.Send(new EditRequest(id)));
+        [Route("{name}")]
+        public async Task<IActionResult> Edit(string name)
+        => View(await mediator.Send(new EditRequest(name)));
 
         [HttpPost]
         [Route("/update")]
