@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.Enabled,
                 null)));
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "id", editViewModel.Id} } );
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name} } );
         }
 
         [HttpGet]
