@@ -4,7 +4,7 @@
 <ul class="list-unstyled components">
     @foreach (var item in Model.GameList)
     {
-        <li>
+        <li>            
             <a asp-route-id="@item.Id" asp-action="Edit" asp-controller="GameConfigs">@item.Name</a>
         </li>
     }
