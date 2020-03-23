@@ -15,7 +15,7 @@ build:
   tags:
     - deploy-dotnet
     
-deploy_game_admin_api:
+deploy-game-admin-api:
   stage: deploy-game-admin-api
   before_script:
     - echo "====== Setting SSH Key ======"
@@ -38,7 +38,7 @@ deploy_game_admin_api:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-api-\d{8}-\d+.*$/
     
-deploy_game_admin_site:
+deploy-game-admin-site:
   stage: deploy-game-admin-site
   before_script:
     - echo "====== Setting SSH Key ======"
