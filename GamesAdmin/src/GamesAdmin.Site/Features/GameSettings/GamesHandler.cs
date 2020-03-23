@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -9,8 +10,7 @@ using MediatR;
 namespace GamesAdmin.Site.Features.GameSettings
 {
     public class GamesHandler
-        : IRequestHandler<IndexRequest, IndexViewModel>
-        , IRequestHandler<EditRequest, EditViewModel>
+        : IRequestHandler<EditRequest, EditViewModel>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<AddRequest, AddViewModel>
         , IRequestHandler<CreateRequest, bool>
@@ -26,12 +26,18 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.gameService = gameService;
         }
 
-        public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
-        => new IndexViewModel((await gameService.GetGames()).ToList());
-
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {
-            var game = await gameService.Get(request.Id);
+            GameConfig game;
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                game = (await gameService.GetGames()).FirstOrDefault();
+            }
+            else
+            {
+                game = await gameService.Get(request.Id);
+            }
 
             return mapper.Map<EditViewModel>(game);
         }

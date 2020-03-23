@@ -6,6 +6,7 @@ using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -19,8 +20,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.mediator = mediator;
         }
 
-        public async Task<IActionResult> Index()
-        => View(await mediator.Send(new IndexRequest()));
+        [HttpGet]
+        public async Task<IActionResult> Edit()
+        => View(await mediator.Send(new EditRequest(string.Empty)));
 
         [HttpGet]
         [Route("{id}")]
@@ -28,7 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new EditRequest(id)));
 
         [HttpPost]
-        [Route("{id}/update")]
+        [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
         {
             await mediator.Send(new UpdateRequest(new GameConfig(
@@ -39,7 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.Enabled,
                 null)));
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "id", editViewModel.Id} } );
         }
 
         [HttpGet]

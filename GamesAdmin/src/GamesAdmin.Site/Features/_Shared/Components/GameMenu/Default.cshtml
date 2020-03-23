@@ -5,7 +5,7 @@
     @foreach (var item in Model.GameList)
     {
         <li>
-            <a href="#">@item.Name</a>
+            <a asp-route-id="@item.Id" asp-action="Edit" asp-controller="GameConfigs">@item.Name</a>
         </li>
     }
 </ul>
