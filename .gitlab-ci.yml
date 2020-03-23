@@ -59,4 +59,4 @@ deploy_game_admin_site:
     - deploy-dotnet
   only:
     - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-site\d{8}-\d+.*$/
+    - /^deploy-site-\d{8}-\d+.*$/
