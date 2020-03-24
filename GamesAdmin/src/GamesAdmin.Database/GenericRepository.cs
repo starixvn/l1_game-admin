@@ -13,12 +13,9 @@ namespace GamesAdmin.Database
     where TDocument : IDocument
     {
         private readonly IMongoCollection<TDocument> collection;
-        //    "ConnectionString": "mongodb://127.0.0.1:27017/",
-        //"DatabaseName": "admin"
 
-        public GenericRepository()
+        public GenericRepository(IMongoDatabase database)
         {
-            var database = new MongoClient("mongodb://127.0.0.1:27017/").GetDatabase("admin");
             collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
         }
 
