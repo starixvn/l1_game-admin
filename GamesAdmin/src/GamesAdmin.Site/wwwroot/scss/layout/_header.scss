@@ -1,0 +1,105 @@
+﻿
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 3rem;
+    z-index: 10;
+    height: 10rem;
+}
+
+.user-info {
+    .dropdown-toggle {
+        border: none;
+    }
+
+    .dropdown-item {
+        font-size: $font-size;
+    }
+    img {
+        border-radius: .5rem;
+        width: 4.2rem;
+    }
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+}
+
+.sub-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    border-radius: .5rem;
+    padding: .5rem 0;
+    margin: 0 3rem;
+    background: #fff;
+    border: #dee2e6 solid 1px;
+
+    > .nav .nav-item {
+        display: inline-block;
+    }
+
+    .nav .nav-item .nav-link.active {
+        color: #da624a;
+
+        &:before {
+            opacity: 1;
+            visibility: visible;
+            bottom: -1.5rem;
+        }
+    }
+
+    .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        cursor: pointer;
+        padding: 1.2rem 2rem;
+        color: #000;
+        font-weight: 600;
+    }
+
+    .nav .nav-item .nav-link::before {
+        position: absolute;
+        left: 50%;
+        margin-left: -0.8rem;
+        bottom: -3rem;
+        content: '';
+        border-radius: .3rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        transform: rotate(45deg);
+        background: #f5f5f5;
+        visibility: hidden;
+        opacity: 0;
+        transition: all .2s;
+        background: #f5f5f5;
+        box-shadow: -1px -1px 1px 0px rgba(222,226,230,0.9);
+    }
+
+    > .nav .nav-item .nav-link span::before {
+        width: 0;
+        content: '';
+        position: absolute;
+        transition: all .2s;
+        background: #da624a;
+        top: -0.8rem;
+        height: 0.4rem;
+        border-radius: 3rem;
+        left: 50%;
+    }
+
+    > .nav .nav-item .nav-link:hover span::before {
+        width: .8rem;
+        margin-left: -0.4rem;
+    }
+}

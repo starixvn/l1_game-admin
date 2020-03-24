@@ -1,56 +1,128 @@
-﻿body {
-  font-family: 'Open Sans', sans-serif;
+﻿@font-face {
+  font-family: 'Roboto';
+  font-weight: normal;
+  src: url("fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 600;
+  src: url("fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: bold;
+  src: url("fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(fonts/material-icons/MaterialIcons-Regular.eot);
+  /* For IE6-8 */
+  src: local("Material Icons"), local("MaterialIcons-Regular"), url(fonts/material-icons/MaterialIcons-Regular.woff2) format("woff2"), url(fonts/material-icons/MaterialIcons-Regular.woff) format("woff"), url(fonts/material-icons/MaterialIcons-Regular.ttf) format("truetype"); }
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga'; }
+
+html {
+  font-size: 10px; }
+
+body {
+  background: linear-gradient(to right, #434343 0%, black 100%);
+  font-family: 'Roboto', sans-serif;
   color: #535353; }
 
 .container {
-  padding-top: 60px; }
+  padding-top: 6rem; }
 
 .logo {
-  margin-bottom: 32px;
+  margin-bottom: 3.2rem;
   text-align: center; }
   .logo .img {
-    width: 200px; }
+    width: 20rem; }
 
 .form-section {
   display: flex;
   flex-direction: column;
-  padding: 30px;
-  max-width: 380px;
+  padding: 4rem 3rem;
+  max-width: 38rem;
   margin: 0 auto;
   background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 35px rgba(0, 0, 0, 0.1); }
+  border-radius: .5rem;
+  box-shadow: 0 0 3.5rem rgba(0, 0, 0, 0.1); }
 
 .form-box {
   position: relative;
-  margin-bottom: 30px; }
+  margin-bottom: 1.6rem; }
 
 .input-text {
   width: 100%;
-  padding: 0 0 10px 0;
-  font-size: 15px;
+  height: 3.6rem;
+  line-height: 3.6rem;
+  padding: 0 0 0 1.2rem;
+  border-radius: .5rem;
+  border: solid 1px #bdbdbd;
+  box-sizing: border-box;
   outline: none;
   background: transparent !important;
   color: #616161;
-  font-weight: 500;
-  border-radius: 0;
-  border: none;
-  border-bottom: solid 2px #bdbdbd; }
+  font-size: 1.5rem;
+  font-weight: 500; }
 
 .btn-submit {
+  position: relative;
   width: 100%;
-  padding: 12px 50px 11px 50px;
-  letter-spacing: 1px;
-  font-size: 15px;
-  font-weight: 400;
-  border-radius: 3px;
-  background: #0f96f9;
+  padding: 1.2rem 5rem 1.1rem 5rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5rem;
+  background: #da624a;
   border: none;
   color: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+  outline: none;
+  font-size: 1.5rem;
+  font-weight: 400; }
+  .btn-submit:hover {
+    cursor: pointer; }
+  .btn-submit:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: none;
+    border-radius: 5rem; }
+
+.btn-submit:hover:after {
+  width: 120%;
+  background-color: rgba(255, 255, 255, 0);
+  transition: all 0.4s ease-in-out; }
 
 .text-danger {
   display: block;
-  margin: 10px 0;
+  margin: 1rem 0;
   color: #db4437;
-  font-size: 14px; }
+  font-size: 1.4rem; }

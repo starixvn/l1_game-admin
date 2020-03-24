@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="~/scss/fonts/Awsome/css/font-awesome.css" rel="stylesheet" />
+    @*<link href="~/scss/fonts/Awsome/css/font-awesome.css" rel="stylesheet" />*@
     <link href="~/scss/page.css" rel="stylesheet" />
 </head>
 <body>
@@ -14,7 +14,7 @@
             <div class="sidebar-header">
                 <a href="/" class="site-name">Saba.Club <span class="highlight">Admin</span></a>
                 <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
-                    <i class="fa fa-bars"></i>
+                    <i class="material-icons">menu</i>
                 </button>
             </div>
             <div class="scrollbar-sidebar">
@@ -24,6 +24,19 @@
             </div>
         </div>
         <div id="content" class="content-container">
+            <div class="header">
+                <div class="page-title">Xóc xóc</div>
+                <div class="user-info">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="~/scss/images/avatar.jpg" alt="profile picture" />
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="header-bar">
                 <ul class="nav">
                     <li class="nav-item">
@@ -44,7 +57,9 @@
                 </ul>
             </div>
 
-            @RenderBody()
+            <div class="inner-content">
+                @RenderBody()
+            </div>
         </div>
     </div>    
 

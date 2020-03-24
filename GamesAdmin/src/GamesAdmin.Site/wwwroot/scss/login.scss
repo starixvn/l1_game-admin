@@ -1,66 +1,98 @@
-﻿body {
-    font-family: 'Open Sans', sans-serif;
+﻿@import "fonts";
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background: linear-gradient(to right, #434343 0%, black 100%);
+    font-family: 'Roboto', sans-serif;
     color: #535353;
 }
 
 .container {
-    padding-top: 60px;
+    padding-top: 6rem;
 }
 
 .logo {
-    margin-bottom: 32px;
+    margin-bottom: 3.2rem;
     text-align: center;
 
     .img {
-        width: 200px;
+        width: 20rem;
     }
 }
 
 .form-section {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    max-width: 380px;
+    padding: 4rem 3rem;
+    max-width: 38rem;
     margin: 0 auto;
     background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+    border-radius: .5rem;
+    box-shadow: 0 0 3.5rem rgba(0, 0, 0, 0.1);
 }
 
 .form-box {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 1.6rem;
 }
 
 .input-text {
     width: 100%;
-    padding: 0 0 10px 0;
-    font-size: 15px;
+    height: 3.6rem;
+    line-height: 3.6rem;
+    padding: 0 0 0 1.2rem;
+    border-radius: .5rem;
+    border: solid 1px #bdbdbd;
+    box-sizing: border-box;
     outline: none;
     background: transparent !important;
     color: #616161;
+    font-size: 1.5rem;
     font-weight: 500;
-    border-radius: 0;
-    border: none;
-    border-bottom: solid 2px #bdbdbd;
 }
 
 .btn-submit {
+    position: relative;
     width: 100%;
-    padding: 12px 50px 11px 50px;
-    letter-spacing: 1px;
-    font-size: 15px;
-    font-weight: 400;
-    border-radius: 3px;
-    background: #0f96f9;
+    padding: 1.2rem 5rem 1.1rem 5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5rem;
+    background: #da624a;
     border: none;
     color: #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    outline: none;
+    font-size: 1.5rem;
+    font-weight: 400;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: rgba(255,255,255,0.4);
+        transition: none;
+        border-radius: 5rem;
+    }
+}
+
+.btn-submit:hover:after {
+    width: 120%;
+    background-color: rgba(255,255,255,0);
+    transition: all 0.4s ease-in-out;
 }
 
 .text-danger {
     display: block;
-    margin: 10px 0;
+    margin: 1rem 0;
     color: #db4437;
-    font-size: 14px;
+    font-size: 1.4rem;
 }

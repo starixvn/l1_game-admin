@@ -1,6 +1,6 @@
 ﻿.form-add {
     .form-control {
-        border-radius: .1rem;
+        border-radius: .5rem;
         outline: initial !important;
         box-shadow: none !important;
         font-size: 1.4rem;
@@ -8,7 +8,7 @@
         line-height: 1;
         background: #fff;
         color: #3a3a3a;
-        border: 1px solid #d7d7d7;
+        border: 1px solid #ced4da;
         height: auto;
     }
 
@@ -17,6 +17,6 @@
     }
 
     .field-validation-error {
-        margin: 10px 0;
+        margin: 1rem 0;
     }
 }

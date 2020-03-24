@@ -2,17 +2,19 @@
 @import "components/button";
 @import "components/table";
 @import "components/forms";
-@import "site-bar";
+@import "layout/header";
+@import "layout/site-bar";
+@import "fonts";
 
 html {
     font-size: 10px;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.4rem;
-    color: #3a3a3a;
-    background: #f5f5f5;
+    background: $page-bg;
+    font-family: $font-family;
+    font-size: $font-size;
+    color: $text-color;
 }
 
 .main-container {
@@ -22,100 +24,9 @@ body {
     position: relative;
 }
 
-
-/* ---------------------------------------------------
-    SIDEBAR STYLE
------------------------------------------------------ */
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-
-.header-bar {
-    display: flex;
-    align-items: center;
-    border-radius: .5rem;
-    padding: .5rem 0;
-    margin: 3rem;
-    background: #fff;
-    border: #dee2e6 solid 1px;
-
-    > .nav .nav-item {
-        display: inline-block;
-    }
-
-    .nav .nav-item .nav-link.active {
-        color: #da624a;
-    }
-
-    .nav-link {
-        position: relative;
-        display: flex;
-        align-items: center;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        cursor: pointer;
-        padding: 1.2rem 1rem;
-        color: #000;
-        font-weight: 600;
-    }
-
-    > .nav .nav-item .nav-link::before {
-        background: #f5f5f5;
-    }
-
-    > .nav .nav-item .nav-link.active::before {
-        opacity: 1;
-        visibility: visible;
-        bottom: -15px;
-    }
-
-    .nav .nav-item .nav-link::before {
-        position: absolute;
-        content: '';
-        border-radius: 3px;
-        width: 16px;
-        height: 16px;
-        transform: rotate(45deg);
-        visibility: hidden;
-        opacity: 0;
-        transition: all .2s;
-        left: 50%;
-        margin-left: -8px;
-        bottom: -30px;
-        box-shadow: -1px -1px 1px 0px rgba(222,226,230,0.9);
-    }
-
-    > .nav .nav-item .nav-link span::before {
-        width: 0;
-        content: '';
-        position: absolute;
-        transition: all .2s;
-        background: #da624a;
-        top: -8px;
-        height: 4px;
-        border-radius: 30px;
-        left: 50%;
-    }
-
-
-    > .nav .nav-item .nav-link:hover span::before {
-        width: 8px;
-        margin-left: -4px;
-    }
-
-    > .nav .nav-item .nav-link span::before {
-        width: 0;
-        content: '';
-        position: absolute;
-        transition: all .2s;
-        background: #da624a;
-        top: -8px;
-        height: 4px;
-        border-radius: 30px;
-        left: 50%;
-    }
-}
-
 
 .content-container {
     flex: 1;
@@ -124,26 +35,20 @@ body {
     z-index: 12;
     padding: 0 0 0 calc((30px) + 280px);
     transition: all .2s;
+}
+
+.inner-content {
+    margin: 3rem;
 
     .row {
-        margin: 0;
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 
 .tab-content {
-    margin-left: 30px;
-    margin-right: 30px;
-}
-
-.page-title {
-    font-size: 2rem;
-    font-weight: 500;
-    position: relative;
-}
-
-.sub-title {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
 
 .list-action {
@@ -152,31 +57,11 @@ body {
 
 .card {
     padding: 0;
-    border: initial;
+    border: 1px solid #dee2e6;
     background: #fff;
     border-radius: 0.5rem;
-    box-shadow: 0 0.1rem 1.5rem rgba(0,0,0,.04), 0 0.1rem 0.6rem rgba(0,0,0,.04);
 
     .card-body {
         padding: 3rem;
-    }
-}
-
-
-/* ---------------------------------------------------
-    MEDIAQUERIES
------------------------------------------------------ */
-
-@media (max-width: 768px) {
-    #sidebar {
-        margin-left: -12rem;
-    }
-
-    #sidebar.active {
-        margin-left: 0;
-    }
-
-    #sidebarCollapse span {
-        display: none;
     }
 }
