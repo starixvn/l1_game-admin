@@ -5,11 +5,11 @@ namespace GamesAdmin.Api.Games.Requests
 {
     public class DeleteRequest : IRequest<bool>
     {
-        public DeleteRequest(Guid id)
+        public DeleteRequest(string name)
         {
-            Id = id;
+            Name = name;
         }
 
-        public Guid Id { get; }
+        public string Name { get; }
     }
 }

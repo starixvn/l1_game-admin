@@ -12,9 +12,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Get("/game-settings")]
         Task<IList<GameConfig>> GetGames();
 
-        [Get("/game-settings/{id}")]
-        Task<GameConfig> GetGame(string id);
-
         [Post("/game-settings/")]
         Task<bool> Add([Body] GameConfig game);
 
@@ -33,8 +30,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<IList<GameConfig>> GetGames();
 
         Task<bool> Update(GameConfig game);
-
-        Task<GameConfig> Get(string id);
 
         Task<bool> Add(GameConfig game);
 
@@ -58,9 +53,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Add(GameConfig game)
         => gameApi.Add(game);
-
-        public Task<GameConfig> Get(string id)
-        => gameApi.GetGame(id);
 
         public Task<IList<GameConfig>> GetGames()
         {

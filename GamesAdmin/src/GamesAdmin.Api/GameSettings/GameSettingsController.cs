@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Api.Games.Requests;
+﻿using GamesAdmin.Api.Games.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Games
 {
@@ -23,11 +22,7 @@ namespace GamesAdmin.Api.Games
         [HttpGet]
         public async Task<IList<GameConfig>> Get()
            => (await mediator.Send(new GetAllRequest())).ToList();
-
-        [HttpGet("{id:length(36)}")]
-        public Task<GameConfig> Get(Guid id)
-            => mediator.Send(new GetByIdRequest(id));
-
+      
         [HttpPost]
         public Task<bool> Create(GameConfig game)
             => mediator.Send(new CreateRequest(game));
@@ -36,9 +31,9 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Update(GameConfig game)
             => mediator.Send(new UpdateRequest(game));
 
-        [HttpPost("{id:length(36)}/delete")]
-        public Task<bool> Delete(Guid id)
-            => mediator.Send(new DeleteRequest(id));
+        [HttpPost("{name}/delete")]
+        public Task<bool> Delete(string name)
+            => mediator.Send(new DeleteRequest(name));
 
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)

@@ -1,10 +1,9 @@
-﻿using MongoDbGenericRepository.Attributes;
-using MongoDbGenericRepository.Models;
+﻿using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    [CollectionName("game_configs")]
-    public class GameConfigEntity: Document
+    [BsonCollection("game_configs")]
+    public class GameConfigEntity : Document
     {
         public string name { get; set; }
 

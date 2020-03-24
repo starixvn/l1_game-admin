@@ -3,10 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Test;Dev</Configurations>
+    <UserSecretsId>8bad5a68-0bbe-4e8a-b774-d9c83df657bb</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDbGenericRepository" Version="1.4.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.2" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.10.2" />
   </ItemGroup>
 
 </Project>

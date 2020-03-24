@@ -1,6 +1,7 @@
 using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
+using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Database;
 using MediatR;
@@ -35,9 +36,10 @@ namespace GamesAdmin.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton(new GenericRepository(dbSettings["ConnectionString"], dbSettings["DatabaseName"]));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-            services.AddScoped<IGameService, GameSettingsService>();
+            services.AddScoped<IGameSettingsService, GameSettingsService>();
+            services.AddScoped<IGameRoundService, GameRoundService>();
 
             services
                 .AddControllers()

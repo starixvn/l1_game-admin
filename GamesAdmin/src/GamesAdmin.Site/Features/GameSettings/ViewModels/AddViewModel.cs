@@ -9,7 +9,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Required(ErrorMessage = "Name could not empty")]
         [MinLength(2)]
         [MaxLength(50)]
-        [Remote(action: "VerifyName", controller: "GameConfigs", AdditionalFields = nameof(Name))]
+        [Remote(action: "VerifyName", controller: "GameSettings", AdditionalFields = nameof(Name))]
         public string Name { get; set; }
 
         public bool Enabled { get; set; }

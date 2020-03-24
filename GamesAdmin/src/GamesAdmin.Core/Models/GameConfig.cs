@@ -1,14 +1,13 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models
 {
     public class GameConfig
     {
         [JsonConstructor]
-        public GameConfig(Guid Id, string name, double minBet, double maxBet, bool enabled, int? disabledround)
+        public GameConfig(string id, string name, double minBet, double maxBet, bool enabled, int? disabledround)
         {
-            this.Id = Id;
+            Id = id;
             Name = name;
             MinBet = minBet;
             MaxBet = maxBet;
@@ -16,7 +15,7 @@ namespace GamesAdmin.Core.Models
             DisabledRound = disabledround;
         }
 
-        public Guid Id { get; }
+        public string Id { get; }
 
         public string Name { get; }
 

@@ -10,65 +10,60 @@ using Sentry;
 
 namespace GamesAdmin.Api.Games
 {
-    public interface IGameService
+    public interface IGameSettingsService
     {
         Task<IEnumerable<GameConfig>> Get();
-
-        Task<GameConfig> Get(Guid id);
 
         Task<bool> Create(GameConfig game);
 
         Task<bool> Update(GameConfig game);
 
-        Task<bool> Delete(Guid id);
-
         Task<GameConfig> GetByName(string name);
+
+        Task<bool> Delete(string name);
     }
 
-    public class GameSettingsService : IGameService
+    public class GameSettingsService : IGameSettingsService
     {
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
-        private readonly GenericRepository repository;
+        private readonly IGenericRepository<GameConfigEntity> repository;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
-            GenericRepository repository)
+            IGenericRepository<GameConfigEntity> repository)
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<GameConfig>> Get()
-        {
-            try {
-                var gameEntities = await repository.GetAllAsync<GameConfigEntity>(config => true);
-
-                return gameEntities
-                    .Select(entity => mapper.Map<GameConfig>(entity));
-            }
-            catch (Exception ex)
+        public Task<IEnumerable<GameConfig>> Get()
+        => Task.Run(() =>
             {
-                sentryClient.CaptureException(ex);
+                try
+                {
+                    var gameEntities = repository.AsQueryable().ToList();
 
-                return await Task.FromResult(Enumerable.Empty<GameConfig>());
-            }
-        }
+                    return gameEntities
+                        .Select(entity => mapper.Map<GameConfig>(entity));
+                }
+                catch (Exception ex)
+                {
+                    sentryClient.CaptureException(ex);
 
-        public async Task<GameConfig> Get(Guid id)
-        {
-            var gameEntity = await repository.GetOneAsync<GameConfigEntity>(entity => entity.Id == id);
+                    return Enumerable.Empty<GameConfig>();
+                }
+            });
 
-            return mapper.Map<GameConfig>(gameEntity);
-        }
+
 
         public async Task<bool> Create(GameConfig game)
         {
             try
             {
-                await repository.AddOneAsync(mapper.Map<GameConfigEntity>(game));
+                await repository.InsertOneAsync(mapper.Map<GameConfigEntity>(game));
             }
             catch (Exception ex)
             {
@@ -84,23 +79,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                await repository.UpdateOneAsync(mapper.Map<GameConfigEntity>(game));
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
-        }
-
-        public async Task<bool> Delete(Guid id)
-        {
-            try
-            {
-                await repository.DeleteOneAsync<GameConfigEntity>(entity => entity.Id == id);
+                await repository.ReplaceOneAsync(mapper.Map<GameConfigEntity>(game));
 
                 return true;
             }
@@ -114,9 +93,25 @@ namespace GamesAdmin.Api.Games
 
         public async Task<GameConfig> GetByName(string name)
         {
-            var gameEntity = await repository.GetOneAsync<GameConfigEntity>(entity => entity.name == name);
+            var gameEntity = await repository.FindOneAsync(entity => entity.name == name);
 
             return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
+        }
+
+        public async Task<bool> Delete(string name)
+        {
+            try
+            {
+                await repository.DeleteOneAsync(entity => entity.name == name);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
     }
 }

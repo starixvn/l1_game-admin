@@ -52,14 +52,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IActionResult> Add([Bind] AddViewModel editViewModel)
         {
             await mediator.Send(new CreateRequest(new GameConfig(
-                Guid.Empty,
+                string.Empty,
                 editViewModel.Name,
                 editViewModel.MinBet,
                 editViewModel.MaxBet,
                 editViewModel.Enabled,
                 null)));
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Edit));
         }
 
         [HttpGet]
@@ -68,7 +68,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             await mediator.Send(new DeleteRequest(id));
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Edit));
         }
 
         [AcceptVerbs("GET")]
