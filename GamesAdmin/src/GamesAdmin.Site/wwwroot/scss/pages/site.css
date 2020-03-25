@@ -1,4 +1,4 @@
-﻿.btn-submit, .btn-add {
+﻿.btn-submit, .btn-add, .btn-outline-green, .btn-outline-gray, .btn-outline-blue {
   min-width: 9rem;
   padding: .75rem 1.3rem .6rem;
   border-radius: .5rem;
@@ -12,11 +12,39 @@
   background-color: #da624a;
   border-color: #da624a;
   color: #fff; }
+  .btn-submit:hover {
+    background-color: #d75339; }
 
 .btn-add {
   background-color: #3ac47d;
   border-color: #3ac47d;
   color: #fff; }
+  .btn-add:hover {
+    background-color: #35b473; }
+
+.btn-outline-green {
+  color: #3ac47d;
+  background-color: #fff;
+  border: 1px solid #3ac47d; }
+  .btn-outline-green:hover {
+    background-color: #3ac47d;
+    color: #fff; }
+
+.btn-outline-gray {
+  background-color: #fff;
+  color: #6c757d;
+  border-color: #6c757d; }
+  .btn-outline-gray:hover {
+    background-color: #6c757d;
+    color: #fff; }
+
+.btn-outline-blue {
+  background-color: #fff;
+  color: #16aaff;
+  border-color: #16aaff; }
+  .btn-outline-blue:hover {
+    background-color: #16aaff;
+    color: #fff; }
 
 .table th {
   padding: .75rem;
@@ -38,6 +66,11 @@
   border: 1px solid #ced4da;
   height: auto; }
 
+.form-add .form-control:disabled,
+.form-add .form-control[readonly] {
+  color: #6c757d;
+  background-color: #e9ecef; }
+
 .form-add .form-group {
   margin-bottom: 1.6rem; }
 
@@ -53,7 +86,8 @@
   height: 10rem; }
 
 .user-info .dropdown-toggle {
-  border: none; }
+  border: none;
+  outline: none; }
 
 .user-info .dropdown-item {
   font-size: 1.4rem; }
@@ -209,54 +243,6 @@
   .site-name:hover, .site-name:focus {
     text-decoration: none;
     color: #f8715f; }
-
-@font-face {
-  font-family: 'Roboto';
-  font-weight: normal;
-  src: url("fonts/Roboto/Roboto-Regular.ttf") format("truetype");
-  /* Legacy iOS */ }
-
-@font-face {
-  font-family: 'Roboto';
-  font-weight: 600;
-  src: url("fonts/Roboto/Roboto-Medium.ttf") format("truetype");
-  /* Legacy iOS */ }
-
-@font-face {
-  font-family: 'Roboto';
-  font-weight: bold;
-  src: url("fonts/Roboto/Roboto-Bold.ttf") format("truetype");
-  /* Legacy iOS */ }
-
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(fonts/material-icons/MaterialIcons-Regular.eot);
-  /* For IE6-8 */
-  src: local("Material Icons"), local("MaterialIcons-Regular"), url(fonts/material-icons/MaterialIcons-Regular.woff2) format("woff2"), url(fonts/material-icons/MaterialIcons-Regular.woff) format("woff"), url(fonts/material-icons/MaterialIcons-Regular.ttf) format("truetype"); }
-
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-  /* Support for IE. */
-  font-feature-settings: 'liga'; }
 
 html {
   font-size: 10px; }

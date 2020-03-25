@@ -10,11 +10,12 @@
         color: #3a3a3a;
         border: 1px solid #ced4da;
         height: auto;
+    }
 
-        &.disabled {
-            color: #6c757d;
-            background-color: #e9ecef;
-        }
+    .form-control:disabled,
+    .form-control[readonly] {
+        color: #6c757d;
+        background-color: #e9ecef;
     }
 
     .form-group {
