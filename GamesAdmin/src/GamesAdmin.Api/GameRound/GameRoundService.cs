@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameRound
 {
-    public interface IGameRoundService 
+    public interface IGameRoundService
     {
         Task<IEnumerable<Round>> Get();
 
-        Task<int> GetLastestRound();
+        Task<Round> GetLastestRound();
+
+        Task<Round> GetBetAmount();
     }
 
     public class GameRoundService : IGameRoundService
@@ -22,15 +24,18 @@ namespace GamesAdmin.Api.GameRound
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<MiniSicboRoundEntity> repository;
+        private readonly IGenericRepository<MiniSicboOnesEntity> betRepository;
 
         public GameRoundService(
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<MiniSicboRoundEntity> repository)
+            IGenericRepository<MiniSicboRoundEntity> repository,
+            IGenericRepository<MiniSicboOnesEntity> betRepository)
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
+            this.betRepository = betRepository;
         }
 
         public async Task<IEnumerable<Round>> Get()
@@ -51,9 +56,32 @@ namespace GamesAdmin.Api.GameRound
             }
         }
 
-        public Task<int> GetLastestRound()
+        //should get bet amount of current round
+        public async Task<Round> GetBetAmount()
         {
-            throw new NotImplementedException();
+            var latestRound = await GetLastestRound();
+
+            var betEntities = betRepository.FilterBy(entity => entity.phien == latestRound.Number).ToList();
+
+            return latestRound;
         }
+
+        public Task<Round> GetLastestRound()
+        => Task.Run(() =>
+            {
+                try
+                {
+                    //should be used for multiple games
+                    var gameEntities = repository.AsQueryable().ToList();
+
+                    return mapper.Map<Round>(gameEntities.LastOrDefault());
+                }
+                catch (Exception ex)
+                {
+                    sentryClient.CaptureException(ex);
+
+                    return default;
+                }
+            });
     }
 }

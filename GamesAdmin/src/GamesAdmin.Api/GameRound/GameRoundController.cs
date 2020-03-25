@@ -23,8 +23,14 @@ namespace GamesAdmin.Api.GameRound
         public async Task<IList<Round>> Get()
            => (await mediator.Send(new GetAllRequest())).ToList();
 
-        //[HttpGet("{name}")]
-        //public Task<Round> Get(string name)
-        //    => mediator.Send(new GetByIdRequest(id));
+        [HttpGet()]
+        [Route("latest")]
+        public Task<Round> GetLatest()
+            => mediator.Send(new GetLatestRoundRequest());
+
+        [HttpGet()]
+        [Route("bet-amount")]
+        public Task<Round> GetBetAmount()
+            => mediator.Send(new GetBetAmountRequest());
     }
 }

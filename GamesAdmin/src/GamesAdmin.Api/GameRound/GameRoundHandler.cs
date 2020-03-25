@@ -9,6 +9,8 @@ namespace GamesAdmin.Api.GameRound
 {
     public class GameRoundHandler
         : IRequestHandler<GetAllRequest, IEnumerable<Round>>
+        , IRequestHandler<GetLatestRoundRequest, Round>
+        , IRequestHandler<GetBetAmountRequest, Round>
     {
         private readonly IGameRoundService gameRoundService;
 
@@ -20,9 +22,10 @@ namespace GamesAdmin.Api.GameRound
         public Task<IEnumerable<Round>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameRoundService.Get();
 
-        //public Task<IEnumerable<Round>> Handle(GetAllRequest request, CancellationToken cancellationToken)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        public Task<Round> Handle(GetLatestRoundRequest request, CancellationToken cancellationToken)
+         => gameRoundService.GetLastestRound();
+
+        public Task<Round> Handle(GetBetAmountRequest request, CancellationToken cancellationToken)
+         => gameRoundService.GetBetAmount();
     }
 }
