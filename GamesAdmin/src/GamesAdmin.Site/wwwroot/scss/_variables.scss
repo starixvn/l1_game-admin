@@ -4,9 +4,28 @@ $page-bg: #f5f5f5;
 $text-color: #495057;
 
 $sidebar-bg: #fff;
-$sidebar-header-border-color: #3D4C8A;
-$sidebar-link-item-color: #fff;
-$sidebar-link-item-bg-color-hover: #fff;
-$sidebar-link-item-color-hover: #7386D5;
 
-$highlight-color: #D60134;
+$btn-submit-bg-color: #da624a;
+$btn-submit-color: #da624a;
+$btn-submit-bg-color-hover: darken($btn-submit-bg-color, 4%);
+$btn-submit-color-hover: #fff;
+
+$btn-add-bg-color: #3ac47d;
+$btn-add-color: #fff;
+$btn-add-bg-color-hover: darken($btn-add-bg-color, 4%);
+$btn-add-color-hover: #fff;
+
+$btn-yellow-bg-color: #f7b924;
+$btn-yellow-color: #fff;
+$btn-yellow-bg-color-hover: darken($btn-yellow-bg-color, 4%);
+$btn-yellow-color-hover: #fff;
+
+$btn-gray-bg-color: #6c757d;
+$btn-gray-color: #fff;
+$btn-gray-bg-color-hover: darken($btn-gray-bg-color, 4%);
+$btn-gray-color-hover: #fff;
+
+$btn-blue-bg-color: #16aaff;
+$btn-blue-color: #fff;
+$btn-blue-bg-color-hover: darken($btn-blue-bg-color, 4%);
+$btn-blue-color-hover: #fff;

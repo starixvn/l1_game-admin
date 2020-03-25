@@ -1,0 +1,126 @@
+﻿
+// Radio
+
+.list-radio {
+    display: flex;
+}
+
+.custom-control {
+    position: relative;
+    display: block;
+    min-height: 1.35rem;
+    padding-left: 2.5rem;
+    margin-right: 2rem;
+    margin-top: .3rem;
+}
+
+.custom-control-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+input[type="radio"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.custom-control-label {
+    position: relative;
+    margin-bottom: 0;
+    vertical-align: middle;
+
+    &:before {
+        position: absolute;
+        top: .175rem;
+        left: -2.5rem;
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        pointer-events: none;
+        content: "";
+        background-color: #fff;
+        border: #adb5bd solid 1px;
+    }
+
+    &:after {
+        position: absolute;
+        top: .175rem;
+        left: -2.5rem;
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        content: "";
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+    }
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #007bff;
+    background-color: #da624a;
+}
+
+.custom-radio .custom-control-label::before {
+    border-radius: 50%;
+}
+
+.custom-control-label::before, .custom-file-label, .custom-select {
+    transition: background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+
+// Toggle button
+
+.toggle-switch {
+    padding-top: calc(.375rem + 1px);
+}
+
+.toggle-switch input[type=checkbox] {
+    display: none;
+}
+
+.toggle-switch label {
+    margin-bottom: 0;
+    cursor: pointer;
+
+    .toggle-track {
+        display: block;
+        height: 2.4rem;
+        width: 6.8rem;
+        background: #eee;
+        border-radius: 2rem;
+        position: relative;
+        border: 1px solid #ccc;
+
+        &:before {
+            content: 'NO';
+            display: inline-block;
+            height: 2.2rem;
+            line-height: 2.2rem;
+            width: 3.5rem;
+            color: #fff;
+            background-color: #6c757d;
+            border-radius: 2rem;
+            position: absolute;
+            top: 0;
+            right: 0;
+            transition: right .2s ease-in;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+    }
+}
+
+
+.toggle-switch input[type="checkbox"]:checked + label .toggle-track:before {
+    content: "YES";
+    background: #31a66a;
+    right: 3.1rem;
+}

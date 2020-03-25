@@ -1,0 +1,121 @@
+﻿@import "../variables";
+@import "../components/forms";
+@import "../components/button";
+@import "../components/custom-control";
+
+.stats .card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .section-id, .total-user {
+        margin: 1rem 0;
+        display: block;
+        opacity: .6;
+        text-align: center;
+    }
+
+    .time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        border-radius: 50%;
+        background-color: #d92550;
+        font-size: 4rem;
+        color: #fff;
+    }
+
+    .users-icon {
+        position: relative;
+        top: 6px;
+        color: #000;
+        width: 30px;
+    }
+}
+.bet {
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    .bet-count {
+        display: block;
+        margin: 1rem 0;
+        opacity: .6;
+        font-size: 1.6rem;
+    }
+
+    .turn-oover {
+        font-weight: bold;
+        font-size: 4rem;
+        display: block;
+        line-height: 1;
+        margin: 1rem auto;
+        color: #16aaff;
+    }
+
+    .win-loss {
+        &.loss {
+            color: #d92550;
+        }
+
+        &.win {
+            color: #3ac47d;
+        }
+    }
+}
+
+.control-area {
+    margin: 3rem 0;
+
+    .card-body {
+        padding: 2rem 1rem;
+    }
+}
+
+.notes {
+    list-style: none;
+    padding-left: 0;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 2rem 0;
+
+    li {
+        margin: 1rem 0;
+    }
+
+    .circle {
+        display: inline-block;
+        position: relative;
+        top: 2px;
+        height: 14px;
+        width: 14px;
+        border-radius: 50%;
+        margin-right: 8px;
+
+        &.bet-count {
+            background-color: #B0B3B6;
+        }
+
+        &.turnover {
+            background-color: #16aaff;
+        }
+
+        &.win {
+            background-color: #3ac47d;
+        }
+
+        &.loss {
+            background-color: #d92550;
+        }
+    }
+}

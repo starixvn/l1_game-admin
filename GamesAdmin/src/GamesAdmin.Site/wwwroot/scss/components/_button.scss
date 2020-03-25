@@ -12,14 +12,61 @@
 
 .btn-submit {
     @extend %btn;
-    background-color: #da624a;
-    border-color: #da624a;
+    background-color: $btn-submit-bg-color;
+    border-color: $btn-submit-bg-color;
     color: #fff;
+
+    &:hover {
+        background-color: $btn-submit-bg-color-hover;
+    }
 }
 
 .btn-add {
     @extend %btn;
-    background-color: #3ac47d;
-    border-color: #3ac47d;
+    background-color: $btn-add-bg-color;
+    border-color: $btn-add-bg-color;
     color: #fff;
+
+    &:hover {
+        background-color: $btn-add-bg-color-hover;
+    }
 }
+
+
+.btn-outline-green {
+    @extend %btn;
+    color: $btn-add-bg-color;
+    background-color: #fff;
+    border: 1px solid $btn-add-bg-color;
+
+    &:hover {
+        background-color: $btn-add-bg-color;
+        color: #fff;
+    }
+}
+
+.btn-outline-gray {
+    @extend %btn;
+    background-color: #fff;
+    color: $btn-gray-bg-color;
+    border-color: $btn-gray-bg-color;
+
+    &:hover {
+        background-color: $btn-gray-bg-color;
+        color: #fff;
+    }
+}
+
+
+.btn-outline-blue {
+    @extend %btn;
+    background-color: #fff;
+    color: $btn-blue-bg-color;
+    border-color: $btn-blue-bg-color;
+
+    &:hover {
+        background-color: $btn-blue-bg-color;
+        color: #fff;
+    }
+}
+

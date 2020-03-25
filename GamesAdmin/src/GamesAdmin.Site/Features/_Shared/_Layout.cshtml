@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @*<link href="~/scss/fonts/Awsome/css/font-awesome.css" rel="stylesheet" />*@
-    <link href="~/scss/page.css" rel="stylesheet" />
+    <link href="~/scss/fonts.min.css" rel="stylesheet" />
+    <link href="~/scss/pages/site.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="main-container">

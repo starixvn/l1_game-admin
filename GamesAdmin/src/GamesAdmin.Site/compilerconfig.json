@@ -1,10 +1,18 @@
 ﻿[
   {
-    "outputFile": "wwwroot/scss/login.css",
-    "inputFile": "wwwroot/scss/login.scss"
+    "outputFile": "wwwroot/scss/pages/login.css",
+    "inputFile": "wwwroot/scss/pages/login.scss"
   },
   {
-    "outputFile": "wwwroot/scss/page.css",
-    "inputFile": "wwwroot/scss/page.scss"
+    "outputFile": "wwwroot/scss/pages/site.css",
+    "inputFile": "wwwroot/scss/pages/site.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/forecast.css",
+    "inputFile": "wwwroot/scss/pages/forecast.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/fonts.css",
+    "inputFile": "wwwroot/scss/fonts.scss"
   }
 ]

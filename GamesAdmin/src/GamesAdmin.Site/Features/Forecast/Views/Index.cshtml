@@ -1,2 +1,72 @@
-﻿
-<h2>Forecast page</h2>
+﻿@section Styles {
+    <link href="~/scss/pages/forecast.css" rel="stylesheet" />
+}
+<div class="forecast">
+    <div class="stats card col-md-6">
+        <div class="card-body">
+            <div class="bet text-right">
+                <h2>Tài</h2>
+                <div class="bet-count">350</div>
+                <div class="turn-oover">4,578</div>
+                <div class="win-loss loss">-1,000</div>
+            </div>
+            <div class="section">
+                <div class="section-id">#234515</div>
+                <div class="time">35</div>
+                <div class="total-user">
+                    <i class="material-icons users-icon">people_alt</i>
+                    <span class="users-number">1234</span>
+                </div>
+            </div>
+            <div class="bet">
+                <h2>Xỉu</h2>
+                <div class="bet-count">299</div>
+                <div class="turn-oover">3,578</div>
+                <div class="win-loss win">+1,000</div>
+            </div>
+        </div>
+        <ul class="notes">
+            <li><span class="circle bet-count"></span> Bet count</li>
+            <li><span class="circle turnover"></span> Turnover of real users</li>
+            <li><span class="circle win"></span> Win Ammount</li>
+            <li><span class="circle loss"></span> Loss Ammount</li>
+        </ul>
+
+    </div>
+    
+    <div class="control-area card  col-md-6">
+        <form class="card-body">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Auto Control</label>
+                <div class="col-sm-10 toggle-switch">
+                    <input type="checkbox" id="chkTest" name="chkTest">
+                    <label for="chkTest">
+                        <span class="toggle-track"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Kết quả</label>
+                <div class="col-sm-10 list-radio">
+                    <div class="custom-radio custom-control">
+                        <input type="radio" id="exampleCustomRadio" name="customRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="exampleCustomRadio">Tài</label>
+                    </div>
+                    <div class="custom-radio custom-control">
+                        <input type="radio" id="exampleCustomRadio2" name="customRadio" class="custom-control-input">
+                        <label class="custom-control-label" for="exampleCustomRadio2">Xỉu</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Xí ngầu</label>
+                <div class="col-sm-10">
+                    <button class="btn-outline-gray">3</button>
+                    <button class="btn-outline-green">4</button>
+                    <button class="btn-outline-blue">5</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
