@@ -17,6 +17,7 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<MiniSicboRoundEntity, Round>()
                 .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.number));
+            CreateMap<MiniSicboOnesEntity, BetInfo>();
         }
     }
 }

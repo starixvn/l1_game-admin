@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.GameRound
 
         Task<Round> GetLastestRound();
 
-        Task<Round> GetBetAmount();
+        Task<IEnumerable<BetInfo>> GetCurrentBetAmount();
     }
 
     public class GameRoundService : IGameRoundService
@@ -55,15 +55,15 @@ namespace GamesAdmin.Api.GameRound
                 return await Task.FromResult(Enumerable.Empty<Round>());
             }
         }
-
-        //should get bet amount of current round
-        public async Task<Round> GetBetAmount()
+     
+        public async Task<IEnumerable<BetInfo>> GetCurrentBetAmount()
         {
             var latestRound = await GetLastestRound();
+            var currentRound = latestRound.Number + 1;
 
-            var betEntities = betRepository.FilterBy(entity => entity.phien == latestRound.Number).ToList();
+            var betEntities = betRepository.FilterBy(entity => entity.round == currentRound).ToList();
 
-            return latestRound;
+            return betEntities.Select(entity => mapper.Map<BetInfo>(entity));
         }
 
         public Task<Round> GetLastestRound()

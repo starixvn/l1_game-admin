@@ -30,7 +30,7 @@ namespace GamesAdmin.Api.GameRound
 
         [HttpGet()]
         [Route("bet-amount")]
-        public Task<Round> GetBetAmount()
+        public Task<IEnumerable<BetInfo>> GetBetAmount()
             => mediator.Send(new GetBetAmountRequest());
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Database.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -9,7 +10,8 @@ namespace GamesAdmin.Database.Entities
 
         public decimal bet { get; set; }
 
-        public int phien { get; set; }
+        [BsonElement("phien")]
+        public int round { get; set; }
 
         public bool select { get; set; }
 
@@ -17,12 +19,15 @@ namespace GamesAdmin.Database.Entities
 
         public bool win { get; set; }
 
-        public decimal tralai { get; set; }
+        [BsonElement("tralai")]
+        public decimal back { get; set; }
 
-        public decimal thuong { get; set; }
+        [BsonElement("thuong")]
+        public decimal bonus { get; set; }
 
         public string uid { get; set; }
 
-        public bool taixiu { get; set; }
+        [BsonElement("taixiu")]
+        public bool sicbo { get; set; }
     }
 }
