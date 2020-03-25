@@ -13,7 +13,7 @@ namespace GamesAdmin.Api.Users
 
     public class UserService : IUserService
     {
-        private const int MinAmount = 12000;
+        private const int MinAmount = 1000;
         private const int AddedAmount = 5000;
 
         private readonly IGenericRepository<UserInfoEntity> repository;
