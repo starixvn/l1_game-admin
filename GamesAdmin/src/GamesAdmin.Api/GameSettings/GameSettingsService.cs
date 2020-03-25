@@ -79,7 +79,8 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                await repository.ReplaceOneAsync(mapper.Map<GameConfigEntity>(game));
+                var entity = mapper.Map<GameConfigEntity>(game);
+                await repository.ReplaceOneAsync(entity);
 
                 return true;
             }

@@ -9,11 +9,13 @@ namespace GamesAdmin.Database.Entities
 
         public bool enabled { get; set; }
 
-        public bool bot { get; set; }
+        public bool botenabled { get; set; }
 
         public double minbet { get; set; }
 
         public double maxbet { get; set; }
+
+        public double maxbot { get; set; }
 
         public int? disabledround { get; set; }
     }

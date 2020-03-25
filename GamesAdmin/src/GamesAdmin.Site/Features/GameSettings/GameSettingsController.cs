@@ -39,6 +39,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.MinBet,
                 editViewModel.MaxBet,
                 editViewModel.Enabled,
+                editViewModel.BotEnabled,
+                editViewModel.MaxBot,
                 null)));
 
             return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name} } );
@@ -49,14 +51,16 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new AddRequest()));
 
         [HttpPost]
-        public async Task<IActionResult> Add([Bind] AddViewModel editViewModel)
+        public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
             await mediator.Send(new CreateRequest(new GameConfig(
                 string.Empty,
-                editViewModel.Name,
-                editViewModel.MinBet,
-                editViewModel.MaxBet,
-                editViewModel.Enabled,
+                addViewModel.Name,
+                addViewModel.MinBet,
+                addViewModel.MaxBet,
+                addViewModel.Enabled,
+                addViewModel.BotEnabled,
+                addViewModel.MaxBot,
                 null)));
 
             return RedirectToAction(nameof(Edit));

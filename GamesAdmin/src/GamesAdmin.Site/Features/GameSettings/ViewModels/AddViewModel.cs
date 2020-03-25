@@ -23,5 +23,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Range(0.01, 1000, ErrorMessage = "Enter number between 0 to 1000")]
         [DisplayName("Maximum Bet Limit")]
         public double MaxBet { get; set; }
+
+        [DisplayName("Bot Enabled")]
+        public bool BotEnabled { get; set; }
+
+        [Range(0, 1, ErrorMessage = "Enter number between 0 to 1")]
+        [DisplayName("Maximum Bot Percentage")]
+        public double MaxBot { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -9,14 +11,17 @@ namespace GamesAdmin.Api._Shared
     {
         public AutoMapping()
         {
+            CreateMap<List<ObjectId>, List<string>>().ConvertUsing(o => o.Select(os => os.ToString()).ToList());
+            CreateMap<List<string>, List<ObjectId>>().ConvertUsing(o => o.Select(os => ObjectId.Parse(os)).ToList());
+            CreateMap<ObjectId, string>().ConvertUsing(o => o.ToString());
+            CreateMap<string, ObjectId>().ConvertUsing(s => ObjectId.Parse(s));
+
             CreateMap<GameConfigEntity, GameConfig>()
                  .ForMember(dest => dest.DisabledRound, opt => opt.MapFrom(src => src.disabledround));
 
-            CreateMap<GameConfig, GameConfigEntity>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => ObjectId.GenerateNewId()));
+            CreateMap<GameConfig, GameConfigEntity>();
 
-            CreateMap<MiniSicboRoundEntity, Round>()
-                .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.number));
+            CreateMap<MiniSicboRoundEntity, Round>();
             CreateMap<MiniSicboOnesEntity, BetInfo>();
         }
     }
