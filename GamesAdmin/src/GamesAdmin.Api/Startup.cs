@@ -3,6 +3,8 @@ using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
+using GamesAdmin.Api.Users;
+using GamesAdmin.Api.Users.ScheduleTasks;
 using GamesAdmin.Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -39,10 +41,13 @@ namespace GamesAdmin.Api
 
             services.AddSingleton(new MongoClient(dbSettings["ConnectionString"]).GetDatabase(dbSettings["DatabaseName"]));
 
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
+
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IHostedService, AddBotBalanceTask>();
 
             services
                 .AddControllers()
