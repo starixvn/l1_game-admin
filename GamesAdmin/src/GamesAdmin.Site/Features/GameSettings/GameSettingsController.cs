@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -43,7 +42,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.MaxBot,
                 null)));
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name} } );
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name } });
         }
 
         [HttpGet]

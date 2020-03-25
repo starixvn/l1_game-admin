@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Games
 {
@@ -57,13 +57,22 @@ namespace GamesAdmin.Api.Games
                 }
             });
 
-
-
         public async Task<bool> Create(GameConfig game)
         {
             try
             {
-                await repository.InsertOneAsync(mapper.Map<GameConfigEntity>(game));
+                var entity = new GameConfigEntity 
+                {
+                    name = game.Name,
+                    enabled = game.Enabled,
+                    maxbet = game.MaxBet,
+                    minbet = game.MinBet,
+                    botenabled = game.BotEnabled,
+                    maxbot = game.MaxBot,
+                    time = DateTime.Now
+                };
+
+                await repository.InsertOneAsync(entity);
             }
             catch (Exception ex)
             {

@@ -72,7 +72,6 @@ namespace GamesAdmin.Database
             });
         }
 
-
         public virtual void InsertOne(TDocument document)
         {
             collection.InsertOne(document);
@@ -80,6 +79,8 @@ namespace GamesAdmin.Database
 
         public virtual Task InsertOneAsync(TDocument document)
         {
+            document.id = ObjectId.GenerateNewId();
+
             return Task.Run(() => collection.InsertOneAsync(document));
         }
 
@@ -87,7 +88,6 @@ namespace GamesAdmin.Database
         {
             collection.InsertMany(documents);
         }
-
 
         public virtual async Task InsertManyAsync(ICollection<TDocument> documents)
         {
