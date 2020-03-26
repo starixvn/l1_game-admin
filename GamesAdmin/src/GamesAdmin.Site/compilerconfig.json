@@ -12,7 +12,11 @@
     "inputFile": "wwwroot/scss/pages/forecast.scss"
   },
   {
-    "outputFile": "wwwroot/scss/fonts.css",
-    "inputFile": "wwwroot/scss/fonts.scss"
+    "outputFile": "wwwroot/scss/base/roboto.css",
+    "inputFile": "wwwroot/scss/base/roboto.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/base/material-icon.css",
+    "inputFile": "wwwroot/scss/base/material-icon.scss"
   }
 ]

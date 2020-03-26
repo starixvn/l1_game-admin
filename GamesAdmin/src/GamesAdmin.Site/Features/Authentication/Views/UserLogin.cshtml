@@ -11,6 +11,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link href="~/scss/base/roboto.min.css" rel="stylesheet" />
     <link href="~/scss/pages/login.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -18,7 +19,7 @@
         <div class="logo">
             <img src="~/images/Saba3.png" class="img" alt="Saba Club Admin Site" />
         </div>
-        <form asp-action="Login" class="form-section">
+        <form asp-action="Login" class="block form-login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-box">
                 <input asp-for="UserName" class="input-text" placeholder="Username" />

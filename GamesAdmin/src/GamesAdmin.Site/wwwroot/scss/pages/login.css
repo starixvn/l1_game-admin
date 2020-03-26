@@ -1,52 +1,4 @@
-﻿@font-face {
-  font-family: 'Roboto';
-  font-weight: normal;
-  src: url("fonts/Roboto/Roboto-Regular.ttf") format("truetype");
-  /* Legacy iOS */ }
-
-@font-face {
-  font-family: 'Roboto';
-  font-weight: 600;
-  src: url("fonts/Roboto/Roboto-Medium.ttf") format("truetype");
-  /* Legacy iOS */ }
-
-@font-face {
-  font-family: 'Roboto';
-  font-weight: bold;
-  src: url("fonts/Roboto/Roboto-Bold.ttf") format("truetype");
-  /* Legacy iOS */ }
-
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(fonts/material-icons/MaterialIcons-Regular.eot);
-  /* For IE6-8 */
-  src: local("Material Icons"), local("MaterialIcons-Regular"), url(fonts/material-icons/MaterialIcons-Regular.woff2) format("woff2"), url(fonts/material-icons/MaterialIcons-Regular.woff) format("woff"), url(fonts/material-icons/MaterialIcons-Regular.ttf) format("truetype"); }
-
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-  /* Support for IE. */
-  font-feature-settings: 'liga'; }
-
-html {
+﻿html {
   font-size: 10px; }
 
 body {
@@ -63,15 +15,18 @@ body {
   .logo .img {
     width: 20rem; }
 
-.form-section {
+.block {
   display: flex;
   flex-direction: column;
   padding: 4rem 3rem;
   max-width: 38rem;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: .5rem;
-  box-shadow: 0 0 3.5rem rgba(0, 0, 0, 0.1); }
+  margin: 0 auto; }
+  .block.form-login {
+    background: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 0 3.5rem rgba(0, 0, 0, 0.1); }
+  .block.error-login {
+    align-items: center; }
 
 .form-box {
   position: relative;
@@ -126,3 +81,11 @@ body {
   margin: 1rem 0;
   color: #db4437;
   font-size: 1.4rem; }
+
+.info {
+  color: #fff;
+  font-size: 1.6rem;
+  margin: 3rem 0; }
+
+.icon-lock {
+  width: 15rem; }

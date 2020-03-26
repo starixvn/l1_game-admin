@@ -1,0 +1,17 @@
+﻿@font-face {
+  font-family: 'Roboto';
+  font-weight: normal;
+  src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 600;
+  src: url("../fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: bold;
+  src: url("../fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+  /* Legacy iOS */ }

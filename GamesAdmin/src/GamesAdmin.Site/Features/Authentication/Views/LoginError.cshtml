@@ -10,20 +10,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link href="~/scss/base/roboto.min.css" rel="stylesheet" />
     <link href="~/scss/pages/login.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
-        <form asp-action="UserLogin" asp-controller="Authentication" method="get" class="form-section">     
-            <div class="logo">
-                <img src="~/images/lock-icon.svg" class="img" alt="Saba Club Admin Site" />
-            </div>
-            <div class="form-box">
-                <label style="font-size:medium; text-align:center"><b>You don't have permission to view this page.</b></label>
-            </div>           
-            <div>
-                <button class="btn-submit">Back to Login page</button>
-            </div>
+        <form asp-action="UserLogin" asp-controller="Authentication" method="get" class="block error-login">
+            <img src="~/images/lock-icon.svg" class="icon-lock" alt="SabaClub Admin Site" />
+            <div class="info">You don't have permission to view this page.</div>
+            <button class="btn-submit">Back to Login page</button>
         </form>
     </div>
 
