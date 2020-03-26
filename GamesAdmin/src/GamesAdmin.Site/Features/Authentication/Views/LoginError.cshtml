@@ -2,6 +2,35 @@
 
 @{
     ViewData["Title"] = "User Login";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/scss/pages/login.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <form asp-action="UserLogin" asp-controller="Authentication" method="get" class="form-section">     
+            <div class="logo">
+                <img src="~/images/lock-icon.svg" class="img" alt="Saba Club Admin Site" />
+            </div>
+            <div class="form-box">
+                <label style="font-size:medium; text-align:center"><b>You don't have permission to view this page.</b></label>
+            </div>           
+            <div>
+                <button class="btn-submit">Back to Login page</button>
+            </div>
+        </form>
+    </div>
 
-<p>Login failed. Please contact your administrator.</p>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
