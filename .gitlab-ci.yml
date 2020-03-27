@@ -54,6 +54,7 @@ deploy_game_admin_api_SIT:
     - cd ./build/game-admin-api/sit
     - git init
     - git remote add origin git@gitlab.com:l1-compiled/game-admin-api-compiled.git
+    - git clone git@gitlab.com:l1-compiled/game-admin-api-compiled.git
     - git add .
     - git commit -m "$(git log -1 --pretty=%B)"
     - git push -u origin master
