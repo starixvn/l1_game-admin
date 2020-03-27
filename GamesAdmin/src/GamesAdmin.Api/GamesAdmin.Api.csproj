@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Configurations>Debug;Release;Test;Dev</Configurations>
+    <Configurations>Debug;Release;Test;Dev;SIT</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
     <Content Remove="appsettings.Release.json" />
+    <Content Remove="appsettings.SIT.json" />
     <Content Remove="appsettings.Test.json" />
   </ItemGroup>
 
@@ -22,6 +23,10 @@
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
     <None Include="appsettings.Release.json">
+      <IsTransformFile>true</IsTransformFile>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </None>
+    <None Include="appsettings.SIT.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
