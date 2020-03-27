@@ -48,18 +48,15 @@ deploy_game_admin_api_SIT:
     - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
     - mkdir -p ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
   script:   
     - echo "====== Deploying ... ======"
     - git clone git@gitlab.com:l1-compiled/game-admin-api-compiled.git ./build/game-admin-api/sit
     - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api/sit
     - cd ./build/game-admin-api/sit
     - git add .
-    - git commit -m "$(git log -1 --pretty=%B)"
+    - git commit -m "$COMMIT_MESSAGE"
     - git push -u origin master
-  artifacts:
-    expire_in: 2 days
-    paths:
-      - './build/game-admin-api'
   tags:
     - deploy-dotnet
   environment:
@@ -90,3 +87,28 @@ deploy_game_admin_site:
   only:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-site-\d{8}-\d+.*$/
+
+deploy_game_admin_site_SIT:
+  stage: deploy-game-admin-site
+  before_script:
+    - echo "====== Setting SSH Key ======"
+    - eval $(ssh-agent -s)
+    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+  script:      
+    - echo "====== Deploying ... ======"
+    - git clone git@gitlab.com:l1-compiled/game-admin-site-compiled.git ./build/game-admin-site/sit
+    - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/game-admin-site/sit
+    - cd ./build/game-admin-site/sit
+    - git add .
+    - git commit -m "$COMMIT_MESSAGE"
+    - git push -u origin master
+  environment:
+    name: SIT
+  tags:
+    - deploy-dotnet
+#  only:
+#    - /^deploy-\d{8}-\d+.*$/
+#    - /^deploy-site-\d{8}-\d+.*$/
