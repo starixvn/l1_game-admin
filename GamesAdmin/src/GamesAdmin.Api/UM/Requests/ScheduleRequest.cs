@@ -5,14 +5,14 @@ namespace GamesAdmin.Api.UM.Requests
 {
     public class ScheduleRequest : IRequest<bool>
     {
-        public ScheduleRequest(DateTimeOffset start, DateTimeOffset end)
+        public ScheduleRequest(DateTime startTime, DateTime endTime)
         {
-            Start = start;
-            End = end;
+            StartTime = startTime;
+            EndTime = endTime;
         }
 
-        public DateTimeOffset Start { get; }
+        public DateTime StartTime { get; }
 
-        public DateTimeOffset End { get; }
+        public DateTime EndTime { get; }
     }
 }

@@ -13,7 +13,6 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<GetByNameRequest, GameConfig>
-        , IRequestHandler<DisableAllRequest, bool>
     {
         private readonly IGameSettingsService gameService;
 
@@ -36,8 +35,5 @@ namespace GamesAdmin.Api.Games
 
         public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);
-
-        public Task<bool> Handle(DisableAllRequest request, CancellationToken cancellationToken)
-         => gameService.DisableAll(request.DisableAt);
     }
 }

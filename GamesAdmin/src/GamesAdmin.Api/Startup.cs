@@ -3,6 +3,7 @@ using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
+using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.Users.ScheduleTasks;
 using GamesAdmin.Database;
@@ -45,6 +46,7 @@ namespace GamesAdmin.Api
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
+            services.AddScoped<IUMService, UMService>();
 
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
