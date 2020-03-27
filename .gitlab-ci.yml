@@ -4,16 +4,16 @@
 stages:
 #  - build
   - deploy-game-admin-api
-#  - deploy-game-admin-site
+  - deploy-game-admin-site
 
-build:
-  stage: build
-  script:      
-    - dotnet clean ./GamesAdmin/GamesAdmin.sln
-    - dotnet restore ./GamesAdmin/GamesAdmin.sln
-    - dotnet build ./GamesAdmin/GamesAdmin.sln
-  tags:
-    - deploy-dotnet
+#build:
+#  stage: build
+#  script:      
+#    - dotnet clean ./GamesAdmin/GamesAdmin.sln
+#    - dotnet restore ./GamesAdmin/GamesAdmin.sln
+#    - dotnet build ./GamesAdmin/GamesAdmin.sln
+#  tags:
+#    - deploy-dotnet
     
 deploy_game_admin_api:
   stage: deploy-game-admin-api
