@@ -130,6 +130,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                // TODO check disableAt
                 var gameEntities = repository.AsQueryable().ToList();
 
                 foreach (var game in gameEntities)
