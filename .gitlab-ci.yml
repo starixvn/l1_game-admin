@@ -60,7 +60,7 @@ deploy_game_admin_api_SIT:
   tags:
     - deploy-dotnet
   environment:
-    name: SIT-GAME-ADMIN-API
+    name: SIT
  # only:
  #   - /^deploy-\d{8}-\d+.*$/
  #   - /^deploy-api-\d{8}-\d+.*$/
@@ -84,6 +84,8 @@ deploy_game_admin_site_LOCAL:
       - './build/game-admin-site'
   tags:
     - deploy-dotnet
+  environment:
+    name: LOCAL
   only:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-site-\d{8}-\d+.*$/
@@ -106,7 +108,7 @@ deploy_game_admin_site_SIT:
     - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
     - git push -u origin master
   environment:
-    name: SIT-GAME-ADMIN-SITE
+    name: SIT
   tags:
     - deploy-dotnet
 #  only:
