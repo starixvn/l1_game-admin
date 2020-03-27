@@ -34,9 +34,40 @@ deploy_game_admin_api:
       - './build/game-admin-api'
   tags:
     - deploy-dotnet
+  environment:
+    name: LOCAL
   only:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-api-\d{8}-\d+.*$/
+    
+deploy_game_admin_api_SIT:
+  stage: deploy-game-admin-api
+  before_script:
+    - echo "====== Setting SSH Key ======"
+    - eval $(ssh-agent -s)
+    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:   
+    - echo "====== Deploying ... ======"
+    - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api/sit
+    - cd ./build/game-admin-api/sit
+    - git init
+    - git remote add origin git@gitlab.com:l1-compiled/game-admin-api-compiled.git
+    - git add .
+    - git commit -m $(git log -1 --pretty=%B)
+    - git push -u origin master
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - './build/game-admin-api'
+  tags:
+    - deploy-dotnet
+  environment:
+    name: SIT
+ # only:
+ #   - /^deploy-\d{8}-\d+.*$/
+ #   - /^deploy-api-\d{8}-\d+.*$/
     
 deploy_game_admin_site:
   stage: deploy-game-admin-site
