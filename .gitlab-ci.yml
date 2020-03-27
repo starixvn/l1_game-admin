@@ -50,11 +50,9 @@ deploy_game_admin_api_SIT:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:   
     - echo "====== Deploying ... ======"
+    - git clone git@gitlab.com:l1-compiled/game-admin-api-compiled.git ./build/game-admin-api/sit
     - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api/sit
     - cd ./build/game-admin-api/sit
-    - git init
-    - git remote add origin git@gitlab.com:l1-compiled/game-admin-api-compiled.git
-    - git clone git@gitlab.com:l1-compiled/game-admin-api-compiled.git
     - git add .
     - git commit -m "$(git log -1 --pretty=%B)"
     - git push -u origin master
