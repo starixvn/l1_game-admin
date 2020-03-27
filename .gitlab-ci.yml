@@ -55,7 +55,7 @@ deploy_game_admin_api_SIT:
     - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api/sit
     - cd ./build/game-admin-api/sit
     - git add .
-    - if [ -z "$(git status --porcelain)" ]; then git commit -m "$COMMIT_MESSAGE"; fi
+    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
     - git push -u origin master
   tags:
     - deploy-dotnet
