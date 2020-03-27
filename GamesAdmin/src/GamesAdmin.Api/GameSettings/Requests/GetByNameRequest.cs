@@ -1,7 +1,7 @@
 ﻿using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Games.Requests
+namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class GetByNameRequest : IRequest<GameConfig>
     {

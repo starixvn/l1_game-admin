@@ -2,7 +2,7 @@
 using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Games.Requests
+namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class GetAllRequest: IRequest<IEnumerable<GameConfig>>
     {

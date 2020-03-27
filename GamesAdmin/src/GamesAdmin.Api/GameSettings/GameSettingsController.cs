@@ -1,7 +1,8 @@
-﻿using GamesAdmin.Api.Games.Requests;
+﻿using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,5 +39,9 @@ namespace GamesAdmin.Api.Games
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)
         => mediator.Send(new GetByNameRequest(name));
+
+        [HttpPost("/disable-all?at")]
+        public Task<bool> DisableAll(DateTimeOffset at)
+           => mediator.Send(new DisableAllRequest(at));
     }
 }

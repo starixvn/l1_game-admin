@@ -21,6 +21,8 @@ namespace GamesAdmin.Api.Games
         Task<GameConfig> GetByName(string name);
 
         Task<bool> Delete(string name);
+
+        Task<bool> DisableAll(DateTimeOffset? disableAt);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -115,6 +117,30 @@ namespace GamesAdmin.Api.Games
                 await repository.DeleteOneAsync(entity => entity.name == name);
 
                 return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> DisableAll(DateTimeOffset? disableAt)
+        {
+            try
+            {
+                var gameEntities = repository.AsQueryable().ToList();
+
+                foreach (var game in gameEntities)
+                {
+                    game.enabled = false;
+
+                    await repository.ReplaceOneAsync(game);
+                }
+
+                return true;
+
             }
             catch (Exception ex)
             {

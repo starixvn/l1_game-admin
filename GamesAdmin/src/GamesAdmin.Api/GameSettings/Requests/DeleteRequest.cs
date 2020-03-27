@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace GamesAdmin.Api.Games.Requests
+namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class DeleteRequest : IRequest<bool>
     {
