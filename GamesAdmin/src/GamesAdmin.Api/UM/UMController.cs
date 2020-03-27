@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.UM
 {
-    [Route("um")]
+    [Route("api/um")]
     [ApiController]
     public class UMController : ControllerBase
     {
@@ -15,17 +15,6 @@ namespace GamesAdmin.Api.UM
         public UMController(IMediator mediator)
         {
             this.mediator = mediator;
-        }
-
-        [HttpPost("/schedule")]
-        public Task<bool> Schedule(DateTime startTime, DateTime endTime)
-        {
-            if (startTime == default || endTime == default)
-            {
-                throw new ArgumentException($"{nameof(startTime)} and {nameof(endTime)} should not be null");
-            }
-
-            return mediator.Send(new ScheduleRequest(startTime, endTime));
         }
 
         [HttpPost()]

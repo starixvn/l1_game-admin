@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GamesAdmin.Api.GameRound
 {
     [ApiController]
-    [Route("game-rounds")]
+    [Route("api/game-rounds")]
     public class GameRoundController : ControllerBase
     {
         private readonly IMediator mediator;

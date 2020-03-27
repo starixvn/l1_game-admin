@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.UM
 {
-    public interface IUMService 
+    public interface IUMService
     {
-        Task<bool> AddSchedule(DateTime start, DateTime end);
-
         Task<bool> Process(bool isUM);
     }
 
@@ -21,38 +19,16 @@ namespace GamesAdmin.Api.UM
         private readonly IGenericRepository<GameConfigEntity> configRepository;
 
         public UMService(
-            ISentryClient sentryClient, 
+            ISentryClient sentryClient,
             IGenericRepository<UMInfoEntity> umRepository,
-            IGenericRepository<GameConfigEntity> configRepository) 
+            IGenericRepository<GameConfigEntity> configRepository)
         {
             this.sentryClient = sentryClient;
             this.umRepository = umRepository;
             this.configRepository = configRepository;
         }
 
-        public async Task<bool> AddSchedule(DateTime start, DateTime end)
-        {
-            try
-            {
-                await umRepository.InsertOneAsync(new UMInfoEntity
-                {
-                    start = start,
-                    end = end,
-                    finish = false,
-                    time = DateTime.UtcNow
-                }); ;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
-        }
-
-        public Task<bool> Process(bool isUM)=> isUM ? Start() : End();
+        public Task<bool> Process(bool isUM) => isUM ? Start() : End();
 
         public async Task<bool> Start()
         {
@@ -117,7 +93,5 @@ namespace GamesAdmin.Api.UM
                 await configRepository.ReplaceOneAsync(game);
             }
         }
-
-        
     }
 }

@@ -2,7 +2,6 @@
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 namespace GamesAdmin.Api.Games
 {
     [ApiController]
-    [Route("game-settings")]
+    [Route("api/game-settings")]
     public class GameSettingsController : ControllerBase
     {
         private readonly IMediator mediator;
