@@ -3,8 +3,8 @@
   
 stages:
 #  - build
-  - deploy-game-admin-api
-  - deploy-game-admin-site
+  - deploy-local
+  - deploy-sit
 
 #build:
 #  stage: build
@@ -15,8 +15,8 @@ stages:
 #  tags:
 #    - deploy-dotnet
     
-deploy_game_admin_api:
-  stage: deploy-game-admin-api
+deploy_game_admin_api_LOCAL:
+  stage: deploy-local
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -41,7 +41,7 @@ deploy_game_admin_api:
     - /^deploy-api-\d{8}-\d+.*$/
     
 deploy_game_admin_api_SIT:
-  stage: deploy-game-admin-api
+  stage: deploy-sit
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -60,13 +60,13 @@ deploy_game_admin_api_SIT:
   tags:
     - deploy-dotnet
   environment:
-    name: SIT
+    name: SIT-GAME-ADMIN-API
  # only:
  #   - /^deploy-\d{8}-\d+.*$/
  #   - /^deploy-api-\d{8}-\d+.*$/
     
-deploy_game_admin_site:
-  stage: deploy-game-admin-site
+deploy_game_admin_site_LOCAL:
+  stage: deploy-local
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -89,7 +89,7 @@ deploy_game_admin_site:
     - /^deploy-site-\d{8}-\d+.*$/
 
 deploy_game_admin_site_SIT:
-  stage: deploy-game-admin-site
+  stage: deploy-sit
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -103,10 +103,10 @@ deploy_game_admin_site_SIT:
     - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/game-admin-site/sit
     - cd ./build/game-admin-site/sit
     - git add .
-    - git commit -m "$COMMIT_MESSAGE"
+    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
     - git push -u origin master
   environment:
-    name: SIT
+    name: SIT-GAME-ADMIN-SITE
   tags:
     - deploy-dotnet
 #  only:
