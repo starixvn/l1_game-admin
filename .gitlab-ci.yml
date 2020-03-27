@@ -1,9 +1,9 @@
 #variables:
 #  PATH: "C:\\OpenSSH;C:\\Program Files\\Git\\bin;C:\\Program Files\\dotnet"
   
-#stages:
+stages:
 #  - build
-#  - deploy-game-admin-api
+  - deploy-game-admin-api
 #  - deploy-game-admin-site
 
 build:
