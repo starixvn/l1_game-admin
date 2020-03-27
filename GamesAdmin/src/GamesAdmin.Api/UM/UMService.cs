@@ -11,9 +11,7 @@ namespace GamesAdmin.Api.UM
     {
         Task<bool> AddSchedule(DateTime start, DateTime end);
 
-        Task<bool> Start();
-
-        Task<bool> End();
+        Task<bool> Process(bool isUM);
     }
 
     public class UMService : IUMService
@@ -53,6 +51,8 @@ namespace GamesAdmin.Api.UM
                 return false;
             }
         }
+
+        public Task<bool> Process(bool isUM)=> isUM ? Start() : End();
 
         public async Task<bool> Start()
         {
@@ -117,5 +117,7 @@ namespace GamesAdmin.Api.UM
                 await configRepository.ReplaceOneAsync(game);
             }
         }
+
+        
     }
 }

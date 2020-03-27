@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.UM
 {
-    [Route("api/[controller]")]
+    [Route("um")]
     [ApiController]
     public class UMController : ControllerBase
     {
@@ -28,12 +28,8 @@ namespace GamesAdmin.Api.UM
             return mediator.Send(new ScheduleRequest(startTime, endTime));
         }
 
-        [HttpPost("/start")]
-        public Task<bool> Start()
-        => mediator.Send(new StartRequest());
-
-        [HttpPost("/end")]
-        public Task<bool> End()
-        => mediator.Send(new EndRequest());
+        [HttpPost()]
+        public Task<bool> Start([FromBody] UMRequest request)
+        => mediator.Send(request);
     }
 }
