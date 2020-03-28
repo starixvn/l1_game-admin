@@ -74,6 +74,8 @@ namespace GamesAdmin.Database
 
         public virtual void InsertOne(TDocument document)
         {
+            document.id = ObjectId.GenerateNewId();
+
             collection.InsertOne(document);
         }
 

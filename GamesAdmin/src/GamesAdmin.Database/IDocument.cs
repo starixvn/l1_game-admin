@@ -21,6 +21,7 @@ namespace GamesAdmin.Database
         public ObjectId id { get; set; }
 
         public DateTime time { get; set; }
+
         public int __v { get; set; }
     }
 }

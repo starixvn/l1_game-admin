@@ -5,7 +5,7 @@ using System;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("userinfos")]
-    public class UserInfoEntity : Document
+    public class AccountInfoEntity : Document
     {
         [BsonElement("id")]
         public string userId { get; set; }
