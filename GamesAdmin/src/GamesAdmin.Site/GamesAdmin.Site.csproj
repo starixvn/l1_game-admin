@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-GamesAdmin.Site-CD4B8648-F4AA-4CB6-8646-C66F4D721A19</UserSecretsId>
-    <Configurations>Dev;SIT;Local;Prod</Configurations>
+    <Configurations>Dev;SIT;Local;Prod;UAT</Configurations>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
@@ -13,6 +13,7 @@
     <Content Remove="appsettings.Local.json" />
     <Content Remove="appsettings.Prod.json" />
     <Content Remove="appsettings.SIT.json" />
+    <Content Remove="appsettings.UAT.json" />
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
@@ -63,6 +64,10 @@
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
     <None Include="appsettings.SIT.json">
+      <IsTransformFile>true</IsTransformFile>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </None>
+    <None Include="appsettings.UAT.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
