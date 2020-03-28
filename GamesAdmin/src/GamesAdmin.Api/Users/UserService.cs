@@ -15,7 +15,7 @@ namespace GamesAdmin.Api.Users
 
         Task<int> GetTotalBots();
 
-        Task<IList<GenerateBotResult>> GenerateUsers(string[] names, bool isBot);
+        Task<IList<GenerateUserResult>> GenerateUsers(string[] names, bool isBot);
     }
 
     public class UserService : IUserService
@@ -68,9 +68,9 @@ namespace GamesAdmin.Api.Users
             return accountInfoRepository.FilterBy(entity => entity.isBot).Count();
         });
 
-        public async Task<IList<GenerateBotResult>> GenerateUsers(string[] names, bool isBot)
+        public async Task<IList<GenerateUserResult>> GenerateUsers(string[] names, bool isBot)
         {
-            var results = new List<GenerateBotResult>();
+            var results = new List<GenerateUserResult>();
             
             var latestUserInfoUID = await GetLatestUserInfoUID();
 
@@ -78,12 +78,13 @@ namespace GamesAdmin.Api.Users
             {
                 latestUserInfoUID += 1;
                 var userName = $"{name}-{latestUserInfoUID}-{(new Random()).Next(100)}";
+                var password = $"pawd-{(new Random()).Next(200, 1000)}-{new Random().Next(150, 500)}";
                 var avatarId = new Random().Next(1, 40);
-                var result = new GenerateBotResult(userName, name, avatarId);
+                var result = new GenerateUserResult(userName, name, password);
                 
                 try
                 {
-                    var createdAccountId = await CreateAccount(userName);
+                    var createdAccountId = await CreateAccount(userName, password);
 
                     if (!string.IsNullOrWhiteSpace(createdAccountId))
                     {
@@ -109,9 +110,8 @@ namespace GamesAdmin.Api.Users
         private Task<int> GetLatestUserInfoUID()
             => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
 
-        private async Task<string> CreateAccount(string username) 
+        private async Task<string> CreateAccount(string username, string password) 
         {
-            var password = $"pawd-{(new Random()).Next(200, 1000)}-{new Random().Next(150, 500)}";
             var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
 
             var account = new AccountEntity

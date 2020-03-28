@@ -23,8 +23,8 @@ namespace GamesAdmin.Api.Users
         public async Task<int> Get()
            => (await mediator.Send(new GetBotCountRequest()));
 
-        [HttpPost("bot/generate")]
-        public async Task<IList<GenerateBotResult>> GenerateUserRandom(string[] names)
+        [HttpPost("bots/generate")]
+        public async Task<IList<GenerateUserResult>> GenerateBotsRandom(string[] names)
         {
             if (names?.Length < 0 || names?.Length > 20)
             {
@@ -32,6 +32,17 @@ namespace GamesAdmin.Api.Users
             }
         
             return await mediator.Send(new GenerateUserRandomRequest(names, true));
+        }
+
+        [HttpPost("generate")]
+        public async Task<IList<GenerateUserResult>> GenerateUsersRandom(string[] names)
+        {
+            if (names?.Length < 0 || names?.Length > 20)
+            {
+                throw new InvalidOperationException("Number of generated users should be in range [1..20]");
+            }
+
+            return await mediator.Send(new GenerateUserRandomRequest(names, false));
         }
     }
 }

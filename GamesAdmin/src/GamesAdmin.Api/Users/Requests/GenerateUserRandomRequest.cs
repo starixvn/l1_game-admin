@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Users.Requests
 {
-    public class GenerateUserRandomRequest : IRequest<IList<GenerateBotResult>>
+    public class GenerateUserRandomRequest : IRequest<IList<GenerateUserResult>>
     {
         public GenerateUserRandomRequest(string[] names, bool isBot) 
         {
