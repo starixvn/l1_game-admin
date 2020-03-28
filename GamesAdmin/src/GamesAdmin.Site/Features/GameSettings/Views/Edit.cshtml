@@ -50,7 +50,8 @@
 
             <div class="form-group">
                 <label asp-for="MaxBot" class="control-label"></label>
-                <input type="number" asp-for="MaxBot" class="form-control" />
+                <select asp-items="@Model.BotPercentageItems" asp-for="MaxBot" class="form-control"></select>
+                <span> <i>(Current bots: <b>@Model.CurrentBot</b>/@Model.BotCount)</i></span>
                 <span asp-validation-for="MaxBot" class="text-danger"></span>
             </div>
 

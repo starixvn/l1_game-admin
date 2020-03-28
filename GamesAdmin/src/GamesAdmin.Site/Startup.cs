@@ -2,6 +2,7 @@ using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.GameSettings;
 using MediatR;
@@ -37,6 +38,9 @@ namespace GamesAdmin.Site
 
             services.AddSingleton(RestService.For<IGameApi>(appSettings.ApiHost));
             services.AddScoped<IGameService, GameService>();
+
+            services.AddSingleton(RestService.For<IAccountApi>(appSettings.ApiHost));
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 

@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -17,13 +20,16 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<IsExistRequest, bool>
     {
-        private readonly IGameService gameService;
         private readonly IMapper mapper;
 
-        public GamesHandler(IMapper mapper, IGameService gameService)
+        private readonly IGameService gameService;
+        private readonly IAccountService accountService;        
+
+        public GamesHandler(IMapper mapper, IGameService gameService, IAccountService accountService)
         {
             this.mapper = mapper;
             this.gameService = gameService;
+            this.accountService = accountService;
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
@@ -39,11 +45,31 @@ namespace GamesAdmin.Site.Features.GameSettings
                 game = await gameService.GetByName(request.Name);
             }
 
-            return mapper.Map<EditViewModel>(game);
+            var viewModel = mapper.Map<EditViewModel>(game);
+
+            viewModel.MaxBot = (int)(game.MaxBot * 100);
+            viewModel.BotCount = await accountService.GetBotCount();
+            viewModel.BotPercentageItems = new List<SelectListItem>();
+
+            for (var i = 1; i <= 10; i++)
+            {
+                var percentage = i * 10;
+                viewModel.BotPercentageItems.Add(new SelectListItem($"{percentage}%", $"{percentage}", viewModel.MaxBot == percentage));
+            }
+
+            return viewModel;
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-        => gameService.Update(request.Game);
+        => gameService.Update(new GameConfig(
+            request.Game.Id, 
+            request.Game.Name, 
+            request.Game.MinBet, 
+            request.Game.MaxBet, 
+            request.Game.Enabled, 
+            request.Game.BotEnabled, 
+            request.Game.MaxBot / 100,
+            null));
 
         public Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         => Task.FromResult(new AddViewModel());

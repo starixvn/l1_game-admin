@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel
-    {
+    { 
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -25,8 +27,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
-        [Range(0, 1, ErrorMessage = "Enter number between 0 to 1")]
+        //[Range(0, 1, ErrorMessage = "Enter number between 0 to 1")]
         [DisplayName("Maximum Bot Percentage")]
-        public double MaxBot { get; set; }
+        public int MaxBot { get; set; }
+
+        public List<SelectListItem> BotPercentageItems { get; set; }        
+
+        public int BotCount { get; set; }
+
+        public int CurrentBot => (int)(BotCount * MaxBot / 100);
     }
 }
