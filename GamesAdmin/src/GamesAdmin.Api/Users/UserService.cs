@@ -71,54 +71,23 @@ namespace GamesAdmin.Api.Users
         public async Task<IList<GenerateBotResult>> GenerateUsers(string[] names, bool isBot)
         {
             var results = new List<GenerateBotResult>();
-
-            // get last UserInfo.UID to make it increase
-            var latestUserInfoUID = accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0;
+            
+            var latestUserInfoUID = await GetLatestUserInfoUID();
 
             foreach (var name in names)
             {
-
                 latestUserInfoUID += 1;
-                var userName = $"{name}-{(new Random()).Next(100)}";
+                var userName = $"{name}-{latestUserInfoUID}-{(new Random()).Next(100)}";
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateBotResult(userName, name, avatarId);
                 
                 try
                 {
-                    var password = $"pawd-{(new Random()).Next(200, 1000)}-{new Random().Next(150, 500)}";
-                    var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
-
-                    var account = new AccountEntity
-                    {
-                        local = new LocalAccount
-                        {
-                            username = userName,
-                            password = hashPassword,
-                            regDate = DateTime.UtcNow
-                        }
-                    };
-
-                    await accountRepository.InsertOneAsync(account);
-
-                    var createdAccountId = accountRepository
-                        .FilterBy(account => account.local.username == userName)
-                        .FirstOrDefault()
-                        ?.id.ToString();
+                    var createdAccountId = await CreateAccount(userName);
 
                     if (!string.IsNullOrWhiteSpace(createdAccountId))
                     {
-                        var accountInfo = new AccountInfoEntity
-                        {
-                            name = name,
-                            avatarId = avatarId,
-                            red = 10000,
-                            isBot = isBot,
-                            userId = createdAccountId,
-                            joinedOn = DateTime.UtcNow,
-                            UID = latestUserInfoUID
-                        };
-
-                        await accountInfoRepository.InsertOneAsync(accountInfo);
+                        await CreateAccountInfo(createdAccountId, name, avatarId, isBot, latestUserInfoUID);
 
                         await txAccountRepository.InsertOneAsync(new MiniSicboAccountEntity { uid = createdAccountId });
                         await xdAccountRepository.InsertOneAsync(new XocDiaAccountEntity { uid = createdAccountId });
@@ -135,6 +104,48 @@ namespace GamesAdmin.Api.Users
             }
 
             return results.ToArray();
+        }
+
+        private Task<int> GetLatestUserInfoUID()
+            => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
+
+        private async Task<string> CreateAccount(string username) 
+        {
+            var password = $"pawd-{(new Random()).Next(200, 1000)}-{new Random().Next(150, 500)}";
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
+
+            var account = new AccountEntity
+            {
+                local = new LocalAccount
+                {
+                    username = username,
+                    password = hashPassword,
+                    regDate = DateTime.UtcNow
+                }
+            };
+
+            await accountRepository.InsertOneAsync(account);
+
+            return accountRepository
+                .FilterBy(account => account.local.username == username)
+                .FirstOrDefault()
+                ?.id.ToString();
+        }
+
+        private Task CreateAccountInfo(string userId, string name, int avatarId, bool isBot, int uid) 
+        {
+            var accountInfo = new AccountInfoEntity
+            {
+                name = name,
+                avatarId = avatarId,
+                red = 10000,
+                isBot = isBot,
+                userId = userId,
+                joinedOn = DateTime.UtcNow,
+                UID = uid
+            };
+
+            return accountInfoRepository.InsertOneAsync(accountInfo);
         }
     }
 }
