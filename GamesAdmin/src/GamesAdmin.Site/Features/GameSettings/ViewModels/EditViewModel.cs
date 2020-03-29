@@ -27,7 +27,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
-        //[Range(0, 1, ErrorMessage = "Enter number between 0 to 1")]
         [DisplayName("Maximum Bot Percentage")]
         public int MaxBot { get; set; }
 

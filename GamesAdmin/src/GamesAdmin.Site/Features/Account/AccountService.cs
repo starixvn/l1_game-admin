@@ -1,6 +1,4 @@
 ﻿using Refit;
-using Sentry;
-using System;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Account
@@ -19,12 +17,10 @@ namespace GamesAdmin.Site.Features.Account
     public class AccountService : IAccountService
     {
         private readonly IAccountApi accountApi;
-        private readonly ISentryClient sentryClient;
 
-        public AccountService(IAccountApi gameApi, ISentryClient sentryClient)
+        public AccountService(IAccountApi gameApi)
         {
             this.accountApi = gameApi;
-            this.sentryClient = sentryClient;
         }
 
         public Task<int> GetBotCount()

@@ -49,15 +49,22 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             viewModel.MaxBot = (int)(game.MaxBot * 100);
             viewModel.BotCount = await accountService.GetBotCount();
-            viewModel.BotPercentageItems = new List<SelectListItem>();
+            viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
+
+            return viewModel;
+        }
+
+        private static List<SelectListItem> GeneratePercentageItems(int currentValue)
+        {
+            var items = new List<SelectListItem>();
 
             for (var i = 1; i <= 10; i++)
             {
                 var percentage = i * 10;
-                viewModel.BotPercentageItems.Add(new SelectListItem($"{percentage}%", $"{percentage}", viewModel.MaxBot == percentage));
+                items.Add(new SelectListItem($"{percentage}%", $"{percentage}", currentValue == percentage));
             }
 
-            return viewModel;
+            return items;
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
@@ -71,11 +78,28 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.MaxBot / 100,
             null));
 
-        public Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new AddViewModel());
+        public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
+        {
+            var viewModel = new AddViewModel
+            {
+                BotCount = await accountService.GetBotCount()
+            };
+
+            viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
+
+            return viewModel;
+        }
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => gameService.Add(request.Game);
+        => gameService.Add(new GameConfig(
+            request.Game.Id,
+            request.Game.Name,
+            request.Game.MinBet,
+            request.Game.MaxBet,
+            request.Game.Enabled,
+            request.Game.BotEnabled,
+            request.Game.MaxBot / 100,
+            null));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
