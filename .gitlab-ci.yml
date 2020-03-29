@@ -1,10 +1,13 @@
-#variables:
-#  PATH: "C:\\OpenSSH;C:\\Program Files\\Git\\bin;C:\\Program Files\\dotnet"
-  
+variables:
+    GAME_ADMIN_API_BUILD_PATH: ./build/game-admin-api
+    GAME_ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
+    GAME_ADMIN_SITE_BUILD_PATH: ./build/game-admin-site
+    GAME_ADMIN_SITE_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Site
+
 stages:
 #  - build
-  - deploy-local
-  - deploy-sit
+  - deploy-game-admin-api
+  - deploy-game-admin-site
 
 #build:
 #  stage: build
@@ -15,8 +18,8 @@ stages:
 #  tags:
 #    - deploy-dotnet
     
-deploy_game_admin_api_LOCAL:
-  stage: deploy-local
+local_deploy_game_admin_api:
+  stage: deploy-game-admin-api
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -25,13 +28,9 @@ deploy_game_admin_api_LOCAL:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:   
     - echo "====== Deploying ... ======"
-    - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api
-    - tar -C ./build/game-admin-api/ -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-api/ -jxf -'
+    - dotnet publish -c Local $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
+    - tar -C $GAME_ADMIN_API_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-api/ -jxf -'
     - ssh root@$HOST 'sudo service l1-game-admin-api restart'
-  artifacts:
-    expire_in: 2 days
-    paths:
-      - './build/game-admin-api'
   tags:
     - deploy-dotnet
   environment:
@@ -39,34 +38,9 @@ deploy_game_admin_api_LOCAL:
   only:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-api-\d{8}-\d+.*$/
-    
-deploy_game_admin_api_SIT:
-  stage: deploy-sit
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-  script:   
-    - echo "====== Deploying ... ======"
-    - git clone git@gitlab.com:l1-compiled/game-admin-api-compiled.git ./build/game-admin-api/sit
-    - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Api/GamesAdmin.Api.csproj -o ./build/game-admin-api/sit
-    - cd ./build/game-admin-api/sit
-    - git add .
-    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
-    - git push -u origin master
-  tags:
-    - deploy-dotnet
-  environment:
-    name: SIT
- # only:
- #   - /^deploy-\d{8}-\d+.*$/
- #   - /^deploy-api-\d{8}-\d+.*$/
-    
-deploy_game_admin_site_LOCAL:
-  stage: deploy-local
+
+local_deploy_game_admin_site:
+  stage: deploy-game-admin-site
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -75,13 +49,9 @@ deploy_game_admin_site_LOCAL:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:      
     - echo "====== Deploying ... ======"
-    - dotnet publish -c Local ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/game-admin-site
-    - tar -C ./build/game-admin-site/ -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-site/ -jxf -'
+    - dotnet publish -c Local $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
+    - tar -C $GAME_ADMIN_SITE_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-site/ -jxf -'
     - ssh root@$HOST 'sudo service l1-game-admin-site restart'
-  artifacts:
-    expire_in: 2 days
-    paths:
-      - './build/game-admin-site'
   tags:
     - deploy-dotnet
   environment:
@@ -90,8 +60,36 @@ deploy_game_admin_site_LOCAL:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-site-\d{8}-\d+.*$/
 
-deploy_game_admin_site_SIT:
-  stage: deploy-sit
+sit_deploy_game_admin_api:
+  stage: deploy-game-admin-api
+  before_script:
+    - echo "====== Setting SSH Key ======"
+    - eval $(ssh-agent -s)
+    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+  script:   
+    - echo "====== Deploying ... ======"
+    - git clone --branch SIT git@gitlab.com:l1-compiled/game-admin-api-compiled.git $GAME_ADMIN_API_BUILD_PATH
+    - dotnet publish -c SIT $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
+    - cp $GAME_ADMIN_API_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_API_BUILD_PATH
+    - cd $GAME_ADMIN_API_BUILD_PATH
+    - git add .
+    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
+    - git push -u origin SIT
+    - echo "==============Waiting for after script execution=============="
+    - sleep 60
+  tags:
+    - deploy-dotnet
+  environment:
+    name: SIT
+ only:
+   - /^deploy-sit-\d{8}-\d+.*$/
+   - /^deploy-sit-api-\d{8}-\d+.*$/
+
+sit_deploy_game_admin_site:
+  stage: deploy-game-admin-site
   before_script:
     - echo "====== Setting SSH Key ======"
     - eval $(ssh-agent -s)
@@ -101,16 +99,75 @@ deploy_game_admin_site_SIT:
     - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
   script:      
     - echo "====== Deploying ... ======"
-    - git clone git@gitlab.com:l1-compiled/game-admin-site-compiled.git ./build/game-admin-site/sit
-    - dotnet publish -c SIT ./GamesAdmin/src/GamesAdmin.Site/GamesAdmin.Site.csproj -o ./build/game-admin-site/sit
-    - cd ./build/game-admin-site/sit
+    - git clone --branch SIT git@gitlab.com:l1-compiled/game-admin-site-compiled.git $GAME_ADMIN_SITE_BUILD_PATH
+    - dotnet publish -c SIT $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
+    - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_SITE_BUILD_PATH
+    - cd $GAME_ADMIN_SITE_BUILD_PATH
     - git add .
     - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
-    - git push -u origin master
+    - git push -u origin SIT
+    - echo "==============Waiting for after script execution=============="
+    - sleep 60
   environment:
     name: SIT
   tags:
     - deploy-dotnet
+  only:
+    - /^deploy-sit\d{8}-\d+.*$/
+    - /^deploy-sit-site-\d{8}-\d+.*$/
+
+uat_deploy_game_admin_api:
+  stage: deploy-game-admin-api
+  before_script:
+    - echo "====== Setting SSH Key ======"
+    - eval $(ssh-agent -s)
+    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+  script:   
+    - echo "====== Deploying ... ======"
+    - git clone --branch UAT git@gitlab.com:l1-compiled/game-admin-api-compiled.git $GAME_ADMIN_API_BUILD_PATH
+    - dotnet publish -c UAT $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
+    - cp $GAME_ADMIN_API_ROOT_PATH/gitlab-ci-after-script-UAT.sh $GAME_ADMIN_API_BUILD_PATH
+    - cd $GAME_ADMIN_API_BUILD_PATH
+    - git add .
+    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
+    - git push -u origin UAT
+    - echo "==============Waiting for after script execution=============="
+    - sleep 60
+  tags:
+    - deploy-dotnet
+  environment:
+    name: UAT
 #  only:
-#    - /^deploy-\d{8}-\d+.*$/
-#    - /^deploy-site-\d{8}-\d+.*$/
+#    - /^deploy-sit-\d{8}-\d+.*$/
+#    - /^deploy-sit-api-\d{8}-\d+.*$/
+
+uat_deploy_game_admin_site:
+  stage: deploy-game-admin-site
+  before_script:
+    - echo "====== Setting SSH Key ======"
+    - eval $(ssh-agent -s)
+    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+  script:      
+    - echo "====== Deploying ... ======"
+    - git clone --branch UAT git@gitlab.com:l1-compiled/game-admin-site-compiled.git $GAME_ADMIN_SITE_BUILD_PATH
+    - dotnet publish -c UAT $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
+    - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_SITE_BUILD_PATH
+    - cd $GAME_ADMIN_SITE_BUILD_PATH
+    - git add .
+    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
+    - git push -u origin UAT
+    - echo "==============Waiting for after script execution=============="
+    - sleep 60
+  environment:
+    name: UAT
+  tags:
+    - deploy-dotnet
+  # only:
+  #   - /^deploy-sit\d{8}-\d+.*$/
+  #   - /^deploy-sit-site-\d{8}-\d+.*$/
