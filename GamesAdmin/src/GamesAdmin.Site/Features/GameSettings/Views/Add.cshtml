@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Games";
 }
+
 <div class="row">
     <div class="col-md-6 card">
         <form class="card-body form-add" asp-action="Add" asp-controller="GameSettings" method="post">
@@ -47,13 +48,16 @@
             <div class="form-group">
                 <label asp-for="MaxBot" class="control-label"></label>
                 <select asp-items="@Model.BotPercentageItems" asp-for="MaxBot" class="form-control"></select>
-                <span> <i>(Current bots: <b>@Model.CurrentBot</b>/@Model.BotCount)</i></span>
+                <span> <i>(Current bots: <b><label id="CurrentBot">@Model.CurrentBot</label></b>/<label id="BotCount">@Model.BotCount</label>)</i></span>
             </div>
 
             <div class="form-group">
                 <input type="submit" value="Submit" class="btn-submit" />
             </div>
         </form>
-        </div>
-    
+    </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/GameSettings.js"></script>
+

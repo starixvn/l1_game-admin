@@ -1,4 +1,3 @@
-using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
@@ -10,11 +9,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.IIS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Refit;
+using System.Reflection;
 
 namespace GamesAdmin.Site
 {
@@ -85,8 +84,6 @@ namespace GamesAdmin.Site
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-
-            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();

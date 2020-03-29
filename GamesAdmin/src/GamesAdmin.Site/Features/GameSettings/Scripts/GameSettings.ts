@@ -1,3 +1,0 @@
-﻿function onSelectBotPercentage() {
-    alert("onSelectBotPercentage");
-}

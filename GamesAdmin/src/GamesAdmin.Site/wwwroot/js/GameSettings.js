@@ -1,4 +1,14 @@
-function onSelectBotPercentage() {
-    alert("onSelectBotPercentage");
+﻿class GameSettings {
+    setPercentageSelectEvent() {
+        $('#MaxBot').change(function () {
+            var per = parseInt($(this).val());
+            var totalBots = parseInt($('#BotCount').text());
+            var currentBot = parseInt(per * totalBots / 100);
+
+            $('#CurrentBot').text(currentBot);
+        });
+    }
 }
-//# sourceMappingURL=GameSettings.js.map
+
+let gameSettings = new GameSettings();
+gameSettings.setPercentageSelectEvent();
