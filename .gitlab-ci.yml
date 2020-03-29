@@ -117,7 +117,7 @@ sit_deploy_game_admin_site:
     - deploy-dotnet
   only:
     - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-sit\d{8}-\d+.*$/
+    - /^deploy-sit-\d{8}-\d+.*$/
     - /^deploy-sit-site-\d{8}-\d+.*$/
 
 uat_deploy_game_admin_api:
@@ -169,5 +169,5 @@ uat_deploy_game_admin_site:
     - deploy-dotnet
   only:
     - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-uat\d{8}-\d+.*$/
+    - /^deploy-uat-\d{8}-\d+.*$/
     - /^deploy-uat-site-\d{8}-\d+.*$/
