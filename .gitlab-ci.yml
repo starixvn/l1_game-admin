@@ -42,6 +42,7 @@ local_deploy_game_admin_api:
     name: LOCAL
   only:
     - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-local-\d{8}-\d+.*$/
     - /^deploy-api-\d{8}-\d+.*$/
 
 local_deploy_game_admin_site:
@@ -57,6 +58,7 @@ local_deploy_game_admin_site:
     name: LOCAL
   only:
     - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-local-\d{8}-\d+.*$/
     - /^deploy-site-\d{8}-\d+.*$/
 
 sit_deploy_game_admin_api:
@@ -77,8 +79,9 @@ sit_deploy_game_admin_api:
   environment:
     name: SIT
   only:
-   - /^deploy-sit-\d{8}-\d+.*$/
-   - /^deploy-sit-api-\d{8}-\d+.*$/
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-sit-\d{8}-\d+.*$/
+    - /^deploy-sit-api-\d{8}-\d+.*$/
 
 sit_deploy_game_admin_site:
   stage: deploy-game-admin-site
@@ -105,6 +108,7 @@ sit_deploy_game_admin_site:
   tags:
     - deploy-dotnet
   only:
+    - /^deploy-\d{8}-\d+.*$/
     - /^deploy-sit\d{8}-\d+.*$/
     - /^deploy-sit-site-\d{8}-\d+.*$/
 
@@ -125,9 +129,10 @@ uat_deploy_game_admin_api:
     - deploy-dotnet
   environment:
     name: UAT
-#  only:
-#    - /^deploy-sit-\d{8}-\d+.*$/
-#    - /^deploy-sit-api-\d{8}-\d+.*$/
+  only:
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-uat-\d{8}-\d+.*$/
+    - /^deploy-uat-api-\d{8}-\d+.*$/
 
 uat_deploy_game_admin_site:
   stage: deploy-game-admin-site
@@ -146,6 +151,7 @@ uat_deploy_game_admin_site:
     name: UAT
   tags:
     - deploy-dotnet
-  # only:
-  #   - /^deploy-sit\d{8}-\d+.*$/
-  #   - /^deploy-sit-site-\d{8}-\d+.*$/
+  only:
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-uat\d{8}-\d+.*$/
+    - /^deploy-uat-site-\d{8}-\d+.*$/
