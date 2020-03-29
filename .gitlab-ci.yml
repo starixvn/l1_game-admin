@@ -132,7 +132,7 @@ uat_deploy_game_admin_site:
     - echo "====== Deploying ... ======"
     - git clone --branch UAT git@gitlab.com:l1-compiled/game-admin-site-compiled.git $GAME_ADMIN_SITE_BUILD_PATH
     - dotnet publish -c UAT $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
-    - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_SITE_BUILD_PATH
+    - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-UAT.sh $GAME_ADMIN_SITE_BUILD_PATH
     - cd $GAME_ADMIN_SITE_BUILD_PATH
     - git add .
     - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
