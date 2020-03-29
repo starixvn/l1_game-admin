@@ -1,8 +1,16 @@
 variables:
-  GAME_ADMIN_API_BUILD_PATH: './build/game-admin-api'
-  GAME_ADMIN_API_ROOT_PATH: './GamesAdmin/src/GamesAdmin.Api'
-  GAME_ADMIN_SITE_BUILD_PATH: './build/game-admin-site'
-  GAME_ADMIN_SITE_ROOT_PATH: './GamesAdmin/src/GamesAdmin.Site'
+  GAME_ADMIN_API_BUILD_PATH: ./build/game-admin-api
+  GAME_ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
+  GAME_ADMIN_SITE_BUILD_PATH: ./build/game-admin-site
+  GAME_ADMIN_SITE_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Site
+
+before_script:
+  - echo "====== Setting SSH Key ======"
+  - eval $(ssh-agent -s)
+  - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
 stages:
 #  - build
@@ -20,12 +28,6 @@ stages:
     
 local_deploy_game_admin_api:
   stage: deploy-game-admin-api
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:   
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
@@ -41,12 +43,6 @@ local_deploy_game_admin_api:
 
 local_deploy_game_admin_site:
   stage: deploy-game-admin-site
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:      
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
@@ -62,13 +58,6 @@ local_deploy_game_admin_site:
 
 sit_deploy_game_admin_api:
   stage: deploy-game-admin-api
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
   script:   
     - echo "====== Deploying ... ======"
     - git clone --branch SIT git@gitlab.com:l1-compiled/game-admin-api-compiled.git $GAME_ADMIN_API_BUILD_PATH
@@ -84,7 +73,7 @@ sit_deploy_game_admin_api:
     - deploy-dotnet
   environment:
     name: SIT
- only:
+  only:
    - /^deploy-sit-\d{8}-\d+.*$/
    - /^deploy-sit-api-\d{8}-\d+.*$/
 
@@ -118,13 +107,6 @@ sit_deploy_game_admin_site:
 
 uat_deploy_game_admin_api:
   stage: deploy-game-admin-api
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
   script:   
     - echo "====== Deploying ... ======"
     - git clone --branch UAT git@gitlab.com:l1-compiled/game-admin-api-compiled.git $GAME_ADMIN_API_BUILD_PATH
@@ -146,13 +128,6 @@ uat_deploy_game_admin_api:
 
 uat_deploy_game_admin_site:
   stage: deploy-game-admin-site
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
   script:      
     - echo "====== Deploying ... ======"
     - git clone --branch UAT git@gitlab.com:l1-compiled/game-admin-site-compiled.git $GAME_ADMIN_SITE_BUILD_PATH
