@@ -1,8 +1,8 @@
 variables:
-    GAME_ADMIN_API_BUILD_PATH: ./build/game-admin-api
-    GAME_ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
-    GAME_ADMIN_SITE_BUILD_PATH: ./build/game-admin-site
-    GAME_ADMIN_SITE_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Site
+    GAME_ADMIN_API_BUILD_PATH: './build/game-admin-api'
+    GAME_ADMIN_API_ROOT_PATH: './GamesAdmin/src/GamesAdmin.Api'
+    GAME_ADMIN_SITE_BUILD_PATH: './build/game-admin-site'
+    GAME_ADMIN_SITE_ROOT_PATH: './GamesAdmin/src/GamesAdmin.Site'
 
 stages:
 #  - build
