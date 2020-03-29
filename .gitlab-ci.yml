@@ -70,10 +70,14 @@ sit_deploy_game_admin_api:
     - cp $GAME_ADMIN_API_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_API_BUILD_PATH
     - cd $GAME_ADMIN_API_BUILD_PATH
     - git add .
-    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
-    - git push -u origin SIT
-    - echo "==============Waiting for after script execution=============="
-    - sleep 60
+    - if [ -z "$(git status --porcelain)" ]; 
+      then 
+        echo "Nothing change"; 
+      else 
+       git commit -m "$COMMIT_MESSAGE"; git push -u origin SIT;
+       echo "==============Waiting for after script execution==============";
+       sleep 60; 
+      fi
   tags:
     - deploy-dotnet
   environment:
@@ -99,10 +103,14 @@ sit_deploy_game_admin_site:
     - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_SITE_BUILD_PATH
     - cd $GAME_ADMIN_SITE_BUILD_PATH
     - git add .
-    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
-    - git push -u origin SIT
-    - echo "==============Waiting for after script execution=============="
-    - sleep 60
+    - if [ -z "$(git status --porcelain)" ]; 
+      then 
+        echo "Nothing change"; 
+      else 
+       git commit -m "$COMMIT_MESSAGE"; git push -u origin SIT;
+       echo "==============Waiting for after script execution==============";
+       sleep 60; 
+      fi
   environment:
     name: SIT
   tags:
@@ -121,10 +129,14 @@ uat_deploy_game_admin_api:
     - cp $GAME_ADMIN_API_ROOT_PATH/gitlab-ci-after-script-UAT.sh $GAME_ADMIN_API_BUILD_PATH
     - cd $GAME_ADMIN_API_BUILD_PATH
     - git add .
-    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
-    - git push -u origin UAT
-    - echo "==============Waiting for after script execution=============="
-    - sleep 60
+    - if [ -z "$(git status --porcelain)" ]; 
+      then 
+        echo "Nothing change"; 
+      else 
+       git commit -m "$COMMIT_MESSAGE"; git push -u origin UAT;
+       echo "==============Waiting for after script execution==============";
+       sleep 60; 
+      fi
   tags:
     - deploy-dotnet
   environment:
@@ -143,10 +155,14 @@ uat_deploy_game_admin_site:
     - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-UAT.sh $GAME_ADMIN_SITE_BUILD_PATH
     - cd $GAME_ADMIN_SITE_BUILD_PATH
     - git add .
-    - if [ -z "$(git status --porcelain)" ]; then echo "Nothing change"; else git commit -m "$COMMIT_MESSAGE"; fi
-    - git push -u origin UAT
-    - echo "==============Waiting for after script execution=============="
-    - sleep 60
+    - if [ -z "$(git status --porcelain)" ]; 
+      then 
+        echo "Nothing change"; 
+      else 
+       git commit -m "$COMMIT_MESSAGE"; git push -u origin UAT;
+       echo "==============Waiting for after script execution==============";
+       sleep 60; 
+      fi
   environment:
     name: UAT
   tags:
