@@ -47,12 +47,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
-            if (game != null)
-            {
-                viewModel.MaxBot = (int)(game.MaxBot * 100);
-                viewModel.BotCount = await accountService.GetBotCount();
-                viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
-            }
+            viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
+            viewModel.BotCount = await accountService.GetBotCount();
+            viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
 
             return viewModel;
         }
