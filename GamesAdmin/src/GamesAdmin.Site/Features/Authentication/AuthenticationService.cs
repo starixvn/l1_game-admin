@@ -37,7 +37,7 @@ namespace GamesAdmin.Site.Features.Authentication
                     new AuthenticationProperties
                     {
                         IsPersistent = true,
-                        ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+                        ExpiresUtc = DateTime.UtcNow.AddHours(3)
                     });
 
                 return true;
