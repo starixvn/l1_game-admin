@@ -83,6 +83,11 @@ namespace GamesAdmin.Api.Users
 
             foreach (var name in names)
             {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    continue;
+                }
+
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
                 var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
