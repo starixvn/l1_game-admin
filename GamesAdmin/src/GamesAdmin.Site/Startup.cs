@@ -48,6 +48,7 @@ namespace GamesAdmin.Site
                   {
                       config.Cookie.Name = "UserLoginCookie";
                       config.LoginPath = "/Authentication/UserLogin";
+                      config.Cookie.Domain = ".saba.vin";
                   });
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
@@ -66,7 +67,6 @@ namespace GamesAdmin.Site
                       options.ViewLocationFormats.Add("/Features/_Shared/Components/{0}.cshtml");
                       options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
                   })
-                //.AddFeatureFolders()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
         }
