@@ -22,15 +22,7 @@
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
-    <None Include="appsettings.Release.json">
-      <IsTransformFile>true</IsTransformFile>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
     <None Include="appsettings.SIT.json">
-      <IsTransformFile>true</IsTransformFile>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
-    <None Include="appsettings.Test.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
