@@ -59,6 +59,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                 sentryClient.CaptureMessage("Edit game is null");
             }
 
+            if (viewModel == null)
+            {
+                sentryClient.CaptureMessage("viewModel is null");
+                viewModel = new EditViewModel();
+            }
+
             viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
             viewModel.BotCount = await accountService.GetBotCount();
 
