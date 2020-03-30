@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Dev;SIT;Local;Prod;UAT</Configurations>
+    <Configurations>Dev;SIT;Local;UAT;PRO</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
