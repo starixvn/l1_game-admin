@@ -65,7 +65,14 @@ namespace GamesAdmin.Api.Users
         public Task<int> GetTotalBots()
         => Task.Run(() =>
         {
-            return accountInfoRepository.FilterBy(entity => entity.isBot).Count();
+            var bots = accountInfoRepository.FilterBy(entity => entity.isBot);
+
+            if (bots?.Any() == true)
+            {
+                return bots.Count();
+            }
+
+            return 0;
         });
 
         public async Task<IList<GenerateUserResult>> GenerateUsers(string[] names, bool isBot)

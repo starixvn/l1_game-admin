@@ -34,6 +34,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public int BotCount { get; set; }
 
-        public int CurrentBot => (int)(BotCount * MaxBot / 100);
+        public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (BotCount * MaxBot / 100) : 0;
     }
 }
