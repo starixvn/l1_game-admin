@@ -91,7 +91,7 @@ namespace GamesAdmin.Site
 
             app.UseCookiePolicy(new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
+                MinimumSameSitePolicy = SameSiteMode.Lax,
             });
             app.UseAuthentication();
             app.UseAuthorization();           
