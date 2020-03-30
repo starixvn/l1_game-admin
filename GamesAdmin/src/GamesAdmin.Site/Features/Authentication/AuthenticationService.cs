@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
 namespace GamesAdmin.Site.Features.Authentication
@@ -29,12 +31,14 @@ namespace GamesAdmin.Site.Features.Authentication
 
                 var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
 
-                var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
-
-                await context.SignInAsync(userPrincipal, new AuthenticationProperties
-                {
-                    IsPersistent = true
-                });
+                await context.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(new[] { grandmaIdentity }),
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+                    });
 
                 return true;
             }

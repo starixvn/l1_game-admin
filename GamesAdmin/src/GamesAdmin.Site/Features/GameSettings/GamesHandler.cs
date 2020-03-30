@@ -25,18 +25,15 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         private readonly IGameService gameService;
         private readonly IAccountService accountService;
-        private readonly ISentryClient sentryClient;
 
         public GamesHandler(
             IMapper mapper, 
             IGameService gameService, 
-            IAccountService accountService,
-            ISentryClient sentryClient)
+            IAccountService accountService)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
-            this.sentryClient = sentryClient;
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
@@ -54,25 +51,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
-            if (game == null)
-            {
-                sentryClient.CaptureMessage("Edit game is null");
-            }
-
             if (viewModel == null)
             {
-                sentryClient.CaptureMessage("viewModel is null");
                 viewModel = new EditViewModel();
             }
 
             viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
             viewModel.BotCount = await accountService.GetBotCount();
-
-            if (viewModel.BotCount == 0)
-            {
-                sentryClient.CaptureMessage("Bot count is zero");
-            }
-
             viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
 
             return viewModel;
