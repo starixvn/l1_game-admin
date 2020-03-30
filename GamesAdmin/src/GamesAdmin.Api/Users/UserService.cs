@@ -5,6 +5,7 @@ using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
@@ -83,17 +84,19 @@ namespace GamesAdmin.Api.Users
 
             foreach (var name in names)
             {
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    continue;
-                }
-
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
                 var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateUserResult(userName, name, password);
-                
+
+                if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 14 || !Regex.IsMatch(name, @"^[a-zA-Z0-9]+$"))
+                {
+                    result.Error = $"Invalid name {name}";
+                    results.Add(result);
+                    continue;
+                }
+
                 try
                 {
                     var createdAccountId = await CreateAccount(userName, password);

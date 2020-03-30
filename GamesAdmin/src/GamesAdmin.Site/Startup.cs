@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,7 +48,6 @@ namespace GamesAdmin.Site
                   {
                       config.Cookie.Name = "UserLoginCookie";
                       config.LoginPath = "/Authentication/UserLogin";
-                      config.Cookie.Domain = ".saba.vin";
                   });
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
