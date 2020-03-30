@@ -9,6 +9,7 @@ using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -23,13 +24,19 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IMapper mapper;
 
         private readonly IGameService gameService;
-        private readonly IAccountService accountService;        
+        private readonly IAccountService accountService;
+        private readonly ISentryClient sentryClient;
 
-        public GamesHandler(IMapper mapper, IGameService gameService, IAccountService accountService)
+        public GamesHandler(
+            IMapper mapper, 
+            IGameService gameService, 
+            IAccountService accountService,
+            ISentryClient sentryClient)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
@@ -47,8 +54,19 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
+            if (game == null)
+            {
+                sentryClient.CaptureMessage("Edit game is null");
+            }
+
             viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
             viewModel.BotCount = await accountService.GetBotCount();
+
+            if (viewModel.BotCount == 0)
+            {
+                sentryClient.CaptureMessage("Bot count is zero");
+            }
+
             viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
 
             return viewModel;
