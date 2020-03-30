@@ -31,7 +31,10 @@ namespace GamesAdmin.Site.Features.Authentication
 
                 var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
 
-                await context.SignInAsync(userPrincipal);
+                await context.SignInAsync(userPrincipal, new AuthenticationProperties
+                {
+                    IsPersistent = true
+                });
 
                 return true;
             }
