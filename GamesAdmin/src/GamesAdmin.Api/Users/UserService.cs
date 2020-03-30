@@ -77,8 +77,8 @@ namespace GamesAdmin.Api.Users
             foreach (var name in names)
             {
                 latestUserInfoUID += 1;
-                var userName = $"{name}-{latestUserInfoUID}-{(new Random()).Next(100)}";
-                var password = $"pawd-{(new Random()).Next(200, 1000)}-{new Random().Next(150, 500)}";
+                var userName = $"{name}{latestUserInfoUID}";
+                var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateUserResult(userName, name, password);
                 
