@@ -48,7 +48,7 @@ namespace GamesAdmin.Site
                   {
                       config.Cookie.Name = "UserLoginCookie";
                       config.LoginPath = "/Authentication/UserLogin";
-                      config.Cookie.Domain = ".saba.vin";
+                      config.Cookie.Domain = "uat-adm.saba.vin";
                   });
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
@@ -88,9 +88,9 @@ namespace GamesAdmin.Site
 
             app.UseRouting();
 
+            app.UseCookiePolicy();
             app.UseAuthentication();
-
-            app.UseAuthorization();
+            app.UseAuthorization();           
 
             app.UseEndpoints(endpoints =>
             {
