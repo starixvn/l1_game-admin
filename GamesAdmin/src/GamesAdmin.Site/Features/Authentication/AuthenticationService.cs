@@ -45,7 +45,7 @@ namespace GamesAdmin.Site.Features.Authentication
                     new AuthenticationProperties
                     {
                         IsPersistent = true,
-                        ExpiresUtc = DateTime.UtcNow.AddHours(3)
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
                     });
 
                 return true;

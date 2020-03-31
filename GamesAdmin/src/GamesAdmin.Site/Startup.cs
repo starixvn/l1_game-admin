@@ -53,10 +53,6 @@ namespace GamesAdmin.Site
                       config.LoginPath = "/Authentication/UserLogin";
                   });
 
-            services.AddSession(options =>
-            {
-                options.Cookie.Name = "UserLoginCookie";
-            });
 
             var dbSettings = Configuration.GetSection("DatabaseSettings");
 
@@ -103,7 +99,6 @@ namespace GamesAdmin.Site
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
