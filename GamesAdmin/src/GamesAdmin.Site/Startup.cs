@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
@@ -52,6 +53,11 @@ namespace GamesAdmin.Site
                       config.LoginPath = "/Authentication/UserLogin";
                   });
 
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = "UserLoginCookie";
+            });
+
             var dbSettings = Configuration.GetSection("DatabaseSettings");
 
             services.AddDataProtection().PersistKeysToMongoDb(() =>
@@ -97,6 +103,7 @@ namespace GamesAdmin.Site
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
