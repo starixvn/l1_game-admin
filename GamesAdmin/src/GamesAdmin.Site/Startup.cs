@@ -60,7 +60,7 @@ namespace GamesAdmin.Site
             {
                 var db = new MongoClient(dbSettings["ConnectionString"]).GetDatabase(dbSettings["DatabaseName"]);
                 return db;
-            }, dbSettings["Collection"]);
+            }, dbSettings["Collection"]).SetApplicationName("Game-Admin");
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                   .AddRazorOptions(options =>
