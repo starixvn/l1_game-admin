@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Driver;
 using Refit;
 
 namespace GamesAdmin.Site
@@ -54,14 +53,6 @@ namespace GamesAdmin.Site
                       config.Cookie.Name = "UserLoginCookie";
                       config.LoginPath = "/Authentication/UserLogin";
                   });
-
-            var dbSettings = Configuration.GetSection("DatabaseSettings");
-
-            services.AddDataProtection().PersistKeysToMongoDb(() =>
-            {
-                var db = new MongoClient(dbSettings["ConnectionString"]).GetDatabase(dbSettings["DatabaseName"]);
-                return db;
-            }, dbSettings["Collection"]);
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                   .AddRazorOptions(options =>
