@@ -1,3 +1,4 @@
+using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
@@ -7,13 +8,14 @@ using GamesAdmin.Site.Features.GameSettings;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Driver;
 using Refit;
-using System.Reflection;
 
 namespace GamesAdmin.Site
 {
@@ -50,6 +52,14 @@ namespace GamesAdmin.Site
                       config.LoginPath = "/Authentication/UserLogin";
                   });
 
+            var dbSettings = Configuration.GetSection("DatabaseSettings");
+
+            services.AddDataProtection().PersistKeysToMongoDb(() =>
+            {
+                var db = new MongoClient(dbSettings["ConnectionString"]).GetDatabase(dbSettings["DatabaseName"]);
+                return db;
+            }, dbSettings["Collection"]);
+
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                   .AddRazorOptions(options =>
                   {
@@ -67,7 +77,6 @@ namespace GamesAdmin.Site
                       options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
                   })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,9 +95,9 @@ namespace GamesAdmin.Site
             app.UseStaticFiles();
 
             app.UseRouting();
-          
+
             app.UseAuthentication();
-            app.UseAuthorization();           
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

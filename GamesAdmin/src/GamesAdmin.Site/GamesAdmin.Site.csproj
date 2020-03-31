@@ -19,6 +19,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.DataProtection.MongoDb" Version="2.3.17" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="3.3.3" />
