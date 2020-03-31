@@ -10,6 +10,7 @@ namespace GamesAdmin.Api.Users
     public class UserHandler
         : IRequestHandler<GetBotCountRequest, int>
         , IRequestHandler<GenerateUserRandomRequest, IList<GenerateUserResult>>
+        , IRequestHandler<ReviseBotNameRequest, int>
     {
         private readonly IUserService userService;
 
@@ -23,5 +24,8 @@ namespace GamesAdmin.Api.Users
 
         public Task<IList<GenerateUserResult>> Handle(GenerateUserRandomRequest request, CancellationToken cancellationToken)
         => userService.GenerateUsers(request.Names, request.IsBot);
+
+        public Task<int> Handle(ReviseBotNameRequest request, CancellationToken cancellationToken)
+        => userService.ReviseBotNames();
     }
 }

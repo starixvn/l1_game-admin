@@ -30,5 +30,18 @@ namespace GamesAdmin.Site.Features.Account
 
             return View(addViewModel);
         }
+
+        [HttpGet]
+        public IActionResult ReviseBots()
+        => View(new ReviseBotViewModel());
+
+        [HttpPost]
+        public async Task<IActionResult> ReviseBots([Bind] ReviseBotViewModel reviseViewModel)
+        {
+            reviseViewModel.Updated = await mediator.Send(new ReviseRequest());
+            reviseViewModel.Success = true;
+
+            return View(reviseViewModel);
+        }
     }
 }

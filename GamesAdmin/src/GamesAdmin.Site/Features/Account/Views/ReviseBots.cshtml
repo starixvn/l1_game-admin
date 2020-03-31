@@ -1,0 +1,29 @@
+﻿@using GamesAdmin.Site.Features.Account.ViewModels;
+@model ReviseBotViewModel;
+
+@{
+    ViewData["Title"] = "Revise Bots";
+}
+
+<div class="row">
+    <div class="col-md-6 card">
+        <form class="card-body form-add" asp-action="ReviseBots" asp-controller="Account" method="post">
+
+            <div class="form-group">
+                <label class="control-label">Click button to validate all bot names and correct them.</label>
+            </div>
+
+            @if (Model.Success)
+            {
+                <div class="form-group">
+                    <label class="control-label">Revised @Model.Updated bot(s)</label>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Revise" class="btn-submit" />
+            </div>
+        </form>
+    </div>
+</div>
+

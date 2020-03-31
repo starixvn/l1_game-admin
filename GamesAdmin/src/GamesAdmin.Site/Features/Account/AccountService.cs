@@ -15,6 +15,9 @@ namespace GamesAdmin.Site.Features.Account
 
         [Post("/users/generate")]
         Task<List<AddUsersResult>> AddUsers(string[] names);
+
+        [Post("/users/bot/revise")]
+        Task<int> ReviseBots();
     }
 
     public interface IAccountService
@@ -22,6 +25,8 @@ namespace GamesAdmin.Site.Features.Account
         Task<int> GetBotCount();
 
         Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot);
+
+        Task<int> ReviseBots();
     }
 
     public class AccountService : IAccountService
@@ -38,5 +43,8 @@ namespace GamesAdmin.Site.Features.Account
 
         public Task<int> GetBotCount()
         => accountApi.BotCount();
+
+        public Task<int> ReviseBots()
+        => accountApi.ReviseBots();
     }
 }

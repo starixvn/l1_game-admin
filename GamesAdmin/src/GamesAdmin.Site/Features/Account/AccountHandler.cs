@@ -12,6 +12,7 @@ namespace GamesAdmin.Site.Features.Account
     public class AccountHandler
         : IRequestHandler<AddRequest, AddViewModel>
         , IRequestHandler<AddUsersRequest, List<AddUsersResult>>
+        , IRequestHandler<ReviseRequest, int>
     {
         private readonly IAccountService accountService;
 
@@ -37,5 +38,8 @@ namespace GamesAdmin.Site.Features.Account
 
             return Task.FromResult(new List<AddUsersResult>());
         }
+
+        public Task<int> Handle(ReviseRequest request, CancellationToken cancellationToken)
+        => accountService.ReviseBots(); 
     }
 }

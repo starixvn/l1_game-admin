@@ -23,6 +23,10 @@ namespace GamesAdmin.Api.Users
         public async Task<int> Get()
            => (await mediator.Send(new GetBotCountRequest()));
 
+        [HttpPost("bot/revise")]
+        public async Task<int> Revise()
+           => (await mediator.Send(new ReviseBotNameRequest()));
+
         [HttpPost("bots/generate")]
         public async Task<IList<GenerateUserResult>> GenerateBotsRandom(string[] names)
         {

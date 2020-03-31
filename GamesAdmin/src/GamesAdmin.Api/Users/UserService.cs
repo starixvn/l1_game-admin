@@ -17,6 +17,8 @@ namespace GamesAdmin.Api.Users
         Task<int> GetTotalBots();
 
         Task<IList<GenerateUserResult>> GenerateUsers(string[] names, bool isBot);
+
+        Task<int> ReviseBotNames();
     }
 
     public class UserService : IUserService
@@ -162,5 +164,19 @@ namespace GamesAdmin.Api.Users
 
             return accountInfoRepository.InsertOneAsync(accountInfo);
         }
+
+        public async Task<int> ReviseBotNames()
+        {
+            var bots = accountInfoRepository.FilterBy(entity => entity.isBot && entity.name.Length > 14).ToList();
+
+            foreach (var bot in bots)
+            {
+                bot.name = bot.name.Substring(0, 13);
+
+                await accountInfoRepository.ReplaceOneAsync(bot);
+            }
+
+            return bots.Count;
+        }      
     }
 }
