@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site._Shared.Enumerations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +13,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public string DisplayName => Enumeration.FromValue<GameType>(Name).DisplayName;
 
         public bool Enabled { get; set; }
 
