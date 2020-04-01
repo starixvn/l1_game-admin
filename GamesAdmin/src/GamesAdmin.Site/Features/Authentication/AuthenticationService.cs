@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site._Shared.Configurations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +18,16 @@ namespace GamesAdmin.Site.Features.Authentication
     public class AuthenticationService : IAuthenticationService
     {
         private const string DefaultUser = "admin";
-        private const string DefaultPassword = "default";
+        private readonly IAppSettings appSettings;
+
+        public AuthenticationService(IAppSettings appSettings) 
+        {
+            this.appSettings = appSettings;
+        }
 
         public async Task<bool> SignInAsync(User user, HttpContext context)
         {
-            if (user.UserName.Equals(DefaultUser) && user.Password.Equals(DefaultPassword))
+            if (user.UserName.Equals(DefaultUser) && BCrypt.Net.BCrypt.Verify(user.Password, appSettings.Hash))
             {
                 var userClaims = new List<Claim>()
                 {

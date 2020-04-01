@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             GameConfig game;
 
             if (string.IsNullOrWhiteSpace(request.Name))
-            {
+            {   
                 game = (await gameService.GetGames()).FirstOrDefault();
             }
             else
