@@ -14,7 +14,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; set; }
 
-        public string DisplayName => Enumeration.FromValue<GameType>(Name).DisplayName;
+        public string DisplayName => string.IsNullOrWhiteSpace(Name) 
+            ? string.Empty 
+            : Enumeration.FromValue<GameType>(Name).DisplayName;
 
         public bool Enabled { get; set; }
 
