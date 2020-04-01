@@ -12,15 +12,6 @@ before_script:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
-build:
- stage: build
- script:      
-   - dotnet clean ./GamesAdmin/GamesAdmin.sln
-   - dotnet restore ./GamesAdmin/GamesAdmin.sln
-   - dotnet build ./GamesAdmin/GamesAdmin.sln
- tags:
-   - deploy-dotnet
-    
 include:
   - .gitlab-ci-admin-api.yml
   - .gitlab-ci-admin-site.yml
