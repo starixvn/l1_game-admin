@@ -4,24 +4,30 @@
     align-items: center;
     margin: 0 3rem;
     z-index: 10;
-    height: 10rem;
+    height: 9.5rem;
 }
 
 .user-info {
-    .dropdown-toggle {
+    .dropdown-toggle,
+    .logout {
         background: none;
         border: none;
         outline: none;
-    }
-
-    .dropdown-item {
-        font-size: $font-size;
+        font-size: 1.4rem;
     }
 
     .icon-user {
         margin-bottom: 0;
         position: relative;
         top: 6px;
+    }
+
+    .logout {
+        text-align: left;
+
+        &:hover {
+            color: #da624a;
+        }
     }
 }
 

@@ -83,20 +83,24 @@
   align-items: center;
   margin: 0 3rem;
   z-index: 10;
-  height: 10rem; }
+  height: 9.5rem; }
 
-.user-info .dropdown-toggle {
+.user-info .dropdown-toggle,
+.user-info .logout {
   background: none;
   border: none;
-  outline: none; }
-
-.user-info .dropdown-item {
+  outline: none;
   font-size: 1.4rem; }
 
 .user-info .icon-user {
   margin-bottom: 0;
   position: relative;
   top: 6px; }
+
+.user-info .logout {
+  text-align: left; }
+  .user-info .logout:hover {
+    color: #da624a; }
 
 .page-title {
   font-size: 2rem;
@@ -163,13 +167,44 @@
     width: .8rem;
     margin-left: -0.4rem; }
 
+.hamburger--elastic .hamburger-inner {
+  top: 1px;
+  transition-duration: 0.275s;
+  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  width: 24px;
+  height: 2px;
+  background-color: #da624a;
+  border-radius: 10px;
+  position: absolute;
+  left: 0;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease; }
+
+.btn-hamburger.hamburger-inner::before {
+  top: 6px;
+  transition: opacity 0.125s 0.275s ease; }
+
+.hamburger-inner::before {
+  top: -6px; }
+
+.hamburger-inner::before, .hamburger-inner::after {
+  content: "";
+  display: block; }
+
+.btn-hamburger .hamburger-inner::after {
+  top: 7px;
+  transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.hamburger-inner::after {
+  bottom: -6px; }
+
 .sidebar {
   width: 280px;
   z-index: 11;
   overflow: hidden;
-  min-width: 280px;
-  position: relative;
-  flex: 0 0 280px;
   transition: all .2s;
   background: #fff;
   border-radius: .35rem;
@@ -179,7 +214,8 @@
   top: 30px;
   height: calc(100% - 60px);
   z-index: 14;
-  overflow: auto; }
+  overflow-y: auto;
+  overflow-x: hidden; }
   .sidebar .sidebar-header {
     width: 100%;
     display: flex;
@@ -188,6 +224,42 @@
     padding: 2rem;
     border-bottom: rgba(0, 0, 0, 0.04) solid 1px;
     background: rgba(0, 0, 0, 0.01); }
+  .sidebar.active {
+    width: 82px; }
+    .sidebar.active .hamburger-inner {
+      transform: translate3d(0, -1px, 0) rotate(135deg);
+      transition-delay: 0.075s; }
+    .sidebar.active .hamburger-inner::before {
+      transition-delay: 0s;
+      opacity: 0; }
+    .sidebar.active .hamburger-inner::after {
+      transform: translate3d(0, -7px, 0) rotate(-270deg);
+      transition-delay: 0.075s; }
+    .sidebar.active .site-name {
+      display: none; }
+    .sidebar.active .menu-name {
+      display: none; }
+    .sidebar.active .sidebar-header {
+      justify-content: center; }
+    .sidebar.active .nav-heading {
+      text-indent: 1000px; }
+      .sidebar.active .nav-heading:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 32px;
+        height: 1px;
+        background: #f7dfda;
+        margin-left: -18px; }
+    .sidebar.active .vertical-nav-menu {
+      padding-left: 8px;
+      padding-right: 8px; }
+    .sidebar.active .menu-item {
+      display: flex;
+      justify-content: center; }
+      .sidebar.active .menu-item a {
+        padding-left: 0; }
 
 .vertical-nav-menu {
   margin: 0;
@@ -201,7 +273,7 @@
     color: #da624a;
     opacity: .6;
     white-space: nowrap; }
-  .vertical-nav-menu li a {
+  .vertical-nav-menu .menu-item a {
     display: block;
     line-height: 4.5rem;
     height: 4.5rem;
@@ -210,7 +282,7 @@
     color: #6c757d;
     font-weight: 600;
     transition: all .2s; }
-    .vertical-nav-menu li a:hover {
+    .vertical-nav-menu .menu-item a:hover {
       text-decoration: none;
       color: #000; }
   .vertical-nav-menu .active > a {
@@ -226,15 +298,13 @@
     transition: color .2s; }
 
 .btn-hamburger {
-  height: 3rem;
-  width: 4rem;
+  position: relative;
+  height: 2.4rem;
+  width: 2.4rem;
   padding: 0;
-  color: #da624a;
-  font-size: 2rem; }
+  color: #da624a; }
   .btn-hamburger:focus {
     box-shadow: none; }
-  .btn-hamburger .svg-inline--fa {
-    font-size: 1.6rem; }
 
 .site-name {
   font-size: 1.6rem;
@@ -269,11 +339,15 @@ body {
   flex-direction: column;
   display: flex;
   z-index: 12;
-  padding: 0 0 0 calc((30px) + 280px);
+  padding: 0 0 0 310px;
   transition: all .2s; }
 
+.sidebar.active + .content-container {
+  padding-left: 112px; }
+
 .inner-content {
-  margin: 3rem; }
+  margin-left: 3rem;
+  margin-right: 3rem; }
   .inner-content .row {
     margin-left: 0;
     margin-right: 0; }

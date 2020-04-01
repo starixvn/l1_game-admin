@@ -12,11 +12,12 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="/" class="site-name">Saba.Club <span class="highlight">Admin</span></a>
                 <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
-                    <i class="material-icons">menu</i>
+                    <!--<i class="material-icons">menu</i>-->
+                    <span class="hamburger-inner"></span>
                 </button>
             </div>
             <div class="scrollbar-sidebar">
@@ -36,10 +37,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <form asp-action="Logout" asp-controller="Authentication" method="post">
-                                <button type="submit" value="Sign out" class="btn-submit" />
-                                <a class="dropdown-item">Logout</a>
-                            </form>
-                            
+                                <button type="submit" value="Sign out" class="logout">Logout</button>
+                            </form>                            
                         </div>
                     </div>
                 </div>
