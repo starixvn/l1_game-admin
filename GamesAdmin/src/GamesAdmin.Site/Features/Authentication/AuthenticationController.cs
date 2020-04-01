@@ -33,5 +33,13 @@ namespace GamesAdmin.Site.Features.Authentication
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await authenticationService.SignOutAsync(HttpContext);
+
+            return RedirectToAction(nameof(UserLogin));
+        }
     }
 }

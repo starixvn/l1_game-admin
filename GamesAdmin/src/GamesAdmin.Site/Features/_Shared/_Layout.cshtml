@@ -34,7 +34,11 @@
                             <img src="~/scss/images/avatar.jpg" alt="profile picture" />
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <form asp-action="Logout" asp-controller="Authentication" method="post">
+                                <button type="submit" value="Sign out" class="btn-submit" />
+                                <a class="dropdown-item">Logout</a>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>

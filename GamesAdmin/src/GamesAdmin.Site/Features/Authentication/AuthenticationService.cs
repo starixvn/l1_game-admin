@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Authentication
 {
     public interface IAuthenticationService
     {
         Task<bool> SignInAsync(User user, HttpContext context);
+
+        Task SignOutAsync(HttpContext context);
     }
 
     public class AuthenticationService : IAuthenticationService
@@ -51,5 +53,8 @@ namespace GamesAdmin.Site.Features.Authentication
 
             return false;
         }
+
+        public Task SignOutAsync(HttpContext context)
+        => context.SignOutAsync();
     }
 }
