@@ -6,9 +6,9 @@
         @foreach (var item in Model.GameList)
         {
             <li>
-                <a asp-route-name="@item.Name" asp-action="Edit" asp-controller="GameSettings">
+                <a asp-route-name="@item.Value" asp-action="Edit" asp-controller="GameSettings">
                     <i class="material-icons menu-icon">bubble_chart</i>
-                    @item.Name
+                    @item.DisplayName
                 </a>
             </li>
         }
@@ -18,16 +18,18 @@
                 Add new game
             </a>
         </li>
+        <li>
+            <a asp-action="ReviseBots" asp-controller="Account">
+                <i class="material-icons menu-icon">storage</i>
+                Revise Bots
+            </a>
+        </li>
         <li class="nav-heading">Users</li>
         <li>
             <a asp-action="Add" asp-controller="Account">
                 <i class="material-icons menu-icon">note_add</i>
                 Add
-            </a>
-            <a asp-action="ReviseBots" asp-controller="Account">
-                <i class="material-icons menu-icon">storage</i>
-                Revise Bots
-            </a>
+            </a>            
         </li>
         @*<li>
             <a  href="#">

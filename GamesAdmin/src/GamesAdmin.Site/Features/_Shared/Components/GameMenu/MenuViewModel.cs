@@ -1,15 +1,16 @@
 ﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Site._Shared.Enumerations;
 using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features._Shared.Components.ViewModels
 {
     public class MenuViewModel
     {
-        public MenuViewModel(List<GameConfig> games)
+        public MenuViewModel(List<GameType> games)
         {
             GameList = games;
         }
 
-        public List<GameConfig> GameList { get; }
+        public List<GameType> GameList { get; }
     }
 }
