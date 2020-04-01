@@ -86,15 +86,17 @@
   height: 10rem; }
 
 .user-info .dropdown-toggle {
+  background: none;
   border: none;
   outline: none; }
 
 .user-info .dropdown-item {
   font-size: 1.4rem; }
 
-.user-info img {
-  border-radius: .5rem;
-  width: 4.2rem; }
+.user-info .icon-user {
+  margin-bottom: 0;
+  position: relative;
+  top: 6px; }
 
 .page-title {
   font-size: 2rem;

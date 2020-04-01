@@ -9,6 +9,7 @@
 
 .user-info {
     .dropdown-toggle {
+        background: none;
         border: none;
         outline: none;
     }
@@ -16,9 +17,11 @@
     .dropdown-item {
         font-size: $font-size;
     }
-    img {
-        border-radius: .5rem;
-        width: 4.2rem;
+
+    .icon-user {
+        margin-bottom: 0;
+        position: relative;
+        top: 6px;
     }
 }
 
