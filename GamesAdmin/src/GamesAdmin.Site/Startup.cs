@@ -69,8 +69,7 @@ namespace GamesAdmin.Site
                       options.ViewLocationFormats.Add("/Features/_Shared/{0}.cshtml");
                       options.ViewLocationFormats.Add("/Features/_Shared/Components/{0}.cshtml");
                       options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
-                  })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                  });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

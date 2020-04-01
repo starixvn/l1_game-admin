@@ -55,7 +55,8 @@ namespace GamesAdmin.Api
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.UseMemberCasing());
 
-            services.AddSwaggerGen(c=> {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "GamesAdmin APIs", Version = "v1" });
             });
         }
@@ -69,7 +70,8 @@ namespace GamesAdmin.Api
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "GamesAdmin APIs v1");
             });
 
