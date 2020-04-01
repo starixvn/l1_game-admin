@@ -13,8 +13,8 @@ stages:
 #   - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
 before_script:
-  - apk update && apk upgrade
-  - apk add git openssh bash
+  # - apk update && apk upgrade
+  # - apk add git openssh bash
   - eval $(ssh-agent -s)
   - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
   - mkdir -p ~/.ssh
