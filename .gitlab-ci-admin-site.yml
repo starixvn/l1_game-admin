@@ -63,7 +63,7 @@ local_deploy:game_admin_site:
     - .base-admin-site
   script:
     - apt-get update
-    - apt-get install build-essential 
+    - apt-get --assume-yes install build-essential 
     - echo "====== Deploying ... ======"
     - dotnet publish -c Local $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME -o $ADMIN_SITE_BUILD_PATH
     - tar -C $ADMIN_SITE_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-site/ -jxf -'
