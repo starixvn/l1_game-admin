@@ -112,12 +112,12 @@ prod_deploy:game_admin_api:
     - .admin-api-push-git-compiled
   environment:
     name: PRO
-  # needs:
-  #   - build:game-admin-api
+  needs:
+    - build:game-admin-api
   when: manual
   allow_failure: false
   only:
     - master
-    - /^deploy-pro-\d{8}-\d+.*$/
+    - /^deploy-\d{8}-\d+.*$/
     - /^deploy-api-\d{8}-\d+.*$/
 
