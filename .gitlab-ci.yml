@@ -4,17 +4,7 @@ stages:
   - build
   - deploy
 
-# before_script:
-#   - echo "====== Setting SSH Key ======"
-#   - eval $(ssh-agent -s)
-#   - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-#   - mkdir -p ~/.ssh
-#   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-#   - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-
 before_script:
-  # - apk update && apk upgrade
-  # - apk add git openssh bash
   - eval $(ssh-agent -s)
   - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
   - mkdir -p ~/.ssh
@@ -25,4 +15,4 @@ before_script:
 
 include:
   - .gitlab-ci-admin-api.yml
-#  - .gitlab-ci-admin-site.yml
+ - .gitlab-ci-admin-site.yml
