@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GamesAdmin.Site._Shared
+namespace GamesAdmin.Site.Features._Shared
 {
     public class HomeController : Controller
     {
