@@ -1,0 +1,123 @@
+variables:
+  ADMIN_API_GIT_COMPILED: git@gitlab.com:l1-compiled/game-admin-api-compiled.git
+  ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
+  ADMIN_API_BUILD_PATH: ./build/game-admin-api
+  ADMIN_API_PROJECT_NAME: GamesAdmin.Api.csproj
+
+.admin-api-push-git-compiled:
+  script: 
+    - if [ "$CI_ENVIRONMENT_NAME" == "PRO" ]; 
+      then
+        export GIT_BRANCH=master;
+      else
+        export GIT_BRANCH=$CI_ENVIRONMENT_NAME;
+      fi
+    - echo $GIT_BRANCH
+    - echo "====== Pushing git compiled ... ======"
+    - git clone --branch $GIT_BRANCH $ADMIN_API_GIT_COMPILED $ADMIN_ADMIN_API_BUILD_PATH
+    - dotnet publish -c $CI_ENVIRONMENT_NAME -r linux-x64 --self-contained false $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME -o $ADMIN_API_BUILD_PATH
+    - cp $ADMIN_API_ROOT_PATH/gitlab-ci-after-script-${CI_ENVIRONMENT_NAME}.sh $ADMIN_API_BUILD_PATH
+    - cd $ADMIN_API_BUILD_PATH
+    - git add .
+    - if [ -z "$(git status --porcelain)" ]; 
+      then 
+        echo "Nothing change"; 
+      else 
+       git commit -m "$COMMIT_MESSAGE"; git push -u origin $GIT_BRANCH;
+       echo "==============Waiting for after script execution==============";
+       sleep 60; 
+      fi
+
+.base-admin-api:
+  stage: deploy
+  tags:
+    - deploy-dotnet
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - forward_deployment_failure
+      - archived_failure
+
+build:game-admin-api:
+  stage: build
+  script:   
+    - dotnet clean $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
+    - dotnet restore $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
+    - dotnet build $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
+  tags:
+    - deploy-dotnet
+  only:
+    - master
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-api-\d{8}-\d+.*$/
+    - /^deploy-local-\d{8}-\d+.*$/
+    - /^deploy-local-api-\d{8}-\d+.*$/
+    - /^deploy-sit-\d{8}-\d+.*$/
+    - /^deploy-sit-api-\d{8}-\d+.*$/
+    - /^deploy-uat-\d{8}-\d+.*$/
+    - /^deploy-uat-api-\d{8}-\d+.*$/
+
+local_deploy:game_admin_api:
+  extends: 
+    - .base-admin-api
+  script:   
+    - echo "====== Deploying ... ======"
+    - dotnet publish -c Local $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME -o $ADMIN_API_BUILD_PATH
+    - tar -C $ADMIN_API_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-api/ -jxf -'
+    - ssh root@$HOST 'sudo service l1-game-admin-api restart'
+  tags:
+    - deploy-dotnet
+  environment:
+    name: LOCAL
+  needs:
+    - build:game-admin-api
+  only:
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-local-\d{8}-\d+.*$/
+    - /^deploy-api-\d{8}-\d+.*$/
+    - /^deploy-local-api-\d{8}-\d+.*$/
+
+sit_deploy:game_admin_api:
+  extends: 
+    - .base-admin-api
+    - .admin-api-push-git-compiled
+  environment:
+    name: SIT
+  needs:
+    - build:game-admin-api
+  only:
+    - /^deploy-sit-\d{8}-\d+.*$/
+    - /^deploy-sit-api-\d{8}-\d+.*$/
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-api-\d{8}-\d+.*$/
+
+uat_deploy:game_admin_api:
+  extends: 
+    - .base-admin-api
+    - .admin-api-push-git-compiled
+  environment:
+    name: UAT
+  needs:
+    - build:game-admin-api
+  only:
+    - /^deploy-uat-\d{8}-\d+.*$/
+    - /^deploy-uat-api-\d{8}-\d+.*$/
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-api-\d{8}-\d+.*$/
+
+prod_deploy:game_admin_api:
+  extends: 
+    - .base-admin-api
+    - .admin-api-push-git-compiled
+  environment:
+    name: PRO
+  needs:
+    - build:game-admin-api
+  when: manual
+  allow_failure: false
+  only:
+    - master
+    - /^deploy-\d{8}-\d+.*$/
+    - /^deploy-api-\d{8}-\d+.*$/
+

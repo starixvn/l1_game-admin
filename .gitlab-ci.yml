@@ -1,11 +1,8 @@
-variables:
-  GAME_ADMIN_API_GIT_COMPILED_REPO: git@gitlab.com:l1-compiled/game-admin-api-compiled.git
-  GAME_ADMIN_API_BUILD_PATH: ./build/game-admin-api
-  GAME_ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
 
-  GAME_ADMIN_SITE_GIT_COMPILED_REPO: git@gitlab.com:l1-compiled/game-admin-site-compiled.git
-  GAME_ADMIN_SITE_BUILD_PATH: ./build/game-admin-site
-  GAME_ADMIN_SITE_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Site
+
+stages:
+  - build
+  - deploy
 
 before_script:
   - echo "====== Setting SSH Key ======"
@@ -15,165 +12,15 @@ before_script:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
-stages:
-#  - build
-  - deploy-game-admin-api
-  - deploy-game-admin-site
-
-#build:
-#  stage: build
-#  script:      
-#    - dotnet clean ./GamesAdmin/GamesAdmin.sln
-#    - dotnet restore ./GamesAdmin/GamesAdmin.sln
-#    - dotnet build ./GamesAdmin/GamesAdmin.sln
-#  tags:
-#    - deploy-dotnet
+build:
+ stage: build
+ script:      
+   - dotnet clean ./GamesAdmin/GamesAdmin.sln
+   - dotnet restore ./GamesAdmin/GamesAdmin.sln
+   - dotnet build ./GamesAdmin/GamesAdmin.sln
+ tags:
+   - deploy-dotnet
     
-local_deploy_game_admin_api:
-  stage: deploy-game-admin-api
-  script:   
-    - echo "====== Deploying ... ======"
-    - dotnet publish -c Local $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
-    - tar -C $GAME_ADMIN_API_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-api/ -jxf -'
-    - ssh root@$HOST 'sudo service l1-game-admin-api restart'
-  tags:
-    - deploy-dotnet
-  environment:
-    name: LOCAL
-  only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-local-\d{8}-\d+.*$/
-    - /^deploy-api-\d{8}-\d+.*$/
-    - /^deploy-local-api-\d{8}-\d+.*$/
-
-local_deploy_game_admin_site:
-  stage: deploy-game-admin-site
-  script:      
-    - echo "====== Deploying ... ======"
-    - dotnet publish -c Local $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
-    - tar -C $GAME_ADMIN_SITE_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-site/ -jxf -'
-    - ssh root@$HOST 'sudo service l1-game-admin-site restart'
-  tags:
-    - deploy-dotnet
-  environment:
-    name: LOCAL
-  only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-site-\d{8}-\d+.*$/
-    - /^deploy-local-\d{8}-\d+.*$/
-    - /^deploy-local-site-\d{8}-\d+.*$/
-
-sit_deploy_game_admin_api:
-  stage: deploy-game-admin-api
-  script:   
-    - echo "====== Deploying ... ======"
-    - git clone --branch SIT $GAME_ADMIN_API_GIT_COMPILED_REPO $GAME_ADMIN_API_BUILD_PATH
-    - dotnet publish -c SIT $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
-    - cp $GAME_ADMIN_API_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_API_BUILD_PATH
-    - cd $GAME_ADMIN_API_BUILD_PATH
-    - git add .
-    - if [ -z "$(git status --porcelain)" ]; 
-      then 
-        echo "Nothing change"; 
-      else 
-       git commit -m "$COMMIT_MESSAGE"; git push -u origin SIT;
-       echo "==============Waiting for after script execution==============";
-       sleep 60; 
-      fi
-  tags:
-    - deploy-dotnet
-  environment:
-    name: SIT
-  only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-api-\d{8}-\d+.*$/
-    - /^deploy-sit-\d{8}-\d+.*$/
-    - /^deploy-sit-api-\d{8}-\d+.*$/
-
-sit_deploy_game_admin_site:
-  stage: deploy-game-admin-site
-  before_script:
-    - echo "====== Setting SSH Key ======"
-    - eval $(ssh-agent -s)
-    - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-    - mkdir -p ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-  script:      
-    - echo "====== Deploying ... ======"
-    - git clone --branch SIT $GAME_ADMIN_SITE_GIT_COMPILED_REPO $GAME_ADMIN_SITE_BUILD_PATH
-    - dotnet publish -c SIT $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
-    - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-SIT.sh $GAME_ADMIN_SITE_BUILD_PATH
-    - cd $GAME_ADMIN_SITE_BUILD_PATH
-    - git add .
-    - if [ -z "$(git status --porcelain)" ]; 
-      then 
-        echo "Nothing change"; 
-      else 
-       git commit -m "$COMMIT_MESSAGE"; git push -u origin SIT;
-       echo "==============Waiting for after script execution==============";
-       sleep 60; 
-      fi
-  environment:
-    name: SIT
-  tags:
-    - deploy-dotnet
-  only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-site-\d{8}-\d+.*$/
-    - /^deploy-sit-\d{8}-\d+.*$/
-    - /^deploy-sit-site-\d{8}-\d+.*$/
-
-uat_deploy_game_admin_api:
-  stage: deploy-game-admin-api
-  script:   
-    - echo "====== Deploying ... ======"
-    - git clone --branch UAT $GAME_ADMIN_API_GIT_COMPILED_REPO $GAME_ADMIN_API_BUILD_PATH
-    - dotnet publish -c UAT $GAME_ADMIN_API_ROOT_PATH/GamesAdmin.Api.csproj -o $GAME_ADMIN_API_BUILD_PATH
-    - cp $GAME_ADMIN_API_ROOT_PATH/gitlab-ci-after-script-UAT.sh $GAME_ADMIN_API_BUILD_PATH
-    - cd $GAME_ADMIN_API_BUILD_PATH
-    - git add .
-    - if [ -z "$(git status --porcelain)" ]; 
-      then 
-        echo "Nothing change"; 
-      else 
-       git commit -m "$COMMIT_MESSAGE"; git push -u origin UAT;
-       echo "==============Waiting for after script execution==============";
-       sleep 60; 
-      fi
-  tags:
-    - deploy-dotnet
-  environment:
-    name: UAT
-  only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-api-\d{8}-\d+.*$/
-    - /^deploy-uat-\d{8}-\d+.*$/
-    - /^deploy-uat-api-\d{8}-\d+.*$/
-
-uat_deploy_game_admin_site:
-  stage: deploy-game-admin-site
-  script:      
-    - echo "====== Deploying ... ======"
-    - git clone --branch UAT $GAME_ADMIN_SITE_GIT_COMPILED_REPO $GAME_ADMIN_SITE_BUILD_PATH
-    - dotnet publish -c UAT $GAME_ADMIN_SITE_ROOT_PATH/GamesAdmin.Site.csproj -o $GAME_ADMIN_SITE_BUILD_PATH
-    - cp $GAME_ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-UAT.sh $GAME_ADMIN_SITE_BUILD_PATH
-    - cd $GAME_ADMIN_SITE_BUILD_PATH
-    - git add .
-    - if [ -z "$(git status --porcelain)" ]; 
-      then 
-        echo "Nothing change"; 
-      else 
-       git commit -m "$COMMIT_MESSAGE"; git push -u origin UAT;
-       echo "==============Waiting for after script execution==============";
-       sleep 60; 
-      fi
-  environment:
-    name: UAT
-  tags:
-    - deploy-dotnet
-  only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-site-\d{8}-\d+.*$/
-    - /^deploy-uat-\d{8}-\d+.*$/
-    - /^deploy-uat-site-\d{8}-\d+.*$/
+include:
+  - .gitlab-ci-admin-api.yml
+  - .gitlab-ci-admin-site.yml
