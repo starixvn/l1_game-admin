@@ -36,16 +36,20 @@ namespace GamesAdmin.Api.UM
             {
                 await UpdateEnableConfig(false);
 
-                await umRepository.InsertOneAsync(new UMInfoEntity
+                var umInfo = umRepository.FilterBy(um => !um.finish).FirstOrDefault();
+
+                if (umInfo != null)
                 {
-                    start = DateTime.UtcNow,
-                    end = default,
-                    finish = false,
-                    time = DateTime.UtcNow
-                }); ;
+                    await umRepository.InsertOneAsync(new UMInfoEntity
+                    {
+                        start = DateTime.UtcNow,
+                        end = default,
+                        finish = false,
+                        time = DateTime.UtcNow
+                    });
+                }
 
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -72,7 +76,6 @@ namespace GamesAdmin.Api.UM
                 }
 
                 return true;
-
             }
             catch (Exception ex)
             {
