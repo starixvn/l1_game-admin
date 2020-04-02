@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -62,6 +63,14 @@ namespace GamesAdmin.Api
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
 
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:8898/";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "admin-api";
+                });
+
             services
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.UseMemberCasing());
@@ -91,6 +100,8 @@ namespace GamesAdmin.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,6 +1,9 @@
-﻿using GamesAdmin.Site.Features.Account.Results;
+﻿using GamesAdmin.Site._Shared.IdentityServer;
+using GamesAdmin.Site.Features.Account.Results;
+using IdentityModel.Client;
 using Refit;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Account
@@ -33,18 +36,18 @@ namespace GamesAdmin.Site.Features.Account
     {
         private readonly IAccountApi accountApi;
 
-        public AccountService(IAccountApi accountApi)
+        public AccountService(HttpClient httpClient)
         {
-            this.accountApi = accountApi;
+            accountApi = RestService.For<IAccountApi>(httpClient);
         }
 
-        public Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot)
-        => isBot ? accountApi.AddBots(names) : accountApi.AddUsers(names);
+        public async Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot)
+        => isBot ? await  accountApi.AddBots(names) : await accountApi.AddUsers(names);
 
-        public Task<int> GetBotCount()
-        => accountApi.BotCount();
+        public async Task<int> GetBotCount()
+        => await accountApi.BotCount();
 
-        public Task<int> ReviseBots()
-        => accountApi.ReviseBots();
+        public async Task<int> ReviseBots()
+        => await accountApi.ReviseBots();
     }
 }

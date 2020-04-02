@@ -1,22 +1,26 @@
+using System;
 using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.IdentityServer;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.GameSettings;
+<<<<<<< HEAD
 using GamesAdmin.Site.Features.Users;
+=======
+using IdentityModel.Client;
+>>>>>>> add identity server
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Refit;
 
 namespace GamesAdmin.Site
 {
@@ -45,9 +49,19 @@ namespace GamesAdmin.Site
 
             services.AddSingleton(RestService.For<IGameApi>(appSettings.ApiHost));
             services.AddScoped<IGameService, GameService>();
+            IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
 
-            services.AddSingleton(RestService.For<IAccountApi>(appSettings.ApiHost));
-            services.AddScoped<IAccountService, AccountService>();
+            const string apiHttpClientName = "game-admin-api-client";
+
+            services.AddHttpClient(apiHttpClientName,  configureClient =>
+            {
+                configureClient.BaseAddress = new Uri(appSettings.ApiHost);
+                configureClient.SetBearerToken(IdentityServerManager.GetAccessToken().Result);
+            });
+
+            services.AddHttpClient<IAccountService, AccountService>(apiHttpClientName);
+
+            services.AddHttpClient<IGameService, GameService>(apiHttpClientName);
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 

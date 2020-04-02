@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using Refit;
@@ -45,37 +46,37 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameApi gameApi;
         private readonly ISentryClient sentryClient;
 
-        public GameService(IGameApi gameApi, ISentryClient sentryClient)
+        public GameService(HttpClient httpClient, ISentryClient sentryClient)
         {
-            this.gameApi = gameApi;
+            gameApi = RestService.For<IGameApi>(httpClient);
             this.sentryClient = sentryClient;
         }
 
         public Task<bool> Add(GameConfig game)
         => gameApi.Add(game);
 
-        public Task<IList<GameConfig>> GetGames()
+        public async Task<IList<GameConfig>> GetGames()
         {
             try
             {
-                return gameApi.GetGames();
+                return await gameApi.GetGames();
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
 
-                return Task.FromResult(new List<GameConfig>() as IList<GameConfig>);
+                return new List<GameConfig>() as IList<GameConfig>;
             }
         }
 
-        public Task<bool> Update(GameConfig game)
-        => gameApi.Update(game);
+        public async Task<bool> Update(GameConfig game)
+        => await gameApi.Update(game);
 
-        public Task<bool> Delete(string id)
-        => gameApi.Delete(id);
+        public async Task<bool> Delete(string id)
+        => await gameApi.Delete(id);
 
-        public Task<GameConfig> GetByName(string name)
-        => gameApi.GetByName(name);
+        public async Task<GameConfig> GetByName(string name)
+        => await gameApi.GetByName(name);
 
         public async Task<bool> IsExistName(string name)
         {
