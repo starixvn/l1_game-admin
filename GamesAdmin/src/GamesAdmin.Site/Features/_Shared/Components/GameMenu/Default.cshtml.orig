@@ -1,0 +1,88 @@
+﻿@using GamesAdmin.Site.Features._Shared.Components.ViewModels;
+@model MenuViewModel;
+
+    <ul class="vertical-nav-menu">
+        <li class="nav-heading">Game</li>
+        @foreach (var item in Model.GameList)
+        {
+            <li class="menu-item">
+                <a asp-route-name="@item.Value" asp-action="Edit" asp-controller="GameSettings">
+                    <i class="material-icons menu-icon">bubble_chart</i>
+                    <span class="menu-name">@item.DisplayName</span>
+                </a>
+            </li>
+            
+        }
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">note_add</i>
+                <span class="menu-name">Add new game</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="ReviseBots" asp-controller="Account">
+                <i class="material-icons menu-icon">adb</i>
+                <span class="menu-name">Revise Bots</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="Account">
+<<<<<<< HEAD
+                <i class="material-icons menu-icon">person_add</i>
+                <span class="menu-name">Add</span>
+=======
+                <i class="material-icons menu-icon">note_add</i>
+                <span class="menu-name">Generate User/Bot</span>
+>>>>>>> update app settings for admin2
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="#">
+                <i class="material-icons menu-icon">assessment</i>
+                <span class="menu-name">Control Panel</span>
+            </a>
+        </li>
+        @*<li class="nav-heading">Users</li>*@
+
+        @*<li>
+            <a  href="#">
+                <i class="material-icons menu-icon">people_alt</i>
+                Management
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="material-icons menu-icon">storage</i>
+                List
+            </a>
+        </li>*@
+        @*<li class="nav-heading">Reports</li>
+        <li class="active">
+            <a href="#">
+                <i class="material-icons menu-icon">assessment</i>
+                Win/Loss by Game
+            </a>
+        </li>
+        <li class="nav-heading">Events</li>
+        <li>
+            <a href="#">
+                <i class="material-icons menu-icon">tune</i>
+                Đu dây thắng thua
+            </a>
+        </li>
+        <li class="nav-heading">Players</li>
+        <li>
+            <a href="#">
+                <i class="material-icons menu-icon">format_list_numbered</i>
+                Top player win
+            </a>
+        </li>*@
+
+        @*<li class="nav-heading">Banks</li>
+        <li>
+            <a href="#">
+                <i class="material-icons menu-icon">local_atm</i>
+                Banks
+            </a>
+        </li>*@
+    </ul>
