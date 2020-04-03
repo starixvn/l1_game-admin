@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api.GameRound.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameRound
 {
-    [ApiController]
+    [ApiController, Authorize]
     [Route("api/game-rounds")]
     public class GameRoundController : ControllerBase
     {

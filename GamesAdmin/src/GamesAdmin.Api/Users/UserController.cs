@@ -1,13 +1,14 @@
 ﻿using GamesAdmin.Api.Users.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
 {
-    [Route("api/users")]
+    [Route("api/users"), Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {

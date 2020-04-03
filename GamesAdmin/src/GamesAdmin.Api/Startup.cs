@@ -66,9 +66,9 @@ namespace GamesAdmin.Api
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:8898/";
+                    options.Authority = Configuration["IdentityServer:Issuer"];
                     options.RequireHttpsMetadata = false;
-                    options.Audience = "admin-api";
+                    options.Audience = Configuration["IdentityServer:Audience"];
                 });
 
             services
