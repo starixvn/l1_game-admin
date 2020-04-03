@@ -37,6 +37,13 @@ namespace GamesAdmin.Site
             var appSettings = new AppSettings(Configuration);
             services.AddSingleton<IAppSettings>(appSettings);
 
+            var controlPanelSettings = new GameControlPanelSettings(
+                Configuration["GameControlPanel:Host"],
+                Configuration["GameControlPanel:SecretKey"],
+                Configuration["GameControlPanel:User"],
+                Configuration["GameControlPanel:Hash"]);
+            services.AddSingleton<IGameControlPanelSettings>(controlPanelSettings);
+
             services.AddSingleton(RestService.For<IGameApi>(appSettings.ApiHost));
             services.AddScoped<IGameService, GameService>();
 
