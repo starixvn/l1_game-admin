@@ -10,7 +10,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         string Hash { get; }
 
-        string Pwd { get; }
+        IGameControlPanelSettings GameControlPanel { get; }
     }
     public class AppSettings : IAppSettings
     {
@@ -22,14 +22,19 @@ namespace GamesAdmin.Site._Shared.Configurations
 
             ApiHost = GetValue<string>(nameof(ApiHost));
             Hash = GetValue<string>(nameof(Hash));
-            Pwd = GetValue<string>(nameof(Pwd));
+
+            GameControlPanel = new GameControlPanelSettings(
+                configuration["GameControlPanel:Host"],
+                configuration["GameControlPanel:SecretKey"],
+                configuration["GameControlPanel:User"],
+                configuration["GameControlPanel:Hash"]);
         }
 
         public string ApiHost { get; }
 
         public string Hash { get; }
 
-        public string Pwd { get; }
+        public IGameControlPanelSettings GameControlPanel { get; }
 
         public T GetValue<T>(string key)
         {
