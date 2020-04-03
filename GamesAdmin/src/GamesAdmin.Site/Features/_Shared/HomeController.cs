@@ -19,7 +19,9 @@ namespace GamesAdmin.Site.Features._Shared
         [HttpGet]
         public IActionResult RedirectToPanel()
         {
-            return Redirect(panelSettings.Host);
+            var hashed = BCrypt.Net.BCrypt.HashPassword(panelSettings.SecretKey, BCrypt.Net.BCrypt.GenerateSalt(12));
+
+            return Redirect($"{panelSettings.Host}?token={hashed}");
         }
     }
 }
