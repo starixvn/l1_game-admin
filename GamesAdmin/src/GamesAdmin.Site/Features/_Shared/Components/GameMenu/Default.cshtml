@@ -8,9 +8,10 @@
             <li class="menu-item">
                 <a asp-route-name="@item.Value" asp-action="Edit" asp-controller="GameSettings">
                     <i class="material-icons menu-icon">bubble_chart</i>
-                    <span class="menu-name">@item.DisplayName</span>                    
+                    <span class="menu-name">@item.DisplayName</span>
                 </a>
             </li>
+            
         }
         <li class="menu-item">
             <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
@@ -20,16 +21,16 @@
         </li>
         <li class="menu-item">
             <a asp-action="ReviseBots" asp-controller="Account">
-                <i class="material-icons menu-icon">storage</i>
+                <i class="material-icons menu-icon">adb</i>
                 <span class="menu-name">Revise Bots</span>
             </a>
         </li>
         <li class="nav-heading">Users</li>
         <li class="menu-item">
             <a asp-action="Add" asp-controller="Account">
-                <i class="material-icons menu-icon">note_add</i>
+                <i class="material-icons menu-icon">person_add</i>
                 <span class="menu-name">Add</span>
-            </a>            
+            </a>
         </li>
         @*<li>
             <a  href="#">

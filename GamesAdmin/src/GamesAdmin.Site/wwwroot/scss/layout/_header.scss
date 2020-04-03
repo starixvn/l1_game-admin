@@ -19,10 +19,12 @@
     .icon-user {
         margin-bottom: 0;
         position: relative;
-        top: 6px;
+        top: 0.6rem;
     }
 
     .logout {
+        width: 100%;
+        padding: 0 1.2rem;
         text-align: left;
 
         &:hover {

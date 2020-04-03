@@ -1,46 +1,33 @@
 ﻿
-
-.hamburger--elastic .hamburger-inner {
-    top: 1px;
-    transition-duration: 0.275s;
-    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
-    width: 24px;
-    height: 2px;
-    background-color: #da624a;
-    border-radius: 10px;
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
     position: absolute;
     left: 0;
+    width: 2.4rem;
+    height: .2rem;
+    background-color: #da624a;
     transition-property: transform;
     transition-duration: 0.15s;
     transition-timing-function: ease;
 }
 
-.btn-hamburger.hamburger-inner::before {
-    top: 6px;
-    transition: opacity 0.125s 0.275s ease;
-}
-
-.hamburger-inner::before {
-    top: -6px;
-}
-
-.hamburger-inner::before, .hamburger-inner::after {
+.hamburger-inner::before,
+.hamburger-inner::after {
     content: "";
     display: block;
 }
 
-.btn-hamburger .hamburger-inner::after {
-    top: 7px;
-    transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.hamburger-inner::before {
+    top: -0.6rem;
+    transition: opacity 0.125s 0.275s ease;
 }
 
 .hamburger-inner::after {
-    bottom: -6px;
+    top: .7rem;
+    bottom: -0.6rem;
+    transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
-
 
 .sidebar {
     width: 280px;
@@ -151,18 +138,19 @@
         padding: 0 1.5rem 0 2.4rem;
         position: relative;
         color: #6c757d;
-        font-weight: 600;
         transition: all .2s;
 
         &:hover {
             text-decoration: none;
             color: #000;
         }
+
+
+        &.active {
+            color: #000;
+        }
     }
 
-    .active > a {
-        color: #000;
-    }
 
     .menu-icon {
         width: 2rem;
