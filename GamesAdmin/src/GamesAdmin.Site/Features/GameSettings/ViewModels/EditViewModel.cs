@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site._Shared.Enumerations;
+using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
-    public class EditViewModel
+    public class EditViewModel : ViewModelBase
     { 
         public string Id { get; set; }
 

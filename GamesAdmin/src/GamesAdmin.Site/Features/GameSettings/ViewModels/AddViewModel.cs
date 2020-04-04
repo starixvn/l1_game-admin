@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
-    public class AddViewModel
+    public class AddViewModel : ViewModelBase
     {
         [Required(ErrorMessage = "Name could not empty")]
         [MinLength(2)]

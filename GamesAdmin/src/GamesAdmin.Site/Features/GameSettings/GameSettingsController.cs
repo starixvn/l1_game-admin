@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -30,19 +31,34 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("/update")]
-        public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
+        public async Task<IActionResult> Edit([Bind] EditViewModel editViewModel)
         {
-            await mediator.Send(new UpdateRequest(new GameConfig(
-                editViewModel.Id,
-                editViewModel.Name,
-                editViewModel.MinBet,
-                editViewModel.MaxBet,
-                editViewModel.Enabled,
-                editViewModel.BotEnabled,
-                editViewModel.MaxBot,
-                null)));
+            try
+            {
+                var updated = await mediator.Send(new UpdateRequest(new GameConfig(
+                   editViewModel.Id,
+                   editViewModel.Name,
+                   editViewModel.MinBet,
+                   editViewModel.MaxBet,
+                   editViewModel.Enabled,
+                   editViewModel.BotEnabled,
+                   editViewModel.MaxBot,
+                   null)));
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name } });
+                editViewModel.Success = updated;
+
+                if (!editViewModel.Success)
+                {
+                    editViewModel.ErrorMessage = "Something went wrong. Cannot update this config.";
+                }
+            }
+            catch (Exception ex) 
+            {
+                editViewModel.Success = false;
+                editViewModel.ErrorMessage = ex.Message;
+            }
+
+            return View(editViewModel);
         }
 
         [HttpGet]
