@@ -29,6 +29,13 @@ namespace GamesAdmin.Site.Features.Users
 
         public async Task<ResultBase> Handle(AddUserRequest request, CancellationToken cancellationToken)
         {
+            var isExist = (await userService.Get(request.User.Username)) != null;
+
+            if (isExist)
+            {
+                return new ResultBase("Username already exist.");
+            }
+
             var added = await userService.Create(request.User);
 
             if (added)
@@ -38,6 +45,5 @@ namespace GamesAdmin.Site.Features.Users
 
             return new ResultBase("Cannot add new user");
         }
-
     }
 }

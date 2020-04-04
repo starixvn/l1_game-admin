@@ -16,6 +16,9 @@ namespace GamesAdmin.Site.Features.Users
 
         [Post("/users/delete")]
         Task<bool> Delete(User user);
+      
+        [Get("/users/{username}")]
+        Task<User> Get(string username);
     }
 
     public interface IUserService 
@@ -25,6 +28,8 @@ namespace GamesAdmin.Site.Features.Users
         Task<IEnumerable<User>> GetAll();
 
         Task<bool> Delete(User user);
+
+        Task<User> Get(string username);
     }
 
     public class UserService : IUserService
@@ -43,6 +48,9 @@ namespace GamesAdmin.Site.Features.Users
 
         public Task<bool> Delete(User user)
         => userApi.Delete(user);
+
+        public Task<User> Get(string username)
+        => userApi.Get(username);
 
         public Task<IEnumerable<User>> GetAll()
         => userApi.GetAll();

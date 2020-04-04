@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.Users
         public IActionResult Add() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Add([Bind] AddViewModel addViewModel) 
+        public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
             if (!addViewModel.Password.Equals(addViewModel.ConfirmPassword))
             {
@@ -37,18 +37,22 @@ namespace GamesAdmin.Site.Features.Users
 
             var addedResult = await mediator.Send(new AddUserRequest(
                 new User(
-                    addViewModel.Username, 
-                    addViewModel.Password, 
+                    addViewModel.Username,
+                    addViewModel.Password,
                     addViewModel.IsAdmin)));
 
             addViewModel.Success = addedResult.Success;
 
-            if (!addViewModel.Success)
+            if (addViewModel.Success)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
             {
                 addViewModel.ErrorMessage = addedResult.Error;
             }
 
-            return RedirectToAction(nameof(Index));
+            return View(addViewModel);
         }
     }
 }

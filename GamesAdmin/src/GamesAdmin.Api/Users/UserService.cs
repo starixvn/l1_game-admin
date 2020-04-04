@@ -19,7 +19,7 @@ namespace GamesAdmin.Api.Users
 
         Task<bool> Delete(User user);
 
-        Task<User> SignIn(string username, string password);
+        Task<User> Get(string username);
     }
 
     public class UserService : IUserService
@@ -77,7 +77,7 @@ namespace GamesAdmin.Api.Users
             }
         }
 
-        public async Task<User> SignIn(string username, string password)
+        public async Task<User> Get(string username)
         {
             try
             {

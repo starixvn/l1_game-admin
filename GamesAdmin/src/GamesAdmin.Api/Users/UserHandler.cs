@@ -30,6 +30,6 @@ namespace GamesAdmin.Api.Users
         => userService.Delete(request.User);
 
         public Task<User> Handle(GetByNameRequest request, CancellationToken cancellationToken)
-        => userService.SignIn(request.Username);
+        => userService.Get(request.Username);
     }
 }
