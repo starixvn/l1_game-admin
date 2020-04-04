@@ -92,6 +92,7 @@ namespace GamesAdmin.Api.Accounts
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
                 var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
+                var amount = (new Random()).Next(1000, 5000);
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateAccountResult(userName, name, password);
 
@@ -120,7 +121,7 @@ namespace GamesAdmin.Api.Accounts
                     {
                         name = name,
                         avatarId = avatarId,
-                        red = 10000,
+                        red = amount,
                         isBot = isBot,
                         joinedOn = DateTime.UtcNow,
                         UID = latestUserInfoUID

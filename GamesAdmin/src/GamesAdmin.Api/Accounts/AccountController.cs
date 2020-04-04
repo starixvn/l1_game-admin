@@ -32,7 +32,7 @@ namespace GamesAdmin.Api.Accounts
         {
             if (names?.Length < 0 || names?.Length > 100)
             {
-                throw new InvalidOperationException("Number of generated users should be in range [1..20]");
+                throw new InvalidOperationException("Number of generated users should be in range [1..100]");
             }
         
             return await mediator.Send(new GenerateAccountRandomRequest(names, true));
@@ -43,7 +43,7 @@ namespace GamesAdmin.Api.Accounts
         {
             if (names?.Length < 0 || names?.Length > 100)
             {
-                throw new InvalidOperationException("Number of generated users should be in range [1..20]");
+                throw new InvalidOperationException("Number of generated users should be in range [1..100]");
             }
 
             return await mediator.Send(new GenerateAccountRandomRequest(names, false));
