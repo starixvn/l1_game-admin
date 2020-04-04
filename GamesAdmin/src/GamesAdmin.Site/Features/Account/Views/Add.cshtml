@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <ul>
                         @foreach (var result in Model.Results)
-                        { 
+                        {
                             <li>Account @result.Username/@result.Password as @result.Name @(result.IsSuccess ? "was" : "not") created</li>
                         }
                     </ul>
@@ -44,6 +44,7 @@
     </div>
 </div>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="~/js/GameSettings.js"></script>
+@section Scripts {
+    <script type="text/javascript" src="~/js/GameSettings.js"></script>
+}
 

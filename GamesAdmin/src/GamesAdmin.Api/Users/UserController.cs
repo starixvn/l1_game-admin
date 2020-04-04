@@ -30,7 +30,7 @@ namespace GamesAdmin.Api.Users
         [HttpPost("bots/generate")]
         public async Task<IList<GenerateUserResult>> GenerateBotsRandom(string[] names)
         {
-            if (names?.Length < 0 || names?.Length > 20)
+            if (names?.Length < 0 || names?.Length > 100)
             {
                 throw new InvalidOperationException("Number of generated users should be in range [1..20]");
             }
@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Users
         [HttpPost("generate")]
         public async Task<IList<GenerateUserResult>> GenerateUsersRandom(string[] names)
         {
-            if (names?.Length < 0 || names?.Length > 20)
+            if (names?.Length < 0 || names?.Length > 100)
             {
                 throw new InvalidOperationException("Number of generated users should be in range [1..20]");
             }
