@@ -82,14 +82,16 @@ namespace GamesAdmin.Api.Accounts
         public async Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot)
         {
             var results = new List<GenerateAccountResult>();
-            
             var latestUserInfoUID = await GetLatestUserInfoUID();
+            var newAccounts = new List<AccountEntity>();
+            var newAccountInfos = new List<AccountInfoEntity>();
+            var tuples = new List<Tuple<AccountEntity, AccountInfoEntity>>();
 
             foreach (var name in names)
             {
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
-                var password = PasswordHelper.Random();
+                var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateAccountResult(userName, name, password);
 
@@ -102,16 +104,31 @@ namespace GamesAdmin.Api.Accounts
 
                 try
                 {
-                    var createdAccountId = await CreateAccount(userName, password);
+                    var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
 
-                    if (!string.IsNullOrWhiteSpace(createdAccountId))
+                    var account = new AccountEntity
                     {
-                        await CreateAccountInfo(createdAccountId, name, avatarId, isBot, latestUserInfoUID);
+                        local = new LocalAccount
+                        {
+                            username = userName,
+                            password = hashPassword,
+                            regDate = DateTime.UtcNow
+                        }
+                    };
 
-                        await txAccountRepository.InsertOneAsync(new MiniSicboAccountEntity { uid = createdAccountId });
-                        await xdAccountRepository.InsertOneAsync(new XocDiaAccountEntity { uid = createdAccountId });
-                        await bcAccountRepository.InsertOneAsync(new BauCuaAccountEntity { uid = createdAccountId });
-                    }
+                    var accountInfo = new AccountInfoEntity
+                    {
+                        name = name,
+                        avatarId = avatarId,
+                        red = 10000,
+                        isBot = isBot,
+                        joinedOn = DateTime.UtcNow,
+                        UID = latestUserInfoUID
+                    };
+
+                    newAccounts.Add(account);
+                    newAccountInfos.Add(accountInfo);
+                    tuples.Add(new Tuple<AccountEntity, AccountInfoEntity>(account, accountInfo));
                 }
                 catch (Exception ex)
                 {
@@ -122,13 +139,25 @@ namespace GamesAdmin.Api.Accounts
                 results.Add(result);
             }
 
+            await accountRepository.InsertManyAsync(newAccounts);
+
+            foreach (var tuple in tuples)
+            {
+                tuple.Item2.userId = tuple.Item1.id.ToString();
+            }
+
+            await accountInfoRepository.InsertManyAsync(newAccountInfos);
+            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new MiniSicboAccountEntity { uid = x.id.ToString() }).ToList());
+            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { uid = x.id.ToString() }).ToList());
+            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { uid = x.id.ToString() }).ToList());
+
             return results.ToArray();
         }
 
         private Task<int> GetLatestUserInfoUID()
             => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
 
-        private async Task<string> CreateAccount(string username, string password) 
+        private async Task<string> CreateAccount(string username, string password)
         {
             var hashPassword = PasswordHelper.HashPassword(password);
 
@@ -150,7 +179,7 @@ namespace GamesAdmin.Api.Accounts
                 ?.id.ToString();
         }
 
-        private Task CreateAccountInfo(string userId, string name, int avatarId, bool isBot, int uid) 
+        private Task CreateAccountInfo(string userId, string name, int avatarId, bool isBot, int uid)
         {
             var accountInfo = new AccountInfoEntity
             {
@@ -178,6 +207,6 @@ namespace GamesAdmin.Api.Accounts
             }
 
             return bots.Count;
-        }      
+        }
     }
 }
