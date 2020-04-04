@@ -23,12 +23,14 @@ namespace GamesAdmin.Site.Features._Shared
         [HttpGet]
         public IActionResult RedirectToPanel()
         {
-            var userPass = $"admin-123456-{DateTime.UtcNow.ToString("HH")}";
-            var userHash = Encrypt(userPass);
+            //var userPass = $"admin-123456-{DateTime.UtcNow.ToString("HH")}";
+            //var userHash = Encrypt(userPass);
 
-            var hashed = BCrypt.Net.BCrypt.HashPassword(panelSettings.SecretKey, BCrypt.Net.BCrypt.GenerateSalt(12));
+            //var hashed = BCrypt.Net.BCrypt.HashPassword(panelSettings.SecretKey, BCrypt.Net.BCrypt.GenerateSalt(12));
 
-            return Redirect($"{panelSettings.Host}?token={hashed}-{userHash}");
+            //return Redirect($"{panelSettings.Host}?token={hashed}-{userHash}");
+
+            return Redirect($"{panelSettings.Host}");
         }
 
         private static string Encrypt(string text)
