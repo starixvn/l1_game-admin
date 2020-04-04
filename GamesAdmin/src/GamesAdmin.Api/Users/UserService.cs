@@ -18,6 +18,8 @@ namespace GamesAdmin.Api.Users
         Task<IEnumerable<User>> GetAll();
 
         Task<bool> Delete(User user);
+
+        Task<User> SignIn(string username, string password);
     }
 
     public class UserService : IUserService
@@ -75,6 +77,25 @@ namespace GamesAdmin.Api.Users
             }
         }
 
+        public async Task<User> SignIn(string username, string password)
+        {
+            try
+            {
+                var userEntity = await userRepository.FindOneAsync(entity => entity.username.Equals(username));
+
+                if (userEntity != null)
+                {
+                    return new User(userEntity.username, string.Empty, userEntity.isadmin);
+                }
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return default;
+        }
+
         public Task<IEnumerable<User>> GetAll()
          => Task.Run(() =>
          {
@@ -83,7 +104,7 @@ namespace GamesAdmin.Api.Users
                  var users = userRepository.AsQueryable().ToList();
 
                  return users
-                     .Select(entity => mapper.Map<User>(entity));
+                     .Select(entity => new User(entity.username, string.Empty, entity.isadmin));
              }
              catch (Exception ex)
              {

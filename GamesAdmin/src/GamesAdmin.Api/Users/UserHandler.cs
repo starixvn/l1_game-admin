@@ -11,6 +11,7 @@ namespace GamesAdmin.Api.Users
         : IRequestHandler<CreateRequest, bool>
         , IRequestHandler<GetAllRequest, IEnumerable<User>>
         , IRequestHandler<DeleteRequest, bool>
+        , IRequestHandler<GetByNameRequest, User>
     {
         private readonly IUserService userService;
 
@@ -27,5 +28,8 @@ namespace GamesAdmin.Api.Users
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => userService.Delete(request.User);
+
+        public Task<User> Handle(GetByNameRequest request, CancellationToken cancellationToken)
+        => userService.SignIn(request.Username);
     }
 }

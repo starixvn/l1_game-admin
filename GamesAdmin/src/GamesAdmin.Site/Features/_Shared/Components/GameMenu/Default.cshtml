@@ -13,18 +13,19 @@
             </li>
 
         }
-        @*<li class="menu-item">
-            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
-                <i class="material-icons menu-icon">note_add</i>
-                <span class="menu-name">Add new game</span>
-            </a>
-        </li>*@
         <li class="menu-item">
             <a asp-action="RedirectToPanel" asp-controller="Home" target="_blank">
                 <i class="material-icons menu-icon">assessment</i>
                 <span class="menu-name">Total Bets</span>
             </a>
         </li>
+        @*<li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">note_add</i>
+                <span class="menu-name">Add new game</span>
+            </a>
+        </li>*@
+
         @*<li class="menu-item">
             <a asp-action="Add" asp-controller="Account">
                 <i class="material-icons menu-icon">person_add</i>
@@ -38,7 +39,20 @@
             </a>
         </li>*@
 
-        @*<li class="nav-heading">Users</li>*@
+        <li class="nav-heading">Users</li>
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="User">
+                <i class="material-icons menu-icon">people_alt</i>
+                Management
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="User">
+                <i class="material-icons menu-icon">person_add</i>
+                <span class="menu-name">Add New User</span>
+            </a>
+        </li>
+
 
         @*<li>
             <a  href="#">

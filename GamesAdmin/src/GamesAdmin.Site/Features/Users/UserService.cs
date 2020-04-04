@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.Models;
 using Refit;
+using Sentry;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace GamesAdmin.Site.Features.Users
         Task<bool> Add(User user);
 
         [Post("/users/delete")]
-        Task<bool> AddUsers(User user);
+        Task<bool> Delete(User user);
     }
 
     public interface IUserService 
@@ -28,19 +29,22 @@ namespace GamesAdmin.Site.Features.Users
 
     public class UserService : IUserService
     {
-        public Task<bool> Create(User user)
+        private readonly IUserApi userApi;
+        private readonly ISentryClient sentryClient;
+
+        public UserService(IUserApi userApi, ISentryClient sentryClient)
         {
-            throw new System.NotImplementedException();
+            this.userApi = userApi;
+            this.sentryClient = sentryClient;
         }
+
+        public Task<bool> Create(User user)
+        => userApi.Add(user);
 
         public Task<bool> Delete(User user)
-        {
-            throw new System.NotImplementedException();
-        }
+        => userApi.Delete(user);
 
         public Task<IEnumerable<User>> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
+        => userApi.GetAll();
     }
 }

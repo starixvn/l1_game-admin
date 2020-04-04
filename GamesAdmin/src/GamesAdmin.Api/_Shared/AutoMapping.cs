@@ -25,7 +25,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<MiniSicboOnesEntity, BetInfo>();
 
             CreateMap<User, AdminUserEntity>();
-            CreateMap<AdminUserEntity, User>();
         }
     }
 }

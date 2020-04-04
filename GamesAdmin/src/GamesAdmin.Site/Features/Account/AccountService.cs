@@ -10,14 +10,14 @@ namespace GamesAdmin.Site.Features.Account
         [Get("/accounts/bot/count")]
         Task<int> BotCount();
 
-        [Post("/game-settings/")]
-        Task<bool> Add([Body] GameConfig game);
+        [Post("/accounts/bots/generate")]
+        Task<List<AddUsersResult>> AddBots(string[] names);
 
-        [Put("/game-settings/")]
-        Task<bool> Update([Body] GameConfig game);
+        [Post("/accounts/generate")]
+        Task<List<AddUsersResult>> AddUsers(string[] names);
 
-        [Post("/game-settings/{id}/delete")]
-        Task<bool> Delete(string id);
+        [Post("/accounts/bot/revise")]
+        Task<int> ReviseBots();
     }
 
     public interface IAccountService

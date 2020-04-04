@@ -1,15 +1,15 @@
-﻿using GamesAdmin.Site.Features.Account.Results;
+﻿using GamesAdmin.Site.Features._Shared;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.Users.ViewModels
 {
-    public class AddViewModel
+    public class AddViewModel : ViewModelBase
     {
         [Required]
         [MaxLength(20)]
         [MinLength(6)]
-        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage="Username should only contain characters and numbers.")]
         public string Username { get; set; }
 
         [Required]
@@ -25,7 +25,5 @@ namespace GamesAdmin.Site.Features.Users.ViewModels
 
         [DisplayName("Is Admin")]
         public bool IsAdmin { get; set; }
-
-        public AddUsersResult Result { get; set; }
     }
 }

@@ -29,5 +29,9 @@ namespace GamesAdmin.Api.Users
         [HttpPost("delete")]
         public Task<bool> Delete(User user)
           => mediator.Send(new DeleteRequest(user));
+
+        [HttpGet("{username}")]
+        public async Task<User> Get(string username)
+           => (await mediator.Send(new GetByNameRequest(username)));
     }
 }

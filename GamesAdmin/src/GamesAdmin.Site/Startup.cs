@@ -6,6 +6,7 @@ using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -49,6 +50,9 @@ namespace GamesAdmin.Site
             services.AddScoped<IAccountService, AccountService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost));
+            services.AddScoped<IUserService, UserService>();
 
             services.AddDataProtection().PersistKeysToMongoDb(Configuration).SetApplicationName(Configuration["ApplicationName"]);
 
