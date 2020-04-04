@@ -46,6 +46,7 @@ namespace GamesAdmin.Api.Users
                 {
                     username = user.Username,
                     password = PasswordHelper.HashPassword(user.Password),
+                    isadmin = user.IsAdmin,
                     time = DateTime.Now
                 };
 

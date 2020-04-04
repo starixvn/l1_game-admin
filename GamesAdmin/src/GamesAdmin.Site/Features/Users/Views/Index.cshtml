@@ -5,14 +5,13 @@
     ViewData["Title"] = "Users";
 }
 
-<div class="card">
+<div class="col-md-10 col-lg-6 card">
     <div class="card-body">
         <table class="table">
             <thead>
                 <tr>
                     <th>Username</th>
                     <th>IsAdmin</th>
-                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,9 +20,6 @@
                     <tr>
                         <td>@item.Username</td>
                         <td>@item.IsAdmin</td>
-                        <td>
-                            <a asp-route-id="@item.Username" asp-action="Delete">Delete</a>
-                        </td>
                     </tr>
                 }
             </tbody>
