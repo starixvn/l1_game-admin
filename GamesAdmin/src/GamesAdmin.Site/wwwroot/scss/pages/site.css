@@ -77,6 +77,22 @@
 .form-add .field-validation-error {
   margin: 1rem 0; }
 
+.message-success, .message-error {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  margin: 2rem 3rem 0; }
+  .message-success .material-icons, .message-error .material-icons {
+    margin-right: 4px; }
+
+.message-success {
+  border: 1px solid #3ac47d;
+  color: #3ac47d; }
+
+.message-error {
+  border: 1px solid #d92550;
+  color: #d92550; }
+
 .header {
   display: flex;
   justify-content: space-between;
