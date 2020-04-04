@@ -1,5 +1,5 @@
 ﻿using GamesAdmin.Api.Users.Requests;
-using GamesAdmin.Api.Users.Results;
+using GamesAdmin.Core.Models;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace GamesAdmin.Api.Users
 {
     public class UserHandler
-        : IRequestHandler<GetBotCountRequest, int>
-        , IRequestHandler<GenerateUserRandomRequest, IList<GenerateUserResult>>
-        , IRequestHandler<ReviseBotNameRequest, int>
+        : IRequestHandler<CreateRequest, bool>
+        , IRequestHandler<GetAllRequest, IEnumerable<User>>
+        , IRequestHandler<DeleteRequest, bool>
     {
         private readonly IUserService userService;
 
@@ -19,13 +19,13 @@ namespace GamesAdmin.Api.Users
             this.userService = userService;
         }
 
-        public Task<int> Handle(GetBotCountRequest request, CancellationToken cancellationToken)
-        => userService.GetTotalBots();
+        public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
+        => userService.Create(request.User);
 
-        public Task<IList<GenerateUserResult>> Handle(GenerateUserRandomRequest request, CancellationToken cancellationToken)
-        => userService.GenerateUsers(request.Names, request.IsBot);
+        public Task<IEnumerable<User>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+        => userService.GetAll();
 
-        public Task<int> Handle(ReviseBotNameRequest request, CancellationToken cancellationToken)
-        => userService.ReviseBotNames();
+        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
+        => userService.Delete(request.User);
     }
 }

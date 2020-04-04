@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.Authentication
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([Bind] User user)
+        public async Task<IActionResult> Login([Bind] Core.Models.Account user)
         {
             if (await authenticationService.SignInAsync(user, HttpContext))
             {

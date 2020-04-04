@@ -2,8 +2,17 @@
 {
     public class User
     {
-        public string UserName { get; set; }
+        public User(string username, string password, bool isAdmin) 
+        {
+            Username = username;
+            Password = password;
+            IsAdmin = isAdmin;
+        }
 
-        public string Password { get; set; }
+        public string Username { get; }
+
+        public string Password { get; }
+
+        public bool IsAdmin { get; }
     }
 }

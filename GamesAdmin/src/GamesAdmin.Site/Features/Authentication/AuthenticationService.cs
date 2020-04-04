@@ -12,7 +12,7 @@ namespace GamesAdmin.Site.Features.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<bool> SignInAsync(User user, HttpContext context);
+        Task<bool> SignInAsync(Core.Models.Account user, HttpContext context);
 
         Task SignOutAsync(HttpContext context);
     }
@@ -27,7 +27,7 @@ namespace GamesAdmin.Site.Features.Authentication
             this.appSettings = appSettings;
         }
 
-        public async Task<bool> SignInAsync(User user, HttpContext context)
+        public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
         {
             if (user.UserName.Equals(DefaultUser) && BCrypt.Net.BCrypt.Verify(user.Password, appSettings.Hash))
             {

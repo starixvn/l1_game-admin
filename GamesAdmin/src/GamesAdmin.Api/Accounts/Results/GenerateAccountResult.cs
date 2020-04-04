@@ -1,10 +1,10 @@
 ﻿using GamesAdmin.Api._Shared;
 
-namespace GamesAdmin.Api.Users.Results
+namespace GamesAdmin.Api.Accounts.Results
 {
-    public class GenerateUserResult : BaseResult
+    public class GenerateAccountResult : BaseResult
     {
-        public GenerateUserResult(string username, string name, string password)
+        public GenerateAccountResult(string username, string name, string password)
         {
             Username = username;
             Name = name;

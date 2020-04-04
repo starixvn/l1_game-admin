@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Users.Requests
 {
-    public class GetAllRequest : IRequest<IEnumerable<AccountInfo>>
+    public class GetAllRequest : IRequest<IEnumerable<User>>
     {
     }
 }

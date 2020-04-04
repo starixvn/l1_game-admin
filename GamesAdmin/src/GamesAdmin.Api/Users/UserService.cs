@@ -1,173 +1,95 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using GamesAdmin.Api.Users.Results;
+﻿using AutoMapper;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
 {
     public interface IUserService
     {
-        Task AddBotBalance();
+        Task<bool> Create(User user);
 
-        Task<int> GetTotalBots();
+        Task<IEnumerable<User>> GetAll();
 
-        Task<IList<GenerateUserResult>> GenerateUsers(string[] names, bool isBot);
-
-        Task<int> ReviseBotNames();
+        Task<bool> Delete(User user);
     }
 
     public class UserService : IUserService
     {
-        private const int MinAmount = 1000;
-        private const int AddedAmount = 5000;
-
-        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
-        private readonly IGenericRepository<AccountEntity> accountRepository;
-        private readonly IGenericRepository<MiniSicboAccountEntity> txAccountRepository;
-        private readonly IGenericRepository<XocDiaAccountEntity> xdAccountRepository;
-        private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
-
+        private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ISentryClient sentryClient;
+        private readonly IMapper mapper;
 
         public UserService(
+            IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IGenericRepository<AccountEntity> accountRepository,
-             IGenericRepository<MiniSicboAccountEntity> txAccountRepository,
-            IGenericRepository<XocDiaAccountEntity> xdAccountRepository,
-            IGenericRepository<BauCuaAccountEntity> bcAccountRepository)
+            IGenericRepository<AdminUserEntity> userRepository)
         {
+            this.mapper = mapper;
             this.sentryClient = sentryClient;
-            this.accountInfoRepository = accountInfoRepository;
-            this.accountRepository = accountRepository;
-            this.txAccountRepository = txAccountRepository;
-            this.xdAccountRepository = xdAccountRepository;
-            this.bcAccountRepository = bcAccountRepository;
+            this.userRepository = userRepository;
         }
 
-        public Task AddBotBalance()
-        => Task.Run(() =>
+        public async Task<bool> Create(User user)
         {
-            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red < MinAmount).ToList();
-
-            sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
-
-            foreach (var bot in botsNeedAddBalance)
+            try
             {
-                bot.red += AddedAmount;
-
-                accountInfoRepository.ReplaceOne(bot);
-            }
-        });
-
-        public Task<int> GetTotalBots()
-        => Task.Run(() =>
-        {
-            var bots = accountInfoRepository.FilterBy(entity => entity.isBot);
-
-            if (bots?.Any() == true)
-            {
-                return bots.Count();
-            }
-
-            return 0;
-        });
-
-        public async Task<IList<GenerateUserResult>> GenerateUsers(string[] names, bool isBot)
-        {
-            var results = new List<GenerateUserResult>();
-            var latestUserInfoUID = await GetLatestUserInfoUID();
-            var newAccounts = new List<AccountEntity>();
-            var newAccountInfos = new List<AccountInfoEntity>();
-            var tuples = new List<Tuple<AccountEntity, AccountInfoEntity>>();
-
-            foreach (var name in names)
-            {
-                latestUserInfoUID += 1;
-                var userName = $"{name}{latestUserInfoUID}";
-                var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
-                var avatarId = new Random().Next(1, 40);
-                var result = new GenerateUserResult(userName, name, password);
-
-                if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 14 || !Regex.IsMatch(name, @"^[a-zA-Z0-9]+$"))
+                var entity = new AdminUserEntity
                 {
-                    result.Error = $"Invalid name {name}";
-                    results.Add(result);
-                    continue;
-                }
+                    username = user.Username,
+                    password = user.Password,
+                    time = DateTime.Now
+                };
 
-                try
-                {
-                    var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
-
-                    var account = new AccountEntity
-                    {
-                        local = new LocalAccount
-                        {
-                            username = userName,
-                            password = hashPassword,
-                            regDate = DateTime.UtcNow
-                        }
-                    };
-
-                    var accountInfo = new AccountInfoEntity
-                    {
-                        name = name,
-                        avatarId = avatarId,
-                        red = 10000,
-                        isBot = isBot,
-                        joinedOn = DateTime.UtcNow,
-                        UID = latestUserInfoUID
-                    };
-
-                    newAccounts.Add(account);
-                    newAccountInfos.Add(accountInfo);
-                    tuples.Add(new Tuple<AccountEntity, AccountInfoEntity>(account, accountInfo));
-                }
-                catch (Exception ex)
-                {
-                    sentryClient.CaptureException(ex);
-                    result.Error = ex.Message;
-                }
-
-                results.Add(result);
+                await userRepository.InsertOneAsync(entity);
             }
-
-            await accountRepository.InsertManyAsync(newAccounts);
-
-            foreach (var tuple in tuples)
+            catch (Exception ex)
             {
-                tuple.Item2.userId = tuple.Item1.id.ToString();
+                sentryClient.CaptureException(ex);
+
+                return false;
             }
 
-            await accountInfoRepository.InsertManyAsync(newAccountInfos);
-            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new MiniSicboAccountEntity { uid = x.id.ToString() }).ToList());
-            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { uid = x.id.ToString() }).ToList());
-            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { uid = x.id.ToString() }).ToList());
-
-            return results.ToArray();
+            return true;
         }
 
-        private Task<int> GetLatestUserInfoUID()
-          => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
-
-        public async Task<int> ReviseBotNames()
+        public async Task<bool> Delete(User user)
         {
-            var bots = accountInfoRepository.FilterBy(entity => entity.isBot && entity.name.Length > 14).ToList();
-
-            foreach (var bot in bots)
+            try
             {
-                bot.name = bot.name.Substring(0, 13);
+                await userRepository.DeleteOneAsync(entity => entity.username == user.Username);
 
-                await accountInfoRepository.ReplaceOneAsync(bot);
+                return true;
             }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
 
-            return bots.Count;
+                return false;
+            }
         }
+
+        public Task<IEnumerable<User>> GetAll()
+         => Task.Run(() =>
+         {
+             try
+             {
+                 var users = userRepository.AsQueryable().ToList();
+
+                 return users
+                     .Select(entity => mapper.Map<User>(entity));
+             }
+             catch (Exception ex)
+             {
+                 sentryClient.CaptureException(ex);
+
+                 return Enumerable.Empty<User>();
+             }
+         });
     }
 }

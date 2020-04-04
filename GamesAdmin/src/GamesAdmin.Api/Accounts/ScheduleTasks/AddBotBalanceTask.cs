@@ -3,22 +3,22 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GamesAdmin.Api.Users.ScheduleTasks
+namespace GamesAdmin.Api.Accounts.ScheduleTasks
 {
     public class AddBotBalanceTask :  HostedService
     {
-        private readonly IUserService userService;
+        private readonly IAccountService accountService;
 
-        public AddBotBalanceTask(IUserService userService) 
+        public AddBotBalanceTask(IAccountService accountService) 
         {
-            this.userService = userService;
+            this.accountService = accountService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await userService.AddBotBalance();
+                await accountService.AddBotBalance();
 
                 await Task.Delay(TimeSpan.FromHours(2), cancellationToken);
             }

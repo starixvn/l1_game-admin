@@ -1,8 +1,7 @@
 ﻿using GamesAdmin.Api.Users.Requests;
-using GamesAdmin.Api.Users.Results;
+using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,34 +18,16 @@ namespace GamesAdmin.Api.Users
             this.mediator = mediator;
         }
 
-        [HttpGet("bot/count")]
-        public async Task<int> Get()
-           => (await mediator.Send(new GetBotCountRequest()));
+        [HttpGet]
+        public async Task<IEnumerable<User>> GetAll()
+           => (await mediator.Send(new GetAllRequest()));
 
-        [HttpPost("bot/revise")]
-        public async Task<int> Revise()
-           => (await mediator.Send(new ReviseBotNameRequest()));
+        [HttpPost]
+        public Task<bool> Create(User user)
+            => mediator.Send(new CreateRequest(user));
 
-        [HttpPost("bots/generate")]
-        public async Task<IList<GenerateUserResult>> GenerateBotsRandom(string[] names)
-        {
-            if (names?.Length < 0 || names?.Length > 100)
-            {
-                throw new InvalidOperationException("Number of generated users should be in range [1..20]");
-            }
-        
-            return await mediator.Send(new GenerateUserRandomRequest(names, true));
-        }
-
-        [HttpPost("generate")]
-        public async Task<IList<GenerateUserResult>> GenerateUsersRandom(string[] names)
-        {
-            if (names?.Length < 0 || names?.Length > 100)
-            {
-                throw new InvalidOperationException("Number of generated users should be in range [1..20]");
-            }
-
-            return await mediator.Send(new GenerateUserRandomRequest(names, false));
-        }
+        [HttpPost("delete")]
+        public Task<bool> Delete(User user)
+          => mediator.Send(new DeleteRequest(user));
     }
 }

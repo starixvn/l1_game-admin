@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GamesAdmin.Api.Users.Requests
+namespace GamesAdmin.Api.Accounts.Requests
 {
     public class ReviseBotNameRequest : IRequest<int>
     {
