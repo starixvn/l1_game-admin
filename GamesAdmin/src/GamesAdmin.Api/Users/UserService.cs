@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -42,7 +43,7 @@ namespace GamesAdmin.Api.Users
                 var entity = new AdminUserEntity
                 {
                     username = user.Username,
-                    password = user.Password,
+                    password = PasswordHelper.HashPassword(user.Password),
                     time = DateTime.Now
                 };
 

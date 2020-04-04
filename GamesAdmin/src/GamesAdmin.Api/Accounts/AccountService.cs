@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.Accounts.Results;
+﻿using GamesAdmin.Api._Shared.Helpers;
+using GamesAdmin.Api.Accounts.Results;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Sentry;
@@ -88,7 +89,7 @@ namespace GamesAdmin.Api.Accounts
             {
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
-                var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
+                var password = PasswordHelper.Random();
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateAccountResult(userName, name, password);
 
@@ -129,7 +130,7 @@ namespace GamesAdmin.Api.Accounts
 
         private async Task<string> CreateAccount(string username, string password) 
         {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
+            var hashPassword = PasswordHelper.HashPassword(password);
 
             var account = new AccountEntity
             {
