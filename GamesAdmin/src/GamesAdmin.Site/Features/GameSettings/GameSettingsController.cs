@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("/update")]
-        public async Task<IActionResult> Edit([Bind] EditViewModel editViewModel)
+        public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
         {
             try
             {
@@ -45,12 +45,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.MaxBot,
                    null)));
 
-                editViewModel.Success = updated;
+                //editViewModel.Success = updated;
 
-                if (!editViewModel.Success)
-                {
-                    editViewModel.ErrorMessage = "Something went wrong. Cannot update this config.";
-                }
+                //if (!editViewModel.Success)
+                //{
+                //    editViewModel.ErrorMessage = "Something went wrong. Cannot update this config.";
+                //}
+
+                return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name } });
             }
             catch (Exception ex) 
             {
