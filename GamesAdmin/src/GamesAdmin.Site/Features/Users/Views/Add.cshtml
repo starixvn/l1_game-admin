@@ -1,0 +1,47 @@
+﻿@using GamesAdmin.Site.Features.Users.ViewModels;
+@model AddViewModel;
+
+@{
+    ViewData["Title"] = "Games";
+}
+
+    <div class="row">
+        <div class="col-md-6 card">
+            <form class="card-body form-add" asp-action="Add" asp-controller="User" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input type="text" asp-for="Username" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <input type="checkbox" asp-for="IsAdmin" />
+                        <label asp-for="IsAdmin" class="control-label"></label>
+                    </div>
+                    <span asp-validation-for="IsAdmin" class="text-danger"></span>
+                </div>
+
+
+                @*@if (Model.Results?.Count > 0)
+                {
+                    <div class="form-group">
+                        <ul>
+                            @foreach (var result in Model.Results)
+                            {
+                                <li>Account @result.Username/@result.Password as @result.Name @(result.IsSuccess ? "was" : "not") created</li>
+                            }
+                        </ul>
+                    </div>
+                }*@
+
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn-submit" />
+                </div>
+            </form>
+        </div>
+    </div>
+
