@@ -43,6 +43,9 @@
 
 
   <ItemGroup>
+    <Folder Include="Features\Users\Views\" />
+    <Folder Include="Features\Users\ViewModels\" />
+    <Folder Include="Features\Users\Requests\" />
     <Folder Include="_Shared\Midlewares\" />
   </ItemGroup>
 

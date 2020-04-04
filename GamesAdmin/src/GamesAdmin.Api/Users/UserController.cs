@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.Users
         public async Task<IEnumerable<User>> GetAll()
            => (await mediator.Send(new GetAllRequest()));
 
-        [HttpPost]
+        [HttpPost("add")]
         public Task<bool> Create(User user)
             => mediator.Send(new CreateRequest(user));
 
