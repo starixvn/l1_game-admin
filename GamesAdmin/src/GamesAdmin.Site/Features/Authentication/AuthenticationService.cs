@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features.Users;
+﻿using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -19,24 +18,28 @@ namespace GamesAdmin.Site.Features.Authentication
 
     public class AuthenticationService : IAuthenticationService
     {
-        private const string DefaultUser = "admin";
-        private readonly IAppSettings appSettings;
-        //private readonly IUserService userService;
+        private readonly IUserService userService;
 
-        public AuthenticationService(IAppSettings appSettings, IUserService userService) 
+        public AuthenticationService(IUserService userService) 
         {
-            this.appSettings = appSettings;
-            //this.userService = userService;
+            this.userService = userService;
         }
 
         public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
         {
-            if (user.UserName.Equals(DefaultUser) && BCrypt.Net.BCrypt.Verify(user.Password, appSettings.Hash))
+            var userSignin = await userService.SignIn(user.UserName, user.Password);
+
+            if (userSignin == null)
+            {
+                return false;
+            }
+            else
             {
                 var userClaims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, $"{user.UserName}@luminetsoft.com"),
+                    new Claim("Username", userSignin.Username),
+                    new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
+                    new Claim("Role", userSignin.IsAdmin ? "admin" : "operation")
                  };
 
                 var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
@@ -52,8 +55,6 @@ namespace GamesAdmin.Site.Features.Authentication
 
                 return true;
             }
-
-            return false;
         }
 
         public Task SignOutAsync(HttpContext context)

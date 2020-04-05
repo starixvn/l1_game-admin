@@ -34,7 +34,7 @@
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons icon-user">account_circle</i>
-                            Admin
+                            @Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <form asp-action="Logout" asp-controller="Authentication" method="post">

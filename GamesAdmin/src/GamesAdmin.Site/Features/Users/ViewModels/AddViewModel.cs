@@ -8,7 +8,7 @@ namespace GamesAdmin.Site.Features.Users.ViewModels
     {
         [Required]
         [MaxLength(20)]
-        [MinLength(6)]
+        [MinLength(4)]
         [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage="Username should only contain characters and numbers.")]
         public string Username { get; set; }
 
