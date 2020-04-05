@@ -20,6 +20,8 @@ namespace GamesAdmin.Api.Users
         Task<bool> Delete(User user);
 
         Task<User> Get(string username);
+
+        Task<User> SignIn(string username, string password);
     }
 
     public class UserService : IUserService
@@ -114,5 +116,24 @@ namespace GamesAdmin.Api.Users
                  return Enumerable.Empty<User>();
              }
          });
+
+        public async Task<User> SignIn(string username, string password)
+        {
+            try
+            {
+                var userEntity = await userRepository.FindOneAsync(entity => entity.username.Equals(username));
+
+                if (userEntity != null && PasswordHelper.VerifyHashPassword(password, userEntity.password))
+                {
+                    return new User(userEntity.username, string.Empty, userEntity.isadmin);
+                }
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return default;
+        }
     }
 }

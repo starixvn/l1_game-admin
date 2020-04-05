@@ -1,5 +1,5 @@
-﻿using GamesAdmin.Core.Models;
-using GamesAdmin.Site._Shared.Configurations;
+﻿using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +21,12 @@ namespace GamesAdmin.Site.Features.Authentication
     {
         private const string DefaultUser = "admin";
         private readonly IAppSettings appSettings;
+        //private readonly IUserService userService;
 
-        public AuthenticationService(IAppSettings appSettings) 
+        public AuthenticationService(IAppSettings appSettings, IUserService userService) 
         {
             this.appSettings = appSettings;
+            //this.userService = userService;
         }
 
         public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)

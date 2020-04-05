@@ -19,6 +19,9 @@ namespace GamesAdmin.Site.Features.Users
       
         [Get("/users/{username}")]
         Task<User> Get(string username);
+
+        [Post("/users/signin")]
+        Task<User> SignIn(string username, string password);
     }
 
     public interface IUserService 
@@ -30,6 +33,8 @@ namespace GamesAdmin.Site.Features.Users
         Task<bool> Delete(User user);
 
         Task<User> Get(string username);
+
+        Task<User> SignIn(string username, string password);
     }
 
     public class UserService : IUserService
@@ -54,5 +59,8 @@ namespace GamesAdmin.Site.Features.Users
 
         public Task<IEnumerable<User>> GetAll()
         => userApi.GetAll();
+
+        public Task<User> SignIn(string username, string password)
+        => userApi.SignIn(username, password);
     }
 }

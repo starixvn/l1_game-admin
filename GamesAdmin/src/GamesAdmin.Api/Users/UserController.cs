@@ -33,5 +33,9 @@ namespace GamesAdmin.Api.Users
         [HttpGet("{username}")]
         public async Task<User> Get(string username)
            => (await mediator.Send(new GetByNameRequest(username)));
+
+        [HttpPost("signin/")]
+        public async Task<User> Get(string username, string password)
+           => (await mediator.Send(new SignInRequest(username, password)));
     }
 }
