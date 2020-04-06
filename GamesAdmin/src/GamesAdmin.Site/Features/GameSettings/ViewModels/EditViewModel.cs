@@ -35,13 +35,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public bool BotEnabled { get; set; }
 
         [DisplayName("Maximum Bot Percentage")]
-        public int MaxBot { get; set; }
+        public double MaxBot { get; set; }
 
         public List<SelectListItem> BotPercentageItems { get; set; }        
 
         public int BotCount { get; set; }
 
-        public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (BotCount * MaxBot / 100) : 0;
+        public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (int)(BotCount * MaxBot / 100) : 0;
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]
         [Range(0.01, 100, ErrorMessage = "Enter number between 0.01 to 100")]

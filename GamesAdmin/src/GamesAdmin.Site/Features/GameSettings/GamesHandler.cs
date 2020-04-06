@@ -57,15 +57,18 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
+            viewModel.BotMaxBet = game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
             viewModel.BotCount = await accountService.GetBotCount();
             viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
 
             return viewModel;
         }
 
-        private static List<SelectListItem> GeneratePercentageItems(int currentValue)
+        private static List<SelectListItem> GeneratePercentageItems(double currentValue)
         {
             var items = new List<SelectListItem>();
+
+            items.Add(new SelectListItem($"0.2%", $"0.2", currentValue == 0.2));
 
             for (var i = 1; i <= 10; i++)
             {
