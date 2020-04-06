@@ -42,5 +42,15 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int BotCount { get; set; }
 
         public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (BotCount * MaxBot / 100) : 0;
+
+        [Required(ErrorMessage = "Mininum Bet could not empty")]
+        [Range(0.01, 100, ErrorMessage = "Enter number between 0.01 to 100")]
+        [DisplayName("Bot Minimum Bet Limit")]
+        public double BotMinBet { get; set; }
+
+        [Required(ErrorMessage = "Maximum Bet could not empty")]
+        [Range(0.01, 1000, ErrorMessage = "Enter number between 0 to 1000")]
+        [DisplayName("Bot Maximum Bet Limit")]
+        public double BotMaxBet { get; set; }
     }
 }

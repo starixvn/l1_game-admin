@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Database.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -18,5 +19,11 @@ namespace GamesAdmin.Database.Entities
         public double maxbot { get; set; }
 
         public int? disabledround { get; set; }
+
+        [BsonElement("bot_minbet")]
+        public double botMinBet { get; set; }
+
+        [BsonElement("bot_maxbet")]
+        public double botMaxBet { get; set; }
     }
 }

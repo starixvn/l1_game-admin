@@ -43,7 +43,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.Enabled,
                    editViewModel.BotEnabled,
                    editViewModel.MaxBot,
-                   null)));
+                   null,
+                   editViewModel.BotMinBet,
+                   editViewModel.BotMaxBet)));
 
                 //editViewModel.Success = updated;
 
@@ -78,7 +80,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 addViewModel.Enabled,
                 addViewModel.BotEnabled,
                 addViewModel.MaxBot,
-                null)));
+                null,
+                0,
+                0)));
 
             return RedirectToAction(nameof(Edit));
         }

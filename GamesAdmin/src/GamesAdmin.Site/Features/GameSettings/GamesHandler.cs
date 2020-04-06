@@ -90,7 +90,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.Enabled, 
             request.Game.BotEnabled, 
             request.Game.MaxBot / 100,
-            null));
+            null,
+            request.Game.BotMinBet,
+            request.Game.BotMaxBet));
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
@@ -113,7 +115,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.Enabled,
             request.Game.BotEnabled,
             request.Game.MaxBot / 100,
-            null));
+            null,
+            0,
+            0));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

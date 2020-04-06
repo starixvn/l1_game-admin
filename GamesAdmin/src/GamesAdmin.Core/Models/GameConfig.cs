@@ -6,14 +6,16 @@ namespace GamesAdmin.Core.Models
     {
         [JsonConstructor]
         public GameConfig(
-            string id, 
-            string name, 
-            double minBet, 
-            double maxBet, 
-            bool enabled, 
+            string id,
+            string name,
+            double minBet,
+            double maxBet,
+            bool enabled,
             bool botEnabled,
             double maxBot,
-            int? disabledround)
+            int? disabledround,
+            double botMinBet,
+            double botMaxBet)
         {
             Id = id;
             Name = name;
@@ -23,6 +25,8 @@ namespace GamesAdmin.Core.Models
             BotEnabled = botEnabled;
             MaxBot = maxBot;
             DisabledRound = disabledround;
+            BotMinBet = botMinBet;
+            BotMaxBet = botMaxBet;
         }
 
         public string Id { get; }
@@ -40,5 +44,9 @@ namespace GamesAdmin.Core.Models
         public double MaxBot { get; }
 
         public int? DisabledRound { get; }
+
+        public double BotMinBet { get; }
+
+        public double BotMaxBet { get; }
     }
 }
