@@ -69,7 +69,12 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             for (var i = 1; i <= 10; i++)
             {
-                var percentage = i * 10;
+                items.Add(new SelectListItem($"{i}%", $"{i}", currentValue == i));
+            }
+
+            for (var i = 15; i <= 100; i += 5)
+            {
+                var percentage = i;
                 items.Add(new SelectListItem($"{percentage}%", $"{percentage}", currentValue == percentage));
             }
 
