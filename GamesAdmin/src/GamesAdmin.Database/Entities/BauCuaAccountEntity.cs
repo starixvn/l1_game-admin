@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("baucua_users")]
-    public class BauCuaAccountEntity : Document
+    public class BauCuaAccountEntity : MiniGameBaseEntity
     {
         public int red { get; set; }
         public int red_lost { get; set; }

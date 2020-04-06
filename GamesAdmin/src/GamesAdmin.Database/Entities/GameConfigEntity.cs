@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("game_configs")]
-    public class GameConfigEntity : Document
+    public class GameConfigEntity : MiniGameBaseEntity
     {
         public string name { get; set; }
 

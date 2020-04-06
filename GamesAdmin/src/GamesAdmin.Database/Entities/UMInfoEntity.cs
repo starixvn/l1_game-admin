@@ -4,7 +4,7 @@ using System;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("um_info")]
-    public class UMInfoEntity : Document
+    public class UMInfoEntity : MiniGameBaseEntity
     {
         public DateTime start { get; set; }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
@@ -16,6 +17,9 @@ namespace GamesAdmin.Database
         IEnumerable<TProjected> FilterBy<TProjected>(
             Expression<Func<TDocument, bool>> filterExpression,
             Expression<Func<TDocument, TProjected>> projectionExpression);
+
+        Task<IEnumerable<TDocument>> FilterByAsync(
+           Expression<Func<TDocument, bool>> filterExpression);
 
         TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression);
 
@@ -48,5 +52,9 @@ namespace GamesAdmin.Database
         void DeleteMany(Expression<Func<TDocument, bool>> filterExpression);
 
         Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression);
+
+        void Update(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition);
+
+        Task UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition);
     }
 }

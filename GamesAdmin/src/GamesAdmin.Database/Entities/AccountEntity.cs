@@ -4,7 +4,7 @@ using System;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("users")]
-    public class AccountEntity : Document
+    public class AccountEntity : MiniGameBaseEntity
     {
         public LocalAccount local { get; set; }
     }

@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("xocxoc_users")]
-    public class XocDiaAccountEntity : Document
+    public class XocDiaAccountEntity : MiniGameBaseEntity
     {
         public double red { get; set; }
         public int red_lost { get; set; }

@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("admin_users")]
-    public class AdminUserEntity : Document
+    public class AdminUserEntity : MiniGameBaseEntity
     {
         public string username { get; set; }
 

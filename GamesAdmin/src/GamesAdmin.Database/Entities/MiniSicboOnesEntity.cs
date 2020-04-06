@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("taixiu_ones")]
-    public class MiniSicboOnesEntity : Document
+    public class MiniSicboOnesEntity : MiniGameBaseEntity
     {
         public bool red { get; set; }
 

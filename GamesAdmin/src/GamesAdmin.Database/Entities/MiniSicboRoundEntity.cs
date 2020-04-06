@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("taixiu_phiens")]
-    public class MiniSicboRoundEntity : Document
+    public class MiniSicboRoundEntity : MiniGameBaseEntity
     {        
         [BsonElement("id")]
         public long number { get; set; }

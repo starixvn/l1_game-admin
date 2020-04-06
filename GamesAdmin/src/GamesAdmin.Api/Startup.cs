@@ -17,6 +17,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using GamesAdmin.Api.Users;
+using GamesAdmin.Api.Sites;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace GamesAdmin.Api
 {
@@ -41,14 +43,21 @@ namespace GamesAdmin.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton(new MongoClient(dbSettings["ConnectionString"]).GetDatabase(dbSettings["DatabaseName"]));
+            var conventionPack = new ConventionPack { new CamelCaseElementNameConvention() };
+            ConventionRegistry.Register("camelCase", conventionPack, t => true);
+
+            var mongoClient = new MongoClient(dbSettings["ConnectionString"]);
+            services.AddSingleton<IMongoClient>(mongoClient);
+            services.AddSingleton(mongoClient.GetDatabase(dbSettings["DatabaseName"]));
 
             services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+            services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISiteSerivce, SiteSerivce>();
 
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();

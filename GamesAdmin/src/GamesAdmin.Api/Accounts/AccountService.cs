@@ -164,13 +164,13 @@ namespace GamesAdmin.Api.Accounts
 
             foreach (var tuple in tuples)
             {
-                tuple.Item2.userId = tuple.Item1.id.ToString();
+                tuple.Item2.userId = tuple.Item1.Id.ToString();
             }
 
             await accountInfoRepository.InsertManyAsync(newAccountInfos);
-            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new MiniSicboAccountEntity { uid = x.id.ToString() }).ToList());
-            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { uid = x.id.ToString() }).ToList());
-            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { uid = x.id.ToString() }).ToList());
+            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new MiniSicboAccountEntity { uid = x.Id.ToString() }).ToList());
+            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { uid = x.Id.ToString() }).ToList());
+            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { uid = x.Id.ToString() }).ToList());
 
             return results.ToArray();
         }
@@ -197,7 +197,7 @@ namespace GamesAdmin.Api.Accounts
             return accountRepository
                 .FilterBy(account => account.local.username == username)
                 .FirstOrDefault()
-                ?.id.ToString();
+                ?.Id.ToString();
         }
 
         private Task CreateAccountInfo(string userId, string name, int avatarId, bool isBot, int uid)

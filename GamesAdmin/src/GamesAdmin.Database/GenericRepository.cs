@@ -45,6 +45,13 @@ namespace GamesAdmin.Database
             return collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
         }
 
+        public virtual async Task<IEnumerable<TDocument>> FilterByAsync(
+           Expression<Func<TDocument, bool>> filterExpression)
+        {
+            return (await collection.FindAsync(filterExpression)).ToEnumerable();
+        }
+
+
         public virtual TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
         {
             return collection.Find(filterExpression).FirstOrDefault();
@@ -58,7 +65,7 @@ namespace GamesAdmin.Database
         public virtual TDocument FindById(string id)
         {
             var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.id, objectId);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
             return collection.Find(filter).SingleOrDefault();
         }
 
@@ -67,21 +74,21 @@ namespace GamesAdmin.Database
             return Task.Run(() =>
             {
                 var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.id, objectId);
+                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
                 return collection.Find(filter).SingleOrDefaultAsync();
             });
         }
 
         public virtual void InsertOne(TDocument document)
         {
-            document.id = ObjectId.GenerateNewId();
+            document.Id = ObjectId.GenerateNewId();
 
             collection.InsertOne(document);
         }
 
         public virtual Task InsertOneAsync(TDocument document)
         {
-            document.id = ObjectId.GenerateNewId();
+            document.Id = ObjectId.GenerateNewId();
 
             return Task.Run(() => collection.InsertOneAsync(document));
         }
@@ -98,13 +105,13 @@ namespace GamesAdmin.Database
 
         public void ReplaceOne(TDocument document)
         {
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.id, document.id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
             collection.FindOneAndReplace(filter, document);
         }
 
         public virtual async Task ReplaceOneAsync(TDocument document)
         {
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.id, document.id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
             await collection.FindOneAndReplaceAsync(filter, document);
         }
 
@@ -121,7 +128,7 @@ namespace GamesAdmin.Database
         public void DeleteById(string id)
         {
             var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.id, objectId);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
             collection.FindOneAndDelete(filter);
         }
 
@@ -130,7 +137,7 @@ namespace GamesAdmin.Database
             return Task.Run(() =>
             {
                 var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.id, objectId);
+                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
                 collection.FindOneAndDeleteAsync(filter);
             });
         }
@@ -143,6 +150,16 @@ namespace GamesAdmin.Database
         public Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
         {
             return Task.Run(() => collection.DeleteManyAsync(filterExpression));
+        }
+
+        public async Task UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition)
+        {
+            await collection.UpdateOneAsync(filterExpression, updateDefinition);
+        }
+
+        public void Update(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition)
+        {
+            collection.UpdateOne(filterExpression, updateDefinition);
         }
     }
 }
