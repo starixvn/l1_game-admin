@@ -7,8 +7,6 @@ namespace GamesAdmin.Site._Shared.Configurations
     public interface IAppSettings 
     {
         string ApiHost { get; }
-
-        string Hash { get; }
     }
     public class AppSettings : IAppSettings
     {
@@ -19,12 +17,9 @@ namespace GamesAdmin.Site._Shared.Configurations
             this.configuration = configuration;
 
             ApiHost = GetValue<string>(nameof(ApiHost));
-            Hash = GetValue<string>(nameof(Hash));
         }
 
         public string ApiHost { get; }
-
-        public string Hash { get; }
 
         public T GetValue<T>(string key)
         {
