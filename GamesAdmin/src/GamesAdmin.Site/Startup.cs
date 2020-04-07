@@ -7,6 +7,7 @@ using GamesAdmin.Site._Shared.IdentityServer;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
+using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Users;
 using IdentityModel.Client;
@@ -44,24 +45,22 @@ namespace GamesAdmin.Site
                 Configuration["GameControlPanel:SecretKey"]);
             services.AddSingleton<IGameControlPanelSettings>(controlPanelSettings);
 
-            services.AddScoped<IGameService, GameService>();
             IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
 
             const string apiHttpClientName = "game-admin-api-client";
 
             services.AddHttpClient(apiHttpClientName, configureClient =>
-           {
-               configureClient.BaseAddress = new Uri(appSettings.ApiHost);
-               configureClient.SetBearerToken(IdentityServerManager.GetAccessToken().Result);
-           });
+            {
+                configureClient.BaseAddress = new Uri(appSettings.ApiHost);
+                configureClient.SetBearerToken(IdentityServerManager.GetAccessToken().Result);
+            });
 
             services.AddHttpClient<IAccountService, AccountService>(apiHttpClientName);
-
             services.AddHttpClient<IGameService, GameService>(apiHttpClientName);
+            services.AddHttpClient<IUserService, UserService>(apiHttpClientName);
+            services.AddHttpClient<IClientSiteService, ClientSiteService>(apiHttpClientName);
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-
-            services.AddScoped<IUserService, UserService>();
 
             services.AddDataProtection().PersistKeysToMongoDb(Configuration).SetApplicationName(Configuration["ApplicationName"]);
 

@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -46,7 +45,6 @@ namespace GamesAdmin.Api
 
             var conventionPack = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("camelCase", conventionPack, t => true);
-
             var mongoClient = new MongoClient(dbSettings["ConnectionString"]);
             services.AddSingleton<IMongoClient>(mongoClient);
             services.AddSingleton(mongoClient.GetDatabase(dbSettings["DatabaseName"]));

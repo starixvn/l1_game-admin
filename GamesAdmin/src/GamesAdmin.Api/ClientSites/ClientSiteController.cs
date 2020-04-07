@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.ClientSites.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.Sites
 {
     [Route("api/clientsites")]
-    [ApiController]
+    [ApiController, Authorize]
     public class ClientSiteController : Controller
     {
         private readonly IMediator mediator;

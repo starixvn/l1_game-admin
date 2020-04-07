@@ -1,12 +1,13 @@
-﻿using GamesAdmin.Core.Models;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using Refit;
 using Sentry;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Users
 {
-    public interface IUserApi 
+    public interface IUserApi
     {
         [Get("/users/")]
         Task<IEnumerable<User>> GetAll();
@@ -16,7 +17,7 @@ namespace GamesAdmin.Site.Features.Users
 
         [Post("/users/delete")]
         Task<bool> Delete(User user);
-      
+
         [Get("/users/{username}")]
         Task<User> Get(string username);
 
@@ -24,7 +25,7 @@ namespace GamesAdmin.Site.Features.Users
         Task<User> SignIn(string username, string password);
     }
 
-    public interface IUserService 
+    public interface IUserService
     {
         Task<bool> Create(User user);
 
@@ -42,25 +43,25 @@ namespace GamesAdmin.Site.Features.Users
         private readonly IUserApi userApi;
         private readonly ISentryClient sentryClient;
 
-        public UserService(IUserApi userApi, ISentryClient sentryClient)
+        public UserService(HttpClient httpClient, ISentryClient sentryClient)
         {
-            this.userApi = userApi;
+            userApi = RestService.For<IUserApi>(httpClient);
             this.sentryClient = sentryClient;
         }
 
-        public Task<bool> Create(User user)
-        => userApi.Add(user);
+        public async Task<bool> Create(User user)
+        => await userApi.Add(user);
 
-        public Task<bool> Delete(User user)
-        => userApi.Delete(user);
+        public async Task<bool> Delete(User user)
+        => await userApi.Delete(user);
 
-        public Task<User> Get(string username)
-        => userApi.Get(username);
+        public async Task<User> Get(string username)
+        => await userApi.Get(username);
 
-        public Task<IEnumerable<User>> GetAll()
-        => userApi.GetAll();
+        public async Task<IEnumerable<User>> GetAll()
+        => await userApi.GetAll();
 
-        public Task<User> SignIn(string username, string password)
-        => userApi.SignIn(username, password);
+        public async Task<User> SignIn(string username, string password)
+        => await userApi.SignIn(username, password);
     }
 }
