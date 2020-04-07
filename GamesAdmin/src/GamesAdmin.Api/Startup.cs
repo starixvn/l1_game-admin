@@ -1,11 +1,13 @@
 using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
+using GamesAdmin.Api.Accounts;
+using GamesAdmin.Api.Accounts.ScheduleTasks;
+using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.UM;
-using GamesAdmin.Api.Accounts;
-using GamesAdmin.Api.Accounts.ScheduleTasks;
+using GamesAdmin.Api.Users;
 using GamesAdmin.Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -15,10 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
-using GamesAdmin.Api.Users;
-using GamesAdmin.Api.Sites;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Api
 {
@@ -57,7 +57,7 @@ namespace GamesAdmin.Api
             services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISiteSerivce, SiteSerivce>();
+            services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
 
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();

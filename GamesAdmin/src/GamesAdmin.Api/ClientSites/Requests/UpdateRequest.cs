@@ -1,15 +1,15 @@
 ﻿using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Sites.Requests
+namespace GamesAdmin.Api.ClientSites.Requests
 {
     public class UpdateRequest : IRequest<bool>
     {
-        public UpdateRequest(Site site)
+        public UpdateRequest(ClientSite site)
         {
             Site = site;
         }
 
-        public Site Site { get; }
+        public ClientSite Site { get; }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Api.Sites.Requests;
+using GamesAdmin.Api.ClientSites;
+using GamesAdmin.Api.ClientSites.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 
 namespace GamesAdmin.Api.Sites
 {
-    public class SiteHandler
+    public class ClientSiteHandler
         : IRequestHandler<UpdateRequest, bool>,
-        IRequestHandler<GetAllRequest, IEnumerable<Site>>
+        IRequestHandler<GetAllRequest, IEnumerable<ClientSite>>
     {
-        private readonly ISiteSerivce siteSerivce;
+        private readonly IClientSiteSiteSerivce siteSerivce;
 
-        public SiteHandler(ISiteSerivce siteSerivce)
+        public ClientSiteHandler(IClientSiteSiteSerivce siteSerivce)
         {
             this.siteSerivce = siteSerivce;
         }
@@ -23,7 +24,7 @@ namespace GamesAdmin.Api.Sites
             return await siteSerivce.UpdateAsync(request.Site);
         }
 
-        public async Task<IEnumerable<Site>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ClientSite>> Handle(GetAllRequest request, CancellationToken cancellationToken)
         {
             return await siteSerivce.GetAllAsync();
         }

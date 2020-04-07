@@ -1,6 +1,6 @@
 ﻿namespace GamesAdmin.Core.Models
 {
-    public class Site
+    public class ClientSite
     {
         public string ClientId { get; set; }
 

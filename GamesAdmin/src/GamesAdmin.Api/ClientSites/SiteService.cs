@@ -5,21 +5,21 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using Sentry;
 
-namespace GamesAdmin.Api.Sites
+namespace GamesAdmin.Api.ClientSites
 {
-    public interface ISiteSerivce
+    public interface IClientSiteSiteSerivce
     {
-        Task<bool> UpdateAsync(Site site);
+        Task<bool> UpdateAsync(ClientSite site);
 
-        Task<IEnumerable<Site>> GetAllAsync();
+        Task<IEnumerable<ClientSite>> GetAllAsync();
     }
 
-    public class SiteSerivce : ISiteSerivce
+    public class ClientSiteSerivce : IClientSiteSiteSerivce
     {
         private readonly ISiteRepository siteRepository;
         private readonly ISentryClient sentryClient;
 
-        public SiteSerivce(
+        public ClientSiteSerivce(
             ISentryClient sentryClient,
             ISiteRepository siteRepository)
         {
@@ -27,13 +27,13 @@ namespace GamesAdmin.Api.Sites
             this.siteRepository = siteRepository;
         }
 
-        public async Task<IEnumerable<Site>> GetAllAsync()
+        public async Task<IEnumerable<ClientSite>> GetAllAsync()
         {
             var result = await siteRepository.FilterByAsync(x => true);
-            return result.Select(x => new Site { ClientId = x.ClientId, SiteId = x.SiteId, GameClientUrl = x.GameClientUrl });
+            return result.Select(x => new ClientSite { ClientId = x.ClientId, SiteId = x.SiteId, GameClientUrl = x.GameClientUrl });
         }
 
-        public async Task<bool> UpdateAsync(Site site)
+        public async Task<bool> UpdateAsync(ClientSite site)
         {
             await siteRepository.UpdateGameClientUrlAsync(site.ClientId, site.SiteId, site.GameClientUrl);
 
