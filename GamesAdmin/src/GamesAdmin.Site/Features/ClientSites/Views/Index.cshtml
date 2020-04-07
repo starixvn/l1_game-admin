@@ -23,7 +23,7 @@
                     <td>@item.ClientId</td>
                     <td>@item.SiteId</td>
                     <td>@item.GameClientUrl</td>
-                    <td></td>
+                    <td><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId">Edit</a></td>
                 </tr>
                 }
             </tbody>

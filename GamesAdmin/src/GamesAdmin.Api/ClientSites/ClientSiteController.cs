@@ -24,7 +24,13 @@ namespace GamesAdmin.Api.Sites
            => (await mediator.Send(new GetAllRequest()));
 
         [HttpPost("update")]
-        public Task<bool> Update(ClientSite site)
-            => mediator.Send(new UpdateRequest(site));
+        public Task<bool> Update(ClientSite clientSite)
+            => mediator.Send(new UpdateRequest(clientSite));
+
+
+        [HttpGet]
+        [Route("{clientId}-{siteId}")]
+        public async Task<ClientSite> Get(string clientId, string siteId)
+           => (await mediator.Send(new GetRequest(clientId, siteId)));
     }
 }

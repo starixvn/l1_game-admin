@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.ClientSites.Requests;
 using GamesAdmin.Site.Features.ClientSites.ViewModels;
 using MediatR;
@@ -9,7 +10,10 @@ using MediatR;
 namespace GamesAdmin.Site.Features.ClientSites
 {
     public class ClientSiteHandler
-        : IRequestHandler<GetAllRequest, IEnumerable<ClientSiteViewModel>>
+        : IRequestHandler<GetAllRequest, IEnumerable<ClientSiteViewModel>>,
+         IRequestHandler<GetRequest, ClientSiteViewModel>,
+         IRequestHandler<UpdateRequest, ResultBase>
+
     {
         private readonly IClientSiteService clientSiteService;
 
@@ -28,6 +32,30 @@ namespace GamesAdmin.Site.Features.ClientSites
                 SiteId = x.SiteId,
                 GameClientUrl = x.GameClientUrl
             });
+        }
+
+        public async Task<ClientSiteViewModel> Handle(GetRequest request, CancellationToken cancellationToken)
+        {
+            var clientSite = await clientSiteService.GetAsync(request.ClientId, request.SiteId);
+
+            return new ClientSiteViewModel
+            {
+                ClientId = clientSite.ClientId,
+                SiteId = clientSite.SiteId,
+                GameClientUrl = clientSite.GameClientUrl
+            };
+        }
+
+        public async Task<ResultBase> Handle(UpdateRequest request, CancellationToken cancellationToken)
+        {
+            var isSuccess = await clientSiteService.Update(request.ClientSite);
+
+            if (isSuccess)
+            {
+                return new ResultBase(string.Empty);
+            }
+
+            return new ResultBase("Cannot Update");
         }
     }
 }

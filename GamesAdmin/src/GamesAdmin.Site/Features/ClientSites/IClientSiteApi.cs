@@ -9,5 +9,11 @@ namespace GamesAdmin.Site.Features.ClientSites
     {
         [Get("/ClientSites")]
         Task<IEnumerable<ClientSite>> GetAll();
+
+        [Get("/ClientSites/{clientId}-{siteId}")]
+        Task<ClientSite> Get(string clientId, string siteId);
+
+        [Post("/ClientSites/update")]
+        Task<bool> Update(ClientSite clientSite);
     }
 }

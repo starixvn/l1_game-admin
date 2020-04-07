@@ -5,11 +5,11 @@ namespace GamesAdmin.Api.ClientSites.Requests
 {
     public class UpdateRequest : IRequest<bool>
     {
-        public UpdateRequest(ClientSite site)
+        public UpdateRequest(ClientSite clientSite)
         {
-            Site = site;
+            ClientSite = clientSite;
         }
 
-        public ClientSite Site { get; }
+        public ClientSite ClientSite { get; }
     }
 }

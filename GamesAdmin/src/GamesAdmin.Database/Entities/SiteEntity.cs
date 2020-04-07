@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("sites")]
-    public class SiteEntity : Document
+    public class ClientSiteEntity : Document
     {
         public string SiteId { get; set; }
 

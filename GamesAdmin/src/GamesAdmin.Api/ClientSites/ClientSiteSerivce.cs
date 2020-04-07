@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
@@ -12,6 +13,8 @@ namespace GamesAdmin.Api.ClientSites
         Task<bool> UpdateAsync(ClientSite site);
 
         Task<IEnumerable<ClientSite>> GetAllAsync();
+
+        Task<ClientSite> Get(string clientId, string siteId);
     }
 
     public class ClientSiteSerivce : IClientSiteSiteSerivce
@@ -33,11 +36,25 @@ namespace GamesAdmin.Api.ClientSites
             return result.Select(x => new ClientSite { ClientId = x.ClientId, SiteId = x.SiteId, GameClientUrl = x.GameClientUrl });
         }
 
+        public async Task<ClientSite> Get(string clientId, string siteId)
+        {
+            var clientSiteEntity = await siteRepository.FindOneAsync(x => x.ClientId == clientId && x.SiteId == siteId);
+            return new ClientSite { ClientId = clientSiteEntity.ClientId, SiteId = clientSiteEntity.SiteId, GameClientUrl = clientSiteEntity.GameClientUrl };
+        }
+
         public async Task<bool> UpdateAsync(ClientSite site)
         {
-            await siteRepository.UpdateGameClientUrlAsync(site.ClientId, site.SiteId, site.GameClientUrl);
+            try
+            {
+                await siteRepository.UpdateGameClientUrlAsync(site.ClientId, site.SiteId, site.GameClientUrl);
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                sentryClient.CaptureException(e);
+                return false;
+            }
         }
     }
 }

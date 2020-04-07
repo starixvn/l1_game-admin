@@ -4,12 +4,12 @@ using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
-    public interface ISiteRepository : IGenericRepository<SiteEntity>
+    public interface ISiteRepository : IGenericRepository<ClientSiteEntity>
     {
         Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl);
     }
 
-    public class SiteRepository : GenericRepository<SiteEntity>, ISiteRepository
+    public class SiteRepository : GenericRepository<ClientSiteEntity>, ISiteRepository
     {
         public SiteRepository(IMongoClient client) : base(client.GetDatabase("member"))
         {
@@ -17,7 +17,7 @@ namespace GamesAdmin.Database
 
         public async Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl)
         {
-            await UpdateAsync(x => x.ClientId == clientId && x.SiteId == siteId, Builders<SiteEntity>.Update.Set(x => x.GameClientUrl, gameClientUrl));
+            await UpdateAsync(x => x.ClientId == clientId && x.SiteId == siteId, Builders<ClientSiteEntity>.Update.Set(x => x.GameClientUrl, gameClientUrl));
         }
     }
 }
