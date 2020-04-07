@@ -20,7 +20,7 @@ namespace GamesAdmin.Api.Accounts.ScheduleTasks
             {
                 await accountService.AddBotBalance();
 
-                await Task.Delay(TimeSpan.FromHours(2), cancellationToken);
+                await Task.Delay(TimeSpan.FromHours(1), cancellationToken);
             }
         }
     }    

@@ -24,8 +24,9 @@ namespace GamesAdmin.Api.Accounts
 
     public class AccountService : IAccountService
     {
-        private const int MinAmount = 1000;
-        private const int AddedAmount = 5000;
+        private const int MinAmount = 500;
+        private const int MinAddedAmount = 1000;
+        private const int MaxAddedAmount = 2000;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
@@ -60,7 +61,7 @@ namespace GamesAdmin.Api.Accounts
 
             foreach (var bot in botsNeedAddBalance)
             {
-                bot.red += AddedAmount;
+                bot.red += new Random().Next(MinAddedAmount, MaxAddedAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }
