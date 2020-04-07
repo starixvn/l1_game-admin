@@ -1,10 +1,8 @@
-﻿using GamesAdmin.Site._Shared.IdentityServer;
-using GamesAdmin.Site.Features.Account.Results;
-using IdentityModel.Client;
-using Refit;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GamesAdmin.Site.Features.Account.Results;
+using Refit;
 
 namespace GamesAdmin.Site.Features.Account
 {
@@ -42,7 +40,7 @@ namespace GamesAdmin.Site.Features.Account
         }
 
         public async Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot)
-        => isBot ? await  accountApi.AddBots(names) : await accountApi.AddUsers(names);
+        => isBot ? await accountApi.AddBots(names) : await accountApi.AddUsers(names);
 
         public async Task<int> GetBotCount()
         => await accountApi.BotCount();
