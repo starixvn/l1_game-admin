@@ -13,7 +13,7 @@ namespace GamesAdmin.Api.Accounts
 {
     public interface IAccountService
     {
-        Task AddBotBalance();
+        Task ReviseBotBalance();
 
         Task<int> GetTotalBots();
 
@@ -25,8 +25,13 @@ namespace GamesAdmin.Api.Accounts
     public class AccountService : IAccountService
     {
         private const int MinAmount = 500;
-        private const int MinAddedAmount = 1000;
-        private const int MaxAddedAmount = 2000;
+        private const int MaxAmount = 10000;
+
+        private const int MinAddAmount = 1000;
+        private const int MaxAddAmount = 2000;
+
+        private const int MinRemoveAmount = 1000;
+        private const int MaxRemoveAmount = 5000;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
@@ -52,16 +57,25 @@ namespace GamesAdmin.Api.Accounts
             this.bcAccountRepository = bcAccountRepository;
         }
 
-        public Task AddBotBalance()
+        public Task ReviseBotBalance()
         => Task.Run(() =>
         {
             var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red < MinAmount).ToList();
+            var botsNeedRemoveBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= MaxAmount).ToList();
 
             sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
+            sentryClient.CaptureMessage($"RemoveBalance for {botsNeedRemoveBalance?.Count}");
 
             foreach (var bot in botsNeedAddBalance)
             {
-                bot.red += new Random().Next(MinAddedAmount, MaxAddedAmount);
+                bot.red += new Random().Next(MinAddAmount, MaxAddAmount);
+
+                accountInfoRepository.ReplaceOne(bot);
+            }
+
+            foreach (var bot in botsNeedRemoveBalance)
+            {
+                bot.red -= new Random().Next(MinRemoveAmount, MaxRemoveAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }

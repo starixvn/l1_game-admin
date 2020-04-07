@@ -18,7 +18,7 @@ namespace GamesAdmin.Api.Accounts.ScheduleTasks
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await accountService.AddBotBalance();
+                await accountService.ReviseBotBalance();
 
                 await Task.Delay(TimeSpan.FromHours(1), cancellationToken);
             }
