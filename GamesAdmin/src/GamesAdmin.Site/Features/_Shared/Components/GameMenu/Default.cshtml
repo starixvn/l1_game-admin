@@ -1,4 +1,5 @@
-﻿@using GamesAdmin.Site.Features._Shared.Components.ViewModels;
+﻿@using System.Security.Claims;
+@using GamesAdmin.Site.Features._Shared.Components.ViewModels;
 @model MenuViewModel;
 
     <ul class="vertical-nav-menu">
@@ -20,7 +21,7 @@
             </a>
         </li>
 
-        @if (Context.User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value == "admin")
+        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
         {
             <li class="menu-item">
                 <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
@@ -53,6 +54,13 @@
                 <a asp-action="Add" asp-controller="User">
                     <i class="material-icons menu-icon">person_add</i>
                     <span class="menu-name">Add New User</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a asp-action="Index" asp-controller="ClientSite">
+                    <i class="material-icons menu-icon">people_alt</i>
+                    <span class="menu-name">Client Sites</span>
                 </a>
             </li>
         }

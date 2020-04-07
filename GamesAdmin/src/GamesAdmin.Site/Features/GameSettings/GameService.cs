@@ -52,8 +52,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.sentryClient = sentryClient;
         }
 
-        public Task<bool> Add(GameConfig game)
-        => gameApi.Add(game);
+        public async Task<bool> Add(GameConfig game)
+        => await gameApi.Add(game);
 
         public async Task<IList<GameConfig>> GetGames()
         {

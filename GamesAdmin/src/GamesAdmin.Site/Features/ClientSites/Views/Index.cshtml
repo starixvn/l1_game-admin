@@ -1,0 +1,32 @@
+﻿@using GamesAdmin.Site.Features.ClientSites.ViewModels;
+@model IEnumerable<ClientSiteViewModel>
+
+@{
+    ViewData["Title"] = "Client Sites";
+}
+
+<div class="col-md-10 col-lg-6 card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Site</th>
+                    <th>Game Client Url</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.ClientId</td>
+                    <td>@item.SiteId</td>
+                    <td>@item.GameClientUrl</td>
+                    <td></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

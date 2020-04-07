@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Security.Claims;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;

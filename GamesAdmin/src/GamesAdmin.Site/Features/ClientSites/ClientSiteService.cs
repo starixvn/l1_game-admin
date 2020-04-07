@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features.ClientSites
             clientSiteApi = RestService.For<IClientSiteApi>(httpClient);
         }
 
-        public Task<IEnumerable<ClientSite>> GetAllAsync()
-        => clientSiteApi.GetAll();
+        public async Task<IEnumerable<ClientSite>> GetAllAsync()
+        => await clientSiteApi.GetAll();
     }
 }

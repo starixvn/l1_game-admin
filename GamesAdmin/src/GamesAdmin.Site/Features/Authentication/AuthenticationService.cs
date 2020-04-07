@@ -39,14 +39,14 @@ namespace GamesAdmin.Site.Features.Authentication
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
-                    new Claim("Role", userSignin.IsAdmin ? "admin" : "operation")
+                    new Claim(ClaimTypes.Role, userSignin.IsAdmin ? "admin" : "operation")
                  };
 
-                var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
+                var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await context.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(new[] { grandmaIdentity }),
+                    new ClaimsPrincipal(grandmaIdentity),
                     new AuthenticationProperties
                     {
                         IsPersistent = true,
