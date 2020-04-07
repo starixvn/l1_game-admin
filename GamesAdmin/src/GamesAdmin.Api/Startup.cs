@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -66,7 +67,10 @@ namespace GamesAdmin.Api
                 {
                     options.Authority = Configuration["IdentityServer:Issuer"];
                     options.RequireHttpsMetadata = false;
-                    options.Audience = Configuration["IdentityServer:Audience"];
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudiences = Configuration.GetSection("IdentityServer:Audiences").Get<string[]>()
+                    };
                 });
 
             services
