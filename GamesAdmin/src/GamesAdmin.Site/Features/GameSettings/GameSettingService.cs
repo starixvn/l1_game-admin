@@ -10,19 +10,19 @@ namespace GamesAdmin.Site.Features.GameSettings
 {
     public interface IGameSettingApi : IBaseAuthorizationApi
     {
-        [Get("/game-settings")]
+        [Get("/game_settings")]
         Task<IList<GameConfig>> GetGames();
 
-        [Post("/game-settings/")]
+        [Post("/game_settings/")]
         Task<bool> Add([Body] GameConfig game);
 
-        [Put("/game-settings/")]
+        [Put("/game_settings/")]
         Task<bool> Update([Body] GameConfig game);
 
-        [Post("/game-settings/{id}/delete")]
+        [Post("/game_settings/{id}/delete")]
         Task<bool> Delete(string id);
 
-        [Get("/game-settings/{name}")]
+        [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
     }
 

@@ -12,7 +12,7 @@ namespace GamesAdmin.Api.Games
 {
     [ApiController]
     [Authorize]
-    [Route("api/game-settings")]
+    [Route("api/game_settings")]
     public class GameSettingsController : ControllerBase
     {
         private readonly IMediator mediator;
