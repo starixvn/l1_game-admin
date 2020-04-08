@@ -26,8 +26,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IAccountService accountService;
 
         public GamesHandler(
-            IMapper mapper, 
-            IGameSettingService gameService, 
+            IMapper mapper,
+            IGameSettingService gameService,
             IAccountService accountService)
         {
             this.mapper = mapper;
@@ -40,7 +40,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             GameConfig game;
 
             if (string.IsNullOrWhiteSpace(request.Name))
-            {   
+            {
                 game = (await gameService.GetGames()).FirstOrDefault();
             }
             else
@@ -86,16 +86,17 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(new GameConfig(
-            request.Game.Id, 
-            request.Game.Name, 
-            request.Game.MinBet, 
-            request.Game.MaxBet, 
-            request.Game.Enabled, 
-            request.Game.BotEnabled, 
+            request.Game.Id,
+            request.Game.Name,
+            request.Game.MinBet,
+            request.Game.MaxBet,
+            request.Game.Enabled,
+            request.Game.BotEnabled,
             request.Game.MaxBot / 100,
             null,
             request.Game.BotMinBet,
-            request.Game.BotMaxBet));
+            request.Game.BotMaxBet,
+            request.Game.HoursMaxBot));
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
@@ -120,7 +121,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.MaxBot / 100,
             null,
             0,
-            0));
+            0,
+            new double[] { }));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

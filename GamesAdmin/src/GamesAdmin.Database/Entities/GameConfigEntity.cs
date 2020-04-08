@@ -25,5 +25,8 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("bot_maxbet")]
         public double botMaxBet { get; set; }
+
+        [BsonElement("hour_maxbot")]
+        public double[] hoursMaxBot { get; set; }
     }
 }

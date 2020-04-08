@@ -53,5 +53,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Range(0.01, 1000, ErrorMessage = "Enter number between 0 to 1000")]
         [DisplayName("Bot Maximum Bet Limit")]
         public double BotMaxBet { get; set; }
+
+        public double[] HoursMaxBot { get; set; }
     }
 }

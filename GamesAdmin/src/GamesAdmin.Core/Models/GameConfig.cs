@@ -15,7 +15,8 @@ namespace GamesAdmin.Core.Models
             double maxBot,
             int? disabledround,
             double botMinBet,
-            double botMaxBet)
+            double botMaxBet,
+            double[] hoursMaxBot)
         {
             Id = id;
             Name = name;
@@ -27,6 +28,7 @@ namespace GamesAdmin.Core.Models
             DisabledRound = disabledround;
             BotMinBet = botMinBet;
             BotMaxBet = botMaxBet;
+            HoursMaxBot = hoursMaxBot;
         }
 
         public string Id { get; }
@@ -48,5 +50,7 @@ namespace GamesAdmin.Core.Models
         public double BotMinBet { get; }
 
         public double BotMaxBet { get; }
+
+        public double[] HoursMaxBot { get; }
     }
 }
