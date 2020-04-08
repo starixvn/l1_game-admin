@@ -1,16 +1,9 @@
-using System;
 using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site._Shared.IdentityServer;
+using GamesAdmin.Site._Shared.Midlewares;
 using GamesAdmin.Site.Extensions;
-using GamesAdmin.Site.Features.Account;
-using GamesAdmin.Site.Features.Authentication;
-using GamesAdmin.Site.Features.ClientSites;
-using GamesAdmin.Site.Features.GameSettings;
-using GamesAdmin.Site.Features.Users;
-using IdentityModel.Client;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -19,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Refit;
 
 namespace GamesAdmin.Site
 {
@@ -41,48 +33,10 @@ namespace GamesAdmin.Site
             var appSettings = new AppSettings(Configuration);
             services.AddSingleton<IAppSettings>(appSettings);
 
-            var controlPanelSettings = new GameControlPanelSettings(
-                Configuration["GameControlPanel:Host"],
-                Configuration["GameControlPanel:SecretKey"]);
-            services.AddSingleton<IGameControlPanelSettings>(controlPanelSettings);
+            services.AddSettings(Configuration);
 
-            IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
-
-            const string apiHttpClientName = "game-admin-api-client";
-
-            services.AddHttpClient(apiHttpClientName, configureClient =>
-            {
-                configureClient.BaseAddress = new Uri(appSettings.ApiHost);
-                configureClient.SetBearerToken(IdentityServerManager.GetAccessToken().Result);
-            });
-
-            var refitSettings = new RefitSettings
-            {
-                AuthorizationHeaderValueGetter = () => IdentityServerManager.GetAccessToken()
-            };
-
-            services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IGameSettingService, GameSettingService>();
-
-            services.AddSingleton(RestService.For<IAccountApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IAccountService, AccountService>();
-
-            services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddSingleton(RestService.For<IClientSiteApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IClientSiteService, ClientSiteService>();
-
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-
-            services.AddDataProtection().PersistKeysToMongoDb(Configuration).SetApplicationName(Configuration["ApplicationName"]);
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                  .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
-                  {
-                      config.Cookie.Name = "UserLoginCookie";
-                      config.LoginPath = "/Authentication/UserLogin";
-                  });
+            services.AddServices(appSettings);
+            services.AddAuthentication(Configuration);
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                   .AddRazorOptions(options =>

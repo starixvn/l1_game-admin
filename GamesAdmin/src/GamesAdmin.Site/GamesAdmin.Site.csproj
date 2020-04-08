@@ -45,7 +45,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Users\Views\" />
-    <Folder Include="_Shared\Midlewares\" />
   </ItemGroup>
 
 
