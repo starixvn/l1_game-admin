@@ -19,9 +19,9 @@ namespace GamesAdmin.Site.Features.ClientSites
     {
         private readonly IClientSiteApi clientSiteApi;
 
-        public ClientSiteService(HttpClient httpClient)
+        public ClientSiteService(IClientSiteApi clientSiteApi)
         {
-            clientSiteApi = RestService.For<IClientSiteApi>(httpClient);
+            this.clientSiteApi = clientSiteApi;
         }
 
         public async Task<IEnumerable<ClientSite>> GetAllAsync()

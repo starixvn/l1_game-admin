@@ -13,10 +13,10 @@ namespace GamesAdmin.Site.Features._Shared.Components
 {
     public class GameMenuViewComponent : ViewComponent
     {
-        private readonly IGameService gameService;
+        private readonly IGameSettingService gameService;
         private readonly ISentryClient sentryClient;
 
-        public GameMenuViewComponent(IGameService gameService, ISentryClient sentryClient)
+        public GameMenuViewComponent(IGameSettingService gameService, ISentryClient sentryClient)
         {
             this.gameService = gameService;
             this.sentryClient = sentryClient;

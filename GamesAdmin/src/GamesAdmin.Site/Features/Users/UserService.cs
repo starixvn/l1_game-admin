@@ -7,6 +7,7 @@ using Sentry;
 
 namespace GamesAdmin.Site.Features.Users
 {
+    [Headers("Authorization: Bearer")]
     public interface IUserApi
     {
         [Get("/users/")]
@@ -41,12 +42,10 @@ namespace GamesAdmin.Site.Features.Users
     public class UserService : IUserService
     {
         private readonly IUserApi userApi;
-        private readonly ISentryClient sentryClient;
 
-        public UserService(HttpClient httpClient, ISentryClient sentryClient)
+        public UserService(IUserApi userApi)
         {
-            userApi = RestService.For<IUserApi>(httpClient);
-            this.sentryClient = sentryClient;
+            this.userApi = userApi;
         }
 
         public async Task<bool> Create(User user)

@@ -5,6 +5,7 @@ using Refit;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
+    [Headers("Authorization: Bearer")]
     public interface IClientSiteApi
     {
         [Get("/ClientSites")]

@@ -9,7 +9,6 @@ using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -23,12 +22,12 @@ namespace GamesAdmin.Site.Features.GameSettings
     {
         private readonly IMapper mapper;
 
-        private readonly IGameService gameService;
+        private readonly IGameSettingService gameService;
         private readonly IAccountService accountService;
 
         public GamesHandler(
             IMapper mapper, 
-            IGameService gameService, 
+            IGameSettingService gameService, 
             IAccountService accountService)
         {
             this.mapper = mapper;
@@ -57,7 +56,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
-            viewModel.BotMaxBet = game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
+            viewModel.BotMaxBet = game == null || game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
             viewModel.BotCount = await accountService.GetBotCount();
             viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
 
@@ -66,9 +65,10 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         private static List<SelectListItem> GeneratePercentageItems(double currentValue)
         {
-            var items = new List<SelectListItem>();
-
-            items.Add(new SelectListItem($"0.2%", $"0.2", currentValue == 0.2));
+            var items = new List<SelectListItem>
+            {
+                new SelectListItem($"0.2%", $"0.2", currentValue == 0.2)
+            };
 
             for (var i = 1; i <= 10; i++)
             {

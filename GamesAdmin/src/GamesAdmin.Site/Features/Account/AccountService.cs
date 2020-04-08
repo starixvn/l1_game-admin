@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Account.Results;
 using Refit;
 
 namespace GamesAdmin.Site.Features.Account
 {
+    [Headers("Authorization: Bearer")]
     public interface IAccountApi
     {
         [Get("/accounts/bot/count")]
@@ -34,9 +34,9 @@ namespace GamesAdmin.Site.Features.Account
     {
         private readonly IAccountApi accountApi;
 
-        public AccountService(HttpClient httpClient)
+        public AccountService(IAccountApi accountApi)
         {
-            accountApi = RestService.For<IAccountApi>(httpClient);
+            this.accountApi = accountApi;
         }
 
         public async Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot)

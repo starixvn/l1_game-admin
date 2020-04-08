@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Refit;
 
 namespace GamesAdmin.Site
 {
@@ -56,10 +57,22 @@ namespace GamesAdmin.Site
                 configureClient.SetBearerToken(IdentityServerManager.GetAccessToken().Result);
             });
 
-            services.AddHttpClient<IAccountService, AccountService>(apiHttpClientName);
-            services.AddHttpClient<IGameService, GameService>(apiHttpClientName);
-            services.AddHttpClient<IUserService, UserService>(apiHttpClientName);
-            services.AddHttpClient<IClientSiteService, ClientSiteService>(apiHttpClientName);
+            var refitSettings = new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => IdentityServerManager.GetAccessToken()
+            };
+
+            services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IGameSettingService, GameSettingService>();
+
+            services.AddSingleton(RestService.For<IAccountApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IAccountService, AccountService>();
+
+            services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddSingleton(RestService.For<IClientSiteApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IClientSiteService, ClientSiteService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 

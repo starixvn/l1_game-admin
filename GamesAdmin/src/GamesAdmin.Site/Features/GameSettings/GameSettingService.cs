@@ -8,7 +8,8 @@ using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    public interface IGameApi
+    [Headers("Authorization: Bearer")]
+    public interface IGameSettingApi
     {
         [Get("/game-settings")]
         Task<IList<GameConfig>> GetGames();
@@ -26,7 +27,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<GameConfig> GetByName(string name);
     }
 
-    public interface IGameService
+    public interface IGameSettingService
     {
         Task<IList<GameConfig>> GetGames();
 
@@ -41,16 +42,25 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> IsExistName(string name);
     }
 
-    public class GameService : IGameService
+    public class GameSettingService : IGameSettingService
     {
-        private readonly IGameApi gameApi;
+        private readonly IGameSettingApi gameApi;
         private readonly ISentryClient sentryClient;
 
-        public GameService(HttpClient httpClient, ISentryClient sentryClient)
+        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi)
         {
-            gameApi = RestService.For<IGameApi>(httpClient);
+            //gameApi = RestService.For<IGameSettingApi>(httpClient);
             this.sentryClient = sentryClient;
+            this.gameApi = gameApi;
         }
+
+        //public GameSettingService(ISentryClient sentryClient, HttpClient httpClient)
+        //{
+        //    gameApi = RestService.For<IGameSettingApi>(httpClient);
+        //    this.sentryClient = sentryClient;
+        //    //this.gameApi = gameApi;
+        //}
+
 
         public async Task<bool> Add(GameConfig game)
         => await gameApi.Add(game);

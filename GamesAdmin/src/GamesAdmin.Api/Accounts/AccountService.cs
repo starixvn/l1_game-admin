@@ -102,6 +102,8 @@ namespace GamesAdmin.Api.Accounts
         public async Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot)
         {
             var results = new List<GenerateAccountResult>();
+
+
             var latestUserInfoUID = await GetLatestUserInfoUID();
             var newAccounts = new List<AccountEntity>();
             var newAccountInfos = new List<AccountInfoEntity>();
@@ -177,44 +179,6 @@ namespace GamesAdmin.Api.Accounts
 
         private Task<int> GetLatestUserInfoUID()
             => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
-
-        private async Task<string> CreateAccount(string username, string password)
-        {
-            var hashPassword = PasswordHelper.HashPassword(password);
-
-            var account = new AccountEntity
-            {
-                local = new LocalAccount
-                {
-                    username = username,
-                    password = hashPassword,
-                    regDate = DateTime.UtcNow
-                }
-            };
-
-            await accountRepository.InsertOneAsync(account);
-
-            return accountRepository
-                .FilterBy(account => account.local.username == username)
-                .FirstOrDefault()
-                ?.Id.ToString();
-        }
-
-        private Task CreateAccountInfo(string userId, string name, int avatarId, bool isBot, int uid)
-        {
-            var accountInfo = new AccountInfoEntity
-            {
-                name = name,
-                avatarId = avatarId,
-                red = 10000,
-                isBot = isBot,
-                userId = userId,
-                joinedOn = DateTime.UtcNow,
-                UID = uid
-            };
-
-            return accountInfoRepository.InsertOneAsync(accountInfo);
-        }
 
         public async Task<int> ReviseBotNames()
         {

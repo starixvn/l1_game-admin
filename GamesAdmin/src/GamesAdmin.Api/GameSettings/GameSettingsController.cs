@@ -1,15 +1,17 @@
-﻿using GamesAdmin.Api.GameSettings.Requests;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Games
 {
-    [ApiController, Authorize]
+    [ApiController]
+    [Authorize]
     [Route("api/game-settings")]
     public class GameSettingsController : ControllerBase
     {
@@ -21,23 +23,72 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpGet]
-        public async Task<IList<GameConfig>> Get()
-           => (await mediator.Send(new GetAllRequest())).ToList();
-      
+        [ProducesResponseType(typeof(List<GameConfig>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get()
+        {
+            var gameConfigs = (await mediator.Send(new GetAllRequest())).ToList();
+
+            return Ok(gameConfigs);
+        }
+
         [HttpPost]
-        public Task<bool> Create(GameConfig game)
-            => mediator.Send(new CreateRequest(game));
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create(GameConfig game)
+        {
+            if (string.IsNullOrWhiteSpace(game.Name))
+            {
+                return BadRequest();
+            }
+
+            var created = await mediator.Send(new CreateRequest(game));
+
+            if (created)
+            {
+                return CreatedAtAction(nameof(GetByName), new { name = game.Name }, game);
+            }
+
+            return BadRequest();
+        }
 
         [HttpPut]
         public Task<bool> Update(GameConfig game)
             => mediator.Send(new UpdateRequest(game));
 
-        [HttpPost("{name}/delete")]
-        public Task<bool> Delete(string name)
-            => mediator.Send(new DeleteRequest(name));
+        [HttpDelete("{name}/delete")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Delete(string name)
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                return BadRequest();
+            }
+
+            var deleted = await mediator.Send(new DeleteRequest(name));
+
+            if (!deleted)
+            {
+                return NoContent();
+            }
+
+            return NotFound();
+        }
 
         [HttpGet("{name}")]
-        public Task<GameConfig> GetByName(string name)
-        => mediator.Send(new GetByNameRequest(name));
+        [ProducesResponseType(typeof(GameConfig), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var gameConfig = await mediator.Send(new GetByNameRequest(name));
+
+            if (gameConfig != default)
+            {
+                return Ok(gameConfig);
+            }
+
+            return NotFound();
+        }
     }
 }
