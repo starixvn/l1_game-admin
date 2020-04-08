@@ -26,16 +26,12 @@ namespace GamesAdmin.Api.Accounts
     {
         private const int MinAmount = 500;
         private const int MaxAmount = 10000;
-        private const int ResetAmount = 20000;
 
-        private const int MinInitAmount = 1000;
-        private const int MaxInitAmount = 5000;
+        private const int MinInitAmount = 700;
+        private const int MaxInitAmount = 2000;
 
         private const int MinAddAmount = 1000;
         private const int MaxAddAmount = 2000;
-
-        private const int MinRemoveAmount = 1000;
-        private const int MaxRemoveAmount = 5000;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
@@ -65,12 +61,10 @@ namespace GamesAdmin.Api.Accounts
         => Task.Run(() =>
         {
            
-            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red < MinAmount).ToList();
-            var botsNeedRemoveBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= MaxAmount).ToList();
-            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= ResetAmount).ToList();
+            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red < MinAmount).ToList();           
+            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= MaxAmount).ToList();
 
             sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
-            sentryClient.CaptureMessage($"RemoveBalance for {botsNeedRemoveBalance?.Count}");
             var resetMessage = $"ResetBalance for {botsNeedResetBalance?.Count}";
 
             foreach (var bot in botsNeedAddBalance)
@@ -80,18 +74,11 @@ namespace GamesAdmin.Api.Accounts
                 accountInfoRepository.ReplaceOne(bot);
             }
 
-            foreach (var bot in botsNeedRemoveBalance)
-            {
-                bot.red -= new Random().Next(MinRemoveAmount, MaxRemoveAmount);
-
-                accountInfoRepository.ReplaceOne(bot);
-            }
-
             foreach (var bot in botsNeedResetBalance)
             {
-                resetMessage += " " + bot.name + ";";
+                resetMessage += $" {bot.name} : {bot.red};";
 
-                bot.red = new Random().Next(MinAmount, MaxAmount);
+                bot.red = new Random().Next(MinInitAmount, MaxInitAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }
