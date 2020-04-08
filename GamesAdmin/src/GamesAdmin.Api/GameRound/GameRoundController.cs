@@ -1,17 +1,16 @@
-﻿using GamesAdmin.Api.GameRound.Requests;
-using GamesAdmin.Core.Models;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
+using GamesAdmin.Api.GameRound.Requests;
+using GamesAdmin.Core.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.GameRound
 {
-    [ApiController, Authorize]
     [Route("api/game_rounds")]
-    public class GameRoundController : ControllerBase
+    public class GameRoundController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 

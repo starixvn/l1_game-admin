@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.Games
 {
-    [ApiController]
-    [Authorize]
     [Route("api/game_settings")]
-    public class GameSettingsController : ControllerBase
+    public class GameSettingsController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 

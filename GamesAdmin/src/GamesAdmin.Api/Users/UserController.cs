@@ -1,16 +1,15 @@
-﻿using GamesAdmin.Api.Users.Requests;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
+using GamesAdmin.Api.Users.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
 {
-    [Route("api/users"), Authorize]
-    [ApiController]
-    public class UserController : ControllerBase
+    [Route("api/users")]
+    public class UserController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 
