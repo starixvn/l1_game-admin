@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
-using Refit;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
