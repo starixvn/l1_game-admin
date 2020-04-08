@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features._Shared;
 using Refit;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
-    [Headers("Authorization: Bearer")]
-    public interface IClientSiteApi
+    public interface IClientSiteApi: IBaseAuthorizationApi
     {
         [Get("/ClientSites")]
         Task<IEnumerable<ClientSite>> GetAll();

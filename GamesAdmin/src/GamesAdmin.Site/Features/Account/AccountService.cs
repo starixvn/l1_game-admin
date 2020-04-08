@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account.Results;
 using Refit;
 
 namespace GamesAdmin.Site.Features.Account
 {
-    [Headers("Authorization: Bearer")]
-    public interface IAccountApi
+    public interface IAccountApi : IBaseAuthorizationApi
     {
         [Get("/accounts/bot/count")]
         Task<int> BotCount();
