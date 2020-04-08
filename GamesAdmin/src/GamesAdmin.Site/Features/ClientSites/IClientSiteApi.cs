@@ -8,13 +8,13 @@ namespace GamesAdmin.Site.Features.ClientSites
 {
     public interface IClientSiteApi: IBaseAuthorizationApi
     {
-        [Get("/ClientSites")]
+        [Get("/client_sites")]
         Task<IEnumerable<ClientSite>> GetAll();
 
-        [Get("/ClientSites/{clientId}-{siteId}")]
+        [Get("/client_sites/{clientId}-{siteId}")]
         Task<ClientSite> Get(string clientId, string siteId);
 
-        [Post("/ClientSites/update")]
+        [Post("/client_sites/update")]
         Task<bool> Update(ClientSite clientSite);
     }
 }

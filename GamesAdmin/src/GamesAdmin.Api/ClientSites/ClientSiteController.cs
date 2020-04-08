@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.Sites
 {
-    [Route("api/clientsites")]
+    [Route("api/client_sites")]
     [ApiController, Authorize]
     public class ClientSiteController : Controller
     {
