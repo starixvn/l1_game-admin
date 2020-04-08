@@ -26,6 +26,10 @@ namespace GamesAdmin.Api.Accounts
     {
         private const int MinAmount = 500;
         private const int MaxAmount = 10000;
+        private const int ResetAmount = 20000;
+
+        private const int MinInitAmount = 1000;
+        private const int MaxInitAmount = 5000;
 
         private const int MinAddAmount = 1000;
         private const int MaxAddAmount = 2000;
@@ -60,11 +64,14 @@ namespace GamesAdmin.Api.Accounts
         public Task ReviseBotBalance()
         => Task.Run(() =>
         {
+           
             var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red < MinAmount).ToList();
             var botsNeedRemoveBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= MaxAmount).ToList();
+            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= ResetAmount).ToList();
 
             sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
             sentryClient.CaptureMessage($"RemoveBalance for {botsNeedRemoveBalance?.Count}");
+            var resetMessage = $"ResetBalance for {botsNeedResetBalance?.Count}";
 
             foreach (var bot in botsNeedAddBalance)
             {
@@ -79,6 +86,17 @@ namespace GamesAdmin.Api.Accounts
 
                 accountInfoRepository.ReplaceOne(bot);
             }
+
+            foreach (var bot in botsNeedResetBalance)
+            {
+                resetMessage += " " + bot.name + ";";
+
+                bot.red = new Random().Next(MinAmount, MaxAmount);
+
+                accountInfoRepository.ReplaceOne(bot);
+            }
+
+            sentryClient.CaptureMessage(resetMessage);
         });
 
         public Task<int> GetTotalBots()
@@ -107,7 +125,7 @@ namespace GamesAdmin.Api.Accounts
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
                 var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
-                var amount = (new Random()).Next(1000, 5000);
+                var amount = (new Random()).Next(MinInitAmount, MaxInitAmount);
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateAccountResult(userName, name, password);
 
@@ -213,7 +231,9 @@ namespace GamesAdmin.Api.Accounts
 
         public async Task<int> ReviseBotNames()
         {
-            var bots = accountInfoRepository.FilterBy(entity => entity.isBot && entity.name.Length > 14).ToList();
+            var bots = accountInfoRepository
+                .FilterBy(entity => entity.isBot && (entity.name.Length > 14))
+                .ToList();
 
             foreach (var bot in bots)
             {
