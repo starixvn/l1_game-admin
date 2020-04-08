@@ -15,6 +15,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Remote(action: "VerifyName", controller: "GameSettings", AdditionalFields = nameof(Name))]
         public string Name { get; set; }
 
+        [DisplayName("Game Enabled")]
         public bool Enabled { get; set; }
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]

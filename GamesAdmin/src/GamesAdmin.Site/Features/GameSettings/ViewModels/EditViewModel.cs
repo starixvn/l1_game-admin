@@ -19,6 +19,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             ? string.Empty 
             : Enumeration.FromValue<GameType>(Name).DisplayName;
 
+        [DisplayName("Game Enabled")]
         public bool Enabled { get; set; }
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]

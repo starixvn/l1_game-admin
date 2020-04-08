@@ -20,6 +20,11 @@
 
     .form-group {
         margin-bottom: 1.6rem;
+
+        &.row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
     }
 
     .field-validation-error {
