@@ -16,6 +16,10 @@
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\scss\pages\adjust-bot.css" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />

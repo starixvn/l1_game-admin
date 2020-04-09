@@ -1,11 +1,15 @@
 ﻿.table {
-    th {
-        padding: .75rem;
-        background-color: #f3f3f3;
+    &.table-bordered thead th {
+        border-bottom-width: 1px;
     }
 
     td, th {
-        padding: .75rem;
-        border-color: #f3f3f3 !important;
+        padding: 1rem;
+        border-color: #ddd !important;
+        vertical-align: middle;
+    }
+
+    &.table-bordered {
+        border-color: #ddd;
     }
 }

@@ -4,6 +4,11 @@
 @{
     ViewData["Title"] = Model.DisplayName;
 }
+
+@section Styles {
+    <link href="~/scss/pages/adjust-bot.min.css" rel="stylesheet" />
+}
+
 <div class="row">
 
     <div class="col-md-10 col-lg-6 card">
@@ -63,10 +68,11 @@
                     <label asp-for="MaxBot" class="control-label"></label>
                     <select asp-items="@Model.BotPercentageItems" asp-for="MaxBot" class="form-control"></select>
                     <span> <i>(Current bots: <b><label id="CurrentBot">@Model.CurrentBot</label></b>/<label id="BotCount">@Model.BotCount</label>)</i></span>
-                    <span>
-                        <a id="OpenDialog" href="#" data-toggle="modal" data-target="#exampleModal">Adjust bots by hour</a>
 
-                    </span>
+                </div>
+
+                <div class="adjust-bot-link">
+                    <a id="OpenDialog" href="#" data-toggle="modal" data-target="#exampleModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
                 </div>
 
                 <div class="form-group">
@@ -85,21 +91,218 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade adjust-bot-hours" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Adjust bots by hour</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <p>Current bots: <strong>72</strong>/721</p>
+                    <div class="row options">
+                        <div class="col-lg-6">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>From (GTM-4)</th>
+                                        <th>From (GTM+7)</th>
+                                        <th>% Bot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>11</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>12</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>13</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>14</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>15</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>16</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>17</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>18</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>19</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>20</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>21</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>22</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>From (GTM-4)</th>
+                                        <th>From (GTM+7)</th>
+                                        <th>% Bot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>23</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>0</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>1</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>15</td>
+                                        <td>2</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>16</td>
+                                        <td>3</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>17</td>
+                                        <td>4</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>18</td>
+                                        <td>5</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>19</td>
+                                        <td>6</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>20</td>
+                                        <td>7</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>8</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>22</td>
+                                        <td>9</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>23</td>
+                                        <td>10</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" class="ratio" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn-submit">Save</button>
                 </div>
             </div>
         </div>

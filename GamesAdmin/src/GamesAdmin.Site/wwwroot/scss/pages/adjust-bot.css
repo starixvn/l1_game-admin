@@ -1,0 +1,32 @@
+﻿.adjust-bot-link {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem; }
+  .adjust-bot-link .bot {
+    position: relative;
+    top: 4px;
+    left: -3px;
+    font-size: 1.8rem; }
+
+.adjust-bot-hours .modal-dialog {
+  max-width: 72rem; }
+
+.adjust-bot-hours .modal-body {
+  max-height: 62rem;
+  overflow: auto; }
+
+.adjust-bot-hours .ratio {
+  width: 6rem;
+  text-align: center; }
+
+.adjust-bot-hours .table th,
+.adjust-bot-hours .table td {
+  text-align: center; }
+
+.adjust-bot-hours .table .ratio-cell {
+  padding-top: 0;
+  padding-bottom: 0; }
+
+.adjust-bot-hours .options {
+  margin-left: -12px;
+  margin-right: -12px; }

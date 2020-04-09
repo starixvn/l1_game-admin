@@ -1,4 +1,4 @@
-﻿.btn-submit, .btn-add, .btn-outline-green, .btn-outline-gray, .btn-outline-blue {
+﻿.btn-submit, .btn-add, .btn-gray, .btn-outline-green, .btn-outline-gray, .btn-outline-blue {
   min-width: 9rem;
   padding: .75rem 1.3rem .6rem;
   border-radius: .5rem;
@@ -21,6 +21,13 @@
   color: #fff; }
   .btn-add:hover {
     background-color: #35b473; }
+
+.btn-gray {
+  background-color: #6c757d;
+  color: #fff;
+  border-color: #6c757d; }
+  .btn-gray:hover {
+    background-color: #636b72; }
 
 .btn-outline-green {
   color: #3ac47d;
@@ -46,13 +53,16 @@
     background-color: #16aaff;
     color: #fff; }
 
-.table th {
-  padding: .75rem;
-  background-color: #f3f3f3; }
+.table.table-bordered thead th {
+  border-bottom-width: 1px; }
 
 .table td, .table th {
-  padding: .75rem;
-  border-color: #f3f3f3 !important; }
+  padding: 1rem;
+  border-color: #ddd !important;
+  vertical-align: middle; }
+
+.table.table-bordered {
+  border-color: #ddd; }
 
 .form-add .form-control {
   border-radius: .5rem;
@@ -73,9 +83,6 @@
 
 .form-add .form-group {
   margin-bottom: 1.6rem; }
-  .form-add .form-group.row {
-    margin-left: -15px;
-    margin-right: -15px; }
 
 .form-add .field-validation-error {
   margin: 1rem 0; }
@@ -95,6 +102,31 @@
 .message-error {
   border: 1px solid #d92550;
   color: #d92550; }
+
+.modal .modal-header,
+.modal .modal-footer {
+  background: #f8f9fa; }
+
+.modal .modal-header {
+  padding: 1.2rem 1.4rem;
+  border-bottom: 1px solid #e9ecef; }
+
+.modal .modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+  font-size: 1.8rem; }
+
+.modal .close {
+  font-size: 2.5rem; }
+
+.modal .modal-footer > :not(:last-child) {
+  margin-right: .5rem; }
+
+.modal .modal-content {
+  border-radius: .5rem; }
+
+.modal .modal-body {
+  padding: 1.4rem; }
 
 .header {
   display: flex;
@@ -340,7 +372,6 @@ body {
 .main-container {
   flex: 1;
   display: flex;
-  z-index: 8;
   position: relative; }
 
 /* ---------------------------------------------------
@@ -350,7 +381,6 @@ body {
   flex: 1;
   flex-direction: column;
   display: flex;
-  z-index: 12;
   padding: 0 0 0 29rem;
   transition: all .2s; }
 
@@ -360,9 +390,6 @@ body {
 .inner-content {
   margin-left: 3rem;
   margin-right: 3rem; }
-  .inner-content .row {
-    margin-left: 0;
-    margin-right: 0; }
 
 .tab-content {
   margin-left: 3rem;
@@ -373,6 +400,7 @@ body {
 
 .card {
   padding: 0;
+  margin: 0 15px;
   border: 1px solid #dee2e6;
   background: #fff;
   border-radius: 0.5rem; }

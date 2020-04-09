@@ -1,0 +1,35 @@
+﻿.modal {
+    .modal-header,
+    .modal-footer {
+        background: #f8f9fa;
+    }
+
+    .modal-header {
+        padding: 1.2rem 1.4rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .modal-title {
+        margin-bottom: 0;
+        line-height: 1.5;
+        font-size: 1.8rem;
+    }
+
+    .close {
+        font-size: 2.5rem;
+    }
+
+    .modal-footer > :not(:last-child) {
+        margin-right: .5rem;
+    }
+
+    .modal-content {
+        border-radius: .5rem;
+    }
+
+    .modal-body {
+        padding: 1.4rem;
+    }
+
+}
+

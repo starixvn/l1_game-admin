@@ -32,6 +32,16 @@
     }
 }
 
+.btn-gray {
+    @extend %btn;
+    background-color: $btn-gray-bg-color;
+    color: $btn-gray-color;
+    border-color: $btn-gray-bg-color;
+
+    &:hover {
+        background-color: $btn-gray-bg-color-hover;
+    }
+}
 
 .btn-outline-green {
     @extend %btn;

@@ -18,5 +18,9 @@
   {
     "outputFile": "wwwroot/scss/base/material-icon.css",
     "inputFile": "wwwroot/scss/base/material-icon.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/adjust-bot.css",
+    "inputFile": "wwwroot/scss/pages/adjust-bot.scss"
   }
 ]

@@ -2,6 +2,7 @@
 @import "../components/button";
 @import "../components/table";
 @import "../components/forms";
+@import "../components/modal";
 @import "../layout/header";
 @import "../layout/site-bar";
 
@@ -19,7 +20,6 @@ body {
 .main-container {
     flex: 1;
     display: flex;
-    z-index: 8;
     position: relative;
 }
 
@@ -31,7 +31,6 @@ body {
     flex: 1;
     flex-direction: column;
     display: flex;
-    z-index: 12;
     padding: 0 0 0 29rem;
     transition: all .2s;
 }
@@ -43,11 +42,6 @@ body {
 .inner-content {
     margin-left: 3rem;
     margin-right: 3rem;
-
-    .row {
-        margin-left: 0;
-        margin-right: 0;
-    }
 }
 
 .tab-content {
@@ -61,6 +55,7 @@ body {
 
 .card {
     padding: 0;
+    margin: 0 15px;
     border: 1px solid #dee2e6;
     background: #fff;
     border-radius: 0.5rem;
@@ -69,3 +64,4 @@ body {
         padding: 3rem;
     }
 }
+
