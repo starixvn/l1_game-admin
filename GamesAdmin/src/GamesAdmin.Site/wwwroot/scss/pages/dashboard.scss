@@ -1,0 +1,79 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.stats {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    margin: 0 0 2rem;
+}
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+
+    &.yellow {
+        background-color: #f7b924;
+
+        .icon {
+            color: $text-color;
+        }
+    }
+
+    &.pink {
+        background-color: #d92550;
+
+        .icon {
+            color: #fff;
+        }
+    }
+
+    &.green {
+        background-color: #3ac47d;
+
+        .icon {
+            color: #fff;
+        }
+    }
+
+    .icon {
+        width: 2.4rem;
+    }
+}
+
+.stats-detail {
+    margin-left: 2rem;
+
+    .number {
+        font-size: 4rem;
+        display: block;
+        line-height: 1;
+        color: #495057;
+        font-weight: bold;
+    }
+}
+
+.stats-item {
+    display: flex;
+}
+
+.card {
+    margin: 0;
+
+    .card-header {
+        padding: 1.2rem 1.8rem;
+        background-color: #fff;
+    }
+
+    .card-title {
+        margin-bottom: 0;
+        text-transform: capitalize;
+        color: rgba(31,10,6,0.6);
+        font-size: 1.8rem;
+    }
+}

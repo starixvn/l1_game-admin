@@ -3,6 +3,14 @@
 @model MenuViewModel;
 
     <ul class="vertical-nav-menu">
+        <li class="nav-heading">Home</li>
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="Dashboard">
+                <i class="material-icons menu-icon">store_mall_directory</i>
+                <span class="menu-name">Home page</span>
+            </a>
+        </li>
+        
         <li class="nav-heading">Game</li>
         @foreach (var item in Model.GameList)
         {

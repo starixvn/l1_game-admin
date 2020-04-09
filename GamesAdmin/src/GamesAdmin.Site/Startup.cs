@@ -80,7 +80,7 @@ namespace GamesAdmin.Site
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=GameSettings}/{action=Edit}/");
+                    pattern: "{controller=Dashboard}/{action=Index}/");
             });
         }
     }
