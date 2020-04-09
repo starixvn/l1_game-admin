@@ -51,32 +51,26 @@ namespace GamesAdmin.Database
             return (await collection.FindAsync(filterExpression)).ToEnumerable();
         }
 
-
         public virtual TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
-        {
-            return collection.Find(filterExpression).FirstOrDefault();
-        }
+        => collection.Find(filterExpression).FirstOrDefault();
 
         public virtual Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
-        {
-            return Task.Run(() => collection.Find(filterExpression).FirstOrDefaultAsync());
-        }
+        => collection.Find(filterExpression).FirstOrDefaultAsync();
 
         public virtual TDocument FindById(string id)
         {
             var objectId = new ObjectId(id);
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+
             return collection.Find(filter).SingleOrDefault();
         }
 
-        public virtual Task<TDocument> FindByIdAsync(string id)
+        public virtual async Task<TDocument> FindByIdAsync(string id)
         {
-            return Task.Run(() =>
-            {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
-                return collection.Find(filter).SingleOrDefaultAsync();
-            });
+            var objectId = new ObjectId(id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+
+            return  (await collection.FindAsync(filter)).FirstOrDefault();
         }
 
         public virtual void InsertOne(TDocument document)
@@ -90,7 +84,7 @@ namespace GamesAdmin.Database
         {
             document.Id = ObjectId.GenerateNewId();
 
-            return Task.Run(() => collection.InsertOneAsync(document));
+            return collection.InsertOneAsync(document);
         }
 
         public void InsertMany(ICollection<TDocument> documents)
@@ -121,9 +115,7 @@ namespace GamesAdmin.Database
         }
 
         public Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression)
-        {
-            return Task.Run(() => collection.FindOneAndDeleteAsync(filterExpression));
-        }
+        => collection.FindOneAndDeleteAsync(filterExpression);
 
         public void DeleteById(string id)
         {
@@ -134,12 +126,10 @@ namespace GamesAdmin.Database
 
         public Task DeleteByIdAsync(string id)
         {
-            return Task.Run(() =>
-            {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
-                collection.FindOneAndDeleteAsync(filter);
-            });
+            var objectId = new ObjectId(id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+
+            return collection.FindOneAndDeleteAsync(filter);
         }
 
         public void DeleteMany(Expression<Func<TDocument, bool>> filterExpression)
@@ -148,14 +138,10 @@ namespace GamesAdmin.Database
         }
 
         public Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
-        {
-            return Task.Run(() => collection.DeleteManyAsync(filterExpression));
-        }
+        => collection.DeleteManyAsync(filterExpression);
 
-        public async Task UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition)
-        {
-            await collection.UpdateOneAsync(filterExpression, updateDefinition);
-        }
+        public Task UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition)
+        => collection.UpdateOneAsync(filterExpression, updateDefinition);
 
         public void Update(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition)
         {
