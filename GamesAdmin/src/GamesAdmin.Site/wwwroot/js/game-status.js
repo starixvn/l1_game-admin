@@ -2,8 +2,7 @@
     $('input[type="checkbox"]').change(function (e) {
 
         var checked = $(this).prop("checked"),
-            container = $(this).parent(),
-            siblings = container.siblings();
+            container = $(this).parent();
 
         container.find('input[type="checkbox"]').prop({
             indeterminate: false,
