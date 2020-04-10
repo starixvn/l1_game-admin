@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamesAdmin.Api.UM
 {
     [Route("api/um")]   
-    public class UMController : BaseAuthorizeController
+    [ApiController]
+    public class UMController : ControllerBase
     {
         private readonly IMediator mediator;
 
