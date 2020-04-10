@@ -1,0 +1,43 @@
+﻿
+@section Styles {
+    <link href="~/scss/pages/game-status.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-10 col-lg-6 card">
+        <form class="card-body form-add" asp-action="Add" asp-controller="GameSettings" method="post">
+            <div class="form-group disabled-game-container">
+                <p>Choose game to enable/disable</p>
+                <ul class="all-game">
+                    <li>
+                        <input type="checkbox" id="option"><label for="option">All games</label>
+                        <ul class="list-game">
+                            <li><label><input type="checkbox" class="subOption"> Big Small</label></li>
+                            <li><label><input type="checkbox" class="subOption"> Fish Prawn Crab</label></li>
+                            <li><label><input type="checkbox" class="subOption"> Shake the Plate</label></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Message</label>
+                <textarea class="form-control">
+                </textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label"><input type="checkbox" /> Push notification message to all users</label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn-submit" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/setting-um.js"></script>
+}
+

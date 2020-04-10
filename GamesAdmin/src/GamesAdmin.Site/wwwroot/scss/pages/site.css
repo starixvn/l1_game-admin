@@ -413,3 +413,6 @@ body {
   border-radius: 0.5rem; }
   .card .card-body {
     padding: 2rem; }
+
+hr {
+  margin-bottom: 2rem; }

@@ -31,5 +31,9 @@
   {    
     "outputFile": "wwwroot/scss/pages/reports.css",
     "inputFile": "wwwroot/scss/pages/reports.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/game-status.css",
+    "inputFile": "wwwroot/scss/pages/game-status.scss"
   }
 ]
