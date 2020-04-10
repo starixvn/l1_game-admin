@@ -88,7 +88,15 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                var existEntity = await GetByName(game.Name);
+
                 var entity = mapper.Map<GameConfigEntity>(game);
+
+                if (entity.hoursMaxBot == null || entity.hoursMaxBot.Length < 24)
+                {
+                    entity.hoursMaxBot = existEntity.HoursMaxBot;
+                }
+
                 await repository.ReplaceOneAsync(entity);
 
                 return true;

@@ -28,8 +28,14 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         [Route("{name}")]
-        public async Task<IActionResult> Edit(string name)
-        => View(await mediator.Send(new EditRequest(name)));
+        public async Task<IActionResult> Edit(string name, bool isSuccess = false, string errorMessage = null)
+        {
+            var viewModel = await mediator.Send(new EditRequest(name));
+            viewModel.ErrorMessage = errorMessage;
+            viewModel.Success = isSuccess;
+
+            return View(viewModel);
+        }
 
         [HttpPost]
         [Route("/update")]
@@ -37,7 +43,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                var updated = await mediator.Send(new UpdateRequest(new GameConfig(
+                await mediator.Send(new UpdateRequest(new GameConfig(
                    editViewModel.Id,
                    editViewModel.Name,
                    editViewModel.MinBet,
@@ -48,16 +54,13 @@ namespace GamesAdmin.Site.Features.GameSettings
                    null,
                    editViewModel.BotMinBet,
                    editViewModel.BotMaxBet,
-                   new double[24] { 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12, 0.5, 0.12 })));
+                   null)));
 
-                //editViewModel.Success = updated;
-
-                //if (!editViewModel.Success)
-                //{
-                //    editViewModel.ErrorMessage = "Something went wrong. Cannot update this config.";
-                //}
-
-                return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name } });
+                return RedirectToAction(nameof(Edit), new RouteValueDictionary 
+                { 
+                    { "name", editViewModel.Name },
+                    { "isSuccess", true}
+                });
             }
             catch (Exception ex)
             {
@@ -65,7 +68,11 @@ namespace GamesAdmin.Site.Features.GameSettings
                 editViewModel.ErrorMessage = ex.Message;
             }
 
-            return View(editViewModel);
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary 
+            { 
+                { "name", editViewModel.Name } ,
+                { "errorMessage", editViewModel.ErrorMessage}
+            });
         }
 
         [HttpGet]
@@ -119,7 +126,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             await mediator.Send(new UpdateBotRatioRequest(name, botRatios));
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", name } });
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary 
+            { 
+                { "name", name } ,
+                { "isSuccess", true}
+            });
         }
     }
 }

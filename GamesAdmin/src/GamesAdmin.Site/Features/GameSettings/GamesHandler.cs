@@ -61,7 +61,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             viewModel.BotMaxBet = game == null || game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
             viewModel.BotCount = await accountService.GetBotCount();
             viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
-            viewModel.BotRatioItems = GenerateBotRatioItems(game?.HoursMaxBot, viewModel.BotCount);
+            viewModel.BotRatioItems = GenerateBotRatioItems(game?.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
 
             return viewModel;
         }
@@ -87,7 +87,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
-        private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot)
+        private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot, double defaultRatio)
         {
             var botRatioItems = new List<BotRatioItemViewModel>();
 
@@ -100,7 +100,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     hour.Hour,
                     hour.AddHours(-4).Hour,
                     hour.AddHours(7).Hour,
-                    botRatios == null || botRatios.Length == 0 ? 0 : botRatios[hour.Hour] * 100,
+                    botRatios == null || botRatios.Length == 0 ? defaultRatio : (int)(botRatios[hour.Hour] * 100),
                     totalBot));
             }
 
