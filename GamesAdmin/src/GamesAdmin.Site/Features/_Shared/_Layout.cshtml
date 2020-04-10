@@ -36,11 +36,12 @@
                             <i class="material-icons icon-user">account_circle</i>
                             @Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <form asp-action="Logout" asp-controller="Authentication" method="post">
-                                <button type="submit" value="Sign out" class="logout">Logout</button>
-                            </form>                            
-                        </div>
+                        <form asp-action="Logout" asp-controller="Authentication" method="post">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><button type="submit" value="Sign out" class="logout">Logout</button></li>
+                                <li>Change Password</li> 
+                            </ul>
+                        </form>
                     </div>
                 </div>
             </div>          

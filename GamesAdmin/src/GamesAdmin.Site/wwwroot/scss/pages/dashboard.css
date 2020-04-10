@@ -61,6 +61,9 @@
 .dataTables_wrapper .dataTables_filter {
   margin-bottom: 1.5rem; }
 
+.dataTables_wrapper .dataTables_info {
+  padding-top: 1.2rem; }
+
 .stats {
   background: #fff;
   padding: 3rem;
@@ -100,7 +103,8 @@
     font-weight: bold; }
 
 .stats-item {
-  display: flex; }
+  display: flex;
+  justify-content: center; }
 
 .card {
   margin: 0; }

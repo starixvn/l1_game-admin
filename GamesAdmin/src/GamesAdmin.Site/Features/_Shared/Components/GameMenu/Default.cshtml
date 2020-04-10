@@ -3,14 +3,63 @@
 @model MenuViewModel;
 
     <ul class="vertical-nav-menu">
-        <li class="nav-heading">Home</li>
         <li class="menu-item">
             <a asp-action="Index" asp-controller="Dashboard">
                 <i class="material-icons menu-icon">store_mall_directory</i>
-                <span class="menu-name">Home page</span>
+                <span class="menu-name">Dashboard</span>
             </a>
         </li>
-        
+        <li class="nav-heading">Setting</li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">wb_sunny</i>
+                <span class="menu-name">UM</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">verified_user</i>
+                <span class="menu-name">Game Status</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">timeline</i>
+                <span class="menu-name">Stake Level</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">adb</i>
+                <span class="menu-name">Bot</span>
+            </a>
+        </li>
+        <li class="nav-heading">Report</li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">donut_large</i>
+                <span class="menu-name">Game Round</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">group</i>
+                <span class="menu-name">User Management</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">format_list_numbered</i>
+                <span class="menu-name">Top 20</span>
+            </a>
+        </li>
+        <li class="nav-heading">Information</li>
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="material-icons menu-icon">share</i>
+                <span class="menu-name">Permission Control</span>
+            </a>
+        </li>
         <li class="nav-heading">Game</li>
         @foreach (var item in Model.GameList)
         {
