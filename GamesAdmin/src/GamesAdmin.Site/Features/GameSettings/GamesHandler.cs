@@ -99,7 +99,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 {
                     GreenwichHour = hour.AddHours(-4).Hour,
                     AsiaPacificHour = hour.AddHours(7).Hour,
-                    BotRatio = botRatios == null || botRatios.Length == 0 ? 0 : botRatios[hour.Hour]
+                    BotRatio = botRatios == null || botRatios.Length == 0 ? 0 : botRatios[hour.Hour] * 100
                 });
             }
 

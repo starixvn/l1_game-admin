@@ -119,7 +119,7 @@
                                             <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                             <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                             <td class="ratio-cell">
-                                                <input type="number" class="ratio" />
+                                                <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
                                             </td>
                                         </tr>
                                     }
@@ -142,7 +142,7 @@
                                             <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                             <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                             <td class="ratio-cell">
-                                                <input type="number" class="ratio" />
+                                                <input type="number" asp-for="BotRatioItems[i].BotRatio"  class="ratio" />
                                             </td>
                                         </tr>
                                     }
