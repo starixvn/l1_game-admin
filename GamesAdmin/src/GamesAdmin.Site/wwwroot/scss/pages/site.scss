@@ -70,3 +70,11 @@ hr {
     margin-bottom: 2rem;
 }
 
+ul {
+    list-style: none;
+}
+
+input[type=checkbox] {
+    position: relative;
+    top: 2px;
+}

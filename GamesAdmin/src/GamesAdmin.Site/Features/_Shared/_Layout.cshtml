@@ -38,8 +38,16 @@
                         </button>
                         <form asp-action="Logout" asp-controller="Authentication" method="post">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><button type="submit" value="Sign out" class="logout">Logout</button></li>
-                                <li>Change Password</li> 
+                                <li>
+                                    <a href="#">
+                                        <i class="material-icons">lock_open</i> Change Password
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="submit" value="Sign out" class="logout"> 
+                                        <i class="material-icons">exit_to_app</i> Logout
+                                    </button>
+                                </li>
                             </ul>
                         </form>
                     </div>

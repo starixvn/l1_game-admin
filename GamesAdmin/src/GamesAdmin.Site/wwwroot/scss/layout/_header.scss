@@ -23,11 +23,37 @@
 
     .logout {
         width: 100%;
-        padding: 0 1.2rem;
+        padding: 1.2rem 1.6rem;
         text-align: left;
+        color: $text-color;
 
         &:hover {
             color: #da624a;
+        }
+    }
+
+    .dropdown-menu {
+        font-size: 1.4rem;
+        min-width: 18rem;
+        left: auto !important;
+        right: 0;
+        transform: translate3d(0, 32px, 0px) !important;
+
+        a {
+            padding: 1.2rem 1.6rem;
+            color: $text-color;
+
+            &:hover {
+                text-decoration: none;
+                color: #da624a;
+            }
+        }
+
+        .material-icons {
+            position: relative;
+            top: 4px;
+            margin-right: 6px;
+            font-size: 1.8rem;
         }
     }
 }

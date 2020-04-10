@@ -156,10 +156,29 @@
 
 .user-info .logout {
   width: 100%;
-  padding: 0 1.2rem;
-  text-align: left; }
+  padding: 1.2rem 1.6rem;
+  text-align: left;
+  color: #495057; }
   .user-info .logout:hover {
     color: #da624a; }
+
+.user-info .dropdown-menu {
+  font-size: 1.4rem;
+  min-width: 18rem;
+  left: auto !important;
+  right: 0;
+  transform: translate3d(0, 32px, 0px) !important; }
+  .user-info .dropdown-menu a {
+    padding: 1.2rem 1.6rem;
+    color: #495057; }
+    .user-info .dropdown-menu a:hover {
+      text-decoration: none;
+      color: #da624a; }
+  .user-info .dropdown-menu .material-icons {
+    position: relative;
+    top: 4px;
+    margin-right: 6px;
+    font-size: 1.8rem; }
 
 .page-title {
   font-size: 2rem;
@@ -315,8 +334,7 @@
 .vertical-nav-menu {
   margin: 0;
   padding: 2px 2.5rem;
-  position: relative;
-  list-style: none; }
+  position: relative; }
   .vertical-nav-menu .nav-heading {
     position: relative;
     text-transform: uppercase;
@@ -416,3 +434,10 @@ body {
 
 hr {
   margin-bottom: 2rem; }
+
+ul {
+  list-style: none; }
+
+input[type=checkbox] {
+  position: relative;
+  top: 2px; }
