@@ -82,6 +82,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public int CurrentBot => (int)( BotRatio * TotalBot / 100);
 
+        [Range(0.01, 100, ErrorMessage = "Number range [0.01..100]")]
         public double BotRatio { get; set; }
     }
 }
