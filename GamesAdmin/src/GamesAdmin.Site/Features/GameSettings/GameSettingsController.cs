@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -58,7 +59,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
                 return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", editViewModel.Name } });
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 editViewModel.Success = false;
                 editViewModel.ErrorMessage = ex.Message;
@@ -85,7 +86,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 null,
                 0,
                 0,
-                new double[]{ })));
+                new double[] { })));
 
             return RedirectToAction(nameof(Edit));
         }
@@ -109,10 +110,16 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("{name}")]
-        public IActionResult UpdateBotRatio(string name,[FromBody] object formData)
+        public async Task<IActionResult> UpdateBotRatio(string name, [Bind]List<BotRatioItemViewModel> botRatioItems)
         {
-            var form = HttpContext.Request.Form;
-            return Ok();
+            var botRatios = botRatioItems
+                .OrderBy(item => item.UtcHour)
+                .Select(item => item.BotRatio / 100)
+                .ToArray();
+
+            await mediator.Send(new UpdateBotRatioRequest(name, botRatios));
+
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary { { "name", name } });
         }
     }
 }

@@ -51,6 +51,6 @@ namespace GamesAdmin.Core.Models
 
         public double BotMaxBet { get; }
 
-        public double[] HoursMaxBot { get; }
+        public double[] HoursMaxBot { get; set; }
     }
 }

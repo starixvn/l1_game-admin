@@ -20,6 +20,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<IsExistRequest, bool>
+        , IRequestHandler<UpdateBotRatioRequest, bool>
     {
         private readonly IMapper mapper;
 
@@ -151,5 +152,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);
+
+        public async Task<bool> Handle(UpdateBotRatioRequest request, CancellationToken cancellationToken)
+        {
+            var game = await gameService.GetByName(request.Name);
+            game.HoursMaxBot = request.BotRatios;
+
+            return await gameService.Update(game);
+        }
     }
 }

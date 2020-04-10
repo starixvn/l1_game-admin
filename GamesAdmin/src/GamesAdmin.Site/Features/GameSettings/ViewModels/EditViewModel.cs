@@ -61,6 +61,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class BotRatioItemViewModel 
     {
+        public BotRatioItemViewModel() { }
+
         public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot) 
         {
             UtcHour = utcHour;
@@ -70,11 +72,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             TotalBot = totalBot;
         }
 
-        public int UtcHour { get; }
+        public int UtcHour { get; set; }
 
         public int GreenwichHour { get; }
 
-        public int AsiaPacificHour { get; }        
+        public int AsiaPacificHour { get; }
 
         public int TotalBot { get; }
 
