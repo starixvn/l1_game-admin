@@ -9,7 +9,7 @@
     font-size: 1.8rem; }
 
 .adjust-bot-hours .modal-dialog {
-  max-width: 83rem; }
+  max-width: 87rem; }
 
 .adjust-bot-hours .modal-body {
   max-height: 50rem;
@@ -18,6 +18,8 @@
 .adjust-bot-hours .ratio {
   width: 5rem;
   line-height: 1.5rem;
+  border-radius: .2rem;
+  border: 1px solid #ced4da;
   text-align: center; }
 
 .adjust-bot-hours .table th,
@@ -41,3 +43,9 @@
 
 .adjust-bot-hours .col-gmt {
   width: 120px; }
+
+.adjust-bot-hours .input-validation-error {
+  border: 1px solid #dc3545; }
+
+.adjust-bot-hours .text-danger {
+  font-size: 1.1rem; }

@@ -118,13 +118,11 @@
                                                 <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
-                                                    <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
-                                                    <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
-                                                    <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3">
+                                                    <div>
+                                                        <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                        <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
+                                                        <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
+                                                    </div>
                                                     <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
                                                 </td>
                                             </tr>
@@ -148,13 +146,11 @@
                                                 <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
-                                                    <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
-                                                    <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
-                                                    <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3">
+                                                    <div>
+                                                        <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                        <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
+                                                        <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
+                                                    </div>
                                                     <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
                                                 </td>
                                             </tr>

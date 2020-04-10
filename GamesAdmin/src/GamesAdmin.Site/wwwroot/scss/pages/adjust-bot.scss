@@ -15,7 +15,7 @@
 
 .adjust-bot-hours {
     .modal-dialog {
-        max-width: 83rem;
+        max-width: 87rem;
     }
 
     .modal-body {
@@ -26,6 +26,8 @@
     .ratio {
         width: 5rem;
         line-height: 1.5rem;
+        border-radius: .2rem;
+        border: 1px solid #ced4da;
         text-align: center;
     }
 
@@ -58,5 +60,13 @@
 
     .col-gmt {
         width: 120px;
+    }
+    // invalid textbox
+    .input-validation-error {
+        border: 1px solid #dc3545;
+    }
+
+    .text-danger {
+        font-size: 1.1rem;
     }
 }
