@@ -4,16 +4,16 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class BigSmallReportRequest : IRequest<IEnumerable<BigSmallReportRecord>>
+    public class BigSmallReportRequest : IRequest<IEnumerable<BigSmallRecord>>
     {
-        public BigSmallReportRequest(int roundId, string nickname, bool excludeBot)
+        public BigSmallReportRequest(long roundId, string nickname, bool excludeBot)
         {
             RoundId = roundId;
             Nickname = nickname;
             ExcludeBot = excludeBot;
         }
 
-        public int RoundId { get; }
+        public long RoundId { get; }
 
         public string Nickname { get; }
 

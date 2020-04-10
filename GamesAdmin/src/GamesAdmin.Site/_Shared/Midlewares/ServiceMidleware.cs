@@ -4,6 +4,7 @@ using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -32,6 +33,9 @@ namespace GamesAdmin.Site._Shared.Midlewares
 
             services.AddSingleton(RestService.For<IClientSiteApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IClientSiteService, ClientSiteService>();
+
+            services.AddSingleton(RestService.For<IReportApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IReportService, ReportService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }

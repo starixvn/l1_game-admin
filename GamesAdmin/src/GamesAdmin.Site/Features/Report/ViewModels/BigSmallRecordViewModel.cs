@@ -1,6 +1,6 @@
-﻿namespace GamesAdmin.Core.Models
+﻿namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class BigSmallReportRecord
+    public class BigSmallRecordViewModel
     {
         public string Username { get; set; }
 

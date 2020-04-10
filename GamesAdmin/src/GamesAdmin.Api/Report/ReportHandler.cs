@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report
 {
-    public class ReportHandler : IRequestHandler<BigSmallReportRequest, IEnumerable<BigSmallReportRecord>>
+    public class ReportHandler : IRequestHandler<BigSmallReportRequest, IEnumerable<BigSmallRecord>>
     {
 
         private readonly IReportService reportService;
@@ -18,11 +18,11 @@ namespace GamesAdmin.Api.Report
             this.reportService = reportService;
         }
 
-        public Task<IEnumerable<BigSmallReportRecord>> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<BigSmallRecord>> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
         {
             var result =  reportService.GetBigSmallReport(request.RoundId, request.Nickname, request.ExcludeBot);
 
-            return Task.FromResult(result.Select(x => new BigSmallReportRecord
+            return Task.FromResult(result.Select(x => new BigSmallRecord
             {
                 Nickname = x.Nickname,
                 Username = x.Username,

@@ -5,7 +5,7 @@ namespace GamesAdmin.Api.Report
 {
     public interface IReportService
     {
-        IEnumerable<BigSmallReportEntity> GetBigSmallReport(int roundId, string nickname, bool excludeBot);
+        IEnumerable<BigSmallReportEntity> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -17,6 +17,6 @@ namespace GamesAdmin.Api.Report
             this.bigSmallReportRepository = bigSmallReportRepository;
         }
 
-        public IEnumerable<BigSmallReportEntity> GetBigSmallReport(int roundId, string nickname, bool excludeBot) => bigSmallReportRepository.Get(roundId, nickname, excludeBot);
+        public IEnumerable<BigSmallReportEntity> GetBigSmallReport(long roundId, string nickname, bool excludeBot) => bigSmallReportRepository.Get(roundId, nickname, excludeBot);
     }
 }

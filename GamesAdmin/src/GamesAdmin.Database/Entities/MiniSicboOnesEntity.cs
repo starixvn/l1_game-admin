@@ -11,7 +11,7 @@ namespace GamesAdmin.Database.Entities
         public decimal bet { get; set; }
 
         [BsonElement("phien")]
-        public int round { get; set; }
+        public long round { get; set; }
 
         public bool select { get; set; }
 

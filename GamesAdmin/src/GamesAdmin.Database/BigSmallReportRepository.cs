@@ -8,7 +8,7 @@ namespace GamesAdmin.Database
 {
     public interface IBigSmallReportRepository
     {
-        IEnumerable<BigSmallReportEntity> Get(int roundId, string nickname, bool excludeBot);
+        IEnumerable<BigSmallReportEntity> Get(long roundId, string nickname, bool excludeBot);
     }
 
     public class BigSmallReportRepository : IBigSmallReportRepository
@@ -24,7 +24,7 @@ namespace GamesAdmin.Database
             accountInfoCollection = database.GetCollection<AccountInfoEntity>("userinfos");
         }
 
-        public IEnumerable<BigSmallReportEntity> Get(int roundId, string nickname, bool excludeBot)
+        public IEnumerable<BigSmallReportEntity> Get(long roundId, string nickname, bool excludeBot)
         {
             var aggregateBuilder = bigSmallCollection.Aggregate().Match(x => x.round == roundId)
                  .Lookup<BigSmallEntity, AccountInfoEntity, BigSmallEntityWithAccountInfos>(
