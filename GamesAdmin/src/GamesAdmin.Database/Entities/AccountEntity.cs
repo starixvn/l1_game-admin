@@ -1,5 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
-using System;
+﻿using System;
+using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -9,7 +9,7 @@ namespace GamesAdmin.Database.Entities
         public LocalAccount local { get; set; }
     }
 
-    public class LocalAccount 
+    public class LocalAccount
     {
         public int ban_pass { get; set; }
 
@@ -20,5 +20,13 @@ namespace GamesAdmin.Database.Entities
         public string password { get; set; }
 
         public DateTime regDate { get; set; }
+
+        public string memberId { get; set; }
+
+        public string memberid { get; set; }
+
+        public string siteId { get; set; }
+
+        public string language { get; set; }
     }
 }

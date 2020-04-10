@@ -22,7 +22,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<GameConfig, GameConfigEntity>();
 
             CreateMap<MiniSicboRoundEntity, Round>();
-            CreateMap<MiniSicboOnesEntity, BetInfo>();
+            CreateMap<BigSmallEntity, BetInfo>();
 
             CreateMap<User, AdminUserEntity>();
         }

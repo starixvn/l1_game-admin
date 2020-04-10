@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("taixiu_ones")]
-    public class MiniSicboOnesEntity : MiniGameBaseEntity
+    public class BigSmallEntity : MiniGameBaseEntity
     {
         public bool red { get; set; }
 
@@ -15,7 +15,7 @@ namespace GamesAdmin.Database.Entities
 
         public bool select { get; set; }
 
-        public double betwin { get; set; }
+        public decimal betwin { get; set; }
 
         public bool win { get; set; }
 

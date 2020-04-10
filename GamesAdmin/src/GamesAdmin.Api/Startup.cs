@@ -6,6 +6,7 @@ using GamesAdmin.Api.Accounts.ScheduleTasks;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
+using GamesAdmin.Api.Report;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Database;
@@ -53,11 +54,13 @@ namespace GamesAdmin.Api
             services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<ISiteRepository, SiteRepository>();
+            services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
+            services.AddScoped<IReportService, ReportService>();
 
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
