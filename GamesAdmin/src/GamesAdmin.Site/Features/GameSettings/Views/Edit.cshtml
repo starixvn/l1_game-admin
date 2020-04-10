@@ -93,7 +93,7 @@
     <!-- Modal -->
     <div class="modal fade adjust-bot-hours" id="botRatioModal" tabindex="-1" role="dialog" aria-labelledby="botRatioModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            @*<form asp-action="UpdateBotRatio" asp-route="@Model.Name" asp-controller="GameSettings" method="post">*@
+            <form asp-action="UpdateBotRatio" asp-route-name="@Model.Name" asp-controller="GameSettings" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="botRatioModalLabel">Adjust bots by hour</h5>
@@ -120,7 +120,7 @@
                                                 <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
-                                                    <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                    <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
                                                     <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
                                                 </td>
                                             </tr>
@@ -144,7 +144,7 @@
                                                 <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
-                                                    <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                    <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
                                                     <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
                                                 </td>
                                             </tr>
@@ -157,10 +157,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn-submit">Save</button>
+                        <button type="submit" class="btn-submit">Save</button>
                     </div>
                 </div>
-            @*</form>*@
+            </form>
         </div>
     </div>
 </div>

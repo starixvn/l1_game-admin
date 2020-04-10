@@ -96,6 +96,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             foreach (var hour in hours)
             {
                 botRatioItems.Add(new BotRatioItemViewModel(
+                    hour.Hour,
                     hour.AddHours(-4).Hour,
                     hour.AddHours(7).Hour,
                     botRatios == null || botRatios.Length == 0 ? 0 : botRatios[hour.Hour] * 100,

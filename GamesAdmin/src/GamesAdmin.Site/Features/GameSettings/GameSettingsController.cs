@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -104,6 +105,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             var isExist = await mediator.Send(new IsExistRequest(name));
 
             return isExist ? Json($"A config named {name} already exists.") : Json(true);
+        }
+
+        [HttpPost]
+        [Route("{name}")]
+        public IActionResult UpdateBotRatio(string name,[FromBody] object formData)
+        {
+            var form = HttpContext.Request.Form;
+            return Ok();
         }
     }
 }
