@@ -55,5 +55,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double BotMaxBet { get; set; }
 
         public double[] HoursMaxBot { get; set; }
+
+        public List<BotRatioItemViewModel> BotRatioItems { get; set; }
+    }
+
+    public class BotRatioItemViewModel 
+    { 
+        public int GreenwichHour { get; set; }
+
+        public int AsiaPacificHour { get; set; }
+
+        public double BotRatio { get; set; }
     }
 }

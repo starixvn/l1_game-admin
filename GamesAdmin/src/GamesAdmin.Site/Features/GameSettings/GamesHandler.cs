@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,6 +60,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             viewModel.BotMaxBet = game == null || game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
             viewModel.BotCount = await accountService.GetBotCount();
             viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
+            viewModel.BotRatioItems = GenerateBotRatioItems(game?.HoursMaxBot);
 
             return viewModel;
         }
@@ -82,6 +84,26 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return items;
+        }
+
+        private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios)
+        {
+            var botRatioItems = new List<BotRatioItemViewModel>();
+
+            var hours = Enumerable.Range(00, 24)
+                .Select(i => (DateTime.UtcNow.AddHours(i)));
+
+            foreach (var hour in hours)
+            {
+                botRatioItems.Add(new BotRatioItemViewModel
+                {
+                    GreenwichHour = hour.AddHours(-4).Hour,
+                    AsiaPacificHour = hour.AddHours(7).Hour,
+                    BotRatio = botRatios == null || botRatios.Length == 0 ? 0 : botRatios[hour.Hour]
+                });
+            }
+
+            return botRatioItems.OrderBy(item => item.GreenwichHour).ToList();
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
