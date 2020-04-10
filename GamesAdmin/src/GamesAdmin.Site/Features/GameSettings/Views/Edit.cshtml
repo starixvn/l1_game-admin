@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="adjust-bot-link">
-                    <a id="OpenDialog" href="#" data-toggle="modal" data-target="#exampleModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
+                    <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
                 </div>
 
                 <div class="form-group">
@@ -91,74 +91,76 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade adjust-bot-hours" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade adjust-bot-hours" id="botRatioModal" tabindex="-1" role="dialog" aria-labelledby="botRatioModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Adjust bots by hour</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Total bots: <strong>@Model.BotCount</strong></p>
-                    <div class="row options">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>From (GTM-4)</th>
-                                        <th>From (GTM+7)</th>
-                                        <th>% Bot</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for (var i = 0; i < 12; i++)
-                                    {
-                                        <tr>
-                                            <td>@Model.BotRatioItems[i].GreenwichHour</td>
-                                            <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
-                                            <td class="ratio-cell">
-                                                <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
-                                                => @Model.BotRatioItems[i].CurrentBot
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>From (GTM-4)</th>
-                                        <th>From (GTM+7)</th>
-                                        <th>% Bot</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for (var i = 12; i < 24; i++)
-                                    {
-                                        <tr>
-                                            <td>@Model.BotRatioItems[i].GreenwichHour</td>
-                                            <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
-                                            <td class="ratio-cell">
-                                                <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
-                                                => @Model.BotRatioItems[i].CurrentBot
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+            <form asp-action="UpdateBotRatio" asp-route="@Model.Name" asp-controller="GameSettings" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="botRatioModalLabel">Adjust bots by hour</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <div class="modal-body">
+                        <p>Total bots: <strong>@Model.BotCount</strong></p>
+                        <div class="row options">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>From (GTM-4)</th>
+                                            <th>From (GTM+7)</th>
+                                            <th>% Bot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < 12; i++)
+                                        {
+                                            <tr>
+                                                <td>@Model.BotRatioItems[i].GreenwichHour</td>
+                                                <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
+                                                <td class="ratio-cell">
+                                                    <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                    (@Model.BotRatioItems[i].CurrentBot bot(s))
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>From (GTM-4)</th>
+                                            <th>From (GTM+7)</th>
+                                            <th>% Bot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 12; i < 24; i++)
+                                        {
+                                            <tr>
+                                                <td>@Model.BotRatioItems[i].GreenwichHour</td>
+                                                <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
+                                                <td class="ratio-cell">
+                                                    <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                    (@Model.BotRatioItems[i].CurrentBot bot(s))
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn-submit">Save</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn-submit">Save</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
