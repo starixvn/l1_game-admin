@@ -101,7 +101,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Current bots: <strong>72</strong>/721</p>
+                    <p>Total bots: <strong>@Model.BotCount</strong></p>
                     <div class="row options">
                         <div class="col-lg-6">
                             <table class="table table-bordered table-hover">
@@ -120,6 +120,7 @@
                                             <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                             <td class="ratio-cell">
                                                 <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                => @Model.BotRatioItems[i].CurrentBot
                                             </td>
                                         </tr>
                                     }
@@ -135,14 +136,15 @@
                                         <th>% Bot</th>
                                     </tr>
                                 </thead>
-                                <tbody>                                    
+                                <tbody>
                                     @for (var i = 12; i < 24; i++)
                                     {
                                         <tr>
                                             <td>@Model.BotRatioItems[i].GreenwichHour</td>
                                             <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                             <td class="ratio-cell">
-                                                <input type="number" asp-for="BotRatioItems[i].BotRatio"  class="ratio" />
+                                                <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                => @Model.BotRatioItems[i].CurrentBot
                                             </td>
                                         </tr>
                                     }

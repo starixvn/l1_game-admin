@@ -60,10 +60,22 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     }
 
     public class BotRatioItemViewModel 
-    { 
-        public int GreenwichHour { get; set; }
+    {
+        public BotRatioItemViewModel(int greenwichHour, int asiaHour, double botRatio, int totalBot) 
+        {
+            GreenwichHour = greenwichHour;
+            AsiaPacificHour = asiaHour;
+            BotRatio = botRatio;
+            TotalBot = totalBot;
+        }
 
-        public int AsiaPacificHour { get; set; }
+        public int GreenwichHour { get; }
+
+        public int AsiaPacificHour { get; }        
+
+        public int TotalBot { get; }
+
+        public int CurrentBot => (int)( BotRatio * TotalBot / 100);
 
         public double BotRatio { get; set; }
     }
