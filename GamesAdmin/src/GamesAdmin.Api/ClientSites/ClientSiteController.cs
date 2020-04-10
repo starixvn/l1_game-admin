@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.ClientSites.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
@@ -9,8 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamesAdmin.Api.Sites
 {
     [Route("api/client_sites")]
-    [ApiController, Authorize]
-    public class ClientSiteController : Controller
+    public class ClientSiteController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 

@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.Accounts.Requests;
+﻿using GamesAdmin.Api._Shared;
+using GamesAdmin.Api.Accounts.Requests;
 using GamesAdmin.Api.Accounts.Results;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Accounts
 {
-    [Route("api/accounts")]
-    [ApiController, Authorize]
-    public class AccountController : ControllerBase
+    [Route("api/accounts")] 
+    public class AccountController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 

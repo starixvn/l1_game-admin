@@ -2,7 +2,8 @@
 
 namespace GamesAdmin.Site.Features._Shared
 {
-    [Headers("Authorization: Bearer")]
+    //TODO remove comment after fixing LOCAL
+    //[Headers("Authorization: Bearer")]
     public interface IBaseAuthorizationApi
     {
     }
