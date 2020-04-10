@@ -15,16 +15,17 @@
 
 .adjust-bot-hours {
     .modal-dialog {
-        max-width: 72rem;
+        max-width: 83rem;
     }
 
     .modal-body {
-        max-height: 62rem;
+        max-height: 50rem;
         overflow: auto;
     }
 
     .ratio {
-        width: 6rem;
+        width: 5rem;
+        line-height: 1.5rem;
         text-align: center;
     }
 
@@ -34,14 +35,28 @@
             text-align: center;
         }
 
-        .ratio-cell {
-            padding-top: 0;
-            padding-bottom: 0;
+        td {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+
+            &.ratio-cell {
+                text-align: left;
+            }
         }
     }
 
     .options {
         margin-left: -12px;
         margin-right: -12px;
+    }
+
+    .bot-number {
+        margin-top: 2px;
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    .col-gmt {
+        width: 120px;
     }
 }

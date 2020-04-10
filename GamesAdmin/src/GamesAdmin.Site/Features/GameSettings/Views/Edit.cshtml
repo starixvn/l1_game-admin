@@ -108,8 +108,8 @@
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>From (GTM-4)</th>
-                                            <th>From (GTM+7)</th>
+                                            <th class="col-gmt">From (GTM-4)</th>
+                                            <th class="col-gmt">From (GTM+7)</th>
                                             <th>% Bot</th>
                                         </tr>
                                     </thead>
@@ -121,7 +121,7 @@
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
                                                     <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
-                                                    (@Model.BotRatioItems[i].CurrentBot bot(s))
+                                                    <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
                                                 </td>
                                             </tr>
                                         }
@@ -132,8 +132,8 @@
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>From (GTM-4)</th>
-                                            <th>From (GTM+7)</th>
+                                            <th class="col-gmt">From (GTM-4)</th>
+                                            <th class="col-gmt">From (GTM+7)</th>
                                             <th>% Bot</th>
                                         </tr>
                                     </thead>
@@ -145,7 +145,7 @@
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
                                                     <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
-                                                    (@Model.BotRatioItems[i].CurrentBot bot(s))
+                                                    <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
                                                 </td>
                                             </tr>
                                         }
