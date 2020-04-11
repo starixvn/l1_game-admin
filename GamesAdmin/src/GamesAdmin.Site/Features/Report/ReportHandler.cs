@@ -38,7 +38,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         {
             var result = await reportService.GetBigSmallRounds();
 
-            return result.Select(x => x.Number);
+            return result.OrderByDescending(x => x.Number).Select(x => x.Number);
         }
     }
 }
