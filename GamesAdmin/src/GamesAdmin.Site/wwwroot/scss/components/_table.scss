@@ -1,6 +1,7 @@
 ﻿.table {
     &.table-bordered thead th {
         border-bottom-width: 1px;
+        text-align: center;
     }
 
     td, th {
@@ -11,5 +12,13 @@
 
     &.table-bordered {
         border-color: #ddd;
+    }
+
+    .total {
+        background-color: #fdf6e0;
+
+        td {
+            font-weight: 600;
+        }
     }
 }

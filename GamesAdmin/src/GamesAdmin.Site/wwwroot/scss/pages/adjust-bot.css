@@ -22,13 +22,10 @@
   border: 1px solid #ced4da;
   text-align: center; }
 
-.adjust-bot-hours .table th,
-.adjust-bot-hours .table td {
-  text-align: center; }
-
 .adjust-bot-hours .table td {
   padding-top: 0.5rem;
-  padding-bottom: 0.5rem; }
+  padding-bottom: 0.5rem;
+  text-align: center; }
   .adjust-bot-hours .table td.ratio-cell {
     text-align: left; }
 

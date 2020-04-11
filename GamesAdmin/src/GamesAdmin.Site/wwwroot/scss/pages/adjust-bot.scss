@@ -32,14 +32,10 @@
     }
 
     .table {
-        th,
-        td {
-            text-align: center;
-        }
-
         td {
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
+            text-align: center;
 
             &.ratio-cell {
                 text-align: left;

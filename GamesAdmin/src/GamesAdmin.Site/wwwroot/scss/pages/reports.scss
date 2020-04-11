@@ -1,25 +1,44 @@
 ﻿@import "../components/tab";
 
-.form-check {
-    padding-left: 2rem;
-}
+.form {
+    padding: 0 1.5rem 1rem;
 
-.form-check-input {
-    margin-left: -1.8rem;
-}
+    .form-check {
+        padding-left: 2rem;
+    }
 
-.form-row > .col, .form-row > [class*=col-] {
-    padding-right: 8px;
-    padding-left: 8px;
-}
+    .form-check-input {
+        margin-left: -1.8rem;
+    }
 
+    .form-row > [class*=col-] {
+        padding-right: 0.8rem;
+        padding-left: 0.8rem;
+    }
+}
 
 .report-container {
     margin-top: 1rem;
 
-    .tab-content {
+    .card {
         margin-left: 0;
         margin-right: 0;
+    }
+
+    .card-header {
+        padding: 1.2rem 1.8rem;
+        background-color: #fff;
+    }
+
+    .card .card-body {
+        overflow-x: auto;
+    }
+
+    .card-title {
+        margin-bottom: 0;
+        text-transform: capitalize;
+        color: rgba(31,10,6,0.6);
+        font-size: 1.8rem;
     }
 
     .table {

@@ -6,13 +6,25 @@
     var smallRecords = Model.Where(x => !x.SelectBig);
 }
 
-<div>
-    <div>
-        <div>Big</div>
-        @await Html.PartialAsync("_Records", bigRecords)
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Big</h2>
+            </div>
+            <div class="card-body">
+                @await Html.PartialAsync("_Records", bigRecords)
+            </div>
+        </div>
     </div>
-    <div>
-        <div>Small</div>
-        @await Html.PartialAsync("_Records", smallRecords)
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Small</h2>
+            </div>
+            <div class="card-body">
+                @await Html.PartialAsync("_Records", smallRecords)
+            </div>
+        </div>
     </div>
 </div>

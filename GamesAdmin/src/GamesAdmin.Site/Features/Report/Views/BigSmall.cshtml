@@ -8,35 +8,33 @@
     <link href="~/scss/pages/reports.min.css" rel="stylesheet" />
 }
 <div class="row">
-    <div class="col-auto card">
-        <form class="card-body form" data-ajax="true" data-ajax-method="GET" asp-action="GetBigSmallReport" data-ajax-mode="replace" data-ajax-update="#report-result"
-              data-ajax-loading="#spinner"
-              method="get">
-            <div class="form-row align-items-center">
-                <div class="col-auto">
-                    <label asp-for="RoundId" class="control-label"></label>
-                    <select asp-items="@Model.Rounds" asp-for="RoundId" class="form-control"></select>
-                </div>
-                <div class="col-auto">
-                    <label asp-for="Nickname" class="control-label"></label>
-                    <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
-                </div>
-                <div class="col-auto mt-5">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" asp-for="ExcludeBot">
-                        <label class="form-check-label" asp-for="ExcludeBot">
-                        </label>
-                    </div>
-                </div>
-                <div class="col-auto mt-5">
-                    <button type="submit" class="btn-submit">Submit</button>
-                    <div id="spinner" class="spinner-border" style="display: none">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+    <form class="form" data-ajax="true" data-ajax-method="GET" asp-action="GetBigSmallReport" data-ajax-mode="replace" data-ajax-update="#report-result"
+          data-ajax-loading="#spinner"
+          method="get">
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                <label asp-for="RoundId" class="control-label"></label>
+                <select asp-items="@Model.Rounds" asp-for="RoundId" class="form-control"></select>
+            </div>
+            <div class="col-auto">
+                <label asp-for="Nickname" class="control-label"></label>
+                <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+            </div>
+            <div class="col-auto mt-5">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="ExcludeBot">
+                    <label class="form-check-label" asp-for="ExcludeBot">
+                    </label>
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="col-auto mt-5">
+                <button type="submit" class="btn-submit">Submit</button>
+                <div id="spinner" class="spinner-border" style="display: none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <div id="report-result" class="col-sm-12 report-container">
     </div>

@@ -17,18 +17,23 @@
             <tr>
                 <td>@item.Username</td>
                 <td>@item.Nickname</td>
-                <td>@item.Bet</td>
-                <td>@item.Back</td>
-                <td>@item.BetWin</td>
+                <td class="text-right">@item.Bet</td>
+                <td class="text-right">@item.Back</td>
+                <td class="text-right">@item.BetWin</td>
             </tr>
 
         }
-        <tr>
+    </tbody>
+    <tfoot>
+        @*<tr>
+            <td class="text-center" colspan="5">No data</td>
+        </tr>*@
+        <tr class="total">
             <td>Total</td>
             <td></td>
-            <td>@Model.Sum(x => x.Bet)</td>
-            <td>@Model.Sum(x => x.Back)</td>
-            <td>@Model.Sum(x => x.BetWin)</td>
+            <td class="text-right">@Model.Sum(x => x.Bet)</td>
+            <td class="text-right">@Model.Sum(x => x.Back)</td>
+            <td class="text-right">@Model.Sum(x => x.BetWin)</td>
         </tr>
-    </tbody>
+    </tfoot>
 </table>
