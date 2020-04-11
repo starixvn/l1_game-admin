@@ -390,11 +390,14 @@ body {
   left: 32rem;
   right: 0;
   height: 100%;
-  transition: all .2s;
-  overflow: auto; }
+  transition: all .2s; }
 
 .sidebar.active + .content-container {
   left: 9rem; }
+
+.inner-content {
+  overflow: auto;
+  height: calc(100% - 7.5rem); }
 
 .tab-content {
   margin-left: 2rem;

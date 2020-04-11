@@ -34,11 +34,15 @@ body {
     right: 0;
     height: 100%;
     transition: all .2s;
-    overflow: auto;
 }
 
 .sidebar.active + .content-container {
     left: 9rem;
+}
+
+.inner-content {
+    overflow: auto;
+    height: calc(100% - 7.5rem);
 }
 
 .tab-content {

@@ -1,7 +1,7 @@
 ﻿@import "../components/tab";
 
 .form {
-    padding: 0 1.5rem 1rem;
+    padding-bottom: 1rem;
 
     .form-check {
         padding-left: 2rem;
@@ -19,6 +19,7 @@
 
 .report-container {
     margin-top: 1rem;
+    padding: 0;
 
     .table {
         background-color: #fff;
