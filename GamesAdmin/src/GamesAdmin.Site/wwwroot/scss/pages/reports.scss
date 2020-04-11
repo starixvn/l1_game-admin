@@ -20,28 +20,15 @@
 .report-container {
     margin-top: 1rem;
 
-    .card {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .card-header {
-        padding: 1.2rem 1.8rem;
-        background-color: #fff;
-    }
-
-    .card .card-body {
-        overflow-x: auto;
-    }
-
-    .card-title {
-        margin-bottom: 0;
-        text-transform: capitalize;
-        color: rgba(31,10,6,0.6);
-        font-size: 1.8rem;
-    }
-
     .table {
         background-color: #fff;
+    }
+
+    .col-nickname {
+        width: 198px;
+    }
+
+    .col-number {
+        width: 96px;
     }
 }

@@ -9,83 +9,76 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Big</h2>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th colspan="6">Big</th>
-                            <th colspan="6">Small</th>
-                        </tr>
-                        <tr>
-                            <th>Date</th>
-                            <th>Username</th>
-                            <th>Nickname</th>
-                            <th>Stake</th>
-                            <th>Refund</th>
-                            <th>Win</th>
-                            <th>Date</th>
-                            <th>Username</th>
-                            <th>Nickname</th>
-                            <th>Stake</th>
-                            <th>Refund</th>
-                            <th>Win</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for(var i = 0; i < totalRow; i++)
-                        {
-                            var bigRecord = bigRecords.ElementAtOrDefault(i);
-                            var smallRecord = smallRecords.ElementAtOrDefault(i);
-                        <tr>
-                            <td></td>
-                            <td>@bigRecord?.Username</td>
-                            <td>@bigRecord?.Nickname</td>
-                            <td class="text-right">@bigRecord?.Bet</td>
-                            <td class="text-right">@bigRecord?.Back</td>
-                            <td class="text-right">@bigRecord?.BetWin</td>
-                            
-                            <td></td>
-                            <td>@smallRecord?.Username</td>
-                            <td>@smallRecord?.Nickname</td>
-                            <td class="text-right">@smallRecord?.Bet</td>
-                            <td class="text-right">@smallRecord?.Back</td>
-                            <td class="text-right">@smallRecord?.BetWin</td>
-                        </tr>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th colspan="6">Big</th>
+                    <th colspan="6">Small</th>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <th>Username</th>
+                    <th>Nickname</th>
+                    <th>Stake</th>
+                    <th>Refund</th>
+                    <th>Win</th>
+                    <th>Date</th>
+                    <th>Username</th>
+                    <th>Nickname</th>
+                    <th>Stake</th>
+                    <th>Refund</th>
+                    <th>Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < totalRow; i++)
+                {
+                    var bigRecord = bigRecords.ElementAtOrDefault(i);
+                    var smallRecord = smallRecords.ElementAtOrDefault(i);
+                    <tr>
+                        <td></td>
+                        <td>@bigRecord?.Username</td>
+                        <td class="col-nickname">@bigRecord?.Nickname</td>
+                        <td class="text-right col-number">@bigRecord?.Bet</td>
+                        <td class="text-right col-number">@bigRecord?.Back</td>
+                        <td class="text-right col-number">@bigRecord?.BetWin</td>
 
-                        }
-                    </tbody>
-                    <tfoot>
-                        @if (totalRow == 0)
-                        {
-                            <tr>
-                                <td class="text-center" colspan="12">No data</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr class="total">
-                                <td>Total</td>
-                                <td></td>
-                                <td></td>
-                                <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
-                                <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
-                                <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
-                                <td>Total</td>
-                                <td></td>
-                                <td></td>
-                                <td class="text-right">@smallRecords.Sum(x => x.Bet)</td>
-                                <td class="text-right">@smallRecords.Sum(x => x.Back)</td>
-                                <td class="text-right">@smallRecords.Sum(x => x.BetWin)</td>
-                            </tr>
-                        }
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+                        <td></td>
+                        <td>@smallRecord?.Username</td>
+                        <td class="col-nickname">@smallRecord?.Nickname</td>
+                        <td class="text-right col-number">@smallRecord?.Bet</td>
+                        <td class="text-right col-number">@smallRecord?.Back</td>
+                        <td class="text-right col-number">@smallRecord?.BetWin</td>
+                    </tr>
+
+                }
+            </tbody>
+            <tfoot>
+                @if (totalRow == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="12">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
+                        <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
+                        <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@smallRecords.Sum(x => x.Bet)</td>
+                        <td class="text-right">@smallRecords.Sum(x => x.Back)</td>
+                        <td class="text-right">@smallRecords.Sum(x => x.BetWin)</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
     </div>
 </div>
 

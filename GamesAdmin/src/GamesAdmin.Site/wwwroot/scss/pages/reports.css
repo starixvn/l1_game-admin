@@ -37,18 +37,9 @@
 
 .report-container {
   margin-top: 1rem; }
-  .report-container .card {
-    margin-left: 0;
-    margin-right: 0; }
-  .report-container .card-header {
-    padding: 1.2rem 1.8rem;
-    background-color: #fff; }
-  .report-container .card .card-body {
-    overflow-x: auto; }
-  .report-container .card-title {
-    margin-bottom: 0;
-    text-transform: capitalize;
-    color: rgba(31, 10, 6, 0.6);
-    font-size: 1.8rem; }
   .report-container .table {
     background-color: #fff; }
+  .report-container .col-nickname {
+    width: 198px; }
+  .report-container .col-number {
+    width: 96px; }
