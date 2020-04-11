@@ -6,7 +6,7 @@
     var smallRecords = Model.Where(x => !x.SelectBig);
 }
 
-<div class="tab-content">
+<div>
     <div>
         <div>Big</div>
         @await Html.PartialAsync("_Records", bigRecords)
