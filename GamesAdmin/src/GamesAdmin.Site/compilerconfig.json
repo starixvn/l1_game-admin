@@ -22,5 +22,9 @@
   {
     "outputFile": "wwwroot/scss/pages/adjust-bot.css",
     "inputFile": "wwwroot/scss/pages/adjust-bot.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/reports.css",
+    "inputFile": "wwwroot/scss/pages/reports.scss"
   }
 ]

@@ -1,0 +1,35 @@
+﻿.simple-tabs {
+    margin: 0 0 2rem;
+    border-color: #dee2e6;
+
+    .nav-link {
+        position: relative;
+        min-width: 8rem;
+        padding: 1.5rem 1rem;
+        border: none;
+        text-align: center;
+        color: #495057;
+
+        &.active {
+            background-color: transparent;
+            color: #da624a;
+        }
+    }
+
+    .nav-link::before {
+        content: '';
+        border-radius: 1.5rem;
+        background: #da624a;
+        transition: all .2s;
+        height: .4rem;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: -0.2rem;
+        opacity: 0;
+    }
+
+    .nav-link.active::before {
+        opacity: 1;
+    }
+}

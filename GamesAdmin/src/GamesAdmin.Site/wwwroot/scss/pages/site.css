@@ -7,6 +7,8 @@
   border-width: 1px;
   border-style: solid;
   outline: none; }
+  .btn-submit:focus, .btn-add:focus, .btn-gray:focus, .btn-outline-green:focus, .btn-outline-gray:focus, .btn-outline-blue:focus {
+    outline: none; }
 
 .btn-submit {
   background-color: #da624a;
@@ -64,27 +66,27 @@
 .table.table-bordered {
   border-color: #ddd; }
 
-.form-add .form-control {
+.form .form-control {
   border-radius: .5rem;
   outline: initial !important;
   box-shadow: none !important;
   font-size: 1.4rem;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   line-height: 1;
   background: #fff;
   color: #3a3a3a;
   border: 1px solid #ced4da;
   height: auto; }
 
-.form-add .form-control:disabled,
-.form-add .form-control[readonly] {
+.form .form-control:disabled,
+.form .form-control[readonly] {
   color: #6c757d;
   background-color: #e9ecef; }
 
-.form-add .form-group {
+.form .form-group {
   margin-bottom: 1.6rem; }
 
-.form-add .field-validation-error {
+.form .field-validation-error {
   margin: 1rem 0; }
 
 .message-success, .message-error {
@@ -170,7 +172,7 @@
   align-items: center;
   border-radius: .5rem;
   padding: .5rem 0;
-  margin: 0 3rem 2rem;
+  margin: 0 0 2rem;
   background: #fff;
   border: #dee2e6 solid 1px; }
   .header-bar > .nav .nav-item {
@@ -392,8 +394,8 @@ body {
   margin-right: 3rem; }
 
 .tab-content {
-  margin-left: 3rem;
-  margin-right: 3rem; }
+  margin-left: 2rem;
+  margin-right: 2rem; }
 
 .list-action {
   margin-bottom: 3rem; }
@@ -405,4 +407,4 @@ body {
   background: #fff;
   border-radius: 0.5rem; }
   .card .card-body {
-    padding: 3rem; }
+    padding: 2rem; }

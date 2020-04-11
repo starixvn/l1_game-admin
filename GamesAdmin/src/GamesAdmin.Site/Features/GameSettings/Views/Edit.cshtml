@@ -9,6 +9,15 @@
     <link href="~/scss/pages/adjust-bot.min.css" rel="stylesheet" />
 }
 
+<div class="header-bar">
+    <ul class="nav">
+        <li class="nav-item">
+            <a role="tab" data-toggle="tab" class="nav-link active" href="#setting">
+                <span>Setting</span>
+            </a>
+        </li>
+    </ul>
+</div>
 <div class="row">
 
     <div class="col-md-10 col-lg-6 card">
@@ -23,7 +32,7 @@
                 <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
             }
 
-            <form class="card-body form-add" asp-action="Update" asp-controller="GameSettings" method="post">
+            <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -60,7 +69,7 @@
 
                 <div class="form-group">
                     <label asp-for="BotMaxBet" class="control-label"></label>
-                    <input type="number" asp-for="BotMaxBet" class="form-control" />                    
+                    <input type="number" asp-for="BotMaxBet" class="form-control" />
                     <span asp-validation-for="BotMaxBet" class="text-danger"></span>
                 </div>
 

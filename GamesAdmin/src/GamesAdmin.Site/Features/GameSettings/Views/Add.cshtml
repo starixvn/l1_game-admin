@@ -4,10 +4,18 @@
 @{
     ViewData["Title"] = "Games";
 }
-
+<div class="header-bar">
+    <ul class="nav">
+        <li class="nav-item">
+            <a role="tab" data-toggle="tab" class="nav-link active" href="#setting">
+                <span>Setting</span>
+            </a>
+        </li>
+    </ul>
+</div>
 <div class="row">
     <div class="col-md-10 col-lg-6 card">
-        <form class="card-body form-add" asp-action="Add" asp-controller="GameSettings" method="post">
+        <form class="card-body form" asp-action="Add" asp-controller="GameSettings" method="post">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
