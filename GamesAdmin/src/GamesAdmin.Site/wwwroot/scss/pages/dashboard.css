@@ -65,11 +65,18 @@
   padding-top: 1.2rem; }
 
 .stats {
-  background: #fff;
+  margin: 0 0 2rem; }
+
+.stats-item:first-child {
+  padding-right: 3rem; }
+
+.stats-container {
+  display: flex;
+  justify-content: center;
   padding: 3rem;
   border-radius: 0.5rem;
   border: 1px solid #ddd;
-  margin: 0 0 2rem; }
+  background: #fff; }
 
 .circle {
   display: flex;
@@ -82,10 +89,6 @@
     background-color: #f7b924; }
     .circle.yellow .icon {
       color: #495057; }
-  .circle.pink {
-    background-color: #d92550; }
-    .circle.pink .icon {
-      color: #fff; }
   .circle.green {
     background-color: #3ac47d; }
     .circle.green .icon {
@@ -101,10 +104,6 @@
     line-height: 1;
     color: #495057;
     font-weight: bold; }
-
-.stats-item {
-  display: flex;
-  justify-content: center; }
 
 .card {
   margin: 0; }

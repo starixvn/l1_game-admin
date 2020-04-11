@@ -1,0 +1,495 @@
+﻿@section Styles {
+    <link href="~/scss/pages/adjust-bot.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12 col-lg-10 card">
+        <form class="card-body form-add">
+            <div class="form-group col-sm-6">
+                <label class="control-label">Game Type</label>
+                <select class="form-control">
+                    <option>Shake the Plate</option>
+                    <option>Big Small</option>
+                    <option>Fish Prawn Crab</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label">Bot Maximum Bet Limit</label>
+                <input type="number" value="200" class="form-control" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label">Maximum Bot Percentage</label>
+                <input type="number" value="80" class="form-control" />
+            </div>
+            <div class="adjust-bot-link">
+                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#exampleModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
+            </div>
+            <div class="row adjust-bot-hours">
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>From (GTM-4)</th>
+                                <th>From (GTM+7)</th>
+                                <th>% Bot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td>
+                                <td>11</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>12</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>13</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>14</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>15</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>16</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>17</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>18</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>19</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>20</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>21</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>22</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>From (GTM-4)</th>
+                                <th>From (GTM+7)</th>
+                                <th>% Bot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12</td>
+                                <td>23</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>0</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>1</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>2</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>3</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>4</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>5</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>6</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>7</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>8</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td>9</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td>10</td>
+                                <td class="ratio-cell">
+                                    <input type="number" value="80" class="ratio" />
+                                    <span class="bot-number">(576 bot(s))</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn-submit" />
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade adjust-bot-hours" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Adjust bots by hour</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Total bots: 721</p>
+                    <div class="row options">
+                        <div class="col-lg-6">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>From (GTM-4)</th>
+                                        <th>From (GTM+7)</th>
+                                        <th>% Bot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>11</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>12</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>13</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>14</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>15</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>16</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>17</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>18</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>19</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>20</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>21</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>22</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>From (GTM-4)</th>
+                                        <th>From (GTM+7)</th>
+                                        <th>% Bot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>23</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>0</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>1</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>15</td>
+                                        <td>2</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>16</td>
+                                        <td>3</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>17</td>
+                                        <td>4</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>18</td>
+                                        <td>5</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>19</td>
+                                        <td>6</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>20</td>
+                                        <td>7</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>8</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>22</td>
+                                        <td>9</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>23</td>
+                                        <td>10</td>
+                                        <td class="ratio-cell">
+                                            <input type="number" value="80" class="ratio" />
+                                            <span class="bot-number">(576 bot(s))</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn-submit">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

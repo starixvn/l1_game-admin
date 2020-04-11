@@ -1,50 +1,55 @@
-﻿$(document).ready(function () {
-    $('input[type="checkbox"]').change(function (e) {
+﻿class GameStatus {
+    checkAll() {
+        $('input[type="checkbox"]').change(function (e) {
 
-        var checked = $(this).prop("checked"),
-            container = $(this).parent();
+            var checked = $(this).prop("checked"),
+                container = $(this).parent();
 
-        container.find('input[type="checkbox"]').prop({
-            indeterminate: false,
-            checked: checked
-        });
-
-        function checkSiblings(el) {
-
-            var parent = el.parent().parent(),
-                all = true;
-
-            el.siblings().each(function () {
-                let returnValue = all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
-                return returnValue;
+            container.find('input[type="checkbox"]').prop({
+                indeterminate: false,
+                checked: checked
             });
 
-            if (all && checked) {
+            function checkSiblings(el) {
 
-                parent.children('input[type="checkbox"]').prop({
-                    indeterminate: false,
-                    checked: checked
+                var parent = el.parent().parent(),
+                    all = true;
+
+                el.siblings().each(function () {
+                    let returnValue = all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+                    return returnValue;
                 });
 
-                checkSiblings(parent);
+                if (all && checked) {
 
-            } else if (all && !checked) {
+                    parent.children('input[type="checkbox"]').prop({
+                        indeterminate: false,
+                        checked: checked
+                    });
 
-                parent.children('input[type="checkbox"]').prop("checked", checked);
-                parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
-                checkSiblings(parent);
+                    checkSiblings(parent);
 
-            } else {
+                } else if (all && !checked) {
 
-                el.parents("li").children('input[type="checkbox"]').prop({
-                    indeterminate: true,
-                    checked: false
-                });
+                    parent.children('input[type="checkbox"]').prop("checked", checked);
+                    parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+                    checkSiblings(parent);
+
+                } else {
+
+                    el.parents("li").children('input[type="checkbox"]').prop({
+                        indeterminate: true,
+                        checked: false
+                    });
+
+                }
 
             }
 
-        }
+            checkSiblings(container);
+        });
+    }
+}
 
-        checkSiblings(container);
-    });
-});
+var gameStatus = new GameStatus();
+gameStatus.checkAll();

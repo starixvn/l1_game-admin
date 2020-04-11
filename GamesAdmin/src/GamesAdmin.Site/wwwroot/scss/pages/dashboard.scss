@@ -1,12 +1,21 @@
 ﻿@import "../base/variables";
 @import "../components/customize-datatable";
 
-.stats {
-    background: #fff;
+.stats {   
+    margin: 0 0 2rem;
+}
+
+.stats-item:first-child {
+    padding-right: 3rem;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
     padding: 3rem;
     border-radius: 0.5rem;
     border: 1px solid #ddd;
-    margin: 0 0 2rem;
+    background: #fff;
 }
 
 .circle {
@@ -22,14 +31,6 @@
 
         .icon {
             color: $text-color;
-        }
-    }
-
-    &.pink {
-        background-color: #d92550;
-
-        .icon {
-            color: #fff;
         }
     }
 
@@ -58,10 +59,7 @@
     }
 }
 
-.stats-item {
-    display: flex;
-    justify-content: center;
-}
+// Online users
 
 .card {
     margin: 0;

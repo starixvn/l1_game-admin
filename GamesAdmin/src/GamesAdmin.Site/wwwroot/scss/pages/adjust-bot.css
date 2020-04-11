@@ -26,6 +26,10 @@
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   text-align: center; }
+
+.adjust-bot-hours .table td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem; }
   .adjust-bot-hours .table td.ratio-cell {
     text-align: left; }
 

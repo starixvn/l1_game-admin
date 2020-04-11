@@ -20,5 +20,15 @@ namespace GamesAdmin.Site.Features.Setting
         {
             return View();
         }
+
+        public IActionResult StakeLevel()
+        {
+            return View();
+        }
+
+        public IActionResult Bot()
+        {
+            return View();
+        }
     }
 }
