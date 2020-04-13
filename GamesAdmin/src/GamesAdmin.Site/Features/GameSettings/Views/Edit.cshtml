@@ -43,6 +43,7 @@
                         <span asp-validation-for="MinBet" class="text-danger"></span>
                         <input asp-for="Name" type="hidden" class="form-control" />
                         <input asp-for="Id" type="hidden" class="form-control" />
+                        <input type="hidden" asp-for="MaxBot" class="form-control"/>
                     </div>
                     <div class="col-lg-6">
                         <label asp-for="MaxBet" class="control-label"></label>
@@ -71,11 +72,6 @@
                     <label asp-for="BotMaxBet" class="control-label"></label>
                     <input type="number" asp-for="BotMaxBet" class="form-control" />
                     <span asp-validation-for="BotMaxBet" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="MaxBot" class="control-label"></label>
-                    <input type="number" asp-for="MaxBot" class="form-control" readonly />
                 </div>
 
                 <div class="adjust-bot-link">
@@ -128,9 +124,9 @@
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
                                                     <div>
-                                                        <input type="number" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                        <input type="number" asp-for="BotRatioItems[i].BotRatio" onchange="gameSettings.updateBotRatio(this, @i, @Model.BotCount);" class="ratio" />
                                                         <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
-                                                        <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
+                                                        <span class="bot-number" id="@("bot_number_" + i)" >(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
                                                     </div>
                                                     <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
                                                 </td>
