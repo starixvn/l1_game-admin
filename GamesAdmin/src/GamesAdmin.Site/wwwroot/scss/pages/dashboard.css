@@ -67,8 +67,10 @@
 .stats {
   margin: 0 0 2rem; }
 
-.stats-item:first-child {
-  padding-right: 3rem; }
+.stats-item {
+  padding: 0; }
+  .stats-item:first-child {
+    padding-right: 3rem; }
 
 .stats-container {
   display: flex;
