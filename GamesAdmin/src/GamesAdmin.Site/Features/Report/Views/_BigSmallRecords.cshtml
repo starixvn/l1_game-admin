@@ -9,20 +9,22 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <h3>Round Result: @Model.RoundResult.Dice1 - @Model.RoundResult.Dice2 - @Model.RoundResult.Dice3</h3>
+        <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Dice1 - @Model.RoundResult.Dice2 - @Model.RoundResult.Dice3</span> </h3>
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th colspan="6">Big</th>
-                    <th colspan="6">Small</th>
+                    <th colspan="6" class="big-small-title">Big</th>
+                    <th class="line-cell"></th>
+                    <th colspan="6" class="big-small-title">Small</th>
                 </tr>
                 <tr>
-                    <th>Date</th>
-                    <th>Username</th>
-                    <th class="col-nickname">Nickname</th>
-                    <th class="col-number">Stake</th>
-                    <th class="col-number">Refund</th>
-                    <th class="col-number">Win</th>
+                    <th class="big-cell">Date</th>
+                    <th class="big-cell">Username</th>
+                    <th class="col-nickname big-cell">Nickname</th>
+                    <th class="col-number big-cell">Stake</th>
+                    <th class="col-number big-cell">Refund</th>
+                    <th class="col-number big-cell">Win</th>
+                    <th class="line-cell"></th>
                     <th>Date</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
@@ -43,7 +45,7 @@
                         <td class="text-right">@bigRecord?.Bet</td>
                         <td class="text-right">@bigRecord?.Back</td>
                         <td class="text-right">@bigRecord?.BetWin</td>
-
+                        <td class="line-cell"></td>
                         <td></td>
                         <td>@smallRecord?.Username</td>
                         <td class="col-nickname">@smallRecord?.Nickname</td>
@@ -58,7 +60,7 @@
                 @if (totalRow == 0)
                 {
                     <tr>
-                        <td class="text-center" colspan="12">No data</td>
+                        <td class="text-center" colspan="13">No data</td>
                     </tr>
                 }
                 else
@@ -70,6 +72,7 @@
                         <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
                         <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
                         <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
+                        <td class="line-cell"></td>
                         <td>Total</td>
                         <td></td>
                         <td></td>
