@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 
 namespace GamesAdmin.Api.Report
 {
     public interface IReportService
     {
-        IEnumerable<BigSmallReportEntity> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
+        Task<BigSmallReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -17,6 +19,29 @@ namespace GamesAdmin.Api.Report
             this.bigSmallReportRepository = bigSmallReportRepository;
         }
 
-        public IEnumerable<BigSmallReportEntity> GetBigSmallReport(long roundId, string nickname, bool excludeBot) => bigSmallReportRepository.Get(roundId, nickname, excludeBot);
+        public async Task<BigSmallReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var result = await bigSmallReportRepository.GetAsync(roundId, nickname, excludeBot);
+
+            return new BigSmallReport
+            {
+                RoundResult = new RoundResult
+                {
+                    Number = result.Item1.number,
+                    Dice1 = result.Item1.dice1,
+                    Dice2 = result.Item1.dice2,
+                    Dice3 = result.Item1.dice3
+                },
+                Records = result.Item2.Select(x => new BigSmallRecord
+                {
+                    Nickname = x.Nickname,
+                    Username = x.Username,
+                    SelectBig = x.SelectBig,
+                    Bet = x.Bet,
+                    BetWin = x.BetWin,
+                    Back = x.Back
+                })
+            };
+        }
     }
 }

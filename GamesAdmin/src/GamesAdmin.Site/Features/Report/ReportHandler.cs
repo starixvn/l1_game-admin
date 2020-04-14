@@ -9,7 +9,7 @@ using MediatR;
 namespace GamesAdmin.Site.Features.ClientSites
 {
     public class ReportHandler :
-        IRequestHandler<GetBigSmallReportRequest, IEnumerable<BigSmallRecordViewModel>>,
+        IRequestHandler<GetBigSmallReportRequest, BigSmallReportResultViewModel>,
         IRequestHandler<GetBigSmallRoundsRequest, IEnumerable<long>>
     {
         private readonly IReportService reportService;
@@ -19,19 +19,29 @@ namespace GamesAdmin.Site.Features.ClientSites
             this.reportService = reportService;
         }
 
-        public async Task<IEnumerable<BigSmallRecordViewModel>> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
+        public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetBigSmallReport(request.RoundId, request.Nickname, request.ExcludeBot);
 
-            return result.Select(x => new BigSmallRecordViewModel
+            return new BigSmallReportResultViewModel
             {
-                Username = x.Username,
-                Nickname = x.Nickname,
-                Back = x.Back,
-                Bet = x.Bet,
-                BetWin = x.BetWin,
-                SelectBig = x.SelectBig
-            });
+                RoundResult = new RoundResultViewModel
+                {
+                    Number = result.RoundResult.Number,
+                    Dice1 = result.RoundResult.Dice1,
+                    Dice2 = result.RoundResult.Dice2,
+                    Dice3 = result.RoundResult.Dice3,
+                },
+                Records = result.Records.Select(x => new BigSmallRecordViewModel
+                {
+                    Username = x.Username,
+                    Nickname = x.Nickname,
+                    Back = x.Back,
+                    Bet = x.Bet,
+                    BetWin = x.BetWin,
+                    SelectBig = x.SelectBig
+                })
+            };
         }
 
         public async Task<IEnumerable<long>> Handle(GetBigSmallRoundsRequest request, CancellationToken cancellationToken)

@@ -1,14 +1,15 @@
 ﻿@using GamesAdmin.Site.Features.Report.ViewModels;
-@model IEnumerable<BigSmallRecordViewModel>
+@model BigSmallReportResultViewModel
 
 @{
-    var bigRecords = Model.Where(x => x.SelectBig).ToList();
-    var smallRecords = Model.Where(x => !x.SelectBig).ToList();
+    var bigRecords = Model.Records.Where(x => x.SelectBig).ToList();
+    var smallRecords = Model.Records.Where(x => !x.SelectBig).ToList();
     var totalRow = bigRecords.Count > smallRecords.Count ? bigRecords.Count : smallRecords.Count;
 }
 
 <div class="row">
     <div class="col-sm-12">
+        <h3>Round Result: @Model.RoundResult.Dice1 - @Model.RoundResult.Dice2 - @Model.RoundResult.Dice3</h3>
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>

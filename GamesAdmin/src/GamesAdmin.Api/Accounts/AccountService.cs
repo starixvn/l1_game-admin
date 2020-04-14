@@ -35,7 +35,7 @@ namespace GamesAdmin.Api.Accounts
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
-        private readonly IGenericRepository<MiniSicboAccountEntity> txAccountRepository;
+        private readonly IGenericRepository<BigSmallAccountEntity> txAccountRepository;
         private readonly IGenericRepository<XocDiaAccountEntity> xdAccountRepository;
         private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
 
@@ -45,7 +45,7 @@ namespace GamesAdmin.Api.Accounts
             ISentryClient sentryClient,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
-             IGenericRepository<MiniSicboAccountEntity> txAccountRepository,
+             IGenericRepository<BigSmallAccountEntity> txAccountRepository,
             IGenericRepository<XocDiaAccountEntity> xdAccountRepository,
             IGenericRepository<BauCuaAccountEntity> bcAccountRepository)
         {
@@ -170,7 +170,7 @@ namespace GamesAdmin.Api.Accounts
             }
 
             await accountInfoRepository.InsertManyAsync(newAccountInfos);
-            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new MiniSicboAccountEntity { uid = x.Id.ToString() }).ToList());
+            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallAccountEntity { uid = x.Id.ToString() }).ToList());
             await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { uid = x.Id.ToString() }).ToList());
             await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { uid = x.Id.ToString() }).ToList());
 

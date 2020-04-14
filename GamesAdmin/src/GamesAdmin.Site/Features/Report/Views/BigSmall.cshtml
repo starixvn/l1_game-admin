@@ -5,6 +5,7 @@
 }
 
 @section Styles {
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/scss/pages/reports.min.css" rel="stylesheet" />
 }
 <form class="form" data-ajax="true" data-ajax-method="GET" asp-action="GetBigSmallReport" data-ajax-mode="replace" data-ajax-update="#report-result"
@@ -40,4 +41,11 @@
 
 @section Scripts {
     <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/select2//dist//js//select2.full.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#RoundId').select2();
+        });
+    </script>
 }

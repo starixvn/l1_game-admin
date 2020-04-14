@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("taixiu_users")]
-    public class MiniSicboAccountEntity : MiniGameBaseEntity
+    public class BigSmallAccountEntity : MiniGameBaseEntity
     {
         public int tRedPlay { get; set; }
         public double tWinRed { get; set; }

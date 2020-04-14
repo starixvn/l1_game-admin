@@ -5,7 +5,7 @@ namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("taixiu_phiens")]
     [BsonIgnoreExtraElements]
-    public class MiniSicboRoundEntity : MiniGameBaseEntity
+    public class BigSmallRoundEntity : MiniGameBaseEntity
     {        
         [BsonElement("id")]
         public long number { get; set; }

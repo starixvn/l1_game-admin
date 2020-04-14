@@ -23,13 +23,13 @@ namespace GamesAdmin.Api.GameRound
     {
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
-        private readonly IGenericRepository<MiniSicboRoundEntity> repository;
+        private readonly IGenericRepository<BigSmallRoundEntity> repository;
         private readonly IGenericRepository<BigSmallEntity> betRepository;
 
         public GameRoundService(
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<MiniSicboRoundEntity> repository,
+            IGenericRepository<BigSmallRoundEntity> repository,
             IGenericRepository<BigSmallEntity> betRepository)
         {
             this.repository = repository;

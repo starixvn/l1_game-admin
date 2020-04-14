@@ -22,9 +22,13 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> BigSmallAsync()
         {
+
+            var rounds = await mediator.Send(new GetBigSmallRoundsRequest());
+
             return View(new BigSmallReportViewModel
             {
-                Rounds = (await mediator.Send(new GetBigSmallRoundsRequest())).Select(x => new SelectListItem(x.ToString(), x.ToString()))
+                Rounds = rounds.Select(x => new SelectListItem(x.ToString(), x.ToString())),
+                RoundId = rounds.FirstOrDefault()
             });
         }
 

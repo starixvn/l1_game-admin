@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using MediatR;
@@ -23,7 +20,7 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("big_small/round/{roundId}/users/{nickname?}")]
-        public async Task<IEnumerable<BigSmallRecord>> BigSmall(long roundId, string nickname, bool excludeBot)
+        public async Task<BigSmallReport> BigSmall(long roundId, string nickname, bool excludeBot)
            => (await mediator.Send(new BigSmallReportRequest(roundId, nickname, excludeBot)));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -8,24 +9,24 @@ namespace GamesAdmin.Database
 {
     public interface IBigSmallReportRepository
     {
-        IEnumerable<BigSmallReportEntity> Get(long roundId, string nickname, bool excludeBot);
+        Task<(BigSmallRoundEntity, IEnumerable<BigSmallReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class BigSmallReportRepository : IBigSmallReportRepository
     {
-        private readonly IMongoCollection<BigSmallEntity> bigSmallCollection;
-        private readonly IMongoCollection<AccountEntity> accountCollection;
-        private readonly IMongoCollection<AccountInfoEntity> accountInfoCollection;
+        private readonly IMongoDatabase database;
 
         public BigSmallReportRepository(IMongoDatabase database)
         {
-            bigSmallCollection = database.GetCollection<BigSmallEntity>("taixiu_ones");
-            accountCollection = database.GetCollection<AccountEntity>("users");
-            accountInfoCollection = database.GetCollection<AccountInfoEntity>("userinfos");
+            this.database = database;
         }
 
-        public IEnumerable<BigSmallReportEntity> Get(long roundId, string nickname, bool excludeBot)
+        public async Task<(BigSmallRoundEntity, IEnumerable<BigSmallReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
         {
+            var bigSmallCollection = database.GetCollection<BigSmallEntity>("taixiu_ones");
+            var accountCollection = database.GetCollection<AccountEntity>("users");
+            var accountInfoCollection = database.GetCollection<AccountInfoEntity>("userinfos");
+
             var aggregateBuilder = bigSmallCollection.Aggregate().Match(x => x.round == roundId)
                  .Lookup<BigSmallEntity, AccountInfoEntity, BigSmallEntityWithAccountInfos>(
                         foreignCollection: accountInfoCollection,
@@ -52,8 +53,11 @@ namespace GamesAdmin.Database
                       Back = x.back
                   });
 
-            var result = aggregateBuilder.ToList();
-            return result;
+            var records = aggregateBuilder.ToList();
+
+            var roundResult = await database.GetCollection<BigSmallRoundEntity>("taixiu_phiens").Find(x => x.number == roundId).FirstOrDefaultAsync();
+
+            return (roundResult, records);
         }
     }
 

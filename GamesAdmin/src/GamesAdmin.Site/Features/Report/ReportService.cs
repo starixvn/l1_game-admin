@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 {
     public interface IReportService
     {
-        Task<IEnumerable<BigSmallRecord>> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
+        Task<BigSmallReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
 
         Task<IEnumerable<Round>> GetBigSmallRounds();
     }
@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.ClientSites
             this.reportApi = reportApi;
         }
 
-        public async Task<IEnumerable<BigSmallRecord>> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
+        public async Task<BigSmallReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetBigSmallReport(roundId, nickname, excludeBot);
 
         public async Task<IEnumerable<Round>> GetBigSmallRounds() => await reportApi.GetBigSmallRounds();
