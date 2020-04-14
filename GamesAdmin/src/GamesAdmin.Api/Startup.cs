@@ -45,7 +45,7 @@ namespace GamesAdmin.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            var conventionPack = new ConventionPack { new CamelCaseElementNameConvention() };
+            var conventionPack = new ConventionPack { new CamelCaseElementNameConvention(), new IgnoreExtraElementsConvention(true) };
             ConventionRegistry.Register("camelCase", conventionPack, t => true);
             var mongoClient = new MongoClient(dbSettings["ConnectionString"]);
             services.AddSingleton<IMongoClient>(mongoClient);
