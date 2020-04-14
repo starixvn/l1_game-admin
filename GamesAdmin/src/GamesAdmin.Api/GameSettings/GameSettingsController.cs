@@ -30,23 +30,14 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create(GameConfig game)
+        public async Task<bool> Create(GameConfig game)
         {
             if (string.IsNullOrWhiteSpace(game.Name))
             {
-                return BadRequest();
+                return false;
             }
 
-            var created = await mediator.Send(new CreateRequest(game));
-
-            if (created)
-            {
-                return CreatedAtAction(nameof(GetByName), new { name = game.Name }, game);
-            }
-
-            return BadRequest();
+            return await mediator.Send(new CreateRequest(game));
         }
 
         [HttpPut]
@@ -75,18 +66,7 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpGet("{name}")]
-        [ProducesResponseType(typeof(GameConfig), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByName(string name)
-        {
-            var gameConfig = await mediator.Send(new GetByNameRequest(name));
-
-            if (gameConfig != default)
-            {
-                return Ok(gameConfig);
-            }
-
-            return NotFound();
-        }
+        public Task<GameConfig> GetByName(string name)
+        => mediator.Send(new GetByNameRequest(name));
     }
 }
