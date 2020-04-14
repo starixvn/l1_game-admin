@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site._Shared.Enumerations;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
@@ -35,6 +37,21 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
+        }
+
+        public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
+        {
+            var viewModel = new AddViewModel {
+                BotPercentageItems = GeneratePercentageItems(0)
+            };
+
+            var gameList = (await gameService.GetGames()).Select(game => game.Name).ToArray();
+            viewModel.GameTypeItems = Enumeration.GetAll<GameType>()
+                .Where(type => !gameList.Contains(type.Value))
+                .Select(type => new SelectListItem(type.DisplayName, type.Value))                
+                .ToList();
+
+            return viewModel;
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
@@ -120,18 +137,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.BotMinBet,
             request.Game.BotMaxBet,
             request.Game.HoursMaxBot));
-
-        public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
-        {
-            var viewModel = new AddViewModel
-            {
-                BotCount = await accountService.GetBotCount()
-            };
-
-            viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
-
-            return viewModel;
-        }
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(

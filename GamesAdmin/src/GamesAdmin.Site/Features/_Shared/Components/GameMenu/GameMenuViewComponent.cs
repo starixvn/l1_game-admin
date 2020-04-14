@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sentry;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features._Shared.Components
@@ -39,7 +40,7 @@ namespace GamesAdmin.Site.Features._Shared.Components
                 }
             }
 
-            return View(new MenuViewModel(gameTypes));
+            return View(new MenuViewModel(gameTypes.OrderBy(type => type.DisplayName).ToList()));
         }
 
         private Task<IList<GameConfig>> GetItemsAsync()

@@ -2,17 +2,13 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Site.Features._Shared;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class AddViewModel : ViewModelBase
     {
-        [Required(ErrorMessage = "Name could not empty")]
-        [MinLength(2)]
-        [MaxLength(50)]
-        [Remote(action: "VerifyName", controller: "GameSettings", AdditionalFields = nameof(Name))]
+        [Required]
         public string Name { get; set; }
 
         [DisplayName("Game Enabled")]
@@ -37,8 +33,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public List<SelectListItem> BotPercentageItems { get; set; }
 
-        public int BotCount { get; set; }
-
-        public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (BotCount * MaxBot / 100) : 0;
+        public List<SelectListItem> GameTypeItems { get; set; }
     }
 }
