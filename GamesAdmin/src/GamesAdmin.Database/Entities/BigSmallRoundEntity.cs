@@ -8,12 +8,12 @@ namespace GamesAdmin.Database.Entities
     public class BigSmallRoundEntity : MiniGameBaseEntity
     {        
         [BsonElement("id")]
-        public long number { get; set; }
+        public long Number { get; set; }
 
-        public int dice1 { get; set; }
+        public int Dice1 { get; set; }
 
-        public int dice2 { get; set; }
+        public int Dice2 { get; set; }
 
-        public int dice3 { get; set; }
+        public int Dice3 { get; set; }
     }
 }

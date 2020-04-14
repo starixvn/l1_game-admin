@@ -61,7 +61,7 @@ namespace GamesAdmin.Api.GameRound
             var latestRound = await GetLastestRound();
             var currentRound = latestRound.Number + 1;
 
-            var betEntities = betRepository.FilterBy(entity => entity.round == currentRound).ToList();
+            var betEntities = betRepository.FilterBy(entity => entity.Round == currentRound).ToList();
 
             return betEntities.Select(entity => mapper.Map<BetInfo>(entity));
         }

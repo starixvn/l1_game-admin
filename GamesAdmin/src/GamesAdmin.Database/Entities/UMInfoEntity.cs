@@ -6,10 +6,10 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("um_info")]
     public class UMInfoEntity : MiniGameBaseEntity
     {
-        public DateTime start { get; set; }
+        public DateTime Start { get; set; }
 
-        public DateTime end { get; set; }
+        public DateTime End { get; set; }
 
-        public bool finish { get; set; }
+        public bool Finish { get; set; }
     }
 }

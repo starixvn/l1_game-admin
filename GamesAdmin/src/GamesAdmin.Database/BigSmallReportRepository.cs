@@ -32,10 +32,10 @@ namespace GamesAdmin.Database
                  .Lookup<BigSmallBetEntity, AccountInfoEntity, BigSmallEntityWithAccountInfos>(
                         foreignCollection: accountInfoCollection,
                         localField: x => x.Uid,
-                        foreignField: x => x.userId,
+                        foreignField: x => x.UserId,
                         @as: r => r.AccountInfos)
                   .Unwind<BigSmallEntityWithAccountInfos, BigSmallEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                  .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.name == nickname) && (!excludeBot || !x.AccountInfos.isBot) && x.AccountInfos.currency != "UUS")
+                  .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
                   .AppendStage<BigSmallEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                   .Lookup<BigSmallEntityWithAccountInfoUnwind, AccountEntity, BigSmallEntityWithAccountInfoUnwind>(
                         foreignCollection: accountCollection,
@@ -46,9 +46,9 @@ namespace GamesAdmin.Database
                   .Unwind<BigSmallEntityWithAccountInfoUnwind, BigSmallEntityReportUnwind>(x => x.Accounts)
                   .Project(x => new BigSmallReportEntity
                   {
-                      Time =  x.time,
-                      Username = x.Accounts.local.username,
-                      Nickname = x.AccountInfos.name,
+                      Time =  x.Time,
+                      Username = x.Accounts.Local.Username,
+                      Nickname = x.AccountInfos.Name,
                       SelectBig = x.Select,
                       Bet = x.Bet,
                       BetWin = x.Betwin,
@@ -57,7 +57,7 @@ namespace GamesAdmin.Database
 
             var records = aggregateBuilder.ToList();
 
-            var roundResult = await database.GetCollection<BigSmallRoundEntity>("taixiu_phiens").Find(x => x.number == roundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<BigSmallRoundEntity>("taixiu_phiens").Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             return (roundResult, records);
         }

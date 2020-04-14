@@ -61,24 +61,24 @@ namespace GamesAdmin.Api.Accounts
         => Task.Run(() =>
         {
            
-            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red < MinAmount).ToList();           
-            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.isBot && entity.red >= MaxAmount).ToList();
+            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red < MinAmount).ToList();           
+            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red >= MaxAmount).ToList();
 
             sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
             var resetMessage = $"ResetBalance for {botsNeedResetBalance?.Count}";
 
             foreach (var bot in botsNeedAddBalance)
             {
-                bot.red += new Random().Next(MinAddAmount, MaxAddAmount);
+                bot.Red += new Random().Next(MinAddAmount, MaxAddAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }
 
             foreach (var bot in botsNeedResetBalance)
             {
-                resetMessage += $" {bot.name} : {bot.red};";
+                resetMessage += $" {bot.Name} : {bot.Red};";
 
-                bot.red = new Random().Next(MinInitAmount, MaxInitAmount);
+                bot.Red = new Random().Next(MinInitAmount, MaxInitAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }
@@ -89,7 +89,7 @@ namespace GamesAdmin.Api.Accounts
         public Task<int> GetTotalBots()
         => Task.Run(() =>
         {
-            var bots = accountInfoRepository.FilterBy(entity => entity.isBot);
+            var bots = accountInfoRepository.FilterBy(entity => entity.IsBot);
 
             if (bots?.Any() == true)
             {
@@ -131,21 +131,21 @@ namespace GamesAdmin.Api.Accounts
 
                     var account = new AccountEntity
                     {
-                        local = new LocalAccount
+                        Local = new LocalAccount
                         {
-                            username = userName,
-                            password = hashPassword,
+                            Username = userName,
+                            Password = hashPassword,
                             regDate = DateTime.UtcNow
                         }
                     };
 
                     var accountInfo = new AccountInfoEntity
                     {
-                        name = name,
-                        avatarId = avatarId,
-                        red = amount,
-                        isBot = isBot,
-                        joinedOn = DateTime.UtcNow,
+                        Name = name,
+                        AvatarId = avatarId,
+                        Red = amount,
+                        IsBot = isBot,
+                        JoinedOn = DateTime.UtcNow,
                         UID = latestUserInfoUID
                     };
 
@@ -166,13 +166,13 @@ namespace GamesAdmin.Api.Accounts
 
             foreach (var tuple in tuples)
             {
-                tuple.Item2.userId = tuple.Item1.Id.ToString();
+                tuple.Item2.UserId = tuple.Item1.Id.ToString();
             }
 
             await accountInfoRepository.InsertManyAsync(newAccountInfos);
-            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallAccountEntity { uid = x.Id.ToString() }).ToList());
-            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { uid = x.Id.ToString() }).ToList());
-            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { uid = x.Id.ToString() }).ToList());
+            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { Uid = x.Id.ToString() }).ToList());
 
             return results.ToArray();
         }
@@ -183,12 +183,12 @@ namespace GamesAdmin.Api.Accounts
         public async Task<int> ReviseBotNames()
         {
             var bots = accountInfoRepository
-                .FilterBy(entity => entity.isBot && (entity.name.Length > 14))
+                .FilterBy(entity => entity.IsBot && (entity.Name.Length > 14))
                 .ToList();
 
             foreach (var bot in bots)
             {
-                bot.name = bot.name.Substring(0, 13);
+                bot.Name = bot.Name.Substring(0, 13);
 
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }

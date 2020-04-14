@@ -6,28 +6,28 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("taixiu_ones")]
     public class BigSmallOnesEntity : MiniGameBaseEntity
     {
-        public bool red { get; set; }
+        public bool Red { get; set; }
 
-        public decimal bet { get; set; }
+        public decimal Bet { get; set; }
 
         [BsonElement("phien")]
-        public long round { get; set; }
+        public long Round { get; set; }
 
-        public bool select { get; set; }
+        public bool Select { get; set; }
 
-        public decimal betwin { get; set; }
+        public decimal Betwin { get; set; }
 
-        public bool win { get; set; }
+        public bool Win { get; set; }
 
         [BsonElement("tralai")]
-        public decimal back { get; set; }
+        public decimal Back { get; set; }
 
         [BsonElement("thuong")]
-        public decimal bonus { get; set; }
+        public decimal Bonus { get; set; }
 
-        public string uid { get; set; }
+        public string Uid { get; set; }
 
         [BsonElement("taixiu")]
-        public bool sicbo { get; set; }
+        public bool Sicbo { get; set; }
     }
 }

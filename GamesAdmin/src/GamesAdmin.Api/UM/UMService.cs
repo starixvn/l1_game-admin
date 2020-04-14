@@ -36,16 +36,16 @@ namespace GamesAdmin.Api.UM
             {
                 await UpdateEnableConfig(false);
 
-                var umInfo = umRepository.FilterBy(um => !um.finish).FirstOrDefault();
+                var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
 
                 if (umInfo == null)
                 {
                     await umRepository.InsertOneAsync(new UMInfoEntity
                     {
-                        start = startTime == default ?  default : startTime.ToUniversalTime().UtcDateTime,
-                        end = endTime == default ? default : endTime.ToUniversalTime().UtcDateTime,
-                        finish = false,
-                        time = DateTime.UtcNow
+                        Start = startTime == default ?  default : startTime.ToUniversalTime().UtcDateTime,
+                        End = endTime == default ? default : endTime.ToUniversalTime().UtcDateTime,
+                        Finish = false,
+                        Time = DateTime.UtcNow
                     });
                 }
 
@@ -65,11 +65,11 @@ namespace GamesAdmin.Api.UM
             {
                 await UpdateEnableConfig(true);
 
-                var umInfo = umRepository.FilterBy(um => !um.finish).FirstOrDefault();
+                var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
 
                 if (umInfo != null)
                 {
-                    umInfo.finish = true;
+                    umInfo.Finish = true;
 
                     await umRepository.ReplaceOneAsync(umInfo);
                 }
@@ -90,7 +90,7 @@ namespace GamesAdmin.Api.UM
 
             foreach (var game in configs)
             {
-                game.enabled = enable;
+                game.Enabled = enable;
 
                 await configRepository.ReplaceOneAsync(game);
             }

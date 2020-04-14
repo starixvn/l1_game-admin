@@ -46,10 +46,10 @@ namespace GamesAdmin.Api.Users
             {
                 var entity = new AdminUserEntity
                 {
-                    username = user.Username,
-                    password = PasswordHelper.HashPassword(user.Password),
-                    isadmin = user.IsAdmin,
-                    time = DateTime.Now
+                    Username = user.Username,
+                    Password = PasswordHelper.HashPassword(user.Password),
+                    Isadmin = user.IsAdmin,
+                    Time = DateTime.Now
                 };
 
                 await userRepository.InsertOneAsync(entity);
@@ -68,7 +68,7 @@ namespace GamesAdmin.Api.Users
         {
             try
             {
-                await userRepository.DeleteOneAsync(entity => entity.username == user.Username);
+                await userRepository.DeleteOneAsync(entity => entity.Username == user.Username);
 
                 return true;
             }
@@ -84,11 +84,11 @@ namespace GamesAdmin.Api.Users
         {
             try
             {
-                var userEntity = await userRepository.FindOneAsync(entity => entity.username.Equals(username));
+                var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
 
                 if (userEntity != null)
                 {
-                    return new User(userEntity.username, string.Empty, userEntity.isadmin);
+                    return new User(userEntity.Username, string.Empty, userEntity.Isadmin);
                 }
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace GamesAdmin.Api.Users
                  var users = userRepository.AsQueryable().ToList();
 
                  return users
-                     .Select(entity => new User(entity.username, string.Empty, entity.isadmin));
+                     .Select(entity => new User(entity.Username, string.Empty, entity.Isadmin));
              }
              catch (Exception ex)
              {
@@ -121,11 +121,11 @@ namespace GamesAdmin.Api.Users
         {
             try
             {
-                var userEntity = await userRepository.FindOneAsync(entity => entity.username.Equals(username));
+                var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
 
-                if (userEntity != null && PasswordHelper.VerifyHashPassword(password, userEntity.password))
+                if (userEntity != null && PasswordHelper.VerifyHashPassword(password, userEntity.Password))
                 {
-                    return new User(userEntity.username, string.Empty, userEntity.isadmin);
+                    return new User(userEntity.Username, string.Empty, userEntity.Isadmin);
                 }
             }
             catch (Exception ex)

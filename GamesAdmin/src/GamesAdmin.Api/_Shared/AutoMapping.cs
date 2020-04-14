@@ -17,7 +17,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<string, ObjectId>().ConvertUsing(s => ObjectId.Parse(s));
 
             CreateMap<GameConfigEntity, GameConfig>()
-                 .ForMember(dest => dest.DisabledRound, opt => opt.MapFrom(src => src.disabledround));
+                 .ForMember(dest => dest.DisabledRound, opt => opt.MapFrom(src => src.Disabledround));
 
             CreateMap<GameConfig, GameConfigEntity>();
 

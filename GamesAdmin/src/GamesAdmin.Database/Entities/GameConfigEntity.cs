@@ -8,25 +8,25 @@ namespace GamesAdmin.Database.Entities
     {
         public string name { get; set; }
 
-        public bool enabled { get; set; }
+        public bool Enabled { get; set; }
 
-        public bool botenabled { get; set; }
+        public bool Botenabled { get; set; }
 
-        public double minbet { get; set; }
+        public double Minbet { get; set; }
 
-        public double maxbet { get; set; }
+        public double Maxbet { get; set; }
 
-        public double maxbot { get; set; }
+        public double Maxbot { get; set; }
 
-        public int? disabledround { get; set; }
+        public int? Disabledround { get; set; }
 
         [BsonElement("bot_minbet")]
-        public double botMinBet { get; set; }
+        public double BotMinBet { get; set; }
 
         [BsonElement("bot_maxbet")]
-        public double botMaxBet { get; set; }
+        public double BotMaxBet { get; set; }
 
         [BsonElement("hour_maxbot")]
-        public double[] hoursMaxBot { get; set; }
+        public double[] HoursMaxBot { get; set; }
     }
 }

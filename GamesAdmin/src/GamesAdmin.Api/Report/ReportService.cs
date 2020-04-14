@@ -27,10 +27,10 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = new RoundResult
                 {
-                    Number = result.Item1.number,
-                    Dice1 = result.Item1.dice1,
-                    Dice2 = result.Item1.dice2,
-                    Dice3 = result.Item1.dice3
+                    Number = result.Item1.Number,
+                    Dice1 = result.Item1.Dice1,
+                    Dice2 = result.Item1.Dice2,
+                    Dice3 = result.Item1.Dice3
                 },
                 Records = result.Item2.Select(x => new BigSmallRecord
                 {

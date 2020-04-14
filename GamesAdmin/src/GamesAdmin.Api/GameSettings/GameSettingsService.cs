@@ -64,12 +64,12 @@ namespace GamesAdmin.Api.Games
                 var entity = new GameConfigEntity 
                 {
                     name = game.Name,
-                    enabled = game.Enabled,
-                    maxbet = game.MaxBet,
-                    minbet = game.MinBet,
-                    botenabled = game.BotEnabled,
-                    maxbot = game.MaxBot,
-                    time = DateTime.Now
+                    Enabled = game.Enabled,
+                    Maxbet = game.MaxBet,
+                    Minbet = game.MinBet,
+                    Botenabled = game.BotEnabled,
+                    Maxbot = game.MaxBot,
+                    Time = DateTime.Now
                 };
 
                 await repository.InsertOneAsync(entity);
@@ -92,9 +92,9 @@ namespace GamesAdmin.Api.Games
 
                 var entity = mapper.Map<GameConfigEntity>(game);
 
-                if (entity.hoursMaxBot == null || entity.hoursMaxBot.Length < 24)
+                if (entity.HoursMaxBot == null || entity.HoursMaxBot.Length < 24)
                 {
-                    entity.hoursMaxBot = existEntity.HoursMaxBot;
+                    entity.HoursMaxBot = existEntity.HoursMaxBot;
                 }
 
                 await repository.ReplaceOneAsync(entity);

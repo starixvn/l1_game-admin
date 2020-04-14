@@ -1,6 +1,6 @@
-﻿using GamesAdmin.Database.Attributes;
+﻿using System;
+using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -8,62 +8,63 @@ namespace GamesAdmin.Database.Entities
     public class AccountInfoEntity : MiniGameBaseEntity
     {
         [BsonElement("id")]
-        public string userId { get; set; }
+        public string UserId { get; set; }
 
-        public string avatar { get; set; }
-        public DateTime joinedOn { get; set; }
+        public string Avatar { get; set; }
 
-        public string email { get; set; }
+        public DateTime JoinedOn { get; set; }
 
-        public string cmt { get; set; }
+        public string Email { get; set; }
 
-        public double red { get; set; }
+        public string Cmt { get; set; }
 
-        public int ketSat { get; set; }
+        public double Red { get; set; }
 
-        public int xu { get; set; }
+        public int KetSat { get; set; }
 
-        public double redWin { get; set; }
+        public int Xu { get; set; }
 
-        public int redLost { get; set; }
+        public double RedWin { get; set; }
 
-        public int redPlay { get; set; }
+        public int RedLost { get; set; }
 
-        public double xuWin { get; set; }
+        public int RedPlay { get; set; }
 
-        public int xuLost { get; set; }
+        public double XuWin { get; set; }
 
-        public int xuPlay { get; set; }
+        public int XuLost { get; set; }
 
-        public int thuong { get; set; }
+        public int XuPlay { get; set; }
 
-        public int vip { get; set; }
+        public int Thuong { get; set; }
 
-        public int lastVip { get; set; }
+        public int Vip { get; set; }
 
-        public int hu { get; set; }
+        public int LastVip { get; set; }
 
-        public int huXu { get; set; }
+        public int Hu { get; set; }
+
+        public int HuXu { get; set; }
 
         [BsonElement("type")]
-        public bool isBot { get; set; }
+        public bool IsBot { get; set; }
 
-        public bool otpFirst { get; set; }
+        public bool OtpFirst { get; set; }
 
-        public int avatarId { get; set; }
+        public int AvatarId { get; set; }
 
-        public string currency { get; set; }
+        public string Currency { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [BsonElement("UID")]
         public int UID { get; set; }
 
-        public Security security { get; set; }
+        public Security Security { get; set; }
     }
 
     public class Security
     {
-        public int login { get; set; }
+        public int Login { get; set; }
     }
 }

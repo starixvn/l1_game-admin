@@ -5,13 +5,13 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("xocxoc_users")]
     public class XocDiaAccountEntity : MiniGameBaseEntity
     {
-        public double red { get; set; }
-        public int red_lost { get; set; }
-        public int redPlay { get; set; }
-        public int xu { get; set; }
-        public int xu_lost { get; set; }
-        public int xuPlay { get; set; }
-        public int thuong { get; set; }
-        public string uid { get; set; }
+        public double Red { get; set; }
+        public int Red_lost { get; set; }
+        public int RedPlay { get; set; }
+        public int Xu { get; set; }
+        public int Xu_lost { get; set; }
+        public int XuPlay { get; set; }
+        public int Thuong { get; set; }
+        public string Uid { get; set; }
     }
 }
