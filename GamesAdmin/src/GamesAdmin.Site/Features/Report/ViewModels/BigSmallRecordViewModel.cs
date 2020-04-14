@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿using System;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class BigSmallRecordViewModel
     {
@@ -13,5 +15,7 @@
         public decimal BetWin { get; set; }
 
         public decimal Back { get; set; }
+
+        public DateTime Time { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
@@ -33,5 +34,7 @@ namespace GamesAdmin.Core.Models
         public decimal BetWin { get; set; }
 
         public decimal Back { get; set; }
+
+        public DateTime Time { get; set; }
     }
 }

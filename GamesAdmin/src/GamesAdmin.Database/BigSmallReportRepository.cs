@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
@@ -23,14 +24,14 @@ namespace GamesAdmin.Database
 
         public async Task<(BigSmallRoundEntity, IEnumerable<BigSmallReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
         {
-            var bigSmallCollection = database.GetCollection<BigSmallEntity>("taixiu_ones");
+            var bigSmallBetCollection = database.GetCollection<BigSmallBetEntity>("taixiu_cuocs");
             var accountCollection = database.GetCollection<AccountEntity>("users");
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>("userinfos");
 
-            var aggregateBuilder = bigSmallCollection.Aggregate().Match(x => x.round == roundId)
-                 .Lookup<BigSmallEntity, AccountInfoEntity, BigSmallEntityWithAccountInfos>(
+            var aggregateBuilder = bigSmallBetCollection.Aggregate().Match(x => x.Round == roundId)
+                 .Lookup<BigSmallBetEntity, AccountInfoEntity, BigSmallEntityWithAccountInfos>(
                         foreignCollection: accountInfoCollection,
-                        localField: x => x.uid,
+                        localField: x => x.Uid,
                         foreignField: x => x.userId,
                         @as: r => r.AccountInfos)
                   .Unwind<BigSmallEntityWithAccountInfos, BigSmallEntityWithAccountInfoUnwind>(x => x.AccountInfos)
@@ -45,12 +46,13 @@ namespace GamesAdmin.Database
                   .Unwind<BigSmallEntityWithAccountInfoUnwind, BigSmallEntityReportUnwind>(x => x.Accounts)
                   .Project(x => new BigSmallReportEntity
                   {
+                      Time =  x.time,
                       Username = x.Accounts.local.username,
                       Nickname = x.AccountInfos.name,
-                      SelectBig = x.@select,
-                      Bet = x.bet,
-                      BetWin = x.betwin,
-                      Back = x.back
+                      SelectBig = x.Select,
+                      Bet = x.Bet,
+                      BetWin = x.Betwin,
+                      Back = x.Back
                   });
 
             var records = aggregateBuilder.ToList();
@@ -61,7 +63,7 @@ namespace GamesAdmin.Database
         }
     }
 
-    public class BigSmallEntityWithAccountInfoUnwind : BigSmallEntity
+    class BigSmallEntityWithAccountInfoUnwind : BigSmallBetEntity
     {
         public ObjectId UserId { get; set; }
 
@@ -70,12 +72,12 @@ namespace GamesAdmin.Database
         public IEnumerable<AccountEntity> Accounts { get; set; }
     }
 
-    public class BigSmallEntityWithAccountInfos : BigSmallEntity
+    class BigSmallEntityWithAccountInfos : BigSmallBetEntity
     {
         public IEnumerable<AccountInfoEntity> AccountInfos { get; set; }
     }
 
-    public class BigSmallEntityReportUnwind : BigSmallEntity
+    class BigSmallEntityReportUnwind : BigSmallBetEntity
     {
         public ObjectId UserId { get; set; }
 
@@ -86,6 +88,8 @@ namespace GamesAdmin.Database
 
     public class BigSmallReportEntity
     {
+        public DateTime Time { get; set; }
+
         public string Username { get; set; }
 
         public string Nickname { get; set; }

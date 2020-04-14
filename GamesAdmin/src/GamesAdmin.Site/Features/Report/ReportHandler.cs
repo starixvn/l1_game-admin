@@ -34,6 +34,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
+                    Time = x.Time,
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,

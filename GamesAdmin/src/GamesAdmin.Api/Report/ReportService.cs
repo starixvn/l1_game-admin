@@ -34,6 +34,7 @@ namespace GamesAdmin.Api.Report
                 },
                 Records = result.Item2.Select(x => new BigSmallRecord
                 {
+                    Time = x.Time,
                     Nickname = x.Nickname,
                     Username = x.Username,
                     SelectBig = x.SelectBig,
