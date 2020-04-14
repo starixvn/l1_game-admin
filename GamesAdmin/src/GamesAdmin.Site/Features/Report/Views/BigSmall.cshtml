@@ -14,7 +14,9 @@
     <div class="form-row align-items-center">
         <div class="col-auto">
             <label asp-for="RoundId" class="control-label"></label>
-            <select asp-items="@Model.Rounds" asp-for="RoundId" class="form-control"></select>
+            <div>
+                <select asp-items="@Model.Rounds" asp-for="RoundId" class="form-control"></select>
+            </div>
         </div>
         <div class="col-auto">
             <label asp-for="Nickname" class="control-label"></label>
