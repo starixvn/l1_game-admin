@@ -13,6 +13,7 @@
     <Content Remove="appsettings.PRO.json" />
     <Content Remove="appsettings.SIT.json" />
     <Content Remove="appsettings.UAT.json" />
+    <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
@@ -77,6 +78,7 @@
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
+    <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\js\GameSettings.js" />
   </ItemGroup>
