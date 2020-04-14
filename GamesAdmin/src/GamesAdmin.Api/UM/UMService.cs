@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.UM
 {
     public interface IUMService
     {
-        Task<bool> Process(bool isUM);
+        Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime);
     }
 
     public class UMService : IUMService
@@ -28,9 +28,9 @@ namespace GamesAdmin.Api.UM
             this.configRepository = configRepository;
         }
 
-        public Task<bool> Process(bool isUM) => isUM ? Start() : End();
+        public Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime) => isUM ? Start(startTime, endTime) : End();
 
-        public async Task<bool> Start()
+        public async Task<bool> Start(DateTimeOffset startTime, DateTimeOffset endTime)
         {
             try
             {
@@ -38,12 +38,12 @@ namespace GamesAdmin.Api.UM
 
                 var umInfo = umRepository.FilterBy(um => !um.finish).FirstOrDefault();
 
-                if (umInfo != null)
+                if (umInfo == null)
                 {
                     await umRepository.InsertOneAsync(new UMInfoEntity
                     {
-                        start = DateTime.UtcNow,
-                        end = default,
+                        start = startTime == default ?  default : startTime.ToUniversalTime().UtcDateTime,
+                        end = endTime == default ? default : endTime.ToUniversalTime().UtcDateTime,
                         finish = false,
                         time = DateTime.UtcNow
                     });
@@ -69,7 +69,6 @@ namespace GamesAdmin.Api.UM
 
                 if (umInfo != null)
                 {
-                    umInfo.end = DateTime.UtcNow;
                     umInfo.finish = true;
 
                     await umRepository.ReplaceOneAsync(umInfo);

@@ -13,7 +13,7 @@ namespace GamesAdmin.Api.UM.Requests
         }
 
         public bool IsUM { get; }
-
+       
         public DateTimeOffset StartTime { get; }
 
         public DateTimeOffset EndTime { get; }

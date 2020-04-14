@@ -152,9 +152,9 @@
                                                 <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
                                                 <td class="ratio-cell">
                                                     <div>
-                                                        <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" class="ratio" />
+                                                        <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" onchange="gameSettings.updateBotRatio(this, @i, @Model.BotCount);" class="ratio" />
                                                         <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
-                                                        <span class="bot-number">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
+                                                        <span class="bot-number" id="@("bot_number_" + i)" >(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
                                                     </div>
                                                     <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
                                                 </td>

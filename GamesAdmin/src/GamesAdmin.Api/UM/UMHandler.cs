@@ -16,6 +16,6 @@ namespace GamesAdmin.Api.UM
         }
 
         public Task<bool> Handle(UMRequest request, CancellationToken cancellationToken)
-        => umService.Process(request.IsUM);
+        => umService.Process(request.IsUM, request.StartTime, request.EndTime);
     }
 }

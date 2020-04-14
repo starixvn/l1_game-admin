@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.UM.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
