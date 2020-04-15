@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Users\Views\" />
+    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
 
