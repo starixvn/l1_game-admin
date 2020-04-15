@@ -6,7 +6,7 @@
 }
 
 @section Styles {
-    <link href="~/scss/pages/adjust-bot.min.css" rel="stylesheet" />
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" />
 }
 
 <div class="header-bar">
@@ -18,161 +18,158 @@
         </li>
     </ul>
 </div>
-<div class="row">
-
-    <div class="col-md-10 col-lg-6 card">
-        @{
-            if (Model.Success)
-            {
-                <div class="message-success"><i class="material-icons">check_circle</i> Updated successfully</div>
-            }
-
-            if (!string.IsNullOrWhiteSpace(@Model.ErrorMessage))
-            {
-                <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
-            }
-
-            <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
-
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <label asp-for="MinBet" class="control-label"></label>
-                        <input type="number" asp-for="MinBet" class="form-control" />
-                        <span asp-validation-for="MinBet" class="text-danger"></span>
-                        <input asp-for="Name" type="hidden" class="form-control" />
-                        <input asp-for="Id" type="hidden" class="form-control" />
-                        <input type="hidden" asp-for="MaxBot" class="form-control"/>
-                    </div>
-                    <div class="col-lg-6">
-                        <label asp-for="MaxBet" class="control-label"></label>
-                        <input type="number" asp-for="MaxBet" class="form-control" />
-                        <span asp-validation-for="MaxBet" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <input type="checkbox" asp-for="Enabled" />
-                        <label asp-for="Enabled" class="control-label"></label>
-                    </div>
-                    <span asp-validation-for="Enabled" class="text-danger"></span>
-                </div>
-
-                <hr />
-
-                @*<div class="form-group">
-                        <label asp-for="BotMinBet" class="control-label"></label>
-                        <input type="number" asp-for="BotMinBet" class="form-control" />
-                        <span asp-validation-for="BotMinBet" class="text-danger"></span>
-                    </div>*@
-
-                <div class="form-group">
-                    <label asp-for="BotMaxBet" class="control-label"></label>
-                    <input type="number" asp-for="BotMaxBet" class="form-control" />
-                    <span asp-validation-for="BotMaxBet" class="text-danger"></span>
-                </div>
-
-                <div class="adjust-bot-link">
-                    <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <input type="checkbox" asp-for="BotEnabled" />
-                        <label asp-for="BotEnabled" class="control-label"></label>
-                    </div>
-                    <span asp-validation-for="BotEnabled" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn-submit" />
-                </div>
-            </form>
+<div class="col-md-10 col-lg-6 card">
+    @{
+        if (Model.Success)
+        {
+            <div class="message-success"><i class="material-icons">check_circle</i> Updated successfully</div>
         }
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade adjust-bot-hours" id="botRatioModal" tabindex="-1" role="dialog" aria-labelledby="botRatioModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form asp-action="UpdateBotRatio" asp-route-name="@Model.Name" asp-controller="GameSettings" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="botRatioModalLabel">Adjust bots by hour</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Total bots: <strong>@Model.BotCount</strong></p>
-                        <div class="row options">
-                            <div class="col-lg-6">
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-gmt">From (GTM-4)</th>
-                                            <th class="col-gmt">From (GTM+7)</th>
-                                            <th>% Bot</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (var i = 0; i < 12; i++)
-                                        {
-                                            <tr>
-                                                <td>@Model.BotRatioItems[i].GreenwichHour</td>
-                                                <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
-                                                <td class="ratio-cell">
-                                                    <div>
-                                                        <input type="number" asp-for="BotRatioItems[i].BotRatio" onchange="gameSettings.updateBotRatio(this, @i, @Model.BotCount);" class="ratio" />
-                                                        <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
-                                                        <span class="bot-number" id="@("bot_number_" + i)" >(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
-                                                    </div>
-                                                    <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-6">
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-gmt">From (GTM-4)</th>
-                                            <th class="col-gmt">From (GTM+7)</th>
-                                            <th>% Bot</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (var i = 12; i < 24; i++)
-                                        {
-                                            <tr>
-                                                <td>@Model.BotRatioItems[i].GreenwichHour</td>
-                                                <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
-                                                <td class="ratio-cell">
-                                                    <div>
-                                                        <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" onchange="gameSettings.updateBotRatio(this, @i, @Model.BotCount);" class="ratio" />
-                                                        <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
-                                                        <span class="bot-number" id="@("bot_number_" + i)" >(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
-                                                    </div>
-                                                    <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+        if (!string.IsNullOrWhiteSpace(@Model.ErrorMessage))
+        {
+            <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
+        }
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn-submit">Save</button>
-                    </div>
+        <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label asp-for="MinBet" class="control-label"></label>
+                    <input type="number" asp-for="MinBet" class="form-control" />
+                    <span asp-validation-for="MinBet" class="text-danger"></span>
+                    <input asp-for="Name" type="hidden" class="form-control" />
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                    <input type="hidden" asp-for="MaxBot" class="form-control" />
                 </div>
-            </form>
-        </div>
+                <div class="col-lg-6">
+                    <label asp-for="MaxBet" class="control-label"></label>
+                    <input type="number" asp-for="MaxBet" class="form-control" />
+                    <span asp-validation-for="MaxBet" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <input type="checkbox" asp-for="Enabled" />
+                    <label asp-for="Enabled" class="control-label"></label>
+                </div>
+                <span asp-validation-for="Enabled" class="text-danger"></span>
+            </div>
+
+            <hr />
+
+            @*<div class="form-group">
+                    <label asp-for="BotMinBet" class="control-label"></label>
+                    <input type="number" asp-for="BotMinBet" class="form-control" />
+                    <span asp-validation-for="BotMinBet" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group">
+                <label asp-for="BotMaxBet" class="control-label"></label>
+                <input type="number" asp-for="BotMaxBet" class="form-control" />
+                <span asp-validation-for="BotMaxBet" class="text-danger"></span>
+            </div>
+
+            <div class="adjust-bot-link">
+                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <input type="checkbox" asp-for="BotEnabled" />
+                    <label asp-for="BotEnabled" class="control-label"></label>
+                </div>
+                <span asp-validation-for="BotEnabled" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn-submit" />
+            </div>
+        </form>
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade adjust-bot-hours" id="botRatioModal" tabindex="-1" role="dialog" aria-labelledby="botRatioModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="UpdateBotRatio" asp-route-name="@Model.Name" asp-controller="GameSettings" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="botRatioModalLabel">Adjust bots by hour</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Total bots: <strong>@Model.BotCount</strong></p>
+                    <div class="row options">
+                        <div class="col-lg-6">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="col-gmt">From (GTM-4)</th>
+                                        <th class="col-gmt">From (GTM+7)</th>
+                                        <th>% Bot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < 12; i++)
+                                    {
+                                        <tr>
+                                            <td>@Model.BotRatioItems[i].GreenwichHour</td>
+                                            <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
+                                            <td class="ratio-cell">
+                                                <div>
+                                                    <input type="number" asp-for="BotRatioItems[i].BotRatio" onchange="gameSettings.updateBotRatio(this, @i, @Model.BotCount);" class="ratio" />
+                                                    <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
+                                                    <span class="bot-number" id="@("bot_number_" + i)">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
+                                                </div>
+                                                <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="col-gmt">From (GTM-4)</th>
+                                        <th class="col-gmt">From (GTM+7)</th>
+                                        <th>% Bot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 12; i < 24; i++)
+                                    {
+                                        <tr>
+                                            <td>@Model.BotRatioItems[i].GreenwichHour</td>
+                                            <td>@Model.BotRatioItems[i].AsiaPacificHour</td>
+                                            <td class="ratio-cell">
+                                                <div>
+                                                    <input type="number" id="BotRatioItems[i].UtcHour" asp-for="BotRatioItems[i].BotRatio" onchange="gameSettings.updateBotRatio(this, @i, @Model.BotCount);" class="ratio" />
+                                                    <input type="hidden" asp-for="BotRatioItems[i].UtcHour" />
+                                                    <span class="bot-number" id="@("bot_number_" + i)">(@Model.BotRatioItems[i].CurrentBot bot(s))</span>
+                                                </div>
+                                                <span asp-validation-for="BotRatioItems[i].BotRatio" class="text-danger"></span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn-submit">Save</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
