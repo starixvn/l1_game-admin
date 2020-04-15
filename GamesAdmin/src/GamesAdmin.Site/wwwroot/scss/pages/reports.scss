@@ -2,13 +2,6 @@
 @import "../components/tab";
 
 .form {
-    display: table;
-    background: #fff;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border-radius: 5px;
-    border: 1px solid #dee2e6;
-
     .form-check {
         padding-left: 2rem;
     }
@@ -33,14 +26,23 @@
 
     .table {
         background-color: #fff;
+
+        th {
+            text-align: center;
+        }
+    }
+
+    .col-date {
+        width: 92px;
+        text-align: center;
     }
 
     .col-nickname {
-        width: 198px;
+        width: 19.1rem;
     }
 
     .col-number {
-        width: 96px;
+        width: 8.4rem;
     }
 
     .big-small-title {
@@ -49,7 +51,7 @@
     }
 
     .line-cell {
-        width: 4px;
+        width: .4rem;
         background-color: #ddd;
         padding: 0;
     }

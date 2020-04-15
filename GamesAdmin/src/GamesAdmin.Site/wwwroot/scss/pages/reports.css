@@ -25,37 +25,38 @@
   .simple-tabs .nav-link.active::before {
     opacity: 1; }
 
-.form {
-  display: table;
-  background: #fff;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  border-radius: 5px;
-  border: 1px solid #dee2e6; }
-  .form .form-check {
-    padding-left: 2rem; }
-  .form .form-check-input {
-    margin-left: -1.8rem; }
-  .form .form-row > [class*=col-] {
-    padding-right: 0.8rem;
-    padding-left: 0.8rem; }
-  .form .round-id {
-    width: 10rem; }
+.form .form-check {
+  padding-left: 2rem; }
+
+.form .form-check-input {
+  margin-left: -1.8rem; }
+
+.form .form-row > [class*=col-] {
+  padding-right: 0.8rem;
+  padding-left: 0.8rem; }
+
+.form .round-id {
+  width: 10rem; }
 
 .report-container {
   margin-top: 1rem;
   padding: 0; }
   .report-container .table {
     background-color: #fff; }
+    .report-container .table th {
+      text-align: center; }
+  .report-container .col-date {
+    width: 92px;
+    text-align: center; }
   .report-container .col-nickname {
-    width: 198px; }
+    width: 19.1rem; }
   .report-container .col-number {
-    width: 96px; }
+    width: 8.4rem; }
   .report-container .big-small-title {
     text-transform: uppercase;
     font-size: 2rem; }
   .report-container .line-cell {
-    width: 4px;
+    width: .4rem;
     background-color: #ddd;
     padding: 0; }
 

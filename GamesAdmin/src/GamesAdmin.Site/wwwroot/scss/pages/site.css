@@ -94,6 +94,14 @@
 .form .field-validation-error {
   margin: 1rem 0; }
 
+.form.filter {
+  display: table;
+  background: #fff;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: .5rem;
+  border: 1px solid #dee2e6; }
+
 .message-success, .message-error {
   display: flex;
   align-items: center;
@@ -272,7 +280,7 @@
   transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
 
 .sidebar {
-  width: 280px;
+  width: 28rem;
   z-index: 11;
   overflow: hidden;
   transition: all .2s;
@@ -280,9 +288,9 @@
   border-radius: .35rem;
   box-shadow: 0 0.46875rem 2.1875rem rgba(31, 10, 6, 0.03), 0 0.9375rem 1.40625rem rgba(31, 10, 6, 0.03), 0 0.25rem 0.53125rem rgba(31, 10, 6, 0.05), 0 0.125rem 0.1875rem rgba(31, 10, 6, 0.03);
   position: fixed;
-  left: 20px;
-  top: 20px;
-  height: calc(100% - 60px);
+  left: 2rem;
+  top: 2rem;
+  height: calc(100% - 4rem);
   z-index: 14;
   overflow-y: auto;
   overflow-x: hidden; }
@@ -312,19 +320,19 @@
     .sidebar.active .sidebar-header {
       justify-content: center; }
     .sidebar.active .nav-heading {
-      text-indent: 1000px; }
+      text-indent: 100rem; }
       .sidebar.active .nav-heading:before {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 32px;
-        height: 1px;
+        width: 3.2rem;
+        height: .1rem;
         background: #f7dfda;
-        margin-left: -18px; }
+        margin-left: -1.8rem; }
     .sidebar.active .vertical-nav-menu {
-      padding-left: 8px;
-      padding-right: 8px; }
+      padding-left: .8rem;
+      padding-right: .8rem; }
     .sidebar.active .menu-item {
       display: flex;
       justify-content: center; }
@@ -333,7 +341,7 @@
 
 .vertical-nav-menu {
   margin: 0;
-  padding: 2px 2.5rem;
+  padding: .2rem 2.5rem;
   position: relative; }
   .vertical-nav-menu .nav-heading {
     position: relative;
@@ -393,6 +401,17 @@ body {
   font-size: 1.4rem;
   color: #495057; }
 
+::-webkit-scrollbar {
+  width: 0.8rem;
+  height: 0.8rem; }
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey; }
+
 .main-container {
   position: relative;
   width: 100vw;
@@ -414,7 +433,7 @@ body {
 
 .inner-content {
   overflow: auto;
-  height: calc(100% - 7.5rem); }
+  height: calc(100% - 9.5rem); }
 
 .list-action {
   margin-bottom: 3rem; }

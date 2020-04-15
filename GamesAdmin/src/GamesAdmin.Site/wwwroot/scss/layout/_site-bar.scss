@@ -30,7 +30,7 @@
 }
 
 .sidebar {
-    width: 280px;
+    width: 28rem;
     z-index: 11;
     overflow: hidden;
     transition: all .2s;
@@ -38,9 +38,9 @@
     border-radius: .35rem;
     box-shadow: 0 0.46875rem 2.1875rem rgba(31,10,6,0.03), 0 0.9375rem 1.40625rem rgba(31,10,6,0.03), 0 0.25rem 0.53125rem rgba(31,10,6,0.05), 0 0.125rem 0.1875rem rgba(31,10,6,0.03);
     position: fixed;
-    left: 20px;
-    top: 20px;
-    height: calc(100% - 60px);
+    left: 2rem;
+    top: 2rem;
+    height: calc(100% - 4rem);
     z-index: 14;
     overflow-y: auto;
     overflow-x: hidden;
@@ -86,23 +86,23 @@
         }
 
         .nav-heading {
-            text-indent: 1000px;
+            text-indent: 100rem;
 
             &:before {
                 content: '';
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                width: 32px;
-                height: 1px;
+                width: 3.2rem;
+                height: .1rem;
                 background: #f7dfda;
-                margin-left: -18px;
+                margin-left: -1.8rem;
             }
         }
 
         .vertical-nav-menu {
-            padding-left: 8px;
-            padding-right: 8px;
+            padding-left: .8rem;
+            padding-right: .8rem;
         }
 
         .menu-item {
@@ -118,7 +118,7 @@
 
 .vertical-nav-menu {
     margin: 0;
-    padding: 2px 2.5rem;
+    padding: .2rem 2.5rem;
     position: relative;
 
     .nav-heading {
