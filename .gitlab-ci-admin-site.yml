@@ -15,6 +15,8 @@ variables:
     - echo $GIT_BRANCH
     - echo "====== Pushing git compiled ... ======"
     - git clone --branch $GIT_BRANCH $ADMIN_SITE_GIT_COMPILED $ADMIN_SITE_BUILD_PATH
+    - dotnet clean $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
+    - dotnet restore $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
     - dotnet build $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
     - dotnet publish -c $CI_ENVIRONMENT_NAME -r linux-x64 --self-contained false $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME -o $ADMIN_SITE_BUILD_PATH
     - cp $ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-${CI_ENVIRONMENT_NAME}.sh $ADMIN_SITE_BUILD_PATH
@@ -40,24 +42,16 @@ variables:
       - forward_deployment_failure
       - archived_failure
 
-# build:game-admin-site:
-#   stage: build
-#   script:   
-#     - dotnet clean $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
-#     - dotnet restore $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
-#     - dotnet build $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
-#   tags:
-#     - docker
-#   only:
-#     - master
-#     - /^deploy-\d{8}-\d+.*$/
-#     - /^deploy-site-\d{8}-\d+.*$/
-#     - /^deploy-local-\d{8}-\d+.*$/
-#     - /^deploy-local-site-\d{8}-\d+.*$/
-#     - /^deploy-sit-\d{8}-\d+.*$/
-#     - /^deploy-sit-site-\d{8}-\d+.*$/
-#     - /^deploy-uat-\d{8}-\d+.*$/
-#     - /^deploy-uat-site-\d{8}-\d+.*$/
+build:game-admin-site:
+  stage: build
+  script:   
+    - dotnet clean $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
+    - dotnet restore $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
+    - dotnet build $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
+  tags:
+    - docker
+  only:
+    - master
 
 local_deploy:game_admin_site:
   extends: 
@@ -71,8 +65,6 @@ local_deploy:game_admin_site:
     - ssh root@$HOST 'sudo service l1-game-admin-site restart'
   environment:
     name: LOCAL
-  # needs:
-  #   - build:game-admin-site
   only:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-local-\d{8}-\d+.*$/
@@ -85,8 +77,6 @@ sit_deploy:game_admin_site:
     - .admin-site-push-git-compiled
   environment:
     name: SIT
-  # needs:
-  #   - build:game-admin-site
   only:
     - /^deploy-sit-\d{8}-\d+.*$/
     - /^deploy-sit-site-\d{8}-\d+.*$/
@@ -99,8 +89,6 @@ uat_deploy:game_admin_site:
     - .admin-site-push-git-compiled
   environment:
     name: UAT
-  # needs:
-  #   - build:game-admin-site
   only:
     - /^deploy-uat-\d{8}-\d+.*$/
     - /^deploy-uat-site-\d{8}-\d+.*$/
@@ -113,12 +101,10 @@ prod_deploy:game_admin_site:
     - .admin-site-push-git-compiled
   environment:
     name: PRO
-  # needs:
-  #   - build:game-admin-site
+  needs:
+    - build:game-admin-site
   when: manual
   allow_failure: false
   only:
     - master
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-site-\d{8}-\d+.*$/
 
