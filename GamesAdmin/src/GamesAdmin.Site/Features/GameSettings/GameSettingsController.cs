@@ -1,10 +1,12 @@
 ﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Site._Shared.Enumerations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,23 +18,25 @@ namespace GamesAdmin.Site.Features.GameSettings
     public class GameSettingsController : Controller
     {
         private readonly IMediator mediator;
+        private readonly ISentryClient sentryClient;
 
-        public GameSettingsController(IMediator mediator)
+        public GameSettingsController(IMediator mediator, ISentryClient sentryClient)
         {
             this.mediator = mediator;
+            this.sentryClient = sentryClient;
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit()
-        => View(await mediator.Send(new EditRequest(string.Empty)));
+        => View(await mediator.Send(new EditRequest(GameType.BigSmall.Value)));
 
         [HttpGet]
         [Route("{name}")]
         public async Task<IActionResult> Edit(string name, bool isSuccess = false, string errorMessage = null)
         {
             var viewModel = await mediator.Send(new EditRequest(name));
-            viewModel.ErrorMessage = errorMessage;
-            viewModel.Success = isSuccess;
+            viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
+            viewModel.Success = TempData["isSuccess"] == null ? false : (bool)TempData["isSuccess"];
 
             return View(viewModel);
         }
@@ -56,22 +60,22 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.BotMaxBet,
                    null)));
 
+                TempData["isSuccess"] = true;
+
                 return RedirectToAction(nameof(Edit), new RouteValueDictionary 
                 { 
-                    { "name", editViewModel.Name },
-                    { "isSuccess", true}
+                    { "name", editViewModel.Name }
                 });
             }
             catch (Exception ex)
             {
-                editViewModel.Success = false;
-                editViewModel.ErrorMessage = ex.Message;
+                TempData["errorMessage"] = ex.Message;
+                sentryClient.CaptureException(ex);
             }
 
             return RedirectToAction(nameof(Edit), new RouteValueDictionary 
             { 
-                { "name", editViewModel.Name } ,
-                { "errorMessage", editViewModel.ErrorMessage}
+                { "name", editViewModel.Name } 
             });
         }
 
@@ -126,10 +130,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             await mediator.Send(new UpdateBotRatioRequest(name, botRatios));
 
+            TempData["isSuccess"] = true;
+
             return RedirectToAction(nameof(Edit), new RouteValueDictionary 
             { 
-                { "name", name } ,
-                { "isSuccess", true}
+                { "name", name } 
             });
         }
     }
