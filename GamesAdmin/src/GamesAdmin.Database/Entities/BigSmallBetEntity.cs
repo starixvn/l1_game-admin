@@ -31,5 +31,8 @@ namespace GamesAdmin.Database.Entities
         public bool Select { get; set; }
 
         public bool Red { get; set; }
+
+        public int? MemberId { get; set; }
+
     }
 }

@@ -12,7 +12,6 @@ namespace GamesAdmin.Site.Features.Dashboard
     {
         private readonly IMediator mediator;
 
-
         public DashboardController(IMediator mediator)
         {
             this.mediator = mediator;
@@ -23,7 +22,8 @@ namespace GamesAdmin.Site.Features.Dashboard
         {
             var viewModel = new DashboardViewModel
             {
-                OnlineUsers = await mediator.Send(new GetOnlineUsersRequests())
+                OnlineUsers = await mediator.Send(new GetOnlineUsersRequests()),
+                TodayTotalBets = await mediator.Send(new GetTodayTotalBetsRequest())
             };
 
             return View(viewModel);
@@ -33,6 +33,12 @@ namespace GamesAdmin.Site.Features.Dashboard
         public async Task<int> OnlineUsers()
         {
             return await mediator.Send(new GetOnlineUsersRequests());
+        }
+
+        [HttpGet]
+        public async Task<long> TodayTotalBets()
+        {
+            return await mediator.Send(new GetTodayTotalBetsRequest());
         }
     }
 }

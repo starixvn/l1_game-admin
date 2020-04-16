@@ -38,7 +38,8 @@ namespace GamesAdmin.Site._Shared.Midlewares
             services.AddSingleton(RestService.For<IReportApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IReportService, ReportService>();
 
-            services.AddSingleton(RestService.For<IDashboardApi>(appSettings.GameServerUrl, refitSettings));
+            services.AddSingleton(RestService.For<IDashboardGameServerApi>(appSettings.GameServerUrl, refitSettings));
+            services.AddSingleton(RestService.For<IDashboardApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IDashboardService, DashboardService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();

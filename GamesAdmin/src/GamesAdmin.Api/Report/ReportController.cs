@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using MediatR;
@@ -8,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamesAdmin.Api.Report
 {
     [Route("api/report")]
-    [ApiController, AllowAnonymous]
-    public class ReportController : Controller
+    public class ReportController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 

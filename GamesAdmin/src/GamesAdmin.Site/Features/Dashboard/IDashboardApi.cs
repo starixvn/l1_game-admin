@@ -5,9 +5,15 @@ using Refit;
 
 namespace GamesAdmin.Site.Features.Dashboard
 {
-    public interface IDashboardApi : IBaseAuthorizationApi
+    public interface IDashboardGameServerApi : IBaseAuthorizationApi
     {
         [Get("/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
+    }
+
+    public interface IDashboardApi : IBaseAuthorizationApi
+    {
+        [Get("/dashboard/TodayTotalBets")]
+        Task<long> GetTodayTotalBets();
     }
 }

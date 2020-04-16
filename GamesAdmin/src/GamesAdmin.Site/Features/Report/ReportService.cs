@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Report;
@@ -24,6 +25,16 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<BigSmallReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetBigSmallReport(roundId, nickname, excludeBot);
 
-        public async Task<IEnumerable<Round>> GetBigSmallRounds() => await reportApi.GetBigSmallRounds();
+        public async Task<IEnumerable<Round>> GetBigSmallRounds() {
+        
+            try
+            {
+                return await reportApi.GetBigSmallRounds();
+            }catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return new List<Round>();
+            }
+        }
     }
 }

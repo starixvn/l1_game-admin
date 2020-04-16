@@ -16,16 +16,9 @@ namespace GamesAdmin.Database
 
         public GenericRepository(IMongoDatabase database)
         {
-            collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
+            collection = database.GetCollection<TDocument>(Document.GetCollectionName(typeof(TDocument)));
         }
 
-        private protected string GetCollectionName(Type documentType)
-        {
-            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
-                    typeof(BsonCollectionAttribute),
-                    true)
-                .FirstOrDefault())?.CollectionName;
-        }
 
         public virtual IQueryable<TDocument> AsQueryable()
         {

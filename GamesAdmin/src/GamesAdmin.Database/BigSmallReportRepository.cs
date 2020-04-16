@@ -24,9 +24,9 @@ namespace GamesAdmin.Database
 
         public async Task<(BigSmallRoundEntity, IEnumerable<BigSmallReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
         {
-            var bigSmallBetCollection = database.GetCollection<BigSmallBetEntity>("taixiu_cuocs");
-            var accountCollection = database.GetCollection<AccountEntity>("users");
-            var accountInfoCollection = database.GetCollection<AccountInfoEntity>("userinfos");
+            var bigSmallBetCollection = database.GetCollection<BigSmallBetEntity>(Document.GetCollectionName(typeof(BigSmallBetEntity)));
+            var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
+            var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
             var aggregateBuilder = bigSmallBetCollection.Aggregate().Match(x => x.Round == roundId)
                  .Lookup<BigSmallBetEntity, AccountInfoEntity, BigSmallEntityWithAccountInfos>(
@@ -57,7 +57,7 @@ namespace GamesAdmin.Database
 
             var records = aggregateBuilder.ToList();
 
-            var roundResult = await database.GetCollection<BigSmallRoundEntity>("taixiu_phiens").Find(x => x.Number == roundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             return (roundResult, records);
         }
