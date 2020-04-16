@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api._Shared
 {
-    //TODO back after fixing issue on LOCAL
-    //[ApiController, Authorize]
-    [ApiController]
+    [ApiController, Authorize]
     public abstract class BaseAuthorizeController : ControllerBase
     {
     }
