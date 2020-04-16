@@ -38,6 +38,8 @@ namespace GamesAdmin.Api.Accounts
         private readonly IGenericRepository<BigSmallAccountEntity> txAccountRepository;
         private readonly IGenericRepository<XocDiaAccountEntity> xdAccountRepository;
         private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
+        private readonly IGenericRepository<BigSmallTurboAccountEntity> bigsmallTurboRepository;
+        private readonly IGenericRepository<OddEvenAccountEntity> oddevenRepository;
 
         private readonly ISentryClient sentryClient;
 
@@ -45,9 +47,11 @@ namespace GamesAdmin.Api.Accounts
             ISentryClient sentryClient,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
-             IGenericRepository<BigSmallAccountEntity> txAccountRepository,
+            IGenericRepository<BigSmallAccountEntity> txAccountRepository,
             IGenericRepository<XocDiaAccountEntity> xdAccountRepository,
-            IGenericRepository<BauCuaAccountEntity> bcAccountRepository)
+            IGenericRepository<BauCuaAccountEntity> bcAccountRepository,
+            IGenericRepository<BigSmallTurboAccountEntity> bigsmallTurboRepository,
+            IGenericRepository<OddEvenAccountEntity> oddevenRepository)
         {
             this.sentryClient = sentryClient;
             this.accountInfoRepository = accountInfoRepository;
@@ -55,6 +59,8 @@ namespace GamesAdmin.Api.Accounts
             this.txAccountRepository = txAccountRepository;
             this.xdAccountRepository = xdAccountRepository;
             this.bcAccountRepository = bcAccountRepository;
+            this.bigsmallTurboRepository = bigsmallTurboRepository;
+            this.oddevenRepository = oddevenRepository;
         }
 
         public Task ReviseBotBalance()
@@ -86,10 +92,9 @@ namespace GamesAdmin.Api.Accounts
             sentryClient.CaptureMessage(resetMessage);
         });
 
-        public Task<int> GetTotalBots()
-        => Task.Run(() =>
+        public async Task<int> GetTotalBots()      
         {
-            var bots = accountInfoRepository.FilterBy(entity => entity.IsBot);
+            var bots = await accountInfoRepository.FilterByAsync(entity => entity.IsBot);
 
             if (bots?.Any() == true)
             {
@@ -97,7 +102,7 @@ namespace GamesAdmin.Api.Accounts
             }
 
             return 0;
-        });
+        }
 
         public async Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot)
         {
@@ -193,7 +198,32 @@ namespace GamesAdmin.Api.Accounts
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
 
+            await MigrateBots();
+
             return bots.Count;
+        }
+
+        private async Task MigrateBots() 
+        {
+            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot)).ToList();
+
+            try
+            {
+                await bigsmallTurboRepository.InsertManyAsync(bots.Select(x => new BigSmallTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
+            }
+            catch (Exception e) 
+            {
+                sentryClient.CaptureException(e);
+            }
+
+            try
+            {
+                await oddevenRepository.InsertManyAsync(bots.Select(x => new OddEvenAccountEntity { Uid = x.Id.ToString() }).ToList());
+            }
+            catch (Exception e)
+            {
+                sentryClient.CaptureException(e);
+            }
         }
     }
 }
