@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Authentication
@@ -23,7 +22,7 @@ namespace GamesAdmin.Site.Features.Authentication
         {
             if (await authenticationService.SignInAsync(user, HttpContext))
             {
-                return RedirectToAction("Edit", "GameSettings");
+                return RedirectToAction("Index", "Dashboard");
             }
 
             return RedirectToAction(nameof(LoginError));

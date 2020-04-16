@@ -3,6 +3,7 @@ using GamesAdmin.Site._Shared.IdentityServer;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.ClientSites;
+using GamesAdmin.Site.Features.Dashboard;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.Users;
@@ -36,6 +37,9 @@ namespace GamesAdmin.Site._Shared.Midlewares
 
             services.AddSingleton(RestService.For<IReportApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IReportService, ReportService>();
+
+            services.AddSingleton(RestService.For<IDashboardApi>(appSettings.GameServerUrl, refitSettings));
+            services.AddScoped<IDashboardService, DashboardService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }

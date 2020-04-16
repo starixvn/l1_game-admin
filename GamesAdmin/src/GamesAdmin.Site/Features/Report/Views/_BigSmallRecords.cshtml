@@ -1,4 +1,5 @@
-﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
 @model BigSmallReportResultViewModel
 
 @{
@@ -39,14 +40,14 @@
                     var bigRecord = bigRecords.ElementAtOrDefault(i);
                     var smallRecord = smallRecords.ElementAtOrDefault(i);
                     <tr>
-                        <td>@bigRecord?.Time.ToString("MM/dd/yyyy HH:mm:ss")</td>
+                        <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bigRecord?.Username</td>
                         <td>@bigRecord?.Nickname</td>
                         <td class="text-right">@bigRecord?.Bet</td>
                         <td class="text-right">@bigRecord?.Back</td>
                         <td class="text-right">@bigRecord?.BetWin</td>
                         <td class="line-cell"></td>
-                        <td>@smallRecord?.Time.ToString("MM/dd/yyyy HH:mm:ss")</td>
+                        <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@smallRecord?.Username</td>
                         <td class="col-nickname">@smallRecord?.Nickname</td>
                         <td class="text-right">@smallRecord?.Bet</td>

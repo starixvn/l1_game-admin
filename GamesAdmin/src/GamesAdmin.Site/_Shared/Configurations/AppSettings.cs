@@ -14,6 +14,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         string Pwd { get; }
 
         IdentityServerAuth IdentityServerAuth { get; }
+
+        string GameServerUrl { get; }
     }
     public class AppSettings : IAppSettings
     {
@@ -26,6 +28,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             ApiHost = GetValue<string>(nameof(ApiHost));
             Hash = GetValue<string>(nameof(Hash));
             Pwd = GetValue<string>(nameof(Pwd));
+            GameServerUrl = GetValue<string>(nameof(GameServerUrl));
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
         }
 
@@ -36,6 +39,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string Pwd { get; }
 
         public IdentityServerAuth IdentityServerAuth { get; }
+
+        public string GameServerUrl { get; }
 
         public T GetValue<T>(string key)
         {

@@ -1,7 +1,8 @@
-﻿
+﻿@model GamesAdmin.Site.Features.Dashboard.ViewModels.DashboardViewModel
+
 @section Styles {
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
-    <link href="~/scss/pages/dashboard.css" rel="stylesheet" />
+    <link href="~/scss/pages/dashboard.css" rel="stylesheet" asp-append-version="true" />
 }
 
 <div class="stats row">
@@ -11,7 +12,7 @@
                 <i class="material-icons icon">people_alt</i>
             </div>
             <div class="stats-detail">
-                <div class="number">100</div>
+                <div class="number" id="online-users">@Model.OnlineUsers</div>
                 <div>Real User</div>
             </div>
         </div>        
@@ -178,11 +179,7 @@
 @section Scripts
 {
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#onlineUserTable').DataTable();
-        });
-    </script>
+    <script type="text/javascript" src="~/js//dashboard.js" asp-append-version="true"></script>
 }
 
 
