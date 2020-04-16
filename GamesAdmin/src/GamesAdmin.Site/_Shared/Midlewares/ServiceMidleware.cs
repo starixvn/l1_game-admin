@@ -16,11 +16,11 @@ namespace GamesAdmin.Site._Shared.Midlewares
     {
         public static void AddServices(this IServiceCollection services, IAppSettings appSettings)
         {
-            IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
+            //IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
 
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = () => IdentityServerManager.GetAccessToken()
+                //AuthorizationHeaderValueGetter = () => IdentityServerManager.GetAccessToken()
             };
 
             services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));

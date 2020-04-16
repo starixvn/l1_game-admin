@@ -28,7 +28,7 @@ namespace GamesAdmin.Database.Entities
 
         public int RedLost { get; set; }
 
-        public int RedPlay { get; set; }
+        public double RedPlay { get; set; }
 
         public double XuWin { get; set; }
 
