@@ -1,15 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Api.Dashboard.Requests;
+using GamesAdmin.Api.Statistic.Requests;
 using MediatR;
 
-namespace GamesAdmin.Api.Dashboard
+namespace GamesAdmin.Api.Statistic
 {
-    public class DashboardHandler : IRequestHandler<GetTodayTotalBetRequest, long>
+    public class StatisticHandler : IRequestHandler<GetTodayTotalBetRequest, long>
     {
-        private readonly IDashboardService dashboardService;
+        private readonly IStatisticService dashboardService;
 
-        public DashboardHandler(IDashboardService dashboardService)
+        public StatisticHandler(IStatisticService dashboardService)
         {
             this.dashboardService = dashboardService;
         }

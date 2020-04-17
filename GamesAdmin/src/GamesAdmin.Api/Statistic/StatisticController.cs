@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
-using GamesAdmin.Api.Dashboard.Requests;
+using GamesAdmin.Api.Statistic.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GamesAdmin.Api.Dashboard
+namespace GamesAdmin.Api.Statistic
 {
-
-    [Route("api/dashboard")]
-    public class DashboardController : BaseAuthorizeController
+    [Route("api/statistic")]
+    public class StatisticController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 
-        public DashboardController(IMediator mediator)
+        public StatisticController(IMediator mediator)
         {
             this.mediator = mediator;
         }
@@ -28,6 +24,5 @@ namespace GamesAdmin.Api.Dashboard
 
             return Ok(totalBets);
         }
-
     }
 }

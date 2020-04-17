@@ -4,7 +4,7 @@ using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Accounts;
 using GamesAdmin.Api.Accounts.ScheduleTasks;
 using GamesAdmin.Api.ClientSites;
-using GamesAdmin.Api.Dashboard;
+using GamesAdmin.Api.Statistic;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.Report;
@@ -56,8 +56,8 @@ namespace GamesAdmin.Api
 
             services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
-            services.AddScoped<IDashboardRepository, DashboardRepository>();
-            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IStatisticRepository, StatisticRepository>();
+            services.AddScoped<IStatisticService, StatisticService>();
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GamesAdmin.Api.Dashboard.Requests
+namespace GamesAdmin.Api.Statistic.Requests
 {
     public class GetTodayTotalBetRequest : IRequest<long>
     {

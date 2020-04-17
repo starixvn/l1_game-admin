@@ -47,7 +47,7 @@ namespace GamesAdmin.Database
                   .Project(x => new BigSmallReportEntity
                   {
                       Time =  x.Time,
-                      Username = x.Accounts.Local.Username,
+                      Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                       Nickname = x.AccountInfos.Name,
                       SelectBig = x.Select,
                       Bet = x.Bet,

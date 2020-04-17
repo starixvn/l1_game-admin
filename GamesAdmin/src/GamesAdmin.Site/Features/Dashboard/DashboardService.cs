@@ -11,10 +11,10 @@ namespace GamesAdmin.Site.Features.Dashboard
 
     public class DashboardService : IDashboardService
     {
-        private readonly IDashboardApi dashboardApi;
-        private readonly IDashboardGameServerApi gameServerApi;
+        private readonly IStatisticApi dashboardApi;
+        private readonly IStatisticGameServerApi gameServerApi;
 
-        public DashboardService(IDashboardApi dashboardApi, IDashboardGameServerApi gameServerApi)
+        public DashboardService(IStatisticApi dashboardApi, IStatisticGameServerApi gameServerApi)
         {
             this.dashboardApi = dashboardApi;
             this.gameServerApi = gameServerApi;
