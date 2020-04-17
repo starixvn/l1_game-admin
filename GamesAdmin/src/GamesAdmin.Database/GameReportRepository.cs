@@ -81,7 +81,7 @@ namespace GamesAdmin.Database
                 var betCollection = database.GetCollection<FishPrawnCrabBetEntity>("baucua_cuocs");
 
                 var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.time >= fromDate && round.time < toDate)
+                    .Match(round => round.Time >= fromDate && round.Time < toDate)
                     .Lookup<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity, FishPrawnCrabRoundWithBetsEntity>(
                         foreignCollection: betCollection,
                         localField: round => round.Number,
@@ -108,7 +108,7 @@ namespace GamesAdmin.Database
                 var betCollection = database.GetCollection<ShakeThePlateBetEntity>("xocxoc_cuocs");
 
                 var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.time >= fromDate && round.time < toDate)
+                    .Match(round => round.Time >= fromDate && round.Time < toDate)
                     .Lookup<ShakeThePlateRoundEntity, ShakeThePlateBetEntity, ShakeThePlateRoundWithBetsEntity>(
                         foreignCollection: betCollection,
                         localField: round => round.Number,
@@ -145,7 +145,7 @@ namespace GamesAdmin.Database
                 var betCollection = database.GetCollection<FishPrawnCrabBetEntity>("baucua_cuocs");
 
                 var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.time >= fromDate && round.time < toDate && round.Number == roundId)
+                    .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
                     .Lookup<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity, FishPrawnCrabRoundWithBetsEntity>(
                         foreignCollection: betCollection,
                         localField: round => round.Number,
@@ -172,7 +172,7 @@ namespace GamesAdmin.Database
                 var betCollection = database.GetCollection<ShakeThePlateBetEntity>("xocxoc_cuocs");
 
                 var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.time >= fromDate && round.time < toDate && round.Number == roundId)
+                    .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
                     .Lookup<ShakeThePlateRoundEntity, ShakeThePlateBetEntity, ShakeThePlateRoundWithBetsEntity>(
                         foreignCollection: betCollection,
                         localField: round => round.Number,
@@ -283,7 +283,7 @@ namespace GamesAdmin.Database
                 Name = Bet.Name,
                 BetWin = Bet.Betwin,
                 Round = Number,
-                Time = time,
+                Time = Time,
                 FirstDice = (byte)(FirstDice + 1),
                 SecondDice = (byte)(SecondDice + 1),
                 ThirdDice = (byte)(ThirdDice + 1),
@@ -313,7 +313,7 @@ namespace GamesAdmin.Database
                 Name = Bet.Name,
                 BetWin = Bet.Betwin,
                 Round = Number,
-                Time = time,
+                Time = Time,
                 Even = Bet.Even,
                 Odd = Bet.Odd,
                 ThreeRed = Bet.ThreeRed,
