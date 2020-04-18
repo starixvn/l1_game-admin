@@ -20,10 +20,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             this.gameServerApi = gameServerApi;
         }
 
-        //public async Task<int> GetOnlineUsers() => (await gameServerApi.GetOnlineUsers()).TotalReal;
-
-        //TODO temp to use hardcode data since it failed on SIT
-        public Task<int> GetOnlineUsers() => Task.FromResult(3);
+        public async Task<int> GetOnlineUsers() => (await gameServerApi.GetOnlineUsers()).TotalReal;        
 
         public async Task<long> GetTodayTotalBets() => await dashboardApi.GetTodayTotalBets();
     }
