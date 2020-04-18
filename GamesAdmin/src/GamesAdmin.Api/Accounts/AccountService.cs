@@ -1,13 +1,12 @@
-﻿using GamesAdmin.Api._Shared.Helpers;
-using GamesAdmin.Api.Accounts.Results;
-using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using Sentry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GamesAdmin.Api.Accounts.Results;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using Sentry;
 
 namespace GamesAdmin.Api.Accounts
 {
@@ -38,7 +37,7 @@ namespace GamesAdmin.Api.Accounts
         private readonly IGenericRepository<BigSmallAccountEntity> txAccountRepository;
         private readonly IGenericRepository<XocDiaAccountEntity> xdAccountRepository;
         private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
-        private readonly IGenericRepository<BigSmallTurboAccountEntity> bigsmallTurboRepository;
+        private readonly IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository;
         private readonly IGenericRepository<OddEvenAccountEntity> oddevenRepository;
 
         private readonly ISentryClient sentryClient;
@@ -50,7 +49,7 @@ namespace GamesAdmin.Api.Accounts
             IGenericRepository<BigSmallAccountEntity> txAccountRepository,
             IGenericRepository<XocDiaAccountEntity> xdAccountRepository,
             IGenericRepository<BauCuaAccountEntity> bcAccountRepository,
-            IGenericRepository<BigSmallTurboAccountEntity> bigsmallTurboRepository,
+            IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository,
             IGenericRepository<OddEvenAccountEntity> oddevenRepository)
         {
             this.sentryClient = sentryClient;
@@ -59,7 +58,7 @@ namespace GamesAdmin.Api.Accounts
             this.txAccountRepository = txAccountRepository;
             this.xdAccountRepository = xdAccountRepository;
             this.bcAccountRepository = bcAccountRepository;
-            this.bigsmallTurboRepository = bigsmallTurboRepository;
+            this.oddEvenTurboRepository = oddEvenTurboRepository;
             this.oddevenRepository = oddevenRepository;
         }
 
@@ -209,7 +208,7 @@ namespace GamesAdmin.Api.Accounts
 
             try
             {
-                await bigsmallTurboRepository.InsertManyAsync(bots.Select(x => new BigSmallTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
+                await oddEvenTurboRepository.InsertManyAsync(bots.Select(x => new OddEvenTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
             }
             catch (Exception e) 
             {

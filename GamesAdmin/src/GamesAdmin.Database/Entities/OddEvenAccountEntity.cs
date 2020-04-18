@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("ChanLe_users")]
+    [BsonCollection("chanle_users")]
     public class OddEvenAccountEntity : MiniGameBaseEntity
     {
         public int TRedPlay { get; set; }
