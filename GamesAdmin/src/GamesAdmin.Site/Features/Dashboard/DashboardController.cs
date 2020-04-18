@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             var viewModel = new DashboardViewModel
             {
                 OnlineUsers = await mediator.Send(new GetOnlineUsersRequests()),
-                TodayTotalBets = 0 // await mediator.Send(new GetTodayTotalBetsRequest())
+                TodayTotalBets = await mediator.Send(new GetTodayTotalBetsRequest())
             };
 
             return View(viewModel);
