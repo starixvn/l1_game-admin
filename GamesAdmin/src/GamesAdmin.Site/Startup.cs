@@ -77,7 +77,7 @@ namespace GamesAdmin.Site
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Dashboard}/{action=Index}");
+                    pattern: "{controller=GameSettings}/{action=Edit}");
             });
         }
     }
