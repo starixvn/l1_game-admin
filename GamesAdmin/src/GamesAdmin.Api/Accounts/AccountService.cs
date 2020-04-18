@@ -208,7 +208,7 @@ namespace GamesAdmin.Api.Accounts
 
             try
             {
-                await oddEvenTurboRepository.InsertManyAsync(bots.Select(x => new OddEvenTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
+                await oddEvenTurboRepository.InsertManyAsync(bots.Select(x => new OddEvenTurboAccountEntity { Uid = x.UID.ToString() }).ToList());
             }
             catch (Exception e) 
             {
@@ -217,7 +217,7 @@ namespace GamesAdmin.Api.Accounts
 
             try
             {
-                await oddevenRepository.InsertManyAsync(bots.Select(x => new OddEvenAccountEntity { Uid = x.Id.ToString() }).ToList());
+                await oddevenRepository.InsertManyAsync(bots.Select(x => new OddEvenAccountEntity { Uid = x.UID.ToString() }).ToList());
             }
             catch (Exception e)
             {
