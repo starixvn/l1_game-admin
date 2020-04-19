@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-md-10 col-lg-6 card">
         <form class="card-body form" asp-action="Add" asp-controller="GameSettings" method="post">
-            <table class="table">
+            <table id="status-tbl" class="table">
                 <thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -23,15 +23,15 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="checkbox" value="all" /></td>
+                        <td><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></td>
                         <td>All</td>
                         <td>&nbsp;</td>
-                        <td>Message to display</td>
+                        <td><input id="msg-all" type="text" placeholder="Message to display" /></td>
                     </tr>
                     @foreach (var item in Model.GameList)
                     {
                         <tr>
-                            <td><input type="checkbox" value="@item.Name" /></td>
+                            <td><input class="game-status-chk" type="checkbox" value="@item.Name" /></td>
                             <td>@item.DisplayName</td>
                             <td>
                                 <div class="toggle-switch">
@@ -42,7 +42,7 @@
                                 </div>
                             </td>
 
-                            <td>@item.DisabledMessage</td>
+                            <td><input type="text" asp-for="@item.DisabledMessage" placeholder="Message to display" /> </td>
                         </tr>
                     }
                 </tbody>
@@ -51,6 +51,7 @@
             <div class="form-group">
                 <input type="submit" value="Enable" class="btn-submit" />
                 <input type="submit" value="Disable" class="btn-submit" />
+                <input type="submit" value="Save" class="btn-submit" />
             </div>
         </form>
     </div>
@@ -58,6 +59,6 @@
 
 
 @section Scripts{
-    <script src="~/js/game-status.js"></script>
+    <script src="~/js/game-status.js" asp-append-version="true"></script>
 }
 

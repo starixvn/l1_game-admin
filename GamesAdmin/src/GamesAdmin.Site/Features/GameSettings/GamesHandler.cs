@@ -137,7 +137,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             null,
             request.Game.BotMinBet,
             request.Game.BotMaxBet,
-            request.Game.HoursMaxBot));
+            request.Game.HoursMaxBot,
+            request.Game.DisabledMessage));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -151,7 +152,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             null,
             0,
             0,
-            new double[] { }));
+            new double[] { },
+            string.Empty));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

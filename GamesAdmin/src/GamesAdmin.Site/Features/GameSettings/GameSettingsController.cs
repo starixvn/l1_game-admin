@@ -58,7 +58,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                    null,
                    editViewModel.BotMinBet,
                    editViewModel.BotMaxBet,
-                   null)));
+                   null,
+                   string.Empty)));
 
                 TempData["isSuccess"] = true;
 
@@ -97,7 +98,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 null,
                 0,
                 0,
-                new double[] { })));
+                new double[] { },
+                string.Empty)));
 
             return RedirectToAction(nameof(Edit));
         }

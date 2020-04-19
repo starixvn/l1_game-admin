@@ -28,5 +28,8 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("hour_maxbot")]
         public double[] HoursMaxBot { get; set; }
+
+        [BsonElement("disabled_message")]
+        public string DisabledMessage { get; set; }
     }
 }

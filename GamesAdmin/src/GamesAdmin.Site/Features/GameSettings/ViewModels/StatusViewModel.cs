@@ -16,10 +16,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class StatusItemViewModel 
     {
-        public StatusItemViewModel(string name, bool enabled) 
+        public StatusItemViewModel(string name, bool enabled, string disabledMessage) 
         {
             Name = name;
             Enabled = enabled;
+            DisabledMessage = disabledMessage;
         }
 
         public string Name { get; }
