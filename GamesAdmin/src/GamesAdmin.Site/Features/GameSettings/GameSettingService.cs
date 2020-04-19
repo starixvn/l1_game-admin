@@ -11,7 +11,7 @@ namespace GamesAdmin.Site.Features.GameSettings
     public interface IGameSettingApi : IBaseAuthorizationApi
     {
         [Get("/game_settings")]
-        Task<IList<GameConfig>> GetGames();
+        Task<IList<GameConfig>> GetAll();
 
         [Post("/game_settings/")]
         Task<bool> Add([Body] GameConfig game);
@@ -28,7 +28,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
     public interface IGameSettingService
     {
-        Task<IList<GameConfig>> GetGames();
+        Task<IList<GameConfig>> GetAll();
 
         Task<bool> Update(GameConfig game);
 
@@ -55,11 +55,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<bool> Add(GameConfig game)
         => await gameApi.Add(game);
 
-        public async Task<IList<GameConfig>> GetGames()
+        public async Task<IList<GameConfig>> GetAll()
         {
             try
             {
-                return await gameApi.GetGames();
+                return await gameApi.GetAll();
             }
             catch (Exception ex)
             {

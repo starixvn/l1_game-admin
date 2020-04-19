@@ -23,6 +23,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<IsExistRequest, bool>
         , IRequestHandler<UpdateBotRatioRequest, bool>
+        , IRequestHandler<GetStatusRequest, StatusViewModel>
     {
         private readonly IMapper mapper;
 
@@ -45,7 +46,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 BotPercentageItems = GeneratePercentageItems(0)
             };
 
-            var gameList = (await gameService.GetGames()).Select(game => game.Name).ToArray();
+            var gameList = (await gameService.GetAll()).Select(game => game.Name).ToArray();
             viewModel.GameTypeItems = Enumeration.GetAll<GameType>()
                 .Where(type => !gameList.Contains(type.Value))
                 .Select(type => new SelectListItem(type.DisplayName, type.Value))                
@@ -60,7 +61,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (string.IsNullOrWhiteSpace(request.Name))
             {
-                game = (await gameService.GetGames()).FirstOrDefault();
+                game = (await gameService.GetAll()).FirstOrDefault();
             }
             else
             {
@@ -165,5 +166,22 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return await gameService.Update(game);
         }
+
+        public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
+        {
+            var gameConfigs = await gameService.GetAll();
+            var gameList = new List<StatusItemViewModel>();
+
+            if (gameConfigs?.Any() == true)
+            {
+                gameList = gameConfigs
+                    .Select(game => mapper.Map<StatusItemViewModel>(game))
+                    .OrderBy(game => game.DisplayName)
+                    .ToList();
+            }
+
+             return new StatusViewModel(gameList);
+        }
+       
     }
 }

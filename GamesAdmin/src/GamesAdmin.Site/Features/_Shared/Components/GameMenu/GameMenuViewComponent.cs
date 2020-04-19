@@ -44,6 +44,6 @@ namespace GamesAdmin.Site.Features._Shared.Components
         }
 
         private Task<IList<GameConfig>> GetItemsAsync()
-        => gameService.GetGames();
+        => gameService.GetAll();
     }
 }

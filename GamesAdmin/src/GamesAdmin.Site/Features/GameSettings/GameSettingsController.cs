@@ -137,5 +137,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                 { "name", name } 
             });
         }
+
+        [HttpGet]
+        [Route("status")]
+        public async Task<IActionResult> Status()
+        => View(await mediator.Send(new GetStatusRequest()));
     }
 }

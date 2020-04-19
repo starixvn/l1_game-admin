@@ -16,11 +16,6 @@ namespace GamesAdmin.Site.Features.Setting
             return View();
         }
 
-        public IActionResult GameStatus()
-        {
-            return View();
-        }
-
         public IActionResult StakeLevel()
         {
             return View();

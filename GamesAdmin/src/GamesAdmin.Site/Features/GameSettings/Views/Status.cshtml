@@ -1,0 +1,63 @@
+﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model StatusViewModel;
+
+@{
+    ViewData["Title"] = "Game Status";
+}
+@section Styles {
+    <link href="~/scss/pages/game-status.css" rel="stylesheet" />
+    <link href="~/scss/pages/forecast.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-10 col-lg-6 card">
+        <form class="card-body form" asp-action="Add" asp-controller="GameSettings" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Name</th>
+                        <th>Enabled</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" value="all" /></td>
+                        <td>All</td>
+                        <td>&nbsp;</td>
+                        <td>Message to display</td>
+                    </tr>
+                    @foreach (var item in Model.GameList)
+                    {
+                        <tr>
+                            <td><input type="checkbox" value="@item.Name" /></td>
+                            <td>@item.DisplayName</td>
+                            <td>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="chkTest" asp-for="@item.Enabled" name="chkTest">
+                                    <label for="chkTest">
+                                        <span class="toggle-track"></span>
+                                    </label>
+                                </div>
+                            </td>
+
+                            <td>@item.DisabledMessage</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" value="Enable" class="btn-submit" />
+                <input type="submit" value="Disable" class="btn-submit" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/game-status.js"></script>
+}
+
