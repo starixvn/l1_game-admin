@@ -28,6 +28,8 @@ namespace GamesAdmin.Database.Entities
         public string Uid { get; set; }
 
         [BsonElement("taixiu")]
-        public bool Sicbo { get; set; }
+        public bool BigSmall { get; set; }
+
+        public int? MemberId { get; set; }
     }
 }

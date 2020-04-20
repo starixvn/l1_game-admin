@@ -26,18 +26,22 @@ namespace GamesAdmin.Database
             var startOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0, DateTimeKind.Utc);
             var endOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 59, DateTimeKind.Utc);
 
-            var bigSmallBetCollection = database.GetCollection<BigSmallBetEntity>(Document.GetCollectionName(typeof(BigSmallBetEntity)));
-            var fishPrawnCrabCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
+            var bigSmallOnesCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
+            var bigSmallTurboOnesCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
+            var evenOddOnesCollection = database.GetCollection<EvenOddOnesEntity>(Document.GetCollectionName(typeof(EvenOddOnesEntity)));
+
+            var fishPrawnCrabBetCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
             var shakeThePlaceBetCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
-            var bigSmallTurboBetCollection = database.GetCollection<BigSmallTurboBetEntity>(Document.GetCollectionName(typeof(BigSmallTurboBetEntity)));
 
-            var bigSmallTotalBets = await bigSmallBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
-            var fishPrawnCrabTotalBets = await fishPrawnCrabCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
+            var bigSmallTotalBets = await bigSmallOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
+            var bigSmallTurboTotalBets = await bigSmallTurboOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
+            var evenOddTotalBets = await evenOddOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
+
+            var fishPrawnCrabTotalBets = await fishPrawnCrabBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
             var shakeThePlaceTotalBets = await shakeThePlaceBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
-            var bigSmallTurboTotalBets = await bigSmallTurboBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time <= endOfDay && x.MemberId.HasValue);
 
 
-            return bigSmallTotalBets + fishPrawnCrabTotalBets + shakeThePlaceTotalBets + bigSmallTurboTotalBets;
+            return bigSmallTotalBets + fishPrawnCrabTotalBets + evenOddTotalBets + shakeThePlaceTotalBets + bigSmallTurboTotalBets;
         }
     }
 }
