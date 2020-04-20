@@ -21,10 +21,10 @@ namespace GamesAdmin.Database
 
         public async Task<long> GetTodayTotalBets()
         {
-            var currentDate = DateTime.UtcNow.Date;
+            var currentDate = DateTime.Now;
 
-            var startOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0, DateTimeKind.Utc);
-            var endOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 59, DateTimeKind.Utc);
+            var startOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0, DateTimeKind.Local).ToUniversalTime();
+            var endOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 59, DateTimeKind.Local).ToUniversalTime();
 
             var bigSmallOnesCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
             var bigSmallTurboOnesCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
