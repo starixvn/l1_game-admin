@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Models;
+﻿using AutoMapper;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,9 @@ namespace GamesAdmin.Api.Report
         private readonly IBigSmallReportRepository bigSmallReportRepository;
         private readonly IGameReportRepository gameReportRepository;
 
-        public ReportService(IBigSmallReportRepository bigSmallReportRepository, IGameReportRepository gameReportRepository)
+        public ReportService(
+            IBigSmallReportRepository bigSmallReportRepository,
+            IGameReportRepository gameReportRepository)
         {
             this.bigSmallReportRepository = bigSmallReportRepository;
             this.gameReportRepository = gameReportRepository;
@@ -57,9 +60,9 @@ namespace GamesAdmin.Api.Report
 
             if (roundId == 0)
             {
-               gameReportEntities = await this.gameReportRepository.GetAll(name, gameType, from, to);
-                
-            } else
+                gameReportEntities = await this.gameReportRepository.GetAll(name, gameType, from, to);
+            }
+            else
             {
                 gameReportEntities = await this.gameReportRepository.GetByRound(roundId, name, gameType, from, to);
             }
@@ -72,7 +75,6 @@ namespace GamesAdmin.Api.Report
         private Bet TransformGameReportEntityToBetModel(GameReportEntity entity)
         {
             Bet result = null;
-            var round = new Round(entity.Round);
 
             if (entity is FishPrawnCrabReportEntity)
             {
@@ -81,15 +83,25 @@ namespace GamesAdmin.Api.Report
                 var betResult = new FishPrawnCrabBetResult(fpcEntity.FirstDice, fpcEntity.SecondDice, fpcEntity.ThirdDice);
                 var betChoice = new FishPrawnCrabChoice(fpcEntity.Stag, fpcEntity.Gourd, fpcEntity.Rooster, fpcEntity.Fish, fpcEntity.Crab, fpcEntity.Prawn);
 
-                result = new FishPrawnCrabBet(round, entity.Time, entity.BetWin, betResult, betChoice);
-            } else if (entity is ShakeThePlateReportEntity)
+                result = new FishPrawnCrabBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice);
+            }
+            else if (entity is ShakeThePlateReportEntity)
             {
                 ShakeThePlateReportEntity stpEntity = (ShakeThePlateReportEntity)entity;
 
                 var betResult = new ShakeThePlateBetResult(stpEntity.FirstRedChip, stpEntity.SecondRedChip, stpEntity.ThirdRedChip, stpEntity.FourthRedChip);
                 var betChoice = new ShakeThePlateChoice(stpEntity.Even, stpEntity.Odd, stpEntity.ThreeRed, stpEntity.FourRed, stpEntity.ThreeWhite, stpEntity.FourWhite);
 
-                result = new ShakeThePlateBet(round, entity.Time, entity.BetWin, betResult, betChoice);
+                result = new ShakeThePlateBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice);
+            }
+            else if (entity is BigSmallGameReportEntity)
+            {
+                BigSmallGameReportEntity bsEntity = (BigSmallGameReportEntity)entity;
+
+                var betResult = new BigSmallBetResult(bsEntity.FirstDice, bsEntity.SecondDice, bsEntity.ThirdDice);
+                var betChoice = new BigSmallChoice(bsEntity.SelectBig, bsEntity.Bet);
+
+                result = new BigSmallBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice, bsEntity.Refund);
             }
 
             return result;

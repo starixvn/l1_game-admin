@@ -67,7 +67,32 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.BigSmall)
             {
-                return new List<GameReportEntity>();
+                var roundCollection = database.GetCollection<BigSmallRoundEntity>("taixiu_phiens");
+                var oneCollection = database.GetCollection<BigSmallOnesEntity>("taixiu_ones");
+                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
+
+                var aggregateBuilder = roundCollection.Aggregate()
+                    .Match(round => round.Time >= fromDate && round.Time < toDate)
+                    .Lookup<BigSmallRoundEntity, BigSmallOnesEntity, BigSmallRoundWithBetsEntity>(
+                        foreignCollection: oneCollection,
+                        localField: round => round.Number,
+                        foreignField: bet => bet.Round,
+                        @as: r => r.One
+                    )
+                    .Unwind<BigSmallRoundWithBetsEntity, BigSmallRoundWithBetUnwindEntity>(x => x.One)
+                    .Lookup<BigSmallRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallRoundWithBetUnwindEntity>(
+                        foreignCollection: accountInfoCollection,
+                        localField: round => round.One.Uid,
+                        foreignField: account => account.UserId,
+                        @as: r => r.Accounts
+                    )
+                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name);
+
+
+                var unwindEntities = await aggregateBuilder.ToListAsync();
+                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
+
+                return results;
             }
 
             return new List<GameReportEntity>();
@@ -131,7 +156,32 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.BigSmall)
             {
-                return new List<GameReportEntity>();
+                var roundCollection = database.GetCollection<BigSmallRoundEntity>("taixiu_phiens");
+                var oneCollection = database.GetCollection<BigSmallOnesEntity>("taixiu_ones");
+                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
+
+                var aggregateBuilder = roundCollection.Aggregate()
+                    .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
+                    .Lookup<BigSmallRoundEntity, BigSmallOnesEntity, BigSmallRoundWithBetsEntity>(
+                        foreignCollection: oneCollection,
+                        localField: round => round.Number,
+                        foreignField: bet => bet.Round,
+                        @as: r => r.One
+                    )
+                    .Unwind<BigSmallRoundWithBetsEntity, BigSmallRoundWithBetUnwindEntity>(x => x.One)
+                    .Lookup<BigSmallRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallRoundWithBetUnwindEntity>(
+                        foreignCollection: accountInfoCollection,
+                        localField: round => round.One.Uid,
+                        foreignField: account => account.UserId,
+                        @as: r => r.Accounts
+                    )
+                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name);
+                    
+
+                var unwindEntities = await aggregateBuilder.ToListAsync();
+                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
+
+                return results;
             }
 
             return new List<GameReportEntity>();
@@ -221,6 +271,8 @@ namespace GamesAdmin.Database
         public decimal Bet { get; set; }
 
         public bool SelectBig { get; set; }
+
+        public decimal Refund { get; set; }
     }
 
     public class FishPrawnCrabReportEntity : GameReportEntity
@@ -324,6 +376,36 @@ namespace GamesAdmin.Database
                 SecondRedChip = SecondRedChip,
                 ThirdRedChip = ThirdRedChip,
                 FourthRedChip = FourthRedChip
+            };
+        }
+    }
+
+    internal class BigSmallRoundWithBetsEntity : BigSmallRoundEntity
+    {
+        public IEnumerable<BigSmallOnesEntity> One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+    }
+
+    internal class BigSmallRoundWithBetUnwindEntity : BigSmallRoundEntity
+    {
+        public BigSmallOnesEntity One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+
+        public GameReportEntity ToGameReport()
+        {
+            return new BigSmallGameReportEntity
+            {
+                BetWin = One.Betwin,
+                Round = Number,
+                Time = Time,
+                Bet = One.Bet,
+                FirstDice = (byte)Dice1,
+                SecondDice = (byte)Dice2,
+                ThirdDice = (byte)Dice3,
+                Refund = One.Back,
+                SelectBig = One.Select
             };
         }
     }

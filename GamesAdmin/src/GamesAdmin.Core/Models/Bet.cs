@@ -4,7 +4,7 @@ namespace GamesAdmin.Core.Models
 {
     public abstract class Bet
     {
-        public Round Round { get; set; }
+        public long Round { get; set; }
 
         public DateTime Time { get; set; }
 
@@ -15,7 +15,7 @@ namespace GamesAdmin.Core.Models
         public IBetChoice Choice { get; set; }
 
         public Bet(
-            Round round,
+            long round,
             DateTime time,
             decimal betWin,
             IBetResult betResult,
@@ -34,7 +34,7 @@ namespace GamesAdmin.Core.Models
         public decimal Refund { get; set; }
 
         public BigSmallBet(
-            Round round,
+            long round,
             DateTime time,
             decimal betWin,
             BigSmallBetResult betResult,
@@ -49,7 +49,7 @@ namespace GamesAdmin.Core.Models
     public class FishPrawnCrabBet : Bet
     {
         public FishPrawnCrabBet(
-            Round round,
+            long round,
             DateTime time,
             decimal betWin,
             FishPrawnCrabBetResult betResult,
@@ -62,7 +62,7 @@ namespace GamesAdmin.Core.Models
     public class ShakeThePlateBet : Bet
     {
         public ShakeThePlateBet(
-            Round round,
+            long round,
             DateTime time,
             decimal betWin,
             ShakeThePlateBetResult betResult,

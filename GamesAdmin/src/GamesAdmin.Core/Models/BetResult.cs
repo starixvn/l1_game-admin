@@ -1,6 +1,4 @@
-﻿using GamesAdmin.Core.Enumeration;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Core.Models
@@ -11,35 +9,29 @@ namespace GamesAdmin.Core.Models
 
     public class BigSmallBetResult : IBetResult
     {
-        public byte FirstDice { get; set; }
+        public IList<byte> Dices { get; set; }
 
-        public byte SecondDice { get; set; }
-
-        public byte ThirdDice { get; set; }
-
-        public int Total => FirstDice + SecondDice + ThirdDice;
+        public int Total => Dices.Aggregate(0, (result, dice) => result + dice);
 
         public BigSmallBetResult(byte firstDice, byte secondDice, byte thirdDice)
         {
-            FirstDice = firstDice;
-            SecondDice = secondDice;
-            ThirdDice = thirdDice;
+            Dices = new List<byte>
+            {
+                firstDice, secondDice, thirdDice
+            };
         }
     }
 
     public class FishPrawnCrabBetResult : IBetResult
     {
-        public byte FirstDice { get; set; }
-
-        public byte SecondDice { get; set; }
-
-        public byte ThirdDice { get; set; }
+        public IList<byte> Dices { get; set; }
 
         public FishPrawnCrabBetResult(byte firstDice, byte secondDice, byte thirdDice)
         {
-            FirstDice = firstDice;
-            SecondDice = secondDice;
-            ThirdDice = thirdDice;
+            Dices = new List<byte>
+            {
+                firstDice, secondDice, thirdDice
+            };
         }
     }
 
