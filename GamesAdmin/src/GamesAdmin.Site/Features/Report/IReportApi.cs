@@ -11,9 +11,5 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/big_small/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
         Task<BigSmallReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
-
-        [Get("/game_rounds")]
-        Task<IEnumerable<Round>> GetBigSmallRounds();
-
     }
 }

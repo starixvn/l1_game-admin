@@ -13,9 +13,7 @@
     <div class="form-row align-items-center">
         <div class="col-auto">
             <label asp-for="RoundId" class="control-label"></label>
-            <div>
-                <select asp-items="@Model.Rounds" asp-for="RoundId" class="form-control round-id"></select>
-            </div>
+            <input type="number" class="form-control" asp-for="RoundId">
         </div>
         <div class="col-auto">
             <label asp-for="Nickname" class="control-label"></label>
@@ -42,11 +40,4 @@
 
 @section Scripts {
     <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/lib/select2//dist//js//select2.full.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#RoundId').select2();
-        });
-    </script>
 }

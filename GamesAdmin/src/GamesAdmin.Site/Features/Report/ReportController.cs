@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -20,16 +18,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> BigSmallAsync()
+        public IActionResult BigSmall()
         {
-
-            var rounds = await mediator.Send(new GetBigSmallRoundsRequest());
-
-            return View(new BigSmallReportViewModel
-            {
-                Rounds = rounds.Select(x => new SelectListItem(x.ToString(), x.ToString())),
-                RoundId = rounds.FirstOrDefault()
-            });
+            return View(new BigSmallReportViewModel());
         }
 
         [HttpGet]

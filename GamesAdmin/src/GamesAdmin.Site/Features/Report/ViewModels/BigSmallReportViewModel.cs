@@ -11,7 +11,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Nickname { get; set; }
 
         public bool ExcludeBot { get; set; }
-
-        public IEnumerable<SelectListItem> Rounds { get; set; }
     }
 }

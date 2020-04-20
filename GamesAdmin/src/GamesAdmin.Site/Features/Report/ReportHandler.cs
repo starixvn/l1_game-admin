@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -9,8 +8,7 @@ using MediatR;
 namespace GamesAdmin.Site.Features.ClientSites
 {
     public class ReportHandler :
-        IRequestHandler<GetBigSmallReportRequest, BigSmallReportResultViewModel>,
-        IRequestHandler<GetBigSmallRoundsRequest, IEnumerable<long>>
+        IRequestHandler<GetBigSmallReportRequest, BigSmallReportResultViewModel>
     {
         private readonly IReportService reportService;
 
@@ -43,13 +41,6 @@ namespace GamesAdmin.Site.Features.ClientSites
                     SelectBig = x.SelectBig
                 })
             };
-        }
-
-        public async Task<IEnumerable<long>> Handle(GetBigSmallRoundsRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetBigSmallRounds();
-
-            return result.OrderByDescending(x => x.Number).Select(x => x.Number);
         }
     }
 }

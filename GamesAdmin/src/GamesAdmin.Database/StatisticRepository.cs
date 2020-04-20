@@ -28,7 +28,7 @@ namespace GamesAdmin.Database
 
             var bigSmallOnesCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
             var bigSmallTurboOnesCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
-            var evenOddOnesCollection = database.GetCollection<EvenOddOnesEntity>(Document.GetCollectionName(typeof(EvenOddOnesEntity)));
+            var evenOddOnesCollection = database.GetCollection<OddEvenOnesEntity>(Document.GetCollectionName(typeof(OddEvenOnesEntity)));
 
             var fishPrawnCrabBetCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
             var shakeThePlaceBetCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
