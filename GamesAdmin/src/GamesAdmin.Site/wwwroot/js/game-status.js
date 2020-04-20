@@ -27,18 +27,18 @@
         var name = chk.val();
         var enabled = $(element).is(":checked");
 
+        var parent = chk.parent();
+        var displayName = parent.find(".game-display-name");
+
         var action = enabled ? "ENABLE" : "DISABLE";
 
-        if (confirm(action + " game " + name + "?")) {
+        if (confirm("Are you sure you want to " + action + " game " + displayName.val() + "?")) {
             $.ajax({
                 method: "POST",
                 url: "/status/update",
                 data: { name: name, enabled: enabled }
             }).done(function (updated) {
-                if (updated)
-                {
-                    alert("Updated!");
-                } else
+                if (!updated)
                 {
                     chk.prop({
                         checked: !enabled

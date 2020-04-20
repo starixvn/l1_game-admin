@@ -51,21 +51,17 @@
                                     <span></span>
                                 </div>
                                 <div class="layer"></div>
+                                <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName"  />
                             </div>
                         </td>
 
                         <td>
-                            <textarea placeholder="Message to display" class="message"></textarea>
-                            @*<input type="text" asp-for="@Model.GameList[index].DisabledMessage" class="disabled-message" placeholder="Message to display" />*@
+                            <textarea asp-for="@Model.GameList[index].DisabledMessage" placeholder="Message to display" class="message"></textarea>                            
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-
-        @*<div class="form-group">
-                <input type="button" value="Save" class="btn-submit" />
-            </div>*@
     </form>
 </div>
 
