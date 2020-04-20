@@ -1,39 +1,32 @@
-﻿
-%line {
-    content: "";
-    position: absolute;
-    background: #e9ecef;
+﻿.game-status {
+    padding-left: 0;
+    padding-right: 0;
+    .btn-enable {
+        margin-right: 14px;
+    }
 }
 
-.disabled-game-container {
-    .all-game {
-        position: relative;
-        padding-left: 2rem;
+.table {
+    background-color: #fff;
 
-        &:before {
-            @extend %line;
-            left: 2.5rem;
-            width: 0.2rem;
-            height: calc(100% - 2.8rem);
-            top: 1.4rem;
-        }
+    th {
+        text-align: center;
     }
 
-    .list-game {
-        padding-left: 2rem;
+    .toggle-button {
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-        li {
-            position: relative;
-            margin: 1rem 0;
+    .col-check {
+        width: 34px;
+    }
 
-            &:before {
-                @extend %line;
-                top: 50%;
-                left: -1.3rem;
-                height: 0.2rem;
-                margin-top: -0.3rem;
-                width: 1.3rem;
-            }
-        }
+    .col-status {
+        width: 128px;
+    }
+
+    .message {
+        width: 100%;
     }
 }
