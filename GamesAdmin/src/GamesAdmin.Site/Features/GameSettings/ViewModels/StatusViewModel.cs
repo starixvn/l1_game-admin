@@ -16,6 +16,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class StatusItemViewModel 
     {
+        public StatusItemViewModel() { }
+
         public StatusItemViewModel(string name, bool enabled, string disabledMessage) 
         {
             Name = name;
@@ -23,12 +25,19 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             DisabledMessage = disabledMessage;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
         public string DisplayName => string.IsNullOrWhiteSpace(Name) ? string.Empty : Enumeration.FromValue<GameType>(Name).DisplayName;
 
-        public bool Enabled { get; }
+        public bool Enabled { get; set; }
 
-        public string DisabledMessage { get; }
+        public string DisabledMessage { get; set; }
+    }
+
+    public class GameDisableMessage 
+    {
+        public string Name { get; set; }
+
+        public string DisabledMessage { get; set; }
     }
 }

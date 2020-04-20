@@ -144,5 +144,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Route("status")]
         public async Task<IActionResult> Status()
         => View(await mediator.Send(new GetStatusRequest()));
+
+        [HttpPost]
+        [Route("status/update")]
+        public async Task<IActionResult> UpdateStatus(string name, bool enabled)
+        {
+            var result = await mediator.Send(new UpdateStatusRequest(name, enabled));
+
+            return Json(result);
+        }
     }
 }

@@ -77,7 +77,7 @@ input[type="radio"] {
     position: relative;
     border: 1px solid #ccc; }
     .toggle-switch label .toggle-track:before {
-      content: 'NO';
+      content: 'DISABLE';
       display: inline-block;
       height: 2.2rem;
       line-height: 2.2rem;
@@ -93,7 +93,7 @@ input[type="radio"] {
       font-size: 1.1rem; }
 
 .toggle-switch input[type="checkbox"]:checked + label .toggle-track:before {
-  content: "YES";
+  content: "ENABLE";
   background: #31a66a;
   right: 3.1rem; }
 

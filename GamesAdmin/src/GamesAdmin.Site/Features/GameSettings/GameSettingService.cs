@@ -24,6 +24,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
+
+        [Put("/game_settings/{name}/update_status")]
+        Task<bool> UpdateStatus(string name, bool status);
     }
 
     public interface IGameSettingService
@@ -39,6 +42,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<GameConfig> GetByName(string name);
 
         Task<bool> IsExistName(string name);
+
+        Task<bool> UpdateStatus(string name, bool enabled);
     }
 
     public class GameSettingService : IGameSettingService
@@ -84,5 +89,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return gameConfig != default;
         }
+
+        public Task<bool> UpdateStatus(string name, bool enabled)
+        => gameApi.UpdateStatus(name, enabled);
     }
 }

@@ -11,13 +11,13 @@
 
 <div class="row">
     <div class="col-md-10 col-lg-6 card">
-        <form class="card-body form" asp-action="Add" asp-controller="GameSettings" method="post">
+        <form class="card-body form" asp-action="UpdateDisableMessage" asp-controller="GameSettings" method="post">
             <table id="status-tbl" class="table">
                 <thead>
                     <tr>
                         <th>&nbsp;</th>
                         <th>Name</th>
-                        <th>Enabled</th>
+                        <th>Status</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -26,32 +26,35 @@
                         <td><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></td>
                         <td>All</td>
                         <td>&nbsp;</td>
-                        <td><input id="msg-all" type="text" placeholder="Message to display" /></td>
+                        <td><input id="msg-all" type="text" placeholder="Message to display" onchange="gameStatus.updateAllMessage(this);"  /></td>
                     </tr>
-                    @foreach (var item in Model.GameList)
+                    @for(var index = 0; index < Model.GameList.Count; index++)
                     {
                         <tr>
-                            <td><input class="game-status-chk" type="checkbox" value="@item.Name" /></td>
-                            <td>@item.DisplayName</td>
+                            <td>
+                                <input class="game-status-chk" type="checkbox" />
+                                <input type="hidden" asp-for="@Model.GameList[index].Name" />
+                            </td>
+                            <td>@Model.GameList[index].DisplayName</td>
                             <td>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="chkTest" asp-for="@item.Enabled" name="chkTest">
-                                    <label for="chkTest">
+                                    <input type="checkbox" id="@Model.GameList[index].Name" onclick="gameStatus.toggle(this)" value="@Model.GameList[index].Name" asp-for="@Model.GameList[index].Enabled">
+                                    <label for="@Model.GameList[index].Name">
                                         <span class="toggle-track"></span>
                                     </label>
                                 </div>
                             </td>
 
-                            <td><input type="text" asp-for="@item.DisabledMessage" placeholder="Message to display" /> </td>
+                            <td><input type="text" asp-for="@Model.GameList[index].DisabledMessage" class="disabled-message" placeholder="Message to display" /> </td>
                         </tr>
                     }
                 </tbody>
             </table>
 
             <div class="form-group">
-                <input type="submit" value="Enable" class="btn-submit" />
-                <input type="submit" value="Disable" class="btn-submit" />
-                <input type="submit" value="Save" class="btn-submit" />
+                <input type="button" onclick="gameStatus.enable()" value="Enable" class="btn-submit" />
+                <input type="button" formaction="Disable" value="Disable" class="btn-submit" />
+                <input type="button" value="Save" class="btn-submit" />
             </div>
         </form>
     </div>

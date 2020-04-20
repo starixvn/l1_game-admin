@@ -2,6 +2,7 @@
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Driver;
 using Sentry;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace GamesAdmin.Api.Games
         Task<GameConfig> GetByName(string name);
 
         Task<bool> Delete(string name);
+
+        Task<bool> UpdateStatus(string name, bool enabled);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -121,6 +124,23 @@ namespace GamesAdmin.Api.Games
             try
             {
                 await repository.DeleteOneAsync(entity => entity.name == name);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateStatus(string name, bool enabled)
+        {
+            try
+            {
+                var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.Enabled), enabled);
+                await repository.UpdateAsync(config => config.name == name, update);
 
                 return true;
             }
