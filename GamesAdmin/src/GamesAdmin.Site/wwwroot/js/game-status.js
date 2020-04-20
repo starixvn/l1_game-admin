@@ -25,16 +25,31 @@
     toggle(element) {
         var chk = $(element);
         var name = chk.val();
-        var enable = $(element).is(":checked");
+        var enabled = $(element).is(":checked");
 
-        $.ajax({
-            method: "POST",
-            url: "/status/update",
-            data: { name: name, enable: enable }
-        })
-        .done(function (msg) {
-            alert("Data Saved: " + msg);
-        });
+        var action = enabled ? "ENABLE" : "DISABLE";
+
+        if (confirm(action + " game " + name + "?")) {
+            $.ajax({
+                method: "POST",
+                url: "/status/update",
+                data: { name: name, enabled: enabled }
+            }).done(function (updated) {
+                if (updated)
+                {
+                    alert("Updated!");
+                } else
+                {
+                    chk.prop({
+                        checked: !enabled
+                    });
+                }                
+            });
+        } else {
+            chk.prop({
+                checked: !enabled
+            });
+        }
     }
 }
 

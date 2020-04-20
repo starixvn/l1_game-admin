@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<GameConfig> GetByName(string name);
 
         [Put("/game_settings/{name}/update_status")]
-        Task<bool> UpdateStatus(string name, bool status);
+        Task<bool> UpdateStatus(string name, bool enabled);
     }
 
     public interface IGameSettingService

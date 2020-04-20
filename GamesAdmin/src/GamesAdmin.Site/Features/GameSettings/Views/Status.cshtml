@@ -12,6 +12,12 @@
 <div class="row">
     <div class="col-md-10 col-lg-6 card">
         <form class="card-body form" asp-action="UpdateDisableMessage" asp-controller="GameSettings" method="post">
+
+            <div class="form-group">
+                <input type="button" onclick="gameStatus.enable()" value="Enable" class="btn-submit" />
+                <input type="button" formaction="Disable" value="Disable" class="btn-submit" />
+            </div>
+
             <table id="status-tbl" class="table">
                 <thead>
                     <tr>
@@ -51,11 +57,9 @@
                 </tbody>
             </table>
 
-            <div class="form-group">
-                <input type="button" onclick="gameStatus.enable()" value="Enable" class="btn-submit" />
-                <input type="button" formaction="Disable" value="Disable" class="btn-submit" />
+            @*<div class="form-group">
                 <input type="button" value="Save" class="btn-submit" />
-            </div>
+            </div>*@
         </form>
     </div>
 </div>
