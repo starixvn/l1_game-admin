@@ -16,6 +16,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
     {
+        private const int MaxLengthOfMessage = 1000;
         private readonly IGameSettingsService gameService;
 
         public GameSettingsHandler(IGameSettingsService gamesService)
@@ -41,7 +42,14 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
         => gameService.UpdateStatus(request.Name, request.Enabled);
 
-        public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateDisbledMessage(request.Name, request.Message);
+        public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
+        {
+            if (request.Message.Length > MaxLengthOfMessage)
+            {
+                return false;
+            }
+
+            return await gameService.UpdateDisbledMessage(request.Name, request.Message);
+        }
     }
 }

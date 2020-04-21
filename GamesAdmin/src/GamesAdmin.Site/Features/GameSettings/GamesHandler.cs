@@ -29,6 +29,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
     {
+        private const int MaxLengthOfMessage = 1000;
+
         private readonly IMapper mapper;
 
         private readonly IGameSettingService gameService;
@@ -209,7 +211,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(request.Name))
+            if (string.IsNullOrWhiteSpace(request.Name) || request.DisabledMessage?.Length > MaxLengthOfMessage)
             {
                 return false;
             }
@@ -219,7 +221,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Handle(UpdateAllDisabledMessageRequest request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(request.DisabledMessage))
+            if (string.IsNullOrWhiteSpace(request.DisabledMessage) || request.DisabledMessage?.Length > MaxLengthOfMessage)
             {
                 return false;
             }

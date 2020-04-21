@@ -38,6 +38,8 @@ namespace GamesAdmin.Api.UM
 
                 var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
 
+                sentryClient.CaptureMessage($"UM Start: {startTime} End: {endTime}");
+
                 if (umInfo == null)
                 {
                     await umRepository.InsertOneAsync(new UMInfoEntity
@@ -64,6 +66,8 @@ namespace GamesAdmin.Api.UM
             try
             {
                 await UpdateEnableConfig(true);
+
+                sentryClient.CaptureMessage($"UM Finished");
 
                 var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
 

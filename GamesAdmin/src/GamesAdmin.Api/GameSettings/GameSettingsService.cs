@@ -96,6 +96,7 @@ namespace GamesAdmin.Api.Games
                 var existEntity = await GetByName(game.Name);
 
                 var entity = mapper.Map<GameConfigEntity>(game);
+                entity.Time = DateTime.Now;
 
                 if (entity.HoursMaxBot == null || entity.HoursMaxBot.Length < 24)
                 {
@@ -143,6 +144,8 @@ namespace GamesAdmin.Api.Games
             {
                 var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.Enabled), enabled);
                 await repository.UpdateAsync(config => config.name == name, update);
+
+                sentryClient.CaptureMessage($"Game {name} enabled: {enabled}");
 
                 return true;
             }
