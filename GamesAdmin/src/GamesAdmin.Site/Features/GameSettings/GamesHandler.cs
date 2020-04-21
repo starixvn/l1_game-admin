@@ -27,6 +27,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
+        , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
     {
         private readonly IMapper mapper;
 
@@ -214,6 +215,23 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return await gameService.UpdateDisabledMessage(request.Name, request.DisabledMessage);
+        }
+
+        public async Task<bool> Handle(UpdateAllDisabledMessageRequest request, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(request.DisabledMessage))
+            {
+                return false;
+            }
+
+            var games = await gameService.GetAll();
+
+            foreach (var game in games)
+            {
+                await gameService.UpdateDisabledMessage(game.Name, request.DisabledMessage);
+            }
+
+            return true;
         }
     }
 }

@@ -32,8 +32,8 @@
                 <td>All</td>
                 <td>&nbsp;</td>
                 <td>
-                    <form class="form" asp-action="UpdateDisabledMessage" asp-controller="GameSettings" method="post">
-                        <textarea placeholder="Message to display" class="message"></textarea>
+                    <form class="form" asp-action="UpdateAllDisabledMessage" asp-controller="GameSettings" method="post">
+                        <textarea placeholder="Message to display" name="disabledMessage" class="message"></textarea>
                         <div class="form-group">
                             <input type="submit" value="Save" class="btn-submit" />
                         </div>

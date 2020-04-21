@@ -146,15 +146,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new GetStatusRequest()));
 
         [HttpPost]
-        [Route("status/update")]
-        public async Task<IActionResult> UpdateStatus(string name, bool enabled)
-        {
-            var result = await mediator.Send(new UpdateStatusRequest(name, enabled));
-
-            return Json(result);
-        }
-
-        [HttpPost]
         [Route("status/enable")]
         public async Task<IActionResult> EnableGames(string[] games)
         {
@@ -177,6 +168,15 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IActionResult> UpdateDisabledMessage(string name, string disabledMessage)
         {
             await mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+
+            return RedirectToAction(nameof(Status));
+        }
+
+        [HttpPost]
+        [Route("status/update")]
+        public async Task<IActionResult> UpdateAllDisabledMessage(string disabledMessage)
+        {
+            await mediator.Send(new UpdateAllDisabledMessageRequest(disabledMessage));
 
             return RedirectToAction(nameof(Status));
         }
