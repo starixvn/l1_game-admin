@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -16,44 +17,49 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        protected async Task<(TRoundEntity, IEnumerable<BetReportEntity>)> GetAsync<TRoundEntity, TBetEntity>(long roundId, string nickname, bool excludeBot) where TRoundEntity : BaseRoundEntity where TBetEntity : BaseBetEntity
+        protected async Task<(TRoundEntity, IEnumerable<BetReportEntity>)> GetAsync<TRoundEntity, TBetEntity>(long roundId, string nickname, bool excludeBot) where TRoundEntity : BaseRoundEntity, new() where TBetEntity : BaseBetEntity
         {
-            var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
-            var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
-            var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
+            var roundResults = await database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity))).Find(x => x.Number == roundId).ToListAsync();
 
-            var aggregateBuilder = betCollection.Aggregate().Match(x => x.Round == roundId)
-                 .Lookup<TBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
-                        foreignCollection: accountInfoCollection,
-                        localField: x => x.Uid,
-                        foreignField: x => x.UserId,
-                        @as: r => r.AccountInfos)
-                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                  .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
-                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
-                        foreignCollection: accountCollection,
-                        localField: x => x.UserId,
-                        foreignField: x => x.Id,
-                        @as: r => r.Accounts
-                  )
-                  .Unwind<BetEntityWithAccountInfoUnwind, BetBigSmallEntityReportUnwind>(x => x.Accounts)
-                  .Project(x => new BetReportEntity
-                  {
-                      Time = x.Time,
-                      Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
-                      Nickname = x.AccountInfos.Name,
-                      SelectBig = x.Select,
-                      Bet = x.Bet,
-                      BetWin = x.Betwin,
-                      Back = x.Back
-                  });
+            if (roundResults.Any())
+            {
+                var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
+                var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
+                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
-            var records = aggregateBuilder.ToList();
+                var aggregateBuilder = betCollection.Aggregate().Match(x => x.Round == roundId)
+                     .Lookup<TBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
+                            foreignCollection: accountInfoCollection,
+                            localField: x => x.Uid,
+                            foreignField: x => x.UserId,
+                            @as: r => r.AccountInfos)
+                      .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
+                      .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
+                      .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
+                      .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
+                            foreignCollection: accountCollection,
+                            localField: x => x.UserId,
+                            foreignField: x => x.Id,
+                            @as: r => r.Accounts
+                      )
+                      .Unwind<BetEntityWithAccountInfoUnwind, BetBigSmallEntityReportUnwind>(x => x.Accounts)
+                      .Project(x => new BetReportEntity
+                      {
+                          Time = x.Time,
+                          Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
+                          Nickname = x.AccountInfos.Name,
+                          Select = x.Select,
+                          Bet = x.Bet,
+                          BetWin = x.Betwin,
+                          Back = x.Back
+                      });
 
-            var roundResult = await database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+                var records = aggregateBuilder.ToList();
 
-            return (roundResult, records);
+                return (roundResults.FirstOrDefault(), records);
+            }
+
+            return (new TRoundEntity(), Enumerable.Empty<BetReportEntity>());
         }
     }
 
@@ -88,7 +94,7 @@ namespace GamesAdmin.Database
 
         public string Nickname { get; set; }
 
-        public bool SelectBig { get; set; }
+        public bool Select { get; set; }
 
         public decimal Bet { get; set; }
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
-    public class BigSmallReport
+    public class GameReport
     {
         public RoundResult RoundResult {get;set;}
-        public IEnumerable<BigSmallRecord> Records { get; set; }
+        public IEnumerable<GameRecord> Records { get; set; }
     }
 
     public class RoundResult
@@ -21,13 +21,13 @@ namespace GamesAdmin.Core.Models
     }
 
 
-    public class BigSmallRecord
+    public class GameRecord
     {
         public string Username { get; set; }
 
         public string Nickname { get; set; }
 
-        public bool SelectBig { get; set; }
+        public bool Select { get; set; }
 
         public decimal Bet { get; set; }
 

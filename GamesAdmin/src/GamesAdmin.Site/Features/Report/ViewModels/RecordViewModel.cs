@@ -2,13 +2,13 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class BigSmallRecordViewModel
+    public class RecordViewModel
     {
         public string Username { get; set; }
 
         public string Nickname { get; set; }
 
-        public bool SelectBig { get; set; }
+        public bool Select { get; set; }
 
         public decimal Bet { get; set; }
 

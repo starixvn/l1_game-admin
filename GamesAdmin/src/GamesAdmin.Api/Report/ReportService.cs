@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,61 +12,71 @@ namespace GamesAdmin.Api.Report
 {
     public interface IReportService
     {
-        Task<BigSmallReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<GameReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot);
 
         Task<IList<Bet>> GetGameReport(string name, long roundId, byte gameType, DateTime from, DateTime to);
+
+        Task<GameReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<GameReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<GameReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
     {
-        private readonly IBigSmallReportRepository bigSmallReportRepository;
-        private readonly IGameReportRepository gameReportRepository;
+        private readonly IServiceProvider serviceProvider;
 
-        public ReportService(
-            IBigSmallReportRepository bigSmallReportRepository,
-            IGameReportRepository gameReportRepository)
+        public ReportService(IServiceProvider serviceProvider)
         {
-            this.bigSmallReportRepository = bigSmallReportRepository;
-            this.gameReportRepository = gameReportRepository;
+            this.serviceProvider = serviceProvider;
         }
 
-        public async Task<BigSmallReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<GameReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
         {
-            var result = await bigSmallReportRepository.GetAsync(roundId, nickname, excludeBot);
+            var repository = serviceProvider.GetService<IBigSmallReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
 
-            return new BigSmallReport
-            {
-                RoundResult = new RoundResult
-                {
-                    Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1,
-                    Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
-                },
-                Records = result.Item2.Select(x => new BigSmallRecord
-                {
-                    Time = x.Time,
-                    Nickname = x.Nickname,
-                    Username = x.Username,
-                    SelectBig = x.SelectBig,
-                    Bet = x.Bet,
-                    BetWin = x.BetWin,
-                    Back = x.Back
-                })
-            };
+            return GenerateGameReport(result);
+        }
+
+        public async Task<GameReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IBigSmallTurboReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            return GenerateGameReport(result);
+
+        }
+
+        public async Task<GameReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IOddEvenReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return GenerateGameReport(result);
+        }
+
+        public async Task<GameReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IOddEvenTurboReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return GenerateGameReport(result);
         }
 
         public async Task<IList<Bet>> GetGameReport(string name, long roundId, byte gameType, DateTime from, DateTime to)
         {
+            var gameReportRepository = serviceProvider.GetService<IGameReportRepository>();
+
             IList<GameReportEntity> gameReportEntities;
 
             if (roundId == 0)
             {
-                gameReportEntities = await this.gameReportRepository.GetAll(name, gameType, from, to);
-            }
-            else
+               gameReportEntities = await gameReportRepository.GetAll(name, gameType, from, to);
+                
+            } else
             {
-                gameReportEntities = await this.gameReportRepository.GetByRound(roundId, name, gameType, from, to);
+                gameReportEntities = await gameReportRepository.GetByRound(roundId, name, gameType, from, to);
             }
 
             var results = gameReportEntities.Select(TransformGameReportEntityToBetModel).ToList();
@@ -105,6 +117,30 @@ namespace GamesAdmin.Api.Report
             }
 
             return result;
+        }
+
+        private GameReport GenerateGameReport((BaseRoundEntity, IEnumerable<BetReportEntity>) result)
+        {
+            return new GameReport
+            {
+                RoundResult = new RoundResult
+                {
+                    Number = result.Item1.Number,
+                    Dice1 = result.Item1.Dice1,
+                    Dice2 = result.Item1.Dice2,
+                    Dice3 = result.Item1.Dice3
+                },
+                Records = result.Item2.Select(x => new GameRecord
+                {
+                    Time = x.Time,
+                    Nickname = x.Nickname,
+                    Username = x.Username,
+                    Select = x.Select,
+                    Bet = x.Bet,
+                    BetWin = x.BetWin,
+                    Back = x.Back
+                })
+            };
         }
     }
 }

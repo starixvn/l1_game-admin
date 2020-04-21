@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {

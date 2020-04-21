@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Report;
 
@@ -8,7 +6,13 @@ namespace GamesAdmin.Site.Features.ClientSites
 {
     public interface IReportService
     {
-        Task<BigSmallReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
+        Task<GameReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
+
+        Task<GameReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot);
+
+        Task<GameReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot);
+
+        Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -20,7 +24,16 @@ namespace GamesAdmin.Site.Features.ClientSites
             this.reportApi = reportApi;
         }
 
-        public async Task<BigSmallReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
+        public async Task<GameReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetBigSmallReport(roundId, nickname, excludeBot);
+
+        public async Task<GameReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot)
+        => await reportApi.GetBigSmallTurboReport(roundId, nickname, excludeBot);
+
+        public async Task<GameReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot)
+        => await reportApi.GetOddEvenReport(roundId, nickname, excludeBot);
+
+        public async Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
+        => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
     }
 }

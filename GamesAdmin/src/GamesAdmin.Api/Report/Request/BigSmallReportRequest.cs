@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class BigSmallReportRequest : IRequest<BigSmallReport>
+    public class BigSmallReportRequest : IRequest<GameReport>
     {
         public BigSmallReportRequest(long roundId, string nickname, bool excludeBot)
         {

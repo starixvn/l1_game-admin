@@ -6,7 +6,6 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("taixiu_phiens")]
     [BsonIgnoreExtraElements]
     public class BigSmallRoundEntity : BaseRoundEntity
-    {        
-      
+    {
     }
 }

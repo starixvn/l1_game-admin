@@ -28,5 +28,41 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_BigSmallRecords", await mediator.Send(new GetBigSmallReportRequest(roundId, nickname, excludeBot)));
         }
+
+        [HttpGet]
+        public IActionResult BigSmallTurbo()
+        {
+            return View(new BigSmallTurboReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetBigSmallTurboReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public IActionResult OddEven()
+        {
+            return View(new OddEvenReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOddEvenReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_OddEvenRecords", await mediator.Send(new GetOddEvenReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public IActionResult OddEvenTurbo()
+        {
+            return View(new OddEvenTurboReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot)));
+        }
     }
 }

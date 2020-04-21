@@ -1,0 +1,91 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+@model BigSmallTurboReportResultViewModel
+
+@{
+    var bigRecords = Model.Records.Where(x => x.Select).ToList();
+    var smallRecords = Model.Records.Where(x => !x.Select).ToList();
+    var totalRow = bigRecords.Count > smallRecords.Count ? bigRecords.Count : smallRecords.Count;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Dice1 - @Model.RoundResult.Dice2 - @Model.RoundResult.Dice3</span> </h3>
+        }
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th colspan="6" class="big-small-title">Big</th>
+                    <th class="line-cell"></th>
+                    <th colspan="6" class="big-small-title">Small</th>
+                </tr>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                    <th class="line-cell"></th>
+                    <th class="col-date">Date</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < totalRow; i++)
+                {
+                    var bigRecord = bigRecords.ElementAtOrDefault(i);
+                    var smallRecord = smallRecords.ElementAtOrDefault(i);
+                    <tr>
+                        <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bigRecord?.Username</td>
+                        <td>@bigRecord?.Nickname</td>
+                        <td class="text-right">@bigRecord?.Bet</td>
+                        <td class="text-right">@bigRecord?.Back</td>
+                        <td class="text-right">@bigRecord?.BetWin</td>
+                        <td class="line-cell"></td>
+                        <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@smallRecord?.Username</td>
+                        <td class="col-nickname">@smallRecord?.Nickname</td>
+                        <td class="text-right">@smallRecord?.Bet</td>
+                        <td class="text-right">@smallRecord?.Back</td>
+                        <td class="text-right">@smallRecord?.BetWin</td>
+                    </tr>
+
+                }
+            </tbody>
+            <tfoot>
+                @if (totalRow == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="13">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
+                        <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
+                        <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
+                        <td class="line-cell"></td>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@smallRecords.Sum(x => x.Bet)</td>
+                        <td class="text-right">@smallRecords.Sum(x => x.Back)</td>
+                        <td class="text-right">@smallRecords.Sum(x => x.BetWin)</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>
