@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.IdentityServer;
+using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.ClientSites;
@@ -43,6 +44,9 @@ namespace GamesAdmin.Site._Shared.Midlewares
             services.AddScoped<IDashboardService, DashboardService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl));
+            services.AddScoped<IGameServerService, GameServerService>();
         }
     }
 }

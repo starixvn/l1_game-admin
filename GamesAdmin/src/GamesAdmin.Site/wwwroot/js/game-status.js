@@ -13,18 +13,20 @@
 
         if (checkedGames.message.length > 0) {
             var message = "ENABLE games:\n" + checkedGames.message + "Are you sure?";
-        }
-     
-        if (confirm(message)) {
-            $.ajax({
-                method: "POST",
-                url: "/status/enable",
-                data: { games: checkedGames.games}
-            }).done(function (updated) {
-                if (updated) {
-                    window.location.href = "/status";
-                }
-            });
+
+            var reload = $("#reload").is(":checked");
+
+            if (confirm(message)) {
+                $.ajax({
+                    method: "POST",
+                    url: "/status/enable",
+                    data: { games: checkedGames.games, reload: reload }
+                }).done(function (updated) {
+                    if (updated) {
+                        window.location.href = "/status";
+                    }
+                });
+            }
         }
     }
 
@@ -34,18 +36,20 @@
 
         if (checkedGames.message.length > 0) {
             var message = "DISABLE games:\n" + checkedGames.message + "Are you sure?";
-        }
 
-        if (confirm(message)) {
-            $.ajax({
-                method: "POST",
-                url: "/status/disable",
-                data: { games: checkedGames.games }
-            }).done(function (updated) {
-                if (updated) {                   
-                    window.location.href = "/status";
-                }
-            });
+            var reload = $("#reload").is(":checked");
+
+            if (confirm(message)) {
+                $.ajax({
+                    method: "POST",
+                    url: "/status/disable",
+                    data: { games: checkedGames.games, reload: reload }
+                }).done(function (updated) {
+                    if (updated) {
+                        window.location.href = "/status";
+                    }
+                });
+            }
         }
     }
 

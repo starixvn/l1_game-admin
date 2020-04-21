@@ -7,6 +7,7 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Enumerations;
+using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
@@ -35,15 +36,18 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         private readonly IGameSettingService gameService;
         private readonly IAccountService accountService;
+        private readonly IGameServerService gameServerService;
 
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
-            IAccountService accountService)
+            IAccountService accountService,
+            IGameServerService gameServerService)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
+            this.gameServerService = gameServerService;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -204,6 +208,11 @@ namespace GamesAdmin.Site.Features.GameSettings
             foreach (var name in request.Names)
             {
                 await gameService.UpdateStatus(name, request.Enabled);
+            }
+
+            if (request.Reload)
+            {
+                await gameServerService.Reload();
             }
 
             return true;

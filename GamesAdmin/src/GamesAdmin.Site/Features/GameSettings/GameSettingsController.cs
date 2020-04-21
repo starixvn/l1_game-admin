@@ -147,18 +147,18 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("status/enable")]
-        public async Task<IActionResult> EnableGames(string[] games)
+        public async Task<IActionResult> EnableGames(string[] games, bool reload = false)
         {
-            var result = await mediator.Send(new UpdateMultipleGameStatusRequest(games, true));
+            var result = await mediator.Send(new UpdateMultipleGameStatusRequest(games, true, reload));
 
             return Json(result);
         }
 
         [HttpPost]
         [Route("status/disable")]
-        public async Task<IActionResult> DisableGames(string[] games)
+        public async Task<IActionResult> DisableGames(string[] games, bool reload = false)
         {
-            var result = await mediator.Send(new UpdateMultipleGameStatusRequest(games, false));
+            var result = await mediator.Send(new UpdateMultipleGameStatusRequest(games, false, reload));
 
             return Json(result);
         }
