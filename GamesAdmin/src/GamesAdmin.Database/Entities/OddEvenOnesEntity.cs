@@ -16,6 +16,9 @@ namespace GamesAdmin.Database.Entities
 
         public decimal Betwin { get; set; }
 
+        [BsonElement("thanhtoan")]
+        public bool Paid { get; set; }
+
         public string Uid { get; set; }
 
         [BsonElement("phien")]

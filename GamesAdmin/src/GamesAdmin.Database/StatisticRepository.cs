@@ -29,6 +29,7 @@ namespace GamesAdmin.Database
             var bigSmallOnesCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
             var bigSmallTurboOnesCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
             var evenOddOnesCollection = database.GetCollection<OddEvenOnesEntity>(Document.GetCollectionName(typeof(OddEvenOnesEntity)));
+            var evenOddTurboOnesCollection = database.GetCollection<OddEvenTurboOnesEntity>(Document.GetCollectionName(typeof(OddEvenTurboOnesEntity)));
 
             var fishPrawnCrabBetCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
             var shakeThePlaceBetCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
@@ -36,12 +37,12 @@ namespace GamesAdmin.Database
             var bigSmallTotalBets = await bigSmallOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
             var bigSmallTurboTotalBets = await bigSmallTurboOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
             var evenOddTotalBets = await evenOddOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
+            var evenOddTurboTotalBets = await evenOddTurboOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
 
             var fishPrawnCrabTotalBets = await fishPrawnCrabBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
             var shakeThePlaceTotalBets = await shakeThePlaceBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
 
-
-            return bigSmallTotalBets + fishPrawnCrabTotalBets + evenOddTotalBets + shakeThePlaceTotalBets + bigSmallTurboTotalBets;
+            return bigSmallTotalBets + fishPrawnCrabTotalBets + evenOddTotalBets + evenOddTurboTotalBets + shakeThePlaceTotalBets + bigSmallTurboTotalBets;
         }
     }
 }
