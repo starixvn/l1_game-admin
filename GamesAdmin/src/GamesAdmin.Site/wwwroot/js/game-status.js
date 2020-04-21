@@ -73,8 +73,10 @@
     }
 
     showForm(element) {
-        var form = $(element).parent().find('.form-disabled-message');
+        var div = $(element).parent();
+        var form = $(div).parent().find('.form-disabled-message');
         form.show();
+        div.hide();
     }
 }
 

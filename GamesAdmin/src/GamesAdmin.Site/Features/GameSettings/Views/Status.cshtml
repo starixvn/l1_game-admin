@@ -46,8 +46,10 @@
                     <td>@Model.GameList[index].DisplayName</td>
                     <td class="text-center">@Model.GameList[index].StatusDisplay</td>
                     <td>
-                        <label class="content-message">@Model.GameList[index].DisabledMessage</label>
-                        <button class="btn-edit" onclick="gameStatus.showForm(this)"><i class="material-icons icon-edit">create</i></button>
+                        <div>
+                            <label class="content-message">@Model.GameList[index].DisabledMessage</label>
+                            <button class="btn-edit" onclick="gameStatus.showForm(this)"><i class="material-icons icon-edit">create</i></button>
+                        </div>                        
                         <form class="form form-disabled-message" asp-action="UpdateDisabledMessage" asp-controller="GameSettings" method="post" style="display:none">
                             <textarea name="disabledMessage" asp-for="@Model.GameList[index].DisabledMessage" placeholder="Message to display" class="message"></textarea>
                             <input type="hidden" name="name" asp-for="@Model.GameList[index].Name" />
