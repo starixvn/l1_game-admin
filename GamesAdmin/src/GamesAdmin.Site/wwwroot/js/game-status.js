@@ -8,6 +8,15 @@
         });
     }
 
+    uncheckAll(element)
+    {
+        if (!$(element).is(":checked")) {
+            $("#status-all").prop({
+                checked: false
+            });
+        }
+    }
+
     enable() {       
         var checkedGames = this.getCheckedGames();
 

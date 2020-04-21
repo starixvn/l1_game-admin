@@ -41,7 +41,7 @@
             {
                 <tr>
                     <td class="text-center">
-                        <input class="game-status-chk" type="checkbox" value="@Model.GameList[index].Name" />
+                        <input class="game-status-chk" type="checkbox"  onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
                         <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
                     </td>
                     <td>@Model.GameList[index].DisplayName</td>
