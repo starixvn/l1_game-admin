@@ -5,6 +5,8 @@
     margin-bottom: 1.6rem; }
   .game-status .btn-enable {
     margin-right: 1.4rem; }
+  .game-status .force-reload {
+    margin-left: 15px; }
 
 .table {
   background-color: #fff; }

@@ -30,60 +30,56 @@
             <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
         }
 
-        <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
+<form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group row">
-                <div class="col-lg-6">
-                    <label asp-for="MinBet" class="control-label"></label>
-                    <input type="number" asp-for="MinBet" class="form-control" />
-                    <span asp-validation-for="MinBet" class="text-danger"></span>
-                    <input asp-for="Name" type="hidden" class="form-control" />
-                    <input asp-for="Id" type="hidden" class="form-control" />
-                    <input type="hidden" asp-for="MaxBot" class="form-control" />
-                    <input type="hidden" asp-for="Enabled" class="form-control" />
-                    <input type="hidden" asp-for="DisabledMessage" class="form-control" />
-                </div>
-                <div class="col-lg-6">
-                    <label asp-for="MaxBet" class="control-label"></label>
-                    <input type="number" asp-for="MaxBet" class="form-control" />
-                    <span asp-validation-for="MaxBet" class="text-danger"></span>
-                </div>
-            </div>
+    <div class="form-group">
+        Game Status: <strong>@Model.StatusDisplay</strong>
+    </div>
 
-            <div class="form-group">
-                <div>
-                    <label asp-for="Enabled" class="control-label"></label>
-                    <label class="control-label"><b>@Model.StatusDisplay</b></label>
-                </div>
-                <span asp-validation-for="Enabled" class="text-danger"></span>
-            </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label asp-for="MinBet" class="control-label"></label>
+            <input type="number" asp-for="MinBet" class="form-control" />
+            <span asp-validation-for="MinBet" class="text-danger"></span>
+            <input asp-for="Name" type="hidden" class="form-control" />
+            <input asp-for="Id" type="hidden" class="form-control" />
+            <input type="hidden" asp-for="MaxBot" class="form-control" />
+            <input type="hidden" asp-for="Enabled" class="form-control" />
+            <input type="hidden" asp-for="DisabledMessage" class="form-control" />
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="MaxBet" class="control-label"></label>
+            <input type="number" asp-for="MaxBet" class="form-control" />
+            <span asp-validation-for="MaxBet" class="text-danger"></span>
+        </div>
+    </div>
 
-            <hr />
+    <hr />
 
-            <div class="form-group">
-                <label asp-for="BotMaxBet" class="control-label"></label>
-                <input type="number" asp-for="BotMaxBet" class="form-control" />
-                <span asp-validation-for="BotMaxBet" class="text-danger"></span>
-            </div>
+    <div class="form-group">
+        <label asp-for="BotMaxBet" class="control-label"></label>
+        <input type="number" asp-for="BotMaxBet" class="form-control" />
+        <span asp-validation-for="BotMaxBet" class="text-danger"></span>
+    </div>
 
-            <div class="adjust-bot-link">
-                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
-            </div>
+    <div class="adjust-bot-link">
+        <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
+    </div>
 
-            <div class="form-group">
-                <div>
-                    <input type="checkbox" asp-for="BotEnabled" />
-                    <label asp-for="BotEnabled" class="control-label"></label>
-                </div>
-                <span asp-validation-for="BotEnabled" class="text-danger"></span>
-            </div>
+    <div class="form-group">
+        <div>
+            <input type="checkbox" asp-for="BotEnabled" />
+            <label asp-for="BotEnabled" class="control-label"></label>
+        </div>
+        <span asp-validation-for="BotEnabled" class="text-danger"></span>
+    </div>
 
-            <div class="form-group">
-                <input type="submit" value="Update" class="btn-submit" />
-            </div>
-        </form>
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn-submit" />
+    </div>
+</form>
     }
 </div>
 
