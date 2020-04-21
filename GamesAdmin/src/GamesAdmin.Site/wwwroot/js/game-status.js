@@ -59,7 +59,7 @@
             if ($(checkboxes[i]).is(":checked")) {
                 games.push($(checkboxes[i]).val());
 
-                var parent = $(checkboxes[i]).parent().parent();
+                var parent = $(checkboxes[i]).parent();
                 var displayName = parent.find(".game-display-name");
 
                 gameChosen += "- " + displayName.val() + "\n";
@@ -70,36 +70,6 @@
             games: games,
             message: gameChosen
         };
-    }
-
-    toggle(element) {
-        var chk = $(element);
-        var name = chk.val();
-        var enabled = $(element).is(":checked");
-
-        var parent = chk.parent();
-        var displayName = parent.find(".game-display-name");
-
-        var action = enabled ? "ENABLE" : "DISABLE";
-
-        if (confirm("Are you sure you want to " + action + " game " + displayName.val() + "?")) {
-            $.ajax({
-                method: "POST",
-                url: "/status/update",
-                data: { name: name, enabled: enabled }
-            }).done(function (updated) {
-                if (!updated)
-                {
-                    chk.prop({
-                        checked: !enabled
-                    });
-                }                
-            });
-        } else {
-            chk.prop({
-                checked: !enabled
-            });
-        }
     }
 
     showForm(element) {
