@@ -59,7 +59,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.BotMinBet,
                    editViewModel.BotMaxBet,
                    null,
-                   string.Empty)));
+                   editViewModel.DisabledMessage)));
 
                 TempData["isSuccess"] = true;
 

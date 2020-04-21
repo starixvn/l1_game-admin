@@ -22,6 +22,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Game Enabled")]
         public bool Enabled { get; set; }
 
+        public string StatusDisplay => Enabled ? "Yes" : "No";
+
         [Required(ErrorMessage = "Mininum Bet could not empty")]
         [Range(0.01, 100, ErrorMessage = "Enter number between 0.01 to 100")]
         [DisplayName("Minimum Bet Limit")]
@@ -57,6 +59,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double[] HoursMaxBot { get; set; }
 
         public List<BotRatioItemViewModel> BotRatioItems { get; set; }
+
+        public string DisabledMessage { get; set; }
     }
 
     public class BotRatioItemViewModel 
