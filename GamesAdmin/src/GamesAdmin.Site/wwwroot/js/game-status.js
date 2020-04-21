@@ -16,14 +16,54 @@
     }
 
     enable() {       
+        var checkedGames = this.getCheckedGames();
+
+        if (checkedGames.message.length > 0) {
+            var message = "ENABLE games:\n" + checkedGames.message + "Are you sure?";
+        }
+     
+        if (confirm(message)) {
+            $.ajax({
+                method: "POST",
+                url: "/status/enable",
+                data: { games: checkedGames.games}
+            }).done(function (updated) {
+                if (updated) {
+                    window.location.href = "/status";
+                }
+            });
+        }
+    }
+
+    disable()
+    {
+        var checkedGames = this.getCheckedGames();
+
+        if (checkedGames.message.length > 0) {
+            var message = "DISABLE games:\n" + checkedGames.message + "Are you sure?";
+        }
+
+        if (confirm(message)) {
+            $.ajax({
+                method: "POST",
+                url: "/status/disable",
+                data: { games: checkedGames.games }
+            }).done(function (updated) {
+                if (updated) {                   
+                    window.location.href = "/status";
+                }
+            });
+        }
+    }
+
+    getCheckedGames() {
         var container = $("#status-tbl");
         var checkboxes = container.find('.game-status-chk');
         var gameChosen = "";
         var games = [];
 
         for (var i = 0; i < checkboxes.length; i++) {
-            if ($(checkboxes[i]).is(":checked"))
-            {
+            if ($(checkboxes[i]).is(":checked")) {
                 games.push($(checkboxes[i]).val());
 
                 var parent = $(checkboxes[i]).parent().parent();
@@ -33,34 +73,10 @@
             }
         }
 
-        if (gameChosen.length > 0) {
-            var message = "ENABLE games:\n" + gameChosen + "Are you sure?";
-        }
-     
-        if (confirm(message)) {
-            $.ajax({
-                method: "POST",
-                url: "/status/enable",
-                data: { games: games}
-            }).done(function (updated) {
-                if (!updated) {
-                    chk.prop({
-                        checked: !enabled
-                    });
-                } else {
-                    window.location.href = "/status";
-                }
-            });
-        }
-    }
-
-    disable()
-    {
-        var enable = confirm("Disable all?");
-
-        if (enable) {
-            alert("Disable all");
-        }
+        return {
+            games: games,
+            message: gameChosen
+        };
     }
 
     toggle(element) {
