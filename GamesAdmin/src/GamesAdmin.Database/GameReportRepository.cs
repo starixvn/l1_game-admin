@@ -510,4 +510,35 @@ namespace GamesAdmin.Database
             };
         }
     }
+
+    internal class EvenOddRoundWithBetsEntity : EvenOddRoundEntity
+    {
+        public IEnumerable<EvenOddOnesEntity> One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+    }
+
+    internal class EvenOddRoundWithBetUnwindEntity : EvenOddRoundEntity
+    {
+        public EvenOddOnesEntity One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+
+        public GameReportEntity ToGameReport()
+        {
+            return new BigSmallGameReportEntity
+            {
+                BetWin = One.Betwin,
+                Round = Number,
+                Time = Time,
+                Bet = One.Bet,
+                FirstDice = (byte)Dice1,
+                SecondDice = (byte)Dice2,
+                ThirdDice = (byte)Dice3,
+                Refund = One.Back,
+                SelectBig = One.Select
+            };
+        }
+    }
+
 }
