@@ -31,5 +31,8 @@ namespace GamesAdmin.Database.Entities
         public bool BigSmall { get; set; }
 
         public int? MemberId { get; set; }
+
+        [BsonElement("thanhtoan")]
+        public bool Paid { get; set; }
     }
 }

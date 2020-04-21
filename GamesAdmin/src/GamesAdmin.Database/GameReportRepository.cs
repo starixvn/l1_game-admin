@@ -29,7 +29,8 @@ namespace GamesAdmin.Database
             {
                 GetAllBigSmall,
                 GetAllFishPrawnCrab,
-                GetAllShakeThePlate
+                GetAllShakeThePlate,
+                GetAllBigSmallTurbo
             };
 
             var result = new List<GameReportEntity>();
@@ -49,7 +50,8 @@ namespace GamesAdmin.Database
             {
                 GetByRoundBigSmall,
                 GetByRoundFishPrawnCrab,
-                GetByRoundShakeThePlate
+                GetByRoundShakeThePlate,
+                GetByRoundBigSmallTurbo
             };
 
             var result = new List<GameReportEntity>();
@@ -67,8 +69,8 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.BigSmall)
             {
-                var roundCollection = database.GetCollection<BigSmallRoundEntity>("taixiu_phiens");
-                var oneCollection = database.GetCollection<BigSmallOnesEntity>("taixiu_ones");
+                var roundCollection = database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)));
+                var oneCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
                 var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
                 var aggregateBuilder = roundCollection.Aggregate()
@@ -86,8 +88,7 @@ namespace GamesAdmin.Database
                         foreignField: account => account.UserId,
                         @as: r => r.Accounts
                     )
-                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name);
-
+                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
 
                 var unwindEntities = await aggregateBuilder.ToListAsync();
                 var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
@@ -102,8 +103,8 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.FishPrawnCrab)
             {
-                var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>("baucua_phiens");
-                var betCollection = database.GetCollection<FishPrawnCrabBetEntity>("baucua_cuocs");
+                var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity)));
+                var betCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
 
                 var aggregateBuilder = roundCollection.Aggregate()
                     .Match(round => round.Time >= fromDate && round.Time < toDate)
@@ -114,7 +115,7 @@ namespace GamesAdmin.Database
                         @as: r => r.Bet
                     )
                     .Unwind<FishPrawnCrabRoundWithBetsEntity, FishPrawnCrabRoundWithBetUnwindEntity>(x => x.Bet)
-                    .Match(x => x.Bet.Name == name);
+                    .Match(x => x.Bet.Name == name && x.Bet.Paid);
 
                 var unwindEntities = await aggregateBuilder.ToListAsync();
                 var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
@@ -129,8 +130,8 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.ShakeThePlate)
             {
-                var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>("xocxoc_phiens");
-                var betCollection = database.GetCollection<ShakeThePlateBetEntity>("xocxoc_cuocs");
+                var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity)));
+                var betCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
 
                 var aggregateBuilder = roundCollection.Aggregate()
                     .Match(round => round.Time >= fromDate && round.Time < toDate)
@@ -141,7 +142,41 @@ namespace GamesAdmin.Database
                         @as: r => r.Bet
                     )
                     .Unwind<ShakeThePlateRoundWithBetsEntity, ShakeThePlateRoundWithBetUnwindEntity>(x => x.Bet)
-                    .Match(x => x.Bet.Name == name);
+                    .Match(x => x.Bet.Name == name && x.Bet.Paid);
+
+                var unwindEntities = await aggregateBuilder.ToListAsync();
+                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
+
+                return results;
+            }
+
+            return new List<GameReportEntity>();
+        }
+
+        private async Task<IList<GameReportEntity>> GetAllBigSmallTurbo(string name, byte gameType, DateTime fromDate, DateTime toDate)
+        {
+            if (gameType == (byte)GameType.BigSmallTurbo)
+            {
+                var roundCollection = database.GetCollection<BigSmallTurboRoundEntity>(Document.GetCollectionName(typeof(BigSmallTurboRoundEntity)));
+                var oneCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
+                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
+
+                var aggregateBuilder = roundCollection.Aggregate()
+                    .Match(round => round.Time >= fromDate && round.Time < toDate)
+                    .Lookup<BigSmallTurboRoundEntity, BigSmallTurboOnesEntity, BigSmallTurboRoundWithBetsEntity>(
+                        foreignCollection: oneCollection,
+                        localField: round => round.Number,
+                        foreignField: bet => bet.Round,
+                        @as: r => r.One
+                    )
+                    .Unwind<BigSmallTurboRoundWithBetsEntity, BigSmallTurboRoundWithBetUnwindEntity>(x => x.One)
+                    .Lookup<BigSmallTurboRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallTurboRoundWithBetUnwindEntity>(
+                        foreignCollection: accountInfoCollection,
+                        localField: round => round.One.Uid,
+                        foreignField: account => account.UserId,
+                        @as: r => r.Accounts
+                    )
+                    .Match<BigSmallTurboRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
 
                 var unwindEntities = await aggregateBuilder.ToListAsync();
                 var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
@@ -156,8 +191,8 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.BigSmall)
             {
-                var roundCollection = database.GetCollection<BigSmallRoundEntity>("taixiu_phiens");
-                var oneCollection = database.GetCollection<BigSmallOnesEntity>("taixiu_ones");
+                var roundCollection = database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)));
+                var oneCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
                 var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
                 var aggregateBuilder = roundCollection.Aggregate()
@@ -175,8 +210,7 @@ namespace GamesAdmin.Database
                         foreignField: account => account.UserId,
                         @as: r => r.Accounts
                     )
-                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name);
-                    
+                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
 
                 var unwindEntities = await aggregateBuilder.ToListAsync();
                 var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
@@ -191,8 +225,8 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.FishPrawnCrab)
             {
-                var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>("baucua_phiens");
-                var betCollection = database.GetCollection<FishPrawnCrabBetEntity>("baucua_cuocs");
+                var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity)));
+                var betCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
 
                 var aggregateBuilder = roundCollection.Aggregate()
                     .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
@@ -203,7 +237,7 @@ namespace GamesAdmin.Database
                         @as: r => r.Bet
                     )
                     .Unwind<FishPrawnCrabRoundWithBetsEntity, FishPrawnCrabRoundWithBetUnwindEntity>(x => x.Bet)
-                    .Match(x => x.Bet.Name == name);
+                    .Match(x => x.Bet.Name == name && x.Bet.Paid);
 
                 var unwindEntities = await aggregateBuilder.ToListAsync();
                 var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
@@ -218,8 +252,8 @@ namespace GamesAdmin.Database
         {
             if (gameType == (byte)GameType.ShakeThePlate)
             {
-                var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>("xocxoc_phiens");
-                var betCollection = database.GetCollection<ShakeThePlateBetEntity>("xocxoc_cuocs");
+                var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity)));
+                var betCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
 
                 var aggregateBuilder = roundCollection.Aggregate()
                     .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
@@ -230,7 +264,41 @@ namespace GamesAdmin.Database
                         @as: r => r.Bet
                     )
                     .Unwind<ShakeThePlateRoundWithBetsEntity, ShakeThePlateRoundWithBetUnwindEntity>(x => x.Bet)
-                    .Match(x => x.Bet.Name == name);
+                    .Match(x => x.Bet.Name == name && x.Bet.Paid);
+
+                var unwindEntities = await aggregateBuilder.ToListAsync();
+                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
+
+                return results;
+            }
+
+            return new List<GameReportEntity>();
+        }
+
+        private async Task<IList<GameReportEntity>> GetByRoundBigSmallTurbo(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
+        {
+            if (gameType == (byte)GameType.BigSmallTurbo)
+            {
+                var roundCollection = database.GetCollection<BigSmallTurboRoundEntity>(Document.GetCollectionName(typeof(BigSmallTurboRoundEntity)));
+                var oneCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
+                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
+
+                var aggregateBuilder = roundCollection.Aggregate()
+                    .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
+                    .Lookup<BigSmallTurboRoundEntity, BigSmallTurboOnesEntity, BigSmallTurboRoundWithBetsEntity>(
+                        foreignCollection: oneCollection,
+                        localField: round => round.Number,
+                        foreignField: bet => bet.Round,
+                        @as: r => r.One
+                    )
+                    .Unwind<BigSmallTurboRoundWithBetsEntity, BigSmallTurboRoundWithBetUnwindEntity>(x => x.One)
+                    .Lookup<BigSmallTurboRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallTurboRoundWithBetUnwindEntity>(
+                        foreignCollection: accountInfoCollection,
+                        localField: round => round.One.Uid,
+                        foreignField: account => account.UserId,
+                        @as: r => r.Accounts
+                    )
+                    .Match<BigSmallTurboRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
 
                 var unwindEntities = await aggregateBuilder.ToListAsync();
                 var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
@@ -242,11 +310,14 @@ namespace GamesAdmin.Database
         }
     }
 
-    public enum GameType
+    internal enum GameType
     {
         BigSmall = 1,
         ShakeThePlate = 2,
-        FishPrawnCrab = 3
+        FishPrawnCrab = 3,
+        BigSmallTurbo = 4,
+        EvenOdd = 5,
+        EvenOddTurbo = 6
     }
 
     public abstract class GameReportEntity
@@ -390,6 +461,36 @@ namespace GamesAdmin.Database
     internal class BigSmallRoundWithBetUnwindEntity : BigSmallRoundEntity
     {
         public BigSmallOnesEntity One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+
+        public GameReportEntity ToGameReport()
+        {
+            return new BigSmallGameReportEntity
+            {
+                BetWin = One.Betwin,
+                Round = Number,
+                Time = Time,
+                Bet = One.Bet,
+                FirstDice = (byte)Dice1,
+                SecondDice = (byte)Dice2,
+                ThirdDice = (byte)Dice3,
+                Refund = One.Back,
+                SelectBig = One.Select
+            };
+        }
+    }
+
+    internal class BigSmallTurboRoundWithBetsEntity : BigSmallTurboRoundEntity
+    {
+        public IEnumerable<BigSmallTurboOnesEntity> One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+    }
+
+    internal class BigSmallTurboRoundWithBetUnwindEntity : BigSmallTurboRoundEntity
+    {
+        public BigSmallTurboOnesEntity One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
 
