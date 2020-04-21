@@ -26,6 +26,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetStatusRequest, StatusViewModel>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
+        , IRequestHandler<UpdateDisabledMessageRequest, bool>
     {
         private readonly IMapper mapper;
 
@@ -203,6 +204,16 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return true;
+        }
+
+        public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                return false;
+            }
+
+            return await gameService.UpdateDisabledMessage(request.Name, request.DisabledMessage);
         }
     }
 }

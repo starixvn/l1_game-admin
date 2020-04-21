@@ -14,6 +14,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
+        , IRequestHandler<UpdateDisabledMessageRequest, bool>
     {
         private readonly IGameSettingsService gameService;
 
@@ -39,5 +40,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
         => gameService.UpdateStatus(request.Name, request.Enabled);
+
+        public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateDisbledMessage(request.Name, request.Message);
     }
 }

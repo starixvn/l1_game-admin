@@ -171,5 +171,14 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return Json(result);
         }
+
+        [HttpPost]
+        [Route("status")]
+        public async Task<IActionResult> UpdateDisabledMessage(string name, string disabledMessage)
+        {
+            await mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+
+            return RedirectToAction(nameof(Status));
+        }
     }
 }

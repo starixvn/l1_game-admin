@@ -8,13 +8,6 @@
         });
     }
 
-    updateAllMessage(element) {
-        var text = $(element).val();
-
-
-        $('.disabled-message').val(text);
-    }
-
     enable() {       
         var checkedGames = this.getCheckedGames();
 
@@ -107,6 +100,11 @@
                 checked: !enabled
             });
         }
+    }
+
+    showForm(element) {
+        var form = $(element).parent().find('.form-disabled-message');
+        form.show();
     }
 }
 

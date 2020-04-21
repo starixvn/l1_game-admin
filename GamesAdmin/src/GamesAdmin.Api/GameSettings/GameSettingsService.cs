@@ -24,6 +24,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> Delete(string name);
 
         Task<bool> UpdateStatus(string name, bool enabled);
+
+        Task<bool> UpdateDisbledMessage(string name, string disabledMessage);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -140,6 +142,23 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.Enabled), enabled);
+                await repository.UpdateAsync(config => config.name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateDisbledMessage(string name, string disabledMessage)
+        {
+            try
+            {
+                var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.DisabledMessage), disabledMessage);
                 await repository.UpdateAsync(config => config.name == name, update);
 
                 return true;
