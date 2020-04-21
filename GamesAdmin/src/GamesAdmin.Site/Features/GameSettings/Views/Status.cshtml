@@ -10,9 +10,7 @@
 
 
 <div class="col-md-12 col-lg-10 game-status">
-
-
-    <div class="form-group">
+    <div class="list-actions">
         <input type="button" onclick="gameStatus.enable()" value="ENABLE" class="btn-add btn-enable" />
         <input type="button" onclick="gameStatus.disable()" value="DISABLE" class="btn-gray" />
     </div>
@@ -28,37 +26,32 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></td>
+                <td class="text-center"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></td>
                 <td>All</td>
                 <td>&nbsp;</td>
                 <td>
                     <form class="form" asp-action="UpdateAllDisabledMessage" asp-controller="GameSettings" method="post">
                         <textarea placeholder="Message to display" name="disabledMessage" class="message"></textarea>
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn-submit" />
-                        </div>
+                        <button class="btn-save"><i class="material-icons icon-save">done_outline</i></button>
                     </form>
                 </td>
             </tr>
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
                 <tr>
-                    <td>
+                    <td class="text-center">
                         <input class="game-status-chk" type="checkbox" value="@Model.GameList[index].Name" />
                         <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
                     </td>
                     <td>@Model.GameList[index].DisplayName</td>
                     <td class="text-center">@Model.GameList[index].StatusDisplay</td>
                     <td>
-                        <label>@Model.GameList[index].DisabledMessage</label>
-                        <a href="#" onclick="gameStatus.showForm(this)">Edit</a>
+                        <label class="content-message">@Model.GameList[index].DisabledMessage</label>
+                        <button class="btn-edit" onclick="gameStatus.showForm(this)"><i class="material-icons icon-edit">create</i></button>
                         <form class="form form-disabled-message" asp-action="UpdateDisabledMessage" asp-controller="GameSettings" method="post" style="display:none">
                             <textarea name="disabledMessage" asp-for="@Model.GameList[index].DisabledMessage" placeholder="Message to display" class="message"></textarea>
                             <input type="hidden" name="name" asp-for="@Model.GameList[index].Name" />
-
-                            <div class="form-group">
-                                <input type="submit" value="Save" class="btn-submit" />
-                            </div>
+                            <button class="btn-save"><i class="material-icons icon-save">done_outline</i></button>
                         </form>
 
                     </td>

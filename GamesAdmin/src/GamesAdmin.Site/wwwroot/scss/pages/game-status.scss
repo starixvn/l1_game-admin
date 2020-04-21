@@ -1,9 +1,15 @@
 ﻿.game-status {
     padding-left: 0;
     padding-right: 0;
-    .btn-enable {
-        margin-right: 14px;
+
+    .list-actions {
+        margin-bottom: 1.6rem;
     }
+
+    .btn-enable {
+        margin-right: 1.4rem;
+    }
+
 }
 
 .table {
@@ -19,14 +25,51 @@
     }
 
     .col-check {
-        width: 34px;
+        width: 4rem;
     }
 
     .col-status {
-        width: 128px;
+        width: 12.8rem;
     }
 
     .message {
-        width: 100%;
+        width: calc(100% - 5rem);
+    }
+
+    .content-message {
+        max-width: calc(100% - 5rem);
+    }
+
+    .btn-save,
+    .btn-edit {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    .btn-save {
+        position: relative;
+        top: -1.1rem;
+    }
+
+    .icon-save {
+        font-size: 2.5rem;
+        color: #3ac47d;
+
+        &:hover {
+            color: #3ac47d;
+        }
+    }
+
+    .icon-edit {
+        position: relative;
+        top: .3rem;
+        font-size: 2rem;
+        color: #6c757d;
+
+        &:hover {
+            color: #3ac47d;
+        }
     }
 }
