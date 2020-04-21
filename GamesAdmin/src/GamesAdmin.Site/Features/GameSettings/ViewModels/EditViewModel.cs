@@ -19,10 +19,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             ? string.Empty 
             : Enumeration.FromValue<GameType>(Name).DisplayName;
 
-        [DisplayName("Game Enabled")]
+        [DisplayName("Game Status:")]
         public bool Enabled { get; set; }
 
-        public string StatusDisplay => Enabled ? "Yes" : "No";
+        public string StatusDisplay => Enabled ? "Enabled" : "Disabled";
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]
         [Range(0.01, 100, ErrorMessage = "Enter number between 0.01 to 100")]
