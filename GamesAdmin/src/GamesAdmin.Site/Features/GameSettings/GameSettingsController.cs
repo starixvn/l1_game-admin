@@ -63,8 +63,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
                 TempData["isSuccess"] = true;
 
-                return RedirectToAction(nameof(Edit), new RouteValueDictionary 
-                { 
+                return RedirectToAction(nameof(Edit), new RouteValueDictionary
+                {
                     { "name", editViewModel.Name }
                 });
             }
@@ -74,9 +74,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 sentryClient.CaptureException(ex);
             }
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary 
-            { 
-                { "name", editViewModel.Name } 
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary
+            {
+                { "name", editViewModel.Name }
             });
         }
 
@@ -134,9 +134,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             TempData["isSuccess"] = true;
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary 
-            { 
-                { "name", name } 
+            return RedirectToAction(nameof(Edit), new RouteValueDictionary
+            {
+                { "name", name }
             });
         }
 
@@ -150,6 +150,24 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IActionResult> UpdateStatus(string name, bool enabled)
         {
             var result = await mediator.Send(new UpdateStatusRequest(name, enabled));
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Route("status/enable")]
+        public async Task<IActionResult> EnableGames(string[] games)
+        {
+            var result = await mediator.Send(new UpdateMultipleGameStatusRequest(games, true));
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Route("status/disable")]
+        public async Task<IActionResult> DisableGames(string[] games)
+        {
+            var result = await mediator.Send(new UpdateMultipleGameStatusRequest(games, false));
 
             return Json(result);
         }

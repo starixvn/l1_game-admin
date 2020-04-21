@@ -25,6 +25,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateBotRatioRequest, bool>
         , IRequestHandler<GetStatusRequest, StatusViewModel>
         , IRequestHandler<UpdateStatusRequest, bool>
+        , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
     {
         private readonly IMapper mapper;
 
@@ -188,5 +189,20 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
         => gameService.UpdateStatus(request.Name, request.Enabled);
+
+        public async Task<bool> Handle(UpdateMultipleGameStatusRequest request, CancellationToken cancellationToken)
+        {
+            if (request.Names?.Length == 0)
+            {
+                return false;
+            }
+
+            foreach (var name in request.Names)
+            {
+                await gameService.UpdateStatus(name, request.Enabled);
+            }
+
+            return true;
+        }
     }
 }

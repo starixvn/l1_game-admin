@@ -14,7 +14,7 @@
 
         <div class="form-group">
             <input type="button" onclick="gameStatus.enable()" value="Enable" class="btn-add btn-enable" />
-            <input type="button" formaction="Disable" value="Disable" class="btn-gray" />
+            <input type="button" onclick="gameStatus.disable()"  value="Disable" class="btn-gray" />
         </div>
 
         <table id="status-tbl" class="table table-bordered">
@@ -40,8 +40,7 @@
                 {
                     <tr>
                         <td>
-                            <input class="game-status-chk" type="checkbox" />
-                            <input type="hidden" asp-for="@Model.GameList[index].Name" />
+                            <input class="game-status-chk" type="checkbox" value="@Model.GameList[index].Name" />
                         </td>
                         <td>@Model.GameList[index].DisplayName</td>
                         <td class="text-center">
