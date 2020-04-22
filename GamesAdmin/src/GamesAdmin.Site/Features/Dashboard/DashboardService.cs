@@ -19,10 +19,11 @@ namespace GamesAdmin.Site.Features.Dashboard
         private readonly IStatisticGameServerApi gameServerApi;
         private readonly ISentryClient sentryClient;
 
-        public DashboardService(IStatisticApi dashboardApi, IStatisticGameServerApi gameServerApi)
+        public DashboardService(IStatisticApi dashboardApi, IStatisticGameServerApi gameServerApi, ISentryClient sentryClient)
         {
             this.dashboardApi = dashboardApi;
             this.gameServerApi = gameServerApi;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<int> GetOnlineUsers()
