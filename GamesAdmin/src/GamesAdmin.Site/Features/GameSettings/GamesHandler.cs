@@ -13,6 +13,9 @@ using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Refit;
+using Sentry;
+using Sentry.Protocol;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -37,17 +40,20 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingService gameService;
         private readonly IAccountService accountService;
         private readonly IGameServerService gameServerService;
+        private readonly ISentryClient sentryClient;
 
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
             IAccountService accountService,
-            IGameServerService gameServerService)
+            IGameServerService gameServerService,
+            ISentryClient sentryClient)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
             this.gameServerService = gameServerService;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -212,10 +218,32 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (request.Reload)
             {
-                await gameServerService.Reload();
+                await SendReload();
             }
 
             return true;
+        }
+
+        private async Task SendReload() 
+        {
+            try
+            {
+                await gameServerService.Reload();
+            }
+            catch (Exception ex)
+            {
+                if (ex is ApiException)
+                {
+                    var apiEx = ex as ApiException;
+
+                    if (apiEx != null)
+                    {
+                        sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}", SentryLevel.Error);
+                    }
+                }
+
+                sentryClient.CaptureException(ex);
+            }
         }
 
         public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
