@@ -37,7 +37,11 @@ namespace GamesAdmin.Site.Features.Dashboard
                 if (ex is ApiException)
                 {
                     var apiEx = ex as ApiException;
-                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}", SentryLevel.Error);
+
+                    if (apiEx != null)
+                    {
+                        sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}", SentryLevel.Error);
+                    }                    
                 }
 
                 sentryClient.CaptureException(ex);
