@@ -35,7 +35,9 @@
                         window.location.href = "/status";
                     }
                 });
-            }
+            } 
+        } else {
+            alert("You should choose at least one game.");
         }
     }
 
@@ -59,6 +61,8 @@
                     }
                 });
             }
+        } else {
+            alert("You should choose at least one game.");
         }
     }
 
