@@ -16,6 +16,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         IdentityServerAuth IdentityServerAuth { get; }
 
         string GameServerUrl { get; }
+
+        TimeZoneInfo DefaultTimeZone { get; }
     }
     public class AppSettings : IAppSettings
     {
@@ -30,6 +32,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             Pwd = GetValue<string>(nameof(Pwd));
             GameServerUrl = GetValue<string>(nameof(GameServerUrl));
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
+            DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
         }
 
         public string ApiHost { get; }
@@ -39,6 +42,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string Pwd { get; }
 
         public IdentityServerAuth IdentityServerAuth { get; }
+
+        public TimeZoneInfo DefaultTimeZone { get; }
 
         public string GameServerUrl { get; }
 

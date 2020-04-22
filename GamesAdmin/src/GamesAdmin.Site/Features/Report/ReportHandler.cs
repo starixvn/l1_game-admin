@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
@@ -14,10 +16,12 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>
     {
         private readonly IReportService reportService;
+        private readonly IAppSettings appSettings;
 
-        public ReportHandler(IReportService reportService)
+        public ReportHandler(IReportService reportService, IAppSettings appSettings)
         {
             this.reportService = reportService;
+            this.appSettings = appSettings;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -35,7 +39,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = x.Time,
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -61,7 +65,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = x.Time,
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -87,7 +91,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = x.Time,
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -113,7 +117,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = x.Time,
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,

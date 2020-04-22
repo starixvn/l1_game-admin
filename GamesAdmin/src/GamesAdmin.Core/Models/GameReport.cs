@@ -35,6 +35,6 @@ namespace GamesAdmin.Core.Models
 
         public decimal Back { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTimeOffset Time { get; set; }
     }
 }
