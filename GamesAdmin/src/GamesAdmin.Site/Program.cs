@@ -22,7 +22,7 @@ namespace GamesAdmin.Site
             return WebHost.CreateDefaultBuilder(args)
                .UseKestrel()
                .UseStartup<Startup>()
-               .UseSentry()
+               .UseSentry(opt => opt.Environment = configuration["Env"])
                .UseIISIntegration()               
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
         }

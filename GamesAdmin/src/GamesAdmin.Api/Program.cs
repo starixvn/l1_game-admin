@@ -21,7 +21,7 @@ namespace GamesAdmin.Api
 
             return WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>()
-               .UseSentry()               
+               .UseSentry(opt => opt.Environment = configuration["Env"])               
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
         }
     }
