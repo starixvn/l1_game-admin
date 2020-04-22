@@ -218,32 +218,10 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (request.Reload)
             {
-                await SendReload();
+                await gameServerService.Reload();
             }
 
             return true;
-        }
-
-        private async Task SendReload() 
-        {
-            try
-            {
-                await gameServerService.Reload();
-            }
-            catch (Exception ex)
-            {
-                if (ex is ApiException)
-                {
-                    var apiEx = ex as ApiException;
-
-                    if (apiEx != null)
-                    {
-                        sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}", SentryLevel.Error);
-                    }
-                }
-
-                sentryClient.CaptureException(ex);
-            }
         }
 
         public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
