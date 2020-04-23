@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api._Shared
 {
-    [ApiController, Authorize]
+    [ApiController]
+    //[ApiController, Authorize]
     public abstract class BaseAuthorizeController : ControllerBase
     {
     }
