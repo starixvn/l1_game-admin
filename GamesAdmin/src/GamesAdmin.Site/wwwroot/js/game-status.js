@@ -8,8 +8,7 @@
         });
     }
 
-    uncheckAll(element)
-    {
+    uncheckAll(element) {
         if (!$(element).is(":checked")) {
             $("#status-all").prop({
                 checked: false
@@ -17,7 +16,7 @@
         }
     }
 
-    enable() {       
+    enable() {
         var checkedGames = this.getCheckedGames();
 
         if (checkedGames.message.length > 0) {
@@ -35,14 +34,13 @@
                         window.location.href = "/status";
                     }
                 });
-            } 
+            }
         } else {
             alert("You should choose at least one game.");
         }
     }
 
-    disable()
-    {
+    disable() {
         var checkedGames = this.getCheckedGames();
 
         if (checkedGames.message.length > 0) {
@@ -63,6 +61,19 @@
             }
         } else {
             alert("You should choose at least one game.");
+        }
+    }
+
+    reload() {
+        if (confirm("Are you sure you want all users to RELOAD?")) {
+            $.ajax({
+                method: "POST",
+                url: "/status/reload"
+            }).done(function (updated) {
+                if (updated) {
+                    alert("Users reloaded!");
+                }
+            });
         }
     }
 

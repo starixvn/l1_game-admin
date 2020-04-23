@@ -1,6 +1,7 @@
 using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Accounts;
 using GamesAdmin.Api.Accounts.ScheduleTasks;
 using GamesAdmin.Api.ClientSites;
@@ -39,11 +40,16 @@ namespace GamesAdmin.Api
             var dbSettings = Configuration.GetSection(nameof(DatabaseSettings));
             services.Configure<DatabaseSettings>(dbSettings);
 
+            var botSettings = Configuration.GetSection(nameof(BotSettings));
+            services.Configure<BotSettings>(botSettings);
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddSingleton<IBotSettings>(sp =>
+               sp.GetRequiredService<IOptions<BotSettings>>().Value);
 
             var conventionPack = new ConventionPack { new CamelCaseElementNameConvention(), new IgnoreExtraElementsConvention(true) };
             ConventionRegistry.Register("camelCase", conventionPack, t => true);

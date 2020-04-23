@@ -167,7 +167,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Route("status")]
         public async Task<IActionResult> UpdateDisabledMessage(string name, string disabledMessage)
         {
-            await mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+            if (string.IsNullOrWhiteSpace(disabledMessage))
+            {
+                TempData["errorMessage"] = "Message cannot be empty.";
+            }
+            else 
+            {
+                await mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+            }
 
             return RedirectToAction(nameof(Status));
         }
@@ -176,9 +183,25 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Route("status/update")]
         public async Task<IActionResult> UpdateAllDisabledMessage(string disabledMessage)
         {
-            await mediator.Send(new UpdateAllDisabledMessageRequest(disabledMessage));
+            if(string.IsNullOrWhiteSpace(disabledMessage))
+            {
+                TempData["errorMessage"] = "Message cannot be empty.";
+            }
+            else 
+            {
+                await mediator.Send(new UpdateAllDisabledMessageRequest(disabledMessage));
+            }                
 
             return RedirectToAction(nameof(Status));
+        }
+
+        [HttpPost]
+        [Route("status/reload")]
+        public async Task<IActionResult> ReloadGameClients()
+        {
+            var result = await mediator.Send(new ReloadGameClientRequest());
+
+            return Json(result);
         }
     }
 }

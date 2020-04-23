@@ -32,6 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
+        , IRequestHandler<ReloadGameClientRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -247,6 +248,13 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 await gameService.UpdateDisabledMessage(game.Name, request.DisabledMessage);
             }
+
+            return true;
+        }
+
+        public async Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)
+        {
+            await gameServerService.Reload();
 
             return true;
         }

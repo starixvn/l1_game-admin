@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Accounts.Results;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -23,36 +24,32 @@ namespace GamesAdmin.Api.Accounts
 
     public class AccountService : IAccountService
     {
-        private const int MinAmount = 500;
-        private const int MaxAmount = 10000;
-
-        private const int MinInitAmount = 700;
-        private const int MaxInitAmount = 2000;
-
-        private const int MinAddAmount = 1000;
-        private const int MaxAddAmount = 2000;
+        private readonly ISentryClient sentryClient;
+        private readonly IBotSettings botSettings;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
         private readonly IGenericRepository<BigSmallAccountEntity> txAccountRepository;
+        private readonly IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository;
         private readonly IGenericRepository<XocDiaAccountEntity> xdAccountRepository;
         private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
         private readonly IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository;
         private readonly IGenericRepository<OddEvenAccountEntity> oddevenRepository;
 
-        private readonly ISentryClient sentryClient;
-
         public AccountService(
             ISentryClient sentryClient,
+            IBotSettings botSettings,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
             IGenericRepository<BigSmallAccountEntity> txAccountRepository,
             IGenericRepository<XocDiaAccountEntity> xdAccountRepository,
             IGenericRepository<BauCuaAccountEntity> bcAccountRepository,
             IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository,
-            IGenericRepository<OddEvenAccountEntity> oddevenRepository)
+            IGenericRepository<OddEvenAccountEntity> oddevenRepository,
+            IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository)
         {
             this.sentryClient = sentryClient;
+            this.botSettings = botSettings;
             this.accountInfoRepository = accountInfoRepository;
             this.accountRepository = accountRepository;
             this.txAccountRepository = txAccountRepository;
@@ -60,21 +57,22 @@ namespace GamesAdmin.Api.Accounts
             this.bcAccountRepository = bcAccountRepository;
             this.oddEvenTurboRepository = oddEvenTurboRepository;
             this.oddevenRepository = oddevenRepository;
+            this.txTurboAccountRepository = txTurboAccountRepository;
         }
 
         public Task ReviseBotBalance()
         => Task.Run(() =>
         {
            
-            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red < MinAmount).ToList();           
-            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red >= MaxAmount).ToList();
+            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red < botSettings.MinAmount).ToList();           
+            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red >= botSettings.MaxAmount).ToList();
 
             sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
             var resetMessage = $"ResetBalance for {botsNeedResetBalance?.Count}";
 
             foreach (var bot in botsNeedAddBalance)
             {
-                bot.Red += new Random().Next(MinAddAmount, MaxAddAmount);
+                bot.Red += new Random().Next(botSettings.MinAddAmount, botSettings.MaxAddAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }
@@ -83,7 +81,7 @@ namespace GamesAdmin.Api.Accounts
             {
                 resetMessage += $" {bot.Name} : {bot.Red};";
 
-                bot.Red = new Random().Next(MinInitAmount, MaxInitAmount);
+                bot.Red = new Random().Next(botSettings.MinInitAmount, botSettings.MaxInitAmount);
 
                 accountInfoRepository.ReplaceOne(bot);
             }
@@ -118,7 +116,7 @@ namespace GamesAdmin.Api.Accounts
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
                 var password = $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
-                var amount = (new Random()).Next(MinInitAmount, MaxInitAmount);
+                var amount = (new Random()).Next(botSettings.MinInitAmount, botSettings.MaxInitAmount);
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateAccountResult(userName, name, password);
 
@@ -177,6 +175,9 @@ namespace GamesAdmin.Api.Accounts
             await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallAccountEntity { Uid = x.Id.ToString() }).ToList());
             await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { Uid = x.Id.ToString() }).ToList());
             await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await txTurboAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await oddevenRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await oddEvenTurboRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
 
             return results.ToArray();
         }
