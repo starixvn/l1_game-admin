@@ -9,10 +9,6 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         string ApiHost { get; }
 
-        string Hash { get; }
-
-        string Pwd { get; }
-
         IdentityServerAuth IdentityServerAuth { get; }
 
         string GameServerUrl { get; }
@@ -28,18 +24,12 @@ namespace GamesAdmin.Site._Shared.Configurations
             this.configuration = configuration;
 
             ApiHost = GetValue<string>(nameof(ApiHost));
-            Hash = GetValue<string>(nameof(Hash));
-            Pwd = GetValue<string>(nameof(Pwd));
             GameServerUrl = GetValue<string>(nameof(GameServerUrl));
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
         }
 
         public string ApiHost { get; }
-
-        public string Hash { get; }
-
-        public string Pwd { get; }
 
         public IdentityServerAuth IdentityServerAuth { get; }
 

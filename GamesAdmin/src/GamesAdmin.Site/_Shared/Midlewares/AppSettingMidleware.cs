@@ -9,8 +9,7 @@ namespace GamesAdmin.Site._Shared.Midlewares
         public static void AddSettings(this IServiceCollection services, IConfiguration configuration)
         {
             var controlPanelSettings = new GameControlPanelSettings(
-                configuration["GameControlPanel:Host"],
-                configuration["GameControlPanel:SecretKey"]);
+                configuration["GameControlPanel:Host"]);
             services.AddSingleton<IGameControlPanelSettings>(controlPanelSettings);
         }
     }
