@@ -59,6 +59,15 @@ namespace GamesAdmin.Site.Features.Users
         => await userApi.GetAll();
 
         public async Task<User> SignIn(string username, string password)
-        => await userApi.SignIn(username, password);
+        {
+            try
+            {
+                return await userApi.SignIn(username, password).ConfigureAwait(false);
+            }
+            catch (ApiException exception)
+            {
+                return null;
+            }
+        } 
     }
 }

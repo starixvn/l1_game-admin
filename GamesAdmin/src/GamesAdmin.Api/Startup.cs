@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -77,16 +78,16 @@ namespace GamesAdmin.Api
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
 
-            //services.AddAuthentication("Bearer")
-            //    .AddJwtBearer("Bearer", options =>
-            //    {
-            //        options.Authority = Configuration["IdentityServer:Issuer"];
-            //        options.RequireHttpsMetadata = false;
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidAudiences = Configuration.GetSection("IdentityServer:Audiences").Get<string[]>()
-            //        };
-            //    });
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["IdentityServer:Issuer"];
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudiences = Configuration.GetSection("IdentityServer:Audiences").Get<string[]>()
+                    };
+                });
 
             services
                 .AddControllers()

@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features.Authentication
         [HttpPost]
         public async Task<IActionResult> Login([Bind] Core.Models.Account user)
         {
-            if (await authenticationService.SignInAsync(user, HttpContext))
+            if (authenticationService.SignInAsync(user, HttpContext).Result)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
