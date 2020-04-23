@@ -39,7 +39,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time")),
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -65,7 +65,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time")),
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -91,7 +91,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time")),
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -117,7 +117,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new RecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time")),
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
