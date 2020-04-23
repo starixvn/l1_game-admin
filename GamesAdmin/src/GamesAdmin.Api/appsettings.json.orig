@@ -28,17 +28,11 @@
       "admin-api",
       "api"
     ]
+<<<<<<< HEAD
   },
   "BotSettings": {
-<<<<<<< HEAD
-    "MinAmount": 1000,
-    "MaxAmount": 10000,
-    "MinInitAmount": 700,
-    "MaxInitAmount": 2000,
-    "MinAddAmount": 1500,
-    "MaxAddAmount": 2500
-=======
     "DefaultMaxBet": 10000
->>>>>>> 2b19749... update max bet for L2
+=======
+>>>>>>> be1b7eb... Update config
   }
 }
