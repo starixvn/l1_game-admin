@@ -1,5 +1,4 @@
 variables:
-  ADMIN_API_GIT_COMPILED: git@gitlab.com:l1-compiled/game-admin-api-compiled.git
   ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
   ADMIN_API_BUILD_PATH: ~/build/game-admin-api
   ADMIN_API_PROJECT_NAME: GamesAdmin.Api.csproj
@@ -15,6 +14,10 @@ variables:
     - echo $GIT_BRANCH
     - echo "====== Pushing git compiled ... ======"
     - git clone --branch $GIT_BRANCH $ADMIN_API_GIT_COMPILED $ADMIN_API_BUILD_PATH
+    - mkdir temp
+    - mv $ADMIN_API_BUILD_PATH/.git ./temp
+    - rm -rfv $ADMIN_API_BUILD_PATH/
+    - cp -r ./temp/ $ADMIN_API_BUILD_PATH
     - dotnet clean $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
     - dotnet restore $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
     - dotnet build $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
@@ -56,17 +59,9 @@ build:game-admin-api:
 local_deploy:game_admin_api:
   extends: 
     - .base-admin-api
-  script:
-    - apt-get update
-    - apt-get --assume-yes install build-essential 
-    - echo "====== Deploying ... ======"
-    - dotnet publish -c Local $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME -o $ADMIN_API_BUILD_PATH
-    - tar -C $ADMIN_API_BUILD_PATH -jcf - ./ | ssh root@$HOST 'tar -C /var/www/l1/game-admin-api/ -jxf -'
-    - ssh root@$HOST 'sudo service l1-game-admin-api restart'
+    - .admin-api-push-git-compiled
   environment:
     name: LOCAL
-  # needs:
-  #   - build:game-admin-api
   only:
     - /^deploy-\d{8}-\d+.*$/
     - /^deploy-local-\d{8}-\d+.*$/
