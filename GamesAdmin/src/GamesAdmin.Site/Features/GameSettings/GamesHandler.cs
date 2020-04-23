@@ -236,7 +236,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Handle(UpdateAllDisabledMessageRequest request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(request.DisabledMessage) || request.DisabledMessage?.Length > MaxLengthOfMessage)
+            if (request.DisabledMessage?.Length > MaxLengthOfMessage)
             {
                 return false;
             }

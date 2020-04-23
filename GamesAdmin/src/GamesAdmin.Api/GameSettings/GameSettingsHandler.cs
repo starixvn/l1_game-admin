@@ -42,14 +42,7 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
         => gameService.UpdateStatus(request.Name, request.Enabled);
 
-        public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
-        {
-            if (request.Message.Length > MaxLengthOfMessage)
-            {
-                return false;
-            }
-
-            return await gameService.UpdateDisbledMessage(request.Name, request.Message);
-        }
+        public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateDisbledMessage(request.Name, request.Message);
     }
 }
