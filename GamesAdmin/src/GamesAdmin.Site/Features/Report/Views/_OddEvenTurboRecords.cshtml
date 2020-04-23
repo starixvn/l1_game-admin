@@ -30,7 +30,7 @@
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
                     <th class="line-cell"></th>
-                    <th class="col-date">Date</th>
+                    <th class="col-date">Date (GMT+7)</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th class="col-number">Stake</th>
@@ -41,22 +41,22 @@
             <tbody>
                 @for (var i = 0; i < totalRow; i++)
                 {
-                    var bigRecord = evenRecords.ElementAtOrDefault(i);
-                    var smallRecord = oddRecords.ElementAtOrDefault(i);
+                    var evenRecord = evenRecords.ElementAtOrDefault(i);
+                    var oddRecord = oddRecords.ElementAtOrDefault(i);
                     <tr>
-                        <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>@bigRecord?.Username</td>
-                        <td>@bigRecord?.Nickname</td>
-                        <td class="text-right">@bigRecord?.Bet</td>
-                        <td class="text-right">@bigRecord?.Back</td>
-                        <td class="text-right">@bigRecord?.BetWin</td>
+                        <td>@evenRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@evenRecord?.Username</td>
+                        <td>@evenRecord?.Nickname</td>
+                        <td class="text-right">@evenRecord?.Bet</td>
+                        <td class="text-right">@evenRecord?.Back</td>
+                        <td class="text-right">@evenRecord?.BetWin</td>
                         <td class="line-cell"></td>
-                        <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>@smallRecord?.Username</td>
-                        <td class="col-nickname">@smallRecord?.Nickname</td>
-                        <td class="text-right">@smallRecord?.Bet</td>
-                        <td class="text-right">@smallRecord?.Back</td>
-                        <td class="text-right">@smallRecord?.BetWin</td>
+                        <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@oddRecord?.Username</td>
+                        <td class="col-nickname">@oddRecord?.Nickname</td>
+                        <td class="text-right">@oddRecord?.Bet</td>
+                        <td class="text-right">@oddRecord?.Back</td>
+                        <td class="text-right">@oddRecord?.BetWin</td>
                     </tr>
 
                 }
