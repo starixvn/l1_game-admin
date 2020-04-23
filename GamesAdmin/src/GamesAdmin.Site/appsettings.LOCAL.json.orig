@@ -1,0 +1,24 @@
+﻿{
+  "Env": "LOCAL",
+  "Sentry": {
+    "Dsn": ""
+  },
+  "ApiHost": "http://localhost:9006/api",
+  "GameServerUrl": "http://localhost:8000/api",
+  "DatabaseSettings": {
+<<<<<<< HEAD
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.13:27101/?replicaSet=L1Local",
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@127.0.0.1:27101/?replicaSet=LocalMainRS",
+>>>>>>> 69fe973... Update config
+    "DatabaseName": "minigame",
+    "Collection": "data_protection_keys"
+  },
+  "GameControlPanel": {
+    "Host": "http://l2-admin1.lumigame.com/"
+  },
+  "IdentityServerAuth": {
+    "Url": "http://l2-auth.lumigame.com:80"
+  },
+  "DefaultTimeZone": "Asia/Ho_Chi_Minh"
+}

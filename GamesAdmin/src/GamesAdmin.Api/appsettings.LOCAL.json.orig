@@ -1,0 +1,17 @@
+﻿{
+  "Env": "LOCAL",
+  "DatabaseSettings": {
+<<<<<<< HEAD
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.13:27101/?replicaSet=L1Local",
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@127.0.0.1:27101/?replicaSet=LocalMainRS",
+>>>>>>> 69fe973... Update config
+    "DatabaseName": "minigame"
+  },
+  "Sentry": {
+    "Dsn": ""
+  },
+  "IdentityServer": {
+    "Issuer": "http://l2-auth.lumigame.com:80"
+  }
+}

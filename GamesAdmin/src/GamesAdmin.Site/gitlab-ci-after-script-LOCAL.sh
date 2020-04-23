@@ -7,7 +7,7 @@ if [ "$HEADHASH" != "$UPSTREAMHASH" ]; then
   git checkout -- .;
   git pull;
   echo "Restart service";
-  sudo systemctl restart l1-game-admin-site.service;
+  sudo systemctl restart l2-game-admin-site.service;
 else
     echo "Up-to-date";
 fi

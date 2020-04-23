@@ -1,0 +1,41 @@
+{
+  "Env": "DEV",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "HostingPort": "9006",
+  "AllowedHosts": "*",
+  "DatabaseSettings": {
+    "ConnectionString": "mongodb://127.0.0.1:27017/",
+    "DatabaseName": "minigame"
+  },
+  "Sentry": {
+    "Dsn": "",
+    "IncludeRequestPayload": true,
+    "SendDefaultPii": true,
+    "MinimumBreadcrumbLevel": "Debug",
+    "MinimumEventLevel": "Warning",
+    "AttachStackTrace": true,
+    "Debug": true,
+    "DiagnosticsLevel": "Error"
+  },
+  "IdentityServer": {
+<<<<<<< HEAD
+    "Issuer": "http://localhost:8898",
+    "Audiences": [ "admin-api", "api" ]
+  },
+  "BotSettings": {
+    "DefaultMaxBet": 1000
+=======
+    "Issuer": "http://localhost:9002",
+    "Audiences": [
+      "admin-api",
+      "api"
+    ]
+>>>>>>> 69fe973... Update config
+  }
+}
