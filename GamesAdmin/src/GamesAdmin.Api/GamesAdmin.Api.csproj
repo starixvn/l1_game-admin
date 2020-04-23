@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Configurations>Dev;SIT;Local;UAT;PRO</Configurations>
+    <Configurations>Dev;SIT;UAT;PRO;LOCAL</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
-    <Content Remove="appsettings.Local.json" />
+    <Content Remove="appsettings.LOCAL.json" />
     <Content Remove="appsettings.PRO.json" />
     <Content Remove="appsettings.Release.json" />
     <Content Remove="appsettings.SIT.json" />
@@ -25,7 +25,7 @@
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
-    <None Include="appsettings.Local.json">
+    <None Include="appsettings.LOCAL.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
