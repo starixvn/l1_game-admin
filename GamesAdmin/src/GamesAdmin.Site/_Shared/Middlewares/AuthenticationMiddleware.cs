@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GamesAdmin.Site._Shared.Midlewares
+namespace GamesAdmin.Site._Shared.Middlewares
 {
-    public static class AuthenticationMidleware
+    public static class AuthenticationMiddleware
     {
         public static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {

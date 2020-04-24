@@ -2,7 +2,7 @@ using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site._Shared.Midlewares;
+using GamesAdmin.Site._Shared.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GamesAdmin.Site._Shared.Midlewares
+namespace GamesAdmin.Site._Shared.Middlewares
 {
-    public static class AppSettingMidleware
+    public static class AppSettingMiddleware
     {
         public static void AddSettings(this IServiceCollection services, IConfiguration configuration)
         {
