@@ -511,16 +511,16 @@ namespace GamesAdmin.Database
         }
     }
 
-    internal class EvenOddRoundWithBetsEntity : EvenOddRoundEntity
+    internal class EvenOddRoundWithBetsEntity : OddEvenRoundEntity
     {
-        public IEnumerable<EvenOddOnesEntity> One { get; set; }
+        public IEnumerable<OddEvenOnesEntity> One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 
-    internal class EvenOddRoundWithBetUnwindEntity : EvenOddRoundEntity
+    internal class EvenOddRoundWithBetUnwindEntity : OddEvenRoundEntity
     {
-        public EvenOddOnesEntity One { get; set; }
+        public OddEvenOnesEntity One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
 
