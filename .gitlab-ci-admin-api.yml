@@ -1,6 +1,6 @@
 variables:
   ADMIN_API_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Api
-  ADMIN_API_BUILD_PATH: ~/build/game-admin-api
+  ADMIN_API_BUILD_PATH: ./build/game-admin-api
   ADMIN_API_PROJECT_NAME: GamesAdmin.Api.csproj
 
 .admin-api-push-git-compiled:
