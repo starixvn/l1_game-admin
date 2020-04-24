@@ -10,6 +10,7 @@ namespace GamesAdmin.Site._Shared.Enumerations
         public static readonly GameType ShakeThePlate = new GameType("xocxoc", "Shake the Plate");
         public static readonly GameType OddEven = new GameType("oddeven", "Odd Even");
         public static readonly GameType OddEvenTurbo = new GameType("oeturbo", "Odd Even Turbo");
+        public static readonly GameType DragonTiger = new GameType("dragontiger", "Dragon Tiger");
 
         public GameType()
         {

@@ -35,6 +35,7 @@ namespace GamesAdmin.Api.Accounts
         private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
         private readonly IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository;
         private readonly IGenericRepository<OddEvenAccountEntity> oddevenRepository;
+        private readonly IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository;
 
         public AccountService(
             ISentryClient sentryClient,
@@ -46,7 +47,8 @@ namespace GamesAdmin.Api.Accounts
             IGenericRepository<BauCuaAccountEntity> bcAccountRepository,
             IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository,
             IGenericRepository<OddEvenAccountEntity> oddevenRepository,
-            IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository)
+            IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository,
+            IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository)
         {
             this.sentryClient = sentryClient;
             this.botSettings = botSettings;
@@ -58,6 +60,7 @@ namespace GamesAdmin.Api.Accounts
             this.oddEvenTurboRepository = oddEvenTurboRepository;
             this.oddevenRepository = oddevenRepository;
             this.txTurboAccountRepository = txTurboAccountRepository;
+            this.dragonTigerRepository = dragonTigerRepository;
         }
 
         public Task ReviseBotBalance()
@@ -178,6 +181,7 @@ namespace GamesAdmin.Api.Accounts
             await txTurboAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
             await oddevenRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenAccountEntity { Uid = x.Id.ToString() }).ToList());
             await oddEvenTurboRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await dragonTigerRepository.InsertManyAsync(newAccounts.Select(x => new DragonTigerAccountEntity { Uid = x.Id.ToString() }).ToList());
 
             return results.ToArray();
         }
@@ -209,18 +213,9 @@ namespace GamesAdmin.Api.Accounts
 
             try
             {
-                await oddEvenTurboRepository.InsertManyAsync(bots.Select(x => new OddEvenTurboAccountEntity { Uid = x.UserId }).ToList());
+                await dragonTigerRepository.InsertManyAsync(bots.Select(x => new DragonTigerAccountEntity { Uid = x.UserId }).ToList());
             }
             catch (Exception e) 
-            {
-                sentryClient.CaptureException(e);
-            }
-
-            try
-            {
-                await oddevenRepository.InsertManyAsync(bots.Select(x => new OddEvenAccountEntity { Uid = x.UserId }).ToList());
-            }
-            catch (Exception e)
             {
                 sentryClient.CaptureException(e);
             }
