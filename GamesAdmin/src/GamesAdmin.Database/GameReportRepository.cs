@@ -1,9 +1,10 @@
-﻿using GamesAdmin.Database.Entities;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Database.Entities;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
@@ -23,202 +24,33 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IList<GameReportEntity>> GetAll(string name, byte gameType, DateTime from, DateTime to)
+        public async Task<IEnumerable<GameReportEntity>> GetBigSmallAsync(long roundId, string name, DateTime fromDate, DateTime toDate)
         {
-            var tasks = new List<Func<string, byte, DateTime, DateTime, Task<IList<GameReportEntity>>>>
-            {
-                GetAllBigSmall,
-                GetAllFishPrawnCrab,
-                GetAllShakeThePlate,
-                GetAllBigSmallTurbo
-            };
+            var roundCollection = database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)));
+            var oneCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
+            var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
-            var result = new List<GameReportEntity>();
+            var aggregateBuilder = roundCollection.Aggregate()
+                .Match(round => round.Time >= fromDate && round.Time < toDate && (round.Number == roundId || roundId == 0))
+                .Lookup<BigSmallRoundEntity, BigSmallOnesEntity, BigSmallRoundWithBetsEntity>(
+                    foreignCollection: oneCollection,
+                    localField: round => round.Number,
+                    foreignField: bet => bet.Round,
+                    @as: r => r.One
+                )
+                .Unwind<BigSmallRoundWithBetsEntity, BigSmallRoundWithBetUnwindEntity>(x => x.One)
+                .Lookup<BigSmallRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallRoundWithBetUnwindEntity>(
+                    foreignCollection: accountInfoCollection,
+                    localField: round => round.One.Uid,
+                    foreignField: account => account.UserId,
+                    @as: r => r.Accounts
+                )
+                .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
 
-            foreach (var task in tasks)
-            {
-                var taskResult = await task(name, gameType, from, to);
-                result.AddRange(taskResult);
-            }
+            var unwindEntities = await aggregateBuilder.ToListAsync();
+            var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
 
-            return result;
-        }
-
-        public async Task<IList<GameReportEntity>> GetByRound(long round, string name, byte gameType, DateTime from, DateTime to)
-        {
-            var tasks = new List<Func<long, string, byte, DateTime, DateTime, Task<IList<GameReportEntity>>>>
-            {
-                GetByRoundBigSmall,
-                GetByRoundFishPrawnCrab,
-                GetByRoundShakeThePlate,
-                GetByRoundBigSmallTurbo
-            };
-
-            var result = new List<GameReportEntity>();
-
-            foreach (var task in tasks)
-            {
-                var taskResult = await task(round, name, gameType, from, to);
-                result.AddRange(taskResult);
-            }
-
-            return result;
-        }
-
-        private async Task<IList<GameReportEntity>> GetAllBigSmall(string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            if (gameType == (byte)GameType.BigSmall)
-            {
-                var roundCollection = database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)));
-                var oneCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
-                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-
-                var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.Time >= fromDate && round.Time < toDate)
-                    .Lookup<BigSmallRoundEntity, BigSmallOnesEntity, BigSmallRoundWithBetsEntity>(
-                        foreignCollection: oneCollection,
-                        localField: round => round.Number,
-                        foreignField: bet => bet.Round,
-                        @as: r => r.One
-                    )
-                    .Unwind<BigSmallRoundWithBetsEntity, BigSmallRoundWithBetUnwindEntity>(x => x.One)
-                    .Lookup<BigSmallRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallRoundWithBetUnwindEntity>(
-                        foreignCollection: accountInfoCollection,
-                        localField: round => round.One.Uid,
-                        foreignField: account => account.UserId,
-                        @as: r => r.Accounts
-                    )
-                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
-
-                var unwindEntities = await aggregateBuilder.ToListAsync();
-                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
-
-                return results;
-            }
-
-            return new List<GameReportEntity>();
-        }
-
-        private async Task<IList<GameReportEntity>> GetAllFishPrawnCrab(string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            if (gameType == (byte)GameType.FishPrawnCrab)
-            {
-                var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity)));
-                var betCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
-
-                var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.Time >= fromDate && round.Time < toDate)
-                    .Lookup<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity, FishPrawnCrabRoundWithBetsEntity>(
-                        foreignCollection: betCollection,
-                        localField: round => round.Number,
-                        foreignField: bet => bet.Round,
-                        @as: r => r.Bet
-                    )
-                    .Unwind<FishPrawnCrabRoundWithBetsEntity, FishPrawnCrabRoundWithBetUnwindEntity>(x => x.Bet)
-                    .Match(x => x.Bet.Name == name && x.Bet.Paid);
-
-                var unwindEntities = await aggregateBuilder.ToListAsync();
-                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
-
-                return results;
-            }
-
-            return new List<GameReportEntity>();
-        }
-
-        private async Task<IList<GameReportEntity>> GetAllShakeThePlate(string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            if (gameType == (byte)GameType.ShakeThePlate)
-            {
-                var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity)));
-                var betCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
-
-                var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.Time >= fromDate && round.Time < toDate)
-                    .Lookup<ShakeThePlateRoundEntity, ShakeThePlateBetEntity, ShakeThePlateRoundWithBetsEntity>(
-                        foreignCollection: betCollection,
-                        localField: round => round.Number,
-                        foreignField: bet => bet.Round,
-                        @as: r => r.Bet
-                    )
-                    .Unwind<ShakeThePlateRoundWithBetsEntity, ShakeThePlateRoundWithBetUnwindEntity>(x => x.Bet)
-                    .Match(x => x.Bet.Name == name && x.Bet.Paid);
-
-                var unwindEntities = await aggregateBuilder.ToListAsync();
-                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
-
-                return results;
-            }
-
-            return new List<GameReportEntity>();
-        }
-
-        private async Task<IList<GameReportEntity>> GetAllBigSmallTurbo(string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            if (gameType == (byte)GameType.BigSmallTurbo)
-            {
-                var roundCollection = database.GetCollection<BigSmallTurboRoundEntity>(Document.GetCollectionName(typeof(BigSmallTurboRoundEntity)));
-                var oneCollection = database.GetCollection<BigSmallTurboOnesEntity>(Document.GetCollectionName(typeof(BigSmallTurboOnesEntity)));
-                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-
-                var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.Time >= fromDate && round.Time < toDate)
-                    .Lookup<BigSmallTurboRoundEntity, BigSmallTurboOnesEntity, BigSmallTurboRoundWithBetsEntity>(
-                        foreignCollection: oneCollection,
-                        localField: round => round.Number,
-                        foreignField: bet => bet.Round,
-                        @as: r => r.One
-                    )
-                    .Unwind<BigSmallTurboRoundWithBetsEntity, BigSmallTurboRoundWithBetUnwindEntity>(x => x.One)
-                    .Lookup<BigSmallTurboRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallTurboRoundWithBetUnwindEntity>(
-                        foreignCollection: accountInfoCollection,
-                        localField: round => round.One.Uid,
-                        foreignField: account => account.UserId,
-                        @as: r => r.Accounts
-                    )
-                    .Match<BigSmallTurboRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
-
-                var unwindEntities = await aggregateBuilder.ToListAsync();
-                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
-
-                return results;
-            }
-
-            return new List<GameReportEntity>();
-        }
-
-        private async Task<IList<GameReportEntity>> GetByRoundBigSmall(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            if (gameType == (byte)GameType.BigSmall)
-            {
-                var roundCollection = database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)));
-                var oneCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
-                var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-
-                var aggregateBuilder = roundCollection.Aggregate()
-                    .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
-                    .Lookup<BigSmallRoundEntity, BigSmallOnesEntity, BigSmallRoundWithBetsEntity>(
-                        foreignCollection: oneCollection,
-                        localField: round => round.Number,
-                        foreignField: bet => bet.Round,
-                        @as: r => r.One
-                    )
-                    .Unwind<BigSmallRoundWithBetsEntity, BigSmallRoundWithBetUnwindEntity>(x => x.One)
-                    .Lookup<BigSmallRoundWithBetUnwindEntity, AccountInfoEntity, BigSmallRoundWithBetUnwindEntity>(
-                        foreignCollection: accountInfoCollection,
-                        localField: round => round.One.Uid,
-                        foreignField: account => account.UserId,
-                        @as: r => r.Accounts
-                    )
-                    .Match<BigSmallRoundWithBetUnwindEntity>(round => round.Accounts.ElementAt(0).Name == name && round.One.Paid);
-
-                var unwindEntities = await aggregateBuilder.ToListAsync();
-                var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
-
-                return results;
-            }
-
-            return new List<GameReportEntity>();
+            return results;
         }
 
         private async Task<IList<GameReportEntity>> GetByRoundFishPrawnCrab(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
@@ -308,16 +140,6 @@ namespace GamesAdmin.Database
 
             return new List<GameReportEntity>();
         }
-    }
-
-    internal enum GameType
-    {
-        BigSmall = 1,
-        ShakeThePlate = 2,
-        FishPrawnCrab = 3,
-        BigSmallTurbo = 4,
-        EvenOdd = 5,
-        EvenOddTurbo = 6
     }
 
     public abstract class GameReportEntity
@@ -540,5 +362,4 @@ namespace GamesAdmin.Database
             };
         }
     }
-
 }
