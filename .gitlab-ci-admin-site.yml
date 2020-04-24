@@ -61,13 +61,13 @@ local_deploy:game_admin_site:
   environment:
     name: LOCAL
   rules:
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-local-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-local-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-site-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-site-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-local-site-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-local-site-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-\d{8}-\d+.*$/
       when: always      
     - when: never
 
@@ -78,13 +78,13 @@ sit_deploy:game_admin_site:
   environment:
     name: SIT
   rules:
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-sit-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-sit-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-site-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-site-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-sit-site-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-sit-site-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-\d{8}-\d+.*$/
       when: always      
     - when: never
 
@@ -95,13 +95,13 @@ uat_deploy:game_admin_site:
   environment:
     name: UAT
   rules:
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-uat-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-uat-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-site-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-site-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-uat-site-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-uat-site-\d{8}-\d+.*$/
       when: always
-    - if: $CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/
+    - if: $CI_COMMIT_TAG =~ /^l2-deploy-\d{8}-\d+.*$/
       when: always      
     - when: never
 
