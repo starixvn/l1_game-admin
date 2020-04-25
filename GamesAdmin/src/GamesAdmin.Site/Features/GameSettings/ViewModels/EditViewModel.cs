@@ -25,12 +25,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string StatusDisplay => Enabled ? "Enabled" : "Disabled";
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]
-        [Range(0.01, 100, ErrorMessage = "Enter number between 0.01 to 100")]
+        [Range(0.01, int.MaxValue)]
         [DisplayName("Minimum Bet Limit")]
         public double MinBet { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(0.01, 1000, ErrorMessage = "Enter number between 0 to 1000")]
+        [Range(0.01, int.MaxValue)]
         [DisplayName("Maximum Bet Limit")]
         public double MaxBet { get; set; }
 
@@ -47,12 +47,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (int)(BotCount * MaxBot / 100) : 0;
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]
-        [Range(0.01, 100, ErrorMessage = "Enter number between 0.01 to 100")]
+        [Range(0.01, int.MaxValue)]
         [DisplayName("Bot Minimum Bet Limit")]
         public double BotMinBet { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(0.01, 1000, ErrorMessage = "Enter number between 0 to 1000")]
+        [Range(0.01, int.MaxValue)]
         [DisplayName("Bot Maximum Bet Limit")]
         public double BotMaxBet { get; set; }
 
