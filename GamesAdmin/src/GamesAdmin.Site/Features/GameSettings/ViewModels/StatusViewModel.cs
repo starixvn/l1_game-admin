@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site._Shared.Enumerations;
+using GameType = GamesAdmin.Site._Shared.Enumerations.GameType;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {

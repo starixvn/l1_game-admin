@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Report;
 
@@ -13,6 +14,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<GameReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot);
 
         Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
+
+        Task<IEnumerable<BaseBetHistory>> GetBetHistory(byte gameTypeId, long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -35,5 +38,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
+
+        public async Task<IEnumerable<BaseBetHistory>> GetBetHistory(byte gameTypeId, long roundId, string nickname) 
+        => await reportApi.GetBetHistory(gameTypeId, roundId, nickname);
     }
 }

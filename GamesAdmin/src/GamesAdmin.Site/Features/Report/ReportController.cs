@@ -64,5 +64,11 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot)));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBetHistory(byte gameTypeId, long roundId, string nickname)
+        {
+            return Ok(await mediator.Send(new GetBetHistoryRequest(gameTypeId, roundId, nickname)));
+        }
     }
 }

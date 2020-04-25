@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Request;
@@ -25,9 +24,9 @@ namespace GamesAdmin.Api.Report
            => (await mediator.Send(new BigSmallReportRequest(roundId, nickname, excludeBot)));
 
         [HttpGet]
-        [Route("{gameType}/{roundId}/{nickname}/{fromDate}/{toDate}")]
-        public async Task<IList<Bet>> GameReport(string nickname, long roundId, byte gameType, DateTime fromDate, DateTime toDate)
-            => (await mediator.Send(new GameReportRequest(nickname, roundId, gameType, fromDate, toDate)));
+        [Route("bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
+        public async Task<IEnumerable<BaseBetHistory>> BetHistory(string nickname, long roundId, byte gameTypeId)
+            => (await mediator.Send(new GameReportRequest(nickname, roundId, gameTypeId)));
 
         [HttpGet]
         [Route("big_small_turbo/round/{roundId}/users/{nickname?}")]

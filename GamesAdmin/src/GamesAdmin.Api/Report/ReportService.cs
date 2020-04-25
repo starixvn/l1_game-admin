@@ -1,12 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -14,7 +14,7 @@ namespace GamesAdmin.Api.Report
     {
         Task<GameReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot);
 
-        Task<IList<Bet>> GetGameReport(string name, long roundId, byte gameType, DateTime from, DateTime to);
+        Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, byte gameType);
 
         Task<GameReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot);
 
@@ -45,7 +45,6 @@ namespace GamesAdmin.Api.Report
             var repository = serviceProvider.GetService<IBigSmallTurboReportRepository>();
             var result = await repository.GetAsync(roundId, nickname, excludeBot);
             return GenerateGameReport(result);
-
         }
 
         public async Task<GameReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot)
@@ -64,29 +63,53 @@ namespace GamesAdmin.Api.Report
             return GenerateGameReport(result);
         }
 
-        public async Task<IList<Bet>> GetGameReport(string name, long roundId, byte gameType, DateTime from, DateTime to)
+        public async Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, byte gameType)
         {
-            var gameReportRepository = serviceProvider.GetService<IGameReportRepository>();
-
-            IList<GameReportEntity> gameReportEntities;
-
-            if (roundId == 0)
+            switch (gameType)
             {
-               gameReportEntities = await gameReportRepository.GetAll(name, gameType, from, to);
-                
-            } else
-            {
-                gameReportEntities = await gameReportRepository.GetByRound(roundId, name, gameType, from, to);
+                case (byte) GameType.BigSmall:
+                    return await GetBigSmallBetHistoryAsync(name, roundId);
+                case (byte) GameType.BigSmallTurbo:
+                    return await GetBigSmallTurboBetHistoryAsync(name, roundId);
+                default:
+                    break;
             }
 
-            var results = gameReportEntities.Select(TransformGameReportEntityToBetModel).ToList();
-
-            return results;
+            return await GetBigSmallBetHistoryAsync(name, roundId);
         }
 
-        private Bet TransformGameReportEntityToBetModel(GameReportEntity entity)
+        private async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistoryAsync(string name, long roundId)
         {
-            Bet result = null;
+            var betHistoryReportRepository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await betHistoryReportRepository.GetBigSmallAsync(roundId, name);
+
+            return result.Select(x =>
+            {
+                var betResult = new BigSmallBetResult(x.FirstDice, x.SecondDice, x.ThirdDice);
+                var betChoice = new BigSmallChoice(x.Select, x.Bet);
+
+                return new BigSmallBet(x.Round, x.Time, x.BetWin, betResult, betChoice, x.Refund);
+            });
+        }
+
+
+        private async Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistoryAsync(string name, long roundId)
+        {
+            var betHistoryReportRepository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await betHistoryReportRepository.GetBigSmallTurboAsync(roundId, name);
+
+            return result.Select(x =>
+            {
+                var betResult = new BigSmallBetResult(x.FirstDice, x.SecondDice, x.ThirdDice);
+                var betChoice = new BigSmallChoice(x.Select, x.Bet);
+
+                return new BigSmallBet(x.Round, x.Time, x.BetWin, betResult, betChoice, x.Refund);
+            });
+        }
+
+        private BaseBetHistory TransformGameReportEntityToBetModel(BetHistoryReportEntity entity)
+        {
+            BaseBetHistory result = null;
 
             if (entity is FishPrawnCrabReportEntity)
             {
@@ -106,12 +129,12 @@ namespace GamesAdmin.Api.Report
 
                 result = new ShakeThePlateBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice);
             }
-            else if (entity is BigSmallGameReportEntity)
+            else if (entity is BigSmallBetHistoryReportEntity)
             {
-                BigSmallGameReportEntity bsEntity = (BigSmallGameReportEntity)entity;
+                BigSmallBetHistoryReportEntity bsEntity = (BigSmallBetHistoryReportEntity)entity;
 
                 var betResult = new BigSmallBetResult(bsEntity.FirstDice, bsEntity.SecondDice, bsEntity.ThirdDice);
-                var betChoice = new BigSmallChoice(bsEntity.SelectBig, bsEntity.Bet);
+                var betChoice = new BigSmallChoice(bsEntity.Select, bsEntity.Bet);
 
                 result = new BigSmallBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice, bsEntity.Refund);
             }

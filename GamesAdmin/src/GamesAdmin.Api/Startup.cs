@@ -73,7 +73,7 @@ namespace GamesAdmin.Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
             services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IGameReportRepository, GameReportRepository>();
+            services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
 
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();

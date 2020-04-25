@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Refit;
 using Sentry;
 using Sentry.Protocol;
+using GameType = GamesAdmin.Site._Shared.Enumerations.GameType;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {

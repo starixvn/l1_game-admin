@@ -23,5 +23,9 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/odd_even_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
         Task<GameReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot);
+
+
+        [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
+        Task<IEnumerable<BigSmallBet>> GetBetHistory(byte gameTypeId, long roundId, string nickname);
     }
-}
+} 

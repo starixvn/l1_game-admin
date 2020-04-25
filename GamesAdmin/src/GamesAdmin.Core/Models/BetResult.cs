@@ -3,15 +3,15 @@ using System.Linq;
 
 namespace GamesAdmin.Core.Models
 {
-    public interface IBetResult
+    public class BetResult
     {
     }
 
-    public class BigSmallBetResult : IBetResult
+    public class BigSmallBetResult : BetResult
     {
         public IList<byte> Dices { get; set; }
 
-        public int Total => Dices.Aggregate(0, (result, dice) => result + dice);
+        public int Total => Dices.Sum(x => x);
 
         public BigSmallBetResult(byte firstDice, byte secondDice, byte thirdDice)
         {
@@ -22,7 +22,7 @@ namespace GamesAdmin.Core.Models
         }
     }
 
-    public class FishPrawnCrabBetResult : IBetResult
+    public class FishPrawnCrabBetResult : BetResult
     {
         public IList<byte> Dices { get; set; }
 
@@ -35,7 +35,7 @@ namespace GamesAdmin.Core.Models
         }
     }
 
-    public class ShakeThePlateBetResult : IBetResult
+    public class ShakeThePlateBetResult : BetResult
     {
         public IList<bool> RedChips { get; set; }
 

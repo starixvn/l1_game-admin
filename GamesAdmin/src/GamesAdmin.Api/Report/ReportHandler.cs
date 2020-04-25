@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.Report
 {
     public class ReportHandler : 
         IRequestHandler<BigSmallReportRequest, GameReport>, 
-        IRequestHandler<GameReportRequest, IList<Bet>>,
+        IRequestHandler<GameReportRequest, IEnumerable<BaseBetHistory>>,
         IRequestHandler<BigSmallTurboReportRequest, GameReport>,
         IRequestHandler<OddEvenTurboReportRequest, GameReport>,
         IRequestHandler<OddEvenReportRequest, GameReport>
@@ -24,8 +24,8 @@ namespace GamesAdmin.Api.Report
         public async Task<GameReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetBigSmallReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
 
-        public async Task<IList<Bet>> Handle(GameReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetGameReport(request.Name, request.RoundId, request.GameType, request.From, request.To);
+        public async Task<IEnumerable<BaseBetHistory>> Handle(GameReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetBetHistoryReport(request.Name, request.RoundId, request.GameType);
 
         public async Task<GameReport> Handle(BigSmallTurboReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetBigSmallTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);

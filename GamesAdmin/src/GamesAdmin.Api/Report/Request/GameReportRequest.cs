@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class GameReportRequest : IRequest<IList<Bet>>
+    public class GameReportRequest : IRequest<IEnumerable<BaseBetHistory>>
     {
         public long RoundId { get; }
 
@@ -13,17 +13,11 @@ namespace GamesAdmin.Api.Report.Request
 
         public string Name { get; }
 
-        public DateTime From { get; }
-
-        public DateTime To { get; }
-
-        public GameReportRequest(string name, long roundId, byte gameType, DateTime from, DateTime to)
+        public GameReportRequest(string name, long roundId, byte gameType)
         {
             Name = name;
             RoundId = roundId;
             GameType = gameType;
-            From = from;
-            To = to;
         }
     }
 }

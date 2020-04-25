@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -13,7 +16,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallReportRequest, BigSmallReportResultViewModel>,
         IRequestHandler<GetBigSmallTurboReportRequest, BigSmallTurboReportResultViewModel>,
         IRequestHandler<GetOddEvenReportRequest, OddEvenReportResultViewModel>,
-        IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>
+        IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>,
+        IRequestHandler<GetBetHistoryRequest, IEnumerable<BaseBetHistory>>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -126,6 +130,11 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Select = x.Select
                 })
             };
+        }
+
+        public async Task<IEnumerable<BaseBetHistory>> Handle(GetBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            return await reportService.GetBetHistory(request.GameTypeId, request.RoundId, request.Nickname);
         }
     }
 }

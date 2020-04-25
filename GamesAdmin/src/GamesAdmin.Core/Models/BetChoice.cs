@@ -1,13 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
-
-namespace GamesAdmin.Core.Models
+﻿namespace GamesAdmin.Core.Models
 {
-    public interface IBetChoice
+    public class BetChoice
     {
     }
 
-    public class BigSmallChoice : IBetChoice
+    public class BigSmallChoice : BetChoice
     {
         public bool Big { get; set; }
 
@@ -20,24 +17,18 @@ namespace GamesAdmin.Core.Models
         }
     }
 
-    public class FishPrawnCrabChoice : IBetChoice
+    public class FishPrawnCrabChoice : BetChoice
     {
-        [JsonProperty(PropertyName = "1")]
         public decimal Stag { get; set; }
 
-        [JsonProperty(PropertyName = "2")]
         public decimal Gourd { get; set; }
 
-        [JsonProperty(PropertyName = "3")]
         public decimal Rooster { get; set; }
 
-        [JsonProperty(PropertyName = "4")]
         public decimal Fish { get; set; }
 
-        [JsonProperty(PropertyName = "5")]
         public decimal Crab { get; set; }
 
-        [JsonProperty(PropertyName = "6")]
         public decimal Prawn { get; set; }
 
         public decimal Amount => Stag + Gourd + Rooster + Fish + Crab + Prawn;
@@ -53,7 +44,7 @@ namespace GamesAdmin.Core.Models
         }
     }
 
-    public class ShakeThePlateChoice : IBetChoice
+    public class ShakeThePlateChoice : BetChoice
     {
         public decimal Even { get; set; }
 

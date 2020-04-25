@@ -2,34 +2,39 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public abstract class Bet
+    public class BaseBetHistory 
     {
+        public BaseBetHistory(long round, DateTime time,  decimal betWin)
+        {
+
+        }
+
         public long Round { get; set; }
 
         public DateTime Time { get; set; }
 
         public decimal BetWin { get; set; }
+    }
 
-        public IBetResult BetResult { get; set; }
+    public class BetHistory<TChoice, TResult> : BaseBetHistory where TChoice: BetChoice where TResult: BetResult
+    {
+        public TResult BetResult { get; set; }
 
-        public IBetChoice Choice { get; set; }
+        public TChoice Choice { get; set; }
 
-        public Bet(
+        public BetHistory(
             long round,
             DateTime time,
             decimal betWin,
-            IBetResult betResult,
-            IBetChoice choice)
+            TResult betResult,
+            TChoice choice) : base(round, time,betWin)
         {
-            Round = round;
-            Time = time;
-            BetWin = betWin;
             BetResult = betResult;
             Choice = choice;
         }
     }
 
-    public class BigSmallBet : Bet
+    public class BigSmallBet : BetHistory<BigSmallChoice, BigSmallBetResult>
     {
         public decimal Refund { get; set; }
 
@@ -46,27 +51,27 @@ namespace GamesAdmin.Core.Models
         }
     }
 
-    public class FishPrawnCrabBet : Bet
+    public class FishPrawnCrabBet : BetHistory<FishPrawnCrabChoice, FishPrawnCrabBetResult>
     {
         public FishPrawnCrabBet(
             long round,
             DateTime time,
             decimal betWin,
             FishPrawnCrabBetResult betResult,
-            IBetChoice choice)
+            FishPrawnCrabChoice choice)
             : base(round, time, betWin, betResult, choice)
         {
         }
     }
 
-    public class ShakeThePlateBet : Bet
+    public class ShakeThePlateBet : BetHistory<ShakeThePlateChoice, ShakeThePlateBetResult>
     {
         public ShakeThePlateBet(
             long round,
             DateTime time,
             decimal betWin,
             ShakeThePlateBetResult betResult,
-            IBetChoice choice)
+            ShakeThePlateChoice choice)
             : base(round, time, betWin, betResult, choice)
         {
         }
