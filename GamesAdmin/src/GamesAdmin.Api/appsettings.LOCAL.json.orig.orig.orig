@@ -1,0 +1,44 @@
+﻿{
+  "Env": "LOCAL",
+  "DatabaseSettings": {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.13:27101/?replicaSet=L1Local",
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@127.0.0.1:27101/?replicaSet=LocalMainRS",
+>>>>>>> 69fe973... Update config
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@127.0.0.1:27101/?replicaSet=LocalMainRS",
+>>>>>>> 6379159... Update config
+    "DatabaseName": "minigame"
+  },
+  "Sentry": {
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@127.0.0.1:27101/?replicaSet=LocalMainRS",
+    "DatabaseName": "minigame"
+  },
+  "Sentry": {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    "Dsn": "https://1633081241b446a68a25635c2d4b227a@sentry.saba.vin/56"
+  },
+  "IdentityServer": {
+    "Issuer": "http://l2-auth.lumigame.com"
+=======
+>>>>>>> 93393bd... Update config
+>>>>>>> 25bd814... update bot add amount
+    "Dsn": ""
+  },
+  "IdentityServer": {
+    "Issuer": "http://l2-auth.lumigame.com:80"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> be1b7eb... Update config
+>>>>>>> 93393bd... Update config
+>>>>>>> 25bd814... update bot add amount
+  }
+}

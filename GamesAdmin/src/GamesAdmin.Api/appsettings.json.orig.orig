@@ -7,18 +7,17 @@
       "Microsoft.Hosting.Lifetime": "Information"
     }
   },
-  "HostingPort": "9006",
+  "HostingPort": "7778",
   "AllowedHosts": "*",
   "DatabaseSettings": {
 <<<<<<< HEAD
-    "ConnectionString": "mongodb://127.0.0.1:27017/",
 =======
-    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.18.200.132:27101/",
->>>>>>> ba73135... update max bet for L2
+    "ConnectionString": "mongodb://127.0.0.1:27017/",
+>>>>>>> 25bd814... update bot add amount
     "DatabaseName": "minigame"
   },
   "Sentry": {
-    "Dsn": "",
+    "Dsn": "https://f466432df2a747c5aacdd810280d522e@sentry.saba.vin/16",
     "IncludeRequestPayload": true,
     "SendDefaultPii": true,
     "MinimumBreadcrumbLevel": "Debug",
@@ -28,36 +27,22 @@
     "DiagnosticsLevel": "Error"
   },
   "IdentityServer": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "Issuer": "http://localhost:8898",
-    "Audiences": [ "admin-api", "api" ]
-  },
-  "BotSettings": {
-    "DefaultMaxBet": 1000
-=======
-=======
->>>>>>> ba73135... update max bet for L2
     "Issuer": "http://localhost:9002",
     "Audiences": [
       "admin-api",
       "api"
     ]
-<<<<<<< HEAD
->>>>>>> 69fe973... Update config
-=======
   },
   "BotSettings": {
-<<<<<<< HEAD
-    "MinAmount": 1000,
-    "MaxAmount": 10000,
-    "MinInitAmount": 700,
-    "MaxInitAmount": 2000,
-    "MinAddAmount": 1500,
-    "MaxAddAmount": 2500
-=======
     "DefaultMaxBet": 10000
->>>>>>> 2b19749... update max bet for L2
->>>>>>> ba73135... update max bet for L2
   }
+<<<<<<< HEAD
 }
+=======
+<<<<<<< HEAD
+}
+=======
+
+}
+>>>>>>> 05bc05d... update bot add amount
+>>>>>>> 25bd814... update bot add amount
