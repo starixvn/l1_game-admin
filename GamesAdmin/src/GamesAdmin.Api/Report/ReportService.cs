@@ -71,6 +71,10 @@ namespace GamesAdmin.Api.Report
                     return await GetBigSmallBetHistoryAsync(name, roundId);
                 case (byte) GameType.BigSmallTurbo:
                     return await GetBigSmallTurboBetHistoryAsync(name, roundId);
+                case (byte)GameType.EvenOdd:
+                    return await GetOddEvenBetHistoryAsync(name, roundId);
+                case (byte)GameType.EvenOddTurbo:
+                    return await GetOddEvenTurboBetHistoryAsync(name, roundId);
                 default:
                     break;
             }
@@ -107,6 +111,36 @@ namespace GamesAdmin.Api.Report
             });
         }
 
+        private async Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistoryAsync(string name, long roundId)
+        {
+            var betHistoryReportRepository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await betHistoryReportRepository.GetOddEvenAsync(roundId, name);
+
+            return result.Select(x =>
+            {
+                var betResult = new OddEvenBetResult(x.FirstDice, x.SecondDice, x.ThirdDice);
+                var betChoice = new OddEvenChoice(x.Select, x.Bet);
+
+                return new OddEvenBet(x.Round, x.Time, x.BetWin, betResult, betChoice, x.Refund);
+            });
+        }
+
+
+        private async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistoryAsync(string name, long roundId)
+        {
+            var betHistoryReportRepository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await betHistoryReportRepository.GetOddEvenTurboAsync(roundId, name);
+
+            return result.Select(x =>
+            {
+                var betResult = new OddEvenBetResult(x.FirstDice, x.SecondDice, x.ThirdDice);
+                var betChoice = new OddEvenChoice(x.Select, x.Bet);
+
+                return new OddEvenBet(x.Round, x.Time, x.BetWin, betResult, betChoice, x.Refund);
+            });
+        }
+
+
         private BaseBetHistory TransformGameReportEntityToBetModel(BetHistoryReportEntity entity)
         {
             BaseBetHistory result = null;
@@ -128,15 +162,6 @@ namespace GamesAdmin.Api.Report
                 var betChoice = new ShakeThePlateChoice(stpEntity.Even, stpEntity.Odd, stpEntity.ThreeRed, stpEntity.FourRed, stpEntity.ThreeWhite, stpEntity.FourWhite);
 
                 result = new ShakeThePlateBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice);
-            }
-            else if (entity is BigSmallBetHistoryReportEntity)
-            {
-                BigSmallBetHistoryReportEntity bsEntity = (BigSmallBetHistoryReportEntity)entity;
-
-                var betResult = new BigSmallBetResult(bsEntity.FirstDice, bsEntity.SecondDice, bsEntity.ThirdDice);
-                var betChoice = new BigSmallChoice(bsEntity.Select, bsEntity.Bet);
-
-                result = new BigSmallBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice, bsEntity.Refund);
             }
 
             return result;

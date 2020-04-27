@@ -46,14 +46,25 @@
                     <tr>
                         <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bigRecord?.Username</td>
-                        <td>@bigRecord?.Nickname</td>
+                        <td>
+                            <a data-ajax="true" data-ajax-method="GET"  data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname"
+                            >
+                                @bigRecord?.Nickname
+                            </a>
+                        </td>
                         <td class="text-right">@bigRecord?.Bet</td>
                         <td class="text-right">@bigRecord?.Back</td>
                         <td class="text-right">@bigRecord?.BetWin</td>
                         <td class="line-cell"></td>
                         <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@smallRecord?.Username</td>
-                        <td class="col-nickname">@smallRecord?.Nickname</td>
+                        <td class="col-nickname">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body"  data-ajax-success="showModal('#modal')"
+                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@smallRecord?.Nickname">
+                                @smallRecord?.Nickname
+                            </a>
+                        </td>
                         <td class="text-right">@smallRecord?.Bet</td>
                         <td class="text-right">@smallRecord?.Back</td>
                         <td class="text-right">@smallRecord?.BetWin</td>

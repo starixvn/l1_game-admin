@@ -66,9 +66,27 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBetHistory(byte gameTypeId, long roundId, string nickname)
+        public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname)
         {
-            return Ok(await mediator.Send(new GetBetHistoryRequest(gameTypeId, roundId, nickname)));
+            return PartialView("_BigSmallBetHistory",await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBigSmallTurboBetHistory(long roundId, string nickname)
+        {
+            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallTurboBetHistoryRequest(roundId, nickname)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOddEvenBetHistory(long roundId, string nickname)
+        {
+            return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenBetHistoryRequest(roundId, nickname)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOddEvenTurboBetHistory(long roundId, string nickname)
+        {
+            return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname)));
         }
     }
 }

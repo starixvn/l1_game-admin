@@ -17,6 +17,19 @@
         }
     }
 
+    public class OddEvenChoice : BetChoice
+    {
+        public bool Even { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public OddEvenChoice(bool isSelectEven, decimal amount)
+        {
+            Even = isSelectEven;
+            Amount = amount;
+        }
+    }
+
     public class FishPrawnCrabChoice : BetChoice
     {
         public decimal Stag { get; set; }

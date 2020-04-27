@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Report;
 
@@ -15,7 +16,13 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
 
-        Task<IEnumerable<BaseBetHistory>> GetBetHistory(byte gameTypeId, long roundId, string nickname);
+        Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
+
+        Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistory(long roundId, string nickname);
+
+        Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname);
+
+        Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -39,7 +46,16 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
 
-        public async Task<IEnumerable<BaseBetHistory>> GetBetHistory(byte gameTypeId, long roundId, string nickname) 
-        => await reportApi.GetBetHistory(gameTypeId, roundId, nickname);
+        public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
+        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameType.BigSmall, roundId, nickname);
+
+        public async Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistory(long roundId, string nickname)
+        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameType.BigSmallTurbo, roundId, nickname);
+
+        public async Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname)
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameType.EvenOdd, roundId, nickname);
+
+        public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameType.EvenOddTurbo, roundId, nickname);
     }
 }

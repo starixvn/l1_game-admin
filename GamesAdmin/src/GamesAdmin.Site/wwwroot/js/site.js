@@ -23,6 +23,10 @@ class Sidebar {
     }
 }
 
+function showModal(selector) {
+    $(selector).modal('show');
+}
+
 let sideBar = new Sidebar();
 sideBar.collapseExpandSidebar();
 sideBar.activeLink();

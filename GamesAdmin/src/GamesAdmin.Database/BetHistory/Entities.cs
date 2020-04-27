@@ -30,6 +30,21 @@ namespace GamesAdmin.Database
         public decimal Refund { get; set; }
     }
 
+    public class OddEvenBetHistoryReportEntity : BetHistoryReportEntity
+    {
+        public byte FirstDice { get; set; }
+
+        public byte SecondDice { get; set; }
+
+        public byte ThirdDice { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public bool Select { get; set; }
+
+        public decimal Refund { get; set; }
+    }
+
     public class FishPrawnCrabReportEntity : BetHistoryReportEntity
     {
         public byte FirstDice { get; set; }
@@ -142,54 +157,52 @@ namespace GamesAdmin.Database
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 
-    internal class BigSmallRoundWithBetUnwindEntity : BigSmallRoundEntity
+    internal class BigSmallRoundWithOneUnwindEntity : BigSmallRoundEntity
     {
         public BigSmallOnesEntity One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 
-    internal class BigSmallTurboRoundWithBetsEntity : BigSmallTurboRoundEntity
+    internal class BigSmallTurboRoundWithOnesEntity : BigSmallTurboRoundEntity
     {
         public IEnumerable<BigSmallTurboOnesEntity> One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 
-    internal class BigSmallTurboRoundWithBetUnwindEntity : BigSmallTurboRoundEntity
+    internal class BigSmallTurboRoundWithOneUnwindEntity : BigSmallTurboRoundEntity
     {
         public BigSmallTurboOnesEntity One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 
-    internal class EvenOddRoundWithBetsEntity : OddEvenRoundEntity
+    internal class OddEvenRoundWithOnesEntity : OddEvenRoundEntity
     {
         public IEnumerable<OddEvenOnesEntity> One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 
-    internal class EvenOddRoundWithBetUnwindEntity : OddEvenRoundEntity
+    internal class OddEvenRoundWithOneUnwindEntity : OddEvenRoundEntity
     {
         public OddEvenOnesEntity One { get; set; }
 
         public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+    }
 
-        public BetHistoryReportEntity ToGameReport()
-        {
-            return new BigSmallBetHistoryReportEntity
-            {
-                BetWin = One.Betwin,
-                Round = Number,
-                Time = Time,
-                Bet = One.Bet,
-                FirstDice = (byte)Dice1,
-                SecondDice = (byte)Dice2,
-                ThirdDice = (byte)Dice3,
-                Refund = One.Back,
-                Select = One.Select
-            };
-        }
+    internal class OddEvenTurboRoundWithOnesEntity : OddEvenTurboRoundEntity
+    {
+        public IEnumerable<OddEvenTurboOnesEntity> One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
+    }
+
+    internal class OddEvenTurboRoundWithOneUnwindEntity : OddEvenTurboRoundEntity
+    {
+        public OddEvenTurboOnesEntity One { get; set; }
+
+        public IEnumerable<AccountInfoEntity> Accounts { get; set; }
     }
 }

@@ -46,14 +46,23 @@
                     <tr>
                         <td>@evenRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@evenRecord?.Username</td>
-                        <td>@evenRecord?.Nickname</td>
+                        <td>
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetOddEvenTurboBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@evenRecord?.Nickname">
+                                @evenRecord?.Nickname
+                            </a>
+                        </td>
                         <td class="text-right">@evenRecord?.Bet</td>
                         <td class="text-right">@evenRecord?.Back</td>
                         <td class="text-right">@evenRecord?.BetWin</td>
                         <td class="line-cell"></td>
                         <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@oddRecord?.Username</td>
-                        <td class="col-nickname">@oddRecord?.Nickname</td>
+                        <td class="col-nickname">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetOddEvenTurboBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@oddRecord?.Nickname">
+                                @oddRecord?.Nickname
+                            </a></td>
                         <td class="text-right">@oddRecord?.Bet</td>
                         <td class="text-right">@oddRecord?.Back</td>
                         <td class="text-right">@oddRecord?.BetWin</td>

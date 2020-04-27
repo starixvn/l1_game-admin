@@ -1,22 +1,19 @@
 ﻿using System.Collections.Generic;
-using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetBetHistoryRequest : IRequest<IEnumerable<BaseBetHistory>>
+    public class GetBigSmallTurboBetHistoryRequest : IRequest<IEnumerable<BigSmallBetHistoryViewModel>>
     {
-        public GetBetHistoryRequest(byte gameTypeId, long roundId, string nickname)
+        public GetBigSmallTurboBetHistoryRequest(long roundId, string nickname)
         {
             RoundId = roundId;
             Nickname = nickname;
-            GameTypeId = gameTypeId;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
-
-        public byte GameTypeId { get; }
     }
 }

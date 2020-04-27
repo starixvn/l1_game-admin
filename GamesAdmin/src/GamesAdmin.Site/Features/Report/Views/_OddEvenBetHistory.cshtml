@@ -1,0 +1,30 @@
+﻿@using GamesAdmin.Core
+@model IEnumerable<GamesAdmin.Site.Features.Report.ViewModels.OddEvenBetHistoryViewModel>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Time (GMT+7)</th>
+            <th>Round</th>
+            <th>Select</th>
+            <th>Result</th>
+            <th>Bet</th>
+            <th>Back</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model)
+        {
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td>@bet.Round</td>
+                <td>@(bet.Choice.Even ? "Even" : "Odd")</td>
+                <td>@string.Join('-', bet.BetResult.Dices) @bet.BetResult.Total</td>
+                <td>@bet.Choice.Amount</td>
+                <td>@bet.Refund</td>
+                <td>@bet.BetWin</td>
+            </tr>
+        }
+    </tbody>
+</table>

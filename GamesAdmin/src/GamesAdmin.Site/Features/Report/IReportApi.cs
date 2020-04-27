@@ -26,6 +26,6 @@ namespace GamesAdmin.Site.Features.Report
 
 
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
-        Task<IEnumerable<BigSmallBet>> GetBetHistory(byte gameTypeId, long roundId, string nickname);
+        Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
     }
 } 

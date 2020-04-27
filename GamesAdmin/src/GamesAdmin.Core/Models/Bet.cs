@@ -6,7 +6,9 @@ namespace GamesAdmin.Core.Models
     {
         public BaseBetHistory(long round, DateTime time,  decimal betWin)
         {
-
+            Round = round;
+            Time = time;
+            BetWin = betWin;
         }
 
         public long Round { get; set; }
@@ -44,6 +46,23 @@ namespace GamesAdmin.Core.Models
             decimal betWin,
             BigSmallBetResult betResult,
             BigSmallChoice choice,
+            decimal refund)
+            : base(round, time, betWin, betResult, choice)
+        {
+            Refund = refund;
+        }
+    }
+
+    public class OddEvenBet : BetHistory<OddEvenChoice, OddEvenBetResult>
+    {
+        public decimal Refund { get; set; }
+
+        public OddEvenBet(
+            long round,
+            DateTime time,
+            decimal betWin,
+            OddEvenBetResult betResult,
+            OddEvenChoice choice,
             decimal refund)
             : base(round, time, betWin, betResult, choice)
         {

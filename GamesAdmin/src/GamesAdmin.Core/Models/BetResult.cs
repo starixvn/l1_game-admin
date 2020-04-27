@@ -9,11 +9,26 @@ namespace GamesAdmin.Core.Models
 
     public class BigSmallBetResult : BetResult
     {
-        public IList<byte> Dices { get; set; }
+        public IEnumerable<byte> Dices { get; set; }
 
         public int Total => Dices.Sum(x => x);
 
         public BigSmallBetResult(byte firstDice, byte secondDice, byte thirdDice)
+        {
+            Dices = new List<byte>
+            {
+                firstDice, secondDice, thirdDice
+            };
+        }
+    }
+
+    public class OddEvenBetResult : BetResult
+    {
+        public IList<byte> Dices { get; set; }
+
+        public int Total => Dices.Sum(x => x);
+
+        public OddEvenBetResult(byte firstDice, byte secondDice, byte thirdDice)
         {
             Dices = new List<byte>
             {

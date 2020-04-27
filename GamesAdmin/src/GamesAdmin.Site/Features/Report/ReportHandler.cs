@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -17,7 +15,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallTurboReportRequest, BigSmallTurboReportResultViewModel>,
         IRequestHandler<GetOddEvenReportRequest, OddEvenReportResultViewModel>,
         IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>,
-        IRequestHandler<GetBetHistoryRequest, IEnumerable<BaseBetHistory>>
+        IRequestHandler<GetBigSmallBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
+        IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
+        IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
+        IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -132,9 +133,92 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<IEnumerable<BaseBetHistory>> Handle(GetBetHistoryRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BigSmallBetHistoryViewModel>> Handle(GetBigSmallBetHistoryRequest request, CancellationToken cancellationToken)
         {
-            return await reportService.GetBetHistory(request.GameTypeId, request.RoundId, request.Nickname);
+            var result = await reportService.GetBigSmallBetHistory(request.RoundId, request.Nickname);
+
+            return result.Select(x => new BigSmallBetHistoryViewModel
+            {
+                Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                BetWin = x.BetWin,
+                Refund = x.Refund,
+                Round = x.Round,
+                BetResult = new BigSmallBetResultViewModel
+                {
+                    Dices = x.BetResult.Dices
+                },
+                Choice = new BigSmallBetChoiceViewModel
+                {
+                    Amount = x.Choice.Amount,
+                    Big = x.Choice.Big
+                }
+            });
+        }
+
+        public async Task<IEnumerable<BigSmallBetHistoryViewModel>> Handle(GetBigSmallTurboBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetBigSmallTurboBetHistory(request.RoundId, request.Nickname);
+
+            return result.Select(x => new BigSmallBetHistoryViewModel
+            {
+                Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                BetWin = x.BetWin,
+                Refund = x.Refund,
+                Round = x.Round,
+                BetResult = new BigSmallBetResultViewModel
+                {
+                    Dices = x.BetResult.Dices
+                },
+                Choice = new BigSmallBetChoiceViewModel
+                {
+                    Amount = x.Choice.Amount,
+                    Big = x.Choice.Big
+                }
+            });
+        }
+
+        public async Task<IEnumerable<OddEvenBetHistoryViewModel>> Handle(GetOddEvenBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetOddEvenBetHistory(request.RoundId, request.Nickname);
+
+            return result.Select(x => new OddEvenBetHistoryViewModel
+            {
+                Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                BetWin = x.BetWin,
+                Refund = x.Refund,
+                Round = x.Round,
+                BetResult = new OddEvenBetResultViewModel
+                {
+                    Dices = x.BetResult.Dices
+                },
+                Choice = new OddEvenBetChoiceViewModel
+                {
+                    Amount = x.Choice.Amount,
+                    Even = x.Choice.Even
+                }
+            });
+        }
+
+        public async Task<IEnumerable<OddEvenBetHistoryViewModel>> Handle(GetOddEvenTurboBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetOddEvenTurboBetHistory(request.RoundId, request.Nickname);
+
+            return result.Select(x => new OddEvenBetHistoryViewModel
+            {
+                Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                BetWin = x.BetWin,
+                Refund = x.Refund,
+                Round = x.Round,
+                BetResult = new OddEvenBetResultViewModel
+                {
+                    Dices = x.BetResult.Dices
+                },
+                Choice = new OddEvenBetChoiceViewModel
+                {
+                    Amount = x.Choice.Amount,
+                    Even = x.Choice.Even
+                }
+            });
         }
     }
 }
