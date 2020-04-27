@@ -35,6 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<ReloadGameClientRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
+        private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
 
         private readonly IMapper mapper;
 
@@ -170,7 +171,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             0,
             0,
             new double[] { },
-            string.Empty));
+            DefaultDisabledMessage));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
