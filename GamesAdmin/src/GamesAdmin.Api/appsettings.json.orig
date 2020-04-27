@@ -10,7 +10,6 @@
   "HostingPort": "9006",
   "AllowedHosts": "*",
   "DatabaseSettings": {
-    "ConnectionString": "mongodb://127.0.0.1:27017/",
     "DatabaseName": "minigame"
   },
   "Sentry": {
@@ -24,18 +23,22 @@
     "DiagnosticsLevel": "Error"
   },
   "IdentityServer": {
-<<<<<<< HEAD
-    "Issuer": "http://localhost:8898",
-    "Audiences": [ "admin-api", "api" ]
-  },
-  "BotSettings": {
-    "DefaultMaxBet": 1000
-=======
     "Issuer": "http://localhost:9002",
     "Audiences": [
       "admin-api",
       "api"
     ]
->>>>>>> 69fe973... Update config
+  },
+  "BotSettings": {
+<<<<<<< HEAD
+    "MinAmount": 1000,
+    "MaxAmount": 10000,
+    "MinInitAmount": 700,
+    "MaxInitAmount": 2000,
+    "MinAddAmount": 1500,
+    "MaxAddAmount": 2500
+=======
+    "DefaultMaxBet": 10000
+>>>>>>> 2b19749... update max bet for L2
   }
 }
