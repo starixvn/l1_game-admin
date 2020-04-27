@@ -20,11 +20,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var viewModel = new DashboardViewModel
-            {
-                OnlineUsers = await mediator.Send(new GetOnlineUsersRequests()),
-                TodayTotalBets = await mediator.Send(new GetTodayTotalBetsRequest())
-            };
+            var viewModel = new DashboardViewModel();
 
             return View(viewModel);
         }

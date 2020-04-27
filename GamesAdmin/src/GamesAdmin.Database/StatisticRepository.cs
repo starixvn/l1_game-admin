@@ -33,6 +33,7 @@ namespace GamesAdmin.Database
 
             var fishPrawnCrabBetCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
             var shakeThePlaceBetCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
+            var dragonTigerBetCollection = database.GetCollection<DragonTigerBetEntity>(Document.GetCollectionName(typeof(DragonTigerBetEntity)));
 
             var bigSmallTotalBets = await bigSmallOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
             var bigSmallTurboTotalBets = await bigSmallTurboOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
@@ -41,8 +42,9 @@ namespace GamesAdmin.Database
 
             var fishPrawnCrabTotalBets = await fishPrawnCrabBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
             var shakeThePlaceTotalBets = await shakeThePlaceBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
+            var dragonTigerTotalBets = await dragonTigerBetCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);
 
-            return bigSmallTotalBets + fishPrawnCrabTotalBets + evenOddTotalBets + evenOddTurboTotalBets + shakeThePlaceTotalBets + bigSmallTurboTotalBets;
+            return bigSmallTotalBets + fishPrawnCrabTotalBets + evenOddTotalBets + evenOddTurboTotalBets + shakeThePlaceTotalBets + bigSmallTurboTotalBets + dragonTigerTotalBets;
         }
     }
 }
