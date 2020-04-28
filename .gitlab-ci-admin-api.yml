@@ -63,10 +63,10 @@ local_deploy:game_admin_api:
   environment:
     name: LOCAL
   only:
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-local-\d{8}-\d+.*$/
-    - /^deploy-api-\d{8}-\d+.*$/
-    - /^deploy-local-api-\d{8}-\d+.*$/
+    - /^l1-deploy-\d{8}-\d+.*$/
+    - /^l1-deploy-local-\d{8}-\d+.*$/
+    - /^l1-deploy-api-\d{8}-\d+.*$/
+    - /^l1-deploy-local-api-\d{8}-\d+.*$/
 
 sit_deploy:game_admin_api:
   extends: 
@@ -75,10 +75,10 @@ sit_deploy:game_admin_api:
   environment:
     name: SIT
   only:
-    - /^deploy-sit-\d{8}-\d+.*$/
-    - /^deploy-sit-api-\d{8}-\d+.*$/
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-api-\d{8}-\d+.*$/
+    - /^l1-deploy-sit-\d{8}-\d+.*$/
+    - /^l1-deploy-sit-api-\d{8}-\d+.*$/
+    - /^l1-deploy-\d{8}-\d+.*$/
+    - /^l1-deploy-api-\d{8}-\d+.*$/
 
 uat_deploy:game_admin_api:
   extends: 
@@ -87,10 +87,10 @@ uat_deploy:game_admin_api:
   environment:
     name: UAT
   only:
-    - /^deploy-uat-\d{8}-\d+.*$/
-    - /^deploy-uat-api-\d{8}-\d+.*$/
-    - /^deploy-\d{8}-\d+.*$/
-    - /^deploy-api-\d{8}-\d+.*$/
+    - /^l1-deploy-uat-\d{8}-\d+.*$/
+    - /^l1-deploy-uat-api-\d{8}-\d+.*$/
+    - /^l1-deploy-\d{8}-\d+.*$/
+    - /^l1-deploy-api-\d{8}-\d+.*$/
 
 prod_deploy:game_admin_api:
   extends: 
