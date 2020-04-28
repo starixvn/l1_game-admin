@@ -62,7 +62,7 @@ namespace GamesAdmin.Database
                     {
                         BetWin = x.One.Betwin,
                         Round = x.Number,
-                        Time = x.Time,
+                        Time = x.One.Time,
                         Bet = x.One.Bet,
                         FirstDice = (byte)x.Dice1,
                         SecondDice = (byte)x.Dice2,
@@ -110,7 +110,7 @@ namespace GamesAdmin.Database
                 {
                     BetWin = x.One.Betwin,
                     Round = x.Number,
-                    Time = x.Time,
+                    Time = x.One.Time,
                     Bet = x.One.Bet,
                     FirstDice = (byte)x.Dice1,
                     SecondDice = (byte)x.Dice2,
@@ -154,7 +154,7 @@ namespace GamesAdmin.Database
                {
                    BetWin = x.One.Betwin,
                    Round = x.Number,
-                   Time = x.Time,
+                   Time = x.One.Time,
                    Bet = x.One.Bet,
                    FirstDice = (byte)x.Dice1,
                    SecondDice = (byte)x.Dice2,
@@ -198,7 +198,7 @@ namespace GamesAdmin.Database
                {
                    BetWin = x.One.Betwin,
                    Round = x.Number,
-                   Time = x.Time,
+                   Time = x.One.Time,
                    Bet = x.One.Bet,
                    FirstDice = (byte)x.Dice1,
                    SecondDice = (byte)x.Dice2,
@@ -211,48 +211,48 @@ namespace GamesAdmin.Database
             return results;
         }
 
-        private async Task<IList<BetHistoryReportEntity>> GetByRoundFishPrawnCrab(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity)));
-            var betCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
+        //private async Task<IList<BetHistoryReportEntity>> GetByRoundFishPrawnCrab(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
+        //{
+        //    var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity)));
+        //    var betCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
 
-            var aggregateBuilder = roundCollection.Aggregate()
-                .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
-                .Lookup<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity, FishPrawnCrabRoundWithBetsEntity>(
-                    foreignCollection: betCollection,
-                    localField: round => round.Number,
-                    foreignField: bet => bet.Round,
-                    @as: r => r.Bet
-                )
-                .Unwind<FishPrawnCrabRoundWithBetsEntity, FishPrawnCrabRoundWithBetUnwindEntity>(x => x.Bet)
-                .Match(x => x.Bet.Name == name && x.Bet.Paid);
+        //    var aggregateBuilder = roundCollection.Aggregate()
+        //        .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
+        //        .Lookup<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity, FishPrawnCrabRoundWithBetsEntity>(
+        //            foreignCollection: betCollection,
+        //            localField: round => round.Number,
+        //            foreignField: bet => bet.Round,
+        //            @as: r => r.Bet
+        //        )
+        //        .Unwind<FishPrawnCrabRoundWithBetsEntity, FishPrawnCrabRoundWithBetUnwindEntity>(x => x.Bet)
+        //        .Match(x => x.Bet.Name == name && x.Bet.Paid);
 
-            var unwindEntities = await aggregateBuilder.ToListAsync();
-            var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
+        //    var unwindEntities = await aggregateBuilder.ToListAsync();
+        //    var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
 
-            return results;
-        }
+        //    return results;
+        //}
 
-        private async Task<IList<BetHistoryReportEntity>> GetByRoundShakeThePlate(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
-        {
-            var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity)));
-            var betCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
+        //private async Task<IList<BetHistoryReportEntity>> GetByRoundShakeThePlate(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
+        //{
+        //    var roundCollection = database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity)));
+        //    var betCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
 
-            var aggregateBuilder = roundCollection.Aggregate()
-                .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
-                .Lookup<ShakeThePlateRoundEntity, ShakeThePlateBetEntity, ShakeThePlateRoundWithBetsEntity>(
-                    foreignCollection: betCollection,
-                    localField: round => round.Number,
-                    foreignField: bet => bet.Round,
-                    @as: r => r.Bet
-                )
-                .Unwind<ShakeThePlateRoundWithBetsEntity, ShakeThePlateRoundWithBetUnwindEntity>(x => x.Bet)
-                .Match(x => x.Bet.Name == name && x.Bet.Paid);
+        //    var aggregateBuilder = roundCollection.Aggregate()
+        //        .Match(round => round.Time >= fromDate && round.Time < toDate && round.Number == roundId)
+        //        .Lookup<ShakeThePlateRoundEntity, ShakeThePlateBetEntity, ShakeThePlateRoundWithBetsEntity>(
+        //            foreignCollection: betCollection,
+        //            localField: round => round.Number,
+        //            foreignField: bet => bet.Round,
+        //            @as: r => r.Bet
+        //        )
+        //        .Unwind<ShakeThePlateRoundWithBetsEntity, ShakeThePlateRoundWithBetUnwindEntity>(x => x.Bet)
+        //        .Match(x => x.Bet.Name == name && x.Bet.Paid);
 
-            var unwindEntities = await aggregateBuilder.ToListAsync();
-            var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
+        //    var unwindEntities = await aggregateBuilder.ToListAsync();
+        //    var results = unwindEntities.Select(x => x.ToGameReport()).ToList();
 
-            return results;
-        }
+        //    return results;
+        //}
     }
 }
