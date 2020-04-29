@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.UM.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,8 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamesAdmin.Api.UM
 {
     [Route("api/um")]   
-    [ApiController]
-    public class UMController : ControllerBase
+    public class UMController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 
