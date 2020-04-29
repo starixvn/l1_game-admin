@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var viewModel = new DashboardViewModel();
 
@@ -29,12 +29,6 @@ namespace GamesAdmin.Site.Features.Dashboard
         public async Task<int> OnlineUsers()
         {
             return await mediator.Send(new GetOnlineUsersRequests());
-        }
-
-        [HttpGet]
-        public async Task<long> TodayTotalBets()
-        {
-            return await mediator.Send(new GetTodayTotalBetsRequest());
         }
     }
 }

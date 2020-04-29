@@ -29,7 +29,6 @@
   {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
     "inputFiles": [
-      "wwwroot/lib/select2/dist/css/select2.min.css",
       "wwwroot/scss/pages/reports.min.css"
     ]
   },
