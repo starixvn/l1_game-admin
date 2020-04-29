@@ -6,26 +6,18 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Dashboard
 {
-    public class DashboardHandler : IRequestHandler<GetOnlineUsersRequests, int>,
-        IRequestHandler<GetTodayTotalBetsRequest, long>
+    public class DashboardHandler : IRequestHandler<GetOnlineUsersRequests, int>
     {
-        private readonly IDashboardService dashboardService;
         private readonly IGameServerService gameServerService;
 
-        public DashboardHandler(IDashboardService dashboardService, IGameServerService gameServerService)
+        public DashboardHandler(IGameServerService gameServerService)
         {
-            this.dashboardService = dashboardService;
             this.gameServerService = gameServerService;
         }
 
         public async Task<int> Handle(GetOnlineUsersRequests request, CancellationToken cancellationToken)
         {
             return await gameServerService.GetOnlineUsers();
-        }
-
-        public async Task<long> Handle(GetTodayTotalBetsRequest request, CancellationToken cancellationToken)
-        {
-            return await dashboardService.GetTodayTotalBets();
         }
     }
 }
