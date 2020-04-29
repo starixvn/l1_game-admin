@@ -10,7 +10,7 @@
   "HostingPort": "9006",
   "AllowedHosts": "*",
   "DatabaseSettings": {
-    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.18.200.132:27101/",
+    "ConnectionString": "mongodb://127.0.0.1:27017/",
     "DatabaseName": "minigame"
   },
   "Sentry": {
@@ -27,14 +27,15 @@
     "Issuer": "http://localhost:9002",
     "Audiences": [
       "admin-api",
-<<<<<<< HEAD
       "api"
     ]
   },
+  "BotSettings": {
+    "DefaultMaxBet": 10000
   }
 <<<<<<< HEAD
-}
-=======
 
 }
->>>>>>> 05bc05d... update bot add amount
+=======
+}
+>>>>>>> 5675c9d... update config
