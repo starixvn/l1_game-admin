@@ -6,7 +6,7 @@ using Sentry;
 
 namespace GamesAdmin.Site.Features._Shared
 {
-    public interface IGameServerApi 
+    public interface IGameServerApi : IBaseAuthorizationApi
     {
         [Post("/reload")]
         Task Reload();
