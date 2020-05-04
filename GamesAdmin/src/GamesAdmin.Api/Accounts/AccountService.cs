@@ -72,7 +72,7 @@ namespace GamesAdmin.Api.Accounts
             minInitAmount = 2 * botSettings.DefaultMaxBet;
             maxInitAmount = 20 * botSettings.DefaultMaxBet;
             minAmount = 2 * botSettings.DefaultMaxBet;
-            maxAmount = 40 * botSettings.DefaultMaxBet;
+            maxAmount = 20 * botSettings.DefaultMaxBet;
             maxAddAmount = 10 * botSettings.DefaultMaxBet;
             minAddAmount = 3 * botSettings.DefaultMaxBet;
         }
