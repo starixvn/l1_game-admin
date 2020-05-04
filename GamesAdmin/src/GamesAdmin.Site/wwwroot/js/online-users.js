@@ -1,7 +1,9 @@
 ﻿var onlineUsers = (function ($) {
     return {
         init: function () {
-            $('#online-users-table').DataTable();
+            $('#online-users-table').DataTable({
+                "order": [[1, "asc"]]
+            });
         }
     }
 }(jQuery));
