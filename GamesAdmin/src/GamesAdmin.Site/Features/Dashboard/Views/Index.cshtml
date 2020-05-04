@@ -1,8 +1,11 @@
 ﻿@model GamesAdmin.Site.Features.Dashboard.ViewModels.DashboardViewModel
 
 @section Styles {
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
-    <link href="~/scss/pages/dashboard.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/scss/pages/dashboard.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
 <div class="stats row">
@@ -12,157 +15,17 @@
                 <i class="material-icons icon">people_alt</i>
             </div>
             <div class="stats-detail">
-                <div class="number" id="online-users">
-                    <div id="spinner" class="spinner-border">
-                    </div>
+                <div class="number">
+                    <a asp-action="OnlineUsers" id="online-users">
+                        <span id="spinner" class="spinner-border">
+                        </span>
+                    </a>
                 </div>
                 <div>Real User</div>
             </div>
         </div>
     </div>
 </div>
-
-@*<div class="card ">
-        <div class="card-header">
-            <h2 class="card-title">Online User</h2>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-hover stripe" id="onlineUserTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Username</th>
-                        <th>Nickname</th>
-                        <th>Currency</th>
-                        <th>Bet Count</th>
-                        <th>Total Stake</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td>Username 1</td>
-                        <td>Nickname 1</td>
-                        <td>US</td>
-                        <td class="text-right">1,000</td>
-                        <td class="text-right">10,000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>*@
 
 @section Scripts
 {

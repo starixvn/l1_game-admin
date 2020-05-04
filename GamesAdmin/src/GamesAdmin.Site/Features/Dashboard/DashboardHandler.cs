@@ -1,12 +1,14 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Dashboard.Requests;
+using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Dashboard
 {
-    public class DashboardHandler : IRequestHandler<GetOnlineUsersRequests, int>
+    public class DashboardHandler : IRequestHandler<GetOnlineUsersRequests, OnlineUsersViewModel>
     {
         private readonly IGameServerService gameServerService;
 
@@ -15,9 +17,29 @@ namespace GamesAdmin.Site.Features.Dashboard
             this.gameServerService = gameServerService;
         }
 
-        public async Task<int> Handle(GetOnlineUsersRequests request, CancellationToken cancellationToken)
+        public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersRequests request, CancellationToken cancellationToken)
         {
-            return await gameServerService.GetOnlineUsers();
+            var result =  await gameServerService.GetOnlineUsers();
+
+            return new OnlineUsersViewModel
+            {
+                TotalReal = result.TotalReal,
+                RealUsers = result.RealUsers.Select(x => new OnlineUserViewModel
+                {
+                    Character = x.Character,
+                    Currency = x.Currency,
+                    Id = x.Id,
+                    Name = x.Name
+                }),
+                TotalUUS = result.TotalUUS,
+                UusUsers = result.UusUsers.Select(x => new OnlineUserViewModel
+                {
+                    Character = x.Character,
+                    Currency = x.Currency,
+                    Id = x.Id,
+                    Name = x.Name
+                }),
+            };
         }
     }
 }

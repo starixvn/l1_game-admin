@@ -15,12 +15,13 @@ namespace GamesAdmin.Site.Features._Shared
         Task<OnlineUsers> GetOnlineUsers();
     }
 
-    public interface IGameServerService 
+    public interface IGameServerService
     {
         Task Reload();
 
-        Task<int> GetOnlineUsers();
+        Task<OnlineUsers> GetOnlineUsers();
     }
+
     public class GameServerService : IGameServerService
     {
         private readonly IGameServerApi serverApi;
@@ -32,13 +33,13 @@ namespace GamesAdmin.Site.Features._Shared
             this.sentryClient = sentryClient;
         }
 
-        public async Task<int> GetOnlineUsers()
+        public async Task<OnlineUsers> GetOnlineUsers()
         {
             try
             {
                 var onlineUsers = await serverApi.GetOnlineUsers();
 
-                return onlineUsers == null ? 0 : onlineUsers.TotalReal;
+                return onlineUsers;
             }
             catch (Exception ex)
             {
@@ -55,7 +56,7 @@ namespace GamesAdmin.Site.Features._Shared
                 sentryClient.CaptureException(ex);
             }
 
-            return 0;
+            return new OnlineUsers();
         }
 
         public async Task Reload()

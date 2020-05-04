@@ -3,7 +3,7 @@
     var $onlineUsers = $("#online-users");
 
     var getOnlineUsers = function () {
-        $.get("/dashboard/onlineusers", function (data) {
+        $.get("/dashboard/realonlineusers", function (data) {
             $onlineUsers.text(data);
         });
     }
