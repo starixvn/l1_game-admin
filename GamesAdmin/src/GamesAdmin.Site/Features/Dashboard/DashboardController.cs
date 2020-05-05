@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using MediatR;
@@ -26,9 +27,31 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<int> OnlineUsers()
+        public async Task<int> RealOnlineUsers()
         {
-            return await mediator.Send(new GetOnlineUsersRequests());
+            return (await mediator.Send(new GetOnlineUsersRequests())).TotalReal;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OnlineUsers()
+        {
+            var viewModel = await mediator.Send(new GetOnlineUsersRequests());
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOnlineUsers(bool includeUUS)
+        {
+            var result = await mediator.Send(new GetOnlineUsersRequests());
+            var users = result.RealUsers.ToList();
+
+            if (includeUUS)
+            {
+                users.AddRange(result.UusUsers);
+            }
+
+            return PartialView("_OnlineUserTable", users);
         }
     }
 }

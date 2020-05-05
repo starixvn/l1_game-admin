@@ -51,6 +51,7 @@
   <ItemGroup>
     <Folder Include="Features\Users\Views\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\lib\data-tables\DataTables-1.10.20\" />
   </ItemGroup>
 
 

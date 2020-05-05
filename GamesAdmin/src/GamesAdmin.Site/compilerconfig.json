@@ -35,5 +35,9 @@
   {
     "outputFile": "wwwroot/scss/pages/game-status.css",
     "inputFile": "wwwroot/scss/pages/game-status.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/online-users.css",
+    "inputFile": "wwwroot/scss/pages/online-users.scss"
   }
 ]
