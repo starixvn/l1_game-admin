@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class OddEvenReportRequest : IRequest<GameReport>
+    public class OddEvenReportRequest : IRequest<OddEvenBetReport>
     {
         public OddEvenReportRequest(long roundId, string nickname, bool excludeBot)
         {

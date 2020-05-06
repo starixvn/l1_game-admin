@@ -31,8 +31,6 @@ namespace GamesAdmin.Database
         {
             try
             {
-
-
                 var roundCollection = database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)));
                 var oneCollection = database.GetCollection<BigSmallOnesEntity>(Document.GetCollectionName(typeof(BigSmallOnesEntity)));
                 var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
@@ -74,7 +72,7 @@ namespace GamesAdmin.Database
 
                 return results;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new List<BigSmallBetHistoryReportEntity>();
             }

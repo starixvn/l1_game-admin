@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class BigSmallTurboReportRequest : IRequest<GameReport>
+    public class BigSmallTurboReportRequest : IRequest<BigSmallBetReport>
     {
         public BigSmallTurboReportRequest(long roundId, string nickname, bool excludeBot)
         {

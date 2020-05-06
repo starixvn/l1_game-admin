@@ -8,5 +8,12 @@ namespace GamesAdmin.Database.Entities
     {
         [BsonElement("taixiu")]
         public bool BigSmall { get; set; }
+
+        [BsonElement("tralai")]
+        public decimal Back { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public bool Select { get; set; }
     }
 }

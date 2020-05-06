@@ -8,13 +8,13 @@ namespace GamesAdmin.Site.Features.ClientSites
 {
     public interface IReportService
     {
-        Task<GameReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
+        Task<BigSmallBetReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
 
-        Task<GameReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot);
+        Task<BigSmallBetReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot);
 
-        Task<GameReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot);
+        Task<OddEvenBetReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot);
 
-        Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
+        Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
@@ -34,16 +34,16 @@ namespace GamesAdmin.Site.Features.ClientSites
             this.reportApi = reportApi;
         }
 
-        public async Task<GameReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
+        public async Task<BigSmallBetReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetBigSmallReport(roundId, nickname, excludeBot);
 
-        public async Task<GameReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot)
+        public async Task<BigSmallBetReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetBigSmallTurboReport(roundId, nickname, excludeBot);
 
-        public async Task<GameReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot)
+        public async Task<OddEvenBetReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetOddEvenReport(roundId, nickname, excludeBot);
 
-        public async Task<GameReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
+        public async Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
