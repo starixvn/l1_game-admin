@@ -19,7 +19,7 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         private readonly IConfiguration configuration;
 
-        public AppSettings(IConfiguration configuration) 
+        public AppSettings(IConfiguration configuration)
         {
             this.configuration = configuration;
 
@@ -27,6 +27,8 @@ namespace GamesAdmin.Site._Shared.Configurations
             GameServerUrl = GetValue<string>(nameof(GameServerUrl));
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
+
+            BetSettings = configuration.GetSection(nameof(BetSettings)).Get<BetSettings>();
         }
 
         public string ApiHost { get; }
@@ -36,6 +38,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public TimeZoneInfo DefaultTimeZone { get; }
 
         public string GameServerUrl { get; }
+
+        public BetSettings BetSettings {get;}
 
         public T GetValue<T>(string key)
         {
