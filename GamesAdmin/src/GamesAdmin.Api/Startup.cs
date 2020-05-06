@@ -4,6 +4,16 @@ using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Middlewares;
 using GamesAdmin.Api.Accounts.ScheduleTasks;
+using GamesAdmin.Api.ClientSites;
+using GamesAdmin.Api.Crawling;
+using GamesAdmin.Api.GameRound;
+using GamesAdmin.Api.Games;
+using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.Report;
+using GamesAdmin.Api.Statistic;
+using GamesAdmin.Api.UM;
+using GamesAdmin.Api.Users;
+using GamesAdmin.Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +57,7 @@ namespace GamesAdmin.Api
             services.AddServices();
 
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
-
+            services.AddHostedService<VietlottKenoCrawlingTask>();
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
