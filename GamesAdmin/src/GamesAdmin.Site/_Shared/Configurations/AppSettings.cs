@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace GamesAdmin.Site._Shared.Configurations
 {
-    public interface IAppSettings 
+    public interface IAppSettings
     {
         string ApiHost { get; }
 
@@ -14,6 +14,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         string GameServerUrl { get; }
 
         TimeZoneInfo DefaultTimeZone { get; }
+
+        BetSettings BetSettings { get; }
     }
     public class AppSettings : IAppSettings
     {
@@ -39,7 +41,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         public string GameServerUrl { get; }
 
-        public BetSettings BetSettings {get;}
+        public BetSettings BetSettings { get; }
 
         public T GetValue<T>(string key)
         {

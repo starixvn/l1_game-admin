@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Enumerations;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
@@ -43,32 +44,33 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingService gameService;
         private readonly IAccountService accountService;
         private readonly IGameServerService gameServerService;
-        private readonly ISentryClient sentryClient;
+        private readonly IAppSettings appSettings;
 
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
             IAccountService accountService,
             IGameServerService gameServerService,
-            ISentryClient sentryClient)
+            IAppSettings appSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
             this.gameServerService = gameServerService;
-            this.sentryClient = sentryClient;
+            this.appSettings = appSettings;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
-            var viewModel = new AddViewModel {
+            var viewModel = new AddViewModel
+            {
                 BotPercentageItems = GeneratePercentageItems(0)
             };
 
             var gameList = (await gameService.GetAll()).Select(game => game.Name).ToArray();
             viewModel.GameTypeItems = Enumeration.GetAll<GameType>()
                 .Where(type => !gameList.Contains(type.Value))
-                .Select(type => new SelectListItem(type.DisplayName, type.Value))                
+                .Select(type => new SelectListItem(type.DisplayName, type.Value))
                 .ToList();
 
             return viewModel;
@@ -97,8 +99,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
             viewModel.BotMaxBet = game == null || game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
             viewModel.BotCount = await accountService.GetBotCount();
-            viewModel.BotPercentageItems = GeneratePercentageItems(viewModel.MaxBot);
             viewModel.BotRatioItems = GenerateBotRatioItems(game?.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
+            viewModel.BetChoiceBetSettings = GenerateBetSettings(game?.Name);
 
             return viewModel;
         }
@@ -142,6 +144,31 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return botRatioItems.OrderBy(item => item.GreenwichHour).ToList();
+        }
+
+        private Dictionary<string, decimal> GenerateBetSettings(string name)
+        {
+            var items = new Dictionary<string, decimal>();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return items;
+            }
+
+            var gameType = Enumeration.FromValue<GameType>(name);
+
+            switch (gameType.Value)
+            {
+                case GameType.ShakeThePlateValue:
+                    items = appSettings.BetSettings.ShakeThePlate;
+                    break;
+
+                case GameType.DragonTigerValue:
+                    items = appSettings.BetSettings.MiniDragonTiger;
+                    break;
+            }
+
+            return items;
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
@@ -201,7 +228,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     .ToList();
             }
 
-             return new StatusViewModel(gameList);
+            return new StatusViewModel(gameList);
         }
 
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)

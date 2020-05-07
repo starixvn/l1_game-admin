@@ -56,7 +56,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.BotEnabled,
                    editViewModel.MaxBot,
                    null,
-                   editViewModel.BotMinBet,
+                   0,
                    editViewModel.BotMaxBet,
                    null,
                    editViewModel.DisabledMessage)));

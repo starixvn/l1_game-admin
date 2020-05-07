@@ -38,19 +38,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
-        [DisplayName("Maximum Bot Percentage")]
         public double MaxBot { get; set; }
 
-        public List<SelectListItem> BotPercentageItems { get; set; }        
-
         public int BotCount { get; set; }
-
-        public int CurrentBot => (BotCount > 0 && MaxBot > 0) ? (int)(BotCount * MaxBot / 100) : 0;
-
-        [Required(ErrorMessage = "Mininum Bet could not empty")]
-        [Range(0.01, int.MaxValue)]
-        [DisplayName("Bot Minimum Bet Limit")]
-        public double BotMinBet { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
         [Range(0.01, int.MaxValue)]
@@ -62,6 +52,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public List<BotRatioItemViewModel> BotRatioItems { get; set; }
 
         public string DisabledMessage { get; set; }
+
+        public Dictionary<string, decimal> BetChoiceBetSettings { get; set; }
     }
 
     public class BotRatioItemViewModel 
