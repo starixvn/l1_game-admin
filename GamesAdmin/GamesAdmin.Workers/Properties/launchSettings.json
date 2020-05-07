@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "GamesAdmin.Workers": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

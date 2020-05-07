@@ -57,7 +57,7 @@ namespace GamesAdmin.Api
             services.AddServices();
 
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
-            services.AddHostedService<VietlottKenoCrawlingTask>();
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
