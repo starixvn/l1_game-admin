@@ -37,23 +37,23 @@
     "Host": "http://localhost:7456/build/"
   },
 <<<<<<< HEAD
+  "DefaultTimeZone": "SE Asia Standard Time"
+=======
   "DefaultTimeZone": "SE Asia Standard Time",
   "BetSettings": {
     "MiniDragonTiger": {
-      "Dragon": 500,
-      "Tiger": 500,
-      "Tie": 100
+      "Dragon": 10000,
+      "Tiger": 10000,
+      "Tie": 2000
     },
     "ShakeThePlate": {
-      "Odd": 500,
-      "Even": 500,
-      "White3": 500,
-      "Red3": 500,
-      "White4": 100,
-      "Red4": 100
+      "Odd": 10000,
+      "Even": 10000,
+      "White3": 10000,
+      "Red3": 10000,
+      "White4": 2000,
+      "Red4": 2000
     }
   }
-=======
-  "DefaultTimeZone": "SE Asia Standard Time"
->>>>>>> 2eaab7e... Update config
+>>>>>>> 93e076c... update max bet settings
 }
