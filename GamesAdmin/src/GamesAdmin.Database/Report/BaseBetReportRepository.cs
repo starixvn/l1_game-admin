@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -23,21 +22,22 @@ namespace GamesAdmin.Database
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
             var aggregateBuilder = betCollection.Aggregate().Match(x => x.Round == roundId)
-                 .Lookup<TBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
-                        foreignCollection: accountInfoCollection,
-                        localField: x => x.Uid,
-                        foreignField: x => x.UserId,
-                        @as: r => r.AccountInfos)
-                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                  .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
-                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
-                        foreignCollection: accountCollection,
-                        localField: x => x.UserId,
-                        foreignField: x => x.Id,
-                        @as: r => r.Accounts
-                  )
-                  .Unwind<BetEntityWithAccountInfoUnwind, TResultEntity>(x => x.Accounts);
+                .SortBy(x => x.Id)
+                .Lookup<TBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
+                       foreignCollection: accountInfoCollection,
+                       localField: x => x.Uid,
+                       foreignField: x => x.UserId,
+                       @as: r => r.AccountInfos)
+                 .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
+                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
+                 .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
+                 .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
+                       foreignCollection: accountCollection,
+                       localField: x => x.UserId,
+                       foreignField: x => x.Id,
+                       @as: r => r.Accounts
+                 )
+                .Unwind<BetEntityWithAccountInfoUnwind, TResultEntity>(x => x.Accounts);
 
             return aggregateBuilder;
         }
