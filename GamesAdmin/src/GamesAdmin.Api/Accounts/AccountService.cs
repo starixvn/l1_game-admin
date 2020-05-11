@@ -36,6 +36,7 @@ namespace GamesAdmin.Api.Accounts
         private readonly IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository;
         private readonly IGenericRepository<OddEvenAccountEntity> oddevenRepository;
         private readonly IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository;
+        private readonly IGenericRepository<KenoProMaxAccountEntity> kenoProMaxRepository;
 
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
@@ -55,7 +56,8 @@ namespace GamesAdmin.Api.Accounts
             IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository,
             IGenericRepository<OddEvenAccountEntity> oddevenRepository,
             IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository,
-            IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository)
+            IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository,
+            IGenericRepository<KenoProMaxAccountEntity> kenoProMaxRepository)
         {
             this.sentryClient = sentryClient;
             this.botSettings = botSettings;
@@ -68,6 +70,7 @@ namespace GamesAdmin.Api.Accounts
             this.oddevenRepository = oddevenRepository;
             this.txTurboAccountRepository = txTurboAccountRepository;
             this.dragonTigerRepository = dragonTigerRepository;
+            this.kenoProMaxRepository = kenoProMaxRepository;
 
             minInitAmount = 2 * botSettings.DefaultMaxBet;
             maxInitAmount = 20 * botSettings.DefaultMaxBet;
@@ -215,6 +218,7 @@ namespace GamesAdmin.Api.Accounts
             await oddevenRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenAccountEntity { Uid = x.Id.ToString() }).ToList());
             await oddEvenTurboRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
             await dragonTigerRepository.InsertManyAsync(newAccounts.Select(x => new DragonTigerAccountEntity { Uid = x.Id.ToString() }).ToList());
+            await kenoProMaxRepository.InsertManyAsync(newAccounts.Select(x => new KenoProMaxAccountEntity { Uid = x.Id.ToString() }).ToList());
         }
 
         private Task<int> GetLatestUserInfoUID()
@@ -244,7 +248,7 @@ namespace GamesAdmin.Api.Accounts
 
             try
             {
-                await dragonTigerRepository.InsertManyAsync(bots.Select(x => new DragonTigerAccountEntity { Uid = x.UserId }).ToList());
+                await kenoProMaxRepository.InsertManyAsync(bots.Select(x => new KenoProMaxAccountEntity { Uid = x.UserId }).ToList());
             }
             catch (Exception e)
             {
