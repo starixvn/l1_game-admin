@@ -47,7 +47,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                //TODO update max bet per choices
                 await mediator.Send(new UpdateRequest(new GameConfig(
                    editViewModel.Id,
                    editViewModel.Name,
@@ -61,7 +60,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.BotMaxBet,
                    null,
                    editViewModel.DisabledMessage,
-                   new Dictionary<string, decimal>())));
+                   editViewModel.MaxBetChoices)));
 
                 TempData["isSuccess"] = true;
 
@@ -103,7 +102,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 0,
                 new double[] { },
                 string.Empty,
-                new Dictionary<string, decimal>())));
+                new Dictionary<string, double>())));
 
             return RedirectToAction(nameof(Edit));
         }

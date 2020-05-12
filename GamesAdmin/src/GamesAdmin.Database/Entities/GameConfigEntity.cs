@@ -34,6 +34,6 @@ namespace GamesAdmin.Database.Entities
         public string DisabledMessage { get; set; }
 
         [BsonElement("choices_maxbet")]
-        public Dictionary<string, decimal> MaxBetChoices {get; set;}
+        public Dictionary<string, double> MaxBetChoices {get; set;}
     }
 }

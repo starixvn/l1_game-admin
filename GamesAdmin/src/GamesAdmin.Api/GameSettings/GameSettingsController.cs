@@ -44,27 +44,6 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Update(GameConfig game)
             => mediator.Send(new UpdateRequest(game));
 
-        [HttpDelete("{name}/delete")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete(string name)
-        {
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                return BadRequest();
-            }
-
-            var deleted = await mediator.Send(new DeleteRequest(name));
-
-            if (!deleted)
-            {
-                return NoContent();
-            }
-
-            return NotFound();
-        }
-
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)
         => mediator.Send(new GetByNameRequest(name));

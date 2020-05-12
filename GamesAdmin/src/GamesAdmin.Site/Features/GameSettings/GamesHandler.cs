@@ -91,11 +91,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel = new EditViewModel();
             }
 
-            viewModel.MaxBot = game == null ? 0 : (int)(game.MaxBot * 100);
-            viewModel.BotMaxBet = game == null || game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
-            viewModel.BotCount = await accountService.GetBotCount();
-            viewModel.BotRatioItems = GenerateBotRatioItems(game?.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
-            viewModel.BetChoiceBetSettings = GenerateBetSettings(game?.Name);
+            if (game != null)
+            {
+                viewModel.MaxBot = game.MaxBot == 0 ? 0 : (int)(game.MaxBot * 100);
+                viewModel.BotMaxBet = game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
+                viewModel.BotCount = await accountService.GetBotCount();
+                viewModel.BotRatioItems = GenerateBotRatioItems(game.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
+                viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Name, game.MaxBetChoices, game.MaxBet);
+            }
 
             return viewModel;
         }
@@ -141,9 +144,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             return botRatioItems.OrderBy(item => item.GreenwichHour).ToList();
         }
 
-        private Dictionary<string, decimal> GenerateBetSettings(string name)
+        private List<MaxBetChoiceViewModel> GenerateBetSettings(string name, Dictionary<string, double> maxBetChoices, double maxbet)
         {
-            var items = new Dictionary<string, decimal>();
+            var items = new List<MaxBetChoiceViewModel>();
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -157,9 +160,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 foreach (var choice in betChoices)
                 {
-                    items.Add(choice.DisplayName, 0);
+                    var maxBet = maxBetChoices.ContainsKey(choice.Value) ? maxBetChoices[choice.Value] : maxbet;
+                    items.Add(new MaxBetChoiceViewModel(choice.Value, maxBet));
                 }
-            }    
+            }
 
             return items;
         }
@@ -174,12 +178,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.Enabled,
             request.Game.BotEnabled,
             request.Game.MaxBot / 100,
-            null,
+            request.Game.DisabledRound,
             request.Game.BotMinBet,
             request.Game.BotMaxBet,
             request.Game.HoursMaxBot,
             request.Game.DisabledMessage,
-            new Dictionary<string, decimal>()));
+            request.Game.MaxBetChoices));
 
         //TODO update maxbet per choice
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
@@ -196,7 +200,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             0,
             new double[] { },
             DefaultDisabledMessage,
-            new Dictionary<string, decimal>()));
+            new Dictionary<string, double>()));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

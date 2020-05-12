@@ -55,12 +55,15 @@
                 </div>
             </div>
 
+            <hr />
+
             <div class="form-group row">
-                @foreach (var item in Model.BetChoiceBetSettings)
+                @for(var i = 0; i < Model.BetChoiceBetSettings.Count; i++)
                 {
                     <div class="col-lg-6">
-                        <label class="control-label">@item.Key</label>
-                        <input type="number" asp-for="@item.Value" readonly class="form-control" />
+                        <label class="control-label">@Model.BetChoiceBetSettings[i].Name</label>
+                        <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[i].Name" class="form-control" />
+                        <input type="number" asp-for="@Model.BetChoiceBetSettings[i].MaxBet" class="form-control" />
                     </div>
                 }
             </div>
