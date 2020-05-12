@@ -145,16 +145,16 @@ namespace GamesAdmin.Api.Report
         {
             switch (gameType)
             {
-                case (byte)GameType.BigSmall:
+                case (byte)GameId.BigSmall:
                     return await GetBigSmallBetHistoryAsync(name, roundId);
 
-                case (byte)GameType.BigSmallTurbo:
+                case (byte)GameId.BigSmallTurbo:
                     return await GetBigSmallTurboBetHistoryAsync(name, roundId);
 
-                case (byte)GameType.EvenOdd:
+                case (byte)GameId.EvenOdd:
                     return await GetOddEvenBetHistoryAsync(name, roundId);
 
-                case (byte)GameType.EvenOddTurbo:
+                case (byte)GameId.EvenOddTurbo:
                     return await GetOddEvenTurboBetHistoryAsync(name, roundId);
 
                 default:

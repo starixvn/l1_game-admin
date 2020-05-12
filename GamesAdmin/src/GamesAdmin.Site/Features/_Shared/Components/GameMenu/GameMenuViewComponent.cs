@@ -1,15 +1,13 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site._Shared.Enumerations;
 using GamesAdmin.Site.Features._Shared.Components.ViewModels;
 using GamesAdmin.Site.Features.GameSettings;
 using Microsoft.AspNetCore.Mvc;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GameType = GamesAdmin.Site._Shared.Enumerations.GameType;
 
 namespace GamesAdmin.Site.Features._Shared.Components
 {

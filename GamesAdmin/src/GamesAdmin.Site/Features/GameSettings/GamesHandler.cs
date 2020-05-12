@@ -7,17 +7,12 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site._Shared.Enumerations;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Refit;
-using Sentry;
-using Sentry.Protocol;
-using GameType = GamesAdmin.Site._Shared.Enumerations.GameType;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -156,17 +151,15 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             var gameType = Enumeration.FromValue<GameType>(name);
+            var betChoices = BetChoiceMapper.Map(gameType);
 
-            switch (gameType.Value)
+            if (betChoices != default)
             {
-                case GameType.ShakeThePlateValue:
-                    items = appSettings.BetSettings.ShakeThePlate;
-                    break;
-
-                case GameType.DragonTigerValue:
-                    items = appSettings.BetSettings.MiniDragonTiger;
-                    break;
-            }
+                foreach (var choice in betChoices)
+                {
+                    items.Add(choice.DisplayName, 0);
+                }
+            }    
 
             return items;
         }

@@ -1,5 +1,9 @@
-﻿using GamesAdmin.Core.Models;
-using GamesAdmin.Site._Shared.Enumerations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -7,10 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {

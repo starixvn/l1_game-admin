@@ -47,15 +47,15 @@ namespace GamesAdmin.Site.Features.ClientSites
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameType.BigSmall, roundId, nickname);
+        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameType.BigSmallTurbo, roundId, nickname);
+        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmallTurbo, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameType.EvenOdd, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOdd, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameType.EvenOddTurbo, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
     }
 }

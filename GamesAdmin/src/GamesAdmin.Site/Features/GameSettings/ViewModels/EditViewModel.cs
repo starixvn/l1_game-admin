@@ -1,23 +1,20 @@
-﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site._Shared.Enumerations;
-using GamesAdmin.Site.Features._Shared;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using GameType = GamesAdmin.Site._Shared.Enumerations.GameType;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site.Features._Shared;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel : ViewModelBase
-    { 
+    {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name) 
-            ? string.Empty 
+        public string DisplayName => string.IsNullOrWhiteSpace(Name)
+            ? string.Empty
             : Enumeration.FromValue<GameType>(Name).DisplayName;
 
         [DisplayName("Game Status:")]
@@ -56,11 +53,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public Dictionary<string, decimal> BetChoiceBetSettings { get; set; }
     }
 
-    public class BotRatioItemViewModel 
+    public class BotRatioItemViewModel
     {
         public BotRatioItemViewModel() { }
 
-        public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot) 
+        public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot)
         {
             UtcHour = utcHour;
             GreenwichHour = greenwichHour;
@@ -77,7 +74,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public int TotalBot { get; }
 
-        public int CurrentBot => (int)( BotRatio * TotalBot / 100);
+        public int CurrentBot => (int)(BotRatio * TotalBot / 100);
 
         [Range(0, 100, ErrorMessage = "Number range [0..100]")]
         public double BotRatio { get; set; }

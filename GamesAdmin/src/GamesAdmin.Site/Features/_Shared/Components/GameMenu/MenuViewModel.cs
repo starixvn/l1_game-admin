@@ -1,6 +1,5 @@
-﻿using GamesAdmin.Core.Models;
-using GamesAdmin.Site._Shared.Enumerations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features._Shared.Components.ViewModels
 {
