@@ -168,7 +168,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
-        //TODO update maxbet per choice
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(new GameConfig(
             request.Game.Id,
@@ -185,7 +184,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.DisabledMessage,
             request.Game.MaxBetChoices));
 
-        //TODO update maxbet per choice
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
             request.Game.Id,

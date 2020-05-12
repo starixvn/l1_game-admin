@@ -46,7 +46,7 @@ namespace GamesAdmin.Api.Games
 
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)
-        => mediator.Send(new GetByNameRequest(name));
+            => mediator.Send(new GetByNameRequest(name));
 
         [HttpPut("{name}/update_status")]
         public Task<bool> UpdateStatus(string name, bool enabled)
