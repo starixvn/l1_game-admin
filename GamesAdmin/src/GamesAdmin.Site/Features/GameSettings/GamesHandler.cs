@@ -171,6 +171,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
+        //TODO update maxbet per choice
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(new GameConfig(
             request.Game.Id,
@@ -184,8 +185,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.BotMinBet,
             request.Game.BotMaxBet,
             request.Game.HoursMaxBot,
-            request.Game.DisabledMessage));
+            request.Game.DisabledMessage,
+            new Dictionary<string, decimal>()));
 
+        //TODO update maxbet per choice
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
             request.Game.Id,
@@ -199,7 +202,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             0,
             0,
             new double[] { },
-            DefaultDisabledMessage));
+            DefaultDisabledMessage,
+            new Dictionary<string, decimal>()));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

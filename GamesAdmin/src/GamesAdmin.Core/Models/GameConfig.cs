@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models
 {
@@ -17,7 +18,8 @@ namespace GamesAdmin.Core.Models
             double botMinBet,
             double botMaxBet,
             double[] hoursMaxBot,
-            string disabledMessage)
+            string disabledMessage, 
+            Dictionary<string, decimal> maxBetChoices)
         {
             Id = id;
             Name = name;
@@ -31,6 +33,7 @@ namespace GamesAdmin.Core.Models
             BotMaxBet = botMaxBet;
             HoursMaxBot = hoursMaxBot;
             DisabledMessage = disabledMessage;
+            MaxBetChoices = maxBetChoices;
         }
 
         public string Id { get; }
@@ -56,5 +59,7 @@ namespace GamesAdmin.Core.Models
         public double[] HoursMaxBot { get; set; }
 
         public string DisabledMessage { get; }
+
+        public Dictionary<string, decimal> MaxBetChoices { get; }
     }
 }

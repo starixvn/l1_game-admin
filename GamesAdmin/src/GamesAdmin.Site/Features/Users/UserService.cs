@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
+using Sentry;
 
 namespace GamesAdmin.Site.Features.Users
 {
@@ -40,10 +41,12 @@ namespace GamesAdmin.Site.Features.Users
     public class UserService : IUserService
     {
         private readonly IUserApi userApi;
+        private readonly ISentryClient sentryClient;
 
-        public UserService(IUserApi userApi)
+        public UserService(IUserApi userApi, ISentryClient sentryClient)
         {
             this.userApi = userApi;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<bool> Create(User user)
@@ -64,8 +67,9 @@ namespace GamesAdmin.Site.Features.Users
             {
                 return await userApi.SignIn(username, password).ConfigureAwait(false);
             }
-            catch (ApiException exception)
+            catch (ApiException ex)
             {
+                sentryClient.CaptureException(ex);
                 return null;
             }
         } 

@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
+﻿using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
@@ -31,5 +32,8 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("disabled_message")]
         public string DisabledMessage { get; set; }
+
+        [BsonElement("choices_maxbet")]
+        public Dictionary<string, decimal> MaxBetChoices {get; set;}
     }
 }
