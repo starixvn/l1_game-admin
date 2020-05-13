@@ -25,7 +25,6 @@ namespace GamesAdmin.Api.Accounts
     public class AccountService : IAccountService
     {
         private readonly ISentryClient sentryClient;
-        private readonly IBotSettings botSettings;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
@@ -60,7 +59,6 @@ namespace GamesAdmin.Api.Accounts
             IGenericRepository<KenoProMaxAccountEntity> kenoProMaxRepository)
         {
             this.sentryClient = sentryClient;
-            this.botSettings = botSettings;
             this.accountInfoRepository = accountInfoRepository;
             this.accountRepository = accountRepository;
             this.txAccountRepository = txAccountRepository;
