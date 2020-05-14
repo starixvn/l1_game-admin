@@ -29,21 +29,21 @@ namespace GamesAdmin.Site.Features.Dashboard
         [HttpGet]
         public async Task<int> RealOnlineUsers()
         {
-            return (await mediator.Send(new GetOnlineUsersRequests())).TotalReal;
+            return (await mediator.Send(new GetOnlineUsersRequest())).TotalReal;
         }
 
         [HttpGet]
         public async Task<IActionResult> OnlineUsers()
         {
-            var viewModel = await mediator.Send(new GetOnlineUsersRequests());
+            var viewModel = await mediator.Send(new GetOnlineUsersRequest());
 
             return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOnlineUsers(bool includeUUS)
+        public async Task<IActionResult> GetOnlineUsers(bool includeUUS, string game)
         {
-            var result = await mediator.Send(new GetOnlineUsersRequests());
+            var result = await mediator.Send(new GetOnlineUsersRequest(game));
             var users = result.RealUsers.ToList();
 
             if (includeUUS)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 {
@@ -13,6 +14,10 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public int TotalUUS { get; set; }
 
         public IEnumerable<OnlineUserViewModel> UusUsers { get; set; }
+
+        public List<SelectListItem> GameTypeItems { get; set; }
+
+        public string Game { get; set; }
     }
 
     public class OnlineUserViewModel
@@ -24,5 +29,12 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public string Currency { get; set; }
 
         public string Character { get; set; }
+    }
+
+    public class BotUserViewModel
+    {
+        public string Name { get; set; }
+
+        public double Red { get; set; }
     }
 }

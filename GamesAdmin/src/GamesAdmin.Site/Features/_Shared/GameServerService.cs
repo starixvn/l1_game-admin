@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using Refit;
 using Sentry;
@@ -13,13 +14,16 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Get("/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
+
+        [Get("/game/{name}/onlineusers")]
+        Task<OnlineUsers> GetOnlineUsersOnGame(string name);
     }
 
     public interface IGameServerService
     {
         Task Reload();
 
-        Task<OnlineUsers> GetOnlineUsers();
+        Task<OnlineUsers> GetOnlineUsers(string game);
     }
 
     public class GameServerService : IGameServerService
@@ -33,30 +37,36 @@ namespace GamesAdmin.Site.Features._Shared
             this.sentryClient = sentryClient;
         }
 
-        public async Task<OnlineUsers> GetOnlineUsers()
+        public Task<OnlineUsers> GetOnlineUsers(string game)
         {
             try
             {
-                var onlineUsers = await serverApi.GetOnlineUsers();
+                if (string.IsNullOrWhiteSpace(game))
+                { 
+                    return serverApi.GetOnlineUsers();
+                }
 
-                return onlineUsers;
+                var gameType = string.Empty;
+                switch (game)
+                {
+                    case GameType.ShakeThePlateValue:
+                        gameType = "stp";
+                        break;
+
+                    case GameType.KenoProMaxValue:
+                        gameType = "keno";
+                        break;
+                }
+
+                return serverApi.GetOnlineUsersOnGame(gameType);
+
             }
             catch (Exception ex)
             {
-                if (ex is ApiException)
-                {
-                    var apiEx = ex as ApiException;
-
-                    if (apiEx != null)
-                    {
-                        sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                    }
-                }
-
-                sentryClient.CaptureException(ex);
+                HandleException(ex);
             }
 
-            return new OnlineUsers();
+            return Task.FromResult(new OnlineUsers());
         }
 
         public async Task Reload()
@@ -67,18 +77,24 @@ namespace GamesAdmin.Site.Features._Shared
             }
             catch (Exception ex)
             {
-                if (ex is ApiException)
-                {
-                    var apiEx = ex as ApiException;
-
-                    if (apiEx != null)
-                    {
-                        sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                    }
-                }
-
-                sentryClient.CaptureException(ex);
+                HandleException(ex);
             }
         }
+
+        private void HandleException(Exception ex)
+        {
+            if (ex is ApiException)
+            {
+                var apiEx = ex as ApiException;
+
+                if (apiEx != null)
+                {
+                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
+                }
+            }
+
+            sentryClient.CaptureException(ex);
+        }
+
     }
 }
