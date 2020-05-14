@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             return new OnlineUsersViewModel
             {
                 TotalReal = result.TotalReal,
-                RealUsers = result.RealUsers.Select(x => new OnlineUserViewModel
+                RealUsers = result.RealUsers?.Select(x => new OnlineUserViewModel
                 {
                     Character = x.Character,
                     Currency = x.Currency,
@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                     Name = x.Name
                 }),
                 TotalUUS = result.TotalUUS,
-                UusUsers = result.UusUsers.Select(x => new OnlineUserViewModel
+                UusUsers = result.UusUsers?.Select(x => new OnlineUserViewModel
                 {
                     Character = x.Character,
                     Currency = x.Currency,
