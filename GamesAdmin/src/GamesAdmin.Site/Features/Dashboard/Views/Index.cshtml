@@ -1,4 +1,5 @@
-﻿@model GamesAdmin.Site.Features.Dashboard.ViewModels.DashboardViewModel
+﻿@using System.Security.Claims;
+@model GamesAdmin.Site.Features.Dashboard.ViewModels.DashboardViewModel
 
 @section Styles {
     <link href="~/scss/pages/dashboard.min.css" rel="stylesheet" asp-append-version="true" />
@@ -25,19 +26,23 @@
             </div>
         </div>
     </div>
-    <div class="stats-item col-sm-6">
-        <div class="stats-container">
-            <div class="circle yellow">
-                <i class="material-icons icon">people_alt</i>
-            </div>
-            <div class="stats-detail">
-                <div class="number">
-                    <a asp-action="BotUsers" id="online-users">Bots</a>
+    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+    {
+        <div class="stats-item col-sm-6">
+            <div class="stats-container">
+                <div class="circle yellow">
+                    <i class="material-icons icon">people_alt</i>
+                </div>
+                <div class="stats-detail">
+                    <div class="number">
+                        <a asp-action="BotUsers" id="online-users">Bots</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
+
 
 @section Scripts
 {
