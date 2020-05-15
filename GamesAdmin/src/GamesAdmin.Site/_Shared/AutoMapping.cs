@@ -12,6 +12,7 @@ namespace GamesAdmin.Site._Shared
             CreateMap<GameConfig, EditViewModel>();
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<OnlineUser, OnlineUserViewModel>();
+            CreateMap<BotUser, BotUserViewModel>();
         }
     }
 }

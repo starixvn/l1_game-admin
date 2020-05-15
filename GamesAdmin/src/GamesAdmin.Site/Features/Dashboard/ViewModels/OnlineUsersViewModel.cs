@@ -5,6 +5,10 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 {
     public class OnlineUsersViewModel
     {
+        public List<SelectListItem> GameTypeItems { get; set; }
+
+        public string Game { get; set; }
+
         public bool IncludeUUS { get; set; }
 
         public int TotalReal { get; set; }
@@ -15,9 +19,10 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 
         public IEnumerable<OnlineUserViewModel> UusUsers { get; set; }
 
-        public List<SelectListItem> GameTypeItems { get; set; }
+       
+        public int TotalBots { get; set; }
 
-        public string Game { get; set; }
+        public IEnumerable<BotUserViewModel> Bots { get; set; }
     }
 
     public class OnlineUserViewModel

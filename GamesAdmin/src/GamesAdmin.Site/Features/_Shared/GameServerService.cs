@@ -59,7 +59,6 @@ namespace GamesAdmin.Site.Features._Shared
                 }
 
                 return serverApi.GetOnlineUsersOnGame(gameType);
-
             }
             catch (Exception ex)
             {

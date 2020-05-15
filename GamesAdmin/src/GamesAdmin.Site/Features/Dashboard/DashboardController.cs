@@ -53,5 +53,21 @@ namespace GamesAdmin.Site.Features.Dashboard
 
             return PartialView("_OnlineUserTable", users);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> BotUsers()
+        {
+            var viewModel = await mediator.Send(new GetOnlineUsersRequest());
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBotUsers(string game)
+        {
+            var result = await mediator.Send(new GetOnlineUsersRequest(game));
+
+            return PartialView("_BotUserTable", result.Bots);
+        }
     }
 }

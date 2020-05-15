@@ -16,12 +16,24 @@
             </div>
             <div class="stats-detail">
                 <div class="number">
-                    <a asp-action="OnlineUsers" id="online-users">
+                    <a asp-action="GetOnlineUsers" id="online-users">
                         <span id="spinner" class="spinner-border">
                         </span>
                     </a>
                 </div>
                 <div>Real User</div>
+            </div>
+        </div>
+    </div>
+    <div class="stats-item col-sm-6">
+        <div class="stats-container">
+            <div class="circle yellow">
+                <i class="material-icons icon">people_alt</i>
+            </div>
+            <div class="stats-detail">
+                <div class="number">
+                    <a asp-action="BotUsers" id="online-users">Bots</a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<GamesAdmin.Site.Features.Dashboard.ViewModels.BotUserViewModel>
+
+<table id="online-users-table" class="table table-bordered table-hover stripe">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Red</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Red</td>
+            </tr>
+        }
+    </tbody>
+</table>

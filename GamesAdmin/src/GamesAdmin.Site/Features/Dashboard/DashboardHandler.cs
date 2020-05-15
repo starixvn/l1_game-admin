@@ -34,6 +34,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 RealUsers = result.RealUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
                 TotalUUS = result.TotalUUS,
                 UusUsers = result.UusUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TotalBots = result.TotalBots,
+                Bots = result.Bots?.Select(x => mapper.Map<BotUserViewModel>(x)),
                 GameTypeItems = GenerateGameItems()
             };
         }

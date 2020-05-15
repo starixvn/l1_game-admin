@@ -1,0 +1,49 @@
+﻿@model GamesAdmin.Site.Features.Dashboard.ViewModels.OnlineUsersViewModel
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="~/lib/data-tables/datatables.min.css">
+    <link href="~/scss/pages/online-users.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Bots";
+}
+
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetBotUsers"
+      data-ajax-mode="replace"
+      data-ajax-update="#online-users-container"
+      data-ajax-loading="#spinner"
+      data-ajax-success="onlineUsers.init"
+      method="get">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <div class="form-check">
+                <select class="form-control" asp-items="@Model.GameTypeItems" asp-for="Game"></select>
+            </div>
+        </div>        
+        <div class="col-auto">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="card ">
+    <div class="card-body" id="online-users-container">
+        <partial name="_BotUserTable" for="Bots"  />
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/js/online-users.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/online-users.min.js" asp-append-version="true"></script>
+    </environment>
+}
