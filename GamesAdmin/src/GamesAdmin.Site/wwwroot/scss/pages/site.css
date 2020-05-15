@@ -190,6 +190,15 @@
   border-radius: .5rem;
   border: 1px solid #dee2e6; }
 
+.form legend {
+  width: auto;
+  padding: 0 8px;
+  font-weight: bold; }
+
+.form fieldset {
+  padding: 3px 20px;
+  border: 1px solid #ced4da; }
+
 .message-success, .message-error {
   display: flex;
   align-items: center;
