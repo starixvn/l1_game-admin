@@ -88,7 +88,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            //TODO set max bet per choice 
             await mediator.Send(new CreateRequest(new GameConfig(
                 string.Empty,
                 addViewModel.Name,
@@ -105,23 +104,6 @@ namespace GamesAdmin.Site.Features.GameSettings
                 new Dictionary<string, double>())));
 
             return RedirectToAction(nameof(Edit));
-        }
-
-        [HttpGet]
-        [Route("{id}/Delete")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            await mediator.Send(new DeleteRequest(id));
-
-            return RedirectToAction(nameof(Edit));
-        }
-
-        [AcceptVerbs("GET")]
-        public async Task<IActionResult> VerifyName(string name)
-        {
-            var isExist = await mediator.Send(new IsExistRequest(name));
-
-            return isExist ? Json($"A config named {name} already exists.") : Json(true);
         }
 
         [HttpPost]

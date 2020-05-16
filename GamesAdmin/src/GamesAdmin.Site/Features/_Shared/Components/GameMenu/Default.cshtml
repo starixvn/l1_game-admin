@@ -10,19 +10,25 @@
             </a>
         </li>
         <li class="nav-heading">Setting</li>
-        @*<li class="menu-item">
+        <li class="menu-item">
             <a asp-action="Notification" asp-controller="Setting" class="add-new-game">
                 <i class="material-icons menu-icon">wb_sunny</i>
                 <span class="menu-name">Notification</span>
             </a>
-        </li>*@
+        </li>
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="UmSchedule" class="add-new-game">
+                <i class="material-icons menu-icon">add_alarm</i>
+                <span class="menu-name">UM Schedule</span>
+            </a>
+        </li>
         <li class="menu-item">
             <a asp-action="Status" asp-controller="GameSettings" class="add-new-game">
                 <i class="material-icons menu-icon">verified_user</i>
                 <span class="menu-name">Game Status</span>
             </a>
         </li>
-        @*<li class="menu-item">
+        <li class="menu-item">
             <a asp-action="StakeLevel" asp-controller="Setting" class="add-new-game">
                 <i class="material-icons menu-icon">timeline</i>
                 <span class="menu-name">Stake Level</span>
@@ -34,7 +40,7 @@
                 <span class="menu-name">Bot</span>
             </a>
         </li>
-        <li class="nav-heading">Report</li>
+        @*<li class="nav-heading">Report</li>
         <li class="menu-item">
             <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
                 <i class="material-icons menu-icon">donut_large</i>
@@ -63,12 +69,12 @@
         <li class="nav-heading">Game</li>
         @foreach (var item in Model.GameList)
         {
-        <li class="menu-item">
-            <a asp-route-name="@item.Value" asp-action="Edit" asp-controller="GameSettings">
-                <i class="material-icons menu-icon">bubble_chart</i>
-                <span class="menu-name">@item.DisplayName</span>
-            </a>
-        </li>
+            <li class="menu-item">
+                <a asp-route-name="@item.Value" asp-action="Edit" asp-controller="GameSettings">
+                    <i class="material-icons menu-icon">bubble_chart</i>
+                    <span class="menu-name">@item.DisplayName</span>
+                </a>
+            </li>
 
         }
         <li class="menu-item">
@@ -81,46 +87,46 @@
 
         @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
         {
-        <li class="menu-item">
-            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
-                <i class="material-icons menu-icon">note_add</i>
-                <span class="menu-name">Add new game</span>
-            </a>
-        </li>
+            <li class="menu-item">
+                <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                    <i class="material-icons menu-icon">note_add</i>
+                    <span class="menu-name">Add new game</span>
+                </a>
+            </li>
 
-        <li class="menu-item">
-            <a asp-action="add" asp-controller="account">
-                <i class="material-icons menu-icon">person_add</i>
-                <span class="menu-name">Generate user/bot</span>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-action="revisebots" asp-controller="account">
-                <i class="material-icons menu-icon">adb</i>
-                <span class="menu-name">Revise bots</span>
-            </a>
-        </li>
+            <li class="menu-item">
+                <a asp-action="add" asp-controller="account">
+                    <i class="material-icons menu-icon">person_add</i>
+                    <span class="menu-name">Generate user/bot</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a asp-action="revisebots" asp-controller="account">
+                    <i class="material-icons menu-icon">adb</i>
+                    <span class="menu-name">Revise bots</span>
+                </a>
+            </li>
 
-        <li class="nav-heading">Users</li>
-        <li class="menu-item">
-            <a asp-action="Index" asp-controller="User">
-                <i class="material-icons menu-icon">people_alt</i>
-                Management
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-action="Add" asp-controller="User">
-                <i class="material-icons menu-icon">person_add</i>
-                <span class="menu-name">Add New User</span>
-            </a>
-        </li>
+            <li class="nav-heading">Users</li>
+            <li class="menu-item">
+                <a asp-action="Index" asp-controller="User">
+                    <i class="material-icons menu-icon">people_alt</i>
+                    Management
+                </a>
+            </li>
+            <li class="menu-item">
+                <a asp-action="Add" asp-controller="User">
+                    <i class="material-icons menu-icon">person_add</i>
+                    <span class="menu-name">Add New User</span>
+                </a>
+            </li>
 
-        <li class="menu-item">
-            <a asp-action="Index" asp-controller="ClientSite">
-                <i class="material-icons menu-icon">people_alt</i>
-                <span class="menu-name">Client Sites</span>
-            </a>
-        </li>
+            <li class="menu-item">
+                <a asp-action="Index" asp-controller="ClientSite">
+                    <i class="material-icons menu-icon">people_alt</i>
+                    <span class="menu-name">Client Sites</span>
+                </a>
+            </li>
         }
 
         <li class="nav-heading">Report</li>

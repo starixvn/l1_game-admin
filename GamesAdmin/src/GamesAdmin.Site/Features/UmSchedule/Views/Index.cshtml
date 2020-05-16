@@ -1,0 +1,17 @@
+﻿@using GamesAdmin.Site.Features.UmSchedule.ViewModels;
+@model IndexViewModel;
+
+@{
+    ViewData["Title"] = "UM Schedule page";
+}
+
+
+<div class="form-row align-items-center">    
+    <div class="col-auto">
+        <a asp-action="Add" asp-controller="UmSchedule" class="add-new-game">
+            <i class="material-icons menu-icon">add_alarm</i>
+            <span class="menu-name">New UM Schedule</span>
+        </a>
+    </div>
+</div>
+

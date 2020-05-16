@@ -4,9 +4,9 @@ using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.ClientSites;
-using GamesAdmin.Site.Features.Dashboard;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Report;
+using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -43,6 +43,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
+
+            services.AddScoped<IUmService, UmService>();
         }
     }
 }
