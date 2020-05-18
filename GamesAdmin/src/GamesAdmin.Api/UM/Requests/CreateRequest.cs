@@ -1,14 +1,15 @@
-﻿using System;
+﻿using GamesAdmin.Core.Models.Um;
 using MediatR;
 
 namespace GamesAdmin.Api.UM.Requests
 {
     public class CreateRequest : IRequest<bool>
     {
-        public DateTime Start { get; set; }
+        public CreateRequest(EventSchedule eventSchedule)
+        {
+            this.eventSchedule = eventSchedule;
+        }
 
-        public DateTime End { get; set; }
-
-        public string Message { get; set; }
+        public EventSchedule eventSchedule { get; }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features._Shared;
+using Microsoft.AspNetCore.Mvc;
 using Refit;
 
 namespace GamesAdmin.Site.Features.UmSchedule
 {
     public interface IUmApi : IBaseAuthorizationApi
     {
-        [Get("/um/create")]
+        [Post("/um/create")]
         Task<bool> Create(EventSchedule eventSchedule);
     }
 

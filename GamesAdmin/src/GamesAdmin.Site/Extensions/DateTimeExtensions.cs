@@ -11,7 +11,7 @@ namespace GamesAdmin.Site.Extensions
                 return string.Empty;
             }
 
-            return date.ToString("dd/MM/yyyy HH:mm");
+            return date.ToString("yyyy-M-dd HH:mm");
         }
     }    
 }

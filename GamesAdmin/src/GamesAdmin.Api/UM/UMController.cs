@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.UM.Requests;
+using GamesAdmin.Core.Models.Um;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ namespace GamesAdmin.Api.UM
 
         [HttpPost]
         [Route("create")]
-        public Task<bool> Create([FromBody] CreateRequest request)
-        => mediator.Send(request);
+        public Task<bool> Create(EventSchedule eventSchedule)
+        => mediator.Send(new CreateRequest(eventSchedule));
     }
 }
