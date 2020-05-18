@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.UmSchedule.ViewModels
 {
@@ -14,16 +16,19 @@ namespace GamesAdmin.Site.Features.UmSchedule.ViewModels
         }
 
         [DisplayName("Start From")]
+        [Required]
         public DateTime Start { get; set; }
 
-        public string StartDisplay => Start.ToString("dd/MM/yyyy HH:mm");
+        public string StartDisplay => Start.ToDateAndTimeFormat();
 
         [DisplayName("End At")]
+        [Required]
         public DateTime End { get; set; }
 
-        public string EndDisplay => End.ToString("dd/MM/yyyy HH:mm");
+        public string EndDisplay => End.ToDateAndTimeFormat();
 
         [DisplayName("Under Maintenance Message")]
+        [Required]
         public string Message { get; set; }
 
         public string ErrorMessage { get; set; }

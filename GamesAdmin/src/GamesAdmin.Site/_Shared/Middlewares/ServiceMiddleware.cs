@@ -44,6 +44,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
 
+            services.AddSingleton(RestService.For<IUmApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IUmService, UmService>();
         }
     }

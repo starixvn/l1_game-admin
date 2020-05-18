@@ -16,8 +16,13 @@ namespace GamesAdmin.Api.UM
             this.mediator = mediator;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public Task<bool> Start([FromBody] UMRequest request)
+        => mediator.Send(request);
+
+        [HttpPost]
+        [Route("create")]
+        public Task<bool> Create([FromBody] CreateRequest request)
         => mediator.Send(request);
     }
 }

@@ -12,7 +12,7 @@
             <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
         }
 
-        <form class="card-body form" method="post">
+        <form class="card-body form" method="post" asp-action="Add" asp-controller="UmSchedule">
             <div class="form-group row">
                 <label asp-for="Start" class="control-label"></label>
                 <input type="datetime" asp-for="Start" value="@Model.StartDisplay" class="form-control" />
