@@ -137,7 +137,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     hour.Hour,
                     hour.AddHours(-4).Hour,
                     hour.AddHours(7).Hour,
-                    botRatios == null || botRatios.Length == 0 ? defaultRatio : (int)(botRatios[hour.Hour] * 100),
+                    botRatios == null || botRatios.Length == 0 ? defaultRatio : Math.Round(botRatios[hour.Hour] * 100, 2),
                     totalBot));
             }
 
