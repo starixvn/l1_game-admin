@@ -3,7 +3,6 @@ using GamesAdmin.Site.Features.UmSchedule.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sentry;
 
 namespace GamesAdmin.Site.Features.UmSchedule
 {
@@ -11,12 +10,10 @@ namespace GamesAdmin.Site.Features.UmSchedule
     public class UmScheduleController : Controller
     {
         private readonly IMediator mediator;
-        private readonly ISentryClient sentryClient;
 
-        public UmScheduleController(IMediator mediator, ISentryClient sentryClient)
+        public UmScheduleController(IMediator mediator)
         {
             this.mediator = mediator;
-            this.sentryClient = sentryClient;
         }
 
         [HttpGet]
@@ -26,5 +23,9 @@ namespace GamesAdmin.Site.Features.UmSchedule
         [HttpGet]
         public async Task<IActionResult> Add()
         => View(await mediator.Send(new AddRequest()));
+
+        [HttpGet]
+        public async Task<IActionResult> Edit()
+        => View(await mediator.Send(new EditRequest()));
     }
 }

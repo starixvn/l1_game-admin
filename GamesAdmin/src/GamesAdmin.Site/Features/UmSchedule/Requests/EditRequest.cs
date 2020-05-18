@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GamesAdmin.Site.Features.UmSchedule.ViewModels;
+using MediatR;
 
 namespace GamesAdmin.Site.Features.UmSchedule.Requests
 {
-    public class EditRequest
+    public class EditRequest: IRequest<EditViewModel>
     {
     }
 }
