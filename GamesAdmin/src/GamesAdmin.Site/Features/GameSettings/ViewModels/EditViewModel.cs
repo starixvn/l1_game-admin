@@ -54,10 +54,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public List<MaxBetChoiceViewModel> BetChoiceBetSettings { get; set; }
 
-        public bool DisplayMaxBetChoices => MaxBetChoices.Count > 2;
+        public bool DisplayMaxBetChoices => MaxBetChoices?.Count > 2;
 
         public Dictionary<string, double> MaxBetChoices
-            => BetChoiceBetSettings.ToDictionary(x => x.Name, x => x.MaxBet);
+            => BetChoiceBetSettings?.ToDictionary(x => x.Name, x => x.MaxBet);
     }
 
     public class BotRatioItemViewModel
