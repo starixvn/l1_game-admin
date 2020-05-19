@@ -4,7 +4,7 @@ namespace GamesAdmin.Core.Models.Um
 {
     public class UmSchedule
     {
-        public UmSchedule(DateTime start, DateTime end, string message) 
+        public UmSchedule(DateTime start, DateTime end, string message = "") 
         {
             Start = start;
             End = end;

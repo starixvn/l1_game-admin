@@ -6,12 +6,42 @@
 }
 
 
-<div class="form-row align-items-center">    
+<div class="form-row align-items-center">
     <div class="col-auto">
         <a asp-action="Add" asp-controller="UmSchedule" class="add-new-game">
             <i class="material-icons menu-icon">add_alarm</i>
             <span class="menu-name">New UM Schedule</span>
         </a>
     </div>
+</div>
+
+<div class="col-md-10 col-lg-6 card">
+    <table id="status-tbl" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
+                <th>Message</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var schedule in Model.Schedules)
+            {
+                <tr>
+
+                    <td>@schedule.Start</td>
+                    <td>@schedule.End</td>
+                    <td>@schedule.Status</td>
+                    <td>@schedule.Message</td>
+                    <td>
+                        <a href="#">Edit</a> |
+                        <a href="#">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 

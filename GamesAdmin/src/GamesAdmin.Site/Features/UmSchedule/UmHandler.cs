@@ -1,7 +1,7 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.UmSchedule.Requests;
 using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 using MediatR;
@@ -24,9 +24,9 @@ namespace GamesAdmin.Site.Features.UmSchedule
 
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         {
-            var schedules = await umService.GetAll();
+            var schedules = (await umService.GetAll());
 
-            return new IndexViewModel(schedules);
+            return new IndexViewModel(mapper.Map<List<UmScheduleItemViewModel>>(schedules));
         }
 
         public Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)

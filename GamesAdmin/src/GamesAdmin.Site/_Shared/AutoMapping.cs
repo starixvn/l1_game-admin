@@ -4,6 +4,7 @@ using GamesAdmin.Site.Features.UmSchedule.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Core.Models.Um;
+using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 
 namespace GamesAdmin.Site._Shared
 {
@@ -11,11 +12,13 @@ namespace GamesAdmin.Site._Shared
     {
         public AutoMapping()
         {
-            CreateMap<GameConfig, EditViewModel>();
+            CreateMap<GameConfig, Features.GameSettings.ViewModels.EditViewModel>();
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<OnlineUser, OnlineUserViewModel>();
             CreateMap<BotUser, BotUserViewModel>();
             CreateMap<CreateRequest, UmSchedule>();
+
+            CreateMap<UmSchedule, UmScheduleItemViewModel>();
         }
     }
 }

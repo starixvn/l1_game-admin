@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -26,8 +26,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<BigSmallOnesEntity, BetInfo>();
 
             CreateMap<User, AdminUserEntity>();
-            CreateMap<UmSchedule, EventScheduleEntity>();
-            CreateMap<EventScheduleEntity, UmSchedule>();
+            CreateMap<UmSchedule, EventScheduleEntity>().ReverseMap();
         }
     }
 }
