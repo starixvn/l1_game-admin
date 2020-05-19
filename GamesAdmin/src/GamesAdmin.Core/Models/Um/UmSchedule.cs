@@ -11,9 +11,9 @@ namespace GamesAdmin.Core.Models.Um
             Message = message;
         }
 
-        public DateTime Start { get;}
+        public DateTimeOffset Start { get;}
 
-        public DateTime End { get; }
+        public DateTimeOffset End { get; }
 
         public string Message { get; }
     }

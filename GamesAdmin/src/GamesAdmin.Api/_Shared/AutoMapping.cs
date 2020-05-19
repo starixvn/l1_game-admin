@@ -26,7 +26,10 @@ namespace GamesAdmin.Api._Shared
             CreateMap<BigSmallOnesEntity, BetInfo>();
 
             CreateMap<User, AdminUserEntity>();
-            CreateMap<UmSchedule, EventScheduleEntity>().ReverseMap();
+            CreateMap<UmSchedule, EventScheduleEntity>()
+                .ForMember(dest => dest.Start, opt => opt.MapFrom(src => src.Start.UtcDateTime))
+                .ForMember(dest => dest.End, opt => opt.MapFrom(src => src.End.UtcDateTime))
+                .ReverseMap();
         }
     }
 }

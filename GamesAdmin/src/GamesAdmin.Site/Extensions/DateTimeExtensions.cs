@@ -4,7 +4,7 @@ namespace GamesAdmin.Site.Extensions
 {
     public static class DateTimeExtensions 
     {
-        public static string ToDateAndTimeFormat(this DateTime date)
+        public static string ToDateAndTimeFormat(this DateTimeOffset date)
         {
             if (date == default)
             {

@@ -16,8 +16,8 @@ namespace GamesAdmin.Site.Features.UmSchedule.ViewModels
     public class UmScheduleItemViewModel
     {
         public UmScheduleItemViewModel(
-            DateTime start, 
-            DateTime end, 
+            DateTimeOffset start,
+            DateTimeOffset end, 
             string message = "")
         {
             Start = start;
@@ -25,11 +25,11 @@ namespace GamesAdmin.Site.Features.UmSchedule.ViewModels
             Message = message;
         }
 
-        public DateTime Start { get; }
+        public DateTimeOffset Start { get; }
 
-        public DateTime End { get; }
+        public DateTimeOffset End { get; }
 
-        public string Status => Start > DateTime.Now ? "comming" : End > DateTime.Now ? "on-going" : "finish";
+        public string Status => Start > DateTimeOffset.Now ? "comming" : End > DateTimeOffset.Now ? "on-going" : "finish";
 
         public string Message { get; }
     }

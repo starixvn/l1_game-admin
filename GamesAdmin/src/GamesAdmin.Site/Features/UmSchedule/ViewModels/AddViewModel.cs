@@ -10,20 +10,20 @@ namespace GamesAdmin.Site.Features.UmSchedule.ViewModels
     {
         public AddViewModel(IAppSettings appSettings) 
         {
-            Start = DateTime.Now;
-            End = DateTime.Now.AddMinutes(30);
+            Start = DateTimeOffset.Now;
+            End = DateTimeOffset.Now.AddMinutes(30);
             Message = string.Format(appSettings.DefaultUmMessage, StartDisplay, EndDisplay);
         }
 
         [DisplayName("Start From")]
         [Required]
-        public DateTime Start { get; set; }
+        public DateTimeOffset Start { get; set; }
 
         public string StartDisplay => Start.ToDateAndTimeFormat();
 
         [DisplayName("End At")]
         [Required]
-        public DateTime End { get; set; }
+        public DateTimeOffset End { get; set; }
 
         public string EndDisplay => End.ToDateAndTimeFormat();
 

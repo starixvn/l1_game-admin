@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Sentry;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.UM
 {
