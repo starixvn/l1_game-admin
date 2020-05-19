@@ -41,11 +41,11 @@ namespace GamesAdmin.Site._Shared.Middlewares
            
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
+            services.AddSingleton(RestService.For<IUmApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IUmService, UmService>();
+
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
-
-            services.AddSingleton(RestService.For<IUmApi>(appSettings.GameServerUrl, refitSettings));
-            services.AddScoped<IUmService, UmService>();
         }
     }
 }

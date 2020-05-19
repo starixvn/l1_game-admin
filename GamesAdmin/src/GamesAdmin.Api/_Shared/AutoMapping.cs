@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace GamesAdmin.Api._Shared
             CreateMap<BigSmallOnesEntity, BetInfo>();
 
             CreateMap<User, AdminUserEntity>();
+            CreateMap<UmSchedule, EventScheduleEntity>();
+            CreateMap<EventScheduleEntity, UmSchedule>();
         }
     }
 }

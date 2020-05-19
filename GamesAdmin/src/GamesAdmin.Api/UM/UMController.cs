@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Models.Um;
@@ -22,8 +23,13 @@ namespace GamesAdmin.Api.UM
         => mediator.Send(request);
 
         [HttpPost]
-        [Route("create")]
-        public Task<bool> Create(EventSchedule eventSchedule)
+        [Route("add")]
+        public Task<bool> Add([FromBody] UmSchedule eventSchedule)
         => mediator.Send(new CreateRequest(eventSchedule));
+
+        [HttpGet]
+        [Route("all")]
+        public Task<IList<UmSchedule>> GetAll()
+        => mediator.Send(new GetAllRequest());
     }
 }

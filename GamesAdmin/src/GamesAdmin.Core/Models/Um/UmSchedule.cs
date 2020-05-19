@@ -2,9 +2,9 @@
 
 namespace GamesAdmin.Core.Models.Um
 {
-    public class EventSchedule
+    public class UmSchedule
     {
-        public EventSchedule(DateTime start, DateTime end, string message) 
+        public UmSchedule(DateTime start, DateTime end, string message) 
         {
             Start = start;
             End = end;

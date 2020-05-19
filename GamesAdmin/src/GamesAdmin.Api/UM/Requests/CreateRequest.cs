@@ -5,11 +5,11 @@ namespace GamesAdmin.Api.UM.Requests
 {
     public class CreateRequest : IRequest<bool>
     {
-        public CreateRequest(EventSchedule eventSchedule)
+        public CreateRequest(UmSchedule eventSchedule)
         {
-            this.eventSchedule = eventSchedule;
+            EventSchedule = eventSchedule;
         }
 
-        public EventSchedule eventSchedule { get; }
+        public UmSchedule EventSchedule { get; }
     }
 }

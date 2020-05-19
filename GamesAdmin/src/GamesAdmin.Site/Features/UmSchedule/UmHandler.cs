@@ -22,13 +22,17 @@ namespace GamesAdmin.Site.Features.UmSchedule
             this.mapper = mapper;
         }
 
-        public Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new IndexViewModel());
+        public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
+        {
+            var schedules = await umService.GetAll();
+
+            return new IndexViewModel(schedules);
+        }
 
         public Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         => Task.FromResult(new EditViewModel());
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => umService.Add(mapper.Map<EventSchedule>(request));
+        => umService.Add(mapper.Map<Core.Models.Um.UmSchedule>(request));
     }
 }

@@ -66,6 +66,7 @@ namespace GamesAdmin.Api
             services.AddScoped<IBigSmallTurboReportRepository, BigSmallTurboReportRepository>();
             services.AddScoped<IOddEvenReportRepository, OddEvenReportRepository>();
             services.AddScoped<IOddEvenTurboReportRepository, OddEvenTurboReportRepository>();
+
             services.AddScoped<IStatisticService, StatisticService>();
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();

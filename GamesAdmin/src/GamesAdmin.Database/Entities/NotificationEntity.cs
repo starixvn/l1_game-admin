@@ -3,12 +3,12 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("notification")]
-    public class Notification : MiniGameBaseEntity
+    public class NotificationEntity : MiniGameBaseEntity
     {
         public string Message { get; set; }
 
-        public int Type { get; set; }
+        public byte EventType { get; set; }
 
-        public int DisplayKind { get; set; }
+        public byte DisplayKind { get; set; }
     }
 }

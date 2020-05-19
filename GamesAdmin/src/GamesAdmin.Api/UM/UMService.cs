@@ -1,7 +1,12 @@
-﻿using GamesAdmin.Database;
+﻿using AutoMapper;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.Um;
+using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Sentry;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,22 +15,35 @@ namespace GamesAdmin.Api.UM
     public interface IUMService
     {
         Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime);
+
+        Task<bool> AddSchedule(UmSchedule eventSchedule);
+
+        Task<IList<UmSchedule>> GetAll();
     }
 
     public class UMService : IUMService
     {
         private readonly ISentryClient sentryClient;
+        private readonly IMapper mapper;
         private readonly IGenericRepository<UMInfoEntity> umRepository;
         private readonly IGenericRepository<GameConfigEntity> configRepository;
+        private readonly IGenericRepository<EventScheduleEntity> scheduleRepository;
+        private readonly IGenericRepository<NotificationEntity> notificationRepository;
 
         public UMService(
             ISentryClient sentryClient,
+            IMapper mapper,
             IGenericRepository<UMInfoEntity> umRepository,
-            IGenericRepository<GameConfigEntity> configRepository)
+            IGenericRepository<GameConfigEntity> configRepository,
+            IGenericRepository<EventScheduleEntity> scheduleRepository,
+            IGenericRepository<NotificationEntity> notificationRepository)
         {
             this.sentryClient = sentryClient;
+            this.mapper = mapper;
             this.umRepository = umRepository;
             this.configRepository = configRepository;
+            this.scheduleRepository = scheduleRepository;
+            this.notificationRepository = notificationRepository;
         }
 
         public Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime) => isUM ? Start(startTime, endTime) : End();
@@ -44,7 +62,7 @@ namespace GamesAdmin.Api.UM
                 {
                     await umRepository.InsertOneAsync(new UMInfoEntity
                     {
-                        Start = startTime == default ?  default : startTime.ToUniversalTime().UtcDateTime,
+                        Start = startTime == default ? default : startTime.ToUniversalTime().UtcDateTime,
                         End = endTime == default ? default : endTime.ToUniversalTime().UtcDateTime,
                         Finish = false,
                         Time = DateTime.UtcNow
@@ -99,5 +117,30 @@ namespace GamesAdmin.Api.UM
                 await configRepository.ReplaceOneAsync(game);
             }
         }
+
+        public async Task<bool> AddSchedule(UmSchedule umSchedule)
+        {
+            var schedule = mapper.Map<EventScheduleEntity>(umSchedule);
+            schedule.EventType = (byte)EventScheduleType.UnderMaintenance;
+
+            var notification = new NotificationEntity
+            {
+                Message = umSchedule.Message,
+                Time = DateTime.UtcNow,
+                EventType = (byte)EventScheduleType.UnderMaintenance,
+                DisplayKind = (byte)NotificationDisplayKind.Marquee
+            };
+
+            await scheduleRepository.InsertOneAsync(schedule);            
+            await notificationRepository.InsertOneAsync(notification);
+
+            return true;
+        }
+
+        public async Task<IList<UmSchedule>> GetAll()
+        => (await scheduleRepository
+            .FilterByAsync(schedule => schedule.EventType == (byte)EventScheduleType.UnderMaintenance))
+            .Select(schedule => mapper.Map<UmSchedule>(schedule))
+            .ToList();
     }
 }
