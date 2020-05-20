@@ -62,11 +62,16 @@ local_deploy:game_admin_site:
     - .admin-site-push-git-compiled
   environment:
     name: LOCAL
-  only:
-    - /^l1-deploy-\d{8}-\d+.*$/
-    - /^l1-deploy-local-\d{8}-\d+.*$/
-    - /^l1-deploy-site-\d{8}-\d+.*$/
-    - /^l1-deploy-local-site-\d{8}-\d+.*$/
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-local-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-site-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-local-site-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/
+      when: always      
+    - when: never
 
 sit_deploy:game_admin_site:
   extends: 
@@ -74,11 +79,16 @@ sit_deploy:game_admin_site:
     - .admin-site-push-git-compiled
   environment:
     name: SIT
-  only:
-    - /^l1-deploy-sit-\d{8}-\d+.*$/
-    - /^l1-deploy-sit-site-\d{8}-\d+.*$/
-    - /^l1-deploy-\d{8}-\d+.*$/
-    - /^l1-deploy-site-\d{8}-\d+.*$/
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-sit-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-site-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-sit-site-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/
+      when: always      
+    - when: never
 
 uat_deploy:game_admin_site:
   extends: 
@@ -86,11 +96,16 @@ uat_deploy:game_admin_site:
     - .admin-site-push-git-compiled
   environment:
     name: UAT
-  only:
-    - /^l1-deploy-uat-\d{8}-\d+.*$/
-    - /^l1-deploy-uat-site-\d{8}-\d+.*$/
-    - /^l1-deploy-\d{8}-\d+.*$/
-    - /^l1-deploy-site-\d{8}-\d+.*$/
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-uat-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-site-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-uat-site-\d{8}-\d+.*$/
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/
+      when: always      
+    - when: never
 
 prod_deploy:game_admin_site:
   extends: 
@@ -100,8 +115,8 @@ prod_deploy:game_admin_site:
     name: PRO
   needs:
     - build:game-admin-site
-  when: manual
   allow_failure: false
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: manual
 
