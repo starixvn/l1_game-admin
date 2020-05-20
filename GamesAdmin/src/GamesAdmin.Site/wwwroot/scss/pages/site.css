@@ -370,7 +370,7 @@
   left: 0;
   width: 2.4rem;
   height: .2rem;
-  background-color: #0e3f82;
+  background-color: #098708;
   transition-property: transform;
   transition-duration: 0.15s;
   transition-timing-function: ease; }
@@ -461,7 +461,7 @@
     position: relative;
     text-transform: uppercase;
     margin: 1.5rem 0;
-    color: #0e3f82;
+    color: #da624a;
     opacity: .6;
     white-space: nowrap; }
   .vertical-nav-menu .menu-item a {
@@ -499,9 +499,9 @@
 .site-name {
   font-size: 1.6rem;
   font-weight: bold;
-  color: #f8715f; }
+  color: #098708; }
   .site-name .highlight {
-    color: #da624a; }
+    color: #098708; }
   .site-name:hover, .site-name:focus {
     text-decoration: none;
     color: #f8715f; }
