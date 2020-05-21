@@ -30,6 +30,8 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.Start, opt => opt.MapFrom(src => src.Start.UtcDateTime))
                 .ForMember(dest => dest.End, opt => opt.MapFrom(src => src.End.UtcDateTime))
                 .ReverseMap();
+
+            CreateMap<Notification, NotificationEntity>().ReverseMap();
         }
     }
 }

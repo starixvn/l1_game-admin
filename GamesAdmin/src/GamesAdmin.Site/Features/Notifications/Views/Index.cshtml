@@ -1,0 +1,42 @@
+﻿@using GamesAdmin.Site.Features.Notifications.ViewModels;
+@model IndexViewModel;
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="form-row align-items-center">
+    <div class="col-auto">
+        <a asp-action="Add" asp-controller="Notification" class="add-new-game">
+            <i class="material-icons menu-icon">add_alarm</i>
+            <span class="menu-name">New Notification</span>
+        </a>
+    </div>
+</div>
+
+<div class="col-md-10 col-lg-6 card">
+    <table id="status-tbl" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>EventType</th>
+                <th>DisplayKind</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        @*<tbody>
+                @foreach (var schedule in Model.Schedules)
+                {
+                    <tr>
+                        <td>@schedule.Start</td>
+                        <td>@schedule.End</td>
+                        <td>@schedule.Message</td>
+                        <td>
+                            <a href="#">Edit</a> |
+                            <a href="#">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>*@
+    </table>
+</div>
