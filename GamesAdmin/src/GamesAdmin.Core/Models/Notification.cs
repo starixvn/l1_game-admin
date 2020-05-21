@@ -4,11 +4,11 @@ namespace GamesAdmin.Core.Models
 {
     public class Notification
     {
-        public Notification(
-            string id, 
+        public Notification(            
             string message, 
             EventScheduleType eventType, 
-            NotificationDisplayKind displayKind) 
+            NotificationDisplayKind displayKind,
+            string id = null) 
         {
             Id = id;
             Message = message;

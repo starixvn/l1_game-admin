@@ -24,14 +24,14 @@ namespace GamesAdmin.Api.Notifications
 
         [HttpPost]
         [Route("add")]
-        public async Task<bool> Add([FromBody]AddRequest createRequest)
+        public async Task<bool> Add([FromBody]AddRequest addRequest)
         {
-            if (string.IsNullOrWhiteSpace(createRequest.Message))
+            if (string.IsNullOrWhiteSpace(addRequest.Message))
             {
                 return false;
             }
 
-            return await mediator.Send(createRequest);
+            return await mediator.Send(addRequest);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -12,7 +13,7 @@ namespace GamesAdmin.Api.Notifications
     {
         public Task<IList<Notification>> Get();
 
-        public Task<bool> Create(Notification notification);
+        public Task<bool> Create(AddRequest notification);
     }
 
     public class NotificationService : INotificationService
@@ -28,7 +29,7 @@ namespace GamesAdmin.Api.Notifications
             this.mapper = mapper;
         }
 
-        public async Task<bool> Create(Notification notification)
+        public async Task<bool> Create(AddRequest notification)
         {
             var notificationEntity = mapper.Map<NotificationEntity>(notification);
             await notificationRepository.InsertOneAsync(notificationEntity);

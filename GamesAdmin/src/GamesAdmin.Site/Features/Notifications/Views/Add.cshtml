@@ -10,11 +10,11 @@
     <form class="card-body form" asp-action="Add" asp-controller="Notification" method="post">
         <div class="form-group">
             <label class="control-label">Message Type</label>
-            <select class="form-control" asp-for="EventType" asp-items="Model.EventTypes"></select>
+            <select class="form-control" asp-for="EventTypeValue" asp-items="Model.EventTypes"></select>
         </div>
         <div class="form-group">
             <label class="control-label">Display As</label>
-            <select class="form-control" asp-for="DisplayKind" asp-items="Model.DisplayKinds"></select>
+            <select class="form-control" asp-for="DisplayKindValue" asp-items="Model.DisplayKinds"></select>
         </div>
         <div class="form-group">
             <label class="control-label">Message</label>

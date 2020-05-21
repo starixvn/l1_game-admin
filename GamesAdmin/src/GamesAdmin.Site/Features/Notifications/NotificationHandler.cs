@@ -27,6 +27,10 @@ namespace GamesAdmin.Site.Features.Notifications
         }
 
         public Task<bool> Handle(AddRequest request, CancellationToken cancellationToken)
-        => notificationService.Add(mapper.Map<Notification>(request));
+        {
+            var notification = mapper.Map<Notification>(request);
+
+            return notificationService.Add(notification);
+        }
     }
 }

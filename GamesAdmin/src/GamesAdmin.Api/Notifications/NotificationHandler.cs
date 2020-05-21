@@ -19,7 +19,7 @@ namespace GamesAdmin.Api.Notifications
         }
 
         public Task<bool> Handle(AddRequest request, CancellationToken cancellationToken)
-        => notificationService.Create(new Notification(string.Empty, request.Message, request.EventType, request.DisplayKind));
+        => notificationService.Create(request);
 
         public Task<IList<Notification>> Handle(GetRequest request, CancellationToken cancellationToken)
         => notificationService.Get();

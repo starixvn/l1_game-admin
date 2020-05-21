@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
@@ -31,7 +32,9 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.End, opt => opt.MapFrom(src => src.End.UtcDateTime))
                 .ReverseMap();
 
-            CreateMap<Notification, NotificationEntity>().ReverseMap();
+            CreateMap<AddRequest, NotificationEntity>()
+                .ForMember(dest => dest.EventType, opt => opt.MapFrom(src => byte.Parse(src.EventType.Value)))
+                .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
         }
     }
 }

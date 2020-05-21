@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -18,10 +19,11 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
 
         public List<SelectListItem> DisplayKinds { get; }
 
-        public EventScheduleType EventType { get; set; }
+        public byte EventTypeValue { get; set; }
 
-        public NotificationDisplayKind DisplayKind { get; set; }
+        public byte DisplayKindValue { get; set; }
 
+        [Required]
         public string Message { get; set; }
     }
 }

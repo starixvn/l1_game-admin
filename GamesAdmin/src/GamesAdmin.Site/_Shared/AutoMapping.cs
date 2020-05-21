@@ -5,6 +5,7 @@ using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.UmSchedule.ViewModels;
+using GamesAdmin.Site.Features.Notifications.Requests;
 
 namespace GamesAdmin.Site._Shared
 {
@@ -20,7 +21,7 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<UmSchedule, UmScheduleItemViewModel>();
 
-            CreateMap<CreateRequest, Notification>();
+            CreateMap<AddRequest, Notification>();
         }
     }
 }
