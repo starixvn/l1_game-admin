@@ -24,19 +24,19 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        @*<tbody>
-                @foreach (var schedule in Model.Schedules)
-                {
-                    <tr>
-                        <td>@schedule.Start</td>
-                        <td>@schedule.End</td>
-                        <td>@schedule.Message</td>
-                        <td>
-                            <a href="#">Edit</a> |
-                            <a href="#">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>*@
+        <tbody>
+            @foreach (var notification in Model.Notifications)
+            {
+                <tr>
+                    <td>@notification.Message</td>
+                    <td>@notification.EventType.DisplayName</td>
+                    <td>@notification.DisplayKind.DisplayName</td>
+                    <td>
+                        <a href="#">Edit</a> |
+                        <a href="#">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>

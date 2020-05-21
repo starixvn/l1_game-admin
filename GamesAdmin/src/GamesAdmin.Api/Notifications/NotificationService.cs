@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -29,18 +30,26 @@ namespace GamesAdmin.Api.Notifications
             this.mapper = mapper;
         }
 
-        public async Task<bool> Create(AddRequest notification)
+        public async Task<bool> Create(AddRequest addRequest)
         {
-            var notificationEntity = mapper.Map<NotificationEntity>(notification);
+            var notificationEntity = mapper.Map<NotificationEntity>(addRequest);
             await notificationRepository.InsertOneAsync(notificationEntity);
 
             return true;
         }
 
         public async Task<IList<Notification>> Get()
-        => (await notificationRepository
+        {
+            var notifications = (await notificationRepository
                 .FilterByAsync(n => true))
-                .Select(x => mapper.Map<Notification>(x))
                 .ToList();
+
+            return notifications.Select(entity => new Notification(
+                entity.Id.ToString(),
+                entity.Message,
+                Enumeration.FromValue<EventScheduleType>(entity.EventType.ToString()),
+                Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()))).ToList();
+        }
+
     }
 }

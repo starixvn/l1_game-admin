@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
@@ -35,6 +36,14 @@ namespace GamesAdmin.Api._Shared
             CreateMap<AddRequest, NotificationEntity>()
                 .ForMember(dest => dest.EventType, opt => opt.MapFrom(src => byte.Parse(src.EventType.Value)))
                 .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
+
+            CreateMap<Notification, NotificationEntity>()
+                .ForMember(dest => dest.EventType, opt => opt.MapFrom(src => byte.Parse(src.EventType.Value)))
+                .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
+
+            CreateMap<NotificationEntity, Notification>()
+                .ForMember(dest => dest.EventType, opt => opt.MapFrom(src => Enumeration.FromValue<EventScheduleType>(src.EventType.ToString())))
+                .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => Enumeration.FromValue<NotificationDisplayKind>(src.DisplayKind.ToString())));
         }
     }
 }

@@ -1,14 +1,18 @@
 ﻿using GamesAdmin.Core.Enumeration;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models
 {
     public class Notification
     {
-        public Notification(            
-            string message, 
-            EventScheduleType eventType, 
-            NotificationDisplayKind displayKind,
-            string id = null) 
+        public Notification() { }
+
+        [JsonConstructor]
+        public Notification(
+            string id,
+            string message,
+            EventScheduleType eventType,
+            NotificationDisplayKind displayKind)
         {
             Id = id;
             Message = message;
@@ -16,12 +20,12 @@ namespace GamesAdmin.Core.Models
             DisplayKind = displayKind;
         }
 
-        public string Id { get; }
+        public string Id { get; set; }
 
-        public string Message { get; }
+        public string Message { get; set; }
 
-        public EventScheduleType EventType { get; }
+        public EventScheduleType EventType { get; set; }
 
-        public NotificationDisplayKind DisplayKind { get; }
+        public NotificationDisplayKind DisplayKind { get; set; }
     }
 }

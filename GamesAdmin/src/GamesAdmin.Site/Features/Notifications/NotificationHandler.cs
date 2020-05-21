@@ -21,9 +21,11 @@ namespace GamesAdmin.Site.Features.Notifications
             this.notificationService = notificationService;
         }
 
-        public Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
+        public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new IndexViewModel());
+            var notifications = await notificationService.Get();
+
+            return new IndexViewModel(notifications);
         }
 
         public Task<bool> Handle(AddRequest request, CancellationToken cancellationToken)
