@@ -1,9 +1,18 @@
 ﻿namespace GamesAdmin.Core.Enumeration
 {
-    public enum NotificationDisplayKind
+    public class NotificationDisplayKind : Enumeration
     {
-        Marquee,
-        Toast,
-        Popup
+        public const string MarqueeValue = "0";
+
+        public static readonly NotificationDisplayKind Marquee = new NotificationDisplayKind(MarqueeValue, "Marquee");
+
+        public NotificationDisplayKind()
+        {
+        }
+
+        public NotificationDisplayKind(string value, string displayName)
+            : base(value, displayName)
+        {
+        }
     }
 }

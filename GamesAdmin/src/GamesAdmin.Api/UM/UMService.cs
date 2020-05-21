@@ -120,13 +120,13 @@ namespace GamesAdmin.Api.UM
         public async Task<bool> AddSchedule(UmSchedule umSchedule)
         {
             var schedule = mapper.Map<EventScheduleEntity>(umSchedule);
-            schedule.EventType = (byte)EventScheduleType.UnderMaintenance;
+            schedule.EventType = byte.Parse(EventScheduleType.UnderMaintenance.Value);
 
             var notification = new NotificationEntity
             {
                 Message = umSchedule.Message,
-                EventType = (byte)EventScheduleType.UnderMaintenance,
-                DisplayKind = (byte)NotificationDisplayKind.Marquee
+                EventType = byte.Parse(EventScheduleType.UnderMaintenance.Value),
+                DisplayKind = byte.Parse(NotificationDisplayKind.Marquee.Value)
             };
 
             await scheduleRepository.InsertOneAsync(schedule);            
@@ -137,7 +137,7 @@ namespace GamesAdmin.Api.UM
 
         public async Task<IList<UmSchedule>> GetAll()
         => (await scheduleRepository
-            .FilterByAsync(schedule => schedule.EventType == (byte)EventScheduleType.UnderMaintenance))
+            .FilterByAsync(schedule => schedule.EventType == byte.Parse(EventScheduleType.UnderMaintenance.Value)))
             .Select(schedule => mapper.Map<UmSchedule>(schedule))
             .ToList();
     }

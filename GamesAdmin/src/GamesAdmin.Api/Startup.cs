@@ -7,6 +7,7 @@ using GamesAdmin.Api.Accounts.ScheduleTasks;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
+using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Statistic;
 using GamesAdmin.Api.UM;
@@ -75,6 +76,7 @@ namespace GamesAdmin.Api
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();

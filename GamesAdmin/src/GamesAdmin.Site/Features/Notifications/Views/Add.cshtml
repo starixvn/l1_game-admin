@@ -10,26 +10,16 @@
     <form class="card-body form" asp-action="Add" asp-controller="Notification" method="post">
         <div class="form-group">
             <label class="control-label">Message Type</label>
-            <select class="form-control">
-                <option>Game maintenance</option>
-                <option>System maintenance</option>
-            </select>
+            <select class="form-control" asp-for="EventType" asp-items="Model.EventTypes"></select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Display As</label>
+            <select class="form-control" asp-for="DisplayKind" asp-items="Model.DisplayKinds"></select>
         </div>
         <div class="form-group">
             <label class="control-label">Message</label>
-            <textarea class="form-control">
-                </textarea>
+            <textarea class="form-control" asp-for="Message"> </textarea>
         </div>
-        <div class="form-group">
-            <label class="control-label"><input type="checkbox" /> Display on marquee</label>
-        </div>
-        <div class="form-group">
-            <label class="control-label"><input type="checkbox" /> Display toast message (auto hide in 20 seconds)</label>
-        </div>
-        <div class="form-group">
-            <label class="control-label"><input type="checkbox" /> Display popup (require user to close)</label>
-        </div>
-
         <div class="form-group">
             <input type="submit" value="Submit" class="btn-submit" />
         </div>

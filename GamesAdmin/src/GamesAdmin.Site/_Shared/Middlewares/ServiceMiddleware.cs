@@ -5,6 +5,7 @@ using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
@@ -43,6 +44,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IUmApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IUmService, UmService>();
+
+            services.AddSingleton(RestService.For<INotificationApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();

@@ -24,7 +24,7 @@ namespace GamesAdmin.Api.Notifications
 
         [HttpPost]
         [Route("add")]
-        public async Task<bool> Add([FromBody]CreateRequest createRequest)
+        public async Task<bool> Add([FromBody]AddRequest createRequest)
         {
             if (string.IsNullOrWhiteSpace(createRequest.Message))
             {

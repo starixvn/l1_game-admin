@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Notifications.Requests
 {
-    public class CreateRequest : IRequest<bool>
+    public class AddRequest : IRequest<bool>
     {
-        public CreateRequest(
+        public AddRequest(
             string message,
             EventScheduleType eventType,
             NotificationDisplayKind displayKind)

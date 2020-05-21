@@ -1,9 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Notifications.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Notifications
 {
@@ -22,6 +26,25 @@ namespace GamesAdmin.Site.Features.Notifications
         => View(await mediator.Send(new IndexRequest()));
 
         [HttpGet]
-        public IActionResult Add() => View(new AddViewModel());
+        public IActionResult Add() => View(new AddViewModel(GenerateEventTypes(), GenerateDisplayKinds()));
+
+        private static List<SelectListItem> GenerateEventTypes()
+        => Enumeration.GetAll<EventScheduleType>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
+
+        private static List<SelectListItem> GenerateDisplayKinds()
+        => Enumeration.GetAll<NotificationDisplayKind>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
+
+        [HttpPost]
+        public async Task<IActionResult> Add([Bind]AddRequest addRequest)
+        {
+            var result = await mediator.Send(addRequest);
+
+            if (result)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
     }
 }

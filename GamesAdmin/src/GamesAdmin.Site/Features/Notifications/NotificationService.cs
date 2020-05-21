@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.Notifications
     {
         public Task<IList<Notification>> Get();
 
-        public Task<bool> Create(Notification notification);
+        public Task<bool> Add(Notification notification);
     }
 
     public class NotificationService : INotificationService
@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.Features.Notifications
             this.api = api;
         }
 
-        public Task<bool> Create(Notification notification)
+        public Task<bool> Add(Notification notification)
         => api.Add(notification);
 
         public Task<IList<Notification>> Get()
