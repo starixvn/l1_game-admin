@@ -40,10 +40,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<Notification, NotificationEntity>()
                 .ForMember(dest => dest.EventType, opt => opt.MapFrom(src => byte.Parse(src.EventType.Value)))
                 .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
-
-            CreateMap<NotificationEntity, Notification>()
-                .ForMember(dest => dest.EventType, opt => opt.MapFrom(src => Enumeration.FromValue<EventScheduleType>(src.EventType.ToString())))
-                .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => Enumeration.FromValue<NotificationDisplayKind>(src.DisplayKind.ToString())));
         }
     }
 }

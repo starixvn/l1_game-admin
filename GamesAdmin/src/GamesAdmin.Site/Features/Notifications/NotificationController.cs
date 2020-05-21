@@ -46,5 +46,11 @@ namespace GamesAdmin.Site.Features.Notifications
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            return View();
+        }
     }
 }

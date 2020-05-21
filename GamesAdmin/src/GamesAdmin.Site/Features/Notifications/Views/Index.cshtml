@@ -32,7 +32,7 @@
                     <td>@notification.EventType.DisplayName</td>
                     <td>@notification.DisplayKind.DisplayName</td>
                     <td>
-                        <a href="#">Edit</a> |
+                        <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |
                         <a href="#">Delete</a>
                     </td>
                 </tr>
