@@ -1,16 +1,22 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Notifications.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Notifications
 {
     public class NotificationHandler
-        : IRequestHandler<IndexRequest, IndexViewModel>
+        : IRequestHandler<IndexRequest, IndexViewModel>        
+        , IRequestHandler<GetByIdRequest, EditViewModel>
         , IRequestHandler<AddRequest, bool>
+        , IRequestHandler<UpdateRequest, bool>
     {
         private readonly IMapper mapper;
         private readonly INotificationService notificationService;
@@ -33,6 +39,26 @@ namespace GamesAdmin.Site.Features.Notifications
             var notification = mapper.Map<Notification>(request);
 
             return notificationService.Add(notification);
+        }
+
+        public async Task<EditViewModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
+        {
+            var notification = await notificationService.GetById(request.Id);
+
+            return new EditViewModel(GenerateEventTypes(), GenerateDisplayKinds(), notification);
+        }
+
+        private static List<SelectListItem> GenerateEventTypes()
+        => Enumeration.GetAll<EventScheduleType>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
+
+        private static List<SelectListItem> GenerateDisplayKinds()
+        => Enumeration.GetAll<NotificationDisplayKind>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
+
+        public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
+        {
+            var notification = mapper.Map<Notification>(request);
+
+            return notificationService.Update(notification);
         }
     }
 }

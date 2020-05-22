@@ -1,5 +1,29 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using GamesAdmin.Site.Features.Notifications.ViewModels;
+@model EditViewModel;
+
 @{
+    ViewData["Title"] = "Edit Notification";
 }
+
+
+<div class="col-md-10 col-lg-6 card">
+    <a asp-controller="Notification" asp-action="Index">Back</a>
+    <form class="card-body form" asp-action="Edit" asp-controller="Notification" method="post">
+        <div class="form-group">
+            <label class="control-label">Message Type</label>
+            <select class="form-control" asp-for="EventTypeValue" asp-items="Model.EventTypes"></select>            
+        </div>
+        <div class="form-group">
+            <label class="control-label">Display As</label>
+            <select class="form-control" asp-for="DisplayKindValue" asp-items="Model.DisplayKinds"></select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Message</label>
+            <textarea class="form-control" asp-for="Message"> </textarea>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Update" class="btn-submit" />
+        </div>
+    </form>
+</div>

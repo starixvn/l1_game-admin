@@ -22,6 +22,7 @@ namespace GamesAdmin.Site._Shared
             CreateMap<UmSchedule, UmScheduleItemViewModel>();
 
             CreateMap<AddRequest, Notification>();
+            CreateMap<UpdateRequest, Notification>();
         }
     }
 }

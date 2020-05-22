@@ -14,7 +14,11 @@ namespace GamesAdmin.Api.Notifications
     {
         public Task<IList<Notification>> Get();
 
+        public Task<Notification> GetById(string id);
+
         public Task<bool> Create(AddRequest notification);
+
+        public Task<bool> Update(UpdateRequest notification);
     }
 
     public class NotificationService : INotificationService
@@ -44,12 +48,29 @@ namespace GamesAdmin.Api.Notifications
                 .FilterByAsync(n => true))
                 .ToList();
 
-            return notifications.Select(entity => new Notification(
+            return notifications.Select(entity => Convert(entity)).ToList();
+        }
+
+        public async Task<Notification> GetById(string id)
+        {
+            var entity = await notificationRepository.FindByIdAsync(id);
+
+            return Convert(entity);
+        }
+
+        public async Task<bool> Update(UpdateRequest notification)
+        {
+            var notificationEntity = mapper.Map<NotificationEntity>(notification);
+            await notificationRepository.ReplaceOneAsync(notificationEntity);
+
+            return true;
+        }
+
+        private static Notification Convert(NotificationEntity entity)
+            => new Notification(
                 entity.Id.ToString(),
                 entity.Message,
                 Enumeration.FromValue<EventScheduleType>(entity.EventType.ToString()),
-                Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()))).ToList();
-        }
-
+                Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()));
     }
 }

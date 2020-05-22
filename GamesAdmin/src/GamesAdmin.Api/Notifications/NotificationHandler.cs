@@ -10,6 +10,8 @@ namespace GamesAdmin.Api.Notifications
     public class NotificationHandler 
         : IRequestHandler<AddRequest, bool>
         , IRequestHandler<GetRequest, IList<Notification>>
+        , IRequestHandler<GetByIdRequest, Notification>
+        , IRequestHandler<UpdateRequest, bool>
     {
         private readonly INotificationService notificationService;
 
@@ -23,5 +25,11 @@ namespace GamesAdmin.Api.Notifications
 
         public Task<IList<Notification>> Handle(GetRequest request, CancellationToken cancellationToken)
         => notificationService.Get();
+
+        public Task<Notification> Handle(GetByIdRequest request, CancellationToken cancellationToken)
+        => notificationService.GetById(request.Id);
+
+        public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
+        => notificationService.Update(request);
     }
 }

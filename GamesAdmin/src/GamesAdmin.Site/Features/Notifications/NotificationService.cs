@@ -11,8 +11,14 @@ namespace GamesAdmin.Site.Features.Notifications
         [Get("/notifications")]
         Task<IList<Notification>> Get();
 
+        [Get("/notifications/{id}")]
+        Task<Notification> GetById(string id);
+
         [Post("/notifications/add")]
         Task<bool> Add([Body] Notification notification);
+
+        [Post("/notifications/update")]
+        Task<bool> Update([Body] Notification notification);
     }
 
     public interface INotificationService
@@ -20,6 +26,10 @@ namespace GamesAdmin.Site.Features.Notifications
         public Task<IList<Notification>> Get();
 
         public Task<bool> Add(Notification notification);
+
+        public Task<Notification> GetById(string id);
+
+        public Task<bool> Update(Notification notification);
     }
 
     public class NotificationService : INotificationService
@@ -36,5 +46,11 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<IList<Notification>> Get()
         => api.Get();
+
+        public Task<Notification> GetById(string id)
+        => api.GetById(id);
+
+        public Task<bool> Update(Notification notification)
+        => api.Update(notification);
     }
 }

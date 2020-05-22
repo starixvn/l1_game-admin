@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 
 namespace GamesAdmin.Site.Features.Notifications
 {
@@ -44,13 +45,24 @@ namespace GamesAdmin.Site.Features.Notifications
                 return RedirectToAction(nameof(Index));
             }
 
-            return View();
+            return RedirectToAction(nameof(Add));
         }
 
         [HttpGet]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
+        => View(await mediator.Send(new GetByIdRequest(id)));
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([Bind]UpdateRequest request)
         {
-            return View();
+            var result = await mediator.Send(request);
+
+            return result
+                ? RedirectToAction(nameof(Index))
+                : RedirectToAction(nameof(Edit), new RouteValueDictionary
+                    {
+                        { "id", request.Id }
+                    });
         }
     }
 }

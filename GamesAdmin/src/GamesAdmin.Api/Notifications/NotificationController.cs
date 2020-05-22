@@ -33,5 +33,20 @@ namespace GamesAdmin.Api.Notifications
 
             return await mediator.Send(addRequest);
         }
+
+        [HttpGet("{id}")]
+        public Task<Notification> Get(string id) => mediator.Send(new GetByIdRequest(id));
+
+        [HttpPost]
+        [Route("update")]
+        public async Task<bool> Update([FromBody]UpdateRequest updateRequest)
+        {
+            if (string.IsNullOrWhiteSpace(updateRequest.Message))
+            {
+                return false;
+            }
+
+            return await mediator.Send(updateRequest);
+        }
     }
 }
