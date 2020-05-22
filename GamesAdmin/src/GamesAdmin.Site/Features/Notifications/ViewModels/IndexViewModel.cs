@@ -11,5 +11,7 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         }
 
         public IList<Notification> Notifications { get; }
+
+        public bool HasData => Notifications.Count > 0;
     }
 }

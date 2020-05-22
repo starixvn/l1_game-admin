@@ -24,7 +24,14 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody>            
+            @if (!Model.HasData) 
+            {
+                <tr>
+                    <td colspan="4" align="center">There is no data.</td>
+                </tr>
+            }
+
             @foreach (var notification in Model.Notifications)
             {
                 <tr>
