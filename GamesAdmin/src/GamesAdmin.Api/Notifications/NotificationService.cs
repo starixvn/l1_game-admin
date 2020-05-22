@@ -19,6 +19,8 @@ namespace GamesAdmin.Api.Notifications
         public Task<bool> Create(AddRequest notification);
 
         public Task<bool> Update(UpdateRequest notification);
+
+        public Task<bool> Delete(string id);
     }
 
     public class NotificationService : INotificationService
@@ -62,6 +64,13 @@ namespace GamesAdmin.Api.Notifications
         {
             var notificationEntity = mapper.Map<NotificationEntity>(notification);
             await notificationRepository.ReplaceOneAsync(notificationEntity);
+
+            return true;
+        }
+
+        public async Task<bool> Delete(string id)
+        {
+            await notificationRepository.DeleteByIdAsync(id);
 
             return true;
         }

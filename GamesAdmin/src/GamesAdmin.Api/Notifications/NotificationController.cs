@@ -48,5 +48,8 @@ namespace GamesAdmin.Api.Notifications
 
             return await mediator.Send(updateRequest);
         }
+
+        [HttpPost("delete/{id}")]
+        public Task<bool> Delete(string id) => mediator.Send(new DeleteRequest(id));
     }
 }

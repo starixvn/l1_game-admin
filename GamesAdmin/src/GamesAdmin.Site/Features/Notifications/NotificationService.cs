@@ -19,6 +19,9 @@ namespace GamesAdmin.Site.Features.Notifications
 
         [Post("/notifications/update")]
         Task<bool> Update([Body] Notification notification);
+
+        [Post("/notifications/delete/id")]
+        Task<bool> Delete(string id);
     }
 
     public interface INotificationService
@@ -30,6 +33,8 @@ namespace GamesAdmin.Site.Features.Notifications
         public Task<Notification> GetById(string id);
 
         public Task<bool> Update(Notification notification);
+
+        public Task<bool> Delete(string id);
     }
 
     public class NotificationService : INotificationService
@@ -52,5 +57,8 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Update(Notification notification)
         => api.Update(notification);
+
+        public Task<bool> Delete(string id)
+        => api.Delete(id);
     }
 }

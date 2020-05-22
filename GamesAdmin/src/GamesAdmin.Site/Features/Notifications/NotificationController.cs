@@ -64,5 +64,13 @@ namespace GamesAdmin.Site.Features.Notifications
                         { "id", request.Id }
                     });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([Bind]DeleteRequest request)
+        {
+            var result = await mediator.Send(request);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

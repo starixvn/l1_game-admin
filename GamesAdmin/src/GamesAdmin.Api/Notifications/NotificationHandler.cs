@@ -12,6 +12,7 @@ namespace GamesAdmin.Api.Notifications
         , IRequestHandler<GetRequest, IList<Notification>>
         , IRequestHandler<GetByIdRequest, Notification>
         , IRequestHandler<UpdateRequest, bool>
+        , IRequestHandler<DeleteRequest, bool>
     {
         private readonly INotificationService notificationService;
 
@@ -31,5 +32,8 @@ namespace GamesAdmin.Api.Notifications
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => notificationService.Update(request);
+
+        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
+        => notificationService.Delete(request.Id);
     }
 }

@@ -17,6 +17,7 @@ namespace GamesAdmin.Site.Features.Notifications
         , IRequestHandler<GetByIdRequest, EditViewModel>
         , IRequestHandler<AddRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
+        , IRequestHandler<DeleteRequest, bool>
     {
         private readonly IMapper mapper;
         private readonly INotificationService notificationService;
@@ -60,5 +61,8 @@ namespace GamesAdmin.Site.Features.Notifications
 
             return notificationService.Update(notification);
         }
+
+        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
+        => notificationService.Delete(request.Id);
     }
 }
