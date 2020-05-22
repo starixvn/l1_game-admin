@@ -1,0 +1,3 @@
+﻿function DeleteButton() {
+    alert("Do you want to delete this item?");
+}

@@ -33,10 +33,14 @@
                     <td>@notification.DisplayKind.DisplayName</td>
                     <td>
                         <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |
-                        <a href="#">Delete</a>
+                        <a href="#" onclick="DeleteButton();">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts{
+    <script src="~/js/Notification.min.js" asp-append-version="true"></script>
+}

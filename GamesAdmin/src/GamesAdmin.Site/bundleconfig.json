@@ -45,5 +45,11 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/online-users.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Notification.min.js",
+    "inputFiles": [
+      "wwwroot/js/Notification.js"
+    ]
   }
 ]
