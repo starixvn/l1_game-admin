@@ -65,13 +65,12 @@ namespace GamesAdmin.Site.Features.Notifications
                     });
         }
 
-        [HttpPost]
-        //[Route("notification/delete")]
+        [HttpPost]       
         public async Task<IActionResult> Delete(string id)
         {
             var result = await mediator.Send(new DeleteRequest(id));
 
-            return RedirectToAction(nameof(Index));
+            return Json(result);
         }
     }
 }

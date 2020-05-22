@@ -7,10 +7,9 @@
             url: "/Notification/Delete",
             data: {id: id}
         }).done(function (updated) {
-            if (!updated) {
-
+            if (updated) {
+                window.location.href = "/notification";
             }
-
         });
     }
 }
