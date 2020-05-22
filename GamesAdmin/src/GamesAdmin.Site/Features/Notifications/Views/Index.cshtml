@@ -33,7 +33,7 @@
                     <td>@notification.DisplayKind.DisplayName</td>
                     <td>
                         <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |
-                        <a href="#" onclick="DeleteButton(@notification.Id);">Delete</a>
+                        <a href="#" onclick="DeleteButton('@notification.Id');">Delete</a>
                     </td>
                 </tr>
             }

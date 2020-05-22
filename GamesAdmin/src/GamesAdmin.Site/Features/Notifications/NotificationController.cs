@@ -66,9 +66,10 @@ namespace GamesAdmin.Site.Features.Notifications
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([Bind]DeleteRequest request)
+        //[Route("notification/delete")]
+        public async Task<IActionResult> Delete(string id)
         {
-            var result = await mediator.Send(request);
+            var result = await mediator.Send(new DeleteRequest(id));
 
             return RedirectToAction(nameof(Index));
         }

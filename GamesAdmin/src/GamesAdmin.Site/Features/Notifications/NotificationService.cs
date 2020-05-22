@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features.Notifications
         [Post("/notifications/update")]
         Task<bool> Update([Body] Notification notification);
 
-        [Post("/notifications/delete/id")]
+        [Post("/notifications/delete/{id}")]
         Task<bool> Delete(string id);
     }
 
