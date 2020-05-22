@@ -13,8 +13,13 @@
     },
     {
       "provider": "unpkg",
-      "library": "@types/jquery@3.3.1",
+      "library": "@types/jquery@3.3.38",
       "destination": "wwwroot/lib/types/jquery/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@types/sizzle@2.3.2",
+      "destination": "wwwroot/lib/types/sizzle/"
     }
   ]
 }
