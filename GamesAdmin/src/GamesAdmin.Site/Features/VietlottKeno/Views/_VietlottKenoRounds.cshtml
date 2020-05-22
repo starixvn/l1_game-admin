@@ -1,0 +1,23 @@
+﻿@using GamesAdmin.Core
+
+@model IEnumerable<GamesAdmin.Site.Features.VietlottKeno.ViewModels.ViewlottKenoRoundViewModel>
+
+<table id="vietlott-keno-table" class="table table-bordered table-hover stripe">
+    <thead>
+        <tr>
+            <th>Round No</th>
+            <th>Date (GMT+7)</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RoundNo</td>
+                <td>@item.Time.ToString(Constants.DateTimeFormat)</td>
+                <td>@string.Join(" - ", item.Results)</td>
+            </tr>
+        }
+    </tbody>
+</table>

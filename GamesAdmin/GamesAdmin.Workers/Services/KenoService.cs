@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GamesAdmin.Workers.Repository;
 using GamesAdmin.Workers.Repository.Entities;
@@ -27,9 +24,9 @@ namespace GamesAdmin.Workers.Services
         {
             var entity = new KenoRoundEntity
             {
-                Date = DateTime.Now,
-                RoundId = kenoRound.DrawId,
-                Results = kenoRound.Data.Split("|").Select(x => int.Parse(x))
+                Time = DateTime.UtcNow,
+                RoundNo = kenoRound.DrawId,
+                Results = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x)
             };
 
             await kenoRepository.InsertAsync(entity);

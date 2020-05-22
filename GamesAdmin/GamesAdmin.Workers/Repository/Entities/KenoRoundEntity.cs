@@ -12,11 +12,11 @@ namespace GamesAdmin.Workers.Repository.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public string RoundId { get; set; }
+        public string RoundNo { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime Date { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        public DateTime Time { get; set; }
 
-        public IEnumerable<int> Results { get; set; }
+        public IEnumerable<byte> Results { get; set; }
     }
 }

@@ -1,0 +1,44 @@
+﻿@model GamesAdmin.Site.Features.VietlottKeno.ViewModels.VietlottKenoViewModel
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="~/lib/data-tables/datatables.min.css" />
+    <link href="~/scss/pages/vietlottkeno.min.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Vietlott Keno";
+}
+
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetVietlottKenoRounds"
+      data-ajax-mode="replace"
+      data-ajax-update="#keno-round-result"
+      data-ajax-loading="#spinner"
+      data-ajax-success="vietlottKeno.init"
+      method="get">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label asp-for="Date" class="control-label"></label>
+            <input type="date" class="form-control" asp-for="Date">
+        </div>
+        <div class="col-auto mt-5">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="keno-round-result" class="keno-round-container">
+</div>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/vietlott-keno.js"></script>
+    </environment>
+    <environment exclude="Development">
+    </environment>
+}

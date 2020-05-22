@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Database.Attributes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace GamesAdmin.Database
         {
             collection = database.GetCollection<TDocument>(Document.GetCollectionName(typeof(TDocument)));
         }
-
 
         public virtual IQueryable<TDocument> AsQueryable()
         {
@@ -63,7 +61,7 @@ namespace GamesAdmin.Database
             var objectId = new ObjectId(id);
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
 
-            return  (await collection.FindAsync(filter)).FirstOrDefault();
+            return (await collection.FindAsync(filter)).FirstOrDefault();
         }
 
         public virtual void InsertOne(TDocument document)

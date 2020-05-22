@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using GamesAdmin.Workers.Configuration;
 using GamesAdmin.Workers.Services;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace GamesAdmin.Workers
@@ -61,6 +60,7 @@ namespace GamesAdmin.Workers
                     break;
 
                 ms.Seek(0, SeekOrigin.Begin);
+
                 using var reader = new StreamReader(ms, Encoding.UTF8);
                 var jsonString = await reader.ReadToEndAsync();
                 var kenoResult = JsonSerializer.Deserialize<VietLottKenoSocketResult>(jsonString);
