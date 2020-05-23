@@ -15,8 +15,6 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
 
         public List<SelectListItem> DisplayKinds { get; }
 
-        public byte EventTypeValue { get; set; }
-
         public byte DisplayKindValue { get; set; }
 
         [Required]

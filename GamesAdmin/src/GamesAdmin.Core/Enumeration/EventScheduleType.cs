@@ -2,9 +2,9 @@
 {
     public class EventScheduleType : Enumeration
     {
-        public const string UnderMaintenanceValue = "0";
-        public const string PromotionValue = "1";
-        public const string NotificationValue = "2";
+        public const string UnderMaintenanceValue = "1";
+        public const string PromotionValue = "2";
+        public const string NotificationValue = "3";
 
         public static readonly EventScheduleType UnderMaintenance = new EventScheduleType(UnderMaintenanceValue, "Under Maintenance");
         public static readonly EventScheduleType Promotion = new EventScheduleType(PromotionValue, "Promotion");

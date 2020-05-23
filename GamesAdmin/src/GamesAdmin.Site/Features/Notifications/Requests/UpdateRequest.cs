@@ -9,12 +9,7 @@ namespace GamesAdmin.Site.Features.Notifications.Requests
 
         public string Message { get; set; }
 
-        public byte EventTypeValue { get; set; }
-
         public byte DisplayKindValue { get; set; }
-
-        public EventScheduleType EventType
-            => Enumeration.FromValue<EventScheduleType>(EventTypeValue.ToString());
 
         public NotificationDisplayKind DisplayKind
             => Enumeration.FromValue<NotificationDisplayKind>(DisplayKindValue.ToString());

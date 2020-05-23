@@ -9,8 +9,6 @@ namespace GamesAdmin.Api.Notifications.Requests
 
         public string Message { get; set; }
 
-        public EventScheduleType EventType { get; set; }
-
         public NotificationDisplayKind DisplayKind { get; set; }
     }
 }
