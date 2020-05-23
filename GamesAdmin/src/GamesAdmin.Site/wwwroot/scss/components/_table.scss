@@ -1,6 +1,11 @@
 ﻿.table {
+    &.has-background {
+        background-color: #fff;
+    }
+
     &.table-bordered thead th {
         border-bottom-width: 2px;
+        text-align: center;
     }
 
     td, th {

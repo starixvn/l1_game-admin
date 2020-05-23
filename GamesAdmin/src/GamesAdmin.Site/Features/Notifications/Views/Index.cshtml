@@ -5,46 +5,47 @@
     ViewData["Title"] = "Notifications";
 }
 
-<div class="form-row align-items-center">
-    <div class="col-auto">
-        <a asp-action="Add" asp-controller="Notification" class="add-new-game">
-            <i class="material-icons menu-icon">add_alarm</i>
-            <span class="menu-name">New Notification</span>
+    <div>
+        <a asp-action="Add" asp-controller="Notification" class="btn-add add-item">
+            <i class="material-icons">add_alert</i>
+            New Notification
         </a>
+        <a asp-action="Add" asp-controller="Notification" class="btn-gray back-button">
+            <i class="material-icons">reply</i>
+            Back
+        </a>
+        
     </div>
-</div>
 
-<div class="col-md-10 col-lg-6 card">
-    <table id="status-tbl" class="table table-bordered">
-        <thead>
+<table id="status-tbl" class="table table-bordered has-background col-md-10 col-lg-6">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th>Display As</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.HasData)
+        {
             <tr>
-                <th>Message</th>
-                <th>Display As</th>
-                <th>Actions</th>
+                <td colspan="4" align="center">There is no data.</td>
             </tr>
-        </thead>
-        <tbody>            
-            @if (!Model.HasData) 
-            {
-                <tr>
-                    <td colspan="4" align="center">There is no data.</td>
-                </tr>
-            }
+        }
 
-            @foreach (var notification in Model.Notifications)
-            {
-                <tr>
-                    <td>@notification.Message</td>
-                    <td>@notification.DisplayKind.DisplayName</td>
-                    <td>
-                        <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |
-                        <a href="#" onclick="DeleteButton('@notification.Id');">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        @foreach (var notification in Model.Notifications)
+        {
+            <tr>
+                <td>@notification.Message</td>
+                <td>@notification.DisplayKind.DisplayName</td>
+                <td>
+                    <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |
+                    <a href="#" onclick="DeleteButton('@notification.Id');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @section Scripts{
     <script src="~/js/Notification.min.js" asp-append-version="true"></script>

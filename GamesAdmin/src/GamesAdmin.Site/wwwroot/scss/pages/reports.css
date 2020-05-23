@@ -43,8 +43,6 @@
   padding: 0; }
   .report-container .table {
     background-color: #fff; }
-    .report-container .table th {
-      text-align: center; }
   .report-container .col-date {
     width: 92px;
     text-align: center; }

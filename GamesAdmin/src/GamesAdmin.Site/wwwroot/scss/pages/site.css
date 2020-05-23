@@ -143,8 +143,12 @@
     left: 44px;
     background-color: #31a66a;
 }*/
+.table.has-background {
+  background-color: #fff; }
+
 .table.table-bordered thead th {
-  border-bottom-width: 2px; }
+  border-bottom-width: 2px;
+  text-align: center; }
 
 .table td, .table th {
   padding: 1rem;
@@ -552,3 +556,24 @@ ul {
 input[type=checkbox] {
   position: relative;
   top: 2px; }
+
+.add-item,
+.back-button {
+  position: relative;
+  display: inline-block;
+  padding-left: 33px;
+  margin-left: 6px;
+  margin-bottom: 12px;
+  color: #fff; }
+  .add-item .material-icons,
+  .back-button .material-icons {
+    font-size: 19px;
+    position: absolute;
+    left: 16px; }
+  .add-item:hover,
+  .back-button:hover {
+    text-decoration: none;
+    color: #fff; }
+
+.back-button .material-icons {
+  left: 9px; }
