@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Notifications.ViewModels;
+using GamesAdmin.Site.Helpers;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Notifications
 {
@@ -46,14 +44,8 @@ namespace GamesAdmin.Site.Features.Notifications
         {
             var notification = await notificationService.GetById(request.Id);
 
-            return new EditViewModel(GenerateDisplayKinds(), notification);
+            return new EditViewModel(EnumerationHelper.ToSelectList<NotificationDisplayKind>(), notification);
         }
-
-        private static List<SelectListItem> GenerateEventTypes()
-        => Enumeration.GetAll<EventScheduleType>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
-
-        private static List<SelectListItem> GenerateDisplayKinds()
-        => Enumeration.GetAll<NotificationDisplayKind>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
