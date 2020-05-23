@@ -2,17 +2,8 @@ using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
-using GamesAdmin.Api.Accounts;
+using GamesAdmin.Api._Shared.Middlewares;
 using GamesAdmin.Api.Accounts.ScheduleTasks;
-using GamesAdmin.Api.ClientSites;
-using GamesAdmin.Api.GameRound;
-using GamesAdmin.Api.Games;
-using GamesAdmin.Api.Notifications;
-using GamesAdmin.Api.Report;
-using GamesAdmin.Api.Statistic;
-using GamesAdmin.Api.UM;
-using GamesAdmin.Api.Users;
-using GamesAdmin.Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +13,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Driver;
 
 namespace GamesAdmin.Api
 {
@@ -42,43 +31,21 @@ namespace GamesAdmin.Api
             var dbSettings = Configuration.GetSection(nameof(DatabaseSettings));
             services.Configure<DatabaseSettings>(dbSettings);
 
+            services.AddSingleton<IDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+
             var botSettings = Configuration.GetSection(nameof(BotSettings));
             services.Configure<BotSettings>(botSettings);
+            services.AddSingleton<IBotSettings>(sp =>
+              sp.GetRequiredService<IOptions<BotSettings>>().Value);
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddSingleton<IDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<IBotSettings>(sp =>
-               sp.GetRequiredService<IOptions<BotSettings>>().Value);
+            services.AddDatabase(dbSettings);
+            services.AddRepositories();
+            services.AddServices();
 
-            var conventionPack = new ConventionPack { new CamelCaseElementNameConvention(), new IgnoreExtraElementsConvention(true) };
-            ConventionRegistry.Register("camelCase", conventionPack, t => true);
-            var mongoClient = new MongoClient(dbSettings["ConnectionString"]);
-            services.AddSingleton<IMongoClient>(mongoClient);
-            services.AddSingleton(mongoClient.GetDatabase(dbSettings["DatabaseName"]));
-
-            services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-            services.AddScoped<ISiteRepository, SiteRepository>();
-            services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
-            services.AddScoped<IStatisticRepository, StatisticRepository>();
-            services.AddScoped<IBigSmallTurboReportRepository, BigSmallTurboReportRepository>();
-            services.AddScoped<IOddEvenReportRepository, OddEvenReportRepository>();
-            services.AddScoped<IOddEvenTurboReportRepository, OddEvenTurboReportRepository>();
-
-            services.AddScoped<IStatisticService, StatisticService>();
-            services.AddScoped<IGameSettingsService, GameSettingsService>();
-            services.AddScoped<IGameRoundService, GameRoundService>();
-            services.AddScoped<IUMService, UMService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
-            services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
-            services.AddScoped<INotificationService, NotificationService>();
-
-            services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IHostedService, AddBotBalanceTask>();
 
             services.AddAuthentication("Bearer")
