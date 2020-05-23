@@ -19,8 +19,7 @@
         <thead>
             <tr>
                 <th>Message</th>
-                <th>EventType</th>
-                <th>DisplayKind</th>
+                <th>Display As</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -36,7 +35,6 @@
             {
                 <tr>
                     <td>@notification.Message</td>
-                    <td>@notification.EventType.DisplayName</td>
                     <td>@notification.DisplayKind.DisplayName</td>
                     <td>
                         <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |

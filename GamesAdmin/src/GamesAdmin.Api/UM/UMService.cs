@@ -125,7 +125,6 @@ namespace GamesAdmin.Api.UM
             var notification = new NotificationEntity
             {
                 Message = umSchedule.Message,
-                EventType = byte.Parse(EventScheduleType.UnderMaintenance.Value),
                 DisplayKind = byte.Parse(NotificationDisplayKind.Marquee.Value)
             };
 

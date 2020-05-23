@@ -46,7 +46,7 @@ namespace GamesAdmin.Site.Features.Notifications
         {
             var notification = await notificationService.GetById(request.Id);
 
-            return new EditViewModel(GenerateEventTypes(), GenerateDisplayKinds(), notification);
+            return new EditViewModel(GenerateDisplayKinds(), notification);
         }
 
         private static List<SelectListItem> GenerateEventTypes()

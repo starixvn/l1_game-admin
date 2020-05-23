@@ -27,10 +27,7 @@ namespace GamesAdmin.Site.Features.Notifications
         => View(await mediator.Send(new IndexRequest()));
 
         [HttpGet]
-        public IActionResult Add() => View(new AddViewModel(GenerateEventTypes(), GenerateDisplayKinds()));
-
-        private static List<SelectListItem> GenerateEventTypes()
-        => Enumeration.GetAll<EventScheduleType>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();
+        public IActionResult Add() => View(new AddViewModel(GenerateDisplayKinds()));
 
         private static List<SelectListItem> GenerateDisplayKinds()
         => Enumeration.GetAll<NotificationDisplayKind>().Select(x => new SelectListItem(x.DisplayName, x.Value)).ToList();

@@ -79,7 +79,6 @@ namespace GamesAdmin.Api.Notifications
             => new Notification(
                 entity.Id.ToString(),
                 entity.Message,
-                Enumeration.FromValue<EventScheduleType>(entity.EventType.ToString()),
                 Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()));
     }
 }
