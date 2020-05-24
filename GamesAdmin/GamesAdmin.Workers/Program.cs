@@ -1,3 +1,5 @@
+using Coravel;
+using GamesAdmin.Workers.Bots.Tasks;
 using GamesAdmin.Workers.Configuration;
 using GamesAdmin.Workers.Extensions;
 using GamesAdmin.Workers.Repository;
@@ -11,9 +13,19 @@ namespace GamesAdmin.Workers
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IHost host = CreateHostBuilder(args).Build();
+
+            host.Services.UseScheduler(scheduler => {
+
+                scheduler
+                    .Schedule<ReviseBalanceTask>()
+                    .EveryThirtyMinutes();
+            });
+
+            host.Run();
         }
 
+        //TODO inject entity, inject services
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
@@ -23,6 +35,8 @@ namespace GamesAdmin.Workers
                     services.AddTransient<IKenoService, KenoService>();
                     services.AddTransient<IKenoRepository, KenoRepository>();
                     services.AddHostedService<VietlottKenoWorker>();
+                    services.AddScheduler();
+                    services.AddTransient<ReviseBalanceTask>();
                 });
     }
 }
