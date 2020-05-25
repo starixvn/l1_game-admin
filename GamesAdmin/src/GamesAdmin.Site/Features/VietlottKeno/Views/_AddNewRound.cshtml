@@ -6,10 +6,9 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<form asp-action="AddNewRound" method="post" id="add-new-round-form">
-
+<form data-ajax="true" asp-action="AddNewRound" method="post" id="add-new-round-form"
+      data-ajax-failure="vietlottKeno.onAddNewRoundFailure">
     <div class="modal-body">
-
         <div class="form-group">
             <label asp-for="RoundNo"></label>
             <input class="form-control" type="number" asp-for="RoundNo">
@@ -24,7 +23,7 @@
             <label>Result</label>
             @for (var i = 0; i < Model.Result.Count(); i++)
             {
-                <input class="form-control" type="number" asp-for="Result[i].Number" />
+                <input class="form-control" type="number" asp-for="Result[i].Number" placeholder="1 to 80" />
             }
         </div>
     </div>
