@@ -63,3 +63,6 @@
 
 .dataTables_wrapper .dataTables_info {
   padding-top: 1.2rem; }
+
+.input-validation-error {
+  border: 1px solid #dc3545; }

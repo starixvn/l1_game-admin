@@ -33,5 +33,12 @@ namespace GamesAdmin.Site.Features.VietlottKeno
             var result = await mediator.Send(new GetRoundsRequest(date.ToUniversalTime()));
             return PartialView("_VietlottKenoRounds", result);
         }
+
+        [HttpGet]
+        public IActionResult AddNewRound()
+        {
+            var viewModel = new AddVietlottKenoRoundViewModel();
+            return PartialView("_AddNewRound", viewModel);
+        }
     }
 }

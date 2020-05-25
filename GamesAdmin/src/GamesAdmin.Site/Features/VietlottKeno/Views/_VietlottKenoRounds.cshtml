@@ -7,6 +7,9 @@
         <tr>
             <th>Round No / Time (GMT+7)</th>
             <th>Result</th>
+            <th>Big / Small</th>
+            <th>Even / Odd</th>
+            <th>Element</th>
         </tr>
     </thead>
     <tbody>
@@ -17,7 +20,34 @@
                     @item.RoundNo
                     <div>@item.Time.ToString(Constants.TimeFormat)</div>
                 </td>
-                <td>@string.Join(" - ", item.Results)</td>
+                <td>@string.Join(" - ", item.Result)</td>
+                <td class="text-center">@(item.Big ? "Big" : "Small")</td>
+                <td class="text-center">@(item.Even ? "Even" : "Odd")</td>
+                <td class="text-center">
+                    @if (item.Gold)
+                    {
+                        @("Gold")
+                    }
+                    @if (item.Wood)
+                    {
+                        @("Wood")
+
+                    }
+                    @if (item.Water)
+                    {
+                        @("Water")
+
+                    }
+                    @if (item.Fire)
+                    {
+                        @("Fire")
+
+                    }
+                    @if (item.Earth)
+                    {
+                        @("Earth")
+                    }
+                </td>
             </tr>
         }
     </tbody>
