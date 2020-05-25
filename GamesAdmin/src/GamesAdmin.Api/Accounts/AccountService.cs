@@ -13,8 +13,6 @@ namespace GamesAdmin.Api.Accounts
 {
     public interface IAccountService
     {
-        Task ReviseBotBalance();
-
         Task<int> GetTotalBots();
 
         Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot);
@@ -39,10 +37,6 @@ namespace GamesAdmin.Api.Accounts
 
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
-        private readonly int minAmount;
-        private readonly int maxAmount;
-        private readonly int maxAddAmount;
-        private readonly int minAddAmount;
 
         public AccountService(
             ISentryClient sentryClient,
@@ -72,40 +66,7 @@ namespace GamesAdmin.Api.Accounts
 
             minInitAmount = 2 * botSettings.DefaultMaxBet;
             maxInitAmount = 20 * botSettings.DefaultMaxBet;
-            minAmount = 2 * botSettings.DefaultMaxBet;
-            maxAmount = 20 * botSettings.DefaultMaxBet;
-            maxAddAmount = 10 * botSettings.DefaultMaxBet;
-            minAddAmount = 3 * botSettings.DefaultMaxBet;
         }
-
-        public Task ReviseBotBalance()
-        => Task.Run(() =>
-        {
-
-            var botsNeedAddBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red < minAmount).ToList();
-            var botsNeedResetBalance = accountInfoRepository.FilterBy(entity => entity.IsBot && entity.Red >= maxAmount).ToList();
-
-            sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
-            var resetMessage = $"ResetBalance for {botsNeedResetBalance?.Count}";
-
-            foreach (var bot in botsNeedAddBalance)
-            {
-                bot.Red += new Random().Next(minAddAmount, maxAddAmount);
-
-                accountInfoRepository.ReplaceOne(bot);
-            }
-
-            foreach (var bot in botsNeedResetBalance)
-            {
-                resetMessage += $" {bot.Name} : {bot.Red};";
-
-                bot.Red = new Random().Next(minInitAmount, maxInitAmount);
-
-                accountInfoRepository.ReplaceOne(bot);
-            }
-
-            sentryClient.CaptureMessage(resetMessage);
-        });
 
         public async Task<int> GetTotalBots()
         {

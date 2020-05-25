@@ -3,17 +3,6 @@ using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Middlewares;
-using GamesAdmin.Api.Accounts.ScheduleTasks;
-using GamesAdmin.Api.ClientSites;
-using GamesAdmin.Api.GameRound;
-using GamesAdmin.Api.Games;
-using GamesAdmin.Api.Notifications;
-using GamesAdmin.Api.Report;
-using GamesAdmin.Api.Statistic;
-using GamesAdmin.Api.UM;
-using GamesAdmin.Api.Users;
-using GamesAdmin.Api.VietlottKeno;
-using GamesAdmin.Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,8 +44,6 @@ namespace GamesAdmin.Api
             services.AddDatabase(dbSettings);
             services.AddRepositories();
             services.AddServices();
-
-            services.AddSingleton<IHostedService, AddBotBalanceTask>();
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
