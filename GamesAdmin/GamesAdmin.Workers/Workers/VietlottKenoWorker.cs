@@ -28,6 +28,11 @@ namespace GamesAdmin.Workers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            if (!vietlottKenoConfiguration.Enable)
+            {
+                return;
+            }
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 using var socket = new ClientWebSocket();

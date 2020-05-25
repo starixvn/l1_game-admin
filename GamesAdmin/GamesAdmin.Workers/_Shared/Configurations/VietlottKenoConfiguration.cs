@@ -3,5 +3,7 @@
     public class VietlottKenoConfiguration
     {
         public string WebSocketUrl { get; set; }
+
+        public bool Enable { get; set; }
     }
 }
