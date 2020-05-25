@@ -55,6 +55,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+    <PackageReference Include="Sentry" Version="2.1.1" />
+    <PackageReference Include="Sentry.Extensions.Logging" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,8 +4,10 @@ using GamesAdmin.Workers.Configuration;
 using GamesAdmin.Workers.Extensions;
 using GamesAdmin.Workers.Repository;
 using GamesAdmin.Workers.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace GamesAdmin.Workers
 {
@@ -38,6 +40,10 @@ namespace GamesAdmin.Workers
 
                     services.AddScheduler();
                     services.AddTransient<ReviseBotBalanceTask>();
+                })
+                .ConfigureLogging((hostingContext, logging) => {
+                    logging.AddConfiguration(hostingContext.Configuration);
+                    logging.AddSentry();
                 });
     }
 }
