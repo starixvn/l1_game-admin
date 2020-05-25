@@ -49,7 +49,7 @@ namespace GamesAdmin.Site.Features._Shared
                 var gameType = string.Empty;
                 switch (game)
                 {
-                    case GameType.ShakeThePlateValue:
+                    case GameType.SeDieValue:
                         gameType = "stp";
                         break;
 

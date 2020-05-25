@@ -43,7 +43,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         private List<SelectListItem> GenerateGameItems()
         => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
-                new SelectListItem(GameType.ShakeThePlate.DisplayName, GameType.ShakeThePlate.Value),
+                new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value)
             };
     }

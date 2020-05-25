@@ -17,8 +17,8 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.OddEvenTurboValue:
                     return Enumeration.GetAll<OddEvenBetChoice>();
 
-                case GameType.ShakeThePlateValue:
-                    return Enumeration.GetAll<ShareThePlateBetChoice>();
+                case GameType.SeDieValue:
+                    return Enumeration.GetAll<SeDieBetChoice>();
 
                 case GameType.FishPrawnCrabValue:
                     return Enumeration.GetAll<FishPrawnCrabBetChoice>();
@@ -28,6 +28,9 @@ namespace GamesAdmin.Core.Enumeration
 
                 case GameType.KenoProMaxValue:
                     return Enumeration.GetAll<KenoProMaxBetChoice>();
+
+                case GameType.MiniSeDieValue:
+                    return Enumeration.GetAll<MiniSeDieBetChoice>();
 
                 default: return default;
             }
