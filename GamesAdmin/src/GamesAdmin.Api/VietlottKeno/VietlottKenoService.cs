@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.VietlottKeno
             {
                 Time = x.Time,
                 Results = x.Results,
-                RoundNo = x.RoundNo
+                Number = x.Number
             });
         }
     }

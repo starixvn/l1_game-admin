@@ -12,7 +12,8 @@ namespace GamesAdmin.Workers.Repository.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public string RoundNo { get; set; }
+        [BsonElement("id")]
+        public long RoundNo { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime Time { get; set; }

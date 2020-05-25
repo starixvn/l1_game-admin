@@ -5,8 +5,7 @@
 <table id="vietlott-keno-table" class="table table-bordered table-hover stripe">
     <thead>
         <tr>
-            <th>Round No</th>
-            <th>Date (GMT+7)</th>
+            <th>Round No / Time (GMT+7)</th>
             <th>Result</th>
         </tr>
     </thead>
@@ -14,8 +13,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.RoundNo</td>
-                <td>@item.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="text-center">
+                    @item.RoundNo
+                    <div>@item.Time.ToString(Constants.TimeFormat)</div>
+                </td>
                 <td>@string.Join(" - ", item.Results)</td>
             </tr>
         }

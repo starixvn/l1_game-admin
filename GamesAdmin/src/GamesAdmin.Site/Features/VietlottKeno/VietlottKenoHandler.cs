@@ -28,7 +28,7 @@ namespace GamesAdmin.Site.Features.VietlottKeno
             return result.OrderByDescending(x => x.Time).Select(x => new ViewlottKenoRoundViewModel
             {
                 Results = x.Results,
-                RoundNo = x.RoundNo,
+                RoundNo = x.Number.ToString("D7"),
                 Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone)
             });
         }

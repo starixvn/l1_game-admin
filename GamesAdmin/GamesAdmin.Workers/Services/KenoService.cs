@@ -25,7 +25,7 @@ namespace GamesAdmin.Workers.Services
             var entity = new KenoRoundEntity
             {
                 Time = DateTime.UtcNow,
-                RoundNo = kenoRound.DrawId,
+                RoundNo = long.Parse(kenoRound.DrawId),
                 Results = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x)
             };
 

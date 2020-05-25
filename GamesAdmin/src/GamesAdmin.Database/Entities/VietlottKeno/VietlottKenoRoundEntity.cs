@@ -4,10 +4,8 @@ using GamesAdmin.Database.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("kenovietlott_phiens")]
-    public class VietlottKenoRoundEntity : MiniGameBaseEntity
+    public class VietlottKenoRoundEntity : BaseRoundEntity
     {
-        public string RoundNo { get; set; }
-
         public IEnumerable<byte> Results { get; set; }
     }
 }
