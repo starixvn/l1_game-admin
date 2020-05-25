@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Workers._Shared.Configurations;
+using Sentry;
 
 namespace GamesAdmin.Workers.Bots
 {
@@ -14,8 +15,6 @@ namespace GamesAdmin.Workers.Bots
 
     public class BotService : IBotService
     {
-        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
-
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
         private readonly int minAmount;
@@ -23,18 +22,24 @@ namespace GamesAdmin.Workers.Bots
         private readonly int maxAddAmount;
         private readonly int minAddAmount;
 
+        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
+        private readonly ISentryClient sentryClient;
+
+
         public BotService(
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IBotSettings botSettings)
+            IBotSettings botSettings, 
+            ISentryClient sentryClient)
         {
-            this.accountInfoRepository = accountInfoRepository;
-
             minInitAmount = 2 * botSettings.DefaultMaxBet;
             maxInitAmount = 20 * botSettings.DefaultMaxBet;
             minAmount = 2 * botSettings.DefaultMaxBet;
             maxAmount = 20 * botSettings.DefaultMaxBet;
             maxAddAmount = 10 * botSettings.DefaultMaxBet;
             minAddAmount = 3 * botSettings.DefaultMaxBet;
+
+            this.accountInfoRepository = accountInfoRepository;
+            this.sentryClient = sentryClient;           
         }
 
         public async Task ReviseBalance()
@@ -53,13 +58,14 @@ namespace GamesAdmin.Workers.Bots
 
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
+
+            sentryClient.CaptureMessage($"AddBalance for {botList?.Count}");
         }
 
         public async Task ResetBalance()
         {
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
-
-            //sentryClient.CaptureMessage($"AddBalance for {botsNeedAddBalance?.Count}");
+            
             var resetMessage = $"ResetBalance for {botList?.Count}";
 
             foreach (var bot in botList)
@@ -71,7 +77,7 @@ namespace GamesAdmin.Workers.Bots
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
 
-            //sentryClient.CaptureMessage(resetMessage);
+            sentryClient.CaptureMessage(resetMessage);
         }
     }
 }

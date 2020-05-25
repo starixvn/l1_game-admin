@@ -12,6 +12,7 @@ using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Sentry;
 
 namespace GamesAdmin.Workers
 {
@@ -19,11 +20,16 @@ namespace GamesAdmin.Workers
     {
         private readonly VietlottKenoConfiguration vietlottKenoConfiguration;
         private readonly IKenoService kenoService;
+        private readonly ISentryClient sentryClient;
 
-        public VietlottKenoWorker(IOptions<VietlottKenoConfiguration> options, IKenoService kenoService)
+        public VietlottKenoWorker(
+            IOptions<VietlottKenoConfiguration> options, 
+            IKenoService kenoService,
+            ISentryClient sentryClient)
         {
             vietlottKenoConfiguration = options.Value;
             this.kenoService = kenoService;
+            this.sentryClient = sentryClient;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -43,7 +49,7 @@ namespace GamesAdmin.Workers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"ERROR - {ex.Message}");
+                    sentryClient.CaptureException(ex);
                 }
             }
         }
