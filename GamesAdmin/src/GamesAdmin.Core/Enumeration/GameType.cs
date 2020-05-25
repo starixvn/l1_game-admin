@@ -13,16 +13,18 @@ namespace GamesAdmin.Core.Enumeration
         public const string OddEvenTurboValue = "oeturbo";
         public const string KenoProMaxValue = "kenopromax";
         public const string BaccaratValue = "baccarat";
+        public const string MiniSeDieValue = "minisedie";
 
         public static readonly GameType BigSmall = new GameType(BigSmallValue, "Big Small");
-        public static readonly GameType BigSmallTurbo = new GameType(BigSmallTurboValue, "Big Small Turbo");        
+        public static readonly GameType BigSmallTurbo = new GameType(BigSmallTurboValue, "Turbo Big Small");        
         public static readonly GameType FishPrawnCrab = new GameType(FishPrawnCrabValue, "Fish Prawn Crab");
-        public static readonly GameType ShakeThePlate = new GameType(ShakeThePlateValue, "Shake the Plate");
+        public static readonly GameType ShakeThePlate = new GameType(ShakeThePlateValue, "Se Die");
         public static readonly GameType OddEven = new GameType(OddEvenValue, "Odd Even");
-        public static readonly GameType OddEvenTurbo = new GameType(OddEvenTurboValue, "Odd Even Turbo");
+        public static readonly GameType OddEvenTurbo = new GameType(OddEvenTurboValue, "Turbo Odd Even");
         public static readonly GameType DragonTiger = new GameType(DragonTigerValue, "Dragon Tiger");
         public static readonly GameType KenoProMax = new GameType(KenoProMaxValue, "Keno Pro Max");
         public static readonly GameType Baccarat = new GameType(BaccaratValue, "Baccarat");
+        public static readonly GameType MiniSeDie = new GameType(MiniSeDieValue, "Mini Se Die");
 
         public GameType()
         {
