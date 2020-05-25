@@ -1,13 +1,14 @@
 using Coravel;
+using GamesAdmin.Database;
+using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Bots.Tasks;
-using GamesAdmin.Workers.Configuration;
 using GamesAdmin.Workers.Extensions;
 using GamesAdmin.Workers.Repository;
-using GamesAdmin.Workers.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GamesAdmin.Workers
 {
@@ -27,19 +28,24 @@ namespace GamesAdmin.Workers
             host.Run();
         }
 
-        //TODO inject entity, inject services
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<VietlottKenoConfiguration>(hostContext.Configuration.GetSection(nameof(VietlottKenoConfiguration)));
+                    var botSettings = hostContext.Configuration.GetSection(nameof(BotSettings));
+                    services.AddSingleton<IBotSettings>(sp => sp.GetRequiredService<IOptions<BotSettings>>().Value);
+
                     services.AddMongoDatabase(hostContext.Configuration);
-                    services.AddTransient<IKenoService, KenoService>();
+                    services.AddServices();
+
+                    services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
                     services.AddTransient<IKenoRepository, KenoRepository>();
                     services.AddHostedService<VietlottKenoWorker>();
 
                     services.AddScheduler();
-                    services.AddTransient<ReviseBotBalanceTask>();
+                    services.AddScheduleTasks();
                 })
                 .ConfigureLogging((hostingContext, logging) => {
                     logging.AddConfiguration(hostingContext.Configuration);

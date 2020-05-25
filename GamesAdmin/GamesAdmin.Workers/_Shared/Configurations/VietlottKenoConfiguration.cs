@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Workers.Configuration
+﻿namespace GamesAdmin.Workers._Shared.Configurations
 {
     public class VietlottKenoConfiguration
     {

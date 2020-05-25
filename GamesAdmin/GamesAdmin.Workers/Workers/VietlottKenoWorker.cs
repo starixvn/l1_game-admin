@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Workers.Configuration;
+using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
