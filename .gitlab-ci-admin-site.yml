@@ -19,8 +19,6 @@ variables:
     - rm -rfv $ADMIN_SITE_BUILD_PATH/
     - cp -r ./temp/ $ADMIN_SITE_BUILD_PATH
     - dotnet clean $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
-    - dotnet restore $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
-    - dotnet build $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
     - dotnet publish -c $CI_ENVIRONMENT_NAME -r linux-x64 --self-contained false $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME -o $ADMIN_SITE_BUILD_PATH
     - cp $ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-${CI_ENVIRONMENT_NAME}.sh $ADMIN_SITE_BUILD_PATH
     - cd $ADMIN_SITE_BUILD_PATH
@@ -49,12 +47,12 @@ build:game-admin-site:
   stage: build
   script:   
     - dotnet clean $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
-    - dotnet restore $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
     - dotnet build $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
   tags:
     - docker
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
 
 local_deploy:game_admin_site:
   extends: 

@@ -22,6 +22,10 @@ before_script:
   - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
   - git config --global user.email "luminet.minigame.app@gmail.com"
   - git config --global user.name "Luminet"
+  - apt-get update
+  - apt-get install -y build-essential python
+  - curl -sL https://deb.nodesource.com/setup_12.x | bash -
+  - apt-get install -y nodejs
 
 include:
   - .gitlab-ci-admin-api.yml

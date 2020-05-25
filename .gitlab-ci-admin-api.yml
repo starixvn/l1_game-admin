@@ -19,8 +19,6 @@ variables:
     - rm -rfv $ADMIN_API_BUILD_PATH/
     - cp -r ./temp/ $ADMIN_API_BUILD_PATH
     - dotnet clean $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
-    - dotnet restore $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
-    - dotnet build $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
     - dotnet publish -c $CI_ENVIRONMENT_NAME -r linux-x64 --self-contained false $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME -o $ADMIN_API_BUILD_PATH
     - cp $ADMIN_API_ROOT_PATH/gitlab-ci-after-script-${CI_ENVIRONMENT_NAME}.sh $ADMIN_API_BUILD_PATH
     - cd $ADMIN_API_BUILD_PATH
@@ -53,8 +51,9 @@ build:game-admin-api:
     - dotnet build $ADMIN_API_ROOT_PATH/$ADMIN_API_PROJECT_NAME
   tags:
     - docker
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
 
 local_deploy:game_admin_api:
   extends: 
