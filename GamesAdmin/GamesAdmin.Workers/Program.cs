@@ -18,7 +18,7 @@ namespace GamesAdmin.Workers
             host.Services.UseScheduler(scheduler => {
 
                 scheduler
-                    .Schedule<ReviseBalanceTask>()
+                    .Schedule<ReviseBotBalanceTask>()
                     .EveryThirtyMinutes();
             });
 
@@ -35,8 +35,9 @@ namespace GamesAdmin.Workers
                     services.AddTransient<IKenoService, KenoService>();
                     services.AddTransient<IKenoRepository, KenoRepository>();
                     services.AddHostedService<VietlottKenoWorker>();
+
                     services.AddScheduler();
-                    services.AddTransient<ReviseBalanceTask>();
+                    services.AddTransient<ReviseBotBalanceTask>();
                 });
     }
 }

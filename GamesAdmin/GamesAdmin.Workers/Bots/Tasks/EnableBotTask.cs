@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GamesAdmin.Workers.Bots.Tasks
 {
-    class EnableRandomly
+    class EnableBotTask
     {
     }
 }

@@ -3,11 +3,11 @@ using Coravel.Invocable;
 
 namespace GamesAdmin.Workers.Bots.Tasks
 {
-    public class ReviseBalanceTask : IInvocable
+    public class ReviseBotBalanceTask : IInvocable
     {
         private readonly IBotService service;
 
-        public ReviseBalanceTask(IBotService service) 
+        public ReviseBotBalanceTask(IBotService service) 
         {
             this.service = service;
         }
