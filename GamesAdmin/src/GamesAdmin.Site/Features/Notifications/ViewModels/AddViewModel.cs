@@ -18,6 +18,8 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         public byte DisplayKindValue { get; set; }
 
         [Required]
+        [MinLength(20)]
+        [MaxLength(1000)]
         public string Message { get; set; }
     }
 }

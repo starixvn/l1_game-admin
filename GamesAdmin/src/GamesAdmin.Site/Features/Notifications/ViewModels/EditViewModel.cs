@@ -22,7 +22,9 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         [Required]
         public string Id { get; set; }
 
-        [Required]
+        [Required]        
+        [MinLength(20)]
+        [MaxLength(1000)]
         public string Message { get; set; }
 
         [Required]
