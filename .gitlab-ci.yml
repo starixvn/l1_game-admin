@@ -30,3 +30,4 @@ before_script:
 include:
   - .gitlab-ci-admin-api.yml
   - .gitlab-ci-admin-site.yml
+  - .gitlab-ci-admin-workers.yml
