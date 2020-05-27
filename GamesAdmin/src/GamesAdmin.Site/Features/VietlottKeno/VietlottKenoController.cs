@@ -37,8 +37,28 @@ namespace GamesAdmin.Site.Features.VietlottKeno
         [HttpGet]
         public IActionResult AddNewRound()
         {
-            var viewModel = new AddVietlottKenoRoundViewModel();
+            var viewModel = new CreateVietlottKenoRoundViewModel();
             return PartialView("_AddNewRound", viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNewRound(CreateVietlottKenoRoundViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.Result.Count(x => x) == 20)
+                {
+                    await mediator.Send(new CreateRoundRequest(viewModel));
+                    return Json(new { isSuccessful = true });
+                }
+                else
+                {
+                    ModelState.AddModelError(nameof(CreateVietlottKenoRoundViewModel.Result), "Please select 20 numbers");
+                }
+            }
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
+            return Json(new { isSuccessful = false, errors });
         }
     }
 }

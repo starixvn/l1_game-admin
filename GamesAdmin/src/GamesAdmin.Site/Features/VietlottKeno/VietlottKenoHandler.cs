@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.VietlottKeno.Requests;
 using GamesAdmin.Site.Features.VietlottKeno.ViewModels;
@@ -10,7 +11,9 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.VietlottKeno
 {
-    public class VietlottKenoHandler : IRequestHandler<GetRoundsRequest, IEnumerable<ViewlottKenoRoundViewModel>>
+    public class VietlottKenoHandler :
+        IRequestHandler<GetRoundsRequest, IEnumerable<ViewlottKenoRoundViewModel>>,
+        IRequestHandler<CreateRoundRequest, Unit>
     {
         private readonly IVietlottKenoService vietlottKenoService;
         private readonly IAppSettings appSettings;
@@ -38,6 +41,29 @@ namespace GamesAdmin.Site.Features.VietlottKeno
                 Wood = x.Wood,
                 Water = x.Water
             });
+        }
+
+        public async Task<Unit> Handle(CreateRoundRequest request, CancellationToken cancellationToken)
+        {
+            var result = new List<byte>();
+            for (var i = 0; i < request.KenoRound.Result.Count(); i++)
+            {
+                if (request.KenoRound.Result[i])
+                {
+                    result.Add((byte)(i + 1));
+                }
+            }
+
+            var model = new CreateVietlottKenoRound
+            {
+                Time = request.KenoRound.Date.ToUniversalTime(),
+                Number = request.KenoRound.RoundNo.Value,
+                Result = result
+            };
+
+            await vietlottKenoService.CreateAsync(model);
+
+            return Unit.Value;
         }
     }
 }

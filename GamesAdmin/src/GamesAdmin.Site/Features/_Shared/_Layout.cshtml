@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="icon" href="favicon.ico">
-    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true"/>
+    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
     @RenderSection("Styles", false)
 </head>
 <body>
@@ -19,8 +19,8 @@
                 </button>
             </div>
             <div class="scrollbar-sidebar">
-                <div class="sidebar__inner">                    
-                        @await Component.InvokeAsync("GameMenu", new { })                    
+                <div class="sidebar__inner">
+                    @await Component.InvokeAsync("GameMenu", new { })
                 </div>
             </div>
         </div>
@@ -36,12 +36,12 @@
                         <form asp-action="Logout" asp-controller="Authentication" method="post">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 @*<li>
-                                    <a asp-action="Index" asp-controller="ChangePassword">
-                                        <i class="material-icons">lock_open</i> Change Password
-                                    </a>
-                                </li>*@
+                                        <a asp-action="Index" asp-controller="ChangePassword">
+                                            <i class="material-icons">lock_open</i> Change Password
+                                        </a>
+                                    </li>*@
                                 <li>
-                                    <button type="submit" value="Sign out" class="logout"> 
+                                    <button type="submit" value="Sign out" class="logout">
                                         <i class="material-icons">exit_to_app</i> Logout
                                     </button>
                                 </li>
@@ -49,13 +49,13 @@
                         </form>
                     </div>
                 </div>
-            </div>          
+            </div>
 
             <div class="inner-content">
                 @RenderBody()
             </div>
         </div>
-    </div>    
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

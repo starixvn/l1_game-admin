@@ -1,4 +1,4 @@
-﻿@model GamesAdmin.Site.Features.VietlottKeno.ViewModels.AddVietlottKenoRoundViewModel
+﻿@model GamesAdmin.Site.Features.VietlottKeno.ViewModels.CreateVietlottKenoRoundViewModel
 
 <div class="modal-header">
     <h5 class="modal-title">Add new round</h5>
@@ -7,27 +7,32 @@
     </button>
 </div>
 <form data-ajax="true" asp-action="AddNewRound" method="post" id="add-new-round-form"
-      data-ajax-failure="vietlottKeno.onAddNewRoundFailure">
+      data-ajax-success="vietlottKeno.onAddNewRoundSuccess">
     <div class="modal-body">
         <div class="form-group">
             <label asp-for="RoundNo"></label>
             <input class="form-control" type="number" asp-for="RoundNo">
-            <span asp-validation-for="RoundNo"></span>
+            <span class="text-danger" asp-validation-for="RoundNo"></span>
         </div>
         <div class="form-group">
             <label asp-for="Date"></label>
             <input class="form-control" type="datetime-local" asp-for="Date">
-            <span asp-validation-for="Date"></span>
+            <span class="text-danger" asp-validation-for="Date"></span>
         </div>
-        <div class="form-group">
-            <label>Result</label>
-            @for (var i = 0; i < Model.Result.Count(); i++)
-            {
-                <input class="form-control" type="number" asp-for="Result[i].Number" placeholder="1 to 80" />
-            }
+        @for (var i = 0; i < Model.Result.Count(); i++)
+        {
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" asp-for="Result[i]">
+                <label class="form-check-label" asp-for="Result[i]">@(i + 1)</label>
+            </div>
+        }
+
+        <div>
+            <input type="hidden" disabled asp-for="Result">
+            <span class="text-danger" asp-validation-for="Result"></span>
         </div>
     </div>
-    <div class="modal-footer">
+    <div class=" modal-footer">
         <button type="submit" class="btn btn-primary">Submit</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>

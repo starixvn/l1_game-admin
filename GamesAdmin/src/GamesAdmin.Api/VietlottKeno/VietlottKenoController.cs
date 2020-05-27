@@ -21,7 +21,15 @@ namespace GamesAdmin.Api.VietlottKeno
 
         [HttpGet]
         [Route("rounds/{date}")]
-        public async Task<IEnumerable<VietlottKenoRound>> GetRoundsAsync(DateTime date)
+        public async Task<IEnumerable<VietlottKenoRound>> GetRounds(DateTime date)
             => (await mediator.Send(new GetRoundsRequest(date)));
+
+        [HttpPost]
+        [Route("rounds/create")]
+        public async Task<IActionResult> Create([FromBody] CreateVietlottKenoRound kenoRound)
+        {
+            await mediator.Send(new CreateRoundRequest(kenoRound));
+            return Ok();
+        }
     }
 }

@@ -8,6 +8,8 @@ namespace GamesAdmin.Site.Features.VietlottKeno
     public interface IVietlottKenoService
     {
         Task<IEnumerable<VietlottKenoRound>> GetRoundsAsync(DateTime date);
+
+        Task CreateAsync(CreateVietlottKenoRound kenoRound);
     }
 
     public class VietlottKenoService : IVietlottKenoService
@@ -21,5 +23,8 @@ namespace GamesAdmin.Site.Features.VietlottKeno
 
         public async Task<IEnumerable<VietlottKenoRound>> GetRoundsAsync(DateTime date)
         => await vietlottKenoApi.GetRounds(date);
+
+        public async Task CreateAsync(CreateVietlottKenoRound kenoRound)
+        => await vietlottKenoApi.Create(kenoRound);
     }
 }
