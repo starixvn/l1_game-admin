@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Workers.Repository;
-using GamesAdmin.Workers.Repository.Entities;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Workers.Services
 {
@@ -13,11 +13,11 @@ namespace GamesAdmin.Workers.Services
 
     public class KenoService : IKenoService
     {
-        private readonly IKenoRepository kenoRepository;
+        private readonly IGenericRepository<VietlottKenoRoundEntity> repository;
 
-        public KenoService(IKenoRepository kenoRepository)
+        public KenoService(IGenericRepository<VietlottKenoRoundEntity> repository)
         {
-            this.kenoRepository = kenoRepository;
+            this.repository = repository;
         }
 
         public async Task AddNewRoundResultAsync(VietLottKenoRound kenoRound)
@@ -25,10 +25,10 @@ namespace GamesAdmin.Workers.Services
             var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
             var sum = result.Sum(x => x);
 
-            var entity = new KenoRoundEntity
+            var entity = new VietlottKenoRoundEntity
             {
                 Time = DateTime.UtcNow,
-                RoundNo = long.Parse(kenoRound.DrawId),
+                Number = long.Parse(kenoRound.DrawId),
                 Result = result,
                 SettlementResult = new SettlementResult()
             };
@@ -76,7 +76,7 @@ namespace GamesAdmin.Workers.Services
                 entity.SettlementResult.Earth = true;
             }
 
-            await kenoRepository.InsertAsync(entity);
+            await repository.InsertOneAsync(entity);
         }
     }
 }

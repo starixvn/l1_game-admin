@@ -3,7 +3,6 @@ using GamesAdmin.Database;
 using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Bots.Tasks;
 using GamesAdmin.Workers.Extensions;
-using GamesAdmin.Workers.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,8 +17,8 @@ namespace GamesAdmin.Workers
         {
             IHost host = CreateHostBuilder(args).Build();
 
-            host.Services.UseScheduler(scheduler => {
-
+            host.Services.UseScheduler(scheduler =>
+            {
                 scheduler
                     .Schedule<ReviseBotBalanceTask>()
                     .EveryThirtyMinutes();
@@ -41,13 +40,13 @@ namespace GamesAdmin.Workers
 
                     services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-                    services.AddTransient<IKenoRepository, KenoRepository>();
                     services.AddHostedService<VietlottKenoWorker>();
 
                     services.AddScheduler();
                     services.AddScheduleTasks();
                 })
-                .ConfigureLogging((hostingContext, logging) => {
+                .ConfigureLogging((hostingContext, logging) =>
+                {
                     logging.AddConfiguration(hostingContext.Configuration);
                     logging.AddSentry();
                 });
