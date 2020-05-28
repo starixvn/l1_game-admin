@@ -23,7 +23,7 @@ namespace GamesAdmin.Workers
         private readonly ISentryClient sentryClient;
 
         public VietlottKenoWorker(
-            IOptions<VietlottKenoConfiguration> options, 
+            IOptions<VietlottKenoConfiguration> options,
             IKenoService kenoService,
             ISentryClient sentryClient)
         {
@@ -41,6 +41,8 @@ namespace GamesAdmin.Workers
 
             while (!stoppingToken.IsCancellationRequested)
             {
+                sentryClient.CaptureMessage("Start connecting to vietlott web socket");
+
                 using var socket = new ClientWebSocket();
                 try
                 {
