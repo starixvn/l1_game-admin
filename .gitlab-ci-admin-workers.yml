@@ -3,7 +3,7 @@ variables:
   ADMIN_WORKER_BUILD_PATH: ~/build/game-admin-worker
   ADMIN_WORKER_PROJECT_NAME: GamesAdmin.Workers.csproj
 
-.admin-site-push-git-compiled:
+.admin-worker-push-git-compiled:
   script: 
     - if [ "$CI_ENVIRONMENT_NAME" == "PRO" ]; 
       then
@@ -57,7 +57,7 @@ build:game_admin_worker:
 local_deploy:game_admin_worker:
   extends: 
     - .base-admin-worker
-    - .admin-site-push-git-compiled
+    - .admin-worker-push-git-compiled
   environment:
     name: LOCAL
   rules:
@@ -74,7 +74,7 @@ local_deploy:game_admin_worker:
 sit_deploy:game_admin_worker:
   extends: 
     - .base-admin-worker
-    - .admin-site-push-git-compiled
+    - .admin-worker-push-git-compiled
   environment:
     name: SIT
   rules:
@@ -91,7 +91,7 @@ sit_deploy:game_admin_worker:
 uat_deploy:game_admin_worker:
   extends: 
     - .base-admin-worker
-    - .admin-site-push-git-compiled
+    - .admin-worker-push-git-compiled
   environment:
     name: UAT
   rules:
@@ -108,7 +108,7 @@ uat_deploy:game_admin_worker:
 prod_deploy:game_admin_worker:
   extends: 
     - .base-admin-worker
-    - .admin-site-push-git-compiled
+    - .admin-worker-push-git-compiled
   environment:
     name: PRO
   needs:
