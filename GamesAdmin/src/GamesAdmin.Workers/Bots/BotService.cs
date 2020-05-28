@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +20,8 @@ namespace GamesAdmin.Workers.Bots
 
     public class BotService : IBotService
     {
+        private const int DefaultMaxBet = 1000;
+
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
         private readonly int minAmount;
@@ -34,15 +35,14 @@ namespace GamesAdmin.Workers.Bots
 
         public BotService(
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IBotSettings botSettings,
             ISentryClient sentryClient)
         {
-            minInitAmount = 2 * botSettings.DefaultMaxBet;
-            maxInitAmount = 20 * botSettings.DefaultMaxBet;
-            minAmount = 2 * botSettings.DefaultMaxBet;
-            maxAmount = 20 * botSettings.DefaultMaxBet;
-            maxAddAmount = 10 * botSettings.DefaultMaxBet;
-            minAddAmount = 3 * botSettings.DefaultMaxBet;
+            minInitAmount = 2 * DefaultMaxBet;
+            maxInitAmount = 20 * DefaultMaxBet;
+            minAmount = 2 * DefaultMaxBet;
+            maxAmount = 20 * DefaultMaxBet;
+            maxAddAmount = 10 * DefaultMaxBet;
+            minAddAmount = 3 * DefaultMaxBet;
 
             this.accountInfoRepository = accountInfoRepository;
             this.sentryClient = sentryClient;

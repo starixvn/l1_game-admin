@@ -30,8 +30,6 @@ namespace GamesAdmin.Workers
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<VietlottKenoConfiguration>(hostContext.Configuration.GetSection(nameof(VietlottKenoConfiguration)));
-                    var botSettings = hostContext.Configuration.GetSection(nameof(BotSettings));
-                    services.AddSingleton<IBotSettings>(sp => sp.GetRequiredService<IOptions<BotSettings>>().Value);
 
                     services.AddMongoDatabase(hostContext.Configuration);
                     services.AddServices();

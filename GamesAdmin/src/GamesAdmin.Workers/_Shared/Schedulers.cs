@@ -9,7 +9,7 @@ namespace GamesAdmin.Workers._Shared
         {
             scheduler
                 .Schedule<ReviseBotBalanceTask>()
-                .EveryThirtyMinutes();
+                .EverySeconds(30);
 
             scheduler
                 .Schedule<DisableBotTask>()
