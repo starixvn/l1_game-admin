@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
@@ -11,12 +12,15 @@ using MediatR;
 namespace GamesAdmin.Site.Features.Notifications
 {
     public class NotificationHandler
-        : IRequestHandler<IndexRequest, IndexViewModel>        
+        : IRequestHandler<IndexRequest, IndexViewModel>
         , IRequestHandler<GetByIdRequest, EditViewModel>
         , IRequestHandler<AddRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
     {
+        private const string NewLinePattern = @"\t|\n|\r";
+        private const string Space = " ";
+
         private readonly IMapper mapper;
         private readonly INotificationService notificationService;
 
@@ -35,6 +39,7 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Handle(AddRequest request, CancellationToken cancellationToken)
         {
+            request.Message = Regex.Replace(request.Message, NewLinePattern, Space);
             var notification = mapper.Map<Notification>(request);
 
             return notificationService.Add(notification);
@@ -49,6 +54,7 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
+            request.Message = Regex.Replace(request.Message, NewLinePattern, Space);
             var notification = mapper.Map<Notification>(request);
 
             return notificationService.Update(notification);
