@@ -44,6 +44,8 @@ namespace GamesAdmin.Workers.Bots
 
         public async Task ReviseBalance()
         {
+            sentryClient.CaptureMessage($"Start task ReviseBalance {DateTime.Now}");
+
             await AddBalance();
             await ResetBalance();
         }
