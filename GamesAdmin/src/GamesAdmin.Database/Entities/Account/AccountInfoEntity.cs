@@ -13,38 +13,14 @@ namespace GamesAdmin.Database.Entities
         public string Avatar { get; set; }
 
         public DateTime JoinedOn { get; set; }
-
-        public string Email { get; set; }
-
-        public string Cmt { get; set; }
-
+     
         public double Red { get; set; }
-
-        public int KetSat { get; set; }
-
-        public int Xu { get; set; }
 
         public double RedWin { get; set; }
 
         public double RedLost { get; set; }
 
-        public double RedPlay { get; set; }
-
-        public double XuWin { get; set; }
-
-        public int XuLost { get; set; }
-
-        public int XuPlay { get; set; }
-
-        public int Thuong { get; set; }
-
-        public int Vip { get; set; }
-
-        public int LastVip { get; set; }
-
-        public int Hu { get; set; }
-
-        public int HuXu { get; set; }
+        public double RedPlay { get; set; }      
 
         [BsonElement("type")]
         public bool IsBot { get; set; }
@@ -61,6 +37,8 @@ namespace GamesAdmin.Database.Entities
         public int UID { get; set; }
 
         public Security Security { get; set; }
+
+        public bool Disabled { get; set; }
     }
 
     public class Security

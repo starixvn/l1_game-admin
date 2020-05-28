@@ -34,6 +34,7 @@ namespace GamesAdmin.Workers.Extensions
         public static void AddScheduleTasks(this IServiceCollection services)
         {
             services.AddTransient<ReviseBotBalanceTask>();
+            services.AddTransient<DisableBotTask>();
         }
     }
 }

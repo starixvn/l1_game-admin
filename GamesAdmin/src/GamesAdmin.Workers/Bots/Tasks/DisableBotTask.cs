@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading.Tasks;
+using Coravel.Invocable;
 
 namespace GamesAdmin.Workers.Bots.Tasks
 {
-    class DisableBotTask
+    public class DisableBotTask : IInvocable
     {
+        private readonly IBotService service;
+
+        public DisableBotTask(IBotService service)
+        {
+            this.service = service;
+        }
+
+        public Task Invoke() => service.DisableRandomly();
     }
 }

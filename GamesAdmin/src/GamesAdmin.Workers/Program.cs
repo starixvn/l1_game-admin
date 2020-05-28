@@ -1,7 +1,7 @@
 using Coravel;
 using GamesAdmin.Database;
+using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
-using GamesAdmin.Workers.Bots.Tasks;
 using GamesAdmin.Workers.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,9 +19,7 @@ namespace GamesAdmin.Workers
 
             host.Services.UseScheduler(scheduler =>
             {
-                scheduler
-                    .Schedule<ReviseBotBalanceTask>()
-                    .EveryThirtyMinutes();
+                scheduler.AddScheduleTasks();
             });
 
             host.Run();

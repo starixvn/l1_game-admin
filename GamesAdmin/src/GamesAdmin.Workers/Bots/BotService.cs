@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Workers._Shared.Configurations;
+using GamesAdmin.Workers.Extensions;
+using MongoDB.Driver;
 using Sentry;
 
 namespace GamesAdmin.Workers.Bots
@@ -11,6 +15,8 @@ namespace GamesAdmin.Workers.Bots
     public interface IBotService
     {
         Task ReviseBalance();
+
+        Task DisableRandomly();
     }
 
     public class BotService : IBotService
@@ -28,7 +34,7 @@ namespace GamesAdmin.Workers.Bots
 
         public BotService(
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IBotSettings botSettings, 
+            IBotSettings botSettings,
             ISentryClient sentryClient)
         {
             minInitAmount = 2 * botSettings.DefaultMaxBet;
@@ -39,12 +45,12 @@ namespace GamesAdmin.Workers.Bots
             minAddAmount = 3 * botSettings.DefaultMaxBet;
 
             this.accountInfoRepository = accountInfoRepository;
-            this.sentryClient = sentryClient;           
+            this.sentryClient = sentryClient;
         }
 
         public async Task ReviseBalance()
         {
-            sentryClient.CaptureMessage($"Start task ReviseBalance {DateTime.Now}");
+            sentryClient.CaptureMessage($"Start task ReviseBalance {DateTime.Now} with minInitAmount {minInitAmount}");
 
             await AddBalance();
             await ResetBalance();
@@ -67,7 +73,7 @@ namespace GamesAdmin.Workers.Bots
         public async Task ResetBalance()
         {
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
-            
+
             var resetMessage = $"ResetBalance for {botList?.Count}";
 
             foreach (var bot in botList)
@@ -80,6 +86,40 @@ namespace GamesAdmin.Workers.Bots
             }
 
             sentryClient.CaptureMessage(resetMessage);
+        }
+
+        public async Task DisableRandomly()
+        {
+            var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled)).ToList();
+            var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
+            enabledBots.Shuffle();
+           
+            var maxRemoval = new Random().Next(5, 15) * enabledBots.Count / 100;
+
+            sentryClient.CaptureMessage($"Disabled {maxRemoval} bots");
+
+            for (var i = 0; i < maxRemoval; i++)
+            {
+                await ToogleEnableDisable(enabledBots[i], true);
+            }
+
+            await Enable(disabledBots);
+        }
+
+        private async Task Enable(List<AccountInfoEntity> disabledBots)
+        {
+            sentryClient.CaptureMessage($"Enable {disabledBots.Count} bots");
+
+            foreach (var bot in disabledBots)
+            {
+                await ToogleEnableDisable(bot, false);
+            }
+        }
+
+        private async Task ToogleEnableDisable(AccountInfoEntity bot, bool disable)
+        {
+            var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Disabled), disable);
+            await accountInfoRepository.UpdateAsync(entity => entity.Id == bot.Id, update);
         }
     }
 }
