@@ -9,11 +9,11 @@ namespace GamesAdmin.Workers._Shared
         {
             scheduler
                 .Schedule<ReviseBotBalanceTask>()
-                .EverySeconds(30);
+                .EveryThirtyMinutes();
 
             scheduler
                 .Schedule<DisableBotTask>()
-                .EverySeconds(30);
+                .Hourly();
         }
     }
 }
