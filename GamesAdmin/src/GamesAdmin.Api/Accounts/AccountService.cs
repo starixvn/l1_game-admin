@@ -210,13 +210,10 @@ namespace GamesAdmin.Api.Accounts
         {
             var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot)).ToList();
 
-            try
+            foreach (var bot in bots)
             {
-                await miniSedieRepository.InsertManyAsync(bots.Select(x => new MiniSedieAccountEntity { Uid = x.UserId }).ToList());
-            }
-            catch (Exception e)
-            {
-                sentryClient.CaptureException(e);
+                bot.Disabled = false;
+                await accountInfoRepository.ReplaceOneAsync(bot);
             }
         }
     }

@@ -15,8 +15,7 @@ namespace GamesAdmin.Workers.Extensions
             var conventionPack = new ConventionPack
             {
                 new CamelCaseElementNameConvention(),
-                new IgnoreExtraElementsConvention(true),
-                new IgnoreIfDefaultConvention(true)
+                new IgnoreExtraElementsConvention(true)
             };
             ConventionRegistry.Register("camelCase", conventionPack, t => true);
 
