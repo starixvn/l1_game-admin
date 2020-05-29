@@ -20,7 +20,8 @@ namespace GamesAdmin.Workers.Bots
 
     public class BotService : IBotService
     {
-        private const int DefaultMaxBet = 1000;
+        private const int DefaultMaxBet = 500;
+        private const int DisabledBotRatio = 1;
 
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
@@ -97,7 +98,7 @@ namespace GamesAdmin.Workers.Bots
             var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
             enabledBots.Shuffle();
            
-            var maxRemoval = new Random().Next(5, 15) * enabledBots.Count / 100;
+            var maxRemoval = DisabledBotRatio * enabledBots.Count / 100;
 
             message = $"Disabled {maxRemoval} bots.";
 
