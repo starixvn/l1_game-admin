@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("baucua_cuocs")]
-    public class FishPrawnCrabBetEntity : MiniGameBaseEntity
+    public class FishPrawnCrabBetEntity : BaseBetEntity
     {
         [BsonElement("0")]
         public int Stag { get; set; }
@@ -23,23 +23,5 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("5")]
         public int Prawn { get; set; }
-
-        [BsonElement("thanhtoan")]
-        public bool Paid { get; set; }
-
-        public bool BigWin { get; set; }
-
-        public decimal Betwin { get; set; }
-
-        public string Uid { get; set; }
-
-        public string Name { get; set; }
-
-        [BsonElement("phien")]
-        public long Round { get; set; }
-
-        public bool Red { get; set; }
-
-        public int? MemberId { get; set; }
     }
 }
