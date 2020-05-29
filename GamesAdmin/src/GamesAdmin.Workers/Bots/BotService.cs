@@ -115,12 +115,15 @@ namespace GamesAdmin.Workers.Bots
 
         private async Task Enable(List<AccountInfoEntity> disabledBots)
         {
-            sentryClient.CaptureMessage($"Enable {disabledBots.Count} bots");
+            var message = $"Enable {disabledBots.Count} bots.";
 
             foreach (var bot in disabledBots)
             {
+                message += " " + bot.Name + ";";
                 await ToogleEnableDisable(bot, false);
             }
+
+            sentryClient.CaptureMessage(message);
         }
 
         private async Task ToogleEnableDisable(AccountInfoEntity bot, bool disable)
