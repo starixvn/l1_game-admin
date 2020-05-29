@@ -12,12 +12,12 @@
     </a>
 </div>
 
-<table id="status-tbl" class="table table-bordered has-background col-md-10 col-lg-6">
+<table id="status-tbl" class="table table-bordered has-background tbl-notification col-sm-12">
     <thead>
         <tr>
             <th>Message</th>
-            <th>Display As</th>
-            <th>Actions</th>
+            <th class="col-display">Display As</th>
+            <th class="col-options">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -32,10 +32,10 @@
         {
             <tr>
                 <td>@notification.Message</td>
-                <td>@notification.DisplayKind.DisplayName</td>
-                <td>
-                    <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id">Edit</a> |
-                    <a href="#" onclick="DeleteButton('@notification.Id');">Delete</a>
+                <td class="text-center">@notification.DisplayKind.DisplayName</td>
+                <td class="text-center">
+                    <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id" class="action-link"><i class="material-icons">edit</i></a>
+                    <a href="#" onclick="DeleteButton('@notification.Id');" class="action-link"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         }
