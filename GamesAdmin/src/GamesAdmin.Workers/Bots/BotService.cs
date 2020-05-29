@@ -90,18 +90,25 @@ namespace GamesAdmin.Workers.Bots
 
         public async Task DisableRandomly()
         {
+            var removedBots = string.Empty;
+            var message = string.Empty;
+
             var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled)).ToList();
             var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
             enabledBots.Shuffle();
            
             var maxRemoval = new Random().Next(5, 15) * enabledBots.Count / 100;
 
-            sentryClient.CaptureMessage($"Disabled {maxRemoval} bots");
+            message = $"Disabled {maxRemoval} bots.";
 
             for (var i = 0; i < maxRemoval; i++)
             {
+                removedBots += " " + enabledBots[i]?.Name + ";";
+
                 await ToogleEnableDisable(enabledBots[i], true);
             }
+
+            sentryClient.CaptureMessage(message);
 
             await Enable(disabledBots);
         }
