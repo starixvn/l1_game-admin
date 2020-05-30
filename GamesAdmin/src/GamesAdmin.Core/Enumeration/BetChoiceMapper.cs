@@ -32,6 +32,9 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.MiniSeDieValue:
                     return Enumeration.GetAll<MiniSeDieBetChoice>();
 
+                case GameType.BaccaratValue:
+                    return Enumeration.GetAll<BaccaratBetChoice>();
+
                 default: return default;
             }
         }

@@ -20,41 +20,39 @@ namespace GamesAdmin.Site.Features.Authentication
     {
         private readonly IUserService userService;
 
-        public AuthenticationService(IUserService userService) 
+        public AuthenticationService(IUserService userService)
         {
             this.userService = userService;
         }
 
         public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
         {
-            var userSignin = await userService.SignIn(user.UserName, user.Password);
+            var userSignin = await userService.SignIn(user.UserName.ToLower(), user.Password);
 
             if (userSignin == null)
             {
                 return false;
             }
-            else
-            {
-                var userClaims = new List<Claim>()
+
+            var userClaims = new List<Claim>()
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
                     new Claim(ClaimTypes.Role, userSignin.IsAdmin ? "admin" : "operation")
                  };
 
-                var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                await context.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(grandmaIdentity),
-                    new AuthenticationProperties
-                    {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
-                    });
+            await context.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(grandmaIdentity),
+                new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
+                });
 
-                return true;
-            }
+            return true;
         }
 
         public Task SignOutAsync(HttpContext context)
