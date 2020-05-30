@@ -20,7 +20,7 @@ namespace GamesAdmin.Workers.Bots
 
     public class BotService : IBotService
     {
-        private const int DefaultMaxBet = 500;
+        private const int DefaultMaxBet = 10000;
         private const int DisabledBotRatio = 1;
 
         private readonly int minInitAmount;
