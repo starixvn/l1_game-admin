@@ -3,7 +3,7 @@
     public class BaccaratBetChoice : Enumeration
     {
         public const string PlayerValue = "player";
-        public const string BankValue = "bank";
+        public const string BankValue = "banker";
         public const string BigValue = "big";
         public const string SmallValue = "small";
         public const string TieValue = "tie";
