@@ -42,7 +42,7 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button.next {
       border-top-right-radius: .35rem;
       border-bottom-right-radius: .35rem;
-      color: #da624a;
+      color: #0c3253;
       background-color: #fff;
       border: 1px solid #dee2e6; }
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -55,8 +55,8 @@
   .dataTables_wrapper .dataTables_paginate .paginate_button.current,
   .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
     color: #fff !important;
-    background: #da624a;
-    border-color: #da624a; }
+    background: #0c3253;
+    border-color: #0c3253; }
 
 .dataTables_wrapper .dataTables_filter {
   margin-bottom: 1.5rem; }
@@ -90,7 +90,7 @@
   .circle.yellow {
     background-color: #f7b924; }
     .circle.yellow .icon {
-      color: #495057; }
+      color: #27303f; }
   .circle.green {
     background-color: #3ac47d; }
     .circle.green .icon {

@@ -2,26 +2,44 @@
 
 // Notification
 
-.back-button .material-icons {
-    left: 0.9rem;
+.add-item,
+.back-button {
+    position: relative;
+    display: inline-block;
+    padding-left: 33px;
+    margin-left: 6px;
+    margin-bottom: 12px;
+    color: #fff;
+
+    .material-icons {
+        font-size: 19px;
+        position: absolute;
+        left: 16px;
+    }
+
+    &:hover {
+        text-decoration: none;
+        color: #fff;
+    }
 }
+
 
 .tbl-notification {
     .col-display {
-        width: 15rem;
+        width: 15rem
     }
 
     .col-options {
-        width: 10rem;
+        width: 10rem
     }
 
     .action-link {
-        margin: 0.6rem;
+        margin: .6rem;
         font-size: 2rem;
-        color: #6c757d;
-
-        &:hover {
-            color: #da624a;
+        color: #6c757d
         }
+
+    .action-link:hover {
+        color: $theme-color;
     }
 }

@@ -12,11 +12,8 @@
     <div class="main-container">
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="site-name">Saba.Club <span class="highlight">Admin</span> (CASH)</a>
-                <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
-                    <!--<i class="material-icons">menu</i>-->
-                    <span class="hamburger-inner"></span>
-                </button>
+                <a href="/" class="site-name">Saba.Club Admin (<span class="highlight">CASH</span>)</a>
+                <span class="env">CASH</span>
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
@@ -26,20 +23,23 @@
         </div>
         <div id="content" class="content-container">
             <div class="header">
-                <div class="page-title">@ViewData["Title"]</div>
+                <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
+                    <!--<i class="material-icons">menu</i>-->
+                    <span class="hamburger-inner"></span>
+                </button>
                 <div class="user-info">
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons icon-user">account_circle</i>
-                            @Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value
+                            <span class="username">@Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value</span>                           
                         </button>
                         <form asp-action="Logout" asp-controller="Authentication" method="post">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 @*<li>
-                                        <a asp-action="Index" asp-controller="ChangePassword">
-                                            <i class="material-icons">lock_open</i> Change Password
-                                        </a>
-                                    </li>*@
+                            <a asp-action="Index" asp-controller="ChangePassword">
+                                <i class="material-icons">lock_open</i> Change Password
+                            </a>
+                        </li>*@
                                 <li>
                                     <button type="submit" value="Sign out" class="logout">
                                         <i class="material-icons">exit_to_app</i> Logout
@@ -52,6 +52,7 @@
             </div>
 
             <div class="inner-content">
+                <div class="page-title">@ViewData["Title"]</div>
                 @RenderBody()
             </div>
         </div>

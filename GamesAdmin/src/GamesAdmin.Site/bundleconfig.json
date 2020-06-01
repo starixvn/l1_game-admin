@@ -21,21 +21,27 @@
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
-      "wwwroot/scss/base/material-icon.min.css",
-      "wwwroot/scss/base/roboto.min.css",
-      "wwwroot/scss/pages/site.min.css"
+      "wwwroot/scss/base/material-icon.css",
+      "wwwroot/scss/base/roboto.css",
+      "wwwroot/scss/pages/site.css"
     ]
   },
   {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
     "inputFiles": [
-      "wwwroot/scss/pages/reports.min.css"
+      "wwwroot/scss/pages/reports.css"
     ]
   },
   {
     "outputFileName": "wwwroot/css/adjust-bot.min.css",
     "inputFiles": [
-      "wwwroot/scss/pages/adjust-bot.min.css"
+      "wwwroot/scss/pages/adjust-bot.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/notification.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/notification.css"
     ]
   },
   {
