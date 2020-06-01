@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Accounts.Results;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -37,12 +36,11 @@ namespace GamesAdmin.Api.Accounts
         private readonly IGenericRepository<KenoProMaxAccountEntity> kenoProMaxRepository;
         private readonly IGenericRepository<MiniSedieAccountEntity> miniSedieRepository;
 
-        private readonly int minInitAmount;
-        private readonly int maxInitAmount;
+        private readonly int minInitAmount = 2000;
+        private readonly int maxInitAmount = 30000;
 
         public AccountService(
             ISentryClient sentryClient,
-            IBotSettings botSettings,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
             IGenericRepository<BigSmallAccountEntity> txAccountRepository,
@@ -67,9 +65,6 @@ namespace GamesAdmin.Api.Accounts
             this.dragonTigerRepository = dragonTigerRepository;
             this.kenoProMaxRepository = kenoProMaxRepository;
             this.miniSedieRepository = miniSedieRepository;
-
-            minInitAmount = 2 * botSettings.DefaultMaxBet;
-            maxInitAmount = 20 * botSettings.DefaultMaxBet;
         }
 
         public async Task<int> GetTotalBots()
