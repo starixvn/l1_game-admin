@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
-using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Extensions;
 using MongoDB.Driver;
 using Sentry;
@@ -20,31 +19,22 @@ namespace GamesAdmin.Workers.Bots
 
     public class BotService : IBotService
     {
-        private const int DefaultMaxBet = 10000;
         private const int DisabledBotRatio = 1;
 
-        private readonly int minInitAmount;
-        private readonly int maxInitAmount;
-        private readonly int minAmount;
-        private readonly int maxAmount;
-        private readonly int maxAddAmount;
-        private readonly int minAddAmount;
+        private const int minInitAmount = 2000;
+        private const int maxInitAmount = 30000;
+        private const int minAmount = 2000;
+        private const int maxAmount = 30000;
+        private const int maxAddAmount = 10000;
+        private const int minAddAmount = 5000;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly ISentryClient sentryClient;
-
 
         public BotService(
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             ISentryClient sentryClient)
         {
-            minInitAmount = 2 * DefaultMaxBet;
-            maxInitAmount = 20 * DefaultMaxBet;
-            minAmount = 2 * DefaultMaxBet;
-            maxAmount = 20 * DefaultMaxBet;
-            maxAddAmount = 10 * DefaultMaxBet;
-            minAddAmount = 3 * DefaultMaxBet;
-
             this.accountInfoRepository = accountInfoRepository;
             this.sentryClient = sentryClient;
         }
@@ -79,11 +69,11 @@ namespace GamesAdmin.Workers.Bots
 
             foreach (var bot in botList)
             {
-                resetMessage += $" {bot.Name} : {bot.Red};";
-
                 bot.Red = new Random().Next(minInitAmount, maxInitAmount);
 
                 await accountInfoRepository.ReplaceOneAsync(bot);
+
+                resetMessage += $" {bot.Name} : new balance {bot.Red};";
             }
 
             sentryClient.CaptureMessage(resetMessage);
@@ -97,7 +87,7 @@ namespace GamesAdmin.Workers.Bots
             var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled)).ToList();
             var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
             enabledBots.Shuffle();
-           
+
             var maxRemoval = DisabledBotRatio * enabledBots.Count / 100;
 
             message = $"Disabled {maxRemoval} bots.";
