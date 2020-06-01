@@ -8,7 +8,7 @@
         public const string SmallValue = "small";
         public const string TieValue = "tie";
         public const string PlayerPairValue = "playerpair";
-        public const string BankPairValue = "bankpair";
+        public const string BankPairValue = "bankerpair";
 
         public static readonly BaccaratBetChoice Player = new BaccaratBetChoice(PlayerValue, "Player");
         public static readonly BaccaratBetChoice Bank = new BaccaratBetChoice(BankValue, "Bank");
@@ -16,7 +16,7 @@
         public static readonly BaccaratBetChoice Small = new BaccaratBetChoice(SmallValue, "Small");
         public static readonly BaccaratBetChoice Tie = new BaccaratBetChoice(TieValue, "Tie");
         public static readonly BaccaratBetChoice PlayerPair = new BaccaratBetChoice(PlayerPairValue, "Player Pair");
-        public static readonly BaccaratBetChoice BankPair = new BaccaratBetChoice(BankPairValue, "Bank Pair");
+        public static readonly BaccaratBetChoice BankerPair = new BaccaratBetChoice(BankPairValue, "Banker Pair");
 
         public BaccaratBetChoice() { }
 
