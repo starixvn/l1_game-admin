@@ -443,6 +443,10 @@
       .sidebar.active .menu-item a {
         padding-left: 0; }
 
+.scrollbar-sidebar {
+  height: calc(100% - 55px);
+  overflow: auto; }
+
 .vertical-nav-menu {
   margin: 0;
   padding: .2rem 2.5rem;
