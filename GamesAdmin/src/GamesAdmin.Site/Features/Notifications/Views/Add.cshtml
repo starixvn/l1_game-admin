@@ -4,9 +4,11 @@
 @{
     ViewData["Title"] = "Add Notification";
 }
+@section Styles {
+    <link href="~/css/notification.min.css" rel="stylesheet" asp-append-version="true" />
+}
 
-
-<div class="col-md-10 col-lg-6 card">   
+<div class="col-md-10 col-lg-6 card">
     <form class="card-body form" asp-action="Add" asp-controller="Notification" method="post">
         <div class="form-group">
             <label class="control-label">Display As</label>

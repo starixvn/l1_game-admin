@@ -42,5 +42,9 @@
   {
     "outputFile": "wwwroot/scss/pages/vietlottkeno.css",
     "inputFile": "wwwroot/scss/pages/vietlottkeno.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/notification.css",
+    "inputFile": "wwwroot/scss/pages/notification.scss"
   }
 ]

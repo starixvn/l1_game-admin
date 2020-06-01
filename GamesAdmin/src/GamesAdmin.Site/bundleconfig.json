@@ -39,6 +39,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/notification.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/notification.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/online-users.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",

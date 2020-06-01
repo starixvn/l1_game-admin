@@ -5,6 +5,10 @@
     ViewData["Title"] = "Notifications";
 }
 
+@section Styles {
+    <link href="~/css/notification.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
 <div>
     <a asp-action="Add" asp-controller="Notification" class="btn-add add-item">
         <i class="material-icons">add_alert</i>
