@@ -42,5 +42,10 @@ namespace GamesAdmin.Api.Report
         [Route("odd_even_turbo/round/{roundId}/users/{nickname?}")]
         public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot)
             => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot)));
+
+        [HttpGet]
+        [Route("shake_the_plate/round/{roundId}/users/{nickname?}")]
+        public async Task<ShakeThePlateBetReport> ShakeThePlate(long roundId, string nickname, bool excludeBot)
+           => (await mediator.Send(new ShakeThePlateReportRequest(roundId, nickname, excludeBot)));
     }
 }

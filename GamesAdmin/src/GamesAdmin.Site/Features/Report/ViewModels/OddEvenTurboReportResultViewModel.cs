@@ -6,6 +6,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public RoundResultViewModel RoundResult { get; set; }
 
-        public IEnumerable<RecordViewModel> Records { get; set; }
+        public IEnumerable<OddEvenRecordViewModel> Records { get; set; }
     }
 }

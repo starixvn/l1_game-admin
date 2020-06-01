@@ -15,6 +15,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallTurboReportRequest, BigSmallTurboReportResultViewModel>,
         IRequestHandler<GetOddEvenReportRequest, OddEvenReportResultViewModel>,
         IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>,
+        IRequestHandler<GetShakeThePlateReportRequest, ShakeThePlateReportResultViewModel>,
         IRequestHandler<GetBigSmallBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
@@ -42,7 +43,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                 },
-                Records = result.Records.Select(x => new RecordViewModel
+                Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
@@ -68,7 +69,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                 },
-                Records = result.Records.Select(x => new RecordViewModel
+                Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
@@ -94,7 +95,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                 },
-                Records = result.Records.Select(x => new RecordViewModel
+                Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
@@ -120,7 +121,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                 },
-                Records = result.Records.Select(x => new RecordViewModel
+                Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
@@ -219,6 +220,33 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Even = x.Choice.Even
                 }
             });
+        }
+
+        public async Task<ShakeThePlateReportResultViewModel> Handle(GetShakeThePlateReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetShakeThePlateReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new ShakeThePlateReportResultViewModel
+            {
+                RoundResult = new ShakeThePlateRoundResultViewModel
+                {
+                    Number = result.RoundResult.Number,
+                    Chips = result.RoundResult.Chips
+                },
+                Records = result.Records.Select(x => new ShakeThePlateRecordViewModel
+                {
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Username = x.Username,
+                    Nickname = x.Nickname,
+                    BetWin = x.BetWin,
+                    Even = x.Even,
+                    Odd = x.Odd,
+                    ThreeRed = x.ThreeRed,
+                    ThreeWhite = x.ThreeWhite,
+                    FourRed = x.FourRed,
+                    FourWhite = x.FourWhite
+                })
+            };
         }
     }
 }

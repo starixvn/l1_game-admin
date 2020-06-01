@@ -12,7 +12,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<GameReportRequest, IEnumerable<BaseBetHistory>>,
         IRequestHandler<BigSmallTurboReportRequest, BigSmallBetReport>,
         IRequestHandler<OddEvenTurboReportRequest, OddEvenBetReport>,
-        IRequestHandler<OddEvenReportRequest, OddEvenBetReport>
+        IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
+        IRequestHandler<ShakeThePlateReportRequest, ShakeThePlateBetReport>
     {
         private readonly IReportService reportService;
 
@@ -35,5 +36,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<OddEvenBetReport> Handle(OddEvenReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+
+        public async Task<ShakeThePlateBetReport> Handle(ShakeThePlateReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetShakeThePlateReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
     }
 }

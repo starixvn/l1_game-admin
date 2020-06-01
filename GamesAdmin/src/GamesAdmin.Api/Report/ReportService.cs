@@ -22,6 +22,8 @@ namespace GamesAdmin.Api.Report
         Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot);
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<ShakeThePlateBetReport> GetShakeThePlateReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -137,6 +139,39 @@ namespace GamesAdmin.Api.Report
                     Bet = x.Bet,
                     BetWin = x.BetWin,
                     Back = x.Back
+                })
+            };
+        }
+
+        public async Task<ShakeThePlateBetReport> GetShakeThePlateReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IShakeThePlateReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new ShakeThePlateBetReport
+            {
+                RoundResult = new ShakeThePlateRoundResult
+                {
+                    Number = result.Item1.Number,
+                    Chips = new bool[] {
+                        result.Item1.FirstRedChip,
+                        result.Item1.SecondRedChip,
+                        result.Item1.ThirdRedChip,
+                        result.Item1.FourthRedChip
+                    }
+                },
+                Records = result.Item2.Select(x => new ShakeThePlateBetRecord
+                {
+                    Time = x.Time,
+                    Nickname = x.Nickname,
+                    Username = x.Username,
+                    BetWin = x.BetWin,
+                    Even = x.Even,
+                    Odd = x.Odd,
+                    FourRed = x.FourRed,
+                    FourWhite = x.FourWhite,
+                    ThreeRed = x.ThreeRed,
+                    ThreeWhite = x.ThreeWhite
                 })
             };
         }

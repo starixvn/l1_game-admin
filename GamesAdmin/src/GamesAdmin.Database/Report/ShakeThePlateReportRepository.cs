@@ -5,18 +5,17 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
 
-namespace GamesAdmin.Database.Report
+namespace GamesAdmin.Database
 {
     public interface IShakeThePlateReportRepository
     {
-        Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ShakeThePlateReportRepository : BaseBetReportRepository, IShakeThePlateReportRepository
     {
         public ShakeThePlateReportRepository(IMongoDatabase database) : base(database)
         {
-          
         }
 
         public async Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)

@@ -30,4 +30,19 @@ namespace GamesAdmin.Core.Models
 
         public decimal Back { get; set; }
     }
+
+    public class ShakeThePlateBetRecord : BetRecord
+    {
+        public decimal Odd { get; set; }
+
+        public decimal Even { get; set; }
+
+        public decimal ThreeRed { get; set; }
+
+        public decimal FourRed { get; set; }
+
+        public decimal ThreeWhite { get; set; }
+
+        public decimal FourWhite { get; set; }
+    }
 }

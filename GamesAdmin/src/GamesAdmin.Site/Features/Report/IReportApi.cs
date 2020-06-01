@@ -20,6 +20,9 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/odd_even_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
         Task<OddEvenBetReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot);
 
+        [Get("/report/shake_the_plate/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
+        Task<ShakeThePlateBetReport> GetShakeThePlateReport(long roundId, string nickname, bool excludeBot);
+
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
     }

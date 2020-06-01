@@ -16,6 +16,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
 
+        Task<ShakeThePlateBetReport> GetShakeThePlateReport(long roundId, string nickname, bool excludeBot);
+
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistory(long roundId, string nickname);
@@ -45,6 +47,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
+
+        public async Task<ShakeThePlateBetReport> GetShakeThePlateReport(long roundId, string nickname, bool excludeBot)
+            => await reportApi.GetShakeThePlateReport(roundId, nickname, excludeBot);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);

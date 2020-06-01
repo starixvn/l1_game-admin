@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
@@ -14,6 +13,10 @@ namespace GamesAdmin.Core.Models
     }
 
     public class OddEvenBetReport : BetReport<OddEvenRoundResult, OddEvenBetRecord>
+    {
+    }
+
+    public class ShakeThePlateBetReport : BetReport<ShakeThePlateRoundResult, ShakeThePlateBetRecord>
     {
     }
 }

@@ -66,9 +66,21 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult ShakeThePlate()
+        {
+            return View(new ShakeThePlateReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetShakeThePlateReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_ShakeThePlateRecords", await mediator.Send(new GetShakeThePlateReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname)
         {
-            return PartialView("_BigSmallBetHistory",await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname)));
+            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname)));
         }
 
         [HttpGet]
