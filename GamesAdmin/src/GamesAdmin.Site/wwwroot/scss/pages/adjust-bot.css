@@ -12,12 +12,13 @@
   max-width: 87rem; }
 
 .adjust-bot-hours .modal-body {
-  max-height: 50rem;
+  max-height: 52rem;
   overflow: auto; }
 
 .adjust-bot-hours .ratio {
   width: 5rem;
-  line-height: 1.5rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
   border-radius: .2rem;
   border: 1px solid #ced4da;
   text-align: center; }
@@ -26,11 +27,8 @@
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   text-align: center; }
-  .adjust-bot-hours .table td td {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem; }
-    .adjust-bot-hours .table td td.ratio-cell {
-      text-align: left; }
+  .adjust-bot-hours .table td.ratio-cell {
+    text-align: left; }
 
 .adjust-bot-hours .table .options {
   margin-left: -12px;
