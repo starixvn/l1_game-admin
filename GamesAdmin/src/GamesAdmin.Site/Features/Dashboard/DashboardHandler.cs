@@ -44,7 +44,8 @@ namespace GamesAdmin.Site.Features.Dashboard
         => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
-                new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value)
+                new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
+                new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value)
             };
     }
 }
