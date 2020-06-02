@@ -56,6 +56,9 @@ namespace GamesAdmin.Site.Features._Shared
                     case GameType.KenoProMaxValue:
                         gameType = "keno";
                         break;
+                    case GameType.BaccaratValue:
+                        gameType = "baccarat";
+                        break;
                 }
 
                 return serverApi.GetOnlineUsersOnGame(gameType);
