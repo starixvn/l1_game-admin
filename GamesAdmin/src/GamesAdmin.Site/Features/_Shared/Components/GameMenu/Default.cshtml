@@ -85,12 +85,12 @@
         </a>
     </li>
 
-    @*<li class="menu-item">
+    <li class="menu-item">
         <a asp-action="Index" asp-controller="VietlottKeno">
             <i class="material-icons menu-icon">bubble_chart</i>
             <span class="menu-name">Vietlott Keno Result</span>
         </a>
-    </li>*@
+    </li>
 
     @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
     {
