@@ -91,15 +91,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     {
         public MaxBetChoiceViewModel() { }
 
-        public MaxBetChoiceViewModel(string name, double maxBet)
+        public MaxBetChoiceViewModel(string name, double maxBet, string displayName)
         {
             Name = name;
             MaxBet = maxBet;
+            DisplayName = displayName;
         }
 
         public string Name { get; set; }
 
-        public string DisplayName => Name.UppercaseFirst(); 
+        public string DisplayName { get; }
 
         [Required]
         public double MaxBet { get; set; }

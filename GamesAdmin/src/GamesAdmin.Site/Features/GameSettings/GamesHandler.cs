@@ -161,7 +161,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 foreach (var choice in betChoices)
                 {
                     var maxBet = maxBetChoices.ContainsKey(choice.Value) ? maxBetChoices[choice.Value] : maxbet;
-                    items.Add(new MaxBetChoiceViewModel(choice.Value, maxBet));
+                    items.Add(new MaxBetChoiceViewModel(choice.Value, maxBet, choice.DisplayName));
                 }
             }
 
