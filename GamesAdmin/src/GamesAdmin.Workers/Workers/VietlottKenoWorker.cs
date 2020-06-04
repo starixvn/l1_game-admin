@@ -59,6 +59,7 @@ namespace GamesAdmin.Workers
         private async Task Receive(ClientWebSocket socket, CancellationToken stoppingToken)
         {
             var buffer = new ArraySegment<byte>(new byte[2048]);
+            var checkMissedRounds = true;
             while (!stoppingToken.IsCancellationRequested)
             {
                 WebSocketReceiveResult result;
@@ -78,12 +79,20 @@ namespace GamesAdmin.Workers
                 var jsonString = await reader.ReadToEndAsync();
                 var kenoResult = JsonSerializer.Deserialize<VietLottKenoSocketResult>(jsonString);
 
-                if (!string.IsNullOrWhiteSpace(kenoResult.LiveData) && kenoResult.Rounds.Any())
+                if (checkMissedRounds)
                 {
-                    var latestRound = kenoResult.Rounds.FirstOrDefault();
-                    await kenoService.AddNewRoundResultAsync(latestRound);
+                    await kenoService.AddMissedRoundsAsync(kenoResult.Rounds);
+                    checkMissedRounds = false;
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(kenoResult.LiveData) && kenoResult.Rounds.Any())
+                    {
+                        var latestRound = kenoResult.Rounds.FirstOrDefault();
+                        await kenoService.AddNewRoundResultAsync(latestRound);
 
-                    Console.WriteLine($"{DateTime.Now} - Added round {latestRound.DrawId} to database!");
+                        Console.WriteLine($"{DateTime.Now} - Added round {latestRound.DrawId} to database!");
+                    }
                 }
             }
         }

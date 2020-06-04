@@ -78,12 +78,12 @@ namespace GamesAdmin.Database
             return collection.InsertOneAsync(document);
         }
 
-        public void InsertMany(ICollection<TDocument> documents)
+        public void InsertMany(IEnumerable<TDocument> documents)
         {
             collection.InsertMany(documents);
         }
 
-        public virtual async Task InsertManyAsync(ICollection<TDocument> documents)
+        public virtual async Task InsertManyAsync(IEnumerable<TDocument> documents)
         {
             await collection.InsertManyAsync(documents);
         }

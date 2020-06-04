@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database;
@@ -9,6 +11,8 @@ namespace GamesAdmin.Workers.Services
     public interface IKenoService
     {
         Task AddNewRoundResultAsync(VietLottKenoRound kenoRound);
+
+        Task AddMissedRoundsAsync(IEnumerable<VietLottKenoRound> kenoRounds);
     }
 
     public class KenoService : IKenoService
@@ -21,6 +25,23 @@ namespace GamesAdmin.Workers.Services
         }
 
         public async Task AddNewRoundResultAsync(VietLottKenoRound kenoRound)
+        {
+            var entity = CreateEntity(kenoRound);
+            await repository.InsertOneAsync(entity);
+        }
+
+        public async Task AddMissedRoundsAsync(IEnumerable<VietLottKenoRound> kenoRounds)
+        {
+            var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
+            var existedRounds = (await repository.FilterByAsync(x => roundIds.Contains(x.Number))).ToList();
+            var missedRounds = kenoRounds.Where(x => !existedRounds.Any(er => er.Number == long.Parse(x.DrawId)))
+                .Select(x => CreateEntity(x))
+                .OrderBy(x => x.Number);
+
+            await repository.InsertManyAsync(missedRounds);
+        }
+
+        private VietlottKenoRoundEntity CreateEntity(VietLottKenoRound kenoRound)
         {
             var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
             var sum = result.Sum(x => x);
@@ -76,7 +97,7 @@ namespace GamesAdmin.Workers.Services
                 entity.SettlementResult.Earth = true;
             }
 
-            await repository.InsertOneAsync(entity);
+            return entity;
         }
     }
 }

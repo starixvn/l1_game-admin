@@ -33,9 +33,9 @@ namespace GamesAdmin.Database
 
         Task InsertOneAsync(TDocument document);
 
-        void InsertMany(ICollection<TDocument> documents);
+        void InsertMany(IEnumerable<TDocument> documents);
 
-        Task InsertManyAsync(ICollection<TDocument> documents);
+        Task InsertManyAsync(IEnumerable<TDocument> documents);
 
         void ReplaceOne(TDocument document);
 

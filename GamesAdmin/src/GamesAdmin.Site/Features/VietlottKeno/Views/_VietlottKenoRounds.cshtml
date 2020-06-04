@@ -7,6 +7,7 @@
         <tr>
             <th>Round No / Time (GMT+7)</th>
             <th>Result</th>
+            <th>Total</th>
             <th>Big / Small</th>
             <th>Even / Odd</th>
             <th>Element</th>
@@ -21,6 +22,7 @@
                     <div>@item.Time.ToString(Constants.TimeFormat)</div>
                 </td>
                 <td>@string.Join(" - ", item.Result)</td>
+                <td>@item.Result.Sum(x => x)</td>
                 <td class="text-center">@(item.Big ? "Big" : "Small")</td>
                 <td class="text-center">@(item.Even ? "Even" : "Odd")</td>
                 <td class="text-center">
