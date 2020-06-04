@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Workers.Services
 {
@@ -26,8 +27,33 @@ namespace GamesAdmin.Workers.Services
 
         public async Task AddNewRoundResultAsync(VietLottKenoRound kenoRound)
         {
+            var roundId = long.Parse(kenoRound.DrawId);
             var entity = CreateEntity(kenoRound);
-            await repository.InsertOneAsync(entity);
+            var existedRound = await repository.FindOneAsync(x => x.Number == roundId);
+
+            var nextRoundEntity = new VietlottKenoRoundEntity
+            {
+                Number = roundId + 1,
+                Time = entity.Time.AddMinutes(10)
+            };
+
+            if (existedRound != null)
+            {
+                var updateDefinition = Builders<VietlottKenoRoundEntity>.Update;
+
+                await repository.UpdateAsync(x => x.Id == existedRound.Id,
+                    updateDefinition.Combine(
+                        updateDefinition.Set(x => x.Time, entity.Time),
+                        updateDefinition.Set(x => x.Result, entity.Result),
+                        updateDefinition.Set(x => x.SettlementResult, entity.SettlementResult)
+                    ));
+
+                await repository.InsertOneAsync(nextRoundEntity);
+            }
+            else
+            {
+                await repository.InsertManyAsync(new[] { entity, nextRoundEntity });
+            }
         }
 
         public async Task AddMissedRoundsAsync(IEnumerable<VietLottKenoRound> kenoRounds)
@@ -38,7 +64,10 @@ namespace GamesAdmin.Workers.Services
                 .Select(x => CreateEntity(x))
                 .OrderBy(x => x.Number);
 
-            await repository.InsertManyAsync(missedRounds);
+            if (missedRounds.Any())
+            {
+                await repository.InsertManyAsync(missedRounds);
+            }
         }
 
         private VietlottKenoRoundEntity CreateEntity(VietLottKenoRound kenoRound)

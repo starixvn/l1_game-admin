@@ -36,13 +36,13 @@ namespace GamesAdmin.Api.VietlottKeno
                 Time = x.Time,
                 Result = x.Result,
                 Number = x.Number,
-                Big = x.SettlementResult.Big,
-                Even = x.SettlementResult.Even,
-                Earth = x.SettlementResult.Earth,
-                Fire = x.SettlementResult.Fire,
-                Gold = x.SettlementResult.Gold,
-                Wood = x.SettlementResult.Wood,
-                Water = x.SettlementResult.Water
+                Big = x.SettlementResult?.Big,
+                Even = x.SettlementResult?.Even,
+                Earth = x.SettlementResult?.Earth,
+                Fire = x.SettlementResult?.Fire,
+                Gold = x.SettlementResult?.Gold,
+                Wood = x.SettlementResult?.Wood,
+                Water = x.SettlementResult?.Water
             });
         }
 

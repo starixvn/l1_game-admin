@@ -21,31 +21,31 @@
                     @item.RoundNo
                     <div>@item.Time.ToString(Constants.TimeFormat)</div>
                 </td>
-                <td>@string.Join(" - ", item.Result)</td>
-                <td>@item.Result.Sum(x => x)</td>
-                <td class="text-center">@(item.Big ? "Big" : "Small")</td>
-                <td class="text-center">@(item.Even ? "Even" : "Odd")</td>
+                <td>@string.Join(" - ", item.Result ?? Enumerable.Empty<byte>())</td>
+                <td class="text-center">@item.Result?.Sum(x => x)</td>
+                <td class="text-center">@(item.Big.HasValue ? item.Big.Value ? "Big" : "Small" : string.Empty)</td>
+                <td class="text-center">@(item.Even.HasValue ? item.Even.Value ? "Even" : "Odd" : string.Empty)</td>
                 <td class="text-center">
-                    @if (item.Gold)
+                    @if (item.Gold.HasValue && item.Gold.Value)
                     {
                         @("Gold")
                     }
-                    @if (item.Wood)
+                    @if (item.Wood.HasValue && item.Wood.Value)
                     {
                         @("Wood")
 
                     }
-                    @if (item.Water)
+                    @if (item.Water.HasValue && item.Water.Value)
                     {
                         @("Water")
 
                     }
-                    @if (item.Fire)
+                    @if (item.Fire.HasValue && item.Fire.Value)
                     {
                         @("Fire")
 
                     }
-                    @if (item.Earth)
+                    @if (item.Earth.HasValue && item.Earth.Value)
                     {
                         @("Earth")
                     }
