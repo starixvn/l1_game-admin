@@ -16,44 +16,41 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td class="text-center">
-                    @item.RoundNo
-                    <div>@item.Time.ToString(Constants.TimeFormat)</div>
-                </td>
-                <td>@string.Join(" - ", item.Result ?? Enumerable.Empty<byte>())</td>
-                <td class="text-center">@item.Result?.Sum(x => x)</td>
-                <td class="text-center">@(item.Big.HasValue ? item.Big.Value ? "Big" : "Small" : string.Empty)</td>
-                <td class="text-center">@(item.Even.HasValue ? item.Even.Value ? "Even" : "Odd" : string.Empty)</td>
-                    }
-                </td>
-                <td class="text-center">@item.Result.Sum(x => x)</td>
-                <td class="text-center">
-                    @if (item.Gold.HasValue && item.Gold.Value)
+        <tr>
+            <td class="text-center">
+                @item.RoundNo
+                <div>@item.Time.ToString(Constants.TimeFormat)</div>
+            </td>
+            <td>@string.Join(" - ", item.Result ?? Enumerable.Empty<byte>())</td>
+            <td class="text-center">@item.Result?.Sum(x => x)</td>
+            <td class="text-center">@(item.Big.HasValue ? item.Big.Value ? "Big" : "Small" : string.Empty)</td>
+            <td class="text-center">@(item.Even.HasValue ? item.Even.Value ? "Even" : "Odd" : string.Empty)</td>
+            <td class="text-center">
+                @if (item.Gold.HasValue && item.Gold.Value)
                     {
-                        @("Gold")
+                @("Gold")
                     }
-                    @if (item.Wood.HasValue && item.Wood.Value)
+                @if (item.Wood.HasValue && item.Wood.Value)
                     {
-                        @("Wood")
+                @("Wood")
 
                     }
-                    @if (item.Water.HasValue && item.Water.Value)
+                @if (item.Water.HasValue && item.Water.Value)
                     {
-                        @("Water")
+                @("Water")
 
                     }
-                    @if (item.Fire.HasValue && item.Fire.Value)
+                @if (item.Fire.HasValue && item.Fire.Value)
                     {
-                        @("Fire")
+                @("Fire")
 
                     }
-                    @if (item.Earth.HasValue && item.Earth.Value)
+                @if (item.Earth.HasValue && item.Earth.Value)
                     {
-                        @("Earth")
+                @("Earth")
                     }
-                </td>
-            </tr>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
