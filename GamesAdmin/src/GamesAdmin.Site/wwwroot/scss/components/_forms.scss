@@ -1,15 +1,15 @@
 ﻿.form {
     .form-control {
-        border-radius: .5rem;
-        outline: initial !important;
-        box-shadow: none !important;
-        font-size: 1.4rem;
         padding: 0.8rem 1rem;
         line-height: 1;
+        height: 3.6rem;
+        border: 1px solid #ced4da;
+        border-radius: .5rem;
+        box-shadow: none !important;
+        outline: initial !important;
+        font-size: 1.4rem;
         background: #fff;
         color: #3a3a3a;
-        border: 1px solid #ced4da;
-        height: auto;
     }
 
     .form-control:disabled,
@@ -49,6 +49,19 @@
 
     .back-button {
         margin-right: 1.4rem;
+    }
+}
+
+.filter .list-buttons {
+    display: flex;
+    margin-top: 2.5rem;
+
+    [class^="btn"] {
+        margin-right: 1.6rem;
+    }
+
+    [class^="btn"]:last-child {
+        margin-right: 0;
     }
 }
 

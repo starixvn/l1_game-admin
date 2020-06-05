@@ -25,6 +25,9 @@
                 <td class="text-center">@item.Result?.Sum(x => x)</td>
                 <td class="text-center">@(item.Big.HasValue ? item.Big.Value ? "Big" : "Small" : string.Empty)</td>
                 <td class="text-center">@(item.Even.HasValue ? item.Even.Value ? "Even" : "Odd" : string.Empty)</td>
+                    }
+                </td>
+                <td class="text-center">@item.Result.Sum(x => x)</td>
                 <td class="text-center">
                     @if (item.Gold.HasValue && item.Gold.Value)
                     {

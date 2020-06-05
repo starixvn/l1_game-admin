@@ -45,6 +45,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/keno-pro-viet.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/keno-pro-viet.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/online-users.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",

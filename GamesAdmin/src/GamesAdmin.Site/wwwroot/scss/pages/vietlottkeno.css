@@ -66,3 +66,46 @@
 
 .input-validation-error {
   border: 1px solid #dc3545; }
+
+.list-numbers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; }
+
+.number {
+  display: block;
+  position: relative;
+  height: 4rem;
+  width: 4rem;
+  padding-left: 30px;
+  margin: 0.4rem;
+  cursor: pointer; }
+  .number input {
+    vertical-align: top;
+    margin-right: 1rem;
+    position: absolute;
+    z-index: -1;
+    opacity: 0; }
+  .number .control_indicator {
+    position: absolute;
+    top: 0.2rem;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+    width: 4rem;
+    background: #e6e6e6;
+    border-radius: 50%; }
+
+.number:hover input ~ .control_indicatior,
+.number input:focus ~ .control_indicator {
+  background: #16aaff;
+  color: #fff; }
+
+.number input:checked ~ .control_indicator {
+  background: #16aaff;
+  color: #fff; }
+
+.new-round {
+  max-width: 51rem; }

@@ -1,14 +1,16 @@
 ﻿
 %btn {
     min-width: 9rem;
+    height: 3.6rem;
     padding: .75rem 1.3rem .6rem;
     border-radius: .5rem;
     box-shadow: none !important;
-    font-size: 1.3rem;
     border-width: 1px;
     border-style: solid;
+    font-size: 1.3rem;
     outline: none;
-
+    text-align: center;
+    
     &:focus {
         outline: none;
     }
@@ -22,6 +24,7 @@
 
     &:hover {
         background-color: $btn-submit-bg-color-hover;
+        color: #fff;
     }
 }
 
@@ -33,6 +36,7 @@
 
     &:hover {
         background-color: $btn-add-bg-color-hover;
+        color: #fff;
     }
 }
 
@@ -47,39 +51,23 @@
     }
 }
 
-.btn-outline-green {
-    @extend %btn;
-    color: $btn-add-bg-color;
-    background-color: #fff;
-    border: 1px solid $btn-add-bg-color;
+.add-item,
+.back-button {
+    position: relative;
+    display: inline-block;
+    padding-left: 3.3rem;
+    margin-left: 0.6rem;
+    margin-bottom: 1.2rem;
+    color: #fff;
 
-    &:hover {
-        background-color: $btn-add-bg-color;
-        color: #fff;
+    .material-icons {
+        font-size: 1.9rem;
+        position: absolute;
+        left: 1.6rem;
     }
-}
-
-.btn-outline-gray {
-    @extend %btn;
-    background-color: #fff;
-    color: $btn-gray-bg-color;
-    border-color: $btn-gray-bg-color;
 
     &:hover {
-        background-color: $btn-gray-bg-color;
-        color: #fff;
-    }
-}
-
-
-.btn-outline-blue {
-    @extend %btn;
-    background-color: #fff;
-    color: $btn-blue-bg-color;
-    border-color: $btn-blue-bg-color;
-
-    &:hover {
-        background-color: $btn-blue-bg-color;
+        text-decoration: none;
         color: #fff;
     }
 }

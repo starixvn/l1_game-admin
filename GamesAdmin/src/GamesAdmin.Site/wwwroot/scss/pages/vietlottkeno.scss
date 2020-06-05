@@ -4,3 +4,59 @@
 .input-validation-error {
     border: 1px solid #dc3545;
 }
+
+.list-numbers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+// Basic control styles
+.number {
+    display: block;
+    position: relative;
+    height: 4rem;
+    width: 4rem;
+    padding-left: 30px;
+    margin: 0.4rem;
+    cursor: pointer;
+
+    // Hide default browser input
+    input {
+        vertical-align: top;
+        margin-right: 1rem;
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+
+    .control_indicator {
+        position: absolute;
+        top: 0.2rem;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 4rem;
+        width: 4rem;
+        background: #e6e6e6;
+        border-radius: 50%;
+    }
+}
+
+// Hover and focus
+.number:hover input ~ .control_indicatior,
+.number input:focus ~ .control_indicator {
+    background: #16aaff;
+    color: #fff;
+}
+// Checked
+.number input:checked ~ .control_indicator {
+    background: #16aaff;
+    color: #fff;
+}
+
+// Add new round
+
+.new-round {
+    max-width: 51rem;
+}

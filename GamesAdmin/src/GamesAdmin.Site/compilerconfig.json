@@ -1,50 +1,62 @@
-﻿[
+[
   {
     "outputFile": "wwwroot/scss/pages/login.css",
-    "inputFile": "wwwroot/scss/pages/login.scss"
+    "inputFile": "wwwroot/scss/pages/login.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/site.css",
-    "inputFile": "wwwroot/scss/pages/site.scss"
+    "inputFile": "wwwroot/scss/pages/site.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/forecast.css",
-    "inputFile": "wwwroot/scss/pages/forecast.scss"
+    "inputFile": "wwwroot/scss/pages/forecast.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/base/roboto.css",
-    "inputFile": "wwwroot/scss/base/roboto.scss"
+    "inputFile": "wwwroot/scss/base/roboto.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/base/material-icon.css",
-    "inputFile": "wwwroot/scss/base/material-icon.scss"
+    "inputFile": "wwwroot/scss/base/material-icon.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/adjust-bot.css",
-    "inputFile": "wwwroot/scss/pages/adjust-bot.scss"
+    "inputFile": "wwwroot/scss/pages/adjust-bot.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/dashboard.css",
-    "inputFile": "wwwroot/scss/pages/dashboard.scss"
+    "inputFile": "wwwroot/scss/pages/dashboard.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/reports.css",
-    "inputFile": "wwwroot/scss/pages/reports.scss"
+    "inputFile": "wwwroot/scss/pages/reports.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/game-status.css",
-    "inputFile": "wwwroot/scss/pages/game-status.scss"
+    "inputFile": "wwwroot/scss/pages/game-status.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/online-users.css",
-    "inputFile": "wwwroot/scss/pages/online-users.scss"
+    "inputFile": "wwwroot/scss/pages/online-users.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/vietlottkeno.css",
-    "inputFile": "wwwroot/scss/pages/vietlottkeno.scss"
+    "inputFile": "wwwroot/scss/pages/vietlottkeno.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/scss/pages/notification.css",
-    "inputFile": "wwwroot/scss/pages/notification.scss"
+    "inputFile": "wwwroot/scss/pages/notification.scss",
+    "sourceMap": false
   }
 ]
