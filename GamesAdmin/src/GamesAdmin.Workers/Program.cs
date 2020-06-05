@@ -1,5 +1,6 @@
 using Coravel;
 using GamesAdmin.Database;
+using GamesAdmin.VietlottKeno;
 using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Extensions;

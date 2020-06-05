@@ -1,4 +1,5 @@
 ﻿using Coravel.Scheduling.Schedule.Interfaces;
+using GamesAdmin.VietlottKeno.Tasks;
 using GamesAdmin.Workers.Bots.Tasks;
 
 namespace GamesAdmin.Workers._Shared
@@ -14,6 +15,10 @@ namespace GamesAdmin.Workers._Shared
             scheduler
                 .Schedule<DisableBotTask>()
                 .Hourly();
+
+            scheduler
+               .Schedule<CheckingLatestKenoRoundTask>()
+               .EveryMinute();
         }
     }
 }

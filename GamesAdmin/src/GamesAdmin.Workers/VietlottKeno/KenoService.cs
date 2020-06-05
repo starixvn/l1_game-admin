@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 
-namespace GamesAdmin.Workers.Services
+namespace GamesAdmin.VietlottKeno
 {
     public interface IKenoService
     {
@@ -18,9 +16,9 @@ namespace GamesAdmin.Workers.Services
 
     public class KenoService : IKenoService
     {
-        private readonly IGenericRepository<VietlottKenoRoundEntity> repository;
+        private readonly IKenoRepository repository;
 
-        public KenoService(IGenericRepository<VietlottKenoRoundEntity> repository)
+        public KenoService(IKenoRepository repository)
         {
             this.repository = repository;
         }
@@ -29,7 +27,7 @@ namespace GamesAdmin.Workers.Services
         {
             var roundId = long.Parse(kenoRound.DrawId);
             var entity = CreateEntity(kenoRound);
-            var existedRound = await repository.FindOneAsync(x => x.Number == roundId);
+            await repository.InsertOrUpdateAsync(entity);
 
             var nextRoundEntity = new VietlottKenoRoundEntity
             {
@@ -37,30 +35,14 @@ namespace GamesAdmin.Workers.Services
                 Time = entity.Time.AddMinutes(10)
             };
 
-            if (existedRound != null)
-            {
-                var updateDefinition = Builders<VietlottKenoRoundEntity>.Update;
-
-                await repository.UpdateAsync(x => x.Id == existedRound.Id,
-                    updateDefinition.Combine(
-                        updateDefinition.Set(x => x.Time, entity.Time),
-                        updateDefinition.Set(x => x.Result, entity.Result),
-                        updateDefinition.Set(x => x.SettlementResult, entity.SettlementResult)
-                    ));
-
-                await repository.InsertOneAsync(nextRoundEntity);
-            }
-            else
-            {
-                await repository.InsertManyAsync(new[] { entity, nextRoundEntity });
-            }
+            await repository.InsertOneAsync(nextRoundEntity);
         }
 
         public async Task AddMissedRoundsAsync(IEnumerable<VietLottKenoRound> kenoRounds)
         {
             var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
-            var existedRounds = (await repository.FilterByAsync(x => roundIds.Contains(x.Number))).ToList();
-            var missedRounds = kenoRounds.Where(x => !existedRounds.Any(er => er.Number == long.Parse(x.DrawId)))
+            var latestRound = await repository.GetLatestRoundAsync();
+            var missedRounds = kenoRounds.Where(x => latestRound?.Number < long.Parse(x.DrawId))
                 .Select(x => CreateEntity(x))
                 .OrderBy(x => x.Number);
 
