@@ -27,7 +27,11 @@ namespace GamesAdmin.VietlottKeno
         {
             var roundId = long.Parse(kenoRound.DrawId);
             var entity = CreateEntity(kenoRound);
-            await repository.InsertOrUpdateAsync(entity);
+            await repository.UpdateAsync(entity,
+                new UpdateOptions
+                {
+                    IsUpsert = true
+                });
 
             var nextRoundEntity = new VietlottKenoRoundEntity
             {
@@ -42,7 +46,15 @@ namespace GamesAdmin.VietlottKeno
         {
             var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
             var latestRound = await repository.GetLatestRoundAsync();
-            var missedRounds = kenoRounds.Where(x => latestRound?.Number < long.Parse(x.DrawId))
+
+            if (latestRound != null && latestRound.Result == null && kenoRounds.Any(x => long.Parse(x.DrawId) == latestRound.Number))
+            {
+                var updatedLatestRound = CreateEntity(kenoRounds.FirstOrDefault(x => long.Parse(x.DrawId) == latestRound.Number));
+
+                await repository.UpdateAsync(updatedLatestRound);
+            }
+
+            var missedRounds = kenoRounds.Where(x => latestRound == null || latestRound.Number < long.Parse(x.DrawId))
                 .Select(x => CreateEntity(x))
                 .OrderBy(x => x.Number);
 

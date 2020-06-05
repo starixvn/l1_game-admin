@@ -7,7 +7,7 @@ namespace GamesAdmin.VietlottKeno
 {
     public interface IKenoRepository : IGenericRepository<VietlottKenoRoundEntity>
     {
-        Task InsertOrUpdateAsync(VietlottKenoRoundEntity entity);
+        Task UpdateAsync(VietlottKenoRoundEntity entity, UpdateOptions updateOptions = null);
 
         Task<VietlottKenoRoundEntity> GetLatestRoundAsync();
     }
@@ -21,7 +21,7 @@ namespace GamesAdmin.VietlottKeno
             collection = mongoDatabase.GetCollection<VietlottKenoRoundEntity>(Document.GetCollectionName(typeof(VietlottKenoRoundEntity)));
         }
 
-        public async Task InsertOrUpdateAsync(VietlottKenoRoundEntity entity)
+        public async Task UpdateAsync(VietlottKenoRoundEntity entity, UpdateOptions updateOptions = null)
         {
             var updateDefinition = Builders<VietlottKenoRoundEntity>.Update;
 
@@ -31,10 +31,7 @@ namespace GamesAdmin.VietlottKeno
                         updateDefinition.Set(x => x.Result, entity.Result),
                         updateDefinition.Set(x => x.SettlementResult, entity.SettlementResult)
                         ),
-                    new UpdateOptions
-                    {
-                        IsUpsert = true
-                    }
+                    updateOptions
                 );
         }
 
