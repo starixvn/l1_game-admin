@@ -72,40 +72,56 @@
   justify-content: center;
   flex-wrap: wrap; }
 
-.number {
-  display: block;
-  position: relative;
-  height: 4rem;
-  width: 4rem;
-  padding-left: 30px;
-  margin: 0.4rem;
-  cursor: pointer; }
-  .number input {
-    vertical-align: top;
-    margin-right: 1rem;
-    position: absolute;
-    z-index: -1;
-    opacity: 0; }
-  .number .control_indicator {
-    position: absolute;
-    top: 0.2rem;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 4rem;
-    width: 4rem;
-    background: #e6e6e6;
-    border-radius: 50%; }
+.btn-add:hover {
+  text-decoration: none; }
 
-.number:hover input ~ .control_indicatior,
-.number input:focus ~ .control_indicator {
-  background: #16aaff;
-  color: #fff; }
+.tble-vietlot .list-numbers {
+  display: grid;
+  grid-template-columns: repeat(10, 3rem);
+  flex-wrap: wrap;
+  grid-gap: .4rem; }
 
-.number input:checked ~ .control_indicator {
-  background: #16aaff;
-  color: #fff; }
+.tble-vietlot .number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  border: 1px solid #16aaff; }
 
 .new-round {
   max-width: 51rem; }
+  .new-round .number {
+    display: block;
+    position: relative;
+    height: 4rem;
+    width: 4rem;
+    padding-left: 30px;
+    margin: 0.4rem;
+    cursor: pointer; }
+    .new-round .number input {
+      vertical-align: top;
+      margin-right: 1rem;
+      position: absolute;
+      z-index: -1;
+      opacity: 0; }
+    .new-round .number .control_indicator {
+      position: absolute;
+      top: 0.2rem;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 4rem;
+      width: 4rem;
+      background: #e6e6e6;
+      border-radius: 50%; }
+  .new-round .number:hover input ~ .control_indicatior,
+  .new-round .number input:focus ~ .control_indicator {
+    background: #16aaff;
+    color: #fff;
+    cursor: pointer; }
+  .new-round .number input:checked ~ .control_indicator {
+    background: #16aaff;
+    color: #fff; }

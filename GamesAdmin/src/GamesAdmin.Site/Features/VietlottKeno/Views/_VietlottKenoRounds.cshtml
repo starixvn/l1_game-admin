@@ -2,7 +2,7 @@
 
 @model IEnumerable<GamesAdmin.Site.Features.VietlottKeno.ViewModels.ViewlottKenoRoundViewModel>
 
-<table id="vietlott-keno-table" class="table table-bordered table-hover stripe">
+<table id="vietlott-keno-table" class="table table-bordered table-hover stripe tble-vietlot">
     <thead>
         <tr>
             <th>Round No / Time (GMT+7)</th>
@@ -21,7 +21,17 @@
                     @item.RoundNo
                     <div>@item.Time.ToString(Constants.TimeFormat)</div>
                 </td>
-                <td>@string.Join(" - ", item.Result ?? Enumerable.Empty<byte>())</td>
+                <td>
+                    <div class="list-numbers">
+                        @if (item.Result != null)
+                        {
+                            @foreach (var number in item.Result)
+                            {
+                                <span class="number">@number</span>
+                            }
+                        }
+                    </div>
+                </td>
                 <td class="text-center">@item.Result?.Sum(x => x)</td>
                 <td class="text-center">@(item.Big.HasValue ? item.Big.Value ? "Big" : "Small" : string.Empty)</td>
                 <td class="text-center">@(item.Even.HasValue ? item.Even.Value ? "Even" : "Odd" : string.Empty)</td>
