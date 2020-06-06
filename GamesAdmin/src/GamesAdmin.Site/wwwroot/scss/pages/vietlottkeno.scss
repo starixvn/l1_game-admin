@@ -74,6 +74,7 @@
     .number input:focus ~ .control_indicator {
         background: #16aaff;
         color: #fff;
+        cursor: pointer;
     }
     // Checked
     .number input:checked ~ .control_indicator {

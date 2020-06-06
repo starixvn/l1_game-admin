@@ -39,9 +39,10 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/css/keno-pro-viet.min.css",
+    "outputFileName": "wwwroot/css/vietlottkeno.min.css",
     "inputFiles": [
-      "wwwroot/scss/pages/keno-pro-viet.css"
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/vietlottkeno.css"
     ]
   },
   {

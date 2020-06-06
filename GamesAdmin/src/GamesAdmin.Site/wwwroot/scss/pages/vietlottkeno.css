@@ -120,7 +120,8 @@
   .new-round .number:hover input ~ .control_indicatior,
   .new-round .number input:focus ~ .control_indicator {
     background: #16aaff;
-    color: #fff; }
+    color: #fff;
+    cursor: pointer; }
   .new-round .number input:checked ~ .control_indicator {
     background: #16aaff;
     color: #fff; }
