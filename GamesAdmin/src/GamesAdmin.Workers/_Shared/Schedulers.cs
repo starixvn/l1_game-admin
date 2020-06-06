@@ -16,9 +16,9 @@ namespace GamesAdmin.Workers._Shared
                 .Schedule<DisableBotTask>()
                 .Hourly();
 
-            //scheduler
-            //   .Schedule<CheckingLatestKenoRoundTask>()
-            //   .EveryMinute();
+            scheduler
+               .Schedule<CheckingLatestKenoRoundTask>()
+               .EveryMinute();
         }
     }
 }

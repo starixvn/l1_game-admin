@@ -1,21 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Coravel.Invocable;
+using Sentry;
 
 namespace GamesAdmin.VietlottKeno.Tasks
 {
     public class CheckingLatestKenoRoundTask : IInvocable
     {
-        public CheckingLatestKenoRoundTask()
+        private readonly IKenoRepository kenoRepository;
+        public CheckingLatestKenoRoundTask(IKenoRepository kenoRepository)
         {
-            throw new NotImplementedException();
+            this.kenoRepository = kenoRepository;
         }
 
-        Task IInvocable.Invoke()
+        public async Task Invoke()
         {
-            throw new NotImplementedException();
+            var startTime = new TimeSpan(6, 1, 0);
+            var endTime = new TimeSpan(21, 53, 0);
+            var currentTime = DateTime.Now;
+
+            if(currentTime.TimeOfDay.Subtract(startTime).TotalMinutes >= 1 && endTime.Subtract(currentTime.TimeOfDay).TotalMinutes <= 1)
+            {
+                var latestRound = await kenoRepository.GetLatestRoundAsync();
+                var utcNow = currentTime.ToUniversalTime();
+
+                var minutes  = (utcNow - latestRound?.Time)?.TotalMinutes;
+
+                if (minutes >= 11)
+                {
+                    SentrySdk.CaptureMessage($"{currentTime} - The worker still hasnt recveived the latest round result from Vietlott!");
+                }
+            }
         }
     }
 }

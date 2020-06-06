@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.VietlottKeno;
+using GamesAdmin.VietlottKeno.Tasks;
 using GamesAdmin.Workers.Bots;
 using GamesAdmin.Workers.Bots.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,7 @@ namespace GamesAdmin.Workers.Extensions
         {
             services.AddTransient<ReviseBotBalanceTask>();
             services.AddTransient<DisableBotTask>();
+            services.AddTransient<CheckingLatestKenoRoundTask>();
         }
     }
 }
