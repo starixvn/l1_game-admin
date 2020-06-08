@@ -22,7 +22,6 @@ namespace GamesAdmin.VietlottKeno
         private readonly IKenoService kenoService;
         private readonly ISentryClient sentryClient;
         private readonly IGameAdminApi gameAdminApi;
-        private bool checkMissedRounds = true;
 
         public VietlottKenoWorker(
             IOptions<VietlottKenoConfiguration> options,
@@ -63,6 +62,7 @@ namespace GamesAdmin.VietlottKeno
         private async Task Receive(ClientWebSocket socket, CancellationToken stoppingToken)
         {
             var buffer = new ArraySegment<byte>(new byte[2048]);
+            bool checkMissedRounds = true;
 
             while (!stoppingToken.IsCancellationRequested)
             {
