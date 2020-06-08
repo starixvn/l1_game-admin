@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Refit;
 
 namespace GamesAdmin.Workers
 {
@@ -40,6 +42,8 @@ namespace GamesAdmin.Workers
 
                     services.AddScheduler();
                     services.AddScheduleTasks();
+
+                    services.AddSingleton(RestService.For<IGameAdminApi>(hostContext.Configuration["GameAdminUrl"]));
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

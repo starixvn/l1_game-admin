@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.VietlottKeno.Requests;
 using GamesAdmin.Site.Features.VietlottKeno.ViewModels;
 using MediatR;
@@ -58,6 +60,14 @@ namespace GamesAdmin.Site.Features.VietlottKeno
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });
             return Json(new { isSuccessful = false, errors });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> NotifyRoundResult([FromBody] IEnumerable<VietlottKenoRound> kenoRounds)
+        {
+            await mediator.Send(new NotifyRoundResultRequest(kenoRounds));
+            return Ok();
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -20,15 +21,19 @@ namespace GamesAdmin.VietlottKeno
         private readonly VietlottKenoConfiguration vietlottKenoConfiguration;
         private readonly IKenoService kenoService;
         private readonly ISentryClient sentryClient;
+        private readonly IGameAdminApi gameAdminApi;
+        private bool checkMissedRounds = true;
 
         public VietlottKenoWorker(
             IOptions<VietlottKenoConfiguration> options,
             IKenoService kenoService,
+            IGameAdminApi gameAdminApi,
             ISentryClient sentryClient)
         {
             vietlottKenoConfiguration = options.Value;
             this.kenoService = kenoService;
             this.sentryClient = sentryClient;
+            this.gameAdminApi = gameAdminApi;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -58,7 +63,7 @@ namespace GamesAdmin.VietlottKeno
         private async Task Receive(ClientWebSocket socket, CancellationToken stoppingToken)
         {
             var buffer = new ArraySegment<byte>(new byte[2048]);
-            var checkMissedRounds = true;
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 WebSocketReceiveResult result;
@@ -80,18 +85,20 @@ namespace GamesAdmin.VietlottKeno
 
                 if (checkMissedRounds)
                 {
-                    await kenoService.AddMissedRoundsAsync(kenoResult.Rounds);
+                    var rounds = await kenoService.AddMissedRoundsAsync(kenoResult.Rounds);
                     checkMissedRounds = false;
                     Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
+                    await gameAdminApi.NotifyRoundResult(rounds);
                 }
                 else
                 {
                     if (!string.IsNullOrWhiteSpace(kenoResult.LiveData) && kenoResult.Rounds.Any())
                     {
-                        var latestRound = kenoResult.Rounds.FirstOrDefault();
-                        await kenoService.AddNewRoundResultAsync(latestRound);
+                        var round = await kenoService.AddNewRoundResultAsync(kenoResult.Rounds.FirstOrDefault());
 
-                        Console.WriteLine($"{DateTime.Now} - Added round {latestRound.DrawId} to database!");
+                        Console.WriteLine($"{DateTime.Now} - Added round {round.Number} to database!");
+
+                        await gameAdminApi.NotifyRoundResult(new[] { round });
                     }
                 }
             }
@@ -103,10 +110,10 @@ namespace GamesAdmin.VietlottKeno
         public string LiveData { get; set; }
 
         [JsonPropertyName("kenos")]
-        public IEnumerable<VietLottKenoRound> Rounds { get; set; }
+        public IEnumerable<VietLottKenoRoundResult> Rounds { get; set; }
     }
 
-    public class VietLottKenoRound
+    public class VietLottKenoRoundResult
     {
         public string Data { get; set; }
 

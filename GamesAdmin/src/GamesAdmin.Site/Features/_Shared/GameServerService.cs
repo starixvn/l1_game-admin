@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -18,6 +19,9 @@ namespace GamesAdmin.Site.Features._Shared
         [Get("/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
+        [Post("/")]
+        Task NotifyRoundResult([Body] IEnumerable<VietlottKenoRound> kenoRounds);
+        
         [Post("/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
     }
@@ -28,7 +32,9 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task<OnlineUsers> GetOnlineUsers(string game);
 
-        Task<JsonWebToken> GetJWT(string username, string userAgent);
+        Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds);
+        
+         Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameServerService : IGameServerService
@@ -47,7 +53,7 @@ namespace GamesAdmin.Site.Features._Shared
             try
             {
                 if (string.IsNullOrWhiteSpace(game))
-                { 
+                {
                     return serverApi.GetOnlineUsers();
                 }
 
@@ -61,6 +67,7 @@ namespace GamesAdmin.Site.Features._Shared
                     case GameType.KenoProMaxValue:
                         gameType = "keno";
                         break;
+
                     case GameType.BaccaratValue:
                         gameType = "baccarat";
                         break;
@@ -101,6 +108,18 @@ namespace GamesAdmin.Site.Features._Shared
             return Task.FromResult(new JsonWebToken());
         }
 
+        public async Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds)
+        {
+            try
+            {
+                await serverApi.NotifyRoundResult(kenoRounds);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
         private void HandleException(Exception ex)
         {
             if (ex is ApiException)
@@ -115,6 +134,5 @@ namespace GamesAdmin.Site.Features._Shared
 
             sentryClient.CaptureException(ex);
         }
-
     }
 }

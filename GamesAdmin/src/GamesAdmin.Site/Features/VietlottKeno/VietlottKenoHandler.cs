@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.VietlottKeno.Requests;
 using GamesAdmin.Site.Features.VietlottKeno.ViewModels;
 using MediatR;
@@ -13,15 +14,18 @@ namespace GamesAdmin.Site.Features.VietlottKeno
 {
     public class VietlottKenoHandler :
         IRequestHandler<GetRoundsRequest, IEnumerable<ViewlottKenoRoundViewModel>>,
-        IRequestHandler<CreateRoundRequest, Unit>
+        IRequestHandler<CreateRoundRequest, Unit>,
+        IRequestHandler<NotifyRoundResultRequest, Unit>
     {
         private readonly IVietlottKenoService vietlottKenoService;
+        private readonly IGameServerService gameServerService;
         private readonly IAppSettings appSettings;
 
-        public VietlottKenoHandler(IVietlottKenoService vietlottKenoService, IAppSettings appSettings)
+        public VietlottKenoHandler(IVietlottKenoService vietlottKenoService, IGameServerService gameServerService, IAppSettings appSettings)
         {
             this.appSettings = appSettings;
             this.vietlottKenoService = vietlottKenoService;
+            this.gameServerService = gameServerService;
         }
 
         public async Task<IEnumerable<ViewlottKenoRoundViewModel>> Handle(GetRoundsRequest request, CancellationToken cancellationToken)
@@ -62,6 +66,13 @@ namespace GamesAdmin.Site.Features.VietlottKeno
             };
 
             await vietlottKenoService.CreateAsync(model);
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(NotifyRoundResultRequest request, CancellationToken cancellationToken)
+        {
+            await gameServerService.NotifyRoundResult(request.KenoRounds);
 
             return Unit.Value;
         }

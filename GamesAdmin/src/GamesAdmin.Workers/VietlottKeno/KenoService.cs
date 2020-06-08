@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 
@@ -9,9 +10,9 @@ namespace GamesAdmin.VietlottKeno
 {
     public interface IKenoService
     {
-        Task AddNewRoundResultAsync(VietLottKenoRound kenoRound);
+        Task<VietlottKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound);
 
-        Task AddMissedRoundsAsync(IEnumerable<VietLottKenoRound> kenoRounds);
+        Task<IEnumerable<VietlottKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds);
     }
 
     public class KenoService : IKenoService
@@ -23,7 +24,7 @@ namespace GamesAdmin.VietlottKeno
             this.repository = repository;
         }
 
-        public async Task AddNewRoundResultAsync(VietLottKenoRound kenoRound)
+        public async Task<VietlottKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound)
         {
             var roundId = long.Parse(kenoRound.DrawId);
             var entity = CreateEntity(kenoRound);
@@ -40,31 +41,65 @@ namespace GamesAdmin.VietlottKeno
             };
 
             await repository.InsertOneAsync(nextRoundEntity);
+
+            return ConvertToModel(entity);
         }
 
-        public async Task AddMissedRoundsAsync(IEnumerable<VietLottKenoRound> kenoRounds)
+        public async Task<IEnumerable<VietlottKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds)
         {
             var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
             var latestRound = await repository.GetLatestRoundAsync();
 
-            if (latestRound != null && latestRound.Result == null && kenoRounds.Any(x => long.Parse(x.DrawId) == latestRound.Number))
+            if (latestRound != null)
             {
-                var updatedLatestRound = CreateEntity(kenoRounds.FirstOrDefault(x => long.Parse(x.DrawId) == latestRound.Number));
+                if (latestRound.Result == null && kenoRounds.Any(x => long.Parse(x.DrawId) == latestRound.Number))
+                {
+                    var updatedLatestRound = CreateEntity(kenoRounds.FirstOrDefault(x => long.Parse(x.DrawId) == latestRound.Number));
+                    updatedLatestRound.Time = latestRound.Time;
+                    await repository.UpdateAsync(updatedLatestRound);
+                }
 
-                await repository.UpdateAsync(updatedLatestRound);
+                var missedRounds = kenoRounds.Where(x => latestRound == null || latestRound.Number < long.Parse(x.DrawId))
+                    .Select(x => CreateEntity(x))
+                    .OrderBy(x => x.Number);
+
+                if (missedRounds.Any())
+                {
+                    var time = latestRound.Time.AddMinutes(10);
+
+                    foreach (var round in missedRounds)
+                    {
+                        round.Time = time;
+                        time = time.AddMinutes(10);
+                    }
+
+                    await repository.InsertManyAsync(missedRounds);
+
+                    return missedRounds.Select(ConvertToModel);
+                }
             }
 
-            var missedRounds = kenoRounds.Where(x => latestRound == null || latestRound.Number < long.Parse(x.DrawId))
-                .Select(x => CreateEntity(x))
-                .OrderBy(x => x.Number);
-
-            if (missedRounds.Any())
-            {
-                await repository.InsertManyAsync(missedRounds);
-            }
+            return Enumerable.Empty<VietlottKenoRound>();
         }
 
-        private VietlottKenoRoundEntity CreateEntity(VietLottKenoRound kenoRound)
+        private VietlottKenoRound ConvertToModel(VietlottKenoRoundEntity entity)
+        {
+            return new VietlottKenoRound
+            {
+                Time = entity.Time,
+                Result = entity.Result,
+                Number = entity.Number,
+                Big = entity.SettlementResult.Big,
+                Even = entity.SettlementResult.Even,
+                Earth = entity.SettlementResult.Earth,
+                Fire = entity.SettlementResult.Fire,
+                Gold = entity.SettlementResult.Gold,
+                Wood = entity.SettlementResult.Wood,
+                Water = entity.SettlementResult.Water
+            };
+        }
+
+        private VietlottKenoRoundEntity CreateEntity(VietLottKenoRoundResult kenoRound)
         {
             var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
             var sum = result.Sum(x => x);
