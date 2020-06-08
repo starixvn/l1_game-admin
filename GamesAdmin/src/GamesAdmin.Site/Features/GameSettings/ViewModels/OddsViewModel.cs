@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -18,6 +19,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisplayName { get; }
 
         [Required]
+        [Range(0.1, int.MaxValue)]
         public double Odds { get; set; }
     }
 }

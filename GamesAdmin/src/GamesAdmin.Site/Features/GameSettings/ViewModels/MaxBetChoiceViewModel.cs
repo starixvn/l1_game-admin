@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName { get; }
 
-        [Required]
+        [Required]        
         public double MaxBet { get; set; }
     }
 }
