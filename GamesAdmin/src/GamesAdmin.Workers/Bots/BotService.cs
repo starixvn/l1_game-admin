@@ -63,6 +63,8 @@ namespace GamesAdmin.Workers.Bots
 
         public async Task ResetBalance()
         {
+            const int maxLogs = 100;
+            var index = 0;
             var resetMessage = string.Empty;
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
 
@@ -70,11 +72,12 @@ namespace GamesAdmin.Workers.Bots
 
             foreach (var bot in botList)
             {
-                bot.Red = new Random().Next(minInitAmount, maxInitAmount);
+                index++;
 
+                bot.Red = new Random().Next(minInitAmount, maxInitAmount);
                 await accountInfoRepository.ReplaceOneAsync(bot);
 
-                resetMessage += $" {bot.Name} : new balance {bot.Red};";
+                resetMessage += index < maxLogs ? $" {bot.Name} : new balance {bot.Red};" : string.Empty;
             }
 
             sentryClient.CaptureMessage(resetMessage);
