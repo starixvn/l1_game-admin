@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features._Shared;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
