@@ -20,31 +20,22 @@ namespace GamesAdmin.Workers.Bots
 
     public class BotService : IBotService
     {
-        private const int DefaultMaxBet = 500;
         private const int DisabledBotRatio = 1;
 
-        private readonly int minInitAmount;
-        private readonly int maxInitAmount;
-        private readonly int minAmount;
-        private readonly int maxAmount;
-        private readonly int maxAddAmount;
-        private readonly int minAddAmount;
+        private const int minInitAmount = 500;
+        private const int maxInitAmount = 3000;
+        private const int minAmount = 300;
+        private const int maxAmount = 7000;
+        private const int maxAddAmount = 3000;
+        private const int minAddAmount = 1000;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly ISentryClient sentryClient;
-
 
         public BotService(
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             ISentryClient sentryClient)
         {
-            minInitAmount = 2 * DefaultMaxBet;
-            maxInitAmount = 20 * DefaultMaxBet;
-            minAmount = 2 * DefaultMaxBet;
-            maxAmount = 20 * DefaultMaxBet;
-            maxAddAmount = 10 * DefaultMaxBet;
-            minAddAmount = 3 * DefaultMaxBet;
-
             this.accountInfoRepository = accountInfoRepository;
             this.sentryClient = sentryClient;
         }
