@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
-using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.Extensions;
 using MongoDB.Driver;
 using Sentry;
@@ -70,11 +69,11 @@ namespace GamesAdmin.Workers.Bots
 
             foreach (var bot in botList)
             {
-                resetMessage += $" {bot.Name} : {bot.Red};";
-
                 bot.Red = new Random().Next(minInitAmount, maxInitAmount);
 
                 await accountInfoRepository.ReplaceOneAsync(bot);
+
+                resetMessage += $" {bot.Name} : new balance {bot.Red};";
             }
 
             sentryClient.CaptureMessage(resetMessage);
