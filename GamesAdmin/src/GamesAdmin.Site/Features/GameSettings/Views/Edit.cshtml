@@ -81,6 +81,29 @@
 
             <br />
 
+            <fieldset>
+                <legend>Odds</legend>
+                @for (var i = 0; i < (Model.BetChoiceOdds.Count / 2 + 1); i++)
+                {
+                    <div class="form-group row">
+                        @for (var j = 0; j < 2; j++)
+                        {
+                            var index = i * 2 + j;
+                            if (index < Model.BetChoiceOdds.Count)
+                            {
+                                <div class="col-lg-6">
+                                    <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
+                                    <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
+                                    <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </fieldset>
+
+            <br />
+
             <div class="form-group">
                 <label asp-for="BotMaxBet" class="control-label"></label>
                 <input type="number" asp-for="BotMaxBet" class="form-control" />

@@ -58,6 +58,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public Dictionary<string, double> MaxBetChoices
             => BetChoiceBetSettings?.ToDictionary(x => x.Name, x => x.MaxBet);
+
+        public List<OddsViewModel> BetChoiceOdds { get; set; }
+
+        public Dictionary<string, double> Odds
+            => BetChoiceOdds?.ToDictionary(x => x.Name, x => x.Odds);
     }
 
     public class BotRatioItemViewModel

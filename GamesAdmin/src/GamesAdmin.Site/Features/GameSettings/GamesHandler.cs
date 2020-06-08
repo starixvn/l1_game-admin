@@ -98,6 +98,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
                 viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Name, game.MaxBetChoices, game.MaxBet);
+                viewModel.BetChoiceOdds = GenerateOdds(game.Name, game.Odds);
             }
 
             return viewModel;
@@ -168,6 +169,30 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
+        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
+        {
+            var items = new List<OddsViewModel>();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return items;
+            }
+
+            var gameType = Enumeration.FromValue<GameType>(name);
+            var betChoices = BetChoiceMapper.Map(gameType);
+
+            if (betChoices != default)
+            {
+                foreach (var choice in betChoices)
+                {
+                    var odds = oddsSettings.ContainsKey(choice.Value) ? oddsSettings[choice.Value] : 0;
+                    items.Add(new OddsViewModel(choice.Value, odds, choice.DisplayName));
+                }
+            }
+
+            return items;
+        }
+
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(new GameConfig(
             request.Game.Id,
@@ -182,7 +207,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.BotMaxBet,
             request.Game.HoursMaxBot,
             request.Game.DisabledMessage,
-            request.Game.MaxBetChoices));
+            request.Game.MaxBetChoices,
+            request.Game.Odds));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -198,6 +224,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             0,
             new double[] { },
             DefaultDisabledMessage,
+            new Dictionary<string, double>(),
             new Dictionary<string, double>()));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)

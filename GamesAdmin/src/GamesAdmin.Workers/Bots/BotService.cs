@@ -24,9 +24,9 @@ namespace GamesAdmin.Workers.Bots
         private const int minInitAmount = 500;
         private const int maxInitAmount = 3000;
         private const int minAmount = 300;
-        private const int maxAmount = 7000;
-        private const int maxAddAmount = 3000;
+        private const int maxAmount = 7000;        
         private const int minAddAmount = 1000;
+        private const int maxAddAmount = 3000;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly ISentryClient sentryClient;
