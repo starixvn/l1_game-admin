@@ -63,9 +63,10 @@ namespace GamesAdmin.Workers.Bots
 
         public async Task ResetBalance()
         {
+            var resetMessage = string.Empty;
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
 
-            var resetMessage = $"ResetBalance for {botList?.Count}";
+            sentryClient.CaptureMessage($"ResetBalance for {botList?.Count}");
 
             foreach (var bot in botList)
             {
