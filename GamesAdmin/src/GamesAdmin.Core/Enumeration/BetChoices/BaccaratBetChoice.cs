@@ -7,8 +7,8 @@
         public const string BigValue = "big";
         public const string SmallValue = "small";
         public const string TieValue = "tie";
-        public const string PlayerPairValue = "playerpair";
-        public const string BankPairValue = "bankerpair";
+        public const string PlayerPairValue = "playerPair";
+        public const string BankPairValue = "bankerPair";
 
         public static readonly BaccaratBetChoice Player = new BaccaratBetChoice(PlayerValue, "Player");
         public static readonly BaccaratBetChoice Bank = new BaccaratBetChoice(BankValue, "Bank");
