@@ -6,33 +6,33 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.VietlottKeno.Requests;
-using GamesAdmin.Site.Features.VietlottKeno.ViewModels;
+using GamesAdmin.Site.Features.ProVietKeno.Requests;
+using GamesAdmin.Site.Features.ProVietKeno.ViewModels;
 using MediatR;
 
-namespace GamesAdmin.Site.Features.VietlottKeno
+namespace GamesAdmin.Site.Features.ProVietKeno
 {
-    public class VietlottKenoHandler :
-        IRequestHandler<GetRoundsRequest, IEnumerable<ViewlottKenoRoundViewModel>>,
+    public class ProVietKenoHandler :
+        IRequestHandler<GetRoundsRequest, IEnumerable<ProVietKenoRoundViewModel>>,
         IRequestHandler<CreateRoundRequest, Unit>,
         IRequestHandler<NotifyRoundResultRequest, Unit>
     {
-        private readonly IVietlottKenoService vietlottKenoService;
+        private readonly IProVietKenoService provietKenoService;
         private readonly IGameServerService gameServerService;
         private readonly IAppSettings appSettings;
 
-        public VietlottKenoHandler(IVietlottKenoService vietlottKenoService, IGameServerService gameServerService, IAppSettings appSettings)
+        public ProVietKenoHandler(IProVietKenoService provietKenoService, IGameServerService gameServerService, IAppSettings appSettings)
         {
             this.appSettings = appSettings;
-            this.vietlottKenoService = vietlottKenoService;
+            this.provietKenoService = provietKenoService;
             this.gameServerService = gameServerService;
         }
 
-        public async Task<IEnumerable<ViewlottKenoRoundViewModel>> Handle(GetRoundsRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ProVietKenoRoundViewModel>> Handle(GetRoundsRequest request, CancellationToken cancellationToken)
         {
-            var result = await vietlottKenoService.GetRoundsAsync(request.Date);
+            var result = await provietKenoService.GetRoundsAsync(request.Date);
 
-            return result.OrderByDescending(x => x.Time).Select(x => new ViewlottKenoRoundViewModel
+            return result.OrderByDescending(x => x.Time).Select(x => new ProVietKenoRoundViewModel
             {
                 Result = x.Result,
                 RoundNo = x.Number.ToString("D7"),
@@ -58,14 +58,14 @@ namespace GamesAdmin.Site.Features.VietlottKeno
                 }
             }
 
-            var model = new CreateVietlottKenoRound
+            var model = new ProVietKenoRound
             {
                 Time = request.KenoRound.Date.ToUniversalTime(),
                 Number = request.KenoRound.RoundNo.Value,
                 Result = result
             };
 
-            await vietlottKenoService.CreateAsync(model);
+            await provietKenoService.CreateAsync(model);
 
             return Unit.Value;
         }

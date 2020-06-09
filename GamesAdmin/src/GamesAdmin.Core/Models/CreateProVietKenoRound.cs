@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
-    public class CreateVietlottKenoRound
+    public class CreateProVietKenoRound
     {
         public DateTime Time { get; set; }
 

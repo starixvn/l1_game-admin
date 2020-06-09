@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace GamesAdmin.Site.Features.VietlottKeno.ViewModels
+namespace GamesAdmin.Site.Features.ProVietKeno.ViewModels
 {
-    public class CreateVietlottKenoRoundViewModel
+    public class CreateProVietKenoRoundViewModel
     {
         [Required]
         [Range(1, long.MaxValue)]

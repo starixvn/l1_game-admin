@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GamesAdmin.Site.Features.VietlottKeno.ViewModels
+namespace GamesAdmin.Core.Models
 {
-    public class ViewlottKenoRoundViewModel
+    public class ProVietKenoRound
     {
         public DateTime Time { get; set; }
 
-        public string RoundNo { get; set; }
+        public long Number { get; set; }
 
         public IEnumerable<byte> Result { get; set; }
 

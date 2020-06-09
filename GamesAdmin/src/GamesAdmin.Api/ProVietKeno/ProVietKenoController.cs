@@ -2,31 +2,31 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
-using GamesAdmin.Api.VietlottKeno.Requests;
+using GamesAdmin.Api.ProVietKeno.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GamesAdmin.Api.VietlottKeno
+namespace GamesAdmin.Api.ProVietKeno
 {
-    [Route("api/vietlott_keno")]
-    public class VietlottKenoController : BaseAuthorizeController
+    [Route("api/proviet_keno")]
+    public class ProVietKenoController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
 
-        public VietlottKenoController(IMediator mediator)
+        public ProVietKenoController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
         [HttpGet]
         [Route("rounds/{date}")]
-        public async Task<IEnumerable<VietlottKenoRound>> GetRounds(DateTime date)
+        public async Task<IEnumerable<ProVietKenoRound>> GetRounds(DateTime date)
             => (await mediator.Send(new GetRoundsRequest(date)));
 
         [HttpPost]
         [Route("rounds/create")]
-        public async Task<IActionResult> Create([FromBody] CreateVietlottKenoRound kenoRound)
+        public async Task<IActionResult> Create([FromBody] CreateProVietKenoRound kenoRound)
         {
             await mediator.Send(new CreateRoundRequest(kenoRound));
             return Ok();

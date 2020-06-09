@@ -10,9 +10,9 @@ namespace GamesAdmin.VietlottKeno
 {
     public interface IKenoService
     {
-        Task<VietlottKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound);
+        Task<ProVietKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound);
 
-        Task<IEnumerable<VietlottKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds);
+        Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds);
     }
 
     public class KenoService : IKenoService
@@ -24,7 +24,7 @@ namespace GamesAdmin.VietlottKeno
             this.repository = repository;
         }
 
-        public async Task<VietlottKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound)
+        public async Task<ProVietKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound)
         {
             var roundId = long.Parse(kenoRound.DrawId);
             var entity = CreateEntity(kenoRound);
@@ -34,7 +34,7 @@ namespace GamesAdmin.VietlottKeno
                     IsUpsert = true
                 });
 
-            var nextRoundEntity = new VietlottKenoRoundEntity
+            var nextRoundEntity = new ProVietKenoRoundEntity
             {
                 Number = roundId + 1,
                 Time = entity.Time.AddMinutes(10)
@@ -45,7 +45,7 @@ namespace GamesAdmin.VietlottKeno
             return ConvertToModel(entity);
         }
 
-        public async Task<IEnumerable<VietlottKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds)
+        public async Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds)
         {
             var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
             var latestRound = await repository.GetLatestRoundAsync();
@@ -79,12 +79,12 @@ namespace GamesAdmin.VietlottKeno
                 }
             }
 
-            return Enumerable.Empty<VietlottKenoRound>();
+            return Enumerable.Empty<ProVietKenoRound>();
         }
 
-        private VietlottKenoRound ConvertToModel(VietlottKenoRoundEntity entity)
+        private ProVietKenoRound ConvertToModel(ProVietKenoRoundEntity entity)
         {
-            return new VietlottKenoRound
+            return new ProVietKenoRound
             {
                 Time = entity.Time,
                 Result = entity.Result,
@@ -99,12 +99,12 @@ namespace GamesAdmin.VietlottKeno
             };
         }
 
-        private VietlottKenoRoundEntity CreateEntity(VietLottKenoRoundResult kenoRound)
+        private ProVietKenoRoundEntity CreateEntity(VietLottKenoRoundResult kenoRound)
         {
             var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
             var sum = result.Sum(x => x);
 
-            var entity = new VietlottKenoRoundEntity
+            var entity = new ProVietKenoRoundEntity
             {
                 Time = DateTime.UtcNow,
                 Number = long.Parse(kenoRound.DrawId),

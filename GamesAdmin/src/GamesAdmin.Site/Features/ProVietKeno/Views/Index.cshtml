@@ -1,4 +1,4 @@
-﻿@model GamesAdmin.Site.Features.VietlottKeno.ViewModels.VietlottKenoViewModel
+﻿@model GamesAdmin.Site.Features.ProVietKeno.ViewModels.ProVietKenoViewModel
 
 @section Styles {
     <link href="~/css/vietlottkeno.min.css" rel="stylesheet" asp-append-version="true" />
@@ -8,7 +8,7 @@
     ViewData["Title"] = "Vietlott Keno";
 }
 
-<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetVietlottKenoRounds"
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetKenoRounds"
       data-ajax-mode="replace"
       data-ajax-update="#keno-round-result .card-body"
       data-ajax-loading="#spinner"

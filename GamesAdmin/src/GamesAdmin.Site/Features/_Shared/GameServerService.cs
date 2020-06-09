@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features._Shared
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
         [Post("/")]
-        Task NotifyRoundResult([Body] IEnumerable<VietlottKenoRound> kenoRounds);
+        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
         
         [Post("/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task<OnlineUsers> GetOnlineUsers(string game);
 
-        Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds);
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
         
          Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
@@ -108,7 +108,7 @@ namespace GamesAdmin.Site.Features._Shared
             return Task.FromResult(new JsonWebToken());
         }
 
-        public async Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds)
+        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
         {
             try
             {

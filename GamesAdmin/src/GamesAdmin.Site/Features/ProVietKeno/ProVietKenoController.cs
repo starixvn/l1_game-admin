@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features.VietlottKeno.Requests;
-using GamesAdmin.Site.Features.VietlottKeno.ViewModels;
+using GamesAdmin.Site.Features.ProVietKeno.Requests;
+using GamesAdmin.Site.Features.ProVietKeno.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GamesAdmin.Site.Features.VietlottKeno
+namespace GamesAdmin.Site.Features.ProVietKeno
 {
     [Authorize]
-    public class VietlottKenoController : Controller
+    public class ProVietKenoController : Controller
     {
         private readonly IMediator mediator;
 
-        public VietlottKenoController(IMediator mediator)
+        public ProVietKenoController(IMediator mediator)
         {
             this.mediator = mediator;
         }
@@ -24,26 +24,26 @@ namespace GamesAdmin.Site.Features.VietlottKeno
         [HttpGet]
         public IActionResult Index()
         {
-            var viewModel = new VietlottKenoViewModel();
+            var viewModel = new ProVietKenoViewModel();
             return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVietlottKenoRounds(DateTime date)
+        public async Task<IActionResult> GetKenoRounds(DateTime date)
         {
             var result = await mediator.Send(new GetRoundsRequest(date.ToUniversalTime()));
-            return PartialView("_VietlottKenoRounds", result);
+            return PartialView("_KenoRounds", result);
         }
 
         [HttpGet]
         public IActionResult AddNewRound()
         {
-            var viewModel = new CreateVietlottKenoRoundViewModel();
+            var viewModel = new CreateProVietKenoRoundViewModel();
             return PartialView("_AddNewRound", viewModel);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddNewRound(CreateVietlottKenoRoundViewModel viewModel)
+        public async Task<IActionResult> AddNewRound(CreateProVietKenoRoundViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace GamesAdmin.Site.Features.VietlottKeno
                 }
                 else
                 {
-                    ModelState.AddModelError(nameof(CreateVietlottKenoRoundViewModel.Result), "Please select 20 numbers");
+                    ModelState.AddModelError(nameof(CreateProVietKenoRoundViewModel.Result), "Please select 20 numbers");
                 }
             }
 
@@ -64,7 +64,7 @@ namespace GamesAdmin.Site.Features.VietlottKeno
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> NotifyRoundResult([FromBody] IEnumerable<VietlottKenoRound> kenoRounds)
+        public async Task<IActionResult> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)
         {
             await mediator.Send(new NotifyRoundResultRequest(kenoRounds));
             return Ok();

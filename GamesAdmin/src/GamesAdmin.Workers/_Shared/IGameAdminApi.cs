@@ -8,6 +8,6 @@ namespace GamesAdmin.Workers._Shared
     public interface IGameAdminApi
     {
         [Post("/VietlottKeno/NotifyRoundResult")]
-        Task NotifyRoundResult([Body] IEnumerable<VietlottKenoRound> kenoRounds);
+        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
     }
 }

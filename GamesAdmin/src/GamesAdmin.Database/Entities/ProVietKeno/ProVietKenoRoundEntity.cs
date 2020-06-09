@@ -3,8 +3,8 @@ using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("kenovietlott_phiens")]
-    public class VietlottKenoRoundEntity : BaseRoundEntity
+    [BsonCollection("kenoproviet_phiens")]
+    public class ProVietKenoRoundEntity : BaseRoundEntity
     {
         public IEnumerable<byte> Result { get; set; }
 

@@ -6,32 +6,32 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 
-namespace GamesAdmin.Api.VietlottKeno
+namespace GamesAdmin.Api.ProVietKeno
 {
-    public interface IVietlottKenoService
+    public interface IProVietKenoService
     {
-        Task<IEnumerable<VietlottKenoRound>> GetRoundsAsync(DateTime date);
+        Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date);
 
-        Task CreateAsync(CreateVietlottKenoRound kenoRound);
+        Task CreateAsync(CreateProVietKenoRound kenoRound);
     }
 
-    public class VietlottKenoService : IVietlottKenoService
+    public class ProVietKenoService : IProVietKenoService
     {
-        private IGenericRepository<VietlottKenoRoundEntity> repository;
+        private IGenericRepository<ProVietKenoRoundEntity> repository;
 
-        public VietlottKenoService(IGenericRepository<VietlottKenoRoundEntity> repository)
+        public ProVietKenoService(IGenericRepository<ProVietKenoRoundEntity> repository)
         {
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<VietlottKenoRound>> GetRoundsAsync(DateTime date)
+        public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
         {
             var fromtDate = date;
             var toDate = fromtDate.AddDays(1);
 
             var result = await repository.FilterByAsync(x => x.Time >= fromtDate && x.Time < toDate);
 
-            return result.Select(x => new VietlottKenoRound
+            return result.Select(x => new ProVietKenoRound
             {
                 Time = x.Time,
                 Result = x.Result,
@@ -46,11 +46,11 @@ namespace GamesAdmin.Api.VietlottKeno
             });
         }
 
-        public async Task CreateAsync(CreateVietlottKenoRound kenoRound)
+        public async Task CreateAsync(CreateProVietKenoRound kenoRound)
         {
             var sum = kenoRound.Result.Sum(x => x);
 
-            var entity = new VietlottKenoRoundEntity
+            var entity = new ProVietKenoRoundEntity
             {
                 Time = kenoRound.Time,
                 Result = kenoRound.Result,
@@ -65,7 +65,7 @@ namespace GamesAdmin.Api.VietlottKeno
             await repository.InsertOneAsync(entity);
         }
 
-        private void SetElementValue(VietlottKenoRoundEntity entity, int sum)
+        private void SetElementValue(ProVietKenoRoundEntity entity, int sum)
         {
             if (sum >= 210 && sum <= 695)
             {
@@ -93,7 +93,7 @@ namespace GamesAdmin.Api.VietlottKeno
             }
         }
 
-        private void SetOddEvenValue(VietlottKenoRoundEntity entity, int sum)
+        private void SetOddEvenValue(ProVietKenoRoundEntity entity, int sum)
         {
             if (sum % 2 == 0)
             {
@@ -105,7 +105,7 @@ namespace GamesAdmin.Api.VietlottKeno
             }
         }
 
-        private void SetBigSmallValue(VietlottKenoRoundEntity entity, int sum)
+        private void SetBigSmallValue(ProVietKenoRoundEntity entity, int sum)
         {
             if (sum >= 811)
             {

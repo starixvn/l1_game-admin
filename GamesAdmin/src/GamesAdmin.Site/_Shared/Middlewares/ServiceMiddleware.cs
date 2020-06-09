@@ -6,10 +6,10 @@ using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Notifications;
+using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
-using GamesAdmin.Site.Features.VietlottKeno;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
@@ -52,8 +52,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
 
-            services.AddSingleton(RestService.For<IVietlottKenoApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IVietlottKenoService, VietlottKenoService>();
+            services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IProVietKenoService, ProVietKenoService>();
         }
     }
 }

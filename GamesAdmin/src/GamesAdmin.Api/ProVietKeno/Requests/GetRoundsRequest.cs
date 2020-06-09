@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using GamesAdmin.Core.Models;
 using System;
 
-namespace GamesAdmin.Api.VietlottKeno.Requests
+namespace GamesAdmin.Api.ProVietKeno.Requests
 {
-    public class GetRoundsRequest : IRequest<IEnumerable<VietlottKenoRound>>
+    public class GetRoundsRequest : IRequest<IEnumerable<ProVietKenoRound>>
     {
         public GetRoundsRequest(DateTime date)
         {

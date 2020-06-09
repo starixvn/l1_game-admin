@@ -1,0 +1,150 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
+using Refit;
+using Sentry;
+
+namespace GamesAdmin.Site.Features._Shared
+{
+    public interface IGameServerApi : IBaseAuthorizationApi
+    {
+        [Post("/reload")]
+        Task Reload();
+
+        [Get("/onlineusers")]
+        Task<OnlineUsers> GetOnlineUsers();
+
+        [Get("/game/{name}/onlineusers")]
+        Task<OnlineUsers> GetOnlineUsersOnGame(string name);
+
+        [Post("/")]
+<<<<<<< HEAD
+        Task NotifyRoundResult([Body] IEnumerable<VietlottKenoRound> kenoRounds);
+        
+        [Post("/jwt")]
+        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
+=======
+        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
+>>>>>>> 09e37bc... change vietlottkeno to proviet keno
+    }
+
+    public interface IGameServerService
+    {
+        Task Reload();
+
+        Task<OnlineUsers> GetOnlineUsers(string game);
+
+<<<<<<< HEAD
+        Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds);
+        
+         Task<JsonWebToken> GetJWT(string username, string userAgent);
+=======
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
+>>>>>>> 09e37bc... change vietlottkeno to proviet keno
+    }
+
+    public class GameServerService : IGameServerService
+    {
+        private readonly IGameServerApi serverApi;
+        private readonly ISentryClient sentryClient;
+
+        public GameServerService(IGameServerApi serverApi, ISentryClient sentryClient)
+        {
+            this.serverApi = serverApi;
+            this.sentryClient = sentryClient;
+        }
+
+        public Task<OnlineUsers> GetOnlineUsers(string game)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(game))
+                {
+                    return serverApi.GetOnlineUsers();
+                }
+
+                var gameType = string.Empty;
+                switch (game)
+                {
+                    case GameType.SeDieValue:
+                        gameType = "stp";
+                        break;
+
+                    case GameType.KenoProMaxValue:
+                        gameType = "keno";
+                        break;
+
+                    case GameType.BaccaratValue:
+                        gameType = "baccarat";
+                        break;
+                }
+
+                return serverApi.GetOnlineUsersOnGame(gameType);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return Task.FromResult(new OnlineUsers());
+        }
+
+        public async Task Reload()
+        {
+            try
+            {
+                await serverApi.Reload();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+<<<<<<< HEAD
+        public Task<JsonWebToken> GetJWT(string username, string userAgent)
+        {
+            try
+            {
+                return serverApi.GetToken(new RequestJWT(username, userAgent));
+            } catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return Task.FromResult(new JsonWebToken());
+        }
+
+        public async Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds)
+=======
+        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
+>>>>>>> 09e37bc... change vietlottkeno to proviet keno
+        {
+            try
+            {
+                await serverApi.NotifyRoundResult(kenoRounds);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private void HandleException(Exception ex)
+        {
+            if (ex is ApiException)
+            {
+                var apiEx = ex as ApiException;
+
+                if (apiEx != null)
+                {
+                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
+                }
+            }
+
+            sentryClient.CaptureException(ex);
+        }
+    }
+}
