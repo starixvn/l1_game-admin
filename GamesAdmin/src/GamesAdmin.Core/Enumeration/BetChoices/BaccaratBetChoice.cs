@@ -11,7 +11,7 @@
         public const string BankPairValue = "bankerpair";
 
         public static readonly BaccaratBetChoice Player = new BaccaratBetChoice(PlayerValue, "Player");
-        public static readonly BaccaratBetChoice Bank = new BaccaratBetChoice(BankValue, "Bank");
+        public static readonly BaccaratBetChoice Bank = new BaccaratBetChoice(BankValue, "Banker");
         public static readonly BaccaratBetChoice Big = new BaccaratBetChoice(BigValue, "Big");
         public static readonly BaccaratBetChoice Small = new BaccaratBetChoice(SmallValue, "Small");
         public static readonly BaccaratBetChoice Tie = new BaccaratBetChoice(TieValue, "Tie");
