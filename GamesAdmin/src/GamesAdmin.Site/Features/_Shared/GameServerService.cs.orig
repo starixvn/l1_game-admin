@@ -19,15 +19,16 @@ namespace GamesAdmin.Site.Features._Shared
         [Get("/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
-        [Post("/")]
 <<<<<<< HEAD
-        Task NotifyRoundResult([Body] IEnumerable<VietlottKenoRound> kenoRounds);
+        [Post("/")]
+        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
         
         [Post("/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
 =======
-        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
->>>>>>> 09e37bc... change vietlottkeno to proviet keno
+        [Post("/proviet-keno/round-result")]
+        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
+>>>>>>> 98d1aba... keno proviet - send request to game server
     }
 
     public interface IGameServerService
@@ -36,13 +37,9 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task<OnlineUsers> GetOnlineUsers(string game);
 
-<<<<<<< HEAD
-        Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds);
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
         
          Task<JsonWebToken> GetJWT(string username, string userAgent);
-=======
-        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
->>>>>>> 09e37bc... change vietlottkeno to proviet keno
     }
 
     public class GameServerService : IGameServerService
@@ -103,7 +100,6 @@ namespace GamesAdmin.Site.Features._Shared
             }
         }
 
-<<<<<<< HEAD
         public Task<JsonWebToken> GetJWT(string username, string userAgent)
         {
             try
@@ -117,19 +113,20 @@ namespace GamesAdmin.Site.Features._Shared
             return Task.FromResult(new JsonWebToken());
         }
 
-        public async Task NotifyRoundResult(IEnumerable<VietlottKenoRound> kenoRounds)
-=======
         public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
->>>>>>> 09e37bc... change vietlottkeno to proviet keno
         {
-            try
+            foreach(var round in kenoRounds)
             {
-                await serverApi.NotifyRoundResult(kenoRounds);
+                try
+                {
+                    await serverApi.NotifyRoundResult(round);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
+          
         }
 
         private void HandleException(Exception ex)

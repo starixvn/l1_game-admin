@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Workers._Shared;
 using MongoDB.Driver;
+using Refit;
+using Sentry;
 
 namespace GamesAdmin.VietlottKeno
 {
@@ -13,15 +16,20 @@ namespace GamesAdmin.VietlottKeno
         Task<ProVietKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound);
 
         Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds);
+
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
     }
 
     public class KenoService : IKenoService
     {
         private readonly IKenoRepository repository;
+        private readonly IGameAdminApi gameAdminApi;
 
-        public KenoService(IKenoRepository repository)
+
+        public KenoService(IKenoRepository repository, IGameAdminApi gameAdminApi)
         {
             this.repository = repository;
+            this.gameAdminApi = gameAdminApi;
         }
 
         public async Task<ProVietKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound)
@@ -52,14 +60,16 @@ namespace GamesAdmin.VietlottKeno
 
             if (latestRound != null)
             {
-                if (latestRound.Result == null && kenoRounds.Any(x => long.Parse(x.DrawId) == latestRound.Number))
+                var isLatestRoundResultExisted = kenoRounds.Any(x => long.Parse(x.DrawId) == latestRound.Number);
+
+                if (latestRound.Result == null && isLatestRoundResultExisted)
                 {
                     var updatedLatestRound = CreateEntity(kenoRounds.FirstOrDefault(x => long.Parse(x.DrawId) == latestRound.Number));
                     updatedLatestRound.Time = latestRound.Time;
                     await repository.UpdateAsync(updatedLatestRound);
                 }
 
-                var missedRounds = kenoRounds.Where(x => latestRound == null || latestRound.Number < long.Parse(x.DrawId))
+                var missedRounds = kenoRounds.Where(x => latestRound.Number < long.Parse(x.DrawId))
                     .Select(x => CreateEntity(x))
                     .OrderBy(x => x.Number);
 
@@ -73,13 +83,47 @@ namespace GamesAdmin.VietlottKeno
                         time = time.AddMinutes(10);
                     }
 
-                    await repository.InsertManyAsync(missedRounds);
+                    await repository.InsertManyAsync(
+                        new List<ProVietKenoRoundEntity>(missedRounds)
+                        {
+                            new ProVietKenoRoundEntity {
+                                Number = missedRounds.LastOrDefault().Number + 1,
+                                Time = time
+                            }
+                        });
 
                     return missedRounds.Select(ConvertToModel);
                 }
             }
 
             return Enumerable.Empty<ProVietKenoRound>();
+        }
+
+        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
+        {
+            try
+            {
+                await gameAdminApi.NotifyRoundResult(kenoRounds);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private void HandleException(Exception ex)
+        {
+            if (ex is ApiException)
+            {
+                var apiEx = ex as ApiException;
+
+                if (apiEx != null)
+                {
+                    SentrySdk.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
+                }
+            }
+
+            SentrySdk.CaptureException(ex);
         }
 
         private ProVietKenoRound ConvertToModel(ProVietKenoRoundEntity entity)

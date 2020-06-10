@@ -19,8 +19,8 @@ namespace GamesAdmin.Site.Features._Shared
         [Get("/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
-        [Post("/")]
-        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
+        [Post("/proviet-keno/round-result")]
+        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
         
         [Post("/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
@@ -110,14 +110,18 @@ namespace GamesAdmin.Site.Features._Shared
 
         public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
         {
-            try
+            foreach(var round in kenoRounds)
             {
-                await serverApi.NotifyRoundResult(kenoRounds);
+                try
+                {
+                    await serverApi.NotifyRoundResult(round);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
+          
         }
 
         private void HandleException(Exception ex)

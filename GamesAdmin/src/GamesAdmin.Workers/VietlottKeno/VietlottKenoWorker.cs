@@ -21,18 +21,15 @@ namespace GamesAdmin.VietlottKeno
         private readonly VietlottKenoConfiguration vietlottKenoConfiguration;
         private readonly IKenoService kenoService;
         private readonly ISentryClient sentryClient;
-        private readonly IGameAdminApi gameAdminApi;
 
         public VietlottKenoWorker(
             IOptions<VietlottKenoConfiguration> options,
             IKenoService kenoService,
-            IGameAdminApi gameAdminApi,
             ISentryClient sentryClient)
         {
             vietlottKenoConfiguration = options.Value;
             this.kenoService = kenoService;
             this.sentryClient = sentryClient;
-            this.gameAdminApi = gameAdminApi;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -88,7 +85,11 @@ namespace GamesAdmin.VietlottKeno
                     var rounds = await kenoService.AddMissedRoundsAsync(kenoResult.Rounds);
                     checkMissedRounds = false;
                     Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
-                    await gameAdminApi.NotifyRoundResult(rounds);
+
+                    if (rounds.Any())
+                    {
+                        _ = Task.Run(() => kenoService.NotifyRoundResult(rounds));
+                    }
                 }
                 else
                 {
@@ -98,11 +99,13 @@ namespace GamesAdmin.VietlottKeno
 
                         Console.WriteLine($"{DateTime.Now} - Added round {round.Number} to database!");
 
-                        await gameAdminApi.NotifyRoundResult(new[] { round });
+                        _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { round }));
                     }
                 }
             }
         }
+
+
     }
 
     public class VietLottKenoSocketResult
