@@ -19,7 +19,8 @@ namespace GamesAdmin.Core.Models
             double botMaxBet,
             double[] hoursMaxBot,
             string disabledMessage, 
-            Dictionary<string, double> maxBetChoices)
+            Dictionary<string, double> maxBetChoices,
+            Dictionary<string, double> odds)
         {
             Id = id;
             Name = name;
@@ -34,6 +35,7 @@ namespace GamesAdmin.Core.Models
             HoursMaxBot = hoursMaxBot;
             DisabledMessage = disabledMessage;
             MaxBetChoices = maxBetChoices;
+            Odds = odds;
         }
 
         public string Id { get; }
@@ -61,5 +63,7 @@ namespace GamesAdmin.Core.Models
         public string DisabledMessage { get; }
 
         public Dictionary<string, double> MaxBetChoices { get; }
+
+        public Dictionary<string, double> Odds { get; }
     }
 }

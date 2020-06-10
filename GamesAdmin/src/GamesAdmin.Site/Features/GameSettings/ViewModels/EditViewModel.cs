@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features._Shared;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
@@ -58,6 +57,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public Dictionary<string, double> MaxBetChoices
             => BetChoiceBetSettings?.ToDictionary(x => x.Name, x => x.MaxBet);
+
+        public List<OddsViewModel> BetChoiceOdds { get; set; }
+
+        public Dictionary<string, double> Odds
+            => BetChoiceOdds?.ToDictionary(x => x.Name, x => x.Odds);
     }
 
     public class BotRatioItemViewModel
@@ -85,24 +89,5 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [Range(0, 100, ErrorMessage = "Number range [0..100]")]
         public double BotRatio { get; set; }
-    }
-
-    public class MaxBetChoiceViewModel
-    {
-        public MaxBetChoiceViewModel() { }
-
-        public MaxBetChoiceViewModel(string name, double maxBet, string displayName)
-        {
-            Name = name;
-            MaxBet = maxBet;
-            DisplayName = displayName;
-        }
-
-        public string Name { get; set; }
-
-        public string DisplayName { get; }
-
-        [Required]
-        public double MaxBet { get; set; }
     }
 }

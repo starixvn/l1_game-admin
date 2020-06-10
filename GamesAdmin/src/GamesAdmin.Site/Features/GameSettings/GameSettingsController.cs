@@ -60,7 +60,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.BotMaxBet,
                    null,
                    editViewModel.DisabledMessage,
-                   editViewModel.MaxBetChoices)));
+                   editViewModel.MaxBetChoices,
+                   editViewModel.Odds)));
 
                 TempData["isSuccess"] = true;
 
@@ -101,6 +102,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 0,
                 new double[] { },
                 string.Empty,
+                new Dictionary<string, double>(),
                 new Dictionary<string, double>())));
 
             return RedirectToAction(nameof(Edit));

@@ -35,5 +35,7 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("choices_maxbet")]
         public Dictionary<string, double> MaxBetChoices {get; set;}
+
+        public Dictionary<string, double> Odds { get; set; }
     }
 }

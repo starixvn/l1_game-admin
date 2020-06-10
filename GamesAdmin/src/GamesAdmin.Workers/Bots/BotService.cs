@@ -73,7 +73,6 @@ namespace GamesAdmin.Workers.Bots
             foreach (var bot in botList)
             {
                 index++;
-
                 bot.Red = new Random().Next(minInitAmount, maxInitAmount);
                 await accountInfoRepository.ReplaceOneAsync(bot);
 
