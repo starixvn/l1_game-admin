@@ -84,10 +84,10 @@ namespace GamesAdmin.VietlottKeno
                 {
                     var rounds = await kenoService.AddMissedRoundsAsync(kenoResult.Rounds);
                     checkMissedRounds = false;
-                    Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
 
                     if (rounds.Any())
                     {
+                        Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
                         _ = Task.Run(() => kenoService.NotifyRoundResult(rounds));
                     }
                 }

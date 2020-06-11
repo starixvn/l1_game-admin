@@ -45,13 +45,14 @@ namespace GamesAdmin.VietlottKeno
             var nextRoundEntity = new ProVietKenoRoundEntity
             {
                 Number = roundId + 1,
-                Time = entity.Time.AddMinutes(10)
+                Time = CalculateNextRoundTime(entity.Time)
             };
 
             await repository.InsertOneAsync(nextRoundEntity);
 
             return ConvertToModel(entity);
         }
+
 
         public async Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds)
         {
@@ -75,12 +76,12 @@ namespace GamesAdmin.VietlottKeno
 
                 if (missedRounds.Any())
                 {
-                    var time = latestRound.Time.AddMinutes(10);
+                    var time = CalculateNextRoundTime(latestRound.Time, missedRounds.First().Number - latestRound.Number);
 
                     foreach (var round in missedRounds)
                     {
                         round.Time = time;
-                        time = time.AddMinutes(10);
+                        time = CalculateNextRoundTime(time);
                     }
 
                     await repository.InsertManyAsync(
@@ -94,7 +95,21 @@ namespace GamesAdmin.VietlottKeno
 
                     return missedRounds.Select(ConvertToModel);
                 }
+                else
+                {
+                    if (isLatestRoundResultExisted)
+                    {
+                        var nextRoundEntity = new ProVietKenoRoundEntity
+                        {
+                            Number = latestRound.Number + 1,
+                            Time = CalculateNextRoundTime(latestRound.Time)
+                        };
+
+                        await repository.InsertOneAsync(nextRoundEntity);
+                    }
+                }
             }
+
 
             return Enumerable.Empty<ProVietKenoRound>();
         }
@@ -109,6 +124,23 @@ namespace GamesAdmin.VietlottKeno
             {
                 HandleException(ex);
             }
+        }
+
+        private DateTime CalculateNextRoundTime(DateTime time, long roundDistance = 1)
+        {
+            var endTimeOfDay = new TimeSpan(14, 55, 0);
+            var nextRoundTime = time;
+
+            for (var i = 1; i <= roundDistance; i++)
+            {
+                nextRoundTime = nextRoundTime.AddMinutes(10);
+                if (nextRoundTime.TimeOfDay > endTimeOfDay)
+                {
+                    nextRoundTime = new DateTime(time.Year, time.Month, time.Day, 23, 1, 0, DateTimeKind.Utc);
+                }
+            }
+
+            return nextRoundTime;
         }
 
         private void HandleException(Exception ex)
