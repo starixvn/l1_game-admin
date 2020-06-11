@@ -1,0 +1,60 @@
+.result {
+  margin-top: 15px;
+  justify-content: center;
+
+  // @media screen and (max-width: 640px) {
+  //   display: grid;
+  //   grid-template-columns: repeat(2, 1fr);
+  // }
+}
+
+.shakeThePlate-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+.shakeThePlate-timmer {
+  max-width: 35%;
+  flex-basis: 35%;
+}
+
+.shakeThePlate-betList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.col-plateeven {
+  grid-column: 1 / span 2;
+
+  @media screen and (max-width: 640px) {
+    grid-column: 1;
+  }
+}
+
+.col-plateodd {
+  grid-column: 3 / span 2;
+
+  @media screen and (max-width: 640px) {
+    grid-column: 2;
+  }
+}
+
+@mixin shaketheplate($col1) {
+  .#{$col1} {
+    //position: absolute;
+    background: url("/game-admin/images/xocxoc/#{$col1}.png") center no-repeat;
+    //width: 100px;
+    height: 24px;
+    background-size: contain;
+  }
+}
+
+@include shaketheplate("mottrangbado");
+@include shaketheplate("motdobatrang");
+@include shaketheplate("bontrang");
+@include shaketheplate("bondo");

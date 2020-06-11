@@ -39,4 +39,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisabledMessage { get; set; }
     }
+
+    public class JWTFromGameServer
+    {
+        public string Token { get; set; }
+
+        public string GameServerEndpoint { get; set; }
+    }
 }

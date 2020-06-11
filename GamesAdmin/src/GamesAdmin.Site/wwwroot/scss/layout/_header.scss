@@ -7,6 +7,19 @@
 }
 
 .user-info {
+
+    .username {
+        display: none;
+
+        @media only screen and (min-width: 768px) {
+            display: inline-block;
+        }
+    }
+
+    .dropdown-toggle {
+        color: #fff;
+    }
+
     .dropdown-toggle,
     .logout {
         background: none;
@@ -28,7 +41,7 @@
         color: $text-color;
 
         &:hover {
-            color: #da624a;
+            color: $theme-color;
         }
     }
 

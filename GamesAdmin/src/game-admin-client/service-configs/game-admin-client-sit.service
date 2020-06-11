@@ -1,0 +1,21 @@
+[Unit]
+Description=Game Client Web (SIT Environment)
+After=network.target
+
+[Service]
+Type=simple
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+Restart=on-failure
+WorkingDirectory=/var/www/nex3/game-admin-client/
+Environment=NODE_ENV=sit
+
+ExecStartPre=/usr/bin/npm install
+ExecStart=/usr/bin/npm start -- --port 4000
+
+StandardOutput=file:/var/log/game-admin-client-sit.log
+StandardError=file:/var/log/game-admin-client-sit.error
+
+[Install]
+WantedBy=multi-user.target

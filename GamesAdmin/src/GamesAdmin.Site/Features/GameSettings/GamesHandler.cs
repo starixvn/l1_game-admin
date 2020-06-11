@@ -30,6 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
         , IRequestHandler<ReloadGameClientRequest, bool>
+        , IRequestHandler<GetJWTRequest, JWTFromGameServer>
     {
         private const int MaxLengthOfMessage = 1000;
         private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
@@ -312,6 +313,17 @@ namespace GamesAdmin.Site.Features.GameSettings
             await gameServerService.Reload();
 
             return true;
+        }
+
+        public async Task<JWTFromGameServer> Handle(GetJWTRequest request, CancellationToken cancellationToken)
+        {
+            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
+
+            return new JWTFromGameServer
+            {
+                Token = result.Token,
+                GameServerEndpoint = appSettings.GameServerDomainUrl
+            };
         }
     }
 }

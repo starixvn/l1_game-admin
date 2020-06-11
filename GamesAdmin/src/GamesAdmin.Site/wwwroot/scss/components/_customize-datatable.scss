@@ -60,7 +60,7 @@
         }
 
         &:hover {
-            color: #da624a !important;
+            color: $theme-color !important;
             background: #e9ecef;
             border-color: #dee2e6;
         }
@@ -74,8 +74,8 @@
     .paginate_button.current,
     .paginate_button.current:hover {
         color: #fff !important;
-        background: #da624a;
-        border-color: #da624a;
+        background: $theme-color;
+        border-color: $theme-color;
     }
 }
 

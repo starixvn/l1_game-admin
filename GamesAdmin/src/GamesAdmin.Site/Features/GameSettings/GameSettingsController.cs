@@ -190,5 +190,19 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return Json(result);
         }
+
+        [HttpPost]
+        [Route("/jwt")]
+        public async Task<IActionResult> JWT([FromBody] GetJWTRequest request)
+        {
+            request.Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+            var result = await mediator.Send(request);
+
+            HttpContext.Response.Cookies.Append("token", result.Token);
+            HttpContext.Response.Cookies.Append("game-server-endpoint", result.GameServerEndpoint);
+
+            return Json(result);
+        }
     }
 }

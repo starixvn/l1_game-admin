@@ -260,6 +260,15 @@
   z-index: 10;
   height: 7.5rem; }
 
+.user-info .username {
+  display: none; }
+  @media only screen and (min-width: 768px) {
+    .user-info .username {
+      display: inline-block; } }
+
+.user-info .dropdown-toggle {
+  color: #fff; }
+
 .user-info .dropdown-toggle,
 .user-info .logout {
   background: none;
@@ -278,7 +287,7 @@
   text-align: left;
   color: #495057; }
   .user-info .logout:hover {
-    color: #da624a; }
+    color: #1b55e2; }
 
 .user-info .dropdown-menu {
   font-size: 1.4rem;
@@ -448,6 +457,10 @@
       justify-content: center; }
       .sidebar.active .menu-item a {
         padding-left: 0; }
+
+.scrollbar-sidebar {
+  height: calc(100% - 56px);
+  overflow: auto; }
 
 .scrollbar-sidebar {
   height: calc(100% - 55px);

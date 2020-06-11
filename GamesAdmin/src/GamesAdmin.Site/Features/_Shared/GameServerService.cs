@@ -17,6 +17,9 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Get("/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
+
+        [Post("/jwt")]
+        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
     }
 
     public interface IGameServerService
@@ -24,6 +27,8 @@ namespace GamesAdmin.Site.Features._Shared
         Task Reload();
 
         Task<OnlineUsers> GetOnlineUsers(string game);
+
+        Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameServerService : IGameServerService
@@ -81,6 +86,19 @@ namespace GamesAdmin.Site.Features._Shared
             {
                 HandleException(ex);
             }
+        }
+
+        public Task<JsonWebToken> GetJWT(string username, string userAgent)
+        {
+            try
+            {
+                return serverApi.GetToken(new RequestJWT(username, userAgent));
+            } catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return Task.FromResult(new JsonWebToken());
         }
 
         private void HandleException(Exception ex)

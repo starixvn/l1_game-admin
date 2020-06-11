@@ -1,0 +1,41 @@
+.dice {
+  height: 50px;
+  width: 50px;
+  background: url("/game-admin/images/dice/dice.png") no-repeat;
+  text-align: center;
+  background-size: contain;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  .dice-value {
+    @media screen and (max-width: 1023px) {
+      width: 100%;
+    }
+  }
+
+  &.xocxoc {
+    .dice-value {
+      width: 20px;
+      height: 20px;
+      margin-top: 15px;
+    }
+  }
+
+  &.small {
+    height: 30px;
+    width: 30px;
+
+    .dice-value {
+      width: 28px;
+      height: 28px;
+      margin-top: 0;
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
+    height: 35px;
+    width: 35px;
+    // margin-right: 20px;
+    // margin-left: 0;
+  }
+}
