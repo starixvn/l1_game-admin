@@ -128,13 +128,14 @@ namespace GamesAdmin.VietlottKeno
 
         private DateTime CalculateNextRoundTime(DateTime time, long roundDistance = 1)
         {
+            var startTimeOfDay = new TimeSpan(23, 0, 0);
             var endTimeOfDay = new TimeSpan(14, 55, 0);
             var nextRoundTime = time;
 
             for (var i = 1; i <= roundDistance; i++)
             {
                 nextRoundTime = nextRoundTime.AddMinutes(10);
-                if (nextRoundTime.TimeOfDay > endTimeOfDay)
+                if (nextRoundTime.TimeOfDay > endTimeOfDay && nextRoundTime.TimeOfDay < startTimeOfDay)
                 {
                     nextRoundTime = new DateTime(time.Year, time.Month, time.Day, 23, 1, 0, DateTimeKind.Utc);
                 }
