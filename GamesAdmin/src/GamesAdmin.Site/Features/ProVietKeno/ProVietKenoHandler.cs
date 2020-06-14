@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
 
             return result.OrderByDescending(x => x.Time).Select(x => new ProVietKenoRoundViewModel
             {
-                Result = x.Result,
+                Result = x.Results,
                 RoundNo = x.Number.ToString("D7"),
                 Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                 Big = x.Big,
@@ -58,14 +58,10 @@ namespace GamesAdmin.Site.Features.ProVietKeno
                 }
             }
 
-            var model = new ProVietKenoRound
-            {
-                Time = request.KenoRound.Date.ToUniversalTime(),
-                Number = request.KenoRound.RoundNo.Value,
-                Result = result
-            };
+            var model = new ProVietKenoRound(request.KenoRound.Date.ToUniversalTime(), request.KenoRound.RoundNo.Value, result);
 
             await provietKenoService.CreateAsync(model);
+            await gameServerService.NotifyRoundResult(new List<ProVietKenoRound> { model });
 
             return Unit.Value;
         }

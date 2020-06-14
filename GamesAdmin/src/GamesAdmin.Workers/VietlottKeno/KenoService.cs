@@ -161,19 +161,7 @@ namespace GamesAdmin.VietlottKeno
 
         private ProVietKenoRound ConvertToModel(ProVietKenoRoundEntity entity)
         {
-            return new ProVietKenoRound
-            {
-                Time = entity.Time,
-                Result = entity.Result,
-                Number = entity.Number,
-                Big = entity.SettlementResult.Big,
-                Even = entity.SettlementResult.Even,
-                Earth = entity.SettlementResult.Earth,
-                Fire = entity.SettlementResult.Fire,
-                Gold = entity.SettlementResult.Gold,
-                Wood = entity.SettlementResult.Wood,
-                Water = entity.SettlementResult.Water
-            };
+            return new ProVietKenoRound(entity.Time, entity.Number, entity.Result.ToList());
         }
 
         private ProVietKenoRoundEntity CreateEntity(VietLottKenoRoundResult kenoRound)

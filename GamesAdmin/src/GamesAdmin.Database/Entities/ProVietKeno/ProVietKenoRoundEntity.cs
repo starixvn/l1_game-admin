@@ -9,6 +9,8 @@ namespace GamesAdmin.Database.Entities
         public IEnumerable<byte> Result { get; set; }
 
         public SettlementResult SettlementResult { get; set; }
+
+        public bool Settled { get; set; }
     }
 
     public class SettlementResult

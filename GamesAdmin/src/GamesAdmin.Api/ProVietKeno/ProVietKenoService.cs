@@ -31,29 +31,19 @@ namespace GamesAdmin.Api.ProVietKeno
 
             var result = await repository.FilterByAsync(x => x.Time >= fromtDate && x.Time < toDate);
 
-            return result.Select(x => new ProVietKenoRound
-            {
-                Time = x.Time,
-                Result = x.Result,
-                Number = x.Number,
-                Big = x.SettlementResult?.Big,
-                Even = x.SettlementResult?.Even,
-                Earth = x.SettlementResult?.Earth,
-                Fire = x.SettlementResult?.Fire,
-                Gold = x.SettlementResult?.Gold,
-                Wood = x.SettlementResult?.Wood,
-                Water = x.SettlementResult?.Water
-            });
+            var rounds = result.Select(x => new ProVietKenoRound(x.Time, x.Number, x.Result));
+
+            return rounds;
         }
 
         public async Task CreateAsync(CreateProVietKenoRound kenoRound)
         {
-            var sum = kenoRound.Result.Sum(x => x);
+            var sum = kenoRound.Results.Sum(x => x);
 
             var entity = new ProVietKenoRoundEntity
             {
                 Time = kenoRound.Time,
-                Result = kenoRound.Result,
+                Result = kenoRound.Results,
                 Number = kenoRound.Number,
                 SettlementResult = new SettlementResult()
             };
