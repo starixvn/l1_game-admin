@@ -25,7 +25,6 @@ namespace GamesAdmin.VietlottKeno
         private readonly IKenoRepository repository;
         private readonly IGameAdminApi gameAdminApi;
 
-
         public KenoService(IKenoRepository repository, IGameAdminApi gameAdminApi)
         {
             this.repository = repository;
@@ -53,7 +52,6 @@ namespace GamesAdmin.VietlottKeno
             return ConvertToModel(entity);
         }
 
-
         public async Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds)
         {
             var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
@@ -72,7 +70,8 @@ namespace GamesAdmin.VietlottKeno
 
                 var missedRounds = kenoRounds.Where(x => latestRound.Number < long.Parse(x.DrawId))
                     .Select(x => CreateEntity(x))
-                    .OrderBy(x => x.Number);
+                    .OrderBy(x => x.Number)
+                    .ToList();
 
                 if (missedRounds.Any())
                 {
@@ -84,14 +83,14 @@ namespace GamesAdmin.VietlottKeno
                         time = CalculateNextRoundTime(time);
                     }
 
-                    await repository.InsertManyAsync(
-                        new List<ProVietKenoRoundEntity>(missedRounds)
+                    missedRounds.Add(
+                        new ProVietKenoRoundEntity
                         {
-                            new ProVietKenoRoundEntity {
-                                Number = missedRounds.LastOrDefault().Number + 1,
-                                Time = time
-                            }
+                            Number = missedRounds.LastOrDefault().Number + 1,
+                            Time = time
                         });
+
+                    await repository.InsertManyAsync(missedRounds);
 
                     return missedRounds.Select(ConvertToModel);
                 }
@@ -109,7 +108,6 @@ namespace GamesAdmin.VietlottKeno
                     }
                 }
             }
-
 
             return Enumerable.Empty<ProVietKenoRound>();
         }
