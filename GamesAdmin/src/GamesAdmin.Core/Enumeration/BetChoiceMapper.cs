@@ -27,7 +27,16 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<DragonTigerBetChoice>();
 
                 case GameType.KenoProMaxValue:
-                    return Enumeration.GetAll<KenoProMaxBetChoice>();
+                case GameType.KenoProVietValue:
+                case GameType.KenoMaxValue:
+                case GameType.KenoMax2Value:
+                case GameType.KenoMiniValue:
+                case GameType.KenoMini2Value:
+                case GameType.KenoEastValue:
+                case GameType.KenoWestValue:
+                case GameType.KenoSouthValue:
+                case GameType.KenoNorthValue:
+                    return Enumeration.GetAll<KenoBetChoice>();
 
                 case GameType.MiniSeDieValue:
                     return Enumeration.GetAll<MiniSeDieBetChoice>();
