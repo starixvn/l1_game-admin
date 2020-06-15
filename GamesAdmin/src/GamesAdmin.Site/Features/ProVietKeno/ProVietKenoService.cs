@@ -9,7 +9,9 @@ namespace GamesAdmin.Site.Features.ProVietKeno
     {
         Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date);
 
-        Task CreateAsync(ProVietKenoRound kenoRound);
+        Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound);
+
+        Task<ProVietKenoRound> GetByRoundIdAsync(long roundId);
     }
 
     public class ProVietKenoService : IProVietKenoService
@@ -24,7 +26,10 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
         => await provietKenoApi.GetRounds(date);
 
-        public async Task CreateAsync(ProVietKenoRound kenoRound)
+        public async Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound)
         => await provietKenoApi.Create(kenoRound);
+
+        public async Task<ProVietKenoRound> GetByRoundIdAsync(long roundId)
+        => await provietKenoApi.GetByRoundId(roundId);
     }
 }

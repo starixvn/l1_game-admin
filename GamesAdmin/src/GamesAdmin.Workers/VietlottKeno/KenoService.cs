@@ -161,7 +161,19 @@ namespace GamesAdmin.VietlottKeno
 
         private ProVietKenoRound ConvertToModel(ProVietKenoRoundEntity entity)
         {
-            return new ProVietKenoRound(entity.Time, entity.Number, entity.Result.ToList());
+            return new ProVietKenoRound
+            {
+                Time = entity.Time,
+                Result = entity.Result,
+                Number = entity.Number,
+                Big = entity.SettlementResult.Big,
+                Even = entity.SettlementResult.Even,
+                Earth = entity.SettlementResult.Earth,
+                Fire = entity.SettlementResult.Fire,
+                Gold = entity.SettlementResult.Gold,
+                Wood = entity.SettlementResult.Wood,
+                Water = entity.SettlementResult.Water
+            };
         }
 
         private ProVietKenoRoundEntity CreateEntity(VietLottKenoRoundResult kenoRound)
@@ -174,51 +186,8 @@ namespace GamesAdmin.VietlottKeno
                 Time = DateTime.UtcNow,
                 Number = long.Parse(kenoRound.DrawId),
                 Result = result,
-                SettlementResult = new SettlementResult()
+                SettlementResult = new SettlementResult(sum)
             };
-
-            if (sum >= 811)
-            {
-                entity.SettlementResult.Big = true;
-            }
-            else
-            {
-                entity.SettlementResult.Small = true;
-            }
-
-            if (sum % 2 == 0)
-            {
-                entity.SettlementResult.Even = true;
-            }
-            else
-            {
-                entity.SettlementResult.Odd = true;
-            }
-
-            if (sum >= 210 && sum <= 695)
-            {
-                entity.SettlementResult.Gold = true;
-            }
-
-            if (sum >= 696 && sum <= 763)
-            {
-                entity.SettlementResult.Wood = true;
-            }
-
-            if (sum >= 764 && sum <= 855)
-            {
-                entity.SettlementResult.Water = true;
-            }
-
-            if (sum >= 856 && sum <= 923)
-            {
-                entity.SettlementResult.Fire = true;
-            }
-
-            if (sum >= 924 && sum <= 1410)
-            {
-                entity.SettlementResult.Earth = true;
-            }
 
             return entity;
         }

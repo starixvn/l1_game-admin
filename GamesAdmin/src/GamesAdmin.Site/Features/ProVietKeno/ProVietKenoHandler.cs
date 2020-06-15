@@ -15,7 +15,8 @@ namespace GamesAdmin.Site.Features.ProVietKeno
     public class ProVietKenoHandler :
         IRequestHandler<GetRoundsRequest, IEnumerable<ProVietKenoRoundViewModel>>,
         IRequestHandler<CreateRoundRequest, Unit>,
-        IRequestHandler<NotifyRoundResultRequest, Unit>
+        IRequestHandler<NotifyRoundResultRequest, Unit>,
+        IRequestHandler<GetByRoundIdRequest, ProVietKenoRound>
     {
         private readonly IProVietKenoService provietKenoService;
         private readonly IGameServerService gameServerService;
@@ -32,18 +33,21 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         {
             var result = await provietKenoService.GetRoundsAsync(request.Date);
 
-            return result.OrderByDescending(x => x.Time).Select(x => new ProVietKenoRoundViewModel
+            return result.OrderByDescending(x => x.Number).Select(x => new ProVietKenoRoundViewModel
             {
-                Result = x.Results,
+                Result = x.Result,
                 RoundNo = x.Number.ToString("D7"),
                 Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                 Big = x.Big,
+                Small = x.Small,
                 Even = x.Even,
+                Odd = x.Odd,
                 Earth = x.Earth,
                 Fire = x.Fire,
                 Gold = x.Gold,
                 Wood = x.Wood,
-                Water = x.Water
+                Water = x.Water,
+                Settled = x.Settled
             });
         }
 
@@ -58,10 +62,15 @@ namespace GamesAdmin.Site.Features.ProVietKeno
                 }
             }
 
-            var model = new ProVietKenoRound(request.KenoRound.Date.ToUniversalTime(), request.KenoRound.RoundNo.Value, result);
+            var createModel = new CreateProVietKenoRound 
+            {
+                Time = request.KenoRound.Date.ToUniversalTime(),
+                Number = request.KenoRound.RoundNo.Value,
+                Results = result,
+            };
 
-            await provietKenoService.CreateAsync(model);
-            await gameServerService.NotifyRoundResult(new List<ProVietKenoRound> { model });
+            var resultModel = await provietKenoService.CreateAsync(createModel);
+            await gameServerService.NotifyRoundResult(new List<ProVietKenoRound> { resultModel });
 
             return Unit.Value;
         }
@@ -71,6 +80,11 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             await gameServerService.NotifyRoundResult(request.KenoRounds);
 
             return Unit.Value;
+        }
+
+        public async Task<ProVietKenoRound> Handle(GetByRoundIdRequest request, CancellationToken cancellationToken)
+        {
+            return await provietKenoService.GetByRoundIdAsync(request.RoundId);
         }
     }
 }

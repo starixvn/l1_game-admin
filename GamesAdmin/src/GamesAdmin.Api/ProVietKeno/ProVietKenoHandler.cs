@@ -9,7 +9,8 @@ namespace GamesAdmin.Api.ProVietKeno
 {
     public class ProVietKenoHandler :
         IRequestHandler<GetRoundsRequest, IEnumerable<ProVietKenoRound>>,
-        IRequestHandler<CreateRoundRequest, Unit>
+        IRequestHandler<CreateRoundRequest, ProVietKenoRound>,
+        IRequestHandler<GetByRoundIdRequest, ProVietKenoRound>
     {
         private readonly IProVietKenoService provietKenoService;
 
@@ -21,10 +22,14 @@ namespace GamesAdmin.Api.ProVietKeno
         public async Task<IEnumerable<ProVietKenoRound>> Handle(GetRoundsRequest request, CancellationToken cancellationToken)
         => await provietKenoService.GetRoundsAsync(request.Date);
 
-        public async Task<Unit> Handle(CreateRoundRequest request, CancellationToken cancellationToken)
+        public async Task<ProVietKenoRound> Handle(CreateRoundRequest request, CancellationToken cancellationToken)
         {
-            await provietKenoService.CreateAsync(request.KenoRound);
-            return Unit.Value;
+            return await provietKenoService.CreateAsync(request.KenoRound);
+        }
+
+        public async Task<ProVietKenoRound> Handle(GetByRoundIdRequest request, CancellationToken cancellationToken)
+        {
+            return await provietKenoService.GetByRoundId(request.RoundId);
         }
     }
 }

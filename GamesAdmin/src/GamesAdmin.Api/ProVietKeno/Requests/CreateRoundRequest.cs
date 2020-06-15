@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.ProVietKeno.Requests
 {
-    public class CreateRoundRequest : IRequest
+    public class CreateRoundRequest : IRequest<ProVietKenoRound>
     {
         public CreateRoundRequest(CreateProVietKenoRound kenoRound)
         {

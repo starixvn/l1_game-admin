@@ -18,7 +18,6 @@
                 $kenoForm.submit();
             } else {
                 if (data.errors) {
-                    debugger;
                     var errorObj = {};
                     for (var i = 0; i < data.errors.length; i++) {
                         var error = data.errors[i];

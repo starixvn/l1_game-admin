@@ -20,5 +20,6 @@ namespace GamesAdmin.Site.Features.ProVietKeno.ViewModels
         public bool? Water { get; set; }
         public bool? Fire { get; set; }
         public bool? Earth { get; set; }
+        public bool Settled { get; internal set; }
     }
 }

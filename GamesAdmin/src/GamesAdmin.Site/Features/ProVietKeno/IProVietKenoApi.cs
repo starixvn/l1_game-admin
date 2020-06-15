@@ -13,6 +13,9 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         Task<IEnumerable<ProVietKenoRound>> GetRounds([Query(Format = "yyyy-MM-ddTHH:mm:ssZ")]DateTime date);
 
         [Post("/proviet_keno/rounds/create")]
-        Task Create([Body] ProVietKenoRound kenoRound);
+        Task<ProVietKenoRound> Create([Body] CreateProVietKenoRound kenoRound);
+
+        [Get("/proviet_keno/rounds/id/{roundId}")]
+        Task<ProVietKenoRound> GetByRoundId(long roundId);
     }
 }

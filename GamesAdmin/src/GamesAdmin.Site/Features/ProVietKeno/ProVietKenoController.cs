@@ -47,15 +47,17 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         {
             if (ModelState.IsValid)
             {
-                if (viewModel.Result.Count(x => x) == 20)
+                var kenoRound = await mediator.Send(new GetByRoundIdRequest(viewModel.RoundNo.Value));
+                if(kenoRound != null && kenoRound.Settled)
+                {
+                    ModelState.AddModelError(nameof(CreateProVietKenoRoundViewModel.RoundNo), "The round has been settled.");
+                }
+                else
                 {
                     await mediator.Send(new CreateRoundRequest(viewModel));
                     return Json(new { isSuccessful = true });
                 }
-                else
-                {
-                    ModelState.AddModelError(nameof(CreateProVietKenoRoundViewModel.Result), "Please select 20 numbers");
-                }
+    
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors.First().ErrorMessage });

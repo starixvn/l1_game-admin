@@ -28,8 +28,14 @@ namespace GamesAdmin.Api.ProVietKeno
         [Route("rounds/create")]
         public async Task<IActionResult> Create([FromBody] CreateProVietKenoRound kenoRound)
         {
-            await mediator.Send(new CreateRoundRequest(kenoRound));
-            return Ok();
+            return Ok(await mediator.Send(new CreateRoundRequest(kenoRound)));
         }
+
+
+        [HttpGet]
+        [Route("rounds/id/{roundId}")]
+        public async Task<ProVietKenoRound> Get(long roundId)
+            => (await mediator.Send(new GetByRoundIdRequest(roundId)));
+
     }
 }
