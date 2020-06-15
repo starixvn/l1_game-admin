@@ -91,12 +91,12 @@
                             var index = i * 2 + j;
                             if (index < Model.BetChoiceOdds.Count)
                             {
-                        <div class="col-lg-6">
-                            <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
-                            <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
-                            <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
-                            <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
-                        </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
+                                    <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
+                                    <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
+                                    <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                                </div>
                             }
                         }
                     </div>
@@ -104,6 +104,11 @@
             </fieldset>
 
             <br />
+
+            <div class="form-group">
+                <label asp-for="DelayStartTime" class="control-label"></label>
+                <input type="number" asp-for="DelayStartTime" class="form-control" />
+            </div>
 
             <div class="form-group">
                 <label asp-for="BotMaxBet" class="control-label"></label>
