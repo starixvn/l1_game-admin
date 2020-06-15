@@ -83,16 +83,16 @@ namespace GamesAdmin.VietlottKeno
                         time = CalculateNextRoundTime(time);
                     }
 
-                    missedRounds.Add(
-                        new ProVietKenoRoundEntity
+                    await repository.InsertManyAsync(new List<ProVietKenoRoundEntity>(missedRounds)
+                    {
+                          new ProVietKenoRoundEntity
                         {
                             Number = missedRounds.LastOrDefault().Number + 1,
                             Time = time
-                        });
+                        }
+                    });
 
-                    await repository.InsertManyAsync(missedRounds);
-
-                    return missedRounds.Select(ConvertToModel);
+                    return missedRounds.Select(x => ConvertToModel(x));
                 }
                 else
                 {
