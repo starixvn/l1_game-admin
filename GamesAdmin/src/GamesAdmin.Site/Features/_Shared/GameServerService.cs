@@ -114,6 +114,7 @@ namespace GamesAdmin.Site.Features._Shared
             {
                 try
                 {
+                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
                     await serverApi.NotifyRoundResult(round);
                 }
                 catch (Exception ex)
