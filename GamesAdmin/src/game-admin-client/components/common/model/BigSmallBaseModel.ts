@@ -21,11 +21,15 @@ export default class BigSmallBaseModel {
   turbo: string
   firstBetTypeUsers: number
   secondBetTypeUsers: number
+  isHavingResult: boolean
+  currentState: number
 
   constructor() {
     this.result = new Array(new DiceModel(), new DiceModel(), new DiceModel());
     this.betList = new BigSmallBaseBetList();
     this.time = new TimeModel();
+    this.isHavingResult = false
+    this.currentState = 0;
   }
 }
 

@@ -1,80 +1,279 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @model StatusViewModel;
 
-@{
-    ViewData["Title"] = "Game Status";
+@{ 
+    ViewData["Title"] = "Game Management";
 }
+
 @section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/scss/pages/game-status.css" rel="stylesheet" asp-append-version="true" />
 }
 
 
-<div class="col-md-12 col-lg-10 game-status">
+<div class="col-md-12 col-lg-12 game-status">
     <div class="list-actions">
-        <input type="button" onclick="gameStatus.enable()" value="ENABLE" class="btn-add btn-enable" />
-        <input type="button" onclick="gameStatus.disable()" value="DISABLE" class="btn-gray btn-enable" />
-        <input type="button" onclick="gameStatus.reload()" value="RELOAD" class="btn-submit" />
+        <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
+        <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
+        <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit" />
     </div>
 
-    <div class="force-reload">
-        <label><input type="checkbox" id="reload" /> Force users to reload after enable/disable game(s)</label>
-    </div>
+
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
     {
-        <div class="message-error"><i class="material-icons">cancel</i> @TempData["errorMessage"].ToString()</div>
-        <br />
-    }
+<div class="message-error"><i class="icon-cancel"></i> @TempData["errorMessage"].ToString()</div>
+                <br />}
 
     <table id="status-tbl" class="table table-bordered">
         <thead>
             <tr>
-                <th class="col-check">&nbsp;</th>
+                <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
                 <th>Name</th>
                 <th class="col-status">Enabled</th>
+                <th class="col-status">Bot Enabled</th>
+                <th>Bet Limit (Min - Max)</th>
+                <th>Round History</th>
+                <th>Monitor</th>
                 <th>Message</th>
+                <th>Setting</th>
+                <th>Bot Ratio</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="text-center"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></td>
-                <td>All</td>
-                <td>&nbsp;</td>
-                <td>
-                    <form class="form" asp-action="UpdateAllDisabledMessage" asp-controller="GameSettings" method="post">
-                        <textarea placeholder="Message to display" name="disabledMessage" class="message"></textarea>
-                        <button class="btn-save"><i class="material-icons icon-save">done_outline</i></button>
-                    </form>
-                </td>
-            </tr>
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
-                <tr>
-                    <td class="text-center">
-                        <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
-                        <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
-                    </td>
-                    <td>@Model.GameList[index].DisplayName</td>
-                    <td class="text-center">@Model.GameList[index].StatusDisplay</td>
-                    <td>
-                        <div>
-                            <label class="content-message">@Model.GameList[index].DisabledMessage</label>
-                            <button class="btn-edit" onclick="gameStatus.showForm(this)"><i class="material-icons icon-edit">create</i></button>
-                        </div>
-                        <form class="form form-disabled-message" asp-action="UpdateDisabledMessage" asp-controller="GameSettings" method="post" style="display:none">
-                            <textarea name="disabledMessage" asp-for="@Model.GameList[index].DisabledMessage" placeholder="Message to display" class="message"></textarea>
-                            <input type="hidden" name="name" asp-for="@Model.GameList[index].Name" />
-                            <button class="btn-save"><i class="material-icons icon-save">done_outline</i></button>
-                        </form>
-
-                    </td>
-                </tr>
-            }
+            <tr>
+                <td class="text-center">
+                    <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
+                    <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
+                </td>
+                <td>@Model.GameList[index].DisplayName</td>
+                <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
+                <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
+                <td class="text-center">@Model.GameList[index].MinBet - @Model.GameList[index].MaxBet</td>
+                <td class="text-center">
+                    @if (Model.GameList[index].EnabledHistory)
+                    {
+                        <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a> 
+                    }                   
+                </td>
+                <td class="text-center">
+                    <a href="#" class="icon-action" onclick="gameStatus.startMonitor('@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                </td>
+                <td class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                </td>
+                <td class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                </td>
+                <td class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>                                                             
+                </td>
+            </tr>}
         </tbody>
     </table>
+
+    <!-- Modal -->
+    <div class="modal fade message-modal" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Message: <span id="updateMsgGameName"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
+
+                    <div class="text-message">
+                        <label class="font-weight-bold">Message</label>
+                        <br />
+                        <textarea rows="3" cols="50" id="textMessage"></textarea>
+                    </div>
+                    <div class="apply-all-checkbox">
+                        <input type="checkbox" id="applyAllCheckbox" name="applyAllCheckbox" /> <label for="applyAllCheckbox">Apply to All Games</label>
+                    </div>
+                    <input type="hidden" id="msgGameName" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-submit" id="updateMsgBtn" onclick="gameStatus.updateMessage()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="gameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Setting: <span id="gameTitleName"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body game-details-content" id="gamedetails">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade adjust-bot-hours bot-ratio-modal" id="botRatioModal" tabindex="-1" role="dialog" aria-labelledby="botRatioModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="updateBotRatio">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal_title"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+                        <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+                        <p>Total bots: <strong id="total_bots"></strong></p>
+                        <input type="hidden" id="total_bots_field"/>
+                        <div class="row options">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-gmt">From (GTM-4)</th>
+                                            <th class="col-gmt">From (GTM+7)</th>
+                                            <th>% Bot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < 12; i++)
+                                        {
+                            <tr id="@("bot_setting_" + i)">
+                                <td class="time-gtm4"></td>
+                                <td class="time-gtm7"></td>
+                                <td class="ratio-cell">
+                                    <div>
+                                        <input type="number" id="bot_ratio" class="ratio" onchange="gameStatus.updateBotCount(this)"/>
+                                        <input type="hidden" class="utc-hour" />
+                                        <span class="bot-number" id="bot_number"></span>
+                                    </div>
+                                    <span id="validate_ratio" class="text-danger"></span>
+                                </td>
+                            </tr>}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-gmt">From (GTM-4)</th>
+                                            <th class="col-gmt">From (GTM+7)</th>
+                                            <th>% Bot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 12; i < 24; i++)
+                                        {
+                            <tr id="@("bot_setting_" + i)">
+                                <td class="time-gtm4"></td>
+                                <td class="time-gtm7"></td>
+                                <td class="ratio-cell">
+                                    <div>
+                                        <input type="number" class="ratio" max="100" min="0" onchange="gameStatus.updateBotCount(this)" />
+                                        <input type="hidden" class="utc-hour" />
+                                        <span class="bot-number" id="bot_number"></span>
+                                    </div>
+                                    <span id="validate_ratio" class="text-danger"></span>
+                                </td>
+                            </tr>
+}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                        <button type="button" id="updateBotRatioBtn" class="btn btn-submit" onclick="gameStatus.updateBotRationItems()">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="reloadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation<span id="reloadTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reload-content-body">
+                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Users reloaded!</span></div>
+                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
+                    <div id="reloadContent" class="reload-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-submit" id="confirmBtn" onclick="gameStatus.submitReload()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade enable-disable-modal" id="enableDisableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation<span id="enableDisableTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reload-content-body">
+                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
+                    <div id="enableDisableContent" class="content-body"></div>
+                    <div class="force-reload-checkbox">
+                        <input type="checkbox" id="forceReloadCheckbox" name="forceReloadCheckbox" />
+                        <label id="forceReloadLabel" for="forceReloadCheckbox">Force users to reload after enable/disable game(s)</label>
+                    </div>
+                    <input type="hidden" id="enableDisableFlag" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-submit" id="confirmBtn" onclick="gameStatus.submitEnableDisable()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reload-content-body" id="alertContent">
+                    You should choose at least one game
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-submit" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>    
 </div>
 
 
 @section Scripts{
     <script src="~/js/game-status.min.js" asp-append-version="true"></script>
 }
-

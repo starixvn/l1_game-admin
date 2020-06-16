@@ -10,16 +10,20 @@ export default class {
   private socket: WebSocket;
   private isConnected: boolean;
   private isLogged: boolean;
+  private disconnectListenterCounter: number;
   private readonly endpoint: string;
   private readonly observers: {
     [key: string]: ObserverClient
   };
+  private readonly onDisconnectedMessage: string;
 
   constructor(endpoint: string) {
     this.isConnected = false;
     this.isLogged = false;
     this.endpoint = endpoint;
     this.observers = {};
+    this.disconnectListenterCounter = 0;
+    this.onDisconnectedMessage = 'onDisconnected';
   }
 
   public connect() {
@@ -39,7 +43,7 @@ export default class {
     }));
   }
 
-  public addObserver(key, handler, selector: ObserverSelector = () => true) {
+  public addObserver(key: string | number, handler: Function, selector: ObserverSelector = () => true) {
     if (!this.observers[key]) {
       this.observers[key] = { handler, selector };
     } else {
@@ -54,7 +58,7 @@ export default class {
     }
   }
 
-  public addOrReplaceObserver(key, handler, selector: ObserverSelector = () => true) {
+  public addOrReplaceObserver(key: string | number, handler: Function, selector: ObserverSelector = () => true) {
     this.observers[key] = { handler, selector };
   }
 
@@ -78,7 +82,7 @@ export default class {
     });
   }
 
-  public send(message) {
+  public send(message: Object) {
     try {
       if (this.socket && this.socket.readyState === 1) {
         this.socket.send(JSON.stringify(message));
@@ -88,25 +92,35 @@ export default class {
     }
   }
 
-  private disconnect() {
-    this.isConnected = false;
-    this.socket.close();
+  public onDisconnected(handler: () => void) {
+    const key = `${this.onDisconnectedMessage}:${this.disconnectListenterCounter++}`;
+    this.addObserver(key, handler, (message: Object) => message[this.onDisconnectedMessage]);
   }
 
-  private onReceiveMessage(event) {
+  private disconnect() {
+    const message = { [this.onDisconnectedMessage]: this.onDisconnectedMessage};
+
+    this.isConnected = false;
+    this.socket.close();
+    this.executeObservers(message);
+  }
+
+  private onReceiveMessage(event: MessageEvent) {
     try {
       const data = event.data;
       const message = JSON.parse(data);
 
-      //console.log(message);
-      //console.log(message.mini_dragon_tiger.finish);
-      Object.values(this.observers).forEach((client) => {
-        if (client.selector && client.selector(message)) {
-          client.handler && client.handler(message);
-        }
-      })
+      this.executeObservers(message);
     } catch (e) {
       logger.error(e);
     }
+  }
+
+  private executeObservers(message: Object) {
+    Object.values(this.observers).forEach((client) => {
+      if (client.selector && client.selector(message)) {
+        client.handler && client.handler(message);
+      }
+    })
   }
 }

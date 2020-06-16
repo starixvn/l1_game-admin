@@ -22,12 +22,12 @@
     @{
         if (Model.Success)
         {
-            <div class="message-success"><i class="material-icons">check_circle</i> Updated successfully</div>
+            <div class="message-success"><i class="icon-check"></i> Updated successfully</div>
         }
 
         if (!string.IsNullOrWhiteSpace(@Model.ErrorMessage))
         {
-            <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
+            <div class="message-error"><i class="icon-cancel"></i> @Model.ErrorMessage</div>
         }
 
         <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
@@ -112,7 +112,7 @@
             </div>
 
             <div class="adjust-bot-link">
-                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
+                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="icon-bot bot"></i> Adjust bots by hour</a>
             </div>
 
             <div class="form-group">

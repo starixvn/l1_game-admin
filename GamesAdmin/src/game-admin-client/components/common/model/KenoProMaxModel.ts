@@ -1,6 +1,5 @@
 import BetList from './BetList'
 import TimeModel from './TimeModel'
-import CardResult from './CardResult'
 
 export default class KenoProMaxModel {
     roundNumber: number
@@ -29,7 +28,6 @@ export default class KenoProMaxModel {
         this.small = new BetList();
         this.even = new BetList();
         this.odd = new BetList();
-
         this.time = new TimeModel();
     }
 }

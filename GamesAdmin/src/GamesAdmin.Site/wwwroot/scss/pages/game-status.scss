@@ -11,12 +11,30 @@
     }
 
     .force-reload {
-        margin-left: 15px;
+        margin-left: 14px;
+
+        input {
+            top: 0px;
+            margin-right: 3px;
+        }
     }
 }
 
 .table {
     background-color: #fff;
+
+    .icon-action:hover {
+        text-decoration: none;
+    } 
+
+    thead tr {
+        background: #1b55e2;
+        color: white;
+    }
+
+    th {
+        text-align: center;
+    }
 
     .toggle-button {
         margin-left: auto;
@@ -28,7 +46,7 @@
     }
 
     .col-status {
-        width: 12.8rem;
+        width: 10rem;
     }
 
     .message {
@@ -64,11 +82,99 @@
     .icon-edit {
         position: relative;
         top: .3rem;
-        font-size: 2rem;
+        font-size: 1.6rem;
         color: #6c757d;
 
         &:hover {
             color: #3ac47d;
         }
+    }
+
+    .icon-history {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8rem;
+    }
+
+    .icon-chart {
+        font-size: 1.8rem;
+    }
+
+    .icon-check {
+        color: #3ac47d;
+    }
+
+    .icon-cancel {
+        color: #ff0000;
+    }
+}
+
+
+.hidden-cls {
+    display: none;
+}
+
+.game-details-content{
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.message-modal {
+    .text-message {
+        padding: 10px 10px;
+
+        textarea {
+            padding: 5px 8px;
+        }
+    }
+
+    .apply-all-checkbox {
+        padding: 10px 10px;
+    }
+
+    input, label {
+        cursor: pointer;
+    }
+}
+
+.game-modal, .message-modal, .bot-ratio-modal {
+    .message-success, .message-error {
+        position: relative;
+        margin: 5px 10px;
+
+        i {
+            position: absolute;
+            top: 13px;
+        }
+
+        span {
+            padding-left: 30px;
+        }
+    }
+}
+
+.reload-content-body {
+    .message-success, .message-error {
+        margin: 5px 3px;
+    }
+
+    .reload-content{
+        padding-left: 3px;
+    }
+}
+
+.enable-disable-modal {
+    .content-body{
+        font-size: 16px;
+        ul {
+            list-style: disc;
+            font-weight: bold;
+            font-size: 15px;
+        }
+    }
+
+    .force-reload-checkbox {
+        padding: 10px 0;
     }
 }

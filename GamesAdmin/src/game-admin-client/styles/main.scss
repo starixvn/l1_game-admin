@@ -41,3 +41,24 @@ body {
     padding-right: 5px;
   }
 }
+
+.notice {
+  &>div {
+    align-items: center;
+    background-color: #411212;
+    border: 2px solid #660f10;
+    border-radius: 15px;
+    color: #f0f0f0;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+
+    @media screen and (max-width: 1023px) {
+      font-size: 12px;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 20px;
+    }
+  }
+}

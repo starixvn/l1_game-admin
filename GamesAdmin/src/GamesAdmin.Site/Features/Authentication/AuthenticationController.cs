@@ -22,7 +22,7 @@ namespace GamesAdmin.Site.Features.Authentication
         {
             if (await authenticationService.SignInAsync(user, HttpContext))
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "GameSettings");
             }
 
             return RedirectToAction(nameof(LoginError));

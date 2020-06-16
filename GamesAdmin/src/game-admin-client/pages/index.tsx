@@ -7,6 +7,7 @@ import GameServerWS from "../components/util/game-server-endpoint/websocket";
 import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
 import MessageTransmitter, { MessageTransmitterType } from "../components/util/message-transmitter";
 import Cookies from 'js-cookie';
+import { Modal, Row } from 'reactstrap';
 
 type Props = {
   router: NextRouter,
@@ -17,6 +18,7 @@ type State = {
   showLoading: boolean,
   gameName: string,
   token: string,
+  showDisconnectedNotice: boolean,
 };
 
 class Home extends React.Component<Props, State>{
@@ -29,14 +31,22 @@ class Home extends React.Component<Props, State>{
 
     const gameServerEndpoint = process.env.NEXT_PUBLIC_ENV === 'local' ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT : Cookies.get('game-server-endpoint');
     const token = process.env.NEXT_PUBLIC_ENV === 'local' ? process.env.NEXT_PUBLIC_TOKEN : Cookies.get('token');
+    const protocol = (globalThis.location || {protocol: ''}).protocol.endsWith('s:') ? 'wss' : 'ws';
 
-    this.socket = new GameWsEndpoint(`ws://${gameServerEndpoint}/admin`);
+    this.socket = new GameWsEndpoint(`${protocol}://${gameServerEndpoint}/admin`);
+    this.socket.onDisconnected(this.showWebSocketDisconnected.bind(this));
+    this.socket.addOrReplaceObserver(
+      'sessionTimeout',
+      this.showWebSocketDisconnected.bind(this),
+      (message: {unauth: Object}) => message && message.unauth != null);
+
     this.messageTransmitter = MessageTransmitter();
     this.state = {
       gameId: 0,
       showLoading: true,
       gameName: '',
       token,
+      showDisconnectedNotice: false,
     };
   }
 
@@ -73,11 +83,23 @@ class Home extends React.Component<Props, State>{
     this.socket.send(initialMessage);
     this.socket.addOrReplaceObserver(key, onMessage(this.messageTransmitter.broadcast), selector);
 
-    return <info.component
-      sendMessage={sendMessage}
-      onMessage={this.messageTransmitter.addListener}
-      onStopReceiveMessage={onStopReceiveMessage}
-    />;
+    return (
+      <>
+        <info.component
+          sendMessage={sendMessage}
+          onMessage={this.messageTransmitter.addListener}
+          onStopReceiveMessage={onStopReceiveMessage}
+        />
+        <Modal isOpen={this.state.showDisconnectedNotice} className='notice'>
+          <Row>Network is disconnected or session timeout.</Row>
+          <Row>Please close this popup and open new popup to monitor again.</Row>
+        </Modal>
+      </>
+    );
+  }
+
+  showWebSocketDisconnected() {
+    this.setState({showDisconnectedNotice: true});
   }
 
   renderLoaderOrGameMenu() {

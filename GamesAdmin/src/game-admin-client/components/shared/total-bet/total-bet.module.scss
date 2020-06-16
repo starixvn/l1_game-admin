@@ -1,3 +1,19 @@
+.win {
+  border-radius: 20px;
+  animation: shining 0.7s infinite;
+}
+
+@keyframes shining {
+  50% {
+    box-shadow: 0px 0px 20px 2px #fbff00;
+  }
+}
+
+.wrapper {
+  margin: 5px;
+  padding: 5px;
+}
+
 .dragonBg {
   .bg {
     --size: 200px;

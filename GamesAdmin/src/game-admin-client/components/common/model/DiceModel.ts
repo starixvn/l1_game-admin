@@ -1,10 +1,10 @@
 import DiceType from './DiceType';
 
 export default class DiceModel {
-    value: Number;
+    value: number;
     type: DiceType;
 
-    constructor(value: Number = -1, type: DiceType = DiceType.BauCua) {
+    constructor(value: number = -1, type: DiceType = DiceType.BauCua) {
         this.value = value;
         this.type = type;
     }

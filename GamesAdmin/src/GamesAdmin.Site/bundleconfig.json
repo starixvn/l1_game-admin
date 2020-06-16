@@ -6,12 +6,6 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/game-settings.min.js",
-    "inputFiles": [
-      "wwwroot/js/game-settings.js"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/js/game-status.min.js",
     "inputFiles": [
       "wwwroot/js/game-status.js"

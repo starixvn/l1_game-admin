@@ -30,10 +30,10 @@ const renderTitle = (titles, type) => {
 }
 
 export default function BetList(props) {
-  const { type, titles, dataList } = props;
+  const { type, titles, dataList, isWin } = props;
 
   return (
-    <div className={style.betlist}>
+    <div className={`${style.betlist} ${isWin ? style.win : ''}`}>
       <div className={style.title}>
         <Row className={style.row}>
           {renderTitle(titles, type)}

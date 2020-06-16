@@ -5,10 +5,10 @@
     ViewData["Title"] = "Client Sites";
 }
 
-<div class="col-md-10 col-lg-6 card">
+<div class="col-md-12 card">
     <div class="card-body">
-        <table class="table">
-            <thead>
+        <table class="table table-bordered">
+            <thead class="thead-light">
                 <tr>
                     <th>Client</th>
                     <th>Site</th>
@@ -23,7 +23,7 @@
                         <td>@item.ClientId</td>
                         <td>@item.SiteId</td>
                         <td>@item.GameClientUrl</td>
-                        <td><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId">Edit</a></td>
+                        <td><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId"><i class="icon-edit"></i></a></td>
                     </tr>
                 }
             </tbody>

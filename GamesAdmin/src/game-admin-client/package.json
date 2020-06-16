@@ -12,6 +12,7 @@
     "export": "npm install && rimraf ./.next && next build && next export && node ./_build-files/after-built.js"
   },
   "dependencies": {
+    "@types/reactstrap": "^8.4.2",
     "bootstrap": "^4.5.0",
     "fs-extra": "^9.0.1",
     "moment": "^2.26.0",

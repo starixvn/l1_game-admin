@@ -7,6 +7,8 @@ const classNames = {
   draw: 'drawBg',
   big: 'bigBg',
   small: 'smallBg',
+  tai: 'bigBg',
+  xiu: 'smallBg',
   tom: 'tomBg',
   cua: 'cuaBg',
   bau: 'bauBg',
@@ -32,13 +34,13 @@ const classNames = {
   kenoodd: 'kenooddBg'
 }
 
-export default function TotalBet(props: { type: string, total: number }) {
-  const { type, total } = props;
+export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {
+  const { type, total, isWin } = props;
   const className = classNames[type];
 
   const amount = total.toLocaleString('en-US');
   return (
-    <div className={`${style[className]}`}>
+    <div className={`${style.wrapper} ${style[className]} ${isWin ? style.win : ''}`}>
       <div className={`${style.bg} `}>
         <div className={`${style.outerBg}`}></div>
         <div className={`${style.innerBg}`}></div>

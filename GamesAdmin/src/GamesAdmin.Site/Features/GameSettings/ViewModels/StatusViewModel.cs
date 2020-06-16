@@ -15,6 +15,22 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class StatusItemViewModel 
     {
+        private static IList<string> gameEnabledHistory = new List<string> 
+        { 
+            GameType.BigSmallValue, 
+            GameType.BigSmallTurboValue, 
+            GameType.OddEvenValue, 
+            GameType.OddEvenTurboValue 
+        };
+
+        private static Dictionary<string, string> gameHistoryUrl = new Dictionary<string, string>
+        {
+            { GameType.BigSmallValue, "bigsmall" },
+            { GameType.BigSmallTurboValue, "bigsmallturbo" },
+            { GameType.OddEvenValue, "oddeven" },
+            { GameType.OddEvenTurboValue, "oddeventurbo" }
+        };
+
         public StatusItemViewModel(string name, bool enabled, string disabledMessage) 
         {
             Name = name;
@@ -28,9 +44,21 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool Enabled { get; }
 
+        public bool BotEnabled { get; set; }
+
+        public string BotEnabledDisplay => BotEnabled ? "Yes" : "No";
+
         public string StatusDisplay => Enabled ? "Yes" : "No";
 
         public string DisabledMessage { get; }
+
+        public double MinBet { get; set; }
+
+        public double MaxBet { get; set; }
+
+        public bool EnabledHistory => gameEnabledHistory.Contains(Name);
+
+        public string GameHistoryUrl => gameHistoryUrl.ContainsKey(Name) ? gameHistoryUrl[Name] : string.Empty;
     }
 
     public class GameDisableMessage 
