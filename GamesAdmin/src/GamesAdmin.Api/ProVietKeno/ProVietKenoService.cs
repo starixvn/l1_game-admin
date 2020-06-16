@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api.ProVietKeno.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -16,6 +17,8 @@ namespace GamesAdmin.Api.ProVietKeno
         Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound);
 
         Task<ProVietKenoRound> GetByRoundId(long roundId);
+
+        Task<IEnumerable<ProVietKenoRound>> GetUnsettledRoundsAsync();
     }
 
     public class ProVietKenoService : IProVietKenoService
@@ -33,20 +36,7 @@ namespace GamesAdmin.Api.ProVietKeno
 
             if(entity != null)
             {
-                return new ProVietKenoRound
-                {
-                    Time = entity.Time,
-                    Result = entity.Result,
-                    Number = entity.Number,
-                    Big = entity.SettlementResult?.Big,
-                    Even = entity.SettlementResult?.Even,
-                    Earth = entity.SettlementResult?.Earth,
-                    Fire = entity.SettlementResult?.Fire,
-                    Gold = entity.SettlementResult?.Gold,
-                    Wood = entity.SettlementResult?.Wood,
-                    Water = entity.SettlementResult?.Water,
-                    Settled = entity.Settled
-                };
+                return entity.ConvertToModel();
             }
 
             return null;
@@ -59,21 +49,7 @@ namespace GamesAdmin.Api.ProVietKeno
 
             var result = await repository.FilterByAsync(x => x.Time >= fromDate && x.Time < toDate);
 
-            var rounds = result.Select(x => new ProVietKenoRound
-            {
-                Time = x.Time,
-                Result = x.Result,
-                Number = x.Number,
-                Big = x.SettlementResult?.Big,
-                Even = x.SettlementResult?.Even,
-                Earth = x.SettlementResult?.Earth,
-                Fire = x.SettlementResult?.Fire,
-                Gold = x.SettlementResult?.Gold,
-                Wood = x.SettlementResult?.Wood,
-                Water = x.SettlementResult?.Water,
-                Settled = x.Settled
-            });
-
+            var rounds = result.Select(x => x.ConvertToModel());
             return rounds;
         }
 
@@ -100,19 +76,15 @@ namespace GamesAdmin.Api.ProVietKeno
                     new UpdateOptions { IsUpsert = true }
                 );
 
-            return new ProVietKenoRound
-            {
-                Time = entity.Time,
-                Result = entity.Result,
-                Number = entity.Number,
-                Big = entity.SettlementResult.Big,
-                Even = entity.SettlementResult.Even,
-                Earth = entity.SettlementResult.Earth,
-                Fire = entity.SettlementResult.Fire,
-                Gold = entity.SettlementResult.Gold,
-                Wood = entity.SettlementResult.Wood,
-                Water = entity.SettlementResult.Water
-            };
+            return entity.ConvertToModel();
+        }
+
+        public async Task<IEnumerable<ProVietKenoRound>> GetUnsettledRoundsAsync()
+        {
+            var result = (await repository.FilterByAsync(x => !x.Settled && x.Result != null && x.SettlementResult != null));
+
+            var rounds = result.Select(x => x.ConvertToModel());
+            return rounds;
         }
     }
 }

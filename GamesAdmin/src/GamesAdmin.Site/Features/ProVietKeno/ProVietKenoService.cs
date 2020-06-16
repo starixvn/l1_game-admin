@@ -12,6 +12,8 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound);
 
         Task<ProVietKenoRound> GetByRoundIdAsync(long roundId);
+
+        Task<IEnumerable<ProVietKenoRound>> GetUnsettledRoundsAsync();
     }
 
     public class ProVietKenoService : IProVietKenoService
@@ -31,5 +33,17 @@ namespace GamesAdmin.Site.Features.ProVietKeno
 
         public async Task<ProVietKenoRound> GetByRoundIdAsync(long roundId)
         => await provietKenoApi.GetByRoundId(roundId);
+
+        public async Task<IEnumerable<ProVietKenoRound>> GetUnsettledRoundsAsync()
+        {
+            try
+            {
+                return await provietKenoApi.GetUnsettledRounds();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

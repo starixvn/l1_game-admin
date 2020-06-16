@@ -5,6 +5,7 @@ using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.ProVietKeno.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.ProVietKeno
@@ -36,6 +37,11 @@ namespace GamesAdmin.Api.ProVietKeno
         [Route("rounds/id/{roundId}")]
         public async Task<ProVietKenoRound> Get(long roundId)
             => (await mediator.Send(new GetByRoundIdRequest(roundId)));
+
+        [HttpGet]
+        [Route("rounds/unsettled")]
+        public async Task<IEnumerable<ProVietKenoRound>> GetUnsettledRounds()
+          => (await mediator.Send(new GetUnsettledRoundsRequest()));
 
     }
 }

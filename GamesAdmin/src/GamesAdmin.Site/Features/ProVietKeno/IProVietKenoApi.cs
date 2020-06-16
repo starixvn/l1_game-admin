@@ -17,5 +17,8 @@ namespace GamesAdmin.Site.Features.ProVietKeno
 
         [Get("/proviet_keno/rounds/id/{roundId}")]
         Task<ProVietKenoRound> GetByRoundId(long roundId);
+
+        [Get("/proviet_keno/rounds/unsettled")]
+        Task<IEnumerable<ProVietKenoRound>> GetUnsettledRounds();
     }
 }

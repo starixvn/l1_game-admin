@@ -11,6 +11,7 @@ using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
+using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -40,6 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingService gameService;
         private readonly IAccountService accountService;
         private readonly IGameServerService gameServerService;
+        private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
 
         public GamesHandler(
@@ -47,12 +49,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             IGameSettingService gameService,
             IAccountService accountService,
             IGameServerService gameServerService,
+            IProVietKenoService proVietKenoService,
             IAppSettings appSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
             this.gameServerService = gameServerService;
+            this.proVietKenoService = proVietKenoService;
             this.appSettings = appSettings;
         }
 
@@ -275,6 +279,11 @@ namespace GamesAdmin.Site.Features.GameSettings
                 await gameService.UpdateStatus(name, request.Enabled);
             }
 
+            if (request.Names.Any(x => x == GameType.KenoProVietValue) && request.Enabled)
+            {
+                await NotifyUnsettleRoundsToGameServer();
+            }
+
             if (request.Reload)
             {
                 await gameServerService.Reload();
@@ -327,6 +336,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                 GameServerEndpoint = appSettings.GameServerDomainUrl,
                 Env = appSettings.Env
             };
+        }
+
+        private async Task NotifyUnsettleRoundsToGameServer()
+        {
+            var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
+            await gameServerService.NotifyRoundResult(unsettleRounds);
         }
     }
 }
