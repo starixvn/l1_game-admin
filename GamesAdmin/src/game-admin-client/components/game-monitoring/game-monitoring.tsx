@@ -9,6 +9,7 @@ import OddEvenTurbo from './odd-even-turbo/odd-even-turbo';
 import ShakeThePlate from './shake-the-plate/shake-the-plate';
 import MiniSedie from './mini-sedie';
 import MiniKeno from './mini-keno/index';
+import Baccarat from './baccarat';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
   const object = _.get(message, path);
@@ -90,6 +91,10 @@ const gameMapper = {
   9: {
     component: MiniSedie,
     ...getInfoByGameKey('miniSedie'),
+  },
+  10: {
+    component: Baccarat,
+    ...getInfoByGameKey('baccarat'),
   },
   12: {
     component: MiniKeno('kenoMax', 20),

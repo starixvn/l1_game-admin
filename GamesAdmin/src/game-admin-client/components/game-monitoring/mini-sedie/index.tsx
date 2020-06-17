@@ -126,43 +126,38 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
       result.push(new DiceModel(data[key], DiceType.XocXoc));
     });
 
-    // result.push(new DiceModel(data.dots[0], DiceType.XocXoc));
-    // result.push(new DiceModel(data.dots[1], DiceType.XocXoc));
-    // result.push(new DiceModel(data.dots[2], DiceType.XocXoc));
-    // result.push(new DiceModel(data.dots[3], DiceType.XocXoc));
-
     return result;
   }
 
-  getWiner() {
+  getWinner() {
     const { result } = this.state;
     const sumDicesValue = result.reduce((sum, dice) => sum + dice.value, 0);
 
-    let winer = '';
+    let winner = '';
     switch (sumDicesValue) {
       case 0:
-        winer = 'white4';
+        winner = 'white4';
         break;
       case 1:
-        winer = 'white3';
+        winner = 'white3';
         break;
       case 2:
-        winer = 'draw';
+        winner = 'draw';
         break;
       case 3:
-        winer = 'red3';
+        winner = 'red3';
         break;
       case 4:
-        winer = 'red4';
+        winner = 'red4';
         break;
     }
 
-    return winer;
+    return winner;
   }
 
   renderMonitor() {
     const { betList, roundNumber, time, result, gameState } = this.state;
-    const winer = gameState == GameState.waiting ? this.getWiner() : '';
+    const winer = gameState == GameState.waiting ? this.getWinner() : '';
 
     return (
       <Container className={styles['shakeThePlate-container']}>
@@ -204,7 +199,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
 
   renderBetList() {
     const { betList, gameState } = this.state;
-    const winer = gameState == GameState.waiting ? this.getWiner() : '';
+    const winer = gameState == GameState.waiting ? this.getWinner() : '';
 
     return (
       <React.Fragment>
