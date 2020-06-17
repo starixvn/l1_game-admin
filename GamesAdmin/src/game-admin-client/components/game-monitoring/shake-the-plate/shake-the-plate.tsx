@@ -199,11 +199,11 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
 
           </Col>
           <Col align='center' className={styles['shakeThePlate-betList']}>
-            <Col className={styles['col-plateodd']}>
-              <TotalBet type='plateodd' total={betList.le.total} isWin={winer == 'white3' || winer == 'red3'} />
-            </Col>
             <Col className={styles['col-plateeven']}>
               <TotalBet type='plateeven' total={betList.chan.total} isWin={winer != '' && winer != 'white3' && winer != 'red3'} />
+            </Col>
+            <Col className={styles['col-plateodd']}>
+              <TotalBet type='plateodd' total={betList.le.total} isWin={winer == 'white3' || winer == 'red3'} />
             </Col>
             <Col>
               <TotalBet type='bondo' total={betList.red4.total} isWin={winer == 'red4'} />
@@ -247,18 +247,18 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
         </Col>
         <Col className='col-4 col-lg-2'>
           <BetList
-            titles={[(<div className={styles['title-le']}>Odd</div>)]}
-            type='simple'
-            dataList={betList.le.dataList}
-            isWin={winer == 'white3' || winer == 'red3'}
-          />
-        </Col>
-        <Col className='col-4 col-lg-2'>
-          <BetList
             titles={[(<div className={styles['title-chan']}>Even</div>)]}
             type='simple'
             dataList={betList.chan.dataList}
             isWin={winer != '' && winer != 'white3' && winer != 'red3'}
+          />
+        </Col>
+        <Col className='col-4 col-lg-2'>
+          <BetList
+            titles={[(<div className={styles['title-le']}>Odd</div>)]}
+            type='simple'
+            dataList={betList.le.dataList}
+            isWin={winer == 'white3' || winer == 'red3'}
           />
         </Col>
         <Col className='col-4 col-lg-2'>
