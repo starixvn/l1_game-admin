@@ -8,6 +8,7 @@ import OddEven from './odd-even/odd-even';
 import OddEvenTurbo from './odd-even-turbo/odd-even-turbo';
 import ShakeThePlate from './shake-the-plate/shake-the-plate';
 import MiniSedie from './mini-sedie';
+import MiniKeno from './mini-keno';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
   const object = _.get(message, path);
@@ -45,6 +46,12 @@ const gameNameMapper = {
   kenopromax: 8,
   minisedie: 9,
   baccarat: 10,
+  kenomini: 14,
+  kenomini2: 15,
+  kenoeast: 16,
+  kenowest: 17,
+  kenosouth: 18,
+  kenonorth: 19,
 };
 
 const gameMapper = {
@@ -83,6 +90,38 @@ const gameMapper = {
   9: {
     component: MiniSedie,
     ...getInfoByGameKey('miniSedie'),
+  },
+  12: {
+    component: MiniKeno('kenoMax'),
+    ...getInfoByGameKey('kenoMax')
+  },
+  13: {
+    component: MiniKeno('kenoMax2'),
+    ...getInfoByGameKey('kenoMax2')
+  },
+  14: {
+    component: MiniKeno('kenoMini'),
+    ...getInfoByGameKey('kenoMini')
+  },
+  15: {
+    component: MiniKeno('kenoMini2'),
+    ...getInfoByGameKey('kenoMini2')
+  },
+  16: {
+    component: MiniKeno('kenoEast'),
+    ...getInfoByGameKey('kenoEast')
+  },
+  17: {
+    component: MiniKeno('kenoWest'),
+    ...getInfoByGameKey('kenoWest')
+  },
+  18: {
+    component: MiniKeno('kenoSouth'),
+    ...getInfoByGameKey('kenoSouth')
+  },
+  19: {
+    component: MiniKeno('kenoNorth'),
+    ...getInfoByGameKey('kenoNorth')
   },
 };
 

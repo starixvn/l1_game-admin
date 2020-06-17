@@ -51,7 +51,7 @@ export default class TimeCounter extends React.Component<timeCounterProps, { cur
 
   render() {
     const { currentTime, gameState } = this.state;
-    console.log(currentTime);
+
     return (
       <div className={styles.timeCounter} >
         <span className={`${currentTime > 5 || gameState != GameState.running ? '' : styles.warning}`}>
