@@ -2,28 +2,34 @@
 @using GamesAdmin.Site.Features._Shared.Components.ViewModels;
 @model MenuViewModel;
 
-<ul class="vertical-nav-menu">
-    <li class="menu-item">
-        <a asp-action="Index" asp-controller="GameSettings" class="add-new-game">
-            <i class="icon-casino menu-icon"></i>
-            <span class="menu-name">Game Management</span>
-        </a>
-    </li>
-    <li class="menu-item">
-        <a asp-action="OnlineUsers" asp-controller="Dashboard">
-            <i class="icon-account-pin menu-icon"></i>
-            <span class="menu-name">Online User</span>
-        </a>
-    </li>
-    @*<li class="nav-heading">Setting</li>*@
-    @*<li class="menu-item">
+    <ul class="vertical-nav-menu">
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="GameSettings" class="add-new-game">
+                <i class="icon-casino menu-icon"></i>
+                <span class="menu-name">Game Monitoring</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="GameSettings" asp-controller="GameSettings" class="add-new-game">
+                <i class="icon-casino menu-icon"></i>
+                <span class="menu-name">Game Management</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a asp-action="OnlineUsers" asp-controller="Dashboard">
+                <i class="icon-account-pin menu-icon"></i>
+                <span class="menu-name">Online User</span>
+            </a>
+        </li>
+        @*<li class="nav-heading">Setting</li>*@
+        @*<li class="menu-item">
             <a asp-action="Notification" asp-controller="Setting" class="add-new-game">
                 <i class="material-icons menu-icon">wb_sunny</i>
                 <span class="menu-name">Notification</span>
             </a>
         </li>*@
 
-    @*<li class="menu-item">
+        @*<li class="menu-item">
             <a asp-action="StakeLevel" asp-controller="Setting" class="add-new-game">
                 <i class="material-icons menu-icon">timeline</i>
                 <span class="menu-name">Stake Level</span>
@@ -61,7 +67,7 @@
                 <span class="menu-name">Permission Control</span>
             </a>
         </li>*@
-    @*<li class="nav-heading">Game</li>
+        @*<li class="nav-heading">Game</li>
         <li class="menu-item">
             <a asp-action="RedirectToPanel" asp-controller="Home" target="_blank">
                 <i class="material-icons menu-icon">assessment</i>
@@ -70,51 +76,51 @@
         </li>*@
 
 
-    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
-    {
-        <li class="menu-item">
-            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
-                <i class="icon-note-add menu-icon"></i>
-                <span class="menu-name">Add new game</span>
-            </a>
-        </li>
+        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+        {
+            <li class="menu-item">
+                <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                    <i class="icon-note-add menu-icon"></i>
+                    <span class="menu-name">Add new game</span>
+                </a>
+            </li>
 
-        <li class="menu-item">
-            <a asp-action="add" asp-controller="account">
-                <i class="icon-account-add menu-icon"></i>
-                <span class="menu-name">Generate user/bot</span>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-action="revisebots" asp-controller="account">
-                <i class="icon-bot menu-icon"></i>
-                <span class="menu-name">Revise bots</span>
-            </a>
-        </li>
+            <li class="menu-item">
+                <a asp-action="add" asp-controller="account">
+                    <i class="icon-account-add menu-icon"></i>
+                    <span class="menu-name">Generate user/bot</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a asp-action="revisebots" asp-controller="account">
+                    <i class="icon-bot menu-icon"></i>
+                    <span class="menu-name">Revise bots</span>
+                </a>
+            </li>
 
-        <li class="nav-heading">Users</li>
-        <li class="menu-item">
-            <a asp-action="Index" asp-controller="User">
-                <i class="icon-account-group menu-icon"></i>
-                <span class="menu-name">Management</span>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-action="Add" asp-controller="User">
-                <i class="icon-account-add menu-icon"></i>
-                <span class="menu-name">Add New User</span>
-            </a>
-        </li>
+            <li class="nav-heading">Users</li>
+            <li class="menu-item">
+                <a asp-action="Index" asp-controller="User">
+                    <i class="icon-account-group menu-icon"></i>
+                    <span class="menu-name">Management</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a asp-action="Add" asp-controller="User">
+                    <i class="icon-account-add menu-icon"></i>
+                    <span class="menu-name">Add New User</span>
+                </a>
+            </li>
 
-        <li class="menu-item">
-            <a asp-action="Index" asp-controller="ClientSite">
-                <i class="icon-link menu-icon"></i>
-                <span class="menu-name">Client Sites</span>
-            </a>
-        </li>
-    }
+            <li class="menu-item">
+                <a asp-action="Index" asp-controller="ClientSite">
+                    <i class="icon-link menu-icon"></i>
+                    <span class="menu-name">Client Sites</span>
+                </a>
+            </li>
+        }
 
-    @*<li class="nav-heading">Report</li>
+        @*<li class="nav-heading">Report</li>
 
         <li class="menu-item">
             <a asp-action="BigSmall" asp-controller="Report">
@@ -140,7 +146,7 @@
                 <span class="menu-name">Turbo Odd Even</span>
             </a>
         </li>*@
-    @*<li>
+        @*<li>
             <a  href="#">
                 <i class="material-icons menu-icon">people_alt</i>
                 Management
@@ -152,7 +158,7 @@
                 List
             </a>
         </li>*@
-    @*<li class="nav-heading">Reports</li>
+        @*<li class="nav-heading">Reports</li>
         <li class="active">
             <a href="#">
                 <i class="material-icons menu-icon">assessment</i>
@@ -174,11 +180,11 @@
             </a>
         </li>*@
 
-    @*<li class="nav-heading">Banks</li>
+        @*<li class="nav-heading">Banks</li>
         <li>
             <a href="#">
                 <i class="material-icons menu-icon">local_atm</i>
                 Banks
             </a>
         </li>*@
-</ul>
+    </ul>

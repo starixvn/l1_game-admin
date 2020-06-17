@@ -116,8 +116,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpGet]
+        public async Task<IActionResult> GameSettings()
+            => View("~/Features/GameSettings/Views/GameManagement.cshtml", await mediator.Send(new GetStatusRequest()));
+
+        [HttpGet]
         public async Task<IActionResult> Index()
-            => View("~/Features/GameSettings/Views/Status.cshtml", await mediator.Send(new GetStatusRequest()));
+            => View("~/Features/GameSettings/Views/GameMonitor.cshtml", await mediator.Send(new GetStatusRequest()));
 
 
         [HttpGet]

@@ -29,13 +29,11 @@
             <tr>
                 <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
                 <th>Name</th>
-                <th class="col-status">Enabled</th>
-                <th class="col-status">Bot Enabled</th>
                 <th>Bet Limit (Min - Max)</th>
-                <th>Round History</th>
-                <th>Monitor</th>
-                <th>Message</th>
+                <th class="col-status">Enabled</th>
                 <th>Setting</th>
+                <th>Disabled Message</th>
+                <th class="col-status">Bot Enabled</th>
                 <th>Bot Ratio</th>
             </tr>
         </thead>
@@ -48,26 +46,17 @@
                     <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
                 </td>
                 <td>@Model.GameList[index].DisplayName</td>
-                <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
-                <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
                 <td class="text-center">@Model.GameList[index].MinBet - @Model.GameList[index].MaxBet</td>
-                <td class="text-center">
-                    @if (Model.GameList[index].EnabledHistory)
-                    {
-                        <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a> 
-                    }                   
-                </td>
-                <td class="text-center">
-                    <a href="#" class="icon-action" onclick="gameStatus.startMonitor('@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
-                </td>
-                <td class="text-center">
-                    <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-                </td>
+                <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
                 <td class="text-center">
                     <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                 </td>
                 <td class="text-center">
-                    <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>                                                             
+                    <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                </td>
+                <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
+                <td class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
                 </td>
             </tr>}
         </tbody>
