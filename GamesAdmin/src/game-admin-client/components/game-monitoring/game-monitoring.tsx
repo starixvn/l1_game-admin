@@ -7,6 +7,7 @@ import KenoProMax from './keno-pro-max/keno-pro-max';
 import OddEven from './odd-even/odd-even';
 import OddEvenTurbo from './odd-even-turbo/odd-even-turbo';
 import ShakeThePlate from './shake-the-plate/shake-the-plate';
+import MiniSedie from './mini-sedie';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
   const object = _.get(message, path);
@@ -42,6 +43,8 @@ const gameNameMapper = {
   oeturbo: 6,
   dragontiger: 7,
   kenopromax: 8,
+  minisedie: 9,
+  baccarat: 10,
 };
 
 const gameMapper = {
@@ -76,6 +79,10 @@ const gameMapper = {
   8: {
     component: KenoProMax,
     ...getInfoByGameKey('kenoProMax'),
+  },
+  9: {
+    component: MiniSedie,
+    ...getInfoByGameKey('miniSedie'),
   },
 };
 
