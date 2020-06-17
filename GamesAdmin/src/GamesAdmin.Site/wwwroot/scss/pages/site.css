@@ -15,6 +15,7 @@
   border-color: #1b55e2;
   color: #fff; }
   .btn-submit:hover {
+    color: #fff;
     background-color: #194ed0; }
 
 .btn-add {
@@ -241,6 +242,7 @@
   border-radius: .5rem; }
 
 .modal .modal-body {
+  position: static;
   padding: 1.4rem; }
 
 .header {

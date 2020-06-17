@@ -140,8 +140,14 @@
 
 .game-modal, .message-modal, .bot-ratio-modal {
     .message-success, .message-error {
-        position: relative;
-        margin: 5px 10px;
+        position: absolute;
+        width: calc(100% - 20px);
+        left: 10px;
+        top: 53px;
+        margin: 0;
+        background: #fff;
+        box-shadow: 0 10px 6px -6px #777;       
+        z-index: 1;
 
         i {
             position: absolute;

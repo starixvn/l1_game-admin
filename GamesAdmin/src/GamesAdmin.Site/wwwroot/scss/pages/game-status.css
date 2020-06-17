@@ -83,8 +83,14 @@
   cursor: pointer; }
 
 .game-modal .message-success, .game-modal .message-error, .message-modal .message-success, .message-modal .message-error, .bot-ratio-modal .message-success, .bot-ratio-modal .message-error {
-  position: relative;
-  margin: 5px 10px; }
+  position: absolute;
+  width: calc(100% - 20px);
+  left: 10px;
+  top: 53px;
+  margin: 0;
+  background: #fff;
+  box-shadow: 0 10px 6px -6px #777;
+  z-index: 1; }
   .game-modal .message-success i, .game-modal .message-error i, .message-modal .message-success i, .message-modal .message-error i, .bot-ratio-modal .message-success i, .bot-ratio-modal .message-error i {
     position: absolute;
     top: 13px; }
