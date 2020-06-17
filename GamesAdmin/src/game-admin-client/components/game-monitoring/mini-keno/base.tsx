@@ -1,14 +1,17 @@
 import React from 'react';
-import {BetChoice, BetOfUser} from "./shared/model";
+import {BetChoice} from "./shared/model";
 import GameTemplate from "../game-template/game-template";
 import MonitorBoard from './shared/monitor-board';
 import BetTable from './shared/bet-table';
 import Logger from '../../util/logger';
+import KenoResult from '../../shared/keno-result/keno-result';
+import style from './base.module.scss';
 
 type Props = {
-  onMessage: Function,
-  sendMessage: Function,
-  gameName: string,
+  onMessage: Function
+  sendMessage: Function
+  gameName: string
+  sizeOfNumbers: number
 };
 
 type State = {
@@ -16,28 +19,32 @@ type State = {
   roundId: number
   choices: Array<BetChoice>
   durations: {
-    wholeRound: number,
-    placingBets: number,
-    lockingBet: number,
+    wholeRound: number
+    placingBets: number
+    lockingBet: number
   }
+  resultText: string
+  result: Array<number>
+  boxes: Array<string>
 }
 
 type KenoMessage = {
   totalBets: {[key: string]: number}
-  remainingTime: number,
-  roundId: number,
+  remainingTime: number
+  roundId: number
   durations: {
-    wholeRound: number,
-    placingBets: number,
+    wholeRound: number
+    placingBets: number
     lockingBet: number
-  },
-  ingame: {[username: string]: {[box: string]: number}},
-  finish: {
-    result: Array<number>,
-    roundId: number,
-    settlementResult: {[box: string]: boolean},
-    time: Date,
   }
+  ingame: {[username: string]: {[box: string]: number}}
+  finish: {
+    result: Array<number>
+    roundId: number
+    settlementResult: {[box: string]: boolean}
+    time: Date
+  }
+  choices: Array<string>
 }
 
 export default class extends React.Component<Props, State> {
@@ -53,6 +60,9 @@ export default class extends React.Component<Props, State> {
         placingBets: 0,
         lockingBet: 0,
       },
+      resultText: '',
+      result: [],
+      boxes: null,
     }
 
     this.showSetResultPanel = this.showSetResultPanel.bind(this);
@@ -82,17 +92,17 @@ export default class extends React.Component<Props, State> {
       {
         selector: () => message.ingame && message.totalBets,
         handle: () => {
-          const {ingame, totalBets} = message;
-          const boxes = Object.keys(totalBets);
-          const choices = boxes.map(box => {
+          const {ingame} = message;
+          const choices = this.state.choices.map(choice => {
             const bets = Object.values(ingame)
               .map(bet => ({
                 name: bet.name.toString(),
-                bet: bet[box],
+                bet: bet[choice.name],
               }))
               .filter(betOfUser => betOfUser.bet > 0);
 
-            return new BetChoice(bets, box, false);
+            choice.bets = bets;
+            return choice;
           });
 
           this.setState({choices});
@@ -101,15 +111,27 @@ export default class extends React.Component<Props, State> {
       {
         selector: () => message.finish,
         handle: () => {
-          const {settlementResult} = message.finish;
+          const {settlementResult, result} = message.finish;
           const choices = this.state.choices.map(choice => {
             choice.isWin = settlementResult[choice.name];
             return choice;
           });
+          const resultText = this.state.choices
+            .reduce(
+              (result, choice) => choice.isWin ? `${result} - ${choice.name.toUpperCase()}` : result,
+              '')
+            .substr(3);
 
-          this.setState({choices});
-        }
-      }
+          this.setState({choices, result, resultText});
+        },
+      },
+      {
+        selector: () => message.choices && !this.state.boxes,
+        handle: () => {
+          const choices = message.choices.map(choice => new BetChoice([], choice, false));
+          this.setState({boxes: message.choices, choices});
+        },
+      },
     ];
 
     actions.forEach(action => action.selector() && action.handle());
@@ -130,10 +152,18 @@ export default class extends React.Component<Props, State> {
   }
 
   renderSettlementResult() {
-    return <p>Settlement Result Here</p>
+    return (
+      <>
+        <KenoResult listResult={this.state.result} maxLength={this.props.sizeOfNumbers}/>
+        <div className={style.result}>
+          {this.state.resultText}
+        </div>
+      </>
+    );
   }
 
   render() {
+    Logger.info(this.state);
     const {
       remainingTime,
       roundId,

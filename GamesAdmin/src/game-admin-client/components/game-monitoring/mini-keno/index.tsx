@@ -6,6 +6,6 @@ type Props = {
   sendMessage: Function,
 };
 
-export default (gameName: string) => (props: Props) => {
-  return <KenoBase gameName={gameName} {...props}/>
+export default (gameName: string, sizeOfNumbers: number) => (props: Props) => {
+  return <KenoBase gameName={gameName} sizeOfNumbers={sizeOfNumbers || 10} {...props}/>
 }

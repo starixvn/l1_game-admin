@@ -48,16 +48,16 @@ export default function(props: Props) {
       <Row>
         <Col className='col-12 col-lg-4'>
           <Row className='justify-content-center'>
-            <div className={style.timeCounter}>
+            <div className={style['time-counter']}>
               <TimeCounter
                 ref={timeCounterRef}
                 remainingTime={remainingTime}
                 placingBetTime={placingBetTime}
                 lockingBetTime={lockingBetTime}/>
               <RoundNum roundNumber={roundId} />
-              <div onClick={showSetResultPanel}>
-                {renderSettlementResult()}
-              </div>
+            </div>
+            <div onClick={showSetResultPanel}>
+              {renderSettlementResult()}
             </div>
           </Row>
         </Col>
