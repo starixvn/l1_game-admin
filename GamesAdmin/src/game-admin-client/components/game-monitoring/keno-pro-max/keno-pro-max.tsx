@@ -15,7 +15,8 @@ import KenoResultUpdater from '../../shared/keno-result-updater/keno-result-upda
 
 type Props = {
   onMessage: Function,
-  sendMessage: Function
+  sendMessage: Function,
+  isProduction: boolean
 };
 
 type State = {
@@ -26,7 +27,7 @@ type State = {
 
 const TYPES = new Array("big", "small", "even", "odd", "earth", "fire", "gold", "water", "wood");
 const TOTAL_TIME = 30;
-const WAITING_TIME = 8;
+const WAITING_TIME = 9;
 
 export default class KenoProMax extends React.Component<Props, State> {
   constructor(props: any) {
@@ -59,54 +60,20 @@ export default class KenoProMax extends React.Component<Props, State> {
     }
   }
 
-  getSettlementResult(result) {
-    const resultArr = [];
-    TYPES.forEach(function (type) {
-      if (result[type]) {
-        resultArr.push(type.toUpperCase());
-      }
-    })
-
-    return resultArr.join(" - ");
-  }
-
   handleStart(message) {
     const newData = new KenoProMaxModel();
-    newData.roundNumber = message.roundId;
-
     let isFinished = message.remainingTime > TOTAL_TIME;
     newData.time.remainingTime = isFinished ? message.remainingTime - TOTAL_TIME : message.remainingTime;
+    newData.roundNumber = isFinished ? message.roundId - 1 : message.roundId;
 
     this.setState({
       data: newData,
       gameState: isFinished ? GameState.waiting : GameState.running
     });
-  }
 
-
-  handleStop(message) {
-    const newData = this.state.data;
-    const result = message.finish.result;
-    newData.roundNumber = message.finish.roundId;
-    newData.result = result;
-    newData.settlementResult = this.getSettlementResult(message.finish.settlementResult);
-    newData.resultSumText = result.reduce((sum, x) => sum + x, 0)
-
-    newData.time.remainingTime = WAITING_TIME;
-    this.setState({
-      data: newData,
-      gameState: GameState.waiting,
-    });
-
-    setTimeout(() => {
-      const newData = this.state.data;
-      newData.time.remainingTime = TOTAL_TIME;
-      newData.roundNumber += 1;
-      this.setState({
-        data: newData,
-        gameState: GameState.running,
-      })
-    }, (WAITING_TIME + 1) * 1000);
+    if (isFinished) {
+      this.countDownToStart.call(this, newData, newData.time.remainingTime + 1);
+    }
   }
 
   handleBet(message) {
@@ -127,17 +94,48 @@ export default class KenoProMax extends React.Component<Props, State> {
       newData[type].total = newData[type].dataList.reduce((sum, x) => sum + x.bet, 0);
     });
 
-    if (this.state.gameState == GameState.waiting) {
-      newData.time.remainingTime = TOTAL_TIME - 1;
+    this.setState({
+      data: newData
+    });
+  }
+
+  handleStop(message) {
+    const newData = this.state.data;
+    const result = message.finish.result;
+    newData.roundNumber = message.finish.roundId;
+    newData.result = result;
+    newData.settlementResult = this.getSettlementResult(message.finish.settlementResult);
+    newData.resultSumText = result.reduce((sum, x) => sum + x, 0)
+    newData.time.remainingTime = WAITING_TIME;
+
+    this.setState({
+      data: newData,
+      gameState: GameState.waiting,
+    });
+
+    this.countDownToStart.call(this, newData, WAITING_TIME + 1);
+  }
+
+  getSettlementResult(result) {
+    const resultArr = [];
+    TYPES.forEach(function (type) {
+      if (result[type]) {
+        resultArr.push(type.toUpperCase());
+      }
+    })
+
+    return resultArr.join(" - ");
+  }
+
+  countDownToStart(newData, time) {
+    setTimeout(() => {
+      newData.time.remainingTime = TOTAL_TIME;
+      newData.roundNumber += 1;
       this.setState({
         data: newData,
         gameState: GameState.running,
-      });
-    } else {
-      this.setState({
-        data: newData,
-      });
-    }
+      })
+    }, time * 1000);
   }
 
   getBet(type, userObj) {
@@ -187,7 +185,7 @@ export default class KenoProMax extends React.Component<Props, State> {
           <Col className='col-12 col-lg-4'>
             <Row className='justify-content-center'>
               <div className={styles.timecounter}>
-                <TimeCounter remainingTime={this.state.data.time.remainingTime} gameState={this.state.gameState}></TimeCounter>
+                <TimeCounter remainingTime={this.state.data.time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
                 <RoundNum roundNumber={this.state.data.roundNumber} />
                 <div className={styles['result-sum']}>
                   {this.state.data.resultSumText}
@@ -247,7 +245,7 @@ export default class KenoProMax extends React.Component<Props, State> {
     return (
       <div>
         <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} />
-        <KenoResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />
+        ${!this.props.isProduction && (<KenoResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
       </div>
     );
   }

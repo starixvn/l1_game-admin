@@ -49,7 +49,6 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     }
 
     if (!!data.time_remain) {
-      debugger
       if (data.time_remain > 30) {
         this.setState({
           gameState: GameState.waiting,
@@ -66,7 +65,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
               remainingTime: 30
             }
           })
-        }, (data.time_remain - 30) * 1000 + 500)
+        }, (data.time_remain - 30) * 1000)
       }
       else {
         this.setState({
@@ -103,7 +102,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
             remainingTime: 30
           }
         })
-      }, waitingTime * 1000 + 500)
+      }, waitingTime * 1000)
     }
   }
 
@@ -187,14 +186,17 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
       <Container className={styles['shakeThePlate-container']}>
         <Row>
           <Col align='center' className={styles['shakeThePlate-timmer']}>
-            <TimeCounter remainingTime={time.remainingTime} gameState={gameState} />
-            <Row className={styles.result}>
-              <Dice diceModel={result[0]} isSmall={false} />
-              <Dice diceModel={result[1]} isSmall={false} />
-              <Dice diceModel={result[2]} isSmall={false} />
-              <Dice diceModel={result[3]} isSmall={false} />
-            </Row>
-            <RoundNum roundNumber={roundNumber} />
+            <TimeCounter remainingTime={time.remainingTime} gameState={gameState} key={gameState} />
+            <div>
+              <Row className={styles.result}>
+                <Dice diceModel={result[0]} isSmall={false} />
+                <Dice diceModel={result[1]} isSmall={false} />
+                <Dice diceModel={result[2]} isSmall={false} />
+                <Dice diceModel={result[3]} isSmall={false} />
+              </Row>
+              <RoundNum roundNumber={roundNumber} />
+            </div>
+
           </Col>
           <Col align='center' className={styles['shakeThePlate-betList']}>
             <Col className={styles['col-plateodd']}>

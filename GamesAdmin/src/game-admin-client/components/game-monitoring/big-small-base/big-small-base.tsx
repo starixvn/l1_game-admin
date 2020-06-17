@@ -210,9 +210,11 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
             <TotalUser totalUser={firstBetTypeUsers} />
           </Col>
           <Col align="center" className={styles["shared-result"]}>
-            <DiceResult dices={result} />
+            <div>
             <TimeCounter remainingTime={time.remainingTime} gameState={currentState} />
-            <RoundNum roundNumber={roundNumber} />
+              <RoundNum roundNumber={roundNumber} />
+            </div>
+            <DiceResult dices={result} />
           </Col>
           <Col align="center" className={styles["flex-col"]}>
             <TotalBet type={type2} total={betList.secondBetType.total} isWin={gameMapping[type][1] == winner} />

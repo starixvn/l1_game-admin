@@ -73,5 +73,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string Token { get; set; }
 
         public string GameServerEndpoint { get; set; }
+
+        public string Env { get; set; }
     }
 }

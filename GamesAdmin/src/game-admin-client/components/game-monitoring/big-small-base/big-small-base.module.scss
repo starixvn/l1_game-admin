@@ -4,6 +4,10 @@
     color: white;
     font-size: 25px;
     text-transform: uppercase;
+
+    @media screen and (max-width: 1024px) {
+      font-size: 18px;
+    }
   }
 
   .betlist {
@@ -28,6 +32,10 @@
 // }
 
 .base-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
   @media screen and (max-width: 640px) {
     padding: 0;
     max-width: 150px;

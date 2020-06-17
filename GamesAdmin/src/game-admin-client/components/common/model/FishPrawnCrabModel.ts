@@ -39,7 +39,6 @@ export default class FishPrawnCrabModel {
   result: Array<DiceModel>
   isOpenModal: boolean
   currentDiceNumber: number
-  isInWaitingTime: boolean
   isHandleNextRoundResult: boolean
   nextRoudResult: GameResult
   winers: Array<boolean>
@@ -51,7 +50,6 @@ export default class FishPrawnCrabModel {
     this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
-    this.isInWaitingTime = false;
     this.nextRoudResult = new GameResult();
     this.winers = new Array(false, false, false, false, false, false)
     this.gameState = 0;

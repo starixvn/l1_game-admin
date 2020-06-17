@@ -213,6 +213,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             HttpContext.Response.Cookies.Append("token", result.Token);
             HttpContext.Response.Cookies.Append("game-server-endpoint", result.GameServerEndpoint);
+            HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
         }

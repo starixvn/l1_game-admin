@@ -32,7 +32,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
     this.state = {
       data: new DragonTigerModel(),
-      gameState: 0
+      gameState: 0,
     };
   }
 
@@ -48,6 +48,60 @@ export default class DragonTiger extends React.Component<Props, State> {
     } else {
       this.handleBet(message);
     }
+  }
+
+  handleBet(message) {
+    const newData = new DragonTigerModel();
+    newData.roundNumber = this.state.data.roundNumber;
+    newData.time.remainingTime = this.state.data.time.remainingTime;
+
+    TYPES.forEach((type) => {
+      newData[type].total = message.info[type];
+    });
+
+    Object.keys(message.ingame).forEach(key => {
+      const userObj = message.ingame[key];
+      TYPES.forEach((type) => {
+        if (userObj[type] > 0) {
+          newData[type].dataList.unshift(this.getBet(type, userObj));
+        }
+      });
+    });
+
+    this.setState({
+      data: newData
+    });
+  }
+
+  handleStart(message) {
+    const newData = new DragonTigerModel();
+    let isFinished = message.time_remain > TOTAL_TIME;
+    newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME : message.time_remain;
+    newData.roundNumber = isFinished ? message.phien - 1 : message.phien;
+    newData.result = this.getResult(message.result);
+
+    this.setState({
+      data: newData,
+      gameState: isFinished ? GameState.waiting : GameState.running
+    });
+
+    if (isFinished) {
+      this.countDownToStart.call(this, newData, newData.time.remainingTime + 1);
+    }
+  }
+
+  handleStop(message) {
+    const newData = this.state.data;
+    newData.roundNumber = message.finish.round;
+    newData.result = this.getResult(message.finish.result);
+    newData.time.remainingTime = WAITING_TIME;
+
+    this.setState({
+      data: newData,
+      gameState: GameState.waiting,
+    });
+
+    this.countDownToStart.call(this, newData, WAITING_TIME + 1);
   }
 
   getBet(type, userObj) {
@@ -66,80 +120,22 @@ export default class DragonTiger extends React.Component<Props, State> {
     return cardResult;
   }
 
-  handleBet(message) {
-    const newData = new DragonTigerModel();
-    newData.roundNumber = this.state.data.roundNumber;
-    newData.time.remainingTime = this.state.data.time.remainingTime;
-
-    TYPES.forEach((type) => {
-      newData[type].total = message.info[type];
-    });
-
-    const _this = this;
-    Object.keys(message.ingame).forEach(function (key) {
-      const userObj = message.ingame[key];
-      TYPES.forEach((type) => {
-        if (userObj[type] > 0) {
-          newData[type].dataList.unshift(_this.getBet(type, userObj));
-        }
-      });
-    });
-
-    if (this.state.gameState == GameState.waiting) {
-      newData.time.remainingTime = TOTAL_TIME - 1;
-      this.setState({
-        data: newData,
-        gameState: GameState.running,
-      });
-    } else {
-      this.setState({
-        data: newData,
-      });
-    }
-  }
-
-  handleStart(message) {
-    const newData = new DragonTigerModel();
-    newData.roundNumber = message.phien;
-
-    let isFinished = message.time_remain > TOTAL_TIME;
-    newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME : message.time_remain;
-
-    const result = message.result;
-    newData.result = new Array(
+  getResult(result) {
+    return new Array(
       this.getCardResult(result[0]),
       this.getCardResult(result[1])
     );
-    this.setState({
-      data: newData,
-      gameState: isFinished ? GameState.waiting : GameState.running
-    });
   }
 
-  handleStop(message) {
-    const newData = this.state.data;
-    const result = message.finish.result;
-    newData.roundNumber = message.finish.round;
-    newData.result = new Array(
-      this.getCardResult(result[0]),
-      this.getCardResult(result[1])
-    );
-
-    newData.time.remainingTime = WAITING_TIME;
-    this.setState({
-      data: newData,
-      gameState: GameState.waiting,
-    });
-
+  countDownToStart(newData, time) {
     setTimeout(() => {
-      const newData = this.state.data;
       newData.time.remainingTime = TOTAL_TIME;
       newData.roundNumber += 1;
       this.setState({
         data: newData,
         gameState: GameState.running,
       })
-    }, (WAITING_TIME + 1) * 1000);
+    }, time * 1000);
   }
 
   getWiner() {
@@ -159,7 +155,7 @@ export default class DragonTiger extends React.Component<Props, State> {
       <Container className={styles["dragonTiger-container"]}>
         <Row>
           <div className={styles.counter}>
-            <TimeCounter remainingTime={this.state.data.time.remainingTime} gameState={this.state.gameState} />
+            <TimeCounter remainingTime={this.state.data.time.remainingTime} gameState={this.state.gameState} key={this.state.gameState} />
             <RoundNum roundNumber={this.state.data.roundNumber} />
           </div>
           <Col align="center">

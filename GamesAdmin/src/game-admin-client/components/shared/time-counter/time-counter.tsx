@@ -4,10 +4,10 @@ import { GameState } from '../common/GameState';
 
 type timeCounterProps = {
   remainingTime: number,
-  gameState?: number
+  gameState: number
 }
 
-export default class TimeCounter extends React.Component<timeCounterProps, { currentTime: number, gameState?: number }> {
+export default class TimeCounter extends React.Component<timeCounterProps, { currentTime: number, gameState: number }> {
   constructor(props) {
     super(props);
 
@@ -20,19 +20,18 @@ export default class TimeCounter extends React.Component<timeCounterProps, { cur
   interval: any;
 
   componentDidMount() {
-    if (this.state.gameState != undefined) {
-      this.interval = setInterval(() => {
-        if (this.state.currentTime > 0) {
-          this.setState({
-            currentTime: this.state.currentTime - 1
-          });
-        }
-      }, 1000);
-    }
+    this.interval = setInterval(() => {
+      if (this.state.currentTime > 0) {
+        this.setState({
+          currentTime: this.state.currentTime - 1
+        });
+      }
+    }, 1000);
+
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (state.gameState == undefined || props.gameState != state.gameState) {
+    if (props.gameState != state.gameState) {
       return {
         currentTime: props.remainingTime,
         gameState: props.gameState
@@ -51,7 +50,6 @@ export default class TimeCounter extends React.Component<timeCounterProps, { cur
 
   render() {
     const { currentTime, gameState } = this.state;
-
     return (
       <div className={styles.timeCounter} >
         <span className={`${currentTime > 5 || gameState != GameState.running ? '' : styles.warning}`}>

@@ -16,7 +16,8 @@ import { FishPrawnCrabModel, GameResult } from '../../common/model/FishPrawnCrab
 
 type FishPrawnCrabProps = {
   onMessage: Function,
-  sendMessage: Function
+  sendMessage: Function,
+  isProduction: boolean
 }
 
 enum FishPrawnCrabDice {
@@ -213,7 +214,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
       isOpenModal: false,
     })
 
-    if (this.state.isInWaitingTime) {
+    if (this.state.gameState == GameState.waiting) {
       const gameResult = this.state.nextRoudResult;
       gameResult[`dice-${currentDiceNumber}`] = value;
 
@@ -356,7 +357,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
   render() {
     return (
       <div className={styles['fish-prawn-crab']}>
-        {this.renderGameControl()}
+        {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()}></GameTemplate>
       </div>
     );

@@ -25,6 +25,7 @@ class Home extends React.Component<Props, State>{
   public state: State;
   private socket: GameServerWS;
   private messageTransmitter: MessageTransmitterType;
+  private isProduction: boolean;
 
   constructor(props: Props) {
     super(props);
@@ -33,6 +34,7 @@ class Home extends React.Component<Props, State>{
     const token = process.env.NEXT_PUBLIC_ENV === 'local' ? process.env.NEXT_PUBLIC_TOKEN : Cookies.get('token');
     const protocol = (globalThis.location || {protocol: ''}).protocol.endsWith('s:') ? 'wss' : 'ws';
 
+    this.isProduction = Cookies.get('env') && Cookies.get('env').toLocaleUpperCase() === 'PRO';
     this.socket = new GameWsEndpoint(`${protocol}://${gameServerEndpoint}/admin`);
     this.socket.onDisconnected(this.showWebSocketDisconnected.bind(this));
     this.socket.addOrReplaceObserver(
@@ -89,6 +91,7 @@ class Home extends React.Component<Props, State>{
           sendMessage={sendMessage}
           onMessage={this.messageTransmitter.addListener}
           onStopReceiveMessage={onStopReceiveMessage}
+          isProduction={this.isProduction}
         />
         <Modal isOpen={this.state.showDisconnectedNotice} className='notice'>
           <Row>Network is disconnected or session timeout.</Row>

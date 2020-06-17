@@ -14,35 +14,38 @@
 }
 
 .shakeThePlate-timmer {
+  display: flex;
+  flex-wrap: wrap;
   max-width: 35%;
   flex-basis: 35%;
+  justify-content: space-around;
+  align-items: center;
+
+  // @media screen and (max-width: 992px) {
+  //   flex-basis: 310px;
+  //   max-width: 310px;
+  // }
 }
 
 .shakeThePlate-betList {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-
-  @media screen and (max-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.col-plateodd {
-  grid-column: 1 / span 2;
-
-  @media screen and (max-width: 640px) {
-    grid-column: 1;
-  }
-}
-
+.col-plateodd,
 .col-plateeven {
-  grid-column: 3 / span 2;
-
-  @media screen and (max-width: 640px) {
-    grid-column: 2;
-  }
+  flex-basis: 50%;
+  max-width: 50%;
 }
+
+// .col-plateeven {
+//   grid-column: 3 / span 2;
+
+//   @media screen and (max-width: 640px) {
+//     grid-column: 2;
+//   }
+// }
 
 @mixin shaketheplate($col1) {
   .#{$col1} {

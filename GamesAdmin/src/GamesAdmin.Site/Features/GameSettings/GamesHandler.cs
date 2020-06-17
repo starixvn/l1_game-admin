@@ -322,7 +322,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             return new JWTFromGameServer
             {
                 Token = result.Token,
-                GameServerEndpoint = appSettings.GameServerDomainUrl
+                GameServerEndpoint = appSettings.GameServerDomainUrl,
+                Env = appSettings.Env
             };
         }
     }
