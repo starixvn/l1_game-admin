@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Coravel.Invocable;
 using Sentry;
+using Sentry.Protocol;
 
 namespace GamesAdmin.VietlottKeno.Tasks
 {
@@ -27,7 +28,7 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
                 if (minutes >= 11)
                 {
-                    SentrySdk.CaptureMessage($"{currentTime} - The worker still hasnt recveived the latest round result from Vietlott!");
+                    SentrySdk.CaptureMessage($"{currentTime} - The worker still hasnt recveived the latest round result from Vietlott!", SentryLevel.Fatal);
                 }
             }
         }
