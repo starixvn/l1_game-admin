@@ -34,7 +34,7 @@ namespace GamesAdmin.Api.ProVietKeno
         {
             var entity = await repository.FindOneAsync(x => x.Number == roundId);
 
-            if(entity != null)
+            if (entity != null)
             {
                 return entity.ConvertToModel();
             }
@@ -76,7 +76,32 @@ namespace GamesAdmin.Api.ProVietKeno
                     new UpdateOptions { IsUpsert = true }
                 );
 
+            if (!repository.AsQueryable().Any(x => x.Number > entity.Number))
+            {
+                await InsertNextEmptyRound(entity.Number, entity.Time);
+            }
+
             return entity.ConvertToModel();
+        }
+
+        private async Task InsertNextEmptyRound(long currentRoundId, DateTime currentTime)
+        {
+            var startTimeOfDay = new TimeSpan(23, 0, 0);
+            var endTimeOfDay = new TimeSpan(14, 55, 0);
+            var nextRoundTime = currentTime.AddMinutes(10);
+
+            if (nextRoundTime.TimeOfDay > endTimeOfDay && nextRoundTime.TimeOfDay < startTimeOfDay)
+            {
+                nextRoundTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 23, 10, 0, DateTimeKind.Utc);
+            }
+
+            var nextRoundEntity = new ProVietKenoRoundEntity
+            {
+                Number = currentRoundId + 1,
+                Time = nextRoundTime
+            };
+
+            await repository.InsertOneAsync(nextRoundEntity);
         }
 
         public async Task<IEnumerable<ProVietKenoRound>> GetUnsettledRoundsAsync()

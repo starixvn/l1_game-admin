@@ -20,7 +20,8 @@ namespace GamesAdmin.Api.ProVietKeno.Extensions
                 Fire = entity.SettlementResult?.Fire,
                 Gold = entity.SettlementResult?.Gold,
                 Wood = entity.SettlementResult?.Wood,
-                Water = entity.SettlementResult?.Water
+                Water = entity.SettlementResult?.Water,
+                Settled = entity.Settled
             };
         }
     }
