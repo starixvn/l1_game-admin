@@ -305,3 +305,11 @@
 @include kenopromax("kenosmall", "white", "Small");
 @include kenopromax("kenoeven", "white", "Even");
 @include kenopromax("kenoodd", "white", "Odd");
+
+@include kenopromax("player", "white", "Player");
+@include kenopromax("banker", "white", "Banker");
+@include kenopromax("tie", "white", "Tie");
+@include kenopromax("playerPair", "white", "Player Pair");
+@include kenopromax("bankerPair", "white", "Banker Pair");
+@include kenopromax("baccaratBig", "white", "Big");
+@include kenopromax("baccaratSmall", "white", "Small");

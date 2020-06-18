@@ -3,6 +3,14 @@ import styles from './index.module.scss';
 import BaccaratModel from '../../common/model/BaccaratModel';
 import { GameState } from '../../shared/common/GameState';
 import BetItem from '../../common/model/BetItem';
+import { Col, Container, Row } from 'reactstrap';
+import TimeCounter from '../../shared/time-counter/time-counter';
+import RoundNum from '../../shared/round-num/round-num';
+import TotalBet from '../../shared/total-bet/total-bet';
+import BetList from '../../shared/bet-list/bet-list';
+import { upperFirstLetter } from '../../util/util';
+import GameTemplate from '../game-template/game-template';
+import CardResult from '../../common/model/CardResult';
 
 type Props = {
     onMessage: Function,
@@ -10,25 +18,15 @@ type Props = {
     isProduction: boolean
 };
 
-type State = {
-    data: BaccaratModel,
-    gameState: number;
-    isShowResultUpdater: boolean
-};
-
 const TOTAL_TIME = 30;
-const WAITING_TIME = 9;
-const TYPES = ["player", "banker", "tie", "playerPair", "bankerPair", "big", "small"];
+const WAITING_TIME = 15;
+const CHOICES = new Array("player", "banker", "tie", "playerPair", "bankerPair", "big", "small");
 
-export default class Baccarat extends React.Component<Props, State>{
+export default class Baccarat extends React.Component<Props, BaccaratModel>{
     constructor(props: Props) {
         super(props);
 
-        this.state = {
-            data: new BaccaratModel(),
-            gameState: GameState.none,
-            isShowResultUpdater: false
-        };
+        this.state = new BaccaratModel();
     }
 
     componentDidMount() {
@@ -36,87 +34,96 @@ export default class Baccarat extends React.Component<Props, State>{
     }
 
     handleMessage(message) {
-        if (message.remainingTime !== undefined) {
+        if (!!message.remainingTime) {
             this.handleStart(message);
         }
-        else if (message.finish !== undefined) {
-            this.handleStop(message);
+
+        if (!!message.finish) {
+            this.handleStop(message.finish);
         }
-        else {
-            this.handleBet(message);
+
+        if (!!message.ingame) {
+            this.handleBet(message.ingame);
         }
     }
 
     handleStart(message) {
-        const newData = new BaccaratModel();
-        let isFinished = message.remainingTime > TOTAL_TIME;
-        newData.time.remainingTime = isFinished ? message.remainingTime - TOTAL_TIME : message.remainingTime;
-        newData.roundNumber = isFinished ? message.roundId - 1 : message.roundId;
-
-        this.setState({
-            data: newData,
-            gameState: isFinished ? GameState.waiting : GameState.running
-        });
+        const { remainingTime, roundId } = message;
+        let isFinished = remainingTime > TOTAL_TIME;
 
         if (isFinished) {
-            this.countDownToStart.call(this, newData, newData.time.remainingTime + 1);
+            this.setState({
+                gameState: GameState.waiting,
+                roundNumber: roundId - 1,
+                time: {
+                    remainingTime: remainingTime - TOTAL_TIME
+                }
+            });
+
+            setTimeout(() => {
+                this.setState({
+                    gameState: GameState.running,
+                    roundNumber: this.state.roundNumber + 1,
+                    time: {
+                        remainingTime: TOTAL_TIME
+                    }
+                })
+            }, (remainingTime - TOTAL_TIME - 1) * 1000)
+        } else {
+            this.setState({
+                gameState: GameState.running,
+                roundNumber: roundId,
+                time: {
+                    remainingTime: remainingTime
+                }
+            })
         }
     }
 
-    handleBet(message) {
-        const _this = this;
-        const newData = new BaccaratModel();
-        newData.roundNumber = this.state.data.roundNumber;
+    handleBet(data) {
+        let betList = new BaccaratModel().betList;
 
-        Object.keys(message.ingame).forEach(function (key) {
-            const userObj = message.ingame[key];
-            TYPES.forEach(type => {
+        Object.keys(data).forEach(key => {
+            const userObj = data[key];
+            CHOICES.forEach(type => {
                 if (userObj[type] > 0) {
-                    newData[type].dataList.unshift(_this.getBet(type, userObj));
+                    betList[type].total += userObj[type];
+                    betList[type].dataList.unshift(new BetItem(userObj.name, userObj[type]));
                 }
             });
         });
 
-        TYPES.forEach(type => {
-            newData[type].total = newData[type].dataList.reduce((sum, x) => sum + x.bet, 0);
-        });
-
-        this.setState({
-            data: newData
-        });
+        this.setState({ betList: betList });
     }
 
-    handleStop(message) {
-        const newData = this.state.data;
-        const result = message.finish.result;
-        newData.roundNumber = message.finish.roundId;
-        newData.result = result;
-        newData.settlementResult = this.getSettlementResult(message.finish.settlementResult);
-        newData.resultSumText = result.reduce((sum, x) => sum + x, 0)
-        newData.time.remainingTime = WAITING_TIME;
+    handleStop(data) {
+        const { result, settlementResult } = data;
 
         this.setState({
-            data: newData,
+            result: result,
+            settlementResult: settlementResult,
             gameState: GameState.waiting,
+            time: {
+                remainingTime: WAITING_TIME
+            }
         });
 
-        this.countDownToStart.call(this, newData, WAITING_TIME + 1);
-    }
-
-    countDownToStart(newData, time) {
         setTimeout(() => {
-            newData.time.remainingTime = TOTAL_TIME;
-            newData.roundNumber += 1;
             this.setState({
-                data: newData,
-                gameState: GameState.running,
-            })
-        }, time * 1000);
+                time: {
+                    remainingTime: TOTAL_TIME
+                },
+                result: { bankerCards: new CardResult(), playerCards: new CardResult() },
+                settlementResult: {},
+                roundNumber: this.state.roundNumber + 1,
+                gameState: GameState.running
+            });
+        }, WAITING_TIME * 1000);
     }
 
     getSettlementResult(result) {
         const resultArr = [];
-        TYPES.forEach(function (type) {
+        CHOICES.forEach(function (type) {
             if (result[type]) {
                 resultArr.push(type.toUpperCase());
             }
@@ -137,5 +144,78 @@ export default class Baccarat extends React.Component<Props, State>{
         this.setState({
             isShowResultUpdater: true
         })
+    }
+
+    checkWinner(choice) {
+        const { settlementResult } = this.state;
+
+        return settlementResult && settlementResult[choice]
+    }
+
+    renderMonitor() {
+        const { time, roundNumber, betList } = this.state;
+        return (
+            <Container>
+                <Row>
+                    <Col className='col-12 col-lg-4'>
+                        <Row className='justify-content-center'>
+                            <div className={styles.timecounter}>
+                                <TimeCounter remainingTime={time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
+                                <RoundNum roundNumber={roundNumber} />
+                            </div>
+                        </Row>
+                        <Row className='justify-content-center'>
+                            <div className='playerBg'>
+                            </div>
+                            <div className='bankerBg'>
+                            </div>
+                        </Row>
+                    </Col>
+                    <Col className='p-0 col-12 col-lg-8'>
+                        <Row className={styles['row-style']}>
+                            <TotalBet type='player' total={betList.player.total} isWin={this.checkWinner('player')} />
+                            <TotalBet type='banker' total={betList.banker.total} isWin={this.checkWinner('banker')} />
+                            <TotalBet type='baccaratBig' total={betList.big.total} isWin={this.checkWinner('big')} />
+                            <TotalBet type='baccaratSmall' total={betList.small.total} isWin={this.checkWinner('small')} />
+                        </Row>
+                        <Row className={styles['row-style']}>
+                            <TotalBet type='tie' total={betList.tie.total} isWin={this.checkWinner('tie')} />
+                            <TotalBet type='playerPair' total={betList.playerPair.total} isWin={this.checkWinner('playerPair')} />
+                            <TotalBet type='bankerPair' total={betList.bankerPair.total} isWin={this.checkWinner('bankerPair')} />
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    }
+
+    renderBetList() {
+        const result = [];
+        const _this = this;
+        CHOICES.forEach(function (choice, i) {
+            result.push((
+                <Col className={styles['baccarat-betlist']} key={i}>
+                    <BetList type="onecolumn" isWin={_this.checkWinner(choice)} titles={[<div>{_this.renderTitle(upperFirstLetter(choice))}</div>]} dataList={_this.state.betList[choice].dataList} />
+                </Col>
+            ));
+        })
+
+        return (
+            <React.Fragment>
+                {result}
+            </React.Fragment>
+        )
+    }
+
+    renderTitle(value) {
+        return <span className={styles['title']}>{value}</span>
+    }
+
+    render() {
+        return (
+            <div>
+                <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} />
+            </div>
+        );
     }
 }

@@ -36,16 +36,12 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
       })
     }
 
-    if (!!data.roundId) {
-      this.setState({
-        roundNumber: data.roundId,
-      });
-    }
-
     if (!!data.remainingTime) {
+
       if (data.remainingTime > 30) {
         this.setState({
           gameState: GameState.waiting,
+          roundNumber: data.roundId - 1,
           time: {
             remainingTime: data.remainingTime - 31
           }
@@ -64,7 +60,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
       else {
         this.setState({
           gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
+          roundNumber: data.roundId,
           time: {
             remainingTime: data.remainingTime
           }

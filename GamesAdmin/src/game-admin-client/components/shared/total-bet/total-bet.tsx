@@ -31,7 +31,14 @@ const classNames = {
   kenobig: 'kenobigBg',
   kenosmall: 'kenosmallBg',
   kenoeven: 'kenoevenBg',
-  kenoodd: 'kenooddBg'
+  kenoodd: 'kenooddBg',
+  player: 'playerBg',
+  banker: 'bankerBg',
+  tie: 'tieBg',
+  baccaratBig: 'baccaratBigBg',
+  baccaratSmall: 'baccaratSmallBg',
+  playerPair: 'playerPairBg',
+  bankerPair: 'bankerPairBg',
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {
