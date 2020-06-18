@@ -15,11 +15,11 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
         public async Task Invoke()
         {
-            var startTime = new TimeSpan(23, 0, 0);
-            var endTime = new TimeSpan(14, 55, 0);
+            var firstRoundTime = new TimeSpan(23, 10, 0);
+            var finalRoundTime = new TimeSpan(14, 55, 0);
             var currentTime = DateTime.UtcNow;
 
-            if(currentTime.TimeOfDay.Subtract(startTime).TotalMinutes >= 2 || endTime.Subtract(currentTime.TimeOfDay).TotalMinutes >= 0)
+            if(currentTime.TimeOfDay.Subtract(firstRoundTime).TotalMinutes >= 2 || finalRoundTime.Subtract(currentTime.TimeOfDay).TotalMinutes >= 0)
             {
                 var latestRound = await kenoRepository.GetLatestRoundAsync();
 

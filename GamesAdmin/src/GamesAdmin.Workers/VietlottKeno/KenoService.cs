@@ -135,7 +135,7 @@ namespace GamesAdmin.VietlottKeno
                 nextRoundTime = nextRoundTime.AddMinutes(10);
                 if (nextRoundTime.TimeOfDay > endTimeOfDay && nextRoundTime.TimeOfDay < startTimeOfDay)
                 {
-                    nextRoundTime = new DateTime(time.Year, time.Month, time.Day, 23, 1, 0, DateTimeKind.Utc);
+                    nextRoundTime = new DateTime(time.Year, time.Month, time.Day, 23, 10, 0, DateTimeKind.Utc);
                 }
             }
 
