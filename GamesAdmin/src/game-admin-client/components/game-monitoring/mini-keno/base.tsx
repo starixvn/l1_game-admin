@@ -6,12 +6,15 @@ import BetTable from './shared/bet-table';
 import Logger from '../../util/logger';
 import KenoResult from '../../shared/keno-result/keno-result';
 import style from './base.module.scss';
+import KenoResultUpdater from '../../shared/keno-result-updater/keno-result-updater';
 
 type Props = {
   onMessage: Function
   sendMessage: Function
   gameName: string
   sizeOfNumbers: number
+  isProduction: boolean
+  isMini?: boolean
 };
 
 type State = {
@@ -26,6 +29,7 @@ type State = {
   resultText: string
   result: Array<number>
   boxes: Array<string>
+  isShowSetResultPanel: boolean
 }
 
 type KenoMessage = {
@@ -63,12 +67,14 @@ export default class extends React.Component<Props, State> {
       resultText: '',
       result: [],
       boxes: null,
+      isShowSetResultPanel: false,
     }
 
     this.showSetResultPanel = this.showSetResultPanel.bind(this);
     this.renderSettlementResult = this.renderSettlementResult.bind(this);
     this.onReceiveMessage = this.onReceiveMessage.bind(this);
     this.reset = this.reset.bind(this);
+    this.updaterSubmit = this.updaterSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -148,7 +154,7 @@ export default class extends React.Component<Props, State> {
   }
 
   showSetResultPanel() {
-    Logger.info('Show set result panel');
+    this.setState({isShowSetResultPanel: !this.state.isShowSetResultPanel});
   }
 
   renderSettlementResult() {
@@ -162,8 +168,15 @@ export default class extends React.Component<Props, State> {
     );
   }
 
+  updaterSubmit(list: Array<number>, listLabel: Array<string>) {
+    const resultText = listLabel
+      .reduce((result, label) => `${result} - ${label.toUpperCase()}`, '')
+      .substr(3);
+    this.setState({result: list, resultText, isShowSetResultPanel: false});
+    this.props.sendMessage({setResult: {result: list, roundId: this.state.roundId}});
+  }
+
   render() {
-    Logger.info(this.state);
     const {
       remainingTime,
       roundId,
@@ -192,6 +205,14 @@ export default class extends React.Component<Props, State> {
           renderMonitor={React.createElement(MonitorBoard, monitorProps)}
           renderBetList={React.createElement(BetTable, betTableProps)}
         />
+        {!this.props.isProduction &&
+          <KenoResultUpdater
+            modal={this.state.isShowSetResultPanel}
+            toggle={this.showSetResultPanel}
+            submit={this.updaterSubmit}
+            isMini={this.props.isMini}
+          />
+        }
       </div>
     )
   }
