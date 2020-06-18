@@ -25,7 +25,7 @@ export default class BigSmallBaseModel {
   currentState: number
 
   constructor() {
-    this.result = new Array(new DiceModel(), new DiceModel(), new DiceModel());
+    this.result = [new DiceModel(), new DiceModel(), new DiceModel()];
     this.betList = new BigSmallBaseBetList();
     this.time = new TimeModel();
     this.isHavingResult = false

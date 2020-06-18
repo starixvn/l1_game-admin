@@ -45,13 +45,13 @@ export default class FishPrawnCrabModel {
   gameState: number
 
   constructor() {
-    this.result = new Array(new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel());
+    this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
     this.betList = new FishPrawnCrabBetList();
     this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
     this.nextRoudResult = new GameResult();
-    this.winers = new Array(false, false, false, false, false, false)
+    this.winers = [false, false, false, false, false, false]
     this.gameState = 0;
   }
 }

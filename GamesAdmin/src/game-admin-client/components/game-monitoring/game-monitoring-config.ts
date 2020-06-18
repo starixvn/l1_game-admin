@@ -1,5 +1,3 @@
-import { emit } from "process";
-
 const loadOrderFromConfigString = (config: string) => {
   if (config) {
     return config.split(',');

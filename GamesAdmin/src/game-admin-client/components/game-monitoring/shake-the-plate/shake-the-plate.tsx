@@ -136,7 +136,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
               currentData[key].dataList.unshift(new BetItem(data[user].name, data[user][key]))
         }
       })
-    };
+    }
 
     return currentData;
   }

@@ -28,7 +28,7 @@ export default class MiniSedieModel {
     gameState: number
 
     constructor() {
-        this.result = new Array(new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel());
+        this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
         this.betList = new MiniSedieBetList();
         this.time = new TimeModel();
         this.gameState = 0;

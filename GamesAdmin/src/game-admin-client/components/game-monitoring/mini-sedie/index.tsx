@@ -114,7 +114,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
           currentData[key].dataList.unshift(new BetItem(data[user].name, betTracks[key]));
         }
       });
-    };
+    }
 
     return currentData;
   }

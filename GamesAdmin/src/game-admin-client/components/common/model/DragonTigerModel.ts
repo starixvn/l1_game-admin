@@ -11,7 +11,7 @@ export default class DragonTigerModel {
     result: Array<CardResult>
 
     constructor() {
-        this.result = new Array(new CardResult(), new CardResult());
+        this.result = [new CardResult(), new CardResult()];
         this.dragon = new BetList();
         this.tiger = new BetList();
         this.tie = new BetList();

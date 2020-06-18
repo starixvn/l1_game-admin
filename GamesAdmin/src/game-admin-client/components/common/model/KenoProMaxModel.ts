@@ -18,7 +18,7 @@ export default class KenoProMaxModel {
     settlementResult: string
 
     constructor() {
-        this.result = new Array();
+        this.result = [];
         this.gold = new BetList();
         this.wood = new BetList();
         this.water = new BetList();

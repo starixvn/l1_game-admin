@@ -22,7 +22,7 @@ type State = {
   gameState: number;
 };
 
-const TYPES = new Array("dragon", "tie", "tiger");
+const TYPES = ["dragon", "tie", "tiger"];
 const TOTAL_TIME = 30;
 const WAITING_TIME = 5;
 
@@ -121,10 +121,8 @@ export default class DragonTiger extends React.Component<Props, State> {
   }
 
   getResult(result) {
-    return new Array(
-      this.getCardResult(result[0]),
-      this.getCardResult(result[1])
-    );
+    return [this.getCardResult(result[0]),
+      this.getCardResult(result[1])];
   }
 
   countDownToStart(newData, time) {

@@ -18,7 +18,7 @@ type State = {
 
 const TOTAL_TIME = 30;
 const WAITING_TIME = 9;
-const TYPES = new Array("player", "banker", "tie", "playerPair", "bankerPair", "big", "small");
+const TYPES = ["player", "banker", "tie", "playerPair", "bankerPair", "big", "small"];
 
 export default class Baccarat extends React.Component<Props, State>{
     constructor(props: Props) {

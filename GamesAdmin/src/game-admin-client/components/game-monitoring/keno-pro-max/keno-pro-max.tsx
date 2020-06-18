@@ -25,7 +25,7 @@ type State = {
   isShowResultUpdater: boolean
 };
 
-const TYPES = new Array("big", "small", "even", "odd", "earth", "fire", "gold", "water", "wood");
+const TYPES = ["big", "small", "even", "odd", "earth", "fire", "gold", "water", "wood"];
 const TOTAL_TIME = 30;
 const WAITING_TIME = 9;
 

@@ -23,11 +23,11 @@ type OptionType = {
 }
 
 const TYPES = {
-  group1: new Array("gold", "wood", "water", "fire", "earth"),
-  group2: new Array("big", "small"),
-  group3: new Array("even", "odd"),
-  group4: new Array("big", "gold", "wood"),
-  group5: new Array("small", "fire", "earth")
+  group1: ["gold", "wood", "water", "fire", "earth"],
+  group2: ["big", "small"],
+  group3: ["even", "odd"],
+  group4: ["big", "gold", "wood"],
+  group5: ["small", "fire", "earth"]
 }
 
 const TYPES_MAP = {

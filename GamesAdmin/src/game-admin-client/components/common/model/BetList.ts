@@ -5,7 +5,7 @@ export default class BetList {
     total: number
 
     constructor() {
-        this.dataList = new Array();
+        this.dataList = [];
         this.total = 0;
     }
 }

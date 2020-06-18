@@ -30,8 +30,8 @@ const getInfoByGameKey = (key: string) => {
     },
   };
 
-  data.initialMessage[key] = { get_time: true, view: true, get_new: true, sync: true };
-  data.endMessage[key] = { view: false };
+  data.initialMessage[key] = {get_time: true, view: true, get_new: true, sync: true};
+  data.endMessage[key] = {view: false};
 
   return data;
 };
