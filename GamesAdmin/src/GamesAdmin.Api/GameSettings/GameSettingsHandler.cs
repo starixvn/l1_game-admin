@@ -40,7 +40,7 @@ namespace GamesAdmin.Api.Games
         => gameService.GetByName(request.Name);
 
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateStatus(request.Name, request.Enabled);
+        => gameService.UpdateStatus(request.Names, request.Enabled);
 
         public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.UpdateDisbledMessage(request.Name, request.Message);

@@ -26,7 +26,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<IsExistRequest, bool>
         , IRequestHandler<UpdateBotRatioRequest, bool>
         , IRequestHandler<GetStatusRequest, StatusViewModel>
-        , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
@@ -264,9 +263,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             return new StatusViewModel(gameList);
         }
 
-        public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateStatus(request.Name, request.Enabled);
-
         public async Task<bool> Handle(UpdateMultipleGameStatusRequest request, CancellationToken cancellationToken)
         {
             if (request.Names?.Length == 0)
@@ -274,10 +270,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return false;
             }
 
-            foreach (var name in request.Names)
-            {
-                await gameService.UpdateStatus(name, request.Enabled);
-            }
+            await gameService.UpdateStatus(request.Names, request.Enabled);
 
             if (request.Names.Any(x => x == GameType.KenoProVietValue) && request.Enabled)
             {

@@ -23,7 +23,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> Delete(string name);
 
-        Task<bool> UpdateStatus(string name, bool enabled);
+        Task<bool> UpdateStatus(string[] names, bool enabled);
 
         Task<bool> UpdateDisbledMessage(string name, string disabledMessage);
     }
@@ -66,7 +66,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                var entity = new GameConfigEntity 
+                var entity = new GameConfigEntity
                 {
                     name = game.Name,
                     Enabled = game.Enabled,
@@ -139,14 +139,14 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateStatus(string name, bool enabled)
+        public async Task<bool> UpdateStatus(string[] names, bool enabled)
         {
             try
             {
                 var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.Enabled), enabled);
-                await repository.UpdateAsync(config => config.name == name, update);
+                await repository.UpdateManyAsync(config => names.Contains(config.name), update);
 
-                sentryClient.CaptureMessage($"Game {name} enabled: {enabled}");
+                sentryClient.CaptureMessage($"Game {string.Join(", ", names)} enabled: {enabled}");
 
                 return true;
             }
