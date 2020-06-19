@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './index.module.scss';
+import styles from './styles.module.scss';
 import BaccaratModel from '../../common/model/BaccaratModel';
 import { GameState } from '../../shared/common/GameState';
 import BetItem from '../../common/model/BetItem';
@@ -10,7 +10,7 @@ import TotalBet from '../../shared/total-bet/total-bet';
 import BetList from '../../shared/bet-list/bet-list';
 import { upperFirstLetter } from '../../util/util';
 import GameTemplate from '../game-template/game-template';
-import CardResult from '../../common/model/CardResult';
+import BaccaratCardResult from './baccarat-card-result';
 
 type Props = {
     onMessage: Function,
@@ -113,7 +113,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 time: {
                     remainingTime: TOTAL_TIME
                 },
-                result: { bankerCards: new CardResult(), playerCards: new CardResult() },
+                result: new BaccaratModel().result,
                 settlementResult: {},
                 roundNumber: this.state.roundNumber + 1,
                 gameState: GameState.running
@@ -153,22 +153,25 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     }
 
     renderMonitor() {
-        const { time, roundNumber, betList } = this.state;
+        const { time, roundNumber, betList, result } = this.state;
         return (
-            <Container>
+            <Container fluid>
                 <Row>
                     <Col className='col-12 col-lg-4'>
                         <Row className='justify-content-center'>
-                            <div className={styles.timecounter}>
+                            <Col align="center">
+                                <div className={styles.title}>Player</div>
+                                <BaccaratCardResult cardResult={result.playerCards} />
+                            </Col>
+                            <Col align="center" className={styles.timecounter}>
                                 <TimeCounter remainingTime={time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
                                 <RoundNum roundNumber={roundNumber} />
-                            </div>
-                        </Row>
-                        <Row className='justify-content-center'>
-                            <div className='playerBg'>
-                            </div>
-                            <div className='bankerBg'>
-                            </div>
+                                <input type="button" value="Set Result" className={styles['set-button']}></input>
+                            </Col>
+                            <Col align="center">
+                                <div className={styles.title}>Banker</div>
+                                <BaccaratCardResult cardResult={result.bankerCards} />
+                            </Col>
                         </Row>
                     </Col>
                     <Col className='p-0 col-12 col-lg-8'>
@@ -185,7 +188,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                         </Row>
                     </Col>
                 </Row>
-            </Container>
+            </Container >
         );
     }
 

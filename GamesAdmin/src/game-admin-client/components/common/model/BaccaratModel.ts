@@ -27,13 +27,13 @@ export default class BaccaratModel {
     roundNumber: number;
     time: TimeModel;
     betList: BaccaratBetList;
-    result: { bankerCards: CardResult, playerCards: CardResult };
+    result: { bankerCards: CardResult[], playerCards: CardResult[] };
     settlementResult: {};
     gameState: number;
     isShowResultUpdater: boolean;
 
     constructor() {
-        this.result = { bankerCards: new CardResult(), playerCards: new CardResult() };
+        this.result = { bankerCards: [new CardResult(), new CardResult(), new CardResult()], playerCards: [new CardResult(), new CardResult(), new CardResult()] };
         this.betList = new BaccaratBetList();
         this.time = new TimeModel();
         this.gameState = GameState.none;
