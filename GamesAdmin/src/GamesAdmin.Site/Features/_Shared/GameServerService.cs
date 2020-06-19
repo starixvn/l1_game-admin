@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Post("/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
-        
+
         [Post("/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
     }
@@ -33,8 +33,8 @@ namespace GamesAdmin.Site.Features._Shared
         Task<OnlineUsers> GetOnlineUsers(string game);
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-        
-         Task<JsonWebToken> GetJWT(string username, string userAgent);
+
+        Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameServerService : IGameServerService
@@ -48,13 +48,13 @@ namespace GamesAdmin.Site.Features._Shared
             this.sentryClient = sentryClient;
         }
 
-        public Task<OnlineUsers> GetOnlineUsers(string game)
+        public async Task<OnlineUsers> GetOnlineUsers(string game)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(game))
                 {
-                    return serverApi.GetOnlineUsers();
+                    return await serverApi.GetOnlineUsers();
                 }
 
                 var gameType = string.Empty;
@@ -73,14 +73,14 @@ namespace GamesAdmin.Site.Features._Shared
                         break;
                 }
 
-                return serverApi.GetOnlineUsersOnGame(gameType);
+                return await serverApi.GetOnlineUsersOnGame(gameType);
             }
             catch (Exception ex)
             {
                 HandleException(ex);
             }
 
-            return Task.FromResult(new OnlineUsers());
+            return new OnlineUsers();
         }
 
         public async Task Reload()
@@ -100,7 +100,8 @@ namespace GamesAdmin.Site.Features._Shared
             try
             {
                 return serverApi.GetToken(new RequestJWT(username, userAgent));
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 HandleException(ex);
             }
@@ -110,7 +111,7 @@ namespace GamesAdmin.Site.Features._Shared
 
         public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
         {
-            foreach(var round in kenoRounds)
+            foreach (var round in kenoRounds)
             {
                 try
                 {
@@ -122,7 +123,7 @@ namespace GamesAdmin.Site.Features._Shared
                     HandleException(ex);
                 }
             }
-          
+
         }
 
         private void HandleException(Exception ex)
