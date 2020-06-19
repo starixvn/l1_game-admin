@@ -123,7 +123,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         public async Task<IActionResult> GameMonitor()
-            => View("~/Features/GameSettings/Views/GameMonitor.cshtml", await mediator.Send(new GetStatusRequest()));
+            => View(await mediator.Send(new GetMonitorRequest()));
 
 
         [HttpGet]

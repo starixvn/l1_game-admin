@@ -31,6 +31,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
         , IRequestHandler<ReloadGameClientRequest, bool>
         , IRequestHandler<GetJWTRequest, JWTFromGameServer>
+        , IRequestHandler<GetMonitorRequest, MonitorViewModel>
     {
         private const int MaxLengthOfMessage = 1000;
         private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
@@ -335,6 +336,22 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
             await gameServerService.NotifyRoundResult(unsettleRounds);
+        }
+
+        public async Task<MonitorViewModel> Handle(GetMonitorRequest request, CancellationToken cancellationToken)
+        {
+            var gameConfigs = await gameService.GetAll();
+            var gameList = new List<MonitorItemViewModel>();
+
+            if (gameConfigs?.Any() == true)
+            {
+                gameList = gameConfigs
+                    .Select(game => mapper.Map<MonitorItemViewModel>(game))
+                    .OrderBy(game => game.DisplayName)
+                    .ToList();
+            }
+
+            return new MonitorViewModel(gameList);
         }
     }
 }
