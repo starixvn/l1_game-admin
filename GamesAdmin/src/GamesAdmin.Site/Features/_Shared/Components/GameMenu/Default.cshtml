@@ -2,67 +2,81 @@
 @using GamesAdmin.Site.Features._Shared.Components.ViewModels;
 @model MenuViewModel;
 
-    <ul class="vertical-nav-menu">
+<ul class="vertical-nav-menu">
+    <li class="menu-item">
+        <a asp-action="GameMonitor" asp-controller="GameSettings" class="add-new-game">
+            <i class="icon-poker-chip menu-icon"></i>
+            <span class="menu-name">Game Monitoring</span>
+        </a>
+    </li>
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="GameSettings" class="add-new-game">
+            <i class="icon-card-game menu-icon"></i>
+            <span class="menu-name">Game Management</span>
+        </a>
+    </li>
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Dashboard">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Online User</span>
+        </a>
+    </li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Notification" class="add-new-game">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Notification</span>
+        </a>
+    </li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="ProVietKeno">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Vietlott Keno Result</span>
+        </a>
+    </li>
+
+    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+    {
         <li class="menu-item">
-            <a asp-action="GameMonitor" asp-controller="GameSettings" class="add-new-game">
-                <i class="icon-poker-chip menu-icon"></i>
-                <span class="menu-name">Game Monitoring</span>
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="icon-note-add menu-icon"></i>
+                <span class="menu-name">Add new game</span>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a asp-action="add" asp-controller="account">
+                <i class="icon-account-add menu-icon"></i>
+                <span class="menu-name">Generate user/bot</span>
             </a>
         </li>
         <li class="menu-item">
-            <a asp-action="Index" asp-controller="GameSettings" class="add-new-game">
-                <i class="icon-card-game menu-icon"></i>
-                <span class="menu-name">Game Management</span>
+            <a asp-action="revisebots" asp-controller="account">
+                <i class="icon-bot menu-icon"></i>
+                <span class="menu-name">Revise bots</span>
+            </a>
+        </li>
+
+        <li class="nav-heading">Users</li>
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="User">
+                <i class="icon-account-group menu-icon"></i>
+                <span class="menu-name">Management</span>
             </a>
         </li>
         <li class="menu-item">
-            <a asp-action="Index" asp-controller="Dashboard">
-                <i class="icon-account-pin menu-icon"></i>
-                <span class="menu-name">Online User</span>
+            <a asp-action="Add" asp-controller="User">
+                <i class="icon-account-add menu-icon"></i>
+                <span class="menu-name">Add New User</span>
             </a>
         </li>
-      
-        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
-        {
-            <li class="menu-item">
-                <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
-                    <i class="icon-note-add menu-icon"></i>
-                    <span class="menu-name">Add new game</span>
-                </a>
-            </li>
 
-            <li class="menu-item">
-                <a asp-action="add" asp-controller="account">
-                    <i class="icon-account-add menu-icon"></i>
-                    <span class="menu-name">Generate user/bot</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a asp-action="revisebots" asp-controller="account">
-                    <i class="icon-bot menu-icon"></i>
-                    <span class="menu-name">Revise bots</span>
-                </a>
-            </li>
-
-            <li class="nav-heading">Users</li>
-            <li class="menu-item">
-                <a asp-action="Index" asp-controller="User">
-                    <i class="icon-account-group menu-icon"></i>
-                    <span class="menu-name">Management</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a asp-action="Add" asp-controller="User">
-                    <i class="icon-account-add menu-icon"></i>
-                    <span class="menu-name">Add New User</span>
-                </a>
-            </li>
-
-            <li class="menu-item">
-                <a asp-action="Index" asp-controller="ClientSite">
-                    <i class="icon-link menu-icon"></i>
-                    <span class="menu-name">Client Sites</span>
-                </a>
-            </li>
-        }
-    </ul>
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="ClientSite">
+                <i class="icon-link menu-icon"></i>
+                <span class="menu-name">Client Sites</span>
+            </a>
+        </li>
+    }
+</ul>
