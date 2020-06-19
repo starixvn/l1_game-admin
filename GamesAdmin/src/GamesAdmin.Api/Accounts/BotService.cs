@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Extensions;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
-using GamesAdmin.Workers.Extensions;
 using MongoDB.Driver;
 using Sentry;
 
-namespace GamesAdmin.Workers.Bots
+namespace GamesAdmin.Api.Accounts
 {
     public interface IBotService
     {
-        Task ReviseBalance();
+        Task<int> ReviseBalance();
 
-        Task DisableRandomly();
+        Task<int> DisableRandomly();
     }
 
     public class BotService : IBotService
@@ -24,7 +24,7 @@ namespace GamesAdmin.Workers.Bots
         private const int minInitAmount = 500;
         private const int maxInitAmount = 3000;
         private const int minAmount = 300;
-        private const int maxAmount = 7000;        
+        private const int maxAmount = 7000;
         private const int minAddAmount = 1000;
         private const int maxAddAmount = 3000;
 
@@ -39,15 +39,18 @@ namespace GamesAdmin.Workers.Bots
             this.sentryClient = sentryClient;
         }
 
-        public async Task ReviseBalance()
+        public async Task<int> ReviseBalance()
         {
+            var total = 0;
             sentryClient.CaptureMessage($"Start task ReviseBalance {DateTime.Now} with minInitAmount {minInitAmount}");
 
-            await AddBalance();
-            await ResetBalance();
+            total += await AddBalance();
+            total += await ResetBalance();
+
+            return total;
         }
 
-        public async Task AddBalance()
+        public async Task<int> AddBalance()
         {
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red < minAmount)).ToList();
 
@@ -58,14 +61,16 @@ namespace GamesAdmin.Workers.Bots
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
 
-            sentryClient.CaptureMessage($"AddBalance for {botList?.Count}");
+            sentryClient.CaptureMessage($"AddBalance for {botList.Count}");
+
+            return botList.Count;
         }
 
-        public async Task ResetBalance()
+        public async Task<int> ResetBalance()
         {
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
 
-            var resetMessage = $"ResetBalance for {botList?.Count}";
+            var resetMessage = $"ResetBalance for {botList.Count}";
 
             foreach (var bot in botList)
             {
@@ -77,17 +82,20 @@ namespace GamesAdmin.Workers.Bots
             }
 
             sentryClient.CaptureMessage(resetMessage);
+
+            return botList.Count;
         }
 
-        public async Task DisableRandomly()
+        public async Task<int> DisableRandomly()
         {
+            var total = 0;
             var removedBots = string.Empty;
             var message = string.Empty;
 
             var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled)).ToList();
             var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
             enabledBots.Shuffle();
-           
+
             var maxRemoval = DisabledBotRatio * enabledBots.Count / 100;
 
             message = $"Disabled {maxRemoval} bots.";
@@ -101,10 +109,13 @@ namespace GamesAdmin.Workers.Bots
 
             sentryClient.CaptureMessage(message);
 
-            await Enable(disabledBots);
+            total = maxRemoval;
+            total += await Enable(disabledBots);
+
+            return total;
         }
 
-        private async Task Enable(List<AccountInfoEntity> disabledBots)
+        private async Task<int> Enable(List<AccountInfoEntity> disabledBots)
         {
             var message = $"Enable {disabledBots.Count} bots.";
 
@@ -115,6 +126,8 @@ namespace GamesAdmin.Workers.Bots
             }
 
             sentryClient.CaptureMessage(message);
+
+            return disabledBots.Count;
         }
 
         private async Task ToogleEnableDisable(AccountInfoEntity bot, bool disable)

@@ -1,4 +1,6 @@
 using System.IO;
+using Coravel;
+using GamesAdmin.Site._Shared.Middlewares;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +11,14 @@ namespace GamesAdmin.Site
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+
+            host.Services.UseScheduler(scheduler =>
+            {
+                scheduler.AddScheduleTasks();
+            });
+
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
@@ -23,7 +32,7 @@ namespace GamesAdmin.Site
                .UseKestrel()
                .UseStartup<Startup>()
                .UseSentry(opt => opt.Environment = configuration["Env"])
-               .UseIISIntegration()               
+               .UseIISIntegration()
                .UseUrls($"http://localhost:{configuration["HostingPort"]}");
         }
     }

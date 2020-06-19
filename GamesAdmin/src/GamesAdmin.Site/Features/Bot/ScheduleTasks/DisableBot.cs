@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Coravel.Invocable;
 
-namespace GamesAdmin.Workers.Bots.Tasks
+namespace GamesAdmin.Site.Features.Bot.ScheduleTasks
 {
-    public class DisableBotTask : IInvocable
+    public class DisableBot : IInvocable
     {
         private readonly IBotService service;
 
-        public DisableBotTask(IBotService service)
+        public DisableBot(IBotService service)
         {
             this.service = service;
         }

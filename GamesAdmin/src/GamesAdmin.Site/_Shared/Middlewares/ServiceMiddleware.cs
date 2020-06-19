@@ -3,6 +3,7 @@ using GamesAdmin.Site._Shared.IdentityServer;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
+using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Notifications;
@@ -54,6 +55,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
+
+            services.AddSingleton(RestService.For<IBotApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IBotService, BotService>();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GamesAdmin.Workers.Extensions
+namespace GamesAdmin.Api._Shared.Extensions
 {
     public static class RandomListExtensions
     {

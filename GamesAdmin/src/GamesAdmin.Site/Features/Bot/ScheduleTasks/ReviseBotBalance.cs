@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Coravel.Invocable;
 
-namespace GamesAdmin.Workers.Bots.Tasks
+namespace GamesAdmin.Site.Features.Bot.ScheduleTasks
 {
-    public class ReviseBotBalanceTask : IInvocable
+    public class ReviseBotBalance : IInvocable
     {
         private readonly IBotService service;
 
-        public ReviseBotBalanceTask(IBotService service) 
+        public ReviseBotBalance(IBotService service)
         {
             this.service = service;
         }

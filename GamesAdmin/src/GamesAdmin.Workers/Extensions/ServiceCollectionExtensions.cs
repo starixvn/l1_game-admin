@@ -1,7 +1,5 @@
 ﻿using GamesAdmin.VietlottKeno;
 using GamesAdmin.VietlottKeno.Tasks;
-using GamesAdmin.Workers.Bots;
-using GamesAdmin.Workers.Bots.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Conventions;
@@ -29,13 +27,10 @@ namespace GamesAdmin.Workers.Extensions
         {
             services.AddTransient<IKenoService, KenoService>();
             services.AddTransient<IKenoRepository, KenoRepository>();
-            services.AddScoped<IBotService, BotService>();
         }
 
         public static void AddScheduleTasks(this IServiceCollection services)
         {
-            services.AddTransient<ReviseBotBalanceTask>();
-            services.AddTransient<DisableBotTask>();
             services.AddTransient<CheckingLatestKenoRoundTask>();
         }
     }

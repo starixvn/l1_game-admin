@@ -27,6 +27,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
 
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IBotService, BotService>();
         }
     }
 }

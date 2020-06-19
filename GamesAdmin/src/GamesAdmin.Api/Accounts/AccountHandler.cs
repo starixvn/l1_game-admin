@@ -11,12 +11,16 @@ namespace GamesAdmin.Api.Accounts
         : IRequestHandler<GetBotCountRequest, int>
         , IRequestHandler<GenerateAccountRandomRequest, IList<GenerateAccountResult>>
         , IRequestHandler<ReviseBotNameRequest, int>
+        , IRequestHandler<ReviseBotBalanceRequest, int>
+        , IRequestHandler<DisableBotRandomlyRequest, int>
     {
         private readonly IAccountService accountService;
+        private readonly IBotService botService;
 
-        public AccountHandler(IAccountService accountService) 
+        public AccountHandler(IAccountService accountService, IBotService botService) 
         {
             this.accountService = accountService;
+            this.botService = botService;
         }
 
         public Task<int> Handle(GetBotCountRequest request, CancellationToken cancellationToken)
@@ -27,5 +31,11 @@ namespace GamesAdmin.Api.Accounts
 
         public Task<int> Handle(ReviseBotNameRequest request, CancellationToken cancellationToken)
         => accountService.ReviseBotNames();
+
+        public Task<int> Handle(ReviseBotBalanceRequest request, CancellationToken cancellationToken)
+        => botService.ReviseBalance();
+
+        public Task<int> Handle(DisableBotRandomlyRequest request, CancellationToken cancellationToken)
+        => botService.DisableRandomly();
     }
 }
