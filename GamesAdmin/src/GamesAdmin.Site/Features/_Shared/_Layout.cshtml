@@ -13,8 +13,10 @@
     <div class="main-container">
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="site-name">Saba.Club Admin</a>
-                <span class="env">INDO</span>
+                <a href="/" class="site-name">Saba.Club <span class="highlight">Admin</span></a>
+                <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
+                    <span class="hamburger-inner"></span>
+                </button>
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
@@ -24,13 +26,11 @@
         </div>
         <div id="content" class="content-container">
             <div class="header">
-                <div class="left-header">
-                    <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
-                        <!--<i class="material-icons">menu</i>-->
-                        <span class="hamburger-inner"></span>
-                    </button>
+                <div class="page-title">@ViewData["Title"]</div>
+
+                <div class="user-info">
                     <div class="header-online-user">
-                        <div class="number">
+                        <div class="number user-online">
                             <i class="icon icon-account-group"></i>
                             <span>Online users: </span>
                             <a asp-controller="Dashboard" asp-action="OnlineUsers" id="online-users"></a>
@@ -43,9 +43,6 @@
                             </div>
                         }
                     </div>
-                </div>
-
-                <div class="user-info">
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-account-circle icon-user"></i>
@@ -53,11 +50,6 @@
                         </button>
                         <form asp-action="Logout" asp-controller="Authentication" method="post">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @*<li>
-                                        <a asp-action="Index" asp-controller="ChangePassword">
-                                            <i class="material-icons">lock_open</i> Change Password
-                                        </a>
-                                    </li>*@
                                 <li>
                                     <button type="submit" value="Sign out" class="logout">
                                         <i class="icon-logout"></i> Logout
@@ -70,8 +62,6 @@
             </div>
 
             <div class="inner-content">
-                <div class="page-title">@ViewData["Title"]</div>
-
                 @RenderBody()
             </div>
         </div>

@@ -8,10 +8,6 @@
         text-align: center;
     }
 
-    .thead-light tr {
-        background: #1b55e2;
-    }
-
     td, th {
         padding: 1rem;
         border-color: #ddd !important;
@@ -28,5 +24,25 @@
         td {
             font-weight: 600;
         }
+    }
+
+    .icon-edit {
+        position: relative;
+        font-size: 1.6rem;
+        color: #6c757d;
+
+        &:hover {
+            color: #3ac47d;
+        }
+    }
+
+    .icon-check {
+        font-size: 1.6rem;
+        color: #3ac47d;
+    }
+
+    .icon-cancel {
+        font-size: 1.6rem;
+        color: #ff0000;
     }
 }

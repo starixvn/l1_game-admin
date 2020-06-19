@@ -5,28 +5,26 @@
     ViewData["Title"] = "Client Sites";
 }
 
-<div class="col-md-12 card">
-    <div class="card-body">
-        <table class="table table-bordered">
-            <thead class="thead-light">
+<div class="col-md-12 p-0">
+    <table class="table table-bordered has-background">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Site</th>
+                <th>Game Client Url</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Client</th>
-                    <th>Site</th>
-                    <th>Game Client Url</th>
-                    <th></th>
+                    <td>@item.ClientId</td>
+                    <td>@item.SiteId</td>
+                    <td>@item.GameClientUrl</td>
+                    <td><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId"><i class="icon-edit"></i></a></td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.ClientId</td>
-                        <td>@item.SiteId</td>
-                        <td>@item.GameClientUrl</td>
-                        <td><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId"><i class="icon-edit"></i></a></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>
