@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task<OnlineUsers> GetOnlineUsers(string game);
 
-        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds, bool disabled = true);
 
         Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
@@ -109,8 +109,13 @@ namespace GamesAdmin.Site.Features._Shared
             return Task.FromResult(new JsonWebToken());
         }
 
-        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
+        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds, bool disabled = true)
         {
+            if (disabled)
+            {
+                return;
+            }
+
             foreach (var round in kenoRounds)
             {
                 try
