@@ -21,7 +21,16 @@ type Props = {
 
 const TOTAL_TIME = 30;
 const WAITING_TIME = 15;
-const CHOICES = new Array("player", "banker", "tie", "playerPair", "bankerPair", "big", "small");
+
+const CHOICES = [
+    { name: "player", displayName: "Player" },
+    { name: "banker", displayName: "Banker" },
+    { name: "tie", displayName: "Tie" },
+    { name: "playerPair", displayName: "Player Pair" },
+    { name: "bankerPair", displayName: "Banker Pair" },
+    { name: "big", displayName: "Big" },
+    { name: "small", displayName: "Small" }
+];
 
 export default class Baccarat extends React.Component<Props, BaccaratModel>{
     constructor(props: Props) {
@@ -30,6 +39,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         this.state = new BaccaratModel();
         this.showUpdater = this.showUpdater.bind(this);
         this.updaterToggle = this.updaterToggle.bind(this);
+        this.updaterSubmit = this.updaterSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -88,10 +98,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
 
         Object.keys(data).forEach(key => {
             const userObj = data[key];
-            CHOICES.forEach(type => {
-                if (userObj[type] > 0) {
-                    betList[type].total += userObj[type];
-                    betList[type].dataList.unshift(new BetItem(userObj.name, userObj[type]));
+            CHOICES.forEach(choice => {
+                if (userObj[choice.name] > 0) {
+                    betList[choice.name].total += userObj[choice.name];
+                    betList[choice.name].dataList.unshift(new BetItem(userObj.name, userObj[choice.name]));
                 }
             });
         });
@@ -126,9 +136,9 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
 
     getSettlementResult(result) {
         const resultArr = [];
-        CHOICES.forEach(function (type) {
-            if (result[type]) {
-                resultArr.push(type.toUpperCase());
+        CHOICES.forEach(function (choice) {
+            if (result[choice.name]) {
+                resultArr.push(choice.name.toUpperCase());
             }
         })
 
@@ -158,16 +168,14 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     renderMonitor() {
         const { time, roundNumber, betList, result } = this.state;
         return (
-            <Container>
+            <Container fluid>
                 <Row>
                     <Col className='col-12 col-lg-4'>
                         <Row className='justify-content-center'>
                             <Col align="center" className={styles.timecounter}>
                                 <TimeCounter remainingTime={time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
                                 <RoundNum roundNumber={roundNumber} />
-                                {/* <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input> */}
                             </Col>
-
                         </Row>
                         <Row>
                             <Col align="center">
@@ -180,7 +188,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                             </Col>
                         </Row>
                     </Col>
-                    <Col className='p-0 col-12 col-lg-8'>
+                    <Col align="center" className='col-12 col-lg-1'>
+                        <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input>
+                    </Col>
+                    <Col className='p-0 col-12 col-lg-7'>
                         <Row className={styles['row-style']}>
                             <TotalBet type='player' total={betList.player.total} isWin={this.checkWinner('player')} />
                             <TotalBet type='banker' total={betList.banker.total} isWin={this.checkWinner('banker')} />
@@ -204,7 +215,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         CHOICES.forEach(function (choice, i) {
             result.push((
                 <Col className={styles['baccarat-betlist']} key={i}>
-                    <BetList type="onecolumn" isWin={_this.checkWinner(choice)} titles={[<div>{_this.renderTitle(upperFirstLetter(choice))}</div>]} dataList={_this.state.betList[choice].dataList} />
+                    <BetList type="onecolumn" isWin={_this.checkWinner(choice)} titles={[<div>{choice.displayName}</div>]} dataList={_this.state.betList[choice.name].dataList} />
                 </Col>
             ));
         })
@@ -226,15 +237,22 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         })
     }
 
-    updaterSubmit(list) {
+    updaterSubmit(result) {
         const obj = {
             setResult: {
-                result: list,
+                result: {
+                    banker: result.banker,
+                    player: result.player
+                },
                 roundId: this.state.gameState == GameState.running ? this.state.roundNumber : this.state.roundNumber + 1
             }
         }
 
         this.setState({
+            result: {
+                playerCards: result.player,
+                bankerCards: result.banker
+            },
             isShowResultUpdater: false
         })
         this.props.sendMessage(obj);

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './baccarat-result-updater.module.scss'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Row } from 'reactstrap';
+import { generateResult } from './generate-baccarat-result';
 
 type Props = {
   modal: boolean,
@@ -23,7 +24,9 @@ type OptionType = {
 
 const TYPES = {
   group1: ["player", "banker", "tie"],
-  group2: ["big", "small"]
+  group2: ["big", "small"],
+  group3: ["playerPair"],
+  group4: ["bankerPair"]
 };
 
 const TYPES_MAP = {
@@ -73,29 +76,31 @@ export default class BaccaratResultUpdater extends React.Component<Props, State>
   }
 
   submit() {
-    // const result = this.getCheckedTypes();
-    // if (result.length < 3) {
-    //   this.setState({
-    //     errors: "You must choose three values."
-    //   })
-    // } else {
-    //   const isEven = result.includes("even");
-    //   const isBig = result.includes("big");
-    //   const bigSmallTypes = [...TYPES.group2, ...TYPES.group3]
-    //   const element = TYPES_MAP[result.filter(x => !bigSmallTypes.includes(x))[0]]
-    //   const list = pickNumbers(isEven, isBig, element, this.props.isMini);
-    //   const fieldNames = [
-    //     Object.keys(TYPES_MAP)[element],
-    //     isBig ? 'big' : 'small',
-    //     isEven ? 'even' : 'odd',
-    //   ];
+    const choices = this.getCheckedTypes();
+    if (Object.values(choices).filter(x => x == true).length < 1) {
+      this.setState({
+        errors: "You must choose values."
+      })
+    } else {
+      // const isEven = result.includes("even");
+      // const isBig = result.includes("big");
+      // const bigSmallTypes = [...TYPES.group2, ...TYPES.group3]
+      // const element = TYPES_MAP[result.filter(x => !bigSmallTypes.includes(x))[0]]
+      // const list = pickNumbers(isEven, isBig, element, this.props.isMini);
+      // const fieldNames = [
+      //   Object.keys(TYPES_MAP)[element],
+      //   isBig ? 'big' : 'small',
+      //   isEven ? 'even' : 'odd',
+      // ];
 
-    //   this.props.submit(list, fieldNames);
-    // }
+      const result = generateResult(choices);
+
+      this.props.submit(result);
+    }
   }
 
   handleCheck(type, e) {
-    const dependingTypes = this.finDependingChoices(type.name);
+    const dependingTypes = this.findDependingTypes(type.name);
     const types = this.updateCheck(dependingTypes, type.name, e.target.checked);
 
     this.setState({
@@ -104,30 +109,27 @@ export default class BaccaratResultUpdater extends React.Component<Props, State>
     })
   }
 
-  getCheckedTypes(): Array<string> {
-    const result = this.state.types.reduce<Array<string>>((arr: Array<string>, type: OptionType) => {
-      if (type.value) {
-        arr.push(type.name)
-      }
-      return arr;
-    }, [])
+  getCheckedTypes() {
+    const result = this.state.types.reduce((result, type: OptionType) => {
+
+      result[type.name] = type.value
+      return result;
+    }, {})
 
     return result;
   }
 
   updateCheck(dependingTypes: any[], typeName: string, typeValue: boolean) {
     const types = this.state.types;
-
-    types.forEach(type => {
-      if (type.name == typeName) {
+    dependingTypes.forEach(dt => {
+      let type = types.find(o => o.name === dt);
+      if (dt !== typeName) {
+        type.value = false;
+      } else {
         type.value = typeValue;
       }
-
-      if (dependingTypes.indexOf(type.name) > -1) {
-        type.value = false;
-      }
     });
-    console.log(types);
+
     return types;
   }
 
@@ -142,19 +144,6 @@ export default class BaccaratResultUpdater extends React.Component<Props, State>
     });
 
     return dependingTypes;
-  }
-
-  finDependingChoices(typeName) {
-    const choices = [];
-    CHOICE_GROUPS.forEach(group => {
-      const index = group.indexOf(typeName);
-
-      if (index >= 0) {
-        choices.push(...group.splice(index, 1));
-      }
-    });
-    console.log(choices);
-    return choices;
   }
 
   renderType(type: OptionType, index) {
