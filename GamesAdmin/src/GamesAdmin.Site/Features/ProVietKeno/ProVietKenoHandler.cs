@@ -66,7 +66,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             {
                 Time = request.KenoRound.Date.ToUniversalTime(),
                 Number = request.KenoRound.RoundNo.Value,
-                Results = result,
+                Result = result,
             };
 
             var resultModel = await provietKenoService.CreateAsync(createModel);

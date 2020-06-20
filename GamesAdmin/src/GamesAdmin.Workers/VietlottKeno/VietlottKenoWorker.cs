@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
 using Microsoft.Extensions.Hosting;
@@ -82,30 +83,58 @@ namespace GamesAdmin.VietlottKeno
 
                 if (checkMissedRounds)
                 {
-                    var rounds = await kenoService.AddMissedRoundsAsync(kenoResult.Rounds);
                     checkMissedRounds = false;
-
-                    if (rounds.Any())
-                    {
-                        Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
-                        _ = Task.Run(() => kenoService.NotifyRoundResult(rounds));
-                    }
+                    await AddMissedRounds(kenoResult.Rounds);
                 }
                 else
                 {
                     if (!string.IsNullOrWhiteSpace(kenoResult.LiveData) && kenoResult.Rounds.Any())
                     {
-                        var round = await kenoService.AddNewRoundResultAsync(kenoResult.Rounds.FirstOrDefault());
-
-                        Console.WriteLine($"{DateTime.Now} - Added round {round.Number} to database!");
-
-                        _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { round }));
+                        await AddNewRound(kenoResult.Rounds.FirstOrDefault());
                     }
                 }
             }
         }
 
+        private async Task AddNewRound(VietLottKenoRoundResult vietLottKenoRoundResult)
+        {
+            var createModel = ToCreateModel(vietLottKenoRoundResult);
 
+            var round = kenoService.GetByRoundIdAsync(createModel.Number);
+
+            if(round?.Result == null)
+            {
+                var result = await kenoService.AddNewRoundResultAsync(createModel);
+                Console.WriteLine($"{DateTime.Now} - Added round {result.Number} to database!");
+                _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { result }));
+            }
+        }
+
+        private async Task AddMissedRounds(IEnumerable<VietLottKenoRoundResult> rounds)
+        {
+            var result = await kenoService.AddMissedRoundsAsync(rounds.Select(x => ToCreateModel(x)));
+
+            if (result.Any())
+            {
+                Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
+                _ = Task.Run(() => kenoService.NotifyRoundResult(result));
+            }
+        }
+
+        private CreateProVietKenoRound ToCreateModel(VietLottKenoRoundResult kenoRound)
+        {
+            var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
+            var sum = result.Sum(x => x);
+
+            var entity = new CreateProVietKenoRound
+            {
+                Time = DateTime.UtcNow,
+                Number = long.Parse(kenoRound.DrawId),
+                Result = result,
+            };
+
+            return entity;
+        }
     }
 
     public class VietLottKenoSocketResult

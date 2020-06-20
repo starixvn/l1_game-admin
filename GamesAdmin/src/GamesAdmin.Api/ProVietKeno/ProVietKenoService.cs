@@ -55,12 +55,12 @@ namespace GamesAdmin.Api.ProVietKeno
 
         public async Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound)
         {
-            var sum = kenoRound.Results.Sum(x => x);
+            var sum = kenoRound.Result.Sum(x => x);
 
             var entity = new ProVietKenoRoundEntity
             {
                 Time = kenoRound.Time,
-                Result = kenoRound.Results,
+                Result = kenoRound.Result,
                 Number = kenoRound.Number,
                 SettlementResult = new SettlementResult(sum)
             };

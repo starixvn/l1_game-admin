@@ -9,6 +9,6 @@ namespace GamesAdmin.Core.Models
 
         public long Number { get; set; }
 
-        public IEnumerable<byte> Results { get; set; }
+        public IEnumerable<byte> Result { get; set; }
     }
 }

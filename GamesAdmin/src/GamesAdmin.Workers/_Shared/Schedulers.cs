@@ -10,6 +10,10 @@ namespace GamesAdmin.Workers._Shared
             scheduler
                .Schedule<CheckingLatestKenoRoundTask>()
                .Cron("* 6-21 * * *");
+
+            scheduler
+                .Schedule<CrawlingKenoRoundTask>()
+                .Cron("* 6-21 * * *");
         }
     }
 }

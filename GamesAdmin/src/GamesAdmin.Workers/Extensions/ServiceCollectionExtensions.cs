@@ -32,6 +32,7 @@ namespace GamesAdmin.Workers.Extensions
         public static void AddScheduleTasks(this IServiceCollection services)
         {
             services.AddTransient<CheckingLatestKenoRoundTask>();
+            services.AddTransient<CrawlingKenoRoundTask>();
         }
     }
 }

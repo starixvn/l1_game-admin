@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Workers._Shared;
+using GamesAdmin.Workers.VietlottKeno;
 using MongoDB.Driver;
 using Refit;
 using Sentry;
@@ -13,11 +14,15 @@ namespace GamesAdmin.VietlottKeno
 {
     public interface IKenoService
     {
-        Task<ProVietKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound);
+        Task<ProVietKenoRound> AddNewRoundResultAsync(CreateProVietKenoRound kenoRound);
 
-        Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds);
+        Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<CreateProVietKenoRound> kenoRounds);
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
+
+        Task<ProVietKenoRound> GetLatestRoundAsync();
+
+        Task<ProVietKenoRound> GetByRoundIdAsync(long roundId);
     }
 
     public class KenoService : IKenoService
@@ -31,9 +36,8 @@ namespace GamesAdmin.VietlottKeno
             this.gameAdminApi = gameAdminApi;
         }
 
-        public async Task<ProVietKenoRound> AddNewRoundResultAsync(VietLottKenoRoundResult kenoRound)
+        public async Task<ProVietKenoRound> AddNewRoundResultAsync(CreateProVietKenoRound kenoRound)
         {
-            var roundId = long.Parse(kenoRound.DrawId);
             var entity = CreateEntity(kenoRound);
             await repository.UpdateAsync(entity,
                 new UpdateOptions
@@ -43,8 +47,8 @@ namespace GamesAdmin.VietlottKeno
 
             var nextRoundEntity = new ProVietKenoRoundEntity
             {
-                Number = roundId + 1,
-                Time = CalculateNextRoundTime(entity.Time)
+                Number = kenoRound.Number + 1,
+                Time = entity.Time.CalculateNextRoundTime()
             };
 
             await repository.InsertOneAsync(nextRoundEntity);
@@ -52,35 +56,35 @@ namespace GamesAdmin.VietlottKeno
             return ConvertToModel(entity);
         }
 
-        public async Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<VietLottKenoRoundResult> kenoRounds)
+        public async Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<CreateProVietKenoRound> kenoRounds)
         {
-            var roundIds = kenoRounds.Select(x => long.Parse(x.DrawId));
+            var roundIds = kenoRounds.Select(x => x.Number);
             var latestRound = await repository.GetLatestRoundAsync();
 
             if (latestRound != null)
             {
-                var isLatestRoundResultExisted = kenoRounds.Any(x => long.Parse(x.DrawId) == latestRound.Number);
+                var isLatestRoundResultExisted = kenoRounds.Any(x => x.Number == latestRound.Number);
 
                 if (latestRound.Result == null && isLatestRoundResultExisted)
                 {
-                    var updatedLatestRound = CreateEntity(kenoRounds.FirstOrDefault(x => long.Parse(x.DrawId) == latestRound.Number));
+                    var updatedLatestRound = CreateEntity(kenoRounds.FirstOrDefault(x => x.Number == latestRound.Number));
                     updatedLatestRound.Time = latestRound.Time;
                     await repository.UpdateAsync(updatedLatestRound);
                 }
 
-                var missedRounds = kenoRounds.Where(x => latestRound.Number < long.Parse(x.DrawId))
+                var missedRounds = kenoRounds.Where(x => latestRound.Number < x.Number)
                     .Select(x => CreateEntity(x))
                     .OrderBy(x => x.Number)
                     .ToList();
 
                 if (missedRounds.Any())
                 {
-                    var time = CalculateNextRoundTime(latestRound.Time, missedRounds.First().Number - latestRound.Number);
+                    var time = latestRound.Time.CalculateNextRoundTime(missedRounds.First().Number - latestRound.Number);
 
                     foreach (var round in missedRounds)
                     {
                         round.Time = time;
-                        time = CalculateNextRoundTime(time);
+                        time = time.CalculateNextRoundTime();
                     }
 
                     await repository.InsertManyAsync(new List<ProVietKenoRoundEntity>(missedRounds)
@@ -101,7 +105,7 @@ namespace GamesAdmin.VietlottKeno
                         var nextRoundEntity = new ProVietKenoRoundEntity
                         {
                             Number = latestRound.Number + 1,
-                            Time = CalculateNextRoundTime(latestRound.Time)
+                            Time = latestRound.Time.CalculateNextRoundTime()
                         };
 
                         await repository.InsertOneAsync(nextRoundEntity);
@@ -122,24 +126,6 @@ namespace GamesAdmin.VietlottKeno
             {
                 HandleException(ex);
             }
-        }
-
-        private DateTime CalculateNextRoundTime(DateTime time, long roundDistance = 1)
-        {
-            var startTimeOfDay = new TimeSpan(23, 0, 0);
-            var endTimeOfDay = new TimeSpan(14, 55, 0);
-            var nextRoundTime = time;
-
-            for (var i = 1; i <= roundDistance; i++)
-            {
-                nextRoundTime = nextRoundTime.AddMinutes(10);
-                if (nextRoundTime.TimeOfDay > endTimeOfDay && nextRoundTime.TimeOfDay < startTimeOfDay)
-                {
-                    nextRoundTime = new DateTime(time.Year, time.Month, time.Day, 23, 10, 0, DateTimeKind.Utc);
-                }
-            }
-
-            return nextRoundTime;
         }
 
         private void HandleException(Exception ex)
@@ -164,32 +150,45 @@ namespace GamesAdmin.VietlottKeno
                 Time = entity.Time,
                 Result = entity.Result,
                 Number = entity.Number,
-                Big = entity.SettlementResult.Big,
-                Small = entity.SettlementResult.Small,
-                Even = entity.SettlementResult.Even,
-                Odd = entity.SettlementResult.Odd,
-                Earth = entity.SettlementResult.Earth,
-                Fire = entity.SettlementResult.Fire,
-                Gold = entity.SettlementResult.Gold,
-                Wood = entity.SettlementResult.Wood,
-                Water = entity.SettlementResult.Water
+                Big = entity.SettlementResult?.Big,
+                Small = entity.SettlementResult?.Small,
+                Even = entity.SettlementResult?.Even,
+                Odd = entity.SettlementResult?.Odd,
+                Earth = entity.SettlementResult?.Earth,
+                Fire = entity.SettlementResult?.Fire,
+                Gold = entity.SettlementResult?.Gold,
+                Wood = entity.SettlementResult?.Wood,
+                Water = entity.SettlementResult?.Water
             };
         }
 
-        private ProVietKenoRoundEntity CreateEntity(VietLottKenoRoundResult kenoRound)
+        private ProVietKenoRoundEntity CreateEntity(CreateProVietKenoRound kenoRound)
         {
-            var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
-            var sum = result.Sum(x => x);
+            var sum = kenoRound.Result.Sum(x => x);
 
             var entity = new ProVietKenoRoundEntity
             {
-                Time = DateTime.UtcNow,
-                Number = long.Parse(kenoRound.DrawId),
-                Result = result,
+                Time = kenoRound.Time,
+                Number = kenoRound.Number,
+                Result = kenoRound.Result,
                 SettlementResult = new SettlementResult(sum)
             };
 
             return entity;
+        }
+
+        public async Task<ProVietKenoRound> GetLatestRoundAsync()
+        {
+            var entity = await repository.GetLatestRoundAsync();
+
+            return entity != null ? ConvertToModel(entity) : null;
+        }
+
+        public async Task<ProVietKenoRound> GetByRoundIdAsync(long roundId)
+        {
+            var entity = await repository.FindOneAsync(x => x.Number == roundId);
+
+            return entity != null ? ConvertToModel(entity) : null;
         }
     }
 }
