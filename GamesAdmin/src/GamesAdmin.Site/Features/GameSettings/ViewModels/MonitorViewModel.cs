@@ -23,6 +23,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             GameType.OddEvenTurboValue,
             GameType.SeDieValue,
             GameType.MiniSeDieValue,
+            GameType.KenoProVietValue
         };
 
         private static Dictionary<string, string> gameHistoryUrl = new Dictionary<string, string>
@@ -32,7 +33,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.OddEvenValue, "oddeven" },
             { GameType.OddEvenTurboValue, "oddeventurbo" },
             { GameType.SeDieValue, "sedie" },
-            { GameType.MiniSeDieValue, "minisedie" }
+            { GameType.MiniSeDieValue, "minisedie" },
+            { GameType.KenoProVietValue, GameType.KenoProVietValue }
         };
 
         public MonitorItemViewModel(string name)

@@ -112,5 +112,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname)));
         }
+
+        [HttpGet]
+        public IActionResult KenoProViet()
+        {
+            return View(new KenoProVietViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoProVietReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetKenoProVietReportRequest(roundId, nickname, excludeBot)));
+        }
     }
 }
