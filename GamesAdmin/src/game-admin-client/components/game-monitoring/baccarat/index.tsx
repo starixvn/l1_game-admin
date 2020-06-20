@@ -158,18 +158,21 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     renderMonitor() {
         const { time, roundNumber, betList, result } = this.state;
         return (
-            <Container fluid>
+            <Container>
                 <Row>
                     <Col className='col-12 col-lg-4'>
                         <Row className='justify-content-center'>
-                            <Col align="center">
-                                <div className={styles.title}>Player</div>
-                                <BaccaratCardResult cardResult={result.playerCards} />
-                            </Col>
                             <Col align="center" className={styles.timecounter}>
                                 <TimeCounter remainingTime={time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
                                 <RoundNum roundNumber={roundNumber} />
                                 {/* <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input> */}
+                            </Col>
+
+                        </Row>
+                        <Row>
+                            <Col align="center">
+                                <div className={styles.title}>Player</div>
+                                <BaccaratCardResult cardResult={result.playerCards} />
                             </Col>
                             <Col align="center">
                                 <div className={styles.title}>Banker</div>
