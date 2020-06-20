@@ -11,6 +11,7 @@ import BetList from '../../shared/bet-list/bet-list';
 import { upperFirstLetter } from '../../util/util';
 import GameTemplate from '../game-template/game-template';
 import BaccaratCardResult from './baccarat-card-result';
+import BaccaratResultUpdater from './baccarat-result-updater';
 
 type Props = {
     onMessage: Function,
@@ -27,6 +28,8 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         super(props);
 
         this.state = new BaccaratModel();
+        this.showUpdater = this.showUpdater.bind(this);
+        this.updaterToggle = this.updaterToggle.bind(this);
     }
 
     componentDidMount() {
@@ -143,7 +146,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     showUpdater() {
         this.setState({
             isShowResultUpdater: true
-        })
+        });
     }
 
     checkWinner(choice) {
@@ -166,7 +169,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                             <Col align="center" className={styles.timecounter}>
                                 <TimeCounter remainingTime={time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
                                 <RoundNum roundNumber={roundNumber} />
-                                <input type="button" value="Set Result" className={styles['set-button']}></input>
+                                {/* <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input> */}
                             </Col>
                             <Col align="center">
                                 <div className={styles.title}>Banker</div>
@@ -214,10 +217,31 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         return <span className={styles['title']}>{value}</span>
     }
 
+    updaterToggle() {
+        this.setState({
+            isShowResultUpdater: !this.state.isShowResultUpdater
+        })
+    }
+
+    updaterSubmit(list) {
+        const obj = {
+            setResult: {
+                result: list,
+                roundId: this.state.gameState == GameState.running ? this.state.roundNumber : this.state.roundNumber + 1
+            }
+        }
+
+        this.setState({
+            isShowResultUpdater: false
+        })
+        this.props.sendMessage(obj);
+    }
+
     render() {
         return (
             <div>
                 <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} />
+                ${!this.props.isProduction && (<BaccaratResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
             </div>
         );
     }
