@@ -158,7 +158,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     renderMonitor() {
         const { time, roundNumber, betList, result } = this.state;
         return (
-            <Container fluid>
+            <Container>
                 <Row>
                     <Col className='col-12 col-lg-4'>
                         <Row className='justify-content-center'>
