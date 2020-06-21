@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.BetReport;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class KenoProVietReportViewModel
     {
-        public RoundResultViewModel RoundResult { get; set; }
+        public KenoResultViewModel RoundResult { get; set; }
 
-        public IEnumerable<RecordViewModel> Records { get; set; }
+        public IEnumerable<KenoBetRecord> BetTickets { get; set; }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GamesAdmin.Core.Models
+﻿namespace GamesAdmin.Core.Models
 {
     public class RoundResult
     {

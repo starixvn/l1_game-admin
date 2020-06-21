@@ -4,8 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities.Keno;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
@@ -25,15 +29,24 @@ namespace GamesAdmin.Api.Report
         Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot);
 
         Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot);
+        
+        Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
     {
         private readonly IServiceProvider serviceProvider;
+        private readonly IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository;
+        private readonly IGenericRepository<KenoRoundEntity> kenoProvietRoundEntity;
 
-        public ReportService(IServiceProvider serviceProvider)
+        public ReportService(
+            IServiceProvider serviceProvider,
+            IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository,
+            IGenericRepository<KenoRoundEntity> kenoProvietRoundEntity)
         {
             this.serviceProvider = serviceProvider;
+            this.kenoProVietOnesRepository = kenoProVietOnesRepository;
+            this.kenoProvietRoundEntity = kenoProvietRoundEntity;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -271,6 +284,41 @@ namespace GamesAdmin.Api.Report
             }
 
             return result;
+        }
+
+        public async Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
+        {
+            var round = await kenoProvietRoundEntity.FindOneAsync(round => round.Number == roundId);
+            var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId && ones.Name == nickname);
+
+            var roundResult = new KenoRoundResult(round.Result, new KenoSettlementResult(round.SettlementResult));
+            var betRecords = bets
+                .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds) 
+                {
+                    Nickname = bet.Name,
+                    BetWin = bet.Betwin,
+                    Time = bet.Time
+                })
+                .ToList();
+
+            return new KenoBetReport(roundResult, betRecords);
+        }
+                
+        private static Dictionary<string, decimal> ConvertToAmountByChoice(KenoProVietOnesEntity entity)
+        {
+            var amounts = new Dictionary<string, decimal>();
+
+            amounts[KenoBetChoice.BigValue] = entity.Big;
+            amounts[KenoBetChoice.SmallValue] = entity.Small;
+            amounts[KenoBetChoice.OddValue] = entity.Odd;
+            amounts[KenoBetChoice.EvenValue] = entity.Even;
+            amounts[KenoBetChoice.GoldValue] = entity.Gold;
+            amounts[KenoBetChoice.EarthValue] = entity.Earth;
+            amounts[KenoBetChoice.FireValue] = entity.Fire;
+            amounts[KenoBetChoice.WaterValue] = entity.Water;
+            amounts[KenoBetChoice.WoodValue] = entity.Wood;
+
+            return amounts;
         }
     }
 }

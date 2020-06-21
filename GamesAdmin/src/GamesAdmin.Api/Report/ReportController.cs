@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +43,7 @@ namespace GamesAdmin.Api.Report
         [Route("odd_even_turbo/round/{roundId}/users/{nickname?}")]
         public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot)
             => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot)));
-
+            
         [HttpGet]
         [Route("sedie/round/{roundId}/users/{nickname?}")]
         public async Task<SeDieBetReport> SeDie(long roundId, string nickname, bool excludeBot)
@@ -52,5 +53,10 @@ namespace GamesAdmin.Api.Report
         [Route("mini_sedie/round/{roundId}/users/{nickname?}")]
         public async Task<SeDieBetReport> MiniSeDie(long roundId, string nickname, bool excludeBot)
             => (await mediator.Send(new MiniSeDieReportRequest(roundId, nickname, excludeBot)));
+            
+        [HttpGet]
+        [Route("kenoproviet/round/{roundId}/users/{nickname?}")]
+        public async Task<KenoBetReport> KenoProViet(long roundId, string nickname, bool excludeBot)
+            => (await mediator.Send(new KenoProVietRequest(roundId, nickname, excludeBot)));
     }
 }

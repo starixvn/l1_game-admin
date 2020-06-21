@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
 
@@ -28,5 +29,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
+
+        [Get("/report/kenoproviet/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
+        Task<KenoBetReport> GetKenoProVietReport(long roundId, string nickname, bool excludeBot);
     }
 }

@@ -20,7 +20,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
-        IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>
+        IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
+        IRequestHandler<GetKenoProVietReportRequest, KenoProVietReportViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -274,6 +275,17 @@ namespace GamesAdmin.Site.Features.ClientSites
                     FourRed = x.FourRed,
                     FourWhite = x.FourWhite
                 })
+            };
+        }
+        
+         public async Task<KenoProVietReportViewModel> Handle(GetKenoProVietReportRequest request, CancellationToken cancellationToken)
+        {
+            var betReport = await reportService.GetKenoProVietBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new KenoProVietReportViewModel
+            {
+                RoundResult = new KenoResultViewModel(betReport.RoundResult.Results),
+                BetTickets = betReport.BetRecords
             };
         }
     }

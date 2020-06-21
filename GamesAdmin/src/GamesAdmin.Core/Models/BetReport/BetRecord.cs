@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public class BetRecord
+    public abstract class BetRecord
     {
         public string Username { get; set; }
 

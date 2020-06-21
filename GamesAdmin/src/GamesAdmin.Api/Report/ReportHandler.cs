@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
@@ -14,7 +15,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<OddEvenTurboReportRequest, OddEvenBetReport>,
         IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
         IRequestHandler<SeDieReportRequest, SeDieBetReport>,
-        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>
+        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
+        IRequestHandler<KenoProVietRequest, KenoBetReport>
     {
         private readonly IReportService reportService;
 
@@ -43,5 +45,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            
+        public Task<KenoBetReport> Handle(KenoProVietRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoProVietReportAsync(request.RoundId, request.Nickname);
     }
 }
