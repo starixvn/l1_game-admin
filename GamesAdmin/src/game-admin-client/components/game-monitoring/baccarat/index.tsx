@@ -228,7 +228,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         CHOICES.forEach(function (choice, i) {
             result.push((
                 <Col className={styles['baccarat-betlist']} key={i}>
-                    <BetList type="onecolumn" isWin={_this.checkWinner(choice)} titles={[<div>{choice.displayName}</div>]} dataList={_this.state.betList[choice.name].dataList} />
+                    <BetList type="onecolumn" isWin={_this.checkWinner(choice.name)} titles={[<div>{choice.displayName}</div>]} dataList={_this.state.betList[choice.name].dataList} />
                 </Col>
             ));
         })
