@@ -63,7 +63,7 @@ export default class KenoProMax extends React.Component<Props, State> {
   handleStart(message) {
     const newData = new KenoProMaxModel();
     let isFinished = message.remainingTime > TOTAL_TIME;
-    newData.time.remainingTime = isFinished ? message.remainingTime - TOTAL_TIME : message.remainingTime;
+    newData.time.remainingTime = isFinished ? message.remainingTime - TOTAL_TIME - 1 : message.remainingTime;
     newData.roundNumber = isFinished ? message.roundId - 1 : message.roundId;
 
     this.setState({
