@@ -37,13 +37,15 @@ namespace GamesAdmin.VietlottKeno.Tasks
                 var kenoBallNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='keno_ball']");
                 var result = kenoBallNodes.Select(x => byte.Parse(x.InnerText)).OrderBy(x => x);
 
-                await kenoService.AddNewRoundResultAsync(
+                var round = await kenoService.AddNewRoundResultAsync(
                     new CreateProVietKenoRound
                     {
                         Time = currentTime,
                         Number = latestRoundId,
                         Result = result
                     });
+
+                _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { round }));
             }
         }
 
