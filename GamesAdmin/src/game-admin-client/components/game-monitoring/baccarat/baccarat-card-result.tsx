@@ -3,12 +3,18 @@ import CardResult from "../../common/model/CardResult";
 import Card from "../../shared/card/card";
 import styles from "./styles.module.scss";
 
-export default function BaccaratCardResult(props: { cardResult: CardResult[] }) {
-    const { cardResult } = props;
+type Props = {
+    selectedCard: string,
+    cardResult: CardResult[],
+    onCardClick?: (selectedCard: string, cardIndex: number) => void
+}
+
+export default function BaccaratCardResult(props: Props) {
+    const { selectedCard, cardResult, onCardClick } = props;
 
     return (
         <div className={styles['card-result']}>
-            {cardResult.map((result, index) => (<div key={index} className={styles.card}><Card value={result.card} suit={result.type} /></div>))}
+            {cardResult.map((result, index) => (<div key={index} className={styles.card} onClick={() => onCardClick(selectedCard, index)}><Card value={result.card} suit={result.type} /></div>))}
         </div>
     );
 }

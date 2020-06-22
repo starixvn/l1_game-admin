@@ -31,6 +31,9 @@ export default class BaccaratModel {
     settlementResult: {};
     gameState: number;
     isShowResultUpdater: boolean;
+    isShowDeskOfCards: boolean;
+    selectedCard: string;
+    cardIndex: number;
 
     constructor() {
         this.result = { bankerCards: [new CardResult(), new CardResult(), new CardResult()], playerCards: [new CardResult(), new CardResult(), new CardResult()] };
@@ -38,5 +41,8 @@ export default class BaccaratModel {
         this.time = new TimeModel();
         this.gameState = GameState.none;
         this.isShowResultUpdater = false;
+        this.isShowDeskOfCards = false;
+        this.selectedCard = "";
+        this.cardIndex = -1;
     }
 }

@@ -8,10 +8,12 @@ import TimeCounter from '../../shared/time-counter/time-counter';
 import RoundNum from '../../shared/round-num/round-num';
 import TotalBet from '../../shared/total-bet/total-bet';
 import BetList from '../../shared/bet-list/bet-list';
-import { upperFirstLetter } from '../../util/util';
 import GameTemplate from '../game-template/game-template';
 import BaccaratCardResult from './baccarat-card-result';
 import BaccaratResultUpdater from './baccarat-result-updater';
+import DeskOfCards from './desk-of-cards';
+import CardModel from '../../common/model/CardModel';
+import CardResult from '../../common/model/CardResult';
 
 type Props = {
     onMessage: Function,
@@ -40,6 +42,9 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         this.showUpdater = this.showUpdater.bind(this);
         this.updaterToggle = this.updaterToggle.bind(this);
         this.updaterSubmit = this.updaterSubmit.bind(this);
+        this.showDeskOfCards = this.showDeskOfCards.bind(this);
+        this.updaterDeskOfCardsToggle = this.updaterDeskOfCardsToggle.bind(this);
+        this.onPickCard = this.onPickCard.bind(this);
     }
 
     componentDidMount() {
@@ -165,6 +170,14 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         return settlementResult && settlementResult[choice]
     }
 
+    showDeskOfCards(selectedCard: string, cardIndex: number) {
+        this.setState({
+            isShowDeskOfCards: true,
+            selectedCard: selectedCard,
+            cardIndex: cardIndex
+        });
+    }
+
     renderMonitor() {
         const { time, roundNumber, betList, result } = this.state;
         return (
@@ -180,11 +193,11 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                         <Row>
                             <Col align="center">
                                 <div className={styles.title}>Player</div>
-                                <BaccaratCardResult cardResult={result.playerCards} />
+                                <BaccaratCardResult cardResult={result.playerCards} onCardClick={this.showDeskOfCards} selectedCard="playerCards" />
                             </Col>
                             <Col align="center">
                                 <div className={styles.title}>Banker</div>
-                                <BaccaratCardResult cardResult={result.bankerCards} />
+                                <BaccaratCardResult cardResult={result.bankerCards} onCardClick={this.showDeskOfCards} selectedCard="bankerCards" />
                             </Col>
                         </Row>
                     </Col>
@@ -220,11 +233,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
             ));
         })
 
-        return (
-            <React.Fragment>
-                {result}
-            </React.Fragment>
-        )
+        return (<React.Fragment>{result}</React.Fragment>)
     }
 
     renderTitle(value) {
@@ -234,7 +243,13 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     updaterToggle() {
         this.setState({
             isShowResultUpdater: !this.state.isShowResultUpdater
-        })
+        });
+    }
+
+    updaterDeskOfCardsToggle() {
+        this.setState({
+            isShowDeskOfCards: !this.state.isShowDeskOfCards
+        });
     }
 
     updaterSubmit(result) {
@@ -258,11 +273,36 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         this.props.sendMessage(obj);
     }
 
+    onPickCard(card: number, type: number) {
+        const { result, selectedCard, cardIndex } = this.state;
+        let cardResult = new CardResult();
+        cardResult.card = card;
+        cardResult.type = type;
+        result[selectedCard][cardIndex] = cardResult;
+        this.setState({
+            result: result,
+            isShowDeskOfCards: false,
+        })
+
+        const message = {
+            setResult: {
+                result: {
+                    banker: result.bankerCards,
+                    player: result.playerCards
+                },
+                roundId: this.state.gameState == GameState.running ? this.state.roundNumber : this.state.roundNumber + 1
+            }
+        };
+
+        this.props.sendMessage(message);
+    }
+
     render() {
         return (
             <div>
                 <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} />
                 ${!this.props.isProduction && (<BaccaratResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
+                ${!this.props.isProduction && (<DeskOfCards modal={this.state.isShowDeskOfCards} toggle={this.updaterDeskOfCardsToggle} onPickCard={this.onPickCard} />)}
             </div>
         );
     }
