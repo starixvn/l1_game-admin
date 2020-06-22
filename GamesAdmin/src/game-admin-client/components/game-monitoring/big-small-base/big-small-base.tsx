@@ -52,7 +52,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
   handleData(data) {
     const { turbo, type } = this.props;
     const totalRemainingTime = this.props.turbo ? 30 : 50;
-    const totalWaitingTime = this.props.turbo ? 5 : 10;
+    const totalWaitingTime = this.props.turbo ? 6 : 11;
     const gameType = turbo && type == 'chanle' ? 'clturbo' : type;
 
     if (data.taixiu != null || data.chanle != null || data.clturbo != null) {
@@ -88,7 +88,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           roundNumber: this.state.roundNumber + 1,
           currentState: GameState.running,
           time: {
-            remainingTime: totalRemainingTime + 1
+            remainingTime: totalRemainingTime
           }
         })
       }, (totalWaitingTime + 1) * 1000);
@@ -98,13 +98,13 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
         isHavingResult: true,
         currentState: GameState.waiting,
         time: {
-          remainingTime: totalWaitingTime + 1
+          remainingTime: totalWaitingTime
         }
       });
     }
 
     if (!!data.time_remain) {
-      if ((this.props.turbo && data.time_remain > totalRemainingTime + 6) || data.time_remain > totalRemainingTime) {
+      if ((this.props.turbo && data.time_remain > totalRemainingTime + 5) || data.time_remain > totalRemainingTime) {
         this.setState({
           time: {
             remainingTime: data.time_remain - totalRemainingTime
@@ -211,7 +211,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           </Col>
           <Col align="center" className={styles["shared-result"]}>
             <div>
-            <TimeCounter remainingTime={time.remainingTime} gameState={currentState} />
+              <TimeCounter remainingTime={time.remainingTime} gameState={currentState} />
               <RoundNum roundNumber={roundNumber} />
             </div>
             <DiceResult dices={result} />

@@ -78,23 +78,9 @@ export default class BaccaratResultUpdater extends React.Component<Props, State>
   submit() {
     const choices = this.getCheckedTypes();
     if (Object.values(choices).filter(x => x == true).length < 1) {
-      this.setState({
-        errors: "You must choose values."
-      })
+      this.setState({ errors: "You must choose values." })
     } else {
-      // const isEven = result.includes("even");
-      // const isBig = result.includes("big");
-      // const bigSmallTypes = [...TYPES.group2, ...TYPES.group3]
-      // const element = TYPES_MAP[result.filter(x => !bigSmallTypes.includes(x))[0]]
-      // const list = pickNumbers(isEven, isBig, element, this.props.isMini);
-      // const fieldNames = [
-      //   Object.keys(TYPES_MAP)[element],
-      //   isBig ? 'big' : 'small',
-      //   isEven ? 'even' : 'odd',
-      // ];
-
       const result = generateResult(choices);
-
       this.props.submit(result);
     }
   }
@@ -164,7 +150,6 @@ export default class BaccaratResultUpdater extends React.Component<Props, State>
                 this.state.types.map((type, index) => this.renderType(type, index))
               }
             </Row>
-
             <Row className={styles['errors']}>
               <div>{this.state.errors}</div>
             </Row>
