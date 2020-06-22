@@ -39,6 +39,8 @@
     position: relative;
     top: 0.2px;
     margin-right: 3rem; }
+  .header-online-user a {
+    min-width: 1rem; }
 
 .user-info {
   display: flex; }
