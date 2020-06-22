@@ -8,5 +8,10 @@
         }
 
         public byte[] Results { get; }
+
+        public override string ToString()
+        {
+            return string.Join("; ", Results);
+        }
     }
 }

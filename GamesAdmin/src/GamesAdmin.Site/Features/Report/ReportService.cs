@@ -72,19 +72,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
-        public async Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot)
-        {
-            try
-            {
-                return await reportApi.GetKenoProVietReport(roundId, nickname, excludeBot);
-            }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-
-                return default;
-            }
-        }
-
+        public Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot)
+        => reportApi.GetKenoProVietReport(roundId, nickname, excludeBot);
     }
 }

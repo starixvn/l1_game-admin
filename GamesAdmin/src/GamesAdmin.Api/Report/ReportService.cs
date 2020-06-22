@@ -288,30 +288,21 @@ namespace GamesAdmin.Api.Report
 
         public async Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
         {
-            try
-            {
-                var round = await kenoProvietRoundEntity.FindOneAsync(round => round.Number == roundId);
-                var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId);
+            var round = await kenoProvietRoundEntity.FindOneAsync(round => round.Number == roundId);
+            var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId);
 
-                var roundResult = round == null ? default : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
+            var roundResult = round == null ? default : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
 
-                var betRecords = bets
-                    .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)
-                    {
-                        Nickname = bet.Name,
-                        BetWin = bet.Betwin,
-                        Time = bet.Time
-                    })
-                    .ToList();
+            var betRecords = bets
+                .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)
+                {
+                    Nickname = bet.Name,
+                    BetWin = bet.Betwin,
+                    Time = bet.Time
+                })
+                .ToList();
 
-                return new KenoBetReport(roundResult, betRecords);
-            }
-            catch (Exception ex)
-            {
-                var err = ex.Message;
-
-                return new KenoBetReport(null, Enumerable.Empty<KenoBetRecord>());
-            }
+            return new KenoBetReport(roundResult, betRecords);
         }
 
         private static Dictionary<string, decimal> ConvertToAmountByChoice(KenoProVietOnesEntity entity)

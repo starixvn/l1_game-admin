@@ -1,5 +1,7 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Enumeration
+@using GamesAdmin.Core.Enumeration.BetChoices;
 
 @model KenoReportViewModel
 
@@ -7,16 +9,20 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Results?.Length > 0)
         {
-            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Results[0];</span> </h3>
+            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.ToString()</span> </h3>
         }
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
                     <th>Username</th>
-                    <th class="col-nickname">Nickname</th>
-                    <th class="col-number">Stake</th>
+                    <th>Nickname</th>
+                    @foreach (var choice in Enumeration.GetAll<KenoBetChoice>())
+                    {
+                        <th class="col-number">@choice.DisplayName</th>
+                    }
                     <th class="col-number">Win</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -26,13 +32,12 @@
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.Username</td>
-                        <td>
-                            @*<a data-ajax="true" data-ajax-method="GET"  data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                                   asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname"
-                                >*@
-                            @bet.Nickname
-                            @*</a>*@
-                        </td>
+                        <td>@bet.Nickname</td>
+                        @foreach (var choice in Enumeration.GetAll<KenoBetChoice>())
+                        {
+                            <td class="text-right">@bet.Amounts[choice.Value]</td>
+                        }
+
                         <td class="text-right">@bet.BetWin</td>
                     </tr>
 
@@ -44,18 +49,6 @@
                     <tr>
                         <td class="text-center" colspan="13">No data</td>
                     </tr>
-                }
-                else
-                {
-                    @*<tr class="total">
-                            <td>Total</td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
-                            <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
-                            <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
-                            <td class="line-cell"></td>
-                        </tr>*@
                 }
             </tfoot>
         </table>
