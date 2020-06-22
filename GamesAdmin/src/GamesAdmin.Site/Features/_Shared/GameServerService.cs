@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task<OnlineUsers> GetOnlineUsers(string game);
 
-        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds, bool disabled = true);
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
         Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
