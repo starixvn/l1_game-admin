@@ -5,6 +5,10 @@ namespace GamesAdmin.Core.Models.BetReport
 {
     public class KenoBetReport
     {
+        public KenoBetReport()
+        {
+        }
+
         public KenoBetReport(
             KenoRoundResult roundResult,
             IEnumerable<KenoBetRecord> betRecords)
@@ -13,8 +17,8 @@ namespace GamesAdmin.Core.Models.BetReport
             BetRecords = betRecords;
         }
 
-        public KenoRoundResult RoundResult { get; }
+        public KenoRoundResult RoundResult { get; set; }
 
-        public IEnumerable<KenoBetRecord> BetRecords { get; }
+        public IEnumerable<KenoBetRecord> BetRecords { get; set; }
     }
 }

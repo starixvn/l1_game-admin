@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -72,6 +73,18 @@ namespace GamesAdmin.Site.Features.ClientSites
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
         public async Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot)
-       => await reportApi.GetKenoProVietReport(roundId, nickname, excludeBot);
+        {
+            try
+            {
+                return await reportApi.GetKenoProVietReport(roundId, nickname, excludeBot);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+
+                return default;
+            }
+        }
+
     }
 }
