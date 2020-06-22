@@ -108,7 +108,6 @@
       top: -1px;
       height: 4rem;
       width: 4rem;
-      z-index: -1;
       opacity: 0; }
     .new-round .number .control_indicator {
       position: absolute;
@@ -119,13 +118,11 @@
       align-items: center;
       height: 4rem;
       width: 4rem;
-      background: #e6e6e6;
       border-radius: 50%; }
-  .new-round .number:hover input ~ .control_indicatior,
-  .new-round .number input:focus ~ .control_indicator {
-    background: #16aaff;
-    color: #fff;
+  .new-round .number input + .control_indicator {
+    background: #e6e6e6;
+    color: #495057;
     cursor: pointer; }
-  .new-round .number input:checked ~ .control_indicator {
+  .new-round .number input:checked + .control_indicator {
     background: #16aaff;
     color: #fff; }
