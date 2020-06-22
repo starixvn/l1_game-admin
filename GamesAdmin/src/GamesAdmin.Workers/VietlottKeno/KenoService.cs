@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.ProVietKeno;
 using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers.VietlottKeno;
 using MongoDB.Driver;
@@ -23,17 +25,21 @@ namespace GamesAdmin.VietlottKeno
         Task<ProVietKenoRound> GetLatestRoundAsync();
 
         Task<ProVietKenoRound> GetByRoundIdAsync(long roundId);
+
+        Task AddRoundLogEntity(long roundId, DateTime time, string source);
     }
 
     public class KenoService : IKenoService
     {
         private readonly IKenoRepository repository;
+        private readonly IGenericRepository<ProvietKenoRoundLogEntity> logRepository;
         private readonly IGameAdminApi gameAdminApi;
 
-        public KenoService(IKenoRepository repository, IGameAdminApi gameAdminApi)
+        public KenoService(IKenoRepository repository, IGameAdminApi gameAdminApi, IGenericRepository<ProvietKenoRoundLogEntity> logRepository)
         {
             this.repository = repository;
             this.gameAdminApi = gameAdminApi;
+            this.logRepository = logRepository;
         }
 
         public async Task<ProVietKenoRound> AddNewRoundResultAsync(CreateProVietKenoRound kenoRound)
@@ -189,6 +195,16 @@ namespace GamesAdmin.VietlottKeno
             var entity = await repository.FindOneAsync(x => x.Number == roundId);
 
             return entity != null ? ConvertToModel(entity) : null;
+        }
+
+        public async Task AddRoundLogEntity(long roundId, DateTime time, string source)
+        {
+            await logRepository.InsertOneAsync(new ProvietKenoRoundLogEntity
+            {
+                Number = roundId,
+                Time = time,
+                Source = source
+            });
         }
     }
 }

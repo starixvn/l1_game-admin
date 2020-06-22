@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
+using GamesAdmin.Workers.VietlottKeno;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Sentry;
@@ -105,6 +106,8 @@ namespace GamesAdmin.VietlottKeno
             if(round?.Result == null)
             {
                 var result = await kenoService.AddNewRoundResultAsync(createModel);
+                await kenoService.AddRoundLogEntity(result.Number, result.Time, vietlottKenoConfiguration.WebSocketUrl);
+
                 Console.WriteLine($"{DateTime.Now} - Added round {result.Number} to database!");
                 _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { result }));
             }
