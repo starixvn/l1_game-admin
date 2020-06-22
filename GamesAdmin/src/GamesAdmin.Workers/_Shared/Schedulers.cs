@@ -9,11 +9,13 @@ namespace GamesAdmin.Workers._Shared
         {
             scheduler
                .Schedule<CheckingLatestKenoRoundTask>()
-               .Cron("* 6-21 * * *");
+               .EveryMinute()
+               .When(CheckingLatestKenoRoundTask.CanRun);
 
-            //scheduler
-            //    .Schedule<CrawlingKenoRoundTask>()
-            //    .Cron("* 6-21 * * *");
+            scheduler
+                .Schedule<CrawlingKenoRoundTask>()
+                .EveryMinute()
+                .When(CrawlingKenoRoundTask.CanRun);
         }
     }
 }

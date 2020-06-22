@@ -23,35 +23,38 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
         public async Task Invoke()
         {
+            var currentTime = DateTime.UtcNow;
+            var web = new HtmlWeb();
+            var htmlDoc = await web.LoadFromWebAsync(configuration.WebUrl);
+
+            var latestRoundNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id = 'kq_ky']");
+            var latestRoundId = long.Parse(latestRoundNode.InnerText.Remove(0, 1));
+
+            var currentLatestRound = await kenoService.GetLatestRoundAsync();
+
+            if (currentLatestRound == null || (currentLatestRound.Result == null && currentLatestRound.Number == latestRoundId) || currentLatestRound.Number < latestRoundId)
+            {
+                var kenoBallNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='keno_ball']");
+                var result = kenoBallNodes.Select(x => byte.Parse(x.InnerText)).OrderBy(x => x);
+
+                await kenoService.AddNewRoundResultAsync(
+                    new CreateProVietKenoRound
+                    {
+                        Time = currentTime,
+                        Number = latestRoundId,
+                        Result = result
+                    });
+            }
+        }
+
+        public static Task<bool> CanRun()
+        {
             var startTimeOfDay = VietlottConstants.StartTimeOfDayUtc;
             var endTimeOfDay = VietlottConstants.EndTimeOfDayUtc;
-            var currentTime = DateTime.UtcNow;
+            var currentTime = DateTime.UtcNow.TimeOfDay;
 
-            if (currentTime.TimeOfDay.Subtract(startTimeOfDay).TotalMinutes >= 12|| endTimeOfDay.Subtract(currentTime.TimeOfDay).TotalMinutes >= 0)
-            {
-                var web = new HtmlWeb();
-                var htmlDoc = await web.LoadFromWebAsync(configuration.WebUrl);
-
-                var latestRoundNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id = 'kq_ky']");
-                var latestRoundId = long.Parse(latestRoundNode.InnerText.Remove(0, 1));
-
-                var currentLatestRound = await kenoService.GetLatestRoundAsync();
-
-                if (currentLatestRound == null || (currentLatestRound.Result == null && currentLatestRound.Number == latestRoundId) || currentLatestRound.Number < latestRoundId)
-                {
-                    var kenoBallNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='keno_ball']");
-                    var result = kenoBallNodes.Select(x => byte.Parse(x.InnerText)).OrderBy(x => x);
-
-                    await kenoService.AddNewRoundResultAsync(
-                        new CreateProVietKenoRound
-                        {
-                            Time = currentTime,
-                            Number = latestRoundId,
-                            Result = result
-                        });
-                }
-            }
-        
+            return Task.FromResult(currentTime.Subtract(startTimeOfDay).TotalMinutes >= 12
+                         || endTimeOfDay.Subtract(currentTime).TotalMinutes >= 0);
         }
     }
 }
