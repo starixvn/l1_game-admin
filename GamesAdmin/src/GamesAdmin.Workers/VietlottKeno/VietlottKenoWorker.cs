@@ -102,7 +102,7 @@ namespace GamesAdmin.VietlottKeno
 
             var round = await kenoService.GetByRoundIdAsync(createModel.Number);
 
-            if(round.Result == null || round == null)
+            if(round?.Result == null)
             {
                 var result = await kenoService.AddNewRoundResultAsync(createModel);
                 Console.WriteLine($"{DateTime.Now} - Added round {result.Number} to database!");
