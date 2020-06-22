@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
-        IRequestHandler<GetKenoProVietReportRequest, KenoProVietReportViewModel>
+        IRequestHandler<GetKenoProVietReportRequest, KenoReportViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -282,7 +282,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         {
             var betReport = await reportService.GetKenoProVietBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
 
-            return new KenoProVietReportViewModel
+            return new KenoReportViewModel
             {
                 RoundResult = new KenoResultViewModel(betReport.RoundResult.Results),
                 BetTickets = betReport.BetRecords

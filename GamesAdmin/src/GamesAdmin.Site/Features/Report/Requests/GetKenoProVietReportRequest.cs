@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetKenoProVietReportRequest : IRequest<KenoProVietReportViewModel>
+    public class GetKenoProVietReportRequest : IRequest<KenoReportViewModel>
     {
         public GetKenoProVietReportRequest(long roundId, string nickname, bool excludeBot)
         {
