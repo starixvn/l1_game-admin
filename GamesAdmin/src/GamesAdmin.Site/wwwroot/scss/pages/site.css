@@ -232,7 +232,6 @@
   display: flex;
   align-items: center;
   padding: 10px 12px;
-  margin: 1.6rem 0;
   border-radius: 4px; }
   .message-success [class^="icon-"], .message-error [class^="icon-"] {
     margin-right: 8px; }
