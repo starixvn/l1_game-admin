@@ -1,0 +1,200 @@
+﻿
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+    position: absolute;
+    left: 0;
+    width: 2.4rem;
+    height: .2rem;
+    background-color: #da624a;
+    transition-property: transform;
+    transition-duration: 0.15s;
+    transition-timing-function: ease;
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+    content: "";
+    display: block;
+}
+
+.hamburger-inner::before {
+    top: -0.6rem;
+    transition: opacity 0.125s 0.275s ease;
+}
+
+.hamburger-inner::after {
+    top: .7rem;
+    bottom: -0.6rem;
+    transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.sidebar {
+    width: 28rem;
+    z-index: 11;
+    overflow: hidden;
+    transition: all .2s;
+    background: $sidebar-bg;
+    border-radius: .35rem;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(31,10,6,0.03), 0 0.9375rem 1.40625rem rgba(31,10,6,0.03), 0 0.25rem 0.53125rem rgba(31,10,6,0.05), 0 0.125rem 0.1875rem rgba(31,10,6,0.03);
+    position: fixed;
+    left: 2rem;
+    top: 2rem;
+    height: calc(100% - 4rem);
+    z-index: 14;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .sidebar-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        border-bottom: rgba(0,0,0,0.04) solid 1px;
+        background: rgba(0,0,0,0.01);
+    }
+
+    &.active {
+        width: 8.2rem;
+
+        .hamburger-inner {
+            transform: translate3d(0, -1px, 0) rotate(135deg);
+            transition-delay: 0.075s;
+        }
+
+        .hamburger-inner::before {
+            transition-delay: 0s;
+            opacity: 0;
+        }
+
+        .hamburger-inner::after {
+            transform: translate3d(0, -7px, 0) rotate(-270deg);
+            transition-delay: 0.075s;
+        }
+
+        .site-name {
+            display: none;
+        }
+
+        .menu-name {
+            display: none;
+        }
+
+        .sidebar-header {
+            justify-content: center;
+        }
+
+        .nav-heading {
+            text-indent: 100rem;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 3.2rem;
+                height: .1rem;
+                background: #f7dfda;
+                margin-left: -1.8rem;
+            }
+        }
+
+        .vertical-nav-menu {
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: center;
+
+            a {
+                padding-left: 0;
+            }
+        }
+    }
+}
+
+.scrollbar-sidebar {
+    height: calc(100% - 55px);
+    overflow: auto;
+}
+
+.vertical-nav-menu {
+    margin: 0;
+    padding: .2rem 2.5rem;
+    position: relative;
+
+    .nav-heading {
+        position: relative;
+        text-transform: uppercase;
+        margin: 1.5rem 0;
+        color: #da624a;
+        opacity: .6;
+        white-space: nowrap;
+    }
+
+    .menu-item a {
+        display: block;
+        line-height: 4.5rem;
+        height: 4.5rem;
+        padding: 0 1.5rem 0 2.6rem;
+        position: relative;
+        color: #6c757d;
+        transition: all .2s;
+
+        &:hover {
+            text-decoration: none;
+            color: #000;
+        }
+
+
+        &.active {
+            color: #000;
+        }
+    }
+
+
+    .menu-icon {
+        width: 2rem;
+        position: absolute;
+        left: -.5rem;
+        top: 50%;
+        margin-top: -0.9rem;
+        font-size: 1.6rem;
+        text-align: center;
+        opacity: .45;
+        transition: color .2s;
+    }
+}
+
+
+.btn-hamburger {
+    position: relative;
+    height: 2.4rem;
+    width: 2.4rem;
+    padding: 0;
+    color: #da624a;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.site-name {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #f8715f;
+
+    .highlight {
+        color: #da624a;
+    }
+
+    &:hover, &:focus {
+        text-decoration: none;
+        color: #f8715f;
+    }
+}
+
+

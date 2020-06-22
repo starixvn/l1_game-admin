@@ -1,0 +1,27 @@
+﻿@import "../base/variables";
+
+// Notification
+
+.back-button .material-icons {
+    left: 0.9rem;
+}
+
+.tbl-notification {
+    .col-display {
+        width: 15rem;
+    }
+
+    .col-options {
+        width: 10rem;
+    }
+
+    .action-link {
+        margin: 0.6rem;
+        font-size: 2rem;
+        color: #6c757d;
+
+        &:hover {
+            color: #da624a;
+        }
+    }
+}

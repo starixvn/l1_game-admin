@@ -17,6 +17,7 @@
       "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "wwwroot/scss/base/material-icon.min.css",
       "wwwroot/scss/base/roboto.min.css",
+      "wwwroot/scss/themes/themel1.min.css",
       "wwwroot/scss/pages/site.min.css"
     ]
   },

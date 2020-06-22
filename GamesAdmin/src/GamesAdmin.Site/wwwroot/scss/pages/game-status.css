@@ -1,0 +1,48 @@
+﻿.game-status {
+  padding-left: 0;
+  padding-right: 0; }
+  .game-status .list-actions {
+    margin-bottom: 1.6rem; }
+  .game-status .btn-enable {
+    margin-right: 1.4rem; }
+  .game-status .force-reload {
+    margin-left: 15px; }
+
+.table {
+  background-color: #fff; }
+  .table .toggle-button {
+    margin-left: auto;
+    margin-right: auto; }
+  .table .col-check {
+    width: 4rem; }
+  .table .col-status {
+    width: 12.8rem; }
+  .table .message {
+    width: calc(100% - 5rem); }
+  .table .content-message {
+    max-width: calc(100% - 5rem); }
+  .table .btn-save,
+  .table .btn-edit {
+    width: 4rem;
+    background: none;
+    border: none;
+    outline: none; }
+  .table .btn-save {
+    position: relative;
+    top: -1.1rem; }
+  .table .icon-save {
+    font-size: 2.5rem;
+    color: #3ac47d; }
+    .table .icon-save:hover {
+      color: #3ac47d; }
+  .table .icon-edit {
+    position: relative;
+    top: .3rem;
+    font-size: 2rem;
+    color: #6c757d; }
+    .table .icon-edit:hover {
+      color: #3ac47d; }
+
+.game-details-content {
+  height: 71rem;
+  overflow: auto; }

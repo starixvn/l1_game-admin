@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\scss\pages\adjust-bot.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\scss\pages\online-users.css" />
   </ItemGroup>
 
 
@@ -149,8 +150,8 @@
     <None Include="wwwroot\lib\select2\dist\js\select2.full.min.js" />
     <None Include="wwwroot\lib\select2\dist\js\select2.js" />
     <None Include="wwwroot\lib\select2\dist\js\select2.min.js" />
-    <None Include="wwwroot\scss\fonts\icons\admin-icons\demo-files\demo.js" />
-    <None Include="wwwroot\scss\fonts\icons\admin-icons\fonts\icomoon.svg" />
+    <None Include="wwwroot\scss\fonts\admin-icons\demo-files\demo.js" />
+    <None Include="wwwroot\scss\fonts\admin-icons\fonts\icomoon.svg" />
   </ItemGroup>
 
 

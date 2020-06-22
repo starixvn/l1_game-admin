@@ -46,5 +46,9 @@
   {
     "outputFile": "wwwroot/scss/pages/notification.css",
     "inputFile": "wwwroot/scss/pages/notification.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/themes/themel1.css",
+    "inputFile": "wwwroot/scss/themes/themel1.scss"
   }
 ]
