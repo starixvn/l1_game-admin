@@ -284,7 +284,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new KenoReportViewModel
             {
-                RoundResult = new KenoResultViewModel(betReport.RoundResult.Results),
+                RoundResult = new KenoResultViewModel(betReport.RoundResult?.Results),
                 BetTickets = betReport.BetRecords
             };
         }

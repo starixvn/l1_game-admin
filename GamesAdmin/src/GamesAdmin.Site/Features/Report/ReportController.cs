@@ -122,7 +122,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetKenoProVietReport(long roundId, string nickname, bool excludeBot)
         {
-            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetKenoProVietReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_KenoProVietRecords", await mediator.Send(new GetKenoProVietReportRequest(roundId, nickname, excludeBot)));
         }
     }
 }

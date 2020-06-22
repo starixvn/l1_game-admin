@@ -10,45 +10,30 @@
             <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Results[0];</span> </h3>
         }
         <table class="table table-bordered table-hover">
-            <thead>               
+            <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th class="col-number">Stake</th>
-                    <th class="col-number">Win</th>                    
+                    <th class="col-number">Win</th>
                 </tr>
             </thead>
             <tbody>
-                @for (var i = 0; i < Model.Total; i++)
+                @foreach (var bet in Model.BetTickets)
                 {
-                    var bigRecord = bigRecords.ElementAtOrDefault(i);
-                    var smallRecord = smallRecords.ElementAtOrDefault(i);
+
                     <tr>
-                        <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>@bigRecord?.Username</td>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
                         <td>
-                            <a data-ajax="true" data-ajax-method="GET"  data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname"
-                            >
-                                @bigRecord?.Nickname
-                            </a>
+                            @*<a data-ajax="true" data-ajax-method="GET"  data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                                   asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname"
+                                >*@
+                            @bet.Nickname
+                            @*</a>*@
                         </td>
-                        <td class="text-right">@bigRecord?.Bet</td>
-                        <td class="text-right">@bigRecord?.Back</td>
-                        <td class="text-right">@bigRecord?.BetWin</td>
-                        <td class="line-cell"></td>
-                        <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>@smallRecord?.Username</td>
-                        <td class="col-nickname">
-                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body"  data-ajax-success="showModal('#modal')"
-                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@smallRecord?.Nickname">
-                                @smallRecord?.Nickname
-                            </a>
-                        </td>
-                        <td class="text-right">@smallRecord?.Bet</td>
-                        <td class="text-right">@smallRecord?.Back</td>
-                        <td class="text-right">@smallRecord?.BetWin</td>
+                        <td class="text-right">@bet.BetWin</td>
                     </tr>
 
                 }
@@ -63,14 +48,14 @@
                 else
                 {
                     @*<tr class="total">
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
-                        <td class="line-cell"></td>                        
-                    </tr>*@
+                            <td>Total</td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
+                            <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
+                            <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
+                            <td class="line-cell"></td>
+                        </tr>*@
                 }
             </tfoot>
         </table>

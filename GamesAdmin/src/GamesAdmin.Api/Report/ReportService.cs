@@ -289,11 +289,12 @@ namespace GamesAdmin.Api.Report
         public async Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
         {
             var round = await kenoProvietRoundEntity.FindOneAsync(round => round.Number == roundId);
-            var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId && ones.Name == nickname);
+            var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId);
 
-            var roundResult = new KenoRoundResult(round.Result, new KenoSettlementResult(round.SettlementResult));
+            var roundResult = round == null ? default : new KenoRoundResult(round.Result, new KenoSettlementResult(round.SettlementResult));
+            
             var betRecords = bets
-                .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds) 
+                .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)
                 {
                     Nickname = bet.Name,
                     BetWin = bet.Betwin,
@@ -303,7 +304,7 @@ namespace GamesAdmin.Api.Report
 
             return new KenoBetReport(roundResult, betRecords);
         }
-                
+
         private static Dictionary<string, decimal> ConvertToAmountByChoice(KenoProVietOnesEntity entity)
         {
             var amounts = new Dictionary<string, decimal>();

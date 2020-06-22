@@ -10,6 +10,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<KenoBetRecord> BetTickets { get; set; }
 
-        public int Total => BetTickets?.Count();
+        public int Total => BetTickets?.Count() == 0 ? 0 : BetTickets.Count();
     }
 }
