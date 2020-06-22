@@ -191,11 +191,11 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                             </Col>
                         </Row>
                         <Row>
-                            <Col align="center">
+                            <Col align="center" className="col-12 col-xl-6">
                                 <div className={styles.title}>Player</div>
                                 <BaccaratCardResult cardResult={result.playerCards} onCardClick={this.showDeskOfCards} selectedCard="playerCards" />
                             </Col>
-                            <Col align="center">
+                            <Col align="center" className="col-12 col-xl-6">
                                 <div className={styles.title}>Banker</div>
                                 <BaccaratCardResult cardResult={result.bankerCards} onCardClick={this.showDeskOfCards} selectedCard="bankerCards" />
                             </Col>
