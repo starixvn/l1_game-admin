@@ -17,10 +17,19 @@
 .card-result {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .card {
   padding: 2px;
+}
+
+.third-card {
+  width: 72px;
+
+  &>div {
+    transform: rotate(-90deg);
+  }
 }
 
 .set-button {
