@@ -159,6 +159,9 @@
     <Content Update="appsettings.json">
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
+    <Content Update="wwwroot\scss\themes\themel2.min.css">
+      <DependentUpon>themel2.css</DependentUpon>
+    </Content>
   </ItemGroup>
 
 </Project>

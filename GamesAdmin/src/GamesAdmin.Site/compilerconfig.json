@@ -50,5 +50,9 @@
   {
     "outputFile": "wwwroot/scss/themes/themel1.css",
     "inputFile": "wwwroot/scss/themes/themel1.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/themes/themel2.css",
+    "inputFile": "wwwroot/scss/themes/themel2.scss"
   }
 ]
