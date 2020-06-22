@@ -109,13 +109,8 @@ namespace GamesAdmin.Site.Features._Shared
             return Task.FromResult(new JsonWebToken());
         }
 
-        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds, bool disabled = true)
+        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
         {
-            if (disabled)
-            {
-                return;
-            }
-
             foreach (var round in kenoRounds)
             {
                 try
