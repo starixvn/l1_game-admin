@@ -42,16 +42,11 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
       })
     }
 
-    if (!!data.phien) {
-      this.setState({
-        roundNumber: data.phien,
-      });
-    }
-
     if (!!data.time_remain) {
       if (data.time_remain > 30) {
         this.setState({
           gameState: GameState.waiting,
+          roundNumber: data.phien - 1,
           time: {
             remainingTime: data.time_remain - 31
           }
@@ -70,7 +65,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
       else {
         this.setState({
           gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
+          roundNumber: data.phien,
           time: {
             remainingTime: data.time_remain
           }

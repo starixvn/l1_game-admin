@@ -56,12 +56,6 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
       })
     }
 
-    if (!!data.phien) {
-      this.setState({
-        roundNumber: data.phien,
-      });
-    }
-
     if (!!data.finish) {
       this.setState({
         result: this.getResult(data.finish),
@@ -97,6 +91,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
       if (data.time_remain > 31) {
         this.setState({
           gameState: GameState.waiting,
+          roundNumber: data.phien - 1,
           time: {
             remainingTime: data.time_remain - 31
           }
@@ -119,6 +114,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
       } else {
         this.setState({
           gameState: GameState.running,
+          roundNumber: data.phien,
           time: {
             remainingTime: data.time_remain
           },

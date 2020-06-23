@@ -64,12 +64,6 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
 
     }
 
-    if (!!data.phien) {
-      this.setState({
-        roundNumber: data.phien,
-      });
-    }
-
     if (!!data.list) {
       this.setState({
         betList: this.getUserBetList(data.list, this.state.betList)
@@ -109,6 +103,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           time: {
             remainingTime: data.time_remain - totalRemainingTime
           },
+          roundNumber: data.phien - 1,
           currentState: GameState.waiting
         })
 
@@ -132,6 +127,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           time: {
             remainingTime: data.time_remain
           },
+          roundNumber: data.phien,
           isHavingResult: false,
           result: [
             new DiceModel(-1, DiceType.TaiXiu),
