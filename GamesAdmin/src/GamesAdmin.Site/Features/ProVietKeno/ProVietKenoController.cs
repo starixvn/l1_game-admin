@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         [HttpGet]
         public async Task<IActionResult> GetKenoRounds(DateTime date)
         {
-            var result = await mediator.Send(new GetRoundsRequest(date);
+            var result = await mediator.Send(new GetRoundsRequest(date));
             return PartialView("_KenoRounds", result);
         }
 
