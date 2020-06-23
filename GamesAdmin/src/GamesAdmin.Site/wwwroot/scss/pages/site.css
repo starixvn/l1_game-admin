@@ -162,12 +162,15 @@
   .table .total td {
     font-weight: 600; }
 
+.table .icon-action:hover {
+  text-decoration: none; }
+
 .table .icon-edit {
   position: relative;
   font-size: 1.6rem;
   color: #6c757d; }
   .table .icon-edit:hover {
-    color: #3ac47d; }
+    color: #da624a; }
 
 .table .icon-check {
   font-size: 1.6rem;
