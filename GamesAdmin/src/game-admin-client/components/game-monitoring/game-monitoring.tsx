@@ -47,6 +47,8 @@ const gameNameMapper = {
   kenopromax: 8,
   minisedie: 9,
   baccarat: 10,
+  kenomax: 12,
+  kenomax2: 13,
   kenomini: 14,
   kenomini2: 15,
   kenoeast: 16,
