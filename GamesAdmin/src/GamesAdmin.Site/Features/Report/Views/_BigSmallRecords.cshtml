@@ -1,5 +1,6 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Site.Features._Shared.Helpers;
 
 @model BigSmallReportResultViewModel
 
@@ -47,27 +48,26 @@
                         <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bigRecord?.Username</td>
                         <td>
-                            <a data-ajax="true" data-ajax-method="GET"  data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname"
-                            >
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname">
                                 @bigRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@bigRecord?.Bet</td>
-                        <td class="text-right">@bigRecord?.Back</td>
-                        <td class="text-right">@bigRecord?.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.BetWin)</td>
                         <td class="line-cell"></td>
                         <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@smallRecord?.Username</td>
                         <td class="col-nickname">
-                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body"  data-ajax-success="showModal('#modal')"
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@smallRecord?.Nickname">
                                 @smallRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@smallRecord?.Bet</td>
-                        <td class="text-right">@smallRecord?.Back</td>
-                        <td class="text-right">@smallRecord?.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.BetWin)</td>
                     </tr>
 
                 }
@@ -85,16 +85,16 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.BetWin))</td>
                         <td class="line-cell"></td>
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@smallRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@smallRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@smallRecords.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.BetWin))</td>
                     </tr>
                 }
             </tfoot>

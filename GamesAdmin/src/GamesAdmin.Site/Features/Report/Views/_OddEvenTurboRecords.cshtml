@@ -1,5 +1,6 @@
-﻿@using GamesAdmin.Core
-@using GamesAdmin.Site.Features.Report.ViewModels
+﻿@using GamesAdmin.Core;
+@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Site.Features._Shared.Helpers;
 
 @model OddEvenTurboReportResultViewModel
 
@@ -52,9 +53,9 @@
                                 @evenRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@evenRecord?.Bet</td>
-                        <td class="text-right">@evenRecord?.Back</td>
-                        <td class="text-right">@evenRecord?.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecord?.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecord?.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecord?.BetWin)</td>
                         <td class="line-cell"></td>
                         <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@oddRecord?.Username</td>
@@ -62,10 +63,11 @@
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="GetOddEvenTurboBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@oddRecord?.Nickname">
                                 @oddRecord?.Nickname
-                            </a></td>
-                        <td class="text-right">@oddRecord?.Bet</td>
-                        <td class="text-right">@oddRecord?.Back</td>
-                        <td class="text-right">@oddRecord?.BetWin</td>
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecord?.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecord?.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecord?.BetWin)</td>
                     </tr>
 
                 }
@@ -83,16 +85,16 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@evenRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@evenRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@evenRecords.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecords.Sum(x => x.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecords.Sum(x => x.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecords.Sum(x => x.BetWin))</td>
                         <td class="line-cell"></td>
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@oddRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@oddRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@oddRecords.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecords.Sum(x => x.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecords.Sum(x => x.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecords.Sum(x => x.BetWin))</td>
                     </tr>
                 }
             </tfoot>
