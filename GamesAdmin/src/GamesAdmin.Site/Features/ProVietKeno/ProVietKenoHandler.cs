@@ -31,13 +31,14 @@ namespace GamesAdmin.Site.Features.ProVietKeno
 
         public async Task<IEnumerable<ProVietKenoRoundViewModel>> Handle(GetRoundsRequest request, CancellationToken cancellationToken)
         {
-            var result = await provietKenoService.GetRoundsAsync(request.Date);
+            var utcDate = TimeZoneInfo.ConvertTimeToUtc(request.Date, appSettings.DefaultTimeZone);
+            var result = await provietKenoService.GetRoundsAsync(utcDate);
 
             return result.OrderByDescending(x => x.Number).Select(x => new ProVietKenoRoundViewModel
             {
                 Result = x.Result,
                 RoundNo = x.Number.ToString("D7"),
-                Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                 Big = x.Big,
                 Small = x.Small,
                 Even = x.Even,
