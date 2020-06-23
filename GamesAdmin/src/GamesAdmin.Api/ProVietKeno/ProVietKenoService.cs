@@ -12,7 +12,7 @@ namespace GamesAdmin.Api.ProVietKeno
 {
     public interface IProVietKenoService
     {
-        Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date);
+        Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTimeOffset date);
 
         Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound);
 
@@ -42,12 +42,12 @@ namespace GamesAdmin.Api.ProVietKeno
             return null;
         }
 
-        public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
+        public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTimeOffset date)
         {
-            var fromDate = date;
+            var fromDate = date.UtcDateTime;
             var toDate = fromDate.AddDays(1);
 
-            var result = await repository.FilterByAsync(x => x.Time >= fromDate && x.Time < toDate);
+            var result = (await repository.FilterByAsync(x => x.Time >= fromDate && x.Time < toDate)).ToList();
 
             var rounds = result.Select(x => x.ConvertToModel());
             return rounds;

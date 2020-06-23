@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         }
 
         public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
-        => await provietKenoApi.GetRounds(date);
+        => await provietKenoApi.GetRounds(date.ToString("o"));
 
         public async Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound)
         => await provietKenoApi.Create(kenoRound);

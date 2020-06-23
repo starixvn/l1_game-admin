@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.ProVietKeno
 
         [HttpGet]
         [Route("rounds/{date}")]
-        public async Task<IEnumerable<ProVietKenoRound>> GetRounds(DateTime date)
+        public async Task<IEnumerable<ProVietKenoRound>> GetRounds(DateTimeOffset date)
             => (await mediator.Send(new GetRoundsRequest(date)));
 
         [HttpPost]

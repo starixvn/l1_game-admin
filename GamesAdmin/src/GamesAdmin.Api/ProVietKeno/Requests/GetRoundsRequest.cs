@@ -7,11 +7,11 @@ namespace GamesAdmin.Api.ProVietKeno.Requests
 {
     public class GetRoundsRequest : IRequest<IEnumerable<ProVietKenoRound>>
     {
-        public GetRoundsRequest(DateTime date)
+        public GetRoundsRequest(DateTimeOffset date)
         {
             Date = date;
         }
 
-        public DateTime Date { get; }
+        public DateTimeOffset Date { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
     public interface IProVietKenoApi : IBaseAuthorizationApi
     {
         [Get("/proviet_keno/rounds/{date}")]
-        Task<IEnumerable<ProVietKenoRound>> GetRounds([Query(Format = "yyyy-MM-ddTHH:mm:ssZ")]DateTime date);
+        Task<IEnumerable<ProVietKenoRound>> GetRounds(string date);
 
         [Post("/proviet_keno/rounds/create")]
         Task<ProVietKenoRound> Create([Body] CreateProVietKenoRound kenoRound);
