@@ -2,7 +2,7 @@
 
 @model IEnumerable<GamesAdmin.Site.Features.ProVietKeno.ViewModels.ProVietKenoRoundViewModel>
 
-<table id="vietlott-keno-table" class="table table-bordered table-hover stripe tble-vietlot">
+<table id="vietlott-keno-table" class="table table-bordered table-hover stripe tble-vietlot sticky-table">
     <thead>
         <tr>
             <th>Round No / Time (GMT+7)</th>
@@ -63,9 +63,9 @@
                         @("Earth")
                     }
                 </td>
-                <th>
+                <td class="text-center">
                     <input type="checkbox" checked="@item.Settled" onclick="return false;"/> 
-                </th>
+                </td>
             </tr>
         }
     </tbody>
