@@ -112,6 +112,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
             time: {
               remainingTime: totalRemainingTime,
             },
+            roundNumber: this.state.roundNumber + 1,
             currentState: GameState.running,
             isHavingResult: false,
             result: [

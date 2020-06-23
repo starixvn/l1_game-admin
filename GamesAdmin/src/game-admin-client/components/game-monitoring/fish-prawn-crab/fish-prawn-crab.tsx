@@ -103,6 +103,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             time: {
               remainingTime: 30,
             },
+            roundNumber: this.state.roundNumber + 1,
             winers: [false, false, false, false, false, false],
             result: [
               new DiceModel(-1, DiceType.BauCua),
