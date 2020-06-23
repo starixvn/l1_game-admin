@@ -141,5 +141,7 @@ namespace GamesAdmin.Database
 
         public Task UpdateManyAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null)
         => collection.UpdateManyAsync(filterExpression, updateDefinition, options);
+
+        public IAggregateFluent<TDocument> Aggregate() => collection.Aggregate();
     }
 }

@@ -58,5 +58,7 @@ namespace GamesAdmin.Database
         Task UpdateAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null);
 
         Task UpdateManyAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null);
+
+        IAggregateFluent<TDocument> Aggregate();
     }
 }

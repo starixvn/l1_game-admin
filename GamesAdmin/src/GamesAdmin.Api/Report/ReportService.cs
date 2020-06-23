@@ -291,7 +291,9 @@ namespace GamesAdmin.Api.Report
             var round = await kenoProvietRoundEntity.FindOneAsync(round => round.Number == roundId);
             var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId);
 
-            var roundResult = round == null ? default : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
+            var roundResult = round == null
+                ? default
+                : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
 
             var betRecords = bets
                 .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)

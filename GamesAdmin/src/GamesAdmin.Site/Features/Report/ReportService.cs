@@ -73,6 +73,6 @@ namespace GamesAdmin.Site.Features.ClientSites
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
         public Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot)
-        => reportApi.GetKenoProVietReport(roundId, nickname, excludeBot);
+        => reportApi.GetKenoProVietReport(GameType.KenoProVietValue, roundId, nickname, excludeBot);
     }
 }
