@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react';
-import {Col, Container, Row} from 'reactstrap';
+import React, { useEffect } from 'react';
+import { Col, Container, Row } from 'reactstrap';
 import style from './monitor-board.module.scss';
 import TimeCounter from '../../../shared/time-counter/count-down';
 import RoundNum from '../../../shared/round-num/round-num';
 import AmountBoard from './amount-board';
-import {BetChoice} from './model';
+import { BetChoice } from './model';
 
 type Props = {
+  gameName: string,
   remainingTime: number
   roundId: number
   renderSettlementResult: Function
@@ -15,10 +16,22 @@ type Props = {
   placingBetTime: number
   lockingBetTime: number,
   reset: Function,
-}
+};
 
-export default function(props: Props) {
+const GAME_NAMES = {
+  "kenoMax": "Keno Max",
+  "kenoMax2": "Keno Max 2",
+  "kenoMini": "Keno Mini",
+  "kenoMini2": "Keno Mini 2",
+  "kenoEast": "Keno East",
+  "kenoWest": "Keno West",
+  "kenoSouth": "Keno South",
+  "kenoNorth": "Keno North"
+};
+
+export default function (props: Props) {
   const {
+    gameName,
     remainingTime,
     roundId,
     placingBetTime,
@@ -44,16 +57,19 @@ export default function(props: Props) {
   }, [props.placingBetTime]);
 
   return (
-    <Container>
+    <Container fluid>
       <Row>
-        <Col className='col-12 col-lg-4'>
+        <Col align="center" className='col-12 col-lg-2'>
+          <span className={style["game-name"]}>{GAME_NAMES[gameName]}</span>
+        </Col>
+        <Col className='col-12 col-lg-3'>
           <Row className='justify-content-center'>
             <div className={style['time-counter']}>
               <TimeCounter
                 ref={timeCounterRef}
                 remainingTime={remainingTime}
                 placingBetTime={placingBetTime}
-                lockingBetTime={lockingBetTime}/>
+                lockingBetTime={lockingBetTime} />
               <RoundNum roundNumber={roundId} />
             </div>
             <div onClick={showSetResultPanel}>
@@ -61,8 +77,8 @@ export default function(props: Props) {
             </div>
           </Row>
         </Col>
-        <Col className='col-12 col-lg-8'>
-          <AmountBoard choices={choices}/>
+        <Col className='col-12 col-lg-7'>
+          <AmountBoard choices={choices} />
         </Col>
       </Row>
     </Container>
