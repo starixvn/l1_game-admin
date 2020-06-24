@@ -202,7 +202,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                         </Row>
                     </Col>
                     <Col align="center" className='col-12 col-lg-1'>
-                        <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input>
+                        ${!this.props.isProduction && <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input>}
                     </Col>
                     <Col className='p-0 col-12 col-lg-7'>
                         <Row className={styles['row-style']}>
