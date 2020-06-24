@@ -40,8 +40,12 @@
     justify-content: center;
     align-items: center;
     font-size: 1.8rem; }
+    .table .icon-history:hover {
+      color: #da624a; }
   .table .icon-chart {
     font-size: 1.8rem; }
+    .table .icon-chart:hover {
+      color: #da624a; }
 
 .hidden-cls {
   display: none; }
