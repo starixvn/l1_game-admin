@@ -16,6 +16,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         IRequestHandler<GetRoundsRequest, IEnumerable<ProVietKenoRoundViewModel>>,
         IRequestHandler<CreateRoundRequest, Unit>,
         IRequestHandler<NotifyRoundResultRequest, Unit>,
+        IRequestHandler<SettleRoundRequest, Unit>,
         IRequestHandler<GetByRoundIdRequest, ProVietKenoRound>
     {
         private readonly IProVietKenoService provietKenoService;
@@ -37,7 +38,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             return result.OrderByDescending(x => x.Number).Select(x => new ProVietKenoRoundViewModel
             {
                 Result = x.Result,
-                RoundNo = x.Number.ToString("D7"),
+                RoundId = x.Number,
                 Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                 Big = x.Big,
                 Small = x.Small,
@@ -86,6 +87,14 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         public async Task<ProVietKenoRound> Handle(GetByRoundIdRequest request, CancellationToken cancellationToken)
         {
             return await provietKenoService.GetByRoundIdAsync(request.RoundId);
+        }
+
+        public async Task<Unit> Handle(SettleRoundRequest request, CancellationToken cancellationToken)
+        {
+            var round = await provietKenoService.GetByRoundIdAsync(request.RoundId);
+            await gameServerService.NotifyRoundResult(new[] { round });
+
+            return Unit.Value;
         }
     }
 }

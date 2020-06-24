@@ -28,6 +28,9 @@
                     validate.showErrors(errorObj);
                 }
             }
+        },
+        onSettleSuccess: function () {
+            $kenoForm.submit();
         }
     }
 }(jQuery));

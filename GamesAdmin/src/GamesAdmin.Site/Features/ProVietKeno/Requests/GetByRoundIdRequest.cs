@@ -1,11 +1,10 @@
-﻿using GamesAdmin.Core.Models;
-using MediatR;
+﻿using MediatR;
 
 namespace GamesAdmin.Site.Features.ProVietKeno.Requests
 {
-    public class GetByRoundIdRequest : IRequest<ProVietKenoRound>
+    public class SettleRoundRequest : IRequest
     {
-        public GetByRoundIdRequest(long roundId)
+        public SettleRoundRequest(long roundId)
         {
             RoundId = roundId;
         }

@@ -64,6 +64,12 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             return Json(new { isSuccessful = false, errors });
         }
 
+        public async Task<IActionResult> SettleRound(long roundId)
+        {
+            await mediator.Send(new SettleRoundRequest(roundId));
+            return Ok();
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)

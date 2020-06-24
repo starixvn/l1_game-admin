@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno.ViewModels
     {
         public DateTime Time { get; set; }
 
-        public string RoundNo { get; set; }
+        public long RoundId { get; set; }
 
         public IEnumerable<byte> Result { get; set; }
 
