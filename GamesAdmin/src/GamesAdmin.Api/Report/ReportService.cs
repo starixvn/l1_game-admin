@@ -9,8 +9,10 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Keno;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Api.Report
 {
@@ -303,6 +305,14 @@ namespace GamesAdmin.Api.Report
                     Time = bet.Time
                 })
                 .ToList();
+
+            var filter = new FilterDefinitionBuilder<KenoProVietOnesEntity>().Eq(x=> x.Round, roundId);
+
+            //var betTickets = kenoProVietOnesRepository
+            //    .Aggregate()
+            //    .Match(filter)
+            //    .SortBy(x => x.Id)
+            //    .Lookup<AccountEntity, KenoBetRecord>(Document.GetCollectionName(typeof(AccountEntity)));
 
             return new KenoBetReport(roundResult, betRecords);
         }
