@@ -28,8 +28,8 @@ namespace GamesAdmin.Site.Features.Bot
             this.api = api;
         }
 
-        public Task DisableRandomly() => api.ReviseBalance();
+        public Task DisableRandomly() => api.DisableRandomly();
 
-        public Task ReviseBalance() => api.DisableRandomly();
+        public Task ReviseBalance() => api.ReviseBalance();
     }
 }
