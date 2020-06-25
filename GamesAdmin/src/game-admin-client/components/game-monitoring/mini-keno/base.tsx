@@ -1,55 +1,55 @@
-import React from 'react';
+import React from "react";
 import { BetChoice } from "./shared/model";
 import GameTemplate from "../game-template/game-template";
-import MonitorBoard from './shared/monitor-board';
-import BetTable from './shared/bet-table';
-import KenoResult from '../../shared/keno-result/keno-result';
-import style from './base.module.scss';
-import KenoResultUpdater from '../../shared/keno-result-updater/keno-result-updater';
-import { duration } from 'moment';
+import MonitorBoard from "./shared/monitor-board";
+import BetTable from "./shared/bet-table";
+import KenoResult from "../../shared/keno-result/keno-result";
+import style from "./base.module.scss";
+import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
+import { duration } from "moment";
 
 type Props = {
-  onMessage: Function
-  sendMessage: Function
-  gameName: string
-  sizeOfNumbers: number
-  isProduction: boolean
-  isMini?: boolean
+  onMessage: Function;
+  sendMessage: Function;
+  gameName: string;
+  sizeOfNumbers: number;
+  isProduction: boolean;
+  isMini?: boolean;
 };
 
 type State = {
-  remainingTime: number
-  roundId: number
-  choices: Array<BetChoice>
+  remainingTime: number;
+  roundId: number;
+  choices: Array<BetChoice>;
   durations: {
-    wholeRound: number
-    placingBets: number
-    lockingBet: number
-  }
-  resultText: string
-  result: Array<number>
-  boxes: Array<string>
-  isShowSetResultPanel: boolean
-}
+    wholeRound: number;
+    placingBets: number;
+    lockingBet: number;
+  };
+  resultText: string;
+  result: Array<number>;
+  boxes: Array<string>;
+  isShowSetResultPanel: boolean;
+};
 
 type KenoMessage = {
-  totalBets: { [key: string]: number }
-  remainingTime: number
-  roundId: number
+  totalBets: { [key: string]: number };
+  remainingTime: number;
+  roundId: number;
   durations: {
-    wholeRound: number
-    placingBets: number
-    lockingBet: number
-  }
-  ingame: { [username: string]: { [box: string]: number } }
+    wholeRound: number;
+    placingBets: number;
+    lockingBet: number;
+  };
+  ingame: { [username: string]: { [box: string]: number } };
   finish: {
-    result: Array<number>
-    roundId: number
-    settlementResult: { [box: string]: boolean }
-    time: Date
-  }
-  choices: Array<string>
-}
+    result: Array<number>;
+    roundId: number;
+    settlementResult: { [box: string]: boolean };
+    time: Date;
+  };
+  choices: Array<string>;
+};
 
 export default class extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -64,11 +64,11 @@ export default class extends React.Component<Props, State> {
         placingBets: 0,
         lockingBet: 0,
       },
-      resultText: '',
+      resultText: "",
       result: [],
       boxes: null,
       isShowSetResultPanel: false,
-    }
+    };
 
     this.showSetResultPanel = this.showSetResultPanel.bind(this);
     this.renderSettlementResult = this.renderSettlementResult.bind(this);
@@ -94,19 +94,19 @@ export default class extends React.Component<Props, State> {
           if (message.remainingTime > durations.placingBets) {
             this.setState({
               roundId: message.roundId - 1,
-              remainingTime: message.remainingTime + 1
+              remainingTime: message.remainingTime + 1,
             });
 
             setTimeout(() => {
               this.setState({
                 roundId: this.state.roundId + 1,
-                remainingTime: durations.placingBets
-              })
+                remainingTime: durations.placingBets,
+              });
             }, (message.remainingTime - durations.placingBets + 1) * 1000);
           } else {
             this.setState({
               roundId: message.roundId,
-              remainingTime: message.remainingTime
+              remainingTime: message.remainingTime,
             });
           }
         },
@@ -119,33 +119,37 @@ export default class extends React.Component<Props, State> {
         selector: () => message.ingame && message.totalBets,
         handle: () => {
           const { ingame } = message;
-          const choices = this.state.choices.map(choice => {
+          const choices = this.state.choices.map((choice) => {
             const bets = Object.values(ingame)
-              .map(bet => ({
+              .map((bet) => ({
                 name: bet.name.toString(),
-                bet: bet[choice.name],
+                bet: bet.betTracks[choice.name],
               }))
-              .filter(betOfUser => betOfUser.bet > 0);
+              .filter((betOfUser) => betOfUser.bet > 0);
 
             choice.bets = bets;
             return choice;
           });
 
           this.setState({ choices });
-        }
+        },
       },
       {
         selector: () => message.finish,
         handle: () => {
           const { settlementResult, result } = message.finish;
-          const choices = this.state.choices.map(choice => {
+          const choices = this.state.choices.map((choice) => {
             choice.isWin = settlementResult[choice.name];
             return choice;
           });
           const resultText = this.state.choices
             .reduce(
-              (result, choice) => choice.isWin ? `${result} - ${choice.name.toUpperCase()}` : result,
-              '')
+              (result, choice) =>
+                choice.isWin
+                  ? `${result} - ${choice.name.toUpperCase()}`
+                  : result,
+              ""
+            )
             .substr(3);
 
           this.setState({ choices, result, resultText });
@@ -154,17 +158,19 @@ export default class extends React.Component<Props, State> {
       {
         selector: () => message.choices && !this.state.boxes,
         handle: () => {
-          const choices = message.choices.map(choice => new BetChoice([], choice, false));
+          const choices = message.choices.map(
+            (choice) => new BetChoice([], choice, false)
+          );
           this.setState({ boxes: message.choices, choices });
         },
       },
     ];
 
-    actions.forEach(action => action.selector() && action.handle());
+    actions.forEach((action) => action.selector() && action.handle());
   }
 
   reset() {
-    const choices = this.state.choices.map(choice => {
+    const choices = this.state.choices.map((choice) => {
       choice.bets = [];
       choice.isWin = false;
       return choice;
@@ -180,29 +186,27 @@ export default class extends React.Component<Props, State> {
   renderSettlementResult() {
     return (
       <>
-        <KenoResult listResult={this.state.result} maxLength={this.props.sizeOfNumbers} />
-        <div className={style.result}>
-          {this.state.resultText}
-        </div>
+        <KenoResult
+          listResult={this.state.result}
+          maxLength={this.props.sizeOfNumbers}
+        />
+        <div className={style.result}>{this.state.resultText}</div>
       </>
     );
   }
 
   updaterSubmit(list: Array<number>, listLabel: Array<string>) {
     const resultText = listLabel
-      .reduce((result, label) => `${result} - ${label.toUpperCase()}`, '')
+      .reduce((result, label) => `${result} - ${label.toUpperCase()}`, "")
       .substr(3);
     this.setState({ result: list, resultText, isShowSetResultPanel: false });
-    this.props.sendMessage({ setResult: { result: list, roundId: this.state.roundId } });
+    this.props.sendMessage({
+      setResult: { result: list, roundId: this.state.roundId },
+    });
   }
 
   render() {
-    const {
-      remainingTime,
-      roundId,
-      choices,
-      durations,
-    } = this.state;
+    const { remainingTime, roundId, choices, durations } = this.state;
 
     const { gameName } = this.props;
 
@@ -228,15 +232,15 @@ export default class extends React.Component<Props, State> {
           renderMonitor={React.createElement(MonitorBoard, monitorProps)}
           renderBetList={React.createElement(BetTable, betTableProps)}
         />
-        {!this.props.isProduction &&
+        {!this.props.isProduction && (
           <KenoResultUpdater
             modal={this.state.isShowSetResultPanel}
             toggle={this.showSetResultPanel}
             submit={this.updaterSubmit}
             isMini={this.props.isMini}
           />
-        }
+        )}
       </div>
-    )
+    );
   }
 }
