@@ -90,6 +90,7 @@ export default class extends React.Component<Props, State> {
         selector: () => message.remainingTime,
         handle: () => {
           const { durations } = this.state;
+
           if (message.remainingTime > durations.placingBets) {
             this.setState({
               roundId: message.roundId - 1,
