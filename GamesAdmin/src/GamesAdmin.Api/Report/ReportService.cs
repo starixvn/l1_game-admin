@@ -12,8 +12,6 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Keno;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Api.Report
@@ -40,20 +38,14 @@ namespace GamesAdmin.Api.Report
     public class ReportService : IReportService
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository;
-        private readonly IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository;
-        private readonly IGenericRepository<AccountEntity> accountRepository;
+        private readonly IKenoReport kenoReport;
 
         public ReportService(
             IServiceProvider serviceProvider,
-            IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository,
-            IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository,
-            IGenericRepository<AccountEntity> accountRepository)
+            IKenoReport kenoReport)
         {
             this.serviceProvider = serviceProvider;
-            this.kenoProVietOnesRepository = kenoProVietOnesRepository;
-            this.kenoProvietRoundRepository = kenoProvietRoundRepository;
-            this.accountRepository = accountRepository;
+            this.kenoReport = kenoReport;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -293,59 +285,7 @@ namespace GamesAdmin.Api.Report
             return result;
         }
 
-        public async Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
-        {
-            var round = await kenoProvietRoundRepository.FindOneAsync(round => round.Number == roundId);
-
-            var roundResult = round == null
-                ? default
-                : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
-
-            var newBets = await kenoProVietOnesRepository
-                   .Aggregate()
-                   .Match(x => x.Round == roundId)
-                   .AppendStage<KenoProVietOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                   .Lookup<KenoProVietOnesEntity, AccountEntity, LookedUpKenoOnes>(
-                       accountRepository.Collection(),
-                       x => x.UserId,
-                       y => y.Id,
-                       y => y.InnerUsers
-                   )
-                   .ToListAsync();
-
-            var betRecords = newBets
-                .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)
-                {
-                    Nickname = bet.Name,
-                    BetWin = bet.Betwin,
-                    Time = bet.Time,
-                    Username = bet.InnerUsers.FirstOrDefault().Local.Username
-                })
-                .ToList();
-
-            return new KenoBetReport(roundResult, betRecords);
-        }
-
-        private static Dictionary<string, decimal> ConvertToAmountByChoice(KenoProVietOnesEntity entity)
-        {
-            var amounts = new Dictionary<string, decimal>();
-
-            amounts[KenoBetChoice.BigValue] = entity.Big;
-            amounts[KenoBetChoice.SmallValue] = entity.Small;
-            amounts[KenoBetChoice.OddValue] = entity.Odd;
-            amounts[KenoBetChoice.EvenValue] = entity.Even;
-            amounts[KenoBetChoice.GoldValue] = entity.Gold;
-            amounts[KenoBetChoice.EarthValue] = entity.Earth;
-            amounts[KenoBetChoice.FireValue] = entity.Fire;
-            amounts[KenoBetChoice.WaterValue] = entity.Water;
-            amounts[KenoBetChoice.WoodValue] = entity.Wood;
-
-            return amounts;
-        }
-    }
-
-    public class LookedUpKenoOnes : KenoProVietOnesEntity
-    {
-        public IEnumerable<AccountEntity> InnerUsers { get; set; }
+        public Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
+        => kenoReport.GetReportAsync(roundId, nickname);
     }
 }
