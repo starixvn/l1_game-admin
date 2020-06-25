@@ -86,7 +86,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                         remainingTime: TOTAL_TIME
                     }
                 })
-            }, (remainingTime - TOTAL_TIME - 1) * 1000)
+            }, (remainingTime - TOTAL_TIME + 1) * 1000)
         } else {
             this.setState({
                 gameState: GameState.running,
