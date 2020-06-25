@@ -187,7 +187,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     const { turbo, type } = this.props;
     const { betList, time, roundNumber, result, firstBetTypeUsers, secondBetTypeUsers, isHavingResult, currentState } = this.state;
 
-    const gameName = `${turbo ? "Turbo " : ""}${types.taixiu ? "Big Small" : "Odd Event"}`;
+    const gameName = `${turbo ? "Turbo " : ""}${type == types.taixiu ? "Big Small" : "Odd Even"}`;
     const type1 = type == types.taixiu ? gameMapping.taixiu[0] : gameMapping.chanle[0];
     const type2 = type == types.taixiu ? gameMapping.taixiu[1] : gameMapping.chanle[1];
     let winner = '';
