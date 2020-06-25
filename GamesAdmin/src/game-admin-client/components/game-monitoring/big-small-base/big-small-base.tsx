@@ -187,7 +187,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     const { turbo, type } = this.props;
     const { betList, time, roundNumber, result, firstBetTypeUsers, secondBetTypeUsers, isHavingResult, currentState } = this.state;
 
-    const turboText = turbo ? "Turbo" : "";
+    const gameName = `${turbo ? "Turbo " : ""}${types.taixiu ? "Big Small" : "Odd Event"}`;
     const type1 = type == types.taixiu ? gameMapping.taixiu[0] : gameMapping.chanle[0];
     const type2 = type == types.taixiu ? gameMapping.taixiu[1] : gameMapping.chanle[1];
     let winner = '';
@@ -200,7 +200,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
       <Container>
         <Row>
           <span className={styles.turbo}>
-            <div>{turboText}</div>
+            <div>{gameName}</div>
           </span>
           <Col align="center" className={styles["flex-col"]}>
             <TotalBet type={type1} total={betList.firstBetType.total} isWin={gameMapping[type][0] == winner} />

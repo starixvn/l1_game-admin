@@ -183,6 +183,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
           <Col align='center' className={styles['shakeThePlate-timmer']}>
             <TimeCounter remainingTime={time.remainingTime} gameState={gameState} key={gameState} />
             <div>
+              <div className={styles.title}>Se Die</div>
               <Row className={styles.result}>
                 <Dice diceModel={result[0]} isSmall={false} />
                 <Dice diceModel={result[1]} isSmall={false} />

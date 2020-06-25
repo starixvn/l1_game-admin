@@ -159,6 +159,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
       <Container className={styles['shakeThePlate-container']}>
         <Row>
           <Col align='center' className={styles['shakeThePlate-timmer']}>
+            <div className={styles.title}>Mini Se Die</div>
             <TimeCounter remainingTime={time.remainingTime} gameState={gameState} />
             <Row className={styles.result}>
               <Dice diceModel={result[0]} isSmall={false} />

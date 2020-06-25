@@ -122,7 +122,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   getResult(result) {
     return [this.getCardResult(result[0]),
-      this.getCardResult(result[1])];
+    this.getCardResult(result[1])];
   }
 
   countDownToStart(newData, time) {
@@ -153,6 +153,7 @@ export default class DragonTiger extends React.Component<Props, State> {
       <Container className={styles["dragonTiger-container"]}>
         <Row>
           <div className={styles.counter}>
+            <div className={styles.title}>Dragon Tiger</div>
             <TimeCounter remainingTime={this.state.data.time.remainingTime} gameState={this.state.gameState} key={this.state.gameState} />
             <RoundNum roundNumber={this.state.data.roundNumber} />
           </div>

@@ -244,6 +244,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
           <Col align="center" className="col-12 col-sm-6">
             <Row className={styles["align-middle"]}>
               <Col className={styles.timecounter}>
+                <div className={styles.title}>Fish Prawn Crab</div>
                 <TimeCounter remainingTime={time.remainingTime} gameState={gameState}></TimeCounter>
                 <RoundNum roundNumber={roundNumber} />
               </Col>

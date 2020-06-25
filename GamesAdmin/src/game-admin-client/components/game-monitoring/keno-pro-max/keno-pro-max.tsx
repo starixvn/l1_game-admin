@@ -182,7 +182,10 @@ export default class KenoProMax extends React.Component<Props, State> {
     return (
       <Container>
         <Row>
-          <Col className='col-12 col-lg-4'>
+          <Col className={`col-12 col-lg-2 ${styles.title}`}>
+            <div>Keno Pro Max</div>
+          </Col>
+          <Col className='col-12 col-lg-3'>
             <Row className='justify-content-center'>
               <div className={styles.timecounter}>
                 <TimeCounter remainingTime={this.state.data.time.remainingTime} gameState={this.state.gameState} key={this.state.gameState}></TimeCounter>
@@ -199,7 +202,7 @@ export default class KenoProMax extends React.Component<Props, State> {
               </div>
             </Row>
           </Col>
-          <Col className='p-0 col-12 col-lg-8'>
+          <Col className='p-0 col-12 col-lg-7'>
             <Row className={styles['row-style']}>
               <TotalBet type='kenogold' total={this.state.data.gold.total} isWin={this.checkWinner('gold')} />
               <TotalBet type='kenowood' total={this.state.data.wood.total} isWin={this.checkWinner('wood')} />
