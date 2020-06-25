@@ -12,6 +12,8 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Keno;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Api.Report
@@ -39,16 +41,19 @@ namespace GamesAdmin.Api.Report
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository;
-        private readonly IGenericRepository<KenoRoundEntity> kenoProvietRoundEntity;
+        private readonly IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository;
+        private readonly IGenericRepository<AccountEntity> accountRepository;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository,
-            IGenericRepository<KenoRoundEntity> kenoProvietRoundEntity)
+            IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository,
+            IGenericRepository<AccountEntity> accountRepository)
         {
             this.serviceProvider = serviceProvider;
             this.kenoProVietOnesRepository = kenoProVietOnesRepository;
-            this.kenoProvietRoundEntity = kenoProvietRoundEntity;
+            this.kenoProvietRoundRepository = kenoProvietRoundRepository;
+            this.accountRepository = accountRepository;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -290,29 +295,33 @@ namespace GamesAdmin.Api.Report
 
         public async Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
         {
-            var round = await kenoProvietRoundEntity.FindOneAsync(round => round.Number == roundId);
-            var bets = await kenoProVietOnesRepository.FilterByAsync(ones => ones.Round == roundId);
+            var round = await kenoProvietRoundRepository.FindOneAsync(round => round.Number == roundId);
 
             var roundResult = round == null
                 ? default
                 : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
 
-            var betRecords = bets
+            var newBets = await kenoProVietOnesRepository
+                   .Aggregate()
+                   .Match(x => x.Round == roundId)
+                   .AppendStage<KenoProVietOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
+                   .Lookup<KenoProVietOnesEntity, AccountEntity, LookedUpKenoOnes>(
+                       accountRepository.Collection(),
+                       x => x.UserId,
+                       y => y.Id,
+                       y => y.InnerUsers
+                   )
+                   .ToListAsync();
+
+            var betRecords = newBets
                 .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)
                 {
                     Nickname = bet.Name,
                     BetWin = bet.Betwin,
-                    Time = bet.Time
+                    Time = bet.Time,
+                    Username = bet.InnerUsers.FirstOrDefault().Local.Username
                 })
                 .ToList();
-
-            var filter = new FilterDefinitionBuilder<KenoProVietOnesEntity>().Eq(x=> x.Round, roundId);
-
-            //var betTickets = kenoProVietOnesRepository
-            //    .Aggregate()
-            //    .Match(filter)
-            //    .SortBy(x => x.Id)
-            //    .Lookup<AccountEntity, KenoBetRecord>(Document.GetCollectionName(typeof(AccountEntity)));
 
             return new KenoBetReport(roundResult, betRecords);
         }
@@ -333,5 +342,10 @@ namespace GamesAdmin.Api.Report
 
             return amounts;
         }
+    }
+
+    public class LookedUpKenoOnes : KenoProVietOnesEntity
+    {
+        public IEnumerable<AccountEntity> InnerUsers { get; set; }
     }
 }

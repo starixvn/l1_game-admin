@@ -60,5 +60,7 @@ namespace GamesAdmin.Database
         Task UpdateManyAsync(Expression<Func<TDocument, bool>> filterExpression, UpdateDefinition<TDocument> updateDefinition, UpdateOptions options = null);
 
         IAggregateFluent<TDocument> Aggregate();
+
+        IMongoCollection<TDocument> Collection();
     }
 }

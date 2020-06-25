@@ -143,5 +143,7 @@ namespace GamesAdmin.Database
         => collection.UpdateManyAsync(filterExpression, updateDefinition, options);
 
         public IAggregateFluent<TDocument> Aggregate() => collection.Aggregate();
+
+        public IMongoCollection<TDocument> Collection() => collection;
     }
 }

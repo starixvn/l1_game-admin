@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
+using MongoDB.Bson;
 
 namespace GamesAdmin.Database.Entities.Keno
 {
@@ -25,5 +26,7 @@ namespace GamesAdmin.Database.Entities.Keno
         public decimal Wood { get; set; }
 
         public Dictionary<string, decimal> Odds { get; set; }
+
+        public ObjectId UserId { get; set; }
     }
 }
