@@ -136,7 +136,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 roundNumber: this.state.roundNumber + 1,
                 gameState: GameState.running
             });
-        }, WAITING_TIME * 1000);
+        }, (WAITING_TIME + 1) * 1000);
     }
 
     getSettlementResult(result) {
