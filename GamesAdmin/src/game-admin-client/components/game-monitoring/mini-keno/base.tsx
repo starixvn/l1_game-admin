@@ -6,7 +6,6 @@ import BetTable from "./shared/bet-table";
 import KenoResult from "../../shared/keno-result/keno-result";
 import style from "./base.module.scss";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
-import { duration } from "moment";
 
 type Props = {
   onMessage: Function;
@@ -121,6 +120,7 @@ export default class extends React.Component<Props, State> {
           const { ingame } = message;
           const choices = this.state.choices.map((choice) => {
             const bets = Object.values(ingame)
+              .reverse()
               .map((bet) => ({
                 name: bet.name.toString(),
                 bet: bet.betTracks[choice.name],
@@ -176,7 +176,7 @@ export default class extends React.Component<Props, State> {
       return choice;
     });
 
-    this.setState({ choices });
+    this.setState({ choices, result: [], resultText: "" });
   }
 
   showSetResultPanel() {
@@ -184,12 +184,14 @@ export default class extends React.Component<Props, State> {
   }
 
   renderSettlementResult() {
+    const total = this.state.result.reduce((a, b) => a + b, 0);
     return (
       <>
         <KenoResult
           listResult={this.state.result}
           maxLength={this.props.sizeOfNumbers}
         />
+        <div className={style.result}>{!!total && `Total: ${total}`}</div>
         <div className={style.result}>{this.state.resultText}</div>
       </>
     );
