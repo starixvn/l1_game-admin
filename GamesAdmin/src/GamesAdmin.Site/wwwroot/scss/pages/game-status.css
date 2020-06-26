@@ -35,10 +35,56 @@
     color: #3ac47d; }
     .table .icon-save:hover {
       color: #3ac47d; }
-  .table .icon-edit {
-    position: relative;
-    top: .3rem;
-    font-size: 2rem;
-    color: #6c757d; }
-    .table .icon-edit:hover {
-      color: #3ac47d; }
+  .table .icon-history {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem; }
+    .table .icon-history:hover {
+      color: #da624a; }
+  .table .icon-chart {
+    font-size: 1.8rem; }
+    .table .icon-chart:hover {
+      color: #da624a; }
+
+.hidden-cls {
+  display: none; }
+
+.game-details-content {
+  max-height: 50rem;
+  overflow-y: auto; }
+
+.message-modal .text-message {
+  padding: 1rem; }
+  .message-modal .text-message textarea {
+    padding: 0.5rem 0.8rem; }
+
+.message-modal .apply-all-checkbox {
+  padding: 1rem; }
+
+.message-modal input, .message-modal label {
+  cursor: pointer; }
+
+.game-modal .message-success, .game-modal .message-error, .message-modal .message-success, .message-modal .message-error, .bot-ratio-modal .message-success, .bot-ratio-modal .message-error {
+  position: absolute;
+  width: calc(100% - 4rem);
+  top: 5.3rem;
+  background: #fff;
+  box-shadow: 0.1rem 0.2rem 0.3rem rgba(0, 0, 0, 0.2);
+  z-index: 1; }
+
+.reload-content-body .message-success, .reload-content-body .message-error {
+  margin: 0.5rem 0.3rem; }
+
+.reload-content-body .reload-content {
+  padding-left: 0.3rem; }
+
+.enable-disable-modal .content-body {
+  font-size: 1.6rem; }
+  .enable-disable-modal .content-body ul {
+    list-style: disc;
+    font-weight: bold;
+    font-size: 1.5rem; }
+
+.enable-disable-modal .force-reload-checkbox {
+  padding: 1rem 0; }

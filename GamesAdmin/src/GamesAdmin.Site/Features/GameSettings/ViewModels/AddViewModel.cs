@@ -34,5 +34,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public List<SelectListItem> BotPercentageItems { get; set; }
 
         public List<SelectListItem> GameTypeItems { get; set; }
+
+        [DisplayName("Delay Start Time")]
+        public int DelayStartTime { get; set; }
     }
 }

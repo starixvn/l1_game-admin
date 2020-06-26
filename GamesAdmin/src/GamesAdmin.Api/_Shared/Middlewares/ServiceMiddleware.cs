@@ -3,11 +3,11 @@ using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Statistic;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
-using GamesAdmin.Api.VietlottKeno;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api._Shared.Middlewares
@@ -24,9 +24,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IVietlottKenoService, VietlottKenoService>();
+            services.AddScoped<IProVietKenoService, ProVietKenoService>();
 
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IBotService, BotService>();
         }
     }
 }

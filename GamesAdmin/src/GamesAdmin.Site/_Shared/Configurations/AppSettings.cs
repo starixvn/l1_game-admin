@@ -13,9 +13,13 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         string GameServerUrl { get; }
 
+        string GameServerDomainUrl { get; }
+
         TimeZoneInfo DefaultTimeZone { get; }
 
         string DefaultUmMessage { get; }
+        
+        string Env { get; }
     }
     public class AppSettings : IAppSettings
     {
@@ -27,9 +31,11 @@ namespace GamesAdmin.Site._Shared.Configurations
 
             ApiHost = GetValue<string>(nameof(ApiHost));
             GameServerUrl = GetValue<string>(nameof(GameServerUrl));
+            GameServerDomainUrl = GetValue<string>(nameof(GameServerDomainUrl));
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
+            Env = GetValue<string>(nameof(Env));
         }
 
         public string ApiHost { get; }
@@ -41,6 +47,10 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string GameServerUrl { get; }
 
         public string DefaultUmMessage { get; }
+
+        public string GameServerDomainUrl { get;  }
+
+        public string Env { get; }
 
         public T GetValue<T>(string key)
         {

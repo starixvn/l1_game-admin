@@ -37,5 +37,7 @@ namespace GamesAdmin.Database.Entities
         public Dictionary<string, double> MaxBetChoices {get; set;}
 
         public Dictionary<string, double> Odds { get; set; }
+
+        public int DelayStartTime { get; set; }
     }
 }

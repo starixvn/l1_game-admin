@@ -62,6 +62,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public Dictionary<string, double> Odds
             => BetChoiceOdds?.ToDictionary(x => x.Name, x => x.Odds);
+
+        [DisplayName("Delay Start Time")]
+        public int DelayStartTime { get; set; }
     }
 
     public class BotRatioItemViewModel

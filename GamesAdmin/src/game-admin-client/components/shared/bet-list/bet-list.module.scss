@@ -1,0 +1,113 @@
+.betlist {
+  border: solid #b17817 1px;
+  border-radius: 6px;
+  // height: 100%;
+  margin-bottom: 10px;
+
+  &.win {
+    animation: shining 0.7s infinite;
+  }
+
+  @keyframes shining {
+    50% {
+      box-shadow: 0px 0px 20px 5px #fbff00;
+    }
+  }
+
+  .title {
+    background: #b17817;
+    border-radius: 6px 6px 0 0;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+    color: white;
+    display: flex;
+    justify-content: center;
+
+    .row {
+      width: 100%;
+
+      .col {
+        text-align: left;
+      }
+
+      .colamount {
+        max-width: 150px;
+        flex-basis: 150px;
+
+        @media screen and (max-width: 767px) {
+          max-width: 80px;
+          flex-basis: 80px;
+        }
+      }
+
+      .col > div {
+        text-align: center;
+        margin: auto;
+      }
+    }
+  }
+
+  .content {
+    max-height: 500px;
+    min-height: 500px;
+    //height: calc(100% - 34px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #2e0e0b;
+    border-radius: 5px;
+
+    .rowSimple {
+      border-top: solid 1px #3c3231;
+      padding: 3px 5px;
+      margin: 0;
+      justify-content: space-between;
+
+      @media screen and (max-width: 640px) {
+        > div {
+          width: 100%;
+          flex-basis: 100%;
+        }
+      }
+    }
+
+    .row {
+      border-top: solid 1px #3c3231;
+      padding: 3px 0;
+      margin: 0;
+    }
+
+    .coltime,
+    .colname {
+      color: white;
+      text-align: left;
+    }
+
+    .colamount {
+      max-width: 150px;
+      flex-basis: 150px;
+      padding-right: 30px;
+      color: #ffb800;
+      text-align: right;
+
+      @media screen and (max-width: 767px) {
+        max-width: 80px;
+        flex-basis: 80px;
+      }
+    }
+
+    .onecol {
+      color: white;
+      padding: 0 5px;
+    }
+
+    .money {
+      color: #ffb800;
+    }
+
+    @media screen and (max-width: 1024px) {
+      min-height: 400px;
+      max-height: 400px;
+    }
+  }
+}

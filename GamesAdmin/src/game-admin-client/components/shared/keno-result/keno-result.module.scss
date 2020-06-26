@@ -1,0 +1,21 @@
+.keno-result {
+  display: flex;
+  flex-wrap: wrap;
+  width: 160px;
+  margin: 0 auto;
+
+  .result-value {
+    color: white;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ee9b22;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 1px;
+    color: #fff;
+  }
+}

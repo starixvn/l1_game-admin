@@ -4,13 +4,13 @@ namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class UpdateStatusRequest : IRequest<bool>
     {
-        public UpdateStatusRequest(string name, bool enabled) 
+        public UpdateStatusRequest(string[] names, bool enabled) 
         {
-            Name = name;
+            Names = names;
             Enabled = enabled;
         }
 
-        public string Name { get; }
+        public string[] Names { get; }
 
         public bool Enabled { get; }
     }

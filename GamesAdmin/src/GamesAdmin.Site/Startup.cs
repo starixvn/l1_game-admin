@@ -1,5 +1,6 @@
 using System.Reflection;
 using AutoMapper;
+using Coravel;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Middlewares;
@@ -51,6 +52,9 @@ namespace GamesAdmin.Site
                       options.ViewLocationFormats.Add("/Features/_Shared/Components/{0}.cshtml");
                       options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
                   });
+
+            services.AddScheduler();
+            services.AddScheduleTasks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,27 @@
+.desk-of-cards {
+  justify-content: center;
+  max-width: 740px;
+
+  &>div {
+    background: #411212ef;
+    border: solid 2px #660f10;
+    border-radius: 15px;
+  }
+
+  .modal-header {
+    border-bottom: none;
+    padding: 5px 15px 0;
+
+    span {
+      color: #b17817;
+    }
+  }
+
+  .card-row {
+    padding: 5px 1rem;
+  }
+
+  .card {
+    padding: 0 2px;
+  }
+}

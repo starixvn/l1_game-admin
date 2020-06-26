@@ -4,6 +4,8 @@
     {
         public string WebSocketUrl { get; set; }
 
+        public string WebUrl { get; set; }
+
         public bool Enable { get; set; }
     }
 }

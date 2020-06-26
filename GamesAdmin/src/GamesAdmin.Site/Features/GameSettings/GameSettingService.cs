@@ -25,8 +25,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
 
-        [Put("/game_settings/{name}/update_status")]
-        Task<bool> UpdateStatus(string name, bool enabled);
+        [Put("/game_settings/update_status")]
+        Task<bool> UpdateStatus(string[] names, bool enabled);
 
         [Put("/game_settings/{name}/update_message")]
         Task<bool> UpdateMessage(string name, string disabledMessage);
@@ -46,7 +46,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> IsExistName(string name);
 
-        Task<bool> UpdateStatus(string name, bool enabled);
+        Task<bool> UpdateStatus(string[] names, bool enabled);
 
         Task<bool> UpdateDisabledMessage(string name, string message);
     }
@@ -75,7 +75,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 sentryClient.CaptureException(ex);
 
-                return new List<GameConfig>() as IList<GameConfig>;
+                return new List<GameConfig>();
             }
         }
 
@@ -95,8 +95,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             return gameConfig != default;
         }
 
-        public Task<bool> UpdateStatus(string name, bool enabled)
-        => gameApi.UpdateStatus(name, enabled);
+        public Task<bool> UpdateStatus(string[] names, bool enabled)
+        => gameApi.UpdateStatus(names, enabled);
 
         public Task<bool> UpdateDisabledMessage(string name, string message)
         => gameApi.UpdateMessage(name, message);

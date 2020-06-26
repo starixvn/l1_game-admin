@@ -47,3 +47,6 @@
 
 .adjust-bot-hours .table .text-danger {
   font-size: 1.1rem; }
+
+.hidden-cls {
+  display: none; }

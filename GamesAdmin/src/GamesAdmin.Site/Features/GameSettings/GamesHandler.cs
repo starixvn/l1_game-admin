@@ -11,6 +11,7 @@ using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
+using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -25,11 +26,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<IsExistRequest, bool>
         , IRequestHandler<UpdateBotRatioRequest, bool>
         , IRequestHandler<GetStatusRequest, StatusViewModel>
-        , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
         , IRequestHandler<ReloadGameClientRequest, bool>
+        , IRequestHandler<GetJWTRequest, JWTFromGameServer>
+        , IRequestHandler<GetMonitorRequest, MonitorViewModel>
     {
         private const int MaxLengthOfMessage = 1000;
         private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
@@ -39,6 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingService gameService;
         private readonly IAccountService accountService;
         private readonly IGameServerService gameServerService;
+        private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
 
         public GamesHandler(
@@ -46,12 +49,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             IGameSettingService gameService,
             IAccountService accountService,
             IGameServerService gameServerService,
+            IProVietKenoService proVietKenoService,
             IAppSettings appSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
             this.gameServerService = gameServerService;
+            this.proVietKenoService = proVietKenoService;
             this.appSettings = appSettings;
         }
 
@@ -208,7 +213,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.HoursMaxBot,
             request.Game.DisabledMessage,
             request.Game.MaxBetChoices,
-            request.Game.Odds));
+            request.Game.Odds,
+            request.Game.DelayStartTime));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -225,7 +231,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             new double[] { },
             DefaultDisabledMessage,
             new Dictionary<string, double>(),
-            new Dictionary<string, double>()));
+            new Dictionary<string, double>(),
+            request.Game.DelayStartTime));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
@@ -257,9 +264,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             return new StatusViewModel(gameList);
         }
 
-        public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateStatus(request.Name, request.Enabled);
-
         public async Task<bool> Handle(UpdateMultipleGameStatusRequest request, CancellationToken cancellationToken)
         {
             if (request.Names?.Length == 0)
@@ -267,9 +271,11 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return false;
             }
 
-            foreach (var name in request.Names)
+            await gameService.UpdateStatus(request.Names, request.Enabled);
+
+            if (request.Names.Any(x => x == GameType.KenoProVietValue) && request.Enabled)
             {
-                await gameService.UpdateStatus(name, request.Enabled);
+                await NotifyUnsettleRoundsToGameServer();
             }
 
             if (request.Reload)
@@ -312,6 +318,40 @@ namespace GamesAdmin.Site.Features.GameSettings
             await gameServerService.Reload();
 
             return true;
+        }
+
+        public async Task<JWTFromGameServer> Handle(GetJWTRequest request, CancellationToken cancellationToken)
+        {
+            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
+
+            return new JWTFromGameServer
+            {
+                Token = result.Token,
+                GameServerEndpoint = appSettings.GameServerDomainUrl,
+                Env = appSettings.Env
+            };
+        }
+
+        private async Task NotifyUnsettleRoundsToGameServer()
+        {
+            var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
+            await gameServerService.NotifyRoundResult(unsettleRounds);
+        }
+
+        public async Task<MonitorViewModel> Handle(GetMonitorRequest request, CancellationToken cancellationToken)
+        {
+            var gameConfigs = await gameService.GetAll();
+            var gameList = new List<MonitorItemViewModel>();
+
+            if (gameConfigs?.Any() == true)
+            {
+                gameList = gameConfigs
+                    .Select(game => mapper.Map<MonitorItemViewModel>(game))
+                    .OrderBy(game => game.DisplayName)
+                    .ToList();
+            }
+
+            return new MonitorViewModel(gameList);
         }
     }
 }

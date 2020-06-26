@@ -1,0 +1,14 @@
+.choice {
+  padding: 5px;
+  text-align: center;
+
+  @media screen and (max-width: 768px) {
+    max-width: 20%;
+    flex-basis: 20%;
+  }
+
+  @media screen and (max-width: 640px) {
+    max-width: 50%;
+    flex-basis: 50%;
+  }
+}

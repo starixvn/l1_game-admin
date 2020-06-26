@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -17,6 +18,12 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Get("/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
+
+        [Post("/proviet-keno/round-result")]
+        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
+
+        [Post("/jwt")]
+        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
     }
 
     public interface IGameServerService
@@ -24,6 +31,10 @@ namespace GamesAdmin.Site.Features._Shared
         Task Reload();
 
         Task<OnlineUsers> GetOnlineUsers(string game);
+
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
+
+        Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameServerService : IGameServerService
@@ -37,13 +48,13 @@ namespace GamesAdmin.Site.Features._Shared
             this.sentryClient = sentryClient;
         }
 
-        public Task<OnlineUsers> GetOnlineUsers(string game)
+        public async Task<OnlineUsers> GetOnlineUsers(string game)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(game))
-                { 
-                    return serverApi.GetOnlineUsers();
+                {
+                    return await serverApi.GetOnlineUsers();
                 }
 
                 var gameType = string.Empty;
@@ -56,19 +67,20 @@ namespace GamesAdmin.Site.Features._Shared
                     case GameType.KenoProMaxValue:
                         gameType = "keno";
                         break;
+
                     case GameType.BaccaratValue:
                         gameType = "baccarat";
                         break;
                 }
 
-                return serverApi.GetOnlineUsersOnGame(gameType);
+                return await serverApi.GetOnlineUsersOnGame(gameType);
             }
             catch (Exception ex)
             {
                 HandleException(ex);
             }
 
-            return Task.FromResult(new OnlineUsers());
+            return new OnlineUsers();
         }
 
         public async Task Reload()
@@ -81,6 +93,37 @@ namespace GamesAdmin.Site.Features._Shared
             {
                 HandleException(ex);
             }
+        }
+
+        public Task<JsonWebToken> GetJWT(string username, string userAgent)
+        {
+            try
+            {
+                return serverApi.GetToken(new RequestJWT(username, userAgent));
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return Task.FromResult(new JsonWebToken());
+        }
+
+        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
+        {
+            foreach (var round in kenoRounds)
+            {
+                try
+                {
+                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
+                    await serverApi.NotifyRoundResult(round);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
+            }
+
         }
 
         private void HandleException(Exception ex)
@@ -97,6 +140,5 @@ namespace GamesAdmin.Site.Features._Shared
 
             sentryClient.CaptureException(ex);
         }
-
     }
 }

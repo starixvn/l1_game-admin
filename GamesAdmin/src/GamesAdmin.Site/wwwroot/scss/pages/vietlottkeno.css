@@ -42,7 +42,7 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button.next {
       border-top-right-radius: .35rem;
       border-bottom-right-radius: .35rem;
-      color: #0c3253;
+      color: #da624a;
       background-color: #fff;
       border: 1px solid #dee2e6; }
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -55,8 +55,8 @@
   .dataTables_wrapper .dataTables_paginate .paginate_button.current,
   .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
     color: #fff !important;
-    background: #0c3253;
-    border-color: #0c3253; }
+    background: #da624a;
+    border-color: #da624a; }
 
 .dataTables_wrapper .dataTables_filter {
   margin-bottom: 1.5rem; }
@@ -104,7 +104,10 @@
       vertical-align: top;
       margin-right: 1rem;
       position: absolute;
-      z-index: -1;
+      left: 12px;
+      top: -1px;
+      height: 4rem;
+      width: 4rem;
       opacity: 0; }
     .new-round .number .control_indicator {
       position: absolute;
@@ -115,13 +118,11 @@
       align-items: center;
       height: 4rem;
       width: 4rem;
-      background: #e6e6e6;
       border-radius: 50%; }
-  .new-round .number:hover input ~ .control_indicatior,
-  .new-round .number input:focus ~ .control_indicator {
-    background: #16aaff;
-    color: #fff;
+  .new-round .number input + .control_indicator {
+    background: #e6e6e6;
+    color: #495057;
     cursor: pointer; }
-  .new-round .number input:checked ~ .control_indicator {
+  .new-round .number input:checked + .control_indicator {
     background: #16aaff;
     color: #fff; }
