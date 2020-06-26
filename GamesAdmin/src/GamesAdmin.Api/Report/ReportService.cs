@@ -4,15 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Entities.Keno;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 
 namespace GamesAdmin.Api.Report
 {
@@ -285,7 +280,15 @@ namespace GamesAdmin.Api.Report
             return result;
         }
 
-        public Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname)
-        => kenoReport.GetReportAsync(roundId, nickname);
+        public Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId, string nickname)
+        {
+            switch (game.Value)
+            {
+                case GameType.KenoProVietValue:
+                    return kenoReport.GetReportAsync(roundId, nickname);
+            }
+
+            return default;
+        }
     }
 }
