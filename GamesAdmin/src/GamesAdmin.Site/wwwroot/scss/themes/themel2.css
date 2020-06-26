@@ -4,7 +4,7 @@
   align-items: center;
   z-index: 10;
   height: 5.6rem;
-  background: #da624a;
+  background: #0c3253;
   box-shadow: 0 1px 0 0 #e2e8f0; }
 
 .left-header {
@@ -14,10 +14,10 @@
 .header-online-user {
   display: flex;
   margin-left: 20px;
-  color: #da624a;
+  color: #0c3253;
   font-size: 20px; }
   .header-online-user a {
-    color: #da624a; }
+    color: #0c3253; }
   .header-online-user span {
     display: inline-block;
     padding-right: 5px; }
@@ -110,7 +110,7 @@
   padding: 1.2rem 1.6rem;
   text-align: left; }
   .user-info .logout:hover {
-    color: #da624a; }
+    color: #0c3253; }
   .user-info .logout .icon-logout {
     font-size: 1.5rem;
     margin-right: .5rem; }
@@ -123,7 +123,7 @@
   transform: translate3d(0, 32px, 0px) !important; }
   .user-info .dropdown-menu a {
     padding: 1.2rem 1.6rem;
-    color: #495057; }
+    color: #27303f; }
     .user-info .dropdown-menu a:hover {
       text-decoration: none;
       color: #da624a; }
@@ -231,7 +231,7 @@
       height: 5.6rem; }
     .sidebar.active .env {
       display: block;
-      color: #da624a;
+      color: #0c3253;
       font-weight: bold; }
     .sidebar.active .nav-heading {
       text-indent: 100rem; }
