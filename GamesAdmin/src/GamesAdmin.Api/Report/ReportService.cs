@@ -26,8 +26,8 @@ namespace GamesAdmin.Api.Report
         Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot);
 
         Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot);
-        
-        Task<KenoBetReport> GetKenoProVietReportAsync(long roundId, string nickname);
+
+        Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId, string nickname);
     }
 
     public class ReportService : IReportService

@@ -1,23 +1,18 @@
-﻿namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿using System;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class RecordViewModel : BaseBetViewModel
     {
-        public DateTimeOffset Time { get; set; }
-
-        public decimal BetWin { get; set; }
     }
 
     public class BigSmallRecordViewModel : RecordViewModel
     {
-        public decimal Back { get; set; }
-
         public bool Select { get; set; }
     }
     public class OddEvenRecordViewModel : RecordViewModel
     {
         public bool Select { get; set; }
-
-        public decimal Bet { get; set; }
     }
 
     public class SeDieRecordViewModel : RecordViewModel

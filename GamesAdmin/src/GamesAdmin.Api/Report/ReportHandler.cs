@@ -45,8 +45,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
-            
-        public Task<KenoBetReport> Handle(KenoProVietRequest request, CancellationToken cancellationToken)
-        => reportService.GetKenoProVietReportAsync(request.RoundId, request.Nickname);
+
+        public Task<KenoBetReport> Handle(KenoReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname);
     }
 }

@@ -16,11 +16,12 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
 <<<<<<< HEAD
         IRequestHandler<SeDieReportRequest, SeDieBetReport>,
-        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>
+        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
+        IRequestHandler<KenoProVietRequest, KenoBetReport>
 =======
         IRequestHandler<ShakeThePlateReportRequest, ShakeThePlateBetReport>,
-        IRequestHandler<KenoProVietRequest, KenoBetReport>
->>>>>>> 930ecb9... init keno report
+        IRequestHandler<KenoReportRequest, KenoBetReport>
+>>>>>>> e077998... resolve conflicts
     {
         private readonly IReportService reportService;
 
@@ -50,12 +51,15 @@ namespace GamesAdmin.Api.Report
 
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
-=======
-        public async Task<ShakeThePlateBetReport> Handle(ShakeThePlateReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetShakeThePlateReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
             
         public Task<KenoBetReport> Handle(KenoProVietRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoProVietReportAsync(request.RoundId, request.Nickname);
->>>>>>> 930ecb9... init keno report
+=======
+        public async Task<ShakeThePlateBetReport> Handle(ShakeThePlateReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetShakeThePlateReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+
+        public Task<KenoBetReport> Handle(KenoReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname);
+>>>>>>> e077998... resolve conflicts
     }
 }
