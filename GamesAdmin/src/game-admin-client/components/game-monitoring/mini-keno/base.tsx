@@ -90,31 +90,32 @@ export default class extends React.Component<Props, State> {
         selector: () => message.remainingTime,
         handle: () => {
           const { durations } = this.state;
+          const { remainingTime } = message;
 
           if (message.remainingTime > durations.placingBets) {
             this.setState({
               roundId: message.roundId - 1,
-              remainingTime: message.remainingTime + 1,
+              remainingTime: remainingTime + 1
             });
 
             setTimeout(() => {
               this.setState({
                 roundId: this.state.roundId + 1,
-                remainingTime: durations.placingBets,
+                remainingTime: durations.placingBets
               });
-            }, (message.remainingTime - durations.placingBets + 1) * 1000);
+            }, (remainingTime - durations.placingBets + 1) * 1000);
           } else {
             this.setState({
               roundId: message.roundId,
-              remainingTime: message.remainingTime,
+              remainingTime: message.remainingTime
             });
           }
         },
       },
-      {
-        selector: () => message.finish,
-        handle: () => this.props.sendMessage({ sync: true }),
-      },
+      // {
+      //   selector: () => message.finish,
+      //   handle: () => this.props.sendMessage({ sync: true }),
+      // },
       {
         selector: () => message.ingame && message.totalBets,
         handle: () => {
@@ -139,6 +140,7 @@ export default class extends React.Component<Props, State> {
         selector: () => message.finish,
         handle: () => {
           const { settlementResult, result } = message.finish;
+          const { durations } = this.state;
           const choices = this.state.choices.map((choice) => {
             choice.isWin = settlementResult[choice.name];
             return choice;
@@ -153,7 +155,14 @@ export default class extends React.Component<Props, State> {
             )
             .substr(3);
 
-          this.setState({ choices, result, resultText });
+          this.setState({ choices, result, resultText, remainingTime: durations.wholeRound + 1 });
+
+          setTimeout(() => {
+            this.setState({
+              roundId: this.state.roundId + 1,
+              remainingTime: durations.placingBets
+            });
+          }, (durations.wholeRound - durations.placingBets + 1) * 1000 + 500);
         },
       },
       {
