@@ -18,9 +18,12 @@ namespace GamesAdmin.Site._Shared.Configurations
         TimeZoneInfo DefaultTimeZone { get; }
 
         string DefaultUmMessage { get; }
-        
+
         string Env { get; }
+
+        string ResultPageUrl { get; }
     }
+
     public class AppSettings : IAppSettings
     {
         private readonly IConfiguration configuration;
@@ -36,6 +39,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
             Env = GetValue<string>(nameof(Env));
+            ResultPageUrl = GetValue<string>(nameof(ResultPageUrl));
         }
 
         public string ApiHost { get; }
@@ -48,9 +52,11 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         public string DefaultUmMessage { get; }
 
-        public string GameServerDomainUrl { get;  }
+        public string GameServerDomainUrl { get; }
 
         public string Env { get; }
+
+        public string ResultPageUrl { get; }
 
         public T GetValue<T>(string key)
         {
