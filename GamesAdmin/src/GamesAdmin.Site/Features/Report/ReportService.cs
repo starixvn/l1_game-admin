@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -22,7 +21,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot);
         
-        Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot);
+        Task<KenoBetReport> GetKenoProVietBetReport(long roundId);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
@@ -72,7 +71,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
-        public Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot)
-        => reportApi.GetKenoProVietReport(GameType.KenoProVietValue, roundId, nickname, excludeBot);
+        public Task<KenoBetReport> GetKenoProVietBetReport(long roundId)
+        => reportApi.GetKenoProVietReport(GameType.KenoProVietValue, roundId);
     }
 }

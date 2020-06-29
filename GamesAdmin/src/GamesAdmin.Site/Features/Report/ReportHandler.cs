@@ -280,7 +280,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<KenoReportViewModel> Handle(GetKenoProVietReportRequest request, CancellationToken cancellationToken)
         {
-            var betReport = await reportService.GetKenoProVietBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var betReport = await reportService.GetKenoProVietBetReport(request.RoundId);
 
             return new KenoReportViewModel
             {

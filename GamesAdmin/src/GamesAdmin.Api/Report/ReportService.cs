@@ -27,7 +27,7 @@ namespace GamesAdmin.Api.Report
 
         Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot);
 
-        Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId, string nickname);
+        Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId);
     }
 
     public class ReportService : IReportService
@@ -280,12 +280,12 @@ namespace GamesAdmin.Api.Report
             return result;
         }
 
-        public Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId, string nickname)
+        public Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId)
         {
             switch (game.Value)
             {
                 case GameType.KenoProVietValue:
-                    return kenoReport.GetReportAsync(roundId, nickname);
+                    return kenoReport.GetReportAsync(roundId);
             }
 
             return default;

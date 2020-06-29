@@ -5,6 +5,6 @@ namespace GamesAdmin.Api.Report
 {
     public interface IKenoReport
     {
-        Task<KenoBetReport> GetReportAsync(long roundId, string nickname);
+        Task<KenoBetReport> GetReportAsync(long roundId);
     }
 }

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
@@ -27,7 +25,7 @@ namespace GamesAdmin.Api.Report
             this.accountRepository = accountRepository;
         }
 
-        public async Task<KenoBetReport> GetReportAsync(long roundId, string nickname)
+        public async Task<KenoBetReport> GetReportAsync(long roundId)
         {
             var roundResult = await GetKenoRoundAsync(roundId);
 
@@ -44,7 +42,7 @@ namespace GamesAdmin.Api.Report
                    .ToListAsync();
 
             var betRecords = newBets
-                .Select(bet => new KenoBetRecord(ConvertToAmountByChoice(bet), bet.Odds)
+                .Select(bet => new KenoBetRecord(bet.ConvertAmountToDictionary(), bet.Odds)
                 {
                     Nickname = bet.Name,
                     BetWin = bet.Betwin,
@@ -60,23 +58,9 @@ namespace GamesAdmin.Api.Report
         {
             var round = await kenoProvietRoundRepository.FindOneAsync(round => round.Number == roundId);
 
-            return round == null
+            return round == null || round.Result == null || round.SettlementResult == null
                 ? default
                 : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
         }
-
-        private static Dictionary<string, decimal> ConvertToAmountByChoice(KenoProVietOnesEntity entity)
-        => new Dictionary<string, decimal>
-            {
-                { KenoBetChoice.BigValue,  entity.Big},
-                { KenoBetChoice.SmallValue,  entity.Small},
-                { KenoBetChoice.OddValue,  entity.Odd},
-                { KenoBetChoice.EvenValue,  entity.Even},
-                { KenoBetChoice.GoldValue,  entity.Gold},
-                { KenoBetChoice.EarthValue,  entity.Earth},
-                { KenoBetChoice.FireValue,  entity.Fire},
-                { KenoBetChoice.WaterValue,  entity.Water},
-                { KenoBetChoice.WoodValue,  entity.Wood},
-            };
     }
 }

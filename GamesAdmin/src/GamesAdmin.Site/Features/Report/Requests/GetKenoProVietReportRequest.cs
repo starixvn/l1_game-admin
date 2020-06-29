@@ -5,17 +5,11 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetKenoProVietReportRequest : IRequest<KenoReportViewModel>
     {
-        public GetKenoProVietReportRequest(long roundId, string nickname, bool excludeBot)
+        public GetKenoProVietReportRequest(long roundId)
         {
             RoundId = roundId;
-            Nickname = nickname;
-            ExcludeBot = excludeBot;
         }
 
         public long RoundId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeBot { get; }
     }
 }

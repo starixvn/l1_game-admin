@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
 
-        [Get("/report/{game}/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<KenoBetReport> GetKenoProVietReport(string game, long roundId, string nickname, bool excludeBot);
+        [Get("/report/{game}/round/{roundId}")]
+        Task<KenoBetReport> GetKenoProVietReport(string game, long roundId);
     }
 }
