@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -21,7 +22,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
-        IRequestHandler<GetKenoProVietReportRequest, KenoReportViewModel>
+        IRequestHandler<GetKenoProVietReportRequest, KenoReportViewModel>,
+        IRequestHandler<GetKenoProVietBetHistoryRequest, KenoBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -284,9 +286,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new KenoReportViewModel
             {
+                RoundId = request.RoundId,
                 RoundResult = new KenoResultViewModel(betReport.RoundResult?.Results),
                 BetTickets = betReport.BetRecords
             };
+        }
+
+        public async Task<KenoBetHistoryViewModel> Handle(GetKenoProVietBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var betHistories = await reportService.GetKenoProVietBetHistory(request.RoundId, request.Nickname);
+
+            return new KenoBetHistoryViewModel(betHistories);
         }
     }
 }

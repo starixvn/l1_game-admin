@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
@@ -14,15 +19,18 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository;
         private readonly IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
+        private readonly IGenericRepository<KenoProVietBetEntity> kenoProVietBetRepository;
 
         public KenoProVietReport(
             IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository,
             IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository,
-            IGenericRepository<AccountEntity> accountRepository)
+            IGenericRepository<AccountEntity> accountRepository,
+            IGenericRepository<KenoProVietBetEntity> kenoProVietBetRepository)
         {
             this.kenoProVietOnesRepository = kenoProVietOnesRepository;
             this.kenoProvietRoundRepository = kenoProvietRoundRepository;
             this.accountRepository = accountRepository;
+            this.kenoProVietBetRepository = kenoProVietBetRepository;
         }
 
         public async Task<KenoBetReport> GetReportAsync(long roundId)
@@ -52,6 +60,24 @@ namespace GamesAdmin.Api.Report
                 .ToList();
 
             return new KenoBetReport(roundResult, betRecords);
+        }
+
+        public async Task<IEnumerable<KenoBetHistory>> GetBetHistoryAsync(long roundId, string nickname)
+        {
+            var bets = await kenoProVietBetRepository.FilterByAsync(bet => bet.Round == roundId && bet.Name == nickname);
+
+            var betLogs = bets
+                .Select(bet => new KenoBetHistory(
+                    bet.Round,
+                    bet.Name,
+                    Enumeration.FromValue<KenoBetChoice>(bet.Choice),
+                    bet.Amount,
+                    bet.MemberId,
+                    bet.SiteId,
+                    new DateTimeOffset(bet.Time)))
+                .ToList();
+
+            return betLogs;
         }
 
         private async Task<KenoRoundResult> GetKenoRoundAsync(long roundId)

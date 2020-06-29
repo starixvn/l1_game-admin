@@ -43,7 +43,7 @@ namespace GamesAdmin.Api.Report
         [Route("odd_even_turbo/round/{roundId}/users/{nickname?}")]
         public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot)
             => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot)));
-            
+
         [HttpGet]
         [Route("sedie/round/{roundId}/users/{nickname?}")]
         public async Task<SeDieBetReport> SeDie(long roundId, string nickname, bool excludeBot)
@@ -56,7 +56,12 @@ namespace GamesAdmin.Api.Report
             
         [HttpGet]
         [Route("{game}/round/{roundId}")]
-        public async Task<KenoBetReport> KenoProViet(string game,long roundId)
+        public async Task<KenoBetReport> KenoBetReport(string game, long roundId)
             => (await mediator.Send(new KenoReportRequest(game, roundId)));
+
+        [HttpGet]
+        [Route("{game}/round/{roundId}/user/{nickname}")]
+        public async Task<IEnumerable<KenoBetHistory>> KenoBetHistory(string game, long roundId, string nickname)
+            => (await mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname)));
     }
 }

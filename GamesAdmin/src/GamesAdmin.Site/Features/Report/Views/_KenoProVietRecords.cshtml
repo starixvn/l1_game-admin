@@ -32,7 +32,11 @@
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.Username</td>
-                        <td>@bet.Nickname</td>
+                        <td>
+                            <a href="#" onclick="report.showBetHistory('@Model.RoundId', '@bet.Nickname');">
+                                @bet.Nickname
+                            </a>
+                        </td>
                         @foreach (var choice in Enumeration.GetAll<KenoBetChoice>())
                         {
                             <td class="text-right">@bet.Amounts[choice.Value]</td>

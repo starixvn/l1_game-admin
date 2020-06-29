@@ -124,5 +124,11 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_KenoProVietRecords", await mediator.Send(new GetKenoProVietReportRequest(roundId)));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> KenoBetHistory(long roundId, string nickname)
+        {
+            return View(await mediator.Send(new GetKenoProVietBetHistoryRequest(roundId, nickname)));
+        }
     }
 }

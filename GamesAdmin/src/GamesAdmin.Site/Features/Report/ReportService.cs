@@ -30,6 +30,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname);
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
+
+        Task<IEnumerable<KenoBetHistory>> GetKenoProVietBetHistory(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -73,5 +75,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<KenoBetReport> GetKenoProVietBetReport(long roundId)
         => reportApi.GetKenoProVietReport(GameType.KenoProVietValue, roundId);
+
+        public Task<IEnumerable<KenoBetHistory>> GetKenoProVietBetHistory(long roundId, string nickname)
+        => reportApi.GetKenoProVietBetHistory(GameType.KenoProVietValue, roundId, nickname);
     }
 }

@@ -32,5 +32,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/{game}/round/{roundId}")]
         Task<KenoBetReport> GetKenoProVietReport(string game, long roundId);
+
+        [Get("/report/{game}/round/{roundId}/user/{nickname}")]
+        Task<IEnumerable<KenoBetHistory>> GetKenoProVietBetHistory(string game, long roundId, string nickname);
     }
 }
