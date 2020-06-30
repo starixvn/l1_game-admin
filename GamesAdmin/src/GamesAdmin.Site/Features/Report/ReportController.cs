@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
@@ -122,13 +123,13 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetKenoProVietReport(long roundId)
         {
-            return PartialView("_KenoProVietRecords", await mediator.Send(new GetKenoProVietReportRequest(roundId)));
+            return PartialView("_KenoProVietRecords", await mediator.Send(new GetKenoReportRequest(GameType.KenoProViet, roundId)));
         }
 
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(long roundId, string nickname)
         {
-            return View(await mediator.Send(new GetKenoProVietBetHistoryRequest(roundId, nickname)));
+            return View(await mediator.Send(new GetKenoBetHistoryRequest(GameType.KenoProViet, roundId, nickname)));
         }
     }
 }

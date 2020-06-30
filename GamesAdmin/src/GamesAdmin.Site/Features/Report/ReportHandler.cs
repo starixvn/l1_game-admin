@@ -22,8 +22,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
-        IRequestHandler<GetKenoProVietReportRequest, KenoReportViewModel>,
-        IRequestHandler<GetKenoProVietBetHistoryRequest, KenoBetHistoryViewModel>
+        IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
+        IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -280,9 +280,9 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<KenoReportViewModel> Handle(GetKenoProVietReportRequest request, CancellationToken cancellationToken)
+        public async Task<KenoReportViewModel> Handle(GetKenoReportRequest request, CancellationToken cancellationToken)
         {
-            var betReport = await reportService.GetKenoProVietBetReport(request.RoundId);
+            var betReport = await reportService.GetKenoBetReport(request.Game, request.RoundId);
 
             return new KenoReportViewModel
             {
@@ -292,9 +292,9 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<KenoBetHistoryViewModel> Handle(GetKenoProVietBetHistoryRequest request, CancellationToken cancellationToken)
+        public async Task<KenoBetHistoryViewModel> Handle(GetKenoBetHistoryRequest request, CancellationToken cancellationToken)
         {
-            var betHistories = await reportService.GetKenoProVietBetHistory(request.RoundId, request.Nickname);
+            var betHistories = await reportService.GetKenoProVietBetHistory(request.Game, request.RoundId, request.Nickname);
 
             return new KenoBetHistoryViewModel(betHistories);
         }
