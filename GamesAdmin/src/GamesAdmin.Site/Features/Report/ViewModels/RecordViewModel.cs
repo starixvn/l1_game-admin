@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Bet { get; set; }
     }
 
-    public class ShakeThePlateRecordViewModel : RecordViewModel
+    public class SeDieRecordViewModel : RecordViewModel
     {
         public decimal Odd { get; set; }
 

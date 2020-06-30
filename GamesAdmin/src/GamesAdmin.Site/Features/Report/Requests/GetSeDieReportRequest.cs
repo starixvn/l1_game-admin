@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetShakeThePlateReportRequest : IRequest<ShakeThePlateReportResultViewModel>
+    public class GetSeDieReportRequest : IRequest<SeDieReportResultViewModel>
     {
-        public GetShakeThePlateReportRequest(long roundId, string nickname, bool excludeBot)
+        public GetSeDieReportRequest(long roundId, string nickname, bool excludeBot)
         {
             RoundId = roundId;
             Nickname = nickname;

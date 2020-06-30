@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class ShakeThePlateReportRequest : IRequest<ShakeThePlateBetReport>
+    public class SeDieReportRequest : IRequest<SeDieBetReport>
     {
-        public ShakeThePlateReportRequest(long roundId, string nickname, bool excludeBot)
+        public SeDieReportRequest(long roundId, string nickname, bool excludeBot)
         {
             RoundId = roundId;
             Nickname = nickname;

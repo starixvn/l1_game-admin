@@ -13,7 +13,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public int Dice3 { get; set; }
     }
 
-    public class ShakeThePlateRoundResultViewModel
+    public class SeDieRoundResultViewModel
     {
         public long Number { get; set; }
 

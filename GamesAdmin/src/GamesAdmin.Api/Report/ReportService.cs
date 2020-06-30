@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Report.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
@@ -23,7 +22,9 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot);
 
-        Task<ShakeThePlateBetReport> GetShakeThePlateReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -143,36 +144,27 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<ShakeThePlateBetReport> GetShakeThePlateReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot)
         {
             var repository = serviceProvider.GetService<IShakeThePlateReportRepository>();
             var result = await repository.GetAsync(roundId, nickname, excludeBot);
 
-            return new ShakeThePlateBetReport
+            return new SeDieBetReport
             {
-                RoundResult = new ShakeThePlateRoundResult
-                {
-                    Number = result.Item1.Number,
-                    Chips = new bool[] {
-                        result.Item1.FirstRedChip,
-                        result.Item1.SecondRedChip,
-                        result.Item1.ThirdRedChip,
-                        result.Item1.FourthRedChip
-                    }
-                },
-                Records = result.Item2.Select(x => new ShakeThePlateBetRecord
-                {
-                    Time = x.Time,
-                    Nickname = x.Nickname,
-                    Username = x.Username,
-                    BetWin = x.BetWin,
-                    Even = x.Even,
-                    Odd = x.Odd,
-                    FourRed = x.FourRed,
-                    FourWhite = x.FourWhite,
-                    ThreeRed = x.ThreeRed,
-                    ThreeWhite = x.ThreeWhite
-                })
+                RoundResult = result.Item1.ToModel(),
+                Records = result.Item2.Select(x => x.ToModel())
+            };
+        }
+
+        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IMiniSeDieReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new SeDieBetReport
+            {
+                RoundResult = result.Item1.ToModel(),
+                Records = result.Item2.Select(x => x.ToModel())
             };
         }
 

@@ -31,7 +31,7 @@ namespace GamesAdmin.Core.Models
         public decimal Back { get; set; }
     }
 
-    public class ShakeThePlateBetRecord : BetRecord
+    public class SeDieBetRecord : BetRecord
     {
         public decimal Odd { get; set; }
 

@@ -15,7 +15,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBigSmallTurboReportRequest, BigSmallTurboReportResultViewModel>,
         IRequestHandler<GetOddEvenReportRequest, OddEvenReportResultViewModel>,
         IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>,
-        IRequestHandler<GetShakeThePlateReportRequest, ShakeThePlateReportResultViewModel>,
+        IRequestHandler<GetSeDieReportRequest, SeDieReportResultViewModel>,
+        IRequestHandler<GetMiniSeDieReportRequest, SeDieReportResultViewModel>,
         IRequestHandler<GetBigSmallBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
@@ -222,18 +223,45 @@ namespace GamesAdmin.Site.Features.ClientSites
             });
         }
 
-        public async Task<ShakeThePlateReportResultViewModel> Handle(GetShakeThePlateReportRequest request, CancellationToken cancellationToken)
+        public async Task<SeDieReportResultViewModel> Handle(GetSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetShakeThePlateReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
 
-            return new ShakeThePlateReportResultViewModel
+            return new SeDieReportResultViewModel
             {
-                RoundResult = new ShakeThePlateRoundResultViewModel
+                RoundResult = new SeDieRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
                     Chips = result.RoundResult.Chips
                 },
-                Records = result.Records.Select(x => new ShakeThePlateRecordViewModel
+                Records = result.Records.Select(x => new SeDieRecordViewModel
+                {
+                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Username = x.Username,
+                    Nickname = x.Nickname,
+                    BetWin = x.BetWin,
+                    Even = x.Even,
+                    Odd = x.Odd,
+                    ThreeRed = x.ThreeRed,
+                    ThreeWhite = x.ThreeWhite,
+                    FourRed = x.FourRed,
+                    FourWhite = x.FourWhite
+                })
+            };
+        }
+
+        public async Task<SeDieReportResultViewModel> Handle(GetMiniSeDieReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetMiniSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new SeDieReportResultViewModel
+            {
+                RoundResult = new SeDieRoundResultViewModel
+                {
+                    Number = result.RoundResult.Number,
+                    Chips = result.RoundResult.Chips
+                },
+                Records = result.Records.Select(x => new SeDieRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,

@@ -1,7 +1,7 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model ShakeThePlateReportResultViewModel
+@model SeDieReportResultViewModel
 
 <div class="row">
     <div class="col-sm-12">
@@ -37,8 +37,8 @@
                         <td>
                             @bet.Nickname
                         </td>
-                        <td>@bet.Even</td>
-                        <td>@bet.Odd</td>
+                        <td class="text-right">@bet.Even</td>
+                        <td class="text-right">@bet.Odd</td>
                         <td class="text-right">@bet.ThreeWhite</td>
                         <td class="text-right">@bet.FourWhite</td>
                         <td class="text-right">@bet.ThreeRed</td>

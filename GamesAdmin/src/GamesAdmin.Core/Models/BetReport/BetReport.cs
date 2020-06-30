@@ -16,7 +16,7 @@ namespace GamesAdmin.Core.Models
     {
     }
 
-    public class ShakeThePlateBetReport : BetReport<ShakeThePlateRoundResult, ShakeThePlateBetRecord>
+    public class SeDieBetReport : BetReport<SeDieRoundResult, SeDieBetRecord>
     {
     }
 }
