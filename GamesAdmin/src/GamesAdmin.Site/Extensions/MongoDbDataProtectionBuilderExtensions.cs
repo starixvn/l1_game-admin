@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Extensions
 
             builder.Services.Configure<KeyManagementOptions>(options =>
             {
-                options.XmlRepository = new MongoDbXmlRepository(mongoDatabase, dbSettings["Collection"]);
+                options.XmlRepository = new MongoDbXmlRepository(mongoDatabase, dbSettings["Collection"], configuration["ApplicationName"]);
             });
 
             return builder;
