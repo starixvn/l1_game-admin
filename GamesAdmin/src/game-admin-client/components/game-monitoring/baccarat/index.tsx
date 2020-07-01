@@ -14,6 +14,7 @@ import BaccaratResultUpdater from './baccarat-result-updater';
 import DeskOfCards from './desk-of-cards';
 import CardModel from '../../common/model/CardModel';
 import CardResult from '../../common/model/CardResult';
+import { Notice } from '../../shared/notice/notice';
 
 type Props = {
     onMessage: Function,
@@ -52,7 +53,16 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     }
 
     handleMessage(message) {
+        if (!!message.um) {
+            this.setState({
+                disabled: message.um,
+                time: { remainingTime: 0 },
+                gameState: GameState.none
+            });
+        }
+
         if (!!message.remainingTime) {
+            this.setState({ disabled: false });
             this.handleStart(message);
         }
 
@@ -301,7 +311,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     render() {
         return (
             <div>
-                <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} />
+                <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} disabled={this.state.disabled} />
                 ${!this.props.isProduction && (<BaccaratResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
                 ${!this.props.isProduction && (<DeskOfCards modal={this.state.isShowDeskOfCards} toggle={this.updaterDeskOfCardsToggle} onPickCard={this.onPickCard} />)}
             </div>

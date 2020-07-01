@@ -30,6 +30,14 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
   }
 
   handleData(data) {
+    if (!!data.um) {
+      this.setState({
+        disabled: data.um,
+        time: { remainingTime: 0 },
+        gameState: GameState.none
+      });
+    }
+
     if (!!data.info) {
       this.setState({
         betList: this.getTotalBetList(data.info.red, this.state.betList)
@@ -43,6 +51,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     }
 
     if (!!data.time_remain) {
+      this.setState({ disabled: false });
       if (data.time_remain > 30) {
         this.setState({
           gameState: GameState.waiting,
@@ -280,7 +289,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
   render() {
     return (
       <div>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()}></GameTemplate>
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled}></GameTemplate>
       </div>
     );
   }

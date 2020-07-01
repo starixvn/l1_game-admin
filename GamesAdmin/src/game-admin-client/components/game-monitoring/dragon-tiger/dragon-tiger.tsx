@@ -12,6 +12,7 @@ import DragonTigerModel from "../../common/model/DragonTigerModel";
 import BetItem from "../../common/model/BetItem";
 import { upperFirstLetter } from "../../util/util";
 import { GameState } from '../../shared/common/GameState';
+import { Notice } from "../../shared/notice/notice";
 
 type Props = {
   onMessage: Function;
@@ -20,6 +21,7 @@ type Props = {
 type State = {
   data: DragonTigerModel;
   gameState: number;
+  disabled: boolean;
 };
 
 const TYPES = ["dragon", "tie", "tiger"];
@@ -33,6 +35,7 @@ export default class DragonTiger extends React.Component<Props, State> {
     this.state = {
       data: new DragonTigerModel(),
       gameState: 0,
+      disabled: false
     };
   }
 
@@ -41,7 +44,15 @@ export default class DragonTiger extends React.Component<Props, State> {
   }
 
   handleMessage(message) {
-    if (message.phien !== undefined) {
+    if (message.um !== undefined) {
+      let data = this.state.data;
+      data.time.remainingTime = 0;
+      this.setState({
+        disabled: message.um,
+        data: data,
+        gameState: GameState.none
+      });
+    } else if (message.phien !== undefined) {
       this.handleStart(message);
     } else if (message.finish !== undefined) {
       this.handleStop(message);
@@ -68,19 +79,20 @@ export default class DragonTiger extends React.Component<Props, State> {
       });
     });
 
-    this.setState({
-      data: newData
-    });
+    this.setState({ data: newData });
   }
 
   handleStart(message) {
-    const newData = new DragonTigerModel();
+    const newData = this.state.data;
     let isFinished = message.time_remain > TOTAL_TIME;
     newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME : message.time_remain;
     newData.roundNumber = isFinished ? message.phien - 1 : message.phien;
-    newData.result = this.getResult(message.result);
+    if (message.result) {
+      newData.result = this.getResult(message.result);
+    }
 
     this.setState({
+      disabled: false,
       data: newData,
       gameState: isFinished ? GameState.waiting : GameState.running
     });
@@ -214,10 +226,7 @@ export default class DragonTiger extends React.Component<Props, State> {
   render() {
     return (
       <div className={styles.dragontiger}>
-        <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
-        ></GameTemplate>
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
       </div>
     );
   }

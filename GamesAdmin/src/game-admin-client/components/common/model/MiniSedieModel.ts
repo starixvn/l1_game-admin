@@ -21,17 +21,19 @@ class MiniSedieBetList {
 }
 
 export default class MiniSedieModel {
-    roundNumber: number
-    time: TimeModel
-    betList: MiniSedieBetList
-    result: Array<DiceModel>
-    gameState: number
+    roundNumber: number;
+    time: TimeModel;
+    betList: MiniSedieBetList;
+    result: Array<DiceModel>;
+    gameState: number;
+    disabled: boolean;
 
     constructor() {
         this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
         this.betList = new MiniSedieBetList();
         this.time = new TimeModel();
         this.gameState = 0;
+        this.disabled = false;
     }
 }
 

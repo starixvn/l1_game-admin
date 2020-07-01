@@ -34,6 +34,7 @@ export default class BaccaratModel {
     isShowDeskOfCards: boolean;
     selectedCard: string;
     cardIndex: number;
+    disabled: boolean;
 
     constructor() {
         this.result = { bankerCards: [new CardResult(), new CardResult(), new CardResult()], playerCards: [new CardResult(), new CardResult(), new CardResult()] };
@@ -44,5 +45,6 @@ export default class BaccaratModel {
         this.isShowDeskOfCards = false;
         this.selectedCard = "";
         this.cardIndex = -1;
+        this.disabled = false;
     }
 }

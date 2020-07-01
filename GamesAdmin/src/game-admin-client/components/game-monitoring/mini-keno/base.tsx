@@ -6,6 +6,7 @@ import BetTable from "./shared/bet-table";
 import KenoResult from "../../shared/keno-result/keno-result";
 import style from "./base.module.scss";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
+import { Notice } from "../../shared/notice/notice";
 
 type Props = {
   onMessage: Function;
@@ -29,9 +30,11 @@ type State = {
   result: Array<number>;
   boxes: Array<string>;
   isShowSetResultPanel: boolean;
+  disabled: boolean;
 };
 
 type KenoMessage = {
+  um: boolean,
   totalBets: { [key: string]: number };
   remainingTime: number;
   roundId: number;
@@ -67,6 +70,7 @@ export default class extends React.Component<Props, State> {
       result: [],
       boxes: null,
       isShowSetResultPanel: false,
+      disabled: false
     };
 
     this.showSetResultPanel = this.showSetResultPanel.bind(this);
@@ -83,6 +87,10 @@ export default class extends React.Component<Props, State> {
   onReceiveMessage(message: KenoMessage) {
     const actions = [
       {
+        selector: () => message.um,
+        handle: () => this.setState({ disabled: message.um, remainingTime: 0 }),
+      },
+      {
         selector: () => message.durations,
         handle: () => this.setState({ durations: message.durations }),
       },
@@ -90,6 +98,8 @@ export default class extends React.Component<Props, State> {
         selector: () => message.remainingTime,
         handle: () => {
           const { durations } = this.state;
+
+          this.setState({ disabled: false });
 
           if (message.remainingTime > durations.placingBets) {
             this.setState({
@@ -209,7 +219,7 @@ export default class extends React.Component<Props, State> {
   }
 
   render() {
-    const { remainingTime, roundId, choices, durations } = this.state;
+    const { remainingTime, roundId, choices, durations, disabled } = this.state;
 
     const { gameName } = this.props;
 
@@ -223,6 +233,7 @@ export default class extends React.Component<Props, State> {
       placingBetTime: durations.placingBets,
       lockingBetTime: durations.lockingBet,
       reset: this.reset,
+      disabled
     };
 
     const betTableProps = {
@@ -234,6 +245,7 @@ export default class extends React.Component<Props, State> {
         <GameTemplate
           renderMonitor={React.createElement(MonitorBoard, monitorProps)}
           renderBetList={React.createElement(BetTable, betTableProps)}
+          disabled={this.state.disabled}
         />
         {!this.props.isProduction && (
           <KenoResultUpdater
@@ -243,6 +255,7 @@ export default class extends React.Component<Props, State> {
             isMini={this.props.isMini}
           />
         )}
+        {disabled && <Notice isOpen={true} message="Game is disabled." />}
       </div>
     );
   }

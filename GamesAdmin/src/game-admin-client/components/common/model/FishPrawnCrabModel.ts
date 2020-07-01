@@ -33,16 +33,17 @@ class GameResult {
 }
 
 export default class FishPrawnCrabModel {
-  roundNumber: number
-  time: TimeModel
-  betList: FishPrawnCrabBetList
-  result: Array<DiceModel>
-  isOpenModal: boolean
-  currentDiceNumber: number
-  isHandleNextRoundResult: boolean
-  nextRoudResult: GameResult
-  winers: Array<boolean>
-  gameState: number
+  roundNumber: number;
+  time: TimeModel;
+  betList: FishPrawnCrabBetList;
+  result: Array<DiceModel>;
+  isOpenModal: boolean;
+  currentDiceNumber: number;
+  isHandleNextRoundResult: boolean;
+  nextRoudResult: GameResult;
+  winers: Array<boolean>;
+  gameState: number;
+  disabled: boolean;
 
   constructor() {
     this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
@@ -53,6 +54,7 @@ export default class FishPrawnCrabModel {
     this.nextRoudResult = new GameResult();
     this.winers = [false, false, false, false, false, false]
     this.gameState = 0;
+    this.disabled = false;
   }
 }
 

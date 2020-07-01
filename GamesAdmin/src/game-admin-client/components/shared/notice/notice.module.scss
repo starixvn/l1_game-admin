@@ -1,0 +1,15 @@
+.notice {
+  justify-content: center;
+  max-width: 480px;
+
+  &>div {
+    background: #411212ef;
+    border: solid 2px #660f10;
+    border-radius: 15px;
+  }
+
+  .body {
+    color: #ffffff;
+    font-size: 24px;
+  }
+}

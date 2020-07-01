@@ -14,6 +14,8 @@ import DiceType from '../../common/model/DiceType';
 import BetItem from '../../common/model/BetItem';
 import { types, gameMapping, gameFlagMapping } from '../game-monitoring-config';
 import { GameState } from '../../shared/common/GameState'
+import { Notice } from "../../shared/notice/notice";
+import { time } from "console";
 
 type BigSmalllProps = {
   turbo: boolean,
@@ -97,13 +99,23 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
       });
     }
 
+    if (!!data.um) {
+      this.setState({
+        disabled: data.um,
+        time: { remainingTime: 0 },
+        currentState: GameState.none
+      });
+    }
+
     if (!!data.time_remain) {
-      if ((this.props.turbo && data.time_remain > totalRemainingTime + 6) || data.time_remain > totalRemainingTime) {
+      this.setState({ disabled: false });
+      const { time_remain, phien } = data;
+      if ((this.props.turbo && time_remain > totalRemainingTime + 6) || time_remain > totalRemainingTime) {
         this.setState({
           time: {
-            remainingTime: data.time_remain - totalRemainingTime
+            remainingTime: time_remain - totalRemainingTime
           },
-          roundNumber: data.phien - 1,
+          roundNumber: phien - 1,
           currentState: GameState.waiting
         })
 
@@ -112,7 +124,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
             time: {
               remainingTime: totalRemainingTime,
             },
-            roundNumber: this.state.roundNumber + 1,
+            roundNumber: phien,
             currentState: GameState.running,
             isHavingResult: false,
             result: [
@@ -121,14 +133,14 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
               new DiceModel(-1, DiceType.TaiXiu)
             ]
           })
-        }, (data.time_remain - totalRemainingTime) * 1000)
+        }, (time_remain - totalRemainingTime) * 1000)
       } else {
         this.setState({
           currentState: GameState.running,
           time: {
-            remainingTime: data.time_remain
+            remainingTime: time_remain
           },
-          roundNumber: data.phien,
+          roundNumber: phien,
           isHavingResult: false,
           result: [
             new DiceModel(-1, DiceType.TaiXiu),
@@ -266,10 +278,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
   render() {
     return (
       <div className={styles.bigsmallturbo}>
-        <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
-        />
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
       </div>
     );
   }

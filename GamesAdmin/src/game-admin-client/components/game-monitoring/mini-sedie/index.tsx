@@ -30,6 +30,14 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
   }
 
   handleData(data) {
+    if (!!data.um) {
+      this.setState({
+        disabled: data.um,
+        time: { remainingTime: 0 },
+        gameState: GameState.none
+      });
+    }
+
     if (!!data.ingame) {
       this.setState({
         betList: this.getUserBetList(data.ingame, this.state.betList)
@@ -37,7 +45,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
     }
 
     if (!!data.remainingTime) {
-
+      this.setState({ disabled: false });
       if (data.remainingTime > 30) {
         this.setState({
           gameState: GameState.waiting,
@@ -50,7 +58,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
         setTimeout(() => {
           this.setState({
             gameState: GameState.running,
-            roundNumber: this.state.roundNumber + 1,
+            roundNumber: data.roundId,
             time: {
               remainingTime: 30
             }
@@ -159,22 +167,24 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
       <Container className={styles['shakeThePlate-container']}>
         <Row>
           <Col align='center' className={styles['shakeThePlate-timmer']}>
-            <div className={styles.title}>Mini Se Die</div>
             <TimeCounter remainingTime={time.remainingTime} gameState={gameState} />
-            <Row className={styles.result}>
-              <Dice diceModel={result[0]} isSmall={false} />
-              <Dice diceModel={result[1]} isSmall={false} />
-              <Dice diceModel={result[2]} isSmall={false} />
-              <Dice diceModel={result[3]} isSmall={false} />
-            </Row>
-            <RoundNum roundNumber={roundNumber} />
+            <div>
+              <div className={styles.title}>Mini Se Die</div>
+              <Row className={styles.result}>
+                <Dice diceModel={result[0]} isSmall={false} />
+                <Dice diceModel={result[1]} isSmall={false} />
+                <Dice diceModel={result[2]} isSmall={false} />
+                <Dice diceModel={result[3]} isSmall={false} />
+              </Row>
+              <RoundNum roundNumber={roundNumber} />
+            </div>
           </Col>
           <Col align='center' className={styles['shakeThePlate-betList']}>
-            <Col className={styles['col-plateodd']}>
-              <TotalBet type='plateodd' total={betList.odd.total} isWin={winer == 'white3' || winer == 'red3'} />
-            </Col>
             <Col className={styles['col-plateeven']}>
               <TotalBet type='plateeven' total={betList.even.total} isWin={winer != '' && winer != 'white3' && winer != 'red3'} />
+            </Col>
+            <Col className={styles['col-plateodd']}>
+              <TotalBet type='plateodd' total={betList.odd.total} isWin={winer == 'white3' || winer == 'red3'} />
             </Col>
             <Col>
               <TotalBet type='bondo' total={betList.red4.total} isWin={winer == 'red4'} />
@@ -218,18 +228,18 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
         </Col>
         <Col className='col-4 col-lg-2'>
           <BetList
-            titles={[(<div className={styles['title-le']}>Odd</div>)]}
-            type='simple'
-            dataList={betList.odd.dataList}
-            isWin={winer == 'white3' || winer == 'red3'}
-          />
-        </Col>
-        <Col className='col-4 col-lg-2'>
-          <BetList
             titles={[(<div className={styles['title-chan']}>Even</div>)]}
             type='simple'
             dataList={betList.even.dataList}
             isWin={winer != '' && winer != 'white3' && winer != 'red3'}
+          />
+        </Col>
+        <Col className='col-4 col-lg-2'>
+          <BetList
+            titles={[(<div className={styles['title-le']}>Odd</div>)]}
+            type='simple'
+            dataList={betList.odd.dataList}
+            isWin={winer == 'white3' || winer == 'red3'}
           />
         </Col>
         <Col className='col-4 col-lg-2'>
@@ -255,7 +265,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
   render() {
     return (
       <div>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()}></GameTemplate>
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled}></GameTemplate>
       </div>
     );
   }

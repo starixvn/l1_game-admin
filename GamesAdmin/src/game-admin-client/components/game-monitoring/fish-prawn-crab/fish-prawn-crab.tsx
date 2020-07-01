@@ -13,6 +13,7 @@ import DiceType from '../../common/model/DiceType';
 import DiceModel from '../../common/model/DiceModel';
 import { GameState } from '../../shared/common/GameState';
 import { FishPrawnCrabModel, GameResult } from '../../common/model/FishPrawnCrabModel';
+import { Notice } from '../../shared/notice/notice';
 
 type FishPrawnCrabProps = {
   onMessage: Function,
@@ -44,6 +45,14 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
   }
 
   handleData(data) {
+    if (!!data.um) {
+      this.setState({
+        disabled: data.um,
+        time: { remainingTime: 0 },
+        gameState: GameState.none
+      });
+    }
+
     if (!!data.info) {
       this.setState({
         betList: this.getTotalBetList(data.info, this.state.betList)
@@ -88,6 +97,8 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
     }
 
     if (!!data.time_remain) {
+      this.setState({ disabled: false });
+
       if (data.time_remain > 31) {
         this.setState({
           gameState: GameState.waiting,
@@ -103,7 +114,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             time: {
               remainingTime: 30,
             },
-            roundNumber: this.state.roundNumber + 1,
+            roundNumber: data.phien,
             winers: [false, false, false, false, false, false],
             result: [
               new DiceModel(-1, DiceType.BauCua),
@@ -356,7 +367,8 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
     return (
       <div className={styles['fish-prawn-crab']}>
         {!this.props.isProduction && this.renderGameControl()}
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()}></GameTemplate>
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
+        {this.state.disabled && <Notice isOpen={true} message="Game is disabled." />}
       </div>
     );
   }
