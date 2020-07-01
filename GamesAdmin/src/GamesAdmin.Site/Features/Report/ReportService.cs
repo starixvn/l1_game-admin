@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Site.Features.Report;
 
 namespace GamesAdmin.Site.Features.ClientSites
@@ -31,7 +32,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
 
-        Task<IEnumerable<KenoBetHistory>> GetKenoProVietBetHistory(GameType game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname);
+
+        Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId);
     }
 
     public class ReportService : IReportService
@@ -74,9 +77,12 @@ namespace GamesAdmin.Site.Features.ClientSites
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
         public Task<KenoBetReport> GetKenoBetReport(GameType game, long roundId)
-        => reportApi.GetKenoProVietReport(game.Value, roundId);
+        => reportApi.GetKenoReport(game.Value, roundId);
 
-        public Task<IEnumerable<KenoBetHistory>> GetKenoProVietBetHistory(GameType game, long roundId, string nickname)
-        => reportApi.GetKenoProVietBetHistory(game.Value, roundId, nickname);
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname)
+        => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
+
+        public Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId)
+        => reportApi.GetKenoRoundResult(game.Value, roundId);
     }
 }

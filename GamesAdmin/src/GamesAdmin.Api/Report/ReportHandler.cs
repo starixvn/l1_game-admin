@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using MediatR;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<SeDieReportRequest, SeDieBetReport>,
         IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
         IRequestHandler<KenoProVietRequest, KenoBetReport>,
-        IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>
+        IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
+        IRequestHandler<KenoRoundResultRequest, KenoRoundResult>
     {
         private readonly IReportService reportService;
 
@@ -53,5 +55,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoBetHistoryAsync(request.Game, request.RoundId, request.Nickname);
+
+        public Task<KenoRoundResult> Handle(KenoRoundResultRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
     }
 }

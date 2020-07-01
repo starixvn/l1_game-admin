@@ -6,6 +6,7 @@ using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +31,8 @@ namespace GamesAdmin.Api.Report
         Task<KenoBetReport> GetKenoReportAsync(GameType game, long roundId);
 
         Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname);
+
+        Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId);
     }
 
     public class ReportService : IReportService
@@ -299,6 +302,17 @@ namespace GamesAdmin.Api.Report
             {
                 case GameType.KenoProVietValue:
                     return kenoReport.GetBetHistoryAsync(roundId, nickname);
+            }
+
+            return default;
+        }
+
+        public Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId)
+        {
+            switch (game.Value)
+            {
+                case GameType.KenoProVietValue:
+                    return kenoReport.GetRoundResultAsync(roundId);
             }
 
             return default;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
 
@@ -31,9 +32,12 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
 
         [Get("/report/{game}/round/{roundId}")]
-        Task<KenoBetReport> GetKenoProVietReport(string game, long roundId);
+        Task<KenoBetReport> GetKenoReport(string game, long roundId);
 
         [Get("/report/{game}/round/{roundId}/user/{nickname}")]
-        Task<IEnumerable<KenoBetHistory>> GetKenoProVietBetHistory(string game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(string game, long roundId, string nickname);
+
+        [Get("/report/{game}/round/{roundId}/result")]
+        Task<KenoRoundResult> GetKenoRoundResult(string game, long roundId);
     }
 }

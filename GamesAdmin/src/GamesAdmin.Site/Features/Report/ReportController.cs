@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    [Authorize]
+    //[Authorize]
     public class ReportController : Controller
     {
         private readonly IMediator mediator;

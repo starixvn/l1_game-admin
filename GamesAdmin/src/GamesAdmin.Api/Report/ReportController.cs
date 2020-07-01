@@ -4,6 +4,7 @@ using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,5 +64,10 @@ namespace GamesAdmin.Api.Report
         [Route("{game}/round/{roundId}/user/{nickname}")]
         public async Task<IEnumerable<KenoBetHistory>> KenoBetHistory(string game, long roundId, string nickname)
             => (await mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname)));
+
+        [HttpGet]
+        [Route("{game}/round/{roundId}/result")]
+        public async Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
+            => (await mediator.Send(new KenoRoundResultRequest(game, roundId)));
     }
 }

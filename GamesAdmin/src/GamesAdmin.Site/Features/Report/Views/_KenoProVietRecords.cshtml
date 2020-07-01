@@ -9,7 +9,40 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Results?.Length > 0)
         {
-            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.ToString()</span> </h3>
+            <table class="table table-bordered table-hover stripe tble-vietlot">
+                <thead>
+                    <tr>
+                        <th>Round No / Time (GMT+7)</th>
+                        <th>Result</th>
+                        <th>Total</th>
+                        <th>Big / Small</th>
+                        <th>Even / Odd</th>
+                        <th>Element</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">
+                            @Model.RoundId.ToString("D7")
+                            <div>@Model.RoundResult.Time.ToString(Constants.TimeFormat)</div>
+                        </td>
+                        <td>
+                            <div class="list-numbers">
+                                @foreach (var number in Model.RoundResult.Results)
+                                {
+                                    <span class="number">
+                                        @number
+                                    </span>
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center">@Model.RoundResult.Total</td>
+                        <td class="text-center">@Model.RoundResult.BigSmallResult</td>
+                        <td class="text-center">@Model.RoundResult.OddEvenResult</td>
+                        <td class="text-center">@Model.RoundResult.FiveElementsResult</td>
+                    </tr>
+                </tbody>
+            </table>
         }
         <table class="table table-bordered table-hover">
             <thead>

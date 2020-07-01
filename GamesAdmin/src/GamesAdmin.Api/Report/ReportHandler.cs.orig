@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using MediatR;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -18,12 +19,14 @@ namespace GamesAdmin.Api.Report
 <<<<<<< HEAD
         IRequestHandler<SeDieReportRequest, SeDieBetReport>,
         IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
-        IRequestHandler<KenoProVietRequest, KenoBetReport>
+        IRequestHandler<KenoProVietRequest, KenoBetReport>,
+        IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>
 =======
         IRequestHandler<ShakeThePlateReportRequest, ShakeThePlateBetReport>,
         IRequestHandler<KenoReportRequest, KenoBetReport>,
-        IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>
->>>>>>> 4010849... add keno pro viet bet history
+        IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
+        IRequestHandler<KenoRoundResultRequest, KenoRoundResult>
+>>>>>>> 40ea36c... update keno report
     {
         private readonly IReportService reportService;
 
@@ -58,5 +61,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoBetHistoryAsync(request.Game, request.RoundId, request.Nickname);
+
+        public Task<KenoRoundResult> Handle(KenoRoundResultRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
     }
 }

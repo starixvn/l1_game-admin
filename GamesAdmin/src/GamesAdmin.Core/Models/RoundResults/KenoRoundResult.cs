@@ -1,29 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration.BetChoices;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models.RoundResults
 {
     public class KenoRoundResult
     {
-        public KenoRoundResult(byte[] results, KenoSettlementResult settlementResult)
+        public KenoRoundResult(
+            byte[] results,
+            KenoSettlementResult settlementResult,
+            DateTimeOffset time)
         {
             Results = results;
             SettlementResult = settlementResult;
+            Time = time;
         }
 
-        public byte[] Results { get; }
+        public byte[] Results { get; set; }
 
-        public KenoSettlementResult SettlementResult { get; }
+        public KenoSettlementResult SettlementResult { get; set; }
+
+        public DateTimeOffset Time { get; set; }
     }
 
     public class KenoSettlementResult
-    {
-        public KenoSettlementResult() { }
-
+    {       
         public KenoSettlementResult(Dictionary<string, bool> settlementResult)
         {
             Big = settlementResult[KenoBetChoice.Big.Value];
+            Small = !Big;
             Odd = settlementResult[KenoBetChoice.Odd.Value];
+            Even = !Odd;
             Gold = settlementResult[KenoBetChoice.Gold.Value];
             Water = settlementResult[KenoBetChoice.Water.Value];
             Wood = settlementResult[KenoBetChoice.Wood.Value];
@@ -31,21 +39,24 @@ namespace GamesAdmin.Core.Models.RoundResults
             Earth = settlementResult[KenoBetChoice.Earth.Value];
         }
 
-        public KenoSettlementResult(bool big, bool odd, bool gold, bool wood, bool water, bool fire, bool earth)
+        [JsonConstructor]
+        public KenoSettlementResult(bool Big, bool Small, bool Odd, bool Even, bool Gold, bool Wood, bool Water, bool Fire, bool Earth)
         {
-            Big = big;
-            Odd = odd;
-            Gold = gold;
-            Wood = wood;
-            Water = water;
-            Fire = fire;
-            Earth = earth;
+            this.Big = Big;
+            this.Small = Small;
+            this.Odd = Odd;
+            this.Even = Even;
+            this.Gold = Gold;
+            this.Wood = Wood;
+            this.Water = Water;
+            this.Fire = Fire;
+            this.Earth = Earth;
         }
 
         public bool Big { get; }
-        public bool Small => !Big;
+        public bool Small { get; }
         public bool Odd { get; }
-        public bool Even => !Odd;
+        public bool Even { get; }
         public bool Gold { get; }
         public bool Wood { get; }
         public bool Water { get; }

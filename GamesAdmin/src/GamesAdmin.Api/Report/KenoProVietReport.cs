@@ -35,7 +35,7 @@ namespace GamesAdmin.Api.Report
 
         public async Task<KenoBetReport> GetReportAsync(long roundId)
         {
-            var roundResult = await GetKenoRoundAsync(roundId);
+            var roundResult = await GetRoundResultAsync(roundId);
 
             var newBets = await kenoProVietOnesRepository
                    .Aggregate()
@@ -80,13 +80,16 @@ namespace GamesAdmin.Api.Report
             return betLogs;
         }
 
-        private async Task<KenoRoundResult> GetKenoRoundAsync(long roundId)
+        public async Task<KenoRoundResult> GetRoundResultAsync(long roundId)
         {
             var round = await kenoProvietRoundRepository.FindOneAsync(round => round.Number == roundId);
 
             return round == null || round.Result == null || round.SettlementResult == null
                 ? default
-                : new KenoRoundResult(round.Result.ToArray(), new KenoSettlementResult(round.SettlementResult));
+                : new KenoRoundResult(
+                    round.Result.ToArray(),
+                    new KenoSettlementResult(round.SettlementResult),
+                    round.Time);
         }
     }
 }
