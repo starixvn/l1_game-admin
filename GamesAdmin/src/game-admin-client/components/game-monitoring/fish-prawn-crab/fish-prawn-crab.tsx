@@ -69,31 +69,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
       this.setState({
         result: this.getResult(data.finish),
         winers: this.getWiners(data.finish),
-        time: {
-          remainingTime: 10
-        },
-        gameState: GameState.waiting
       });
-
-      setTimeout(() => {
-        const { nextRoudResult } = this.state;
-
-        this.setState({
-          result: [
-            new DiceModel(nextRoudResult['dice-0'], DiceType.BauCua),
-            new DiceModel(nextRoudResult['dice-1'], DiceType.BauCua),
-            new DiceModel(nextRoudResult['dice-2'], DiceType.BauCua)
-          ],
-          winers: [false, false, false, false, false, false],
-          nextRoudResult: new GameResult(),
-          isHandleNextRoundResult: false,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 30
-          },
-          gameState: GameState.running
-        })
-      }, 11500);
     }
 
     if (!!data.time_remain) {
@@ -122,7 +98,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
               new DiceModel(-1, DiceType.BauCua)
             ]
           })
-        }, (data.time_remain - 31) * 1000);
+        }, (data.time_remain - 30) * 1000);
       } else {
         this.setState({
           gameState: GameState.running,

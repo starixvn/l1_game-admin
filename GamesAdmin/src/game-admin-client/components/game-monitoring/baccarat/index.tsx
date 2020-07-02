@@ -36,6 +36,7 @@ const CHOICES = [
 ];
 
 export default class Baccarat extends React.Component<Props, BaccaratModel>{
+    private stopTimeout: NodeJS.Timeout;
     constructor(props: Props) {
         super(props);
 
@@ -59,6 +60,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 time: { remainingTime: 0 },
                 gameState: GameState.none
             });
+            clearTimeout(this.stopTimeout);
         }
 
         if (!!message.remainingTime) {
@@ -136,7 +138,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
             }
         });
 
-        setTimeout(() => {
+        this.stopTimeout = setTimeout(() => {
             this.setState({
                 time: {
                     remainingTime: TOTAL_TIME

@@ -29,6 +29,8 @@ const TOTAL_TIME = 30;
 const WAITING_TIME = 5;
 
 export default class DragonTiger extends React.Component<Props, State> {
+  private timeOut: NodeJS.Timeout;
+
   constructor(props: any) {
     super(props);
 
@@ -45,6 +47,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   handleMessage(message) {
     if (message.um !== undefined) {
+      clearTimeout(this.timeOut);
       let data = this.state.data;
       data.time.remainingTime = 0;
       this.setState({
@@ -85,7 +88,7 @@ export default class DragonTiger extends React.Component<Props, State> {
   handleStart(message) {
     const newData = new DragonTigerModel();
     let isFinished = message.time_remain > TOTAL_TIME;
-    newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME : message.time_remain;
+    newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME - 1 : message.time_remain;
     newData.roundNumber = isFinished ? message.phien - 1 : message.phien;
     if (message.result) {
       newData.result = this.getResult(message.result);
@@ -113,7 +116,7 @@ export default class DragonTiger extends React.Component<Props, State> {
       gameState: GameState.waiting,
     });
 
-    this.countDownToStart.call(this, newData, WAITING_TIME + 1);
+    this.timeOut = this.countDownToStart.call(this, newData, WAITING_TIME + 1);
   }
 
   getBet(type, userObj) {

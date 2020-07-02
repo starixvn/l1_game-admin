@@ -18,6 +18,7 @@ type Props = {
 }
 
 export default class ShakeThePlate extends React.Component<Props, MiniSedieModel> {
+  private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
@@ -31,6 +32,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
 
   handleData(data) {
     if (!!data.um) {
+      clearTimeout(this.timeout);
       this.setState({
         disabled: data.um,
         time: { remainingTime: 0 },
@@ -86,7 +88,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
         }
       });
 
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.setState({
           result: [
             new DiceModel(-1, DiceType.XocXoc),

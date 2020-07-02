@@ -81,7 +81,6 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
             new DiceModel(-1, DiceType.TaiXiu)
           ],
           isHavingResult: false,
-          roundNumber: this.state.roundNumber + 1,
           currentState: GameState.running,
           time: {
             remainingTime: totalRemainingTime

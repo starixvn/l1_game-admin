@@ -31,6 +31,8 @@ const TOTAL_TIME = 30;
 const WAITING_TIME = 9;
 
 export default class KenoProMax extends React.Component<Props, State> {
+  private stopTimeout: NodeJS.Timeout;
+
   constructor(props: any) {
     super(props);
 
@@ -52,13 +54,14 @@ export default class KenoProMax extends React.Component<Props, State> {
 
   handleMessage(message) {
     if (message.um !== undefined) {
+      clearTimeout(this.stopTimeout);
       let data = this.state.data;
       data.time.remainingTime = 0;
       this.setState({
         disabled: message.um,
         data: data,
         gameState: GameState.none
-      })
+      });
 
     } else if (message.remainingTime !== undefined) {
       this.setState({ disabled: false });
@@ -140,7 +143,7 @@ export default class KenoProMax extends React.Component<Props, State> {
   }
 
   countDownToStart(newData, time) {
-    setTimeout(() => {
+    this.stopTimeout = setTimeout(() => {
       newData.time.remainingTime = TOTAL_TIME;
       newData.roundNumber += 1;
       this.setState({

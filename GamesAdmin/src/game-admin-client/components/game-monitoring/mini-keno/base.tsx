@@ -54,6 +54,7 @@ type KenoMessage = {
 };
 
 export default class extends React.Component<Props, State> {
+  private timeout: NodeJS.Timeout;
   constructor(props: Props) {
     super(props);
 
@@ -88,7 +89,10 @@ export default class extends React.Component<Props, State> {
     const actions = [
       {
         selector: () => message.um,
-        handle: () => this.setState({ disabled: message.um, remainingTime: 0 }),
+        handle: () => {
+          clearTimeout(this.timeout);
+          this.setState({ disabled: message.um, remainingTime: 0 });
+        },
       },
       {
         selector: () => message.durations,
@@ -107,7 +111,7 @@ export default class extends React.Component<Props, State> {
               remainingTime: message.remainingTime + 1,
             });
 
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
               this.setState({
                 roundId: this.state.roundId + 1,
                 remainingTime: durations.placingBets,
