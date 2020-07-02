@@ -22,8 +22,7 @@ type Props = {
 type State = {
   data: KenoProMaxModel,
   gameState: number;
-  isShowResultUpdater: boolean,
-  disabled: boolean
+  isShowResultUpdater: boolean
 };
 
 const TYPES = ["big", "small", "even", "odd", "earth", "fire", "gold", "water", "wood"];
@@ -39,8 +38,7 @@ export default class KenoProMax extends React.Component<Props, State> {
     this.state = {
       data: new KenoProMaxModel(),
       gameState: GameState.none,
-      isShowResultUpdater: false,
-      disabled: false
+      isShowResultUpdater: false
     }
 
     this.showUpdater = this.showUpdater.bind(this);
@@ -57,14 +55,14 @@ export default class KenoProMax extends React.Component<Props, State> {
       clearTimeout(this.stopTimeout);
       let data = this.state.data;
       data.time.remainingTime = 0;
+      data.result = [];
+      data.settlementResult = "";
       this.setState({
-        disabled: message.um,
         data: data,
-        gameState: GameState.none
+        gameState: GameState.disabled
       });
 
     } else if (message.remainingTime !== undefined) {
-      this.setState({ disabled: false });
       this.handleStart(message);
     }
     else if (message.finish !== undefined) {
@@ -262,7 +260,7 @@ export default class KenoProMax extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} disabled={this.state.disabled} />
+        <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} disabled={this.state.gameState == GameState.disabled} />
         ${!this.props.isProduction && (<KenoResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
       </div>
     );

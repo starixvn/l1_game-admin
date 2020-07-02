@@ -81,10 +81,8 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
 
     if (!!data.time_remain) {
       clearTimeout(this.timeout);
-      this.setState({ gameState: GameState.disabled });
 
       if (data.time_remain > 31) {
-
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.phien - 1,
