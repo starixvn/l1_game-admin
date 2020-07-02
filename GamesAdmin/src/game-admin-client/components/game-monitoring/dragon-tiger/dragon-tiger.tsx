@@ -83,7 +83,7 @@ export default class DragonTiger extends React.Component<Props, State> {
   }
 
   handleStart(message) {
-    const newData = this.state.data;
+    const newData = new DragonTigerModel();
     let isFinished = message.time_remain > TOTAL_TIME;
     newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME : message.time_remain;
     newData.roundNumber = isFinished ? message.phien - 1 : message.phien;

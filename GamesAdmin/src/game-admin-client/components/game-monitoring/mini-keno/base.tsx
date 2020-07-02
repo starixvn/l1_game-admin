@@ -255,7 +255,6 @@ export default class extends React.Component<Props, State> {
             isMini={this.props.isMini}
           />
         )}
-        {disabled && <Notice isOpen={true} message="Game is disabled." />}
       </div>
     );
   }
