@@ -1,6 +1,7 @@
 import BetList from './BetList'
 import TimeModel from './TimeModel'
 import DiceModel from './DiceModel'
+import DiceType from './DiceType';
 
 class FishPrawnCrabBetList {
   redBau: BetList;
@@ -41,20 +42,22 @@ export default class FishPrawnCrabModel {
   currentDiceNumber: number;
   isHandleNextRoundResult: boolean;
   nextRoudResult: GameResult;
-  winers: Array<boolean>;
+  winners: Array<boolean>;
   gameState: number;
-  disabled: boolean;
 
   constructor() {
-    this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
+    this.result = [
+      new DiceModel(-1, DiceType.BauCua),
+      new DiceModel(-1, DiceType.BauCua),
+      new DiceModel(-1, DiceType.BauCua)
+    ]
     this.betList = new FishPrawnCrabBetList();
     this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
     this.nextRoudResult = new GameResult();
-    this.winers = [false, false, false, false, false, false]
+    this.winners = [false, false, false, false, false, false]
     this.gameState = 0;
-    this.disabled = false;
   }
 }
 

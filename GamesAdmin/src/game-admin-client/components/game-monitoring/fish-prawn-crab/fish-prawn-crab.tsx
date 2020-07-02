@@ -31,6 +31,8 @@ enum FishPrawnCrabDice {
 }
 
 export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, FishPrawnCrabModel> {
+
+  private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
@@ -47,9 +49,14 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
   handleData(data) {
     if (!!data.um) {
       this.setState({
-        disabled: data.um,
         time: { remainingTime: 0 },
-        gameState: GameState.none
+        gameState: GameState.disabled,
+        winners: [false, false, false, false, false, false],
+        result: [
+          new DiceModel(-1, DiceType.BauCua),
+          new DiceModel(-1, DiceType.BauCua),
+          new DiceModel(-1, DiceType.BauCua)
+        ]
       });
     }
 
@@ -68,14 +75,16 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
     if (!!data.finish) {
       this.setState({
         result: this.getResult(data.finish),
-        winers: this.getWiners(data.finish),
+        winners: this.getWiners(data.finish),
       });
     }
 
     if (!!data.time_remain) {
-      this.setState({ disabled: false });
+      clearTimeout(this.timeout);
+      this.setState({ gameState: GameState.disabled });
 
       if (data.time_remain > 31) {
+
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.phien - 1,
@@ -84,14 +93,14 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
           }
         })
 
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.setState({
             gameState: GameState.running,
             time: {
               remainingTime: 30,
             },
             roundNumber: data.phien,
-            winers: [false, false, false, false, false, false],
+            winners: [false, false, false, false, false, false],
             result: [
               new DiceModel(-1, DiceType.BauCua),
               new DiceModel(-1, DiceType.BauCua),
@@ -106,12 +115,6 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
           time: {
             remainingTime: data.time_remain
           },
-          winers: [false, false, false, false, false, false],
-          result: [
-            new DiceModel(-1, DiceType.BauCua),
-            new DiceModel(-1, DiceType.BauCua),
-            new DiceModel(-1, DiceType.BauCua)
-          ]
         })
       }
     }
@@ -174,7 +177,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
   }
 
   getWiners(data) {
-    const winers = this.state.winers;
+    const winers = this.state.winners;
     winers[data.dices[0]] = true;
     winers[data.dices[1]] = true;
     winers[data.dices[2]] = true;
@@ -223,7 +226,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
   }
 
   renderMonitor() {
-    const { betList, roundNumber, time, result, winers, gameState } = this.state;
+    const { betList, roundNumber, time, result, winners, gameState } = this.state;
 
     return (
       <Container>
@@ -242,14 +245,14 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
           </Col>
           <Col align="center" className={styles.timecounter} >
             <Row className="justify-content-center">
-              <TotalBet total={betList.redHuou.total} type='nai' isWin={winers[FishPrawnCrabDice.nai]}></TotalBet>
-              <TotalBet total={betList.redBau.total} type='bau' isWin={winers[FishPrawnCrabDice.bau]}></TotalBet>
-              <TotalBet total={betList.redGa.total} type='ga' isWin={winers[FishPrawnCrabDice.ga]}></TotalBet>
+              <TotalBet total={betList.redHuou.total} type='nai' isWin={winners[FishPrawnCrabDice.nai]}></TotalBet>
+              <TotalBet total={betList.redBau.total} type='bau' isWin={winners[FishPrawnCrabDice.bau]}></TotalBet>
+              <TotalBet total={betList.redGa.total} type='ga' isWin={winners[FishPrawnCrabDice.ga]}></TotalBet>
             </Row>
             <Row className="justify-content-center">
-              <TotalBet total={betList.redCa.total} type='ca' isWin={winers[FishPrawnCrabDice.ca]}></TotalBet>
-              <TotalBet total={betList.redCua.total} type='cua' isWin={winers[FishPrawnCrabDice.cua]}></TotalBet>
-              <TotalBet total={betList.redTom.total} type='tom' isWin={winers[FishPrawnCrabDice.tom]}></TotalBet>
+              <TotalBet total={betList.redCa.total} type='ca' isWin={winners[FishPrawnCrabDice.ca]}></TotalBet>
+              <TotalBet total={betList.redCua.total} type='cua' isWin={winners[FishPrawnCrabDice.cua]}></TotalBet>
+              <TotalBet total={betList.redTom.total} type='tom' isWin={winners[FishPrawnCrabDice.tom]}></TotalBet>
             </Row>
           </Col>
         </Row>
@@ -258,7 +261,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
   }
 
   renderBetList() {
-    const { betList, winers } = this.state;
+    const { betList, winners } = this.state;
 
     return (
       <React.Fragment>
@@ -267,7 +270,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             type="simple"
             dataList={betList.redHuou.dataList}
             titles={[this.renderBetListBau(FishPrawnCrabDice.nai)]}
-            isWin={winers[FishPrawnCrabDice.nai]}
+            isWin={winners[FishPrawnCrabDice.nai]}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -275,7 +278,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             type="simple"
             dataList={betList.redBau.dataList}
             titles={[this.renderBetListBau(FishPrawnCrabDice.bau)]}
-            isWin={winers[FishPrawnCrabDice.bau]}
+            isWin={winners[FishPrawnCrabDice.bau]}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -283,7 +286,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             type="simple"
             dataList={betList.redGa.dataList}
             titles={[this.renderBetListBau(FishPrawnCrabDice.ga)]}
-            isWin={winers[FishPrawnCrabDice.ga]}
+            isWin={winners[FishPrawnCrabDice.ga]}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -291,7 +294,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             type="simple"
             dataList={betList.redCa.dataList}
             titles={[this.renderBetListBau(FishPrawnCrabDice.ca)]}
-            isWin={winers[FishPrawnCrabDice.ca]}
+            isWin={winners[FishPrawnCrabDice.ca]}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -299,7 +302,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             type="simple"
             dataList={betList.redCua.dataList}
             titles={[this.renderBetListBau(FishPrawnCrabDice.cua)]}
-            isWin={winers[FishPrawnCrabDice.cua]}
+            isWin={winners[FishPrawnCrabDice.cua]}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -307,7 +310,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
             type="simple"
             dataList={betList.redTom.dataList}
             titles={[this.renderBetListBau(FishPrawnCrabDice.tom)]}
-            isWin={winers[FishPrawnCrabDice.tom]}
+            isWin={winners[FishPrawnCrabDice.tom]}
           />
         </Col>
       </React.Fragment>
@@ -344,7 +347,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
       <div className={styles['fish-prawn-crab']}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
-        {this.state.disabled && <Notice isOpen={true} message="Game is disabled." />}
+        {this.state.gameState == GameState.disabled && <Notice isOpen={true} message="Game is disabled." />}
       </div>
     );
   }
