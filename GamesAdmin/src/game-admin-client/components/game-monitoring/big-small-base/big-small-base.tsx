@@ -84,7 +84,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           roundNumber: this.state.roundNumber + 1,
           currentState: GameState.running,
           time: {
-            remainingTime: totalRemainingTime + 1
+            remainingTime: totalRemainingTime
           }
         })
       }, (totalWaitingTime + 1) * 1000);
@@ -94,7 +94,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
         isHavingResult: true,
         currentState: GameState.waiting,
         time: {
-          remainingTime: totalWaitingTime + 1
+          remainingTime: totalWaitingTime
         }
       });
     }
@@ -113,7 +113,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
       if ((this.props.turbo && time_remain > totalRemainingTime + 6) || time_remain > totalRemainingTime) {
         this.setState({
           time: {
-            remainingTime: time_remain - totalRemainingTime
+            remainingTime: time_remain - totalRemainingTime - 1
           },
           roundNumber: phien - 1,
           currentState: GameState.waiting
@@ -133,12 +133,12 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
               new DiceModel(-1, DiceType.TaiXiu)
             ]
           })
-        }, (time_remain - totalRemainingTime) * 1000)
+        }, (time_remain - totalRemainingTime - 1) * 1000)
       } else {
         this.setState({
           currentState: GameState.running,
           time: {
-            remainingTime: time_remain
+            remainingTime: time_remain - 1
           },
           roundNumber: phien,
           isHavingResult: false,
