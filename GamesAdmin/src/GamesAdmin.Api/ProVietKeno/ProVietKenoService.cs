@@ -89,6 +89,7 @@ namespace GamesAdmin.Api.ProVietKeno
             var startTimeOfDay = new TimeSpan(23, 0, 0);
             var endTimeOfDay = new TimeSpan(14, 55, 0);
             var nextRoundTime = currentTime.AddMinutes(10);
+            nextRoundTime = nextRoundTime.AddMinutes((Math.Floor((double)nextRoundTime.Minute / 10) * 10) - nextRoundTime.Minute);
 
             if (nextRoundTime.TimeOfDay > endTimeOfDay && nextRoundTime.TimeOfDay < startTimeOfDay)
             {
