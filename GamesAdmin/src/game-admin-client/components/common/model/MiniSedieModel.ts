@@ -1,6 +1,7 @@
 import BetList from './BetList'
 import TimeModel from './TimeModel'
 import DiceModel from './DiceModel'
+import DiceType from './DiceType';
 
 class MiniSedieBetList {
     even: BetList;
@@ -26,14 +27,17 @@ export default class MiniSedieModel {
     betList: MiniSedieBetList;
     result: Array<DiceModel>;
     gameState: number;
-    disabled: boolean;
 
     constructor() {
-        this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
+        this.result = [
+            new DiceModel(-1, DiceType.XocXoc),
+            new DiceModel(-1, DiceType.XocXoc),
+            new DiceModel(-1, DiceType.XocXoc),
+            new DiceModel(-1, DiceType.XocXoc)
+        ];
         this.betList = new MiniSedieBetList();
         this.time = new TimeModel();
         this.gameState = 0;
-        this.disabled = false;
     }
 }
 

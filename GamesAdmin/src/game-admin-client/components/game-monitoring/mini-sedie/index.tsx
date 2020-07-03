@@ -23,7 +23,6 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
     super(props);
 
     this.state = new MiniSedieModel();
-
   }
 
   componentDidMount() {
@@ -34,9 +33,14 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
     if (!!data.um) {
       clearTimeout(this.timeout);
       this.setState({
-        disabled: data.um,
         time: { remainingTime: 0 },
-        gameState: GameState.none
+        gameState: GameState.disabled,
+        result: [
+          new DiceModel(-1, DiceType.XocXoc),
+          new DiceModel(-1, DiceType.XocXoc),
+          new DiceModel(-1, DiceType.XocXoc),
+          new DiceModel(-1, DiceType.XocXoc)
+        ]
       });
     }
 
@@ -47,7 +51,6 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
     }
 
     if (!!data.remainingTime) {
-      this.setState({ disabled: false });
       if (data.remainingTime > 30) {
         this.setState({
           gameState: GameState.waiting,
@@ -65,7 +68,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
               remainingTime: 30
             }
           })
-        }, (data.remainingTime - 30) * 1000 + 500)
+        }, (data.remainingTime - 30) * 1000)
       }
       else {
         this.setState({
@@ -79,7 +82,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
     }
 
     if (!!data.finish) {
-      const waitingTime = 9;
+      const waitingTime = 8;
       this.setState({
         result: this.getResult(data.finish.result),
         gameState: GameState.waiting,
@@ -102,7 +105,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
             remainingTime: 30
           }
         })
-      }, waitingTime * 1000 + 500)
+      }, (waitingTime + 1) * 1000)
     }
   }
 
@@ -267,7 +270,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
   render() {
     return (
       <div>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled}></GameTemplate>
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.gameState == GameState.disabled}></GameTemplate>
       </div>
     );
   }

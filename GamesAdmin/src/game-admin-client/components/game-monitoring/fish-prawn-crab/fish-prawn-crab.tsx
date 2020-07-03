@@ -344,7 +344,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
     return (
       <div className={styles['fish-prawn-crab']}>
         {!this.props.isProduction && this.renderGameControl()}
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.gameState == GameState.disabled} />
         {this.state.gameState == GameState.disabled && <Notice isOpen={true} message="Game is disabled." />}
       </div>
     );
