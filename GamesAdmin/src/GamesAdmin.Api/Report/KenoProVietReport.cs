@@ -16,20 +16,21 @@ namespace GamesAdmin.Api.Report
     public class KenoProVietReport : IKenoReport
     {
         private readonly IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository;
-        private readonly IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository;
-        private readonly IGenericRepository<AccountEntity> accountRepository;
+        private readonly IGenericRepository<KenoProVietRoundEntity> kenoProvietRoundRepository;
         private readonly IGenericRepository<KenoProVietBetEntity> kenoProVietBetRepository;
+        private readonly IGenericRepository<AccountEntity> accountRepository;        
 
         public KenoProVietReport(
             IGenericRepository<KenoProVietOnesEntity> kenoProVietOnesRepository,
-            IGenericRepository<KenoRoundEntity> kenoProvietRoundRepository,
-            IGenericRepository<AccountEntity> accountRepository,
-            IGenericRepository<KenoProVietBetEntity> kenoProVietBetRepository)
+            IGenericRepository<KenoProVietRoundEntity> kenoProvietRoundRepository,
+            IGenericRepository<KenoProVietBetEntity> kenoProVietBetRepository,
+            IGenericRepository<AccountEntity> accountRepository)
         {
             this.kenoProVietOnesRepository = kenoProVietOnesRepository;
-            this.kenoProvietRoundRepository = kenoProvietRoundRepository;
-            this.accountRepository = accountRepository;
+            this.kenoProvietRoundRepository = kenoProvietRoundRepository;            
             this.kenoProVietBetRepository = kenoProVietBetRepository;
+
+            this.accountRepository = accountRepository;
         }
 
         public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId)

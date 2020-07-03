@@ -302,8 +302,9 @@ namespace GamesAdmin.Api.Report
             {
                 case GameType.KenoProVietValue:
                     return kenoReport.GetBetHistoryAsync(roundId, nickname);
-            }
 
+            }
+            
             return default;
         }
 

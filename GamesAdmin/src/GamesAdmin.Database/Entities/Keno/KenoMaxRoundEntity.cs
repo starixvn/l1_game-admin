@@ -3,11 +3,9 @@ using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities.Keno
 {
-    [BsonCollection("kenoproviet_phiens")]
-    public class KenoRoundEntity: BaseRoundEntity
+    [BsonCollection("kenomax_phiens")]
+    public class KenoMaxRoundEntity : BaseKenoRoundEntity
     {
-        public IEnumerable<byte> Result { get; set; }
-
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
 }
