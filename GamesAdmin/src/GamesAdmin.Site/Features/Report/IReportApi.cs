@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
 
         [Get("/report/{game}/round/{roundId}")]
-        Task<KenoBetReport> GetKenoReport(string game, long roundId);
+        Task<IEnumerable<KenoBetRecord>> GetKenoReport(string game, long roundId);
 
         [Get("/report/{game}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(string game, long roundId, string nickname);

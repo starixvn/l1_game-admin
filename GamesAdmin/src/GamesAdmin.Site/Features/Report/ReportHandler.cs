@@ -283,7 +283,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<KenoReportViewModel> Handle(GetKenoReportRequest request, CancellationToken cancellationToken)
         {
             var roundResult = await reportService.GetKenoRoundResult(request.Game, request.RoundId);
-            var betReport = await reportService.GetKenoBetReport(request.Game, request.RoundId);
+            var betRecords = await reportService.GetKenoBetReport(request.Game, request.RoundId);
 
             return new KenoReportViewModel
             {
@@ -292,7 +292,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     roundResult?.Results,
                     roundResult?.SettlementResult,
                     roundResult?.Time),
-                BetTickets = betReport.BetRecords
+                BetTickets = betRecords
             };
         }
 

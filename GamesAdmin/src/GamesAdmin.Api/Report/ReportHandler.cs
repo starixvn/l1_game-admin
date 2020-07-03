@@ -1,12 +1,11 @@
-﻿using GamesAdmin.Api.Report.Request;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using MediatR;
-using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -17,8 +16,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<OddEvenTurboReportRequest, OddEvenBetReport>,
         IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
         IRequestHandler<SeDieReportRequest, SeDieBetReport>,
+        IRequestHandler<KenoReportRequest, IEnumerable<KenoBetRecord>>,
         IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
-        IRequestHandler<KenoProVietRequest, KenoBetReport>,
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
         IRequestHandler<KenoRoundResultRequest, KenoRoundResult>
     {
@@ -50,7 +49,7 @@ namespace GamesAdmin.Api.Report
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
 
-        public Task<KenoBetReport> Handle(KenoReportRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<KenoBetRecord>> Handle(KenoReportRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoReportAsync(request.Game, request.RoundId);
 
         public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)

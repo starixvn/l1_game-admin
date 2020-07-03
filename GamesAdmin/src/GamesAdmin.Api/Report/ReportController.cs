@@ -57,17 +57,17 @@ namespace GamesAdmin.Api.Report
             
         [HttpGet]
         [Route("{game}/round/{roundId}")]
-        public async Task<KenoBetReport> KenoBetReport(string game, long roundId)
-            => (await mediator.Send(new KenoReportRequest(game, roundId)));
+        public Task<IEnumerable<KenoBetRecord>> KenoBetReport(string game, long roundId)
+            => mediator.Send(new KenoReportRequest(game, roundId));
 
         [HttpGet]
         [Route("{game}/round/{roundId}/user/{nickname}")]
-        public async Task<IEnumerable<KenoBetHistory>> KenoBetHistory(string game, long roundId, string nickname)
-            => (await mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname)));
+        public Task<IEnumerable<KenoBetHistory>> KenoBetHistory(string game, long roundId, string nickname)
+            => mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname));
 
         [HttpGet]
         [Route("{game}/round/{roundId}/result")]
-        public async Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
-            => (await mediator.Send(new KenoRoundResultRequest(game, roundId)));
+        public Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
+            => mediator.Send(new KenoRoundResultRequest(game, roundId));
     }
 }

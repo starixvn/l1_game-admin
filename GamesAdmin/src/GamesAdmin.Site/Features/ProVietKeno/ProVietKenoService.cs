@@ -28,14 +28,14 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             this.sentryClient = sentryClient;
         }
 
-        public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
-        => await provietKenoApi.GetRounds(date.ToString("o"));
+        public Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
+        => provietKenoApi.GetRounds(date.ToString("o"));
 
-        public async Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound)
-        => await provietKenoApi.Create(kenoRound);
+        public Task<ProVietKenoRound> CreateAsync(CreateProVietKenoRound kenoRound)
+        => provietKenoApi.Create(kenoRound);
 
-        public async Task<ProVietKenoRound> GetByRoundIdAsync(long roundId)
-        => await provietKenoApi.GetByRoundId(roundId);
+        public Task<ProVietKenoRound> GetByRoundIdAsync(long roundId)
+        => provietKenoApi.GetByRoundId(roundId);
 
         public async Task<IEnumerable<ProVietKenoRound>> GetUnsettledRoundsAsync()
         {
@@ -43,11 +43,12 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             {
                 return await provietKenoApi.GetUnsettledRounds();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-                return null;
             }
+
+            return default;
         }
     }
 }

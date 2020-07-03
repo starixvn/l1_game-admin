@@ -1,10 +1,11 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class KenoReportRequest : IRequest<KenoBetReport>
+    public class KenoReportRequest : IRequest<IEnumerable<KenoBetRecord>>
     {
         public KenoReportRequest(string game, long roundId)
         {

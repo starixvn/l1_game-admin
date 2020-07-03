@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,11 +32,9 @@ namespace GamesAdmin.Api.Report
             this.kenoProVietBetRepository = kenoProVietBetRepository;
         }
 
-        public async Task<KenoBetReport> GetReportAsync(long roundId)
+        public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId)
         {
-            var roundResult = await GetRoundResultAsync(roundId);
-
-            var newBets = await kenoProVietOnesRepository
+            var bets = await kenoProVietOnesRepository
                    .Aggregate()
                    .Match(x => x.Round == roundId)
                    .AppendStage<KenoProVietOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
@@ -49,7 +46,7 @@ namespace GamesAdmin.Api.Report
                    )
                    .ToListAsync();
 
-            var betRecords = newBets
+            var betRecords = bets
                 .Select(bet => new KenoBetRecord(bet.ConvertAmountToDictionary(), bet.Odds)
                 {
                     Nickname = bet.Name,
@@ -59,7 +56,7 @@ namespace GamesAdmin.Api.Report
                 })
                 .ToList();
 
-            return new KenoBetReport(roundResult, betRecords);
+            return betRecords;
         }
 
         public async Task<IEnumerable<KenoBetHistory>> GetBetHistoryAsync(long roundId, string nickname)

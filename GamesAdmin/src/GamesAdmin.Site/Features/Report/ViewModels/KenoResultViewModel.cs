@@ -27,18 +27,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string OddEvenResult => SettlementResult.Odd ? KenoBetChoice.Odd.DisplayName : KenoBetChoice.Even.DisplayName;
 
         public string FiveElementsResult
-        {
-            get
-            {
-                if (SettlementResult.Gold) return KenoBetChoice.Gold.DisplayName;
-                if (SettlementResult.Earth) return KenoBetChoice.Earth.DisplayName;
-                if (SettlementResult.Fire) return KenoBetChoice.Fire.DisplayName;
-                if (SettlementResult.Water) return KenoBetChoice.Water.DisplayName;
-                if (SettlementResult.Wood) return KenoBetChoice.Wood.DisplayName;
+            => SettlementResult.Gold ? KenoBetChoice.Gold.DisplayName
+                    : SettlementResult.Earth ? KenoBetChoice.Earth.DisplayName
+                    : SettlementResult.Fire ? KenoBetChoice.Fire.DisplayName
+                    : SettlementResult.Water ? KenoBetChoice.Water.DisplayName
+                    : SettlementResult.Wood ? KenoBetChoice.Wood.DisplayName
+                    : string.Empty;
 
-                return string.Empty;
-            }
-        }
 
         public override string ToString()
         {
@@ -46,3 +41,4 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
     }
 }
+

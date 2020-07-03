@@ -24,7 +24,7 @@
                     <tr>
                         <td class="text-center">
                             @Model.RoundId.ToString("D7")
-                            <div>@Model.RoundResult.Time.ToString(Constants.TimeFormat)</div>
+                            <div>@Model.RoundResult.Time?.ToString(Constants.TimeFormat)</div>
                         </td>
                         <td>
                             <div class="list-numbers">
