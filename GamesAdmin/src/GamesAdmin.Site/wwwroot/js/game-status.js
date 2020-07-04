@@ -106,7 +106,7 @@
         $.ajax({
             method: "GET",
             url: "/gamedetails/" + gameName
-        }).done(function (content) {                        
+        }).done(function (content) {
             if (content) {
                 $('#gamedetails').html(content);
                 $('#gameTitleName').html(gameDisplayName);
@@ -141,7 +141,7 @@
                 const setting = wrapper.find(`#bot_setting_${i}`);
 
                 wrapper.find('#total_bots').html(result.botCount);
-                wrapper.find('#total_bots_field').val(result.botCount);                
+                wrapper.find('#total_bots_field').val(result.botCount);
                 wrapper.find('#modal_title').html(`<b>${result.displayName}</b> - Adjust bots by hour`);
 
                 setting.find('.time-gtm4').html(botRatioItems[i].greenwichHour);
@@ -163,7 +163,6 @@
         let isValid = true;
 
         btnSubmit.prop('disabled', true);
-
 
         for (let i = 0; i < 24; i++) {
             const setting = modal.find(`#bot_setting_${i}`);
@@ -195,7 +194,6 @@
             } else {
                 modal.find('#failedMsg').show();
             }
-
 
             setTimeout(function () {
                 btnSubmit.prop('disabled', false);
@@ -300,7 +298,7 @@
                 modal.find('#confirmBtn').prop('disabled', false);
                 modal.find('#updateMsgSuccess').hide();
                 modal.find('#updateMsgFailed').hide();
-                modal.modal('hide');                
+                modal.modal('hide');
             }, 1000);
         });
     }
@@ -322,9 +320,8 @@
             modal.find('#forceReloadLabel').html(`Force users to reload after ${label} game(s)`);
             modal.find('#enableDisableFlag').val(enabled);
             modal.modal('show');
-           
         } else {
-            this.showAlert("You should choose at least one game.");            
+            this.showAlert("You should choose at least one game.");
         }
     }
 
@@ -332,7 +329,7 @@
         const modal = $('#enableDisableModal');
         const enabled = modal.find('#enableDisableFlag').val();
         const label = enabled === "true" ? "enable" : "disable";
-        
+
         var checkedGames = this.getCheckedGames();
         var isReload = modal.find('#forceReloadCheckbox').is(":checked")
         modal.find('#confirmBtn').prop('disabled', true);
@@ -340,7 +337,7 @@
             method: "POST",
             url: `/status/${label}`,
             data: { games: checkedGames.games, reload: isReload }
-        }).done(function (updated) {            
+        }).done(function (updated) {
             if (updated) {
                 modal.find('#updateMsgSuccess').show();
             }
@@ -358,7 +355,7 @@
         });
     }
 
-    showAlert(message) {        
+    showAlert(message) {
         const modal = $('#alertModal');
         modal.find('#alertContent').html(message);
         modal.modal('show');
@@ -366,3 +363,10 @@
 }
 
 var gameStatus = new GameStatus();
+
+$(document).ready(function () {
+    $("#status-tbl").DataTable({
+        "paging": false,
+        "ordering": false
+    });
+})
