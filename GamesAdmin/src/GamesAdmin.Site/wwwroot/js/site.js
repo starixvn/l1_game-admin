@@ -5,17 +5,9 @@
 
 class Sidebar {
     collapseExpandSidebar() {
-        let isMobile = window.matchMedia("only screen and (max-device-width: 767px)").matches;
-
-        if (!isMobile) {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        } else {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('expand-mobile');
-            });
-        }
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
     }
 
     activeLink() {

@@ -208,9 +208,12 @@
   border-radius: .5rem;
   box-shadow: none !important;
   outline: initial !important;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   background: #fff;
   color: #3a3a3a; }
+  @media screen and (min-device-width: 1300px) {
+    .form .form-control {
+      font-size: 1.4rem; } }
 
 .form .form-control:disabled,
 .form .form-control[readonly] {

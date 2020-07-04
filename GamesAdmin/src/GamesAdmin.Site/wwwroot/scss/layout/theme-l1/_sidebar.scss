@@ -55,52 +55,9 @@
         background: rgba(0,0,0,0.01);
     }
 
+    
+
     &.active {
-        width: 8.2rem;
-
-        .site-name {
-            display: none;
-        }
-
-        .menu-name {
-            display: none;
-        }
-
-        .sidebar-header {
-            justify-content: center;
-        }
-
-        .nav-heading {
-            text-indent: 100rem;
-
-            &:before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 3.2rem;
-                height: .1rem;
-                background: #f7dfda;
-                margin-left: -1.8rem;
-            }
-        }
-
-        .vertical-nav-menu {
-            padding-left: .8rem;
-            padding-right: .8rem;
-        }
-
-        .menu-item {
-            display: flex;
-            justify-content: center;
-
-            a {
-                padding-left: 0;
-            }
-        }
-    }
-
-    &.active, &.expand-mobile {
         .hamburger-inner {
             transform: translate3d(0, -1px, 0) rotate(135deg);
             transition-delay: 0.075s;
@@ -205,6 +162,11 @@
         top: 0;
         height: 100%;
         left: -30rem;
+
+        &.active {
+            left: 0;
+            width: 100%;
+        }
     }
 
     .site-name {
@@ -213,13 +175,55 @@
 
     .btn-hamburger {
         position: fixed;
-        top: 13px;
+        top: 15px;
         left: 9px;
     }
+}
 
-    .expand-mobile {
-        left: 0;
-        width: 100%;
+@media screen and (min-device-width: 768px) {
+    .sidebar.active {
+        width: 8.2rem;
+
+        .site-name {
+            display: none;
+        }
+
+        .menu-name {
+            display: none;
+        }
+
+        .sidebar-header {
+            justify-content: center;
+        }
+
+        .nav-heading {
+            text-indent: 100rem;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 3.2rem;
+                height: .1rem;
+                background: #f7dfda;
+                margin-left: -1.8rem;
+            }
+        }
+
+        .vertical-nav-menu {
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: center;
+
+            a {
+                padding-left: 0;
+            }
+        }
     }
 }
 
