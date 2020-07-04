@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult BigSmall()
         {
-            return View(new BigSmallReportViewModel());
+            return View(new ReportViewModel());
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult BigSmallTurbo()
         {
-            return View(new BigSmallTurboReportViewModel());
+            return View(new ReportViewModel());
         }
 
         [HttpGet]
@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult OddEven()
         {
-            return View(new OddEvenReportViewModel());
+            return View(new ReportViewModel());
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult OddEvenTurbo()
         {
-            return View(new OddEvenTurboReportViewModel());
+            return View(new ReportViewModel());
         }
 
         [HttpGet]
@@ -66,9 +66,33 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult SeDie()
+        {
+            return View(new ReportViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult MiniSeDie()
+        {
+            return View(new ReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_SeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname)
         {
-            return PartialView("_BigSmallBetHistory",await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname)));
+            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname)));
         }
 
         [HttpGet]

@@ -1,0 +1,75 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model SeDieReportResultViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Chips.Count(x => x) red</span></h3>
+        }
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Username</th>
+                    <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th colspan="6" class="col-number">Stake</th>
+                    <th rowspan="2" class="col-number">Win</th>
+                </tr>
+
+                <tr>
+                    <th>Even</th>
+                    <th>Odd</th>
+                    <th>Three White</th>
+                    <th>Four White</th>
+                    <th>Three Red</th>
+                    <th>Four Red</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">@bet.Even</td>
+                        <td class="text-right">@bet.Odd</td>
+                        <td class="text-right">@bet.ThreeWhite</td>
+                        <td class="text-right">@bet.FourWhite</td>
+                        <td class="text-right">@bet.ThreeRed</td>
+                        <td class="text-right">@bet.FourRed</td>
+                        <td class="text-right">@bet.BetWin</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (Model.Records.Count() == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="13">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@Model.Records.Sum(x => x.Even)</td>
+                        <td class="text-right">@Model.Records.Sum(x => x.Odd)</td>
+                        <td class="text-right">@Model.Records.Sum(x => x.ThreeWhite)</td>
+                        <td class="text-right">@Model.Records.Sum(x => x.FourWhite)</td>
+                        <td class="text-right">@Model.Records.Sum(x => x.ThreeRed)</td>
+                        <td class="text-right">@Model.Records.Sum(x => x.FourRed)</td>
+                        <td class="text-right">@Model.Records.Sum(x => x.BetWin)</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

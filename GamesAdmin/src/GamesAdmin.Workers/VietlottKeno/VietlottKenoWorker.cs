@@ -9,9 +9,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
-using GamesAdmin.Workers.VietlottKeno;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Sentry;
@@ -71,10 +69,13 @@ namespace GamesAdmin.VietlottKeno
                 {
                     result = await socket.ReceiveAsync(buffer, stoppingToken);
                     ms.Write(buffer.Array, buffer.Offset, result.Count);
-                } while (!result.EndOfMessage);
+                }
+                while (!result.EndOfMessage);
 
                 if (result.MessageType == WebSocketMessageType.Close)
+                {
                     break;
+                }
 
                 ms.Seek(0, SeekOrigin.Begin);
 
@@ -103,7 +104,7 @@ namespace GamesAdmin.VietlottKeno
 
             var round = await kenoService.GetByRoundIdAsync(createModel.Number);
 
-            if(round?.Result == null)
+            if (round?.Result == null)
             {
                 var result = await kenoService.AddNewRoundResultAsync(createModel);
                 await kenoService.AddRoundLogEntity(result.Number, result.Time, vietlottKenoConfiguration.WebSocketUrl);

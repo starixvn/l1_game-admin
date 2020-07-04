@@ -8,16 +8,18 @@ namespace GamesAdmin.Site.DataProtection
 {
     public class MongoDbXmlRepository : IXmlRepository
     {
-        private readonly IMongoCollection<KeyElement> _collection;
+        private readonly string appName;
+        private readonly IMongoCollection<KeyElement> collection;
 
-        public MongoDbXmlRepository(IMongoDatabase database, string collectionName)
+        public MongoDbXmlRepository(IMongoDatabase database, string collectionName, string appName)
         {
-            _collection = database.GetCollection<KeyElement>(collectionName);
+            collection = database.GetCollection<KeyElement>(collectionName);
+            this.appName = appName;
         }
 
         public IReadOnlyCollection<XElement> GetAllElements()
         {
-            var keyElements = _collection.Find(FilterDefinition<KeyElement>.Empty).ToList();
+            var keyElements = collection.Find(x => x.AppName == appName).ToList();
             return keyElements.Select(element => XElement.Parse(element.Xml)).ToList().AsReadOnly();
         }
 
@@ -25,9 +27,10 @@ namespace GamesAdmin.Site.DataProtection
         {
             var keyElement = new KeyElement
             {
+                AppName = appName,
                 Xml = element.ToString(SaveOptions.DisableFormatting)
             };
-            _collection.InsertOne(keyElement);
+            collection.InsertOne(keyElement);
         }
     }
 }
