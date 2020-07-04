@@ -36,6 +36,8 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
                     SentryLevel.Error);
             }
 
+            sentryClient.CaptureMessage($"Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}");
+
             latestOnlineUsers = onlineUser.TotalReal;
         }
     }
