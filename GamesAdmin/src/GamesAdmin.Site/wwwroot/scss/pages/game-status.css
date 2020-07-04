@@ -46,6 +46,10 @@
     font-size: 1.8rem; }
     .table .icon-chart:hover {
       color: #da624a; }
+  .table .col-game-name {
+    min-width: 15rem; }
+  .table .col-bet-limit {
+    min-width: 10rem; }
 
 .hidden-cls {
   display: none; }

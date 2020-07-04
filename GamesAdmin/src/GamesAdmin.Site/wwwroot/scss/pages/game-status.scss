@@ -81,6 +81,14 @@
             color: $theme-color;
         }
     }
+    // game management
+    .col-game-name {
+        min-width: 15rem;
+    }
+
+    .col-bet-limit {
+        min-width: 10rem;
+    }
 }
 
 

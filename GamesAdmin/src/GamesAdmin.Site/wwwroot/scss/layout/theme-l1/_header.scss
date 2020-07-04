@@ -193,3 +193,32 @@
         margin-left: -0.4rem;
     }
 }
+
+@media screen and (max-device-width: 767px) {
+    .header {
+        align-items: flex-start;
+        flex-direction: column-reverse;
+        padding: 12px 0;
+        height: auto;
+    }
+
+    .page-title {
+        padding-top: 10px;
+    }
+
+    .header-online-user {
+        margin-left: 3rem;
+
+        .user-online span {
+            display: none;
+        }
+
+        .number {
+            margin-right: 1rem;
+        }
+    }
+
+    .header-online-user:after {
+        margin-right: 1rem;
+    }
+}

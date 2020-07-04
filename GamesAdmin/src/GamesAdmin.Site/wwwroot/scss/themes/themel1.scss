@@ -1,6 +1,6 @@
 ﻿@import "../base/variables";
 @import "../layout/theme-l1/header";
-@import "../layout/theme-l1/site-bar";
+@import "../layout/theme-l1/sidebar";
 
 /* ---------------------------------------------------
     CONTENT STYLE
@@ -22,4 +22,11 @@
 .inner-content {
     overflow: auto;
     height: calc(100% - 9.5rem);
+}
+
+@media screen and (max-device-width: 767px) {
+    .content-container {
+        left: 0;
+        padding: 0 12px;
+    }
 }
