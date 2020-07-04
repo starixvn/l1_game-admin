@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coravel.Invocable;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
@@ -36,7 +37,7 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
                     SentryLevel.Error);
             }
 
-            sentryClient.CaptureMessage($"Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}");
+            sentryClient.CaptureMessage($"{DateTime.UtcNow} Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}");
 
             latestOnlineUsers = onlineUser.TotalReal;
         }
