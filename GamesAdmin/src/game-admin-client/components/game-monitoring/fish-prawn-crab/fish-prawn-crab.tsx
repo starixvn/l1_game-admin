@@ -48,16 +48,12 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
 
   handleData(data) {
     if (!!data.um) {
-      this.setState({
-        time: { remainingTime: 0 },
-        gameState: GameState.disabled,
-        winners: [false, false, false, false, false, false],
-        result: [
-          new DiceModel(-1, DiceType.BauCua),
-          new DiceModel(-1, DiceType.BauCua),
-          new DiceModel(-1, DiceType.BauCua)
-        ]
-      });
+      if (this.state.time.remainingTime == 30) {
+        this.setState({
+          time: { remainingTime: 0 },
+          gameState: GameState.disabled
+        });
+      }
     }
 
     if (!!data.info) {

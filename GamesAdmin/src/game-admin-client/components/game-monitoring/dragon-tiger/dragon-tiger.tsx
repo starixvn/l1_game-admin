@@ -21,7 +21,6 @@ type Props = {
 type State = {
   data: DragonTigerModel;
   gameState: number;
-  disabled: boolean;
 };
 
 const TYPES = ["dragon", "tie", "tiger"];
@@ -37,7 +36,6 @@ export default class DragonTiger extends React.Component<Props, State> {
     this.state = {
       data: new DragonTigerModel(),
       gameState: 0,
-      disabled: false
     };
   }
 
@@ -47,14 +45,15 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   handleMessage(message) {
     if (message.um !== undefined) {
-      clearTimeout(this.timeOut);
-      let data = this.state.data;
-      data.time.remainingTime = 0;
-      this.setState({
-        disabled: message.um,
-        data: data,
-        gameState: GameState.none
-      });
+      if (this.state.data.time.remainingTime == TOTAL_TIME) {
+        let data = this.state.data;
+        data.time.remainingTime = 0;
+        data.roundNumber -= 1;
+        this.setState({
+          data: data,
+          gameState: GameState.disabled
+        });
+      }
     } else if (message.phien !== undefined) {
       this.handleStart(message);
     } else if (message.finish !== undefined) {
@@ -86,16 +85,15 @@ export default class DragonTiger extends React.Component<Props, State> {
   }
 
   handleStart(message) {
-    const newData = new DragonTigerModel();
+    const newData = this.state.data;
     let isFinished = message.time_remain > TOTAL_TIME;
     newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME - 1 : message.time_remain;
     newData.roundNumber = isFinished ? message.phien - 1 : message.phien;
-    if (message.result) {
-      newData.result = this.getResult(message.result);
-    }
+    // if (isFinished && message.result) {
+    //   newData.result = this.getResult(message.result);
+    // }
 
     this.setState({
-      disabled: false,
       data: newData,
       gameState: isFinished ? GameState.waiting : GameState.running
     });
@@ -229,7 +227,7 @@ export default class DragonTiger extends React.Component<Props, State> {
   render() {
     return (
       <div className={styles.dragontiger}>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.gameState == GameState.disabled} />
       </div>
     );
   }

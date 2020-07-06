@@ -99,15 +99,15 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     }
 
     if (!!data.um) {
-      this.setState({
-        disabled: data.um,
-        time: { remainingTime: 0 },
-        currentState: GameState.none
-      });
+      if (this.state.time.remainingTime == totalRemainingTime) {
+        this.setState({
+          time: { remainingTime: 0 },
+          currentState: GameState.disabled
+        });
+      }
     }
 
     if (!!data.time_remain) {
-      this.setState({ disabled: false });
       const { time_remain, phien } = data;
       if ((this.props.turbo && time_remain > totalRemainingTime + 6) || time_remain > totalRemainingTime) {
         this.setState({
@@ -277,7 +277,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
   render() {
     return (
       <div className={styles.bigsmallturbo}>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled} />
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.currentState == GameState.disabled} />
       </div>
     );
   }

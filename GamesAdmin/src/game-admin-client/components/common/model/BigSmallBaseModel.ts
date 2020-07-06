@@ -23,7 +23,6 @@ export default class BigSmallBaseModel {
   secondBetTypeUsers: number;
   isHavingResult: boolean;
   currentState: number;
-  disabled: boolean;
 
   constructor() {
     this.result = [new DiceModel(), new DiceModel(), new DiceModel()];
@@ -31,7 +30,6 @@ export default class BigSmallBaseModel {
     this.time = new TimeModel();
     this.isHavingResult = false;
     this.currentState = 0;
-    this.disabled = false;
   }
 }
 
