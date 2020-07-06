@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Coravel.Invocable;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
@@ -36,7 +35,7 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
             if (onlineUser.TotalReal < latestOnlineUsers - appSettings.MaxDecreased)
             {
                 sentryClient.CaptureMessage(
-                    $"Online users DOWN. Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}",
+                    $"Online users DOWN!!! Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}",
                     SentryLevel.Error);
             }
 
