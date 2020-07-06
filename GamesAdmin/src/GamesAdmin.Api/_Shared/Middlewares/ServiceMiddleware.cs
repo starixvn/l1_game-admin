@@ -30,6 +30,14 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton<IBotService, BotService>();
 
             services.AddSingleton<IKenoReport, KenoProVietReport>();
+
+            services.AddScoped<IKenoReportFactory, KenoReportFactory>();
+
+            services.AddScoped<KenoProVietReport>()
+                        .AddScoped<IKenoReport, KenoProVietReport>(s => s.GetService<KenoProVietReport>());
+
+            services.AddScoped<KenoMaxReport>()
+                        .AddScoped<IKenoReport, KenoMaxReport>(s => s.GetService<KenoMaxReport>());
         }
     }
 }
