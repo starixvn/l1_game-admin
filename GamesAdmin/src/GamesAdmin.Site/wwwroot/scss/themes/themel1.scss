@@ -26,7 +26,13 @@
 
 .inner-content {
     overflow: auto;
-    height: calc(100% - 9.5rem);
+    height: calc(100% - 10rem);
+}
+
+@media screen and (min-width: 767px) {
+    .inner-content {
+        height: calc(100% - 5.5rem);
+    }
 }
 
 @media screen and (min-width: 1200px) {
@@ -41,6 +47,9 @@
 
     .sidebar.active + .content-container {
         left: 12rem;
+    }
+    .inner-content {
+        height: calc(100% - 9.5rem);
     }
 }
 
