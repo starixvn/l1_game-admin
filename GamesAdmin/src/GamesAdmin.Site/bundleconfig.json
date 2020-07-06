@@ -48,6 +48,14 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/game-management.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/adjust-bot.css",
+      "wwwroot/scss/pages/game-status.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/online-users.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
