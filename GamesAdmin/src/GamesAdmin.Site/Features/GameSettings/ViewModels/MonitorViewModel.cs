@@ -20,7 +20,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             GameType.BigSmallValue,
             GameType.BigSmallTurboValue,
             GameType.OddEvenValue,
-            GameType.OddEvenTurboValue
+            GameType.OddEvenTurboValue,
+            GameType.SeDieValue,
+            GameType.MiniSeDieValue,
         };
 
         private static Dictionary<string, string> gameHistoryUrl = new Dictionary<string, string>
@@ -28,7 +30,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.BigSmallValue, "bigsmall" },
             { GameType.BigSmallTurboValue, "bigsmallturbo" },
             { GameType.OddEvenValue, "oddeven" },
-            { GameType.OddEvenTurboValue, "oddeventurbo" }
+            { GameType.OddEvenTurboValue, "oddeventurbo" },
+            { GameType.SeDieValue, "sedie" },
+            { GameType.MiniSeDieValue, "minisedie" }
         };
 
         public MonitorItemViewModel(string name)
