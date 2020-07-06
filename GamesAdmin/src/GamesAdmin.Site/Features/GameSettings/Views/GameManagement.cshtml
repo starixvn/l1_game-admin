@@ -48,14 +48,14 @@
                     <td class="text-center">@Model.GameList[index].MinBet - @Model.GameList[index].MaxBet</td>
                     <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
                     <td class="text-center">
-                        <button class="btn-edit" onclick="javascript:gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                        <button class="btn-edit" onfocus="javascript:gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                     </td>
                     <td class="text-center">
-                        <button class="btn-edit" onclick="javascript:gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                        <button class="btn-edit" onfocus="javascript:gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                     </td>
                     <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
                     <td class="text-center">
-                        <button class="btn-edit" onclick="javascript:gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
+                        <button class="btn-edit" onfocus="javascript:gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
                     </td>
                 </tr>
             }
