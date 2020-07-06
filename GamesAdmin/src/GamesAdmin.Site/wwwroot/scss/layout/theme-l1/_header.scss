@@ -194,7 +194,17 @@
     }
 }
 
-@media screen and (max-device-width: 767px) {
+@media screen and (max-width: 1199px) {
+    .header {
+        height: 5.5rem;
+    }
+
+    .page-title {
+        padding-left: 40px;
+    }
+}
+
+@media screen and (max-width: 768px) {
     .header {
         align-items: flex-start;
         flex-direction: column-reverse;
@@ -203,11 +213,21 @@
     }
 
     .page-title {
+        padding-left: 0;
         padding-top: 10px;
+    }
+
+    .user-info {
+        justify-content: space-between;
+        width: 100%;
     }
 
     .header-online-user {
         margin-left: 3rem;
+
+        &:after {
+            display: none;
+        }
 
         span {
             display: none;

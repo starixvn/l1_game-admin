@@ -146,16 +146,28 @@
     width: .8rem;
     margin-left: -0.4rem; }
 
-@media screen and (max-device-width: 767px) {
+@media screen and (max-width: 1199px) {
+  .header {
+    height: 5.5rem; }
+  .page-title {
+    padding-left: 40px; } }
+
+@media screen and (max-width: 768px) {
   .header {
     align-items: flex-start;
     flex-direction: column-reverse;
     padding: 12px 0;
     height: auto; }
   .page-title {
+    padding-left: 0;
     padding-top: 10px; }
+  .user-info {
+    justify-content: space-between;
+    width: 100%; }
   .header-online-user {
     margin-left: 3rem; }
+    .header-online-user:after {
+      display: none; }
     .header-online-user span {
       display: none; }
     .header-online-user .number {
@@ -280,7 +292,7 @@
     text-decoration: none;
     color: #f8715f; }
 
-@media screen and (max-device-width: 767px) {
+@media screen and (max-width: 1199px) {
   .sidebar {
     position: absolute;
     top: 0;
@@ -289,16 +301,24 @@
     .sidebar.active {
       position: fixed;
       left: 0;
-      width: 100%; }
+      width: 28rem; }
+      .sidebar.active .btn-hamburger {
+        display: block; }
+    .sidebar .btn-hamburger {
+      display: none; }
   .site-name {
     margin-left: 30px; }
   .btn-hamburger {
     position: fixed;
     top: 15px;
     left: 9px;
-    z-index: 20; } }
+    z-index: 10; } }
 
-@media screen and (min-device-width: 768px) {
+@media screen and (max-width: 768px) {
+  .sidebar.active {
+    width: 100%; } }
+
+@media screen and (min-width: 1200px) {
   .sidebar.active {
     width: 8.2rem; }
     .sidebar.active .site-name {
@@ -333,19 +353,26 @@
 .content-container {
   position: absolute;
   top: 0;
-  left: 32rem;
   right: 0;
   height: 100%;
-  transition: all .2s; }
+  transition: all .2s;
+  left: 0;
+  padding: 0 12px; }
+  .content-container .btn-hamburger {
+    display: block; }
 
 .sidebar.active + .content-container {
-  left: 12rem; }
+  left: 0; }
 
 .inner-content {
   overflow: auto;
   height: calc(100% - 9.5rem); }
 
-@media screen and (max-device-width: 767px) {
+@media screen and (min-width: 1200px) {
   .content-container {
-    left: 0;
-    padding: 0 12px; } }
+    left: 32rem;
+    padding: 0; }
+    .content-container .btn-hamburger {
+      display: none; }
+  .sidebar.active + .content-container {
+    left: 12rem; } }

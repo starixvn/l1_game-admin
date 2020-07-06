@@ -9,14 +9,19 @@
 .content-container {
     position: absolute;
     top: 0;
-    left: 32rem;
     right: 0;
     height: 100%;
     transition: all .2s;
+    left: 0;
+    padding: 0 12px;
+
+    .btn-hamburger {
+        display: block;
+    }
 }
 
 .sidebar.active + .content-container {
-    left: 12rem;
+    left: 0;
 }
 
 .inner-content {
@@ -24,9 +29,18 @@
     height: calc(100% - 9.5rem);
 }
 
-@media screen and (max-device-width: 767px) {
+@media screen and (min-width: 1200px) {
     .content-container {
-        left: 0;
-        padding: 0 12px;
+        left: 32rem;
+        padding: 0;
+
+        .btn-hamburger {
+            display: none;
+        }
+    }
+
+    .sidebar.active + .content-container {
+        left: 12rem;
     }
 }
+

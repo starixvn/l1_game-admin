@@ -156,7 +156,7 @@
     }
 }
 
-@media screen and (max-device-width: 767px) {
+@media screen and (max-width: 1199px) {
     .sidebar {
         position: absolute;
         top: 0;
@@ -166,7 +166,15 @@
         &.active {
             position: fixed;
             left: 0;
-            width: 100%;
+            width: 28rem;
+
+            .btn-hamburger {
+                display: block;
+            }
+        }
+
+        .btn-hamburger {
+            display: none;
         }
     }
 
@@ -178,11 +186,18 @@
         position: fixed;
         top: 15px;
         left: 9px;
-        z-index: 20;
+        z-index: 10;
     }
 }
 
-@media screen and (min-device-width: 768px) {
+@media screen and (max-width: 768px) {
+    .sidebar.active {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
     .sidebar.active {
         width: 8.2rem;
 
