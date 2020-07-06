@@ -58,6 +58,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IBotApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IBotService, BotService>();
+
+            services.AddSingleton<ICacheManager, CacheManager>();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Coravel.Invocable;
+using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
 using Sentry;
@@ -13,33 +14,33 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
         private readonly IGameServerService service;
         private readonly ISentryClient sentryClient;
         private readonly IAppSettings appSettings;
-
-        private int latestOnlineUsers = 0;
+        private readonly ICacheManager cache;
 
         public MonitorOnlineUsers(
-            IGameServerService service, 
+            IGameServerService service,
             ISentryClient sentryClient,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            ICacheManager cache)
         {
             this.service = service;
             this.sentryClient = sentryClient;
             this.appSettings = appSettings;
+            this.cache = cache;
         }
 
         public async Task Invoke()
         {
             var onlineUser = await service.GetOnlineUsers(string.Empty);
+            var latestOnlineUsers = cache.GetCache(CachedKeys.OnlineUsers.ToString());
 
             if (onlineUser.TotalReal < latestOnlineUsers - appSettings.MaxDecreased)
             {
                 sentryClient.CaptureMessage(
-                    $"Alert! Online users decreased dramatically. Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}",
+                    $"Online users DOWN. Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}",
                     SentryLevel.Error);
             }
 
-            sentryClient.CaptureMessage($"{DateTime.UtcNow} Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}");
-
-            latestOnlineUsers = onlineUser.TotalReal;
+            cache.SetCache(CachedKeys.OnlineUsers.ToString(), onlineUser.TotalReal);
         }
     }
 }
