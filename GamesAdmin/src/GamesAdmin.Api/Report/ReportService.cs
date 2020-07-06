@@ -289,21 +289,21 @@ namespace GamesAdmin.Api.Report
         {
             var service = kenoReportFactory.GetReportService(game);
 
-            return service.GetReportAsync(roundId);
+            return service == default ? default : service.GetReportAsync(roundId);
         }
 
         public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname)
         {
             var service = kenoReportFactory.GetReportService(game);
 
-            return service.GetBetHistoryAsync(roundId, nickname);
+            return service == default ? default : service.GetBetHistoryAsync(roundId, nickname);
         }
 
         public Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId)
         {
             var service = kenoReportFactory.GetReportService(game);
 
-            return service.GetRoundResultAsync(roundId);
+            return service == default ? default : service.GetRoundResultAsync(roundId);
         }
     }
 }

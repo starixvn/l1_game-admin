@@ -15,7 +15,6 @@ namespace GamesAdmin.Api.Report
 {
     public class KenoMaxReport : IKenoReport
     {
-
         private readonly IGenericRepository<KenoMaxOnesEntity> kenoMaxOnesRepository;
         private readonly IGenericRepository<KenoMaxRoundEntity> kenoMaxRoundRepository;
         private readonly IGenericRepository<KenoMaxBetEntity> kenoMaxBetRepository;
