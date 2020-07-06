@@ -77,13 +77,15 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     }
 
     handleStart(message) {
-        const { remainingTime, roundId } = message;
+        const { remainingTime, roundId, result, settlementResult } = message;
         let isFinished = remainingTime > TOTAL_TIME;
 
         if (isFinished) {
             this.setState({
                 gameState: GameState.waiting,
                 roundNumber: roundId - 1,
+                result: result ?? new BaccaratModel().result,
+                settlementResult: settlementResult ?? {},
                 time: {
                     remainingTime: remainingTime - TOTAL_TIME
                 }
@@ -93,6 +95,8 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 this.setState({
                     gameState: GameState.running,
                     roundNumber: this.state.roundNumber + 1,
+                    result: new BaccaratModel().result,
+                    settlementResult: {},
                     time: {
                         remainingTime: TOTAL_TIME
                     }

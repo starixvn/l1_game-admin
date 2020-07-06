@@ -15,9 +15,10 @@ export default function BaccaratCardResult(props: Props) {
     return (
         <div className={styles['card-result']}>
             {cardResult.map((result, index) => (
-                <div key={index} className={`${styles.card} ${index == 2 ? styles["third-card"] : ""}`} onClick={() => onCardClick(selectedCard, index)}>
+                result &&
+                (<div key={index} className={`${styles.card} ${index == 2 ? styles["third-card"] : ""}`} onClick={() => onCardClick(selectedCard, index)}>
                     <Card value={result.card} suit={result.type} />
-                </div>
+                </div>)
             ))}
         </div>
     );
