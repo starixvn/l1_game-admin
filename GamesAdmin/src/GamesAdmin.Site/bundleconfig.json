@@ -8,6 +8,7 @@
   {
     "outputFileName": "wwwroot/js/game-status.min.js",
     "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/game-status.js"
     ]
   },
