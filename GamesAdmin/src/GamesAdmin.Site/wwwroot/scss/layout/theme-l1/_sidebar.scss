@@ -158,12 +158,13 @@
 
 @media screen and (max-device-width: 767px) {
     .sidebar {
-        position: fixed;
+        position: absolute;
         top: 0;
         height: 100%;
         left: -30rem;
 
         &.active {
+            position: fixed;
             left: 0;
             width: 100%;
         }
