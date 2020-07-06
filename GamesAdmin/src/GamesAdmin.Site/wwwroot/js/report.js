@@ -1,8 +1,8 @@
 ﻿class Report {
-    showBetHistory(roundId, nickname) {
+    showBetHistory(game, roundId, nickname) {
         $.ajax({
             method: "GET",
-            url: "/Report/KenoBetHistory/?roundId=" + roundId + "&nickname=" + nickname
+            url: "/Report/KenoBetHistory/?game=" + game + "&roundId=" + roundId + "&nickname=" + nickname
         }).done(function (content) {
             if (content) {
                 $('#kenoBetHistory').html(content);

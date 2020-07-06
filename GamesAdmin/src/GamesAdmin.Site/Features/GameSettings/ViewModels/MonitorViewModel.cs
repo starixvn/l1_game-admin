@@ -15,17 +15,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class MonitorItemViewModel
     {
-        private static IList<string> gameEnabledHistory = new List<string>
-        {
-            GameType.BigSmallValue,
-            GameType.BigSmallTurboValue,
-            GameType.OddEvenValue,
-            GameType.OddEvenTurboValue,
-            GameType.SeDieValue,
-            GameType.MiniSeDieValue,
-            GameType.KenoProVietValue
-        };
-
         private static Dictionary<string, string> gameHistoryUrl = new Dictionary<string, string>
         {
             { GameType.BigSmallValue, "bigsmall" },
@@ -34,7 +23,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.OddEvenTurboValue, "oddeventurbo" },
             { GameType.SeDieValue, "sedie" },
             { GameType.MiniSeDieValue, "minisedie" },
-            { GameType.KenoProVietValue, GameType.KenoProVietValue }
+            { GameType.KenoProVietValue, GameType.KenoProVietValue },
+            { GameType.KenoMaxValue, GameType.KenoMaxValue }
         };
 
         public MonitorItemViewModel(string name)
@@ -46,7 +36,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => string.IsNullOrWhiteSpace(Name) ? string.Empty : Enumeration.FromValue<GameType>(Name).DisplayName;
 
-        public bool EnabledHistory => gameEnabledHistory.Contains(Name);
+        public bool EnabledHistory => gameHistoryUrl.ContainsKey(Name);
 
         public string GameHistoryUrl => gameHistoryUrl.ContainsKey(Name) ? gameHistoryUrl[Name] : string.Empty;
     }

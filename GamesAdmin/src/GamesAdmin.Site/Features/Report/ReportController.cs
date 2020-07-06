@@ -117,19 +117,25 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult KenoProViet()
         {
-            return View(new KenoProVietViewModel());
+            return View("KenoReport", new KenoViewModel());
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetKenoProVietReport(long roundId)
+        public IActionResult KenoMax()
         {
-            return PartialView("_KenoProVietRecords", await mediator.Send(new GetKenoReportRequest(GameType.KenoProViet, roundId)));
+            return View("KenoReport", new KenoViewModel());
         }
 
         [HttpGet]
-        public async Task<IActionResult> KenoBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> GetKenoReport(string game, long roundId)
         {
-            return View(await mediator.Send(new GetKenoBetHistoryRequest(GameType.KenoProViet, roundId, nickname)));
+            return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(Enumeration.FromValue<GameType>(game), roundId)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)
+        {
+            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<GameType>(game), roundId, nickname)));
         }
     }
 }

@@ -287,6 +287,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new KenoReportViewModel
             {
+                Game = request.Game,
                 RoundId = request.RoundId,
                 RoundResult = new KenoResultViewModel(
                     roundResult?.Results,
