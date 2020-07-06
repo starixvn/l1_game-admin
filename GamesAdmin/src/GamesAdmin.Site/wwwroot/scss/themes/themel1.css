@@ -156,7 +156,7 @@
     padding-top: 10px; }
   .header-online-user {
     margin-left: 3rem; }
-    .header-online-user .user-online span {
+    .header-online-user span {
       display: none; }
     .header-online-user .number {
       margin-right: 1rem; }
@@ -294,7 +294,8 @@
   .btn-hamburger {
     position: fixed;
     top: 15px;
-    left: 9px; } }
+    left: 9px;
+    z-index: 10; } }
 
 @media screen and (min-device-width: 768px) {
   .sidebar.active {
