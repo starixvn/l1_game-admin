@@ -51,11 +51,11 @@ namespace GamesAdmin.Api.UM
         {
             try
             {
+                sentryClient.CaptureMessage($"{DateTime.Now} UM Start: {startTime} End: {endTime}");
+
                 await UpdateEnableConfig(false);
 
                 var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
-
-                sentryClient.CaptureMessage($"UM Start: {startTime} End: {endTime}");
 
                 if (umInfo == null)
                 {
@@ -82,9 +82,9 @@ namespace GamesAdmin.Api.UM
         {
             try
             {
-                await UpdateEnableConfig(true);
+                sentryClient.CaptureMessage($"{DateTime.Now} UM Finished");
 
-                sentryClient.CaptureMessage($"UM Finished");
+                await UpdateEnableConfig(true);
 
                 var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
 
