@@ -1,5 +1,5 @@
 ﻿var gameStatus = (function ($) {
-    var gameName = '';
+    var currentGameName = '';
 
     return {
         checkAll: function () {
