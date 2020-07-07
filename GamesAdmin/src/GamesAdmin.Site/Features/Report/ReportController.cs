@@ -127,6 +127,12 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult KenoMax2()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetKenoReport(string game, long roundId)
         {
             return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(Enumeration.FromValue<GameType>(game), roundId)));

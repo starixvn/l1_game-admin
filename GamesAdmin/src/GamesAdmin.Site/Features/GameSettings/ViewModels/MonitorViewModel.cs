@@ -24,7 +24,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.SeDieValue, "sedie" },
             { GameType.MiniSeDieValue, "minisedie" },
             { GameType.KenoProVietValue, GameType.KenoProVietValue },
-            { GameType.KenoMaxValue, GameType.KenoMaxValue }
+            { GameType.KenoMaxValue, GameType.KenoMaxValue },
+            { GameType.KenoMax2Value, GameType.KenoMax2Value }
         };
 
         public MonitorItemViewModel(string name)

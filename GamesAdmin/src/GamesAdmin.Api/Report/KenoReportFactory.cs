@@ -14,7 +14,8 @@ namespace GamesAdmin.Api.Report
         private readonly Dictionary<string, Type> reports = new Dictionary<string, Type>
         {
             { GameType.KenoProVietValue, typeof(KenoProVietReport) },
-            { GameType.KenoMaxValue, typeof(KenoMaxReport) }
+            { GameType.KenoMaxValue, typeof(KenoMaxReport) },
+            { GameType.KenoMax2Value, typeof(KenoMax2Report) }
         };
 
         private readonly IServiceProvider serviceProvider;

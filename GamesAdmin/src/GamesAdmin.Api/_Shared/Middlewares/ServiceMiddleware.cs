@@ -38,6 +38,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddScoped<KenoMaxReport>()
                         .AddScoped<IKenoReport, KenoMaxReport>(s => s.GetService<KenoMaxReport>());
+
+            services.AddScoped<KenoMax2Report>()
+                        .AddScoped<IKenoReport, KenoMax2Report>(s => s.GetService<KenoMax2Report>());
         }
     }
 }
