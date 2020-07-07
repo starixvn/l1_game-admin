@@ -31,11 +31,12 @@ enum FishPrawnCrabDice {
 }
 
 export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, FishPrawnCrabModel> {
-
+  private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
+    this.isFirstLoad = true;
     this.state = new FishPrawnCrabModel();
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
@@ -48,11 +49,13 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
 
   handleData(data) {
     if (!!data.um) {
-      if (this.state.time.remainingTime == 30) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
+        clearTimeout(this.timeout);
         this.setState({
           time: { remainingTime: 0 },
           gameState: GameState.disabled
         });
+        this.isFirstLoad = false;
       }
     }
 
@@ -69,6 +72,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
     }
 
     if (!!data.finish) {
+      this.isFirstLoad = false;
       this.setState({
         result: this.getResult(data.finish),
         winners: this.getWiners(data.finish),
