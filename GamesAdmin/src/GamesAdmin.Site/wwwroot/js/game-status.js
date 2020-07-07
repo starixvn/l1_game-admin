@@ -372,7 +372,7 @@ $(document).ready(function () {
         "ordering": false
     });
 
-    $("#status-tbl").on("click touchstart", "a.icon-action", function (event) {
+    $("#status-tbl").on("click touchend", "a.icon-action", function (event) {
         var $this = $(this);
         $this.toggleClass("text-black-50");
         const gameName = $this.data("game-name");
