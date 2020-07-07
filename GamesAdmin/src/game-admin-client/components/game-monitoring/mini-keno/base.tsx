@@ -50,14 +50,18 @@ type KenoMessage = {
     settlementResult: { [box: string]: boolean };
     time: Date;
   };
+  result: Array<number>;
+  settlementResult: { [box: string]: boolean };
   choices: Array<string>;
 };
 
 export default class extends React.Component<Props, State> {
   private timeout: NodeJS.Timeout;
+  private isFirstLoad: boolean;
   constructor(props: Props) {
     super(props);
 
+    this.isFirstLoad = true;
     this.state = {
       remainingTime: 0,
       roundId: 0,
@@ -90,8 +94,17 @@ export default class extends React.Component<Props, State> {
       {
         selector: () => message.um,
         handle: () => {
-          clearTimeout(this.timeout);
-          this.setState({ disabled: message.um, remainingTime: 0 });
+          const { remainingTime, durations } = this.state;
+          if (this.isFirstLoad || remainingTime == durations.placingBets) {
+            clearTimeout(this.timeout);
+            this.setState({
+              disabled: message.um,
+              remainingTime: 0,
+              roundId: this.isFirstLoad ? this.state.roundId : this.state.roundId - 1
+            });
+            this.reset();
+            this.isFirstLoad = false;
+          }
         },
       },
       {
@@ -106,9 +119,14 @@ export default class extends React.Component<Props, State> {
           this.setState({ disabled: false });
 
           if (message.remainingTime > durations.placingBets) {
+            const { result, settlementResult } = message;
+            const choices = settlementResult ? this.updateWinningChoice(this.state.choices, settlementResult) : this.state.choices;
             this.setState({
               roundId: message.roundId - 1,
               remainingTime: message.remainingTime + 1,
+              result: result ? result : this.state.result,
+              choices: choices,
+              resultText: this.getResultText(choices)
             });
 
             this.timeout = setTimeout(() => {
@@ -152,20 +170,10 @@ export default class extends React.Component<Props, State> {
       {
         selector: () => message.finish,
         handle: () => {
+          this.isFirstLoad = false;
           const { settlementResult, result } = message.finish;
-          const choices = this.state.choices.map((choice) => {
-            choice.isWin = settlementResult[choice.name];
-            return choice;
-          });
-          const resultText = this.state.choices
-            .reduce(
-              (result, choice) =>
-                choice.isWin
-                  ? `${result} - ${choice.name.toUpperCase()}`
-                  : result,
-              ""
-            )
-            .substr(3);
+          const choices = this.updateWinningChoice(this.state.choices, settlementResult);
+          const resultText = this.getResultText(choices);
 
           this.setState({ choices, result, resultText });
         },
@@ -182,6 +190,23 @@ export default class extends React.Component<Props, State> {
     ];
 
     actions.forEach((action) => action.selector() && action.handle());
+  }
+
+  updateWinningChoice(choices, settlementResult) {
+    return choices.map((choice) => {
+      choice.isWin = settlementResult[choice.name];
+      return choice;
+    });
+  }
+
+  getResultText(choices) {
+    return choices.reduce(
+      (result, choice) =>
+        choice.isWin
+          ? `${result} - ${choice.name.toUpperCase()}`
+          : result,
+      ""
+    ).substr(3);
   }
 
   reset() {
