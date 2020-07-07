@@ -59,6 +59,8 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 clearTimeout(this.timeout);
                 this.setState({
                     time: { remainingTime: 0 },
+                    result: new BaccaratModel().result,
+                    settlementResult: {},
                     roundNumber: this.isFirstLoad ? this.state.roundNumber : this.state.roundNumber - 1,
                     gameState: GameState.disabled
                 });

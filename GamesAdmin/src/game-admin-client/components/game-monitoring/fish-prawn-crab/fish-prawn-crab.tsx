@@ -51,9 +51,12 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
     if (!!data.um) {
       if (this.isFirstLoad || this.state.time.remainingTime == 30) {
         clearTimeout(this.timeout);
+        const model = new FishPrawnCrabModel();
         this.setState({
           time: { remainingTime: 0 },
-          gameState: GameState.disabled
+          gameState: GameState.disabled,
+          result: model.result,
+          winners: model.winners,
         });
         this.isFirstLoad = false;
       }
@@ -73,19 +76,39 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
 
     if (!!data.finish) {
       this.isFirstLoad = false;
+      const { dices } = data.finish;
       this.setState({
-        result: this.getResult(data.finish),
-        winners: this.getWiners(data.finish),
+        result: this.getResult(dices),
+        winners: this.getWinners(dices),
+        time: {
+          remainingTime: 10
+        },
+        gameState: GameState.waiting
       });
+
+      setTimeout(() => {
+        const model = new FishPrawnCrabModel();
+        this.setState({
+          result: model.result,
+          winners: model.winners,
+          nextRoudResult: new GameResult(),
+          isHandleNextRoundResult: false,
+          roundNumber: this.state.roundNumber + 1,
+          time: {
+            remainingTime: 30
+          },
+          gameState: GameState.running
+        })
+      }, 11500);
     }
 
     if (!!data.time_remain) {
-      clearTimeout(this.timeout);
-
       if (data.time_remain > 31) {
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.phien - 1,
+          winners: data.dices ? this.getWinners(data.dices) : this.state.winners,
+          result: data.dices ? this.getResult(data.dices) : this.state.result,
           time: {
             remainingTime: data.time_remain - 31
           }
@@ -164,23 +187,23 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
 
   }
 
-  getResult(data) {
+  getResult(dices) {
     const result = new Array<DiceModel>();
 
-    result.push(new DiceModel(data.dices[0], DiceType.BauCua));
-    result.push(new DiceModel(data.dices[1], DiceType.BauCua));
-    result.push(new DiceModel(data.dices[2], DiceType.BauCua));
+    result.push(new DiceModel(dices[0], DiceType.BauCua));
+    result.push(new DiceModel(dices[1], DiceType.BauCua));
+    result.push(new DiceModel(dices[2], DiceType.BauCua));
 
     return result;
   }
 
-  getWiners(data) {
-    const winers = this.state.winners;
-    winers[data.dices[0]] = true;
-    winers[data.dices[1]] = true;
-    winers[data.dices[2]] = true;
+  getWinners(dices) {
+    const winners = this.state.winners;
+    winners[dices[0]] = true;
+    winners[dices[1]] = true;
+    winners[dices[2]] = true;
 
-    return winers;
+    return winners;
   }
 
   handleChangeResult(id, value) {
