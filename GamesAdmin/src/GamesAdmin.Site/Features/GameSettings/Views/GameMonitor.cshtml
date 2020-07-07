@@ -26,7 +26,7 @@
                 <tr>
                     <td>@Model.GameList[index].DisplayName</td>
                     <td class="text-center">
-                        <a href="javascript:gameStatus.startMonitor()" class="icon-action"><i class="icon-chart"></i></a>
+                        <a href="#" class="icon-action" data-game-name="'@Model.GameList[index].Name"><i class="icon-chart"></i></a>
                     </td>
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledHistory)
@@ -35,12 +35,18 @@
                         }
                     </td>
                 </tr>
-}
+            }
         </tbody>
     </table>
 </div>
 
 
 @section Scripts{
-    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/game-status.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    </environment>
 }

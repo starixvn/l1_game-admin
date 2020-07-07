@@ -371,4 +371,11 @@ $(document).ready(function () {
         "paging": false,
         "ordering": false
     });
+
+    $("#status-tbl").on("click", "a.icon-action", function (event) {
+        var $this = $(this);
+        const gameName = $this.data("game-name");
+        gameStatus.startMonitor(gameName);
+    });
+
 })
