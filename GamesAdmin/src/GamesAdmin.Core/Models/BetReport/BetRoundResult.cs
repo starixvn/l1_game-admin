@@ -26,4 +26,9 @@ namespace GamesAdmin.Core.Models
 
         public int Dice3 { get; set; }
     }
+
+    public class SeDieRoundResult : RoundResult
+    {
+        public IEnumerable<bool> Chips { get; set; }
+    }
 }

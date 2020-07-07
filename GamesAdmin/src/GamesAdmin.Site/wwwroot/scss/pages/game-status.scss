@@ -1,4 +1,6 @@
-﻿.game-status {
+﻿@import "../base/variables";
+
+.game-status {
     padding-left: 0;
     padding-right: 0;
 
@@ -61,14 +63,87 @@
         }
     }
 
-    .icon-edit {
-        position: relative;
-        top: .3rem;
-        font-size: 2rem;
-        color: #6c757d;
+    .icon-history {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8rem;
 
         &:hover {
-            color: #3ac47d;
+            color: $theme-color;
         }
+    }
+
+    .icon-chart {
+        font-size: 1.8rem;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+
+.hidden-cls {
+    display: none;
+}
+
+.game-details-content {
+    max-height: 50rem;
+    overflow-y: auto;
+}
+
+.message-modal {
+    .text-message {
+        padding: 1rem;
+
+        textarea {
+            padding: 0.5rem 0.8rem;
+        }
+    }
+
+    .apply-all-checkbox {
+        padding: 1rem;
+    }
+
+    input, label {
+        cursor: pointer;
+    }
+}
+
+.game-modal, .message-modal, .bot-ratio-modal {
+    .message-success, .message-error {
+        position: absolute;
+        width: calc(100% - 4rem);
+        top: 5.3rem;
+        background: #fff;
+        box-shadow: 0.1rem 0.2rem 0.3rem rgba(0,0,0,.2);
+        z-index: 1;
+    }
+}
+
+.reload-content-body {
+    .message-success, .message-error {
+        margin: 0.5rem 0.3rem;
+    }
+
+    .reload-content {
+        padding-left: 0.3rem;
+    }
+}
+
+.enable-disable-modal {
+    .content-body {
+        font-size: 1.6rem;
+
+        ul {
+            list-style: disc;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    }
+
+    .force-reload-checkbox {
+        padding: 1rem 0;
     }
 }

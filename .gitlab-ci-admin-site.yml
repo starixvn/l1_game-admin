@@ -1,6 +1,7 @@
 variables:
   ADMIN_SITE_ROOT_PATH: ./GamesAdmin/src/GamesAdmin.Site
   ADMIN_SITE_BUILD_PATH: ./build/game-admin-site
+  ADMIN_SITE_CLIENT_ROOT_PATH: ./GamesAdmin/src/game-admin-client
   ADMIN_SITE_PROJECT_NAME: GamesAdmin.Site.csproj
 
 .admin-site-push-git-compiled:
@@ -18,6 +19,7 @@ variables:
     - mv $ADMIN_SITE_BUILD_PATH/.git ./temp
     - rm -rfv $ADMIN_SITE_BUILD_PATH/
     - cp -r ./temp/ $ADMIN_SITE_BUILD_PATH
+    - npm run export --prefix $ADMIN_SITE_CLIENT_ROOT_PATH
     - dotnet clean $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME
     - dotnet publish -c $CI_ENVIRONMENT_NAME -r linux-x64 --self-contained false $ADMIN_SITE_ROOT_PATH/$ADMIN_SITE_PROJECT_NAME -o $ADMIN_SITE_BUILD_PATH
     - cp $ADMIN_SITE_ROOT_PATH/gitlab-ci-after-script-${CI_ENVIRONMENT_NAME}.sh $ADMIN_SITE_BUILD_PATH

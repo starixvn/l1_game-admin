@@ -1,0 +1,21 @@
+[Unit]
+Description=Game Client Web (Test Environment)
+After=network.target
+
+[Service]
+Type=simple
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+Restart=on-failure
+WorkingDirectory=/var/www/nex3/game-admin-client/
+Environment=NODE_ENV=test
+
+ExecStartPre=/usr/bin/npm install
+ExecStart=/usr/bin/npm start -- --port 4000
+
+StandardOutput=file:/var/log/game-admin-client-test.log
+StandardError=file:/var/log/game-admin-client-test.error
+
+[Install]
+WantedBy=multi-user.target

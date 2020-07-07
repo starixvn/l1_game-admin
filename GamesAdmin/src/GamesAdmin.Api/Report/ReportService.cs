@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Report.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
@@ -22,6 +21,10 @@ namespace GamesAdmin.Api.Report
         Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot);
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -138,6 +141,30 @@ namespace GamesAdmin.Api.Report
                     BetWin = x.BetWin,
                     Back = x.Back
                 })
+            };
+        }
+
+        public async Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IShakeThePlateReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new SeDieBetReport
+            {
+                RoundResult = result.Item1.ToModel(),
+                Records = result.Item2.Select(x => x.ToModel())
+            };
+        }
+
+        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IMiniSeDieReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new SeDieBetReport
+            {
+                RoundResult = result.Item1.ToModel(),
+                Records = result.Item2.Select(x => x.ToModel())
             };
         }
 

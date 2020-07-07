@@ -1,0 +1,315 @@
+.win {
+  border-radius: 20px;
+  animation: shining 0.7s infinite;
+}
+
+@keyframes shining {
+  50% {
+    box-shadow: 0px 0px 20px 2px #fbff00;
+  }
+}
+
+.wrapper {
+  margin: 5px;
+  padding: 5px;
+}
+
+.dragonBg {
+  .bg {
+    --size: 100px;
+
+    width: var(--size);
+    height: var(--size);
+    background: url("/game-admin/images/dragon-tiger/dragon.png") no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 1199px) {
+      width: calc(var(--size) * 0.8);
+      height: calc(var(--size) * 0.8);
+    }
+
+    @media screen and (max-width: 992px) {
+      width: calc(var(--size) * 0.5);
+      height: calc(var(--size) * 0.5);
+    }
+  }
+
+  .totalText {
+    margin-top: 10px;
+  }
+}
+
+.tigerBg {
+  .bg {
+    --size: 100px;
+
+    width: var(--size);
+    height: var(--size);
+    background: url("/game-admin/images/dragon-tiger/tiger.png") no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 1199px) {
+      width: calc(var(--size) * 0.8);
+      height: calc(var(--size) * 0.8);
+    }
+
+    @media screen and (max-width: 992px) {
+      width: calc(var(--size) * 0.5);
+      height: calc(var(--size) * 0.5);
+    }
+  }
+
+  .totalText {
+    margin-top: 10px;
+  }
+}
+
+.drawBg {
+  .bg {
+    width: 86px;
+    height: 50px;
+    background: url("/game-admin/images/dragon-tiger/tie.png") no-repeat;
+    background-size: contain;
+
+    // @media screen and (max-width: 1199px) {
+    //   width: calc(180px * 0.8);
+    //   height: calc(110px * 0.8);
+    // }
+
+    // @media screen and (max-width: 992px) {
+    //   width: calc(180px * 0.5);
+    //   height: calc(110px * 0.5);
+    // }
+  }
+}
+
+@mixin bigsmall($col1, $col2, $col3, $col4) {
+  .#{$col1}Bg {
+    text-align: center;
+
+    .bg {
+      width: #{$col3};
+      height: #{$col4};
+
+      .outerBg {
+        background: url("/game-admin/images/big-small/#{$col2}.png") no-repeat;
+        background-size: contain;
+        width: #{$col3};
+        height: #{$col4};
+        margin: 0 auto;
+
+        @media screen and (max-width: 1199px) {
+          width: calc(#{$col3} * 0.8);
+          height: calc(#{$col4} * 0.8);
+        }
+
+        @media screen and (max-width: 992px) {
+          width: calc(#{$col3} * 0.5);
+          height: calc(#{$col4} * 0.5);
+        }
+
+        @media screen and (max-width: 640px) {
+          width: calc(#{$col3} * 0.3);
+          height: calc(#{$col4} * 0.3);
+        }
+      }
+
+      @media screen and (max-width: 1199px) {
+        width: calc(#{$col3} * 0.8);
+        height: calc(#{$col4} * 0.8);
+      }
+
+      @media screen and (max-width: 992px) {
+        width: calc(#{$col3} * 0.5);
+        height: calc(#{$col4} * 0.5);
+      }
+
+      @media screen and (max-width: 640px) {
+        width: calc(#{$col3} * 0.3);
+        height: calc(#{$col4} * 0.3);
+      }
+    }
+  }
+}
+
+@mixin tomcuabauca($col) {
+  $width: 90px;
+  $height: 60px;
+
+  .#{$col}Bg {
+    text-align: center;
+    margin: 5px;
+    margin-top: 0;
+
+    .bg {
+      width: $width;
+      height: $height;
+
+      .innerBg {
+        width: $height;
+        height: $height;
+        margin: 0 auto;
+        background: #faf6f4 url("/game-admin/images/fish-prawn-crab/#{$col}.png") no-repeat;
+        background-size: contain;
+        border-radius: 10px;
+        border: 3px solid #e1b94e;
+        box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+      }
+
+      @media screen and (max-width: 740px) {
+        width: 50px;
+
+        .innerBg {
+          width: 50px;
+        }
+      }
+    }
+  }
+}
+
+@mixin shaketheplate($col1, $col2) {
+  $width: 90px;
+  $height: 70px;
+
+  .#{$col1}Bg {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+
+    .bg {
+      width: $width;
+      height: $height;
+      margin: 0 auto;
+
+      @media screen and (max-width: 1199px) {
+        width: calc(#{$width} * 0.8);
+        height: calc(#{$height} * 0.8);
+      }
+
+      @media screen and (max-width: 992px) {
+        width: calc(#{$width} * 0.5);
+      }
+
+      .outerBg {
+        width: $width;
+        height: $height;
+        background: url("/game-admin/images/xocxoc/#{$col1}.png") center 5px no-repeat;
+        background-size: contain;
+
+        @media screen and (max-width: 1199px) {
+          width: calc(#{$width} * 0.8);
+          height: calc(#{$height} * 0.8);
+        }
+
+        @media screen and (max-width: 992px) {
+          width: calc(#{$width} * 0.5);
+        }
+      }
+    }
+
+    .totalText {
+      margin-top: -40px;
+    }
+  }
+}
+
+@mixin plateevenodd($col1, $col2, $col3) {
+  $width: 130px;
+  $height: 80px;
+
+  .#{$col1}Bg {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0;
+
+    .bg {
+      color: #{$col2};
+    }
+
+    // .totalText {
+    //   margin-top: -80px;
+    // }
+  }
+
+  .#{$col1}Bg:before {
+    content: "#{$col3}";
+    color: #{$col2};
+  }
+}
+
+@mixin kenopromax($col1, $col2, $col3) {
+  .#{$col1}Bg {
+    // width: 160px;
+    // height: 80px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+
+    .bg {
+      // width: 160px;
+      // height: 111px;
+      // color: #{$col2};
+    }
+
+    // .totalText {
+    //   margin-top: -115px;
+    // }
+  }
+
+  .#{$col1}Bg:before {
+    content: "#{$col3}";
+    color: #{$col2};
+  }
+}
+
+.totalText {
+  color: #ffb800;
+  font-size: 25px;
+  font-weight: bold;
+  background: -webkit-linear-gradient(red, yellow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  @media screen and (max-width: 992px) {
+    font-size: 22px;
+  }
+}
+
+@include bigsmall("big", "tai", "113px", "50px");
+@include bigsmall("small", "xiu", "180px", "50px");
+@include bigsmall("chan", "chan", "140px", "50px");
+@include bigsmall("le", "le", "107px", "50px");
+
+@include tomcuabauca("tom");
+@include tomcuabauca("cua");
+@include tomcuabauca("bau");
+@include tomcuabauca("ca");
+@include tomcuabauca("nai");
+@include tomcuabauca("ga");
+
+@include shaketheplate("mottrangbado", "");
+@include shaketheplate("motdobatrang", "");
+@include shaketheplate("bontrang", "");
+@include shaketheplate("bondo", "");
+
+@include plateevenodd("plateeven", "white", "Even");
+@include plateevenodd("plateodd", "red", "Odd");
+
+@include kenopromax("kenogold", "white", "Gold");
+@include kenopromax("kenowood", "white", "Wood");
+@include kenopromax("kenowater", "white", "Water");
+@include kenopromax("kenofire", "white", "Fire");
+@include kenopromax("kenoearth", "white", "Earth");
+@include kenopromax("kenobig", "white", "Big");
+@include kenopromax("kenosmall", "white", "Small");
+@include kenopromax("kenoeven", "white", "Even");
+@include kenopromax("kenoodd", "white", "Odd");
+
+@include kenopromax("player", "white", "Player");
+@include kenopromax("banker", "white", "Banker");
+@include kenopromax("tie", "white", "Tie");
+@include kenopromax("playerPair", "white", "Player Pair");
+@include kenopromax("bankerPair", "white", "Banker Pair");
+@include kenopromax("baccaratBig", "white", "Big");
+@include kenopromax("baccaratSmall", "white", "Small");

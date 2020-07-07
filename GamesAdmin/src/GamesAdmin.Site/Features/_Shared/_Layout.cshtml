@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,26 +24,38 @@
         </div>
         <div id="content" class="content-container">
             <div class="header">
-                <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
-                    <!--<i class="material-icons">menu</i>-->
-                    <span class="hamburger-inner"></span>
-                </button>
+                <div class="left-header">
+                    <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
+                        <!--<i class="material-icons">menu</i>-->
+                        <span class="hamburger-inner"></span>
+                    </button>
+                    <div class="header-online-user">
+                        <div class="number user-online">
+                            <i class="icon icon-account-group"></i>
+                            <span>Online users: </span>
+                            <a asp-controller="Dashboard" asp-action="OnlineUsers" id="online-users"></a>
+                        </div>
+                        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                        {
+                            <div class="number">
+                                <i class="icon icon-bot"></i>
+                                <a asp-action="BotUsers" asp-controller="Dashboard" id="online-users">Bots</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+                
                 <div class="user-info">
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons icon-user">account_circle</i>
-                            <span class="username">@Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value</span>                           
+                            <i class="icon-account-circle icon-user"></i>
+                            <span class="username">@Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value</span>
                         </button>
                         <form asp-action="Logout" asp-controller="Authentication" method="post">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @*<li>
-                            <a asp-action="Index" asp-controller="ChangePassword">
-                                <i class="material-icons">lock_open</i> Change Password
-                            </a>
-                        </li>*@
                                 <li>
                                     <button type="submit" value="Sign out" class="logout">
-                                        <i class="material-icons">exit_to_app</i> Logout
+                                        <i class="icon-logout"></i> Logout
                                     </button>
                                 </li>
                             </ul>
@@ -63,6 +76,7 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dashboard.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

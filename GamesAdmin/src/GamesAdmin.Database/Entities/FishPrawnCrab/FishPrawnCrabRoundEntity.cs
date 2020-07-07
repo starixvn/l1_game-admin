@@ -5,18 +5,15 @@ namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("baucua_phiens")]
     [BsonIgnoreExtraElements]
-    public class FishPrawnCrabRoundEntity : MiniGameBaseEntity
+    public class FishPrawnCrabRoundEntity : BaseRoundEntity
     {
-        [BsonElement("id")]
-        public long Number { get; set; }
-
         [BsonElement("dice1")]
-        public int FirstDice { get; set; }
+        public byte FirstDice { get; set; }
 
         [BsonElement("dice2")]
-        public int SecondDice { get; set; }
+        public byte SecondDice { get; set; }
 
         [BsonElement("dice3")]
-        public int ThirdDice { get; set; }
+        public byte ThirdDice { get; set; }
     }
 }

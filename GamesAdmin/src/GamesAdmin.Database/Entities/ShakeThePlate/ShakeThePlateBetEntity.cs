@@ -7,21 +7,21 @@ namespace GamesAdmin.Database.Entities
     public class ShakeThePlateBetEntity : BaseBetEntity
     {
         [BsonElement("le")]
-        public int Odd { get; set; }
+        public decimal Odd { get; set; }
 
         [BsonElement("chan")]
-        public int Even { get; set; }
+        public decimal Even { get; set; }
 
         [BsonElement("red3")]
-        public int ThreeRed { get; set; }
+        public decimal ThreeRed { get; set; }
 
         [BsonElement("red4")]
-        public int FourRed { get; set; }
+        public decimal FourRed { get; set; }
 
         [BsonElement("white3")]
-        public int ThreeWhite { get; set; }
+        public decimal ThreeWhite { get; set; }
 
         [BsonElement("white4")]
-        public int FourWhite { get; set; }
+        public decimal FourWhite { get; set; }
     }
 }

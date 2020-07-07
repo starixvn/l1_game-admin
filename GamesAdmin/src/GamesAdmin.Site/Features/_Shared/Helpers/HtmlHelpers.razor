@@ -1,0 +1,11 @@
+﻿@functions {
+    public static string formatNumber(decimal value)
+    {
+        return value.ToString("#,##0.00");
+    }
+
+    public static string formatNumber(decimal? value)
+    {
+        return formatNumber(value.GetValueOrDefault());
+    }
+}

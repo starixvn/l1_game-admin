@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class StatusViewModel
     {
-        public StatusViewModel(IList<StatusItemViewModel> gameList) 
+        public StatusViewModel(IList<StatusItemViewModel> gameList)
         {
             GameList = gameList;
         }
@@ -13,9 +13,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public IList<StatusItemViewModel> GameList { get; }
     }
 
-    public class StatusItemViewModel 
+    public class StatusItemViewModel
     {
-        public StatusItemViewModel(string name, bool enabled, string disabledMessage) 
+        public StatusItemViewModel(string name, bool enabled, string disabledMessage)
         {
             Name = name;
             Enabled = enabled;
@@ -28,15 +28,32 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool Enabled { get; }
 
+        public bool BotEnabled { get; set; }
+
+        public string BotEnabledDisplay => BotEnabled ? "Yes" : "No";
+
         public string StatusDisplay => Enabled ? "Yes" : "No";
 
         public string DisabledMessage { get; }
+
+        public double MinBet { get; set; }
+
+        public double MaxBet { get; set; }
     }
 
-    public class GameDisableMessage 
+    public class GameDisableMessage
     {
         public string Name { get; set; }
 
         public string DisabledMessage { get; set; }
+    }
+
+    public class JWTFromGameServer
+    {
+        public string Token { get; set; }
+
+        public string GameServerEndpoint { get; set; }
+
+        public string Env { get; set; }
     }
 }

@@ -1,0 +1,45 @@
+.dragontigerresult {
+  display: flex;
+  justify-content: space-between;
+
+  .dragon,
+  .tiger {
+    margin-bottom: 10px;
+    background: url("/game-admin/images/dragon-tiger/rong-ho.png") no-repeat;
+  }
+
+  .dragon {
+    background-position: -4px -339px;
+    width: 69px;
+    height: 17px;
+  }
+
+  .tiger {
+    background-position: -76px -340px;
+    width: 47px;
+    height: 16px;
+  }
+
+  .dragonCol,
+  .tigerCol {
+    width: 70px;
+  }
+
+  .line {
+    height: 110px;
+    width: 2px;
+    background: white;
+  }
+
+  @media screen and (max-width: 640px) {
+    .dragon,
+    .tiger {
+      display: none;
+    }
+
+    .line {
+      height: 60px;
+      margin-top: -5px;
+    }
+  }
+}

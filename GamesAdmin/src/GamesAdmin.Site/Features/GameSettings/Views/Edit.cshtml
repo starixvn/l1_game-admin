@@ -22,12 +22,12 @@
     @{
         if (Model.Success)
         {
-            <div class="message-success"><i class="material-icons">check_circle</i> Updated successfully</div>
+            <div class="message-success"><i class="icon-check"></i> Updated successfully</div>
         }
 
         if (!string.IsNullOrWhiteSpace(@Model.ErrorMessage))
         {
-            <div class="message-error"><i class="material-icons">cancel</i> @Model.ErrorMessage</div>
+            <div class="message-error"><i class="icon-cancel"></i> @Model.ErrorMessage</div>
         }
 
         <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post">
@@ -91,12 +91,12 @@
                             var index = i * 2 + j;
                             if (index < Model.BetChoiceOdds.Count)
                             {
-                        <div class="col-lg-6">
-                            <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
-                            <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
-                            <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
-                            <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
-                        </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
+                                    <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
+                                    <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
+                                    <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                                </div>
                             }
                         }
                     </div>
@@ -106,13 +106,18 @@
             <br />
 
             <div class="form-group">
+                <label asp-for="DelayStartTime" class="control-label"></label>
+                <input type="number" asp-for="DelayStartTime" class="form-control" />
+            </div>
+
+            <div class="form-group">
                 <label asp-for="BotMaxBet" class="control-label"></label>
                 <input type="number" asp-for="BotMaxBet" class="form-control" />
                 <span asp-validation-for="BotMaxBet" class="text-danger"></span>
             </div>
 
             <div class="adjust-bot-link">
-                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="material-icons bot">adb</i> Adjust bots by hour</a>
+                <a id="OpenDialog" href="#" data-toggle="modal" data-target="#botRatioModal"> <i class="icon-bot bot"></i> Adjust bots by hour</a>
             </div>
 
             <div class="form-group">
@@ -125,6 +130,7 @@
 
             <div class="form-group">
                 <input type="submit" value="Update" class="btn-submit" />
+                <input type="button" value="Monitor" class="btn-submit ml-1" onclick="gameSettings.startMonitor('@Model.Name')"/>
             </div>
         </form>
     }

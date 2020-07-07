@@ -1,0 +1,26 @@
+﻿@import "../base/variables";
+@import "../layout/theme-l2/header";
+@import "../layout/theme-l2/site-bar";
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+.content-container {
+    position: absolute;
+    top: 0;
+    left: 28rem;
+    right: 0;
+    height: 100%;
+    transition: all .2s;
+}
+
+.sidebar.active + .content-container {
+    left: 8rem;
+}
+
+.inner-content {
+    overflow: auto;
+    height: calc(100% - 5.6rem);
+    padding: 2rem;
+}

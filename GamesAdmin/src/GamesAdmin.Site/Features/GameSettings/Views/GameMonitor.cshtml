@@ -1,0 +1,45 @@
+﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model MonitorViewModel;
+
+@{
+    ViewData["Title"] = "Game Monitoring";
+}
+
+@section Styles {
+    <link href="~/scss/pages/game-status.css" rel="stylesheet" asp-append-version="true" />
+}
+
+
+<div class="col-md-12 col-lg-6 game-status">
+    <table id="status-tbl" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                @*<th>Monitor</th>*@
+                <th>Round History</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var index = 0; index < Model.GameList.Count; index++)
+            {
+                <tr>
+                    <td>@Model.GameList[index].DisplayName</td>
+                    @*<td class="text-center">
+                        <a href="#" class="icon-action" onclick="gameStatus.startMonitor('@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                    </td>*@
+                    <td class="text-center">
+                        @if (Model.GameList[index].EnabledHistory)
+                        {
+                            <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
+                        }
+                    </td>
+                </tr>
+}
+        </tbody>
+    </table>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+}

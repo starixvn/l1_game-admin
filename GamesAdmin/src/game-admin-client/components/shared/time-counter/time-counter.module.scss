@@ -1,0 +1,32 @@
+.timeCounter {
+  position: relative;
+  font-weight: 500;
+  font-size: 35px;
+  width: 70px;
+  height: 80px;
+  border: 2px solid #ffb800;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 13px;
+  background: rgb(66, 11, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(98, 11, 31, 1) 0%,
+    rgba(66, 11, 31, 1) 40%,
+    rgba(66, 11, 31, 1) 60%,
+    rgba(98, 11, 31, 1) 100%
+  );
+  color: #f0f0f0;
+  box-sizing: border-box;
+
+  .warning {
+    color: #f40102;
+  }
+
+  @media screen and (max-width: 1023px) {
+    font-size: 25px;
+    width: 50px;
+    height: 50px;
+    padding-top: 3px;
+  }
+}

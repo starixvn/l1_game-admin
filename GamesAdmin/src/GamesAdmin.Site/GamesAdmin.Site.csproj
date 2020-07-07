@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\scss\pages\adjust-bot.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\scss\pages\online-users.css" />
   </ItemGroup>
 
 
@@ -26,16 +27,12 @@
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="3.3.3" />
-    <PackageReference Include="FluentValidation" Version="8.6.2" />
+    <PackageReference Include="Coravel" Version="3.6.1" />
     <PackageReference Include="IdentityModel.AspNetCore" Version="1.0.0-rc.4.1" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.2.26">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -56,6 +53,8 @@
   <ItemGroup>
     <Folder Include="Features\Users\Views\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\game-admin\_next\rmtxTm8B14eU70SRrA5fB\" />
+    <Folder Include="wwwroot\game-admin\_next\static\development\pages\next\dist\pages\" />
     <Folder Include="wwwroot\lib\data-tables\DataTables-1.10.20\" />
   </ItemGroup>
 
@@ -87,7 +86,7 @@
     </None>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
-    <None Include="wwwroot\js\game-settings.js" />
+    <None Include="wwwroot\game-admin\**" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\af.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\ar.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\az.js" />
@@ -151,12 +150,17 @@
     <None Include="wwwroot\lib\select2\dist\js\select2.full.min.js" />
     <None Include="wwwroot\lib\select2\dist\js\select2.js" />
     <None Include="wwwroot\lib\select2\dist\js\select2.min.js" />
+    <None Include="wwwroot\scss\fonts\admin-icons\demo-files\demo.js" />
+    <None Include="wwwroot\scss\fonts\admin-icons\fonts\icomoon.svg" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Content Update="appsettings.json">
       <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <Content Update="wwwroot\scss\themes\themel2.min.css">
+      <DependentUpon>themel2.css</DependentUpon>
     </Content>
   </ItemGroup>
 

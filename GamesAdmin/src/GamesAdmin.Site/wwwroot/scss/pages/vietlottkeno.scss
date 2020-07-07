@@ -52,7 +52,10 @@
             vertical-align: top;
             margin-right: 1rem;
             position: absolute;
-            z-index: -1;
+            left: 12px;
+            top: -1px;
+            height: 4rem;
+            width: 4rem;
             opacity: 0;
         }
 
@@ -65,19 +68,17 @@
             align-items: center;
             height: 4rem;
             width: 4rem;
-            background: #e6e6e6;
             border-radius: 50%;
         }
     }
     // Hover and focus
-    .number:hover input ~ .control_indicatior,
-    .number input:focus ~ .control_indicator {
-        background: #16aaff;
-        color: #fff;
+    .number input + .control_indicator {
+        background: #e6e6e6;
+        color: $text-color;
         cursor: pointer;
     }
     // Checked
-    .number input:checked ~ .control_indicator {
+    .number input:checked + .control_indicator {
         background: #16aaff;
         color: #fff;
     }

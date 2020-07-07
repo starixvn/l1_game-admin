@@ -13,6 +13,16 @@
         public const string BaccaratValue = "baccarat";
         public const string MiniSeDieValue = "minisedie";
 
+        public const string KenoProVietValue = "kenoproviet";
+        public const string KenoMaxValue = "kenomax";
+        public const string KenoMax2Value = "kenomax2";
+        public const string KenoMiniValue = "kenomini";
+        public const string KenoMini2Value = "kenomini2";
+        public const string KenoEastValue = "kenoeast";
+        public const string KenoWestValue = "kenowest";
+        public const string KenoSouthValue = "kenosouth";
+        public const string KenoNorthValue = "kenonorth";
+
         public static readonly GameType BigSmall = new GameType(BigSmallValue, "Big Small");
         public static readonly GameType BigSmallTurbo = new GameType(BigSmallTurboValue, "Turbo Big Small");        
         public static readonly GameType FishPrawnCrab = new GameType(FishPrawnCrabValue, "Fish Prawn Crab");
@@ -23,6 +33,15 @@
         public static readonly GameType KenoProMax = new GameType(KenoProMaxValue, "Keno Pro Max");
         public static readonly GameType Baccarat = new GameType(BaccaratValue, "Baccarat");
         public static readonly GameType MiniSeDie = new GameType(MiniSeDieValue, "Mini Se Die");
+        public static readonly GameType KenoProViet = new GameType(KenoProVietValue, "Keno Pro Viet");
+        public static readonly GameType KenoMax = new GameType(KenoMaxValue, "Keno Max");
+        public static readonly GameType KenoMax2 = new GameType(KenoMax2Value, "Keno Max2");
+        public static readonly GameType KenoMini = new GameType(KenoMiniValue, "Keno Mini");
+        public static readonly GameType KenoMini2 = new GameType(KenoMini2Value, "Keno Mini 2");
+        public static readonly GameType KenoEast = new GameType(KenoEastValue, "Keno East");
+        public static readonly GameType KenoWest = new GameType(KenoWestValue, "Keno West");
+        public static readonly GameType KenoSouth = new GameType(KenoSouthValue, "Keno South");
+        public static readonly GameType KenoNorth = new GameType(KenoNorthValue, "Keno North");
 
         public GameType()
         {

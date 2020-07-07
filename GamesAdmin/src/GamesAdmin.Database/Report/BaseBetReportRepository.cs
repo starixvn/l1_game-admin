@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -20,6 +21,7 @@ namespace GamesAdmin.Database
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
+            var nickNameRegex = new Regex($"(?i){nickname}");
 
             var aggregateBuilder = betCollection.Aggregate().Match(x => x.Round == roundId)
                 .SortBy(x => x.Id)
@@ -29,7 +31,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
+                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.AccountInfos.Name)) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,

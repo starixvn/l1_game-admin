@@ -1,5 +1,6 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Site.Features._Shared.Helpers;
 @model BigSmallTurboReportResultViewModel
 
 @{
@@ -51,9 +52,9 @@
                                 @bigRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@bigRecord?.Bet</td>
-                        <td class="text-right">@bigRecord?.Back</td>
-                        <td class="text-right">@bigRecord?.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.BetWin)</td>
                         <td class="line-cell"></td>
                         <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@smallRecord?.Username</td>
@@ -63,9 +64,9 @@
                                 @smallRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@smallRecord?.Bet</td>
-                        <td class="text-right">@smallRecord?.Back</td>
-                        <td class="text-right">@smallRecord?.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.BetWin)</td>
                     </tr>
 
                 }
@@ -83,16 +84,16 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@bigRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@bigRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@bigRecords.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.BetWin))</td>
                         <td class="line-cell"></td>
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@smallRecords.Sum(x => x.Bet)</td>
-                        <td class="text-right">@smallRecords.Sum(x => x.Back)</td>
-                        <td class="text-right">@smallRecords.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.BetWin))</td>
                     </tr>
                 }
             </tfoot>

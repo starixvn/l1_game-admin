@@ -11,7 +11,7 @@
 
 <div>
     <a asp-action="Add" asp-controller="Notification" class="btn-add add-item">
-        <i class="material-icons">add_alert</i>
+        <i class="icon-add_alert"></i>
         &nbsp; New Notification
     </a>
 </div>
@@ -38,8 +38,8 @@
                 <td>@notification.Message</td>
                 <td class="text-center">@notification.DisplayKind.DisplayName</td>
                 <td class="text-center">
-                    <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id" class="action-link"><i class="material-icons">edit</i></a>
-                    <a href="#" onclick="DeleteButton('@notification.Id');" class="action-link"><i class="material-icons">delete</i></a>
+                    <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id" class="action-link"><i class="icon-edit"></i></a>
+                    <a href="#" onclick="DeleteButton('@notification.Id');" class="action-link"><i class="icon-cancel"></i></a>
                 </td>
             </tr>
         }

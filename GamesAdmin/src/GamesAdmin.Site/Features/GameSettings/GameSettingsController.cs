@@ -61,25 +61,17 @@ namespace GamesAdmin.Site.Features.GameSettings
                    null,
                    editViewModel.DisabledMessage,
                    editViewModel.MaxBetChoices,
-                   editViewModel.Odds)));
+                   editViewModel.Odds,
+                   editViewModel.DelayStartTime)));
 
-                TempData["isSuccess"] = true;
-
-                return RedirectToAction(nameof(Edit), new RouteValueDictionary
-                {
-                    { "name", editViewModel.Name }
-                });
+                return Json(true);
             }
             catch (Exception ex)
             {
-                TempData["errorMessage"] = ex.Message;
                 sentryClient.CaptureException(ex);
             }
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary
-            {
-                { "name", editViewModel.Name }
-            });
+            return Json(false);
         }
 
         [HttpGet]
@@ -103,14 +95,15 @@ namespace GamesAdmin.Site.Features.GameSettings
                 new double[] { },
                 string.Empty,
                 new Dictionary<string, double>(),
-                new Dictionary<string, double>())));
+                new Dictionary<string, double>(),
+                addViewModel.DelayStartTime)));
 
             return RedirectToAction(nameof(Edit));
         }
 
         [HttpPost]
         [Route("{name}")]
-        public async Task<IActionResult> UpdateBotRatio(string name, [Bind]List<BotRatioItemViewModel> botRatioItems)
+        public async Task<IActionResult> UpdateBotRatio(string name, [Bind] List<BotRatioItemViewModel> botRatioItems)
         {
             var botRatios = botRatioItems
                 .OrderBy(item => item.UtcHour)
@@ -121,16 +114,37 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             TempData["isSuccess"] = true;
 
-            return RedirectToAction(nameof(Edit), new RouteValueDictionary
-            {
-                { "name", name }
-            });
+            return Json(true);
         }
 
         [HttpGet]
-        [Route("status")]
-        public async Task<IActionResult> Status()
-        => View(await mediator.Send(new GetStatusRequest()));
+        public async Task<IActionResult> Index()
+            => View("~/Features/GameSettings/Views/GameManagement.cshtml", await mediator.Send(new GetStatusRequest()));
+
+        [HttpGet]
+        public async Task<IActionResult> GameMonitor()
+            => View(await mediator.Send(new GetMonitorRequest()));
+
+
+        [HttpGet]
+        [Route("gamedetails/{name}")]
+        public async Task<IActionResult> GameDetails(string name)
+        {
+            var viewModel = await mediator.Send(new EditRequest(name));
+            viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
+            viewModel.Success = TempData["isSuccess"] == null ? false : (bool)TempData["isSuccess"];
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        [Route("botratio/{gameName}")]
+        public async Task<IActionResult> BotRatio(string gameName)
+        {
+            var gameSetting = await mediator.Send(new EditRequest(gameName));
+
+            return Json(gameSetting);
+        }
 
         [HttpPost]
         [Route("status/enable")]
@@ -157,29 +171,29 @@ namespace GamesAdmin.Site.Features.GameSettings
             if (string.IsNullOrWhiteSpace(disabledMessage))
             {
                 TempData["errorMessage"] = "Message cannot be empty.";
+                return Json(false);
             }
-            else 
+            else
             {
                 await mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+                return Json(true);
             }
-
-            return RedirectToAction(nameof(Status));
         }
 
         [HttpPost]
         [Route("status/update")]
         public async Task<IActionResult> UpdateAllDisabledMessage(string disabledMessage)
         {
-            if(string.IsNullOrWhiteSpace(disabledMessage))
+            if (string.IsNullOrWhiteSpace(disabledMessage))
             {
                 TempData["errorMessage"] = "Message cannot be empty.";
+                return Json(false);
             }
-            else 
+            else
             {
                 await mediator.Send(new UpdateAllDisabledMessageRequest(disabledMessage));
-            }                
-
-            return RedirectToAction(nameof(Status));
+                return Json(true);
+            }
         }
 
         [HttpPost]

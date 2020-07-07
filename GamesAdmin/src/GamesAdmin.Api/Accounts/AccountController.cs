@@ -49,5 +49,13 @@ namespace GamesAdmin.Api.Accounts
 
             return await mediator.Send(new GenerateAccountRandomRequest(names, false));
         }
+
+        [HttpPost("bot/revise_balance")]
+        public async Task<int> ReviseBalance()
+           => (await mediator.Send(new ReviseBotBalanceRequest()));
+
+        [HttpPost("bot/disable_randomly")]
+        public async Task<int> DisableRandomly()
+           => (await mediator.Send(new DisableBotRandomlyRequest()));
     }
 }
