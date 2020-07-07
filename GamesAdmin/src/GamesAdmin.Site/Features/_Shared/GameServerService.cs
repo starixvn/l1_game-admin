@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
-        Task<JsonWebToken> GetJWT(string username, string userAgent);
+        //Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameServerService : IGameServerService

@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Monitor</th>
+                @*<th>Monitor</th>*@
                 <th>Round History</th>
             </tr>
         </thead>
@@ -24,9 +24,9 @@
             {
                 <tr>
                     <td>@Model.GameList[index].DisplayName</td>
-                    <td class="text-center">
+                    @*<td class="text-center">
                         <a href="#" class="icon-action" onclick="gameStatus.startMonitor('@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
-                    </td>
+                    </td>*@
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledHistory)
                         {

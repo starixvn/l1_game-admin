@@ -20,8 +20,6 @@ namespace GamesAdmin.VietlottKeno
 
         Task<IEnumerable<ProVietKenoRound>> AddMissedRoundsAsync(IEnumerable<CreateProVietKenoRound> kenoRounds);
 
-        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-
         Task<ProVietKenoRound> GetLatestRoundAsync();
 
         Task<ProVietKenoRound> GetByRoundIdAsync(long roundId);
@@ -121,19 +119,7 @@ namespace GamesAdmin.VietlottKeno
 
             return Enumerable.Empty<ProVietKenoRound>();
         }
-
-        public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
-        {
-            try
-            {
-                await gameAdminApi.NotifyRoundResult(kenoRounds);
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
-
+       
         private void HandleException(Exception ex)
         {
             if (ex is ApiException)

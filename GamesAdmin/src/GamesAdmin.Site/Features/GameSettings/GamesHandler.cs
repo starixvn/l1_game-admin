@@ -30,7 +30,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
         , IRequestHandler<ReloadGameClientRequest, bool>
-        , IRequestHandler<GetJWTRequest, JWTFromGameServer>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
     {
         private const int MaxLengthOfMessage = 1000;
@@ -318,18 +317,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             await gameServerService.Reload();
 
             return true;
-        }
-
-        public async Task<JWTFromGameServer> Handle(GetJWTRequest request, CancellationToken cancellationToken)
-        {
-            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
-
-            return new JWTFromGameServer
-            {
-                Token = result.Token,
-                GameServerEndpoint = appSettings.GameServerDomainUrl,
-                Env = appSettings.Env
-            };
         }
 
         private async Task NotifyUnsettleRoundsToGameServer()

@@ -46,8 +46,6 @@ namespace GamesAdmin.VietlottKeno.Tasks
                     });
 
                 await kenoService.AddRoundLogEntity(round.Number, round.Time, configuration.WebUrl);
-
-                _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { round }));
             }
         }
 
