@@ -18,10 +18,12 @@ type Props = {
 }
 
 export default class ShakeThePlate extends React.Component<Props, MiniSedieModel> {
+  private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
+    this.isFirstLoad = true;
     this.state = new MiniSedieModel();
   }
 
@@ -31,17 +33,17 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
 
   handleData(data) {
     if (!!data.um) {
-      clearTimeout(this.timeout);
-      this.setState({
-        time: { remainingTime: 0 },
-        gameState: GameState.disabled,
-        result: [
-          new DiceModel(-1, DiceType.XocXoc),
-          new DiceModel(-1, DiceType.XocXoc),
-          new DiceModel(-1, DiceType.XocXoc),
-          new DiceModel(-1, DiceType.XocXoc)
-        ]
-      });
+      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
+        clearTimeout(this.timeout);
+        this.setState({
+          time: { remainingTime: 0 },
+          gameState: GameState.disabled,
+          roundNumber: this.isFirstLoad ? this.state.roundNumber : this.state.roundNumber - 1,
+          result: new MiniSedieModel().result
+        });
+
+        this.isFirstLoad = false;
+      }
     }
 
     if (!!data.ingame) {
@@ -55,12 +57,13 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
+          result: data.result ? this.getResult(data.result) : this.state.result,
           time: {
             remainingTime: data.remainingTime - 31
           }
         })
 
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.setState({
             gameState: GameState.running,
             roundNumber: data.roundId,
@@ -82,6 +85,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
     }
 
     if (!!data.finish) {
+      this.isFirstLoad = false;
       const waitingTime = 8;
       this.setState({
         result: this.getResult(data.finish.result),
@@ -91,14 +95,9 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
         }
       });
 
-      this.timeout = setTimeout(() => {
+      setTimeout(() => {
         this.setState({
-          result: [
-            new DiceModel(-1, DiceType.XocXoc),
-            new DiceModel(-1, DiceType.XocXoc),
-            new DiceModel(-1, DiceType.XocXoc),
-            new DiceModel(-1, DiceType.XocXoc)
-          ],
+          result: new MiniSedieModel().result,
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
