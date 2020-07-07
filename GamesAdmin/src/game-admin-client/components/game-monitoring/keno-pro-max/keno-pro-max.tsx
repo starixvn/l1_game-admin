@@ -30,11 +30,13 @@ const TOTAL_TIME = 30;
 const WAITING_TIME = 9;
 
 export default class KenoProMax extends React.Component<Props, State> {
+  private isFirstLoad: boolean;
   private stopTimeout: NodeJS.Timeout;
 
   constructor(props: any) {
     super(props);
 
+    this.isFirstLoad = true;
     this.state = {
       data: new KenoProMaxModel(),
       gameState: GameState.none,
@@ -52,16 +54,19 @@ export default class KenoProMax extends React.Component<Props, State> {
 
   handleMessage(message) {
     if (message.um !== undefined) {
-      clearTimeout(this.stopTimeout);
-      let data = this.state.data;
-      data.time.remainingTime = 0;
-      data.result = [];
-      data.settlementResult = "";
-      this.setState({
-        data: data,
-        gameState: GameState.disabled
-      });
-
+      if (this.isFirstLoad || this.state.data.time.remainingTime == TOTAL_TIME) {
+        clearTimeout(this.stopTimeout);
+        let data = this.state.data;
+        data.time.remainingTime = 0;
+        data.roundNumber = this.isFirstLoad ? this.state.data.roundNumber : this.state.data.roundNumber - 1,
+          data.result = [];
+        data.settlementResult = "";
+        this.setState({
+          data: data,
+          gameState: GameState.disabled
+        });
+        this.isFirstLoad = false;
+      }
     } else if (message.remainingTime !== undefined) {
       this.handleStart(message);
     }
@@ -113,6 +118,7 @@ export default class KenoProMax extends React.Component<Props, State> {
   }
 
   handleStop(message) {
+    this.isFirstLoad = false;
     const newData = this.state.data;
     const result = message.finish.result;
     newData.roundNumber = message.finish.roundId;
