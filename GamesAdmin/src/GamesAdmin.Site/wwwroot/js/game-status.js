@@ -203,6 +203,7 @@
     }
 
     startMonitor(gameName) {
+        alert("start monitor");
         var fetchOptions = {
             method: 'POST',
             body: JSON.stringify({ userAgent: navigator.userAgent }),
