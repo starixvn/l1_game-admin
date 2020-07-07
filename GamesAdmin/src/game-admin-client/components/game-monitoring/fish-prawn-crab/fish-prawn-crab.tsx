@@ -55,6 +55,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
         this.setState({
           time: { remainingTime: 0 },
           gameState: GameState.disabled,
+          roundNumber: this.isFirstLoad ? this.state.roundNumber : this.state.roundNumber - 1,
           result: model.result,
           winners: model.winners,
         });
