@@ -374,7 +374,7 @@ $(document).ready(function () {
 
     $("#status-tbl").on("click touchstart", "a.icon-action", function (event) {
         var $this = $(this);
-        $this.toggleClass("text-danger");
+        $this.toggleClass("text-black-50");
         const gameName = $this.data("game-name");
         gameStatus.startMonitor(gameName);
     });
