@@ -56,8 +56,8 @@ namespace GamesAdmin.Api.Report
             var bets = await kenoMaxOnesRepository
                   .Aggregate()
                   .Match(x => x.Round == roundId)
-                  .AppendStage<KenoProVietOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                  .Lookup<KenoProVietOnesEntity, AccountEntity, JoinedKenoBetOnes>(
+                  .AppendStage<KenoMaxOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
+                  .Lookup<KenoMaxOnesEntity, AccountEntity, JoinedKenoBetOnes>(
                       accountRepository.Collection(),
                       x => x.UserId,
                       y => y.Id,
