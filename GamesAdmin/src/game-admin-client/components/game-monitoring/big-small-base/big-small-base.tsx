@@ -42,6 +42,7 @@ const betListMapping = (gameType: string, flag: boolean) => {
 
 export default class BigSmallBase extends React.Component<BigSmalllProps, BigSmallBaseModel> {
   private isFirstLoad: boolean;
+  private timeout: NodeJS.Timeout;
 
   constructor(props) {
     super(props);
@@ -100,10 +101,12 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
 
     if (!!data.um) {
       if (this.isFirstLoad || this.state.time.remainingTime == totalRemainingTime) {
+        clearTimeout(this.timeout);
         this.setState({
           time: { remainingTime: 0 },
           currentState: GameState.disabled
         });
+        this.isFirstLoad = false;
       }
     }
 
@@ -119,7 +122,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           currentState: GameState.waiting
         })
 
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.setState({
             time: {
               remainingTime: totalRemainingTime,

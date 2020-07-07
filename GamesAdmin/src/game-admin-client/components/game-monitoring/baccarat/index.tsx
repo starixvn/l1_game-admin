@@ -35,6 +35,7 @@ const CHOICES = [
 
 export default class Baccarat extends React.Component<Props, BaccaratModel>{
     private isFirstLoad: boolean;
+    private timeout: NodeJS.Timeout;
     constructor(props: Props) {
         super(props);
 
@@ -55,11 +56,13 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     handleMessage(message) {
         if (!!message.um) {
             if (this.isFirstLoad || this.state.time.remainingTime == TOTAL_TIME) {
+                clearTimeout(this.timeout);
                 this.setState({
                     time: { remainingTime: 0 },
-                    roundNumber: this.state.roundNumber - 1,
+                    roundNumber: this.isFirstLoad ? this.state.roundNumber : this.state.roundNumber - 1,
                     gameState: GameState.disabled
                 });
+                this.isFirstLoad = false;
             }
         }
 
@@ -91,7 +94,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 }
             });
 
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
                 this.setState({
                     gameState: GameState.running,
                     roundNumber: this.state.roundNumber + 1,

@@ -28,11 +28,13 @@ const TOTAL_TIME = 30;
 const WAITING_TIME = 5;
 
 export default class DragonTiger extends React.Component<Props, State> {
+  private isFirstLoad: boolean;
   private timeOut: NodeJS.Timeout;
 
   constructor(props: any) {
     super(props);
 
+    this.isFirstLoad = true;
     this.state = {
       data: new DragonTigerModel(),
       gameState: 0,
@@ -45,14 +47,16 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   handleMessage(message) {
     if (message.um !== undefined) {
-      if (this.state.data.time.remainingTime == TOTAL_TIME) {
+      if (this.isFirstLoad || this.state.data.time.remainingTime == TOTAL_TIME) {
+        clearTimeout(this.timeOut);
         let data = this.state.data;
         data.time.remainingTime = 0;
-        data.roundNumber -= 1;
+        data.roundNumber = this.isFirstLoad ? data.roundNumber : data.roundNumber - 1;
         this.setState({
           data: data,
           gameState: GameState.disabled
         });
+        this.isFirstLoad = false;
       }
     } else if (message.phien !== undefined) {
       this.handleStart(message);
@@ -89,9 +93,9 @@ export default class DragonTiger extends React.Component<Props, State> {
     let isFinished = message.time_remain > TOTAL_TIME;
     newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME - 1 : message.time_remain;
     newData.roundNumber = isFinished ? message.phien - 1 : message.phien;
-    // if (isFinished && message.result) {
-    //   newData.result = this.getResult(message.result);
-    // }
+    if (isFinished && message.result) {
+      newData.result = this.getResult(message.result);
+    }
 
     this.setState({
       data: newData,
@@ -108,13 +112,14 @@ export default class DragonTiger extends React.Component<Props, State> {
     newData.roundNumber = message.finish.round;
     newData.result = this.getResult(message.finish.result);
     newData.time.remainingTime = WAITING_TIME;
+    this.isFirstLoad = false;
 
     this.setState({
       data: newData,
       gameState: GameState.waiting,
     });
 
-    this.timeOut = this.countDownToStart.call(this, newData, WAITING_TIME + 1);
+    this.countDownToStart.call(this, newData, WAITING_TIME + 1);
   }
 
   getBet(type, userObj) {
@@ -139,7 +144,7 @@ export default class DragonTiger extends React.Component<Props, State> {
   }
 
   countDownToStart(newData, time) {
-    setTimeout(() => {
+    this.timeOut = setTimeout(() => {
       newData.time.remainingTime = TOTAL_TIME;
       newData.roundNumber += 1;
       this.setState({
