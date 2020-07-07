@@ -26,7 +26,7 @@
                 <tr>
                     <td>@Model.GameList[index].DisplayName</td>
                     <td class="text-center">
-                        <a href="javascript:gameStatus.startMonitor('@Model.GameList[index].Name')" class="icon-action" onclick=""><i class="icon-chart"></i></a>
+                        <a href="javascript:gameStatus.startMonitor()" class="icon-action"><i class="icon-chart"></i></a>
                     </td>
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledHistory)
