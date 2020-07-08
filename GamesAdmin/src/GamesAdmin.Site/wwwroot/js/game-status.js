@@ -371,9 +371,7 @@ $(document).ready(function () {
 
     $(".icon-action").on("click", function (event) {
         var $this = $(this);
-        $this.toggleClass("text-black-50");
         const gameName = $this.data("game-name");
-
         gameStatus.startMonitor(gameName);
     });
 })
