@@ -6,7 +6,6 @@ import BetTable from "./shared/bet-table";
 import KenoResult from "../../shared/keno-result/keno-result";
 import style from "./base.module.scss";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
-import { Notice } from "../../shared/notice/notice";
 
 type Props = {
   onMessage: Function;

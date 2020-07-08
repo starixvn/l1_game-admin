@@ -100,7 +100,7 @@ export default class FishPrawnCrab extends React.Component<FishPrawnCrabProps, F
           },
           gameState: GameState.running
         })
-      }, 11500);
+      }, 10500);
     }
 
     if (!!data.time_remain) {
