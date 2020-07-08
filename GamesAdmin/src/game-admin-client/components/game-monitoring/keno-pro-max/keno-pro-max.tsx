@@ -85,7 +85,7 @@ export default class KenoProMax extends React.Component<Props, State> {
     newData.roundNumber = isFinished ? message.roundId - 1 : message.roundId;
     if (isFinished && message.result) {
       newData.result = message.result;
-      newData.settlementResult = message.settlementResult;
+      newData.settlementResult = this.getSettlementResult(message.settlementResult);
     }
 
     this.setState({
@@ -197,8 +197,7 @@ export default class KenoProMax extends React.Component<Props, State> {
 
   checkWinner(betType) {
     const result = this.state.data.settlementResult;
-
-    return result == undefined ? false : result.split(' - ').includes(betType.toUpperCase());
+    return result ? result.split(' - ').includes(betType.toUpperCase()) : false;
   }
 
   renderMonitor() {
