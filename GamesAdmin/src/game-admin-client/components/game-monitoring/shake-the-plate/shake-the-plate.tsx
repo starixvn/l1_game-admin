@@ -60,7 +60,8 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
           roundNumber: data.phien - 1,
           time: {
             remainingTime: data.time_remain - 31
-          }
+          },
+          result: data.dices ? this.getResult(data.dices) : this.state.result
         })
 
         setTimeout(() => {
@@ -69,7 +70,13 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
             roundNumber: this.state.roundNumber + 1,
             time: {
               remainingTime: 30
-            }
+            },
+            result: [
+              new DiceModel(-1, DiceType.XocXoc),
+              new DiceModel(-1, DiceType.XocXoc),
+              new DiceModel(-1, DiceType.XocXoc),
+              new DiceModel(-1, DiceType.XocXoc)
+            ],
           })
         }, (data.time_remain - 30) * 1000)
       }
@@ -87,7 +94,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     if (!!data.finish) {
       const waitingTime = 9;
       this.setState({
-        result: this.getResult(data.finish),
+        result: this.getResult(data.finish.dots),
         gameState: GameState.waiting,
         time: {
           remainingTime: waitingTime
@@ -147,13 +154,13 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     return currentData;
   }
 
-  getResult(data) {
+  getResult(dots) {
     const result = new Array<DiceModel>();
 
-    result.push(new DiceModel(data.dots[0], DiceType.XocXoc));
-    result.push(new DiceModel(data.dots[1], DiceType.XocXoc));
-    result.push(new DiceModel(data.dots[2], DiceType.XocXoc));
-    result.push(new DiceModel(data.dots[3], DiceType.XocXoc));
+    result.push(new DiceModel(dots[0], DiceType.XocXoc));
+    result.push(new DiceModel(dots[1], DiceType.XocXoc));
+    result.push(new DiceModel(dots[2], DiceType.XocXoc));
+    result.push(new DiceModel(dots[3], DiceType.XocXoc));
 
     return result;
   }
