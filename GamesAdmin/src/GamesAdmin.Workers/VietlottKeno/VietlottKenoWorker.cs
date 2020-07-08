@@ -110,6 +110,7 @@ namespace GamesAdmin.VietlottKeno
                 await kenoService.AddRoundLogEntity(result.Number, result.Time, vietlottKenoConfiguration.WebSocketUrl);
 
                 Console.WriteLine($"{DateTime.Now} - Added round {result.Number} to database!");
+                _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { result }));
             }
         }
 
@@ -120,6 +121,7 @@ namespace GamesAdmin.VietlottKeno
             if (result.Any())
             {
                 Console.WriteLine($"{DateTime.Now} - Added missing rounds to database!");
+                _ = Task.Run(() => kenoService.NotifyRoundResult(result));
             }
         }
 

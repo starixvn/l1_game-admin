@@ -37,6 +37,13 @@
             </a>
         </li>
 
+        <li class="menu-item">
+            <a href="javascript:window.open('@appSettings.ResultPageUrl','_blank', 'width=1020,height=765')">
+                <i class="icon-account-pin menu-icon"></i>
+                <span class="menu-name">Game Result</span>
+            </a>
+        </li>
+
         @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
         {
             <li class="menu-item">
