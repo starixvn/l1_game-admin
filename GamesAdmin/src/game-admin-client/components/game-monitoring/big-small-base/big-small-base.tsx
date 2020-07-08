@@ -118,6 +118,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
             remainingTime: time_remain - totalRemainingTime - 1
           },
           result: dices ? this.getResult(dices) : this.state.result,
+          isHavingResult: dices ? true : this.state.isHavingResult,
           roundNumber: phien - 1,
           currentState: GameState.waiting
         })
