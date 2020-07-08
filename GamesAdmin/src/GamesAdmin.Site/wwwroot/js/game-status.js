@@ -211,12 +211,10 @@
                 },
             };
 
-            var newWindow = window.open(`/game-admin/monitor.html?game=${gameName}&v=${new Date().getTime()}`, "_blank", "width=1020,height=765");
-
             fetch('/jwt', fetchOptions)
                 .then(res => res.json())
                 .then(data => {
-                    newWindow.location;
+                    window.open(`/game-admin/monitor.html?game=${gameName}&v=${new Date().getTime()}`, "_blank", "width=1020,height=765");
                 });
         },
         submit: function() {
