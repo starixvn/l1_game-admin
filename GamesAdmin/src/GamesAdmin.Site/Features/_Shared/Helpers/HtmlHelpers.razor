@@ -6,6 +6,6 @@
 
     public static string formatNumber(decimal? value)
     {
-        return formatNumber(value.GetValueOrDefault());
+        return value.HasValue ? formatNumber(value.Value) : string.Empty;
     }
 }
