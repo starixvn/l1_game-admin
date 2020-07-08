@@ -31,8 +31,6 @@ namespace GamesAdmin.Site
             var appSettings = new AppSettings(Configuration);
             services.AddSingleton<IAppSettings>(appSettings);
 
-            services.AddSettings(Configuration);
-
             services.AddServices(appSettings);
             services.AddAuthentication(Configuration);
 
