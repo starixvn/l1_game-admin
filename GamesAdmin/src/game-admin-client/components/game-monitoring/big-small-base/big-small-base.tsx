@@ -104,6 +104,8 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
         clearTimeout(this.timeout);
         this.setState({
           time: { remainingTime: 0 },
+          result: new BigSmallBaseModel().result,
+          isHavingResult: false,
           currentState: GameState.disabled
         });
         this.isFirstLoad = false;
