@@ -16,6 +16,7 @@ type Props = {
   placingBetTime: number
   lockingBetTime: number,
   reset: Function,
+  disabled: boolean
 };
 
 const GAME_NAMES = {
@@ -40,6 +41,7 @@ export default function (props: Props) {
     showSetResultPanel,
     reset,
     choices,
+    disabled
   } = props;
 
   const timeCounterRef = React.createRef<TimeCounter>();

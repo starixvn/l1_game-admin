@@ -14,6 +14,8 @@ import DiceType from '../../common/model/DiceType';
 import BetItem from '../../common/model/BetItem';
 import { types, gameMapping, gameFlagMapping } from '../game-monitoring-config';
 import { GameState } from '../../shared/common/GameState'
+import { Notice } from "../../shared/notice/notice";
+import { time } from "console";
 
 type BigSmalllProps = {
   turbo: boolean,
@@ -39,10 +41,14 @@ const betListMapping = (gameType: string, flag: boolean) => {
 }
 
 export default class BigSmallBase extends React.Component<BigSmalllProps, BigSmallBaseModel> {
+  private isFirstLoad: boolean;
+  private timeout: NodeJS.Timeout;
+
   constructor(props) {
     super(props);
 
     this.state = new BigSmallBaseModel();
+    this.isFirstLoad = true;
   }
 
   componentDidMount() {
@@ -71,70 +77,74 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     }
 
     if (!!data.finish) {
+      this.isFirstLoad = false;
       setTimeout(() => {
         this.setState({
-          result: [
-            new DiceModel(-1, DiceType.TaiXiu),
-            new DiceModel(-1, DiceType.TaiXiu),
-            new DiceModel(-1, DiceType.TaiXiu)
-          ],
+          result: new BigSmallBaseModel().result,
           isHavingResult: false,
-          roundNumber: this.state.roundNumber + 1,
           currentState: GameState.running,
           time: {
-            remainingTime: totalRemainingTime + 1
+            remainingTime: totalRemainingTime
           }
         })
       }, (totalWaitingTime + 1) * 1000);
 
       this.setState({
-        result: this.getResult(data.finish),
+        result: this.getResult(data.finish.dices),
         isHavingResult: true,
         currentState: GameState.waiting,
         time: {
-          remainingTime: totalWaitingTime + 1
+          remainingTime: totalWaitingTime
         }
       });
     }
 
+    if (!!data.um) {
+      if (this.isFirstLoad || this.state.time.remainingTime == totalRemainingTime) {
+        clearTimeout(this.timeout);
+        this.setState({
+          time: { remainingTime: 0 },
+          result: new BigSmallBaseModel().result,
+          isHavingResult: false,
+          currentState: GameState.disabled
+        });
+        this.isFirstLoad = false;
+      }
+    }
+
     if (!!data.time_remain) {
-      if ((this.props.turbo && data.time_remain > totalRemainingTime + 6) || data.time_remain > totalRemainingTime) {
+      const { time_remain, phien, dices } = data;
+      if ((this.props.turbo && time_remain > totalRemainingTime + 6) || time_remain > totalRemainingTime) {
         this.setState({
           time: {
-            remainingTime: data.time_remain - totalRemainingTime
+            remainingTime: time_remain - totalRemainingTime - 1
           },
-          roundNumber: data.phien - 1,
+          result: dices ? this.getResult(dices) : this.state.result,
+          isHavingResult: dices ? true : this.state.isHavingResult,
+          roundNumber: phien - 1,
           currentState: GameState.waiting
         })
 
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.setState({
             time: {
               remainingTime: totalRemainingTime,
             },
-            roundNumber: this.state.roundNumber + 1,
+            roundNumber: phien,
             currentState: GameState.running,
             isHavingResult: false,
-            result: [
-              new DiceModel(-1, DiceType.TaiXiu),
-              new DiceModel(-1, DiceType.TaiXiu),
-              new DiceModel(-1, DiceType.TaiXiu)
-            ]
+            result: new BigSmallBaseModel().result
           })
-        }, (data.time_remain - totalRemainingTime) * 1000)
+        }, (time_remain - totalRemainingTime - 1) * 1000)
       } else {
         this.setState({
           currentState: GameState.running,
           time: {
-            remainingTime: data.time_remain
+            remainingTime: time_remain - 1
           },
-          roundNumber: data.phien,
+          roundNumber: phien,
           isHavingResult: false,
-          result: [
-            new DiceModel(-1, DiceType.TaiXiu),
-            new DiceModel(-1, DiceType.TaiXiu),
-            new DiceModel(-1, DiceType.TaiXiu)
-          ]
+          result: new BigSmallBaseModel().result
         })
       }
     }
@@ -161,12 +171,12 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     return currentData;
   }
 
-  getResult(data) {
+  getResult(dices) {
     const result = new Array<DiceModel>();
 
-    result.push(new DiceModel(data.dices[0], DiceType.TaiXiu));
-    result.push(new DiceModel(data.dices[1], DiceType.TaiXiu));
-    result.push(new DiceModel(data.dices[2], DiceType.TaiXiu));
+    result.push(new DiceModel(dices[0], DiceType.TaiXiu));
+    result.push(new DiceModel(dices[1], DiceType.TaiXiu));
+    result.push(new DiceModel(dices[2], DiceType.TaiXiu));
 
     return result;
   }
@@ -266,10 +276,7 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
   render() {
     return (
       <div className={styles.bigsmallturbo}>
-        <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
-        />
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.currentState == GameState.disabled} />
       </div>
     );
   }

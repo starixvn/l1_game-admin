@@ -27,7 +27,6 @@ export default class TimeCounter extends React.Component<timeCounterProps, { cur
         });
       }
     }, 1000);
-
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -46,7 +45,6 @@ export default class TimeCounter extends React.Component<timeCounterProps, { cur
       clearInterval(this.interval);
     }
   }
-
 
   render() {
     const { currentTime, gameState } = this.state;

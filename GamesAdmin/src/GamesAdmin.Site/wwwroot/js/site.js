@@ -5,7 +5,7 @@
 
 class Sidebar {
     collapseExpandSidebar() {
-        $('#sidebarCollapse').on('click', function () {
+        $('.sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
         });
     }

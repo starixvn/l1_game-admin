@@ -1,4 +1,6 @@
 ﻿@import "../base/variables";
+@import "../components/table";
+@import "../components/customize-datatable";
 
 .game-status {
     padding-left: 0;
@@ -80,6 +82,14 @@
         &:hover {
             color: $theme-color;
         }
+    }
+    // game management
+    .col-game-name {
+        min-width: 15rem;
+    }
+
+    .col-bet-limit {
+        min-width: 10rem;
     }
 }
 

@@ -1,6 +1,7 @@
 import BetList from './BetList'
 import TimeModel from './TimeModel'
 import DiceModel from './DiceModel'
+import DiceType from './DiceType';
 
 class BigSmallBaseBetList {
   firstBetType: BetList;
@@ -13,22 +14,26 @@ class BigSmallBaseBetList {
 }
 
 export default class BigSmallBaseModel {
-  roundNumber: number
-  time: TimeModel
-  betList: BigSmallBaseBetList
-  result: Array<DiceModel>
-  type: string
-  turbo: string
-  firstBetTypeUsers: number
-  secondBetTypeUsers: number
-  isHavingResult: boolean
-  currentState: number
+  roundNumber: number;
+  time: TimeModel;
+  betList: BigSmallBaseBetList;
+  result: Array<DiceModel>;
+  type: string;
+  turbo: string;
+  firstBetTypeUsers: number;
+  secondBetTypeUsers: number;
+  isHavingResult: boolean;
+  currentState: number;
 
   constructor() {
-    this.result = [new DiceModel(), new DiceModel(), new DiceModel()];
+    this.result = [
+      new DiceModel(-1, DiceType.TaiXiu),
+      new DiceModel(-1, DiceType.TaiXiu),
+      new DiceModel(-1, DiceType.TaiXiu)
+    ];
     this.betList = new BigSmallBaseBetList();
     this.time = new TimeModel();
-    this.isHavingResult = false
+    this.isHavingResult = false;
     this.currentState = 0;
   }
 }

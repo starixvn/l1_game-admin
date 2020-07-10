@@ -15,6 +15,9 @@
             <div class="sidebar-header">
                 <a href="/" class="site-name">Saba.Club Admin (<span class="highlight">CASH</span>)</a>
                 <span class="env">CASH</span>
+                <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
+                    <span class="hamburger-inner"></span>
+                </button>
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
@@ -23,6 +26,9 @@
             </div>
         </div>
         <div id="content" class="content-container">
+            <button type="button" class="btn btn-hamburger sidebarCollapse">
+                <span class="hamburger-inner"></span>
+            </button>
             <div class="header">
                 <div class="left-header">
                     <button type="button" id="sidebarCollapse" class="btn btn-hamburger">
@@ -39,7 +45,7 @@
                         {
                             <div class="number">
                                 <i class="icon icon-bot"></i>
-                                <a asp-action="BotUsers" asp-controller="Dashboard" id="online-users">Bots</a>
+                                <a asp-action="BotUsers" asp-controller="Dashboard" id="online-users"> <span>Bots</span></a>
                             </div>
                         }
                     </div>

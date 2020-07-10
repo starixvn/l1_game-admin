@@ -22,6 +22,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         string Env { get; }
 
         string ResultPageUrl { get; }
+
+        int MaxDecreased { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -40,6 +42,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
             Env = GetValue<string>(nameof(Env));
             ResultPageUrl = GetValue<string>(nameof(ResultPageUrl));
+            MaxDecreased = GetValue<int>(nameof(MaxDecreased));
         }
 
         public string ApiHost { get; }
@@ -57,6 +60,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string Env { get; }
 
         public string ResultPageUrl { get; }
+
+        public int MaxDecreased { get; }
 
         public T GetValue<T>(string key)
         {

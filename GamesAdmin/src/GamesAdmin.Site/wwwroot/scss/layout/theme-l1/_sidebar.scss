@@ -19,7 +19,7 @@
         align-items: center;
         padding: 1.5rem 2rem;
         border-bottom: rgba(0,0,0,0.04) solid 1px;
-
+    
         .env {
             display: none;
         }
@@ -27,17 +27,6 @@
 
     &.active {
         width: 8.2rem;
-
-        .site-name {
-            display: none;
-        }
-
-        .menu-name {
-            display: none;
-        }
-
-        .sidebar-header {
-            justify-content: center;
             height: 5.6rem;
         }
 
@@ -45,36 +34,6 @@
             display: block;
             color: $theme-color;
             font-weight: bold;
-        }
-
-        .nav-heading {
-            text-indent: 100rem;
-
-            &:before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 3.2rem;
-                height: .1rem;
-                background: #f7dfda;
-                margin-left: -1.8rem;
-            }
-        }
-
-        .vertical-nav-menu {
-            padding-left: .8rem;
-            padding-right: .8rem;
-        }
-
-        .menu-item {
-            display: flex;
-            justify-content: center;
-
-            a {
-                padding-left: 0;
-            }
-        }
     }
 }
 
@@ -152,4 +111,92 @@
 .scrollbar-sidebar {
     height: calc(100% - 56px);
     overflow: auto;
+}
+
+@media screen and (max-width: 1199px) {
+    .sidebar {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        left: -30rem;
+
+        &.active {
+            position: fixed;
+            left: 0;
+            width: 28rem;
+
+            .btn-hamburger {
+                display: block;
+            }
+        }
+
+        .btn-hamburger {
+            display: none;
+        }
+    }
+
+    .site-name {
+        margin-left: 30px;
+    }
+
+    .btn-hamburger {
+        position: absolute;
+        top: 15px;
+        left: 9px;
+        z-index: 10;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .sidebar.active {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .sidebar.active {
+        width: 8.2rem;
+
+        .site-name {
+            display: none;
+        }
+
+        .menu-name {
+            display: none;
+        }
+
+        .sidebar-header {
+            justify-content: center;
+        }
+
+        .nav-heading {
+            text-indent: 100rem;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 3.2rem;
+                height: .1rem;
+                background: #f7dfda;
+                margin-left: -1.8rem;
+            }
+        }
+
+        .vertical-nav-menu {
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: center;
+
+            a {
+                padding-left: 0;
+            }
+        }
+    }
 }

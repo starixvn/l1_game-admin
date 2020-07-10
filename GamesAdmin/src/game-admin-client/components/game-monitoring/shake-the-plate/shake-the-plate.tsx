@@ -18,6 +18,7 @@ type ShakeThePlateProps = {
 }
 
 export default class ShakeThePlate extends React.Component<ShakeThePlateProps, ShakeThePlaceModel> {
+  private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
@@ -30,6 +31,15 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
   }
 
   handleData(data) {
+    if (!!data.um) {
+      clearTimeout(this.timeout);
+      this.setState({
+        disabled: data.um,
+        time: { remainingTime: 0 },
+        gameState: GameState.none
+      });
+    }
+
     if (!!data.info) {
       this.setState({
         betList: this.getTotalBetList(data.info.red, this.state.betList)
@@ -43,13 +53,15 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     }
 
     if (!!data.time_remain) {
+      this.setState({ disabled: false });
       if (data.time_remain > 30) {
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.phien - 1,
           time: {
             remainingTime: data.time_remain - 31
-          }
+          },
+          result: data.dices ? this.getResult(data.dices) : this.state.result
         })
 
         setTimeout(() => {
@@ -58,7 +70,13 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
             roundNumber: this.state.roundNumber + 1,
             time: {
               remainingTime: 30
-            }
+            },
+            result: [
+              new DiceModel(-1, DiceType.XocXoc),
+              new DiceModel(-1, DiceType.XocXoc),
+              new DiceModel(-1, DiceType.XocXoc),
+              new DiceModel(-1, DiceType.XocXoc)
+            ],
           })
         }, (data.time_remain - 30) * 1000)
       }
@@ -76,14 +94,14 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     if (!!data.finish) {
       const waitingTime = 9;
       this.setState({
-        result: this.getResult(data.finish),
+        result: this.getResult(data.finish.dots),
         gameState: GameState.waiting,
         time: {
           remainingTime: waitingTime
         }
       });
 
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.setState({
           result: [
             new DiceModel(-1, DiceType.XocXoc),
@@ -136,13 +154,13 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     return currentData;
   }
 
-  getResult(data) {
+  getResult(dots) {
     const result = new Array<DiceModel>();
 
-    result.push(new DiceModel(data.dots[0], DiceType.XocXoc));
-    result.push(new DiceModel(data.dots[1], DiceType.XocXoc));
-    result.push(new DiceModel(data.dots[2], DiceType.XocXoc));
-    result.push(new DiceModel(data.dots[3], DiceType.XocXoc));
+    result.push(new DiceModel(dots[0], DiceType.XocXoc));
+    result.push(new DiceModel(dots[1], DiceType.XocXoc));
+    result.push(new DiceModel(dots[2], DiceType.XocXoc));
+    result.push(new DiceModel(dots[3], DiceType.XocXoc));
 
     return result;
   }
@@ -280,7 +298,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
   render() {
     return (
       <div>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()}></GameTemplate>
+        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.disabled}></GameTemplate>
       </div>
     );
   }

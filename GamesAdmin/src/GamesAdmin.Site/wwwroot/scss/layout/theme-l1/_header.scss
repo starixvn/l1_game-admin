@@ -1,8 +1,8 @@
 ﻿.header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+    padding: 12px 0;
     height: 5.6rem;
     background: $theme-color;
     box-shadow: 0 1px 0 0 #e2e8f0;
@@ -63,19 +63,19 @@
 
 .header-online-user {
     display: flex;
-    margin-left: 2rem;
     font-size: 1.4rem;
+    margin-left: 3rem;
 
     span {
-        display: inline-block;
-        padding-right: 5px;
+        display: none;
+        padding-right: 0.5rem;
     }
 
     .number {
         display: flex;
         align-items: center;
-        padding: 3px 15px;
-        margin-right: 20px;
+        padding: 0.3rem 1.5rem;
+        margin-right: 1rem;
 
         .icon {
             margin-right: 0.5rem;
@@ -95,17 +95,6 @@
         }
     }
 
-    &:after {
-        content: "";
-        height: 3.2rem;
-        width: 0.1rem;
-        background: #ccc;
-        display: inline-block;
-        position: relative;
-        top: 0.2px;
-        margin-right: 3rem;
-    }
-
     a {
         min-width: 1rem;
     }
@@ -113,6 +102,8 @@
 
 .user-info {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
 
 
         @media only screen and (min-width: 768px) {
@@ -181,6 +172,7 @@
     font-size: 2rem;
     font-weight: 600;
     position: relative;
+    padding-top: 10px;
 }
 
 .sub-title {
@@ -256,6 +248,62 @@
     > .nav .nav-item .nav-link:hover span::before {
         width: .8rem;
         margin-left: -0.4rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .header {
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+        z-index: 10;
+        height: 5.5rem;
+    }
+
+    .user-info {
+        width: auto;
+    }
+
+    .page-title {
+        padding-top: 0;
+        padding-left: 4rem;
+    }
+
+    .header-online-user {
+        margin-left: 2rem;
+
+        &:after {
+            display: none;
+        }
+
+        span {
+            display: block;
+        }
+
+        .number {
+            margin-right: 2rem;
+        }
+
+        &:after {
+            content: "";
+            height: 3.2rem;
+            width: 0.1rem;
+            background: #ccc;
+            display: inline-block;
+            position: relative;
+            top: 0.2px;
+            margin-right: 3rem;
+        }
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .header {
+        height: 7.5rem;
+    }
+
+    .page-title {
+        padding-left: 0;
     }
 }
 

@@ -21,17 +21,19 @@ class ShakeThePlaceBetList {
 }
 
 export default class ShakeThePlaceModel {
-  roundNumber: number
-  time: TimeModel
-  betList: ShakeThePlaceBetList
-  result: Array<DiceModel>
-  gameState: number
+  roundNumber: number;
+  time: TimeModel;
+  betList: ShakeThePlaceBetList;
+  result: Array<DiceModel>;
+  gameState: number;
+  disabled: boolean;
 
   constructor() {
     this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
     this.betList = new ShakeThePlaceBetList();
     this.time = new TimeModel();
     this.gameState = 0;
+    this.disabled = false;
   }
 }
 

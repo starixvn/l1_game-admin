@@ -4,6 +4,7 @@ using GamesAdmin.Site._Shared.Middlewares;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Sentry;
 
 namespace GamesAdmin.Site
 {
@@ -16,7 +17,8 @@ namespace GamesAdmin.Site
             host.Services.UseScheduler(scheduler =>
             {
                 scheduler.AddScheduleTasks();
-            });
+            })
+            .OnError((exception) => SentrySdk.CaptureException(exception));
 
             host.Run();
         }

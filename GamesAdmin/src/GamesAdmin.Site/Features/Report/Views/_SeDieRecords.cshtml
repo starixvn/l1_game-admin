@@ -37,13 +37,13 @@
                         <td>
                             @bet.Nickname
                         </td>
-                        <td class="text-right">@bet.Even</td>
-                        <td class="text-right">@bet.Odd</td>
-                        <td class="text-right">@bet.ThreeWhite</td>
-                        <td class="text-right">@bet.FourWhite</td>
-                        <td class="text-right">@bet.ThreeRed</td>
-                        <td class="text-right">@bet.FourRed</td>
-                        <td class="text-right">@bet.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Even)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Odd)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.ThreeWhite)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.FourWhite)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.ThreeRed)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.FourRed)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }
             </tbody>
@@ -60,13 +60,13 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@Model.Records.Sum(x => x.Even)</td>
-                        <td class="text-right">@Model.Records.Sum(x => x.Odd)</td>
-                        <td class="text-right">@Model.Records.Sum(x => x.ThreeWhite)</td>
-                        <td class="text-right">@Model.Records.Sum(x => x.FourWhite)</td>
-                        <td class="text-right">@Model.Records.Sum(x => x.ThreeRed)</td>
-                        <td class="text-right">@Model.Records.Sum(x => x.FourRed)</td>
-                        <td class="text-right">@Model.Records.Sum(x => x.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Even))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Odd))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ThreeWhite))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.FourWhite))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ThreeRed))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.FourRed))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
                     </tr>
                 }
             </tfoot>

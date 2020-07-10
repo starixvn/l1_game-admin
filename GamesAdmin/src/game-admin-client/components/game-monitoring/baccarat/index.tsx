@@ -12,7 +12,6 @@ import GameTemplate from '../game-template/game-template';
 import BaccaratCardResult from './baccarat-card-result';
 import BaccaratResultUpdater from './baccarat-result-updater';
 import DeskOfCards from './desk-of-cards';
-import CardModel from '../../common/model/CardModel';
 import CardResult from '../../common/model/CardResult';
 
 type Props = {
@@ -35,9 +34,12 @@ const CHOICES = [
 ];
 
 export default class Baccarat extends React.Component<Props, BaccaratModel>{
+    private isFirstLoad: boolean;
+    private timeout: NodeJS.Timeout;
     constructor(props: Props) {
         super(props);
 
+        this.isFirstLoad = true;
         this.state = new BaccaratModel();
         this.showUpdater = this.showUpdater.bind(this);
         this.updaterToggle = this.updaterToggle.bind(this);
@@ -52,6 +54,20 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     }
 
     handleMessage(message) {
+        if (!!message.um) {
+            if (this.isFirstLoad || this.state.time.remainingTime == TOTAL_TIME) {
+                clearTimeout(this.timeout);
+                this.setState({
+                    time: { remainingTime: 0 },
+                    result: new BaccaratModel().result,
+                    settlementResult: {},
+                    roundNumber: this.isFirstLoad ? this.state.roundNumber : this.state.roundNumber - 1,
+                    gameState: GameState.disabled
+                });
+                this.isFirstLoad = false;
+            }
+        }
+
         if (!!message.remainingTime) {
             this.handleStart(message);
         }
@@ -66,22 +82,26 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     }
 
     handleStart(message) {
-        const { remainingTime, roundId } = message;
+        const { remainingTime, roundId, result, settlementResult } = message;
         let isFinished = remainingTime > TOTAL_TIME;
 
         if (isFinished) {
             this.setState({
                 gameState: GameState.waiting,
                 roundNumber: roundId - 1,
+                result: result ?? new BaccaratModel().result,
+                settlementResult: settlementResult ?? {},
                 time: {
                     remainingTime: remainingTime - TOTAL_TIME
                 }
             });
 
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
                 this.setState({
                     gameState: GameState.running,
                     roundNumber: this.state.roundNumber + 1,
+                    result: new BaccaratModel().result,
+                    settlementResult: {},
                     time: {
                         remainingTime: TOTAL_TIME
                     }
@@ -115,6 +135,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     }
 
     handleStop(data) {
+        this.isFirstLoad = false;
         const { result, settlementResult } = data;
 
         this.setState({
@@ -301,7 +322,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
     render() {
         return (
             <div>
-                <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} />
+                <GameTemplate renderMonitor={this.renderMonitor()} renderBetList={this.renderBetList()} disabled={this.state.gameState == GameState.disabled} />
                 ${!this.props.isProduction && (<BaccaratResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
                 ${!this.props.isProduction && (<DeskOfCards modal={this.state.isShowDeskOfCards} toggle={this.updaterDeskOfCardsToggle} onPickCard={this.onPickCard} />)}
             </div>

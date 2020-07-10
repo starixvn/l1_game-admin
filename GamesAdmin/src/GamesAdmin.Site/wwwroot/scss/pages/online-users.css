@@ -74,3 +74,6 @@
     text-transform: capitalize;
     color: rgba(31, 10, 6, 0.6);
     font-size: 1.8rem; }
+
+.filter .form-row > [class*=col-] {
+  margin-bottom: 1.6rem; }

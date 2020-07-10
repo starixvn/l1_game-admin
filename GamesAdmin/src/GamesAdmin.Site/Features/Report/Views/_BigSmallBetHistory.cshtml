@@ -21,9 +21,9 @@
                 <td>@bet.Round</td>
                 <td>@(bet.Choice.Big ? "Big" : "Small")</td>
                 <td>@string.Join('-', bet.BetResult.Dices) @bet.BetResult.Total</td>
-                <td>@bet.Choice.Amount</td>
-                <td>@bet.Refund</td>
-                <td>@bet.BetWin</td>
+                <td>@HtmlHelpers.formatNumber(bet.Choice.Amount)</td>
+                <td>@HtmlHelpers.formatNumber(bet.Refund)</td>
+                <td>@HtmlHelpers.formatNumber(bet.BetWin)</td>
             </tr>
         }
     </tbody>
