@@ -23,7 +23,7 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
             var minutes = (currentTime - latestRound?.Time)?.TotalMinutes;
 
-            if (minutes >= 1)
+            if (minutes >= 2)
             {
                 SentrySdk.CaptureMessage($"{currentTime} - The worker still hasnt recveived the latest round result from Vietlott!", SentryLevel.Fatal);
             }
