@@ -24,7 +24,7 @@
     }
 
     span {
-        display: inline-block;
+        display: none;
         padding-right: 5px;
     }
 
@@ -105,9 +105,6 @@
         transition-delay: 0.075s;
     }
 }
-
-
-
 
 .user-info {
 
@@ -260,5 +257,12 @@
     > .nav .nav-item .nav-link:hover span::before {
         width: .8rem;
         margin-left: -0.4rem;
+    }
+}
+@media screen and (min-width: 768px) {
+    .header-online-user {
+        span {
+            display: inline-block;
+        }
     }
 }

@@ -9,14 +9,32 @@
 .content-container {
     position: absolute;
     top: 0;
-    left: 28rem;
+    left: 0;
     right: 0;
     height: 100%;
     transition: all .2s;
+
+    > .btn-hamburger {
+        display: none;
+
+        .hamburger-inner,
+        .hamburger-inner::before,
+        .hamburger-inner::after {
+            background-color: $theme-color;
+        }
+    }
 }
 
 .sidebar.active + .content-container {
-    left: 8rem;
+    left: 0;
+
+    > .btn-hamburger {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 0;
+        z-index: 20;
+    }
 }
 
 .inner-content {
@@ -24,3 +42,18 @@
     height: calc(100% - 5.6rem);
     padding: 2rem;
 }
+
+@media screen and (min-width: 1200px) {
+    .content-container {
+        left: 28rem;
+    }
+
+    .sidebar.active + .content-container {
+        left: 8rem;
+
+        > .btn-hamburger {
+            display: none;
+        }
+    }
+}
+
