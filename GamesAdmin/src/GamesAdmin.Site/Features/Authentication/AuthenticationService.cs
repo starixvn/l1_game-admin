@@ -32,17 +32,13 @@ namespace GamesAdmin.Site.Features.Authentication
         {
             try
             {
-                sentryClient.CaptureMessage($"{DateTime.Now} Start login user {user.UserName}, password {user.Password}");
-
                 var userSignin = await userService.SignIn(user.UserName.ToLower(), user.Password);
 
                 if (userSignin == null)
                 {
-                    sentryClient.CaptureMessage($"{DateTime.Now} Not found user {user.UserName}, password {user.Password}");
+                    sentryClient.CaptureMessage($"{DateTime.Now} Not found user {user.UserName}.");
                     return false;
                 }
-
-                sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} signing in...");
 
                 var userClaims = new List<Claim>()
                 {
