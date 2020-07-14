@@ -355,6 +355,9 @@
   height: calc(100% - 5.6rem);
   padding: 2rem; }
 
+.table.sticky-table th {
+  top: -2rem; }
+
 @media screen and (min-width: 1200px) {
   .content-container {
     left: 28rem; }
