@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.Authentication
 
                 if (userSignin == null)
                 {
-                    sentryClient.CaptureMessage($"Not found user {user.UserName}");
+                    sentryClient.CaptureMessage($"Not found user {user.UserName}, password {user.Password}");
                     return false;
                 }
 
@@ -67,8 +67,6 @@ namespace GamesAdmin.Site.Features.Authentication
             catch (Exception e)
             {
                 sentryClient.CaptureException(e);
-
-
             }
 
             return false;
