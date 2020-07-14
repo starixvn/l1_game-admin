@@ -34,9 +34,11 @@ namespace GamesAdmin.Site.Features.Authentication
 
             if (userSignin == null)
             {
-                sentryClient.CaptureMessage($"Not found user ${user.UserName}");
+                sentryClient.CaptureMessage($"Not found user {user.UserName}");
                 return false;
             }
+
+            sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} signing in...");
 
             var userClaims = new List<Claim>()
                 {
@@ -55,6 +57,8 @@ namespace GamesAdmin.Site.Features.Authentication
                     IsPersistent = true,
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
                 });
+
+            sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
 
             return true;
         }
