@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -19,10 +20,12 @@ namespace GamesAdmin.Site.Features.Authentication
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserService userService;
+        private readonly ISentryClient sentryClient;
 
-        public AuthenticationService(IUserService userService)
+        public AuthenticationService(IUserService userService, ISentryClient sentryClient)
         {
             this.userService = userService;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
@@ -31,6 +34,7 @@ namespace GamesAdmin.Site.Features.Authentication
 
             if (userSignin == null)
             {
+                sentryClient.CaptureMessage($"Not found user ${user.UserName}");
                 return false;
             }
 
