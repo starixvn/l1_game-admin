@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using Sentry;
 
 namespace GamesAdmin.Site.Features.ProVietKeno
 {
@@ -19,10 +20,12 @@ namespace GamesAdmin.Site.Features.ProVietKeno
     public class ProVietKenoService : IProVietKenoService
     {
         private readonly IProVietKenoApi provietKenoApi;
+        private readonly ISentryClient sentryClient;
 
-        public ProVietKenoService(IProVietKenoApi provietKenoApi)
+        public ProVietKenoService(IProVietKenoApi provietKenoApi, ISentryClient sentryClient)
         {
             this.provietKenoApi = provietKenoApi;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<IEnumerable<ProVietKenoRound>> GetRoundsAsync(DateTime date)
@@ -42,6 +45,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             }
             catch(Exception ex)
             {
+                sentryClient.CaptureException(ex);
                 return null;
             }
         }
