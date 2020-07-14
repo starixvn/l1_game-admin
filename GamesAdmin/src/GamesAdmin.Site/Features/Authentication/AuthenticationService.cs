@@ -30,37 +30,48 @@ namespace GamesAdmin.Site.Features.Authentication
 
         public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
         {
-            var userSignin = await userService.SignIn(user.UserName.ToLower(), user.Password);
-
-            if (userSignin == null)
+            try
             {
-                sentryClient.CaptureMessage($"Not found user {user.UserName}");
-                return false;
-            }
+                var userSignin = await userService.SignIn(user.UserName.ToLower(), user.Password);
 
-            sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} signing in...");
+                if (userSignin == null)
+                {
+                    sentryClient.CaptureMessage($"Not found user {user.UserName}");
+                    return false;
+                }
 
-            var userClaims = new List<Claim>()
+                sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} signing in...");
+
+                var userClaims = new List<Claim>()
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
                     new Claim(ClaimTypes.Role, userSignin.IsAdmin ? "admin" : "operation")
                  };
 
-            var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            await context.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(grandmaIdentity),
-                new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
-                });
+                await context.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(grandmaIdentity),
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
+                    });
 
-            sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
+                sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                sentryClient.CaptureException(e);
+
+
+            }
+
+            return false;
         }
 
         public Task SignOutAsync(HttpContext context)
