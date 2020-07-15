@@ -361,10 +361,11 @@
 @media screen and (max-device-width: 767px) {
   .inner-content {
     overflow: initial; }
+    .inner-content .table.sticky-table th {
+      top: 0 !important; }
     .inner-content.android-device {
-      overflow: auto; }
-  .table.sticky-table th {
-    top: 0 !important; } }
+      overflow: auto;
+      top: -2rem !important; } }
 
 @media screen and (min-width: 1200px) {
   .content-container {

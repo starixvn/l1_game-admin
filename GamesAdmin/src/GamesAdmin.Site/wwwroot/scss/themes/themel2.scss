@@ -51,13 +51,14 @@
     .inner-content {
         overflow: initial;
 
+        .table.sticky-table th {
+            top: 0 !important;
+        }
+
         &.android-device {
             overflow: auto;
+            top: -2rem !important;
         }
-    }
-
-    .table.sticky-table th {
-        top: 0 !important;
     }
 }
 
