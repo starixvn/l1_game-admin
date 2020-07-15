@@ -2,6 +2,10 @@
 @import "../layout/theme-l2/header";
 @import "../layout/theme-l2/sidebar";
 
+body {
+    overflow: hidden;
+}
+
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
