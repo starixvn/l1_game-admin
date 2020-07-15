@@ -21,6 +21,14 @@ class Sidebar {
             }
         });
     }
+
+    detectAndroidDevice() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        if (/android/i.test(userAgent)) {
+            $('.inner-content').addClass("android-device");
+        }
+    }
 }
 
 function showModal(selector) {
@@ -30,3 +38,4 @@ function showModal(selector) {
 let sideBar = new Sidebar();
 sideBar.collapseExpandSidebar();
 sideBar.activeLink();
+sideBar.detectAndroidDevice();

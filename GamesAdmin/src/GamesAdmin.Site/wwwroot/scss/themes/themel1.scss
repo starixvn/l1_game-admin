@@ -29,6 +29,16 @@
     height: calc(100% - 10rem);
 }
 
+@media screen and (max-device-width: 767px) {
+    .inner-content {
+        overflow: initial;
+
+        &.android-device {
+            overflow: auto;
+        }
+    }
+}
+
 @media screen and (min-width: 768px) {
     .inner-content {
         height: calc(100% - 5.5rem);
