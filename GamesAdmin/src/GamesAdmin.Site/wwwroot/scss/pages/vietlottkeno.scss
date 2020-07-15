@@ -34,6 +34,19 @@
         border-radius: 50%;
         border: 1px solid #16aaff;
     }
+
+    .btn-settle {
+        margin-left: 16px;
+        padding: 4px;
+        border: 1px solid;
+        border-radius: 3px;
+        color: #007bff;
+
+        &:hover {
+            cursor: pointer;
+            color: #da624a;
+        }
+    }
 }
 // Add new round
 .new-round {

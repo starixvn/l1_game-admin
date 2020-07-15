@@ -64,13 +64,20 @@
                     }
                 </td>
                 <td class="text-center">
-                    <input type="checkbox" checked="@item.Settled" onclick="return false;" />
+                    @if (item.Settled)
+                    {
+                        <i class="icon-check"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-cancel"></i>
+                    }
                     @if (!item.Settled && item.Result != null)
                     {
-                        <a data-ajax="true" data-ajax-method="GET" data-ajax-success="vietlottKeno.onSettleSuccess"
-                           asp-action="SettleRound" asp-route-roundId="@item.RoundId">
+                        <span class="btn-settle" data-ajax="true" data-ajax-method="GET" data-ajax-success="vietlottKeno.onSettleSuccess"
+                              asp-action="SettleRound" asp-route-roundId="@item.RoundId">
                             Settle
-                        </a>
+                        </span>
                     }
                 </td>
             </tr>

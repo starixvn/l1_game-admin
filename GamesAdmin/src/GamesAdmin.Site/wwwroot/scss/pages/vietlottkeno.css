@@ -90,6 +90,16 @@
   border-radius: 50%;
   border: 1px solid #16aaff; }
 
+.tble-vietlot .btn-settle {
+  margin-left: 16px;
+  padding: 4px;
+  border: 1px solid;
+  border-radius: 3px;
+  color: #007bff; }
+  .tble-vietlot .btn-settle:hover {
+    cursor: pointer;
+    color: #da624a; }
+
 .new-round {
   max-width: 51rem; }
   .new-round .number {
