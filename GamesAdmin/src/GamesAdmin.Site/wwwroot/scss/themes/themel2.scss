@@ -47,6 +47,12 @@
     top: -2rem !important;
 }
 
+@media screen and (max-device-width: 767px) {
+    .inner-content {
+        overflow: initial;
+    }
+}
+
 @media screen and (min-width: 1200px) {
     .content-container {
         left: 28rem;
