@@ -360,7 +360,9 @@
 
 @media screen and (max-device-width: 767px) {
   .inner-content {
-    overflow: initial; } }
+    overflow: initial; }
+  .table.sticky-table th {
+    top: 0 !important; } }
 
 @media screen and (min-width: 1200px) {
   .content-container {
