@@ -25,7 +25,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.MiniSeDieValue, "minisedie" },
             { GameType.KenoProVietValue, GameType.KenoProVietValue },
             { GameType.KenoMaxValue, GameType.KenoMaxValue },
-            { GameType.KenoMax2Value, GameType.KenoMax2Value }
+            { GameType.KenoMax2Value, GameType.KenoMax2Value },
+            { GameType.KenoMiniValue, GameType.KenoMiniValue },
+            { GameType.KenoMini2Value, GameType.KenoMini2Value },
+            { GameType.KenoEastValue, GameType.KenoEastValue },
+            { GameType.KenoWestValue, GameType.KenoWestValue },
+            { GameType.KenoSouthValue, GameType.KenoSouthValue },
+            { GameType.KenoNorthValue, GameType.KenoNorthValue }
         };
 
         public MonitorItemViewModel(string name)

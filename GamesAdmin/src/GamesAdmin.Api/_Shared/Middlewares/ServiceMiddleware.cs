@@ -35,12 +35,22 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddScoped<KenoProVietReport>()
                         .AddScoped<IKenoReport, KenoProVietReport>(s => s.GetService<KenoProVietReport>());
-
             services.AddScoped<KenoMaxReport>()
                         .AddScoped<IKenoReport, KenoMaxReport>(s => s.GetService<KenoMaxReport>());
-
             services.AddScoped<KenoMax2Report>()
                         .AddScoped<IKenoReport, KenoMax2Report>(s => s.GetService<KenoMax2Report>());
+            services.AddScoped<KenoMiniReport>()
+                        .AddScoped<IKenoReport, KenoMiniReport>(s => s.GetService<KenoMiniReport>());
+            services.AddScoped<KenoMini2Report>()
+                        .AddScoped<IKenoReport, KenoMini2Report>(s => s.GetService<KenoMini2Report>());
+            services.AddScoped<KenoEastReport>()
+                        .AddScoped<IKenoReport, KenoEastReport>(s => s.GetService<KenoEastReport>());
+            services.AddScoped<KenoWestReport>()
+                        .AddScoped<IKenoReport, KenoWestReport>(s => s.GetService<KenoWestReport>());
+            services.AddScoped<KenoSouthReport>()
+                        .AddScoped<IKenoReport, KenoSouthReport>(s => s.GetService<KenoSouthReport>());
+            services.AddScoped<KenoNorthReport>()
+                        .AddScoped<IKenoReport, KenoNorthReport>(s => s.GetService<KenoNorthReport>());
         }
     }
 }

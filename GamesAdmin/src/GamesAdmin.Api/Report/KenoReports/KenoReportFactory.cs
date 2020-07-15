@@ -15,7 +15,13 @@ namespace GamesAdmin.Api.Report
         {
             { GameType.KenoProVietValue, typeof(KenoProVietReport) },
             { GameType.KenoMaxValue, typeof(KenoMaxReport) },
-            { GameType.KenoMax2Value, typeof(KenoMax2Report) }
+            { GameType.KenoMax2Value, typeof(KenoMax2Report) },
+            { GameType.KenoMiniValue, typeof(KenoMiniReport) },
+            { GameType.KenoMini2Value, typeof(KenoMini2Report) },
+            { GameType.KenoEastValue, typeof(KenoEastReport) },
+            { GameType.KenoWestValue, typeof(KenoWestReport) },
+            { GameType.KenoSouthValue, typeof(KenoSouthReport) },
+            { GameType.KenoNorthValue, typeof(KenoNorthReport) }
         };
 
         private readonly IServiceProvider serviceProvider;

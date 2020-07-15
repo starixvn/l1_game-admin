@@ -133,6 +133,42 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult KenoMini()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult KenoMini2()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult KenoEast()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult KenoWest()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult KenoSouth()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult KenoNorth()
+        {
+            return View("KenoReport", new KenoViewModel());
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetKenoReport(string game, long roundId)
         {
             return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(Enumeration.FromValue<GameType>(game), roundId)));
