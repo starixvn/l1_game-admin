@@ -364,8 +364,9 @@
     .inner-content .table.sticky-table th {
       top: 0 !important; }
     .inner-content.android-device {
-      overflow: auto;
-      top: -2rem !important; } }
+      overflow: auto; }
+      .inner-content.android-device .table.sticky-table th {
+        top: -2rem !important; } }
 
 @media screen and (min-width: 1200px) {
   .content-container {

@@ -57,7 +57,10 @@
 
         &.android-device {
             overflow: auto;
-            top: -2rem !important;
+
+            .table.sticky-table th {
+                top: -2rem !important;
+            }
         }
     }
 }
