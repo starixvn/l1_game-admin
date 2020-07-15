@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using Polly;
+using Polly.Retry;
 using Refit;
 using Sentry;
 
@@ -41,11 +45,20 @@ namespace GamesAdmin.Site.Features._Shared
     {
         private readonly IGameServerApi serverApi;
         private readonly ISentryClient sentryClient;
+        private AsyncRetryPolicy policy;
 
         public GameServerService(IGameServerApi serverApi, ISentryClient sentryClient)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
+
+            policy = Policy
+             .Handle<HttpRequestException>()
+             .Or<IOException>()
+             .RetryAsync(3, onRetry: (exception, retryCount, context) =>
+             {
+                 sentryClient.CaptureMessage($"Retry {retryCount} , getting {context["Type"]} of id {context["Id"]}, due to: {exception}.");
+             });
         }
 
         public async Task<OnlineUsers> GetOnlineUsers(string game)
@@ -116,7 +129,8 @@ namespace GamesAdmin.Site.Features._Shared
                 try
                 {
                     sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
-                    await serverApi.NotifyRoundResult(round);
+
+                    await policy.ExecuteAsync(() => serverApi.NotifyRoundResult(round));
                 }
                 catch (Exception ex)
                 {

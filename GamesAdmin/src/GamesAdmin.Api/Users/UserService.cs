@@ -46,7 +46,7 @@ namespace GamesAdmin.Api.Users
             {
                 var entity = new AdminUserEntity
                 {
-                    Username = user.Username,
+                    Username = user.Username.ToLower(),
                     Password = PasswordHelper.HashPassword(user.Password),
                     Isadmin = user.IsAdmin,
                     Time = DateTime.Now
@@ -84,7 +84,7 @@ namespace GamesAdmin.Api.Users
         {
             try
             {
-                var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
+                var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username.ToLower()));
 
                 if (userEntity != null)
                 {
