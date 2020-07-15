@@ -361,6 +361,8 @@
 @media screen and (max-device-width: 767px) {
   .inner-content {
     overflow: initial; }
+    .inner-content.android-device {
+      overflow: auto; }
   .table.sticky-table th {
     top: 0 !important; } }
 
