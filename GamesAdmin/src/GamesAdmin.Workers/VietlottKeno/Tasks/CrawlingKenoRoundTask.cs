@@ -7,6 +7,7 @@ using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.VietlottKeno;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Options;
+using Sentry;
 
 namespace GamesAdmin.VietlottKeno.Tasks
 {
@@ -14,18 +15,32 @@ namespace GamesAdmin.VietlottKeno.Tasks
     {
         private readonly IKenoService kenoService;
         private readonly VietlottKenoConfiguration configuration;
+        private readonly ISentryClient sentryClient;
 
-        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options)
+        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options, ISentryClient sentryClient)
         {
             this.kenoService = kenoService;
             configuration = options.Value;
+            this.sentryClient = sentryClient;
         }
 
         public async Task Invoke()
         {
             var currentTime = DateTime.UtcNow;
-            var web = new HtmlWeb();
-            var htmlDoc = await web.LoadFromWebAsync(configuration.WebUrl);
+            HtmlDocument htmlDoc = null;
+
+            try
+            {
+                var web = new HtmlWeb();
+                htmlDoc = await web.LoadFromWebAsync(configuration.WebUrl);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureMessage($"Failed to get content from {configuration.WebUrl}");
+                sentryClient.CaptureException(ex);
+            }
+
+            if (htmlDoc == null) return;
 
             var latestRoundNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id = 'kq_ky']");
             var latestRoundId = long.Parse(latestRoundNode.InnerText.Remove(0, 1));

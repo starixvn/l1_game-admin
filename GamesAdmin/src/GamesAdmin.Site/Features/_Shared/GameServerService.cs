@@ -134,13 +134,12 @@ namespace GamesAdmin.Site.Features._Shared
                 }
                 catch (Exception ex)
                 {
-                    HandleException(ex);
+                    HandleException(ex, $"{DateTime.Now} NotifyRoundResult failed for #{round.Number}");
                 }
             }
-
         }
 
-        private void HandleException(Exception ex)
+        private void HandleException(Exception ex, string title = null)
         {
             if (ex is ApiException)
             {
@@ -150,6 +149,11 @@ namespace GamesAdmin.Site.Features._Shared
                 {
                     sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
                 }
+            }
+
+            if (!string.IsNullOrWhiteSpace(title)) 
+            {
+                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
             }
 
             sentryClient.CaptureException(ex);
