@@ -39,6 +39,8 @@ namespace GamesAdmin.Database.Entities
         public Security Security { get; set; }
 
         public bool Disabled { get; set; }
+
+        public bool InRoom { get; set; }
     }
 
     public class Security

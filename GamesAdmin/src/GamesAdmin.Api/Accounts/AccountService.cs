@@ -212,6 +212,7 @@ namespace GamesAdmin.Api.Accounts
 
             foreach (var bot in bots)
             {
+                bot.InRoom = false;
                 bot.Disabled = false;
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
