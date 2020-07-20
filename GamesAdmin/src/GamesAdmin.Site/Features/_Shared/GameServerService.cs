@@ -55,9 +55,9 @@ namespace GamesAdmin.Site.Features._Shared
             policy = Policy
              .Handle<HttpRequestException>()
              .Or<IOException>()
-             .RetryAsync(3, onRetry: (exception, retryCount, context) =>
+             .RetryAsync(2, onRetry: (exception, retryCount, context) =>
              {
-                 sentryClient.CaptureMessage($"Retry {retryCount} , getting {context["Type"]} of id {context["Id"]}, due to: {exception}.");
+                 sentryClient.CaptureMessage($"Retry {retryCount} , due to: {exception}.");
              });
         }
 
@@ -130,7 +130,7 @@ namespace GamesAdmin.Site.Features._Shared
                 {
                     sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
 
-                    await policy.ExecuteAsync(() => serverApi.NotifyRoundResult(round));
+                    await serverApi.NotifyRoundResult(round);
                 }
                 catch (Exception ex)
                 {
