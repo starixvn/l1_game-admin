@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using Polly;
+using Polly.Retry;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features._Shared
 {
@@ -19,16 +23,11 @@ namespace GamesAdmin.Site.Features._Shared
         [Get("/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
-<<<<<<< HEAD
-        [Post("/")]
-        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
-        
-        [Post("/jwt")]
-        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
-=======
         [Post("/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
->>>>>>> 98d1aba... keno proviet - send request to game server
+
+        [Post("/jwt")]
+        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
     }
 
     public interface IGameServerService
@@ -38,28 +37,37 @@ namespace GamesAdmin.Site.Features._Shared
         Task<OnlineUsers> GetOnlineUsers(string game);
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-        
-         Task<JsonWebToken> GetJWT(string username, string userAgent);
+
+        Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameServerService : IGameServerService
     {
         private readonly IGameServerApi serverApi;
         private readonly ISentryClient sentryClient;
+        private AsyncRetryPolicy policy;
 
         public GameServerService(IGameServerApi serverApi, ISentryClient sentryClient)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
+
+            policy = Policy
+             .Handle<HttpRequestException>()
+             .Or<IOException>()
+             .RetryAsync(2, onRetry: (exception, retryCount, context) =>
+             {
+                 sentryClient.CaptureMessage($"Retry {retryCount} , due to: {exception}.");
+             });
         }
 
-        public Task<OnlineUsers> GetOnlineUsers(string game)
+        public async Task<OnlineUsers> GetOnlineUsers(string game)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(game))
                 {
-                    return serverApi.GetOnlineUsers();
+                    return await serverApi.GetOnlineUsers();
                 }
 
                 var gameType = string.Empty;
@@ -78,14 +86,14 @@ namespace GamesAdmin.Site.Features._Shared
                         break;
                 }
 
-                return serverApi.GetOnlineUsersOnGame(gameType);
+                return await serverApi.GetOnlineUsersOnGame(gameType);
             }
             catch (Exception ex)
             {
                 HandleException(ex);
             }
 
-            return Task.FromResult(new OnlineUsers());
+            return new OnlineUsers();
         }
 
         public async Task Reload()
@@ -105,7 +113,8 @@ namespace GamesAdmin.Site.Features._Shared
             try
             {
                 return serverApi.GetToken(new RequestJWT(username, userAgent));
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 HandleException(ex);
             }
@@ -115,21 +124,26 @@ namespace GamesAdmin.Site.Features._Shared
 
         public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
         {
-            foreach(var round in kenoRounds)
+            foreach (var round in kenoRounds)
             {
                 try
                 {
+                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
+
                     await serverApi.NotifyRoundResult(round);
                 }
                 catch (Exception ex)
                 {
-                    HandleException(ex);
+<<<<<<< HEAD
+                    HandleException(ex, $"{DateTime.Now} NotifyRoundResult failed for #{round.Number}");
+=======
+                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
+>>>>>>> e1424d5... add details log for notify round result error
                 }
             }
-          
         }
 
-        private void HandleException(Exception ex)
+        private void HandleException(Exception ex, string title = null)
         {
             if (ex is ApiException)
             {
@@ -139,6 +153,15 @@ namespace GamesAdmin.Site.Features._Shared
                 {
                     sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
                 }
+            }
+
+<<<<<<< HEAD
+            if (!string.IsNullOrWhiteSpace(title)) 
+=======
+            if (!string.IsNullOrWhiteSpace(title))
+>>>>>>> e1424d5... add details log for notify round result error
+            {
+                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
             }
 
             sentryClient.CaptureException(ex);

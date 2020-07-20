@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using Polly;
 using Polly.Retry;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features._Shared
 {
@@ -131,10 +131,11 @@ namespace GamesAdmin.Site.Features._Shared
                     sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
 
                     await serverApi.NotifyRoundResult(round);
+                    await policy.ExecuteAsync(() => serverApi.NotifyRoundResult(round));
                 }
                 catch (Exception ex)
                 {
-                    HandleException(ex, $"{DateTime.Now} NotifyRoundResult failed for #{round.Number}");
+                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
                 }
             }
         }
@@ -151,7 +152,7 @@ namespace GamesAdmin.Site.Features._Shared
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(title)) 
+            if (!string.IsNullOrWhiteSpace(title))
             {
                 sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
             }
