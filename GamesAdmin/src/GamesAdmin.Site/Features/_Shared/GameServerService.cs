@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using Polly;
 using Polly.Retry;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features._Shared
 {
@@ -57,7 +57,7 @@ namespace GamesAdmin.Site.Features._Shared
              .Or<IOException>()
              .RetryAsync(3, onRetry: (exception, retryCount, context) =>
              {
-                 sentryClient.CaptureMessage($"Retry {retryCount} , getting {context["Type"]} of id {context["Id"]}, due to: {exception}.");
+                 sentryClient.CaptureMessage($"Retry {retryCount} , due to: {exception}.");
              });
         }
 
@@ -134,13 +134,13 @@ namespace GamesAdmin.Site.Features._Shared
                 }
                 catch (Exception ex)
                 {
-                    HandleException(ex);
+                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
                 }
             }
 
         }
 
-        private void HandleException(Exception ex)
+        private void HandleException(Exception ex, string title = null)
         {
             if (ex is ApiException)
             {
@@ -150,6 +150,11 @@ namespace GamesAdmin.Site.Features._Shared
                 {
                     sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
                 }
+            }
+
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
             }
 
             sentryClient.CaptureException(ex);
