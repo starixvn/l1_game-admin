@@ -40,7 +40,9 @@ namespace GamesAdmin.Site.Features.Monitors.ScheduleTasks
                     var latestRound = latestGameInfo.Value;
                     var currentRound = info.ContainsKey(latestGameInfo.Key) ? info[latestGameInfo.Key] : null;
 
-                    var notChanged = latestRound.RoundId == currentRound.RoundId && latestRound.RemainingTime == currentRound.RemainingTime;
+                    var notChanged = !currentRound.IsDisabled &&
+                        latestRound.RoundId == currentRound.RoundId &&
+                        latestRound.RemainingTime == currentRound.RemainingTime;
 
                     if (currentRound == null || notChanged)
                     {
