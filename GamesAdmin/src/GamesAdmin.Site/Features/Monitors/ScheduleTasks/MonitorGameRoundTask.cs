@@ -31,6 +31,11 @@ namespace GamesAdmin.Site.Features.Monitors.ScheduleTasks
             var alerts = new List<string>();
             var info = await service.GetGameRoundInfo();
 
+            if (info?.Count == 0) 
+            {
+                sentryClient.CaptureMessage("Not found any game round info!!!", Sentry.Protocol.SentryLevel.Error);
+            }
+
             var latestInfo = cache.GetCache<Dictionary<string, GameRoundInfo>>(CachedKeys.GameRoundInfo.ToString());
 
             if (latestInfo != null)
