@@ -1,6 +1,7 @@
 ﻿using Coravel.Scheduling.Schedule.Interfaces;
 using GamesAdmin.Site.Features.Bot.ScheduleTasks;
 using GamesAdmin.Site.Features.Dashboard.ScheduleTasks;
+using GamesAdmin.Site.Features.Monitors.ScheduleTasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Site._Shared.Middlewares
@@ -20,6 +21,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             scheduler
                 .Schedule<MonitorOnlineUsers>()
                 .EveryMinute();
+            scheduler
+                .Schedule<MonitorGameRoundTask>()
+                .EveryMinute();
         }
 
         public static void AddScheduleTasks(this IServiceCollection services)
@@ -27,6 +31,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddTransient<ReviseBotBalance>();
             services.AddTransient<DisableBot>();
             services.AddTransient<MonitorOnlineUsers>();
+            services.AddTransient<MonitorGameRoundTask>();
         }
     }
 }

@@ -28,6 +28,9 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Post("/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
+
+        [Get("/gameRoundInfo")]
+        Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
     }
 
     public interface IGameServerService
@@ -39,6 +42,8 @@ namespace GamesAdmin.Site.Features._Shared
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
         Task<JsonWebToken> GetJWT(string username, string userAgent);
+
+        Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
     }
 
     public class GameServerService : IGameServerService
@@ -158,6 +163,20 @@ namespace GamesAdmin.Site.Features._Shared
             }
 
             sentryClient.CaptureException(ex);
+        }
+
+        public async Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo()
+        {
+            try
+            {
+                return await serverApi.GetGameRoundInfo();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return new Dictionary<string, GameRoundInfo>();
         }
     }
 }
