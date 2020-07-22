@@ -1,0 +1,26 @@
+﻿{
+  "Env": "UAT",
+  "HostingPort": "7511",
+  "ApiHost": "http://localhost:7514/api",
+  "GameServerUrl": "http://10.99.99.101:7210/api",
+  "GameServerDomainUrl": "uat-gsr.sabagame.net",
+  "DatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend%4022027@10.99.99.187:37201/?replicaSet=SabaL2UAT",
+    "DatabaseName": "minigame",
+    "Collection": "data_protection_keys"
+  },
+  "Sentry": {
+    "Dsn": "http://550cbe19a9d446cead7eaeb530c6dd4a@10.99.99.187:800/62"
+  },
+  "IdentityServerAuth": {
+    "Url": "http://10.99.99.101:7313"
+  },
+  "DefaultTimeZone": "Asia/Ho_Chi_Minh",
+<<<<<<< HEAD
+  "ResultPageUrl": "https://uatresult.sabagame.net/auth?key=e91e49e9-3bf2-45c4-aba6-2c26c9c020a8"
+=======
+  "ResultPageConfiguration": {
+    "ClientKey": "144d673f-1769-49dd-8341-c7aeb47017c0"
+  }
+>>>>>>> 7d591a15... game round result - update
+}
