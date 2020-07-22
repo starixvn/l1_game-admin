@@ -140,7 +140,7 @@ namespace GamesAdmin.Site.Features._Shared
                 }
                 catch (Exception ex)
                 {
-                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
+                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for #{round.Number}.");
                 }
             }
         }
