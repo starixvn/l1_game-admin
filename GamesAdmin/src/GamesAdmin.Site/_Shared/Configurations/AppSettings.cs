@@ -23,9 +23,16 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         string Env { get; }
 
-        string ResultPageUrl { get; }
-
         int MaxDecreased { get; }
+
+        ResultPageConfiguration ResultPageConfiguration { get; }
+    }
+
+    public class ResultPageConfiguration
+    {
+        public string BaseUrl { get; set; }
+        public string ClientId { get; set; }
+        public string ClientKey { get; set; }
     }
 
     public class AppSettings : IAppSettings
@@ -44,7 +51,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
             Env = GetValue<string>(nameof(Env));
-            ResultPageUrl = GetValue<string>(nameof(ResultPageUrl));
+            ResultPageConfiguration = configuration.GetSection(nameof(ResultPageConfiguration)).Get<ResultPageConfiguration>();
             MaxDecreased = GetValue<int>(nameof(MaxDecreased));
         }
 
@@ -62,7 +69,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         public string Env { get; }
 
-        public string ResultPageUrl { get; }
+        public ResultPageConfiguration ResultPageConfiguration { get; }
 
         public int MaxDecreased { get; }
 

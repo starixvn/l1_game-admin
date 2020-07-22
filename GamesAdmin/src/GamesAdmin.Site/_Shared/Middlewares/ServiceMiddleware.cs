@@ -6,6 +6,7 @@ using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.GameServers;
+using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.ProVietKeno;
@@ -62,6 +63,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IBotApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IBotService, BotService>();
+
+            services.AddSingleton(RestService.For<IGameRoundResultApi>(appSettings.ResultPageConfiguration.BaseUrl));
+            services.AddScoped<IGameRoundResultService, GameRoundResultService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
         }
