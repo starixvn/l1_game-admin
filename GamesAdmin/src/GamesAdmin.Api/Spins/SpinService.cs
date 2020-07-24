@@ -1,45 +1,44 @@
 ﻿using GamesAdmin.Api.Spins.Requests;
 using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using MongoDB.Driver;
-using Sentry;
+using GamesAdmin.Database.Entities.Spins;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Spins
 {
     public interface ISpinService
     {
-        Task AddSpin(CreateRequest createRequest);
+        Task<bool> AddSpin(CreateRequest createRequest);
     }
 
     public class SpinService : ISpinService
     {
-        private readonly ISentryClient sentryClient;
-        private readonly IGenericRepository<AccountEntity> accountRepository;
-        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
+        private readonly IGenericRepository<SpinEntity> spinRepository;
 
-        public SpinService(
-            ISentryClient sentryClient,
-            IGenericRepository<AccountEntity> accountRepository,
-            IGenericRepository<AccountInfoEntity> accountInfoRepository)
+        public SpinService(IGenericRepository<SpinEntity> spinRepository)
         {
-            this.sentryClient = sentryClient;
-            this.accountRepository = accountRepository;
-            this.accountInfoRepository = accountInfoRepository;
+            this.spinRepository = spinRepository;
         }
 
-        public async Task AddSpin(CreateRequest createRequest)
+        public async Task<bool> AddSpin(CreateRequest createRequest)
         {
-            var user = await accountRepository.FindOneAsync(account => account.Local.MemberId == createRequest.ObCustId);
-            var userInfo = await accountInfoRepository.FindOneAsync(accountInfo => accountInfo.UserId == user.Id.ToString());
+            var spins = new List<SpinEntity>();
+            var time = DateTime.UtcNow;
 
-            var totalSpins = userInfo.Spins += createRequest.Spins;
+            for (var i = 0; i < createRequest.Spins; i++)
+            {
+                spins.Add(new SpinEntity
+                {
+                    ObCustId = createRequest.ObCustId,
+                    SiteId = createRequest.SiteId,
+                    Time = time
+                });
+            }
 
-            Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Spins), totalSpins);
+            await spinRepository.InsertManyAsync(spins);
 
-            await accountInfoRepository.UpdateAsync(
-                accountInfo => accountInfo.UserId == user.Id.ToString(),
-                Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Spins), totalSpins));
+            return true;
         }
     }
 }

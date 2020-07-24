@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Api.Spins.Requests
 {
-    public class CreateRequest : IRequest
+    public class CreateRequest : IRequest<bool>
     {
         public CreateRequest(string obCustId, string siteId, byte spins) 
         {

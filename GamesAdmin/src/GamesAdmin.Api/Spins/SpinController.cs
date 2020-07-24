@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.Spins
             this.mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public Task Add([FromBody] CreateRequest request)
         => mediator.Send(request);
     }

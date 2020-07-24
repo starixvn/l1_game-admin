@@ -1,17 +1,21 @@
 ﻿using GamesAdmin.Api.Spins.Requests;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Spins
 {
     public class SpinHandler
-        : IRequestHandler<CreateRequest>
+        : IRequestHandler<CreateRequest, bool>
     {
-        public Task<Unit> Handle(CreateRequest request, CancellationToken cancellationToken)
+        private readonly ISpinService spinService;
+
+        public SpinHandler(ISpinService spinService) 
         {
-            throw new NotImplementedException();
+            this.spinService = spinService;
         }
+
+        public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
+        => spinService.AddSpin(request);
     }
 }
