@@ -41,8 +41,10 @@ namespace GamesAdmin.Database.Entities
         public bool Disabled { get; set; }
 
         public bool InRoom { get; set; }
-
+        
         public string InGameRoom { get; set; }
+
+        public byte Spins { get; set; }
     }
 
     public class Security
