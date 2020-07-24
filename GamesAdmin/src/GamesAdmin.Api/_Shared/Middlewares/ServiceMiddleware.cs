@@ -5,7 +5,6 @@ using GamesAdmin.Api.Games;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
-using GamesAdmin.Api.Statistic;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +15,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
     {
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IStatisticService, StatisticService>();
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();
