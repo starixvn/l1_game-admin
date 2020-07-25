@@ -7,7 +7,7 @@ namespace GamesAdmin.Api.Report
 {
     public interface IKenoReport
     {
-        Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId);
+        Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<KenoBetHistory>> GetBetHistoryAsync(long roundId, string nickname);
 

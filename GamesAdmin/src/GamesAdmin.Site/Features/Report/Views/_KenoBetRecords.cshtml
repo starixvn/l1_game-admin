@@ -87,6 +87,17 @@
                         <td class="text-center" colspan="13">No data</td>
                     </tr>
                 }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Total))</td>
+                    </tr>
+                }
             </tfoot>
         </table>
     </div>

@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.Report
             this.accountRepository = accountRepository;
         }
 
-        public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId)
+        public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var bets = await kenoProVietOnesRepository
                    .Aggregate()

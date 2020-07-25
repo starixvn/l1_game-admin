@@ -1,9 +1,12 @@
-﻿using System;
+﻿using GamesAdmin.Core.Models.BetReport;
+using System;
 
 namespace GamesAdmin.Core.Models
 {
     public abstract class BetRecord
     {
+        public string UserId { get; set; }
+
         public string Username { get; set; }
 
         public string Nickname { get; set; }
@@ -11,6 +14,8 @@ namespace GamesAdmin.Core.Models
         public decimal BetWin { get; set; }
 
         public DateTimeOffset Time { get; set; }
+
+        public GameAccount Account { get; set; }
     }
 
     public class BigSmallBetRecord : BetRecord

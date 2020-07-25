@@ -6,4 +6,9 @@ namespace GamesAdmin.Database.Entities.Keno
     {
         public IEnumerable<AccountEntity> InnerUsers { get; set; }
     }
+
+    public class JoinedAccountInfoEntity : AccountEntity
+    {
+        public IEnumerable<AccountInfoEntity> InnerUserInfo { get; set; }
+    }
 }

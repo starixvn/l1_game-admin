@@ -50,7 +50,7 @@ namespace GamesAdmin.Api.Report
             => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
 
         public Task<IEnumerable<KenoBetRecord>> Handle(KenoReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetKenoReportAsync(request.Game, request.RoundId);
+        => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoBetHistoryAsync(request.Game, request.RoundId, request.Nickname);

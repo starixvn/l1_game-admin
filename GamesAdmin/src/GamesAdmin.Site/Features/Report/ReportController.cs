@@ -169,9 +169,13 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetKenoReport(string game, long roundId)
+        public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
         {
-            return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(Enumeration.FromValue<GameType>(game), roundId)));
+            return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(
+                Enumeration.FromValue<GameType>(game),
+                roundId,
+                nickname,
+                excludeUUS)));
         }
 
         [HttpGet]
