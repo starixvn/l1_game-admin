@@ -74,10 +74,10 @@
                     }
                     @if (!item.Settled && item.Result != null)
                     {
-                        <span class="btn-settle" data-ajax="true" data-ajax-method="GET" data-ajax-success="vietlottKeno.onSettleSuccess"
-                              asp-action="SettleRound" asp-route-roundId="@item.RoundId">
+                        <a class="btn-settle" data-ajax="true" data-ajax-method="GET" data-ajax-success="vietlottKeno.onSettleSuccess"
+                           asp-action="SettleRound" asp-route-roundId="@item.RoundId">
                             Settle
-                        </span>
+                        </a>
                     }
                 </td>
             </tr>
