@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Core.Models.BetReport
+﻿namespace GamesAdmin.Core.Models
 {
     public class GameAccount
     {
@@ -42,6 +42,6 @@
 
         public int? UID { get; }
 
-        public bool IsUUS => Currency.Equals("UUS", System.StringComparison.OrdinalIgnoreCase);
+        public bool IsUUS => Currency != null && Currency.Equals("UUS", System.StringComparison.OrdinalIgnoreCase);
     }
 }

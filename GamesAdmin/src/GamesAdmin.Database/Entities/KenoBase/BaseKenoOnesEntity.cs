@@ -26,8 +26,6 @@ namespace GamesAdmin.Database.Entities.Keno
 
         public Dictionary<string, decimal> Odds { get; set; }
 
-        public ObjectId UserId { get; set; }
-
         public Dictionary<string, decimal> ConvertAmountToDictionary()
         => new Dictionary<string, decimal>
             {

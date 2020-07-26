@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Report
                    .AppendStage<KenoProVietOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                    .Lookup<KenoProVietOnesEntity, AccountEntity, JoinedKenoBetOnes>(
                        accountRepository.Collection(),
-                       x => x.UserId,
+                       x => x.Uid,
                        y => y.Id,
                        y => y.InnerUsers
                    )

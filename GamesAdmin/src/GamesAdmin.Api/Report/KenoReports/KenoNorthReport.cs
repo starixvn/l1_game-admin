@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api.Accounts;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
@@ -18,19 +19,19 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<KenoNorthOnesEntity> kenoNorthOnesRepository;
         private readonly IGenericRepository<KenoNorthRoundEntity> kenoNorthRoundRepository;
         private readonly IGenericRepository<KenoNorthBetEntity> kenoNorthBetRepository;
-        private readonly IGenericRepository<AccountEntity> accountRepository;
+        private readonly IAccountService accountService;
 
         public KenoNorthReport(
             IGenericRepository<KenoNorthOnesEntity> kenoNorthOnesRepository,
             IGenericRepository<KenoNorthRoundEntity> kenoNorthRoundRepository,
             IGenericRepository<KenoNorthBetEntity> kenoNorthBetRepository,
-            IGenericRepository<AccountEntity> accountRepository)
+            IAccountService accountService)
         {
             this.kenoNorthOnesRepository = kenoNorthOnesRepository;
             this.kenoNorthRoundRepository = kenoNorthRoundRepository;
             this.kenoNorthBetRepository = kenoNorthBetRepository;
 
-            this.accountRepository = accountRepository;
+            this.accountService = accountService;
         }
 
         public async Task<IEnumerable<KenoBetHistory>> GetBetHistoryAsync(long roundId, string nickname)
@@ -53,29 +54,25 @@ namespace GamesAdmin.Api.Report
 
         public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId, string nickname, bool excludeUUS)
         {
-            var bets = await kenoNorthOnesRepository
-                  .Aggregate()
-                  .Match(x => x.Round == roundId)
-                  .AppendStage<KenoNorthOnesEntity>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                  .Lookup<KenoNorthOnesEntity, AccountEntity, JoinedKenoBetOnes>(
-                      accountRepository.Collection(),
-                      x => x.UserId,
-                      y => y.Id,
-                      y => y.InnerUsers
-                  )
-                  .ToListAsync();
+            var bets = await kenoNorthOnesRepository.FilterByAsync(x => x.Round == roundId);
 
             var betRecords = bets
                 .Select(bet => new KenoBetRecord(bet.ConvertAmountToDictionary(), bet.Odds)
                 {
+                    UserId = bet.Uid.ToString(),
                     Nickname = bet.Name,
                     BetWin = bet.Betwin,
-                    Time = bet.Time,
-                    Username = bet.InnerUsers.FirstOrDefault().Local.Username
+                    Time = bet.Time
                 })
                 .ToList();
 
-            return betRecords;
+            foreach (var bet in betRecords)
+            {
+                var account = await accountService.GetAccountAsync(bet.UserId, nickname, excludeUUS);
+                bet.Username = account?.MemberName;
+            }
+
+            return betRecords.Where(bet => bet.Username != null);
         }
 
         public async Task<KenoRoundResult> GetRoundResultAsync(long roundId)

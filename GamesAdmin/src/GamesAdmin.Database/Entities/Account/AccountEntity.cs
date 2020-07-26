@@ -7,6 +7,8 @@ namespace GamesAdmin.Database.Entities
     public class AccountEntity : MiniGameBaseEntity
     {
         public LocalAccount Local { get; set; }
+
+        public string UserIdStr { get; set; }
     }
 
     public class LocalAccount
