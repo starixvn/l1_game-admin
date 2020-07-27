@@ -13,6 +13,8 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         string GameServerUrl { get; }
 
+        string ShakeThePlateServerUrl { get; }
+
         string GameServerDomainUrl { get; }
 
         TimeZoneInfo DefaultTimeZone { get; }
@@ -36,6 +38,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
             ApiHost = GetValue<string>(nameof(ApiHost));
             GameServerUrl = GetValue<string>(nameof(GameServerUrl));
+            ShakeThePlateServerUrl = GetValue<string>(nameof(ShakeThePlateServerUrl));
             GameServerDomainUrl = GetValue<string>(nameof(GameServerDomainUrl));
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
@@ -62,6 +65,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string ResultPageUrl { get; }
 
         public int MaxDecreased { get; }
+
+        public string ShakeThePlateServerUrl { get; }
 
         public T GetValue<T>(string key)
         {

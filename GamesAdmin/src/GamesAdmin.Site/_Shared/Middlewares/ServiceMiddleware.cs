@@ -5,6 +5,7 @@ using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
+using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.ProVietKeno;
@@ -52,6 +53,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
+
+            services.AddSingleton(RestService.For<IShakeThePlateGameServerApi>(appSettings.ShakeThePlateServerUrl, refitSettings));
+            services.AddScoped<IShakeThePlateGameServer, ShakeThePlateGameServer>();
 
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
