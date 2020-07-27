@@ -217,6 +217,8 @@ namespace GamesAdmin.Api.Accounts
             {
                 bot.InRoom = false;
                 bot.Disabled = false;
+                bot.InGameRoom = string.Empty;
+
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
         }
