@@ -23,6 +23,11 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
         public async Task Invoke()
         {
+            if (!configuration.EnableWebCrawling) 
+            {
+                return;
+            }
+
             var currentTime = DateTime.UtcNow;
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(configuration.WebUrl);

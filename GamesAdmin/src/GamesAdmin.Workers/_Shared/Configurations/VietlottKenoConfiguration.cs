@@ -7,5 +7,7 @@
         public string WebUrl { get; set; }
 
         public bool Enable { get; set; }
+
+        public bool EnableWebCrawling { get; set; }
     }
 }
