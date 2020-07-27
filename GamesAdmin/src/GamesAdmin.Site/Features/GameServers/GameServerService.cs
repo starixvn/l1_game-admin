@@ -47,7 +47,7 @@ namespace GamesAdmin.Site.Features._Shared
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
     }
 
-    public class GameServerService : IGameServerService
+    public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
         private readonly IShakeThePlateGameServer shakeThePlateGameServer;
@@ -58,6 +58,7 @@ namespace GamesAdmin.Site.Features._Shared
             IGameServerApi serverApi,
             IShakeThePlateGameServer shakeThePlateGameServer,
             ISentryClient sentryClient)
+            : base(sentryClient)
         {
             this.serverApi = serverApi;
             this.shakeThePlateGameServer = shakeThePlateGameServer;
@@ -148,26 +149,6 @@ namespace GamesAdmin.Site.Features._Shared
                 }
             }
 
-        }
-
-        private void HandleException(Exception ex, string title = null)
-        {
-            if (ex is ApiException)
-            {
-                var apiEx = ex as ApiException;
-
-                if (apiEx != null)
-                {
-                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(title))
-            {
-                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
-            }
-
-            sentryClient.CaptureException(ex);
         }
 
         public async Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo()

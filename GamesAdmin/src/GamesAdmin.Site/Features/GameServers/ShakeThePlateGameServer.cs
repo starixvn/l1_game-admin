@@ -11,14 +11,6 @@ namespace GamesAdmin.Site.Features.GameServers
     {
         [Get("/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
-
-        //[Get("/game/{name}/onlineusers")]
-        //Task<OnlineUsers> GetOnlineUsersOnGame(string name);
-
-
-
-        //[Get("/gameRoundInfo")]
-        //Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
     }
 
     public interface IShakeThePlateGameServer
@@ -26,15 +18,13 @@ namespace GamesAdmin.Site.Features.GameServers
         Task<OnlineUsers> GetOnlineUsers();
     }
 
-    public class ShakeThePlateGameServer : IShakeThePlateGameServer
+    public class ShakeThePlateGameServer : BaseGameServerService, IShakeThePlateGameServer
     {
         private readonly IShakeThePlateGameServerApi serverApi;
-        private readonly ISentryClient sentryClient;
 
-        public ShakeThePlateGameServer(IShakeThePlateGameServerApi serverApi, ISentryClient sentryClient)
+        public ShakeThePlateGameServer(IShakeThePlateGameServerApi serverApi, ISentryClient sentryClient) : base(sentryClient)
         {
             this.serverApi = serverApi;
-            this.sentryClient = sentryClient;
         }
 
         public async Task<OnlineUsers> GetOnlineUsers()
@@ -49,26 +39,6 @@ namespace GamesAdmin.Site.Features.GameServers
             }
 
             return new OnlineUsers();
-        }
-
-        private void HandleException(Exception ex, string title = null)
-        {
-            if (ex is ApiException)
-            {
-                var apiEx = ex as ApiException;
-
-                if (apiEx != null)
-                {
-                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(title))
-            {
-                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
-            }
-
-            sentryClient.CaptureException(ex);
         }
     }
 }
