@@ -26,6 +26,8 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
         public async Task Invoke()
         {
+            sentryClient.CaptureMessage($"{DateTime.Now} Invoke task crawling from {configuration.WebUrl}");
+
             if (!configuration.EnableWebCrawling) 
             {
                 return;
