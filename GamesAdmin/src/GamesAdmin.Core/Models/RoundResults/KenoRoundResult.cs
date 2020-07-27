@@ -10,22 +10,22 @@ namespace GamesAdmin.Core.Models.RoundResults
         public KenoRoundResult(
             byte[] results,
             KenoSettlementResult settlementResult,
-            DateTimeOffset time)
+            DateTime time)
         {
             Results = results;
             SettlementResult = settlementResult;
             Time = time;
         }
 
-        public byte[] Results { get; set; }
+        public byte[] Results { get; }
 
-        public KenoSettlementResult SettlementResult { get; set; }
+        public KenoSettlementResult SettlementResult { get; }
 
-        public DateTimeOffset Time { get; set; }
+        public DateTime Time { get; }
     }
 
     public class KenoSettlementResult
-    {       
+    {
         public KenoSettlementResult(Dictionary<string, bool> settlementResult)
         {
             Big = settlementResult[KenoBetChoice.Big.Value];

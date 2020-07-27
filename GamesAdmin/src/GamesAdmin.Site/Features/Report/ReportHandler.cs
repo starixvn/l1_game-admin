@@ -285,23 +285,19 @@ namespace GamesAdmin.Site.Features.ClientSites
             var roundResult = await reportService.GetKenoRoundResult(request.Game, request.RoundId);
             var betRecords = await reportService.GetKenoBetReport(request.Game, request.RoundId);
 
-            return new KenoReportViewModel
-            {
-                Game = request.Game,
-                RoundId = request.RoundId,
-                RoundResult = new KenoResultViewModel(
-                    roundResult?.Results,
-                    roundResult?.SettlementResult,
-                    roundResult?.Time),
-                BetTickets = betRecords
-            };
+            return new KenoReportViewModel(
+                request.Game,
+                request.RoundId,
+                roundResult,
+                betRecords,
+                appSettings.DefaultTimeZone);
         }
 
         public async Task<KenoBetHistoryViewModel> Handle(GetKenoBetHistoryRequest request, CancellationToken cancellationToken)
         {
             var betHistories = await reportService.GetKenoBetHistory(request.Game, request.RoundId, request.Nickname);
 
-            return new KenoBetHistoryViewModel(betHistories);
+            return new KenoBetHistoryViewModel(betHistories, appSettings.DefaultTimeZone);
         }
     }
 }

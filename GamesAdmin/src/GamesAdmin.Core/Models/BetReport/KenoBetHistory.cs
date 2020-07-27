@@ -12,7 +12,7 @@ namespace GamesAdmin.Core.Models.BetReport
             decimal amount,
             int? memberId,
             string siteId,
-            DateTimeOffset time)
+            DateTime time)
         {
             Round = round;
             Name = name;
@@ -35,6 +35,6 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public string SiteId { get; }
 
-        public DateTimeOffset Time { get; }
+        public DateTime Time { get; }
     }
 }

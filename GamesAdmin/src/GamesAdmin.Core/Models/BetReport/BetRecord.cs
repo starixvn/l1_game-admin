@@ -13,7 +13,7 @@ namespace GamesAdmin.Core.Models
 
         public decimal BetWin { get; set; }
 
-        public DateTimeOffset Time { get; set; }
+        public DateTime Time { get; set; }
 
         public GameAccount Account { get; set; }
     }

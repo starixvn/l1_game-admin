@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class KenoResultViewModel
     {
-        public KenoResultViewModel(byte[] results, KenoSettlementResult settlementResult, DateTimeOffset? time)
+        public KenoResultViewModel(byte[] results, KenoSettlementResult settlementResult, DateTime? time)
         {
             Results = results;
             SettlementResult = settlementResult;
@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public KenoSettlementResult SettlementResult { get; }
 
-        public DateTimeOffset? Time { get; }
+        public DateTime? Time { get; }
 
         public int Total => Results.Sum(x => x);
 

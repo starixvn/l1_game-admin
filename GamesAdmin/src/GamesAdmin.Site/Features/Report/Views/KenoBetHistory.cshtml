@@ -1,4 +1,4 @@
-﻿@using GamesAdmin.Core
+﻿@using GamesAdmin.Site.Extensions
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
 @model KenoBetHistoryViewModel
@@ -12,7 +12,6 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
-                    <th>Nickname</th>
                     <th>Choice</th>
                     <th class="col-number">Amount</th>
 
@@ -23,10 +22,7 @@
                 {
 
                     <tr>
-                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>
-                            @bet.Name
-                        </td>
+                        <td>@bet.Time.ToReportDateTimeFormat(Model.TimeZoneInfo)</td>                        
                         <td>
                             @bet.Choice
                         </td>

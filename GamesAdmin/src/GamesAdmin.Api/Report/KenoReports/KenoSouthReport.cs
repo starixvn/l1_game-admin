@@ -46,7 +46,7 @@ namespace GamesAdmin.Api.Report
                     bet.Amount,
                     bet.MemberId,
                     bet.SiteId,
-                    new DateTimeOffset(bet.Time)))
+                    bet.Time))
                 .ToList();
 
             return betLogs;
