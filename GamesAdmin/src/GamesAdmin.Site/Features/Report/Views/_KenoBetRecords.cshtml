@@ -76,16 +76,16 @@
                                 @bet.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Big.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Small.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Odd.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Even.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Gold.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Wood.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Water.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Fire.Value]</td>
-                        <td class="text-right">@bet.Amounts[@KenoBetChoice.Earth.Value]</td>
-                        <td class="text-right">@bet.BetWin</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Big.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Small.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Odd.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Even.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Gold.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Wood.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Water.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Fire.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Earth.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
 
                 }
