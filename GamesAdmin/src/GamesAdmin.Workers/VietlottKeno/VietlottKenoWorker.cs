@@ -41,7 +41,7 @@ namespace GamesAdmin.VietlottKeno
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                sentryClient.CaptureMessage("Start connecting to vietlott web socket");
+                sentryClient.CaptureMessage($"{DateTime.Now} Start connecting to vietlott web socket");
 
                 using var socket = new ClientWebSocket();
                 try
