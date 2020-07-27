@@ -7,18 +7,21 @@ using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.VietlottKeno;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Options;
+using Sentry;
 
 namespace GamesAdmin.VietlottKeno.Tasks
 {
     public class CrawlingKenoRoundTask : IInvocable
     {
         private readonly IKenoService kenoService;
+        private readonly ISentryClient sentryClient;
         private readonly VietlottKenoConfiguration configuration;
 
-        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options)
+        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options, ISentryClient sentryClient)
         {
             this.kenoService = kenoService;
             configuration = options.Value;
+            this.sentryClient = sentryClient;
         }
 
         public async Task Invoke()

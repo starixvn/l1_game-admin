@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Refit;
+using Sentry;
 
 namespace GamesAdmin.Workers
 {
@@ -22,7 +22,9 @@ namespace GamesAdmin.Workers
             host.Services.UseScheduler(scheduler =>
             {
                 scheduler.AddScheduleTasks();
-            });
+            }).OnError((exception) =>
+                  SentrySdk.CaptureException(exception)
+            );
 
             host.Run();
         }
