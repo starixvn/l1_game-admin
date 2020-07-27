@@ -42,6 +42,8 @@ namespace GamesAdmin.VietlottKeno.Tasks
                 var kenoBallNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='keno_ball']");
                 var result = kenoBallNodes.Select(x => byte.Parse(x.InnerText)).OrderBy(x => x);
 
+                sentryClient.CaptureMessage($"{DateTime.Now} Got result [{string.Join(", ", result)}] from {configuration.WebUrl}");
+
                 var round = await kenoService.AddNewRoundResultAsync(
                     new CreateProVietKenoRound
                     {
