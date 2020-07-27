@@ -38,14 +38,14 @@ namespace GamesAdmin.VietlottKeno.Tasks
             var latestRoundNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id = 'kq_ky']");
             var latestRoundId = long.Parse(latestRoundNode.InnerText.Remove(0, 1));
 
+            sentryClient.CaptureMessage($"{DateTime.Now} Got result for round {latestRoundId} from {configuration.WebUrl}");
+
             var currentLatestRound = await kenoService.GetLatestRoundAsync();
 
             if (currentLatestRound == null || (currentLatestRound.Result == null && currentLatestRound.Number == latestRoundId) || currentLatestRound.Number < latestRoundId)
             {
                 var kenoBallNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='keno_ball']");
                 var result = kenoBallNodes.Select(x => byte.Parse(x.InnerText)).OrderBy(x => x);
-
-                sentryClient.CaptureMessage($"{DateTime.Now} Got result [{string.Join(", ", result)}] from {configuration.WebUrl}");
 
                 var round = await kenoService.AddNewRoundResultAsync(
                     new CreateProVietKenoRound
