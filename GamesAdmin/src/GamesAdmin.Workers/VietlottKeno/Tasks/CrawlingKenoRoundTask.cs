@@ -14,20 +14,16 @@ namespace GamesAdmin.VietlottKeno.Tasks
     public class CrawlingKenoRoundTask : IInvocable
     {
         private readonly IKenoService kenoService;
-        private readonly ISentryClient sentryClient;
         private readonly VietlottKenoConfiguration configuration;
 
-        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options, ISentryClient sentryClient)
+        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options)
         {
             this.kenoService = kenoService;
             configuration = options.Value;
-            this.sentryClient = sentryClient;
         }
 
         public async Task Invoke()
         {
-            sentryClient.CaptureMessage($"{DateTime.Now} Invoke task crawling from {configuration.WebUrl}");
-
             if (!configuration.EnableWebCrawling) 
             {
                 return;
@@ -39,8 +35,6 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
             var latestRoundNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id = 'kq_ky']");
             var latestRoundId = long.Parse(latestRoundNode.InnerText.Remove(0, 1));
-
-            sentryClient.CaptureMessage($"{DateTime.Now} Got result for round {latestRoundId} from {configuration.WebUrl}");
 
             var currentLatestRound = await kenoService.GetLatestRoundAsync();
 
