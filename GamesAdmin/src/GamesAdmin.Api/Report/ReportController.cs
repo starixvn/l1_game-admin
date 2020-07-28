@@ -56,7 +56,7 @@ namespace GamesAdmin.Api.Report
             => (await mediator.Send(new MiniSeDieReportRequest(roundId, nickname, excludeBot)));
             
         [HttpGet]
-        [Route("{game}/round/{roundId}")]
+        [Route("{game}/round/{roundId}/users/{nickname?}")]
         public Task<IEnumerable<KenoBetRecord>> KenoBetReport(string game, long roundId, string nickname, bool excludeUUS)
             => mediator.Send(new KenoReportRequest(game, roundId, nickname, excludeUUS));
 

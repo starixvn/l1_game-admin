@@ -233,17 +233,19 @@ namespace GamesAdmin.Api.Accounts
                     && (!excludeUUS || !(x.Currency == "UUS"))
                     && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)));
 
-            return new GameAccount(
-                account.Local.Username,
-                account.Local.MemberId,
-                account.Local.MemberName,
-                account.Local.SiteId,
-                account.Local.Language,
-                accountInfo.IsBot,
-                accountInfo.Currency,
-                accountInfo.Name,
-                accountInfo.UID
-            );
+            return accountInfo == null || account == null 
+                ? default 
+                : new GameAccount(
+                    account.Local.Username,
+                    account.Local.MemberId,
+                    account.Local.MemberName,
+                    account.Local.SiteId,
+                    account.Local.Language,
+                    accountInfo.IsBot,
+                    accountInfo.Currency,
+                    accountInfo.Name,
+                    accountInfo.UID
+                );
         }
     }
 }

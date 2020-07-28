@@ -8,10 +8,10 @@
             string memberName,
             int siteId,
             string language,
-            bool? isBot,
+            bool isBot,
             string currency,
             string name,
-            int? uid)
+            int uid)
         {
             Username = username;
             MemberId = memberId;
@@ -34,13 +34,13 @@
 
         public string Language { get; }
 
-        public bool? IsBot { get; }
+        public bool IsBot { get; }
 
         public string Currency { get; }
 
         public string Name { get; }
 
-        public int? UID { get; }
+        public int UID { get; }
 
         public bool IsUUS => Currency != null && Currency.Equals("UUS", System.StringComparison.OrdinalIgnoreCase);
     }

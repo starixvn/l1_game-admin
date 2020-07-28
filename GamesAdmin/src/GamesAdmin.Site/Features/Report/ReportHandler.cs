@@ -283,7 +283,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<KenoReportViewModel> Handle(GetKenoReportRequest request, CancellationToken cancellationToken)
         {
             var roundResult = await reportService.GetKenoRoundResult(request.Game, request.RoundId);
-            var betRecords = await reportService.GetKenoBetReport(request.Game, request.RoundId);
+            var betRecords = await reportService.GetKenoBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new KenoReportViewModel(
                 request.Game,

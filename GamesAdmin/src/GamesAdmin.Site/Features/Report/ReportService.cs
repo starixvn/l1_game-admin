@@ -22,7 +22,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot);
         
-        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId);
+        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
@@ -76,8 +76,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
-        public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId)
-        => reportApi.GetKenoReport(game.Value, roundId);
+        public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetKenoReport(game.Value, roundId, nickname, excludeUUS);
 
         public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname)
         => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
