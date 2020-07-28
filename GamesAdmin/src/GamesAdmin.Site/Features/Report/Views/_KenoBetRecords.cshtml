@@ -110,7 +110,7 @@
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Water.Value]))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Fire.Value]))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Earth.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BetWin))</td>
+                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BetWin)))</td>
                     </tr>
                 }
             </tfoot>
