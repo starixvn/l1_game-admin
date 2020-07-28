@@ -64,4 +64,13 @@ namespace GamesAdmin.Core.Models
 
         public decimal Prawn { get; set; }
     }
+
+    public class DragonTigerBetRecord : BetRecord
+    {
+        public decimal Dragon { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public decimal Tiger { get; set; }
+    }
 }

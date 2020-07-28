@@ -45,6 +45,10 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>();
             CreateMap<FishPrawnCrabBetReportEntity, FishPrawnCrabBetRecord>();
+
+            CreateMap<Card, CardResult>();
+            CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>();
+            CreateMap<DragonTigerBetReportEntity, DragonTigerBetRecord>();
         }
     }
 }

@@ -42,5 +42,9 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/fish_prawn_crab/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
         Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot);
+
+
+        [Get("/report/dragon_tiger/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
+        Task<DragonTigerBetReport> GetDragonTigerReport(long roundId, string nickname, bool excludeBot);
     }
 }

@@ -30,4 +30,20 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public byte ThirdDice { get; set; }
     }
+
+    public class DragonTigerRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public CardViewModel Dragon { get; set; }
+
+        public CardViewModel Tiger { get; set; }
+    }
+
+    public class CardViewModel
+    {
+        public byte Number { get; set; }
+
+        public byte Type { get; set; }
+    }
 }

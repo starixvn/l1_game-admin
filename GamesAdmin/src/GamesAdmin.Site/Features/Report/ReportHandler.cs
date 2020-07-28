@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -23,15 +24,19 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
-        IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>
+        IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
+        IRequestHandler<GetFishPrawnCrabReportRequest, FishPrawnCrabReportResultViewModel>,
+        IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
+        private readonly IMapper mapper;
 
-        public ReportHandler(IReportService reportService, IAppSettings appSettings)
+        public ReportHandler(IReportService reportService, IAppSettings appSettings, IMapper mapper)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
+            this.mapper = mapper;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -298,6 +303,40 @@ namespace GamesAdmin.Site.Features.ClientSites
             var betHistories = await reportService.GetKenoBetHistory(request.Game, request.RoundId, request.Nickname);
 
             return new KenoBetHistoryViewModel(betHistories, appSettings.DefaultTimeZone);
+        }
+
+        public async Task<FishPrawnCrabReportResultViewModel> Handle(GetFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetFishPrawnCrabBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new FishPrawnCrabReportResultViewModel
+            {
+                RoundResult = mapper.Map<FishPrawnCrabRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<FishPrawnCrabRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<DragonTigerReportResultViewModel> Handle(GetDragonTigerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetDragonTigerBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new DragonTigerReportResultViewModel
+            {
+                RoundResult = mapper.Map<DragonTigerRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<DragonTigerRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
         }
     }
 }

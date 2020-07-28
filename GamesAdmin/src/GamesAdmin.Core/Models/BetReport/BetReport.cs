@@ -23,4 +23,8 @@ namespace GamesAdmin.Core.Models
     public class FishPrawnCrabBetReport : BetReport<FishPrawnCrabRoundResult, FishPrawnCrabBetRecord>
     {
     }
+
+    public class DragonTigerBetReport : BetReport<DragonTigerRoundResult, DragonTigerBetRecord>
+    {
+    }
 }

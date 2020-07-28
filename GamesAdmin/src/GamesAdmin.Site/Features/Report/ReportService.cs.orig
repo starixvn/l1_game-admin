@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Site.Features.Report;
 
 namespace GamesAdmin.Site.Features.ClientSites
@@ -17,15 +18,18 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
 
-<<<<<<< HEAD
         Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeBot);
 
         Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot);
-=======
-        Task<ShakeThePlateBetReport> GetShakeThePlateReport(long roundId, string nickname, bool excludeBot);
+<<<<<<< HEAD
         
-        Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot);
->>>>>>> 930ecb9... init keno report
+        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS);
+=======
+
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeBot);
+
+        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId);
+>>>>>>> 27015f57... report - add dragon tiger game
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
@@ -34,6 +38,12 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname);
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
+
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname);
+
+        Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId);
+
+        Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -63,6 +73,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot)
             => await reportApi.GetMiniSeDieReport(roundId, nickname, excludeBot);
 
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot)
+           => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeBot);
+
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);
 
@@ -75,7 +88,19 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
 
-        public async Task<KenoBetReport> GetKenoProVietBetReport(long roundId, string nickname, bool excludeBot)
-       => await reportApi.GetKenoProVietReport(roundId, nickname, excludeBot);
+        public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetKenoReport(game.Value, roundId, nickname, excludeUUS);
+
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname)
+        => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
+
+        public Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId)
+        => reportApi.GetKenoRoundResult(game.Value, roundId);
+
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeBot)
+        => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeBot);
+
+        public async Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeBot)
+        => await reportApi.GetDragonTigerReport(roundId, nickname, excludeBot);
     }
 }

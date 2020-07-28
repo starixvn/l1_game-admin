@@ -79,9 +79,33 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult FishPrawnCrab()
+        {
+            return View(new ReportViewModel());
+        }
+
+        [HttpGet]
+        public IActionResult DragonTiger()
+        {
+            return View(new ReportViewModel());
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeBot)
         {
             return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDragonTigerReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_DragonTigerRecords", await mediator.Send(new GetDragonTigerReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_FishPrawnCrabRecords", await mediator.Send(new GetFishPrawnCrabReportRequest(roundId, nickname, excludeBot)));
         }
 
         [HttpGet]
@@ -113,6 +137,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname)));
         }
+
 
         [HttpGet]
         public IActionResult KenoProViet()

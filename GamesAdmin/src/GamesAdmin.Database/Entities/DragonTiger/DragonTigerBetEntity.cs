@@ -5,10 +5,10 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("minidragontiger_cuocs")]
     public class DragonTigerBetEntity : BaseBetEntity
     {
-        public int Dragon { get; set; }
+        public decimal Dragon { get; set; }
 
-        public int Tie { get; set; }
+        public decimal Tie { get; set; }
 
-        public int Tiger { get; set; }
+        public decimal Tiger { get; set; }
     }
 }

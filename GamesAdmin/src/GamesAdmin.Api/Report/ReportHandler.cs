@@ -20,7 +20,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
         IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
-        IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>
+        IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
+        IRequestHandler<DragonTigerReportRequest, DragonTigerBetReport>
     {
         private readonly IReportService reportService;
 
@@ -61,5 +62,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+
+        public Task<DragonTigerBetReport> Handle(DragonTigerReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetDragonTigerReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
     }
 }

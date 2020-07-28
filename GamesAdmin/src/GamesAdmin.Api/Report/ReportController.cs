@@ -54,7 +54,7 @@ namespace GamesAdmin.Api.Report
         [Route("mini_sedie/round/{roundId}/users/{nickname?}")]
         public async Task<SeDieBetReport> MiniSeDie(long roundId, string nickname, bool excludeBot)
             => (await mediator.Send(new MiniSeDieReportRequest(roundId, nickname, excludeBot)));
-            
+
         [HttpGet]
         [Route("{game}/round/{roundId}/users/{nickname?}")]
         public Task<IEnumerable<KenoBetRecord>> KenoBetReport(string game, long roundId, string nickname, bool excludeUUS)
@@ -74,5 +74,10 @@ namespace GamesAdmin.Api.Report
         [Route("fish_prawn_crab/round/{roundId}/users/{nickname?}")]
         public async Task<FishPrawnCrabBetReport> FishPrawnCrab(long roundId, string nickname, bool excludeBot)
         => (await mediator.Send(new FishPrawnCrabReportRequest(roundId, nickname, excludeBot)));
+
+        [HttpGet]
+        [Route("dragon_tiger/round/{roundId}/users/{nickname?}")]
+        public async Task<DragonTigerBetReport> DragonTiger(long roundId, string nickname, bool excludeBot)
+        => (await mediator.Send(new DragonTigerReportRequest(roundId, nickname, excludeBot)));
     }
 }

@@ -48,7 +48,7 @@
                 }
             </tbody>
             <tfoot>
-                @if (Model.Records.Count() == 0)
+                @if (!Model.Records.Any())
                 {
                     <tr>
                         <td class="text-center" colspan="13">No data</td>

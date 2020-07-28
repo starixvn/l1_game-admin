@@ -1,0 +1,86 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model DragonTigerReportResultViewModel
+
+@{
+    var cardLabels = new[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    var dragonCard = Model.RoundResult.Dragon;
+    var tigerCard = Model.RoundResult.Tiger;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <dive class="round-result">
+                Round Result:
+                <div class="clearfix" style="display:inline-block">
+                    <div class="card card-type-@dragonCard.Type">
+                        <span>@cardLabels[dragonCard.Number]</span>
+                        <img class="img" src="~/images/card_@(dragonCard.Type).png" />
+                    </div>
+                    <div class="card card-type-@tigerCard.Type">
+                        <span>@cardLabels[tigerCard.Number]</span>
+                        <img class="img" src="~/images/card_@(tigerCard.Type).png" />
+                    </div>
+                </div>
+
+            </dive>
+
+        }
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Username</th>
+                    <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th colspan="3" class="col-number">Stake</th>
+                    <th rowspan="2" class="col-number">Win</th>
+                </tr>
+
+                <tr>
+                    <th>Dragon</th>
+                    <th>Tie</th>
+                    <th>Tiger</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Dragon)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Tie)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Tiger)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="7">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Dragon))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Tie))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Tiger))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

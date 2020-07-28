@@ -23,6 +23,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.OddEvenTurboValue, "oddeventurbo" },
             { GameType.SeDieValue, "sedie" },
             { GameType.MiniSeDieValue, "minisedie" },
+            { GameType.FishPrawnCrabValue, "fishprawncrab" },
+            { GameType.DragonTigerValue, GameType.DragonTigerValue },
             { GameType.KenoProVietValue, GameType.KenoProVietValue },
             { GameType.KenoMaxValue, GameType.KenoMaxValue },
             { GameType.KenoMax2Value, GameType.KenoMax2Value },

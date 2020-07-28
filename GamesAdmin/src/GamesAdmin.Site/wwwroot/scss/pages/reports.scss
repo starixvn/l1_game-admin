@@ -85,3 +85,58 @@
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 3.4rem;
 }
+
+.card {
+    position: relative;
+    float: left;
+    display: inline-block;
+    height: 3.2rem;
+    width: 2.5rem;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    border: 0.1rem solid #949494;
+    border-radius: .4rem;
+    background-color: #fff;
+    box-shadow: 0.1rem 0.2rem 0.2rem rgba(0,0,0,0.2);
+    text-align: center;
+
+    span {
+        position: relative;
+        top: -0.8rem;
+        font-size: 1.2rem;
+    }
+
+    .img {
+        position: absolute;
+        bottom: 0.2rem;
+        left: 0.5rem;
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    &:last-child:before {
+        position: absolute;
+        left: -0.5rem;
+        top: 0.6rem;
+        content: "";
+        height: 1.8rem;
+        width: 0.1rem;
+        background-color: #222;
+    }
+}
+
+// co, ro
+.card-type-0,
+.card-type-1 {
+    span {
+        color: #df0000;
+    }
+}
+
+// chuon, bich
+.card-type-2,
+.card-type-3 {
+    span {
+        color: #000;
+    }
+}

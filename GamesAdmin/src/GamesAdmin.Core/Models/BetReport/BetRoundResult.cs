@@ -38,4 +38,18 @@ namespace GamesAdmin.Core.Models
 
         public byte ThirdDice { get; set; }
     }
+
+    public class DragonTigerRoundResult : RoundResult
+    {
+        public CardResult Dragon { get; set; }
+
+        public CardResult Tiger { get; set; }
+    }
+
+    public class CardResult
+    {
+        public byte Number { get; set; }
+
+        public byte Type { get; set; }
+    }
 }

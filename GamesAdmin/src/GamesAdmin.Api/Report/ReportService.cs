@@ -36,6 +36,8 @@ namespace GamesAdmin.Api.Report
         Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId);
 
         Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -321,6 +323,18 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<FishPrawnCrabRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<FishPrawnCrabBetRecord>(x))
+            };
+        }
+
+        public async Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IDragonTigerReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new DragonTigerBetReport
+            {
+                RoundResult = mapper.Map<DragonTigerRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<DragonTigerBetRecord>(x))
             };
         }
     }

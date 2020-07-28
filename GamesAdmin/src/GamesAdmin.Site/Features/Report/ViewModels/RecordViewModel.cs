@@ -1,21 +1,24 @@
-﻿using System;
-
-namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class RecordViewModel : BaseBetViewModel
+    public class BetRecordViewModel : BaseBetViewModel
     {
     }
 
-    public class BigSmallRecordViewModel : RecordViewModel
+    public class BigSmallRecordViewModel : BetRecordViewModel
     {
-        public bool Select { get; set; }
-    }
-    public class OddEvenRecordViewModel : RecordViewModel
-    {
+        public decimal Bet { get; set; }
+        public decimal Back { get; set; }
         public bool Select { get; set; }
     }
 
-    public class SeDieRecordViewModel : RecordViewModel
+    public class OddEvenRecordViewModel : BetRecordViewModel
+    {
+        public decimal Bet { get; set; }
+        public decimal Back { get; set; }
+        public bool Select { get; set; }
+    }
+
+    public class SeDieRecordViewModel : BetRecordViewModel
     {
         public decimal Odd { get; set; }
 
@@ -30,7 +33,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal FourWhite { get; set; }
     }
 
-    public class FishPrawnCrabRecordViewModel : RecordViewModel
+    public class FishPrawnCrabRecordViewModel : BetRecordViewModel
     {
         public decimal Stag { get; set; }
 
@@ -43,5 +46,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Crab { get; set; }
 
         public decimal Prawn { get; set; }
+    }
+
+    public class DragonTigerRecordViewModel : BetRecordViewModel
+    {
+        public decimal Dragon { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public decimal Tiger { get; set; }
     }
 }
