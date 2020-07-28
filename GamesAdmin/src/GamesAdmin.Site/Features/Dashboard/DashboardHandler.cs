@@ -35,28 +35,15 @@ namespace GamesAdmin.Site.Features.Dashboard
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersRequest request, CancellationToken cancellationToken)
         {
             var result = await gameServerService.GetOnlineUsers(string.Empty);
-            var shakeThePlate = await shakeThePlateGameServer.GetOnlineUsers();
-
-            var realUsers = new List<OnlineUser>();
-            realUsers.AddRange(result.RealUsers);
-            realUsers.AddRange(shakeThePlate.RealUsers);
-
-            var uusUsers = new List<OnlineUser>();
-            uusUsers.AddRange(result.UusUsers);
-            uusUsers.AddRange(shakeThePlate.UusUsers);
-
-            var bots = new List<BotUser>();
-            bots.AddRange(result.Bots);
-            bots.AddRange(shakeThePlate.Bots);
 
             return new OnlineUsersViewModel
             {
-                TotalReal = result.TotalReal + shakeThePlate.TotalReal,
-                RealUsers = realUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalUUS = result.TotalUUS + shakeThePlate.TotalUUS,
-                UusUsers = uusUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalBots = result.TotalBots + shakeThePlate.TotalBots,
-                Bots = bots.Select(x => mapper.Map<BotUserViewModel>(x)),
+                TotalReal = result.TotalReal,
+                RealUsers = result.RealUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TotalUUS = result.TotalUUS,
+                UusUsers = result.UusUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TotalBots = result.TotalBots,
+                Bots = result.Bots?.Select(x => mapper.Map<BotUserViewModel>(x)),
                 GameTypeItems = GenerateGameItems()
             };
         }
