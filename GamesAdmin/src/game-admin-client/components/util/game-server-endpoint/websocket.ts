@@ -2,20 +2,20 @@ import logger from "../logger";
 
 type ObserverSelector = (message?: object) => boolean;
 type ObserverClient = {
-  selector: ObserverSelector,
-  handler: Function
+  selector: ObserverSelector;
+  handler: Function;
 };
 
 export default class {
   private socket: WebSocket;
-  private isConnected: boolean;
+  protected isConnected: boolean;
   private isLogged: boolean;
   private disconnectListenterCounter: number;
-  private readonly endpoint: string;
+  protected readonly endpoint: string;
   private readonly observers: {
-    [key: string]: ObserverClient
+    [key: string]: ObserverClient;
   };
-  private readonly onDisconnectedMessage: string;
+  protected readonly onDisconnectedMessage: string;
 
   constructor(endpoint: string) {
     this.isConnected = false;
@@ -23,15 +23,15 @@ export default class {
     this.endpoint = endpoint;
     this.observers = {};
     this.disconnectListenterCounter = 0;
-    this.onDisconnectedMessage = 'onDisconnected';
+    this.onDisconnectedMessage = "onDisconnected";
   }
 
   public connect() {
-    return new Promise((resolve => {
+    return new Promise((resolve) => {
       if (!this.isConnected) {
         this.socket = new WebSocket(this.endpoint);
         this.socket.onmessage = this.onReceiveMessage.bind(this);
-        this.socket.onerror = event => logger.error(event);
+        this.socket.onerror = (event) => logger.error(event);
         this.socket.onclose = this.disconnect.bind(this);
         this.socket.onopen = () => {
           this.isConnected = true;
@@ -40,14 +40,18 @@ export default class {
       } else {
         resolve();
       }
-    }));
+    });
   }
 
-  public addObserver(key: string | number, handler: Function, selector: ObserverSelector = () => true) {
+  public addObserver(
+    key: string | number,
+    handler: Function,
+    selector: ObserverSelector = () => true
+  ) {
     if (!this.observers[key]) {
       this.observers[key] = { handler, selector };
     } else {
-      logger.warn(`Observer '${key}' have already been registered`)
+      logger.warn(`Observer '${key}' have already been registered`);
     }
     logger.info(this.observers);
   }
@@ -58,22 +62,30 @@ export default class {
     }
   }
 
-  public addOrReplaceObserver(key: string | number, handler: Function, selector: ObserverSelector = () => true) {
+  public addOrReplaceObserver(
+    key: string | number,
+    handler: Function,
+    selector: ObserverSelector = () => true
+  ) {
     this.observers[key] = { handler, selector };
   }
 
-  public login(data: { username?: string, password?: string, jwt?: string }) {
-    return new Promise(resolve => {
+  public login(data: { username?: string; password?: string; jwt?: string }) {
+    return new Promise((resolve) => {
       if (this.isConnected && !this.isLogged) {
-        const loginResultKey = 'login-result';
-        const loginResultSelector = message => message.Authorized != null;
-        const loginHandler = message => {
+        const loginResultKey = "login-result";
+        const loginResultSelector = (message) => message.Authorized != null;
+        const loginHandler = (message) => {
           this.isLogged = message.Authorized;
           this.removeObserver(loginResultKey);
           resolve();
-        }
+        };
 
-        this.addOrReplaceObserver(loginResultKey, loginHandler, loginResultSelector);
+        this.addOrReplaceObserver(
+          loginResultKey,
+          loginHandler,
+          loginResultSelector
+        );
 
         this.send({ authentication: { ...data } });
       } else {
@@ -93,20 +105,28 @@ export default class {
   }
 
   public onDisconnected(handler: () => void) {
-    const key = `${this.onDisconnectedMessage}:${this.disconnectListenterCounter++}`;
-    this.addObserver(key, handler, (message: Object) => message[this.onDisconnectedMessage]);
+    const key = `${this.onDisconnectedMessage}:${this
+      .disconnectListenterCounter++}`;
+    this.addObserver(
+      key,
+      handler,
+      (message: Object) => message[this.onDisconnectedMessage]
+    );
   }
 
-  private disconnect() {
-    const message = { [this.onDisconnectedMessage]: this.onDisconnectedMessage};
+  protected disconnect() {
+    const message = {
+      [this.onDisconnectedMessage]: this.onDisconnectedMessage,
+    };
 
     this.isConnected = false;
     this.socket.close();
     this.executeObservers(message);
   }
 
-  private onReceiveMessage(event: MessageEvent) {
+  protected onReceiveMessage(event: MessageEvent) {
     try {
+      console.log(event);
       const data = event.data;
       const message = JSON.parse(data);
 
@@ -116,11 +136,11 @@ export default class {
     }
   }
 
-  private executeObservers(message: Object) {
+  protected executeObservers(message: Object) {
     Object.values(this.observers).forEach((client) => {
       if (client.selector && client.selector(message)) {
         client.handler && client.handler(message);
       }
-    })
+    });
   }
 }
