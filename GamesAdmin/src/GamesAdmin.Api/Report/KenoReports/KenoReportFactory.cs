@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Api.Report
@@ -21,7 +22,8 @@ namespace GamesAdmin.Api.Report
             { GameType.KenoEastValue, typeof(KenoEastReport) },
             { GameType.KenoWestValue, typeof(KenoWestReport) },
             { GameType.KenoSouthValue, typeof(KenoSouthReport) },
-            { GameType.KenoNorthValue, typeof(KenoNorthReport) }
+            { GameType.KenoNorthValue, typeof(KenoNorthReport) },
+            { GameType.KenoProMaxValue, typeof(KenoProMaxReport) }
         };
 
         private readonly IServiceProvider serviceProvider;

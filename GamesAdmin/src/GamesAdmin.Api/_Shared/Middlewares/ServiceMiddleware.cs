@@ -5,6 +5,7 @@ using GamesAdmin.Api.Games;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
+using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +47,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
                         .AddScoped<IKenoReport, KenoSouthReport>(s => s.GetService<KenoSouthReport>());
             services.AddScoped<KenoNorthReport>()
                         .AddScoped<IKenoReport, KenoNorthReport>(s => s.GetService<KenoNorthReport>());
+            services.AddScoped<KenoProMaxReport>()
+                        .AddScoped<IKenoReport, KenoProMaxReport>(s => s.GetService<KenoProMaxReport>());
         }
     }
 }

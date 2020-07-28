@@ -26,6 +26,11 @@ namespace GamesAdmin.Core.Models.RoundResults
 
     public class KenoSettlementResult
     {
+        public KenoSettlementResult(int sum)
+        { 
+        
+        }
+
         public KenoSettlementResult(Dictionary<string, bool> settlementResult)
         {
             Big = settlementResult[KenoBetChoice.Big.Value];
