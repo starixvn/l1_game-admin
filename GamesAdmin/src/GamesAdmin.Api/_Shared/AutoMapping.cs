@@ -2,7 +2,6 @@
 using System.Linq;
 using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
@@ -49,6 +48,32 @@ namespace GamesAdmin.Api._Shared
             CreateMap<Card, CardResult>();
             CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>();
             CreateMap<DragonTigerBetReportEntity, DragonTigerBetRecord>();
+
+            CreateMap<BaccaratResultEntity, BaccaratResult>();
+            CreateMap<BaccaratBetReportEntity, BaccaratBetRecord>();
+            CreateMap<BaccaratRoundEntity, BaccaratRoundResult>()
+              .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                  var mapper = context.Mapper;
+                  var result = new List<CardResult> { mapper.Map<CardResult>(source.Player.FirstCard), mapper.Map<CardResult>(source.Player.SecondCard) };
+                  if (source.Player.ThirdCard != null)
+                  {
+                      result.Add(mapper.Map<CardResult>(source.Player.ThirdCard));
+                  }
+
+                  return result;
+              }))
+              .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                  var mapper = context.Mapper;
+                  var result = new List<CardResult> { mapper.Map<CardResult>(source.Banker.FirstCard), mapper.Map<CardResult>(source.Banker.SecondCard) };
+                  if (source.Banker.ThirdCard != null)
+                  {
+                      result.Add(mapper.Map<CardResult>(source.Banker.ThirdCard));
+                  }
+
+                  return result;
+              }));
         }
     }
 }

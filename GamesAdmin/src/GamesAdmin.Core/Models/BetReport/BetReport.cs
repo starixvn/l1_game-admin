@@ -27,4 +27,8 @@ namespace GamesAdmin.Core.Models
     public class DragonTigerBetReport : BetReport<DragonTigerRoundResult, DragonTigerBetRecord>
     {
     }
+
+    public class BaccaratBetReport : BetReport<BaccaratRoundResult, BaccaratBetRecord>
+    {
+    }
 }

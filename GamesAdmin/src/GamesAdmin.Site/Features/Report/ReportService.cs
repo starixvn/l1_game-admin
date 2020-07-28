@@ -39,6 +39,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId);
 
         Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeBot);
+
+        Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -97,5 +99,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetDragonTigerReport(roundId, nickname, excludeBot);
+
+        public async Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeBot)
+        => await reportApi.GetBaccaratReport(roundId, nickname, excludeBot);
     }
 }

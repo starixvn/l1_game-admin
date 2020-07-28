@@ -79,5 +79,10 @@ namespace GamesAdmin.Api.Report
         [Route("dragon_tiger/round/{roundId}/users/{nickname?}")]
         public async Task<DragonTigerBetReport> DragonTiger(long roundId, string nickname, bool excludeBot)
         => (await mediator.Send(new DragonTigerReportRequest(roundId, nickname, excludeBot)));
+
+        [HttpGet]
+        [Route("baccarat/round/{roundId}/users/{nickname?}")]
+        public async Task<BaccaratBetReport> Baccarat(long roundId, string nickname, bool excludeBot)
+       => (await mediator.Send(new BaccaratReportRequest(roundId, nickname, excludeBot)));
     }
 }

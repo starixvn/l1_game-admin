@@ -52,4 +52,25 @@ namespace GamesAdmin.Core.Models
 
         public byte Type { get; set; }
     }
+
+    public class BaccaratRoundResult : RoundResult
+    {
+        public IEnumerable<CardResult> PlayerCards { get; set; }
+
+        public IEnumerable<CardResult> BankerCards { get; set; }
+
+        public BaccaratResult Result { get; set; }
+    }
+
+    public class BaccaratResult
+    {
+        public bool Player { get; set; }
+        public bool Banker { get; set; }
+        public bool Tie { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+        public bool PlayerPair { get; set; }
+        public bool BankerPair { get; set; }
+        public bool Natural { get; set; }
+    }
 }
