@@ -6,6 +6,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
 
 namespace GamesAdmin.Api._Shared
@@ -41,6 +42,9 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<Notification, NotificationEntity>()
                 .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
+
+            CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>();
+            CreateMap<FishPrawnCrabBetReportEntity, FishPrawnCrabBetRecord>();
         }
     }
 }

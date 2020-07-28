@@ -64,6 +64,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot)
             => await reportApi.GetMiniSeDieReport(roundId, nickname, excludeBot);
 
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot)
+           => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeBot);
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);
 

@@ -69,5 +69,10 @@ namespace GamesAdmin.Api.Report
         [Route("{game}/round/{roundId}/result")]
         public Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
             => mediator.Send(new KenoRoundResultRequest(game, roundId));
+
+        [HttpGet]
+        [Route("fish_prawn_crab/round/{roundId}/users/{nickname?}")]
+        public async Task<FishPrawnCrabBetReport> FishPrawnCrab(long roundId, string nickname, bool excludeBot)
+        => (await mediator.Send(new FishPrawnCrabReportRequest(roundId, nickname, excludeBot)));
     }
 }

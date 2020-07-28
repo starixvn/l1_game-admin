@@ -39,5 +39,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/{game}/round/{roundId}/result")]
         Task<KenoRoundResult> GetKenoRoundResult(string game, long roundId);
+
+        [Get("/report/fish_prawn_crab/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot);
     }
 }

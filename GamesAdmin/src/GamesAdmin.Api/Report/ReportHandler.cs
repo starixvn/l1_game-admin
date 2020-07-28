@@ -19,7 +19,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoReportRequest, IEnumerable<KenoBetRecord>>,
         IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
-        IRequestHandler<KenoRoundResultRequest, KenoRoundResult>
+        IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
+        IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>
     {
         private readonly IReportService reportService;
 
@@ -57,5 +58,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<KenoRoundResult> Handle(KenoRoundResultRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
+
+        public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
     }
 }

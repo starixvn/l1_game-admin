@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -33,19 +34,24 @@ namespace GamesAdmin.Api.Report
         Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname);
 
         Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId);
+
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class ReportService : IReportService
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IKenoReportFactory kenoReportFactory;
+        private readonly IMapper mapper;
 
         public ReportService(
             IServiceProvider serviceProvider,
-            IKenoReportFactory kenoReportFactory)
+            IKenoReportFactory kenoReportFactory,
+            IMapper mapper)
         {
             this.serviceProvider = serviceProvider;
             this.kenoReportFactory = kenoReportFactory;
+            this.mapper = mapper;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -304,6 +310,18 @@ namespace GamesAdmin.Api.Report
             var service = kenoReportFactory.GetReportService(game);
 
             return service == default ? default : service.GetRoundResultAsync(roundId);
+        }
+
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IFishPrawnCrabReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new FishPrawnCrabBetReport
+            {
+                RoundResult = mapper.Map<FishPrawnCrabRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<FishPrawnCrabBetRecord>(x))
+            };
         }
     }
 }

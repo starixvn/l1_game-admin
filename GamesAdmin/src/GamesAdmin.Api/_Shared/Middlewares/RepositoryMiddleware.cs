@@ -18,6 +18,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
             services.AddScoped<IShakeThePlateReportRepository, ShakeThePlateReportRepository>();
             services.AddScoped<IMiniSeDieReportRepository, MiniSeDieReportRepository>();
+            services.AddScoped<IFishPrawnCrabReportRepository, FishPrawnCrabReportRepository>();
         }
     }
 }

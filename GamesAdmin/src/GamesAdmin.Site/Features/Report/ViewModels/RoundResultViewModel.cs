@@ -19,4 +19,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<bool> Chips { get; set; }
     }
+
+    public class FishPrawnCrabRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public byte FirstDice { get; set; }
+
+        public byte SecondDice { get; set; }
+
+        public byte ThirdDice { get; set; }
+    }
 }

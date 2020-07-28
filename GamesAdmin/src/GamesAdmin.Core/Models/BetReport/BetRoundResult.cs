@@ -29,4 +29,13 @@ namespace GamesAdmin.Core.Models
     {
         public IEnumerable<bool> Chips { get; set; }
     }
+
+    public class FishPrawnCrabRoundResult : RoundResult
+    {
+        public byte FirstDice { get; set; }
+
+        public byte SecondDice { get; set; }
+
+        public byte ThirdDice { get; set; }
+    }
 }
