@@ -46,6 +46,7 @@ namespace GamesAdmin.Workers
                     services.AddScheduleTasks();
 
                     services.AddSingleton(RestService.For<IGameAdminApi>(hostContext.Configuration["GameAdminUrl"]));
+                    //services.AddHttpClient();
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
