@@ -1,34 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.GameServers;
+using Polly;
+using Polly.Retry;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features._Shared
 {
     public interface IGameServerApi : IBaseAuthorizationApi
     {
-        [Post("/reload")]
+        [Post("/api/reload")]
         Task Reload();
 
-        [Get("/onlineusers")]
+        [Get("/api/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
 
-        [Get("/game/{name}/onlineusers")]
+        [Get("/api/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
-<<<<<<< HEAD
-        [Post("/")]
-        Task NotifyRoundResult([Body] IEnumerable<ProVietKenoRound> kenoRounds);
-        
-        [Post("/jwt")]
-        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
-=======
-        [Post("/proviet-keno/round-result")]
+        [Post("/api/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
->>>>>>> 98d1aba... keno proviet - send request to game server
+
+        [Post("/api/jwt")]
+        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
+
+        [Get("/api/gameRoundInfo")]
+        Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
     }
 
     public interface IGameServerService
@@ -38,28 +41,47 @@ namespace GamesAdmin.Site.Features._Shared
         Task<OnlineUsers> GetOnlineUsers(string game);
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-        
-         Task<JsonWebToken> GetJWT(string username, string userAgent);
+
+        Task<JsonWebToken> GetJWT(string username, string userAgent);
+
+        Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
     }
 
-    public class GameServerService : IGameServerService
+    public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
+<<<<<<< HEAD
+=======
+        private readonly ISeDieGameServer shakeThePlateGameServer;
+>>>>>>> e813b603... update naming
         private readonly ISentryClient sentryClient;
+        private AsyncRetryPolicy policy;
 
-        public GameServerService(IGameServerApi serverApi, ISentryClient sentryClient)
+        public GameServerService(
+            IGameServerApi serverApi,
+            ISeDieGameServer shakeThePlateGameServer,
+            ISentryClient sentryClient)
+            : base(sentryClient)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
+
+            policy = Policy
+             .Handle<HttpRequestException>()
+             .Or<IOException>()
+             .RetryAsync(3, onRetry: (exception, retryCount, context) =>
+             {
+                 sentryClient.CaptureMessage($"Retry {retryCount} , due to: {exception}.");
+             });
         }
 
-        public Task<OnlineUsers> GetOnlineUsers(string game)
+        public async Task<OnlineUsers> GetOnlineUsers(string game)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(game))
                 {
-                    return serverApi.GetOnlineUsers();
+                    return await serverApi.GetOnlineUsers();
                 }
 
                 var gameType = string.Empty;
@@ -78,14 +100,14 @@ namespace GamesAdmin.Site.Features._Shared
                         break;
                 }
 
-                return serverApi.GetOnlineUsersOnGame(gameType);
+                return await serverApi.GetOnlineUsersOnGame(gameType);
             }
             catch (Exception ex)
             {
                 HandleException(ex);
             }
 
-            return Task.FromResult(new OnlineUsers());
+            return new OnlineUsers();
         }
 
         public async Task Reload()
@@ -105,7 +127,8 @@ namespace GamesAdmin.Site.Features._Shared
             try
             {
                 return serverApi.GetToken(new RequestJWT(username, userAgent));
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 HandleException(ex);
             }
@@ -115,33 +138,34 @@ namespace GamesAdmin.Site.Features._Shared
 
         public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
         {
-            foreach(var round in kenoRounds)
+            foreach (var round in kenoRounds)
             {
                 try
                 {
-                    await serverApi.NotifyRoundResult(round);
+                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
+
+                    await policy.ExecuteAsync(() => serverApi.NotifyRoundResult(round));
                 }
                 catch (Exception ex)
                 {
-                    HandleException(ex);
+                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
                 }
             }
-          
+
         }
 
-        private void HandleException(Exception ex)
+        public async Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo()
         {
-            if (ex is ApiException)
+            try
             {
-                var apiEx = ex as ApiException;
-
-                if (apiEx != null)
-                {
-                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                }
+                return await serverApi.GetGameRoundInfo();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
             }
 
-            sentryClient.CaptureException(ex);
+            return new Dictionary<string, GameRoundInfo>();
         }
     }
 }

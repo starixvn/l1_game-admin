@@ -56,16 +56,18 @@ namespace GamesAdmin.Site.Features._Shared
     public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
+        private readonly ISeDieGameServer shakeThePlateGameServer;
         private readonly ISentryClient sentryClient;
         private AsyncRetryPolicy policy;
 
         public GameServerService(
             IGameServerApi serverApi,
-            IShakeThePlateGameServer shakeThePlateGameServer,
+            ISeDieGameServer shakeThePlateGameServer,
             ISentryClient sentryClient)
             : base(sentryClient)
         {
             this.serverApi = serverApi;
+            this.shakeThePlateGameServer = shakeThePlateGameServer;
             this.sentryClient = sentryClient;
 
             policy = Policy

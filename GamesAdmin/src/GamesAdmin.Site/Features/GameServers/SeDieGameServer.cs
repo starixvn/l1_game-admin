@@ -13,12 +13,12 @@ namespace GamesAdmin.Site.Features.GameServers
         Task<OnlineUsers> GetOnlineUsers();
     }
 
-    public interface IShakeThePlateGameServer
+    public interface ISeDieGameServer
     {
         Task<OnlineUsers> GetOnlineUsers();
     }
 
-    public class SeDieGameServer : BaseGameServerService, IShakeThePlateGameServer
+    public class SeDieGameServer : BaseGameServerService, ISeDieGameServer
     {
         private readonly ISeDieGameServerApi serverApi;
 

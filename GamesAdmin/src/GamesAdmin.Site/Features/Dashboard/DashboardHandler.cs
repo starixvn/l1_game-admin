@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.Features.Dashboard
 
         public DashboardHandler(
             IGameServerService gameServerService,
-            IShakeThePlateGameServer shakeThePlateGameServer,
+            ISeDieGameServer shakeThePlateGameServer,
             IMapper mapper)
         {
             this.gameServerService = gameServerService;
