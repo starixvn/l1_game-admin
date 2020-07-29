@@ -13,7 +13,6 @@ import MessageTransmitter, {
 } from "../components/util/message-transmitter";
 import Cookies from "js-cookie";
 import { Modal, Row } from "reactstrap";
-import SocketIO from "../components/util/game-server-endpoint/socket-io";
 
 type Props = {
   router: NextRouter;
@@ -32,33 +31,14 @@ export class Home extends React.Component<Props, State> {
   private socket: GameWsEndpoint;
   private messageTransmitter: MessageTransmitterType;
   private isProduction: boolean;
+  protected readonly protocol: string;
 
-  constructor(props: Props, isUseSocketIO = false) {
+  constructor(props: Props) {
     super(props);
-
-    const gameServerEndpoint =
-      process.env.NEXT_PUBLIC_ENV === "local"
-        ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT
-        : Cookies.get("game-server-endpoint");
-    const token =
-      process.env.NEXT_PUBLIC_ENV === "local"
-        ? process.env.NEXT_PUBLIC_TOKEN
-        : Cookies.get("token");
-    const protocol = (
-      globalThis.location || { protocol: "" }
-    ).protocol.endsWith("s:")
-      ? "wss"
-      : "ws";
-    const sedieServerEndpoint =
-      process.env.NEXT_PUBLIC_ENV === "local"
-        ? process.env.NEXT_PUBLIC_SEDIE_SERVER_ENDPOINT
-        : Cookies.get("sedie-server-endpoint");
-
-    this.isProduction =
-      Cookies.get("env") && Cookies.get("env").toLocaleUpperCase() === "PRO";
-    this.socket = isUseSocketIO
-      ? new SocketIO(`${protocol}://${sedieServerEndpoint}`)
-      : new GameWsEndpoint(`${protocol}://${gameServerEndpoint}/admin`);
+    const token = process.env.NEXT_PUBLIC_ENV === "local" ? process.env.NEXT_PUBLIC_TOKEN : Cookies.get("token");
+    this.protocol = (globalThis.location || { protocol: "" }).protocol.endsWith("s:") ? "wss" : "ws";
+    this.isProduction = Cookies.get("env") && Cookies.get("env").toLocaleUpperCase() === "PRO";
+    this.socket = this.initSocket();
     this.socket.onDisconnected(this.showWebSocketDisconnected.bind(this));
     this.socket.addOrReplaceObserver(
       "sessionTimeout",
@@ -74,6 +54,11 @@ export class Home extends React.Component<Props, State> {
       token,
       showDisconnectedNotice: false,
     };
+  }
+
+  initSocket() {
+    const gameServerEndpoint = process.env.NEXT_PUBLIC_ENV === "local" ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT : Cookies.get("game-server-endpoint");
+    return new GameWsEndpoint(`${this.protocol}://${gameServerEndpoint}/admin`);
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {

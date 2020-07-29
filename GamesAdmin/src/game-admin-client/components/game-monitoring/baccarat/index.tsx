@@ -89,8 +89,8 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
             this.setState({
                 gameState: GameState.waiting,
                 roundNumber: roundId - 1,
-                result: result ?? new BaccaratModel().result,
-                settlementResult: settlementResult ?? {},
+                result: result ? result : new BaccaratModel().result,
+                settlementResult: settlementResult ? settlementResult : {},
                 time: {
                     remainingTime: remainingTime - TOTAL_TIME
                 }

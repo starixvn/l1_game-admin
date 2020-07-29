@@ -14,6 +14,7 @@ module.exports = {
   ) {
     return {
       "/monitor": { page: "/" },
+      "/monitoring": { page: "/monitoring" },
     };
   },
 };
