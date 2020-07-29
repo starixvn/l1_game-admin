@@ -25,6 +25,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.MiniSeDieValue, "minisedie" },
             { GameType.FishPrawnCrabValue, "fishprawncrab" },
             { GameType.DragonTigerValue, GameType.DragonTigerValue },
+            { GameType.BaccaratValue, GameType.BaccaratValue },
             { GameType.KenoProVietValue, GameType.KenoProVietValue },
             { GameType.KenoMaxValue, GameType.KenoMaxValue },
             { GameType.KenoMax2Value, GameType.KenoMax2Value },
