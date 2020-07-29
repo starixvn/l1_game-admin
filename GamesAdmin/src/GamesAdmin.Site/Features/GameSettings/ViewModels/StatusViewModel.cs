@@ -48,12 +48,22 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisabledMessage { get; set; }
     }
 
-    public class JWTFromGameServer
+    public class GameServerToken
     {
-        public string Token { get; set; }
+        public GameServerToken(string token, string gameServerEndpoint, string env, string redirectUrl)
+        {
+            Token = token;
+            GameServerEndpoint = gameServerEndpoint;
+            Env = env;
+            RedirectUrl = redirectUrl;
+        }
 
-        public string GameServerEndpoint { get; set; }
+        public string Token { get; }
 
-        public string Env { get; set; }
+        public string GameServerEndpoint { get; }
+
+        public string Env { get; }
+
+        public string RedirectUrl { get; }
     }
 }

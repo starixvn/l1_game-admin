@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
         , IRequestHandler<ReloadGameClientRequest, bool>
-        , IRequestHandler<GetJWTRequest, JWTFromGameServer>
+        , IRequestHandler<GetJWTRequest, GameServerToken>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
     {
@@ -321,16 +321,20 @@ namespace GamesAdmin.Site.Features.GameSettings
             return true;
         }
 
-        public async Task<JWTFromGameServer> Handle(GetJWTRequest request, CancellationToken cancellationToken)
+        public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
             var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
+            var redirectUrl = request.Game == GameType.SeDieValue ?
+                @$"/game-admin/monitoring.html?game={request.Game}&v={DateTime.Now.Ticks}" :
+                @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
 
-            return new JWTFromGameServer
-            {
-                Token = result.Token,
-                GameServerEndpoint = appSettings.GameServerDomainUrl,
-                Env = appSettings.Env
-            };
+            return new GameServerToken
+            (
+                result.Token,
+                appSettings.GameServerDomainUrl,
+                appSettings.Env,
+                redirectUrl
+            );
         }
 
         private async Task NotifyUnsettleRoundsToGameServer()

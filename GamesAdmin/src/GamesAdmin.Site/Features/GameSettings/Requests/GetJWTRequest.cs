@@ -3,10 +3,12 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
-    public class GetJWTRequest : IRequest<JWTFromGameServer>
+    public class GetJWTRequest : IRequest<GameServerToken>
     {
         public string UserAgent { get; set; }
 
         public string Username { get; set; }
+
+        public string Game { get; set; }
     }
 }

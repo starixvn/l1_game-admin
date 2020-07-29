@@ -233,7 +233,7 @@
         startMonitor: function(gameName) {
             var fetchOptions = {
                 method: 'POST',
-                body: JSON.stringify({ userAgent: navigator.userAgent }),
+                body: JSON.stringify({ userAgent: navigator.userAgent, game: gameName }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8'
                 },
@@ -242,7 +242,9 @@
             fetch('/jwt', fetchOptions)
                 .then(res => res.json())
                 .then(data => {
-                    window.open(`/game-admin/monitor.html?game=${gameName}&v=${new Date().getTime()}`, "_blank", "width=1020,height=765");
+                    if (data) {
+                        window.open(data.redirectUrl, "_blank", "width=1020,height=765");
+                    }                    
                 });
         },
         submit: function() {
