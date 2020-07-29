@@ -1,5 +1,6 @@
 ﻿using Coravel.Invocable;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.VietlottKeno;
 using GamesAdmin.Workers.VietlottKeno.DTOs;
@@ -7,9 +8,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sentry;
 using System;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -17,12 +16,18 @@ namespace GamesAdmin.VietlottKeno.Tasks
 {
     public class CrawlingKenoRoundTask : IInvocable
     {
+        private readonly IKenoWebApi crawlApi;
         private readonly IKenoService kenoService;
         private readonly ISentryClient sentryClient;
         private readonly VietlottKenoConfiguration configuration;
 
-        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options, ISentryClient sentryClient)
+        public CrawlingKenoRoundTask(
+            IKenoWebApi crawlApi, 
+            IKenoService kenoService, 
+            IOptions<VietlottKenoConfiguration> options, 
+            ISentryClient sentryClient)
         {
+            this.crawlApi = crawlApi;
             this.kenoService = kenoService;
             this.sentryClient = sentryClient;
             configuration = options.Value;
@@ -36,8 +41,7 @@ namespace GamesAdmin.VietlottKeno.Tasks
             }
 
             var currentTime = DateTime.UtcNow;
-            var uri = new Uri(configuration.WebUrl);
-            var kenoResult = await Task.Run(() => CrawlKenoResult(uri));
+            var kenoResult = await CrawlKenoResult();
 
             if (kenoResult == default)
             {
@@ -70,26 +74,14 @@ namespace GamesAdmin.VietlottKeno.Tasks
            || currentLatestRound.Number < crawlRoundId;
 
 
-        private KenoResultDto CrawlKenoResult(Uri url)
+        private async Task<KenoResultDto> CrawlKenoResult()
         {
             try
-            {
-                var responseFromServer = string.Empty;
-                var request = WebRequest.Create(url);
-                request.Credentials = CredentialCache.DefaultCredentials;
-
-                var response = request.GetResponse();
-
-                using (Stream dataStream = response.GetResponseStream())
-                {
-                    StreamReader reader = new StreamReader(dataStream);
-                    responseFromServer = reader.ReadToEnd();
-                }
-
-                response.Close();
+            {    
+                var response = await crawlApi.GetResult();
 
                 var regex = new Regex(@"\""lastResult"": {([^}]+)\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                var matches = regex.Matches(responseFromServer);
+                var matches = regex.Matches(response);
                 var rawResult = matches.FirstOrDefault()?.Value.Replace(@"""lastResult"": ", string.Empty).Trim();
 
                 return string.IsNullOrWhiteSpace(rawResult)
