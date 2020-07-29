@@ -91,6 +91,18 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult Baccarat()
+        {
+            return View(new ReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBaccaratReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_BaccaratRecords", await mediator.Send(new GetBaccaratReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeBot)
         {
             return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeBot)));

@@ -26,7 +26,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
         IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
         IRequestHandler<GetFishPrawnCrabReportRequest, FishPrawnCrabReportResultViewModel>,
-        IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>
+        IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
+        IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -332,6 +333,23 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<DragonTigerRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<BaccaratReportResultViewModel> Handle(GetBaccaratReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new BaccaratReportResultViewModel
+            {
+                RoundResult = mapper.Map<BaccaratRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<BaccaratRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return recordViewModel;

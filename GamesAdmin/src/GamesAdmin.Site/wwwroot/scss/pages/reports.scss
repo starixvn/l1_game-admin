@@ -140,3 +140,46 @@
         color: #000;
     }
 }
+
+
+// Baccarat
+.baccarat-result {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .cards {
+        .card {
+            margin-left: 0.1rem;
+            margin-right: 0.1rem;
+        }
+
+        .card:nth-child(3) {
+            margin-left: 1rem;
+        }
+
+        .card:last-child:before {
+            display: none;
+        }
+
+        &:first-child {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        &:last-child {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        &:last-child:before {
+            position: relative;
+            top: 0.8rem;
+            display: inline-block;
+            height: 1.8rem;
+            width: 0.1rem;
+            margin: 0 0.6rem;
+            background-color: #222;
+            content: "";
+        }
+    }
+}

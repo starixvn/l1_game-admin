@@ -49,7 +49,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>();
             CreateMap<DragonTigerBetReportEntity, DragonTigerBetRecord>();
 
-            CreateMap<BaccaratResultEntity, BaccaratResult>();
+            CreateMap<BaccaratSettlementResultEntity, BaccaratSettlementResult>();
             CreateMap<BaccaratBetReportEntity, BaccaratBetRecord>();
             CreateMap<BaccaratRoundEntity, BaccaratRoundResult>()
               .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>

@@ -120,3 +120,29 @@
 .card-type-2 span,
 .card-type-3 span {
   color: #000; }
+
+.baccarat-result {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+  .baccarat-result .cards .card {
+    margin-left: 0.1rem;
+    margin-right: 0.1rem; }
+  .baccarat-result .cards .card:nth-child(3) {
+    margin-left: 1rem; }
+  .baccarat-result .cards .card:last-child:before {
+    display: none; }
+  .baccarat-result .cards:first-child {
+    display: flex;
+    justify-content: flex-end; }
+  .baccarat-result .cards:last-child {
+    display: flex;
+    justify-content: flex-start; }
+  .baccarat-result .cards:last-child:before {
+    position: relative;
+    top: 0.8rem;
+    display: inline-block;
+    height: 1.8rem;
+    width: 0.1rem;
+    margin: 0 0.6rem;
+    background-color: #222;
+    content: ""; }

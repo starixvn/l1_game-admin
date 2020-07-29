@@ -46,4 +46,27 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public byte Type { get; set; }
     }
+
+    public class BaccaratRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<CardViewModel> PlayerCards { get; set; }
+
+        public IEnumerable<CardViewModel> BankerCards { get; set; }
+
+        public BaccaratSettlementResultViewModel Result { get; set; }
+    }
+
+    public class BaccaratSettlementResultViewModel
+    {
+        public bool Player { get; set; }
+        public bool Banker { get; set; }
+        public bool Tie { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+        public bool PlayerPair { get; set; }
+        public bool BankerPair { get; set; }
+        public bool Natural { get; set; }
+    }
 }

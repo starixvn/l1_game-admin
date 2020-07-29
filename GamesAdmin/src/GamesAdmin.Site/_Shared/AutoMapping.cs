@@ -31,6 +31,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<DragonTigerRoundResult, DragonTigerRoundResultViewModel>();
             CreateMap<DragonTigerBetRecord, DragonTigerRecordViewModel>();
             CreateMap<CardResult, CardViewModel>();
+
+            CreateMap<BaccaratRoundResult, BaccaratRoundResultViewModel>();
+            CreateMap<BaccaratSettlementResult, BaccaratSettlementResultViewModel>();
+            CreateMap<BaccaratBetRecord, BaccaratRecordViewModel>();
         }
     }
 }

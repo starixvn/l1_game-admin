@@ -10,10 +10,10 @@ namespace GamesAdmin.Database.Entities
 
         public Side Banker { get; set; }
 
-        public BaccaratResultEntity Result { get; set; }
+        public BaccaratSettlementResultEntity Result { get; set; }
     }
 
-    public class BaccaratResultEntity
+    public class BaccaratSettlementResultEntity
     {
         public bool Player { get; set; }
         public bool Banker { get; set; }
