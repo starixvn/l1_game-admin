@@ -3,7 +3,7 @@
 
 @model FishPrawnCrabReportResultViewModel
 
-@{ 
+@{
     var animals = new[] { "Stag", "Gourd", "Rooster", "Fish", "Crab", "Prawn" };
 }
 
@@ -11,7 +11,7 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-        <h3 class="round-result">Round Result: @animals[Model.RoundResult.FirstDice] - @animals[Model.RoundResult.SecondDice] - @animals[Model.RoundResult.ThirdDice]</h3>
+            <h3 class="round-result">Round Result: @animals[Model.RoundResult.FirstDice] - @animals[Model.RoundResult.SecondDice] - @animals[Model.RoundResult.ThirdDice]</h3>
         }
         <table class="table table-bordered table-hover">
             <thead>

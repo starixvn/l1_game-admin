@@ -13,20 +13,50 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-            <dive class="round-result">
-                Round Result:
-                <div class="clearfix" style="display:inline-block">
-                    <div class="card card-type-@dragonCard.Type">
-                        <span>@cardLabels[dragonCard.Number]</span>
-                        <img class="img" src="~/images/card_@(dragonCard.Type).png" />
-                    </div>
-                    <div class="card card-type-@tigerCard.Type">
-                        <span>@cardLabels[tigerCard.Number]</span>
-                        <img class="img" src="~/images/card_@(tigerCard.Type).png" />
-                    </div>
-                </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Result (Dragon | Tiger)</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="cards">
+                                <div class="card card-type-@dragonCard.Type">
+                                    <span>@cardLabels[dragonCard.Number]</span>
+                                    <img class="img" src="~/images/card_@(dragonCard.Type).png" />
+                                </div>
+                                <div class="card card-type-@tigerCard.Type">
+                                    <span>@cardLabels[tigerCard.Number]</span>
+                                    <img class="img" src="~/images/card_@(tigerCard.Type).png" />
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
 
-            </dive>
+                            @if (Model.RoundResult.Dragon.Number > Model.RoundResult.Tiger.Number)
+                            {
+                                @("Dragon")
+                            }
+                            else
+                            {
+                                if (Model.RoundResult.Dragon.Number < Model.RoundResult.Tiger.Number)
+                                {
+                                    @("Tiger")
+
+                                }
+                                else
+                                {
+                                    @("Tie")
+                                }
+
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         }
         <table class="table table-bordered table-hover">

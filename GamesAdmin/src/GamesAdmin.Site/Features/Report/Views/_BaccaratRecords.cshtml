@@ -11,34 +11,76 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-            <dive class="round-result">
-                Round Result:
-                <div class="clearfix" style="display:inline-block">
-                    <div class="baccarat-result">
-                        <div class="cards">
-                            @foreach (var card in Model.RoundResult.PlayerCards)
-                            {
-                                <div class="card card-type-@card.Type">
-                                    <span>@cardLabels[card.Number]</span>
-                                    <img class="img" src="~/images/card_@(card.Type).png" />
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Result (Player | Banker)</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="baccarat-result">
+                                <div class="cards">
+                                    @foreach (var card in Model.RoundResult.PlayerCards)
+                                    {
+                                        <div class="card card-type-@card.Type">
+                                            <span>@cardLabels[card.Number]</span>
+                                            <img class="img" src="~/images/card_@(card.Type).png" />
+                                        </div>
+
+                                    }
                                 </div>
+                                <div class="cards">
+                                    @foreach (var card in Model.RoundResult.BankerCards)
+                                    {
+                                        <div class="card card-type-@card.Type">
+                                            <span>@cardLabels[card.Number]</span>
+                                            <img class="img" src="~/images/card_@(card.Type).png" />
+                                        </div>
 
-                            }
-                        </div>
-                        <div class="cards">
-                            @foreach (var card in Model.RoundResult.BankerCards)
-                            {
-                                <div class="card card-type-@card.Type">
-                                    <span>@cardLabels[card.Number]</span>
-                                    <img class="img" src="~/images/card_@(card.Type).png" />
+                                    }
                                 </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            @{
+                                var winningOptionsText = string.Empty;
+                                var settlementResult = Model.RoundResult.Result;
+                                if (settlementResult.Player)
+                                {
+                                    winningOptionsText = "Player";
+                                }
+                                else
+                                {
+                                    if (settlementResult.Banker)
+                                    {
+                                        winningOptionsText = "Banker";
+                                    }
+                                    else
+                                    {
+                                        winningOptionsText = "Tie";
+                                    }
+                                }
 
+                                @if (settlementResult.PlayerPair)
+                                {
+                                    winningOptionsText = $"{winningOptionsText}, Player Pair";
+                                }
+
+                                @if (settlementResult.BankerPair)
+                                {
+                                    winningOptionsText = $"{winningOptionsText}, Banker Pair";
+                                }
+
+                                winningOptionsText = $"{winningOptionsText}, {(settlementResult.Big ? "Big" : "Small")}";
                             }
-                        </div>
-                    </div>
-                </div>
-            </dive>
-
+                            @winningOptionsText
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         }
         <table class="table table-bordered table-hover">
             <thead>
