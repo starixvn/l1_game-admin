@@ -16,22 +16,22 @@ namespace GamesAdmin.Site.Features._Shared
 {
     public interface IGameServerApi : IBaseAuthorizationApi
     {
-        [Post("/reload")]
+        [Post("/api/reload")]
         Task Reload();
 
-        [Get("/onlineusers")]
+        [Get("/api/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
 
-        [Get("/game/{name}/onlineusers")]
+        [Get("/api/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
-        [Post("/proviet-keno/round-result")]
+        [Post("/api/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
 
-        [Post("/jwt")]
+        [Post("/api/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
 
-        [Get("/gameRoundInfo")]
+        [Get("/api/gameRoundInfo")]
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
 
         [Post("/um")]

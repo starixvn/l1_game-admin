@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -19,11 +20,13 @@ namespace GamesAdmin.Site.Features.GameSettings
     {
         private readonly IMediator mediator;
         private readonly ISentryClient sentryClient;
+        private readonly IAppSettings appSettings;
 
-        public GameSettingsController(IMediator mediator, ISentryClient sentryClient)
+        public GameSettingsController(IMediator mediator, ISentryClient sentryClient, IAppSettings appSettings)
         {
             this.mediator = mediator;
             this.sentryClient = sentryClient;
+            this.appSettings = appSettings;
         }
 
         [HttpGet]
@@ -227,7 +230,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             var result = await mediator.Send(request);
 
             HttpContext.Response.Cookies.Append("token", result.Token);
-            HttpContext.Response.Cookies.Append("game-server-endpoint", result.GameServerEndpoint);
+            HttpContext.Response.Cookies.Append("game-server-endpoint", appSettings.GameServers.Main.Socket);
+            HttpContext.Response.Cookies.Append("game-sedie-endpoint", appSettings.GameServers.Sedie.Socket);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

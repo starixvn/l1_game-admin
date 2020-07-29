@@ -50,17 +50,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class GameServerToken
     {
-        public GameServerToken(string token, string gameServerEndpoint, string env, string redirectUrl)
+        public GameServerToken(string token, string env, string redirectUrl)
         {
             Token = token;
-            GameServerEndpoint = gameServerEndpoint;
             Env = env;
             RedirectUrl = redirectUrl;
         }
 
         public string Token { get; }
-
-        public string GameServerEndpoint { get; }
 
         public string Env { get; }
 

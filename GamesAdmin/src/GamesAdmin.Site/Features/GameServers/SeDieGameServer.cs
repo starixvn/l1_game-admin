@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameServers
 {
-    public interface IShakeThePlateGameServerApi : IBaseAuthorizationApi
+    public interface ISeDieGameServerApi : IBaseAuthorizationApi
     {
-        [Get("/onlineusers")]
+        [Get("/api/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
     }
 
@@ -18,11 +18,11 @@ namespace GamesAdmin.Site.Features.GameServers
         Task<OnlineUsers> GetOnlineUsers();
     }
 
-    public class ShakeThePlateGameServer : BaseGameServerService, IShakeThePlateGameServer
+    public class SeDieGameServer : BaseGameServerService, IShakeThePlateGameServer
     {
-        private readonly IShakeThePlateGameServerApi serverApi;
+        private readonly ISeDieGameServerApi serverApi;
 
-        public ShakeThePlateGameServer(IShakeThePlateGameServerApi serverApi, ISentryClient sentryClient) : base(sentryClient)
+        public SeDieGameServer(ISeDieGameServerApi serverApi, ISentryClient sentryClient) : base(sentryClient)
         {
             this.serverApi = serverApi;
         }
