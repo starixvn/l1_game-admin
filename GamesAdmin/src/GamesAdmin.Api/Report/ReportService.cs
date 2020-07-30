@@ -25,9 +25,9 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot);
 
-        Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(GameType game, long roundId, string nickname, bool excludeUUS = false);
 
@@ -35,11 +35,11 @@ namespace GamesAdmin.Api.Report
 
         Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId);
 
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -166,10 +166,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IShakeThePlateReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
             return new SeDieBetReport
             {
@@ -178,10 +178,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IMiniSeDieReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
             return new SeDieBetReport
             {
@@ -316,10 +316,10 @@ namespace GamesAdmin.Api.Report
             return service == default ? default : service.GetRoundResultAsync(roundId);
         }
 
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IFishPrawnCrabReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
             return new FishPrawnCrabBetReport
             {
@@ -328,10 +328,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IDragonTigerReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
             return new DragonTigerBetReport
             {
@@ -340,10 +340,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IBaccaratReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
             return new BaccaratBetReport
             {

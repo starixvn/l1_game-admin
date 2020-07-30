@@ -5,17 +5,17 @@ namespace GamesAdmin.Api.Report.Request
 {
     public class BaccaratReportRequest : IRequest<BaccaratBetReport>
     {
-        public BaccaratReportRequest(long roundId, string nickname, bool excludeBot)
+        public BaccaratReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;
-            ExcludeBot = excludeBot;
+            ExcludeUUS = excludeUUS;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
 
-        public bool ExcludeBot { get; }
+        public bool ExcludeUUS { get; }
     }
 }

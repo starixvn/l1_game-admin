@@ -47,10 +47,10 @@ namespace GamesAdmin.Api.Report
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
 
         public async Task<SeDieBetReport> Handle(SeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<IEnumerable<KenoBetRecord>> Handle(KenoReportRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
@@ -62,12 +62,12 @@ namespace GamesAdmin.Api.Report
         => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
 
         public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+        => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<DragonTigerBetReport> Handle(DragonTigerReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetDragonTigerReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+        => reportService.GetDragonTigerReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<BaccaratBetReport> Handle(BaccaratReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+        => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

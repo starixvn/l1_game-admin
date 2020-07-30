@@ -24,7 +24,7 @@ namespace GamesAdmin.Database
 
             if (roundResult != null)
             {
-                var records = await GetBaseAggregateBuilder<BigSmallTurboBetEntity, BigSmallBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot)
+                var records = await GetBaseAggregateBuilder<BigSmallTurboBetEntity, BigSmallBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot, true)
                     .Project(x => new BigSmallBetReportEntity
                     {
                         Time = x.Time,

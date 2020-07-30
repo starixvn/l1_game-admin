@@ -5,17 +5,17 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetMiniSeDieReportRequest : IRequest<SeDieReportResultViewModel>
     {
-        public GetMiniSeDieReportRequest(long roundId, string nickname, bool excludeBot)
+        public GetMiniSeDieReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;
-            ExcludeBot = excludeBot;
+            ExcludeUUS = excludeUUS;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
 
-        public bool ExcludeBot { get; }
+        public bool ExcludeUUS { get; }
     }
 }

@@ -7,5 +7,7 @@
         public string Nickname { get; set; }
 
         public bool ExcludeBot { get; set; }
+
+        public bool ExcludeUUS { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IBaccaratReportRepository
     {
-        Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
     public class BaccaratReportRepository : BaseBetReportRepository, IBaccaratReportRepository
     {
@@ -18,13 +18,13 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var roundResult = await database.GetCollection<BaccaratRoundEntity>(Document.GetCollectionName(typeof(BaccaratRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<BaccaratBetEntity, BaccaratBetWithUnWindAccountsEntity>(roundId, nickname, excludeBot)
+                var project = GetBaseAggregateBuilder<BaccaratBetEntity, BaccaratBetWithUnWindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
                     .Project(x => new BaccaratBetReportEntity
                     {
                         Time = x.Time,

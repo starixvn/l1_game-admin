@@ -47,13 +47,13 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("sedie/round/{roundId}/users/{nickname?}")]
-        public async Task<SeDieBetReport> SeDie(long roundId, string nickname, bool excludeBot)
-           => (await mediator.Send(new SeDieReportRequest(roundId, nickname, excludeBot)));
+        public async Task<SeDieBetReport> SeDie(long roundId, string nickname, bool excludeUUS)
+           => (await mediator.Send(new SeDieReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
         [Route("mini_sedie/round/{roundId}/users/{nickname?}")]
-        public async Task<SeDieBetReport> MiniSeDie(long roundId, string nickname, bool excludeBot)
-            => (await mediator.Send(new MiniSeDieReportRequest(roundId, nickname, excludeBot)));
+        public async Task<SeDieBetReport> MiniSeDie(long roundId, string nickname, bool excludeUUS)
+            => (await mediator.Send(new MiniSeDieReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
         [Route("{game}/round/{roundId}/users/{nickname?}")]
@@ -72,17 +72,17 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("fish_prawn_crab/round/{roundId}/users/{nickname?}")]
-        public async Task<FishPrawnCrabBetReport> FishPrawnCrab(long roundId, string nickname, bool excludeBot)
-        => (await mediator.Send(new FishPrawnCrabReportRequest(roundId, nickname, excludeBot)));
+        public async Task<FishPrawnCrabBetReport> FishPrawnCrab(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new FishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
         [Route("dragon_tiger/round/{roundId}/users/{nickname?}")]
-        public async Task<DragonTigerBetReport> DragonTiger(long roundId, string nickname, bool excludeBot)
-        => (await mediator.Send(new DragonTigerReportRequest(roundId, nickname, excludeBot)));
+        public async Task<DragonTigerBetReport> DragonTiger(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new DragonTigerReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
         [Route("baccarat/round/{roundId}/users/{nickname?}")]
-        public async Task<BaccaratBetReport> Baccarat(long roundId, string nickname, bool excludeBot)
-       => (await mediator.Send(new BaccaratReportRequest(roundId, nickname, excludeBot)));
+        public async Task<BaccaratBetReport> Baccarat(long roundId, string nickname, bool excludeUUS)
+       => (await mediator.Send(new BaccaratReportRequest(roundId, nickname, excludeUUS)));
     }
 }

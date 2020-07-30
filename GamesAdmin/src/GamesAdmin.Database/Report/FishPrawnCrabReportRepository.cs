@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IFishPrawnCrabReportRepository
     {
-        Task<(FishPrawnCrabRoundEntity, IEnumerable<FishPrawnCrabBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(FishPrawnCrabRoundEntity, IEnumerable<FishPrawnCrabBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
     public class FishPrawnCrabReportRepository : BaseBetReportRepository, IFishPrawnCrabReportRepository
     {
@@ -17,13 +17,13 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(FishPrawnCrabRoundEntity, IEnumerable<FishPrawnCrabBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(FishPrawnCrabRoundEntity, IEnumerable<FishPrawnCrabBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var roundResult = await database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<FishPrawnCrabBetEntity, FishPrawnCrabBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot)
+                var project = GetBaseAggregateBuilder<FishPrawnCrabBetEntity, FishPrawnCrabBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
                     .Project(x => new FishPrawnCrabBetReportEntity
                     {
                         Time = x.Time,

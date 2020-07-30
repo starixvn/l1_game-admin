@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IShakeThePlateReportRepository
     {
-        Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ShakeThePlateReportRepository : BaseBetReportRepository, IShakeThePlateReportRepository
@@ -18,13 +18,13 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var roundResult = await database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<ShakeThePlateBetEntity, ShakeThePlateBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot)
+                var project = GetBaseAggregateBuilder<ShakeThePlateBetEntity, ShakeThePlateBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
                     .Project(x => new ShakeThePlateBetReportEntity
                     {
                         Time = x.Time,

@@ -18,11 +18,11 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot);
 
-        Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeBot);
+        Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot);
+        Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeBot);
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
         Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS);
 
 
@@ -38,9 +38,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId);
 
-        Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeBot);
+        Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeBot);
+        Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -64,14 +64,11 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot)
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot);
 
-        public async Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeBot)
-            => await reportApi.GetSeDieReport(roundId, nickname, excludeBot);
+        public async Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
+            => await reportApi.GetSeDieReport(roundId, nickname, excludeUUS);
 
-        public async Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot)
-            => await reportApi.GetMiniSeDieReport(roundId, nickname, excludeBot);
-
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot)
-           => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeBot);
+        public async Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS)
+            => await reportApi.GetMiniSeDieReport(roundId, nickname, excludeUUS);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);
@@ -94,13 +91,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId)
         => reportApi.GetKenoRoundResult(game.Value, roundId);
 
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeBot)
-        => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeBot);
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
+        => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeUUS);
 
-        public async Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeBot)
-        => await reportApi.GetDragonTigerReport(roundId, nickname, excludeBot);
+        public async Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeUUS)
+        => await reportApi.GetDragonTigerReport(roundId, nickname, excludeUUS);
 
-        public async Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeBot)
-        => await reportApi.GetBaccaratReport(roundId, nickname, excludeBot);
+        public async Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
+        => await reportApi.GetBaccaratReport(roundId, nickname, excludeUUS);
     }
 }

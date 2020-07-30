@@ -234,7 +234,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SeDieReportResultViewModel> Handle(GetSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new SeDieReportResultViewModel
             {
@@ -261,7 +261,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SeDieReportResultViewModel> Handle(GetMiniSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetMiniSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetMiniSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new SeDieReportResultViewModel
             {
@@ -308,7 +308,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<FishPrawnCrabReportResultViewModel> Handle(GetFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetFishPrawnCrabBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetFishPrawnCrabBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new FishPrawnCrabReportResultViewModel
             {
@@ -325,7 +325,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<DragonTigerReportResultViewModel> Handle(GetDragonTigerReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetDragonTigerBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetDragonTigerBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new DragonTigerReportResultViewModel
             {
@@ -342,7 +342,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<BaccaratReportResultViewModel> Handle(GetBaccaratReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new BaccaratReportResultViewModel
             {

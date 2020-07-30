@@ -97,33 +97,33 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBaccaratReport(long roundId, string nickname, bool excludeBot)
+        public async Task<IActionResult> GetBaccaratReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_BaccaratRecords", await mediator.Send(new GetBaccaratReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_BaccaratRecords", await mediator.Send(new GetBaccaratReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeBot)
+        public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDragonTigerReport(long roundId, string nickname, bool excludeBot)
+        public async Task<IActionResult> GetDragonTigerReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_DragonTigerRecords", await mediator.Send(new GetDragonTigerReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_DragonTigerRecords", await mediator.Send(new GetDragonTigerReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeBot)
+        public async Task<IActionResult> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_FishPrawnCrabRecords", await mediator.Send(new GetFishPrawnCrabReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_FishPrawnCrabRecords", await mediator.Send(new GetFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMiniSeDieReport(long roundId, string nickname, bool excludeBot)
+        public async Task<IActionResult> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_SeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_SeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

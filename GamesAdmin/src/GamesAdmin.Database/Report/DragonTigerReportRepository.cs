@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IDragonTigerReportRepository
     {
-        Task<(DragonTigerRoundEntity, IEnumerable<DragonTigerBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(DragonTigerRoundEntity, IEnumerable<DragonTigerBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
     public class DragonTigerReportRepository : BaseBetReportRepository, IDragonTigerReportRepository
     {
@@ -17,13 +17,13 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(DragonTigerRoundEntity, IEnumerable<DragonTigerBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(DragonTigerRoundEntity, IEnumerable<DragonTigerBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var roundResult = await database.GetCollection<DragonTigerRoundEntity>(Document.GetCollectionName(typeof(DragonTigerRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<DragonTigerBetEntity, DragonTigerBetWithUnWindAccountsEntity>(roundId, nickname, excludeBot)
+                var project = GetBaseAggregateBuilder<DragonTigerBetEntity, DragonTigerBetWithUnWindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
                     .Project(x => new DragonTigerBetReportEntity
                     {
                         Time = x.Time,
