@@ -16,6 +16,7 @@
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
+                    <th rowspan="2">Round ID</th>
                     <th rowspan="2" class="col-date">Date (GMT+7)</th>
                     <th rowspan="2">Username</th>
                     <th rowspan="2" class="col-nickname">Nickname</th>
@@ -36,6 +37,7 @@
                 @foreach (var bet in Model.Records)
                 {
                     <tr>
+                        <td>@Model.RoundResult.Number</td>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.Username</td>
                         <td>

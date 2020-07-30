@@ -16,12 +16,14 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>Round ID</th>
                         <th>Result (Dragon | Tiger)</th>
                         <th>Winning Options</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>@Model.RoundResult.Number</td>
                         <td>
                             <div class="cards">
                                 <div class="card card-type-@dragonCard.Type">
