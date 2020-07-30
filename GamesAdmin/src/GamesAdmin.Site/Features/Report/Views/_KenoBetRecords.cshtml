@@ -85,7 +85,7 @@
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Water.Value])</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Fire.Value])</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Earth.Value])</td>
-                        <td class="text-right">@(Model.RoundResult.Results == null ? "running" : HtmlHelpers.formatNumber(bet.BetWin)) </td>
+                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(bet.BetWin)) </td>
                     </tr>
 
                 }
@@ -100,8 +100,17 @@
                 else
                 {
                     <tr class="total">
-                        <td>Total</td>
-                        <td class="text-right" colspan="12">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Total))</td>
+                        <td colspan="3">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Big.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Small.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Even.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Odd.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Gold.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Wood.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Water.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Fire.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Earth.Value]))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BetWin))</td>
                     </tr>
                 }
             </tfoot>
