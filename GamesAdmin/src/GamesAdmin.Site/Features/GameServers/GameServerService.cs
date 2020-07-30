@@ -56,18 +56,18 @@ namespace GamesAdmin.Site.Features._Shared
     public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
-        private readonly ISeDieGameServer shakeThePlateGameServer;
+        private readonly ISeDieGameServer seDieGameServer;
         private readonly ISentryClient sentryClient;
         private AsyncRetryPolicy policy;
 
         public GameServerService(
             IGameServerApi serverApi,
-            ISeDieGameServer shakeThePlateGameServer,
+            ISeDieGameServer seDieGameServer,
             ISentryClient sentryClient)
             : base(sentryClient)
         {
             this.serverApi = serverApi;
-            this.shakeThePlateGameServer = shakeThePlateGameServer;
+            this.seDieGameServer = seDieGameServer;
             this.sentryClient = sentryClient;
 
             policy = Policy
@@ -92,8 +92,7 @@ namespace GamesAdmin.Site.Features._Shared
                 switch (game)
                 {
                     case GameType.SeDieValue:
-                        gameType = "stp";
-                        break;
+                        return await seDieGameServer.GetOnlineUsers();
 
                     case GameType.KenoProMaxValue:
                         gameType = "keno";
