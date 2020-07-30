@@ -33,7 +33,7 @@
                 @foreach (var bet in Model.Records)
                 {
                     <tr>
-                        <td>@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.Number</td>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.Username</td>
                         <td>
