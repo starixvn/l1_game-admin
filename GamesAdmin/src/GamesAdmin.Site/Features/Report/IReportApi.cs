@@ -46,7 +46,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/dragon_tiger/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<DragonTigerBetReport> GetDragonTigerReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/baccarat/round/{roundId}/users/{nickname}?excludeBot={excludeUUS}")]
+        [Get("/report/baccarat/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<BaccaratBetReport> GetBaccaratReport(long roundId, string nickname, bool excludeUUS);
     }
 }

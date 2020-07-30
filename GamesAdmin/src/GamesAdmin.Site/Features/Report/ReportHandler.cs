@@ -55,7 +55,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -81,7 +81,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -107,7 +107,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -133,7 +133,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     Back = x.Back,
@@ -245,7 +245,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new SeDieRecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     BetWin = x.BetWin,
@@ -272,7 +272,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 },
                 Records = result.Records.Select(x => new SeDieRecordViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTime(x.Time, appSettings.DefaultTimeZone),
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     Username = x.Username,
                     Nickname = x.Nickname,
                     BetWin = x.BetWin,

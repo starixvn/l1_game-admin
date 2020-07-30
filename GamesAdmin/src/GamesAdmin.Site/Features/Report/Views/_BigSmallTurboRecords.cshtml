@@ -12,7 +12,28 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Dice1 - @Model.RoundResult.Dice2 - @Model.RoundResult.Dice3</span> </h3>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Results</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">
+                            <div class="dice-list">
+                                <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice1).png" />
+                                <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice2).png" />
+                                <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice3).png" />
+                            </div>
+                        </td>
+                        <td class="text-center">@(Model.RoundResult.Dice1 + Model.RoundResult.Dice2 + Model.RoundResult.Dice3)</td>
+                    </tr>
+                </tbody>
+            </table>
         }
         <table class="table table-bordered table-hover sticky-table">
             <thead>
