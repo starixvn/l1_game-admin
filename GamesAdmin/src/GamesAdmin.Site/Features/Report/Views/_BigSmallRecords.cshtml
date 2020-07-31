@@ -19,6 +19,7 @@
                         <th>Round ID</th>
                         <th>Results</th>
                         <th>Total</th>
+                        <th>Winning Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +33,7 @@
                             </div>
                         </td>
                         <td class="text-center">@Model.RoundResult.Total</td>
-                        <td>@(Model.RoundResult.IsBig ? "Big": "Small")</td>
+                        <td class="text-center">@(Model.RoundResult.IsBig ? "Big": "Small")</td>
                     </tr>
                 </tbody>
             </table>
