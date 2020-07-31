@@ -394,7 +394,7 @@ $(document).ready(function () {
         "ordering": false
     });
 
-    $(".icon-action").on("click", function (event) {
+    $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
         const gameName = $this.data("game-name");
         gameStatus.startMonitor(gameName);
