@@ -223,3 +223,20 @@
         height: 3.9rem;
     }
 }
+
+// Se die
+%chip {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.6rem;
+}
+
+.red-chip {
+    @extend %chip;
+    background: url(../../images/chip_do.png) no-repeat;
+}
+
+.white-chip {
+    @extend %chip;
+    background: url(../../images/chip_trang.png) no-repeat;
+}

@@ -7,7 +7,34 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-            <h3 class="round-result">Round Result: <span class="result">@(Model.RoundResult.Chips.Any(x => x) ? $"{Model.RoundResult.Chips.Count(x => x)} red" : "4 white")</span></h3>
+            <table class="table table-bordered  table-hover table-se-die" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Results</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">
+                            @foreach (var chip in Model.RoundResult.Chips)
+                            {
+                                if (chip)
+                                {
+                                    <i class="red-chip"></i>
+                                }
+                                else
+                                {
+                                    <i class="white-chip"></i>
+                                }
+                            }
+                        </td>
+                        <td class="text-center">@(Model.RoundResult.Chips.Any(x => x) ? $"{Model.RoundResult.Chips.Count(x => x)} red" : "4 white")</td>
+                    </tr>
+                </tbody>
+            </table>
         }
         <table class="table table-bordered table-hover sticky-table">
             <thead>
@@ -60,6 +87,7 @@
                 {
                     <tr class="total">
                         <td>Total</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Even))</td>
