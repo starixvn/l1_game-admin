@@ -211,7 +211,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("status/um")]
-        public async Task<IActionResult> UnderMaintenance([FromBody] UnderMaintenanceRequest request)
+        public async Task<IActionResult> UnderMaintenance([Bind] UnderMaintenanceRequest request)
         {
             var result = await mediator.Send(request);
 

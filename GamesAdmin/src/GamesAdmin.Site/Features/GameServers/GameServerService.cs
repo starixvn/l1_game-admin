@@ -1,15 +1,16 @@
-﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features.GameServers;
-using Polly;
-using Polly.Retry;
-using Refit;
-using Sentry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.GameServers;
+using GamesAdmin.Site.Features.GameSettings.Requests;
+using Polly;
+using Polly.Retry;
+using Refit;
+using Sentry;
 
 namespace GamesAdmin.Site.Features._Shared
 {
@@ -32,6 +33,9 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Get("/gameRoundInfo")]
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
+
+        [Post("/um")]
+        Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
     public interface IGameServerService
@@ -45,6 +49,8 @@ namespace GamesAdmin.Site.Features._Shared
         Task<JsonWebToken> GetJWT(string username, string userAgent);
 
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
+
+        Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
     public class GameServerService : BaseGameServerService, IGameServerService
@@ -162,6 +168,18 @@ namespace GamesAdmin.Site.Features._Shared
             }
 
             return new Dictionary<string, GameRoundInfo>();
+        }
+
+        public async Task UnderMaintenance(UnderMaintenanceRequest request)
+        {
+            try
+            {
+                await serverApi.UnderMaintenance(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
         }
     }
 }

@@ -6,14 +6,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     {
         public UnderMaintenanceViewModel()
         {
-            From = DateTime.Now;
-            To = From.AddHours(1);
+            StartTime = DateTime.Now;
+            EndTime = StartTime.AddHours(1);
             IsUM = true;
         }
 
-        public DateTimeOffset From { get; set; }
+        public DateTimeOffset StartTime { get; set; }
 
-        public DateTimeOffset To { get; set; }
+        public DateTimeOffset EndTime { get; set; }
 
         public bool IsUM { get; set; }
     }

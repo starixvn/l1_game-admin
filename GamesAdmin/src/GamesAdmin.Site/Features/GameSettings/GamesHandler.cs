@@ -32,6 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<ReloadGameClientRequest, bool>
         , IRequestHandler<GetJWTRequest, JWTFromGameServer>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
+        , IRequestHandler<UnderMaintenanceRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
         private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
@@ -352,6 +353,13 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return new MonitorViewModel(gameList);
+        }
+
+        public async Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
+        {
+            await gameServerService.UnderMaintenance(request);
+
+            return true;
         }
     }
 }

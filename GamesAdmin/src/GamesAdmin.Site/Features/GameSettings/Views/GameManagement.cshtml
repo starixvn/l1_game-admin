@@ -14,8 +14,8 @@
     <div class="list-actions">
         <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
         <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
-        <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit" />
-        @*<input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-submit" />*@
+        <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
+        <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
     </div>
 
 
@@ -276,7 +276,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit()">Save</button>
+                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.underMaintenance()">Save</button>
                 </div>
             </div>
         </div>

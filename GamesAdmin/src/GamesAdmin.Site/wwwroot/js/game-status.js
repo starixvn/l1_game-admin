@@ -79,14 +79,17 @@
             }
         },
 
-        um: function () {
+        underMaintenance: function () {
             if (confirm("Are you sure you want to set Under Maintenance schedule?")) {
                 $.ajax({
                     method: "POST",
-                    url: "/status/um"
+                    url: "/status/um",
+                    dataType: 'json',
+                    data: $('#umForm').serialize(),
                 }).done(function (updated) {
                     if (updated) {
                         alert("Under Maintenance!");
+                        $('#umModal').modal('hide');
                     }
                 });
             }
