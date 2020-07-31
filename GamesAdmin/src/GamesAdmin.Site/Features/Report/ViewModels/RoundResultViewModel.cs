@@ -11,6 +11,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public int Dice2 { get; set; }
 
         public int Dice3 { get; set; }
+
+        public int Total => Dice1 + Dice2 + Dice3;
+
+        public bool IsBig => Total > 10;
+
+        public bool IsEven => Total % 2 == 0;
     }
 
     public class SeDieRoundResultViewModel

@@ -31,7 +31,8 @@
                                 <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice3).png" />
                             </div>
                         </td>
-                        <td class="text-center">@(Model.RoundResult.Dice1 + Model.RoundResult.Dice2 + Model.RoundResult.Dice3)</td>
+                        <td class="text-center">@Model.RoundResult.Total</td>
+                        <td>@(Model.RoundResult.IsBig ? "Big": "Small")</td>
                     </tr>
                 </tbody>
             </table>
