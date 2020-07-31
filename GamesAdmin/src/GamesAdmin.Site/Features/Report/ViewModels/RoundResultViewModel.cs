@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -24,6 +25,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public long Number { get; set; }
 
         public IEnumerable<bool> Chips { get; set; }
+
+        public int TotalRed => Chips.Count(x => x);
+
+        public bool IsEven => TotalRed % 2 == 0;
     }
 
     public class FishPrawnCrabRoundResultViewModel

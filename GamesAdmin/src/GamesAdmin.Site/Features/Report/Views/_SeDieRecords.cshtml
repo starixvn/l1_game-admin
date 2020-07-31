@@ -31,7 +31,7 @@
                                 }
                             }
                         </td>
-                        <td class="text-center">@(Model.RoundResult.Chips.Any(x => x) ? $"{Model.RoundResult.Chips.Count(x => x)} red" : "4 white")</td>
+                        <td class="text-center">@(Model.RoundResult.IsEven ? "Even" : "Odd") @(Model.RoundResult.TotalRed > 0 ? $", {Model.RoundResult.TotalRed} red" : ", 4 white")</td>
                     </tr>
                 </tbody>
             </table>
