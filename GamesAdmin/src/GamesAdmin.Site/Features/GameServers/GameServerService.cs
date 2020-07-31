@@ -174,7 +174,14 @@ namespace GamesAdmin.Site.Features._Shared
         {
             try
             {
-                await serverApi.UnderMaintenance(request);
+                var umRequest = new UnderMaintenanceRequest
+                {
+                    StartTime = request.StartTime.ToUniversalTime(),
+                    EndTime = request.EndTime.ToUniversalTime(),
+                    IsUM = request.IsUM
+                };
+
+                await serverApi.UnderMaintenance(umRequest);
             }
             catch (Exception ex)
             {
