@@ -2,7 +2,7 @@
 {
     public class ReportViewModel
     {
-        public long RoundId { get; set; }
+        public long? RoundId { get; set; }
 
         public string Nickname { get; set; }
 
