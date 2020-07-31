@@ -3,7 +3,6 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Report
@@ -69,31 +68,31 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult SeDie()
         {
-            return View(new ReportViewModel());
+            return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
         public IActionResult MiniSeDie()
         {
-            return View(new ReportViewModel());
+            return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
         public IActionResult FishPrawnCrab()
         {
-            return View(new ReportViewModel());
+            return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
         public IActionResult DragonTiger()
         {
-            return View(new ReportViewModel());
+            return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
         public IActionResult Baccarat()
         {
-            return View(new ReportViewModel());
+            return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
@@ -149,7 +148,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname)));
         }
-
 
         [HttpGet]
         public IActionResult KenoProViet()
