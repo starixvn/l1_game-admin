@@ -79,6 +79,31 @@
             }
         },
 
+        um: function () {
+            if (confirm("Are you sure you want to set Under Maintenance schedule?")) {
+                $.ajax({
+                    method: "POST",
+                    url: "/status/um"
+                }).done(function (updated) {
+                    if (updated) {
+                        alert("Under Maintenance!");
+                    }
+                });
+            }
+        },
+
+        showUnderMaintenanceForm: function () {
+            $.ajax({
+                method: "GET",
+                url: "/status/um"
+            }).done(function (content) {
+                if (content) {
+                    $('#um').html(content);
+                    $('#umModal').modal('show');
+                }
+            });
+        },
+
         getCheckedGames: function() {
             var container = $("#status-tbl");
             var checkboxes = container.find('.game-status-chk');
