@@ -31,7 +31,16 @@
                                 }
                             }
                         </td>
-                        <td class="text-center">@(Model.RoundResult.IsEven ? "Even" : "Odd") @(Model.RoundResult.TotalRed > 0 ? $", {Model.RoundResult.TotalRed} red" : ", 4 white")</td>
+                        <td class="text-center">
+                            @(Model.RoundResult.IsEven ? "Even" : "Odd")
+                            @{
+                                if (Model.RoundResult.TotalRed != 2)
+                                {
+                                    @(Model.RoundResult.TotalRed > 0 ? $", {Model.RoundResult.TotalRed} red" : ", 4 white")
+
+                                }
+                            }
+                        </td>
                     </tr>
                 </tbody>
             </table>
