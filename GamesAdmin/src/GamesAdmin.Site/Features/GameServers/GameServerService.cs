@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features._Shared
         [Get("/api/gameRoundInfo")]
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
 
-        [Post("/um")]
+        [Post("/api/um")]
         Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
