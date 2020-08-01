@@ -20,7 +20,6 @@ namespace GamesAdmin.VietlottKeno.Tasks
         private readonly IKenoService kenoService;
         private readonly ISentryClient sentryClient;
         private readonly VietlottKenoConfiguration configuration;
-        private readonly ISentryClient sentryClient;
 
         public CrawlingKenoRoundTask(
             IKenoWebApi crawlApi, 
@@ -30,7 +29,6 @@ namespace GamesAdmin.VietlottKeno.Tasks
         {
             this.crawlApi = crawlApi;
             this.kenoService = kenoService;
-            this.sentryClient = sentryClient;
             configuration = options.Value;
             this.sentryClient = sentryClient;
         }
