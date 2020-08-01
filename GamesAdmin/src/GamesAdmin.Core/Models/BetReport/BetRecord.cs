@@ -2,15 +2,19 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public class BetRecord
+    public abstract class BetRecord
     {
+        public string UserId { get; set; }
+
         public string Username { get; set; }
 
         public string Nickname { get; set; }
 
         public decimal BetWin { get; set; }
 
-        public DateTimeOffset Time { get; set; }
+        public DateTime Time { get; set; }
+
+        public GameAccount Account { get; set; }
     }
 
     public class BigSmallBetRecord : BetRecord
@@ -44,5 +48,46 @@ namespace GamesAdmin.Core.Models
         public decimal ThreeWhite { get; set; }
 
         public decimal FourWhite { get; set; }
+    }
+
+    public class FishPrawnCrabBetRecord : BetRecord
+    {
+        public decimal Stag { get; set; }
+
+        public decimal Gourd { get; set; }
+
+        public decimal Rooster { get; set; }
+
+        public decimal Fish { get; set; }
+
+        public decimal Crab { get; set; }
+
+        public decimal Prawn { get; set; }
+    }
+
+    public class DragonTigerBetRecord : BetRecord
+    {
+        public decimal Dragon { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public decimal Tiger { get; set; }
+    }
+
+    public class BaccaratBetRecord : BetRecord
+    {
+        public decimal Banker { get; set; }
+
+        public decimal BankerPair { get; set; }
+
+        public decimal Player { get; set; }
+
+        public decimal PlayerPair { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public decimal Big { get; set; }
+
+        public decimal Small { get; set; }
     }
 }

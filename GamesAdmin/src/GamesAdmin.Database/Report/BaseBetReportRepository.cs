@@ -16,7 +16,7 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        protected IAggregateFluent<TResultEntity> GetBaseAggregateBuilder<TBetEntity, TResultEntity>(long roundId, string nickname, bool excludeBot) where TBetEntity : BaseBetEntity where TResultEntity : BaseBetEntity
+        protected IAggregateFluent<TResultEntity> GetBaseAggregateBuilder<TBetEntity, TResultEntity>(long roundId, string nickname, bool excludeBot = false, bool excludeUUS = false) where TBetEntity : BaseBetEntity where TResultEntity : BaseBetEntity
         {
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
@@ -31,7 +31,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.AccountInfos.Name)) && (!excludeBot || !x.AccountInfos.IsBot) && x.AccountInfos.Currency != "UUS")
+                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.AccountInfos.Name)) && (!excludeBot || !x.AccountInfos.IsBot) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,

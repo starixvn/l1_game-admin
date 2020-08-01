@@ -80,3 +80,114 @@
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
   line-height: 3.4rem; }
+
+.card {
+  position: relative;
+  float: left;
+  display: inline-block;
+  height: 3.2rem;
+  width: 2.5rem;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
+  border: 0.1rem solid #949494;
+  border-radius: .4rem;
+  background-color: #fff;
+  box-shadow: 0.1rem 0.2rem 0.2rem rgba(0, 0, 0, 0.2);
+  text-align: center; }
+  .card span {
+    position: relative;
+    top: -.4rem;
+    font-size: 1.2rem; }
+  .card .img {
+    position: absolute;
+    bottom: 0.2rem;
+    left: 0.5rem;
+    width: 1.4rem;
+    height: 1.4rem; }
+  .card:last-child:before {
+    position: absolute;
+    left: -0.5rem;
+    top: 0.6rem;
+    content: "";
+    height: 1.8rem;
+    width: 0.1rem;
+    background-color: #222; }
+
+.card-type-0 span,
+.card-type-1 span {
+  color: #df0000; }
+
+.card-type-2 span,
+.card-type-3 span {
+  color: #000; }
+
+.cards {
+  display: flex;
+  justify-content: center; }
+
+.baccarat-result {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+  .baccarat-result .cards .card {
+    margin-left: 0.1rem;
+    margin-right: 0.1rem; }
+  .baccarat-result .cards .card:nth-child(3) {
+    margin-left: 1rem; }
+  .baccarat-result .cards .card:last-child:before {
+    display: none; }
+  .baccarat-result .cards:first-child {
+    display: flex;
+    justify-content: flex-end; }
+  .baccarat-result .cards:last-child {
+    display: flex;
+    justify-content: flex-start; }
+  .baccarat-result .cards:last-child:before {
+    position: relative;
+    top: 0.8rem;
+    display: inline-block;
+    height: 1.8rem;
+    width: 0.1rem;
+    margin: 0 0.6rem;
+    background-color: #222;
+    content: ""; }
+
+.animal {
+  width: 3.1rem;
+  height: 3.1rem;
+  margin-left: .2rem;
+  margin-right: .2rem;
+  border: 0.1rem solid #949494;
+  border-radius: 0.4rem;
+  padding: 0.2rem; }
+  @media only screen and (min-width: 768px) {
+    .animal {
+      width: 4.1rem;
+      height: 4.1rem;
+      margin-left: .4rem;
+      margin-right: .4rem; } }
+
+.dice-list {
+  display: flex;
+  justify-content: center; }
+
+.dice {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  margin-left: .4rem;
+  margin-right: .4rem; }
+  @media only screen and (min-width: 768px) {
+    .dice {
+      width: 3.9rem;
+      height: 3.9rem; } }
+
+.red-chip, .white-chip {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.6rem; }
+
+.red-chip {
+  background: url(../../images/chip_do.png) no-repeat; }
+
+.white-chip {
+  background: url(../../images/chip_trang.png) no-repeat; }

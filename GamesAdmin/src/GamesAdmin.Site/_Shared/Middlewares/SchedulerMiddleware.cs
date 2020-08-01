@@ -21,9 +21,10 @@ namespace GamesAdmin.Site._Shared.Middlewares
             scheduler
                 .Schedule<MonitorOnlineUsers>()
                 .EveryMinute();
+
             scheduler
                 .Schedule<MonitorGameRoundTask>()
-                .EveryMinute();
+                .Cron("*/2 * * * *"); // runs every 2 minutes
         }
 
         public static void AddScheduleTasks(this IServiceCollection services)

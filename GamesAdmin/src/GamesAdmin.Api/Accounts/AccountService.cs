@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using GamesAdmin.Api.Accounts.Results;
+﻿using GamesAdmin.Api.Accounts.Results;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.MiniSedie;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Accounts
 {
@@ -18,6 +19,8 @@ namespace GamesAdmin.Api.Accounts
         Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot);
 
         Task<int> ReviseBotNames();
+
+        Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
     }
 
     public class AccountService : IAccountService
@@ -209,8 +212,35 @@ namespace GamesAdmin.Api.Accounts
             {
                 bot.InRoom = false;
                 bot.Disabled = false;
+                bot.InGameRoom = string.Empty;
+
                 await accountInfoRepository.ReplaceOneAsync(bot);
             }
+        }
+
+        public async Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS)
+        {
+            var nickNameRegex = new Regex($"(?i){nickname}");
+
+            var account = await accountRepository.FindByIdAsync(userId);
+            var accountInfo = await accountInfoRepository
+                .FindOneAsync(x => x.UserId == account.Id.ToString()
+                    && (!excludeUUS || !(x.Currency == "UUS"))
+                    && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)));
+
+            return accountInfo == null || account == null 
+                ? default 
+                : new GameAccount(
+                    account.Local.Username,
+                    account.Local.MemberId,
+                    account.Local.MemberName,
+                    account.Local.SiteId,
+                    account.Local.Language,
+                    accountInfo.IsBot,
+                    accountInfo.Currency,
+                    accountInfo.Name,
+                    accountInfo.UID
+                );
         }
     }
 }

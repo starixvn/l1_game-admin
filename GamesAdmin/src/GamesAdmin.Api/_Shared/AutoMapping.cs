@@ -2,10 +2,10 @@
 using System.Linq;
 using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
 
 namespace GamesAdmin.Api._Shared
@@ -41,6 +41,49 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<Notification, NotificationEntity>()
                 .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
+
+            CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>();
+            CreateMap<FishPrawnCrabBetReportEntity, FishPrawnCrabBetRecord>();
+
+            CreateMap<Card, CardResult>();
+            CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>();
+            CreateMap<DragonTigerBetReportEntity, DragonTigerBetRecord>();
+
+            CreateMap<BaccaratSettlementResultEntity, BaccaratSettlementResult>();
+            CreateMap<BaccaratBetReportEntity, BaccaratBetRecord>();
+            CreateMap<BaccaratRoundEntity, BaccaratRoundResult>()
+              .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                  if (source.Player != null)
+                  {
+                      var mapper = context.Mapper;
+                      var result = new List<CardResult> { mapper.Map<CardResult>(source.Player.FirstCard), mapper.Map<CardResult>(source.Player.SecondCard) };
+                      if (source.Player.ThirdCard != null)
+                      {
+                          result.Add(mapper.Map<CardResult>(source.Player.ThirdCard));
+                      }
+
+                      return result;
+                  }
+
+                  return Enumerable.Empty<CardResult>();
+              }))
+              .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                  if (source.Banker != null)
+                  {
+                      var mapper = context.Mapper;
+                      var result = new List<CardResult> { mapper.Map<CardResult>(source.Banker.FirstCard), mapper.Map<CardResult>(source.Banker.SecondCard) };
+                      if (source.Banker.ThirdCard != null)
+                      {
+                          result.Add(mapper.Map<CardResult>(source.Banker.ThirdCard));
+                      }
+
+                      return result;
+                  }
+
+                  return Enumerable.Empty<CardResult>();
+              }));
         }
     }
 }

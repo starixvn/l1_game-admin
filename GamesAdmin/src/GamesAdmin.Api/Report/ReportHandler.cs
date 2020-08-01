@@ -1,9 +1,11 @@
-﻿using GamesAdmin.Api.Report.Request;
-using GamesAdmin.Core.Models;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Api.Report.Request;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
+using MediatR;
 
 namespace GamesAdmin.Api.Report
 {
@@ -14,7 +16,13 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<OddEvenTurboReportRequest, OddEvenBetReport>,
         IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
         IRequestHandler<SeDieReportRequest, SeDieBetReport>,
-        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>
+        IRequestHandler<KenoReportRequest, IEnumerable<KenoBetRecord>>,
+        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
+        IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
+        IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
+        IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
+        IRequestHandler<DragonTigerReportRequest, DragonTigerBetReport>,
+        IRequestHandler<BaccaratReportRequest, BaccaratBetReport>
     {
         private readonly IReportService reportService;
 
@@ -39,9 +47,27 @@ namespace GamesAdmin.Api.Report
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
 
         public async Task<SeDieBetReport> Handle(SeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<IEnumerable<KenoBetRecord>> Handle(KenoReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoBetHistoryAsync(request.Game, request.RoundId, request.Nickname);
+
+        public Task<KenoRoundResult> Handle(KenoRoundResultRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
+
+        public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<DragonTigerBetReport> Handle(DragonTigerReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetDragonTigerReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<BaccaratBetReport> Handle(BaccaratReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

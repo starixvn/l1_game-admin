@@ -7,11 +7,48 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-            <h3 class="round-result">Round Result: <span class="result">@Model.RoundResult.Chips.Count(x => x) red</span></h3>
+            <table class="table table-bordered  table-hover table-se-die" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Results</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">
+                            @foreach (var chip in Model.RoundResult.Chips)
+                            {
+                                if (chip)
+                                {
+                                    <i class="red-chip"></i>
+                                }
+                                else
+                                {
+                                    <i class="white-chip"></i>
+                                }
+                            }
+                        </td>
+                        <td class="text-center">
+                            @(Model.RoundResult.IsEven ? "Even" : "Odd")
+                            @{
+                                if (Model.RoundResult.TotalRed != 2)
+                                {
+                                    @(Model.RoundResult.TotalRed > 0 ? $", {Model.RoundResult.TotalRed} red" : ", 4 white")
+
+                                }
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         }
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
+                    <th rowspan="2">Round ID</th>
                     <th rowspan="2" class="col-date">Date (GMT+7)</th>
                     <th rowspan="2">Username</th>
                     <th rowspan="2" class="col-nickname">Nickname</th>
@@ -22,16 +59,17 @@
                 <tr>
                     <th>Even</th>
                     <th>Odd</th>
-                    <th>Three White</th>
-                    <th>Four White</th>
-                    <th>Three Red</th>
-                    <th>Four Red</th>
+                    <th>3 Red</th>
+                    <th>4 Red</th>
+                    <th>1 Red</th>
+                    <th>4 White</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var bet in Model.Records)
                 {
                     <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.Username</td>
                         <td>
@@ -39,16 +77,16 @@
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Even)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Odd)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.ThreeWhite)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.FourWhite)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.ThreeRed)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.FourRed)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.ThreeWhite)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.FourWhite)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }
             </tbody>
             <tfoot>
-                @if (Model.Records.Count() == 0)
+                @if (!Model.Records.Any())
                 {
                     <tr>
                         <td class="text-center" colspan="13">No data</td>
@@ -60,12 +98,13 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Even))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Odd))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ThreeWhite))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.FourWhite))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ThreeRed))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.FourRed))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ThreeWhite))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.FourWhite))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
                     </tr>
                 }

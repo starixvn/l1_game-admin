@@ -6,6 +6,7 @@ using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 using GamesAdmin.Site.Features.Notifications.Requests;
+using GamesAdmin.Site.Features.Report.ViewModels;
 
 namespace GamesAdmin.Site._Shared
 {
@@ -24,6 +25,16 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<AddRequest, Notification>();
             CreateMap<UpdateRequest, Notification>();
+            CreateMap<FishPrawnCrabRoundResult, FishPrawnCrabRoundResultViewModel>();
+            CreateMap<FishPrawnCrabBetRecord, FishPrawnCrabRecordViewModel>();
+
+            CreateMap<DragonTigerRoundResult, DragonTigerRoundResultViewModel>();
+            CreateMap<DragonTigerBetRecord, DragonTigerRecordViewModel>();
+            CreateMap<CardResult, CardViewModel>();
+
+            CreateMap<BaccaratRoundResult, BaccaratRoundResultViewModel>();
+            CreateMap<BaccaratSettlementResult, BaccaratSettlementResultViewModel>();
+            CreateMap<BaccaratBetRecord, BaccaratRecordViewModel>();
         }
     }
 }

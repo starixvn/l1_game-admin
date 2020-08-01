@@ -1,14 +1,16 @@
-﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models;
-using Polly;
-using Polly.Retry;
-using Refit;
-using Sentry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.GameServers;
+using GamesAdmin.Site.Features.GameSettings.Requests;
+using Polly;
+using Polly.Retry;
+using Refit;
+using Sentry;
 
 namespace GamesAdmin.Site.Features._Shared
 {
@@ -31,6 +33,9 @@ namespace GamesAdmin.Site.Features._Shared
 
         [Get("/gameRoundInfo")]
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
+
+        [Post("/um")]
+        Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
     public interface IGameServerService
@@ -44,15 +49,21 @@ namespace GamesAdmin.Site.Features._Shared
         Task<JsonWebToken> GetJWT(string username, string userAgent);
 
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
+
+        Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
-    public class GameServerService : IGameServerService
+    public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
         private readonly ISentryClient sentryClient;
         private AsyncRetryPolicy policy;
 
-        public GameServerService(IGameServerApi serverApi, ISentryClient sentryClient)
+        public GameServerService(
+            IGameServerApi serverApi,
+            IShakeThePlateGameServer shakeThePlateGameServer,
+            ISentryClient sentryClient)
+            : base(sentryClient)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
@@ -145,26 +156,6 @@ namespace GamesAdmin.Site.Features._Shared
             }
         }
 
-        private void HandleException(Exception ex, string title = null)
-        {
-            if (ex is ApiException)
-            {
-                var apiEx = ex as ApiException;
-
-                if (apiEx != null)
-                {
-                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(title))
-            {
-                sentryClient.CaptureMessage(title, Sentry.Protocol.SentryLevel.Error);
-            }
-
-            sentryClient.CaptureException(ex);
-        }
-
         public async Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo()
         {
             try
@@ -177,6 +168,25 @@ namespace GamesAdmin.Site.Features._Shared
             }
 
             return new Dictionary<string, GameRoundInfo>();
+        }
+
+        public async Task UnderMaintenance(UnderMaintenanceRequest request)
+        {
+            try
+            {
+                var umRequest = new UnderMaintenanceRequest
+                {
+                    StartTime = request.StartTime.ToUniversalTime(),
+                    EndTime = request.EndTime.ToUniversalTime(),
+                    IsUM = request.IsUM
+                };
+
+                await serverApi.UnderMaintenance(umRequest);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
         }
     }
 }

@@ -15,16 +15,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class MonitorItemViewModel
     {
-        private static IList<string> gameEnabledHistory = new List<string>
-        {
-            GameType.BigSmallValue,
-            GameType.BigSmallTurboValue,
-            GameType.OddEvenValue,
-            GameType.OddEvenTurboValue,
-            GameType.SeDieValue,
-            GameType.MiniSeDieValue,
-        };
-
         private static Dictionary<string, string> gameHistoryUrl = new Dictionary<string, string>
         {
             { GameType.BigSmallValue, "bigsmall" },
@@ -32,7 +22,20 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.OddEvenValue, "oddeven" },
             { GameType.OddEvenTurboValue, "oddeventurbo" },
             { GameType.SeDieValue, "sedie" },
-            { GameType.MiniSeDieValue, "minisedie" }
+            { GameType.MiniSeDieValue, "minisedie" },
+            { GameType.FishPrawnCrabValue, "fishprawncrab" },
+            { GameType.DragonTigerValue, GameType.DragonTigerValue },
+            { GameType.BaccaratValue, GameType.BaccaratValue },
+            { GameType.KenoProVietValue, GameType.KenoProVietValue },
+            { GameType.KenoMaxValue, GameType.KenoMaxValue },
+            { GameType.KenoMax2Value, GameType.KenoMax2Value },
+            { GameType.KenoMiniValue, GameType.KenoMiniValue },
+            { GameType.KenoMini2Value, GameType.KenoMini2Value },
+            { GameType.KenoEastValue, GameType.KenoEastValue },
+            { GameType.KenoWestValue, GameType.KenoWestValue },
+            { GameType.KenoSouthValue, GameType.KenoSouthValue },
+            { GameType.KenoNorthValue, GameType.KenoNorthValue },
+            { GameType.KenoProMaxValue, GameType.KenoProMaxValue }
         };
 
         public MonitorItemViewModel(string name)
@@ -44,7 +47,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => string.IsNullOrWhiteSpace(Name) ? string.Empty : Enumeration.FromValue<GameType>(Name).DisplayName;
 
-        public bool EnabledHistory => gameEnabledHistory.Contains(Name);
+        public bool EnabledHistory => gameHistoryUrl.ContainsKey(Name);
 
         public string GameHistoryUrl => gameHistoryUrl.ContainsKey(Name) ? gameHistoryUrl[Name] : string.Empty;
     }

@@ -1,62 +1,67 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Coravel.Invocable;
+﻿using Coravel.Invocable;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Workers._Shared;
 using GamesAdmin.Workers._Shared.Configurations;
 using GamesAdmin.Workers.VietlottKeno;
-using HtmlAgilityPack;
+using GamesAdmin.Workers.VietlottKeno.DTOs;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Sentry;
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.VietlottKeno.Tasks
 {
     public class CrawlingKenoRoundTask : IInvocable
     {
+        private readonly IKenoWebApi crawlApi;
         private readonly IKenoService kenoService;
+        private readonly ISentryClient sentryClient;
         private readonly VietlottKenoConfiguration configuration;
         private readonly ISentryClient sentryClient;
 
-        public CrawlingKenoRoundTask(IKenoService kenoService, IOptions<VietlottKenoConfiguration> options, ISentryClient sentryClient)
+        public CrawlingKenoRoundTask(
+            IKenoWebApi crawlApi, 
+            IKenoService kenoService, 
+            IOptions<VietlottKenoConfiguration> options, 
+            ISentryClient sentryClient)
         {
+            this.crawlApi = crawlApi;
             this.kenoService = kenoService;
+            this.sentryClient = sentryClient;
             configuration = options.Value;
             this.sentryClient = sentryClient;
         }
 
         public async Task Invoke()
         {
+            if (!configuration.EnableWebCrawling)
+            {
+                return;
+            }
+
             var currentTime = DateTime.UtcNow;
-            HtmlDocument htmlDoc = null;
+            var kenoResult = await CrawlKenoResult();
 
-            try
+
+            if (kenoResult == default)
             {
-                var web = new HtmlWeb();
-                htmlDoc = await web.LoadFromWebAsync(configuration.WebUrl);
+                return;
             }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureMessage($"Failed to get content from {configuration.WebUrl}");
-                sentryClient.CaptureException(ex);
-            }
-
-            if (htmlDoc == null) return;
-
-            var latestRoundNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@id = 'kq_ky']");
-            var latestRoundId = long.Parse(latestRoundNode.InnerText.Remove(0, 1));
 
             var currentLatestRound = await kenoService.GetLatestRoundAsync();
 
-            if (currentLatestRound == null || (currentLatestRound.Result == null && currentLatestRound.Number == latestRoundId) || currentLatestRound.Number < latestRoundId)
+            if (IsNotHaveLatestResult(kenoResult.RoundId, currentLatestRound))
             {
-                var kenoBallNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='keno_ball']");
-                var result = kenoBallNodes.Select(x => byte.Parse(x.InnerText)).OrderBy(x => x);
+                var result = kenoResult.Results.Select(x => byte.Parse(x)).OrderBy(x => x);
 
                 var round = await kenoService.AddNewRoundResultAsync(
                     new CreateProVietKenoRound
                     {
                         Time = currentTime,
-                        Number = latestRoundId,
+                        Number = kenoResult.RoundId,
                         Result = result
                     });
 
@@ -64,6 +69,34 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
                 _ = Task.Run(() => kenoService.NotifyRoundResult(new[] { round }));
             }
+        }
+
+        private static bool IsNotHaveLatestResult(long crawlRoundId, ProVietKenoRound currentLatestRound)
+        => currentLatestRound == null
+           || (currentLatestRound.Result == null && currentLatestRound.Number == crawlRoundId)
+           || currentLatestRound.Number < crawlRoundId;
+
+
+        private async Task<KenoResultDto> CrawlKenoResult()
+        {
+            try
+            {    
+                var response = await crawlApi.GetResult();
+
+                var regex = new Regex(@"\""lastResult"": {([^}]+)\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var matches = regex.Matches(response);
+                var rawResult = matches.FirstOrDefault()?.Value.Replace(@"""lastResult"": ", string.Empty).Trim();
+
+                return string.IsNullOrWhiteSpace(rawResult)
+                    ? default
+                    : JsonConvert.DeserializeObject<KenoResultDto>(rawResult);
+            }
+            catch (Exception e)
+            {
+                sentryClient.CaptureException(e);
+            }
+
+            return default;
         }
 
         public static Task<bool> CanRun()

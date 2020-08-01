@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
@@ -30,5 +28,49 @@ namespace GamesAdmin.Core.Models
     public class SeDieRoundResult : RoundResult
     {
         public IEnumerable<bool> Chips { get; set; }
+    }
+
+    public class FishPrawnCrabRoundResult : RoundResult
+    {
+        public byte FirstDice { get; set; }
+
+        public byte SecondDice { get; set; }
+
+        public byte ThirdDice { get; set; }
+    }
+
+    public class DragonTigerRoundResult : RoundResult
+    {
+        public CardResult Dragon { get; set; }
+
+        public CardResult Tiger { get; set; }
+    }
+
+    public class CardResult
+    {
+        public byte Number { get; set; }
+
+        public byte Type { get; set; }
+    }
+
+    public class BaccaratRoundResult : RoundResult
+    {
+        public IEnumerable<CardResult> PlayerCards { get; set; }
+
+        public IEnumerable<CardResult> BankerCards { get; set; }
+
+        public BaccaratSettlementResult Result { get; set; }
+    }
+
+    public class BaccaratSettlementResult
+    {
+        public bool Player { get; set; }
+        public bool Banker { get; set; }
+        public bool Tie { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+        public bool PlayerPair { get; set; }
+        public bool BankerPair { get; set; }
+        public bool Natural { get; set; }
     }
 }

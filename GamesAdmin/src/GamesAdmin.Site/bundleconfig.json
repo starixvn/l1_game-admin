@@ -82,5 +82,11 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/vietlott-keno.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/report.min.js",
+    "inputFiles": [
+      "wwwroot/js/report.js"
+    ]
   }
 ]

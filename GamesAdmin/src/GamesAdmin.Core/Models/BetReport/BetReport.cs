@@ -19,4 +19,16 @@ namespace GamesAdmin.Core.Models
     public class SeDieBetReport : BetReport<SeDieRoundResult, SeDieBetRecord>
     {
     }
+
+    public class FishPrawnCrabBetReport : BetReport<FishPrawnCrabRoundResult, FishPrawnCrabBetRecord>
+    {
+    }
+
+    public class DragonTigerBetReport : BetReport<DragonTigerRoundResult, DragonTigerBetRecord>
+    {
+    }
+
+    public class BaccaratBetReport : BetReport<BaccaratRoundResult, BaccaratBetRecord>
+    {
+    }
 }

@@ -205,6 +205,19 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
+        [Route("status/um")]
+        public IActionResult UnderMaintenance()
+        => View(new UnderMaintenanceViewModel());
+
+        [HttpPost]
+        [Route("status/um")]
+        public async Task<IActionResult> UnderMaintenance([Bind] UnderMaintenanceRequest request)
+        {
+            var result = await mediator.Send(request);
+
+            return Json(result);
+        }
+
         [HttpPost]
         [Route("/jwt")]
         public async Task<IActionResult> JWT([FromBody] GetJWTRequest request)

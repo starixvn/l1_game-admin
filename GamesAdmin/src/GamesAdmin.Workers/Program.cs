@@ -8,8 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Sentry;
+using Microsoft.Extensions.Options;
 using Refit;
+using Sentry;
+using System;
+using System.Net.Http;
 
 namespace GamesAdmin.Workers
 {
@@ -46,6 +49,11 @@ namespace GamesAdmin.Workers
                     services.AddScheduleTasks();
 
                     services.AddSingleton(RestService.For<IGameAdminApi>(hostContext.Configuration["GameAdminUrl"]));
+                    services.AddSingleton(RestService.For<IKenoWebApi>(new HttpClient
+                    {
+                        BaseAddress = new Uri(hostContext.Configuration.GetSection(nameof(VietlottKenoConfiguration)).Get<VietlottKenoConfiguration>().WebUrl),
+                        Timeout = TimeSpan.FromSeconds(30)
+                    }));
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

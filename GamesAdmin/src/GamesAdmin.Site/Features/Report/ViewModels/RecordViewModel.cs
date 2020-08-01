@@ -1,37 +1,24 @@
-﻿using System;
-
-namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class RecordViewModel
+    public class BetRecordViewModel : BaseBetViewModel
     {
-        public DateTimeOffset Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
-        public decimal BetWin { get; set; }
     }
 
-    public class BigSmallRecordViewModel : RecordViewModel
+    public class BigSmallRecordViewModel : BetRecordViewModel
     {
-        public decimal Back { get; set; }
-
-        public bool Select { get; set; }
-
         public decimal Bet { get; set; }
-    }
-
-    public class OddEvenRecordViewModel : RecordViewModel
-    {
         public decimal Back { get; set; }
-
         public bool Select { get; set; }
-
-        public decimal Bet { get; set; }
     }
 
-    public class SeDieRecordViewModel : RecordViewModel
+    public class OddEvenRecordViewModel : BetRecordViewModel
+    {
+        public decimal Bet { get; set; }
+        public decimal Back { get; set; }
+        public bool Select { get; set; }
+    }
+
+    public class SeDieRecordViewModel : BetRecordViewModel
     {
         public decimal Odd { get; set; }
 
@@ -44,5 +31,46 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal ThreeWhite { get; set; }
 
         public decimal FourWhite { get; set; }
+    }
+
+    public class FishPrawnCrabRecordViewModel : BetRecordViewModel
+    {
+        public decimal Stag { get; set; }
+
+        public decimal Gourd { get; set; }
+
+        public decimal Rooster { get; set; }
+
+        public decimal Fish { get; set; }
+
+        public decimal Crab { get; set; }
+
+        public decimal Prawn { get; set; }
+    }
+
+    public class DragonTigerRecordViewModel : BetRecordViewModel
+    {
+        public decimal Dragon { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public decimal Tiger { get; set; }
+    }
+
+    public class BaccaratRecordViewModel : BetRecordViewModel
+    {
+        public decimal Banker { get; set; }
+
+        public decimal BankerPair { get; set; }
+
+        public decimal Player { get; set; }
+
+        public decimal PlayerPair { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public decimal Big { get; set; }
+
+        public decimal Small { get; set; }
     }
 }

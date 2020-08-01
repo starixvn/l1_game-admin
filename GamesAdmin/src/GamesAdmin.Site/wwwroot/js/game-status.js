@@ -79,6 +79,34 @@
             }
         },
 
+        underMaintenance: function () {
+            if (confirm("Are you sure you want to set Under Maintenance schedule?")) {
+                $.ajax({
+                    method: "POST",
+                    url: "/status/um",
+                    dataType: 'json',
+                    data: $('#umForm').serialize(),
+                }).done(function (updated) {
+                    if (updated) {
+                        alert("Under Maintenance!");
+                        $('#umModal').modal('hide');
+                    }
+                });
+            }
+        },
+
+        showUnderMaintenanceForm: function () {
+            $.ajax({
+                method: "GET",
+                url: "/status/um"
+            }).done(function (content) {
+                if (content) {
+                    $('#um').html(content);
+                    $('#umModal').modal('show');
+                }
+            });
+        },
+
         getCheckedGames: function() {
             var container = $("#status-tbl");
             var checkboxes = container.find('.game-status-chk');
@@ -369,7 +397,7 @@ $(document).ready(function () {
         "ordering": false
     });
 
-    $(".icon-action").on("click", function (event) {
+    $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
         const gameName = $this.data("game-name");
         gameStatus.startMonitor(gameName);

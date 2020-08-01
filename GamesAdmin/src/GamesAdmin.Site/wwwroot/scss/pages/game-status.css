@@ -56,6 +56,9 @@
     top: -1px;
     border-top: 1px solid #ddd; }
 
+.table.sticky-table thead tr:nth-child(2) th {
+  top: 42.73px; }
+
 .table.dataTable {
   border-collapse: collapse; }
   .table.dataTable th {

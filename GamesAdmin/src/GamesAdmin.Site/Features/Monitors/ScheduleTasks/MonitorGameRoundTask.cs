@@ -51,7 +51,7 @@ namespace GamesAdmin.Site.Features.Monitors.ScheduleTasks
 
                     if (currentRound == null || notChanged)
                     {
-                        alerts.Add($"Game {latestGameInfo.Key} stop at round {latestRound.RoundId} remainingTime {latestRound.RemainingTime}");
+                        alerts.Add($"{DateTime.Now} Game {latestGameInfo.Key} stop at round {latestRound.RoundId} remainingTime {latestRound.RemainingTime}");
                     }
                 }
 
