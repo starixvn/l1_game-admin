@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Api.Accounts;
 using GamesAdmin.Api.ClientSites;
+using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.Notifications;
@@ -24,6 +25,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
+            services.AddScoped<IDailySummaryService, DailySummaryService>();
 
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IBotService, BotService>();
