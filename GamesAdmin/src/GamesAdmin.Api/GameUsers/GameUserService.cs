@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Results;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -25,7 +26,7 @@ namespace GamesAdmin.Api.GameUser
 
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
-        Task<bool> AddSpin(AddSpinRequest createRequest);
+        Task<AddSpinResult> AddSpin(AddSpinRequest createRequest);
     }
 
     public class GameUserService : IGameUserService
@@ -214,23 +215,32 @@ namespace GamesAdmin.Api.GameUser
                 );
         }
 
-        public async Task<bool> AddSpin(AddSpinRequest createRequest)
+        public async Task<AddSpinResult> AddSpin(AddSpinRequest createRequest)
         {
             var spins = new List<SpinEntity>();
             var time = DateTime.UtcNow;
+            var result = new AddSpinResult { ObCustId = createRequest.ObCustId };
 
-            for (var i = 0; i < createRequest.Spins; i++)
+            try
             {
-                spins.Add(new SpinEntity
+                for (var i = 0; i < createRequest.Spins; i++)
                 {
-                    ObCustId = createRequest.ObCustId,
-                    Time = time
-                });
+                    spins.Add(new SpinEntity
+                    {
+                        ObCustId = createRequest.ObCustId,
+                        Time = time
+                    });
+                }
+
+                await spinRepository.InsertManyAsync(spins);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                result.Error = ex.Message;
             }
 
-            await spinRepository.InsertManyAsync(spins);
-
-            return true;
+            return result;
         }
     }
 }

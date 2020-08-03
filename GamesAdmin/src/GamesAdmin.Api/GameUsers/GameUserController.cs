@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,7 +59,7 @@ namespace GamesAdmin.Api.GameUser
            => (await mediator.Send(new DisableBotRandomlyRequest()));
 
         [HttpPost("add_spins")]
-        public async Task<bool> AddSpins([FromBody] AddSpinRequest request)
+        public async Task<AddSpinResult> AddSpins([FromBody] AddSpinRequest request)
            => (await mediator.Send(request));
     }
 }

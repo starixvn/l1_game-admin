@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Results;
 using GamesAdmin.Core.Models;
 using MediatR;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace GamesAdmin.Api.GameUser
         , IRequestHandler<ReviseBotNameRequest, int>
         , IRequestHandler<ReviseBotBalanceRequest, int>
         , IRequestHandler<DisableBotRandomlyRequest, int>
-        , IRequestHandler<AddSpinRequest, bool>
+        , IRequestHandler<AddSpinRequest, AddSpinResult>
     {
         private readonly IGameUserService gameUserService;
         private readonly IBotService botService;
@@ -40,7 +41,7 @@ namespace GamesAdmin.Api.GameUser
         public Task<int> Handle(DisableBotRandomlyRequest request, CancellationToken cancellationToken)
         => botService.DisableRandomly();
 
-        public Task<bool> Handle(AddSpinRequest request, CancellationToken cancellationToken)
+        public Task<AddSpinResult> Handle(AddSpinRequest request, CancellationToken cancellationToken)
         => gameUserService.AddSpin(request);
     }
 }
