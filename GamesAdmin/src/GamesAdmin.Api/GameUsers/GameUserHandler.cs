@@ -1,11 +1,10 @@
-﻿using GamesAdmin.Api.GameUser.Requests;
-using GamesAdmin.Api.GameUser.Results;
-using GamesAdmin.Api.GameUsers.Results;
-using GamesAdmin.Core.Models;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Api.GameUser.Requests;
+using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Results;
+using MediatR;
 
 namespace GamesAdmin.Api.GameUser
 {
