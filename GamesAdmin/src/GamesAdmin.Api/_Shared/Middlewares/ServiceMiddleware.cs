@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Api.Accounts;
+﻿using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.GameRound;
@@ -7,7 +7,6 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
-using GamesAdmin.Api.Spins;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
             services.AddScoped<IDailySummaryService, DailySummaryService>();
-            services.AddScoped<IAccountService, AccountService>();
+services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<ISpinService, SpinService>();
 

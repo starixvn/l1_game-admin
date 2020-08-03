@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Api.Accounts;
+using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
@@ -19,13 +19,13 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<KenoMax2OnesEntity> kenoMax2OnesRepository;
         private readonly IGenericRepository<KenoMax2RoundEntity> kenoMax2RoundRepository;
         private readonly IGenericRepository<KenoMax2BetEntity> kenoMax2BetRepository;
-        private readonly IAccountService accountService;
+        private readonly IGameUserService accountService;
 
         public KenoMax2Report(
             IGenericRepository<KenoMax2OnesEntity> kenoMax2OnesRepository,
             IGenericRepository<KenoMax2RoundEntity> kenoMax2RoundRepository,
             IGenericRepository<KenoMax2BetEntity> kenoMax2BetRepository,
-            IAccountService accountService)
+            IGameUserService accountService)
         {
             this.kenoMax2OnesRepository = kenoMax2OnesRepository;
             this.kenoMax2RoundRepository = kenoMax2RoundRepository;

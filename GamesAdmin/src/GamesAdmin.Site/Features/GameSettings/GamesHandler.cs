@@ -8,7 +8,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.Account;
+using GamesAdmin.Site.Features.GameUser;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.ProVietKeno;

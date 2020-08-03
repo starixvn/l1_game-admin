@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Api.Accounts;
+﻿using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.GameRound;
@@ -7,7 +7,6 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
-using GamesAdmin.Api.Spins;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,14 +27,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
 <<<<<<< HEAD
             services.AddScoped<IDailySummaryService, DailySummaryService>();
-
-            services.AddSingleton<IAccountService, AccountService>();
-            services.AddSingleton<IBotService, BotService>();
-=======
-            services.AddScoped<ISpinService, SpinService>();
             services.AddScoped<IAccountService, AccountService>();
+=======
+            services.AddScoped<IGameUserService, GameUserService>();
+>>>>>>> db92532d... rename Account to GameUser, move add spins api to game user
             services.AddScoped<IBotService, BotService>();
->>>>>>> a11578ef... add spins
+            services.AddScoped<ISpinService, SpinService>();
 
             services.AddScoped<IKenoReportFactory, KenoReportFactory>();
             services.AddScoped<KenoProVietReport>()
