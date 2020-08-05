@@ -23,9 +23,7 @@ namespace GamesAdmin.Api.DailySummarize
 
         public async Task<IEnumerable<DailySummaryResult>> Get(DateTimeOffset summarizeDate)
         {
-            var fromTime = summarizeDate.DateTime;
-            var toTime = fromTime.AddDays(1);
-            var result = (await repository.FilterByAsync(x => x.Time >= fromTime && x.Time < toTime)).ToList();
+            var result = (await repository.FilterByAsync(x => x.Time == summarizeDate.Date)).ToList();
 
             return result
                 .GroupBy(x => x.Currency)
