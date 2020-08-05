@@ -39,6 +39,18 @@ const classNames = {
   baccaratSmall: 'baccaratSmallBg',
   playerPair: 'playerPairBg',
   bankerPair: 'bankerPairBg',
+  straightUp: 'straightUpBg',
+  split: 'splitBg',
+  street: 'streetBg',
+  triangle: 'triangleBg',
+  corner: 'cornerBg',
+  fourNumbers: 'fourNumbersBg',
+  line: 'lineBg',
+  column: 'columnBg',
+  dozen: 'dozenBg',
+  redBlack: 'redBlackBg',
+  oddEven: 'oddEvenBg',
+  bigSmall: 'bigSmallBg',
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {

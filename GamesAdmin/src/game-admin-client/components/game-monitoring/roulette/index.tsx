@@ -8,6 +8,7 @@ import RoundNum from '../../shared/round-num/round-num';
 import Title from '../../shared/title';
 import styles from './styles.module.scss';
 import RouletteResultUpdater from './result-updater';
+import TotalBet from '../../shared/total-bet/total-bet';
 
 type Props = {
     onMessage: Function,
@@ -17,6 +18,21 @@ type Props = {
 
 const PlacingBetDuration = 35;
 const WaitingTime = 9;
+
+const TYPE_OF_BETS = {
+    "straightUp": "Straight Up",
+    "split": "Split",
+    "street": "Street",
+    "triangle": "Triangle",
+    "corner": "Corner",
+    "fourNumbers": "Four Numbers",
+    "line": "Line",
+    "column": "Column",
+    "dozen": "Dozen",
+    "redBlack": "Red Black",
+    "oddEven": "Odd Even",
+    "bigSmall": "Big Small",
+};
 
 export default class Roulette extends React.Component<Props, RouletteModel>{
     private isFirstLoad: boolean;
@@ -127,7 +143,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
     }
 
     renderMonitor() {
-        const { time, roundNumber, gameState } = this.state;
+        const { time, roundNumber, gameState, betList } = this.state;
         return (
             <Container>
                 <Row>
@@ -141,6 +157,24 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                                 <RoundNum roundNumber={roundNumber} />
                             </div>
                             <div onClick={this.showUpdater} className={styles.result}>{this.state.result >= 0 ? this.state.result : ""}</div>
+                        </Row>
+                    </Col>
+                    <Col className='p-0 col-12 col-lg-7'>
+                        <Row>
+                            <TotalBet type='straightUp' total={betList.straightUp.total} />
+                            <TotalBet type='split' total={betList.split.total} />
+                            <TotalBet type='street' total={betList.street.total} />
+                            <TotalBet type='triangle' total={betList.triangle.total} />
+                            <TotalBet type='corner' total={betList.corner.total} />
+                            <TotalBet type='fourNumbers' total={betList.fourNumbers.total} />
+                        </Row>
+                        <Row>
+                            <TotalBet type='line' total={betList.line.total} />
+                            <TotalBet type='column' total={betList.column.total} />
+                            <TotalBet type='dozen' total={betList.dozen.total} />
+                            <TotalBet type='redBlack' total={betList.redBlack.total} />
+                            <TotalBet type='oddEven' total={betList.oddEven.total} />
+                            <TotalBet type='bigSmall' total={betList.bigSmall.total} />
                         </Row>
                     </Col>
                 </Row>
