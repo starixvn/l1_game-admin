@@ -5,9 +5,14 @@ import GameTemplate from '../game-template/game-template';
 import { Container, Row, Col } from 'reactstrap';
 import TimeCounter from '../../shared/time-counter/time-counter';
 import RoundNum from '../../shared/round-num/round-num';
+import Title from '../../shared/title';
+import styles from './styles.module.scss';
+import RouletteResultUpdater from './result-updater';
 
 type Props = {
-    onMessage: Function
+    onMessage: Function,
+    sendMessage: Function,
+    isProduction: boolean
 }
 
 const PlacingBetDuration = 35;
@@ -22,10 +27,41 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
 
         this.isFirstLoad = true;
         this.state = new RouletteModel();
+
+        this.updaterToggle = this.updaterToggle.bind(this);
+        this.updaterSubmit = this.updaterSubmit.bind(this);
+        this.showUpdater = this.showUpdater.bind(this);
     }
 
     componentDidMount() {
         this.props.onMessage((message) => this.handleData(message));
+    }
+
+    showUpdater() {
+        this.setState({
+            isShowResultUpdater: true
+        })
+    }
+
+    updaterToggle() {
+        this.setState({
+            isShowResultUpdater: !this.state.isShowResultUpdater
+        })
+    }
+
+    updaterSubmit(number) {
+        const obj = {
+            setResult: {
+                result: number,
+                roundId: this.state.gameState == GameState.running ? this.state.roundNumber : this.state.roundNumber + 1
+            }
+        }
+
+        this.setState({
+            isShowResultUpdater: false
+        })
+
+        this.props.sendMessage(obj);
     }
 
     handleData(data) {
@@ -95,11 +131,17 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
         return (
             <Container>
                 <Row>
-                    <Col align='center'>
-                        <TimeCounter remainingTime={time.remainingTime} gameState={gameState} />
-                        <div>
-                            <RoundNum roundNumber={roundNumber} />
-                        </div>
+                    <Col className="col-12 col-lg-2">
+                        <Title title="Roulette" />
+                    </Col>
+                    <Col align='center' className='col-12 col-lg-3'>
+                        <Row className="justify-content-center">
+                            <div className={styles.timer}>
+                                <TimeCounter remainingTime={time.remainingTime} gameState={gameState} />
+                                <RoundNum roundNumber={roundNumber} />
+                            </div>
+                            <div onClick={this.showUpdater} className={styles.result}>{this.state.result >= 0 ? this.state.result : ""}</div>
+                        </Row>
                     </Col>
                 </Row>
             </Container>
@@ -118,6 +160,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                     renderMonitor={this.renderMonitor()}
                     renderBetList={this.renderBetList()}
                     disabled={this.state.gameState == GameState.disabled} />
+                {!this.props.isProduction && (<RouletteResultUpdater modal={this.state.isShowResultUpdater} toggle={this.updaterToggle} submit={this.updaterSubmit} />)}
             </div>
         )
     }
