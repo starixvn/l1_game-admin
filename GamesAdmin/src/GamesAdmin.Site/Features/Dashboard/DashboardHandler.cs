@@ -68,7 +68,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                     break;
             }
 
-            if (!string.IsNullOrWhiteSpace(gameType))
+            if (string.IsNullOrWhiteSpace(gameType))
             {
                 onlineUsers = await gameServerService.GetOnlineUsers(request.Game);
             }

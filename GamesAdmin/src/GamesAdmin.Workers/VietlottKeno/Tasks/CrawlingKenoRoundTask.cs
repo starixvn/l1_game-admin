@@ -50,7 +50,7 @@ namespace GamesAdmin.VietlottKeno.Tasks
                 return;
             }
 
-            if (IsNotHaveLatestResult(kenoResult.RoundId, currentLatestRound))
+            if (kenoResult != null && IsNotHaveLatestResult(kenoResult.RoundId, currentLatestRound))
             {
                 var result = kenoResult.Results.Select(x => byte.Parse(x)).OrderBy(x => x);
 
