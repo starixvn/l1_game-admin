@@ -29,10 +29,22 @@ const TYPE_OF_BETS = {
     "line": "Line",
     "column": "Column",
     "dozen": "Dozen",
-    "redBlack": "Red Black",
-    "oddEven": "Odd Even",
-    "bigSmall": "Big Small",
+    "redBlack": "Red/Black",
+    "oddEven": "Odd/Even",
+    "bigSmall": "Big/Small",
 };
+
+const TYPE_GROUPS = {
+    0: ["straightUp"],
+    1: ["split"],
+    2: ["street", "triangle"],
+    3: ["corner", "fourNumbers"],
+    4: ["line"],
+    5: ["column", "dozen"],
+    6: ["redBlack"],
+    7: ["oddEven"],
+    8: ["bigSmall"],
+}
 
 export default class Roulette extends React.Component<Props, RouletteModel>{
     private isFirstLoad: boolean;

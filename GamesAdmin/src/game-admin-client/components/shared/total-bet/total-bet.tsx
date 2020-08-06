@@ -39,23 +39,11 @@ const classNames = {
   baccaratSmall: 'baccaratSmallBg',
   playerPair: 'playerPairBg',
   bankerPair: 'bankerPairBg',
-  straightUp: 'straightUpBg',
-  split: 'splitBg',
-  street: 'streetBg',
-  triangle: 'triangleBg',
-  corner: 'cornerBg',
-  fourNumbers: 'fourNumbersBg',
-  line: 'lineBg',
-  column: 'columnBg',
-  dozen: 'dozenBg',
-  redBlack: 'redBlackBg',
-  oddEven: 'oddEvenBg',
-  bigSmall: 'bigSmallBg',
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {
   const { type, total, isWin } = props;
-  const className = classNames[type];
+  const className = classNames[type] ? classNames[type] : `${type}Bg`;
 
   const amount = total.toLocaleString('en-US');
   return (
