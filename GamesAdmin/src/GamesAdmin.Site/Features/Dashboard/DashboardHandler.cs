@@ -19,14 +19,16 @@ namespace GamesAdmin.Site.Features.Dashboard
         , IRequestHandler<GetOnlineUsersByGameRequest, OnlineUsersViewModel>
     {
         private readonly IGameServerService gameServerService;
+        private readonly ISeDieGameServer sedieGameServer;
         private readonly IMapper mapper;
 
         public DashboardHandler(
             IGameServerService gameServerService,
-            ISeDieGameServer shakeThePlateGameServer,
+            ISeDieGameServer sedieGameServer,
             IMapper mapper)
         {
             this.gameServerService = gameServerService;
+            this.sedieGameServer = sedieGameServer;
             this.mapper = mapper;
         }
 
@@ -48,7 +50,28 @@ namespace GamesAdmin.Site.Features.Dashboard
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
-            var onlineUsers = await gameServerService.GetOnlineUsers(request.Game);
+            var onlineUsers = new OnlineUsers();
+            var gameType = string.Empty;
+
+            switch (request.Game)
+            {
+                case GameType.SeDieValue:
+                    onlineUsers = await sedieGameServer.GetOnlineUsers();
+                    break;
+
+                case GameType.KenoProMaxValue:
+                    gameType = "keno";
+                    break;
+
+                case GameType.BaccaratValue:
+                    gameType = "baccarat";
+                    break;
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameType))
+            {
+                onlineUsers = await gameServerService.GetOnlineUsers(request.Game);
+            }
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }
