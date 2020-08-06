@@ -210,7 +210,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Route("status/um")]
         public IActionResult UnderMaintenance()
-        => View(new UnderMaintenanceViewModel());
+        => View(new UnderMaintenanceViewModel(appSettings));
 
         [HttpPost]
         [Route("status/um")]
