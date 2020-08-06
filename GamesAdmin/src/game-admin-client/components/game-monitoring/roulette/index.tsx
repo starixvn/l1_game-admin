@@ -9,6 +9,7 @@ import Title from '../../shared/title';
 import styles from './styles.module.scss';
 import RouletteResultUpdater from './result-updater';
 import TotalBet from '../../shared/total-bet/total-bet';
+import BetList from '../../shared/bet-list/bet-list';
 
 type Props = {
     onMessage: Function,
@@ -195,8 +196,24 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
     }
 
     renderBetList() {
-        return (<>
-        </>)
+        const result = [];
+        const { betList } = this.state;
+
+        Object.keys(TYPE_GROUPS).map((key, index) => {
+            const titles = [];
+            const dataList = [];
+
+            TYPE_GROUPS[key].map(type => {
+                titles.push(TYPE_OF_BETS[type]);
+                dataList.concat(betList[type].dataList)
+            });
+            result.push((
+                <Col key={index}>
+                    <BetList type="onecolumn" isWin={false} titles={titles} dataList={dataList} />
+                </Col>
+            ));
+        })
+        return (<>{result}</>);
     }
 
     render() {
