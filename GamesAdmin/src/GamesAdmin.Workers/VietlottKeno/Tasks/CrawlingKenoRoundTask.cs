@@ -22,9 +22,9 @@ namespace GamesAdmin.VietlottKeno.Tasks
         private readonly VietlottKenoConfiguration configuration;
 
         public CrawlingKenoRoundTask(
-            IKenoWebApi crawlApi, 
-            IKenoService kenoService, 
-            IOptions<VietlottKenoConfiguration> options, 
+            IKenoWebApi crawlApi,
+            IKenoService kenoService,
+            IOptions<VietlottKenoConfiguration> options,
             ISentryClient sentryClient)
         {
             this.crawlApi = crawlApi;
@@ -42,13 +42,13 @@ namespace GamesAdmin.VietlottKeno.Tasks
 
             var currentTime = DateTime.UtcNow;
             var kenoResult = await CrawlKenoResult();
+            var currentLatestRound = await kenoService.GetLatestRoundAsync();
 
-            if (kenoResult == default)
+            if (kenoResult == default && IsWaitingResult(currentLatestRound))
             {
+                sentryClient.CaptureMessage("Crawl keno from MinhChinh failed!", Sentry.Protocol.SentryLevel.Error);
                 return;
             }
-
-            var currentLatestRound = await kenoService.GetLatestRoundAsync();
 
             if (IsNotHaveLatestResult(kenoResult.RoundId, currentLatestRound))
             {
@@ -68,6 +68,10 @@ namespace GamesAdmin.VietlottKeno.Tasks
             }
         }
 
+        private static bool IsWaitingResult(ProVietKenoRound currentLatestRound)
+            => currentLatestRound == null
+                || (currentLatestRound.Result == null && currentLatestRound.Time.AddMinutes(2) < DateTime.Now);
+
         private static bool IsNotHaveLatestResult(long crawlRoundId, ProVietKenoRound currentLatestRound)
         => currentLatestRound == null
            || (currentLatestRound.Result == null && currentLatestRound.Number == crawlRoundId)
@@ -77,7 +81,7 @@ namespace GamesAdmin.VietlottKeno.Tasks
         private async Task<KenoResultDto> CrawlKenoResult()
         {
             try
-            {    
+            {
                 var response = await crawlApi.GetResult();
 
                 var regex = new Regex(@"\""lastResult"": {([^}]+)\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -88,9 +92,8 @@ namespace GamesAdmin.VietlottKeno.Tasks
                     ? default
                     : JsonConvert.DeserializeObject<KenoResultDto>(rawResult);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                sentryClient.CaptureException(e);
             }
 
             return default;
