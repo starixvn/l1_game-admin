@@ -50,14 +50,14 @@ namespace GamesAdmin.Site.Features.Dashboard
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
-            var onlineUsers = new OnlineUsers();
+            OnlineUsers onlineUsers;
             var gameType = string.Empty;
 
             switch (request.Game)
             {
                 case GameType.SeDieValue:
                     onlineUsers = await sedieGameServer.GetOnlineUsers();
-                    break;
+                    return ConvertToOnlineUserViewModel(onlineUsers);
 
                 case GameType.KenoProMaxValue:
                     gameType = "keno";
@@ -68,10 +68,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                     break;
             }
 
-            if (string.IsNullOrWhiteSpace(gameType))
-            {
-                onlineUsers = await gameServerService.GetOnlineUsers(request.Game);
-            }
+            onlineUsers = await gameServerService.GetOnlineUsers(gameType);
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }

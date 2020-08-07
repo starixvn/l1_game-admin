@@ -83,27 +83,9 @@ namespace GamesAdmin.Site.Features._Shared
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(game))
-                {
-                    return await serverApi.GetOnlineUsers();
-                }
-
-                var gameType = string.Empty;
-                switch (game)
-                {
-                    case GameType.SeDieValue:
-                        return await seDieGameServer.GetOnlineUsers();
-
-                    case GameType.KenoProMaxValue:
-                        gameType = "keno";
-                        break;
-
-                    case GameType.BaccaratValue:
-                        gameType = "baccarat";
-                        break;
-                }
-
-                return await serverApi.GetOnlineUsersOnGame(gameType);
+                return string.IsNullOrWhiteSpace(game)
+                    ? await serverApi.GetOnlineUsers()
+                    : await serverApi.GetOnlineUsersOnGame(game);
             }
             catch (Exception ex)
             {
