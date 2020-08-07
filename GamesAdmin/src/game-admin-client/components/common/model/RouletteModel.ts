@@ -2,7 +2,7 @@ import TimeModel from "./TimeModel";
 import { GameState } from "../../shared/common/GameState";
 import BetList from "./BetList";
 
-class RouletteBetList {
+export class RouletteBetList {
     straightUp: BetList;
     split: BetList;
     street: BetList;

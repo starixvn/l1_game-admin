@@ -6,7 +6,8 @@ import { Row, Col } from 'reactstrap';
 const displayTypes = {
   onecolumn: "onecolumn",
   simple: "simple",
-  withtime: "withtime"
+  withtime: "withtime",
+  withchoice: "withchoice"
 }
 
 const renderTitle = (titles, type) => {
@@ -56,6 +57,12 @@ export default function BetList(props) {
                 return <Row key={index} className={style.rowSimple}>
                   <div className={style.colname}>{data.name}</div>
                   <div className={style.money}>{betAmount}</div>
+                </Row>
+              }
+              case displayTypes.withchoice: {
+                return <Row key={index} className={style.rowSimple}>
+                  <div className={style.colname}>{data.name}</div>
+                  <div className={style.money}>{betAmount}@{data.choice}</div>
                 </Row>
               }
               default: {

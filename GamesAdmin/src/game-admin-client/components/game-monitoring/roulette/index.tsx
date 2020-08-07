@@ -1,5 +1,5 @@
 import React from 'react';
-import RouletteModel from '../../common/model/RouletteModel';
+import RouletteModel, { RouletteBetList } from '../../common/model/RouletteModel';
 import { GameState } from '../../shared/common/GameState';
 import GameTemplate from '../game-template/game-template';
 import { Container, Row, Col } from 'reactstrap';
@@ -10,12 +10,13 @@ import styles from './styles.module.scss';
 import RouletteResultUpdater from './result-updater';
 import TotalBet from '../../shared/total-bet/total-bet';
 import BetList from '../../shared/bet-list/bet-list';
+import BetItem from '../../common/model/BetItem';
 
 type Props = {
     onMessage: Function,
     sendMessage: Function,
     isProduction: boolean
-}
+};
 
 const PlacingBetDuration = 35;
 const WaitingTime = 9;
@@ -153,12 +154,33 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                 });
             }, (WaitingTime + 1) * 1000);
         }
+
+        if (!!data.ingame) {
+            this.updateBetList(data.ingame);
+        }
+    }
+
+    updateBetList(data) {
+        const betList = new RouletteBetList();
+        for (const user in data) {
+            const { name, betTracks } = data[user];
+
+            Object.keys(betTracks).forEach(key => {
+                const betTrack = betTracks[key];
+
+                Object.keys(betTrack).forEach(choice => {
+                    betList[key].total += betTrack[choice];
+                    betList[key].dataList.unshift(new BetItem(name, betTrack[choice], '', choice));
+                });
+            });
+        }
+        this.setState({ betList: betList })
     }
 
     renderMonitor() {
         const { time, roundNumber, gameState, betList } = this.state;
         return (
-            <Container>
+            <Container fluid>
                 <Row>
                     <Col className="col-12 col-lg-2">
                         <Title title="Roulette" />
@@ -173,7 +195,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                         </Row>
                     </Col>
                     <Col className='p-0 col-12 col-lg-7'>
-                        <Row>
+                        <Row className={styles['total-bet']}>
                             <TotalBet type='straightUp' total={betList.straightUp.total} />
                             <TotalBet type='split' total={betList.split.total} />
                             <TotalBet type='street' total={betList.street.total} />
@@ -181,7 +203,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                             <TotalBet type='corner' total={betList.corner.total} />
                             <TotalBet type='fourNumbers' total={betList.fourNumbers.total} />
                         </Row>
-                        <Row>
+                        <Row className={styles['total-bet']}>
                             <TotalBet type='line' total={betList.line.total} />
                             <TotalBet type='column' total={betList.column.total} />
                             <TotalBet type='dozen' total={betList.dozen.total} />
@@ -198,22 +220,29 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
     renderBetList() {
         const result = [];
         const { betList } = this.state;
+        console.log(betList);
 
         Object.keys(TYPE_GROUPS).map((key, index) => {
-            const titles = [];
-            const dataList = [];
+            let titles = [];
+            let dataList = [];
 
             TYPE_GROUPS[key].map(type => {
                 titles.push(TYPE_OF_BETS[type]);
-                dataList.concat(betList[type].dataList)
+                console.log(betList[type].dataList);
+                dataList = dataList.concat(betList[type].dataList)
             });
+            console.log(dataList);
             result.push((
                 <Col key={index}>
-                    <BetList type="onecolumn" isWin={false} titles={titles} dataList={dataList} />
+                    <BetList type="withchoice" isWin={false} titles={[this.renderTitles(titles)]} dataList={dataList} />
                 </Col>
             ));
         })
         return (<>{result}</>);
+    }
+
+    renderTitles(titles: string[]) {
+        return (<div className={styles['betlist-title']}>{titles.map(title => (<Row align='center' key={title}><span >{title}</span></Row>))}</div>)
     }
 
     render() {

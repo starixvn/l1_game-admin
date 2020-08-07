@@ -17,3 +17,19 @@
     margin-right: 30px;
     text-align: center;
 }
+
+.total-bet{
+    justify-content: space-around;
+}
+
+.betlist-title{
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    span{
+        width: 100%;
+    }
+}
