@@ -48,6 +48,18 @@ const TYPE_GROUPS = {
     8: ["bigSmall"],
 }
 
+const DOZEN_CHOICE_MAPPER = {
+    1: "1-12",
+    2: "13-24",
+    3: "25-35",
+};
+
+const COLUMN_CHOICE_MAPPER = {
+    1: "1st column",
+    2: "2nd column",
+    3: "3rd column",
+};
+
 export default class Roulette extends React.Component<Props, RouletteModel>{
     private isFirstLoad: boolean;
     private timeout: NodeJS.Timeout;
@@ -165,16 +177,27 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
         for (const user in data) {
             const { name, betTracks } = data[user];
 
-            Object.keys(betTracks).forEach(key => {
-                const betTrack = betTracks[key];
+            Object.keys(betTracks).forEach(type => {
+                const betTrack = betTracks[type];
 
                 Object.keys(betTrack).forEach(choice => {
-                    betList[key].total += betTrack[choice];
-                    betList[key].dataList.unshift(new BetItem(name, betTrack[choice], '', choice));
+                    betList[type].total += betTrack[choice];
+                    betList[type].dataList.unshift(new BetItem(name, betTrack[choice], '', this.getChoice(type, choice)));
                 });
             });
         }
         this.setState({ betList: betList })
+    }
+
+    getChoice(type, choice) {
+        switch (type) {
+            case "dozen":
+                return DOZEN_CHOICE_MAPPER[choice];
+            case "column":
+                return COLUMN_CHOICE_MAPPER[choice];
+            default:
+                return choice;
+        }
     }
 
     renderMonitor() {
@@ -220,7 +243,6 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
     renderBetList() {
         const result = [];
         const { betList } = this.state;
-        console.log(betList);
 
         Object.keys(TYPE_GROUPS).map((key, index) => {
             let titles = [];
@@ -228,10 +250,8 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
 
             TYPE_GROUPS[key].map(type => {
                 titles.push(TYPE_OF_BETS[type]);
-                console.log(betList[type].dataList);
                 dataList = dataList.concat(betList[type].dataList)
             });
-            console.log(dataList);
             result.push((
                 <Col key={index}>
                     <BetList type="withchoice" isWin={false} titles={[this.renderTitles(titles)]} dataList={dataList} />

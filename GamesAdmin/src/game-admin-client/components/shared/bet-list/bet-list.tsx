@@ -62,7 +62,7 @@ export default function BetList(props) {
               case displayTypes.withchoice: {
                 return <Row key={index} className={style.rowSimple}>
                   <div className={style.colname}>{data.name}</div>
-                  <div className={style.money}>{betAmount}@{data.choice}</div>
+                  <div><span className={style.money}>{betAmount}</span><span className={style.colname}>@{data.choice}</span></div>
                 </Row>
               }
               default: {
