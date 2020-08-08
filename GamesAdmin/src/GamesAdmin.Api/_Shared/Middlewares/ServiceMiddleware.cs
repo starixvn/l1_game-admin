@@ -26,9 +26,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
             services.AddScoped<IDailySummaryService, DailySummaryService>();
-services.AddScoped<IGameUserService, GameUserService>();
+            services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
-            services.AddScoped<ISpinService, SpinService>();
 
             services.AddScoped<IKenoReportFactory, KenoReportFactory>();
             services.AddScoped<KenoProVietReport>()
