@@ -19,7 +19,7 @@ type Props = {
 };
 
 const PlacingBetDuration = 35;
-const WaitingTime = 9;
+const WaitingTime = 14;
 
 const TYPE_OF_BETS = {
     "straightUp": "Straight Up",
