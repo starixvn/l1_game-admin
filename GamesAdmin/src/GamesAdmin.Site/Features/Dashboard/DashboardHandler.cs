@@ -66,6 +66,10 @@ namespace GamesAdmin.Site.Features.Dashboard
                 case GameType.BaccaratValue:
                     gameType = "baccarat";
                     break;
+
+                case GameType.RouletteValue:
+                    gameType = GameType.RouletteValue;
+                    break;
             }
 
             onlineUsers = await gameServerService.GetOnlineUsers(gameType);
@@ -90,7 +94,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
-                new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value)
+                new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
+                new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),
                 };
     }
 }

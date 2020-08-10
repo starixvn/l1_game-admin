@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -136,7 +135,6 @@ namespace GamesAdmin.Site.Features._Shared
                     HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
                 }
             }
-
         }
 
         public async Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo()
