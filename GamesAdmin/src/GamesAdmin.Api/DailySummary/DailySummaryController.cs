@@ -18,6 +18,6 @@ namespace GamesAdmin.Api.DailySummarize
 
         [HttpPost]
         public async Task<IActionResult> Index([FromBody] DailySummaryRequest request)
-            => Ok(new { summary = await mediator.Send(request), errorCode = "0" });
+            => Ok(new { summary = await mediator.Send(request)});
     }
 }
