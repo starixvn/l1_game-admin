@@ -35,7 +35,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.KenoWestValue, GameType.KenoWestValue },
             { GameType.KenoSouthValue, GameType.KenoSouthValue },
             { GameType.KenoNorthValue, GameType.KenoNorthValue },
-            { GameType.KenoProMaxValue, GameType.KenoProMaxValue }
+            { GameType.KenoProMaxValue, GameType.KenoProMaxValue },
+            { GameType.RouletteValue, GameType.RouletteValue }
         };
 
         public MonitorItemViewModel(string name)
