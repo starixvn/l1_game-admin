@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
+    [BsonCollection("roulette_phiens")]
     public class RouletteRoundEntity : BaseRoundEntity
     {
         public byte Result { get; set; }
