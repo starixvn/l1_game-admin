@@ -89,5 +89,11 @@ namespace GamesAdmin.Api.Report
         [Route("roulette/round/{roundId}/users/{nickname?}")]
         public async Task<RouletteBetReport> Roulette(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new RouletteReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("bet_history/game/roulette/round/{roundId}/user/{nickname}")]
+        public async Task<RouletteBetHistory> BetHistory(string nickname, long roundId)
+         => (await mediator.Send(new RouletteBetHistoryRequest(roundId, nickname)));
+
     }
 }

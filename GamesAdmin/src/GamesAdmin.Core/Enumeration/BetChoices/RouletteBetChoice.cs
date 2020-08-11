@@ -21,8 +21,8 @@
         public static readonly RouletteBetChoice Line = new RouletteBetChoice("line", "Line");
         public static readonly RouletteBetChoice Column = new RouletteBetChoice("column", "Column");
         public static readonly RouletteBetChoice Dozen = new RouletteBetChoice("dozen", "Dozen");
-        public static readonly RouletteBetChoice Red = new RouletteBetChoice("redBlack", "Red Black");
-        public static readonly RouletteBetChoice Odd = new RouletteBetChoice("oddEven", "Odd Even");
-        public static readonly RouletteBetChoice Big = new RouletteBetChoice("bigSmall", "Big Small");
+        public static readonly RouletteBetChoice RedBlack = new RouletteBetChoice("redBlack", "Red Black");
+        public static readonly RouletteBetChoice OddEven = new RouletteBetChoice("oddEven", "Odd Even");
+        public static readonly RouletteBetChoice BigSmall = new RouletteBetChoice("bigSmall", "Big Small");
     }
 }

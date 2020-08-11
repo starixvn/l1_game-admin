@@ -47,7 +47,12 @@
                         <td>
                             @bet.Nickname
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.TotalBet)</td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetRouletteBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bet.Nickname">
+                                @HtmlHelpers.formatNumber(bet.TotalBet)
+                            </a>
+                        </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }

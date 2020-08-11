@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
@@ -88,6 +89,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<RouletteBetReportEntity, RouletteBetRecord>();
             CreateMap<RouletteRoundEntity, RouletteRoundResult>();
             CreateMap<RouletteSettlementResultEntity, RouletteSettlementResult>();
+            CreateMap<RouletteBetEntity, RouletteBetHistoryRecord>();
         }
     }
 }

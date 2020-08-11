@@ -42,6 +42,8 @@ namespace GamesAdmin.Api.Report
         Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<RouletteBetReport> GetRouletteReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -362,6 +364,18 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<RouletteBetRecord>(x))
+            };
+        }
+
+        public async Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string nickname)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetRouletteAsync(roundId, nickname);
+
+            return new RouletteBetHistory
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
             };
         }
     }

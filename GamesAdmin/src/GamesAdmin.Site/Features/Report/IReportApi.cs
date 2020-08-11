@@ -52,5 +52,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/roulette/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<RouletteBetReport> GetRouletteReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/game/roulette/round/{roundId}/user/{nickname}")]
+        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string nickname) ;
     }
 }

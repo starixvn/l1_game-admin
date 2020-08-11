@@ -29,7 +29,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetFishPrawnCrabReportRequest, FishPrawnCrabReportResultViewModel>,
         IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
         IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
-        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>
+        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
+        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -372,6 +373,23 @@ namespace GamesAdmin.Site.Features.ClientSites
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<RouletteBetHistoryViewModel> Handle(GetRouletteBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetRouletteBetHistory(request.RoundId, request.Nickname);
+
+            return new RouletteBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<RouletteRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<RouletteBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
                 })
             };
         }

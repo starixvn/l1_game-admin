@@ -1,0 +1,390 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration.BetChoices
+@model GamesAdmin.Site.Features.Report.ViewModels.RouletteBetHistoryRowViewModel
+
+@{
+    var bet = Model.Bet;
+    var settlementResult = Model.SettlementResult;
+    var rowSpan = 0;
+    Dictionary<string, decimal> firstBetType = null;
+    string firstBetTypeName = null;
+    IEnumerable<string> firstSettlementResult = null;
+
+    var dozens = new Dictionary<string, string>()
+{
+        {"1", "1-12" },
+        {"2", "13-24" },
+        {"3", "25-36"  }
+    };
+
+    var bigSmall = new Dictionary<string, string>()
+{
+        {"small", "1-18" },
+        {"big", "19-36" },
+    };
+
+    var redBlackResources = new Dictionary<string, string>()
+{
+        {"red", "Red" },
+        {"black", "Black" },
+    };
+
+    var oddEvenResource = new Dictionary<string, string>()
+{
+        {"odd", "Odd" },
+        {"even", "Even" },
+    };
+
+
+    var columns = new Dictionary<string, string>()
+    {
+        {"1", "1st Column" },
+        {"2", "2nd Column" },
+        {"3", "3rd Column"  }
+    };
+
+    if (bet.StraightUp.Any())
+    {
+        rowSpan += bet.StraightUp.Count;
+        firstBetType = bet.StraightUp;
+        firstBetTypeName = RouletteBetChoice.StraightUp.DisplayName;
+        firstSettlementResult = settlementResult.StraightUp;
+    }
+
+    if (bet.Split.Any())
+    {
+        rowSpan += bet.Split.Count;
+        firstBetType = firstBetType ?? bet.Split;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Split.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Split;
+    }
+
+    if (bet.Street.Any())
+    {
+        rowSpan += bet.Street.Count;
+        firstBetType = firstBetType ?? bet.Street;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Street.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Street;
+    }
+
+    if (bet.Triangle.Any())
+    {
+        rowSpan += bet.Triangle.Count;
+        firstBetType = firstBetType ?? bet.Triangle;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Triangle.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Triangle;
+    }
+
+    if (bet.Corner.Any())
+    {
+        rowSpan += bet.Corner.Count;
+        firstBetType = firstBetType ?? bet.Corner;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Corner.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Corner;
+    }
+
+    if (bet.FourNumbers.Any())
+    {
+        rowSpan += bet.FourNumbers.Count;
+        firstBetType = firstBetType ?? bet.FourNumbers;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.FourNumbers.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.FourNumbers;
+    }
+
+    if (bet.Line.Any())
+    {
+        rowSpan += bet.Line.Count;
+        firstBetType = firstBetType ?? bet.Line;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Line.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Line;
+    }
+
+    if (bet.Column.Any())
+    {
+        rowSpan += bet.Column.Count;
+        firstBetType = firstBetType ?? bet.Column;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Column.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Column;
+    }
+
+    if (bet.Dozen.Any())
+    {
+        rowSpan += bet.Dozen.Count;
+        firstBetType = firstBetType ?? bet.Dozen;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.Dozen.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.Dozen;
+    }
+
+    if (bet.RedBlack.Any())
+    {
+        rowSpan += bet.RedBlack.Count;
+        firstBetType = firstBetType ?? bet.RedBlack;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.RedBlack.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.RedBlack;
+    }
+
+    if (bet.OddEven.Any())
+    {
+        rowSpan += bet.OddEven.Count;
+        firstBetType = firstBetType ?? bet.OddEven;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.OddEven.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.OddEven;
+    }
+
+    if (bet.BigSmall.Any())
+    {
+        rowSpan += bet.BigSmall.Count;
+        firstBetType = firstBetType ?? bet.BigSmall;
+        firstBetTypeName = firstBetTypeName ?? RouletteBetChoice.BigSmall.DisplayName;
+        firstSettlementResult = firstSettlementResult ?? settlementResult.BigSmall;
+    }
+}
+
+<tr>
+    <td rowspan="@rowSpan">
+        @bet.Time.ToString(Constants.DateTimeFormat)
+    </td>
+    <td>@firstBetTypeName</td>
+    @{
+        var cssClass = firstSettlementResult.Any(x => x == firstBetType.FirstOrDefault().Key) ? "text-primary" : string.Empty;
+    }
+    <td class="@cssClass">
+        @firstBetType.FirstOrDefault().Key
+    </td>
+    <td class="text @cssClass">
+        @HtmlHelpers.formatNumber(firstBetType.FirstOrDefault().Value)
+    </td>
+</tr>
+
+@if (firstBetType.Count > 1)
+{
+    foreach (var betChoice in firstBetType.Skip(1))
+    {
+        var winningCssClass = firstSettlementResult.Any(x => x == firstBetType.FirstOrDefault().Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>@firstBetTypeName</td>
+
+            <td class="@winningCssClass">
+                @betChoice.Key
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+
+    }
+}
+
+@if (bet.StraightUp.Any() && firstBetType != bet.StraightUp)
+{
+    foreach (var betChoice in bet.StraightUp)
+    {
+        var winningCssClass = settlementResult.StraightUp.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>@RouletteBetChoice.StraightUp.DisplayName</td>
+            <td class="@winningCssClass">
+                @betChoice.Key
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Split.Any() && firstBetType != bet.Split)
+{
+    foreach (var betChoice in bet.Split)
+    {
+        var winningCssClass = settlementResult.Split.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>@RouletteBetChoice.Split.DisplayName</td>
+            <td class="@winningCssClass">
+                @betChoice.Key.Replace("-", ", ")
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Street.Any() && firstBetType != bet.Street)
+{
+    foreach (var betChoice in bet.Street)
+    {
+        var winningCssClass = settlementResult.Street.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+        <tr>
+            <td>@RouletteBetChoice.Street.DisplayName</td>
+            <td class="@winningCssClass">
+                @betChoice.Key.Replace("-", ", ")
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Triangle.Any() && firstBetType != bet.Triangle)
+{
+    foreach (var betChoice in bet.Triangle)
+    {
+        var winningCssClass = settlementResult.Triangle.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+        <tr>
+            <td>@RouletteBetChoice.Triangle.DisplayName</td>
+            <td class="@winningCssClass">
+                @betChoice.Key.Replace("-", ", ")
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Corner.Any() && firstBetType != bet.Corner)
+{
+    foreach (var betChoice in bet.Corner)
+    {
+        var winningCssClass = settlementResult.Corner.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+        <tr>
+            <td>@RouletteBetChoice.Corner.DisplayName</td>
+            <td class="@winningCssClass">
+                @betChoice.Key.Replace("-", ", ")
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.FourNumbers.Any() && firstBetType != bet.FourNumbers)
+{
+    foreach (var betChoice in bet.FourNumbers)
+    {
+        var winningCssClass = settlementResult.FourNumbers.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+        <tr>
+            <td>@RouletteBetChoice.FourNumbers.DisplayName</td>
+            <td class="@winningCssClass">
+                @betChoice.Key.Replace("-", ", ")
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Line.Any() && firstBetType != bet.Line)
+{
+    foreach (var betChoice in bet.Line)
+    {
+        var winningCssClass = settlementResult.Line.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+        <tr>
+            <td>@RouletteBetChoice.Line.DisplayName</td>
+            <td class="@winningCssClass">
+                @{
+                    var splits = betChoice.Key.Split('-');
+                }
+                <div>@splits[0], @splits[1], @splits[2]</div>
+                <div>@splits[3], @splits[4], @splits[5]</div>
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Column.Any() && firstBetType != bet.Column)
+{
+    foreach (var betChoice in bet.Column)
+    {
+        var winningCssClass = settlementResult.Column.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+        <tr>
+            <td>@RouletteBetChoice.Column.DisplayName</td>
+            <td class="@winningCssClass">
+                @columns[betChoice.Key]
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.Dozen.Any() && firstBetType != bet.Dozen)
+{
+    foreach (var betChoice in bet.Dozen)
+    {
+        var winningCssClass = settlementResult.Dozen.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>@RouletteBetChoice.Dozen.DisplayName</td>
+            <td class="@winningCssClass">
+                @dozens[betChoice.Key]
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.RedBlack.Any() && firstBetType != bet.RedBlack)
+{
+    foreach (var betChoice in bet.RedBlack)
+    {
+        var winningCssClass = settlementResult.RedBlack.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>Red/Black</td>
+            <td class="@winningCssClass text-capitalize">
+                @betChoice.Key
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.OddEven.Any() && firstBetType != bet.OddEven)
+{
+    foreach (var betChoice in bet.OddEven)
+    {
+        var winningCssClass = settlementResult.OddEven.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>Odd/Even</td>
+            <td class="@winningCssClass text-capitalize">
+                @oddEvenResource[betChoice.Key]
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}
+
+@if (bet.BigSmall.Any() && firstBetType != bet.BigSmall)
+{
+    foreach (var betChoice in bet.BigSmall)
+    {
+        var winningCssClass = settlementResult.BigSmall.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        <tr>
+            <td>Big/Small</td>
+            <td class="@winningCssClass">
+                @bigSmall[betChoice.Key]
+            </td>
+            <td class="text-right @winningCssClass">
+                @HtmlHelpers.formatNumber(betChoice.Value)
+            </td>
+        </tr>
+    }
+}

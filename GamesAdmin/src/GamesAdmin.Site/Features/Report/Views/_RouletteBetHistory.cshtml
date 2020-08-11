@@ -1,0 +1,19 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@model RouletteBetHistoryViewModel
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Bet Type</th>
+            <th>Bet Choice</th>
+            <th>Bet Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            @await Html.PartialAsync("_RouletteBetHistoryRow", new RouletteBetHistoryRowViewModel { Bet = bet, SettlementResult = Model.RoundResult.SettlementResult })
+        }
+    </tbody>
+</table>
