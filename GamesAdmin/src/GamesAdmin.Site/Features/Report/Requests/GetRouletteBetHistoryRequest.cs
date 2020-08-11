@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetRouletteBetHistoryRequest : IRequest<IEnumerable<RouletteBetHistoryViewModel>>
+    public class GetRouletteBetHistoryRequest : IRequest<RouletteBetHistoryViewModel>
     {
         public GetRouletteBetHistoryRequest(long roundId, string nickname)
         {

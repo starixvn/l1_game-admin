@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;

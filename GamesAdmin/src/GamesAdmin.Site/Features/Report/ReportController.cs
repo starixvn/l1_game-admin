@@ -119,7 +119,6 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, nickname)));
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
