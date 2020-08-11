@@ -84,6 +84,10 @@ namespace GamesAdmin.Api._Shared
 
                   return Enumerable.Empty<CardResult>();
               }));
+
+            CreateMap<RouletteBetReportEntity, RouletteBetRecord>();
+            CreateMap<RouletteRoundEntity, RouletteRoundResult>();
+            CreateMap<RouletteSettlementResultEntity, RouletteSettlementResult>();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -27,7 +28,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
         IRequestHandler<GetFishPrawnCrabReportRequest, FishPrawnCrabReportResultViewModel>,
         IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
-        IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>
+        IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
+        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -350,6 +352,23 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<BaccaratRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<RouletteReportResultViewModel> Handle(GetRouletteReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetRouletteBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new RouletteReportResultViewModel
+            {
+                RoundResult = mapper.Map<RouletteRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<RouletteRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return recordViewModel;

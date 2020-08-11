@@ -102,6 +102,18 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult Roulette()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRouletteReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_RouletteRecords", await mediator.Send(new GetRouletteReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeUUS)));

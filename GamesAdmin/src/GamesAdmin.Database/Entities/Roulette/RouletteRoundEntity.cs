@@ -6,10 +6,10 @@ namespace GamesAdmin.Database.Entities
     {
         public byte Result { get; set; }
 
-        public RouletteSettlementResult SettlementResult { get; set; }
+        public RouletteSettlementResultEntity SettlementResult { get; set; }
     }
 
-    public class RouletteSettlementResult
+    public class RouletteSettlementResultEntity
     {
         public IEnumerable<string> StraightUp { get; set; }
 

@@ -22,7 +22,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
         IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
         IRequestHandler<DragonTigerReportRequest, DragonTigerBetReport>,
-        IRequestHandler<BaccaratReportRequest, BaccaratBetReport>
+        IRequestHandler<BaccaratReportRequest, BaccaratBetReport>,
+        IRequestHandler<RouletteReportRequest, RouletteBetReport>
     {
         private readonly IReportService reportService;
 
@@ -69,5 +70,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<BaccaratBetReport> Handle(BaccaratReportRequest request, CancellationToken cancellationToken)
         => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<RouletteBetReport> Handle(RouletteReportRequest request, CancellationToken cancellationToken)
+            => reportService.GetRouletteReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

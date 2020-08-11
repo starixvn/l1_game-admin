@@ -73,4 +73,9 @@
 
         public decimal Small { get; set; }
     }
+
+    public class RouletteRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
 }

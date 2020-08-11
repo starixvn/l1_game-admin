@@ -41,6 +41,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -99,5 +101,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
         => await reportApi.GetBaccaratReport(roundId, nickname, excludeUUS);
+
+        public async Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS)
+        => await reportApi.GetRouletteReport(roundId, nickname, excludeUUS);
     }
 }

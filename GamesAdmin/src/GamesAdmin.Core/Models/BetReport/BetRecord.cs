@@ -90,4 +90,9 @@ namespace GamesAdmin.Core.Models
 
         public decimal Small { get; set; }
     }
+
+    public class RouletteBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
+    }
 }
