@@ -114,9 +114,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRouletteBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> GetRouletteBetHistory(long roundId, string userId)
         {
-            return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, nickname)));
+            return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, userId)));
         }
 
         [HttpGet]
