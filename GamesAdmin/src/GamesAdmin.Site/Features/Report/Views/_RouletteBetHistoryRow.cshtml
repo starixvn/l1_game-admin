@@ -147,7 +147,7 @@
     @{
         var cssClass = firstSettlementResult.Any(x => x == firstBetType.FirstOrDefault().Key) ? "text-primary" : string.Empty;
     }
-    <td class="@cssClass">
+    <td class="@cssClass text-center">
         @firstBetType.FirstOrDefault().Key
     </td>
     <td class="text-right @cssClass">

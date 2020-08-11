@@ -93,7 +93,7 @@ namespace GamesAdmin.Api.Report
         [HttpGet]
         [Route("bet_history/game/roulette/round/{roundId}/user/{userId}")]
         public async Task<RouletteBetHistory> BetHistory(string userId, long roundId)
-         => (await mediator.Send(new RouletteBetHistoryRequest(roundId, nickname)));
+         => (await mediator.Send(new RouletteBetHistoryRequest(roundId, userId)));
 
     }
 }
