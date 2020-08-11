@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetFishPrawnCrabReportRequest, FishPrawnCrabReportResultViewModel>,
         IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
         IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
-        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
+        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
