@@ -30,6 +30,7 @@ namespace GamesAdmin.Database
                         Time = x.Time,
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
+                        UserId = x.Uid,
                         BetWin = x.Betwin,
                         TotalBet = x.TotalAmount
                     });
