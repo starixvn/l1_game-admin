@@ -377,7 +377,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<RouletteBetHistoryViewModel> Handle(GetRouletteBetHistoryRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetRouletteBetHistory(request.RoundId, request.Nickname);
+            var result = await reportService.GetRouletteBetHistory(request.RoundId, request.UserId);
 
             return new RouletteBetHistoryViewModel
             {

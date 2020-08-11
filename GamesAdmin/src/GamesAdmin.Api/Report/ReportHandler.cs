@@ -76,6 +76,6 @@ namespace GamesAdmin.Api.Report
             => reportService.GetRouletteReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<RouletteBetHistory> Handle(RouletteBetHistoryRequest request, CancellationToken cancellationToken)
-            => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.Nickname);
+            => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.UserId);
     }
 }

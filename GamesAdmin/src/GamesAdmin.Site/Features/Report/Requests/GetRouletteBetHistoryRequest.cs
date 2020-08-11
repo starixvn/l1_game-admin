@@ -6,14 +6,14 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetRouletteBetHistoryRequest : IRequest<RouletteBetHistoryViewModel>
     {
-        public GetRouletteBetHistoryRequest(long roundId, string nickname)
+        public GetRouletteBetHistoryRequest(long roundId, string userId)
         {
             RoundId = roundId;
-            Nickname = nickname;
+            UserId = userId;
         }
 
         public long RoundId { get; }
 
-        public string Nickname { get; }
+        public string UserId { get; }
     }
 }

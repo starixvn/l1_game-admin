@@ -35,9 +35,8 @@
         {"even", "Even" },
     };
 
-
     var columns = new Dictionary<string, string>()
-    {
+{
         {"1", "1st Column" },
         {"2", "2nd Column" },
         {"3", "3rd Column"  }
@@ -151,7 +150,7 @@
     <td class="@cssClass">
         @firstBetType.FirstOrDefault().Key
     </td>
-    <td class="text @cssClass">
+    <td class="text-right @cssClass">
         @HtmlHelpers.formatNumber(firstBetType.FirstOrDefault().Value)
     </td>
 </tr>
@@ -160,11 +159,11 @@
 {
     foreach (var betChoice in firstBetType.Skip(1))
     {
-        var winningCssClass = firstSettlementResult.Any(x => x == firstBetType.FirstOrDefault().Key) ? "text-primary" : string.Empty;
+        var winningCssClass = firstSettlementResult.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>@firstBetTypeName</td>
 
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key
             </td>
             <td class="text-right @winningCssClass">
@@ -182,7 +181,7 @@
         var winningCssClass = settlementResult.StraightUp.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>@RouletteBetChoice.StraightUp.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key
             </td>
             <td class="text-right @winningCssClass">
@@ -199,7 +198,7 @@
         var winningCssClass = settlementResult.Split.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>@RouletteBetChoice.Split.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key.Replace("-", ", ")
             </td>
             <td class="text-right @winningCssClass">
@@ -217,7 +216,7 @@
 
         <tr>
             <td>@RouletteBetChoice.Street.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key.Replace("-", ", ")
             </td>
             <td class="text-right @winningCssClass">
@@ -235,7 +234,7 @@
 
         <tr>
             <td>@RouletteBetChoice.Triangle.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key.Replace("-", ", ")
             </td>
             <td class="text-right @winningCssClass">
@@ -253,7 +252,7 @@
 
         <tr>
             <td>@RouletteBetChoice.Corner.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key.Replace("-", ", ")
             </td>
             <td class="text-right @winningCssClass">
@@ -271,7 +270,7 @@
 
         <tr>
             <td>@RouletteBetChoice.FourNumbers.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @betChoice.Key.Replace("-", ", ")
             </td>
             <td class="text-right @winningCssClass">
@@ -289,7 +288,7 @@
 
         <tr>
             <td>@RouletteBetChoice.Line.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @{
                     var splits = betChoice.Key.Split('-');
                 }
@@ -311,7 +310,7 @@
 
         <tr>
             <td>@RouletteBetChoice.Column.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @columns[betChoice.Key]
             </td>
             <td class="text-right @winningCssClass">
@@ -328,7 +327,7 @@
         var winningCssClass = settlementResult.Dozen.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>@RouletteBetChoice.Dozen.DisplayName</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @dozens[betChoice.Key]
             </td>
             <td class="text-right @winningCssClass">
@@ -345,7 +344,7 @@
         var winningCssClass = settlementResult.RedBlack.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>Red/Black</td>
-            <td class="@winningCssClass text-capitalize">
+            <td class="@winningCssClass text-center text-capitalize">
                 @betChoice.Key
             </td>
             <td class="text-right @winningCssClass">
@@ -362,7 +361,7 @@
         var winningCssClass = settlementResult.OddEven.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>Odd/Even</td>
-            <td class="@winningCssClass text-capitalize">
+            <td class="@winningCssClass text-center text-capitalize">
                 @oddEvenResource[betChoice.Key]
             </td>
             <td class="text-right @winningCssClass">
@@ -379,7 +378,7 @@
         var winningCssClass = settlementResult.BigSmall.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
         <tr>
             <td>Big/Small</td>
-            <td class="@winningCssClass">
+            <td class="@winningCssClass text-center">
                 @bigSmall[betChoice.Key]
             </td>
             <td class="text-right @winningCssClass">

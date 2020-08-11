@@ -49,7 +49,7 @@
                         </td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetRouletteBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bet.UserId">
+                               asp-action="GetRouletteBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
                                 @HtmlHelpers.formatNumber(bet.TotalBet)
                             </a>
                         </td>

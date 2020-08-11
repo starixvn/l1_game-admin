@@ -5,14 +5,14 @@ namespace GamesAdmin.Api.Report.Request
 {
     public class RouletteBetHistoryRequest : IRequest<RouletteBetHistory>
     {
-        public RouletteBetHistoryRequest(long roundId, string nickname)
+        public RouletteBetHistoryRequest(long roundId, string userId)
         {
             RoundId = roundId;
-            Nickname = nickname;
+            UserId = userId;
         }
 
         public long RoundId { get; }
 
-        public string Nickname { get; }
+        public string UserId { get; }
     }
 }

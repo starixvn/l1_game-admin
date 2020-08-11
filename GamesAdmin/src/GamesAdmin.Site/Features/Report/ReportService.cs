@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string nickname);
+        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -107,7 +107,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS)
         => await reportApi.GetRouletteReport(roundId, nickname, excludeUUS);
 
-        public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string nickname)
-        => await reportApi.GetRouletteBetHistory(roundId, nickname);
+        public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
+        => await reportApi.GetRouletteBetHistory(roundId, userId);
     }
 }
