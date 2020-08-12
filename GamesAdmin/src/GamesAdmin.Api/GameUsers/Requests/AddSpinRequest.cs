@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.GameUser.Requests
 {
-    public class AddSpinRequest : IRequest<AddSpinResult>
+    public class AddSpinRequest : IRequest<AddMemberSpinResult>
     {
         public AddSpinRequest(string key, string obCustId, byte spins) 
         {

@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Requests;
 using GamesAdmin.Api.GameUsers.Results;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
@@ -26,7 +27,9 @@ namespace GamesAdmin.Api.GameUser
 
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
-        Task<AddSpinResult> AddSpin(AddSpinRequest createRequest);
+        Task<AddMemberSpinResult> AddSpin(AddSpinRequest createRequest);
+
+        Task<AddBatchOfSpinResult> AddBatchOfSpins(AddBatchOfSpinsRequest createRequest);
     }
 
     public class GameUserService : IGameUserService
@@ -89,7 +92,7 @@ namespace GamesAdmin.Api.GameUser
 
                 if (InvalidName(name))
                 {
-                    result.Error = $"Invalid name {name}";
+                    result.ErrorDescription = $"Invalid name {name}";
                     results.Add(result);
                     continue;
                 }
@@ -110,7 +113,7 @@ namespace GamesAdmin.Api.GameUser
                 catch (Exception ex)
                 {
                     sentryClient.CaptureException(ex);
-                    result.Error = ex.Message;
+                    result.ErrorDescription = ex.Message;
                 }
 
                 results.Add(result);
@@ -215,9 +218,9 @@ namespace GamesAdmin.Api.GameUser
                 );
         }
 
-        public async Task<AddSpinResult> AddSpin(AddSpinRequest createRequest)
+        public async Task<AddMemberSpinResult> AddSpin(AddSpinRequest createRequest)
         {
-            var result = new AddSpinResult { Key = createRequest.Key, ObCustId = createRequest.ObCustId };
+            var result = new AddMemberSpinResult { Key = createRequest.Key, ObCustId = createRequest.ObCustId };
 
             try
             {
@@ -225,9 +228,11 @@ namespace GamesAdmin.Api.GameUser
 
                 if (existingSpins.Count > 0)
                 {
-                    result.Error = existingSpins.Count == createRequest.Spins && existingSpins.All(x => x.ObCustId == createRequest.ObCustId)
-                        ? string.Empty
-                        : "Existing Key with different spin info.";
+                    if (existingSpins.Count != createRequest.Spins || !existingSpins.All(x => x.ObCustId == createRequest.ObCustId))
+                    {
+                        result.ErrorDescription = "Existing Key with different spin info.";
+                        result.ErrorCode = "1000";
+                    }
 
                     return result;
                 }
@@ -237,7 +242,9 @@ namespace GamesAdmin.Api.GameUser
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-                result.Error = ex.Message;
+
+                result.ErrorDescription = "Unspecified Error.";
+                result.ErrorCode = "1000";
             }
 
             return result;
@@ -252,7 +259,7 @@ namespace GamesAdmin.Api.GameUser
             {
                 spins.Add(new SpinEntity
                 {
-                    Key = createRequest.ObCustId,
+                    Key = createRequest.Key,
                     ObCustId = createRequest.ObCustId,
                     Time = time
                 });
@@ -263,5 +270,21 @@ namespace GamesAdmin.Api.GameUser
 
         private async Task<IList<SpinEntity>> GetSpinsByKey(string key)
         => (await spinRepository.FilterByAsync(spin => spin.Key == key)).ToList();
+
+        public async Task<AddBatchOfSpinResult> AddBatchOfSpins(AddBatchOfSpinsRequest createRequest)
+        {
+            var errors = new List<AddMemberSpinResult>();
+
+            foreach (var spinRequest in createRequest.Spins)
+            {
+                var memberSpinResult = await AddSpin(spinRequest);
+                if (!memberSpinResult.IsSuccess)
+                {
+                    errors.Add(memberSpinResult);
+                }
+            }
+
+            return new AddBatchOfSpinResult(errors);
+        }
     }
 }

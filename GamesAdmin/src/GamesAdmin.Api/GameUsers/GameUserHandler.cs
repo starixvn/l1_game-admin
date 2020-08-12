@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Requests;
 using GamesAdmin.Api.GameUsers.Results;
 using MediatR;
 
@@ -14,12 +15,13 @@ namespace GamesAdmin.Api.GameUser
         , IRequestHandler<ReviseBotNameRequest, int>
         , IRequestHandler<ReviseBotBalanceRequest, int>
         , IRequestHandler<DisableBotRandomlyRequest, int>
-        , IRequestHandler<AddSpinRequest, AddSpinResult>
+        , IRequestHandler<AddSpinRequest, AddMemberSpinResult>
+        , IRequestHandler<AddBatchOfSpinsRequest, AddBatchOfSpinResult>
     {
         private readonly IGameUserService gameUserService;
         private readonly IBotService botService;
 
-        public GameUserHandler(IGameUserService gameUserService, IBotService botService) 
+        public GameUserHandler(IGameUserService gameUserService, IBotService botService)
         {
             this.gameUserService = gameUserService;
             this.botService = botService;
@@ -40,7 +42,10 @@ namespace GamesAdmin.Api.GameUser
         public Task<int> Handle(DisableBotRandomlyRequest request, CancellationToken cancellationToken)
         => botService.DisableRandomly();
 
-        public Task<AddSpinResult> Handle(AddSpinRequest request, CancellationToken cancellationToken)
+        public Task<AddMemberSpinResult> Handle(AddSpinRequest request, CancellationToken cancellationToken)
         => gameUserService.AddSpin(request);
+
+        public Task<AddBatchOfSpinResult> Handle(AddBatchOfSpinsRequest request, CancellationToken cancellationToken)
+        => gameUserService.AddBatchOfSpins(request);
     }
 }
