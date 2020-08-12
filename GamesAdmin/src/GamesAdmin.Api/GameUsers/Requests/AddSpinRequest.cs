@@ -5,11 +5,14 @@ namespace GamesAdmin.Api.GameUser.Requests
 {
     public class AddSpinRequest : IRequest<AddSpinResult>
     {
-        public AddSpinRequest(string obCustId, byte spins) 
+        public AddSpinRequest(string key, string obCustId, byte spins) 
         {
+            Key = key;
             ObCustId = obCustId;
             Spins = spins;
         }
+
+        public string Key { get; }
 
         public string ObCustId { get; }
 

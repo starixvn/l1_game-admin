@@ -11,6 +11,8 @@ namespace GamesAdmin.Database.Entities.Spins
             Time = DateTime.UtcNow;
         }
 
+        public string Key { get; set; }
+
         public string ObCustId { get; set; }
 
         public bool Used { get; set; }

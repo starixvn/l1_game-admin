@@ -217,22 +217,22 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<AddSpinResult> AddSpin(AddSpinRequest createRequest)
         {
-            var spins = new List<SpinEntity>();
-            var time = DateTime.UtcNow;
-            var result = new AddSpinResult { ObCustId = createRequest.ObCustId };
+            var result = new AddSpinResult { Key = createRequest.Key, ObCustId = createRequest.ObCustId };
 
             try
             {
-                for (var i = 0; i < createRequest.Spins; i++)
+                var existingSpins = await GetSpinsByKey(createRequest.Key);
+
+                if (existingSpins.Count > 0)
                 {
-                    spins.Add(new SpinEntity
-                    {
-                        ObCustId = createRequest.ObCustId,
-                        Time = time
-                    });
+                    result.Error = existingSpins.Count == createRequest.Spins && existingSpins.All(x => x.ObCustId == createRequest.ObCustId)
+                        ? string.Empty
+                        : "Existing Key with different spin info.";
+
+                    return result;
                 }
 
-                await spinRepository.InsertManyAsync(spins);
+                await CreateSpins(createRequest);
             }
             catch (Exception ex)
             {
@@ -242,5 +242,26 @@ namespace GamesAdmin.Api.GameUser
 
             return result;
         }
+
+        private async Task CreateSpins(AddSpinRequest createRequest)
+        {
+            var spins = new List<SpinEntity>();
+            var time = DateTime.UtcNow;
+
+            for (var i = 0; i < createRequest.Spins; i++)
+            {
+                spins.Add(new SpinEntity
+                {
+                    Key = createRequest.ObCustId,
+                    ObCustId = createRequest.ObCustId,
+                    Time = time
+                });
+            }
+
+            await spinRepository.InsertManyAsync(spins);
+        }
+
+        private async Task<IList<SpinEntity>> GetSpinsByKey(string key)
+        => (await spinRepository.FilterByAsync(spin => spin.Key == key)).ToList();
     }
 }
