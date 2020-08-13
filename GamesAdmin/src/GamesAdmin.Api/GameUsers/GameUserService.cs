@@ -27,8 +27,6 @@ namespace GamesAdmin.Api.GameUser
 
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
-        Task<AddMemberSpinResult> AddSpin(AddSpinRequest createRequest);
-
         Task<AddBatchOfSpinResult> AddBatchOfSpins(AddBatchOfSpinsRequest createRequest);
     }
 
@@ -218,7 +216,7 @@ namespace GamesAdmin.Api.GameUser
                 );
         }
 
-        public async Task<AddMemberSpinResult> AddSpin(AddSpinRequest createRequest)
+        private async Task<AddMemberSpinResult> AddSpin(AddSpinRequest createRequest)
         {
             var result = new AddMemberSpinResult { Key = createRequest.Key, ObCustId = createRequest.ObCustId };
 
@@ -228,7 +226,7 @@ namespace GamesAdmin.Api.GameUser
 
                 if (existingSpins.Count > 0)
                 {
-                    if (existingSpins.Count != createRequest.Spins || !existingSpins.All(x => x.ObCustId == createRequest.ObCustId))
+                    if (existingSpins.Count != createRequest.NumberOfSpins || !existingSpins.All(x => x.ObCustId == createRequest.ObCustId))
                     {
                         result.ErrorDescription = "Existing Key with different spin info.";
                         result.ErrorCode = "1000";
@@ -255,7 +253,7 @@ namespace GamesAdmin.Api.GameUser
             var spins = new List<SpinEntity>();
             var time = DateTime.UtcNow;
 
-            for (var i = 0; i < createRequest.Spins; i++)
+            for (var i = 0; i < createRequest.NumberOfSpins; i++)
             {
                 spins.Add(new SpinEntity
                 {

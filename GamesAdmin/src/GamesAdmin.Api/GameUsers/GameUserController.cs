@@ -60,10 +60,6 @@ namespace GamesAdmin.Api.GameUser
            => (await mediator.Send(new DisableBotRandomlyRequest()));
 
         [HttpPost("spins/add")]
-        public Task<AddMemberSpinResult> AddSpins([FromBody] AddSpinRequest request)
-           => mediator.Send(request);
-
-        [HttpPut("spins/add_batch")]
         public Task<AddBatchOfSpinResult> AddBatchOfSpins([FromBody] AddBatchOfSpinsRequest request)
            => mediator.Send(request);
     }

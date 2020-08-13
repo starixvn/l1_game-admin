@@ -11,7 +11,7 @@ namespace GamesAdmin.Api.GameUsers.Results
             ErrorDescription = errorSpins?.Count > 0 ? "Unspecified Error." : string.Empty;
         }
 
-        public IList<AddMemberSpinResult> ErrorSpins { get; set; }        
+        public IList<AddMemberSpinResult> MemberErrors { get; set; }        
     }
 
     public class AddMemberSpinResult : BaseResult

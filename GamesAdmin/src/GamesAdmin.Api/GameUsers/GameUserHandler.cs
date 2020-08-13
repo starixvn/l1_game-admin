@@ -15,7 +15,6 @@ namespace GamesAdmin.Api.GameUser
         , IRequestHandler<ReviseBotNameRequest, int>
         , IRequestHandler<ReviseBotBalanceRequest, int>
         , IRequestHandler<DisableBotRandomlyRequest, int>
-        , IRequestHandler<AddSpinRequest, AddMemberSpinResult>
         , IRequestHandler<AddBatchOfSpinsRequest, AddBatchOfSpinResult>
     {
         private readonly IGameUserService gameUserService;
@@ -41,9 +40,6 @@ namespace GamesAdmin.Api.GameUser
 
         public Task<int> Handle(DisableBotRandomlyRequest request, CancellationToken cancellationToken)
         => botService.DisableRandomly();
-
-        public Task<AddMemberSpinResult> Handle(AddSpinRequest request, CancellationToken cancellationToken)
-        => gameUserService.AddSpin(request);
 
         public Task<AddBatchOfSpinResult> Handle(AddBatchOfSpinsRequest request, CancellationToken cancellationToken)
         => gameUserService.AddBatchOfSpins(request);
