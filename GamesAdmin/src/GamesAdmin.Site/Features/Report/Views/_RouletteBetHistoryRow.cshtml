@@ -145,13 +145,34 @@
     </td>
     <td>@firstBetTypeName</td>
     @{
-        var cssClass = firstSettlementResult.Any(x => x == firstBetType.FirstOrDefault().Key) ? "text-primary" : string.Empty;
+        var firstBetChoice = firstBetType.FirstOrDefault();
+        var cssClass = firstSettlementResult.Any(x => x == firstBetChoice.Key) ? "text-primary" : string.Empty;
+        var displayBetChoice = string.Empty;
     }
     <td class="@cssClass text-center">
-        @firstBetType.FirstOrDefault().Key
+        @if (firstBetTypeName == RouletteBetChoice.Dozen.DisplayName)
+        {
+            displayBetChoice = dozens[firstBetChoice.Key];
+        }
+
+        @if (firstBetTypeName == RouletteBetChoice.OddEven.DisplayName)
+        {
+            displayBetChoice = oddEvenResource[firstBetChoice.Key];
+        }
+        @if (firstBetTypeName == RouletteBetChoice.BigSmall.DisplayName)
+        {
+            displayBetChoice = bigSmall[firstBetChoice.Key];
+        }
+        @if (firstBetTypeName == RouletteBetChoice.Column.DisplayName)
+        {
+            displayBetChoice = columns[firstBetChoice.Key];
+        }
+
+        @(string.IsNullOrWhiteSpace(displayBetChoice) ? firstBetChoice.Key.Replace("-", ", ") : displayBetChoice)
+
     </td>
     <td class="text-right @cssClass">
-        @HtmlHelpers.formatNumber(firstBetType.FirstOrDefault().Value)
+        @HtmlHelpers.formatNumber(firstBetChoice.Value)
     </td>
 </tr>
 
@@ -160,11 +181,30 @@
     foreach (var betChoice in firstBetType.Skip(1))
     {
         var winningCssClass = firstSettlementResult.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+        displayBetChoice = string.Empty;
         <tr>
             <td>@firstBetTypeName</td>
 
             <td class="@winningCssClass text-center">
-                @betChoice.Key
+                @if (firstBetTypeName == RouletteBetChoice.Dozen.DisplayName)
+                { 
+                    displayBetChoice = dozens[betChoice.Key];
+                }
+
+                @if (firstBetTypeName == RouletteBetChoice.OddEven.DisplayName)
+                {
+                    displayBetChoice = oddEvenResource[betChoice.Key];
+                }
+                @if (firstBetTypeName == RouletteBetChoice.BigSmall.DisplayName)
+                {
+                    displayBetChoice = bigSmall[betChoice.Key];
+                }
+                @if (firstBetTypeName == RouletteBetChoice.Column.DisplayName)
+                {
+                    displayBetChoice = columns[betChoice.Key];
+                }
+
+                @(string.IsNullOrWhiteSpace(displayBetChoice) ? betChoice.Key.Replace("-", ", ") : displayBetChoice)
             </td>
             <td class="text-right @winningCssClass">
                 @HtmlHelpers.formatNumber(betChoice.Value)
