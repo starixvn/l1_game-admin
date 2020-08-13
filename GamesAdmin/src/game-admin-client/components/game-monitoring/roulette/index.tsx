@@ -51,7 +51,7 @@ const TYPE_GROUPS = {
 const DOZEN_CHOICE_MAPPER = {
     1: "1-12",
     2: "13-24",
-    3: "25-35",
+    3: "25-36",
 };
 
 const COLUMN_CHOICE_MAPPER = {
@@ -100,6 +100,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
         }
 
         this.setState({
+            result: number,
             isShowResultUpdater: false
         })
 
@@ -134,6 +135,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                     this.setState({
                         gameState: GameState.running,
                         roundNumber: roundId,
+                        result: -1,
                         time: {
                             remainingTime: remainingTime
                         }
@@ -143,6 +145,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                 this.setState({
                     gameState: GameState.running,
                     roundNumber: roundId,
+                    result: -1,
                     time: { remainingTime: remainingTime }
                 });
             }
@@ -195,6 +198,8 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                 return DOZEN_CHOICE_MAPPER[choice];
             case "column":
                 return COLUMN_CHOICE_MAPPER[choice];
+            case "line":
+                return choice.replace(/-/g, ',');
             default:
                 return choice;
         }
@@ -244,7 +249,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
         const result = [];
         const { betList } = this.state;
 
-        Object.keys(TYPE_GROUPS).map((key, index) => {
+        Object.keys(TYPE_GROUPS).forEach((key, index) => {
             let titles = [];
             let dataList = [];
 
@@ -257,7 +262,7 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
                     <BetList type="withchoice" isWin={false} titles={[this.renderTitles(titles)]} dataList={dataList} />
                 </Col>
             ));
-        })
+        });
         return (<>{result}</>);
     }
 
