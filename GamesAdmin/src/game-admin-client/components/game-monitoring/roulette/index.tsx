@@ -199,6 +199,11 @@ export default class Roulette extends React.Component<Props, RouletteModel>{
             case "column":
                 return COLUMN_CHOICE_MAPPER[choice];
             case "line":
+            case "slit":
+            case "street":
+            case "triangle":
+            case "conner":
+            case "fourNumbers":
                 return choice.replace(/-/g, ',');
             default:
                 return choice;
