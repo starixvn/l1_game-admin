@@ -203,6 +203,14 @@
 .table.sticky-table thead tr:nth-child(2) th {
   top: 42.73px; }
 
+.table-hover tbody tr:hover {
+  background: none; }
+  .table-hover tbody tr:hover td {
+    background-color: rgba(0, 0, 0, 0.075); }
+
+.table-hover tbody:hover td[rowspan] {
+  background-color: rgba(0, 0, 0, 0.075); }
+
 .form .form-control {
   padding: 0.8rem 1rem;
   line-height: 1;

@@ -83,3 +83,21 @@
         }
     }
 }
+
+.table-hover {
+    tbody {
+        tr:hover {
+            background: none;
+
+            td {
+                background-color: rgba(0, 0, 0, 0.075);
+            }
+        }
+
+        &:hover {
+            td[rowspan] {
+                background-color: rgba(0, 0, 0, 0.075);
+            }
+        }
+    }
+}
