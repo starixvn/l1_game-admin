@@ -81,10 +81,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmallTurbo, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOdd, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEven, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
         public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS)
         => reportApi.GetKenoReport(game.Value, roundId, nickname, excludeUUS);

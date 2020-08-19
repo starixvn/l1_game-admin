@@ -27,5 +27,7 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("chan")]
         public decimal OldEven { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 }

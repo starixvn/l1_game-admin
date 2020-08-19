@@ -5,10 +5,8 @@ namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("xocxoc_phiens")]
     [BsonIgnoreExtraElements]
-    public class SeDieRoundEntity : MiniGameBaseEntity
+    public class SeDieRoundEntity : BaseRoundEntity
     {
-        [BsonElement("id")]
-        public long Number { get; set; }
 
         [BsonElement("red1")]
         public bool FirstRedChip { get; set; }
@@ -22,7 +20,7 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("red4")]
         public bool FourthRedChip { get; set; }
 
-        public  SeDieResultEntity Result {get;set;}
+        public SeDieResultEntity Result { get; set; }
 
         public SeDieSettlementResultEntity SettlementResult { get; set; }
     }

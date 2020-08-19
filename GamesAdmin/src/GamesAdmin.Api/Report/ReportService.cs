@@ -204,10 +204,10 @@ namespace GamesAdmin.Api.Report
                 case (byte)GameId.BigSmallTurbo:
                     return await GetBigSmallTurboBetHistoryAsync(name, roundId);
 
-                case (byte)GameId.EvenOdd:
+                case (byte)GameId.OddEven:
                     return await GetOddEvenBetHistoryAsync(name, roundId);
 
-                case (byte)GameId.EvenOddTurbo:
+                case (byte)GameId.OddEvenTurbo:
                     return await GetOddEvenTurboBetHistoryAsync(name, roundId);
 
                 default:
