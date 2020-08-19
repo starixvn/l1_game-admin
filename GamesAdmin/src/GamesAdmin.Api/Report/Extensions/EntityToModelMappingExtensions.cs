@@ -6,17 +6,17 @@ namespace GamesAdmin.Api.Report.Extensions
 {
     public static class EntityToModelMappingExtensions
     {
-        public static SeDieRoundResult ToModel(this ShakeThePlateRoundEntity entity)
+        public static SeDieRoundResult ToModel(this SeDieRoundEntity entity)
         {
             return new SeDieRoundResult
             {
                 Number = entity.Number,
                 Chips = new bool[]
                 {
-                    entity.FirstRedChip,
-                    entity.SecondRedChip,
-                    entity.ThirdRedChip,
-                    entity.FourthRedChip
+                    entity.Result?.FirstRedChip ?? entity.FirstRedChip,
+                    entity.Result?.SecondRedChip ?? entity.SecondRedChip,
+                    entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
+                    entity.Result?.FourthRedChip ?? entity.FourthRedChip
                 }
             };
         }
@@ -45,10 +45,10 @@ namespace GamesAdmin.Api.Report.Extensions
                 Number = entity.Number,
                 Chips = new bool[]
                 {
-                    entity.FirstRedChip,
-                    entity.SecondRedChip,
-                    entity.ThirdRedChip,
-                    entity.FourthRedChip
+                    entity.Result?.FirstRedChip ?? entity.FirstRedChip,
+                    entity.Result?.SecondRedChip ?? entity.SecondRedChip,
+                    entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
+                    entity.Result?.FourthRedChip ?? entity.FourthRedChip
                 }
             };
         }

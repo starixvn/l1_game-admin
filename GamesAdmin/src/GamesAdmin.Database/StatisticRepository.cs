@@ -32,7 +32,7 @@ namespace GamesAdmin.Database
             var evenOddTurboOnesCollection = database.GetCollection<OddEvenTurboOnesEntity>(Document.GetCollectionName(typeof(OddEvenTurboOnesEntity)));
 
             var fishPrawnCrabBetCollection = database.GetCollection<FishPrawnCrabBetEntity>(Document.GetCollectionName(typeof(FishPrawnCrabBetEntity)));
-            var shakeThePlateBetCollection = database.GetCollection<ShakeThePlateBetEntity>(Document.GetCollectionName(typeof(ShakeThePlateBetEntity)));
+            var shakeThePlateBetCollection = database.GetCollection<SeDieBetEntity>(Document.GetCollectionName(typeof(SeDieBetEntity)));
             var dragonTigerBetCollection = database.GetCollection<DragonTigerBetEntity>(Document.GetCollectionName(typeof(DragonTigerBetEntity)));
 
             var bigSmallTotalBets = await bigSmallOnesCollection.CountDocumentsAsync(x => x.Time >= startOfDay && x.Time < endOfDay && x.MemberId.HasValue);

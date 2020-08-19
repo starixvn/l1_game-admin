@@ -45,7 +45,7 @@ namespace GamesAdmin.Api.GameUser
             ISentryClient sentryClient,
             IBotSettings botSettings,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IGenericRepository<AccountEntity> accountRepository)
+            IGenericRepository<AccountEntity> accountRepository,
             IGenericRepository<SpinEntity> spinRepository)
         {
             this.sentryClient = sentryClient;

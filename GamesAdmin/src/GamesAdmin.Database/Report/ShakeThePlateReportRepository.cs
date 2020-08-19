@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IShakeThePlateReportRepository
     {
-        Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(SeDieRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ShakeThePlateReportRepository : BaseBetReportRepository, IShakeThePlateReportRepository
@@ -18,21 +18,21 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(ShakeThePlateRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(SeDieRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
-            var roundResult = await database.GetCollection<ShakeThePlateRoundEntity>(Document.GetCollectionName(typeof(ShakeThePlateRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<SeDieRoundEntity>(Document.GetCollectionName(typeof(SeDieRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<ShakeThePlateBetEntity, ShakeThePlateBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
+                var project = GetBaseAggregateBuilder<SeDieBetEntity, ShakeThePlateBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
                     .Project(x => new ShakeThePlateBetReportEntity
                     {
                         Time = x.Time,
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
-                        Even = x.Even,
-                        Odd = x.Odd,
+                        Even = x.Even + x.OldEven,
+                        Odd = x.Odd + x.OldOdd,
                         ThreeRed = x.ThreeRed,
                         FourRed = x.FourRed,
                         ThreeWhite = x.ThreeWhite,
@@ -43,7 +43,7 @@ namespace GamesAdmin.Database
                 return (roundResult, records);
             }
 
-            return (new ShakeThePlateRoundEntity(), Enumerable.Empty<ShakeThePlateBetReportEntity>());
+            return (new SeDieRoundEntity(), Enumerable.Empty<ShakeThePlateBetReportEntity>());
         }
     }
 }

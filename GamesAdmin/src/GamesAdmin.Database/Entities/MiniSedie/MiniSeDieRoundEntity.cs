@@ -21,5 +21,9 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("red4")]
         public bool FourthRedChip { get; set; }
+
+        public SeDieResultEntity Result { get; set; }
+
+        public SeDieSettlementResultEntity SettlementResult { get; set; }
     }
 }
