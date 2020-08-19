@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.EndGameInfo;
 using GamesAdmin.Api.EndGameInfo.Request;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.EndGameInfo;
 using MediatR;
 using Sentry;
@@ -11,11 +12,11 @@ namespace GamesAdmin.Api.DailySummarize
 {
     public class EndGameInfoHandler : IRequestHandler<RetrieveEndGameInfoRequest, EndGameInfoResult>
     {
-        private IEndGameInfoService service;
+        private IEndGameInfoServiceFactory factory;
 
-        public EndGameInfoHandler(IEndGameInfoService service)
+        public EndGameInfoHandler(IEndGameInfoServiceFactory factory)
         {
-            this.service = service;
+            this.factory = factory;
         }
 
         public async Task<EndGameInfoResult> Handle(RetrieveEndGameInfoRequest request, CancellationToken cancellationToken)
@@ -26,34 +27,33 @@ namespace GamesAdmin.Api.DailySummarize
             {
                 if (request.GameRoundId == 0)
                 {
-                    result = EndGameInfoError.SB1002;
+                    return EndGameInfoError.SB1002;
                 }
-                else
+
+                if (string.IsNullOrWhiteSpace(request.SiteId))
                 {
-                    if (string.IsNullOrWhiteSpace(request.SiteId))
-                    {
-                        result = EndGameInfoError.SB1003;
-                    }
-                    else
-                    {
-                        if (request.ObCustId == 0)
-                        {
-                            result = EndGameInfoError.SB1004;
-                        }
-                        else
-                        {
-                            result = await service.GetAsync(request);
-                        }
-                    }
+                    return EndGameInfoError.SB1003;
                 }
+
+                if (request.ObCustId == 0)
+                {
+                    return EndGameInfoError.SB1004;
+                }
+
+
+                if (!Enum.TryParse(request.GameTypeId.ToString(), out GameId gameType))
+                {
+                    return EndGameInfoError.SB1006;
+                }
+
+                var service = factory.GetService(gameType);
+                return await service.GetAsync(request);
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                result = EndGameInfoError.SB1000;
+                return EndGameInfoError.SB1000;
             }
-
-            return result;
         }
     }
 }

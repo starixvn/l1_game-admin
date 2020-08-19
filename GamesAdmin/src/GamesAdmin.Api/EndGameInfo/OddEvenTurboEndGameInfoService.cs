@@ -7,9 +7,9 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class OddEvenTurboTurboEndGameInfoService : BaseEndGameInfoService<OddEvenTurboRoundEntity, OddEvenTurboOnesEntity>, IEndGameInfoService
+    public class OddEvenTurboEndGameInfoService : BaseEndGameInfoService<OddEvenTurboRoundEntity, OddEvenTurboOnesEntity>, IEndGameInfoService
     {
-        public OddEvenTurboTurboEndGameInfoService(IGenericRepository<OddEvenTurboRoundEntity> roundRepository, IGenericRepository<OddEvenTurboOnesEntity> betRepository)
+        public OddEvenTurboEndGameInfoService(IGenericRepository<OddEvenTurboRoundEntity> roundRepository, IGenericRepository<OddEvenTurboOnesEntity> betRepository)
             : base(roundRepository, betRepository)
         {
         }

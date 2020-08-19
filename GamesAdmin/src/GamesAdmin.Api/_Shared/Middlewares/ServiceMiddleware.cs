@@ -10,6 +10,7 @@ using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using Microsoft.Extensions.DependencyInjection;
+using GamesAdmin.Api.EndGameInfo;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -50,6 +51,27 @@ namespace GamesAdmin.Api._Shared.Middlewares
                         .AddScoped<IKenoReport, KenoNorthReport>(s => s.GetService<KenoNorthReport>());
             services.AddScoped<KenoProMaxReport>()
                         .AddScoped<IKenoReport, KenoProMaxReport>(s => s.GetService<KenoProMaxReport>());
+
+            services.AddScoped<IEndGameInfoServiceFactory, EndGameInfoServiceFactory>();
+            services.AddScoped<BigSmallEndGameInfoService>();
+            services.AddScoped<BigSmallTurboEndGameInfoService>();
+            services.AddScoped<OddEvenEndGameInfoService>();
+            services.AddScoped<OddEvenTurboEndGameInfoService>();
+            services.AddScoped<FishPrawnCrabEndGameInfoService>();
+            services.AddScoped<SeDieEndGameInfoService>();
+            services.AddScoped<MiniSeDieEndGameInfoService>();
+            services.AddScoped<DragonTigerEndGameInfoService>();
+            services.AddScoped<BaccaratEndGameInfoService>();
+            services.AddScoped<KenoProMaxEndGameInfoService>();
+            services.AddScoped<KenoProVietEndGameInfoService>();
+            services.AddScoped<KenoMaxEndGameInfoService>();
+            services.AddScoped<KenoMax2EndGameInfoService>();
+            services.AddScoped<KenoMiniEndGameInfoService>();
+            services.AddScoped<KenoMini2EndGameInfoService>();
+            services.AddScoped<KenoEastEndGameInfoService>();
+            services.AddScoped<KenoWestEndGameInfoService>();
+            services.AddScoped<KenoSouthEndGameInfoService>();
+            services.AddScoped<KenoNorthEndGameInfoService>();
         }
     }
 }
