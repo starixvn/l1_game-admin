@@ -28,7 +28,8 @@ namespace GamesAdmin.Site.Features.GameRoundResult
                 {
                     ClientId = resultPageConfiguration.ClientId,
                     ClientKey = resultPageConfiguration.ClientKey
-                }
+                },
+                Language = resultPageConfiguration.Language
             });
 
             return result.RedirectUrl;
