@@ -33,6 +33,7 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string BaseUrl { get; set; }
         public string ClientId { get; set; }
         public string ClientKey { get; set; }
+        public string Language { get; set; }
     }
 
     public class AppSettings : IAppSettings
