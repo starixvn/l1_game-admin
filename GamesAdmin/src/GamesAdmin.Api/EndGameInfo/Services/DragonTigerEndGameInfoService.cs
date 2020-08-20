@@ -7,7 +7,7 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class DragonTigerEndGameInfoService : BaseEndGameInfoService<DragonTigerRoundEntity, DragonTigerBetEntity>
+    public class DragonTigerEndGameInfoService : BaseEndGameInfoService<DragonTigerRoundEntity, DragonTigerBetEntity>, IEndGameInfoService
     {
         public DragonTigerEndGameInfoService(IGenericRepository<DragonTigerRoundEntity> roundRepository, IGenericRepository<DragonTigerBetEntity> betRepository)
         : base(roundRepository, betRepository)

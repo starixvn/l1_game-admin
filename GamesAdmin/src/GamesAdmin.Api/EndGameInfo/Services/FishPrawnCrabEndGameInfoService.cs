@@ -7,7 +7,7 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class FishPrawnCrabEndGameInfoService : BaseEndGameInfoService<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity>
+    public class FishPrawnCrabEndGameInfoService : BaseEndGameInfoService<FishPrawnCrabRoundEntity, FishPrawnCrabBetEntity>, IEndGameInfoService
     {
         public FishPrawnCrabEndGameInfoService(IGenericRepository<FishPrawnCrabRoundEntity> roundRepository, IGenericRepository<FishPrawnCrabBetEntity> betRepository)
        : base(roundRepository, betRepository)
