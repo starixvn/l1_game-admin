@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
+using MongoDB.Driver;
+
+namespace GamesAdmin.Database
+{
+    public interface ISeDieReportRepository
+    {
+        Task<(SeDieRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+    }
+
+    public class SeDieReportRepository : BaseBetReportRepository, ISeDieReportRepository
+    {
+        public SeDieReportRepository(IMongoDatabase database) : base(database)
+        {
+        }
+
+        public async Task<(SeDieRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var roundResult = await database.GetCollection<SeDieRoundEntity>(Document.GetCollectionName(typeof(SeDieRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            if (roundResult != null)
+            {
+                try
+                {
+                    var project = GetBaseAggregateBuilder<SeDieBetEntity, SeDieBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS);
+
+                    var records = (await project.ToListAsync())
+                        .Select(x => new SeDieBetReportEntity
+                        {
+                            Time = x.Time,
+                            Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
+                            Nickname = x.AccountInfos.Name,
+                            BetWin = x.Betwin,
+                            Even = x.Even + x.OldEven,
+                            Odd = x.Odd + x.OldOdd,
+                            ThreeRed = x.ThreeRed,
+                            FourRed = x.FourRed,
+                            ThreeWhite = x.ThreeWhite,
+                            FourWhite = x.FourWhite
+                        });
+
+                    return (roundResult, records);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+
+            return (new SeDieRoundEntity(), Enumerable.Empty<SeDieBetReportEntity>());
+        }
+    }
+}

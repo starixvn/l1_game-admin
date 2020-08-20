@@ -21,7 +21,7 @@ namespace GamesAdmin.Api.Report.Extensions
             };
         }
 
-        public static SeDieBetRecord ToModel(this ShakeThePlateBetReportEntity entity)
+        public static SeDieBetRecord ToModel(this SeDieBetReportEntity entity)
         {
             return new SeDieBetRecord
             {
