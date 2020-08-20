@@ -18,6 +18,6 @@ namespace GamesAdmin.Api.EndGameInfo
 
         [HttpPost]
         public async Task<IActionResult> Index([FromBody] RetrieveEndGameInfoRequest request)
-            => Ok(new { summary = await mediator.Send(request) });
+            => Ok(await mediator.Send(request));
     }
 }

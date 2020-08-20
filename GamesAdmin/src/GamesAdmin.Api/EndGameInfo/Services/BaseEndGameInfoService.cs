@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GamesAdmin.Api.EndGameInfo.Request;
@@ -38,9 +39,8 @@ namespace GamesAdmin.Api.EndGameInfo
             Expression<Func<TBetEntity, bool>> defaultExpression = x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId && x.Paid;
 
             var finalExpression = filter != null ? defaultExpression.And(filter) : defaultExpression;
-            var betEntities = await betRepository.FilterByAsync(finalExpression);
 
-            return betEntities;
+            return (await betRepository.FilterByAsync(finalExpression)).ToList();
         }
     }
 }

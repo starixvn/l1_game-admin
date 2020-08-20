@@ -21,8 +21,6 @@ namespace GamesAdmin.Api.DailySummarize
 
         public async Task<EndGameInfoResult> Handle(RetrieveEndGameInfoRequest request, CancellationToken cancellationToken)
         {
-            EndGameInfoResult result;
-
             try
             {
                 if (request.GameRoundId == 0)
