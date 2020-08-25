@@ -72,6 +72,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoWestEndGameInfoService>();
             services.AddScoped<KenoSouthEndGameInfoService>();
             services.AddScoped<KenoNorthEndGameInfoService>();
+            services.AddScoped<RouletteEndGameInfoService>();
         }
     }
 }
