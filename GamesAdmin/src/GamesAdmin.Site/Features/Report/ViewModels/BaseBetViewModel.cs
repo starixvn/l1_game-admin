@@ -4,6 +4,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class BaseBetViewModel
     {
+        public string UserId { get; set; }
+
         public string Username { get; set; }
 
         public string Nickname { get; set; }

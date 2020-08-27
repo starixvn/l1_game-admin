@@ -6,6 +6,6 @@
 
         public int RemainingTime { get; set; }
 
-        public bool IsDisabled { get; set; }
+        public bool IsDisabled { get; set; }       
     }
 }

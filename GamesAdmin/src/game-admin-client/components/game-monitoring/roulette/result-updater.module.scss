@@ -1,0 +1,39 @@
+.result-updater{
+    justify-content: center;
+
+    &> div {
+        background: #411212ef;
+        border: solid 2px #660f10;
+        border-radius: 15px;
+
+        .modal-header {
+            border-bottom: none;
+            padding: 5px 15px 0;
+
+            span{
+                color: #b17817;
+            }            
+        }
+
+        .modal-footer{
+            border-top: none;
+            justify-content: center;
+        }
+    }      
+
+    .number{
+        color: white;
+        justify-content: center;
+        font-size: 30px;
+        border: 1px solid #ee9b22;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .column{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+}

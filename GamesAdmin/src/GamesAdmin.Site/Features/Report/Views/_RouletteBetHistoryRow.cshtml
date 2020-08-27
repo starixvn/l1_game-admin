@@ -1,0 +1,376 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration.BetChoices
+@model GamesAdmin.Site.Features.Report.ViewModels.RouletteBetHistoryRowViewModel
+
+@{
+    var bet = Model.Bet;
+    var settlementResult = Model.SettlementResult;
+    var rowSpan = 0;
+
+    var dozens = new Dictionary<string, string>()
+{
+        {"1", "1-12" },
+        {"2", "13-24" },
+        {"3", "25-36"  }
+    };
+
+    var bigSmall = new Dictionary<string, string>()
+{
+        {"small", "1-18" },
+        {"big", "19-36" },
+    };
+
+    var redBlackResources = new Dictionary<string, string>()
+{
+        {"red", "Red" },
+        {"black", "Black" },
+    };
+
+    var oddEvenResource = new Dictionary<string, string>()
+{
+        {"odd", "Odd" },
+        {"even", "Even" },
+    };
+
+    var columns = new Dictionary<string, string>()
+{
+        {"1", "1st Column" },
+        {"2", "2nd Column" },
+        {"3", "3rd Column"  }
+    };
+
+    if (bet.StraightUp.Any())
+    {
+        rowSpan += bet.StraightUp.Count;
+    }
+
+    if (bet.Split.Any())
+    {
+        rowSpan += bet.Split.Count;
+    }
+
+    if (bet.Street.Any())
+    {
+        rowSpan += bet.Street.Count;
+    }
+
+    if (bet.Triangle.Any())
+    {
+        rowSpan += bet.Triangle.Count;
+    }
+
+    if (bet.Corner.Any())
+    {
+        rowSpan += bet.Corner.Count;
+    }
+
+    if (bet.FourNumbers.Any())
+    {
+        rowSpan += bet.FourNumbers.Count;
+    }
+
+    if (bet.Line.Any())
+    {
+        rowSpan += bet.Line.Count;
+    }
+
+    if (bet.Column.Any())
+    {
+        rowSpan += bet.Column.Count;
+    }
+
+    if (bet.Dozen.Any())
+    {
+        rowSpan += bet.Dozen.Count;
+    }
+
+    if (bet.RedBlack.Any())
+    {
+        rowSpan += bet.RedBlack.Count;
+    }
+
+    if (bet.OddEven.Any())
+    {
+        rowSpan += bet.OddEven.Count;
+    }
+
+    if (bet.BigSmall.Any())
+    {
+        rowSpan += bet.BigSmall.Count;
+    }
+
+    var renderDate = true;
+}
+
+
+@foreach (var betChoice in bet.StraightUp)
+{
+    var winningCssClass = settlementResult.StraightUp.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.StraightUp.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @betChoice.Key
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.Split)
+{
+    var winningCssClass = settlementResult.Split.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Split.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @betChoice.Key.Replace("-", ", ")
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.Street)
+{
+    var winningCssClass = settlementResult.Street.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Street.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @betChoice.Key.Replace("-", ", ")
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+@foreach (var betChoice in bet.Triangle)
+{
+    var winningCssClass = settlementResult.Triangle.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Triangle.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @betChoice.Key.Replace("-", ", ")
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.Corner)
+{
+    var winningCssClass = settlementResult.Corner.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Corner.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @betChoice.Key.Replace("-", ", ")
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.FourNumbers)
+{
+    var winningCssClass = settlementResult.FourNumbers.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.FourNumbers.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @betChoice.Key.Replace("-", ", ")
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+@foreach (var betChoice in bet.Line)
+{
+    var winningCssClass = settlementResult.Line.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Line.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @{
+                var splits = betChoice.Key.Split('-');
+            }
+            <div>@splits[0], @splits[1], @splits[2]</div>
+            <div>@splits[3], @splits[4], @splits[5]</div>
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+
+}
+
+@foreach (var betChoice in bet.Column)
+{
+    var winningCssClass = settlementResult.Column.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Column.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @columns[betChoice.Key]
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.Dozen)
+{
+    var winningCssClass = settlementResult.Dozen.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+    <tr>
+
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>@RouletteBetChoice.Dozen.DisplayName</td>
+        <td class="@winningCssClass text-center">
+            @dozens[betChoice.Key]
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.RedBlack)
+{
+    var winningCssClass = settlementResult.RedBlack.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>Red/Black</td>
+        <td class="@winningCssClass text-center text-capitalize">
+            @betChoice.Key
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.OddEven)
+{
+    var winningCssClass = settlementResult.OddEven.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>Odd/Even</td>
+        <td class="@winningCssClass text-center text-capitalize">
+            @oddEvenResource[betChoice.Key]
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}
+
+
+@foreach (var betChoice in bet.BigSmall)
+{
+    var winningCssClass = settlementResult.BigSmall.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
+    <tr>
+        @if (renderDate)
+        {
+            renderDate = false;
+            <td rowspan="@rowSpan">
+                @bet.Time.ToString(Constants.DateTimeFormat)
+            </td>
+        }
+        <td>Big/Small</td>
+        <td class="@winningCssClass text-center">
+            @bigSmall[betChoice.Key]
+        </td>
+        <td class="text-right @winningCssClass">
+            @HtmlHelpers.formatNumber(betChoice.Value)
+        </td>
+    </tr>
+}

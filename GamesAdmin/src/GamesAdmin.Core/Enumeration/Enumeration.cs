@@ -34,6 +34,19 @@ namespace GamesAdmin.Core.Enumeration
             return matchingItem;
         }
 
+        public static bool Contains<T>(string value) where T : Enumeration, new()
+        {
+            try
+            {
+                var matchingItem = Parse<T, string>(value, "value", item => item.Value == value);
+                return matchingItem != null ;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }            
+        }
+
         public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
         {
             var type = typeof(T);

@@ -43,7 +43,7 @@ const classNames = {
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {
   const { type, total, isWin } = props;
-  const className = classNames[type];
+  const className = classNames[type] ? classNames[type] : `${type}Bg`;
 
   const amount = total.toLocaleString('en-US');
   return (

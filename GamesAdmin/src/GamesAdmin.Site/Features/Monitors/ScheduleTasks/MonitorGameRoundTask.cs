@@ -1,12 +1,12 @@
-﻿using Coravel.Invocable;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Coravel.Invocable;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.Monitors.Models;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Monitors.ScheduleTasks
 {
@@ -29,29 +29,31 @@ namespace GamesAdmin.Site.Features.Monitors.ScheduleTasks
         public async Task Invoke()
         {
             var alerts = new List<string>();
-            var info = await service.GetGameRoundInfo();
+            var currentGameRounds = await service.GetGameRoundInfo();
 
-            if (info?.Count == 0) 
+            if (currentGameRounds?.Count == 0)
             {
                 sentryClient.CaptureMessage("Not found any game round info!!!", Sentry.Protocol.SentryLevel.Error);
             }
 
-            var latestInfo = cache.GetCache<Dictionary<string, GameRoundInfo>>(CachedKeys.GameRoundInfo.ToString());
+            var latestInfo = cache.GetCache<GameRoundInfoCache>(CachedKeys.GameRoundInfo.ToString());
 
-            if (latestInfo != null)
+            if (latestInfo?.GameRounds?.Count > 0)
             {
-                foreach (var latestGameInfo in latestInfo)
+                foreach (var latestGameInfo in latestInfo.GameRounds)
                 {
-                    var latestRound = latestGameInfo.Value;
-                    var currentRound = info.ContainsKey(latestGameInfo.Key) ? info[latestGameInfo.Key] : null;
-
-                    var notChanged = !currentRound.IsDisabled &&
-                        latestRound.RoundId == currentRound.RoundId &&
-                        latestRound.RemainingTime == currentRound.RemainingTime;
-
-                    if (currentRound == null || notChanged)
+                    var currentRound = currentGameRounds.ContainsKey(latestGameInfo.Key) ? currentGameRounds[latestGameInfo.Key] : null;
+                    if (currentRound == null)
                     {
-                        alerts.Add($"{DateTime.Now} Game {latestGameInfo.Key} stop at round {latestRound.RoundId} remainingTime {latestRound.RemainingTime}");
+                        alerts.Add($"{DateTime.Now} Game {latestGameInfo.Key} not found round info");
+                        continue;
+                    }
+
+                    var latestRound = latestGameInfo.Value;
+
+                    if (IsRoundUnchanged(currentRound, latestRound))
+                    {
+                        alerts.Add($"Game {latestGameInfo.Key} stop at round {latestRound.RoundId} remainingTime {latestRound.RemainingTime}. Latest info cached at {latestInfo.CachedDate}.");
                     }
                 }
 
@@ -61,7 +63,12 @@ namespace GamesAdmin.Site.Features.Monitors.ScheduleTasks
                 }
             }
 
-            cache.SetCache(CachedKeys.GameRoundInfo.ToString(), info);
+            cache.SetCache(CachedKeys.GameRoundInfo.ToString(), new GameRoundInfoCache { CachedDate = DateTimeOffset.Now, GameRounds = currentGameRounds });
         }
+
+        private static bool IsRoundUnchanged(GameRoundInfo currentRound, GameRoundInfo latestRound)
+        => !currentRound.IsDisabled &&
+                latestRound.RoundId == currentRound.RoundId &&
+                latestRound.RemainingTime == currentRound.RemainingTime;
     }
 }

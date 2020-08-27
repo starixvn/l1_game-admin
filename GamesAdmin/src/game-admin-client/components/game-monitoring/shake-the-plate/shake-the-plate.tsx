@@ -40,26 +40,20 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
       });
     }
 
-    if (!!data.info) {
+    if (!!data.inGame) {
       this.setState({
-        betList: this.getTotalBetList(data.info.red, this.state.betList)
+        betList: this.getUserBetList(data.inGame, this.state.betList)
       })
     }
 
-    if (!!data.ingame) {
-      this.setState({
-        betList: this.getUserBetList(data.ingame.red, this.state.betList)
-      })
-    }
-
-    if (!!data.time_remain) {
+    if (!!data.remainingTime) {
       this.setState({ disabled: false });
-      if (data.time_remain > 30) {
+      if (data.remainingTime > 30) {
         this.setState({
           gameState: GameState.waiting,
-          roundNumber: data.phien - 1,
+          roundNumber: data.roundId - 1,
           time: {
-            remainingTime: data.time_remain - 31
+            remainingTime: data.remainingTime - 31
           },
           result: data.dices ? this.getResult(data.dices) : this.state.result
         })
@@ -78,14 +72,14 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
               new DiceModel(-1, DiceType.XocXoc)
             ],
           })
-        }, (data.time_remain - 30) * 1000)
+        }, (data.remainingTime - 30) * 1000)
       }
       else {
         this.setState({
           gameState: GameState.running,
-          roundNumber: data.phien,
+          roundNumber: data.roundId,
           time: {
-            remainingTime: data.time_remain
+            remainingTime: data.remainingTime
           }
         })
       }
@@ -119,36 +113,20 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     }
   }
 
-  getTotalBetList(data, currentData) {
-    currentData.chan.total = data.chan;
-    currentData.le.total = data.le;
-    currentData.red3.total = data.red3;
-    currentData.red4.total = data.red4;
-    currentData.white3.total = data.white3;
-    currentData.white4.total = data.white4;
-
-    return currentData;
-  }
-
   getUserBetList(data, currentData) {
     Object.keys(currentData).forEach(key => {
+      currentData[key].total = 0;
       currentData[key].dataList = new Array<BetItem>();
     });
 
     for (const user in data) {
-      Object.keys(data[user]).forEach(key => {
-        switch (key) {
-          case 'name':
-            break;
-          case 'cuocQueue':
-            break;
-          case 'currentCuoc':
-            break;
-          default:
-            if (data[user][key] > 0)
-              currentData[key].dataList.unshift(new BetItem(data[user].name, data[user][key]))
+      let betTracks = data[user].betTracks;
+      Object.keys(betTracks).forEach(key => {
+        if (betTracks[key]) {
+          currentData[key].total += betTracks[key];
+          currentData[key].dataList.unshift(new BetItem(data[user].name, betTracks[key]));
         }
-      })
+      });
     }
 
     return currentData;

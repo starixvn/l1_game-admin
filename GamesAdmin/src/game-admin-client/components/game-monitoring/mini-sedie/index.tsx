@@ -17,7 +17,7 @@ type Props = {
   onMessage: Function
 }
 
-export default class ShakeThePlate extends React.Component<Props, MiniSedieModel> {
+export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
   constructor(props) {
@@ -80,7 +80,7 @@ export default class ShakeThePlate extends React.Component<Props, MiniSedieModel
           time: {
             remainingTime: data.remainingTime
           }
-        })
+        });
       }
     }
 

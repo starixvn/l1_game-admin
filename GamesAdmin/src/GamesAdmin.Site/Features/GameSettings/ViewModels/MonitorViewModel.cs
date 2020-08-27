@@ -35,7 +35,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             { GameType.KenoWestValue, GameType.KenoWestValue },
             { GameType.KenoSouthValue, GameType.KenoSouthValue },
             { GameType.KenoNorthValue, GameType.KenoNorthValue },
-            { GameType.KenoProMaxValue, GameType.KenoProMaxValue }
+            { GameType.KenoProMaxValue, GameType.KenoProMaxValue },
+            { GameType.RouletteValue, GameType.RouletteValue }
         };
 
         public MonitorItemViewModel(string name)
@@ -45,7 +46,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; }
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name) ? string.Empty : Enumeration.FromValue<GameType>(Name).DisplayName;
+        public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
+            ? Name
+            : Enumeration.FromValue<GameType>(Name).DisplayName;
 
         public bool EnabledHistory => gameHistoryUrl.ContainsKey(Name);
 

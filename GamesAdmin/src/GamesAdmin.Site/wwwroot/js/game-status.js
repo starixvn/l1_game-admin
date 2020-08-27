@@ -66,7 +66,7 @@
             }
         },
 
-        reload: function() {
+        reload: function () {
             if (confirm("Are you sure you want all users to RELOAD?")) {
                 $.ajax({
                     method: "POST",
@@ -80,7 +80,10 @@
         },
 
         underMaintenance: function () {
-            if (confirm("Are you sure you want to set Under Maintenance schedule?")) {
+            const status = $("#IsUM").prop("checked") ? "ON" : "OFF";
+            let message = "You are going to set Under Maintenance to " + status + ". Are you sure?";
+
+            if (confirm(message)) {
                 $.ajax({
                     method: "POST",
                     url: "/status/um",
@@ -88,7 +91,7 @@
                     data: $('#umForm').serialize(),
                 }).done(function (updated) {
                     if (updated) {
-                        alert("Under Maintenance!");
+                        alert("Under Maintenance is " + status + " now!");
                         $('#umModal').modal('hide');
                     }
                 });
@@ -107,7 +110,7 @@
             });
         },
 
-        getCheckedGames: function() {
+        getCheckedGames: function () {
             var container = $("#status-tbl");
             var checkboxes = container.find('.game-status-chk');
             var gameChosen = "";
@@ -130,7 +133,7 @@
             };
         },
 
-        showGameForm: function(gameName, gameDisplayName) {
+        showGameForm: function (gameName, gameDisplayName) {
             $.ajax({
                 method: "GET",
                 url: "/gamedetails/" + gameName
@@ -143,7 +146,7 @@
             });
         },
 
-        updateBotCount: function(element) {
+        updateBotCount: function (element) {
             const wrapper = $('#botRatioModal');
             var per = parseInt($(element).parent().find('.ratio').val());
             var totalBots = parseInt(wrapper.find('#total_bots_field').val());
@@ -152,7 +155,7 @@
             $(element).parent().find('.bot-number').html(`${currentBot} bot(s)`);
         },
 
-        showBotRatioModal: function(gameName) {
+        showBotRatioModal: function (gameName) {
             const wrapper = $('#botRatioModal');
 
             currentGameName = gameName;
@@ -184,7 +187,7 @@
             });
         },
 
-        updateBotRationItems: function() {
+        updateBotRationItems: function () {
             const modal = $('#botRatioModal');
             const btnSubmit = modal.find('#updateBotRatioBtn');
             const data = [];
@@ -230,10 +233,10 @@
             });
         },
 
-        startMonitor: function(gameName) {
+        startMonitor: function (gameName) {
             var fetchOptions = {
                 method: 'POST',
-                body: JSON.stringify({ userAgent: navigator.userAgent }),
+                body: JSON.stringify({ userAgent: navigator.userAgent, game: gameName }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8'
                 },
@@ -242,10 +245,12 @@
             fetch('/jwt', fetchOptions)
                 .then(res => res.json())
                 .then(data => {
-                    window.open(`/game-admin/monitor.html?game=${gameName}&v=${new Date().getTime()}`, "_blank", "width=1020,height=765");
+                    if (data) {
+                        window.open(data.redirectUrl, "_blank", "width=1020,height=765");
+                    }
                 });
         },
-        submit: function() {
+        submit: function () {
             $('#updateBtn').prop('disabled', true);
             $.ajax({
                 method: "POST",
@@ -268,7 +273,7 @@
             });
         },
 
-        updateMessage: function() {
+        updateMessage: function () {
             var message = $('#textMessage').val();
             var applyAll = $('#applyAllCheckbox').is(":checked");
             var name = $('#msgGameName').val();
@@ -299,7 +304,7 @@
             });
         },
 
-        showUpdateMessage: function(textMsg, name, displayName) {
+        showUpdateMessage: function (textMsg, name, displayName) {
             $('#textMessage').val(textMsg);
             $('#msgGameName').val(name);
             $('#updateMsgGameName').html(displayName);
@@ -307,7 +312,7 @@
             $('#messageModal').modal('show');
         },
 
-        submitReload: function() {
+        submitReload: function () {
             const modal = $('#reloadModal');
 
             modal.find('#confirmBtn').prop('disabled', true);
@@ -331,13 +336,13 @@
             });
         },
 
-        showReload: function() {
+        showReload: function () {
             const modal = $('#reloadModal');
             modal.find('#reloadContent').html("Are you sure you want all users to RELOAD?");
             modal.modal('show');
         },
 
-        showEnableDisable: function(enabled) {
+        showEnableDisable: function (enabled) {
             const modal = $('#enableDisableModal');
             const label = enabled ? "enable" : "disable";
 
@@ -353,7 +358,7 @@
             }
         },
 
-        submitEnableDisable: function() {
+        submitEnableDisable: function () {
             const modal = $('#enableDisableModal');
             const enabled = modal.find('#enableDisableFlag').val();
             const label = enabled === "true" ? "enable" : "disable";
@@ -383,7 +388,7 @@
             });
         },
 
-        showAlert: function(message) {
+        showAlert: function (message) {
             const modal = $('#alertModal');
             modal.find('#alertContent').html(message);
             modal.modal('show');

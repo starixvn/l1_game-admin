@@ -40,6 +40,10 @@ namespace GamesAdmin.Api.Report
         Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<RouletteBetReport> GetRouletteReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -349,6 +353,29 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<BaccaratRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<BaccaratBetRecord>(x))
+            };
+        }
+        public async Task<RouletteBetReport> GetRouletteReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IRouletteReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+
+            return new RouletteBetReport
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<RouletteBetRecord>(x))
+            };
+        }
+
+        public async Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetRouletteAsync(roundId, userId);
+
+            return new RouletteBetHistory
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
             };
         }
     }

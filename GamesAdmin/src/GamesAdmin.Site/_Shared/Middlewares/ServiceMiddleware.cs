@@ -52,11 +52,11 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<INotificationApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<INotificationService, NotificationService>();
 
-            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServerUrl, refitSettings));
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
 
-            services.AddSingleton(RestService.For<IShakeThePlateGameServerApi>(appSettings.ShakeThePlateServerUrl, refitSettings));
-            services.AddScoped<IShakeThePlateGameServer, ShakeThePlateGameServer>();
+            services.AddSingleton(RestService.For<ISeDieGameServerApi>(appSettings.GameServers.Sedie.Api, refitSettings));
+            services.AddScoped<ISeDieGameServer, SeDieGameServer>();
 
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();

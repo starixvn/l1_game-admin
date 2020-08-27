@@ -19,14 +19,16 @@ namespace GamesAdmin.Site.Features.Dashboard
         , IRequestHandler<GetOnlineUsersByGameRequest, OnlineUsersViewModel>
     {
         private readonly IGameServerService gameServerService;
+        private readonly ISeDieGameServer sedieGameServer;
         private readonly IMapper mapper;
 
         public DashboardHandler(
             IGameServerService gameServerService,
-            IShakeThePlateGameServer shakeThePlateGameServer,
+            ISeDieGameServer sedieGameServer,
             IMapper mapper)
         {
             this.gameServerService = gameServerService;
+            this.sedieGameServer = sedieGameServer;
             this.mapper = mapper;
         }
 
@@ -48,7 +50,29 @@ namespace GamesAdmin.Site.Features.Dashboard
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
-            var onlineUsers = await gameServerService.GetOnlineUsers(request.Game);
+            OnlineUsers onlineUsers;
+            var gameType = string.Empty;
+
+            switch (request.Game)
+            {
+                case GameType.SeDieValue:
+                    onlineUsers = await sedieGameServer.GetOnlineUsers();
+                    return ConvertToOnlineUserViewModel(onlineUsers);
+
+                case GameType.KenoProMaxValue:
+                    gameType = "keno";
+                    break;
+
+                case GameType.BaccaratValue:
+                    gameType = "baccarat";
+                    break;
+
+                case GameType.RouletteValue:
+                    gameType = GameType.RouletteValue;
+                    break;
+            }
+
+            onlineUsers = await gameServerService.GetOnlineUsers(gameType);
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }
@@ -70,7 +94,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
-                new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value)
+                new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
+                new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),
                 };
     }
 }

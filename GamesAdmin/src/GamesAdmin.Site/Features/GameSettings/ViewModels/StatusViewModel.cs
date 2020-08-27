@@ -24,7 +24,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; }
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name) ? string.Empty : Enumeration.FromValue<GameType>(Name).DisplayName;
+        public string DisplayName =>  string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
+            ? Name
+            : Enumeration.FromValue<GameType>(Name).DisplayName;
 
         public bool Enabled { get; }
 
@@ -48,12 +50,19 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisabledMessage { get; set; }
     }
 
-    public class JWTFromGameServer
+    public class GameServerToken
     {
-        public string Token { get; set; }
+        public GameServerToken(string token, string env, string redirectUrl)
+        {
+            Token = token;
+            Env = env;
+            RedirectUrl = redirectUrl;
+        }
 
-        public string GameServerEndpoint { get; set; }
+        public string Token { get; }
 
-        public string Env { get; set; }
+        public string Env { get; }
+
+        public string RedirectUrl { get; }
     }
 }

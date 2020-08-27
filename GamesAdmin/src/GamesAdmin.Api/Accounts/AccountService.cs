@@ -29,15 +29,6 @@ namespace GamesAdmin.Api.Accounts
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
-        private readonly IGenericRepository<BigSmallAccountEntity> txAccountRepository;
-        private readonly IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository;
-        private readonly IGenericRepository<XocDiaAccountEntity> xdAccountRepository;
-        private readonly IGenericRepository<BauCuaAccountEntity> bcAccountRepository;
-        private readonly IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository;
-        private readonly IGenericRepository<OddEvenAccountEntity> oddevenRepository;
-        private readonly IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository;
-        private readonly IGenericRepository<KenoProMaxAccountEntity> kenoProMaxRepository;
-        private readonly IGenericRepository<MiniSedieAccountEntity> miniSedieRepository;
 
         private readonly int minInitAmount = 2000;
         private readonly int maxInitAmount = 30000;
@@ -45,29 +36,11 @@ namespace GamesAdmin.Api.Accounts
         public AccountService(
             ISentryClient sentryClient,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
-            IGenericRepository<AccountEntity> accountRepository,
-            IGenericRepository<BigSmallAccountEntity> txAccountRepository,
-            IGenericRepository<XocDiaAccountEntity> xdAccountRepository,
-            IGenericRepository<BauCuaAccountEntity> bcAccountRepository,
-            IGenericRepository<OddEvenTurboAccountEntity> oddEvenTurboRepository,
-            IGenericRepository<OddEvenAccountEntity> oddevenRepository,
-            IGenericRepository<BigSmallTurboAccountEntity> txTurboAccountRepository,
-            IGenericRepository<DragonTigerAccountEntity> dragonTigerRepository,
-            IGenericRepository<KenoProMaxAccountEntity> kenoProMaxRepository,
-            IGenericRepository<MiniSedieAccountEntity> miniSedieRepository)
+            IGenericRepository<AccountEntity> accountRepository)
         {
             this.sentryClient = sentryClient;
             this.accountInfoRepository = accountInfoRepository;
             this.accountRepository = accountRepository;
-            this.txAccountRepository = txAccountRepository;
-            this.xdAccountRepository = xdAccountRepository;
-            this.bcAccountRepository = bcAccountRepository;
-            this.oddEvenTurboRepository = oddEvenTurboRepository;
-            this.oddevenRepository = oddevenRepository;
-            this.txTurboAccountRepository = txTurboAccountRepository;
-            this.dragonTigerRepository = dragonTigerRepository;
-            this.kenoProMaxRepository = kenoProMaxRepository;
-            this.miniSedieRepository = miniSedieRepository;
         }
 
         public async Task<int> GetTotalBots()
@@ -138,7 +111,6 @@ namespace GamesAdmin.Api.Accounts
             }
 
             await accountInfoRepository.InsertManyAsync(newAccountInfos);
-            await JoinToGameCollections(newAccounts);
 
             return results.ToArray();
         }
@@ -169,19 +141,6 @@ namespace GamesAdmin.Api.Accounts
             JoinedOn = DateTime.UtcNow,
             UID = latestUserInfoUID
         };
-
-        private async Task JoinToGameCollections(List<AccountEntity> newAccounts)
-        {
-            await txAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await xdAccountRepository.InsertManyAsync(newAccounts.Select(x => new XocDiaAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await bcAccountRepository.InsertManyAsync(newAccounts.Select(x => new BauCuaAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await txTurboAccountRepository.InsertManyAsync(newAccounts.Select(x => new BigSmallTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await oddevenRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await oddEvenTurboRepository.InsertManyAsync(newAccounts.Select(x => new OddEvenTurboAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await dragonTigerRepository.InsertManyAsync(newAccounts.Select(x => new DragonTigerAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await kenoProMaxRepository.InsertManyAsync(newAccounts.Select(x => new KenoProMaxAccountEntity { Uid = x.Id.ToString() }).ToList());
-            await miniSedieRepository.InsertManyAsync(newAccounts.Select(x => new MiniSedieAccountEntity { Uid = x.Id.ToString() }).ToList());
-        }
 
         private Task<int> GetLatestUserInfoUID()
             => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
@@ -228,8 +187,8 @@ namespace GamesAdmin.Api.Accounts
                     && (!excludeUUS || !(x.Currency == "UUS"))
                     && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)));
 
-            return accountInfo == null || account == null 
-                ? default 
+            return accountInfo == null || account == null
+                ? default
                 : new GameAccount(
                     account.Local.Username,
                     account.Local.MemberId,

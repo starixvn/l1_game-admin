@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features.UmSchedule.Requests;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
-using GamesAdmin.Core.Models.Um;
-using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
+using GamesAdmin.Site.Features.UmSchedule.Requests;
+using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 
 namespace GamesAdmin.Site._Shared
 {
@@ -35,6 +36,11 @@ namespace GamesAdmin.Site._Shared
             CreateMap<BaccaratRoundResult, BaccaratRoundResultViewModel>();
             CreateMap<BaccaratSettlementResult, BaccaratSettlementResultViewModel>();
             CreateMap<BaccaratBetRecord, BaccaratRecordViewModel>();
+
+            CreateMap<RouletteRoundResult, RouletteRoundResultViewModel>();
+            CreateMap<RouletteSettlementResult, RouletteSettlementResultViewModel>();
+            CreateMap<RouletteBetRecord, RouletteRecordViewModel>();
+            CreateMap<RouletteBetHistoryRecord, RouletteBetHistoryRecordViewModel>();
         }
     }
 }

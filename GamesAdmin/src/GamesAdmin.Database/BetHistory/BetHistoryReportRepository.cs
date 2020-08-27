@@ -16,6 +16,8 @@ namespace GamesAdmin.Database
         Task<IEnumerable<OddEvenBetHistoryReportEntity>> GetOddEvenAsync(long roundId, string name);
 
         Task<IEnumerable<OddEvenBetHistoryReportEntity>> GetOddEvenTurboAsync(long roundId, string name);
+
+        Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId);
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -208,6 +210,18 @@ namespace GamesAdmin.Database
 
             return results;
         }
+
+        public async Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId)
+        {
+            var roundCollection = database.GetCollection<RouletteRoundEntity>(Document.GetCollectionName(typeof(RouletteRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<RouletteBetEntity>(Document.GetCollectionName(typeof(RouletteBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
+
+            return (roundResult, bets);
+        }
+
 
         //private async Task<IList<BetHistoryReportEntity>> GetByRoundFishPrawnCrab(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
         //{

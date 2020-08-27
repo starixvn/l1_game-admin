@@ -44,6 +44,8 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.BaccaratValue:
                     return Enumeration.GetAll<BaccaratBetChoice>();
 
+                case GameType.RouletteValue:
+                    return Enumeration.GetAll<RouletteBetChoice>();
                 default: return default;
             }
         }

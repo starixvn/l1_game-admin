@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -16,25 +15,25 @@ namespace GamesAdmin.Site.Features._Shared
 {
     public interface IGameServerApi : IBaseAuthorizationApi
     {
-        [Post("/reload")]
+        [Post("/api/reload")]
         Task Reload();
 
-        [Get("/onlineusers")]
+        [Get("/api/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers();
 
-        [Get("/game/{name}/onlineusers")]
+        [Get("/api/game/{name}/onlineusers")]
         Task<OnlineUsers> GetOnlineUsersOnGame(string name);
 
-        [Post("/proviet-keno/round-result")]
+        [Post("/api/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
 
-        [Post("/jwt")]
+        [Post("/api/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
 
-        [Get("/gameRoundInfo")]
+        [Get("/api/gameRoundInfo")]
         Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
 
-        [Post("/um")]
+        [Post("/api/um")]
         Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
@@ -56,16 +55,18 @@ namespace GamesAdmin.Site.Features._Shared
     public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
+        private readonly ISeDieGameServer seDieGameServer;
         private readonly ISentryClient sentryClient;
         private AsyncRetryPolicy policy;
 
         public GameServerService(
             IGameServerApi serverApi,
-            IShakeThePlateGameServer shakeThePlateGameServer,
+            ISeDieGameServer seDieGameServer,
             ISentryClient sentryClient)
             : base(sentryClient)
         {
             this.serverApi = serverApi;
+            this.seDieGameServer = seDieGameServer;
             this.sentryClient = sentryClient;
 
             policy = Policy
@@ -81,28 +82,9 @@ namespace GamesAdmin.Site.Features._Shared
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(game))
-                {
-                    return await serverApi.GetOnlineUsers();
-                }
-
-                var gameType = string.Empty;
-                switch (game)
-                {
-                    case GameType.SeDieValue:
-                        gameType = "stp";
-                        break;
-
-                    case GameType.KenoProMaxValue:
-                        gameType = "keno";
-                        break;
-
-                    case GameType.BaccaratValue:
-                        gameType = "baccarat";
-                        break;
-                }
-
-                return await serverApi.GetOnlineUsersOnGame(gameType);
+                return string.IsNullOrWhiteSpace(game)
+                    ? await serverApi.GetOnlineUsers()
+                    : await serverApi.GetOnlineUsersOnGame(game);
             }
             catch (Exception ex)
             {

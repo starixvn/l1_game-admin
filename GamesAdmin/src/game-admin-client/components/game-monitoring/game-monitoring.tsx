@@ -10,6 +10,7 @@ import ShakeThePlate from './shake-the-plate/shake-the-plate';
 import MiniSedie from './mini-sedie';
 import MiniKeno from './mini-keno/index';
 import Baccarat from './baccarat';
+import Roulette from './roulette';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
   const object = _.get(message, path);
@@ -30,8 +31,8 @@ const getInfoByGameKey = (key: string) => {
     },
   };
 
-  data.initialMessage[key] = {get_time: true, view: true, get_new: true, sync: true};
-  data.endMessage[key] = {view: false};
+  data.initialMessage[key] = { get_time: true, view: true, get_new: true, sync: true };
+  data.endMessage[key] = { view: false };
 
   return data;
 };
@@ -55,6 +56,7 @@ const gameNameMapper = {
   kenowest: 17,
   kenosouth: 18,
   kenonorth: 19,
+  roulette: 21
 };
 
 const gameMapper = {
@@ -129,6 +131,10 @@ const gameMapper = {
   19: {
     component: MiniKeno('kenoNorth', 20),
     ...getInfoByGameKey('kenoNorth')
+  },
+  21: {
+    component: Roulette,
+    ...getInfoByGameKey('roulette')
   },
 };
 

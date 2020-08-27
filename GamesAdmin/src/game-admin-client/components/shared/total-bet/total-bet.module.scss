@@ -238,7 +238,7 @@
   }
 }
 
-@mixin kenopromax($col1, $col2, $col3) {
+@mixin totalBet($col1, $col2, $col3) {
   .#{$col1}Bg {
     // width: 160px;
     // height: 80px;
@@ -296,20 +296,33 @@
 @include plateevenodd("plateeven", "white", "Even");
 @include plateevenodd("plateodd", "red", "Odd");
 
-@include kenopromax("kenogold", "white", "Gold");
-@include kenopromax("kenowood", "white", "Wood");
-@include kenopromax("kenowater", "white", "Water");
-@include kenopromax("kenofire", "white", "Fire");
-@include kenopromax("kenoearth", "white", "Earth");
-@include kenopromax("kenobig", "white", "Big");
-@include kenopromax("kenosmall", "white", "Small");
-@include kenopromax("kenoeven", "white", "Even");
-@include kenopromax("kenoodd", "white", "Odd");
+@include totalBet("kenogold", "white", "Gold");
+@include totalBet("kenowood", "white", "Wood");
+@include totalBet("kenowater", "white", "Water");
+@include totalBet("kenofire", "white", "Fire");
+@include totalBet("kenoearth", "white", "Earth");
+@include totalBet("kenobig", "white", "Big");
+@include totalBet("kenosmall", "white", "Small");
+@include totalBet("kenoeven", "white", "Even");
+@include totalBet("kenoodd", "white", "Odd");
 
-@include kenopromax("player", "white", "Player");
-@include kenopromax("banker", "white", "Banker");
-@include kenopromax("tie", "white", "Tie");
-@include kenopromax("playerPair", "white", "Player Pair");
-@include kenopromax("bankerPair", "white", "Banker Pair");
-@include kenopromax("baccaratBig", "white", "Big");
-@include kenopromax("baccaratSmall", "white", "Small");
+@include totalBet("player", "white", "Player");
+@include totalBet("banker", "white", "Banker");
+@include totalBet("tie", "white", "Tie");
+@include totalBet("playerPair", "white", "Player Pair");
+@include totalBet("bankerPair", "white", "Banker Pair");
+@include totalBet("baccaratBig", "white", "Big");
+@include totalBet("baccaratSmall", "white", "Small");
+
+@include totalBet("straightUp", "white", "Straight Up");
+@include totalBet("split", "white", "Split");
+@include totalBet("street", "white", "Street");
+@include totalBet("triangle", "white", "Triangle");
+@include totalBet("corner", "white", "Corner");
+@include totalBet("fourNumbers", "white", "Four Numbers");
+@include totalBet("line", "white", "Line");
+@include totalBet("column", "white", "Column");
+@include totalBet("dozen", "white", "Dozen");
+@include totalBet("redBlack", "white", "Red/Black");
+@include totalBet("oddEven", "white", "Odd/Even");
+@include totalBet("bigSmall", "white", "Big/Small");

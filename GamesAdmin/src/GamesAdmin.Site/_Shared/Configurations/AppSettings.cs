@@ -9,13 +9,7 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         string ApiHost { get; }
 
-        IdentityServerAuth IdentityServerAuth { get; }
-
-        string GameServerUrl { get; }
-
-        string ShakeThePlateServerUrl { get; }
-
-        string GameServerDomainUrl { get; }
+        IdentityServerAuth IdentityServerAuth { get; }     
 
         TimeZoneInfo DefaultTimeZone { get; }
 
@@ -24,8 +18,10 @@ namespace GamesAdmin.Site._Shared.Configurations
         string Env { get; }
 
         int MaxDecreased { get; }
-
-        ResultPageConfiguration ResultPageConfiguration { get; }
+	
+	ResultPageConfiguration ResultPageConfiguration { get; }
+	
+        GameServerSettings GameServers { get; }
     }
 
     public class ResultPageConfiguration
@@ -45,9 +41,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             this.configuration = configuration;
 
             ApiHost = GetValue<string>(nameof(ApiHost));
-            GameServerUrl = GetValue<string>(nameof(GameServerUrl));
-            ShakeThePlateServerUrl = GetValue<string>(nameof(ShakeThePlateServerUrl));
-            GameServerDomainUrl = GetValue<string>(nameof(GameServerDomainUrl));
+            GameServers = configuration.GetSection(nameof(GameServers)).Get<GameServerSettings>();
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
@@ -62,11 +56,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         public TimeZoneInfo DefaultTimeZone { get; }
 
-        public string GameServerUrl { get; }
-
         public string DefaultUmMessage { get; }
-
-        public string GameServerDomainUrl { get; }
 
         public string Env { get; }
 
@@ -74,7 +64,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         public int MaxDecreased { get; }
 
-        public string ShakeThePlateServerUrl { get; }
+        public GameServerSettings GameServers { get; }
 
         public T GetValue<T>(string key)
         {
