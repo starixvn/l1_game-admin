@@ -322,7 +322,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
-            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);            
+        {
+            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
             var redirectUrl = request.Game == GameType.SeDieValue ?
                 @$"/game-admin/monitoring.html?game={request.Game}&v={DateTime.Now.Ticks}" :
                 @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
@@ -332,6 +333,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 appSettings.Env,
                 redirectUrl
             );
+        }
+
         private async Task NotifyUnsettleRoundsToGameServer()
         {
             var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
@@ -352,18 +355,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return new MonitorViewModel(gameList);
-        }
-
-        public async Task<JWTFromGameServer> Handle(GetJWTRequest request, CancellationToken cancellationToken)
-        {
-            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
-
-            return new JWTFromGameServer
-            {
-                Token = result.Token,
-                GameServerEndpoint = appSettings.GameServerDomainUrl,
-                Env = appSettings.Env
-            };
         }
         
         public async Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
