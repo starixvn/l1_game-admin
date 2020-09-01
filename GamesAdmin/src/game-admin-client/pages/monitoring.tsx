@@ -1,7 +1,8 @@
+import Cookies from "js-cookie";
 import { withRouter } from "next/router";
+
 import { Home } from ".";
 import SocketIO from "../components/util/game-server-endpoint/socket-io";
-import Cookies from "js-cookie";
 
 class Monitor extends Home {
   constructor(props) {
