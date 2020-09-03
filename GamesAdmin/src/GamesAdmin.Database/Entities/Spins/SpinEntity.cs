@@ -1,20 +1,16 @@
 ﻿using GamesAdmin.Database.Attributes;
-using System;
 
 namespace GamesAdmin.Database.Entities.Spins
 {
-    [BsonCollection("user_spins")]
-    public class SpinEntity : MiniGameBaseEntity
-    {
-        public SpinEntity()
-        {
-            Time = DateTime.UtcNow;
-        }
+    [BsonCollection("spins")]
+    public class SpinEntity : Document
+    {        
+        public int MemberId { get; set; }
 
-        public string Key { get; set; }
+        public int AvailSpins { get; set; }
 
-        public string ObCustId { get; set; }
+        public int UsedSpins { get; set; }
 
-        public bool Used { get; set; }
+        public bool Enabled { get; set; }
     }
 }

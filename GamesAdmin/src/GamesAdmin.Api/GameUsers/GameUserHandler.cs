@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
-using GamesAdmin.Api.GameUsers.Requests;
 using GamesAdmin.Api.GameUsers.Results;
 using MediatR;
 
@@ -15,7 +14,7 @@ namespace GamesAdmin.Api.GameUser
         , IRequestHandler<ReviseBotNameRequest, int>
         , IRequestHandler<ReviseBotBalanceRequest, int>
         , IRequestHandler<DisableBotRandomlyRequest, int>
-        , IRequestHandler<AddBatchOfSpinsRequest, AddBatchOfSpinResult>
+        , IRequestHandler<UpdateSpinRequest, UpdateMemberSpinResult>
     {
         private readonly IGameUserService gameUserService;
         private readonly IBotService botService;
@@ -41,7 +40,7 @@ namespace GamesAdmin.Api.GameUser
         public Task<int> Handle(DisableBotRandomlyRequest request, CancellationToken cancellationToken)
         => botService.DisableRandomly();
 
-        public Task<AddBatchOfSpinResult> Handle(AddBatchOfSpinsRequest request, CancellationToken cancellationToken)
-        => gameUserService.AddBatchOfSpins(request);
+        public Task<UpdateMemberSpinResult> Handle(UpdateSpinRequest request, CancellationToken cancellationToken)
+        => gameUserService.UpdateMemberSpins(request);
     }
 }

@@ -1,19 +1,18 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
-using GamesAdmin.Api.GameUser.Requests;
-using GamesAdmin.Api.GameUser.Results;
-using GamesAdmin.Api.GameUsers.Requests;
-using GamesAdmin.Api.GameUsers.Results;
-using GamesAdmin.Core.Models;
-using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Entities.MiniSedie;
-using GamesAdmin.Database.Entities.Spins;
-using Sentry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.GameUser.Requests;
+using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Api.GameUsers.Results;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Spins;
+using MongoDB.Driver;
+using Sentry;
 
 namespace GamesAdmin.Api.GameUser
 {
@@ -27,7 +26,7 @@ namespace GamesAdmin.Api.GameUser
 
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
-        Task<AddBatchOfSpinResult> AddBatchOfSpins(AddBatchOfSpinsRequest createRequest);
+        Task<UpdateMemberSpinResult> UpdateMemberSpins(UpdateSpinRequest updateRequest);
     }
 
     public class GameUserService : IGameUserService
@@ -37,6 +36,7 @@ namespace GamesAdmin.Api.GameUser
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
         private readonly IGenericRepository<SpinEntity> spinRepository;
+        private readonly IGenericRepository<SpinLogEntity> spinLogRepository;
 
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
@@ -46,12 +46,14 @@ namespace GamesAdmin.Api.GameUser
             IBotSettings botSettings,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
-            IGenericRepository<SpinEntity> spinRepository)
+            IGenericRepository<SpinEntity> spinRepository,
+            IGenericRepository<SpinLogEntity> spinLogRepository)
         {
             this.sentryClient = sentryClient;
             this.accountInfoRepository = accountInfoRepository;
             this.accountRepository = accountRepository;
             this.spinRepository = spinRepository;
+            this.spinLogRepository = spinLogRepository;
 
             minInitAmount = 2 * botSettings.DefaultMaxBet;
             maxInitAmount = 20 * botSettings.DefaultMaxBet;
@@ -215,74 +217,38 @@ namespace GamesAdmin.Api.GameUser
                     accountInfo.UID
                 );
         }
-
-        private async Task<AddMemberSpinResult> AddSpin(AddSpinRequest createRequest)
+      
+        public async Task<UpdateMemberSpinResult> UpdateMemberSpins(UpdateSpinRequest updateRequest)
         {
-            var result = new AddMemberSpinResult { Key = createRequest.Key, ObCustId = createRequest.ObCustId };
+            var result = new UpdateMemberSpinResult { MemberId = updateRequest.MemberId };
 
             try
             {
-                var existingSpins = await GetSpinsByKey(createRequest.Key);
+                var memberSpin = await GetMemberSpins(updateRequest.MemberId);
+                var update = Builders<SpinEntity>.Update.Set(nameof(SpinEntity.AvailSpins), updateRequest.AvailSpins);
 
-                if (existingSpins.Count > 0)
+                await spinRepository.UpdateAsync(spin => spin.MemberId == updateRequest.MemberId, update);
+
+                var log = new SpinLogEntity
                 {
-                    if (existingSpins.Count != createRequest.NumberOfSpins || !existingSpins.All(x => x.ObCustId == createRequest.ObCustId))
-                    {
-                        result.ErrorDescription = "Existing Key with different spin info.";
-                        result.ErrorCode = "1000";
-                    }
+                    Key = Guid.NewGuid().ToString(),
+                    MemberId = updateRequest.MemberId,
+                    Source = $"admin_{updateRequest.AdminUser}",
+                    ExpiryDate = updateRequest.ExpiryDate,
+                    SpinCount= updateRequest.AvailSpins - memberSpin.AvailSpins
+                };
 
-                    return result;
-                }
-
-                await CreateSpins(createRequest);
+                await spinLogRepository.InsertOneAsync(log);
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-
-                result.ErrorDescription = "Unspecified Error.";
-                result.ErrorCode = "1000";
             }
 
             return result;
         }
 
-        private async Task CreateSpins(AddSpinRequest createRequest)
-        {
-            var spins = new List<SpinEntity>();
-            var time = DateTime.UtcNow;
-
-            for (var i = 0; i < createRequest.NumberOfSpins; i++)
-            {
-                spins.Add(new SpinEntity
-                {
-                    Key = createRequest.Key,
-                    ObCustId = createRequest.ObCustId,
-                    Time = time
-                });
-            }
-
-            await spinRepository.InsertManyAsync(spins);
-        }
-
-        private async Task<IList<SpinEntity>> GetSpinsByKey(string key)
-        => (await spinRepository.FilterByAsync(spin => spin.Key == key)).ToList();
-
-        public async Task<AddBatchOfSpinResult> AddBatchOfSpins(AddBatchOfSpinsRequest createRequest)
-        {
-            var errors = new List<AddMemberSpinResult>();
-
-            foreach (var spinRequest in createRequest.Spins)
-            {
-                var memberSpinResult = await AddSpin(spinRequest);
-                if (!memberSpinResult.IsSuccess)
-                {
-                    errors.Add(memberSpinResult);
-                }
-            }
-
-            return new AddBatchOfSpinResult(errors);
-        }
+        public Task<SpinEntity> GetMemberSpins(int memberId) 
+        => spinRepository.FindOneAsync(spin => spin.MemberId == memberId);
     }
 }
