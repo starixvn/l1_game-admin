@@ -11,7 +11,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
-            services.AddScoped<IStatisticRepository, StatisticRepository>();
             services.AddScoped<IBigSmallTurboReportRepository, BigSmallTurboReportRepository>();
             services.AddScoped<IOddEvenReportRepository, OddEvenReportRepository>();
             services.AddScoped<IOddEvenTurboReportRepository, OddEvenTurboReportRepository>();
