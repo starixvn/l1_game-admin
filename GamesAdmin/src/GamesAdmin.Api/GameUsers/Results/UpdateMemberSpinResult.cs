@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Api._Shared;
+﻿using GamesAdmin.Api._Shared;
 
-namespace GamesAdmin.Api.GameUsers.Results
+namespace GamesAdmin.Api.GameUser.Results
 {
     public class UpdateMemberSpinResult : BaseResult
     {

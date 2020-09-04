@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
-using GamesAdmin.Api.GameUsers.Results;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -27,6 +26,10 @@ namespace GamesAdmin.Api.GameUser
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
         Task<UpdateMemberSpinResult> UpdateMemberSpins(UpdateSpinRequest updateRequest);
+
+        Task<SpinEntity> GetMemberSpins(int memberId);
+
+        Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId);
     }
 
     public class GameUserService : IGameUserService
@@ -250,5 +253,11 @@ namespace GamesAdmin.Api.GameUser
 
         public Task<SpinEntity> GetMemberSpins(int memberId) 
         => spinRepository.FindOneAsync(spin => spin.MemberId == memberId);
+
+        public async Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId)
+        => (await spinLogRepository
+            .FilterByAsync(spin => spin.MemberId == memberId))
+            .OrderByDescending(spin => spin.ExpiryDate)
+            .ToList();
     }
 }

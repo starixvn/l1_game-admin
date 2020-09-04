@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
-using GamesAdmin.Api.GameUsers.Results;
+using GamesAdmin.Database.Entities.Spins;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,5 +61,13 @@ namespace GamesAdmin.Api.GameUser
         [HttpPost("/spins/update")]
         public Task<UpdateMemberSpinResult> UpdateMemberSpins([FromBody] UpdateSpinRequest request)
            => mediator.Send(request);
+
+        [HttpGet("/spins/{memberId}/get")]
+        public Task<SpinEntity> GetMemberSpins(int memberId)
+           => mediator.Send(new GetSpinRequest(memberId));
+
+        [HttpGet("/spins/{memberId}/get_logs")]
+        public Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId)
+           => mediator.Send(new GetSpinLogRequest(memberId));
     }
 }

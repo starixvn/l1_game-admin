@@ -1,5 +1,5 @@
 ﻿using System;
-using GamesAdmin.Api.GameUsers.Results;
+using GamesAdmin.Api.GameUser.Results;
 using MediatR;
 
 namespace GamesAdmin.Api.GameUser.Requests
