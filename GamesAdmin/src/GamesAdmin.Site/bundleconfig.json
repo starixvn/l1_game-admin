@@ -82,5 +82,11 @@
     "inputFiles": [
       "wwwroot/js/report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/game-user.min.js",
+    "inputFiles": [
+      "wwwroot/js/game-user.js"
+    ]
   }
 ]

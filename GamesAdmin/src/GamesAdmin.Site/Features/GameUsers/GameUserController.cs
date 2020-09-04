@@ -51,5 +51,9 @@ namespace GamesAdmin.Site.Features.GameUsers
         [HttpGet]
         public async Task<IActionResult> GetMemberSpins(int memberId)
         => PartialView("_SpinRecords", await mediator.Send(new GetSpinRequest(memberId)));
+
+        [HttpGet]
+        public IActionResult UpdateSpin(int memberId)
+        => View(new UpdateSpinViewModel(memberId));
     }
 }
