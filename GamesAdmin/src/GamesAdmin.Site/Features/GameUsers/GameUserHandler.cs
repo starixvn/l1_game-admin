@@ -1,24 +1,25 @@
-﻿using GamesAdmin.Site.Features.GameUser.Requests;
-using GamesAdmin.Site.Features.GameUser.Results;
-using GamesAdmin.Site.Features.GameUser.ViewModels;
+﻿using GamesAdmin.Site.Features.GameUsers.Requests;
+using GamesAdmin.Site.Features.GameUsers.Results;
+using GamesAdmin.Site.Features.GameUsers.ViewModels;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GamesAdmin.Site.Features.GameUser
+namespace GamesAdmin.Site.Features.GameUsers
 {
     public class GameUserHandler
         : IRequestHandler<AddRequest, AddViewModel>
         , IRequestHandler<AddUsersRequest, List<AddUsersResult>>
         , IRequestHandler<ReviseRequest, int>
+        , IRequestHandler<GetSpinRequest, MemberSpinViewModel>
     {
-        private readonly IAccountService accountService;
+        private readonly IGameUserService gameUserService;
 
-        public GameUserHandler(IAccountService accountService) 
+        public GameUserHandler(IGameUserService gameUserService)
         {
-            this.accountService = accountService;
+            this.gameUserService = gameUserService;
         }
 
         public Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -33,13 +34,21 @@ namespace GamesAdmin.Site.Features.GameUser
 
             if (names?.Length > 0)
             {
-                return accountService.AddUsers(names, request.IsBot); 
+                return gameUserService.AddUsers(names, request.IsBot);
             }
 
             return Task.FromResult(new List<AddUsersResult>());
         }
 
         public Task<int> Handle(ReviseRequest request, CancellationToken cancellationToken)
-        => accountService.ReviseBots(); 
+        => gameUserService.ReviseBots();
+
+        public async Task<MemberSpinViewModel> Handle(GetSpinRequest request, CancellationToken cancellationToken)
+        {
+            var spins = await gameUserService.GetMemberSpins(request.MemberId);
+            var logs = await gameUserService.GetMemberSpinLogs(request.MemberId);
+
+            return new MemberSpinViewModel(spins, logs);
+        }
     }
 }

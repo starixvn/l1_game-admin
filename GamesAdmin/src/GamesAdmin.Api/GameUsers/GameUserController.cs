@@ -58,15 +58,15 @@ namespace GamesAdmin.Api.GameUser
         public async Task<int> DisableRandomly()
            => (await mediator.Send(new DisableBotRandomlyRequest()));
 
-        [HttpPost("/spins/update")]
+        [HttpPost("spins/update")]
         public Task<UpdateMemberSpinResult> UpdateMemberSpins([FromBody] UpdateSpinRequest request)
            => mediator.Send(request);
 
-        [HttpGet("/spins/{memberId}/get")]
+        [HttpGet("spins/{memberId}/get")]
         public Task<SpinEntity> GetMemberSpins(int memberId)
            => mediator.Send(new GetSpinRequest(memberId));
 
-        [HttpGet("/spins/{memberId}/get_logs")]
+        [HttpGet("spins/{memberId}/get_logs")]
         public Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId)
            => mediator.Send(new GetSpinLogRequest(memberId));
     }

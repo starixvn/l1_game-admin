@@ -8,7 +8,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.GameUser;
+using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.ProVietKeno;
@@ -40,7 +40,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IMapper mapper;
 
         private readonly IGameSettingService gameService;
-        private readonly IAccountService accountService;
+        private readonly IGameUserService accountService;
         private readonly IGameServerService gameServerService;
         private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
@@ -48,7 +48,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
-            IAccountService accountService,
+            IGameUserService accountService,
             IGameServerService gameServerService,
             IProVietKenoService proVietKenoService,
             IAppSettings appSettings)

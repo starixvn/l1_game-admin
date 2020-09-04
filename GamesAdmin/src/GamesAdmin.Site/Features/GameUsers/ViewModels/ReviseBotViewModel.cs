@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Site.Features.GameUser.ViewModels
+﻿namespace GamesAdmin.Site.Features.GameUsers.ViewModels
 {
     public class ReviseBotViewModel
     {

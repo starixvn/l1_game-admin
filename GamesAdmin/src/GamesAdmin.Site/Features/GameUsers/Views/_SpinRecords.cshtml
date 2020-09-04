@@ -1,0 +1,53 @@
+﻿@using GamesAdmin.Site.Features.GameUsers.ViewModels;
+
+@model MemberSpinViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.Spin != null)
+        {
+            <table class="table table-bordered table-hover stripe tble-vietlot">
+                <thead>
+                    <tr>
+                        <th>Member Id</th>
+                        <th>Avail Spins</th>
+                        <th>Used Spins</th>
+                        <th>Enabled</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.Spin.MemberId</td>
+                        <td class="text-center">@Model.Spin.AvailSpins</td>
+                        <td class="text-center">@Model.Spin.UsedSpins</td>
+                        <td class="text-center">@Model.Spin.Enabled</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Spin Count</th>
+                    <th>Source</th>
+                    <th>Expiry Date</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var spinLog in Model.Logs)
+                {
+
+                    <tr>
+                        <td>@spinLog.Time</td>
+                        <td>@spinLog.SpinCount</td>
+                        <td>@spinLog.Source</td>
+                        <td>@spinLog.ExpiryDate</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

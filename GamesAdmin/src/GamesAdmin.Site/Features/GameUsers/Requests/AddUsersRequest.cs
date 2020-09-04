@@ -1,8 +1,8 @@
-﻿using GamesAdmin.Site.Features.GameUser.Results;
+﻿using GamesAdmin.Site.Features.GameUsers.Results;
 using MediatR;
 using System.Collections.Generic;
 
-namespace GamesAdmin.Site.Features.GameUser.Requests
+namespace GamesAdmin.Site.Features.GameUsers.Requests
 {
     public class AddUsersRequest : IRequest<List<AddUsersResult>>
     {

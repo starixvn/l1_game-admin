@@ -1,9 +1,9 @@
-﻿using GamesAdmin.Site.Features.GameUser.Results;
+﻿using GamesAdmin.Site.Features.GameUsers.Results;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace GamesAdmin.Site.Features.GameUser.ViewModels
+namespace GamesAdmin.Site.Features.GameUsers.ViewModels
 {
     public class AddViewModel
     {

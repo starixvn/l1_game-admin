@@ -1,7 +1,7 @@
 ﻿using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.IdentityServer;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.GameUser;
+using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
@@ -32,8 +32,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IGameSettingService, GameSettingService>();
 
-            services.AddSingleton(RestService.For<IAccountApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IAccountService, GameUserService>();
+            services.AddSingleton(RestService.For<IGameUserApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IGameUserService, GameUserService>();
 
             services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IUserService, UserService>();

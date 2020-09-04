@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GamesAdmin.Site.Features.GameUser.Results
+namespace GamesAdmin.Site.Features.GameUsers.Results
 {
     public class AddUsersResult
     {

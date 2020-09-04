@@ -1,0 +1,56 @@
+﻿@using GamesAdmin.Site.Features.GameUsers.ViewModels;
+
+@model GetSpinViewModel
+
+@{
+    ViewData["Title"] = "Member Spins";
+}
+
+@section Styles {
+    <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/vietlottkeno.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<form class="form filter" data-ajax="true" data-ajax-method="GET"
+      asp-action="GetMemberSpins"
+      data-ajax-mode="replace"
+      data-ajax-update="#member-spins"
+      data-ajax-loading="#spinner"
+      method="get">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label asp-for="MemberId" class="control-label"></label>
+            <input type="number" class="form-control" asp-for="MemberId">
+        </div>
+        <div class="col-auto mt-5">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="member-spins" class="col-sm-12 report-container">
+</div>
+@*<partial name="_Modal" />
+
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body game-details-content" id="kenoBetHistory">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@section Scripts {
+    <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/js/report.min.js" asp-append-version="true"></script>
+}
