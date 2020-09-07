@@ -215,7 +215,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.DisabledMessage,
             request.Game.MaxBetChoices,
             request.Game.Odds,
-            request.Game.DelayStartTime));
+            request.Game.DelayStartTime,
+            request.Game.EnableFreeBet));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -233,7 +234,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             DefaultDisabledMessage,
             new Dictionary<string, double>(),
             new Dictionary<string, double>(),
-            request.Game.DelayStartTime));
+            request.Game.DelayStartTime,
+            request.Game.EnableFreeBet));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

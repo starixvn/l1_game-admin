@@ -129,8 +129,16 @@
             </div>
 
             <div class="form-group">
+                <div>
+                    <input type="checkbox" asp-for="EnableFreeBet" />
+                    <label asp-for="EnableFreeBet" class="control-label"></label>
+                </div>
+                <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Update" class="btn-submit" />
-                <input type="button" value="Monitor" class="btn-submit ml-1" onclick="gameSettings.startMonitor('@Model.Name')"/>
+                <input type="button" value="Monitor" class="btn-submit ml-1" onclick="gameSettings.startMonitor('@Model.Name')" />
             </div>
         </form>
     }

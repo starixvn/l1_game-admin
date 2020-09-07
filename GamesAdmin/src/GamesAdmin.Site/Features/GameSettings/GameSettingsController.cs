@@ -65,7 +65,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.DisabledMessage,
                    editViewModel.MaxBetChoices,
                    editViewModel.Odds,
-                   editViewModel.DelayStartTime)));
+                   editViewModel.DelayStartTime,
+                   editViewModel.EnableFreeBet)));
 
                 return Json(true);
             }
@@ -99,7 +100,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 string.Empty,
                 new Dictionary<string, double>(),
                 new Dictionary<string, double>(),
-                addViewModel.DelayStartTime)));
+                addViewModel.DelayStartTime,
+                false)));
 
             return RedirectToAction(nameof(Edit));
         }
