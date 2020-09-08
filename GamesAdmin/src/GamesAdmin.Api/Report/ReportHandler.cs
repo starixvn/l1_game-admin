@@ -5,6 +5,7 @@ using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.Spins;
 using MediatR;
 
 namespace GamesAdmin.Api.Report
@@ -24,7 +25,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<DragonTigerReportRequest, DragonTigerBetReport>,
         IRequestHandler<BaccaratReportRequest, BaccaratBetReport>,
         IRequestHandler<RouletteReportRequest, RouletteBetReport>,
-        IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>
+        IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>,
+        IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>
     {
         private readonly IReportService reportService;
 
@@ -73,9 +75,12 @@ namespace GamesAdmin.Api.Report
         => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<RouletteBetReport> Handle(RouletteReportRequest request, CancellationToken cancellationToken)
-            => reportService.GetRouletteReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        => reportService.GetRouletteReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<RouletteBetHistory> Handle(RouletteBetHistoryRequest request, CancellationToken cancellationToken)
-            => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.UserId);
+        => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.UserId);
+
+        public Task<IEnumerable<SpinResult>> Handle(LuckyWheelReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetLuckyWheelReportAsync(request.Nickname);
     }
 }

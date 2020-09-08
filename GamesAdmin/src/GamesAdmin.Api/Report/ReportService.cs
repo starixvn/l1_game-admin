@@ -8,7 +8,9 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities.Spins;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
@@ -44,22 +46,27 @@ namespace GamesAdmin.Api.Report
         Task<RouletteBetReport> GetRouletteReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId);
+
+        Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname);
     }
 
     public class ReportService : IReportService
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IKenoReportFactory kenoReportFactory;
+        private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IKenoReportFactory kenoReportFactory,
-            IMapper mapper)
+            IMapper mapper,
+            IGenericRepository<SpinResultEntity> spinResultRepository)
         {
             this.serviceProvider = serviceProvider;
             this.kenoReportFactory = kenoReportFactory;
             this.mapper = mapper;
+            this.spinResultRepository = spinResultRepository;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -273,32 +280,6 @@ namespace GamesAdmin.Api.Report
             });
         }
 
-        private BaseBetHistory TransformGameReportEntityToBetModel(BetHistoryReportEntity entity)
-        {
-            BaseBetHistory result = null;
-
-            if (entity is FishPrawnCrabReportEntity)
-            {
-                FishPrawnCrabReportEntity fpcEntity = (FishPrawnCrabReportEntity)entity;
-
-                var betResult = new FishPrawnCrabBetResult(fpcEntity.FirstDice, fpcEntity.SecondDice, fpcEntity.ThirdDice);
-                var betChoice = new FishPrawnCrabChoice(fpcEntity.Stag, fpcEntity.Gourd, fpcEntity.Rooster, fpcEntity.Fish, fpcEntity.Crab, fpcEntity.Prawn);
-
-                result = new FishPrawnCrabBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice);
-            }
-            else if (entity is ShakeThePlateReportEntity)
-            {
-                ShakeThePlateReportEntity stpEntity = (ShakeThePlateReportEntity)entity;
-
-                var betResult = new ShakeThePlateBetResult(stpEntity.FirstRedChip, stpEntity.SecondRedChip, stpEntity.ThirdRedChip, stpEntity.FourthRedChip);
-                var betChoice = new ShakeThePlateChoice(stpEntity.Even, stpEntity.Odd, stpEntity.ThreeRed, stpEntity.FourRed, stpEntity.ThreeWhite, stpEntity.FourWhite);
-
-                result = new ShakeThePlateBet(entity.Round, entity.Time, entity.BetWin, betResult, betChoice);
-            }
-
-            return result;
-        }
-
         public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(GameType game, long roundId, string nickname, bool excludeUUS = false)
         {
             var service = kenoReportFactory.GetReportService(game);
@@ -377,6 +358,13 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
             };
+        }
+
+        public async Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname)
+        {
+            var results = await spinResultRepository.FilterByAsync(spin => spin.Name == nickname);
+
+            return mapper.Map<IEnumerable<SpinResult>>(results.ToList());
         }
     }
 }

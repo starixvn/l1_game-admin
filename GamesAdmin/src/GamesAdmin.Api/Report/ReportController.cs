@@ -5,6 +5,7 @@ using GamesAdmin.Api.Report.Request;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -95,5 +96,9 @@ namespace GamesAdmin.Api.Report
         public async Task<RouletteBetHistory> BetHistory(string userId, long roundId)
          => (await mediator.Send(new RouletteBetHistoryRequest(roundId, userId)));
 
+        [HttpGet]
+        [Route("luckywheel/users/{nickname}")]
+        public async Task<IEnumerable<SpinResult>> LuckyWheel(string nickname)
+        => (await mediator.Send(new LuckyWheelReportRequest(nickname)));
     }
 }
