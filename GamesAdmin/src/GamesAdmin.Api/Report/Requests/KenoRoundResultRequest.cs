@@ -2,7 +2,7 @@
 using GamesAdmin.Core.Models.RoundResults;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
     public class KenoRoundResultRequest : IRequest<KenoRoundResult>
     {

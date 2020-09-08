@@ -2,7 +2,7 @@
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
     public class LuckyWheelReportRequest : IRequest<IEnumerable<SpinResult>>
     {

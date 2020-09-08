@@ -1,7 +1,7 @@
 ﻿using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
     public class RouletteReportRequest : IRequest<RouletteBetReport>
     {

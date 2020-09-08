@@ -1,11 +1,11 @@
 ﻿using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
-    public class FishPrawnCrabReportRequest : IRequest<FishPrawnCrabBetReport>
+    public class MiniSeDieReportRequest : IRequest<SeDieBetReport>
     {
-        public FishPrawnCrabReportRequest(long roundId, string nickname, bool excludeUUS)
+        public MiniSeDieReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;

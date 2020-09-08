@@ -3,20 +3,15 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
-    public class KenoReportRequest : IRequest<IEnumerable<KenoBetRecord>>
+    public class KenoBetHistoryRequest : IRequest<IEnumerable<KenoBetHistory>>
     {
-        public KenoReportRequest(
-            string game, 
-            long roundId,
-            string nickname,
-            bool excludeUUS)
+        public KenoBetHistoryRequest(string game, long roundId, string nickname)
         {
             Game = Enumeration.FromValue<GameType>(game);
             RoundId = roundId;
             Nickname = nickname;
-            ExcludeUUS = excludeUUS;
         }
 
         public GameType Game { get; }
@@ -24,7 +19,5 @@ namespace GamesAdmin.Api.Report.Request
         public long RoundId { get; }
 
         public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
     }
 }

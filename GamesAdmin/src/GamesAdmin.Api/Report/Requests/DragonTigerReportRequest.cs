@@ -1,11 +1,11 @@
 ﻿using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
-    public class BaccaratReportRequest : IRequest<BaccaratBetReport>
+    public class DragonTigerReportRequest : IRequest<DragonTigerBetReport>
     {
-        public BaccaratReportRequest(long roundId, string nickname, bool excludeUUS)
+        public DragonTigerReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;

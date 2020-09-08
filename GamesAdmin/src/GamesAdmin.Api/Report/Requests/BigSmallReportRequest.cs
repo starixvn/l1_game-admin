@@ -1,11 +1,11 @@
 ﻿using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Api.Report.Request
+namespace GamesAdmin.Api.Report.Requests
 {
-    public class OddEvenReportRequest : IRequest<OddEvenBetReport>
+    public class BigSmallReportRequest : IRequest<BigSmallBetReport>
     {
-        public OddEvenReportRequest(long roundId, string nickname, bool excludeBot)
+        public BigSmallReportRequest(long roundId, string nickname, bool excludeBot)
         {
             RoundId = roundId;
             Nickname = nickname;
