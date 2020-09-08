@@ -4,14 +4,17 @@ namespace GamesAdmin.Core.Models.Spins
 {
     public class SpinResult
     {
-        public SpinResult(string uid, string name, int memberId, byte result, DateTime time) 
+        public SpinResult(int roundId, string uid, string name, int memberId, byte result, DateTime time) 
         {
+            RoundId = roundId;
             Uid = uid;
             Name = name;
             MemberId = memberId;
             Result = result;
             Time = time;
         }
+
+        public int RoundId { get; set; }
 
         public string Uid { get; set; }
 
