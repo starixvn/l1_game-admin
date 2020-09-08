@@ -19,7 +19,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         private static string[] disableHistory = new string[]
         {
-            GameType.LuckyWheelValue
         };
 
         private static string[] disableMonitoring = new string[]
@@ -33,7 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Name = name;
         }
 
-        public string Name { get; }       
+        public string Name { get; }
 
         public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
             ? Name

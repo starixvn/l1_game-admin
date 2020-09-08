@@ -242,5 +242,11 @@ namespace GamesAdmin.Site.Features.Report
         {
             return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<GameType>(game), roundId, nickname)));
         }
+
+        [HttpGet]
+        public IActionResult LuckyWheel()
+        {
+            return View(new LuckyWheelViewModel());
+        }
     }
 }
