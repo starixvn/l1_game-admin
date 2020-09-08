@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult BigSmallTurbo()
+        public IActionResult TurboBigSmall()
         {
             return View(new ReportViewModel());
         }
@@ -54,7 +54,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult OddEvenTurbo()
+        public IActionResult TurboOddEven()
         {
             return View(new ReportViewModel());
         }

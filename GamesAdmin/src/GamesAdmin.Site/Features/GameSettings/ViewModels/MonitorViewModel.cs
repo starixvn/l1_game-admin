@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
@@ -15,28 +16,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class MonitorItemViewModel
     {
-        private static Dictionary<string, string> gameHistoryUrl = new Dictionary<string, string>
+
+        private static string[] disableHistory = new string[]
         {
-            { GameType.BigSmallValue, "bigsmall" },
-            { GameType.BigSmallTurboValue, "bigsmallturbo" },
-            { GameType.OddEvenValue, "oddeven" },
-            { GameType.OddEvenTurboValue, "oddeventurbo" },
-            { GameType.SeDieValue, "sedie" },
-            { GameType.MiniSeDieValue, "minisedie" },
-            { GameType.FishPrawnCrabValue, "fishprawncrab" },
-            { GameType.DragonTigerValue, GameType.DragonTigerValue },
-            { GameType.BaccaratValue, GameType.BaccaratValue },
-            { GameType.KenoProVietValue, GameType.KenoProVietValue },
-            { GameType.KenoMaxValue, GameType.KenoMaxValue },
-            { GameType.KenoMax2Value, GameType.KenoMax2Value },
-            { GameType.KenoMiniValue, GameType.KenoMiniValue },
-            { GameType.KenoMini2Value, GameType.KenoMini2Value },
-            { GameType.KenoEastValue, GameType.KenoEastValue },
-            { GameType.KenoWestValue, GameType.KenoWestValue },
-            { GameType.KenoSouthValue, GameType.KenoSouthValue },
-            { GameType.KenoNorthValue, GameType.KenoNorthValue },
-            { GameType.KenoProMaxValue, GameType.KenoProMaxValue },
-            { GameType.RouletteValue, GameType.RouletteValue }
+            GameType.LuckyWheelValue
+        };
+
+        private static string[] disableMonitoring = new string[]
+        {
+            GameType.LuckyWheelValue,
+            GameType.KenoProVietValue
         };
 
         public MonitorItemViewModel(string name)
@@ -44,14 +33,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Name = name;
         }
 
-        public string Name { get; }
+        public string Name { get; }       
 
         public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
             ? Name
             : Enumeration.FromValue<GameType>(Name).DisplayName;
 
-        public bool EnabledHistory => gameHistoryUrl.ContainsKey(Name);
+        public bool EnabledMonitoring => !disableMonitoring.Contains(Name);
 
-        public string GameHistoryUrl => gameHistoryUrl.ContainsKey(Name) ? gameHistoryUrl[Name] : string.Empty;
+        public bool EnabledHistory => !disableHistory.Contains(Name);
+
+        public string GameHistoryUrl => DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
     }
 }
