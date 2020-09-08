@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Request
 {
-    public class MiniSeDieReportRequest : IRequest<SeDieBetReport>
+    public class SeDieReportRequest : IRequest<SeDieBetReport>
     {
-        public MiniSeDieReportRequest(long roundId, string nickname, bool excludeUUS)
+        public SeDieReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;
