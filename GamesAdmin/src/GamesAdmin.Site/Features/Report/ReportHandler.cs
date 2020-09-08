@@ -255,7 +255,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                     ThreeRed = x.ThreeRed,
                     ThreeWhite = x.ThreeWhite,
                     FourRed = x.FourRed,
-                    FourWhite = x.FourWhite
+                    FourWhite = x.FourWhite,
+                    FreeBet = x.FreeBet
                 })
             };
         }

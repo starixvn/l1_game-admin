@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
@@ -25,30 +24,25 @@ namespace GamesAdmin.Database
 
             if (roundResult != null)
             {
-                try
-                {
-                    var project = GetBaseAggregateBuilder<SeDieBetEntity, SeDieBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS);
+                var project = GetBaseAggregateBuilder<SeDieBetEntity, SeDieBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS);
 
-                    var records = (await project.ToListAsync())
-                        .Select(x => new SeDieBetReportEntity
-                        {
-                            Time = x.Time,
-                            Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
-                            Nickname = x.AccountInfos.Name,
-                            BetWin = x.Betwin,
-                            Even = x.Even + x.OldEven,
-                            Odd = x.Odd + x.OldOdd,
-                            ThreeRed = x.ThreeRed,
-                            FourRed = x.FourRed,
-                            ThreeWhite = x.ThreeWhite,
-                            FourWhite = x.FourWhite
-                        });
+                var records = (await project.ToListAsync())
+                    .Select(x => new SeDieBetReportEntity
+                    {
+                        Time = x.Time,
+                        Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
+                        Nickname = x.AccountInfos.Name,
+                        BetWin = x.Betwin,
+                        Even = x.Even + x.OldEven,
+                        Odd = x.Odd + x.OldOdd,
+                        ThreeRed = x.ThreeRed,
+                        FourRed = x.FourRed,
+                        ThreeWhite = x.ThreeWhite,
+                        FourWhite = x.FourWhite,
+                        FreeBet = x.FreeBet ?? false
+                    });
 
-                    return (roundResult, records);
-                }
-                catch (Exception e)
-                {
-                }
+                return (roundResult, records);
             }
 
             return (new SeDieRoundEntity(), Enumerable.Empty<SeDieBetReportEntity>());

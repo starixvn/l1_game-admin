@@ -48,6 +48,8 @@ namespace GamesAdmin.Core.Models
         public decimal ThreeWhite { get; set; }
 
         public decimal FourWhite { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 
     public class FishPrawnCrabBetRecord : BetRecord

@@ -11,7 +11,7 @@ namespace GamesAdmin.Database
     {
         protected readonly IMongoDatabase database;
 
-        public BaseBetReportRepository(IMongoDatabase database)
+        protected BaseBetReportRepository(IMongoDatabase database)
         {
             this.database = database;
         }

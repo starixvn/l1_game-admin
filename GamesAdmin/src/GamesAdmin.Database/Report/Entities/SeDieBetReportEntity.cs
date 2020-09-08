@@ -23,5 +23,7 @@ namespace GamesAdmin.Database.Report.Entities
         public decimal FourWhite { get; set; }
 
         public decimal BetWin { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 }

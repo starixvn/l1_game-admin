@@ -34,7 +34,8 @@ namespace GamesAdmin.Api.Report.Extensions
                 FourRed = entity.FourRed,
                 FourWhite = entity.FourWhite,
                 ThreeRed = entity.ThreeRed,
-                ThreeWhite = entity.ThreeWhite
+                ThreeWhite = entity.ThreeWhite,
+                FreeBet = entity.FreeBet
             };
         }
 

@@ -31,6 +31,8 @@
         public decimal ThreeWhite { get; set; }
 
         public decimal FourWhite { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 
     public class FishPrawnCrabRecordViewModel : BetRecordViewModel
