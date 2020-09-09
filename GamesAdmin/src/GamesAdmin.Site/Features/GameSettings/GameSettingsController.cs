@@ -29,21 +29,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.appSettings = appSettings;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit()
-        => View(await mediator.Send(new EditRequest(GameType.BigSmall.Value)));
-
-        [HttpGet]
-        [Route("{name}")]
-        public async Task<IActionResult> Edit(string name, bool isSuccess = false, string errorMessage = null)
-        {
-            var viewModel = await mediator.Send(new EditRequest(name));
-            viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
-            viewModel.Success = TempData["isSuccess"] == null ? false : (bool)TempData["isSuccess"];
-
-            return View(viewModel);
-        }
-
         [HttpPost]
         [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
@@ -103,7 +88,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 addViewModel.DelayStartTime,
                 false)));
 
-            return RedirectToAction(nameof(Edit));
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
