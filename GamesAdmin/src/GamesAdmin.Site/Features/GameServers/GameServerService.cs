@@ -30,9 +30,6 @@ namespace GamesAdmin.Site.Features._Shared
         [Post("/api/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
 
-        [Get("/api/gameRoundInfo")]
-        Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
-
         [Post("/api/um")]
         Task UnderMaintenance(UnderMaintenanceRequest request);
     }
@@ -47,26 +44,21 @@ namespace GamesAdmin.Site.Features._Shared
 
         Task<JsonWebToken> GetJWT(string username, string userAgent);
 
-        Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo();
-
         Task UnderMaintenance(UnderMaintenanceRequest request);
     }
 
     public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
-        private readonly ISeDieGameServer seDieGameServer;
         private readonly ISentryClient sentryClient;
         private AsyncRetryPolicy policy;
 
         public GameServerService(
             IGameServerApi serverApi,
-            ISeDieGameServer seDieGameServer,
             ISentryClient sentryClient)
             : base(sentryClient)
         {
             this.serverApi = serverApi;
-            this.seDieGameServer = seDieGameServer;
             this.sentryClient = sentryClient;
 
             policy = Policy
@@ -135,20 +127,6 @@ namespace GamesAdmin.Site.Features._Shared
                     HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
                 }
             }
-        }
-
-        public async Task<Dictionary<string, GameRoundInfo>> GetGameRoundInfo()
-        {
-            try
-            {
-                return await serverApi.GetGameRoundInfo();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-
-            return new Dictionary<string, GameRoundInfo>();
         }
 
         public async Task UnderMaintenance(UnderMaintenanceRequest request)
