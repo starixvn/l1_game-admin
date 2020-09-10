@@ -20,15 +20,18 @@ namespace GamesAdmin.Site.Features.Dashboard
     {
         private readonly IGameServerService gameServerService;
         private readonly ISeDieGameServer sedieGameServer;
+        private readonly IVipSeDieGameServer vipSedieGameServer;
         private readonly IMapper mapper;
 
         public DashboardHandler(
             IGameServerService gameServerService,
             ISeDieGameServer sedieGameServer,
+            IVipSeDieGameServer vipSedieGameServer,
             IMapper mapper)
         {
             this.gameServerService = gameServerService;
             this.sedieGameServer = sedieGameServer;
+            this.vipSedieGameServer = vipSedieGameServer;
             this.mapper = mapper;
         }
 
@@ -57,6 +60,10 @@ namespace GamesAdmin.Site.Features.Dashboard
             {
                 case GameType.SeDieValue:
                     onlineUsers = await sedieGameServer.GetOnlineUsers();
+                    return ConvertToOnlineUserViewModel(onlineUsers);
+
+                case GameType.VipSeDieValue:
+                    onlineUsers = await vipSedieGameServer.GetOnlineUsers();
                     return ConvertToOnlineUserViewModel(onlineUsers);
 
                 case GameType.KenoProMaxValue:
@@ -93,6 +100,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
+                new SelectListItem(GameType.VipSeDie.DisplayName, GameType.VipSeDie.Value),
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
                 new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
                 new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),

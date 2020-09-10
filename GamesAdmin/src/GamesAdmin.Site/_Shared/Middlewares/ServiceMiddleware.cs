@@ -58,6 +58,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<ISeDieGameServerApi>(appSettings.GameServers.Sedie.Api, refitSettings));
             services.AddScoped<ISeDieGameServer, SeDieGameServer>();
 
+            services.AddSingleton(RestService.For<IVipSeDieGameServerApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
+            services.AddScoped<IVipSeDieGameServer, VipSeDieGameServer>();
+
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
 
