@@ -33,7 +33,8 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.KenoWest, typeof(KenoWestEndGameInfoService) },
             { GameId.KenoSouth, typeof(KenoSouthEndGameInfoService) },
             { GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
-            { GameId.Roulette, typeof(RouletteEndGameInfoService) }
+            { GameId.Roulette, typeof(RouletteEndGameInfoService) },
+            { GameId.VipSeDie, typeof(VipSeDieEndGameInfoService) }
         };
 
         private readonly IServiceProvider serviceProvider;

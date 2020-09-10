@@ -100,5 +100,15 @@ namespace GamesAdmin.Api.Report
         [Route("luckywheel/users/{nickname}")]
         public async Task<IEnumerable<SpinResult>> LuckyWheel(string nickname)
         => (await mediator.Send(new LuckyWheelReportRequest(nickname)));
+
+        [HttpGet]
+        [Route("vipsedie/round/{roundId}/users/{nickname?}")]
+        public async Task<VipSeDieBetReport> VipSeDie(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new VipSeDieReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("bet_history/game/vipsedie/round/{roundId}/user/{userId}")]
+        public async Task<IEnumerable<VipSeDieBetHistoryRecord>> VipSeDieBetHistory(string userId, long roundId)
+        => (await mediator.Send(new VipSeDieBetHistoryRequest(roundId, userId)));
     }
 }

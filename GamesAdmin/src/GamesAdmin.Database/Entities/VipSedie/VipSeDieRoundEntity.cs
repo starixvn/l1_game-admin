@@ -1,8 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using GamesAdmin.Database.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace GamesAdmin.Database.Entities.VipSedie
+namespace GamesAdmin.Database.Entities
 {
-    internal class VipSeDieRoundEntity : BaseRoundEntity
+    [BsonCollection("vipsedie_phiens")]
+    public class VipSeDieRoundEntity : BaseRoundEntity
     {
         public VipSeDieResultEntity Result { get; set; }
 

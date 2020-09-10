@@ -1,5 +1,4 @@
-﻿using System;
-using GamesAdmin.Database.Attributes;
+﻿using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities.Spins
@@ -17,7 +16,5 @@ namespace GamesAdmin.Database.Entities.Spins
         public int MemberId { get; set; }
 
         public byte Result { get; set; }
-
-        public DateTime Time { get; set; }
     }
 }

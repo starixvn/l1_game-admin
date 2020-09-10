@@ -119,10 +119,29 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, userId)));
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public IActionResult VipSeDie()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_VipSeDieRecords", await mediator.Send(new GetVipSeDieReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipSeDieBetHistory(long roundId, string userId)
+        {
+            return PartialView("_VipSeDieBetHistory", await mediator.Send(new GetVipSeDieBetHistoryRequest(roundId, userId)));
         }
 
         [HttpGet]

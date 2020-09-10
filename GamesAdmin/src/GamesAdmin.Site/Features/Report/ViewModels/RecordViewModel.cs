@@ -35,6 +35,23 @@
         public bool FreeBet { get; set; }
     }
 
+    public class VipSeDieRecordViewModel : BetRecordViewModel
+    {
+        public decimal Odd { get; set; }
+
+        public decimal Even { get; set; }
+
+        public decimal TwoRed { get; set; }
+
+        public decimal ThreeRed { get; set; }
+
+        public decimal FourRed { get; set; }
+
+        public decimal ThreeWhite { get; set; }
+
+        public decimal FourWhite { get; set; }
+    }
+
     public class FishPrawnCrabRecordViewModel : BetRecordViewModel
     {
         public decimal Stag { get; set; }

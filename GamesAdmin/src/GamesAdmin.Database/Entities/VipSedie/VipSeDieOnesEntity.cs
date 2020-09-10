@@ -1,10 +1,10 @@
 ﻿using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace GamesAdmin.Database.Entities.VipSedie
+namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("VipSeDie_ones")]
-    public class VipSeDieOneEntity : BaseBetEntity
+    [BsonCollection("vipsedie_ones")]
+    public class VipSeDieOnesEntity : BaseBetEntity
     {
         public decimal Odd { get; set; }
 

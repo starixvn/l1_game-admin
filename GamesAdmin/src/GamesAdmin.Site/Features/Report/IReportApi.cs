@@ -55,5 +55,11 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/bet_history/game/roulette/round/{roundId}/user/{userId}")]
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId) ;
+
+        [Get("/report/vipsedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/game/vipsedie/round/{roundId}/user/{userId}")]
+        Task<IEnumerable<VipSeDieBetHistoryRecord>> GetVipSeDieBetHistory(long roundId, string userId);
     }
 }

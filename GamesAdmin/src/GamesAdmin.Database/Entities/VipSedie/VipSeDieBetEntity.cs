@@ -1,9 +1,9 @@
 ﻿using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace GamesAdmin.Database.Entities.VipSedie
+namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("VipSeDie_cuocs")]
+    [BsonCollection("vipsedie_cuocs")]
     public class VipSeDieBetEntity : MiniGameBaseEntity
     {
         public string Uid { get; set; }
