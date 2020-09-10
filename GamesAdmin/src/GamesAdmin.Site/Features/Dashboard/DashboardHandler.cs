@@ -8,7 +8,6 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
-using GamesAdmin.Site.Features.GameServers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -19,25 +18,19 @@ namespace GamesAdmin.Site.Features.Dashboard
         , IRequestHandler<GetOnlineUsersByGameRequest, OnlineUsersViewModel>
     {
         private readonly IGameServerService gameServerService;
-        private readonly ISeDieGameServer sedieGameServer;
-        private readonly IVipSeDieGameServer vipSedieGameServer;
         private readonly IMapper mapper;
 
         public DashboardHandler(
             IGameServerService gameServerService,
-            ISeDieGameServer sedieGameServer,
-            IVipSeDieGameServer vipSedieGameServer,
             IMapper mapper)
         {
             this.gameServerService = gameServerService;
-            this.sedieGameServer = sedieGameServer;
-            this.vipSedieGameServer = vipSedieGameServer;
             this.mapper = mapper;
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersRequest request, CancellationToken cancellationToken)
         {
-            var result = await gameServerService.GetOnlineUsers(string.Empty);
+            var result = await gameServerService.GetOnlineUsers();
 
             return new OnlineUsersViewModel
             {
@@ -58,14 +51,6 @@ namespace GamesAdmin.Site.Features.Dashboard
 
             switch (request.Game)
             {
-                case GameType.SeDieValue:
-                    onlineUsers = await sedieGameServer.GetOnlineUsers();
-                    return ConvertToOnlineUserViewModel(onlineUsers);
-
-                case GameType.VipSeDieValue:
-                    onlineUsers = await vipSedieGameServer.GetOnlineUsers();
-                    return ConvertToOnlineUserViewModel(onlineUsers);
-
                 case GameType.KenoProMaxValue:
                     gameType = "keno";
                     break;
@@ -79,7 +64,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                     break;
             }
 
-            onlineUsers = await gameServerService.GetOnlineUsers(gameType);
+            onlineUsers = await gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game), gameType);
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }

@@ -50,16 +50,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IUmService, UmService>();
 
             services.AddSingleton(RestService.For<INotificationApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<INotificationService, NotificationService>();
-
-            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
-            services.AddScoped<IGameServerService, GameServerService>();
-
-            services.AddSingleton(RestService.For<ISeDieGameServerApi>(appSettings.GameServers.Sedie.Api, refitSettings));
-            services.AddScoped<ISeDieGameServer, SeDieGameServer>();
-
-            services.AddSingleton(RestService.For<IVipSeDieGameServerApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
-            services.AddScoped<IVipSeDieGameServer, VipSeDieGameServer>();
+            services.AddScoped<INotificationService, NotificationService>();            
 
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
@@ -71,6 +62,15 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IGameRoundResultService, GameRoundResultService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
+
+            // game servers api
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddScoped<IGameServerService, GameServerService>();
+
+            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
+            services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
         }
     }
 }

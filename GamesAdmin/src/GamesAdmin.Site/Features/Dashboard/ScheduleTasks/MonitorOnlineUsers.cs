@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
 
         public async Task Invoke()
         {
-            var onlineUser = await service.GetOnlineUsers(string.Empty);
+            var onlineUser = await service.GetOnlineUsers();
             var latestOnlineUsers = cache.GetCache(CachedKeys.OnlineUsers.ToString());
 
             if (onlineUser.TotalReal < latestOnlineUsers - appSettings.MaxDecreased)

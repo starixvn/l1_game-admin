@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -19,10 +20,10 @@ namespace GamesAdmin.Site.Features._Shared
         Task Reload();
 
         [Get("/api/onlineusers")]
-        Task<OnlineUsers> GetOnlineUsers();
+        Task<OnlineUsers> GetAllOnlineUsers();
 
         [Get("/api/game/{name}/onlineusers")]
-        Task<OnlineUsers> GetOnlineUsersOnGame(string name);
+        Task<OnlineUsers> GetOnlineUsers(string name);
 
         [Post("/api/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
@@ -38,7 +39,7 @@ namespace GamesAdmin.Site.Features._Shared
     {
         Task Reload();
 
-        Task<OnlineUsers> GetOnlineUsers(string game);
+        Task<OnlineUsers> GetOnlineUsers(GameType gameType = null, string game = null);
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
@@ -50,16 +51,19 @@ namespace GamesAdmin.Site.Features._Shared
     public class GameServerService : BaseGameServerService, IGameServerService
     {
         private readonly IGameServerApi serverApi;
+        private readonly IOnlineUserApiFactory onlineUserFactory;
         private readonly ISentryClient sentryClient;
         private AsyncRetryPolicy policy;
 
         public GameServerService(
             IGameServerApi serverApi,
-            ISentryClient sentryClient)
+            ISentryClient sentryClient,
+            IOnlineUserApiFactory onlineUserFactory)
             : base(sentryClient)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
+            this.onlineUserFactory = onlineUserFactory;
 
             policy = Policy
              .Handle<HttpRequestException>()
@@ -70,13 +74,18 @@ namespace GamesAdmin.Site.Features._Shared
              });
         }
 
-        public async Task<OnlineUsers> GetOnlineUsers(string game)
+        public async Task<OnlineUsers> GetOnlineUsers(GameType gameType = null, string game = null)
         {
             try
             {
-                return string.IsNullOrWhiteSpace(game)
-                    ? await serverApi.GetOnlineUsers()
-                    : await serverApi.GetOnlineUsersOnGame(game);
+                if (gameType == null)
+                {
+                    return await serverApi.GetAllOnlineUsers();
+                }
+
+                var onlineUserService = onlineUserFactory.GetReportService(gameType);
+
+                return await onlineUserService.GetOnlineUsers(game);
             }
             catch (Exception ex)
             {
