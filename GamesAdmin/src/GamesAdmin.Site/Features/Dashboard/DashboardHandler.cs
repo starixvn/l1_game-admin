@@ -46,7 +46,6 @@ namespace GamesAdmin.Site.Features.Dashboard
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
-            OnlineUsers onlineUsers;
             var gameType = string.Empty;
 
             switch (request.Game)
@@ -64,7 +63,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                     break;
             }
 
-            onlineUsers = await gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game), gameType);
+            var onlineUsers = await gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game), gameType);
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }
