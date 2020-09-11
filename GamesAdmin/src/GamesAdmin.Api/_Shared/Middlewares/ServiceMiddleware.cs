@@ -1,20 +1,20 @@
-﻿using GamesAdmin.Api.GameUser;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.DailySummarize;
+using GamesAdmin.Api.EndGameInfo;
 using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
+using GamesAdmin.Api.GameServers;
+using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
-using Microsoft.Extensions.DependencyInjection;
-using GamesAdmin.Api.EndGameInfo;
-using GamesAdmin.Api.GameServers;
-using Refit;
-using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Core.IdentityServer;
+using Microsoft.Extensions.DependencyInjection;
+using Refit;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -88,6 +88,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
+            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
+            services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
         }
     }
 }

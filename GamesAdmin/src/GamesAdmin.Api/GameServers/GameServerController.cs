@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,15 @@ namespace GamesAdmin.Api.GameServers
         }
 
         [HttpPost("reload")]
-        public async Task<bool> Reload()
-           => (await mediator.Send(new ReloadRequest()));
+        public Task<bool> Reload()
+           => mediator.Send(new ReloadRequest());
 
         [HttpPost("jwt")]
-        public async Task<JsonWebToken> GetJWT([FromBody] JWTRequest request)
-           => (await mediator.Send(request));
+        public Task<JsonWebToken> GetJWT([FromBody] JWTRequest request)
+           => mediator.Send(request);
+
+        [HttpGet("online_users/{game?}")]
+        public Task<OnlineUsers> OnlineUsers(string game)
+           => mediator.Send(new OnlineUserRequest(game));
     }
 }

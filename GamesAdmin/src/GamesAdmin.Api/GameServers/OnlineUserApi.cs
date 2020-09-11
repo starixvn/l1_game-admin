@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features._Shared;
 using Refit;
 
-namespace GamesAdmin.Site.Features.GameServers
+namespace GamesAdmin.Api.GameServers
 {
-    public interface IOnlineUserApi : IBaseAuthorizationApi
+    [Headers("Authorization: Bearer")]
+    public interface IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         Task<OnlineUsers> GetOnlineUsers(string name = "");

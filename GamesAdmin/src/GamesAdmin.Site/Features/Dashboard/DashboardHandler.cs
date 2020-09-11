@@ -8,6 +8,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
+using GamesAdmin.Site.Features.GameSettings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -17,53 +18,27 @@ namespace GamesAdmin.Site.Features.Dashboard
         : IRequestHandler<GetOnlineUsersRequest, OnlineUsersViewModel>
         , IRequestHandler<GetOnlineUsersByGameRequest, OnlineUsersViewModel>
     {
-        private readonly IGameServerService gameServerService;
+        private readonly IGameSettingService gameSettingService;
         private readonly IMapper mapper;
 
         public DashboardHandler(
-            IGameServerService gameServerService,
+            IGameSettingService gameSettingService,
             IMapper mapper)
-        {
-            this.gameServerService = gameServerService;
+        {            
+            this.gameSettingService = gameSettingService;
             this.mapper = mapper;
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersRequest request, CancellationToken cancellationToken)
         {
-            var result = await gameServerService.GetOnlineUsers();
+            var result = await gameSettingService.GetOnlineUsers();
 
-            return new OnlineUsersViewModel
-            {
-                TotalReal = result.TotalReal,
-                RealUsers = result.RealUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalUUS = result.TotalUUS,
-                UusUsers = result.UusUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalBots = result.TotalBots,
-                Bots = result.Bots?.Select(x => mapper.Map<BotUserViewModel>(x)),
-                GameTypeItems = GenerateGameItems()
-            };
+            return ConvertToOnlineUserViewModel(result);
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
-            var gameType = string.Empty;
-
-            switch (request.Game)
-            {
-                case GameType.KenoProMaxValue:
-                    gameType = "keno";
-                    break;
-
-                case GameType.BaccaratValue:
-                    gameType = "baccarat";
-                    break;
-
-                case GameType.RouletteValue:
-                    gameType = GameType.RouletteValue;
-                    break;
-            }
-
-            var onlineUsers = await gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game), gameType);
+            var onlineUsers = await gameSettingService.GetOnlineUsers(request.Game);
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }

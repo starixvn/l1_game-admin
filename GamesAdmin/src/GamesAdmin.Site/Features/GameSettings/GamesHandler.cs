@@ -8,9 +8,9 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
+using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -356,11 +356,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return new MonitorViewModel(gameList);
         }
 
-        public async Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
-        {
-            await gameServerService.UnderMaintenance(request);
-
-            return true;
-        }
+        public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
+        => gameService.UnderMaintenance(request);
     }
 }

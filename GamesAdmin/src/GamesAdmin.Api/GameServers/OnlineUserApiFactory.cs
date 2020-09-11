@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration;
 
-namespace GamesAdmin.Site.Features.GameServers
+namespace GamesAdmin.Api.GameServers
 {
     public interface IOnlineUserApiFactory
     {
-        IOnlineUserApi GetReportService(GameType game);
+        IOnlineUserApi GetOnlineUserApi(GameType game);
     }
 
     public class OnlineUserApiFactory : IOnlineUserApiFactory
@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.GameServers
             this.serviceProvider = serviceProvider;
         }
 
-        IOnlineUserApi IOnlineUserApiFactory.GetReportService(GameType game)
+        IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(GameType game)
         => onlineUserServices.ContainsKey(game.Value)
             ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[game.Value])
             : (IOnlineUserApi)serviceProvider.GetService(defaultOnlineUserApi);

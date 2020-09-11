@@ -66,11 +66,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             // game servers api
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
-
-            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
-            services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
-            services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
-            services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
         }
     }
 }

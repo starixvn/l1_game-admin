@@ -16,5 +16,8 @@ namespace GamesAdmin.Api.GameServers
 
         [Post("/api/jwt")]
         Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] JWTRequest request);
+
+        [Get("/api/onlineusers")]
+        Task<OnlineUsers> GetAllOnlineUsers();
     }
 }

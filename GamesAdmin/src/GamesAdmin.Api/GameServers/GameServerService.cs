@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.UM.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using Refit;
 using Sentry;
@@ -15,19 +16,24 @@ namespace GamesAdmin.Api.GameServers
         Task Reload();
 
         Task<JsonWebToken> GetJWT(JWTRequest request);
+
+        Task<OnlineUsers> GetOnlineUsers(GameType gameType = null);
     }
 
     public class GameServerService : IGameServerService
     {
         private readonly IGameServerApi serverApi;
         private readonly ISentryClient sentryClient;
+        private readonly IOnlineUserApiFactory onlineUserApiFactory;
 
         public GameServerService(
             IGameServerApi serverApi,
-            ISentryClient sentryClient)
+            ISentryClient sentryClient,
+            IOnlineUserApiFactory onlineUserApiFactory)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
+            this.onlineUserApiFactory = onlineUserApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -72,6 +78,44 @@ namespace GamesAdmin.Api.GameServers
             catch (Exception ex)
             {
                 HandleException(ex);
+            }
+        }
+
+        public async Task<OnlineUsers> GetOnlineUsers(GameType gameType = null)
+        {
+            try
+            {
+                if (gameType == null)
+                {
+                    return await serverApi.GetAllOnlineUsers();
+                }
+
+                var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameType);
+
+                return await onlineUserService.GetOnlineUsers(ConvertTypeToGameServerName(gameType));
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return new OnlineUsers();
+        }
+
+        private string ConvertTypeToGameServerName(GameType gameType)
+        {
+            switch (gameType.Value)
+            {
+                case GameType.KenoProMaxValue:
+                    return "keno";
+
+                case GameType.BaccaratValue:
+                    return "baccarat";
+
+                case GameType.RouletteValue:
+                    return GameType.RouletteValue;
+
+                default: return string.Empty;
             }
         }
 
