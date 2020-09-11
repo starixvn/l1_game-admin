@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Core.Models;
 using Refit;
 
 namespace GamesAdmin.Api.GameServers
@@ -12,5 +13,8 @@ namespace GamesAdmin.Api.GameServers
 
         [Post("/api/reload")]
         Task Reload();
+
+        [Post("/api/jwt")]
+        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] JWTRequest request);
     }
 }

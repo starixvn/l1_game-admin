@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.UM.Requests;
+using GamesAdmin.Core.Models;
 using Refit;
 using Sentry;
 
@@ -12,6 +13,8 @@ namespace GamesAdmin.Api.GameServers
         Task UnderMaintenance(UMRequest request);
 
         Task Reload();
+
+        Task<JsonWebToken> GetJWT(JWTRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -25,6 +28,20 @@ namespace GamesAdmin.Api.GameServers
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
+        }
+
+        public Task<JsonWebToken> GetJWT(JWTRequest request)
+        {
+            try
+            {
+                return serverApi.GetToken(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return Task.FromResult(new JsonWebToken());
         }
 
         public async Task Reload()

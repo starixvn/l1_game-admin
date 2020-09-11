@@ -16,20 +16,11 @@ namespace GamesAdmin.Site.Features._Shared
 {
     public interface IGameServerApi : IBaseAuthorizationApi
     {
-        [Post("/api/reload")]
-        Task Reload();
-
         [Get("/api/onlineusers")]
         Task<OnlineUsers> GetAllOnlineUsers();
 
-        [Get("/api/game/{name}/onlineusers")]
-        Task<OnlineUsers> GetOnlineUsers(string name);
-
         [Post("/api/proviet-keno/round-result")]
-        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
-
-        [Post("/api/jwt")]
-        Task<JsonWebToken> GetToken([Body(BodySerializationMethod.UrlEncoded)] RequestJWT request);
+        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);     
 
         [Post("/api/um")]
         Task UnderMaintenance(UnderMaintenanceRequest request);
@@ -37,13 +28,9 @@ namespace GamesAdmin.Site.Features._Shared
 
     public interface IGameServerService
     {
-        Task Reload();
-
         Task<OnlineUsers> GetOnlineUsers(GameType gameType = null, string game = null);
 
         Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-
-        Task<JsonWebToken> GetJWT(string username, string userAgent);
 
         Task UnderMaintenance(UnderMaintenanceRequest request);
     }
@@ -93,32 +80,6 @@ namespace GamesAdmin.Site.Features._Shared
             }
 
             return new OnlineUsers();
-        }
-
-        public async Task Reload()
-        {
-            try
-            {
-                await serverApi.Reload();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
-
-        public Task<JsonWebToken> GetJWT(string username, string userAgent)
-        {
-            try
-            {
-                return serverApi.GetToken(new RequestJWT(username, userAgent));
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-
-            return Task.FromResult(new JsonWebToken());
         }
 
         public async Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)

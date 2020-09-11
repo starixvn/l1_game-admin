@@ -33,6 +33,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/game_server/reload")]
         Task<bool> Reload();
+
+        [Post("/game_server/jwt")]
+        Task<JsonWebToken> GetToken([Body] RequestJWT request);
     }
 
     public interface IGameSettingService
@@ -54,6 +57,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateDisabledMessage(string name, string message);
 
         Task<bool> Reload();
+
+        Task<JsonWebToken> GetJWT(string username, string userAgent);
     }
 
     public class GameSettingService : IGameSettingService
@@ -108,5 +113,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Reload()
         => gameApi.Reload();
+
+        public Task<JsonWebToken> GetJWT(string username, string userAgent)
+        => gameApi.GetToken(new RequestJWT(username, userAgent));
     }
 }

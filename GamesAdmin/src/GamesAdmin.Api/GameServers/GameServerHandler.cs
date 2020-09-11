@@ -1,12 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Core.Models;
 using MediatR;
 
 namespace GamesAdmin.Api.GameServers
 {
     public class GameServerHandler
         : IRequestHandler<ReloadRequest, bool>
+        , IRequestHandler<JWTRequest, JsonWebToken>
     {
         private readonly IGameServerService gameServerService;
 
@@ -21,5 +23,8 @@ namespace GamesAdmin.Api.GameServers
 
             return true;
         }
+
+        public Task<JsonWebToken> Handle(JWTRequest request, CancellationToken cancellationToken)
+        => gameServerService.GetJWT(request);
     }
 }

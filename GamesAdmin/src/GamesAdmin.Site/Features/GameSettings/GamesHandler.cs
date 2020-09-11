@@ -283,7 +283,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (request.Reload)
             {
-                await gameServerService.Reload();
+                await gameService.Reload();
             }
 
             return true;
@@ -321,7 +321,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
-            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
+            var result = await gameService.GetJWT(request.Username, request.UserAgent);
             var redirectUrl = request.Game == GameType.SeDieValue ?
                 @$"/game-admin/monitoring.html?game={request.Game}&v={DateTime.Now.Ticks}" :
                 @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
