@@ -87,7 +87,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     }
 
     if (!!data.finish) {
-      const waitingTime = 9;
+      const waitingTime = 10;
       this.setState({
         result: this.getResult(data.finish.result),
         gameState: GameState.waiting,
