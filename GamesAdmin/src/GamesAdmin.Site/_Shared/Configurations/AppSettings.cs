@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using GamesAdmin.Site._Shared.IdentityServer;
+using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.Configuration;
 
 namespace GamesAdmin.Site._Shared.Configurations
@@ -19,7 +19,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         int MaxDecreased { get; }
 	
-	ResultPageConfiguration ResultPageConfiguration { get; }
+	    ResultPageConfiguration ResultPageConfiguration { get; }
 	
         GameServerSettings GameServers { get; }
     }

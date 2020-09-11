@@ -30,6 +30,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Put("/game_settings/{name}/update_message")]
         Task<bool> UpdateMessage(string name, string disabledMessage);
+
+        [Post("/game_server/reload")]
+        Task<bool> Reload();
     }
 
     public interface IGameSettingService
@@ -49,6 +52,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
         Task<bool> UpdateDisabledMessage(string name, string message);
+
+        Task<bool> Reload();
     }
 
     public class GameSettingService : IGameSettingService
@@ -100,5 +105,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateDisabledMessage(string name, string message)
         => gameApi.UpdateMessage(name, message);
+
+        public Task<bool> Reload()
+        => gameApi.Reload();
     }
 }

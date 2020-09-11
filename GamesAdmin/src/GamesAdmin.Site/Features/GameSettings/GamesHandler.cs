@@ -316,16 +316,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             return true;
         }
 
-        public async Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)
-        {
-            await gameServerService.Reload();
-
-            return true;
-        }
+        public Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)
+        => gameService.Reload();
 
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
-            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);            
+            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
             var redirectUrl = request.Game == GameType.SeDieValue ?
                 @$"/game-admin/monitoring.html?game={request.Game}&v={DateTime.Now.Ticks}" :
                 @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";

@@ -11,13 +11,24 @@ using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using Microsoft.Extensions.DependencyInjection;
 using GamesAdmin.Api.EndGameInfo;
+using GamesAdmin.Api.GameServers;
+using Refit;
+using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Core.IdentityServer;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
     public static class ServiceMiddleware
     {
-        public static void AddServices(this IServiceCollection services)
+        public static void AddServices(this IServiceCollection services, IAppSettings appSettings)
         {
+            IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
+
+            var refitSettings = new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+            };
+
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();
@@ -74,6 +85,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoNorthEndGameInfoService>();
             services.AddScoped<RouletteEndGameInfoService>();
             services.AddScoped<VipSeDieEndGameInfoService>();
+
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddScoped<IGameServerService, GameServerService>();
         }
     }
 }

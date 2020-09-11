@@ -1,13 +1,13 @@
-﻿using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site._Shared.IdentityServer;
+﻿using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
-using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameRoundResult;
+using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;

@@ -7,12 +7,14 @@ using Sentry;
 
 namespace GamesAdmin.Api.GameServers
 {
-    public interface IGameServerService 
+    public interface IGameServerService
     {
         Task UnderMaintenance(UMRequest request);
+
+        Task Reload();
     }
 
-    public class GameServerService: IGameServerService
+    public class GameServerService : IGameServerService
     {
         private readonly IGameServerApi serverApi;
         private readonly ISentryClient sentryClient;
@@ -25,6 +27,17 @@ namespace GamesAdmin.Api.GameServers
             this.sentryClient = sentryClient;
         }
 
+        public async Task Reload()
+        {
+            try
+            {
+                await serverApi.Reload();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
 
         public async Task UnderMaintenance(UMRequest request)
         {
