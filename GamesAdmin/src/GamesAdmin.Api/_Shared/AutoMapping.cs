@@ -99,9 +99,9 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new bool[]
                 {
                     source.Result.FirstRedChip,
-                    source.Result.FirstRedChip,
-                    source.Result.FirstRedChip,
-                    source.Result.FirstRedChip
+                    source.Result.SecondRedChip,
+                    source.Result.ThirdRedChip,
+                    source.Result.FourthRedChip
                 }));
 
             CreateMap<VipSeDieBetReportEntity, VipSeDieBetRecord>();
