@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/um")]
         Task<bool> UnderMaintenance([Body] UnderMaintenanceRequest request);
 
-        [Get("/game_server/online_users")]
+        [Get("/game_server/online_users/{game}")]
         Task<OnlineUsers> GetOnlineUsers(string game = null);
     }
 
