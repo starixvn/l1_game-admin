@@ -70,10 +70,7 @@
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.Username</td>
                         <td>
-                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetVipSeDieBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
-                                @bet.Nickname
-                            </a>
+                            @bet.Nickname
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Even)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Odd)</td>

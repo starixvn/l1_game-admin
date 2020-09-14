@@ -47,8 +47,6 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
 
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
-
-        Task<IEnumerable<VipSeDieBetHistoryRecord>> GetVipSeDieBetHistory(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -116,8 +114,5 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipSeDieReport(roundId, nickname, excludeUUS);
-
-        public Task<IEnumerable<VipSeDieBetHistoryRecord>> GetVipSeDieBetHistory(long roundId, string userId)
-        => reportApi.GetVipSeDieBetHistory(roundId, userId);
     }
 }

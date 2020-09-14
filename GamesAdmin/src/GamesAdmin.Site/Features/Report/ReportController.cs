@@ -139,12 +139,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVipSeDieBetHistory(long roundId, string userId)
-        {
-            return PartialView("_VipSeDieBetHistory", await mediator.Send(new GetVipSeDieBetHistoryRequest(roundId, userId)));
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetDragonTigerReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_DragonTigerRecords", await mediator.Send(new GetDragonTigerReportRequest(roundId, nickname, excludeUUS)));

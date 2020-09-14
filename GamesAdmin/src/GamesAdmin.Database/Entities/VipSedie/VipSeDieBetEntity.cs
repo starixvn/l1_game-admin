@@ -4,21 +4,25 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("vipsedie_cuocs")]
-    public class VipSeDieBetEntity : MiniGameBaseEntity
+    public class VipSeDieBetEntity : BaseBetEntity
     {
-        public string Uid { get; set; }
+        public decimal Odd { get; set; }
 
-        public string Name { get; set; }
+        public decimal Even { get; set; }
 
-        [BsonElement("phien")]
-        public long Round { get; set; }
+        [BsonElement("red2")]
+        public decimal TwoRed { get; set; }
 
-        public int? MemberId { get; set; }
+        [BsonElement("red3")]
+        public decimal ThreeRed { get; set; }
 
-        public string SiteId { get; set; }
+        [BsonElement("red4")]
+        public decimal FourRed { get; set; }
 
-        public string Choice { get; set; }
+        [BsonElement("white3")]
+        public decimal ThreeWhite { get; set; }
 
-        public decimal Amount { get; set; }
+        [BsonElement("white4")]
+        public decimal FourWhite { get; set; }
     }
 }

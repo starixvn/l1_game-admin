@@ -29,8 +29,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
-        IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>,
-        IRequestHandler<GetVipSeDieBetHistoryRequest, IEnumerable<VipSeDieBetHistoryRecordViewModel>>
+        IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -404,13 +403,6 @@ namespace GamesAdmin.Site.Features.ClientSites
                 RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
                 Records = result.Records.Select(x => mapper.Map<VipSeDieRecordViewModel>(x))
             };
-        }
-
-        public async Task<IEnumerable<VipSeDieBetHistoryRecordViewModel>> Handle(GetVipSeDieBetHistoryRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetVipSeDieBetHistory(request.RoundId, request.UserId);
-
-            return mapper.Map<IEnumerable<VipSeDieBetHistoryRecordViewModel>>(result);
         }
     }
 }

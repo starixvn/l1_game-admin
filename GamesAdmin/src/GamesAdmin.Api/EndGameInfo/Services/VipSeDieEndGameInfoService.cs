@@ -7,9 +7,9 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class VipSeDieEndGameInfoService : BaseEndGameInfoService<VipSeDieRoundEntity, VipSeDieOnesEntity>, IEndGameInfoService
+    public class VipSeDieEndGameInfoService : BaseEndGameInfoService<VipSeDieRoundEntity, VipSeDieBetEntity>, IEndGameInfoService
     {
-        public VipSeDieEndGameInfoService(IGenericRepository<VipSeDieRoundEntity> roundRepository, IGenericRepository<VipSeDieOnesEntity> betRepository)
+        public VipSeDieEndGameInfoService(IGenericRepository<VipSeDieRoundEntity> roundRepository, IGenericRepository<VipSeDieBetEntity> betRepository)
             : base(roundRepository, betRepository)
         {
         }

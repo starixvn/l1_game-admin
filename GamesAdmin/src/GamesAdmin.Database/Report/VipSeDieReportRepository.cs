@@ -24,7 +24,7 @@ namespace GamesAdmin.Database
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<VipSeDieOnesEntity, VipSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
+                var project = GetBaseAggregateBuilder<VipSeDieBetEntity, VipSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
                     .Project(x => new VipSeDieBetReportEntity
                     {
                         Time = x.Time,

@@ -50,9 +50,6 @@ namespace GamesAdmin.Api.Report
         Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname);
 
         Task<VipSeDieBetReport> GetVipSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<IEnumerable<VipSeDieBetHistoryRecord>> GetVipSeDieBetHistoryAsync(long roundId, string userId);
-
     }
 
     public class ReportService : IReportService
@@ -382,14 +379,6 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<VipSeDieBetRecord>(x))
             };
-        }
-
-        public async Task<IEnumerable<VipSeDieBetHistoryRecord>> GetVipSeDieBetHistoryAsync(long roundId, string userId)
-        {
-            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
-            var result = await repository.GetVipSeDieAsync(roundId, userId);
-
-            return mapper.Map<IEnumerable<VipSeDieBetHistoryRecord>>(result);
         }
     }
 }

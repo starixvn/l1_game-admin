@@ -105,8 +105,6 @@ namespace GamesAdmin.Api._Shared
                 }));
 
             CreateMap<VipSeDieBetReportEntity, VipSeDieBetRecord>();
-
-            CreateMap<VipSeDieBetEntity, VipSeDieBetHistoryRecord>();
         }
     }
 }

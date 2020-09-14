@@ -27,8 +27,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<RouletteReportRequest, RouletteBetReport>,
         IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>,
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
-        IRequestHandler<VipSeDieReportRequest, VipSeDieBetReport>,
-        IRequestHandler<VipSeDieBetHistoryRequest, IEnumerable<VipSeDieBetHistoryRecord>>
+        IRequestHandler<VipSeDieReportRequest, VipSeDieBetReport>
     {
         private readonly IReportService reportService;
 
@@ -87,8 +86,5 @@ namespace GamesAdmin.Api.Report
 
         public Task<VipSeDieBetReport> Handle(VipSeDieReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-        public Task<IEnumerable<VipSeDieBetHistoryRecord>> Handle(VipSeDieBetHistoryRequest request, CancellationToken cancellationToken)
-        => reportService.GetVipSeDieBetHistoryAsync(request.RoundId, request.UserId);
     }
 }
