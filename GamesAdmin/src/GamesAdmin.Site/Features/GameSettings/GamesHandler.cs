@@ -7,7 +7,6 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
@@ -41,7 +40,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         private readonly IGameSettingService gameService;
         private readonly IGameUserService accountService;
-        private readonly IGameServerService gameServerService;
         private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
 
@@ -49,14 +47,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             IMapper mapper,
             IGameSettingService gameService,
             IGameUserService accountService,
-            IGameServerService gameServerService,
             IProVietKenoService proVietKenoService,
             IAppSettings appSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
-            this.gameServerService = gameServerService;
             this.proVietKenoService = proVietKenoService;
             this.appSettings = appSettings;
         }
@@ -337,7 +333,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private async Task NotifyUnsettleRoundsToGameServer()
         {
             var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
-            await gameServerService.NotifyRoundResult(unsettleRounds);
+            await proVietKenoService.NotifyRoundResult(unsettleRounds);
         }
 
         public async Task<MonitorViewModel> Handle(GetMonitorRequest request, CancellationToken cancellationToken)

@@ -19,5 +19,8 @@ namespace GamesAdmin.Api.GameServers
 
         [Get("/api/onlineusers")]
         Task<OnlineUsers> GetAllOnlineUsers();
+
+        [Post("/api/proviet-keno/round-result")]
+        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
     }
 }

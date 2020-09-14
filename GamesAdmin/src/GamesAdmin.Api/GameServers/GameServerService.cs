@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.UM.Requests;
@@ -18,6 +19,8 @@ namespace GamesAdmin.Api.GameServers
         Task<JsonWebToken> GetJWT(JWTRequest request);
 
         Task<OnlineUsers> GetOnlineUsers(GameType gameType = null);
+
+        Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
     }
 
     public class GameServerService : IGameServerService
@@ -137,6 +140,25 @@ namespace GamesAdmin.Api.GameServers
             }
 
             sentryClient.CaptureException(ex);
+        }
+
+        public async Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
+        {
+            foreach (var round in kenoRounds)
+            {
+                try
+                {
+                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
+
+                    await serverApi.NotifyRoundResult(round);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
+                }
+            }
+
+            return true;
         }
     }
 }

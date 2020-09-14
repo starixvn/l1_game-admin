@@ -11,6 +11,7 @@ namespace GamesAdmin.Api.GameServers
         : IRequestHandler<ReloadRequest, bool>
         , IRequestHandler<JWTRequest, JsonWebToken>
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
+        , IRequestHandler<NotifyRoundsRequest, bool>
     {
         private readonly IGameServerService gameServerService;
 
@@ -33,5 +34,8 @@ namespace GamesAdmin.Api.GameServers
         => string.IsNullOrWhiteSpace(request.Game)
                 ? gameServerService.GetOnlineUsers()
                 : gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game));
+
+        public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
+        => gameServerService.NotifyRoundResult(request.Rounds);
     }
 }

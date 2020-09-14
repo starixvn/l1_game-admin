@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
@@ -29,5 +30,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpGet("online_users/{game?}")]
         public Task<OnlineUsers> OnlineUsers(string game)
            => mediator.Send(new OnlineUserRequest(game));
+
+        [HttpPost("notify_proviet_results")]
+        public Task<bool> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)
+           => mediator.Send(new NotifyRoundsRequest(kenoRounds));
     }
 }
