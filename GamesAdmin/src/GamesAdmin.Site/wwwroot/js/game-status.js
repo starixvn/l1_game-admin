@@ -93,6 +93,7 @@
                     if (updated) {
                         alert("Under Maintenance is " + status + " now!");
                         $('#umModal').modal('hide');
+                        window.location.href = "/status";
                     }
                 });
             }
