@@ -8,8 +8,7 @@ import SocketIO from "../components/util/game-server-endpoint/socket-io";
 
 class Monitor extends Home {
   static async getInitialProps(ctx: NextPageContext) {
-    console.log(ctx.query);
-    return { game: ctx.query.game }
+    return { game: ctx.query.game, gameId: ctx.query.gameId }
   }
 
   initSocket() {
@@ -35,4 +34,4 @@ class Monitor extends Home {
 }
 
 
-export default withRouter(Monitor);
+export default Monitor;

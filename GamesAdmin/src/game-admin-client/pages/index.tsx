@@ -17,6 +17,7 @@ import { Modal, Row } from "reactstrap";
 type Props = {
   router: NextRouter;
   game: string;
+  gameId: string | number;
 };
 
 type State = {
@@ -60,13 +61,6 @@ export class Home extends React.Component<Props, State> {
   initSocket() {
     const gameServerEndpoint = process.env.NEXT_PUBLIC_ENV === "local" ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT : Cookies.get("game-server-endpoint");
     return new GameWsEndpoint(`${this.protocol}://${gameServerEndpoint}/admin`);
-  }
-
-  static getDerivedStateFromProps(props: Props, state: State) {
-    state.gameId = (props.router.query.gameId || 0).toString();
-    state.gameName = (props.router.query.game || "").toString();
-
-    return state;
   }
 
   changeLoadingState(showLoading: boolean) {
@@ -133,8 +127,9 @@ export class Home extends React.Component<Props, State> {
   }
 
   render() {
-    const { gameId, gameName, token } = this.state;
-    const info = getGameInfoByGameId(gameId) || getGameInfoByGameName(gameName);
+    const { gameId, game } = this.props;
+    const {token} = this.state;
+    const info = getGameInfoByGameId(gameId) || getGameInfoByGameName(game);
 
     this.socket.login({ jwt: token });
 
