@@ -41,4 +41,4 @@ export default class MiniSedieModel {
     }
 }
 
-export { MiniSedieModel as ShakeThePlaceModel, MiniSedieBetList }
+export { MiniSedieModel as ShakeThePlateModel, MiniSedieBetList }

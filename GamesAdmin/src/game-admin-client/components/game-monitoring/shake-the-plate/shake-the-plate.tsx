@@ -4,7 +4,7 @@ import { Col, Container, Row } from "reactstrap";
 import BetItem from "../../common/model/BetItem";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
-import ShakeThePlaceModel from "../../common/model/ShakeThePlateModel";
+import ShakeThePlateModel from "../../common/model/ShakeThePlateModel";
 import BetList from "../../shared/bet-list/bet-list";
 import { GameState } from "../../shared/common/GameState";
 import Dice from "../../shared/dice/dice";
@@ -18,12 +18,12 @@ type ShakeThePlateProps = {
   onMessage: Function
 }
 
-export default class ShakeThePlate extends React.Component<ShakeThePlateProps, ShakeThePlaceModel> {
+export default class ShakeThePlate extends React.Component<ShakeThePlateProps, ShakeThePlateModel> {
   private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
-    this.state = new ShakeThePlaceModel();
+    this.state = new ShakeThePlateModel();
 
   }
 

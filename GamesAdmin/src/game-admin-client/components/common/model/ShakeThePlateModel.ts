@@ -5,6 +5,7 @@ import TimeModel from "./TimeModel";
 class ShakeThePlaceBetList {
   odd: BetList;
   even: BetList;
+  red2: BetList;
   red3: BetList;
   red4: BetList;
   white3: BetList;
@@ -13,6 +14,7 @@ class ShakeThePlaceBetList {
   constructor() {
     this.odd = new BetList();
     this.even = new BetList();
+    this.red2 = new BetList();
     this.red3 = new BetList();
     this.red4 = new BetList();
     this.white3 = new BetList();
@@ -20,7 +22,7 @@ class ShakeThePlaceBetList {
   }
 }
 
-export default class ShakeThePlaceModel {
+export default class ShakeThePlateModel {
   roundNumber: number;
   time: TimeModel;
   betList: ShakeThePlaceBetList;
@@ -37,4 +39,4 @@ export default class ShakeThePlaceModel {
   }
 }
 
-export { ShakeThePlaceModel, ShakeThePlaceBetList }
+export { ShakeThePlateModel, ShakeThePlaceBetList }

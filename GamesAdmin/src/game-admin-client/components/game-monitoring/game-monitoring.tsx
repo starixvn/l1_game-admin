@@ -12,6 +12,7 @@ import OddEvenTurbo from "./odd-even-turbo/odd-even-turbo";
 import OddEven from "./odd-even/odd-even";
 import Roulette from "./roulette";
 import ShakeThePlate from "./shake-the-plate/shake-the-plate";
+import VipSeDie from "./vip-sedie/vip-sedie";
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
   const object = _.get(message, path);
@@ -57,7 +58,8 @@ const gameNameMapper = {
   kenowest: 17,
   kenosouth: 18,
   kenonorth: 19,
-  roulette: 21
+  roulette: 21,
+  vipsedie: 22
 };
 
 const gameMapper = {
@@ -137,6 +139,10 @@ const gameMapper = {
     component: Roulette,
     ...getInfoByGameKey('roulette')
   },
+  22: {
+    component: VipSeDie,
+    ...getInfoByGameKey('VipSeDie'),
+  }
 };
 
 export function getGameInfoByGameId(gameId: number | string) {

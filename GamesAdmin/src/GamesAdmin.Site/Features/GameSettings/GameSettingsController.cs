@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -114,7 +113,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpGet]
         public async Task<IActionResult> GameMonitor()
             => View(await mediator.Send(new GetMonitorRequest()));
-
 
         [HttpGet]
         [Route("gamedetails/{name}")]
