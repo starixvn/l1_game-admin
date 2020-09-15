@@ -27,6 +27,9 @@ class Monitor extends Home {
             : Cookies.get("sedie-server-endpoint");
         break;
     }
+
+    console.log(serverEndpoint);
+    console.log(this.props.router.query.game);
     return new SocketIO(`${this.protocol}://${serverEndpoint}`);
   }
 }

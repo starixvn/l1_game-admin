@@ -10,8 +10,10 @@ export default class SocketIO extends Websocket {
     return new Promise((resolve) => {
       console.log(this.isConnected);
       if (!this.isConnected) {
+        console.log(this.endpoint);
         this.socketIO = io(this.endpoint, { transports: ["websocket"], upgrade: false });
         this.socketIO.on("connect", () => {
+          console.log(this.socketIO);
           this.isConnected = true;
           this.socketIO.on("message", this.onReceiveMessage.bind(this));
           this.socketIO.on("error", (event) => logger.error(event));
