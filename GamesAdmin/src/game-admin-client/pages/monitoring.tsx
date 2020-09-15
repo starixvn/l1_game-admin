@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { GetServerSideProps } from "next";
+import { NextPageContext } from "next";
 import { withRouter } from "next/router";
 
 import { Home } from ".";
@@ -7,8 +7,8 @@ import GameName from "../components/shared/common/GameName";
 import SocketIO from "../components/util/game-server-endpoint/socket-io";
 
 class Monitor extends Home {
-  constructor(props) {
-    super(props);
+  static async getInitialProps(ctx: NextPageContext) {
+    return { game: ctx.query.game }
   }
 
   initSocket() {
@@ -32,10 +32,5 @@ class Monitor extends Home {
   }
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return {
-    props: { game: context.query.game }
-  };
-};
 
 export default withRouter(Monitor);
