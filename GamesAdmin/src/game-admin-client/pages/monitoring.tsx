@@ -8,6 +8,7 @@ import SocketIO from "../components/util/game-server-endpoint/socket-io";
 
 class Monitor extends Home {
   static async getInitialProps(ctx: NextPageContext) {
+    console.log(ctx.query);
     return { game: ctx.query.game }
   }
 
