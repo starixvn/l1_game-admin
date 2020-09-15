@@ -13,7 +13,7 @@ class Monitor extends Home {
 
   initSocket() {
     let serverEndpoint = "";
-    switch (this.props.router.query.game) {
+    switch (this.props.game) {
       case GameName.VipSeDie:
         serverEndpoint =
           process.env.NEXT_PUBLIC_ENV === "local"
@@ -27,9 +27,8 @@ class Monitor extends Home {
             : Cookies.get("sedie-server-endpoint");
         break;
     }
-
+    console.log(this.props.game);
     console.log(serverEndpoint);
-    console.log(this.props.router.query.game);
     return new SocketIO(`${this.protocol}://${serverEndpoint}`);
   }
 }

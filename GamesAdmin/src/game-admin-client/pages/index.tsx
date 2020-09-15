@@ -16,6 +16,7 @@ import { Modal, Row } from "reactstrap";
 
 type Props = {
   router: NextRouter;
+  game: string;
 };
 
 type State = {
