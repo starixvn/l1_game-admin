@@ -12,7 +12,6 @@ class Monitor extends Home {
   }
 
   initSocket() {
-    debugger;
     let serverEndpoint = "";
     switch (this.props.router.query.game) {
       case GameName.VipSeDie:
