@@ -8,6 +8,7 @@ export default class SocketIO extends Websocket {
 
   connect() {
     return new Promise((resolve) => {
+      console.log(this.isConnected);
       if (!this.isConnected) {
         this.socketIO = io(this.endpoint, { transports: ["websocket"], upgrade: false });
         this.socketIO.on("connect", () => {
