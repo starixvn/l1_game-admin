@@ -4,7 +4,8 @@ const movingItems = [
   { from: './out/_next', to: './out/game-admin/_next' },
   { from: './out/404.html', to: './out/game-admin/404.html' },
   { from: './out/monitor.html', to: './out/game-admin/monitor.html' },
-  { from: './out/monitoring.html', to: './out/game-admin/monitoring.html' },
+  { from: './out/xocxoc.html', to: './out/game-admin/xocxoc.html' },
+  { from: './out/vipsedie.html', to: './out/game-admin/vipsedie.html' },
   { from: './out/game-admin', to: '../GamesAdmin.Site/wwwroot/game-admin' }
 ];
 
