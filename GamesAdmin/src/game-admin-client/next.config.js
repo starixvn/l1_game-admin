@@ -14,7 +14,8 @@ module.exports = {
   ) {
     return {
       "/monitor": { page: "/" },
-      "/monitoring": { page: "/monitoring" },
+      "/xocxoc": { page: "/monitoring", query: { game: "xocxoc" } },
+      "/vipsedie": { page: "/monitoring", query: { game: "vipsedie" } },
     };
   },
 };

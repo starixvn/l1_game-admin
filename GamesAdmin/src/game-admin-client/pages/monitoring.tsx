@@ -1,9 +1,8 @@
 import Cookies from "js-cookie";
 import { NextPageContext } from "next";
-import { NextRouter, withRouter } from "next/router";
+import { NextRouter } from "next/router";
 import React from "react";
 
-import { Home } from ".";
 import GameName from "../components/shared/common/GameName";
 import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
 import SocketIO from "../components/util/game-server-endpoint/socket-io";
@@ -21,8 +20,8 @@ import GameMenu from "../components/game-monitoring/menu/menu";
 
 type Props = {
   router: NextRouter;
-  game: string,
-  gameId: string
+  game: string;
+  gameId: string;
 };
 
 type State = {
@@ -163,12 +162,12 @@ class Monitor extends React.Component<Props, State> {
       const info =
         getGameInfoByGameId(gameId ? gameId.toString() : "") ||
         getGameInfoByGameName(game ? game.toString() : "");
-  
+
       this.socket.login({ jwt: token });
 
       return info
-      ? this.renderGameMonitoringComponent(info)
-      : this.renderLoaderOrGameMenu();
+        ? this.renderGameMonitoringComponent(info)
+        : this.renderLoaderOrGameMenu();
     }
 
     return null;

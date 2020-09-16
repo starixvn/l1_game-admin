@@ -319,7 +319,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var result = await gameService.GetJWT(request.Username, request.UserAgent);
             var redirectUrl = request.Game == GameType.SeDieValue || request.Game == GameType.VipSeDieValue ?
-                @$"/game-admin/monitoring.html?game={request.Game}&v={DateTime.Now.Ticks}" :
+                @$"/game-admin/{request.Game}.html?v={DateTime.Now.Ticks}" :
                 @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
 
             return new GameServerToken
