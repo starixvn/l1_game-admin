@@ -70,8 +70,7 @@ class Monitor extends React.Component<Props, State> {
             : Cookies.get("sedie-server-endpoint");
         break;
     }
-    console.log(this.props.game);
-    console.log(serverEndpoint);
+
     return new SocketIO(`${this.protocol}://${serverEndpoint}`);
   }
 
