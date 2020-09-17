@@ -4,7 +4,7 @@ namespace GamesAdmin.Core.Models.EndGameInfo
 {
     public class EndGameInfoResult
     {
-        public string ErrorCode { get; set; }
+        public string ErrorCode { get; set; } = "0";
 
         public string ErrorDescription { get; set; }
 
