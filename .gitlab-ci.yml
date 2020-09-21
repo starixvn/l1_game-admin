@@ -1,42 +1,29 @@
-image: mcr.microsoft.com/dotnet/core/sdk:3.1
+image: docker:19.03.12
+services:
+  - docker:19.03.12-dind
 
-variables:
-  SOLUTION_NAME: ./GamesAdmin/GamesAdmin.sln
-  PROJECT_NAME: "l1-game-admin"
-  
 stages:
   - test
+  - build-dotnet
   - build
-  - deploy  
+  - post-build
+  - deploy
 
-before_script:
-  - echo $CURRENT_TAG
-  - if echo "$CI_COMMIT_TAG" | grep -q "$CURRENT_TAG";
-    then
-      echo "Continue deploying";
-    elif [ "$CI_COMMIT_BRANCH" == "master" ]; then
-      echo "Continue deploying";
-    else
-      echo "This job has tag is not used for current repository";
-      exit 1;
-    fi
-  - eval $(ssh-agent -s)
-  - echo "$TARGET_SERVER_SECRET_KEY_BASE64" | ssh-add -
-  - mkdir -p ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  - export COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-  - git config --global user.email "luminet.minigame.app@gmail.com"
-  - git config --global user.name "Luminet"
-  - apt-get update
-  - apt-get install -y build-essential python
-  - curl -sL https://deb.nodesource.com/setup_12.x | bash -
-  - apt-get install -y nodejs
-  
-  
 include:
   - project: 'lumi-ops/ci-scripts'
     ref: master
-    file: 'sonarqube-dotnet.gitlab-ci.yml'
-  - .gitlab-ci-admin-api.yml
-  - .gitlab-ci-admin-site.yml
-  - .gitlab-ci-admin-workers.yml
+    file: 'sonarqube/sonarqube-dotnet.gitlab-ci.yml'
+  - project: 'lumi-ops/ci-scripts'
+    ref: master
+    file: 'docker/before-script-docker.gitlab-ci.yml'
+  - project: 'lumi-ops/ci-scripts'
+    ref: master
+    file: 'docker/build-docker-image-cocos.gitlab-ci.yml'
+  - project: 'lumi-ops/ci-scripts'
+    ref: master
+    file: 'docker/post-build-docker-image.gitlab-ci.yml'
+  - project: 'lumi-ops/ci-scripts'
+    ref: master
+    file: 'docker/deploy-docker-cocos.gitlab-ci.yml'
+  - .gitlab-ci/build-dotnet.gitlab-ci.yml
+  - .gitlab-ci/admin-site/admin-site.gitlab-ci.yml

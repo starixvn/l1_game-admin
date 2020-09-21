@@ -1,0 +1,41 @@
+build_admin_site_local:
+  extends:
+    - .build-admin-site
+    - .deploy:local:rules
+  environment:
+    name: LOCAL
+
+build_image_admin_site_local:
+  extends:
+    - .deploy_vars
+    - .build_image
+    - .deploy:local:rules
+  needs: ["build_admin_site_local"]
+  dependencies:
+    - build_admin_site_local
+  environment:
+    name: LOCAL
+
+post_build_admin_site_local:
+  extends:
+    - .deploy_vars
+    - .post_build
+    - .deploy:local:rules
+  needs: ["build_image_admin_site_local"]
+  environment:
+    name: LOCAL
+
+deploy_admin_site_local:
+  extends:
+    - .deploy_vars
+    - .base_deploy_local
+    - .deploy:local:rules
+  needs: ["post_build_admin_site_local"]
+  variables:
+    SERVER_IP: $LOCAL_IP
+    SERVER_USER: $LOCAL_USER
+    SERVER_PORT: $LOCAL_SSH_PORT
+    DOCKER_PUBLIC_PORT: 7779
+    DOCKER_PRIVATE_PORT: 5000
+  environment:
+    name: LOCAL
