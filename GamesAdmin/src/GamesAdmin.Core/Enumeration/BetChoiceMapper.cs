@@ -47,9 +47,6 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.RouletteValue:
                     return Enumeration.GetAll<RouletteBetChoice>();
 
-                case GameType.VipSeDieValue:
-                    return Enumeration.GetAll<VipSeDieBetChoice>();
-
                 default: return default;
             }
         }
