@@ -94,17 +94,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<RouletteBetEntity, RouletteBetHistoryRecord>();
 
             CreateMap<SpinResultEntity, SpinResult>();
-
-            CreateMap<VipSeDieRoundEntity, SeDieRoundResult>()
-                .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new bool[]
-                {
-                    source.Result.FirstRedChip,
-                    source.Result.SecondRedChip,
-                    source.Result.ThirdRedChip,
-                    source.Result.FourthRedChip
-                }));
-
-            CreateMap<VipSeDieBetReportEntity, VipSeDieBetRecord>();
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.GameSettings;
@@ -59,7 +58,6 @@ namespace GamesAdmin.Site.Features.Dashboard
             => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
-                new SelectListItem(GameType.VipSeDie.DisplayName, GameType.VipSeDie.Value),
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
                 new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
                 new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),

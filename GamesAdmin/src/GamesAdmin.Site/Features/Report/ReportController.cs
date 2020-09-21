@@ -3,11 +3,12 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    //[Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly IMediator mediator;
@@ -130,12 +131,6 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult VipSeDie()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_VipSeDieRecords", await mediator.Send(new GetVipSeDieReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

@@ -5,8 +5,6 @@
         public GameServerConfigs Main { get; set; }
 
         public GameServerConfigs Sedie { get; set; }
-
-        public GameServerConfigs VipSedie { get; set; }
     }
 
     public class GameServerConfigs
