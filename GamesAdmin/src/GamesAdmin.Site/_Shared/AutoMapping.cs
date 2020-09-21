@@ -41,6 +41,9 @@ namespace GamesAdmin.Site._Shared
             CreateMap<RouletteSettlementResult, RouletteSettlementResultViewModel>();
             CreateMap<RouletteBetRecord, RouletteRecordViewModel>();
             CreateMap<RouletteBetHistoryRecord, RouletteBetHistoryRecordViewModel>();
+
+            CreateMap<VipSeDieBetRecord, VipSeDieRecordViewModel>();
+            CreateMap<SeDieRoundResult, SeDieRoundResultViewModel>();
         }
     }
 }

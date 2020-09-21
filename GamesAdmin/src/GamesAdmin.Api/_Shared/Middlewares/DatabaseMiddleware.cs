@@ -19,6 +19,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             var mongoClient = new MongoClient(dbSettings["ConnectionString"]);
             services.AddSingleton<IMongoClient>(mongoClient);
+
             services.AddSingleton(mongoClient.GetDatabase(dbSettings["DatabaseName"]));
         }
     }

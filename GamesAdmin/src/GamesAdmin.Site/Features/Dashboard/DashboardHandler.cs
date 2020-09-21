@@ -8,7 +8,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
-using GamesAdmin.Site.Features.GameServers;
+using GamesAdmin.Site.Features.GameSettings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -18,61 +18,27 @@ namespace GamesAdmin.Site.Features.Dashboard
         : IRequestHandler<GetOnlineUsersRequest, OnlineUsersViewModel>
         , IRequestHandler<GetOnlineUsersByGameRequest, OnlineUsersViewModel>
     {
-        private readonly IGameServerService gameServerService;
-        private readonly ISeDieGameServer sedieGameServer;
+        private readonly IGameSettingService gameSettingService;
         private readonly IMapper mapper;
 
         public DashboardHandler(
-            IGameServerService gameServerService,
-            ISeDieGameServer sedieGameServer,
+            IGameSettingService gameSettingService,
             IMapper mapper)
-        {
-            this.gameServerService = gameServerService;
-            this.sedieGameServer = sedieGameServer;
+        {            
+            this.gameSettingService = gameSettingService;
             this.mapper = mapper;
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersRequest request, CancellationToken cancellationToken)
         {
-            var result = await gameServerService.GetOnlineUsers(string.Empty);
+            var result = await gameSettingService.GetOnlineUsers();
 
-            return new OnlineUsersViewModel
-            {
-                TotalReal = result.TotalReal,
-                RealUsers = result.RealUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalUUS = result.TotalUUS,
-                UusUsers = result.UusUsers?.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalBots = result.TotalBots,
-                Bots = result.Bots?.Select(x => mapper.Map<BotUserViewModel>(x)),
-                GameTypeItems = GenerateGameItems()
-            };
+            return ConvertToOnlineUserViewModel(result);
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
-            OnlineUsers onlineUsers;
-            var gameType = string.Empty;
-
-            switch (request.Game)
-            {
-                case GameType.SeDieValue:
-                    onlineUsers = await sedieGameServer.GetOnlineUsers();
-                    return ConvertToOnlineUserViewModel(onlineUsers);
-
-                case GameType.KenoProMaxValue:
-                    gameType = "keno";
-                    break;
-
-                case GameType.BaccaratValue:
-                    gameType = "baccarat";
-                    break;
-
-                case GameType.RouletteValue:
-                    gameType = GameType.RouletteValue;
-                    break;
-            }
-
-            onlineUsers = await gameServerService.GetOnlineUsers(gameType);
+            var onlineUsers = await gameSettingService.GetOnlineUsers(request.Game);
 
             return ConvertToOnlineUserViewModel(onlineUsers);
         }
@@ -93,6 +59,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
+                new SelectListItem(GameType.VipSeDie.DisplayName, GameType.VipSeDie.Value),
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
                 new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
                 new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),

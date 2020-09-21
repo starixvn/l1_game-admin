@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
-using GamesAdmin.Api.Report.Request;
+using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -95,5 +96,14 @@ namespace GamesAdmin.Api.Report
         public async Task<RouletteBetHistory> BetHistory(string userId, long roundId)
          => (await mediator.Send(new RouletteBetHistoryRequest(roundId, userId)));
 
+        [HttpGet]
+        [Route("luckywheel/users/{nickname}")]
+        public async Task<IEnumerable<SpinResult>> LuckyWheel(string nickname)
+        => (await mediator.Send(new LuckyWheelReportRequest(nickname)));
+
+        [HttpGet]
+        [Route("vipsedie/round/{roundId}/users/{nickname?}")]
+        public async Task<VipSeDieBetReport> VipSeDie(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new VipSeDieReportRequest(roundId, nickname, excludeUUS)));
     }
 }

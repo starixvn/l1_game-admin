@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Api.Accounts;
+using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
@@ -19,13 +19,13 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<KenoSouthOnesEntity> kenoSouthOnesRepository;
         private readonly IGenericRepository<KenoSouthRoundEntity> kenoSouthRoundRepository;
         private readonly IGenericRepository<KenoSouthBetEntity> kenoSouthBetRepository;
-        private readonly IAccountService accountService;
+        private readonly IGameUserService accountService;
 
         public KenoSouthReport(
             IGenericRepository<KenoSouthOnesEntity> kenoSouthOnesRepository,
             IGenericRepository<KenoSouthRoundEntity> kenoSouthRoundRepository,
             IGenericRepository<KenoSouthBetEntity> kenoSouthBetRepository,
-            IAccountService accountService)
+            IGameUserService accountService)
         {
             this.kenoSouthOnesRepository = kenoSouthOnesRepository;
             this.kenoSouthRoundRepository = kenoSouthRoundRepository;

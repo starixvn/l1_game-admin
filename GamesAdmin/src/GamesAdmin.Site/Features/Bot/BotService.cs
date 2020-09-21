@@ -6,10 +6,10 @@ namespace GamesAdmin.Site.Features.Bot
 {
     public interface IBotApi : IBaseAuthorizationApi
     {
-        [Post("/accounts/bot/revise_balance")]
+        [Post("/game_users/bot/revise_balance")]
         Task<int> ReviseBalance();
 
-        [Post("/accounts/bot/disable_randomly")]
+        [Post("/game_users/bot/disable_randomly")]
         Task<int> DisableRandomly();
     }
 

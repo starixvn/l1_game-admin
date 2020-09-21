@@ -26,7 +26,10 @@
                 <tr>
                     <td>@Model.GameList[index].DisplayName</td>
                     <td class="text-center">
-                        <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                        @if (Model.GameList[index].EnabledMonitoring)
+                        {
+                            <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                        }
                     </td>
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledHistory)

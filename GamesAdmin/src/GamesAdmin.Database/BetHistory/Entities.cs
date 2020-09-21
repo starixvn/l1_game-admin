@@ -119,14 +119,14 @@ namespace GamesAdmin.Database
         }
     }
 
-    internal class ShakeThePlateRoundWithBetsEntity : ShakeThePlateRoundEntity
+    internal class ShakeThePlateRoundWithBetsEntity : SeDieRoundEntity
     {
-        public IEnumerable<ShakeThePlateBetEntity> Bet { get; set; }
+        public IEnumerable<SeDieBetEntity> Bet { get; set; }
     }
 
-    internal class ShakeThePlateRoundWithBetUnwindEntity : ShakeThePlateRoundEntity
+    internal class ShakeThePlateRoundWithBetUnwindEntity : SeDieRoundEntity
     {
-        public ShakeThePlateBetEntity Bet { get; set; }
+        public SeDieBetEntity Bet { get; set; }
 
         public BetHistoryReportEntity ToGameReport()
         {
@@ -136,16 +136,16 @@ namespace GamesAdmin.Database
                 BetWin = Bet.Betwin,
                 Round = Number,
                 Time = Time,
-                Even = Bet.Even,
-                Odd = Bet.Odd,
+                Even = Bet.Even + Bet.OldEven,
+                Odd = Bet.Odd + Bet.OldOdd,
                 ThreeRed = Bet.ThreeRed,
                 FourRed = Bet.FourRed,
                 ThreeWhite = Bet.ThreeWhite,
                 FourWhite = Bet.FourWhite,
-                FirstRedChip = FirstRedChip,
-                SecondRedChip = SecondRedChip,
-                ThirdRedChip = ThirdRedChip,
-                FourthRedChip = FourthRedChip
+                FirstRedChip = Result?.FirstRedChip ?? FirstRedChip,
+                SecondRedChip = Result?.SecondRedChip ?? SecondRedChip,
+                ThirdRedChip = Result?.ThirdRedChip ?? ThirdRedChip,
+                FourthRedChip = Result?.FourthRedChip ?? FourthRedChip
             };
         }
     }

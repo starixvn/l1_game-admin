@@ -2,16 +2,20 @@
 {
     public class AccountInfo
     {
-        public string Username { get; }
-
-        public string Password { get; }
+        public AccountInfo(string name, double red, bool isBot, byte spins)
+        {
+            Name = name;
+            Red = red;
+            IsBot = isBot;
+            Spins = spins;
+        }
 
         public double Red { get; }
 
-        public int AvatarId { get; }
-
         public string Name { get; }
 
-        public bool isBot { get; }
+        public bool IsBot { get; }
+
+        public byte Spins { get; set; }
     }
 }

@@ -28,7 +28,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
         IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
-        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>
+        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
+        IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -255,7 +256,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                     ThreeRed = x.ThreeRed,
                     ThreeWhite = x.ThreeWhite,
                     FourRed = x.FourRed,
-                    FourWhite = x.FourWhite
+                    FourWhite = x.FourWhite,
+                    FreeBet = x.FreeBet
                 })
             };
         }
@@ -389,6 +391,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
                     return betViewModel;
                 })
+            };
+        }
+
+        public async Task<VipSeDieReportResultViewModel> Handle(GetVipSeDieReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetVipSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new VipSeDieReportResultViewModel
+            {
+                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x => mapper.Map<VipSeDieRecordViewModel>(x))
             };
         }
     }

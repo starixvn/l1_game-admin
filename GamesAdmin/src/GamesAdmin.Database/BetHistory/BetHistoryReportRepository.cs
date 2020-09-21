@@ -222,7 +222,6 @@ namespace GamesAdmin.Database
             return (roundResult, bets);
         }
 
-
         //private async Task<IList<BetHistoryReportEntity>> GetByRoundFishPrawnCrab(long roundId, string name, byte gameType, DateTime fromDate, DateTime toDate)
         //{
         //    var roundCollection = database.GetCollection<FishPrawnCrabRoundEntity>(Document.GetCollectionName(typeof(FishPrawnCrabRoundEntity)));

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.ProVietKeno.Requests;
 using GamesAdmin.Site.Features.ProVietKeno.ViewModels;
 using MediatR;
@@ -20,14 +20,14 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         IRequestHandler<GetByRoundIdRequest, ProVietKenoRound>
     {
         private readonly IProVietKenoService provietKenoService;
-        private readonly IGameServerService gameServerService;
         private readonly IAppSettings appSettings;
 
-        public ProVietKenoHandler(IProVietKenoService provietKenoService, IGameServerService gameServerService, IAppSettings appSettings)
+        public ProVietKenoHandler(
+            IProVietKenoService provietKenoService, 
+            IAppSettings appSettings)
         {
             this.appSettings = appSettings;
             this.provietKenoService = provietKenoService;
-            this.gameServerService = gameServerService;
         }
 
         public async Task<IEnumerable<ProVietKenoRoundViewModel>> Handle(GetRoundsRequest request, CancellationToken cancellationToken)
@@ -72,14 +72,14 @@ namespace GamesAdmin.Site.Features.ProVietKeno
             };
 
             var resultModel = await provietKenoService.CreateAsync(createModel);
-            await gameServerService.NotifyRoundResult(new List<ProVietKenoRound> { resultModel });
+            await provietKenoService.NotifyRoundResult(new List<ProVietKenoRound> { resultModel });
 
             return Unit.Value;
         }
 
         public async Task<Unit> Handle(NotifyRoundResultRequest request, CancellationToken cancellationToken)
         {
-            await gameServerService.NotifyRoundResult(request.KenoRounds);
+            await provietKenoService.NotifyRoundResult(request.KenoRounds);
 
             return Unit.Value;
         }
@@ -92,7 +92,7 @@ namespace GamesAdmin.Site.Features.ProVietKeno
         public async Task<Unit> Handle(SettleRoundRequest request, CancellationToken cancellationToken)
         {
             var round = await provietKenoService.GetByRoundIdAsync(request.RoundId);
-            await gameServerService.NotifyRoundResult(new[] { round });
+            await provietKenoService.NotifyRoundResult(new[] { round });
 
             return Unit.Value;
         }

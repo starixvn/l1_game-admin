@@ -6,22 +6,22 @@ namespace GamesAdmin.Api.Report.Extensions
 {
     public static class EntityToModelMappingExtensions
     {
-        public static SeDieRoundResult ToModel(this ShakeThePlateRoundEntity entity)
+        public static SeDieRoundResult ToModel(this SeDieRoundEntity entity)
         {
             return new SeDieRoundResult
             {
                 Number = entity.Number,
                 Chips = new bool[]
                 {
-                    entity.FirstRedChip,
-                    entity.SecondRedChip,
-                    entity.ThirdRedChip,
-                    entity.FourthRedChip
+                    entity.Result?.FirstRedChip ?? entity.FirstRedChip,
+                    entity.Result?.SecondRedChip ?? entity.SecondRedChip,
+                    entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
+                    entity.Result?.FourthRedChip ?? entity.FourthRedChip
                 }
             };
         }
 
-        public static SeDieBetRecord ToModel(this ShakeThePlateBetReportEntity entity)
+        public static SeDieBetRecord ToModel(this SeDieBetReportEntity entity)
         {
             return new SeDieBetRecord
             {
@@ -34,7 +34,8 @@ namespace GamesAdmin.Api.Report.Extensions
                 FourRed = entity.FourRed,
                 FourWhite = entity.FourWhite,
                 ThreeRed = entity.ThreeRed,
-                ThreeWhite = entity.ThreeWhite
+                ThreeWhite = entity.ThreeWhite,
+                FreeBet = entity.FreeBet
             };
         }
 
@@ -45,10 +46,10 @@ namespace GamesAdmin.Api.Report.Extensions
                 Number = entity.Number,
                 Chips = new bool[]
                 {
-                    entity.FirstRedChip,
-                    entity.SecondRedChip,
-                    entity.ThirdRedChip,
-                    entity.FourthRedChip
+                    entity.Result?.FirstRedChip ?? entity.FirstRedChip,
+                    entity.Result?.SecondRedChip ?? entity.SecondRedChip,
+                    entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
+                    entity.Result?.FourthRedChip ?? entity.FourthRedChip
                 }
             };
         }

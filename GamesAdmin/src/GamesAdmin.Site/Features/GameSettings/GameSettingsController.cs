@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -29,21 +28,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.appSettings = appSettings;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit()
-        => View(await mediator.Send(new EditRequest(GameType.BigSmall.Value)));
-
-        [HttpGet]
-        [Route("{name}")]
-        public async Task<IActionResult> Edit(string name, bool isSuccess = false, string errorMessage = null)
-        {
-            var viewModel = await mediator.Send(new EditRequest(name));
-            viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
-            viewModel.Success = TempData["isSuccess"] == null ? false : (bool)TempData["isSuccess"];
-
-            return View(viewModel);
-        }
-
         [HttpPost]
         [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
@@ -65,7 +49,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.DisabledMessage,
                    editViewModel.MaxBetChoices,
                    editViewModel.Odds,
-                   editViewModel.DelayStartTime)));
+                   editViewModel.DelayStartTime,
+                   editViewModel.EnableFreeBet)));
 
                 return Json(true);
             }
@@ -99,9 +84,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                 string.Empty,
                 new Dictionary<string, double>(),
                 new Dictionary<string, double>(),
-                addViewModel.DelayStartTime)));
+                addViewModel.DelayStartTime,
+                false)));
 
-            return RedirectToAction(nameof(Edit));
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -127,7 +113,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpGet]
         public async Task<IActionResult> GameMonitor()
             => View(await mediator.Send(new GetMonitorRequest()));
-
 
         [HttpGet]
         [Route("gamedetails/{name}")]
@@ -232,6 +217,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("token", result.Token);
             HttpContext.Response.Cookies.Append("game-server-endpoint", appSettings.GameServers.Main.Socket);
             HttpContext.Response.Cookies.Append("sedie-server-endpoint", appSettings.GameServers.Sedie.Socket);
+            HttpContext.Response.Cookies.Append("vip-sedie-server-endpoint", appSettings.GameServers.VipSedie.Socket);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

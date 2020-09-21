@@ -45,6 +45,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
+
+        Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -81,10 +83,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmallTurbo, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOdd, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEven, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.EvenOddTurbo, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
         public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS)
         => reportApi.GetKenoReport(game.Value, roundId, nickname, excludeUUS);
@@ -109,5 +111,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
         => await reportApi.GetRouletteBetHistory(roundId, userId);
+
+        public Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetVipSeDieReport(roundId, nickname, excludeUUS);
     }
 }

@@ -1,8 +1,13 @@
 image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
+variables:
+  SOLUTION_NAME: ./GamesAdmin/GamesAdmin.sln
+  PROJECT_NAME: "l1-game-admin"
+  
 stages:
+  - test
   - build
-  - deploy
+  - deploy  
 
 before_script:
   - echo $CURRENT_TAG
@@ -26,8 +31,12 @@ before_script:
   - apt-get install -y build-essential python
   - curl -sL https://deb.nodesource.com/setup_12.x | bash -
   - apt-get install -y nodejs
-
+  
+  
 include:
+  - project: 'lumi-ops/ci-scripts'
+    ref: master
+    file: 'sonarqube-dotnet.gitlab-ci.yml'
   - .gitlab-ci-admin-api.yml
   - .gitlab-ci-admin-site.yml
   - .gitlab-ci-admin-workers.yml

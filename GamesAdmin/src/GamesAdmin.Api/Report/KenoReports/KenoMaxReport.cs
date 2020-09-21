@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Api.Accounts;
+﻿using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
@@ -19,13 +19,13 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<KenoMaxRoundEntity> kenoMaxRoundRepository;
         private readonly IGenericRepository<KenoMaxBetEntity> kenoMaxBetRepository;
 
-        private readonly IAccountService accountService;
+        private readonly IGameUserService accountService;
 
         public KenoMaxReport(
             IGenericRepository<KenoMaxOnesEntity> kenoMaxOnesRepository,
             IGenericRepository<KenoMaxRoundEntity> kenoMaxRoundRepository,
             IGenericRepository<KenoMaxBetEntity> kenoMaxBetRepository,
-            IAccountService accountService)
+            IGameUserService accountService)
         {
             this.kenoMaxOnesRepository = kenoMaxOnesRepository;
             this.kenoMaxRoundRepository = kenoMaxRoundRepository;

@@ -1,0 +1,57 @@
+﻿using System;
+using GamesAdmin.Database.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace GamesAdmin.Database.Entities
+{
+    [BsonCollection("userinfos")]
+    public class AccountInfoEntity : MiniGameBaseEntity
+    {
+        [BsonElement("id")]
+        public string UserId { get; set; }
+
+        public string Avatar { get; set; }
+
+        public DateTime JoinedOn { get; set; }
+     
+        public double Red { get; set; }
+
+        public double RedWin { get; set; }
+
+        public double RedLost { get; set; }
+
+        public double RedPlay { get; set; }      
+
+        [BsonElement("type")]
+        public bool IsBot { get; set; }
+
+        public bool OtpFirst { get; set; }
+
+        public int AvatarId { get; set; }
+
+        public string Currency { get; set; }
+
+        public string Name { get; set; }
+
+        [BsonElement("UID")]
+        public int UID { get; set; }
+
+        public Security Security { get; set; }
+
+        public bool Disabled { get; set; }
+
+        public bool InRoom { get; set; }
+<<<<<<< HEAD
+        
+        public string InGameRoom { get; set; }
+
+        public byte Spins { get; set; }
+=======
+>>>>>>> 3fa70e19... add spins
+    }
+
+    public class Security
+    {
+        public int Login { get; set; }
+    }
+}

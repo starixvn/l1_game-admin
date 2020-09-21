@@ -1,9 +1,10 @@
-﻿using GamesAdmin.Api.UM.Requests;
-using GamesAdmin.Core.Models.Um;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Api.GameServers;
+using GamesAdmin.Api.UM.Requests;
+using GamesAdmin.Core.Models.Um;
+using MediatR;
 
 namespace GamesAdmin.Api.UM
 {
@@ -13,14 +14,20 @@ namespace GamesAdmin.Api.UM
         , IRequestHandler<GetAllRequest, IList<UmSchedule>>
     {
         private readonly IUMService umService;
+        private readonly IGameServerService gameServerService;
 
-        public UMHandler(IUMService umService) 
+        public UMHandler(IUMService umService, IGameServerService gameServerService)
         {
             this.umService = umService;
+            this.gameServerService = gameServerService;
         }
 
-        public Task<bool> Handle(UMRequest request, CancellationToken cancellationToken)
-        => umService.Process(request.IsUM, request.StartTime, request.EndTime);
+        public async Task<bool> Handle(UMRequest request, CancellationToken cancellationToken)
+        {
+            await gameServerService.UnderMaintenance(request);
+
+            return await umService.Process(request.IsUM, request.StartTime, request.EndTime);
+        }
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => umService.AddSchedule(request.EventSchedule);
