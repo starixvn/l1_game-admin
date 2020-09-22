@@ -97,7 +97,7 @@ namespace GamesAdmin.Api.Report
          => (await mediator.Send(new RouletteBetHistoryRequest(roundId, userId)));
 
         [HttpGet]
-        [Route("luckywheel/users/{nickname}")]
+        [Route("lucky_wheel/users/{nickname}")]
         public async Task<IEnumerable<SpinResult>> LuckyWheel(string nickname)
         => (await mediator.Send(new LuckyWheelReportRequest(nickname)));
     }

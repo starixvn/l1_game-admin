@@ -256,5 +256,11 @@ namespace GamesAdmin.Site.Features.Report
         {
             return View(new LuckyWheelViewModel());
         }
+
+        [HttpGet]
+        public async Task<IActionResult> LuckyWheelHistory(string nickname)
+        {
+            return PartialView("_LuckyWheelRecords", await mediator.Send(new GetLuckyWheelHistoryRequest(nickname)));
+        }
     }
 }

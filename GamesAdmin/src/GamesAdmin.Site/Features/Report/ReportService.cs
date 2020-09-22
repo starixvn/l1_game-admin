@@ -4,6 +4,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report;
 
 namespace GamesAdmin.Site.Features.ClientSites
@@ -45,6 +46,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
+
+        Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
     }
 
     public class ReportService : IReportService
@@ -109,5 +112,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
         => await reportApi.GetRouletteBetHistory(roundId, userId);
+
+        public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
+        => reportApi.GetLuckyWheelBetHistory(nickname);
     }
 }

@@ -28,7 +28,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
         IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
-        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>
+        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
+        IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -391,6 +392,13 @@ namespace GamesAdmin.Site.Features.ClientSites
                     return betViewModel;
                 })
             };
+        }
+
+        public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);
+
+            return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
         }
     }
 }

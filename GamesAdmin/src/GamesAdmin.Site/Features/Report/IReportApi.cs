@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
 
@@ -49,11 +50,13 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/baccarat/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<BaccaratBetReport> GetBaccaratReport(long roundId, string nickname, bool excludeUUS);
 
-
         [Get("/report/roulette/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<RouletteBetReport> GetRouletteReport(long roundId, string nickname, bool excludeUUS);
 
         [Get("/report/bet_history/game/roulette/round/{roundId}/user/{userId}")]
-        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId) ;
+        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
+
+        [Get("/report/lucky_wheel/users/{nickname}")]
+        Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
     }
 }
