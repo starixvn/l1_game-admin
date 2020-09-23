@@ -1,7 +1,7 @@
 build_admin_site_local:
   extends:
     - .build-admin-site
-    - .deploy:local:rules
+    - .deploy-site:local:rules
   environment:
     name: LOCAL
 
@@ -9,8 +9,8 @@ build_image_admin_site_local:
   extends:
     - .deploy_vars
     - .build_image
-    - .deploy:local:rules
-  needs: ["build_admin_site_local"]
+    - .deploy-site:local:rules
+  needs: ['build_admin_site_local']
   dependencies:
     - build_admin_site_local
   environment:
@@ -20,8 +20,8 @@ post_build_admin_site_local:
   extends:
     - .deploy_vars
     - .post_build
-    - .deploy:local:rules
-  needs: ["build_image_admin_site_local"]
+    - .deploy-site:local:rules
+  needs: ['build_image_admin_site_local']
   environment:
     name: LOCAL
 
@@ -29,8 +29,8 @@ deploy_admin_site_local:
   extends:
     - .deploy_vars
     - .base_deploy_local
-    - .deploy:local:rules
-  needs: ["post_build_admin_site_local"]
+    - .deploy-site:local:rules
+  needs: ['post_build_admin_site_local']
   variables:
     SERVER_IP: $LOCAL_IP
     SERVER_USER: $LOCAL_USER

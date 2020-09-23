@@ -1,0 +1,41 @@
+build_admin_site_uat:
+  extends:
+    - .build-admin-site
+    - .deploy-site:uat:rules
+  environment:
+    name: UAT
+
+build_image_admin_site_uat:
+  extends:
+    - .deploy_vars
+    - .build_image
+    - .deploy-site:uat:rules
+  needs: ['build_admin_site_uat']
+  dependencies:
+    - build_admin_site_uat
+  environment:
+    name: UAT
+
+post_build_admin_site_uat:
+  extends:
+    - .deploy_vars
+    - .post_build
+    - .deploy-site:uat:rules
+  needs: ['build_image_admin_site_uat']
+  environment:
+    name: UAT
+
+deploy_admin_site_uat:
+  extends:
+    - .deploy_vars
+    - .base_deploy_kbt
+    - .deploy-site:uat:rules
+  needs: ['post_build_admin_site_uat']
+  variables:
+    SERVER_IP: $SIT_IP
+    SERVER_USER: $SIT_USER
+    SERVER_PORT: $SIT_SSH_PORT
+    DOCKER_PUBLIC_PORT: 7301
+    DOCKER_PRIVATE_PORT: 7301
+  environment:
+    name: UAT

@@ -1,10 +1,8 @@
-variables:
-  WORKING_PATH: /var/www/l1/game-admin-site/
-  DOCKER_SERVICE_NAME: l1-game-admin-site
-  DOCKER_IMAGE_PATH: /l1/docker-registry/game-admin-site
-
 include:
   - .gitlab-ci/admin-site/build.gitlab-ci.yml
   - .gitlab-ci/admin-site/deploy-vars.gitlab-ci.yml
   - .gitlab-ci/admin-site/rules.gitlab-ci.yml
   - .gitlab-ci/admin-site/deploy-local.gitlab-ci.yml
+  - .gitlab-ci/admin-site/deploy-sit.gitlab-ci.yml
+  - .gitlab-ci/admin-site/deploy-uat.gitlab-ci.yml
+  - .gitlab-ci/admin-site/deploy-prod.gitlab-ci.yml
