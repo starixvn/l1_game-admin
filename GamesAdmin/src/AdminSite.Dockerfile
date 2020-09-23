@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS builder
 WORKDIR /src
 
 ARG DEPLOY_ENV=DEV
@@ -20,11 +20,9 @@ COPY ./GamesAdmin/src/GamesAdmin.Site .
 RUN npm run export --prefix ../game-admin-client
 RUN dotnet publish -c $DEPLOY_ENV -r linux-x64 --self-contained false -o /app 
 
-FROM build AS publish
-
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=builder /app .
 
 ENTRYPOINT ["dotnet", "GamesAdmin.Site.dll"]

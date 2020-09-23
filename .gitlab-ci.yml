@@ -1,4 +1,6 @@
 image: docker:19.03.12
+services:
+  - docker:19.03.12-dind
 
 stages:
   - test
@@ -18,7 +20,7 @@ include:
     file: 'docker/before-script-docker.gitlab-ci.yml'
   - project: 'lumi-ops/ci-scripts'
     ref: master
-    file: 'docker/build-docker-image-cocos.gitlab-ci.yml'
+    file: 'docker/build-docker-image-dotnet.gitlab-ci.yml'
   - project: 'lumi-ops/ci-scripts'
     ref: master
     file: 'docker/post-build-docker-image.gitlab-ci.yml'
