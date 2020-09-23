@@ -1,6 +1,3 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
-WORKDIR /app
-
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 
@@ -24,7 +21,9 @@ RUN npm run export --prefix ../game-admin-client
 RUN dotnet publish -c $DEPLOY_ENV -r linux-x64 --self-contained false -o /app 
 
 FROM build AS publish
-FROM base AS final
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+
 WORKDIR /app
 COPY --from=publish /app .
 
