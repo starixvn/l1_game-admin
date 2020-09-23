@@ -4,7 +4,6 @@ services:
 
 stages:
   - test
-  # - build-dotnet
   - build
   - post-build
   - deploy
