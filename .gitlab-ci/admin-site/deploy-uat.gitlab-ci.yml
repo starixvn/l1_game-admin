@@ -1,18 +1,18 @@
-build_admin_site_uat:
-  extends:
-    - .build-admin-site
-    - .deploy-site:uat:rules
-  environment:
-    name: UAT
+# build_admin_site_uat:
+#   extends:
+#     - .build-admin-site
+#     - .deploy-site:uat:rules
+#   environment:
+#     name: UAT
 
 build_image_admin_site_uat:
   extends:
     - .deploy_vars
     - .build_image
     - .deploy-site:uat:rules
-  needs: ['build_admin_site_uat']
-  dependencies:
-    - build_admin_site_uat
+  # needs: ['build_admin_site_uat']
+  # dependencies:
+  #   - build_admin_site_uat
   environment:
     name: UAT
 

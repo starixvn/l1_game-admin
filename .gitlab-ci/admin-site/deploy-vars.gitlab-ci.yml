@@ -3,4 +3,5 @@
     WORKING_PATH: /var/www/l1/game-admin-site/
     DOCKER_SERVICE_NAME: l1-game-admin-site
     DOCKER_IMAGE_PATH: l1/docker-registry/game-admin-site
-    DOCKER_FILE_PATH: ./GamesAdmin/src/GamesAdmin.Site
+    DOCKER_FILE_PATH: ./GamesAdmin/src
+    DOCKER_FILE_NAME: AdminSite.Dockerfile

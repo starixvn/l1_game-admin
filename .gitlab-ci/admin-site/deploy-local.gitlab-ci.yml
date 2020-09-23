@@ -1,18 +1,11 @@
-build_admin_site_local:
-  extends:
-    - .build-admin-site
-    - .deploy-site:local:rules
-  environment:
-    name: LOCAL
-
 build_image_admin_site_local:
   extends:
     - .deploy_vars
     - .build_image
     - .deploy-site:local:rules
-  needs: ['build_admin_site_local']
-  dependencies:
-    - build_admin_site_local
+  # needs: ['build_admin_site_local']
+  # dependencies:
+  #   - build_admin_site_local
   environment:
     name: LOCAL
 

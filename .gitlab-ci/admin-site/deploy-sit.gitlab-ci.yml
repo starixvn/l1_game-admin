@@ -1,18 +1,18 @@
-build_admin_site_sit:
-  extends:
-    - .build-admin-site
-    - .deploy-site:sit:rules
-  environment:
-    name: SIT
+# build_admin_site_sit:
+#   extends:
+#     - .build-admin-site
+#     - .deploy-site:sit:rules
+#   environment:
+#     name: SIT
 
 build_image_admin_site_sit:
   extends:
     - .deploy_vars
     - .build_image
     - .deploy-site:sit:rules
-  needs: ['build_admin_site_sit']
-  dependencies:
-    - build_admin_site_sit
+  # needs: ['build_admin_site_sit']
+  # dependencies:
+  #   - build_admin_site_sit
   environment:
     name: SIT
 

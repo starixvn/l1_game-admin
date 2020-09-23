@@ -1,18 +1,18 @@
-build_admin_site_prod:
-  extends:
-    - .build-admin-site
-    - .deploy:prod:rules
-  environment:
-    name: PROD
+# build_admin_site_prod:
+#   extends:
+#     - .build-admin-site
+#     - .deploy:prod:rules
+#   environment:
+#     name: PROD
 
 build_image_admin_site_prod:
   extends:
     - .deploy_vars
     - .build_image
     - .deploy:prod-auto:rules
-  needs: ['build_admin_site_prod']
-  dependencies:
-    - build_admin_site_prod
+  # needs: ['build_admin_site_prod']
+  # dependencies:
+  #   - build_admin_site_prod
   environment:
     name: PROD
 

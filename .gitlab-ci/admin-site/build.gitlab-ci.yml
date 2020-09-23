@@ -8,8 +8,9 @@
     - npm run export --prefix $ADMIN_SITE_CLIENT_ROOT_PATH
     - dotnet clean $PROJECT_PATH/$PROJECT_NAME
     - dotnet publish -c $DEPLOY_ENV -r linux-x64 --self-contained false $PROJECT_PATH/$PROJECT_NAME -o $BUILD_PATH
-  extends:
-    - .build-dotnet
+
+  # extends:
+  #   - .build-dotnet
 # build-admin-site-sit:
 #   extends:
 #     - .build-admin-site
