@@ -5,3 +5,4 @@
     DOCKER_IMAGE_PATH: l1/docker-registry/game-admin-site
     DOCKER_FILE_PATH: ./GamesAdmin/src
     DOCKER_FILE_NAME: AdminSite.Dockerfile
+    DOCKER_NETWORK_NAME: admin

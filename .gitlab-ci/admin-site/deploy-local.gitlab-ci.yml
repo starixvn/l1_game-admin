@@ -8,6 +8,8 @@ build_image_admin_site_local:
   #   - build_admin_site_local
   environment:
     name: LOCAL
+  tags:
+    - docker-nodind
 
 post_build_admin_site_local:
   extends:
