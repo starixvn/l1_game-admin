@@ -35,7 +35,7 @@ namespace GamesAdmin.Site
                .UseStartup<Startup>()
                .UseSentry(opt => opt.Environment = configuration["Env"])
                .UseIISIntegration()
-               .UseUrls($"http://localhost:{configuration["HostingPort"]}");
+               .UseUrls($"http://0.0.0.0:{configuration["HostingPort"]}");
         }
     }
 }

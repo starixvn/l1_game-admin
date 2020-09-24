@@ -1,0 +1,59 @@
+.if-deploy-all: &if-deploy-all
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-\d{8}-\d+.*$/'
+
+.if-deploy-local: &if-deploy-local
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-local-\d{8}-\d+.*$/'
+
+.if-deploy-sit: &if-deploy-sit
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-sit-\d{8}-\d+.*$/'
+
+.if-deploy-uat: &if-deploy-uat
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-uat-\d{8}-\d+.*$/'
+
+.if-deploy-all-worker: &if-deploy-all-worker
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-worker-\d{8}-\d+.*$/'
+
+.if-deploy-worker-local: &if-deploy-worker-local
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-local-worker-\d{8}-\d+.*$/'
+
+.if-deploy-worker-sit: &if-deploy-worker-sit
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-sit-worker-\d{8}-\d+.*$/'
+
+.if-deploy-worker-uat: &if-deploy-worker-uat
+  if: '$CI_COMMIT_TAG =~ /^l1-deploy-uat-worker-\d{8}-\d+.*$/'
+
+.deploy-worker:local:rules:
+  rules:
+    - <<: *if-deploy-local
+      when: on_success
+    - <<: *if-deploy-worker-local
+      when: on_success
+    - <<: *if-deploy-all-worker
+      when: on_success
+    - <<: *if-deploy-all
+      when: on_success
+    - when: never
+
+.deploy-worker:sit:rules:
+  rules:
+    - <<: *if-deploy-sit
+      when: on_success
+    - <<: *if-deploy-worker-sit
+      when: on_success
+    - <<: *if-deploy-all-worker
+      when: on_success
+    - <<: *if-deploy-all
+      when: on_success
+    - when: never
+
+.deploy-worker:uat:rules:
+  rules:
+    - <<: *if-deploy-uat
+      when: on_success
+    - <<: *if-deploy-worker-uat
+      when: on_success
+    - <<: *if-deploy-all-worker
+      when: on_success
+    - <<: *if-deploy-all
+      when: on_success
+    - when: never

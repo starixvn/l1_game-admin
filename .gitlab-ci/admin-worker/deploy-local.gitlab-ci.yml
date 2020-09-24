@@ -1,0 +1,29 @@
+build_image_admin_worker_local:
+  extends:
+    - .deploy_vars_admin_worker
+    - .build_image
+    - .deploy-worker:local:rules
+  environment:
+    name: LOCAL
+
+post_build_admin_worker_local:
+  extends:
+    - .deploy_vars_admin_worker
+    - .post_build
+    - .deploy-worker:local:rules
+  needs: ['build_image_admin_worker_local']
+  environment:
+    name: LOCAL
+
+deploy_admin_worker_local:
+  extends:
+    - .deploy_vars_admin_worker
+    - .base_deploy_local
+    - .deploy-worker:local:rules
+  needs: ['post_build_admin_worker_local']
+  variables:
+    SERVER_IP: $LOCAL_IP
+    SERVER_USER: $LOCAL_USER
+    SERVER_PORT: $LOCAL_SSH_PORT
+  environment:
+    name: LOCAL
