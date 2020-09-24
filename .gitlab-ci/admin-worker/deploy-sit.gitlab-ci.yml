@@ -1,0 +1,31 @@
+build_image_admin_worker_sit:
+  extends:
+    - .deploy_vars_admin_worker
+    - .build_image
+    - .deploy-worker:sit:rules
+  environment:
+    name: SIT
+
+post_build_admin_worker_sit:
+  extends:
+    - .deploy_vars_admin_worker
+    - .post_build
+    - .deploy-worker:sit:rules
+  needs: ['build_image_admin_worker_sit']
+  environment:
+    name: SIT
+
+deploy_admin_worker_sit:
+  extends:
+    - .deploy_vars_admin_worker
+    - .base_deploy_kbt
+    - .deploy-worker:sit:rules
+  needs: ['post_build_admin_worker_sit']
+  variables:
+    SERVER_IP: $SIT_IP
+    SERVER_USER: $SIT_USER
+    SERVER_PORT: $SIT_SSH_PORT
+    DOCKER_PUBLIC_PORT: 6304
+    DOCKER_PRIVATE_PORT: 6504
+  environment:
+    name: SIT
