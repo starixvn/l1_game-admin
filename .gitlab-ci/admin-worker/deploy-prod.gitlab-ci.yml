@@ -25,7 +25,5 @@ deploy_admin_worker_prod:
     SERVER_IP: $PROD_IP
     SERVER_USER: $PROD_USER
     SERVER_PORT: $PROD_SSH_PORT
-    DOCKER_PUBLIC_PORT: 8304
-    DOCKER_PRIVATE_PORT: 8504
   environment:
     name: PROD

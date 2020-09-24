@@ -25,7 +25,5 @@ deploy_admin_worker_local:
     SERVER_IP: $LOCAL_IP
     SERVER_USER: $LOCAL_USER
     SERVER_PORT: $LOCAL_SSH_PORT
-    DOCKER_PUBLIC_PORT: 7780
-    DOCKER_PRIVATE_PORT: 7780
   environment:
     name: LOCAL
