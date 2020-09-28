@@ -25,6 +25,7 @@
         public const string LuckyWheelValue = "luckywheel";
         public const string VipSeDieValue = "vipsedie";
         public const string SpecialSeDieValue = "specialsedie";
+        public const string BlackJackValue = "blackjack";
 
         public static readonly GameType BigSmall = new GameType(BigSmallValue, "Big Small");
         public static readonly GameType BigSmallTurbo = new GameType(BigSmallTurboValue, "Turbo Big Small");        
@@ -49,6 +50,7 @@
         public static readonly GameType LuckyWheel = new GameType(LuckyWheelValue, "Lucky Wheel");
         public static readonly GameType VipSeDie = new GameType(VipSeDieValue, "Vip Se Die");
         public static readonly GameType SpecialSeDie = new GameType(SpecialSeDieValue, "Special SeDie");
+        public static readonly GameType BlackJack = new GameType(BlackJackValue, "Blackjack");
 
         public GameType()
         {

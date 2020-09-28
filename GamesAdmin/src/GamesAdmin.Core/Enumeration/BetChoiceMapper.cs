@@ -51,6 +51,9 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.VipSeDieValue:
                     return Enumeration.GetAll<VipSeDieBetChoice>();
 
+                case GameType.BlackJackValue:
+                    return Enumeration.GetAll<BlackjackBetChoice>();
+
                 default: return default;
             }
         }
