@@ -21,7 +21,6 @@
         KenoWest,
         KenoSouth,
         KenoNorth,
-        Roulette = 21,
-        VipSeDie
+        Roulette = 21
     }
 }
