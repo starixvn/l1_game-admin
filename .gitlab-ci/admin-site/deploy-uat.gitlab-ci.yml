@@ -25,7 +25,7 @@ deploy_admin_site_uat:
     SERVER_IP: $SIT_IP
     SERVER_USER: $SIT_USER
     SERVER_PORT: $SIT_SSH_PORT
-    DOCKER_PUBLIC_PORT: 7301
+    DOCKER_PUBLIC_PORT: 7501
     DOCKER_PRIVATE_PORT: 7501
   environment:
     name: UAT

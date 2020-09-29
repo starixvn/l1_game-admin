@@ -2,6 +2,10 @@ image: docker:19.03.12
 services:
   - docker:19.03.12-dind
 
+variables:
+  PROJECT_NAME: l1-game-admin
+  SOLUTION_NAME: ./GamesAdmin/GamesAdmin.sln
+
 stages:
   - test
   - build
