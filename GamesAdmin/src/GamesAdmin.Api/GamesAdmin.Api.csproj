@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Configurations>Dev;SIT;UAT;PRO;LOCAL</Configurations>
+    <Configurations>Dev;SIT;UAT;PROD;LOCAL</Configurations>
     <CodeAnalysisRuleSet>..\..\.sonarlint\l1-game-admincsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
@@ -10,7 +10,7 @@
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
     <Content Remove="appsettings.LOCAL.json" />
-    <Content Remove="appsettings.PRO.json" />
+    <Content Remove="appsettings.PROD.json" />
     <Content Remove="appsettings.Release.json" />
     <Content Remove="appsettings.SIT.json" />
     <Content Remove="appsettings.Test.json" />
@@ -34,7 +34,7 @@
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
-    <None Include="appsettings.PRO.json">
+    <None Include="appsettings.PROD.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
