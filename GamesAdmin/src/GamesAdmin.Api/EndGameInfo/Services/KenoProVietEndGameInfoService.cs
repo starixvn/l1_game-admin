@@ -19,7 +19,7 @@ namespace GamesAdmin.Api.EndGameInfo
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId);
+            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId, null, false);
 
             if (!bets.Any())
             {

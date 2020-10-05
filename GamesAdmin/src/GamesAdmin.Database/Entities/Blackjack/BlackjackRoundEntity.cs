@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
+
+namespace GamesAdmin.Database.Entities
+{
+    [BsonCollection("blackjack_phiens")]
+    public class BlackjackRoundEntity : BaseRoundEntity
+    {
+        public IEnumerable<BlackjackCard> Result { get; set; }
+
+        public DateTime RoundStartTime { get; set; }
+
+        public bool End { get; set; }
+
+        public string Uid { get; set;}
+
+        public string Name { get; set; }
+    }
+
+    public class BlackjackCard
+    {
+        public string Rank { get; set; }
+
+        public string Suit { get; set; }
+    }
+}

@@ -21,22 +21,27 @@ namespace GamesAdmin.Api.EndGameInfo
         protected readonly IGenericRepository<TRounEntity> roundRepository;
         protected readonly IGenericRepository<TBetEntity> betRepository;
 
-        public BaseEndGameInfoService(IGenericRepository<TRounEntity> roundRepository, IGenericRepository<TBetEntity> betRepository)
+        protected BaseEndGameInfoService(IGenericRepository<TRounEntity> roundRepository, IGenericRepository<TBetEntity> betRepository)
         {
             this.roundRepository = roundRepository;
             this.betRepository = betRepository;
         }
 
-        protected async Task<TRounEntity> GetRoundAsync(long gameRoundId)
+        protected virtual async Task<TRounEntity> GetRoundAsync(long gameRoundId)
         {
             var roundEntity = await roundRepository.FindOneAsync(x => x.Number == gameRoundId);
 
             return roundEntity;
         }
 
-        protected virtual async Task<IEnumerable<TBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, Expression<Func<TBetEntity, bool>> filter = null)
+        protected virtual async Task<IEnumerable<TBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, Expression<Func<TBetEntity, bool>> filter = null, bool paidOnly = true)
         {
-            Expression<Func<TBetEntity, bool>> defaultExpression = x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId && x.Paid;
+            Expression<Func<TBetEntity, bool>> defaultExpression = x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId;
+
+            if(paidOnly)
+            {
+                defaultExpression.And(x => x.Paid);
+            }
 
             var finalExpression = filter != null ? defaultExpression.And(filter) : defaultExpression;
 
