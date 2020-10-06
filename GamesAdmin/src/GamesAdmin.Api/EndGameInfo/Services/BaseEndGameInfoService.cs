@@ -34,14 +34,9 @@ namespace GamesAdmin.Api.EndGameInfo
             return roundEntity;
         }
 
-        protected virtual async Task<IEnumerable<TBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, Expression<Func<TBetEntity, bool>> filter = null, bool paidOnly = true)
+        protected virtual async Task<IEnumerable<TBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, Expression<Func<TBetEntity, bool>> filter = null)
         {
-            Expression<Func<TBetEntity, bool>> defaultExpression = x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId;
-
-            if(paidOnly)
-            {
-                defaultExpression.And(x => x.Paid);
-            }
+            Expression<Func<TBetEntity, bool>> defaultExpression = x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId && x.Paid;
 
             var finalExpression = filter != null ? defaultExpression.And(filter) : defaultExpression;
 

@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.EndGameInfo
         }
 
         protected override async Task<IEnumerable<BlackjackBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, 
-            Expression<Func<BlackjackBetEntity, bool>> filter = null, bool paidOnly = true)
+            Expression<Func<BlackjackBetEntity, bool>> filter = null)
         {
             return (await betRepository.FilterByAsync(x => x.HandId == gameRoundId && x.MemberId == memberId && x.SiteId == siteId && x.Paid)).ToList();
         }
