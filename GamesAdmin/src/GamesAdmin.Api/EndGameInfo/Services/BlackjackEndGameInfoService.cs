@@ -26,6 +26,11 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1001;
             }
 
+            if (bets.Any(x => !x.Paid))
+            {
+                return EndGameInfoError.SB1005;
+            }
+
             var round = await GetRoundAsync(bets.FirstOrDefault().Round);
 
             var totalBetAmount = bets.Sum(x => x.Bet);
@@ -43,7 +48,7 @@ namespace GamesAdmin.Api.EndGameInfo
         protected override async Task<IEnumerable<BlackjackBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, 
             Expression<Func<BlackjackBetEntity, bool>> filter = null)
         {
-            return (await betRepository.FilterByAsync(x => x.HandId == gameRoundId && x.MemberId == memberId && x.SiteId == siteId && x.Paid)).ToList();
+            return (await betRepository.FilterByAsync(x => x.HandId == gameRoundId && x.MemberId == memberId && x.SiteId == siteId)).ToList();
         }
     }
 }
