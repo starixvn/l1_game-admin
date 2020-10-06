@@ -18,8 +18,8 @@ namespace GamesAdmin.Api.EndGameInfo
 
     public abstract class BaseEndGameInfoService<TRounEntity, TBetEntity> where TRounEntity : BaseRoundEntity where TBetEntity : BaseBetEntity
     {
-        private readonly IGenericRepository<TRounEntity> roundRepository;
-        private readonly IGenericRepository<TBetEntity> betRepository;
+        protected readonly IGenericRepository<TRounEntity> roundRepository;
+        protected readonly IGenericRepository<TBetEntity> betRepository;
 
         public BaseEndGameInfoService(IGenericRepository<TRounEntity> roundRepository, IGenericRepository<TBetEntity> betRepository)
         {
@@ -34,7 +34,7 @@ namespace GamesAdmin.Api.EndGameInfo
             return roundEntity;
         }
 
-        protected async Task<IEnumerable<TBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, Expression<Func<TBetEntity, bool>> filter = null)
+        protected virtual async Task<IEnumerable<TBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, Expression<Func<TBetEntity, bool>> filter = null)
         {
             Expression<Func<TBetEntity, bool>> defaultExpression = x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId && x.Paid;
 
