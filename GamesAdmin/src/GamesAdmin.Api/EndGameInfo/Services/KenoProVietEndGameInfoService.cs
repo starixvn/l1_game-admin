@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GamesAdmin.Api.EndGameInfo.Request;
 using GamesAdmin.Core.Models.EndGameInfo;
@@ -18,9 +21,15 @@ namespace GamesAdmin.Api.EndGameInfo
         {
             var round = await GetRoundAsync(request.GameRoundId);
             var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId);
+
             if (round == null || !bets.Any())
             {
                 return EndGameInfoError.SB1001;
+            }
+
+            if (bets.Any(x => !x.Paid))
+            {
+                return EndGameInfoError.SB1005;
             }
 
             var totalBetAmount = bets.Sum(x => x.ConvertAmountToDictionary().Sum(c => c.Value));
@@ -33,6 +42,12 @@ namespace GamesAdmin.Api.EndGameInfo
                 TotalAmount = totalBetAmount,
                 TotalWin = totalBetWin
             };
+        }
+
+        protected override async Task<IEnumerable<KenoProVietOnesEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId,
+            Expression<Func<KenoProVietOnesEntity, bool>> filter = null)
+        {
+            return (await betRepository.FilterByAsync(x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId)).ToList();
         }
     }
 }
