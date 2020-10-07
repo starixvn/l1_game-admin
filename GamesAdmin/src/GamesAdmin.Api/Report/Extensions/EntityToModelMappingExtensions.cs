@@ -17,7 +17,13 @@ namespace GamesAdmin.Api.Report.Extensions
                     entity.Result?.SecondRedChip ?? entity.SecondRedChip,
                     entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
                     entity.Result?.FourthRedChip ?? entity.FourthRedChip
-                }
+                },
+                Even = entity.SettlementResult.Even,
+                Odd = entity.SettlementResult.Odd,
+                ThreeRed = entity.SettlementResult.ThreeRed,
+                FourRed = entity.SettlementResult.FourRed,
+                ThreeWhite = entity.SettlementResult.ThreeWhite,
+                FourWhite = entity.SettlementResult.FourWhite
             };
         }
 
@@ -50,7 +56,13 @@ namespace GamesAdmin.Api.Report.Extensions
                     entity.Result?.SecondRedChip ?? entity.SecondRedChip,
                     entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
                     entity.Result?.FourthRedChip ?? entity.FourthRedChip
-                }
+                },
+                Even = entity.SettlementResult.Even,
+                Odd = entity.SettlementResult.Odd,
+                ThreeRed = entity.SettlementResult.ThreeRed,
+                FourRed = entity.SettlementResult.FourRed,
+                ThreeWhite = entity.SettlementResult.ThreeWhite,
+                FourWhite = entity.SettlementResult.FourWhite
             };
         }
 

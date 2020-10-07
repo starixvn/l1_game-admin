@@ -28,7 +28,19 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public int TotalRed => Chips.Count(x => x);
 
-        public bool IsEven => TotalRed % 2 == 0;
+        public bool Even { get; set; }
+
+        public bool Odd { get; set; }
+
+        public bool TwoRed { get; set; }
+
+        public bool ThreeRed { get; set; }
+
+        public bool FourRed { get; set; }
+
+        public bool ThreeWhite { get; set; }
+
+        public bool FourWhite { get; set; }
     }
 
     public class FishPrawnCrabRoundResultViewModel

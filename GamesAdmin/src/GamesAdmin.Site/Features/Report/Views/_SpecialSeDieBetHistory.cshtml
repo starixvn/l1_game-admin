@@ -1,0 +1,43 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model SpecialSeDieBetHistoryViewModel
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Round</th>
+            <th>Bet Choice</th>
+            <th>Result</th>
+            <th>Stake</th>
+            <th>Refund</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td>@bet.Round</td>
+                <td class="text-capitalize">@bet.Choice</td>
+                <td>
+                    @foreach (var chip in Model.RoundResult.Chips)
+                    {
+                        if (chip)
+                        {
+                            <i class="red-chip"></i>
+                        }
+                        else
+                        {
+                            <i class="white-chip"></i>
+                        }
+                    }
+                </td>
+                <td>@HtmlHelpers.formatNumber(bet.Amount)</td>
+                <td>@HtmlHelpers.formatNumber(bet.Refund)</td>
+                <td>@HtmlHelpers.formatNumber(bet.BetWin)</td>
+            </tr>
+        }
+    </tbody>
+</table>

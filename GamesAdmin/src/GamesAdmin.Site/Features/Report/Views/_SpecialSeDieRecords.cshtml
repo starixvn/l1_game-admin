@@ -1,0 +1,131 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model SpecialSeDieReportResultViewModel
+
+@{
+    var oddRecords = Model.Records.Where(x => x.Choice == "odd").ToList();
+    var evenRecords = Model.Records.Where(x => x.Choice == "even").ToList();
+    var totalRow = oddRecords.Count > evenRecords.Count ? oddRecords.Count : evenRecords.Count;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered  table-hover table-se-die" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Results</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">
+                            @foreach (var chip in Model.RoundResult.Chips)
+                            {
+                                if (chip)
+                                {
+                                    <i class="red-chip"></i>
+                                }
+                                else
+                                {
+                                    <i class="white-chip"></i>
+                                }
+                            }
+                        </td>
+                        <td class="text-center">
+                            @(Model.RoundResult.Even ? "Even" : "Odd")
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th colspan="6" class="big-small-title">Even</th>
+                    <th class="line-cell"></th>
+                    <th colspan="6" class="big-small-title">Odd</th>
+                </tr>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                    <th class="line-cell"></th>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < totalRow; i++)
+                {
+                    var evenRecord = evenRecords.ElementAtOrDefault(i);
+                    var oddRecord = oddRecords.ElementAtOrDefault(i);
+                    <tr>
+                        <td>@evenRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@evenRecord?.Username</td>
+                        <td>
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetSpecialSeDieBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@evenRecord?.UserId">
+                                @evenRecord?.Nickname
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecord?.Amount)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecord?.Refund)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecord?.BetWin)</td>
+                        <td class="line-cell"></td>
+                        <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@oddRecord?.Username</td>
+                        <td class="col-nickname">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetSpecialSeDieBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@oddRecord?.UserId">
+                                @oddRecord?.Nickname
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecord?.Amount)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecord?.Refund)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecord?.BetWin)</td>
+                    </tr>
+
+                }
+            </tbody>
+            <tfoot>
+                @if (totalRow == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="13">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecords.Sum(x => x.Amount))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecords.Sum(x => x.Refund))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(evenRecords.Sum(x => x.BetWin))</td>
+                        <td class="line-cell"></td>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecords.Sum(x => x.Amount))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecords.Sum(x => x.Refund))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(oddRecords.Sum(x => x.BetWin))</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

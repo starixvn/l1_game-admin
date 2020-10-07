@@ -139,6 +139,24 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult SpecialSeDie()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSpecialSeDieReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSpecialSeDieBetHistory(long roundId, string userId)
+        {
+            return PartialView("_SpecialSeDieBetHistory", await mediator.Send(new GetSpecialSeDieBetHistoryRequest(roundId, userId)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetDragonTigerReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_DragonTigerRecords", await mediator.Send(new GetDragonTigerReportRequest(roundId, nickname, excludeUUS)));
