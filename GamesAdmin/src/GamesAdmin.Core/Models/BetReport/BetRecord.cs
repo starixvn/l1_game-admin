@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
@@ -113,6 +114,33 @@ namespace GamesAdmin.Core.Models
     public class RouletteBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
+    }
+
+
+    public class BlackjackBetRecord : BetRecord
+    {
+        public long HandId { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public byte Point { get; set; }
+
+        public byte? SplitForm { get; set; }
+
+        public IEnumerable<BlackjackCard> Cards { get; set; }
+
+        public IEnumerable<BlackjackCard> DealerCards { get; set; }
+
+        public bool End { get; set; }
+
+        public byte DealerPoint { get; set; }
+    }
+
+    public class BlackjackCard
+    {
+        public string Rank { get; set; }
+
+        public byte Suit { get; set; }
     }
 
     public class SpecialSeDieBetRecord : BetRecord

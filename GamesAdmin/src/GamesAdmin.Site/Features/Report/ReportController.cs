@@ -133,6 +133,18 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult Blackjack()
+        {
+            return View(new BlackjackReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBlackjackReport(long handId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(handId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_VipSeDieRecords", await mediator.Send(new GetVipSeDieReportRequest(roundId, nickname, excludeUUS)));

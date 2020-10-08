@@ -7,7 +7,7 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("blackjack_phiens")]
     public class BlackjackRoundEntity : BaseRoundEntity
     {
-        public IEnumerable<BlackjackCard> Result { get; set; }
+        public IEnumerable<BlackjackCardEntity> Result { get; set; }
 
         public DateTime RoundStartTime { get; set; }
 
@@ -16,12 +16,14 @@ namespace GamesAdmin.Database.Entities
         public string Uid { get; set;}
 
         public string Name { get; set; }
+
+        public byte SettlementResult { get; set; }
     }
 
-    public class BlackjackCard
+    public class BlackjackCardEntity
     {
         public string Rank { get; set; }
 
-        public string Suit { get; set; }
+        public byte Suit { get; set; }
     }
 }

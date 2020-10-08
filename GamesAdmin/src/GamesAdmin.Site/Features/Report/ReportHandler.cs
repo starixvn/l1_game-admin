@@ -31,7 +31,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
-        IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>
+        IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
+        IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>
+
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -403,13 +405,7 @@ namespace GamesAdmin.Site.Features.ClientSites
             return new VipSeDieReportResultViewModel
             {
                 RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<VipSeDieRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
+                Records = result.Records.Select(x => mapper.Map<VipSeDieRecordViewModel>(x))
             };
         }
 
@@ -444,6 +440,16 @@ namespace GamesAdmin.Site.Features.ClientSites
 
                     return betViewModel;
                 })
+            };
+        }
+        
+        public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetBlackjackReport(request.HandId, request.Nickname, request.ExcludeUUS);
+
+            return new BlackjackReportResultViewModel
+            {
+                Records = result.Select(x => mapper.Map<BlackjackRecordViewModel>(x))
             };
         }
     }

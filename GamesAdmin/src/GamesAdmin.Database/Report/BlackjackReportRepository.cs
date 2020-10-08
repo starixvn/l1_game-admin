@@ -34,7 +34,9 @@ namespace GamesAdmin.Database
                     Bet = x.Bet,
                     Cards = x.Cards,
                     SplitForm = x.SplitFrom,
-                    Round = x.Round
+                    Round = x.Round,
+                    HandId = x.HandId,
+                    Point = x.Total
                 });
 
             var records = await project.ToListAsync();
@@ -47,6 +49,7 @@ namespace GamesAdmin.Database
                 var round = rounds.FirstOrDefault(x => x.Number == record.Round);
                 record.DealerCards = round.Result;
                 record.End = round.End;
+                record.DealerPoint = round.SettlementResult;
             }
 
             return records;
@@ -59,7 +62,7 @@ namespace GamesAdmin.Database
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"(?i){nickname}");
 
-            var aggregateBuilder = betCollection.Aggregate().Match(x => x.HandId == handId)
+            var aggregateBuilder = betCollection.Aggregate().Match(x => x.HandId == handId || handId == 0)
                 .SortBy(x => x.Id)
                 .Lookup<BlackjackBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,

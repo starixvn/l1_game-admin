@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class BetRecordViewModel : BaseBetViewModel
     {
@@ -96,6 +98,34 @@
     public class RouletteRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
+    }
+
+    public class BlackjackRecordViewModel : BetRecordViewModel
+    {
+        public long HandId { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public byte? SplitForm { get; set; }
+
+        public long Round { get; set; }
+
+        public IEnumerable<BlackjackCardViewModel> Cards { get; set; }
+
+        public IEnumerable<BlackjackCardViewModel> DealerCards { get; set; }
+
+        public bool End { get; set; }
+
+        public byte Point { get; set; }
+
+        public byte DealerPoint { get; set; }
+    }
+
+    public class BlackjackCardViewModel
+    {
+        public string Rank { get; set; }
+
+        public byte Suit { get; set; }
     }
 
     public class SpecialSeDieRecordViewModel : BetRecordViewModel

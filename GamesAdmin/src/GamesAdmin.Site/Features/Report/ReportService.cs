@@ -51,6 +51,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
+        
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
+
     }
 
     public class ReportService : IReportService
@@ -124,5 +127,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId)
         => reportApi.GetSpecialSeDieBetHistory(roundId, userId);
+        
+        public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS)
+        => reportApi.GetBlackjackReport(handId, nickname, excludeUUS);
+
     }
 }

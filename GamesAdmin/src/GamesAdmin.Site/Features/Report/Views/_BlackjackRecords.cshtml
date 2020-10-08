@@ -1,0 +1,112 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model BlackjackReportResultViewModel
+
+@{
+    var blackJackValue = 21;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>HandId</th>
+                    <th colspan="2" class="col-nickname">Dealer</th>
+                    <th colspan="2" class="col-nickname">Player</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.HandId @(bet.SplitForm.HasValue ? "(Split)" : string.Empty)</td>
+                        <td>
+                            <div class="cards">
+                                @if (bet.End)
+                                {
+                                    foreach (var card in bet.DealerCards)
+                                    {
+                                        <div class="card card-type-@card.Suit">
+                                            <span>@card.Rank</span>
+                                            <img class="img" src="~/images/card_@(card.Suit).png" />
+                                        </div>
+
+                                    }
+                                }
+                                else
+                                {
+                                    var firstCard = bet.DealerCards.FirstOrDefault();
+                                    <div class="card card-type-@firstCard.Suit">
+                                        <span>@firstCard.Rank</span>
+                                        <img class="img" src="~/images/card_@(firstCard.Suit).png" />
+                                    </div>
+                                    <div class="card">
+                                        <img class="img" src="~/images/card_back.png" />
+                                    </div>
+                                }
+
+                            </div>
+                        </td>
+                        <td>
+                            @if (bet.End)
+                            {
+                                if (bet.DealerPoint == blackJackValue && bet.DealerCards.Count() == 2)
+                                {
+                                    @("BJ")
+                                }
+                                else
+                                {
+                                    @(bet.DealerPoint > blackJackValue ? "Bust" : bet.DealerPoint.ToString())
+                                }
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                        </td>
+                        <td>
+                            <div class="cards">
+                                @foreach (var card in bet.Cards)
+                                {
+                                    <div class="card card-type-@card.Suit">
+                                        <span>@card.Rank</span>
+                                        <img class="img" src="~/images/card_@(card.Suit).png" />
+                                    </div>
+
+                                }
+                            </div>
+                        </td>
+                        <td>
+                          
+                                @if (bet.Point == blackJackValue && bet.DealerCards.Count() == 2)
+                                {
+                                    @("BJ")
+                                }
+                                else
+                                {
+                                    @(bet.Point > blackJackValue ? "Bust" : bet.DealerPoint.ToString())
+                                }
+
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Bet)</td>
+                        <td class="text-right">@(bet.End? HtmlHelpers.formatNumber(bet.BetWin): "Running")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="8">No data</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

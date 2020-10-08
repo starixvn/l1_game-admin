@@ -38,6 +38,9 @@
 .form .round-id {
   width: 10rem; }
 
+.form .input-validation-error {
+  border-color: #dc3545; }
+
 .report-container {
   margin-top: 1rem;
   padding: 0; }

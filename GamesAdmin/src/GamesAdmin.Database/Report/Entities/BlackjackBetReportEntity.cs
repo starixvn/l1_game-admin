@@ -12,18 +12,24 @@ namespace GamesAdmin.Database.Report.Entities
 
         public string Nickname { get; set; }
 
+        public long HandId { get; set; }
+
         public decimal BetWin { get; set; }
 
         public decimal Bet { get; set; }
+
+        public byte Point { get; set; }
 
         public byte? SplitForm { get; set; }
 
         public long Round { get; set; }
 
-        public IEnumerable<BlackjackCard> Cards { get; set; }
+        public IEnumerable<BlackjackCardEntity> Cards { get; set; }
 
-        public IEnumerable<BlackjackCard> DealerCards { get; set; }
+        public IEnumerable<BlackjackCardEntity> DealerCards { get; set; }
 
         public bool End { get; set; }
+
+        public byte DealerPoint { get; set; }
     }
 }
