@@ -21,4 +21,8 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 COPY --from=builder /app .
 
+RUN    apt-get update \
+    && apt-get install openssl \
+    && apt-get install ca-certificates
+
 ENTRYPOINT ["dotnet", "GamesAdmin.Workers.dll"]
