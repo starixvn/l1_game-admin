@@ -21,4 +21,10 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 COPY --from=builder /app .
 
+RUN    apt-get update \
+    && apt-get install openssl \
+    && apt-get install ca-certificates
+
+RUN sed -i "s|TLSv1.2|TLSv1.0|g" /etc/ssl/openssl.cnf
+
 ENTRYPOINT ["dotnet", "GamesAdmin.Workers.dll"]
