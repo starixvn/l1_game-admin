@@ -25,4 +25,6 @@ RUN    apt-get update \
     && apt-get install openssl \
     && apt-get install ca-certificates
 
+RUN sed -i "s|TLSv1.2|TLSv1.0|g" /etc/ssl/openssl.cnf
+
 ENTRYPOINT ["dotnet", "GamesAdmin.Workers.dll"]
