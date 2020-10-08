@@ -22,7 +22,7 @@ deploy_admin_worker_prod:
     - .deploy:prod:rules
   needs: ['post_build_admin_worker_prod']
   variables:
-    SERVER_IP: $PROD_IP
+    SERVER_IP: $PROD_API_IP
     SERVER_USER: $PROD_USER
     SERVER_PORT: $PROD_SSH_PORT
   environment:
