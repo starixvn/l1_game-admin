@@ -16,7 +16,7 @@ namespace GamesAdmin.Core.Enumeration
             {GameType.MiniSeDieValue, Enumeration.GetAll<MiniSeDieBetChoice>() },
             {GameType.BaccaratValue, Enumeration.GetAll<BaccaratBetChoice>() },
             {GameType.VipSeDieValue, Enumeration.GetAll<VipSeDieBetChoice>() },
-            {GameType.BlackJackValue, Enumeration.GetAll<RouletteBetChoice>() },
+            {GameType.BlackJackValue, Enumeration.GetAll<BlackjackBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>
