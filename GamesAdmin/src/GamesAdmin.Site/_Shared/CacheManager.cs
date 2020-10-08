@@ -6,7 +6,6 @@ namespace GamesAdmin.Site._Shared
     public enum CachedKeys
     {
         OnlineUsers,
-        GameRoundInfo
     }
 
     public interface ICacheManager

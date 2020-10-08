@@ -1,0 +1,29 @@
+build_image_admin_worker_prod:
+  extends:
+    - .deploy_vars_admin_worker
+    - .build_image
+    - .deploy:prod-auto:rules
+  environment:
+    name: PROD
+
+post_build_admin_worker_prod:
+  extends:
+    - .deploy_vars_admin_worker
+    - .post_build
+    - .deploy:prod-auto:rules
+  needs: ['build_image_admin_worker_prod']
+  environment:
+    name: PROD
+
+deploy_admin_worker_prod:
+  extends:
+    - .deploy_vars_admin_worker
+    - .base_deploy_kbt
+    - .deploy:prod:rules
+  needs: ['post_build_admin_worker_prod']
+  variables:
+    SERVER_IP: $PROD_IP
+    SERVER_USER: $PROD_USER
+    SERVER_PORT: $PROD_SSH_PORT
+  environment:
+    name: PROD

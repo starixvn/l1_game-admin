@@ -20,5 +20,8 @@ namespace GamesAdmin.Site.Features.ProVietKeno
 
         [Get("/proviet_keno/rounds/unsettled")]
         Task<IEnumerable<ProVietKenoRound>> GetUnsettledRounds();
+
+        [Post("/game_server/notify_proviet_results")]
+        Task NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
     }
 }

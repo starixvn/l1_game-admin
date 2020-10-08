@@ -37,5 +37,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Delay Start Time")]
         public int DelayStartTime { get; set; }
+
+        [DisplayName("Enable Free Bet")]
+        public bool EnableFreeBet { get; set; }
     }
 }

@@ -12,7 +12,6 @@
         public const string KenoProMaxValue = "kenopromax";
         public const string BaccaratValue = "baccarat";
         public const string MiniSeDieValue = "minisedie";
-
         public const string KenoProVietValue = "kenoproviet";
         public const string KenoMaxValue = "kenomax";
         public const string KenoMax2Value = "kenomax2";
@@ -23,6 +22,7 @@
         public const string KenoSouthValue = "kenosouth";
         public const string KenoNorthValue = "kenonorth";
         public const string RouletteValue = "roulette";
+        public const string LuckyWheelValue = "luckywheel";
 
         public static readonly GameType BigSmall = new GameType(BigSmallValue, "Big Small");
         public static readonly GameType BigSmallTurbo = new GameType(BigSmallTurboValue, "Turbo Big Small");        
@@ -44,6 +44,7 @@
         public static readonly GameType KenoSouth = new GameType(KenoSouthValue, "Keno South");
         public static readonly GameType KenoNorth = new GameType(KenoNorthValue, "Keno North");
         public static readonly GameType Roulette = new GameType(RouletteValue, "Roulette");
+        public static readonly GameType LuckyWheel = new GameType(LuckyWheelValue, "Lucky Wheel");
 
         public GameType()
         {

@@ -25,5 +25,13 @@ namespace GamesAdmin.Database
                     true)
                 .FirstOrDefault())?.CollectionName;
         }
+
+        public static string GetDatabaseName(Type documentType)
+        {
+            return ((BsonDatabaseAttribute)documentType.GetCustomAttributes(
+                    typeof(BsonDatabaseAttribute),
+                    true)
+                .FirstOrDefault())?.DatabaseName;
+        }
     }
 }

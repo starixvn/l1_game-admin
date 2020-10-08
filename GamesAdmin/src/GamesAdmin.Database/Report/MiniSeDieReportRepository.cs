@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IMiniSeDieReportRepository
     {
-        Task<(MiniSeDieRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(MiniSeDieRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class MiniSeDieReportRepository : BaseBetReportRepository, IMiniSeDieReportRepository
@@ -18,14 +18,14 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(MiniSeDieRoundEntity, IEnumerable<ShakeThePlateBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(MiniSeDieRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var roundResult = await database.GetCollection<MiniSeDieRoundEntity>(Document.GetCollectionName(typeof(MiniSeDieRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
                 var project = GetBaseAggregateBuilder<MiniSeDieBetEntity, MiniSeDieBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
-                    .Project(x => new ShakeThePlateBetReportEntity
+                    .Project(x => new SeDieBetReportEntity
                     {
                         Time = x.Time,
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -43,7 +43,7 @@ namespace GamesAdmin.Database
                 return (roundResult, records);
             }
 
-            return (new MiniSeDieRoundEntity(), Enumerable.Empty<ShakeThePlateBetReportEntity>());
+            return (new MiniSeDieRoundEntity(), Enumerable.Empty<SeDieBetReportEntity>());
         }
     }
 }

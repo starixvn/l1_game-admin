@@ -3,17 +3,22 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>dotnet-GamesAdmin.Workers-5D9E4A50-5455-47FD-A1A3-B4A15C6A29DE</UserSecretsId>
-    <Configurations>Debug;Release;Dev;LOCAL;SIT;UAT;PRO</Configurations>
+    <Configurations>Debug;Release;Dev;LOCAL;SIT;UAT;PROD</Configurations>
+    <CodeAnalysisRuleSet>..\..\.sonarlint\l1-game-admincsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
     <Content Remove="appsettings.LOCAL.json" />
-    <Content Remove="appsettings.PRO.json" />
+    <Content Remove="appsettings.PROD.json" />
     <Content Remove="appsettings.Release.json" />
     <Content Remove="appsettings.SIT.json" />
     <Content Remove="appsettings.UAT.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\.sonarlint\l1-game-admin\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +34,7 @@
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
-    <None Include="appsettings.PRO.json">
+    <None Include="appsettings.PROD.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>

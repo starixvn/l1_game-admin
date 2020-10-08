@@ -1,0 +1,8 @@
+.deploy_vars_admin_api:
+  variables:
+    WORKING_PATH: /var/www/l2/game-admin-api/
+    DOCKER_SERVICE_NAME: l2-game-admin-api
+    DOCKER_IMAGE_PATH: l2/docker-registry/game-admin-api
+    DOCKER_FILE_PATH: ./GamesAdmin/src
+    DOCKER_FILE_NAME: AdminApi.Dockerfile
+    DOCKER_NETWORK_NAME: admin

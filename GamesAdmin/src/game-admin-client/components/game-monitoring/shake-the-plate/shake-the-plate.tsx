@@ -1,28 +1,29 @@
-import React from 'react';
-import styles from './shake-the-plate.module.scss';
-import TimeCounter from '../../shared/time-counter/time-counter';
-import TotalBet from '../../shared/total-bet/total-bet';
-import { Col, Container, Row } from 'reactstrap';
-import GameTemplate from '../game-template/game-template';
-import BetList from '../../shared/bet-list/bet-list';
-import Dice from '../../shared/dice/dice';
-import DiceModel from '../../common/model/DiceModel';
-import DiceType from '../../common/model/DiceType';
-import BetItem from '../../common/model/BetItem';
-import ShakeThePlaceModel from '../../common/model/ShakeThePlateModel';
-import RoundNum from '../../shared/round-num/round-num';
-import { GameState } from '../../shared/common/GameState';
+import React from "react";
+import { Col, Container, Row } from "reactstrap";
+
+import BetItem from "../../common/model/BetItem";
+import DiceModel from "../../common/model/DiceModel";
+import DiceType from "../../common/model/DiceType";
+import ShakeThePlateModel from "../../common/model/ShakeThePlateModel";
+import BetList from "../../shared/bet-list/bet-list";
+import { GameState } from "../../shared/common/GameState";
+import Dice from "../../shared/dice/dice";
+import RoundNum from "../../shared/round-num/round-num";
+import TimeCounter from "../../shared/time-counter/time-counter";
+import TotalBet from "../../shared/total-bet/total-bet";
+import GameTemplate from "../game-template/game-template";
+import styles from "./shake-the-plate.module.scss";
 
 type ShakeThePlateProps = {
   onMessage: Function
 }
 
-export default class ShakeThePlate extends React.Component<ShakeThePlateProps, ShakeThePlaceModel> {
+export default class ShakeThePlate extends React.Component<ShakeThePlateProps, ShakeThePlateModel> {
   private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
-    this.state = new ShakeThePlaceModel();
+    this.state = new ShakeThePlateModel();
 
   }
 
@@ -86,9 +87,9 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     }
 
     if (!!data.finish) {
-      const waitingTime = 9;
+      const waitingTime = 10;
       this.setState({
-        result: this.getResult(data.finish.dots),
+        result: this.getResult(data.finish.result),
         gameState: GameState.waiting,
         time: {
           remainingTime: waitingTime
@@ -132,46 +133,45 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
     return currentData;
   }
 
-  getResult(dots) {
+  getResult(data) {
     const result = new Array<DiceModel>();
 
-    result.push(new DiceModel(dots[0], DiceType.XocXoc));
-    result.push(new DiceModel(dots[1], DiceType.XocXoc));
-    result.push(new DiceModel(dots[2], DiceType.XocXoc));
-    result.push(new DiceModel(dots[3], DiceType.XocXoc));
+    Object.keys(data).forEach(key => {
+      result.push(new DiceModel(data[key], DiceType.XocXoc));
+    });
 
     return result;
   }
 
-  getWiner() {
+  getWinner() {
     const { result } = this.state;
     const sumDicesValue = result.reduce((sum, dice) => sum + dice.value, 0);
 
-    let winer = '';
+    let winner = '';
     switch (sumDicesValue) {
       case 0:
-        winer = 'white4';
+        winner = 'white4';
         break;
       case 1:
-        winer = 'white3';
+        winner = 'white3';
         break;
       case 2:
-        winer = 'draw';
+        winner = 'draw';
         break;
       case 3:
-        winer = 'red3';
+        winner = 'red3';
         break;
       case 4:
-        winer = 'red4';
+        winner = 'red4';
         break;
     }
 
-    return winer;
+    return winner;
   }
 
   renderMonitor() {
     const { betList, roundNumber, time, result, gameState } = this.state;
-    const winer = gameState == GameState.waiting ? this.getWiner() : '';
+    const winner = gameState == GameState.waiting ? this.getWinner() : '';
 
     return (
       <Container className={styles['shakeThePlate-container']}>
@@ -192,22 +192,22 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
           </Col>
           <Col align='center' className={styles['shakeThePlate-betList']}>
             <Col className={styles['col-plateeven']}>
-              <TotalBet type='plateeven' total={betList.chan.total} isWin={winer != '' && winer != 'white3' && winer != 'red3'} />
+              <TotalBet type='plateeven' total={betList.even.total} isWin={winner != '' && winner != 'white3' && winner != 'red3'} />
             </Col>
             <Col className={styles['col-plateodd']}>
-              <TotalBet type='plateodd' total={betList.le.total} isWin={winer == 'white3' || winer == 'red3'} />
+              <TotalBet type='plateodd' total={betList.odd.total} isWin={winner == 'white3' || winner == 'red3'} />
             </Col>
             <Col>
-              <TotalBet type='bondo' total={betList.red4.total} isWin={winer == 'red4'} />
+              <TotalBet type='bondo' total={betList.red4.total} isWin={winner == 'red4'} />
             </Col>
             <Col>
-              <TotalBet type='mottrangbado' total={betList.red3.total} isWin={winer == 'red3'} />
+              <TotalBet type='mottrangbado' total={betList.red3.total} isWin={winner == 'red3'} />
             </Col>
             <Col>
-              <TotalBet type='motdobatrang' total={betList.white3.total} isWin={winer == 'white3'} />
+              <TotalBet type='motdobatrang' total={betList.white3.total} isWin={winner == 'white3'} />
             </Col>
             <Col>
-              <TotalBet type='bontrang' total={betList.white4.total} isWin={winer == 'white4'} />
+              <TotalBet type='bontrang' total={betList.white4.total} isWin={winner == 'white4'} />
             </Col>
           </Col>
         </Row>
@@ -217,7 +217,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
 
   renderBetList() {
     const { betList, gameState } = this.state;
-    const winer = gameState == GameState.waiting ? this.getWiner() : '';
+    const winer = gameState == GameState.waiting ? this.getWinner() : '';
 
     return (
       <React.Fragment>
@@ -241,7 +241,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
           <BetList
             titles={[(<div className={styles['title-chan']}>Even</div>)]}
             type='simple'
-            dataList={betList.chan.dataList}
+            dataList={betList.even.dataList}
             isWin={winer != '' && winer != 'white3' && winer != 'red3'}
           />
         </Col>
@@ -249,7 +249,7 @@ export default class ShakeThePlate extends React.Component<ShakeThePlateProps, S
           <BetList
             titles={[(<div className={styles['title-le']}>Odd</div>)]}
             type='simple'
-            dataList={betList.le.dataList}
+            dataList={betList.odd.dataList}
             isWin={winer == 'white3' || winer == 'red3'}
           />
         </Col>

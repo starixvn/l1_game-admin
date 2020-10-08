@@ -1,0 +1,12 @@
+.build-dotnet:
+  image: git3.nexdev.net:5050/lumi-ops/docker-images/dotnet-nodejs:3.1
+  stage: build-dotnet
+  script:
+    - dotnet clean $PROJECT_PATH/$PROJECT_NAME
+    - dotnet publish -c $DEPLOY_ENV -r linux-x64 --self-contained false $PROJECT_PATH/$PROJECT_NAME -o $BUILD_PATH
+  tags:
+    - docker
+  artifacts:
+    paths:
+      - $BUILD_PATH
+    expire_in: 1 day

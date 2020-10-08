@@ -4,8 +4,10 @@ using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
 
@@ -90,6 +92,8 @@ namespace GamesAdmin.Api._Shared
             CreateMap<RouletteRoundEntity, RouletteRoundResult>();
             CreateMap<RouletteSettlementResultEntity, RouletteSettlementResult>();
             CreateMap<RouletteBetEntity, RouletteBetHistoryRecord>();
+
+            CreateMap<SpinResultEntity, SpinResult>();
         }
     }
 }

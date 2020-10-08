@@ -1,18 +1,20 @@
-import BetList from './BetList'
-import TimeModel from './TimeModel'
-import DiceModel from './DiceModel'
+import BetList from "./BetList";
+import DiceModel from "./DiceModel";
+import TimeModel from "./TimeModel";
 
 class ShakeThePlaceBetList {
-  chan: BetList;
-  le: BetList;
+  odd: BetList;
+  even: BetList;
+  red2: BetList;
   red3: BetList;
   red4: BetList;
   white3: BetList;
   white4: BetList;
 
   constructor() {
-    this.chan = new BetList();
-    this.le = new BetList();
+    this.odd = new BetList();
+    this.even = new BetList();
+    this.red2 = new BetList();
     this.red3 = new BetList();
     this.red4 = new BetList();
     this.white3 = new BetList();
@@ -20,7 +22,7 @@ class ShakeThePlaceBetList {
   }
 }
 
-export default class ShakeThePlaceModel {
+export default class ShakeThePlateModel {
   roundNumber: number;
   time: TimeModel;
   betList: ShakeThePlaceBetList;
@@ -37,4 +39,4 @@ export default class ShakeThePlaceModel {
   }
 }
 
-export { ShakeThePlaceModel, ShakeThePlaceBetList }
+export { ShakeThePlateModel, ShakeThePlaceBetList }

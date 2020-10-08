@@ -3,11 +3,12 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    //[Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly IMediator mediator;
@@ -30,7 +31,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult BigSmallTurbo()
+        public IActionResult TurboBigSmall()
         {
             return View(new ReportViewModel());
         }
@@ -54,7 +55,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult OddEvenTurbo()
+        public IActionResult TurboOddEven()
         {
             return View(new ReportViewModel());
         }
@@ -119,10 +120,17 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, userId)));
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public IActionResult VipSeDie()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
@@ -241,6 +249,18 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)
         {
             return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<GameType>(game), roundId, nickname)));
+        }
+
+        [HttpGet]
+        public IActionResult LuckyWheel()
+        {
+            return View(new LuckyWheelViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LuckyWheelHistory(string nickname)
+        {
+            return PartialView("_LuckyWheelRecords", await mediator.Send(new GetLuckyWheelHistoryRequest(nickname)));
         }
     }
 }

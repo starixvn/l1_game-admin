@@ -3,6 +3,7 @@ using Coravel.Invocable;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.GameSettings;
 using Sentry;
 using Sentry.Protocol;
 
@@ -10,13 +11,13 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
 {
     public class MonitorOnlineUsers : IInvocable
     {
-        private readonly IGameServerService service;
+        private readonly IGameSettingService service;
         private readonly ISentryClient sentryClient;
         private readonly IAppSettings appSettings;
         private readonly ICacheManager cache;
 
         public MonitorOnlineUsers(
-            IGameServerService service,
+            IGameSettingService service,
             ISentryClient sentryClient,
             IAppSettings appSettings,
             ICacheManager cache)
@@ -29,7 +30,7 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
 
         public async Task Invoke()
         {
-            var onlineUser = await service.GetOnlineUsers(string.Empty);
+            var onlineUser = await service.GetOnlineUsers();
             var latestOnlineUsers = cache.GetCache(CachedKeys.OnlineUsers.ToString());
 
             if (onlineUser.TotalReal < latestOnlineUsers - appSettings.MaxDecreased)

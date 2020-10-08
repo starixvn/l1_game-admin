@@ -11,12 +11,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
-            services.AddScoped<IStatisticRepository, StatisticRepository>();
             services.AddScoped<IBigSmallTurboReportRepository, BigSmallTurboReportRepository>();
             services.AddScoped<IOddEvenReportRepository, OddEvenReportRepository>();
             services.AddScoped<IOddEvenTurboReportRepository, OddEvenTurboReportRepository>();
             services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
-            services.AddScoped<IShakeThePlateReportRepository, ShakeThePlateReportRepository>();
+            services.AddScoped<ISeDieReportRepository, SeDieReportRepository>();
             services.AddScoped<IMiniSeDieReportRepository, MiniSeDieReportRepository>();
             services.AddScoped<IFishPrawnCrabReportRepository, FishPrawnCrabReportRepository>();
             services.AddScoped<IDragonTigerReportRepository, DragonTigerReportRepository>();

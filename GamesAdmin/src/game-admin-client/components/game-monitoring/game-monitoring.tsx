@@ -1,16 +1,18 @@
-import _ from 'lodash';
-import BigSmall from './big-small/big-small';
-import BigSmallTurbo from './big-small-turbo/big-small-turbo';
-import DragonTiger from './dragon-tiger/dragon-tiger';
-import FishPrawnCrab from './fish-prawn-crab/fish-prawn-crab';
-import KenoProMax from './keno-pro-max/keno-pro-max';
-import OddEven from './odd-even/odd-even';
-import OddEvenTurbo from './odd-even-turbo/odd-even-turbo';
-import ShakeThePlate from './shake-the-plate/shake-the-plate';
-import MiniSedie from './mini-sedie';
-import MiniKeno from './mini-keno/index';
-import Baccarat from './baccarat';
-import Roulette from './roulette';
+import _ from "lodash";
+
+import Baccarat from "./baccarat";
+import BigSmallTurbo from "./big-small-turbo/big-small-turbo";
+import BigSmall from "./big-small/big-small";
+import DragonTiger from "./dragon-tiger/dragon-tiger";
+import FishPrawnCrab from "./fish-prawn-crab/fish-prawn-crab";
+import KenoProMax from "./keno-pro-max/keno-pro-max";
+import MiniKeno from "./mini-keno";
+import MiniSedie from "./mini-sedie";
+import OddEvenTurbo from "./odd-even-turbo/odd-even-turbo";
+import OddEven from "./odd-even/odd-even";
+import Roulette from "./roulette";
+import ShakeThePlate from "./shake-the-plate/shake-the-plate";
+import VipSeDie from "./vip-sedie/vip-sedie";
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
   const object = _.get(message, path);
@@ -56,7 +58,8 @@ const gameNameMapper = {
   kenowest: 17,
   kenosouth: 18,
   kenonorth: 19,
-  roulette: 21
+  roulette: 21,
+  vipsedie: 22
 };
 
 const gameMapper = {
@@ -66,7 +69,7 @@ const gameMapper = {
   },
   2: {
     component: ShakeThePlate,
-    ...getInfoByGameKey('xocxoc'),
+    ...getInfoByGameKey('XocXoc'),
   },
   3: {
     component: FishPrawnCrab,
@@ -136,6 +139,10 @@ const gameMapper = {
     component: Roulette,
     ...getInfoByGameKey('roulette')
   },
+  22: {
+    component: VipSeDie,
+    ...getInfoByGameKey('VipSeDie'),
+  }
 };
 
 export function getGameInfoByGameId(gameId: number | string) {

@@ -1,13 +1,11 @@
-﻿using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site._Shared.IdentityServer;
-using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.Account;
+﻿using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
-using GamesAdmin.Site.Features.GameServers;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
@@ -32,8 +30,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IGameSettingService, GameSettingService>();
 
-            services.AddSingleton(RestService.For<IAccountApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddSingleton(RestService.For<IGameUserApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IGameUserService, GameUserService>();
 
             services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IUserService, UserService>();
@@ -50,13 +48,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IUmService, UmService>();
 
             services.AddSingleton(RestService.For<INotificationApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<INotificationService, NotificationService>();
-
-            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
-            services.AddScoped<IGameServerService, GameServerService>();
-
-            services.AddSingleton(RestService.For<ISeDieGameServerApi>(appSettings.GameServers.Sedie.Api, refitSettings));
-            services.AddScoped<ISeDieGameServer, SeDieGameServer>();
+            services.AddScoped<INotificationService, NotificationService>();            
 
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();

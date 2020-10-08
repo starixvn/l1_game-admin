@@ -38,12 +38,15 @@ namespace GamesAdmin.Api
             services.AddSingleton<IBotSettings>(sp =>
               sp.GetRequiredService<IOptions<BotSettings>>().Value);
 
+            var appSettings = new AppSettings(Configuration);
+            services.AddSingleton<IAppSettings>(appSettings);
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(typeof(Startup));
 
             services.AddDatabase(dbSettings);
             services.AddRepositories();
-            services.AddServices();
+            services.AddServices(appSettings);
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>

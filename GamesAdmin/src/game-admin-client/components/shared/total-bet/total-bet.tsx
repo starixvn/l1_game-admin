@@ -19,6 +19,7 @@ const classNames = {
   mottrangbado: 'mottrangbadoBg',
   bondo: 'bondoBg',
   bontrang: 'bontrangBg',
+  haido: 'haidoBg',
   plateeven: 'plateevenBg',
   plateodd: 'plateoddBg',
   chan: 'chanBg',

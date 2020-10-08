@@ -7,10 +7,9 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.Account;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
+using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,23 +39,20 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IMapper mapper;
 
         private readonly IGameSettingService gameService;
-        private readonly IAccountService accountService;
-        private readonly IGameServerService gameServerService;
+        private readonly IGameUserService accountService;
         private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
 
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
-            IAccountService accountService,
-            IGameServerService gameServerService,
+            IGameUserService accountService,
             IProVietKenoService proVietKenoService,
             IAppSettings appSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
-            this.gameServerService = gameServerService;
             this.proVietKenoService = proVietKenoService;
             this.appSettings = appSettings;
         }
@@ -215,7 +211,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.DisabledMessage,
             request.Game.MaxBetChoices,
             request.Game.Odds,
-            request.Game.DelayStartTime));
+            request.Game.DelayStartTime,
+            request.Game.EnableFreeBet));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -233,7 +230,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             DefaultDisabledMessage,
             new Dictionary<string, double>(),
             new Dictionary<string, double>(),
-            request.Game.DelayStartTime));
+            request.Game.DelayStartTime,
+            request.Game.EnableFreeBet));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
@@ -281,7 +279,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (request.Reload)
             {
-                await gameServerService.Reload();
+                await gameService.Reload();
             }
 
             return true;
@@ -314,18 +312,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             return true;
         }
 
-        public async Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)
-        {
-            await gameServerService.Reload();
-
-            return true;
-        }
+        public Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)
+        => gameService.Reload();
 
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
-            var result = await gameServerService.GetJWT(request.Username, request.UserAgent);
+            var result = await gameService.GetJWT(request.Username, request.UserAgent);
             var redirectUrl = request.Game == GameType.SeDieValue ?
-                @$"/game-admin/monitoring.html?game={request.Game}&v={DateTime.Now.Ticks}" :
+                @$"/game-admin/{request.Game}.html?v={DateTime.Now.Ticks}" :
                 @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
             return new GameServerToken
             (
@@ -338,7 +332,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private async Task NotifyUnsettleRoundsToGameServer()
         {
             var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
-            await gameServerService.NotifyRoundResult(unsettleRounds);
+            await proVietKenoService.NotifyRoundResult(unsettleRounds);
         }
 
         public async Task<MonitorViewModel> Handle(GetMonitorRequest request, CancellationToken cancellationToken)
@@ -357,11 +351,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return new MonitorViewModel(gameList);
         }
         
-        public async Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
-        {
-            await gameServerService.UnderMaintenance(request);
-
-            return true;
-        }
+        public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
+        => gameService.UnderMaintenance(request);
     }
 }

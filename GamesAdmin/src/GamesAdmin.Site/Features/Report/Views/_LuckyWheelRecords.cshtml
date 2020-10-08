@@ -1,0 +1,48 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Site.Extensions
+
+@model LuckyWheelHistoryViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th>Date (GMT+7)</th>
+                    <th>Round</th>
+                    <th>MemberId</th>
+                    <th>Nickname</th>
+                    <th>Scoins</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.SpinResults)
+                {
+
+                    <tr>
+                        <td>@bet.Time.ToReportDateTimeFormat(Model.TimeZoneInfo)</td>
+                        <td>@bet.RoundId</td>
+                        <td>@bet.MemberId</td>
+                        <td>@bet.Name</td>
+                        <td>@bet.Result</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (Model.Total == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="13">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td colspan="4">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.TotalWinningScoins)</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

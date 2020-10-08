@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Api.Accounts;
+﻿using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
@@ -18,13 +18,13 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<KenoEastRoundEntity> kenoEastRoundRepository;
         private readonly IGenericRepository<KenoEastBetEntity> kenoEastBetRepository;
 
-        private readonly IAccountService accountService;
+        private readonly IGameUserService accountService;
 
         public KenoEastReport(
             IGenericRepository<KenoEastOnesEntity> kenoEastOnesRepository,
             IGenericRepository<KenoEastRoundEntity> kenoEastRoundRepository,
             IGenericRepository<KenoEastBetEntity> kenoEastBetRepository,
-            IAccountService accountService)
+            IGameUserService accountService)
         {
             this.kenoEastOnesRepository = kenoEastOnesRepository;
             this.kenoEastRoundRepository = kenoEastRoundRepository;
