@@ -46,11 +46,8 @@
                                         <span>@firstCard.Rank</span>
                                         <img class="img" src="~/images/card_@(firstCard.Suit).png" />
                                     </div>
-                                    <div class="card">
-                                        <img class="img" src="~/images/card_back.png" />
-                                    </div>
+                                    <img class="card" src="~/images/card_back.png" />
                                 }
-
                             </div>
                         </td>
                         <td>
@@ -83,16 +80,15 @@
                             </div>
                         </td>
                         <td>
-                          
-                                @if (bet.Point == blackJackValue && bet.DealerCards.Count() == 2)
-                                {
-                                    @("BJ")
-                                }
-                                else
-                                {
-                                    @(bet.Point > blackJackValue ? "Bust" : bet.DealerPoint.ToString())
-                                }
 
+                            @if (bet.Point == blackJackValue && bet.DealerCards.Count() == 2)
+                            {
+                                @("BJ")
+                            }
+                            else
+                            {
+                                @(bet.Point > blackJackValue ? "Bust" : bet.DealerPoint.ToString())
+                            }
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Bet)</td>
                         <td class="text-right">@(bet.End? HtmlHelpers.formatNumber(bet.BetWin): "Running")</td>
