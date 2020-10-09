@@ -33,6 +33,7 @@ namespace GamesAdmin.Site
 
             services.AddServices(appSettings);
             services.AddAuthentication(Configuration);
+            services.AddHealthChecks();
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                   .AddRazorOptions(options =>
@@ -77,6 +78,7 @@ namespace GamesAdmin.Site
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Dashboard}/{action=Index}");
