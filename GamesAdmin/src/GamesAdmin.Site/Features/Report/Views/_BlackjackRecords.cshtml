@@ -26,7 +26,7 @@
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@bet.HandId @(bet.SplitForm.HasValue ? "(Split)" : string.Empty)</td>
-                        <td>
+                        <td class="blackjack-result">
                             <div class="cards">
                                 @if (bet.End)
                                 {
@@ -67,7 +67,7 @@
                                 @("-")
                             }
                         </td>
-                        <td>
+                        <td class="blackjack-result">
                             <div class="cards">
                                 @foreach (var card in bet.Cards)
                                 {
