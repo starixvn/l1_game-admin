@@ -12,15 +12,17 @@ export default class {
   private isLogged: boolean;
   private disconnectListenterCounter: number;
   protected readonly endpoint: string;
+  protected readonly endpointRoute: string;
   private readonly observers: {
     [key: string]: ObserverClient;
   };
   protected readonly onDisconnectedMessage: string;
 
-  constructor(endpoint: string) {
+  constructor(endpoint: string, route: string = '') {
     this.isConnected = false;
     this.isLogged = false;
     this.endpoint = endpoint;
+    this.endpointRoute = route;
     this.observers = {};
     this.disconnectListenterCounter = 0;
     this.onDisconnectedMessage = "onDisconnected";

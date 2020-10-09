@@ -2,21 +2,21 @@ import Cookies from "js-cookie";
 import { NextPageContext } from "next";
 import { NextRouter } from "next/router";
 import React from "react";
-
-import GameName from "../components/shared/common/GameName";
-import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
-import SocketIO from "../components/util/game-server-endpoint/socket-io";
-import MessageTransmitter, {
-  MessageTransmitterType,
-} from "../components/util/message-transmitter";
+import { Modal, Row } from "reactstrap";
 import {
   GameMonitoringInfo,
   getGameInfoByGameId,
-  getGameInfoByGameName,
+  getGameInfoByGameName
 } from "../components/game-monitoring/game-monitoring";
-import { Modal, Row } from "reactstrap";
 import Loading from "../components/game-monitoring/game-template/game-template-loading";
 import GameMenu from "../components/game-monitoring/menu/menu";
+import GameName from "../components/shared/common/GameName";
+import SocketIO from "../components/util/game-server-endpoint/socket-io";
+import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
+import MessageTransmitter, {
+  MessageTransmitterType
+} from "../components/util/message-transmitter";
+
 
 type Props = {
   router: NextRouter;
@@ -56,22 +56,28 @@ class Monitor extends React.Component<Props, State> {
 
   initSocket() {
     let serverEndpoint = "";
+    let endpointRoute = "";
+
     switch (this.props.game) {
       case GameName.VipSeDie:
         serverEndpoint =
           process.env.NEXT_PUBLIC_ENV === "local"
             ? process.env.NEXT_PUBLIC_VIP_SEDIE_SERVER_ENDPOINT
             : Cookies.get("vip-sedie-server-endpoint");
+
+        endpointRoute = Cookies.get("vip-sedie-server-endpoint-route");
         break;
       case GameName.SeDie:
         serverEndpoint =
           process.env.NEXT_PUBLIC_ENV === "local"
             ? process.env.NEXT_PUBLIC_SEDIE_SERVER_ENDPOINT
             : Cookies.get("sedie-server-endpoint");
+
+        endpointRoute = Cookies.get("sedie-server-endpoint-route");
         break;
     }
 
-    return new SocketIO(`${this.protocol}://${serverEndpoint}`);
+    return new SocketIO(`${this.protocol}://${serverEndpoint}`, endpointRoute);
   }
 
   changeLoadingState(showLoading: boolean) {

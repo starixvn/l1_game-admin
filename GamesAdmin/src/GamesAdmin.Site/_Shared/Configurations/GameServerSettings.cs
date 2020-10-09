@@ -14,5 +14,7 @@
         public string Api { get; set; }
 
         public string Socket { get; set; }
+
+        public string SocketRoute { get; set; }
     }
 }
