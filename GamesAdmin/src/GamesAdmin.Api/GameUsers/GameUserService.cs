@@ -19,9 +19,7 @@ namespace GamesAdmin.Api.GameUser
     {
         Task<int> GetTotalBots();
 
-        Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot);
-
-        Task<int> ReviseBotNames();
+        Task<IList<GenerateAccountResult>> GenerateUsers(string[] names);
 
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
@@ -34,6 +32,11 @@ namespace GamesAdmin.Api.GameUser
 
     public class GameUserService : IGameUserService
     {
+        private const int minAmountScale = 2;
+        private const int maxAmountScale = 20;
+        private const int minCharNameLength = 3;
+        private const int maxCharNameLength = 14;
+
         private readonly ISentryClient sentryClient;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
@@ -43,6 +46,7 @@ namespace GamesAdmin.Api.GameUser
 
         private readonly int minInitAmount;
         private readonly int maxInitAmount;
+        
 
         public GameUserService(
             ISentryClient sentryClient,
@@ -58,8 +62,8 @@ namespace GamesAdmin.Api.GameUser
             this.spinRepository = spinRepository;
             this.spinLogRepository = spinLogRepository;
 
-            minInitAmount = 2 * botSettings.DefaultMaxBet;
-            maxInitAmount = 20 * botSettings.DefaultMaxBet;
+            minInitAmount = minAmountScale * botSettings.DefaultMaxBet;
+            maxInitAmount = maxAmountScale * botSettings.DefaultMaxBet;
         }
 
         public async Task<int> GetTotalBots()
@@ -68,13 +72,13 @@ namespace GamesAdmin.Api.GameUser
 
             if (bots?.Any() == true)
             {
-                return bots.Count();
+                return bots.Count;
             }
 
             return 0;
         }
 
-        public async Task<IList<GenerateAccountResult>> GenerateUsers(string[] names, bool isBot)
+        public async Task<IList<GenerateAccountResult>> GenerateUsers(string[] names)
         {
             var results = new List<GenerateAccountResult>();
 
@@ -88,7 +92,7 @@ namespace GamesAdmin.Api.GameUser
             {
                 latestUserInfoUID += 1;
                 var userName = $"{name}{latestUserInfoUID}";
-                var password = isBot ? string.Empty : $"pwd{(new Random()).Next(200, 1000)}{new Random().Next(150, 500)}";
+                var password = string.Empty;
                 var amount = (new Random()).Next(minInitAmount, maxInitAmount);
                 var avatarId = new Random().Next(1, 40);
                 var result = new GenerateAccountResult(userName, name, password);
@@ -102,12 +106,8 @@ namespace GamesAdmin.Api.GameUser
 
                 try
                 {
-                    var hashPassword = isBot
-                        ? defaultHash
-                        : BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
-
-                    var account = GenerateAccount(userName, hashPassword);
-                    var accountInfo = GenerateAccountInfo(isBot, latestUserInfoUID, name, amount, avatarId);
+                    var account = GenerateAccount(userName, defaultHash);
+                    var accountInfo = GenerateAccountInfo(latestUserInfoUID, name, amount, avatarId);
 
                     newAccounts.Add(account);
                     newAccountInfos.Add(accountInfo);
@@ -135,7 +135,7 @@ namespace GamesAdmin.Api.GameUser
         }
 
         private static bool InvalidName(string name)
-        => string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 14 || !Regex.IsMatch(name, @"^[a-zA-Z0-9]+$");
+        => string.IsNullOrWhiteSpace(name) || name.Length < minCharNameLength || name.Length > maxCharNameLength || !Regex.IsMatch(name, @"^[a-zA-Z0-9]+$");
 
 
         private static AccountEntity GenerateAccount(string userName, string hashPassword)
@@ -150,51 +150,19 @@ namespace GamesAdmin.Api.GameUser
         };
 
 
-        private static AccountInfoEntity GenerateAccountInfo(bool isBot, int latestUserInfoUID, string name, int amount, int avatarId)
+        private static AccountInfoEntity GenerateAccountInfo(int latestUserInfoUID, string name, int amount, int avatarId)
         => new AccountInfoEntity
         {
             Name = name,
             AvatarId = avatarId,
             Red = amount,
-            IsBot = isBot,
+            IsBot = true,
             JoinedOn = DateTime.UtcNow,
             UID = latestUserInfoUID
         };
 
         private Task<int> GetLatestUserInfoUID()
             => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
-
-        public async Task<int> ReviseBotNames()
-        {
-            var bots = accountInfoRepository
-                .FilterBy(entity => entity.IsBot && (entity.Name.Length > 14))
-                .ToList();
-
-            foreach (var bot in bots)
-            {
-                bot.Name = bot.Name.Substring(0, 13);
-
-                await accountInfoRepository.ReplaceOneAsync(bot);
-            }
-
-            await MigrateBots();
-
-            return bots.Count;
-        }
-
-        private async Task MigrateBots()
-        {
-            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot)).ToList();
-
-            foreach (var bot in bots)
-            {
-                bot.InRoom = false;
-                bot.Disabled = false;
-                bot.InGameRoom = string.Empty;
-
-                await accountInfoRepository.ReplaceOneAsync(bot);
-            }
-        }
 
         public async Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS)
         {
@@ -203,7 +171,7 @@ namespace GamesAdmin.Api.GameUser
             var account = await accountRepository.FindByIdAsync(userId);
             var accountInfo = await accountInfoRepository
                 .FindOneAsync(x => x.UserId == account.Id.ToString()
-                    && (!excludeUUS || !(x.Currency == "UUS"))
+                    && IsExcludeUUS(excludeUUS, x.Currency)
                     && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)));
 
             return accountInfo == null || account == null
@@ -220,7 +188,9 @@ namespace GamesAdmin.Api.GameUser
                     accountInfo.UID
                 );
         }
-      
+
+        private bool IsExcludeUUS(bool excludeUUS, string currency) => (!excludeUUS || (currency != "UUS"));
+
         public async Task<UpdateMemberSpinResult> UpdateMemberSpins(UpdateSpinRequest updateRequest)
         {
             var result = new UpdateMemberSpinResult { MemberId = updateRequest.MemberId };

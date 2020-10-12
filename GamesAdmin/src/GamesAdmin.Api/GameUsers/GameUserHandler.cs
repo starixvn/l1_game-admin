@@ -12,7 +12,6 @@ namespace GamesAdmin.Api.GameUser
     public class GameUserHandler
         : IRequestHandler<GetBotCountRequest, int>
         , IRequestHandler<GenerateAccountRandomRequest, IList<GenerateAccountResult>>
-        , IRequestHandler<ReviseBotNameRequest, int>
         , IRequestHandler<ReviseBotBalanceRequest, int>
         , IRequestHandler<DisableBotRandomlyRequest, int>
         , IRequestHandler<UpdateSpinRequest, UpdateMemberSpinResult>
@@ -32,10 +31,7 @@ namespace GamesAdmin.Api.GameUser
         => gameUserService.GetTotalBots();
 
         public Task<IList<GenerateAccountResult>> Handle(GenerateAccountRandomRequest request, CancellationToken cancellationToken)
-        => gameUserService.GenerateUsers(request.Names, request.IsBot);
-
-        public Task<int> Handle(ReviseBotNameRequest request, CancellationToken cancellationToken)
-        => gameUserService.ReviseBotNames();
+        => gameUserService.GenerateUsers(request.Names);
 
         public Task<int> Handle(ReviseBotBalanceRequest request, CancellationToken cancellationToken)
         => botService.ReviseBalance();
