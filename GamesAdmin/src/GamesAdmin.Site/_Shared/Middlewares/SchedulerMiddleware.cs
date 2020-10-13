@@ -18,6 +18,10 @@ namespace GamesAdmin.Site._Shared.Middlewares
                 .Hourly();
 
             scheduler
+                .Schedule<BanBot>()
+                .Cron("0 0 1 * *");
+
+            scheduler
                 .Schedule<MonitorOnlineUsers>()
                 .EveryMinute();
         }

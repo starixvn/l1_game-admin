@@ -17,10 +17,6 @@ namespace GamesAdmin.Api.GameUser
 {
     public interface IGameUserService
     {
-        Task<int> GetTotalBots();
-
-        Task<IList<GenerateAccountResult>> GenerateUsers(string[] names);
-
         Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS);
 
         Task<UpdateMemberSpinResult> UpdateMemberSpins(UpdateSpinRequest updateRequest);
@@ -32,21 +28,12 @@ namespace GamesAdmin.Api.GameUser
 
     public class GameUserService : IGameUserService
     {
-        private const int minAmountScale = 2;
-        private const int maxAmountScale = 20;
-        private const int minCharNameLength = 3;
-        private const int maxCharNameLength = 14;
-
         private readonly ISentryClient sentryClient;
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
         private readonly IGenericRepository<SpinEntity> spinRepository;
         private readonly IGenericRepository<SpinLogEntity> spinLogRepository;
-
-        private readonly int minInitAmount;
-        private readonly int maxInitAmount;
-        
 
         public GameUserService(
             ISentryClient sentryClient,
@@ -61,108 +48,7 @@ namespace GamesAdmin.Api.GameUser
             this.accountRepository = accountRepository;
             this.spinRepository = spinRepository;
             this.spinLogRepository = spinLogRepository;
-
-            minInitAmount = minAmountScale * botSettings.DefaultMaxBet;
-            maxInitAmount = maxAmountScale * botSettings.DefaultMaxBet;
         }
-
-        public async Task<int> GetTotalBots()
-        {
-            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot)).ToList();
-
-            if (bots?.Any() == true)
-            {
-                return bots.Count;
-            }
-
-            return 0;
-        }
-
-        public async Task<IList<GenerateAccountResult>> GenerateUsers(string[] names)
-        {
-            var results = new List<GenerateAccountResult>();
-
-            var latestUserInfoUID = await GetLatestUserInfoUID();
-            var newAccounts = new List<AccountEntity>();
-            var newAccountInfos = new List<AccountInfoEntity>();
-            var tuples = new List<Tuple<AccountEntity, AccountInfoEntity>>();
-            var defaultHash = BCrypt.Net.BCrypt.HashPassword("bot1234AA", BCrypt.Net.BCrypt.GenerateSalt(12));
-
-            foreach (var name in names)
-            {
-                latestUserInfoUID += 1;
-                var userName = $"{name}{latestUserInfoUID}";
-                var password = string.Empty;
-                var amount = (new Random()).Next(minInitAmount, maxInitAmount);
-                var avatarId = new Random().Next(1, 40);
-                var result = new GenerateAccountResult(userName, name, password);
-
-                if (InvalidName(name))
-                {
-                    result.ErrorDescription = $"Invalid name {name}";
-                    results.Add(result);
-                    continue;
-                }
-
-                try
-                {
-                    var account = GenerateAccount(userName, defaultHash);
-                    var accountInfo = GenerateAccountInfo(latestUserInfoUID, name, amount, avatarId);
-
-                    newAccounts.Add(account);
-                    newAccountInfos.Add(accountInfo);
-                    tuples.Add(new Tuple<AccountEntity, AccountInfoEntity>(account, accountInfo));
-                }
-                catch (Exception ex)
-                {
-                    sentryClient.CaptureException(ex);
-                    result.ErrorDescription = ex.Message;
-                }
-
-                results.Add(result);
-            }
-
-            await accountRepository.InsertManyAsync(newAccounts);
-
-            foreach (var tuple in tuples)
-            {
-                tuple.Item2.UserId = tuple.Item1.Id.ToString();
-            }
-
-            await accountInfoRepository.InsertManyAsync(newAccountInfos);
-
-            return results.ToArray();
-        }
-
-        private static bool InvalidName(string name)
-        => string.IsNullOrWhiteSpace(name) || name.Length < minCharNameLength || name.Length > maxCharNameLength || !Regex.IsMatch(name, @"^[a-zA-Z0-9]+$");
-
-
-        private static AccountEntity GenerateAccount(string userName, string hashPassword)
-        => new AccountEntity
-        {
-            Local = new LocalAccount
-            {
-                Username = userName,
-                Password = hashPassword,
-                regDate = DateTime.UtcNow
-            }
-        };
-
-
-        private static AccountInfoEntity GenerateAccountInfo(int latestUserInfoUID, string name, int amount, int avatarId)
-        => new AccountInfoEntity
-        {
-            Name = name,
-            AvatarId = avatarId,
-            Red = amount,
-            IsBot = true,
-            JoinedOn = DateTime.UtcNow,
-            UID = latestUserInfoUID
-        };
-
-        private Task<int> GetLatestUserInfoUID()
-            => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
 
         public async Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS)
         {
@@ -208,7 +94,7 @@ namespace GamesAdmin.Api.GameUser
                     MemberId = updateRequest.MemberId,
                     Source = $"admin_{updateRequest.AdminUser}",
                     ExpiryDate = updateRequest.ExpiryDate,
-                    SpinCount= updateRequest.AvailSpins - memberSpin.AvailSpins
+                    SpinCount = updateRequest.AvailSpins - memberSpin.AvailSpins
                 };
 
                 await spinLogRepository.InsertOneAsync(log);
@@ -221,7 +107,7 @@ namespace GamesAdmin.Api.GameUser
             return result;
         }
 
-        public Task<SpinEntity> GetMemberSpins(int memberId) 
+        public Task<SpinEntity> GetMemberSpins(int memberId)
         => spinRepository.FindOneAsync(spin => spin.MemberId == memberId);
 
         public async Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId)
