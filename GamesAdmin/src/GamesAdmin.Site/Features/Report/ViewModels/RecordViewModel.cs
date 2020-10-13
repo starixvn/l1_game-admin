@@ -106,7 +106,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Bet { get; set; }
 
-        public byte? SplitForm { get; set; }
+        public long? SplitForm { get; set; }
 
         public long Round { get; set; }
 

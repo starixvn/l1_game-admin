@@ -20,7 +20,7 @@ namespace GamesAdmin.Database.Report.Entities
 
         public byte Point { get; set; }
 
-        public byte? SplitForm { get; set; }
+        public long? SplitForm { get; set; }
 
         public long Round { get; set; }
 

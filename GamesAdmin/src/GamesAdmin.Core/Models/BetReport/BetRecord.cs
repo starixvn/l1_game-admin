@@ -125,7 +125,7 @@ namespace GamesAdmin.Core.Models
 
         public byte Point { get; set; }
 
-        public byte? SplitForm { get; set; }
+        public long? SplitForm { get; set; }
 
         public IEnumerable<BlackjackCard> Cards { get; set; }
 
