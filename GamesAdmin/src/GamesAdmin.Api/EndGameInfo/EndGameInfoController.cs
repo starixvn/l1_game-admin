@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.EndGameInfo
     [Route("api/endgameinfo")]
     public class EndGameInfoController : BaseAuthorizeController
     {
-        private IMediator mediator;
+        private readonly IMediator mediator;
 
         public EndGameInfoController(IMediator mediator)
         {
