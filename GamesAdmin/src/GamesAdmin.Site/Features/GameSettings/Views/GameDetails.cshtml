@@ -39,26 +39,24 @@
             </div>
         </div>
 
-        @if (Model.DisplayMaxBetChoices)
-        {
-            <fieldset>
-                <legend>Bet Choices</legend>
-                @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
-                {
-                    <div class="form-group row">
-                        @for (var j = 0; j < 2; j++)
+        <fieldset>
+            <legend>Bet Choices</legend>
+            @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
+            {
+                <div class="form-group row">
+                    @for (var j = 0; j < 2; j++)
+                    {
+                        var index = i * 2 + j;
+                        if (index < Model.BetChoiceBetSettings.Count)
                         {
-                            var index = i * 2 + j;
-                            if (index < Model.BetChoiceBetSettings.Count)
-                            {
-                                <div class="col-lg-6">
-                                    <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
-                                    <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
-                                    <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
-                                </div>}
-                        }
-                    </div>}
-            </fieldset>}
+                            <div class="col-lg-6">
+                                <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
+                                <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
+                                <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                            </div>}
+                    }
+                </div>}
+        </fieldset>
 
         <br />
         @if (Model.BetChoiceOdds != null && Model.BetChoiceOdds.Any())
