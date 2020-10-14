@@ -63,6 +63,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
                 new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
                 new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),
+                new SelectListItem(GameType.SpecialSeDie.DisplayName, GameType.SpecialSeDie.Value),
                 };
     }
 }
