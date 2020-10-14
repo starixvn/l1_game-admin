@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    public abstract class BaseBetEntity : MiniGameBaseEntity
+    public class BaseBetEntity : MiniGameBaseEntity
     {
         [BsonElement("thanhtoan")]
         public bool Paid { get; set; }
