@@ -25,6 +25,11 @@ namespace GamesAdmin.Api.EndGameInfo
 
             var bet = bets.FirstOrDefault();
 
+            if(!bet.Paid)
+            {
+                return EndGameInfoError.SB1005;
+            }
+
             return new EndGameInfoResult
             {
                 EndTime = round.Time,
