@@ -37,7 +37,6 @@ namespace GamesAdmin.Api.GameUser
 
         public GameUserService(
             ISentryClient sentryClient,
-            IBotSettings botSettings,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
             IGenericRepository<SpinEntity> spinRepository,

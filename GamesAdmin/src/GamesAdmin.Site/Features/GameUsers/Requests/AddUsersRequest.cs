@@ -6,14 +6,11 @@ namespace GamesAdmin.Site.Features.GameUsers.Requests
 {
     public class AddUsersRequest : IRequest<List<AddUsersResult>>
     {
-        public AddUsersRequest(string textNames, bool isBot) 
+        public AddUsersRequest(string textNames) 
         {
             TextNames = textNames;
-            IsBot = isBot;
         }
 
         public string TextNames { get; }
-
-        public bool IsBot { get; }
     }
 }

@@ -11,9 +11,6 @@ namespace GamesAdmin.Site.Features.GameUsers.ViewModels
         [Required]
         public string TextNames { get; set; }
 
-        [DisplayName("IsBot")]
-        public bool IsBot { get; set; }
-
         public List<AddUsersResult> Results { get; set; }
     }
 }

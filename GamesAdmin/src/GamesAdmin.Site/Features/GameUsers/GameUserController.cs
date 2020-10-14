@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.GameUsers
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            var resutls = await mediator.Send(new AddUsersRequest(addViewModel.TextNames, addViewModel.IsBot));
+            var resutls = await mediator.Send(new AddUsersRequest(addViewModel.TextNames));
 
             addViewModel.Results = resutls;
 
@@ -34,15 +34,6 @@ namespace GamesAdmin.Site.Features.GameUsers
         [HttpGet]
         public IActionResult ReviseBots()
         => View(new ReviseBotViewModel());
-
-        [HttpPost]
-        public async Task<IActionResult> ReviseBots([Bind] ReviseBotViewModel reviseViewModel)
-        {
-            reviseViewModel.Updated = await mediator.Send(new ReviseRequest());
-            reviseViewModel.Success = true;
-
-            return View(reviseViewModel);
-        }
 
         [HttpGet]
         public IActionResult Spins()

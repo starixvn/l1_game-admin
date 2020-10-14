@@ -12,7 +12,6 @@ namespace GamesAdmin.Site.Features.GameUsers
     public class GameUserHandler
         : IRequestHandler<AddRequest, AddViewModel>
         , IRequestHandler<AddUsersRequest, List<AddUsersResult>>
-        , IRequestHandler<ReviseRequest, int>
         , IRequestHandler<GetSpinRequest, MemberSpinViewModel>
     {
         private readonly IGameUserService gameUserService;
@@ -34,14 +33,11 @@ namespace GamesAdmin.Site.Features.GameUsers
 
             if (names?.Length > 0)
             {
-                return gameUserService.AddUsers(names, request.IsBot);
+                return gameUserService.AddUsers(names);
             }
 
             return Task.FromResult(new List<AddUsersResult>());
         }
-
-        public Task<int> Handle(ReviseRequest request, CancellationToken cancellationToken)
-        => gameUserService.ReviseBots();
 
         public async Task<MemberSpinViewModel> Handle(GetSpinRequest request, CancellationToken cancellationToken)
         {

@@ -73,7 +73,7 @@ namespace GamesAdmin.Api.GameUser
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red < minAmount)).ToList();
 
             foreach (var bot in botList)
-            {               
+            {
                 var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Red), bot.Red + new Random().Next(minAddAmount, maxAddAmount));
                 await accountInfoRepository.UpdateAsync(entity => entity.Id == bot.Id, update);
             }
@@ -247,23 +247,13 @@ namespace GamesAdmin.Api.GameUser
             {
                 strBuilder.Append($" {bannedBots[i]?.Name};");
 
-                await ToogleBanned(bannedBots[i], true);
+                var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Banned), true);
+                await accountInfoRepository.UpdateAsync(entity => entity.Id == bannedBots[i].Id, update);
             }
 
             sentryClient.CaptureMessage(strBuilder.ToString());
 
-            foreach (var bot in bannedBots)
-            {
-                await ToogleBanned(bot, true);
-            }           
-
             return maxRemoval;
-        }
-
-        private async Task ToogleBanned(AccountInfoEntity bot, bool banned)
-        {
-            var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Banned), banned);
-            await accountInfoRepository.UpdateAsync(entity => entity.Id == bot.Id, update);
         }
     }
 }

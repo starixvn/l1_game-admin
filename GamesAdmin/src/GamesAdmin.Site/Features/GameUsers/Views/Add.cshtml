@@ -2,7 +2,7 @@
 @model AddViewModel;
 
 @{
-    ViewData["Title"] = "Account";
+    ViewData["Title"] = "Add New Bots";
 }
 
 
@@ -15,14 +15,6 @@
                     <label asp-for="TextNames" class="control-label"></label>
                     <textarea asp-for="TextNames" class="form-control" placeholder="Names are separated by ';'"></textarea>
                     <span asp-validation-for="TextNames" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        <input type="checkbox" asp-for="IsBot" />
-                        <label asp-for="IsBot" class="control-label"></label>
-                    </div>
-                    <span asp-validation-for="IsBot" class="text-danger"></span>
                 </div>
 
                 @if (Model.Results?.Count > 0)

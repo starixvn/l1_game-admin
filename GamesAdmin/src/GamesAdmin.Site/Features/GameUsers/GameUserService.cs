@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
@@ -14,13 +13,7 @@ namespace GamesAdmin.Site.Features.GameUsers
         Task<int> BotCount();
 
         [Post("/game_users/bots/generate")]
-        Task<List<AddUsersResult>> AddBots(string[] names);
-
-        [Post("/game_users/generate")]
-        Task<List<AddUsersResult>> AddUsers(string[] names);
-
-        [Post("/game_users/bot/revise")]
-        Task<int> ReviseBots();
+        Task<List<AddUsersResult>> AddBots(string[] names);     
 
         [Get("/game_users/spins/{memberId}/get")]
         Task<Spin> GetMemberSpins(int memberId);
@@ -36,9 +29,7 @@ namespace GamesAdmin.Site.Features.GameUsers
     {
         Task<int> GetBotCount();
 
-        Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot);
-
-        Task<int> ReviseBots();
+        Task<List<AddUsersResult>> AddUsers(string[] names);
 
         Task<Spin> GetMemberSpins(int memberId);
 
@@ -54,14 +45,11 @@ namespace GamesAdmin.Site.Features.GameUsers
             this.gameUserApi = accountApi;
         }
 
-        public async Task<List<AddUsersResult>> AddUsers(string[] names, bool isBot)
-        => isBot ? await gameUserApi.AddBots(names) : await gameUserApi.AddUsers(names);
+        public Task<List<AddUsersResult>> AddUsers(string[] names)
+        => gameUserApi.AddBots(names);
 
-        public async Task<int> GetBotCount()
-        => await gameUserApi.BotCount();
-
-        public async Task<int> ReviseBots()
-        => await gameUserApi.ReviseBots();
+        public  Task<int> GetBotCount()
+        => gameUserApi.BotCount();
 
         public Task<List<SpinLog>> GetMemberSpinLogs(int memberId)
         => gameUserApi.GetMemberSpinLogs(memberId);
