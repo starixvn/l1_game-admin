@@ -29,7 +29,7 @@ namespace GamesAdmin.Api.GameUser
     public class BotService : IBotService
     {
         private const int DisabledBotRatio = 1;
-        private const int BannedBotRatio = 10;
+        private const int InactiveBotRatio = 10;
 
         private const int minBalance = 500;
         private const int maxBalance = 3000;
@@ -236,21 +236,21 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> Deactivate()
         {
-            var bannedBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Banned)).ToList();
-            var unbannedBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Banned)).ToList();
-            bannedBots.Shuffle();
+            var activeBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Banned)).ToList();
+            activeBots.Shuffle();
 
-            var maxRemoval = BannedBotRatio * unbannedBots.Count / 100;
+            var maxRemoval = InactiveBotRatio * activeBots.Count / 100;
             var strBuilder = new StringBuilder($"Banned {maxRemoval} bots.");
 
             for (var i = 0; i < maxRemoval; i++)
             {
-                strBuilder.Append($" {bannedBots[i]?.Name};");
+                strBuilder.Append($" {activeBots[i]?.Name};");
 
-                var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Banned), true);
-                update.Set(nameof(AccountInfoEntity.Disabled), true);
+                var update = Builders<AccountInfoEntity>.Update
+                    .Set(nameof(AccountInfoEntity.Banned), true)
+                    .Set(nameof(AccountInfoEntity.Disabled), true);
 
-                await accountInfoRepository.UpdateAsync(entity => entity.Id == bannedBots[i].Id, update);
+                await accountInfoRepository.UpdateAsync(entity => entity.Id == activeBots[i].Id, update);
             }
 
             sentryClient.CaptureMessage(strBuilder.ToString());
