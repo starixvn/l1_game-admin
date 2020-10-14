@@ -1,0 +1,33 @@
+﻿@using GamesAdmin.Site.Features.Bot.ViewModels;
+@model DeactivateViewModel;
+
+@{
+    ViewData["Title"] = "Deactivate Bots";
+}
+
+
+<div class="col-md-12 col-lg-6 card">
+    <form class="card-body form-add" asp-action="Deactivate" asp-controller="Bot" method="post">
+
+        <div class="form-group">
+            <label class="control-label">Deactivate bot randomly.</label>
+        </div>
+
+        @if (Model?.Total > 0)
+        {
+            <div class="form-group">
+                <label class="control-label">Deactivate @Model.Total bot(s)</label>
+            </div>
+        }
+
+        <div class="form-group">
+            <input type="submit" value="Deactivate" class="btn-submit" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/GameSettings.js"></script>
+}
+

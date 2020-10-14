@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Api.GameUser.Requests
 {
-    public class BanBotRandomlyRequest : IRequest<int>
+    public class DeactivateBotRequest : IRequest<int>
     {
     }
 }

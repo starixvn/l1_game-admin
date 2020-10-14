@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.GameUsers.Results;
 using Refit;
 
 namespace GamesAdmin.Site.Features.GameUsers
@@ -11,9 +10,6 @@ namespace GamesAdmin.Site.Features.GameUsers
     {
         [Get("/game_users/bot/count")]
         Task<int> BotCount();
-
-        [Post("/game_users/bots/generate")]
-        Task<List<AddUsersResult>> AddBots(string[] names);     
 
         [Get("/game_users/spins/{memberId}/get")]
         Task<Spin> GetMemberSpins(int memberId);
@@ -29,8 +25,6 @@ namespace GamesAdmin.Site.Features.GameUsers
     {
         Task<int> GetBotCount();
 
-        Task<List<AddUsersResult>> AddUsers(string[] names);
-
         Task<Spin> GetMemberSpins(int memberId);
 
         Task<List<SpinLog>> GetMemberSpinLogs(int memberId);
@@ -45,10 +39,7 @@ namespace GamesAdmin.Site.Features.GameUsers
             this.gameUserApi = accountApi;
         }
 
-        public Task<List<AddUsersResult>> AddUsers(string[] names)
-        => gameUserApi.AddBots(names);
-
-        public  Task<int> GetBotCount()
+        public Task<int> GetBotCount()
         => gameUserApi.BotCount();
 
         public Task<List<SpinLog>> GetMemberSpinLogs(int memberId)

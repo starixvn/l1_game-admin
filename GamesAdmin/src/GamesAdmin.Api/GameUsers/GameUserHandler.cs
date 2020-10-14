@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.GameUser
         , IRequestHandler<UpdateSpinRequest, UpdateMemberSpinResult>
         , IRequestHandler<GetSpinRequest, SpinEntity>
         , IRequestHandler<GetSpinLogRequest, IList<SpinLogEntity>>
-        , IRequestHandler<BanBotRandomlyRequest, int>
+        , IRequestHandler<DeactivateBotRequest, int>
     {
         private readonly IGameUserService gameUserService;
         private readonly IBotService botService;
@@ -48,7 +48,7 @@ namespace GamesAdmin.Api.GameUser
         public Task<IList<SpinLogEntity>> Handle(GetSpinLogRequest request, CancellationToken cancellationToken)
         => gameUserService.GetMemberSpinLogs(request.MemberId);
 
-        public Task<int> Handle(BanBotRandomlyRequest request, CancellationToken cancellationToken)
-        => botService.BannedRandomly();
+        public Task<int> Handle(DeactivateBotRequest request, CancellationToken cancellationToken)
+        => botService.Deactivate();
     }
 }

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GamesAdmin.Site.Features.GameUsers.Results
+﻿namespace GamesAdmin.Site.Features.Bot.Results
 {
-    public class AddUsersResult
+    public class AddBotResult
     {
-        public AddUsersResult(string username, string name, string password)
+        public AddBotResult(string username, string name, string password)
         {
             Username = username;
             Name = name;

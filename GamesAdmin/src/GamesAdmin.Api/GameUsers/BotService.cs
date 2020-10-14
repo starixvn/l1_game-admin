@@ -23,7 +23,7 @@ namespace GamesAdmin.Api.GameUser
 
         Task<IList<GenerateAccountResult>> Generate(string[] names);
 
-        Task<int> BannedRandomly();
+        Task<int> Deactivate();
     }
 
     public class BotService : IBotService
@@ -47,8 +47,8 @@ namespace GamesAdmin.Api.GameUser
         private readonly int minInitAmount = minAmountScale * defaultMaxBet;
         private readonly int maxInitAmount = maxAmountScale * defaultMaxBet;
 
-        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly ISentryClient sentryClient;
+        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
 
         public BotService(
@@ -103,7 +103,7 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> DisableRandomly()
         {
-            var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled)).ToList();
+            var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled && !entity.Banned)).ToList();
             var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
             enabledBots.Shuffle();
 
@@ -145,7 +145,7 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> GetTotal()
         {
-            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot)).ToList();
+            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
 
             return bots.Count;
         }
@@ -234,7 +234,7 @@ namespace GamesAdmin.Api.GameUser
         private Task<int> GetLatestUserInfoUID()
             => Task.Run(() => { return accountInfoRepository.FilterBy(userInfo => userInfo.UID > 0).LastOrDefault()?.UID ?? 0; });
 
-        public async Task<int> BannedRandomly()
+        public async Task<int> Deactivate()
         {
             var bannedBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Banned)).ToList();
             var unbannedBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Banned)).ToList();
@@ -248,6 +248,8 @@ namespace GamesAdmin.Api.GameUser
                 strBuilder.Append($" {bannedBots[i]?.Name};");
 
                 var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Banned), true);
+                update.Set(nameof(AccountInfoEntity.Disabled), true);
+
                 await accountInfoRepository.UpdateAsync(entity => entity.Id == bannedBots[i].Id, update);
             }
 

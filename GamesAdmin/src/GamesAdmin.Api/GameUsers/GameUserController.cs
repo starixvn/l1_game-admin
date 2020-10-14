@@ -57,8 +57,8 @@ namespace GamesAdmin.Api.GameUser
         public Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId)
            => mediator.Send(new GetSpinLogRequest(memberId));
 
-        [HttpPost("bot/ban_randomly")]
-        public async Task<int> BanRandomly()
-           => (await mediator.Send(new BanBotRandomlyRequest()));
+        [HttpPost("bot/deactivate")]
+        public async Task<int> Deactivate()
+           => (await mediator.Send(new DeactivateBotRequest()));
     }
 }

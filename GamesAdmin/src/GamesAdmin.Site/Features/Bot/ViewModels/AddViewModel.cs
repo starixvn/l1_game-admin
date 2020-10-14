@@ -1,9 +1,9 @@
-﻿using GamesAdmin.Site.Features.GameUsers.Results;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using GamesAdmin.Site.Features.Bot.Results;
 
-namespace GamesAdmin.Site.Features.GameUsers.ViewModels
+namespace GamesAdmin.Site.Features.Bot.ViewModels
 {
     public class AddViewModel
     {
@@ -11,6 +11,6 @@ namespace GamesAdmin.Site.Features.GameUsers.ViewModels
         [Required]
         public string TextNames { get; set; }
 
-        public List<AddUsersResult> Results { get; set; }
+        public List<AddBotResult> Results { get; set; }
     }
 }
