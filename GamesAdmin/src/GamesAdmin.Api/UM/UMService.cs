@@ -15,7 +15,7 @@ namespace GamesAdmin.Api.UM
     {
         Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime);
 
-        Task<bool> AddSchedule(UmSchedule eventSchedule);
+        Task<bool> AddSchedule(UmSchedule umSchedule);
 
         Task<IList<UmSchedule>> GetAll();
     }

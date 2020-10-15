@@ -22,10 +22,11 @@ namespace GamesAdmin.Site._Shared
 
             if (!(context.ActionContext.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor))
             {
-                throw new NullReferenceException("ControllerActionDescriptor cannot be null.");
+                throw new InvalidOperationException("ControllerActionDescriptor cannot be null.");
             }
 
             string featureName = controllerActionDescriptor.Properties["feature"] as string;
+
             foreach (var location in viewLocations)
             {
                 yield return location.Replace("{3}", featureName);
@@ -34,6 +35,7 @@ namespace GamesAdmin.Site._Shared
 
         public void PopulateValues(ViewLocationExpanderContext context)
         {
+            throw new NotImplementedException();
         }
     }
 }
