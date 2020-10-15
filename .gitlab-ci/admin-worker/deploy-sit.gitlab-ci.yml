@@ -18,7 +18,7 @@ post_build_admin_worker_sit:
 deploy_admin_worker_sit:
   extends:
     - .deploy_vars_admin_worker
-    - .base_deploy_kbt
+    - .base_deploy_swarm_service
     - .deploy-worker:sit:rules
   needs: ['post_build_admin_worker_sit']
   variables:
