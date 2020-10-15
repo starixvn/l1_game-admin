@@ -57,6 +57,7 @@ namespace GamesAdmin.Core.Enumeration
                     return GameType.BigSmallValue;
 
                 case GameType.OddEvenTurboValue:
+                case GameType.SpecialSeDieValue:
                     return GameType.OddEvenValue;
 
                 default: return gameType.Value;
