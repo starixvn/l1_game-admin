@@ -10,6 +10,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel : ViewModelBase
     {
+        private const int MinChoices = 2;
+        private const double MinBetAmount = 0.01;
+
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -24,12 +27,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string StatusDisplay => Enabled ? "Enabled" : "Disabled";
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]
-        [Range(0.01, int.MaxValue)]
+        [Range(MinBetAmount, int.MaxValue)]
         [DisplayName("Minimum Bet Limit")]
         public double MinBet { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(0.01, int.MaxValue)]
+        [Range(MinBetAmount, int.MaxValue)]
         [DisplayName("Maximum Bet Limit")]
         public double MaxBet { get; set; }
 
@@ -41,7 +44,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public int BotCount { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(0.01, int.MaxValue)]
+        [Range(MinBetAmount, int.MaxValue)]
         [DisplayName("Bot Maximum Bet Limit")]
         public double BotMaxBet { get; set; }
 
@@ -52,6 +55,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisabledMessage { get; set; }
 
         public List<MaxBetChoiceViewModel> BetChoiceBetSettings { get; set; }
+
+        public bool DisplayMaxBetChoices => MaxBetChoices?.Count > MinChoices;
 
         public Dictionary<string, double> MaxBetChoices
             => BetChoiceBetSettings?.ToDictionary(x => x.Name, x => x.MaxBet);
@@ -70,6 +75,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class BotRatioItemViewModel
     {
+        private const int MaxPercentage = 100;
+
         public BotRatioItemViewModel() { }
 
         public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot)
@@ -89,9 +96,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public int TotalBot { get; }
 
-        public int CurrentBot => (int)(BotRatio * TotalBot / 100);
+        public int CurrentBot => (int)(BotRatio * TotalBot / MaxPercentage);
 
-        [Range(0, 100, ErrorMessage = "Number range [0..100]")]
+        [Range(0, MaxPercentage, ErrorMessage = "Number range [0..100]")]
         public double BotRatio { get; set; }
     }
 }
