@@ -48,7 +48,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeUUS);
+        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
     }
@@ -119,8 +119,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipSeDieReport(roundId, nickname, excludeUUS);
 
-        public Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeUUS)
-        => reportApi.GetSpecialSeDieReport(roundId, nickname, excludeUUS);
+        public Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot)
+        => reportApi.GetSpecialSeDieReport(roundId, nickname, excludeBot);
 
         public Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId)
         => reportApi.GetSpecialSeDieBetHistory(roundId, userId);

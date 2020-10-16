@@ -385,10 +385,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeBot)
         {
             var repository = serviceProvider.GetService<ISpecialSeDieReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
 
             return new SpecialSeDieBetReport
             {

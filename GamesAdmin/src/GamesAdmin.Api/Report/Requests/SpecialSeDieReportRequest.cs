@@ -5,17 +5,17 @@ namespace GamesAdmin.Api.Report.Requests
 {
     public class SpecialSeDieReportRequest : IRequest<SpecialSeDieBetReport>
     {
-        public SpecialSeDieReportRequest(long roundId, string nickname, bool excludeUUS)
+        public SpecialSeDieReportRequest(long roundId, string nickname, bool excludeBot)
         {
             RoundId = roundId;
             Nickname = nickname;
-            ExcludeUUS = excludeUUS;
+            ExcludeBot = excludeBot;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
 
-        public bool ExcludeUUS { get; }
+        public bool ExcludeBot { get; }
     }
 }

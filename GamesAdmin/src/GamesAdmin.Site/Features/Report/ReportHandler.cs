@@ -415,7 +415,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSpecialSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetSpecialSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
 
             return new SpecialSeDieReportResultViewModel
             {

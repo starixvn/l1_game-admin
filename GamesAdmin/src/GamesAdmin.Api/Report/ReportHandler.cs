@@ -90,7 +90,7 @@ namespace GamesAdmin.Api.Report
         => reportService.GetVipSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SpecialSeDieBetReport> Handle(SpecialSeDieReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetSpecialSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        => reportService.GetSpecialSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
 
         public Task<SpecialSeDieBetHistory> Handle(SpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);

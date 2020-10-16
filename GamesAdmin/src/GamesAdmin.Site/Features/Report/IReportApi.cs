@@ -59,8 +59,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/vipsedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/specialsedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeUUS);
+        [Get("/report/specialsedie/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
+        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
 
         [Get("/report/bet_history/game/specialsedie/round/{roundId}/user/{userId}")]
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);

@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface ISpecialSeDieReportRepository
     {
-        Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
     }
 
     public class SpecialSeDieReportRepository : BaseBetReportRepository, ISpecialSeDieReportRepository
@@ -18,13 +18,13 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
         {
             var roundResult = await database.GetCollection<SpecialSeDieRoundEntity>(Document.GetCollectionName(typeof(SpecialSeDieRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<SpecialSeDieOnesEntity, SpecialSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
+                var project = GetBaseAggregateBuilder<SpecialSeDieBetEntity, SpecialSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeBot, true)
                     .Project(x => new SpecialSeDieBetReportEntity
                     {
                         Time = x.Time,

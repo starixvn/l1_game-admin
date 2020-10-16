@@ -141,13 +141,13 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult SpecialSeDie()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return View(new ReportViewModel { ExcludeBot = true });
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSpecialSeDieReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot)
         {
-            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot)));
         }
 
         [HttpGet]

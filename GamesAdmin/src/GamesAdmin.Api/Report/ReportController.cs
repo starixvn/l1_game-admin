@@ -108,8 +108,8 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("specialsedie/round/{roundId}/users/{nickname?}")]
-        public async Task<SpecialSeDieBetReport> SpecialSedie(long roundId, string nickname, bool excludeUUS)
-        => (await mediator.Send(new SpecialSeDieReportRequest(roundId, nickname, excludeUUS)));
+        public async Task<SpecialSeDieBetReport> SpecialSedie(long roundId, string nickname, bool excludeBot)
+        => (await mediator.Send(new SpecialSeDieReportRequest(roundId, nickname, excludeBot)));
 
         [HttpGet]
         [Route("bet_history/game/specialsedie/round/{roundId}/user/{userId}")]

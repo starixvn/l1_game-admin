@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class SpecialSeDieBetWithUnWindAccountsEntity : SpecialSeDieOnesEntity
+    public class SpecialSeDieBetWithUnWindAccountsEntity : SpecialSeDieBetEntity
     {
         public ObjectId UserId { get; set; }
 
