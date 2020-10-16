@@ -141,7 +141,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult SpecialSeDie()
         {
-            return View(new ReportViewModel { ExcludeBot = true });
+            return View(new ReportViewModel());
         }
 
         [HttpGet]
