@@ -1,146 +1,175 @@
-import React from "react";
-import {
-  getGameInfoByGameId,
-  getGameInfoByGameName,
-  GameMonitoringInfo,
-} from "../components/game-monitoring/game-monitoring";
-import Loading from "../components/game-monitoring/game-template/game-template-loading";
-import GameMenu from "../components/game-monitoring/menu/menu";
-import { NextRouter, withRouter } from "next/router";
-import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
-import MessageTransmitter, {
-  MessageTransmitterType,
-} from "../components/util/message-transmitter";
 import Cookies from "js-cookie";
+import { NextRouter, withRouter } from "next/router";
+import React from "react";
 import { Modal, Row } from "reactstrap";
 
+import { GameMonitoringInfo, getGameInfoByGameId, getGameInfoByGameName } from "../components/game-monitoring/game-monitoring";
+import gameNameMapper from "../components/game-monitoring/game-name-mapper";
+import Loading from "../components/game-monitoring/game-template/game-template-loading";
+import GameMenu from "../components/game-monitoring/menu/menu";
+import SocketIO from "../components/util/game-server-endpoint/socket-io";
+import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
+import MessageTransmitter, { MessageTransmitterType } from "../components/util/message-transmitter";
+
 type Props = {
-  router: NextRouter;
+    router: NextRouter;
 };
 
 type State = {
-  gameId: string | number;
-  showLoading: boolean;
-  gameName: string;
-  token: string;
-  showDisconnectedNotice: boolean;
+    gameId: string | number;
+    showLoading: boolean;
+    gameName: string;
+    token: string;
+    showDisconnectedNotice: boolean;
+    socket: GameWsEndpoint;
 };
 
 export class Home extends React.Component<Props, State> {
-  public state: State;
-  private socket: GameWsEndpoint;
-  private messageTransmitter: MessageTransmitterType;
-  private isProduction: boolean;
-  protected readonly protocol: string;
+    public state: State;
+    private messageTransmitter: MessageTransmitterType;
+    private isProduction: boolean;
+    protected readonly protocol: string;
+    //private SocketIOGames = [2, 22];
 
-  constructor(props: Props) {
-    super(props);
-    const token = process.env.NEXT_PUBLIC_ENV === "local" ? process.env.NEXT_PUBLIC_TOKEN : Cookies.get("token");
-    this.protocol = (globalThis.location || { protocol: "" }).protocol.endsWith("s:") ? "wss" : "ws";
-    this.isProduction = Cookies.get("env") && Cookies.get("env").toLocaleUpperCase() === "PRO";
-    this.socket = this.initSocket();
-    this.socket.onDisconnected(this.showWebSocketDisconnected.bind(this));
-    this.socket.addOrReplaceObserver(
-      "sessionTimeout",
-      this.showWebSocketDisconnected.bind(this),
-      (message: { unauth: Object }) => message && message.unauth != null
-    );
+    constructor(props: Props) {
+        super(props);
 
-    this.messageTransmitter = MessageTransmitter();
-    this.state = {
-      gameId: 0,
-      showLoading: true,
-      gameName: "",
-      token,
-      showDisconnectedNotice: false,
-    };
-  }
+        const token = process.env.NEXT_PUBLIC_ENV === 'local' ? process.env.NEXT_PUBLIC_TOKEN : Cookies.get('token');
+        this.protocol = (globalThis.location || { protocol: '' }).protocol.endsWith('s:') ? 'wss' : 'ws';
+        this.isProduction = Cookies.get('env') && Cookies.get('env').toLocaleUpperCase() === 'PRO';
+        this.messageTransmitter = MessageTransmitter();
 
-  initSocket() {
-    const gameServerEndpoint = process.env.NEXT_PUBLIC_ENV === "local" ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT : Cookies.get("game-server-endpoint");
-    return new GameWsEndpoint(`${this.protocol}://${gameServerEndpoint}/admin`);
-  }
+        this.state = {
+            gameId: 0,
+            showLoading: true,
+            gameName: '',
+            token,
+            showDisconnectedNotice: false,
+            socket: null,
+        };
+    }
 
-  static getDerivedStateFromProps(props: Props, state: State) {
-    state.gameId = (props.router.query.gameId || 0).toString();
-    state.gameName = (props.router.query.game || "").toString();
+    initSocket(gameId: number) {
+        const socketInfo = this.getSocketInfo(gameId);
 
-    return state;
-  }
+        const socket = [2, 22].includes(gameId)
+            ? new SocketIO(`${this.protocol}://${socketInfo.endpoint}`, socketInfo.route)
+            : new GameWsEndpoint(`${this.protocol}://${socketInfo.endpoint}/admin`);
 
-  changeLoadingState(showLoading: boolean) {
-    this.setState({ showLoading });
-  }
+        socket.onDisconnected(this.showWebSocketDisconnected.bind(this));
+        socket.addOrReplaceObserver(
+            'sessionTimeout',
+            this.showWebSocketDisconnected.bind(this),
+            (message: { unauth: Object }) => message && message.unauth != null
+        );
 
-  async componentDidMount() {
-    await this.socket.connect();
-    this.changeLoadingState(false);
-  }
+        return socket;
+    }
 
-  renderGameMonitoringComponent(info: GameMonitoringInfo) {
-    const { gameId } = this.state;
-    const {
-      onMessage,
-      selector,
-      initialMessage,
-      endMessage,
-      generateMessage,
-    } = info;
-    const key = `game-monitoring:${gameId}`;
-    const onStopReceiveMessage = () => {
-      this.socket.send(endMessage);
-      this.messageTransmitter.clearAllListener();
-    };
-    const sendMessage = (data: any) => {
-      const message = generateMessage(data);
+    getSocketInfo(gameId) {
+        switch (gameId) {
+            case gameNameMapper.xocxoc:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_SEDIE_SERVER_ENDPOINT
+                            : Cookies.get('sedie-server-endpoint'),
+                    route:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_SEDIE_SERVER_PROXY_ROUTE
+                            : Cookies.get('sedie-server-endpoint-route'),
+                };
+            case gameNameMapper.vipsedie:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_VIP_SEDIE_SERVER_ENDPOINT
+                            : Cookies.get('vip-sedie-server-endpoint'),
+                    route:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_VIP_SEDIE_SERVER_PROXY_ROUTE
+                            : Cookies.get('vip-sedie-server-endpoint-route'),
+                };
+            default:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT
+                            : Cookies.get('game-server-endpoint'),
+                    route: '',
+                };
+        }
+    }
 
-      this.socket.send(message);
-    };
+    async componentDidUpdate(prevProps) {
+        const { query } = this.props.router;
 
-    this.socket.send(initialMessage);
-    this.socket.addOrReplaceObserver(
-      key,
-      onMessage(this.messageTransmitter.broadcast),
-      selector
-    );
+        if (query !== prevProps.router.query) {
+            const gameId = (query.gameId || 0).toString();
+            const gameName = (query.game || '').toString();
+            const socket = this.initSocket(parseInt(gameId || gameNameMapper[gameName]));
 
-    return (
-      <>
-        <info.component
-          sendMessage={sendMessage}
-          onMessage={this.messageTransmitter.addListener}
-          onStopReceiveMessage={onStopReceiveMessage}
-          isProduction={this.isProduction}
-        />
-        <Modal isOpen={this.state.showDisconnectedNotice} className="notice">
-          <Row>Network is disconnected or session timeout.</Row>
-          <Row>
-            Please close this popup and open new popup to monitor again.
-          </Row>
-        </Modal>
-      </>
-    );
-  }
+            await socket.connect();
+            this.changeLoadingState(false);
 
-  showWebSocketDisconnected() {
-    this.setState({ showDisconnectedNotice: true });
-  }
+            this.setState({ gameId, gameName, socket });
+        }
+    }
 
-  renderLoaderOrGameMenu() {
-    const { showLoading } = this.state;
-    return showLoading ? <Loading /> : <GameMenu />;
-  }
+    changeLoadingState(showLoading: boolean) {
+        this.setState({ showLoading });
+    }
 
-  render() {
-    const { gameId, gameName, token } = this.state;
-    const info = getGameInfoByGameId(gameId) || getGameInfoByGameName(gameName);
+    renderGameMonitoringComponent(info: GameMonitoringInfo) {
+        const { gameId, socket } = this.state;
+        const { onMessage, selector, initialMessage, endMessage, generateMessage } = info;
+        const key = `game-monitoring:${gameId}`;
+        const onStopReceiveMessage = () => {
+            socket.send(endMessage);
+            this.messageTransmitter.clearAllListener();
+        };
+        const sendMessage = (data: any) => {
+            const message = generateMessage(data);
 
-    this.socket.login({ jwt: token });
+            socket.send(message);
+        };
 
-    return info
-      ? this.renderGameMonitoringComponent(info)
-      : this.renderLoaderOrGameMenu();
-  }
+        socket.send(initialMessage);
+        socket.addOrReplaceObserver(key, onMessage(this.messageTransmitter.broadcast), selector);
+
+        return (
+            <>
+                <info.component
+                    sendMessage={sendMessage}
+                    onMessage={this.messageTransmitter.addListener}
+                    onStopReceiveMessage={onStopReceiveMessage}
+                    isProduction={this.isProduction}
+                />
+                <Modal isOpen={this.state.showDisconnectedNotice} className="notice">
+                    <Row>Network is disconnected or session timeout.</Row>
+                    <Row>Please close this popup and open new popup to monitor again.</Row>
+                </Modal>
+            </>
+        );
+    }
+
+    showWebSocketDisconnected() {
+        this.setState({ showDisconnectedNotice: true });
+    }
+
+    renderLoaderOrGameMenu() {
+        const { showLoading } = this.state;
+        return showLoading ? <Loading /> : <GameMenu />;
+    }
+
+    render() {
+        const { gameId, gameName, token, socket } = this.state;
+        const info = getGameInfoByGameId(gameId) || getGameInfoByGameName(gameName);
+
+        socket && socket.login({ jwt: token });
+
+        return info ? this.renderGameMonitoringComponent(info) : this.renderLoaderOrGameMenu();
+    }
 }
 
 export default withRouter(Home);
