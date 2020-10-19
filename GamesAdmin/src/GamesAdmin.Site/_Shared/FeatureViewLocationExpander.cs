@@ -35,7 +35,6 @@ namespace GamesAdmin.Site._Shared
 
         public void PopulateValues(ViewLocationExpanderContext context)
         {
-            throw new NotImplementedException();
         }
     }
 }
