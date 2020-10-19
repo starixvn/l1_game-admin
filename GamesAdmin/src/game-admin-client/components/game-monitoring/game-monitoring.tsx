@@ -1,19 +1,20 @@
-import _ from "lodash";
+import _ from 'lodash';
 
-import Baccarat from "./baccarat";
-import BigSmallTurbo from "./big-small-turbo/big-small-turbo";
-import BigSmall from "./big-small/big-small";
-import DragonTiger from "./dragon-tiger/dragon-tiger";
-import FishPrawnCrab from "./fish-prawn-crab/fish-prawn-crab";
-import gameNameMapper from "./game-name-mapper";
-import KenoProMax from "./keno-pro-max/keno-pro-max";
-import MiniKeno from "./mini-keno";
-import MiniSedie from "./mini-sedie";
-import OddEvenTurbo from "./odd-even-turbo/odd-even-turbo";
-import OddEven from "./odd-even/odd-even";
-import Roulette from "./roulette";
-import ShakeThePlate from "./shake-the-plate/shake-the-plate";
-import VipSeDie from "./vip-sedie/vip-sedie";
+import Baccarat from './baccarat';
+import BigSmallTurbo from './big-small-turbo/big-small-turbo';
+import BigSmall from './big-small/big-small';
+import DragonTiger from './dragon-tiger/dragon-tiger';
+import FishPrawnCrab from './fish-prawn-crab/fish-prawn-crab';
+import gameNameMapper from './game-name-mapper';
+import KenoProMax from './keno-pro-max/keno-pro-max';
+import MiniKeno from './mini-keno';
+import MiniSedie from './mini-sedie';
+import OddEvenTurbo from './odd-even-turbo/odd-even-turbo';
+import OddEven from './odd-even/odd-even';
+import Roulette from './roulette';
+import ShakeThePlate from './shake-the-plate/shake-the-plate';
+import SpecialSeDie from './special-sedie';
+import VipSeDie from './vip-sedie/vip-sedie';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
     const object = _.get(message, path);
@@ -120,6 +121,10 @@ const gameMapper = {
     22: {
         component: VipSeDie,
         ...getInfoByGameKey('VipSeDie'),
+    },
+    24: {
+        component: SpecialSeDie,
+        ...getInfoByGameKey('SpecialSeDie'),
     },
 };
 

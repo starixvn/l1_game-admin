@@ -10,6 +10,8 @@ declare namespace NodeJS {
         readonly NEXT_PUBLIC_SEDIE_SERVER_PROXY_ROUTE: string;
         readonly NEXT_PUBLIC_VIP_SEDIE_SERVER_ENDPOINT: string;
         readonly NEXT_PUBLIC_VIP_SEDIE_SERVER_PROXY_ROUTE: string;
+        readonly NEXT_PUBLIC_SPECIAL_SEDIE_SERVER_ENDPOINT: string;
+        readonly NEXT_PUBLIC_SPECIAL_SEDIE_SERVER_PROXY_ROUTE: string;
         readonly NEXT_PUBLIC_TAIXIU_ORDER: string;
         readonly NEXT_PUBLIC_CHANLE_ORDER: string;
     }

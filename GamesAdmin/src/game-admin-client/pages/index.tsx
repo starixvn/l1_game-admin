@@ -1,15 +1,19 @@
-import Cookies from "js-cookie";
-import { NextRouter, withRouter } from "next/router";
-import React from "react";
-import { Modal, Row } from "reactstrap";
+import Cookies from 'js-cookie';
+import { NextRouter, withRouter } from 'next/router';
+import React from 'react';
+import { Modal, Row } from 'reactstrap';
 
-import { GameMonitoringInfo, getGameInfoByGameId, getGameInfoByGameName } from "../components/game-monitoring/game-monitoring";
-import gameNameMapper from "../components/game-monitoring/game-name-mapper";
-import Loading from "../components/game-monitoring/game-template/game-template-loading";
-import GameMenu from "../components/game-monitoring/menu/menu";
-import SocketIO from "../components/util/game-server-endpoint/socket-io";
-import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
-import MessageTransmitter, { MessageTransmitterType } from "../components/util/message-transmitter";
+import {
+    GameMonitoringInfo,
+    getGameInfoByGameId,
+    getGameInfoByGameName,
+} from '../components/game-monitoring/game-monitoring';
+import gameNameMapper from '../components/game-monitoring/game-name-mapper';
+import Loading from '../components/game-monitoring/game-template/game-template-loading';
+import GameMenu from '../components/game-monitoring/menu/menu';
+import SocketIO from '../components/util/game-server-endpoint/socket-io';
+import GameWsEndpoint from '../components/util/game-server-endpoint/websocket';
+import MessageTransmitter, { MessageTransmitterType } from '../components/util/message-transmitter';
 
 type Props = {
     router: NextRouter;
@@ -24,12 +28,13 @@ type State = {
     socket: GameWsEndpoint;
 };
 
+const NewSocketGameIds = [2, 22, 24];
+
 export class Home extends React.Component<Props, State> {
     public state: State;
     private messageTransmitter: MessageTransmitterType;
     private isProduction: boolean;
     protected readonly protocol: string;
-    //private SocketIOGames = [2, 22];
 
     constructor(props: Props) {
         super(props);
@@ -52,7 +57,7 @@ export class Home extends React.Component<Props, State> {
     initSocket(gameId: number) {
         const socketInfo = this.getSocketInfo(gameId);
 
-        const socket = [2, 22].includes(gameId)
+        const socket = NewSocketGameIds.includes(gameId)
             ? new SocketIO(`${this.protocol}://${socketInfo.endpoint}`, socketInfo.route)
             : new GameWsEndpoint(`${this.protocol}://${socketInfo.endpoint}/admin`);
 
@@ -89,6 +94,17 @@ export class Home extends React.Component<Props, State> {
                         process.env.NEXT_PUBLIC_ENV === 'local'
                             ? process.env.NEXT_PUBLIC_VIP_SEDIE_SERVER_PROXY_ROUTE
                             : Cookies.get('vip-sedie-server-endpoint-route'),
+                };
+            case gameNameMapper.specialsedie:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_SPECIAL_SEDIE_SERVER_ENDPOINT
+                            : Cookies.get('special-sedie-server-endpoint'),
+                    route:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_SPECIAL_SEDIE_SERVER_PROXY_ROUTE
+                            : Cookies.get('special-sedie-server-endpoint-route'),
                 };
             default:
                 return {
