@@ -123,7 +123,7 @@ export class Home extends React.Component<Props, State> {
         if (query !== prevProps.router.query) {
             const gameId = (query.gameId || 0).toString();
             const gameName = (query.game || '').toString();
-            const socket = this.initSocket(parseInt(gameId || gameNameMapper[gameName]));
+            const socket = this.initSocket(parseInt(gameId) > 0 ? parseInt(gameId) : parseInt(gameNameMapper[gameName]));
 
             await socket.connect();
             this.changeLoadingState(false);
