@@ -318,9 +318,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
             var result = await gameService.GetJWT(request.Username, request.UserAgent);
-            var redirectUrl = request.Game == GameType.SeDieValue || request.Game == GameType.VipSeDieValue ?
-                @$"/game-admin/{request.Game}.html?v={DateTime.Now.Ticks}" :
-                @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
+            var redirectUrl = @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
 
             return new GameServerToken
             (
