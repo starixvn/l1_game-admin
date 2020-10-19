@@ -7,6 +7,8 @@
         public GameServerConfigs Sedie { get; set; }
 
         public GameServerConfigs VipSedie { get; set; }
+
+        public GameServerConfigs SpecialSedie { get; set; }
     }
 
     public class GameServerConfigs 
