@@ -1,18 +1,18 @@
-import React from 'react';
-import { Col, Container, Row } from 'reactstrap';
+import React from "react";
+import { Col, Container, Row } from "reactstrap";
 
-import BetItem from '../../common/model/BetItem';
-import DiceModel from '../../common/model/DiceModel';
-import DiceType from '../../common/model/DiceType';
-import SpecialSeDieModel from '../../common/model/SpecialSeDieModel';
-import BetList from '../../shared/bet-list/bet-list';
-import { GameState } from '../../shared/common/GameState';
-import Dice from '../../shared/dice/dice';
-import RoundNum from '../../shared/round-num/round-num';
-import TimeCounter from '../../shared/time-counter/time-counter';
-import TotalBet from '../../shared/total-bet/total-bet';
-import GameTemplate from '../game-template/game-template';
-import styles from './styles.module.scss';
+import BetItem from "../../common/model/BetItem";
+import DiceModel from "../../common/model/DiceModel";
+import DiceType from "../../common/model/DiceType";
+import SpecialSeDieModel from "../../common/model/SpecialSeDieModel";
+import BetList from "../../shared/bet-list/bet-list";
+import { GameState } from "../../shared/common/GameState";
+import Dice from "../../shared/dice/dice";
+import RoundNum from "../../shared/round-num/round-num";
+import TimeCounter from "../../shared/time-counter/time-counter";
+import TotalBet from "../../shared/total-bet/total-bet";
+import GameTemplate from "../game-template/game-template";
+import styles from "./styles.module.scss";
 
 type Props = {
   onMessage: Function
@@ -117,10 +117,13 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
     });
 
     for (const user in data) {
-      let betTracks = data[user].betTracks;
+      const { currency, betTracks } = data[user];
       Object.keys(betTracks).forEach(key => {
         if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
+          if (!currency || currency.toUpperCase() !== "UUS") {
+            currentData[key].total += betTracks[key];
+          }
+
           currentData[key].dataList.unshift(new BetItem(data[user].name, betTracks[key]));
         }
       });
