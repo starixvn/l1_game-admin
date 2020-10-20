@@ -64,6 +64,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
                 new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),
                 new SelectListItem(GameType.SpecialSeDie.DisplayName, GameType.SpecialSeDie.Value),
+                new SelectListItem(GameType.BlackJack.DisplayName, GameType.BlackJack.Value),
                 };
     }
 }
