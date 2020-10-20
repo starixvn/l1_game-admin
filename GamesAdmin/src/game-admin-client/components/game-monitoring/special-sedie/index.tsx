@@ -55,7 +55,7 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
     }
 
     if (!!data.remainingTime) {
-      if (data.remainingTime > 30) {
+      if (data.remainingTime > 31) {
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
@@ -70,10 +70,10 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 30
+              remainingTime: 31
             }
           })
-        }, (data.remainingTime - 30) * 1000)
+        }, (data.remainingTime - 31) * 1000)
       }
       else {
         this.setState({
@@ -103,7 +103,7 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 30
+            remainingTime: 31
           }
         })
       }, (waitingTime + 1) * 1000)
