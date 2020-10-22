@@ -85,6 +85,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoNorthEndGameInfoService>();
             services.AddScoped<RouletteEndGameInfoService>();
             services.AddScoped<VipSeDieEndGameInfoService>();
+            services.AddScoped<BlackjackEndGameInfoService>();
             services.AddScoped<SpecialSeDieEndGameInfoService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
