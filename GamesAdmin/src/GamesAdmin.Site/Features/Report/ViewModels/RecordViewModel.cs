@@ -114,7 +114,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<BlackjackCardViewModel> DealerCards { get; set; }
 
-        public bool End { get; set; }
+        public bool Ended { get; set; }
 
         public byte Point { get; set; }
 

@@ -48,7 +48,7 @@ namespace GamesAdmin.Database
             {
                 var round = rounds.FirstOrDefault(x => x.Number == record.Round);
                 record.DealerCards = round.Result;
-                record.End = round.End;
+                record.Ended = round.Ended;
                 record.DealerPoint = round.SettlementResult;
             }
 

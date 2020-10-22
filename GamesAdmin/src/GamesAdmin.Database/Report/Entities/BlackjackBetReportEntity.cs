@@ -28,7 +28,7 @@ namespace GamesAdmin.Database.Report.Entities
 
         public IEnumerable<BlackjackCardEntity> DealerCards { get; set; }
 
-        public bool End { get; set; }
+        public bool Ended { get; set; }
 
         public byte DealerPoint { get; set; }
     }

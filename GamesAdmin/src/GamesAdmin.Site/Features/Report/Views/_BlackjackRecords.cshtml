@@ -28,7 +28,7 @@
                         <td>@bet.HandId @(bet.SplitForm.HasValue ? "(Split)" : string.Empty)</td>
                         <td class="blackjack-result">
                             <div class="cards">
-                                @if (bet.End)
+                                @if (bet.Ended)
                                 {
                                     foreach (var card in bet.DealerCards)
                                     {
@@ -51,7 +51,7 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            @if (bet.End)
+                            @if (bet.Ended)
                             {
                                 if (bet.DealerPoint == blackJackValue && bet.DealerCards.Count() == 2)
                                 {
@@ -91,7 +91,7 @@
                             }
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Bet)</td>
-                        <td class="text-right">@(bet.End? HtmlHelpers.formatNumber(bet.BetWin): "Running")</td>
+                        <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(bet.BetWin): "Running")</td>
                     </tr>
                 }
             </tbody>
