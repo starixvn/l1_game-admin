@@ -18,7 +18,7 @@ namespace GamesAdmin.Database.Entities
 
         public byte Total { get; set; }
 
-        public byte? SplitFrom { get; set; }
+        public long? SplitFrom { get; set; }
 
         public decimal Bet { get; set; }
     }
