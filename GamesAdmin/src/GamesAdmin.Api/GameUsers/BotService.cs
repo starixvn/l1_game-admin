@@ -29,7 +29,7 @@ namespace GamesAdmin.Api.GameUser
     public class BotService : IBotService
     {
         private const int DisabledBotRatio = 1;
-        private const int InactiveBotRatio = 10;
+        private const int InactiveBotsNumber = 500;
 
         private const int minBalance = 500;
         private const int maxBalance = 3000;
@@ -43,6 +43,9 @@ namespace GamesAdmin.Api.GameUser
         private const int minCharNameLength = 3;
         private const int maxCharNameLength = 14;
         private const int defaultMaxBet = 1000;
+
+        private const string defaultMaxNamePostfix = "9";
+        private const byte maxPostfix = 5;
 
         private readonly int minInitAmount = minAmountScale * defaultMaxBet;
         private readonly int maxInitAmount = maxAmountScale * defaultMaxBet;
@@ -158,7 +161,6 @@ namespace GamesAdmin.Api.GameUser
             var newAccounts = new List<AccountEntity>();
             var newAccountInfos = new List<AccountInfoEntity>();
             var tuples = new List<Tuple<AccountEntity, AccountInfoEntity>>();
-            var defaultHash = BCrypt.Net.BCrypt.HashPassword("bot1234AA", BCrypt.Net.BCrypt.GenerateSalt(12));
 
             foreach (var name in names)
             {
@@ -167,19 +169,21 @@ namespace GamesAdmin.Api.GameUser
                 var password = string.Empty;
                 var amount = (new Random()).Next(minInitAmount, maxInitAmount);
                 var avatarId = new Random().Next(1, 40);
-                var result = new GenerateAccountResult(userName, name, password);
+                var postfix = GenerateNumberPostfix(name);
+                var charName = $"{name}{postfix}";
+                var result = new GenerateAccountResult(userName, charName, password);
 
-                if (InvalidName(name))
+                if (InvalidName(charName))
                 {
-                    result.ErrorDescription = $"Invalid name {name}";
+                    result.ErrorDescription = $"Invalid name {charName}";
                     results.Add(result);
                     continue;
                 }
 
                 try
                 {
-                    var account = GenerateAccount(userName, defaultHash);
-                    var accountInfo = GenerateAccountInfo(latestUserInfoUID, name, amount, avatarId);
+                    var account = GenerateAccount(userName, $"{charName}{amount}{avatarId}");
+                    var accountInfo = GenerateAccountInfo(latestUserInfoUID, charName, amount, avatarId);
 
                     newAccounts.Add(account);
                     newAccountInfos.Add(accountInfo);
@@ -204,6 +208,22 @@ namespace GamesAdmin.Api.GameUser
             await accountInfoRepository.InsertManyAsync(newAccountInfos);
 
             return results.ToArray();
+        }
+
+        private static int GenerateNumberPostfix(string name)
+        {
+            var remainingLength = maxCharNameLength - name.Length > maxPostfix ? maxPostfix : maxCharNameLength - name.Length;
+            var numbers = new List<string>();
+
+            for (var i = 0; i < remainingLength; i++)
+            {
+                numbers.Add(defaultMaxNamePostfix);
+            }
+
+            var min = int.Parse(defaultMaxNamePostfix);
+            var max = int.Parse(string.Join(string.Empty, numbers));
+
+            return (new Random()).Next(min, max);
         }
 
         private static bool InvalidName(string name)
@@ -238,11 +258,9 @@ namespace GamesAdmin.Api.GameUser
         {
             var activeBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Banned)).ToList();
             activeBots.Shuffle();
+            var strBuilder = new StringBuilder($"Banned {InactiveBotsNumber} bots.");
 
-            var maxRemoval = InactiveBotRatio * activeBots.Count / 100;
-            var strBuilder = new StringBuilder($"Banned {maxRemoval} bots.");
-
-            for (var i = 0; i < maxRemoval; i++)
+            for (var i = 0; i < InactiveBotsNumber; i++)
             {
                 strBuilder.Append($" {activeBots[i]?.Name};");
 
@@ -255,7 +273,7 @@ namespace GamesAdmin.Api.GameUser
 
             sentryClient.CaptureMessage(strBuilder.ToString());
 
-            return maxRemoval;
+            return InactiveBotsNumber;
         }
     }
 }
