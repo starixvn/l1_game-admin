@@ -148,7 +148,7 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> GetTotal()
         {
-            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
+            var bots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Banned)).ToList();
 
             return bots.Count;
         }
