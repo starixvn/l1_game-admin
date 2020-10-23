@@ -6,3 +6,7 @@
     DOCKER_FILE_PATH: ./GamesAdmin/src
     DOCKER_FILE_NAME: AdminSite.Dockerfile
     DOCKER_NETWORK_NAME: admin
+    CONFIG_FILE_NAME: appsettings
+    CONFIG_FILE_EXTENSION: json
+    CONFIGS_SRC_DIR_PATH: ./GamesAdmin/src/GamesAdmin.Site
+    CONFIG_CONTAINER_PATH: /app/appsettings.json

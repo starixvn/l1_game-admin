@@ -1,31 +1,27 @@
-build_image_admin_api_prod:
-  extends:
-    - .deploy_vars_admin_api
-    - .build_image
-    - .deploy:prod-auto:rules
-  environment:
-    name: PROD
-
 post_build_admin_api_prod:
   extends:
     - .deploy_vars_admin_api
     - .post_build
     - .deploy:prod-auto:rules
-  needs: ['build_image_admin_api_prod']
+  needs: ['build_image_admin_api']
   environment:
     name: PROD
 
 deploy_admin_api_prod:
   extends:
     - .deploy_vars_admin_api
-    - .base_deploy_kbt
+    - .base_deploy_swarm_service
     - .deploy:prod:rules
   needs: ['post_build_admin_api_prod']
   variables:
-    SERVER_IP: $PROD_API_IP
-    SERVER_USER: $PROD_USER
-    SERVER_PORT: $PROD_SSH_PORT
-    DOCKER_PUBLIC_PORT: 8504
-    DOCKER_PRIVATE_PORT: 8504
+    SERVER_IP: $SC_SWARM_LEADER_PROD
+    SERVER_USER: $SC_SWARM_LEADER_PROD_SSH_USER
+    SERVER_PORT: $SC_SWARM_LEADER_PROD_SSH_PORT
+    SWARM_NODES: $SC_SWARM_CLUSTER_PROD
+    SWARM_REPLICAS: 1
+    NODE_LABEL: L1_API
+    DOCKER_PUBLIC_PORT: 8304
+    DOCKER_PRIVATE_PORT: 8304
+    DOCKER_NETWORK_NAME: lumi-network
   environment:
     name: PROD

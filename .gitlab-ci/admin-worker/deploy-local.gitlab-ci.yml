@@ -1,17 +1,9 @@
-build_image_admin_worker_local:
-  extends:
-    - .deploy_vars_admin_worker
-    - .build_image
-    - .deploy-worker:local:rules
-  environment:
-    name: LOCAL
-
 post_build_admin_worker_local:
   extends:
     - .deploy_vars_admin_worker
     - .post_build
     - .deploy-worker:local:rules
-  needs: ['build_image_admin_worker_local']
+  needs: ['build_image_admin_worker']
   environment:
     name: LOCAL
 

@@ -34,7 +34,6 @@ include:
   - project: "lumi-ops/ci-scripts"
     ref: master
     file: "docker/deploy-swarm-service.gitlab-ci.yml"
-  - .gitlab-ci/build-dotnet.gitlab-ci.yml
   - .gitlab-ci/admin-site/admin-site.gitlab-ci.yml
   - .gitlab-ci/admin-api/admin-api.gitlab-ci.yml
   - .gitlab-ci/admin-worker/admin-worker.gitlab-ci.yml
