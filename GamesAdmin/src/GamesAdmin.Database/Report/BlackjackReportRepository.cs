@@ -24,36 +24,42 @@ namespace GamesAdmin.Database
 
         public async Task<IEnumerable<BlackjackBetReportEntity>> GetAsync(long handId, string nickname, bool excludeUUS)
         {
-            var project = GetAggregateBuilder(handId, nickname, excludeUUS)
-                .Project(x => new BlackjackBetReportEntity
-                {
-                    Time = x.Time,
-                    Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
-                    Nickname = x.AccountInfos.Name,
-                    BetWin = x.Betwin,
-                    Bet = x.Bet,
-                    Cards = x.Cards,
-                    SplitForm = x.SplitFrom,
-                    Round = x.Round,
-                    HandId = x.HandId,
-                    Point = x.Total,
-                    Actions = x.Actions
-                });
-
-            var records = await project.ToListAsync();
-            var roundIds = records.Select(x => x.Round).ToList();
-
-            var rounds = await database.GetCollection<BlackjackRoundEntity>(Document.GetCollectionName(typeof(BlackjackRoundEntity))).Find(x => roundIds.Contains(x.Number)).ToListAsync();
-
-            foreach (var record in records)
+            if (handId != 0 || !string.IsNullOrWhiteSpace(nickname))
             {
-                var round = rounds.FirstOrDefault(x => x.Number == record.Round);
-                record.DealerCards = round.Result;
-                record.Ended = round.Ended;
-                record.DealerPoint = round.SettlementResult;
+                var project = GetAggregateBuilder(handId, nickname, excludeUUS)
+                    .Project(x => new BlackjackBetReportEntity
+                    {
+                        Time = x.Time,
+                        Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
+                        Nickname = x.AccountInfos.Name,
+                        BetWin = x.Betwin,
+                        Bet = x.Bet,
+                        Cards = x.Cards,
+                        SplitForm = x.SplitFrom,
+                        Round = x.Round,
+                        HandId = x.HandId,
+                        Point = x.Total,
+                        Actions = x.Actions,
+                        SoftPoints = x.SoftPoints
+                    });
+
+                var records = await project.ToListAsync();
+                var roundIds = records.Select(x => x.Round).ToList();
+
+                var rounds = await database.GetCollection<BlackjackRoundEntity>(Document.GetCollectionName(typeof(BlackjackRoundEntity))).Find(x => roundIds.Contains(x.Number)).ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var round = rounds.FirstOrDefault(x => x.Number == record.Round);
+                    record.DealerCards = round.Result;
+                    record.Ended = round.Ended;
+                    record.DealerPoint = round.SettlementResult;
+                }
+
+                return records;
             }
 
-            return records;
+            return Enumerable.Empty<BlackjackBetReportEntity>();
         }
 
         private IAggregateFluent<BlackjackBetWithUnWindAccountsEntity> GetAggregateBuilder(long handId, string nickname, bool excludeUUS)

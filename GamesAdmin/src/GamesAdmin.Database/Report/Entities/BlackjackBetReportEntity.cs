@@ -33,5 +33,7 @@ namespace GamesAdmin.Database.Report.Entities
         public byte DealerPoint { get; set; }
 
         public IEnumerable<string> Actions { get; set; }
+
+        public IEnumerable<byte> SoftPoints { get; set; }
     }
 }

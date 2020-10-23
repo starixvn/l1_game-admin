@@ -121,6 +121,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public byte Point { get; set; }
 
         public byte DealerPoint { get; set; }
+
+        public IEnumerable<byte> SoftPoints { get; set; }
     }
 
     public class BlackjackCardViewModel

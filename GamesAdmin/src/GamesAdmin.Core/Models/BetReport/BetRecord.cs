@@ -136,6 +136,8 @@ namespace GamesAdmin.Core.Models
         public bool Ended { get; set; }
 
         public byte DealerPoint { get; set; }
+
+        public IEnumerable<byte> SoftPoints { get; set; }
     }
 
     public class BlackjackCard

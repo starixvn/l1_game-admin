@@ -17,7 +17,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long? HandId { get; set; }
 
-        [Required]
         public string Nickname { get; set; }
 
         public bool ExcludeUUS { get; set; }

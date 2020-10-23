@@ -16,6 +16,8 @@ namespace GamesAdmin.Database.Entities
 
         public IEnumerable<BlackjackCardEntity> Cards { get; set; }
 
+        public IEnumerable<byte> SoftPoints { get; set; }
+
         public byte Total { get; set; }
 
         public long? SplitFrom { get; set; }
