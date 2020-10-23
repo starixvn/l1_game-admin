@@ -129,6 +129,8 @@ namespace GamesAdmin.Core.Models
 
         public IEnumerable<BlackjackCard> Cards { get; set; }
 
+        public IEnumerable<string> Actions { get; set; }
+
         public IEnumerable<BlackjackCard> DealerCards { get; set; }
 
         public bool Ended { get; set; }

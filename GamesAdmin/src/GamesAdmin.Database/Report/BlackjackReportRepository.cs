@@ -36,7 +36,8 @@ namespace GamesAdmin.Database
                     SplitForm = x.SplitFrom,
                     Round = x.Round,
                     HandId = x.HandId,
-                    Point = x.Total
+                    Point = x.Total,
+                    Actions = x.Actions
                 });
 
             var records = await project.ToListAsync();

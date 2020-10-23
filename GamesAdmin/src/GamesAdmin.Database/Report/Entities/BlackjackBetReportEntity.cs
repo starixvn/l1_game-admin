@@ -31,5 +31,7 @@ namespace GamesAdmin.Database.Report.Entities
         public bool Ended { get; set; }
 
         public byte DealerPoint { get; set; }
+
+        public IEnumerable<string> Actions { get; set; }
     }
 }
