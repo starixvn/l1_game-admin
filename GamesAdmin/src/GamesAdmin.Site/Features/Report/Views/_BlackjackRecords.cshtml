@@ -86,22 +86,22 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            @if (bet.Ended)
+                            @if (bet.Point == blackJackValue && bet.Cards.Count() == 2 && !isSplittedHand)
                             {
-                                if (bet.Point == blackJackValue && bet.DealerCards.Count() == 2 && !isSplittedHand)
-                                {
-                                    @("Blackjack")
-                                }
-                                else
-                                {
-                                    @(bet.Point > blackJackValue ? "Bust" : bet.Point.ToString())
-                                }
+                                @("Blackjack")
                             }
                             else
                             {
-                                @(string.Join("/", bet.SoftPoints))
-                            }
+                                if (bet.Ended)
+                                {
+                                    @(bet.Point > blackJackValue ? "Bust" : bet.Point.ToString())
+                                }
+                                else
+                                {
+                                    @(string.Join("/", bet.SoftPoints))
+                                }
 
+                            }
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Bet)</td>
                         <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(bet.BetWin): "Running")</td>

@@ -70,7 +70,7 @@ namespace GamesAdmin.Database
             var nickNameRegex = new Regex($"^(?i){nickname}$");
 
             var aggregateBuilder = betCollection.Aggregate().Match(x => x.HandId == handId || handId == 0)
-                .SortBy(x => x.Id)
+                .SortByDescending(x => x.Id)
                 .Lookup<BlackjackBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
                        localField: x => x.Uid,
