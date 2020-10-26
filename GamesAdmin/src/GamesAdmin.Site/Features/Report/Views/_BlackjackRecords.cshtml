@@ -13,6 +13,8 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
                     <th>HandId</th>
                     <th colspan="2" class="col-nickname">Dealer</th>
                     <th colspan="2" class="col-nickname">Player</th>
@@ -27,6 +29,8 @@
 
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>@bet.Nickname</td>
                         <td class="text-center">@bet.HandId @(isSplittedHand ? "(Split)" : string.Empty)</td>
                         <td class="blackjack-result">
                             <div class="cards">
@@ -108,7 +112,7 @@
                 @if (!Model.Records.Any())
                 {
                     <tr>
-                        <td class="text-center" colspan="8">No data</td>
+                        <td class="text-center" colspan="10">No data</td>
                     </tr>
                 }
             </tfoot>

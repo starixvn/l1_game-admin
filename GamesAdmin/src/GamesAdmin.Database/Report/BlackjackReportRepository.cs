@@ -67,17 +67,16 @@ namespace GamesAdmin.Database
             var betCollection = database.GetCollection<BlackjackBetEntity>(Document.GetCollectionName(typeof(BlackjackBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-            var nickNameRegex = new Regex($"(?i){nickname}");
 
             var aggregateBuilder = betCollection.Aggregate().Match(x => x.HandId == handId || handId == 0)
-                .SortBy(x => x.Id)
+                .SortByDescending(x => x.Id)
                 .Lookup<BlackjackBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
                        localField: x => x.Uid,
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.AccountInfos.Name)) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
+                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,
