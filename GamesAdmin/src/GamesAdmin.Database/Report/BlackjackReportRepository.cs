@@ -76,7 +76,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name == nickname) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
+                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || x.AccountInfos.Name.ToLower() == nickname.ToLower()) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,
