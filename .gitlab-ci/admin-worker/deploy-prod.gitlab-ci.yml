@@ -10,7 +10,7 @@ post_build_admin_worker_prod:
 deploy_admin_worker_prod:
   extends:
     - .deploy_vars_admin_worker
-    - .base_deploy_kbt
+    - .base_deploy_swarm_service
     - .deploy:prod:rules
   needs: ['post_build_admin_worker_prod']
   variables:
