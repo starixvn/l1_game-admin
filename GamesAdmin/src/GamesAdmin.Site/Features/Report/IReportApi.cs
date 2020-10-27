@@ -58,5 +58,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/lucky_wheel/users/{nickname}")]
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
+        
+        [Get("/report/vipsedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
     }
 }
