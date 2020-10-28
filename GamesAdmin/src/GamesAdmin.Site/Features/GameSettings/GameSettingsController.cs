@@ -217,7 +217,11 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("token", result.Token);
             HttpContext.Response.Cookies.Append("game-server-endpoint", appSettings.GameServers.Main.Socket);
             HttpContext.Response.Cookies.Append("sedie-server-endpoint", appSettings.GameServers.Sedie.Socket);
+            HttpContext.Response.Cookies.Append("sedie-server-endpoint-route", appSettings.GameServers.Sedie.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-sedie-server-endpoint", appSettings.GameServers.VipSedie.Socket);
+            HttpContext.Response.Cookies.Append("vip-sedie-server-endpoint-route", appSettings.GameServers.VipSedie.SocketRoute);
+            HttpContext.Response.Cookies.Append("special-sedie-server-endpoint", appSettings.GameServers.SpecialSedie.Socket);
+            HttpContext.Response.Cookies.Append("special-sedie-server-endpoint-route", appSettings.GameServers.SpecialSedie.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

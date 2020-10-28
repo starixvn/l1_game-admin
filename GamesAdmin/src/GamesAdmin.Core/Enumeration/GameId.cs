@@ -22,6 +22,7 @@
         KenoSouth,
         KenoNorth,
         Roulette = 21,
-        VipSeDie
+        VipSeDie,
+        SpecialSeDie = 24
     }
 }

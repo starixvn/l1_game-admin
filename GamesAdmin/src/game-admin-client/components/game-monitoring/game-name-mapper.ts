@@ -1,0 +1,23 @@
+export default {
+    taixiu: 1,
+    xocxoc: 2,
+    baucua: 3,
+    txturbo: 4,
+    oddeven: 5,
+    oeturbo: 6,
+    dragontiger: 7,
+    kenopromax: 8,
+    minisedie: 9,
+    baccarat: 10,
+    kenomax: 12,
+    kenomax2: 13,
+    kenomini: 14,
+    kenomini2: 15,
+    kenoeast: 16,
+    kenowest: 17,
+    kenosouth: 18,
+    kenonorth: 19,
+    roulette: 21,
+    vipsedie: 22,
+    specialsedie: 24
+};

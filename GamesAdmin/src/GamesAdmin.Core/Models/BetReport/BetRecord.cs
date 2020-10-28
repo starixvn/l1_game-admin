@@ -114,4 +114,13 @@ namespace GamesAdmin.Core.Models
     {
         public decimal TotalBet { get; set; }
     }
+
+    public class SpecialSeDieBetRecord : BetRecord
+    {
+        public string Choice { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public decimal Refund { get; set; }
+    }
 }

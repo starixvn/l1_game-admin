@@ -31,6 +31,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>
+        IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
+        IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -402,7 +404,47 @@ namespace GamesAdmin.Site.Features.ClientSites
             return new VipSeDieReportResultViewModel
             {
                 RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x => mapper.Map<VipSeDieRecordViewModel>(x))
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<VipSeDieRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetSpecialSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new SpecialSeDieReportResultViewModel
+            {
+                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<SpecialSeDieRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<SpecialSeDieBetHistoryViewModel> Handle(GetSpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetSpecialSeDieBetHistory(request.RoundId, request.UserId);
+
+            return new SpecialSeDieBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<SpecialSeDieBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
             };
         }
 

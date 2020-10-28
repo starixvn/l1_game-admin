@@ -1,12 +1,14 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    public abstract class BaseBetEntity : MiniGameBaseEntity
+    public class BaseBetEntity : MiniGameBaseEntity
     {
         [BsonElement("thanhtoan")]
         public bool Paid { get; set; }
 
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Betwin { get; set; }
 
         public string Uid { get; set; }

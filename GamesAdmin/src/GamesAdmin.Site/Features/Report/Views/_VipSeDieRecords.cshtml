@@ -32,7 +32,7 @@
                             }
                         </td>
                         <td class="text-center">
-                            @(Model.RoundResult.IsEven ? "Even" : "Odd")
+                            @(Model.RoundResult.Even ? "Even" : "Odd")
                             @(Model.RoundResult.TotalRed > 0 ? $", {Model.RoundResult.TotalRed} red" : ", 4 white")
                         </td>
                     </tr>

@@ -28,4 +28,10 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
+
+    public interface ISpecialSedieOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 }

@@ -50,6 +50,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
         
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
+
+        Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -120,5 +124,11 @@ namespace GamesAdmin.Site.Features.ClientSites
         
         public Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipSeDieReport(roundId, nickname, excludeUUS);
+
+        public Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot)
+        => reportApi.GetSpecialSeDieReport(roundId, nickname, excludeBot);
+
+        public Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId)
+        => reportApi.GetSpecialSeDieBetHistory(roundId, userId);
     }
 }

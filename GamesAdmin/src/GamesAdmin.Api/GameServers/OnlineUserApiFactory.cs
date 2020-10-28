@@ -15,6 +15,7 @@ namespace GamesAdmin.Api.GameServers
         {
             { GameType.SeDieValue, typeof(ISedieOnlineUserApi) },
             { GameType.VipSeDieValue, typeof(IVipSedieOnlineUserApi) },
+            { GameType.SpecialSeDieValue, typeof(ISpecialSedieOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

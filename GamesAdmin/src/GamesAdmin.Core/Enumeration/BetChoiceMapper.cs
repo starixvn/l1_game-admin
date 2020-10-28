@@ -15,6 +15,7 @@ namespace GamesAdmin.Core.Enumeration
 
                 case GameType.OddEvenValue:
                 case GameType.OddEvenTurboValue:
+                case GameType.SpecialSeDieValue:
                     return Enumeration.GetAll<OddEvenBetChoice>();
 
                 case GameType.SeDieValue:
