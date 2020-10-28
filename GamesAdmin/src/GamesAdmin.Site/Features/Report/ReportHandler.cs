@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
-        IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>
+        IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>
     {
