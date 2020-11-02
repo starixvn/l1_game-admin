@@ -54,6 +54,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
 
+        Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
+
     }
 
     public class ReportService : IReportService
@@ -130,6 +132,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         
         public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS)
         => reportApi.GetBlackjackReport(handId, nickname, excludeUUS);
+
+        public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);
 
     }
 }

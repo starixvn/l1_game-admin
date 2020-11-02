@@ -140,4 +140,22 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Refund { get; set; }
     }
+
+    public class VipFishPrawnCrabRecordViewModel : BetRecordViewModel
+    {
+        public decimal Stag { get; set; }
+
+        public decimal Gourd { get; set; }
+
+        public decimal Rooster { get; set; }
+
+        public decimal Fish { get; set; }
+
+        public decimal Crab { get; set; }
+
+        public decimal Prawn { get; set; }
+
+        public decimal AnyTriple { get; set; }
+    }
+
 }

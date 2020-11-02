@@ -157,6 +157,18 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult VipFishPrawnCrab()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_VipFishPrawnCrabRecords", await mediator.Send(new GetVipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot)
         {
             return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot)));

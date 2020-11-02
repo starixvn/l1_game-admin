@@ -169,5 +169,7 @@ namespace GamesAdmin.Core.Models
         public decimal Crab { get; set; }
 
         public decimal Prawn { get; set; }
+
+        public decimal AnyTriple { get; set; }
     }
 }
