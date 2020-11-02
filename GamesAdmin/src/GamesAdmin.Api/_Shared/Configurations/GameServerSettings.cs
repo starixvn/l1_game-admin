@@ -11,6 +11,8 @@
         public GameServerConfigs SpecialSedie { get; set; }
 
         public GameServerConfigs Blackjack { get; set; }
+        
+        public GameServerConfigs VipFishPrawnCrab { get; set; }
     }
 
     public class GameServerConfigs

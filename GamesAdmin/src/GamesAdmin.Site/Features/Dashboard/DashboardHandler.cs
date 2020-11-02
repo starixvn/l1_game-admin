@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         public DashboardHandler(
             IGameSettingService gameSettingService,
             IMapper mapper)
-        {            
+        {
             this.gameSettingService = gameSettingService;
             this.mapper = mapper;
         }
@@ -65,6 +65,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),
                 new SelectListItem(GameType.SpecialSeDie.DisplayName, GameType.SpecialSeDie.Value),
                 new SelectListItem(GameType.BlackJack.DisplayName, GameType.BlackJack.Value),
+                new SelectListItem(GameType.VipFishPrawnCrab.DisplayName, GameType.VipFishPrawnCrab.Value),
                 };
     }
 }
