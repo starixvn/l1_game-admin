@@ -87,6 +87,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<VipSeDieEndGameInfoService>();
             services.AddScoped<BlackjackEndGameInfoService>();
             services.AddScoped<SpecialSeDieEndGameInfoService>();
+            services.AddScoped<VipFishPrawnCrabEndGameInfoService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();

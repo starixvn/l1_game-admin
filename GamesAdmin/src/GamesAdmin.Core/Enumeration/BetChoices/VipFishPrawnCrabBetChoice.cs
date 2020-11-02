@@ -2,15 +2,20 @@
 {
     public class VipFishPrawnCrabBetChoice : Enumeration
     {
-        public const string SingleValue = "single";
-        public const string DoubleValue = "double";
-        public const string TripleValue = "triple";
+        public const string FishValue = "fish";
+        public const string PrawnValue = "prawn";
+        public const string CrabValue = "crab";
+        public const string StagValue = "stag";
+        public const string GourdValue = "gourd";
+        public const string RoosterValue = "rooster";
         public const string AnyTripleValue = "anytriple";
 
-
-        public static readonly VipFishPrawnCrabBetChoice Single = new VipFishPrawnCrabBetChoice(SingleValue, "Single");
-        public static readonly VipFishPrawnCrabBetChoice Double = new VipFishPrawnCrabBetChoice(DoubleValue, "Double");
-        public static readonly VipFishPrawnCrabBetChoice Triple = new VipFishPrawnCrabBetChoice(TripleValue, "Triple");
+        public static readonly VipFishPrawnCrabBetChoice Fish = new VipFishPrawnCrabBetChoice(FishValue, "Fish");
+        public static readonly VipFishPrawnCrabBetChoice Prawn = new VipFishPrawnCrabBetChoice(PrawnValue, "Prawn");
+        public static readonly VipFishPrawnCrabBetChoice Crab = new VipFishPrawnCrabBetChoice(CrabValue, "Crab");
+        public static readonly VipFishPrawnCrabBetChoice Stag = new VipFishPrawnCrabBetChoice(StagValue, "Stag");
+        public static readonly VipFishPrawnCrabBetChoice Gourd = new VipFishPrawnCrabBetChoice(GourdValue, "Gourd");
+        public static readonly VipFishPrawnCrabBetChoice Rooster = new VipFishPrawnCrabBetChoice(RoosterValue, "Rooster");
         public static readonly VipFishPrawnCrabBetChoice AnyTriple = new VipFishPrawnCrabBetChoice(AnyTripleValue, "Any Triple");
 
         public VipFishPrawnCrabBetChoice() { }

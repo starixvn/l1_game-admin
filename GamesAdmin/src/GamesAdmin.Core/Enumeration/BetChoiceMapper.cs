@@ -61,7 +61,6 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.SpecialSeDieValue:
                     return GameType.OddEvenValue;
 
-
                 case GameType.VipFishPrawnCrabValue:
                     return Enumeration.GetAll<VipFishPrawnCrabBetChoice>();
 
