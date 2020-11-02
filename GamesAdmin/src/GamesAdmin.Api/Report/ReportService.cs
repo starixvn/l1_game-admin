@@ -57,6 +57,8 @@ namespace GamesAdmin.Api.Report
         
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(long handId, string nickname, bool excludeUUS);
 
+        Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
+
     }
 
     public class ReportService : IReportService
@@ -409,6 +411,18 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<SpecialSeDieBetHistoryRecord>(x))
+            };
+        }
+
+        public async Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IVipFishPrawnCrabReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+
+            return new VipFishPrawnCrabBetReport
+            {
+                RoundResult = mapper.Map<VipFishPrawnCrabRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<VipFishPrawnCrabBetRecord>(x))
             };
         }
 

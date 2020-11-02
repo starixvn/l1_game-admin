@@ -121,4 +121,13 @@ namespace GamesAdmin.Core.Models
 
         public IEnumerable<string> BigSmall { get; set; }
     }
+
+    public class VipFishPrawnCrabRoundResult : RoundResult
+    {
+        public byte FirstDice { get; set; }
+
+        public byte SecondDice { get; set; }
+
+        public byte ThirdDice { get; set; }
+    }
 }

@@ -25,6 +25,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVipSeDieReportRepository, VipSeDieReportRepository>();
             services.AddScoped<ISpecialSeDieReportRepository, SpecialSeDieReportRepository>();
             services.AddScoped<IBlackjackReportRepository, BlackjackReportRepository>();
+            services.AddScoped<IVipFishPrawnCrabReportRepository, VipFishPrawnCrabReportRepository>();
         }
     }
 }

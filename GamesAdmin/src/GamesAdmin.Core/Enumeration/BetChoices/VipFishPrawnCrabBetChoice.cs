@@ -8,7 +8,7 @@
         public const string StagValue = "stag";
         public const string GourdValue = "gourd";
         public const string RoosterValue = "rooster";
-        public const string AnyTripleValue = "anytriple";
+        public const string AnyTripleValue = "anyTriple";
 
         public static readonly VipFishPrawnCrabBetChoice Fish = new VipFishPrawnCrabBetChoice(FishValue, "Fish");
         public static readonly VipFishPrawnCrabBetChoice Prawn = new VipFishPrawnCrabBetChoice(PrawnValue, "Prawn");
