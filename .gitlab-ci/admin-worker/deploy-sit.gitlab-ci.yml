@@ -27,7 +27,7 @@ deploy_admin_worker_sit:
     SERVER_PORT: $SC_SWARM_LEADER_SIT_SSH_PORT
     SWARM_NODES: $SC_SWARM_CLUSTER_SIT
     SWARM_REPLICAS: 1
-    NODE_LABEL: L1
+    NODE_LABEL: L2
     DOCKER_NETWORK_NAME: lumi-network
   environment:
     name: SIT

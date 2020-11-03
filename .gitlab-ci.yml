@@ -3,7 +3,7 @@ services:
   - docker:19.03.12-dind
 
 variables:
-  PROJECT_NAME: l1-game-admin
+  PROJECT_NAME: l2-game-admin
   SOLUTION_NAME: ./GamesAdmin/GamesAdmin.sln
 
 stages:
