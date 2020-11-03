@@ -14,6 +14,7 @@ import OddEven from './odd-even/odd-even';
 import Roulette from './roulette';
 import ShakeThePlate from './shake-the-plate/shake-the-plate';
 import SpecialSeDie from './special-sedie';
+import VipFishPrawnCrab from './vip-fish-prawn-crab/vip-fish-prawn-crab';
 import VipSeDie from './vip-sedie/vip-sedie';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
@@ -125,6 +126,10 @@ const gameMapper = {
     24: {
         component: SpecialSeDie,
         ...getInfoByGameKey('SpecialSeDie'),
+    },
+    26: {
+        component: VipFishPrawnCrab,
+        ...getInfoByGameKey('vipfishprawncrab'),
     },
 };
 

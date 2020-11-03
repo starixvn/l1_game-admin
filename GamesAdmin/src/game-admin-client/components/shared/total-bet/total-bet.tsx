@@ -40,6 +40,7 @@ const classNames = {
   baccaratSmall: 'baccaratSmallBg',
   playerPair: 'playerPairBg',
   bankerPair: 'bankerPairBg',
+  anyTriple: 'anyTripleBg',
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {

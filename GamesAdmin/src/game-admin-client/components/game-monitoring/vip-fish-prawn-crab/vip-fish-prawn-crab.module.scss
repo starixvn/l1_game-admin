@@ -1,0 +1,43 @@
+.title {
+  color: #ffffff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.align-middle {
+  align-items: center;
+}
+
+.fish-prawn-crab {
+  .timecounter {
+    //margin-top: 130px;
+  }
+
+  .result {
+    //margin-top: 80px;
+    display: inline-block;
+    text-align: center;
+  }
+}
+
+.game-control-panel {
+  width: 350px;
+
+  &>div {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background-color: #411212;
+    border: 5px solid #660f10;
+    border-radius: 20px;
+    z-index: 99;
+    padding: 5px;
+  }
+
+  div[class^='dice_dice'] {
+    margin: 0;
+  }
+}

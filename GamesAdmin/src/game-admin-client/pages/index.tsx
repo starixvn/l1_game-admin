@@ -106,6 +106,17 @@ export class Home extends React.Component<Props, State> {
                             ? process.env.NEXT_PUBLIC_SPECIAL_SEDIE_SERVER_PROXY_ROUTE
                             : Cookies.get('special-sedie-server-endpoint-route'),
                 };
+            case gameNameMapper.vipfishprawncrab:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_VIP_FISH_PRAWN_CRAB_SERVER_ENDPOINT
+                            : Cookies.get('vip-fish-prawn-crab-server-endpoint'),
+                    route:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_VIP_FISH_PRAWN_CRAB_SERVER_PROXY_ROUTE
+                            : Cookies.get('vip-fish-prawn-crab-server-endpoint-route'),
+                };
             default:
                 return {
                     endpoint:

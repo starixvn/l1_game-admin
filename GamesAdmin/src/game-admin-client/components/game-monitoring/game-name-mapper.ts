@@ -19,5 +19,6 @@ export default {
     kenonorth: 19,
     roulette: 21,
     vipsedie: 22,
-    specialsedie: 24
+    specialsedie: 24,
+    vipfishprawncrab: 26
 };
