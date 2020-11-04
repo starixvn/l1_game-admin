@@ -15,6 +15,7 @@ namespace GamesAdmin.Core.Enumeration
             {GameType.KenoProMaxValue, Enumeration.GetAll<KenoBetChoice>() },
             {GameType.MiniSeDieValue, Enumeration.GetAll<MiniSeDieBetChoice>() },
             {GameType.BaccaratValue, Enumeration.GetAll<BaccaratBetChoice>() },
+            {GameType.RouletteValue, Enumeration.GetAll<RouletteBetChoice>() },
             {GameType.VipSeDieValue, Enumeration.GetAll<VipSeDieBetChoice>() },
             {GameType.BlackJackValue, Enumeration.GetAll<BlackjackBetChoice>() },
         };
