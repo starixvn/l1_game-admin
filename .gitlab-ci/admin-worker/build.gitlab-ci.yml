@@ -1,0 +1,5 @@
+build_image_admin_worker:
+    extends:
+      - .deploy_vars_admin_worker
+      - .build_image_no_env
+      - .build:image-worker:rules

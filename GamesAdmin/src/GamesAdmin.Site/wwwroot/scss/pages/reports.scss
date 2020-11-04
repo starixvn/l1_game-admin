@@ -18,6 +18,10 @@
     .round-id {
         width: 10rem;
     }
+
+    .input-validation-error {
+        border-color: #dc3545;
+    }
 }
 
 .report-container {
@@ -239,4 +243,12 @@
 .white-chip {
     @extend %chip;
     background: url(../../images/chip_trang.png) no-repeat;
+}
+
+.blackjack-result {
+    .cards {
+        .card:last-child:before {
+            display: none;
+        }
+    }
 }

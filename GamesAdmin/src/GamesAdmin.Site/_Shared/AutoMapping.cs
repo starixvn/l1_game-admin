@@ -47,6 +47,9 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<SpecialSeDieBetRecord, SpecialSeDieRecordViewModel>();
             CreateMap<SpecialSeDieBetHistoryRecord, SpecialSeDieBetHistoryRecordViewModel>();
+            
+            CreateMap<BlackjackBetRecord, BlackjackRecordViewModel>();
+            CreateMap<BlackjackCard, BlackjackCardViewModel>();
         }
     }
 }

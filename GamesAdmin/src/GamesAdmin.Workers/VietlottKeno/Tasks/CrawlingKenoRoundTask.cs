@@ -16,6 +16,8 @@ namespace GamesAdmin.VietlottKeno.Tasks
 {
     public class CrawlingKenoRoundTask : IInvocable
     {
+        private const int MaxMinutesBetweenRounds = 12;
+
         private readonly IKenoWebApi crawlApi;
         private readonly IKenoService kenoService;
         private readonly ISentryClient sentryClient;
@@ -92,8 +94,9 @@ namespace GamesAdmin.VietlottKeno.Tasks
                     ? default
                     : JsonConvert.DeserializeObject<KenoResultDto>(rawResult);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                sentryClient.CaptureException(e);
             }
 
             return default;
@@ -105,7 +108,7 @@ namespace GamesAdmin.VietlottKeno.Tasks
             var endTimeOfDay = VietlottConstants.EndTimeOfDayUtc;
             var currentTime = DateTime.UtcNow.TimeOfDay;
 
-            return Task.FromResult(currentTime.Subtract(startTimeOfDay).TotalMinutes >= 12
+            return Task.FromResult(currentTime.Subtract(startTimeOfDay).TotalMinutes >= MaxMinutesBetweenRounds
                          || endTimeOfDay.Subtract(currentTime).TotalMinutes >= 0);
         }
     }

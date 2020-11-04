@@ -32,11 +32,6 @@ namespace GamesAdmin.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            var botSettings = Configuration.GetSection(nameof(BotSettings));
-            services.Configure<BotSettings>(botSettings);
-            services.AddSingleton<IBotSettings>(sp =>
-              sp.GetRequiredService<IOptions<BotSettings>>().Value);
-
             var appSettings = new AppSettings(Configuration);
             services.AddSingleton<IAppSettings>(appSettings);
 

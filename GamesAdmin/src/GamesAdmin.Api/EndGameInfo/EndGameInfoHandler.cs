@@ -12,7 +12,7 @@ namespace GamesAdmin.Api.DailySummarize
 {
     public class EndGameInfoHandler : IRequestHandler<RetrieveEndGameInfoRequest, EndGameInfoResult>
     {
-        private IEndGameInfoServiceFactory factory;
+        private readonly IEndGameInfoServiceFactory factory;
 
         public EndGameInfoHandler(IEndGameInfoServiceFactory factory)
         {

@@ -126,6 +126,9 @@ namespace GamesAdmin.Api._Shared
             CreateMap<SpecialSeDieBetReportEntity, SpecialSeDieBetRecord>();
 
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
+            
+            CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
+            CreateMap<BlackjackCardEntity, BlackjackCard>();
 
         }
     }

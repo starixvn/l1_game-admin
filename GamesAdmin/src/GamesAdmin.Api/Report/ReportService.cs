@@ -54,6 +54,9 @@ namespace GamesAdmin.Api.Report
         Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistoryAsync(long roundId, string userId);
+        
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(long handId, string nickname, bool excludeUUS);
+
     }
 
     public class ReportService : IReportService
@@ -407,6 +410,14 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<SpecialSeDieBetHistoryRecord>(x))
             };
+        }
+
+        public async Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(long handId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IBlackjackReportRepository>();
+            var result = await repository.GetAsync(handId, nickname, excludeUUS);
+
+            return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
     }
 }

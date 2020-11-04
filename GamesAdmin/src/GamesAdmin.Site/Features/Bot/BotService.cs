@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.Bot.Results;
 using Refit;
 
 namespace GamesAdmin.Site.Features.Bot
@@ -11,6 +13,12 @@ namespace GamesAdmin.Site.Features.Bot
 
         [Post("/game_users/bot/disable_randomly")]
         Task<int> DisableRandomly();
+
+        [Post("/game_users/bot/deactivate")]
+        Task<int> Deactivate();
+
+        [Post("/game_users/bots/generate")]
+        Task<List<AddBotResult>> Add(string[] names);
     }
 
     public interface IBotService
@@ -18,15 +26,24 @@ namespace GamesAdmin.Site.Features.Bot
         Task ReviseBalance();
 
         Task DisableRandomly();
+
+        Task<int> Deactivate();
+
+        Task<List<AddBotResult>> Add(string[] names);
     }
 
     public class BotService : IBotService
     {
         private readonly IBotApi api;
+
         public BotService(IBotApi api)
         {
             this.api = api;
         }
+
+        public Task<List<AddBotResult>> Add(string[] names) => api.Add(names);
+
+        public Task<int> Deactivate() => api.Deactivate();
 
         public Task DisableRandomly() => api.DisableRandomly();
 
