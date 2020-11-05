@@ -446,7 +446,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<VipFishPrawnCrabReportResultViewModel> Handle(GetVipFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetFishPrawnCrabBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetVipFishPrawnCrabBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new VipFishPrawnCrabReportResultViewModel
             {

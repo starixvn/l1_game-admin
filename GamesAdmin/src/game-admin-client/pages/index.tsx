@@ -28,7 +28,7 @@ type State = {
     socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24];
+const NewSocketGameIds = [2, 22, 24, 26];
 
 export class Home extends React.Component<Props, State> {
     public state: State;
@@ -137,8 +137,8 @@ export class Home extends React.Component<Props, State> {
             const socket = this.initSocket(parseInt(gameId) > 0 ? parseInt(gameId) : parseInt(gameNameMapper[gameName]));
 
             await socket.connect();
-            this.changeLoadingState(false);
 
+            this.changeLoadingState(false);
             this.setState({ gameId, gameName, socket });
         }
     }

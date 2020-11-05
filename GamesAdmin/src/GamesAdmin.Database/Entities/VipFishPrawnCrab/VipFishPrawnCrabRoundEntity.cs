@@ -25,18 +25,18 @@ namespace GamesAdmin.Database.Entities
 
     public class VipFishPrawnCrabSettlementResultEntity
     {
-        public decimal Stag { get; set; }
+        public bool Stag { get; set; }
 
-        public decimal Gourd { get; set; }
+        public bool Gourd { get; set; }
 
-        public decimal Rooster { get; set; }
+        public bool Rooster { get; set; }
 
-        public decimal Fish { get; set; }
+        public bool Fish { get; set; }
 
-        public decimal Crab { get; set; }
+        public bool Crab { get; set; }
 
-        public decimal Prawn { get; set; }
+        public bool Prawn { get; set; }
 
-        public decimal AnyTriple { get; set; }
+        public bool AnyTriple { get; set; }
     }
 }
