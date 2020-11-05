@@ -19,8 +19,8 @@ deploy_admin_site_uat:
   extends:
     - .deploy_vars_admin_site
     - .base_deploy_swarm_service
-    - .deploy-site:sit:rules
-  needs: ['post_build_admin_site_sit']
+    - .deploy-site:uat:rules
+  needs: ['post_build_admin_site_uat']
   variables:
     SERVER_IP: $SC_SWARM_LEADER_SIT
     SERVER_USER: $SC_SWARM_LEADER_SIT_SSH_USER
