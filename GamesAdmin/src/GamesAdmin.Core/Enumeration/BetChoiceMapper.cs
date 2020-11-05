@@ -18,6 +18,7 @@ namespace GamesAdmin.Core.Enumeration
             {GameType.RouletteValue, Enumeration.GetAll<RouletteBetChoice>() },
             {GameType.VipSeDieValue, Enumeration.GetAll<VipSeDieBetChoice>() },
             {GameType.BlackJackValue, Enumeration.GetAll<BlackjackBetChoice>() },
+            {GameType.VipFishPrawnCrabValue, Enumeration.GetAll<VipFishPrawnCrabBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>
@@ -62,7 +63,7 @@ namespace GamesAdmin.Core.Enumeration
                     return GameType.OddEvenValue;
 
                 case GameType.VipFishPrawnCrabValue:
-                    return Enumeration.GetAll<VipFishPrawnCrabBetChoice>();
+                    return GameType.VipFishPrawnCrabValue;
 
                 default: return default;
             }

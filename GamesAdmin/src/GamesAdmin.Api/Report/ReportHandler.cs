@@ -30,7 +30,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<VipSeDieReportRequest, VipSeDieBetReport>,
         IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
         IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
-        IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>
+        IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
         IRequestHandler<VipFishPrawnCrabReportRequest, VipFishPrawnCrabBetReport>
     {
         private readonly IReportService reportService;
