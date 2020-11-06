@@ -65,7 +65,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             };
 
             var gameList = (await gameService.GetAll()).Select(game => game.Name).ToArray();
-            viewModel.GameTypeItems = Enumeration.GetAll<GameType>()
+            viewModel.GameTypeItems = Enumeration.GetAll<Game>()
                 .Where(type => !gameList.Contains(type.Value))
                 .Select(type => new SelectListItem(type.DisplayName, type.Value))
                 .ToList();
@@ -156,7 +156,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return items;
             }
 
-            var gameType = Enumeration.FromValue<GameType>(name);
+            var gameType = Enumeration.FromValue<Game>(name);
             var betChoices = BetChoiceMapper.Map(gameType);
 
             if (betChoices != default)
@@ -180,7 +180,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return items;
             }
 
-            var gameType = Enumeration.FromValue<GameType>(name);
+            var gameType = Enumeration.FromValue<Game>(name);
             var betOdds = BetOddsMapper.Map(gameType);
 
             if (betOdds != default)
@@ -272,7 +272,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             await gameService.UpdateStatus(request.Names, request.Enabled);
 
-            if (request.Names.Any(x => x == GameType.KenoProVietValue) && request.Enabled)
+            if (request.Names.Any(x => x == Game.KenoProVietValue) && request.Enabled)
             {
                 await NotifyUnsettleRoundsToGameServer();
             }

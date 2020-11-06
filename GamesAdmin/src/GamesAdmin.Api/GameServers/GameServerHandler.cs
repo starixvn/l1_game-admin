@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
         => string.IsNullOrWhiteSpace(request.Game)
                 ? gameServerService.GetOnlineUsers()
-                : gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game));
+                : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
 
         public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
         => gameServerService.NotifyRoundResult(request.Rounds);

@@ -335,7 +335,7 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
         {
             return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(
-                Enumeration.FromValue<GameType>(game),
+                Enumeration.FromValue<Game>(game),
                 roundId,
                 nickname,
                 excludeUUS)));
@@ -344,7 +344,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)
         {
-            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<GameType>(game), roundId, nickname)));
+            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<Game>(game), roundId, nickname)));
         }
 
         [HttpGet]

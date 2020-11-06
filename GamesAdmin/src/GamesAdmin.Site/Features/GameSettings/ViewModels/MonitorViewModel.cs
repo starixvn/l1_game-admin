@@ -23,9 +23,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         private static string[] disableMonitoring = new string[]
         {
-            GameType.LuckyWheelValue,
-            GameType.KenoProVietValue,
-            GameType.BlackJackValue
+            Game.LuckyWheelValue,
+            Game.KenoProVietValue,
+            Game.BlackJackValue
         };
 
         public MonitorItemViewModel(string name)
@@ -35,9 +35,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; }
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
+        public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<Game>(Name)
             ? Name
-            : Enumeration.FromValue<GameType>(Name).DisplayName;
+            : Enumeration.FromValue<Game>(Name).DisplayName;
 
         public bool EnabledMonitoring => !disableMonitoring.Contains(Name);
 

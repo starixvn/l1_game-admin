@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => string.IsNullOrWhiteSpace(Name)
             ? string.Empty
-            : Enumeration.FromValue<GameType>(Name).DisplayName;
+            : Enumeration.FromValue<Game>(Name).DisplayName;
 
         [DisplayName("Game Status:")]
         public bool Enabled { get; set; }

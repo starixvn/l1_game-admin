@@ -30,11 +30,11 @@ namespace GamesAdmin.Api.Report
 
         Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(GameType game, long roundId, string nickname, bool excludeUUS = false);
+        Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false);
 
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname);
 
-        Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId);
+        Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId);
 
         Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
 
@@ -296,21 +296,21 @@ namespace GamesAdmin.Api.Report
             });
         }
 
-        public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(GameType game, long roundId, string nickname, bool excludeUUS = false)
+        public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false)
         {
             var service = kenoReportFactory.GetReportService(game);
 
             return service == default ? default : service.GetReportAsync(roundId, nickname, excludeUUS);
         }
 
-        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname)
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname)
         {
             var service = kenoReportFactory.GetReportService(game);
 
             return service == default ? default : service.GetBetHistoryAsync(roundId, nickname);
         }
 
-        public Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId)
+        public Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId)
         {
             var service = kenoReportFactory.GetReportService(game);
 

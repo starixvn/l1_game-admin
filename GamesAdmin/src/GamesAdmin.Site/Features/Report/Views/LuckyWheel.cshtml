@@ -4,7 +4,7 @@
 @model LuckyWheelViewModel
 @{
     var game = Context.Request.Path.Value.Split('/').LastOrDefault();
-    ViewData["Title"] = Enumeration.FromValue<GameType>(game).DisplayName;
+    ViewData["Title"] = Enumeration.FromValue<Game>(game).DisplayName;
 }
 
 @section Styles {

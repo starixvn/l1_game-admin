@@ -18,7 +18,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<JsonWebToken> GetJWT(JWTRequest request);
 
-        Task<OnlineUsers> GetOnlineUsers(GameType gameType = null);
+        Task<OnlineUsers> GetOnlineUsers(Game gameType = null);
 
         Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
     }
@@ -84,7 +84,7 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task<OnlineUsers> GetOnlineUsers(GameType gameType = null)
+        public async Task<OnlineUsers> GetOnlineUsers(Game gameType = null)
         {
             try
             {
@@ -105,18 +105,18 @@ namespace GamesAdmin.Api.GameServers
             return new OnlineUsers();
         }
 
-        private string ConvertTypeToGameServerName(GameType gameType)
+        private string ConvertTypeToGameServerName(Game gameType)
         {
             switch (gameType.Value)
             {
-                case GameType.KenoProMaxValue:
+                case Game.KenoProMaxValue:
                     return "keno";
 
-                case GameType.BaccaratValue:
+                case Game.BaccaratValue:
                     return "baccarat";
 
-                case GameType.RouletteValue:
-                    return GameType.RouletteValue;
+                case Game.RouletteValue:
+                    return Game.RouletteValue;
 
                 default: return string.Empty;
             }

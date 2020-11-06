@@ -7,17 +7,17 @@ namespace GamesAdmin.Core.Enumeration
     {
         private static Dictionary<string, IEnumerable<Enumeration>> gameBetChoices = new Dictionary<string, IEnumerable<Enumeration>>
         {
-            {GameType.BigSmallValue, Enumeration.GetAll<BigSmallBetChoice>() },
-            {GameType.OddEvenValue, Enumeration.GetAll<OddEvenBetChoice>() },
-            {GameType.SeDieValue, Enumeration.GetAll<SeDieBetChoice>() },
-            {GameType.FishPrawnCrabValue, Enumeration.GetAll<FishPrawnCrabBetChoice>() },
-            {GameType.DragonTigerValue, Enumeration.GetAll<DragonTigerBetChoice>() },
-            {GameType.KenoProMaxValue, Enumeration.GetAll<KenoBetChoice>() },
-            {GameType.MiniSeDieValue, Enumeration.GetAll<MiniSeDieBetChoice>() },
-            {GameType.BaccaratValue, Enumeration.GetAll<BaccaratBetChoice>() },
-            {GameType.RouletteValue, Enumeration.GetAll<RouletteBetChoice>() },
-            {GameType.VipSeDieValue, Enumeration.GetAll<VipSeDieBetChoice>() },
-            {GameType.BlackJackValue, Enumeration.GetAll<BlackjackBetChoice>() },
+            {Game.BigSmallValue, Enumeration.GetAll<BigSmallBetChoice>() },
+            {Game.OddEvenValue, Enumeration.GetAll<OddEvenBetChoice>() },
+            {Game.SeDieValue, Enumeration.GetAll<SeDieBetChoice>() },
+            {Game.FishPrawnCrabValue, Enumeration.GetAll<FishPrawnCrabBetChoice>() },
+            {Game.DragonTigerValue, Enumeration.GetAll<DragonTigerBetChoice>() },
+            {Game.KenoProMaxValue, Enumeration.GetAll<KenoBetChoice>() },
+            {Game.MiniSeDieValue, Enumeration.GetAll<MiniSeDieBetChoice>() },
+            {Game.BaccaratValue, Enumeration.GetAll<BaccaratBetChoice>() },
+            {Game.RouletteValue, Enumeration.GetAll<RouletteBetChoice>() },
+            {Game.VipSeDieValue, Enumeration.GetAll<VipSeDieBetChoice>() },
+            {Game.BlackJackValue, Enumeration.GetAll<BlackjackBetChoice>() },
             {GameType.VipFishPrawnCrabValue, Enumeration.GetAll<VipFishPrawnCrabBetChoice>() },
             {GameType.SicBoValue, Enumeration.GetAll<SicBoBetChoice>() },
             {GameType.VipBaccaratValue, Enumeration.GetAll<VipBaccaratBetChoice>() },
@@ -26,18 +26,18 @@ namespace GamesAdmin.Core.Enumeration
 
         private static List<string> KenoTypes = new List<string>
         {
-             GameType.KenoProVietValue,
-             GameType.KenoMaxValue,
-             GameType.KenoMax2Value,
-             GameType.KenoMiniValue,
-             GameType.KenoMini2Value,
-             GameType.KenoEastValue,
-             GameType.KenoWestValue,
-             GameType.KenoSouthValue,
-             GameType.KenoNorthValue
+             Game.KenoProVietValue,
+             Game.KenoMaxValue,
+             Game.KenoMax2Value,
+             Game.KenoMiniValue,
+             Game.KenoMini2Value,
+             Game.KenoEastValue,
+             Game.KenoWestValue,
+             Game.KenoSouthValue,
+             Game.KenoNorthValue
         };
 
-        public static IEnumerable<Enumeration> Map(GameType gameType)
+        public static IEnumerable<Enumeration> Map(Game gameType)
         {
             var game = ConvertGameTypeValue(gameType);
 
@@ -49,21 +49,21 @@ namespace GamesAdmin.Core.Enumeration
             return default;
         }
 
-        public static string ConvertGameTypeValue(GameType gameType)
+        public static string ConvertGameTypeValue(Game gameType)
         {
             if (KenoTypes.Contains(gameType.Value))
             {
-                return GameType.KenoProMaxValue;
+                return Game.KenoProMaxValue;
             }
 
             switch (gameType.Value)
             {
-                case GameType.BigSmallTurboValue:
-                    return GameType.BigSmallValue;
+                case Game.BigSmallTurboValue:
+                    return Game.BigSmallValue;
 
-                case GameType.OddEvenTurboValue:
-                case GameType.SpecialSeDieValue:
-                    return GameType.OddEvenValue;
+                case Game.OddEvenTurboValue:
+                case Game.SpecialSeDieValue:
+                    return Game.OddEvenValue;
 
                 default: return gameType.Value;
             }
