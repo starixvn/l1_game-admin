@@ -4,6 +4,7 @@ using GamesAdmin.Site.Features.Users.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Users
@@ -69,11 +70,10 @@ namespace GamesAdmin.Site.Features.Users
                 return View(viewModel);
             }
 
-            //var username = Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
-            var result = await mediator.Send(new ChangePasswordRequest("", viewModel.Password, viewModel.NewPassword));
+            var username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+            var result = await mediator.Send(new ChangePasswordRequest(username, viewModel.Password, viewModel.NewPassword));
 
             viewModel.Success = result.Success;
-
             viewModel.ErrorMessage = result.Success ? string.Empty : result.Error;
 
             return View(viewModel);
