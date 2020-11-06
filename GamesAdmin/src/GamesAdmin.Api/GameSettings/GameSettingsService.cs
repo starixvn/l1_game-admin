@@ -13,13 +13,13 @@ namespace GamesAdmin.Api.Games
 {
     public interface IGameSettingsService
     {
-        Task<IEnumerable<GameConfig>> Get();
+        Task<IEnumerable<AutoRNGGameConfig>> Get();
 
-        Task<bool> Create(GameConfig game);
+        Task<bool> Create(AutoRNGGameConfig game);
 
-        Task<bool> Update(GameConfig game);
+        Task<bool> Update(AutoRNGGameConfig game);
 
-        Task<GameConfig> GetByName(string name);
+        Task<AutoRNGGameConfig> GetByName(string name);
 
         Task<bool> Delete(string name);
 
@@ -44,7 +44,7 @@ namespace GamesAdmin.Api.Games
             this.mapper = mapper;
         }
 
-        public Task<IEnumerable<GameConfig>> Get()
+        public Task<IEnumerable<AutoRNGGameConfig>> Get()
         => Task.Run(() =>
             {
                 try
@@ -52,23 +52,23 @@ namespace GamesAdmin.Api.Games
                     var gameEntities = repository.AsQueryable().ToList();
 
                     return gameEntities
-                        .Select(entity => mapper.Map<GameConfig>(entity));
+                        .Select(entity => mapper.Map<AutoRNGGameConfig>(entity));
                 }
                 catch (Exception ex)
                 {
                     sentryClient.CaptureException(ex);
 
-                    return Enumerable.Empty<GameConfig>();
+                    return Enumerable.Empty<AutoRNGGameConfig>();
                 }
             });
 
-        public async Task<bool> Create(GameConfig game)
+        public async Task<bool> Create(AutoRNGGameConfig game)
         {
             try
             {
                 var entity = new GameConfigEntity
                 {
-                    name = game.Name,
+                    Name = game.Name,
                     Enabled = game.Enabled,
                     Maxbet = game.MaxBet,
                     Minbet = game.MinBet,
@@ -90,7 +90,7 @@ namespace GamesAdmin.Api.Games
             return true;
         }
 
-        public async Task<bool> Update(GameConfig game)
+        public async Task<bool> Update(AutoRNGGameConfig game)
         {
             try
             {
@@ -116,18 +116,18 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<GameConfig> GetByName(string name)
+        public async Task<AutoRNGGameConfig> GetByName(string name)
         {
-            var gameEntity = await repository.FindOneAsync(entity => entity.name == name);
+            var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
 
-            return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
+            return gameEntity != null ? mapper.Map<AutoRNGGameConfig>(gameEntity) : default;
         }
 
         public async Task<bool> Delete(string name)
         {
             try
             {
-                await repository.DeleteOneAsync(entity => entity.name == name);
+                await repository.DeleteOneAsync(entity => entity.Name == name);
 
                 return true;
             }
@@ -144,7 +144,7 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.Enabled), enabled);
-                await repository.UpdateManyAsync(config => names.Contains(config.name), update);
+                await repository.UpdateManyAsync(config => names.Contains(config.Name), update);
 
                 sentryClient.CaptureMessage($"Game {string.Join(", ", names)} enabled: {enabled}");
 
@@ -163,7 +163,7 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.DisabledMessage), disabledMessage);
-                await repository.UpdateAsync(config => config.name == name, update);
+                await repository.UpdateAsync(config => config.Name == name, update);
 
                 return true;
             }

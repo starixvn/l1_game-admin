@@ -7,7 +7,7 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("game_configs")]
     public class GameConfigEntity : MiniGameBaseEntity
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public bool Enabled { get; set; }
 

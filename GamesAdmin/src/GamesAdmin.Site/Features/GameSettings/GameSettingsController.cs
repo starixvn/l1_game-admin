@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateRequest(new GameConfig(
+                await mediator.Send(new UpdateRequest(new AutoRNGGameConfig(
                    editViewModel.Id,
                    editViewModel.Name,
                    editViewModel.MinBet,
@@ -69,7 +69,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            await mediator.Send(new CreateRequest(new GameConfig(
+            await mediator.Send(new CreateRequest(new AutoRNGGameConfig(
                 string.Empty,
                 addViewModel.Name,
                 addViewModel.MinBet,

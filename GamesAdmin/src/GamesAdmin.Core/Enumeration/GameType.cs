@@ -4,14 +4,12 @@
     {
         public const string AutoRNGValue = "1";
         public const string SlotsValue = "2";
-        public const string VipFishPrawnCrabValue = "vipfishprawncrab";
         public const string SicBoValue = "sicbo";
         public const string VipBaccaratValue = "vipbaccarat";
         public const string VipSeDieWarValue = "vipsediewar";
 
         public static readonly GameType AutoRNG = new GameType(AutoRNGValue, "Auto RNG");
-        public static readonly GameType Slots = new GameType(AutoRNGValue, "Slots");
-        public static readonly GameType VipFishPrawnCrab = new GameType(VipFishPrawnCrabValue, "Vip Fish Prawn Crab");
+        public static readonly GameType Slots = new GameType(SlotsValue, "Slots");
         public static readonly GameType SicBo = new GameType(SicBoValue, "Sic Bo");
         public static readonly GameType VipBaccarat = new GameType(VipBaccaratValue, "Vip Baccarat");
         public static readonly GameType VipSeDieWar = new GameType(VipSeDieWarValue, "Se Die War");

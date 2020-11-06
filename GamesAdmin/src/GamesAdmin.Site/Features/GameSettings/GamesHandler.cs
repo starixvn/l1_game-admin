@@ -75,7 +75,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {
-            GameConfig game;
+            AutoRNGGameConfig game;
 
             if (string.IsNullOrWhiteSpace(request.Name))
             {
@@ -196,7 +196,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-        => gameService.Update(new GameConfig(
+        => gameService.Update(new AutoRNGGameConfig(
             request.Game.Id,
             request.Game.Name,
             request.Game.MinBet,
@@ -215,7 +215,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.EnableFreeBet));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => gameService.Add(new GameConfig(
+        => gameService.Add(new AutoRNGGameConfig(
             request.Game.Id,
             request.Game.Name,
             request.Game.MinBet,

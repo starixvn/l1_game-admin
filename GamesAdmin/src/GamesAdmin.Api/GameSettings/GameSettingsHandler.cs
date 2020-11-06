@@ -8,11 +8,11 @@ using MediatR;
 namespace GamesAdmin.Api.Games
 {
     public class GameSettingsHandler
-        : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
+        : IRequestHandler<GetAllRequest, IEnumerable<AutoRNGGameConfig>>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
-        , IRequestHandler<GetByNameRequest, GameConfig>
+        , IRequestHandler<GetByNameRequest, AutoRNGGameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
     {
@@ -24,7 +24,7 @@ namespace GamesAdmin.Api.Games
             this.gameService = gamesService;
         }
 
-        public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<AutoRNGGameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
@@ -36,7 +36,7 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Name);
 
-        public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
+        public Task<AutoRNGGameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);
 
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)

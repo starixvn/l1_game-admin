@@ -15,9 +15,9 @@ namespace GamesAdmin.Site._Shared
     {
         public AutoMapping()
         {
-            CreateMap<GameConfig, Features.GameSettings.ViewModels.EditViewModel>();
-            CreateMap<GameConfig, StatusItemViewModel>();
-            CreateMap<GameConfig, MonitorItemViewModel>();
+            CreateMap<AutoRNGGameConfig, Features.GameSettings.ViewModels.EditViewModel>();
+            CreateMap<AutoRNGGameConfig, StatusItemViewModel>();
+            CreateMap<AutoRNGGameConfig, MonitorItemViewModel>();
             CreateMap<OnlineUser, OnlineUserViewModel>();
             CreateMap<BotUser, BotUserViewModel>();
             CreateMap<CreateRequest, UmSchedule>();

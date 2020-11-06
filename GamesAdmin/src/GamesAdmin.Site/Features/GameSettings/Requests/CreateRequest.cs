@@ -5,11 +5,11 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class CreateRequest : IRequest<bool>
     {
-        public CreateRequest(GameConfig game)
+        public CreateRequest(AutoRNGGameConfig game)
         {
             Game = game;
         }
 
-        public GameConfig Game { get; }
+        public AutoRNGGameConfig Game { get; }
     }
 }
