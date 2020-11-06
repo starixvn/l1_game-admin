@@ -4,22 +4,22 @@ import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
 
 class VipFishPrawnCrabBetList {
-  redBau: BetList;
-  redCa: BetList;
-  redCua: BetList;
-  redGa: BetList;
-  redHuou: BetList;
-  redTom: BetList;
-  redAnyTriple: BetList;
+  gourd: BetList;
+  fish: BetList;
+  crab: BetList;
+  rooster: BetList;
+  stag: BetList;
+  prawn: BetList;
+  anyTriple: BetList;
 
   constructor() {
-    this.redBau = new BetList();
-    this.redCa = new BetList();
-    this.redCua = new BetList();
-    this.redGa = new BetList();
-    this.redHuou = new BetList();
-    this.redTom = new BetList();
-    this.redAnyTriple = new BetList();
+    this.gourd = new BetList();
+    this.fish = new BetList();
+    this.crab = new BetList();
+    this.rooster = new BetList();
+    this.stag = new BetList();
+    this.prawn = new BetList();
+    this.anyTriple = new BetList();
   }
 }
 
@@ -58,7 +58,7 @@ export default class VipFishPrawnCrabModel {
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
     this.nextRoudResult = new GameResult();
-    this.winners = [false, false, false, false, false, false];
+    this.winners = [false, false, false, false, false, false, false];
     this.gameState = 0;
   }
 }

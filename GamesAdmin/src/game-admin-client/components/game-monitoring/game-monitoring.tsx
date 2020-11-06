@@ -129,7 +129,7 @@ const gameMapper = {
     },
     26: {
         component: VipFishPrawnCrab,
-        ...getInfoByGameKey('vipfishprawncrab'),
+        ...getInfoByGameKey('VipFishPrawnCrab'),
     },
 };
 
