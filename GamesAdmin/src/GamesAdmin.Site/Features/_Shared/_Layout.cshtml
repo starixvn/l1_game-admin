@@ -18,7 +18,7 @@
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
-                    @await Component.InvokeAsync("GameMenu", new { })
+                    <partial name="_VerticalMenu" />
                 </div>
             </div>
         </div>
@@ -53,15 +53,24 @@
                             <i class="icon-account-circle icon-user"></i>
                             <span class="username">@Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value</span>
                         </button>
-                        <form asp-action="Logout" asp-controller="Authentication" method="post">
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <form asp-action="Logout" asp-controller="Authentication" method="post">
                                     <button type="submit" value="Sign out" class="logout">
                                         <i class="icon-logout"></i> Logout
                                     </button>
-                                </li>
-                            </ul>
-                        </form>
+                                </form>
+                            </li>
+
+                            <li>
+                                <a asp-action="ChangePassword" asp-controller="User">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-name">Change Password</span>
+                                </a>
+                            </li>
+                        </ul>
+
                     </div>
                 </div>
             </div>

@@ -54,5 +54,29 @@ namespace GamesAdmin.Site.Features.Users
 
             return View(addViewModel);
         }
+
+        [HttpGet]
+        public IActionResult ChangePassword() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([Bind] ChangePasswordViewModel viewModel)
+        {
+            if (!viewModel.NewPassword.Equals(viewModel.ConfirmNewPassword))
+            {
+                viewModel.Success = false;
+                viewModel.ErrorMessage = "Password and Confirm Password must match.";
+
+                return View(viewModel);
+            }
+
+            //var username = Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+            var result = await mediator.Send(new ChangePasswordRequest("", viewModel.Password, viewModel.NewPassword));
+
+            viewModel.Success = result.Success;
+
+            viewModel.ErrorMessage = result.Success ? string.Empty : result.Error;
+
+            return View(viewModel);
+        }
     }
 }

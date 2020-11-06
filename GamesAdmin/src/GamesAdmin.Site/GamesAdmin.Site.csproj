@@ -54,7 +54,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Features\Users\Views\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\game-admin\_next\rmtxTm8B14eU70SRrA5fB\" />
     <Folder Include="wwwroot\game-admin\_next\static\development\pages\next\dist\pages\" />
