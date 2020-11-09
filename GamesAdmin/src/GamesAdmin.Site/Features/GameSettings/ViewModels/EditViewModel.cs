@@ -39,8 +39,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
-        public double MaxBot { get; set; }
-
         public int BotCount { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]

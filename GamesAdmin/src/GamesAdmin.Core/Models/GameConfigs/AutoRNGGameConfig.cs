@@ -9,14 +9,13 @@ namespace GamesAdmin.Core.Models
         [JsonConstructor]
         public AutoRNGGameConfig(
             string id,
+            byte type,
             string name,
             double minBet,
             double maxBet,
             bool enabled,
             bool botEnabled,
-            double maxBot,
             int? disabledround,
-            double botMinBet,
             double botMaxBet,
             double[] hoursMaxBot,
             string disabledMessage,
@@ -26,6 +25,7 @@ namespace GamesAdmin.Core.Models
             bool enableFreeBet)
             : base(
                id,
+               type,
                name,
                enabled,
                botEnabled,
@@ -39,7 +39,6 @@ namespace GamesAdmin.Core.Models
 
             MinBet = minBet;
             MaxBet = maxBet;
-            MaxBot = maxBot;
             MaxBetChoices = maxBetChoices;
             Odds = odds;
         }
@@ -47,9 +46,6 @@ namespace GamesAdmin.Core.Models
         public double MinBet { get; }
 
         public double MaxBet { get; }
-        public double MaxBot { get; }
-
-        public double BotMinBet { get; }
 
         public Dictionary<string, double> MaxBetChoices { get; }
 

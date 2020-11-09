@@ -1,9 +1,12 @@
-﻿namespace GamesAdmin.Core.Models.GameConfigs
+﻿using GamesAdmin.Core.Enumeration;
+
+namespace GamesAdmin.Core.Models.GameConfigs
 {
     public abstract class BaseConfig
     {
         protected BaseConfig(
            string id,
+           byte type,
            string name,           
            bool enabled,
            bool botEnabled,
@@ -24,9 +27,12 @@
             DisabledMessage = disabledMessage;
             DelayStartTime = delayStartTime;
             EnableFreeBet = enableFreeBet;
+            Type = type;
         }
 
         public string Id { get; }
+
+        public byte Type { get; }
 
         public string Name { get; }
 

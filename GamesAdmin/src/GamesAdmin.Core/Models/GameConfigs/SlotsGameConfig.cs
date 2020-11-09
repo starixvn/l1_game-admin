@@ -7,6 +7,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         [JsonConstructor]
         public SlotsGameConfig(
             string id,
+            byte type,
             string name,
             bool enabled,
             bool botEnabled,
@@ -18,6 +19,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             bool enableFreeBet)
             : base(
                id,
+               type,
                name,
                enabled,
                botEnabled,

@@ -7,6 +7,7 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
@@ -35,6 +36,7 @@ namespace GamesAdmin.Site.Features.GameSettings
     {
         private const int MaxLengthOfMessage = 1000;
         private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
+        private const int DefaultBotMaxBet = 10;
 
         private readonly IMapper mapper;
 
@@ -59,32 +61,24 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
-            var viewModel = new AddViewModel
-            {
-                BotPercentageItems = GeneratePercentageItems(0)
-            };
-
             var gameList = (await gameService.GetAll()).Select(game => game.Name).ToArray();
-            viewModel.GameTypeItems = Enumeration.GetAll<Game>()
+            var games = Enumeration.GetAll<Game>()
                 .Where(type => !gameList.Contains(type.Value))
                 .Select(type => new SelectListItem(type.DisplayName, type.Value))
                 .ToList();
 
-            return viewModel;
+            var types = Enum.GetValues(typeof(GameType))
+                .Cast<GameType>()
+                .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
+
+            return new AddViewModel(games, types);
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {
-            AutoRNGGameConfig game;
-
-            if (string.IsNullOrWhiteSpace(request.Name))
-            {
-                game = (await gameService.GetAll()).FirstOrDefault();
-            }
-            else
-            {
-                game = await gameService.GetByName(request.Name);
-            }
+            var game = string.IsNullOrWhiteSpace(request.Name)
+                ? (await gameService.GetAll()).FirstOrDefault()
+                : await gameService.GetByName(request.Name);
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
@@ -95,10 +89,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (game != null)
             {
-                viewModel.MaxBot = game.MaxBot == 0 ? 0 : (int)(game.MaxBot * 100);
-                viewModel.BotMaxBet = game.BotMaxBet == 0 ? 10 : game.BotMaxBet;
+                viewModel.BotMaxBet = game.BotMaxBet <= 0 ? DefaultBotMaxBet : game.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
-                viewModel.BotRatioItems = GenerateBotRatioItems(game.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
+                viewModel.BotRatioItems = GenerateBotRatioItems(game.HoursMaxBot, viewModel.BotCount);
                 viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Name, game.MaxBetChoices, game.MaxBet);
                 viewModel.BetChoiceOdds = GenerateOdds(game.Name, game.Odds);
             }
@@ -106,28 +99,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return viewModel;
         }
 
-        private static List<SelectListItem> GeneratePercentageItems(double currentValue)
-        {
-            var items = new List<SelectListItem>
-            {
-                new SelectListItem($"0.2%", $"0.2", currentValue == 0.2)
-            };
-
-            for (var i = 1; i <= 10; i++)
-            {
-                items.Add(new SelectListItem($"{i}%", $"{i}", currentValue == i));
-            }
-
-            for (var i = 15; i <= 100; i += 5)
-            {
-                var percentage = i;
-                items.Add(new SelectListItem($"{percentage}%", $"{percentage}", currentValue == percentage));
-            }
-
-            return items;
-        }
-
-        private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot, double defaultRatio)
+        private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot)
         {
             var botRatioItems = new List<BotRatioItemViewModel>();
 
@@ -138,9 +110,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 botRatioItems.Add(new BotRatioItemViewModel(
                     hour.Hour,
-                    hour.AddHours(-4).Hour,
-                    hour.AddHours(7).Hour,
-                    botRatios == null || botRatios.Length == 0 ? defaultRatio : Math.Round(botRatios[hour.Hour] * 100, 2),
+                    hour.ToGreenwichHour(),
+                    hour.ToAsiaHour(),
+                    botRatios == null || botRatios.Length == 0 ? 0 : botRatios[hour.Hour].ToPercentage(),
                     totalBot));
             }
 
@@ -198,14 +170,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(new AutoRNGGameConfig(
             request.Game.Id,
+            request.Game.Type,
             request.Game.Name,
             request.Game.MinBet,
             request.Game.MaxBet,
             request.Game.Enabled,
             request.Game.BotEnabled,
-            request.Game.MaxBot / 100,
             request.Game.DisabledRound,
-            request.Game.BotMinBet,
             request.Game.BotMaxBet,
             request.Game.HoursMaxBot,
             request.Game.DisabledMessage,
@@ -217,14 +188,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new AutoRNGGameConfig(
             request.Game.Id,
+            request.Game.Type,
             request.Game.Name,
             request.Game.MinBet,
             request.Game.MaxBet,
             request.Game.Enabled,
             request.Game.BotEnabled,
-            request.Game.MaxBot / 100,
             null,
-            0,
             0,
             new double[] { },
             DefaultDisabledMessage,

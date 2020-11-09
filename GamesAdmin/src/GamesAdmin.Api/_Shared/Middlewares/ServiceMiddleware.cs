@@ -2,7 +2,6 @@
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.EndGameInfo;
-using GamesAdmin.Api.GameRound;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
@@ -30,7 +29,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
-            services.AddScoped<IGameRoundService, GameRoundService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();

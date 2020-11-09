@@ -73,7 +73,6 @@ namespace GamesAdmin.Api.Games
                     Maxbet = game.MaxBet,
                     Minbet = game.MinBet,
                     Botenabled = game.BotEnabled,
-                    Maxbot = game.MaxBot,
                     DisabledMessage = game.DisabledMessage,
                     Time = DateTime.Now
                 };

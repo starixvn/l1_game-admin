@@ -36,14 +36,13 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 await mediator.Send(new UpdateRequest(new AutoRNGGameConfig(
                    editViewModel.Id,
+                   (byte) 1, //TODO input game type
                    editViewModel.Name,
                    editViewModel.MinBet,
                    editViewModel.MaxBet,
                    editViewModel.Enabled,
                    editViewModel.BotEnabled,
-                   editViewModel.MaxBot,
                    null,
-                   0,
                    editViewModel.BotMaxBet,
                    null,
                    editViewModel.DisabledMessage,
@@ -71,14 +70,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             await mediator.Send(new CreateRequest(new AutoRNGGameConfig(
                 string.Empty,
+                (byte)1, //TODO input game type
                 addViewModel.Name,
                 addViewModel.MinBet,
                 addViewModel.MaxBet,
                 addViewModel.Enabled,
                 addViewModel.BotEnabled,
-                addViewModel.MaxBot,
                 null,
-                0,
                 0,
                 new double[] { },
                 string.Empty,
