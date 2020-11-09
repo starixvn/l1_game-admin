@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GameUser.Requests;
 using GamesAdmin.Api.GameUser.Results;
 using GamesAdmin.Core.Models;
@@ -55,26 +54,25 @@ namespace GamesAdmin.Api.GameUser
 
             var account = await accountRepository.FindByIdAsync(userId);
             var accountInfo = await accountInfoRepository
-                .FindOneAsync(x => x.UserId == account.Id.ToString()
-                    && IsExcludeUUS(excludeUUS, x.Currency)
-                    && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)));
-
+#pragma warning disable S1067 // Expressions should not be too complex
+                    .FindOneAsync(x => x.UserId == account.Id.ToString()
+                        && (!excludeUUS || x.Currency != "UUS")
+                        && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)));
+#pragma warning restore S1067 // Expressions should not be too complex
             return accountInfo == null || account == null
-                ? default
-                : new GameAccount(
-                    account.Local.Username,
-                    account.Local.MemberId,
-                    account.Local.MemberName,
-                    account.Local.SiteId,
-                    account.Local.Language,
-                    accountInfo.IsBot,
-                    accountInfo.Currency,
-                    accountInfo.Name,
-                    accountInfo.UID
-                );
+            ? default
+            : new GameAccount(
+                account.Local.Username,
+                account.Local.MemberId,
+                account.Local.MemberName,
+                account.Local.SiteId,
+                account.Local.Language,
+                accountInfo.IsBot,
+                accountInfo.Currency,
+                accountInfo.Name,
+                accountInfo.UID
+            );
         }
-
-        private bool IsExcludeUUS(bool excludeUUS, string currency) => (!excludeUUS || (currency != "UUS"));
 
         public async Task<UpdateMemberSpinResult> UpdateMemberSpins(UpdateSpinRequest updateRequest)
         {
