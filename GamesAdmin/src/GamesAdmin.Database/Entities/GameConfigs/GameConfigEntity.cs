@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
+using GamesAdmin.Database.Entities.GameConfigs;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
@@ -7,6 +8,8 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("game_configs")]
     public class GameConfigEntity : MiniGameBaseEntity
     {
+        public byte Type { get; set; }
+
         public string Name { get; set; }
 
         public bool Enabled { get; set; }
@@ -21,9 +24,6 @@ namespace GamesAdmin.Database.Entities
 
         public int? Disabledround { get; set; }
 
-        [BsonElement("bot_minbet")]
-        public double BotMinBet { get; set; }
-
         [BsonElement("bot_maxbet")]
         public double BotMaxBet { get; set; }
 
@@ -34,12 +34,14 @@ namespace GamesAdmin.Database.Entities
         public string DisabledMessage { get; set; }
 
         [BsonElement("choices_maxbet")]
-        public Dictionary<string, double> MaxBetChoices {get; set;}
+        public Dictionary<string, double> MaxBetChoices { get; set; }
 
         public Dictionary<string, double> Odds { get; set; }
 
         public int DelayStartTime { get; set; }
 
         public bool EnableFreeBet { get; set; }
+
+        public SlotsGameConfig SlotsConfig { get; set; }
     }
 }
