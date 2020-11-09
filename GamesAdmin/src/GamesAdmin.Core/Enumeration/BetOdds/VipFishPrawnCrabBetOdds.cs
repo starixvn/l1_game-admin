@@ -5,7 +5,7 @@
         public const string SingleValue = "single";
         public const string DoubleValue = "double";
         public const string TripleValue = "triple";
-        public const string AnyTripleValue = "anytriple";
+        public const string AnyTripleValue = "anyTriple";
 
 
         public static readonly VipFishPrawnCrabBetOdds Single = new VipFishPrawnCrabBetOdds(SingleValue, "Single");
