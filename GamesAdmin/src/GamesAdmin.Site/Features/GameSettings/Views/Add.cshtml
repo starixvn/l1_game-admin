@@ -59,10 +59,10 @@
 
         <div class="form-group">
             <label asp-for="GameType" class="control-label"></label>
-            <select asp-items="@Model.GameTypes" asp-for="GameType" class="form-control"></select>
+            <select asp-items="@Model.GameTypes" asp-for="GameType" onchange="gameStatus.toogleSlotsConfig();" class="form-control"></select>
         </div>
 
-        <div id="slots-config" class="slots-game">
+        <div id="slots-config" class="slots-game" style="display:none;">
             <div class="form-group">
                 <label asp-for="Difficulty" class="control-label"></label>
                 <select asp-items="@Model.DifficultyItems" asp-for="Difficulty" class="form-control"></select>
@@ -75,6 +75,12 @@
 
             <fieldset>
                 <legend>Stake Levels</legend>
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <input type="checkbox" asp-for="EnableJackpot" onclick="gameStatus.toogleJackpot();" />
+                        <label asp-for="EnableJackpot" class="control-label"></label>
+                    </div>
+                </div>
                 @foreach (var stake in Model.Stakes)
                 {
                     <div class="form-group row">
@@ -83,7 +89,7 @@
                             <input type="number" asp-for="@stake.Stake" class="form-control" />
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 slots-jackpot" style="display: none">
                             <label class="control-label">Jackpot</label>
                             <input type="number" asp-for="@stake.Jackpot" class="form-control" />
                         </div>
@@ -116,3 +122,7 @@
         </div>
     </form>
 </div>
+
+@section Scripts{
+    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+}

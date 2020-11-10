@@ -11,19 +11,17 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     public class AddViewModel : ViewModelBase
     {
         private const double Min = 0.01;
-        private const byte MaxStakeLevels = 3;
 
         public AddViewModel(
-            List<SelectListItem> games,
             List<SelectListItem> gameTypes,
             List<SelectListItem> difficultyItems,
             List<StakeLevel> stakes
             )
         {
-            Games = games;
             GameTypes = gameTypes;
             DifficultyItems = difficultyItems;
             Stakes = stakes;
+            Difficulty = SlotDifficulties.Medium;
         }
 
         [Required]
@@ -32,8 +30,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Required]
         [DisplayName("Display Name")]
         public string DisplayName { get; set; }
-
-        public List<SelectListItem> Games { get; set; }
 
         [DisplayName("Type")]
         public GameType GameType { get; set; }
@@ -69,12 +65,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Number of Slot Icons")]
         public int NumberOfIcons { get; set; }
 
-        public byte NumberOfStakeLevels => MaxStakeLevels;
-
         public List<StakeLevel> Stakes { get; set; }
 
         public double MinBonus { get; set; }
 
         public double MaxBonus { get; set; }
+
+        [DisplayName("Enable Jackpot")]
+        public bool EnableJackpot { get; set; }
     }
 }

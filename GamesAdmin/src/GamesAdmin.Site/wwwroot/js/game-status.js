@@ -393,15 +393,33 @@
             const modal = $('#alertModal');
             modal.find('#alertContent').html(message);
             modal.modal('show');
+        },
+
+        toogleJackpot: function () {
+            if ($('#slots-config').find('#EnableJackpot').is(":checked")) {
+                $('.slots-jackpot').show();
+            } else {
+                $('.slots-jackpot').hide();
+            }
+        },
+
+        toogleSlotsConfig: function () {
+            if ($('#GameType').val() === "2") {
+                $('#slots-config').show();
+            } else {
+                $('#slots-config').hide();
+            }
         }
     }
 }(jQuery));
 
 $(document).ready(function () {
-    $("#status-tbl").DataTable({
-        "paging": false,
-        "ordering": false
-    });
+    if ($("#status-tbl")) {
+        $("#status-tbl").DataTable({
+            "paging": false,
+            "ordering": false
+        });
+    }    
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);

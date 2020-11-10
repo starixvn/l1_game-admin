@@ -60,14 +60,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.appSettings = appSettings;
         }
 
-        public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
+        public Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
-            var gameList = (await gameService.GetAll()).Select(game => game.Name).ToArray();
-            var games = Enumeration.GetAll<Game>()
-                .Where(type => !gameList.Contains(type.Value))
-                .Select(type => new SelectListItem(type.DisplayName, type.Value))
-                .ToList();
-
             var types = Enum.GetValues(typeof(GameType))
                 .Cast<GameType>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
@@ -76,7 +70,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<SlotDifficulties>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            return new AddViewModel(games, types, dificultyItems, GenerateEmptyStakes());
+            return Task.FromResult(new AddViewModel(types, dificultyItems, GenerateEmptyStakes()));
         }
 
         private static List<StakeLevel> GenerateEmptyStakes()
