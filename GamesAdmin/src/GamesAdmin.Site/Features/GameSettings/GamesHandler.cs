@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -71,8 +72,19 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<GameType>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            return new AddViewModel(games, types);
+            var dificultyItems = Enum.GetValues(typeof(SlotDifficulties))
+                .Cast<SlotDifficulties>()
+                .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
+
+            return new AddViewModel(games, types, dificultyItems, GenerateEmptyStakes());
         }
+
+        private static List<StakeLevel> GenerateEmptyStakes()
+        => new List<StakeLevel> {
+            new StakeLevel(0, 0),
+            new StakeLevel(0, 0),
+            new StakeLevel(0, 0)
+        };
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {

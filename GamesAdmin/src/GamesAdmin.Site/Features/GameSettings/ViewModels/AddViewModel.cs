@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -9,16 +10,28 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class AddViewModel : ViewModelBase
     {
-        public AddViewModel(List<SelectListItem> games, List<SelectListItem> gameTypes) 
+        private const double Min = 0.01;
+        private const byte MaxStakeLevels = 3;
+
+        public AddViewModel(
+            List<SelectListItem> games,
+            List<SelectListItem> gameTypes,
+            List<SelectListItem> difficultyItems,
+            List<StakeLevel> stakes
+            )
         {
             Games = games;
             GameTypes = gameTypes;
+            DifficultyItems = difficultyItems;
+            Stakes = stakes;
         }
-
-        private const double Min = 0.01;
 
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        [DisplayName("Display Name")]
+        public string DisplayName { get; set; }
 
         public List<SelectListItem> Games { get; set; }
 
@@ -32,12 +45,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [Required(ErrorMessage = "Mininum Bet could not empty")]
         [Range(Min, int.MaxValue)]
-        [DisplayName("Minimum Bet Limit")]
+        [DisplayName("Min Bet Limit")]
         public double MinBet { get; set; }
 
         [Required(ErrorMessage = "Maximum Bet could not empty")]
         [Range(Min, int.MaxValue)]
-        [DisplayName("Maximum Bet Limit")]
+        [DisplayName("Max Bet Limit")]
         public double MaxBet { get; set; }
 
         [DisplayName("Bot Enabled")]
@@ -48,5 +61,20 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Enable Free Bet")]
         public bool EnableFreeBet { get; set; }
+
+        public SlotDifficulties Difficulty { get; set; }
+
+        public List<SelectListItem> DifficultyItems { get; set; }
+
+        [DisplayName("Number of Slot Icons")]
+        public int NumberOfIcons { get; set; }
+
+        public byte NumberOfStakeLevels => MaxStakeLevels;
+
+        public List<StakeLevel> Stakes { get; set; }
+
+        public double MinBonus { get; set; }
+
+        public double MaxBonus { get; set; }
     }
 }

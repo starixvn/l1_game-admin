@@ -2,62 +2,54 @@
 @model AddViewModel;
 
 @{
-    ViewData["Title"] = "Games";
+    ViewData["Title"] = "Add Game Settings";
 }
-<div class="header-bar">
-    <ul class="nav">
-        <li class="nav-item">
-            <a role="tab" data-toggle="tab" class="nav-link active" href="#setting">
-                <span>Setting</span>
-            </a>
-        </li>
-    </ul>
-</div>
-
 
 <div class="col-md-12 col-lg-5 card">
     <form class="card-body form" asp-action="Add" asp-controller="GameSettings" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <select asp-items="@Model.Games" asp-for="Name" class="form-control"></select>
-            <span asp-validation-for="Name" class="text-danger"></span>
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <label asp-for="Name" class="control-label"></label>
+                <input type="text" asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6">
+                <label asp-for="DisplayName" class="control-label"></label>
+                <input type="text" asp-for="DisplayName" class="form-control" />
+                <span asp-validation-for="DisplayName" class="text-danger"></span>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="GameType" class="control-label"></label>
-            <select asp-items="@Model.GameTypes" asp-for="GameType" class="form-control"></select>
-            <span asp-validation-for="GameType" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <div>
+        <div class="form-group row">
+            <div class="col-lg-4">
                 <input type="checkbox" asp-for="Enabled" />
                 <label asp-for="Enabled" class="control-label"></label>
             </div>
-            <span asp-validation-for="Enabled" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="MinBet" class="control-label"></label>
-            <input type="number" asp-for="MinBet" class="form-control" />
-            <span asp-validation-for="MinBet" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="MaxBet" class="control-label"></label>
-            <input type="number" asp-for="MaxBet" class="form-control" />
-            <span asp-validation-for="MaxBet" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <div>
+            <div class="col-lg-4">
                 <input type="checkbox" asp-for="BotEnabled" />
                 <label asp-for="BotEnabled" class="control-label"></label>
             </div>
-            <span asp-validation-for="BotEnabled" class="text-danger"></span>
+            <div class="col-lg-4">
+                <input type="checkbox" asp-for="EnableFreeBet" />
+                <label asp-for="EnableFreeBet" class="control-label"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <label asp-for="MinBet" class="control-label"></label>
+                <input type="number" asp-for="MinBet" class="form-control" />
+                <span asp-validation-for="MinBet" class="text-danger"></span>
+            </div>
+
+            <div class="col-lg-6">
+                <label asp-for="MaxBet" class="control-label"></label>
+                <input type="number" asp-for="MaxBet" class="form-control" />
+                <span asp-validation-for="MaxBet" class="text-danger"></span>
+            </div>
         </div>
 
         <div class="form-group">
@@ -66,17 +58,61 @@
         </div>
 
         <div class="form-group">
-            <div>
-                <input type="checkbox" asp-for="EnableFreeBet" />
-                <label asp-for="EnableFreeBet" class="control-label"></label>
-            </div>
-            <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
+            <label asp-for="GameType" class="control-label"></label>
+            <select asp-items="@Model.GameTypes" asp-for="GameType" class="form-control"></select>
         </div>
 
+        <div id="slots-config" class="slots-game">
+            <div class="form-group">
+                <label asp-for="Difficulty" class="control-label"></label>
+                <select asp-items="@Model.DifficultyItems" asp-for="Difficulty" class="form-control"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NumberOfIcons" class="control-label"></label>
+                <input type="number" asp-for="NumberOfIcons" class="form-control" />
+            </div>
+
+            <fieldset>
+                <legend>Stake Levels</legend>
+                @foreach (var stake in Model.Stakes)
+                {
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="control-label">Stake</label>
+                            <input type="number" asp-for="@stake.Stake" class="form-control" />
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="control-label">Jackpot</label>
+                            <input type="number" asp-for="@stake.Jackpot" class="form-control" />
+                        </div>
+                    </div>
+                }
+            </fieldset>
+            <br />
+            <fieldset>
+                <legend>Bonus</legend>
+
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <label class="control-label">Min</label>
+                        <input type="number" asp-for="MinBonus" class="form-control" />
+                        <span asp-validation-for="MinBonus" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label class="control-label">Max</label>
+                        <input type="number" asp-for="MaxBonus" class="form-control" />
+                        <span asp-validation-for="MaxBonus" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+        <br />
         <div class="form-group">
             <input type="submit" value="Submit" class="btn-submit" />
         </div>
     </form>
 </div>
-
-
