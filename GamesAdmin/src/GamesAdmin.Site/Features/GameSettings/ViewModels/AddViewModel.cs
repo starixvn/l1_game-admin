@@ -63,7 +63,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public List<SelectListItem> DifficultyItems { get; set; }
 
         [DisplayName("Number of Slot Icons")]
-        public int NumberOfIcons { get; set; }
+        public byte NumberOfIcons { get; set; }
 
         public List<StakeLevel> Stakes { get; set; }
 

@@ -38,6 +38,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.Id,
                    (byte) 1, //TODO input game type
                    editViewModel.Name,
+                   "", //TODO input display name
                    editViewModel.MinBet,
                    editViewModel.MaxBet,
                    editViewModel.Enabled,
@@ -72,6 +73,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 string.Empty,
                 (byte)1, //TODO input game type
                 addViewModel.Name,
+                addViewModel.DisplayName,
                 addViewModel.MinBet,
                 addViewModel.MaxBet,
                 addViewModel.Enabled,

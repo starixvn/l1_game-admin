@@ -7,7 +7,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
         protected BaseConfig(
            string id,
            byte type,
-           string name,           
+           string name,      
+           string displayName,
            bool enabled,
            bool botEnabled,
            int? disabledround,
@@ -19,6 +20,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         {
             Id = id;
             Name = name;
+            DisplayName = displayName;
             Enabled = enabled;
             BotEnabled = botEnabled;
             DisabledRound = disabledround;
@@ -35,6 +37,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public byte Type { get; }
 
         public string Name { get; }
+
+        public string DisplayName { get; }
 
         public bool Enabled { get; }
 
