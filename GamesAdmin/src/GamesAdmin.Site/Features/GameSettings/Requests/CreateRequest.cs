@@ -8,18 +8,35 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class CreateRequest : IRequest<bool>
     {
-        public CreateRequest(AutoRNGGameConfig game)
+        public CreateRequest(AutoRNGGameConfig game, SlotsConfigRequest slotsConfig)
         {
             Game = game;
+            SlotConfigs = slotsConfig;
         }
 
         public AutoRNGGameConfig Game { get; }
 
-        public AddSlotsConfigRequest SlotConfigs { get; set; }
+        public SlotsConfigRequest SlotConfigs { get; }
     }
 
-    public class AddSlotsConfigRequest
+    public class SlotsConfigRequest
     {
+        public SlotsConfigRequest(
+            bool enableJackpot,
+            byte numberOfIcons,
+            SlotDifficulties difficulty,
+            double minBonus,
+            double maxBonus,
+            List<StakeLevel> stakes)
+        {
+            EnableJackpot = enableJackpot;
+            NumberOfIcons = numberOfIcons;
+            Difficulty = difficulty;
+            MinBonus = minBonus;
+            MaxBonus = maxBonus;
+            Stakes = stakes;
+        }
+
         public bool EnableJackpot { get; set; }
 
         public byte NumberOfIcons { get; set; }

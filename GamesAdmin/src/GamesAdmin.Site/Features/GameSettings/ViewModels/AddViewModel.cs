@@ -10,18 +10,17 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class AddViewModel : ViewModelBase
     {
-        private const double Min = 0.01;
+        public AddViewModel()
+        {
+        }
 
-        public AddViewModel(
-            List<SelectListItem> gameTypes,
-            List<SelectListItem> difficultyItems,
-            List<StakeLevel> stakes
-            )
+        public AddViewModel(List<SelectListItem> gameTypes, List<SelectListItem> difficultyItems)
         {
             GameTypes = gameTypes;
             DifficultyItems = difficultyItems;
-            Stakes = stakes;
             Difficulty = SlotDifficulties.Medium;
+            Stakes = new double[] { 0, 0, 0 };
+            Jackpots = new double[] { 0, 0, 0 };
         }
 
         [Required]
@@ -39,13 +38,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Game Enabled")]
         public bool Enabled { get; set; }
 
-        [Required(ErrorMessage = "Mininum Bet could not empty")]
-        [Range(Min, int.MaxValue)]
         [DisplayName("Min Bet Limit")]
         public double MinBet { get; set; }
 
-        [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(Min, int.MaxValue)]
         [DisplayName("Max Bet Limit")]
         public double MaxBet { get; set; }
 
@@ -65,7 +60,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Number of Slot Icons")]
         public byte NumberOfIcons { get; set; }
 
-        public List<StakeLevel> Stakes { get; set; }
+        public double[] Stakes { get; set; }
+
+        public double[] Jackpots { get; set; }
 
         public double MinBonus { get; set; }
 
@@ -73,5 +70,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Enable Jackpot")]
         public bool EnableJackpot { get; set; }
+
+        public double BigWinRatio { get; set; }
+
+        public double JackpotRTP { get; set; }
+
+        public double BotJackpotContribution { get; set; }
+
+        public double PlayerJackpotContribution { get; set; }
     }
 }

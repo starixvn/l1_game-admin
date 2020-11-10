@@ -70,15 +70,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<SlotDifficulties>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            return Task.FromResult(new AddViewModel(types, dificultyItems, GenerateEmptyStakes()));
+            return Task.FromResult(new AddViewModel(types, dificultyItems));
         }
-
-        private static List<StakeLevel> GenerateEmptyStakes()
-        => new List<StakeLevel> {
-            new StakeLevel(0, 0),
-            new StakeLevel(0, 0),
-            new StakeLevel(0, 0)
-        };
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {

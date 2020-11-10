@@ -22,10 +22,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ObjectId, string>().ConvertUsing(o => o.ToString());
             CreateMap<string, ObjectId>().ConvertUsing(s => ObjectId.Parse(s));
 
-            CreateMap<GameConfigEntity, AutoRNGGameConfig>()
-                 .ForMember(dest => dest.DisabledRound, opt => opt.MapFrom(src => src.Disabledround));
-
-            CreateMap<AutoRNGGameConfig, GameConfigEntity>();
+            CreateMap<GameConfigEntity, AutoRNGGameConfig>().ReverseMap();
 
             CreateMap<BigSmallRoundEntity, Round>();
             CreateMap<BigSmallOnesEntity, BetInfo>();

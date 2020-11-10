@@ -9,39 +9,21 @@ namespace GamesAdmin.Core.Models
         [JsonConstructor]
         public AutoRNGGameConfig(
             string id,
-            byte type,
-            string name,
-            string displayName,
-            double minBet,
-            double maxBet,
-            bool enabled,
-            bool botEnabled,
-            int? disabledround,
-            double botMaxBet,
-            double[] hoursMaxBot,
-            string disabledMessage,
-            Dictionary<string, double> maxBetChoices,
-            Dictionary<string, double> odds,
-            int delayStartTime,
-            bool enableFreeBet)
+            GameInfo info,
+            EnableSettings enableSettings,
+            BotSettings botSettings,
+            BetLimit betLimit,
+            Dictionary<string, double> odds)
             : base(
                id,
-               type,
-               name,
-               displayName,
-               enabled,
-               botEnabled,
-               disabledround,
-               botMaxBet,
-               hoursMaxBot,
-               disabledMessage,
-               delayStartTime,
-               enableFreeBet)
+               info,
+               enableSettings,
+               botSettings)
         {
 
-            MinBet = minBet;
-            MaxBet = maxBet;
-            MaxBetChoices = maxBetChoices;
+            MinBet = betLimit.MinBet;
+            MaxBet = betLimit.MaxBet;
+            MaxBetChoices = betLimit.MaxBetChoices;
             Odds = odds;
         }
 
@@ -52,5 +34,21 @@ namespace GamesAdmin.Core.Models
         public Dictionary<string, double> MaxBetChoices { get; }
 
         public Dictionary<string, double> Odds { get; }
+    }
+
+    public class BetLimit
+    {
+        public BetLimit(double min, double max, Dictionary<string, double> maxBetChoices) 
+        {
+            MinBet = min;
+            MaxBet = max;
+            MaxBetChoices = maxBetChoices;
+        }
+
+        public double MinBet { get; }
+
+        public double MaxBet { get; }
+
+        public Dictionary<string, double> MaxBetChoices { get; }
     }
 }

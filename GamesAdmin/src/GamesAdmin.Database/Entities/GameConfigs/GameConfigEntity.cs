@@ -22,7 +22,7 @@ namespace GamesAdmin.Database.Entities
 
         public double Maxbet { get; set; }
 
-        public int? Disabledround { get; set; }
+        public int? DisabledRound { get; set; }
 
         [BsonElement("bot_maxbet")]
         public double BotMaxBet { get; set; }

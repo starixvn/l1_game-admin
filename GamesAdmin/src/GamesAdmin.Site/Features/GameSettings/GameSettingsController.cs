@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
@@ -34,23 +36,15 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
+                //TODO input game type, input display name
                 await mediator.Send(new UpdateRequest(new AutoRNGGameConfig(
                    editViewModel.Id,
-                   (byte) 1, //TODO input game type
-                   editViewModel.Name,
-                   "", //TODO input display name
-                   editViewModel.MinBet,
-                   editViewModel.MaxBet,
-                   editViewModel.Enabled,
-                   editViewModel.BotEnabled,
-                   null,
-                   editViewModel.BotMaxBet,
-                   null,
-                   editViewModel.DisabledMessage,
-                   editViewModel.MaxBetChoices,
-                   editViewModel.Odds,
-                   editViewModel.DelayStartTime,
-                   editViewModel.EnableFreeBet)));
+                   new GameInfo((byte)1, editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
+                    new EnableSettings(editViewModel.Enabled, editViewModel.DisabledMessage, null, editViewModel.DelayStartTime),
+                    new BotSettings(editViewModel.BotEnabled, editViewModel.BotMaxBet, null),
+                    new BetLimit(editViewModel.MinBet, editViewModel.MaxBet, editViewModel.MaxBetChoices),
+                    editViewModel.Odds
+                  )));
 
                 return Json(true);
             }
@@ -69,25 +63,40 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            await mediator.Send(new CreateRequest(new AutoRNGGameConfig(
-                string.Empty,
-                (byte)1, //TODO input game type
-                addViewModel.Name,
-                addViewModel.DisplayName,
-                addViewModel.MinBet,
-                addViewModel.MaxBet,
-                addViewModel.Enabled,
-                addViewModel.BotEnabled,
-                null,
-                0,
-                new double[] { },
-                string.Empty,
-                new Dictionary<string, double>(),
-                new Dictionary<string, double>(),
-                addViewModel.DelayStartTime,
-                false)));
+            await mediator.Send(new CreateRequest(MapToRNGConfig(addViewModel), MapToSlotConfig(addViewModel)));
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private static AutoRNGGameConfig MapToRNGConfig(AddViewModel addViewModel)
+        => new AutoRNGGameConfig(
+                string.Empty,
+                new GameInfo((byte)addViewModel.GameType, addViewModel.Name, addViewModel.DisplayName, addViewModel.EnableFreeBet),
+                new EnableSettings(addViewModel.Enabled, string.Empty, null, addViewModel.DelayStartTime),
+                new BotSettings(addViewModel.BotEnabled, 10, new double[] { }),
+                new BetLimit(addViewModel.MinBet, addViewModel.MaxBet, new Dictionary<string, double>()),
+                new Dictionary<string, double>());
+
+        private static SlotsConfigRequest MapToSlotConfig(AddViewModel addViewModel)
+        => new SlotsConfigRequest(
+            addViewModel.EnableJackpot,
+            addViewModel.NumberOfIcons,
+            addViewModel.Difficulty,
+            addViewModel.MinBonus,
+            addViewModel.MaxBonus,
+            ConvertStakeLevels(addViewModel.Stakes, addViewModel.Jackpots)
+            );
+
+        private static List<StakeLevel> ConvertStakeLevels(double[] stakes, double[] jackpots)
+        {
+            var stakeLevels = new List<StakeLevel>();
+
+            for (var i = 0; i < stakes.Length; i++)
+            {
+                stakeLevels.Add(new StakeLevel(stakes[i], jackpots[i]));
+            }
+
+            return stakeLevels;
         }
 
         [HttpPost]
