@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Core.Models.GameConfigs
+﻿using GamesAdmin.Core.Enumeration;
+
+namespace GamesAdmin.Core.Models.GameConfigs
 {
     public abstract class BaseConfig
     {
@@ -12,7 +14,7 @@
             Name = info.Name;
             DisplayName = info.DisplayName;
             EnableFreeBet = info.EnableFreeBet;
-            Type = info.Type;
+            Type = (byte)info.Type;
 
             Enabled = enableSettings.Enabled;
             DisabledRound = enableSettings.DisabledRound;
@@ -52,18 +54,18 @@
     public class GameInfo
     {
         public GameInfo(
-            byte type, 
-            string name, 
-            string displayName, 
-            bool freeBet) 
+            GameType type,
+            string name,
+            string displayName,
+            bool enableFreeBet)
         {
             Type = type;
             Name = name;
             DisplayName = displayName;
-            EnableFreeBet = freeBet;
+            EnableFreeBet = enableFreeBet;
         }
 
-        public byte Type { get; }
+        public GameType Type { get; }
 
         public string Name { get; }
 
@@ -74,7 +76,12 @@
 
     public class EnableSettings
     {
-        public EnableSettings(bool enabled, string disabledMessage, int? disabledRound, int delayStartTime) 
+        public EnableSettings(bool enabled) 
+        {
+            Enabled = enabled;
+        }
+
+        public EnableSettings(bool enabled, int? disabledRound, int delayStartTime, string disabledMessage)
         {
             Enabled = enabled;
             DisabledMessage = disabledMessage;
@@ -93,7 +100,7 @@
 
     public class BotSettings
     {
-        public BotSettings(bool enabled, double maxBet, double[] hoursMaxBot) 
+        public BotSettings(bool enabled, double maxBet, double[] hoursMaxBot = null)
         {
             BotEnabled = enabled;
             BotMaxBet = maxBet;

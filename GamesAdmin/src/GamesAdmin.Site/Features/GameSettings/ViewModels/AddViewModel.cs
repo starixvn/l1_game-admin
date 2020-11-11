@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -31,7 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisplayName { get; set; }
 
         [DisplayName("Type")]
-        public GameType GameType { get; set; }
+        public GameType Type { get; set; }
 
         public List<SelectListItem> GameTypes { get; set; }
 
@@ -71,12 +70,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Enable Jackpot")]
         public bool EnableJackpot { get; set; }
 
+        [DisplayName("Big Win Ratio")]
         public double BigWinRatio { get; set; }
 
+        [DisplayName("RTP")]
         public double JackpotRTP { get; set; }
 
+        [DisplayName("Bot Contribution")]
         public double BotJackpotContribution { get; set; }
 
+        [DisplayName("Player Contribution")]
         public double PlayerJackpotContribution { get; set; }
     }
 }

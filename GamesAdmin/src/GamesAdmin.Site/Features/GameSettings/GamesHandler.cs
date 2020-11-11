@@ -166,43 +166,24 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
+        //TODO convert game type
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(new AutoRNGGameConfig(
             request.Game.Id,
-            request.Game.Type,
-            request.Game.Name,
-            request.Game.DisplayName,
-            request.Game.MinBet,
-            request.Game.MaxBet,
-            request.Game.Enabled,
-            request.Game.BotEnabled,
-            request.Game.DisabledRound,
-            request.Game.BotMaxBet,
-            request.Game.HoursMaxBot,
-            request.Game.DisabledMessage,
-            request.Game.MaxBetChoices,
-            request.Game.Odds,
-            request.Game.DelayStartTime,
-            request.Game.EnableFreeBet));
+            new GameInfo(GameType.AutoRNG, request.Game.Name, request.Game.DisplayName, request.Game.EnableFreeBet),
+            new EnableSettings(request.Game.Enabled, request.Game.DisabledRound, request.Game.DelayStartTime, request.Game.DisabledMessage),
+            new BotSettings(request.Game.BotEnabled, request.Game.MaxBet, request.Game.HoursMaxBot),
+            new BetLimit(request.Game.MinBet, request.Game.MaxBet, request.Game.MaxBetChoices),
+            request.Game.Odds));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new AutoRNGGameConfig(
-            request.Game.Id,
-            request.Game.Type,
-            request.Game.Name,
-            request.Game.DisplayName,
-            request.Game.MinBet,
-            request.Game.MaxBet,
-            request.Game.Enabled,
-            request.Game.BotEnabled,
-            null,
-            0,
-            new double[] { },
-            DefaultDisabledMessage,
-            new Dictionary<string, double>(),
-            new Dictionary<string, double>(),
-            request.Game.DelayStartTime,
-            request.Game.EnableFreeBet));
+            string.Empty,
+            request.GameInfo,
+            request.EnableSettings,
+            request.BotSettings,
+            request.BetLimit,
+            new Dictionary<string, double>()));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

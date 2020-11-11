@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
@@ -19,15 +19,19 @@ namespace GamesAdmin.Site.Features.GameSettings
     [Authorize]
     public class GameSettingsController : Controller
     {
+        private const int DefaultBotMaxBet = 10;
+
         private readonly IMediator mediator;
         private readonly ISentryClient sentryClient;
         private readonly IAppSettings appSettings;
+        private readonly IMapper mapper;
 
-        public GameSettingsController(IMediator mediator, ISentryClient sentryClient, IAppSettings appSettings)
+        public GameSettingsController(IMediator mediator, ISentryClient sentryClient, IAppSettings appSettings, IMapper mapper)
         {
             this.mediator = mediator;
             this.sentryClient = sentryClient;
             this.appSettings = appSettings;
+            this.mapper = mapper;
         }
 
         [HttpPost]
@@ -39,12 +43,11 @@ namespace GamesAdmin.Site.Features.GameSettings
                 //TODO input game type, input display name
                 await mediator.Send(new UpdateRequest(new AutoRNGGameConfig(
                    editViewModel.Id,
-                   new GameInfo((byte)1, editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
-                    new EnableSettings(editViewModel.Enabled, editViewModel.DisabledMessage, null, editViewModel.DelayStartTime),
-                    new BotSettings(editViewModel.BotEnabled, editViewModel.BotMaxBet, null),
-                    new BetLimit(editViewModel.MinBet, editViewModel.MaxBet, editViewModel.MaxBetChoices),
-                    editViewModel.Odds
-                  )));
+                   new GameInfo(Core.Enumeration.GameType.AutoRNG, editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
+                   new EnableSettings(editViewModel.Enabled, null, editViewModel.DelayStartTime, editViewModel.DisabledMessage),
+                   new BotSettings(editViewModel.BotEnabled, editViewModel.BotMaxBet, null),
+                   new BetLimit(editViewModel.MinBet, editViewModel.MaxBet, editViewModel.MaxBetChoices),
+                   editViewModel.Odds)));
 
                 return Json(true);
             }
@@ -63,40 +66,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            await mediator.Send(new CreateRequest(MapToRNGConfig(addViewModel), MapToSlotConfig(addViewModel)));
+            await mediator.Send(new CreateRequest(
+                mapper.Map<GameInfo>(addViewModel),
+                mapper.Map<EnableSettings>(addViewModel),
+                mapper.Map<BotSettings>(addViewModel),
+                mapper.Map<BetLimit>(addViewModel),
+                mapper.Map<SlotsConfigRequest>(addViewModel)));
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private static AutoRNGGameConfig MapToRNGConfig(AddViewModel addViewModel)
-        => new AutoRNGGameConfig(
-                string.Empty,
-                new GameInfo((byte)addViewModel.GameType, addViewModel.Name, addViewModel.DisplayName, addViewModel.EnableFreeBet),
-                new EnableSettings(addViewModel.Enabled, string.Empty, null, addViewModel.DelayStartTime),
-                new BotSettings(addViewModel.BotEnabled, 10, new double[] { }),
-                new BetLimit(addViewModel.MinBet, addViewModel.MaxBet, new Dictionary<string, double>()),
-                new Dictionary<string, double>());
-
-        private static SlotsConfigRequest MapToSlotConfig(AddViewModel addViewModel)
-        => new SlotsConfigRequest(
-            addViewModel.EnableJackpot,
-            addViewModel.NumberOfIcons,
-            addViewModel.Difficulty,
-            addViewModel.MinBonus,
-            addViewModel.MaxBonus,
-            ConvertStakeLevels(addViewModel.Stakes, addViewModel.Jackpots)
-            );
-
-        private static List<StakeLevel> ConvertStakeLevels(double[] stakes, double[] jackpots)
-        {
-            var stakeLevels = new List<StakeLevel>();
-
-            for (var i = 0; i < stakes.Length; i++)
-            {
-                stakeLevels.Add(new StakeLevel(stakes[i], jackpots[i]));
-            }
-
-            return stakeLevels;
         }
 
         [HttpPost]

@@ -404,7 +404,7 @@
         },
 
         toogleSlotsConfig: function () {
-            if ($('#GameType').val() === "2") {
+            if ($('#Type').val() === "2") {
                 $('#slots-config').show();
                 $('#min-max-bet').hide();
             } else {

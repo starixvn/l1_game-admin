@@ -20,7 +20,6 @@ namespace GamesAdmin.Core.Models
                enableSettings,
                botSettings)
         {
-
             MinBet = betLimit.MinBet;
             MaxBet = betLimit.MaxBet;
             MaxBetChoices = betLimit.MaxBetChoices;
@@ -38,7 +37,11 @@ namespace GamesAdmin.Core.Models
 
     public class BetLimit
     {
-        public BetLimit(double min, double max, Dictionary<string, double> maxBetChoices) 
+        public BetLimit()
+        {
+        }
+
+        public BetLimit(double min, double max, Dictionary<string, double> maxBetChoices)
         {
             MinBet = min;
             MaxBet = max;
