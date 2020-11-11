@@ -41,6 +41,8 @@ const classNames = {
   playerPair: 'playerPairBg',
   bankerPair: 'bankerPairBg',
   anyTriple: 'anyTripleBg',
+  mountain: 'mountainBg',
+  ocean: 'oceanBg',
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {

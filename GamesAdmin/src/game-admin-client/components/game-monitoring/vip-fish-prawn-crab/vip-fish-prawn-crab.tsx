@@ -187,7 +187,7 @@ export default class VipFishPrawnCrab extends React.Component<
         roundId: this.state.roundNumber,
         result: {
           [`dice${currentDiceNumber + 1}`]: value,
-        }
+        },
       },
     });
 
@@ -235,7 +235,7 @@ export default class VipFishPrawnCrab extends React.Component<
     return (
       <Container>
         <Row className={styles["align-middle"]}>
-          <Col align="center" className="col-12 col-sm-6">
+          <Col align="center" className="col-12 col-md-4">
             <Row className={styles["align-middle"]}>
               <Col className={styles.timecounter}>
                 <div className={styles.title}>VIP Fish Prawn Crab</div>
@@ -250,7 +250,7 @@ export default class VipFishPrawnCrab extends React.Component<
               </Col>
             </Row>
           </Col>
-          <Col align="center" className={styles.timecounter}>
+          <Col align="center" className="col-4">
             <Row className="justify-content-center">
               <TotalBet
                 total={betList.stag.total}
@@ -284,6 +284,30 @@ export default class VipFishPrawnCrab extends React.Component<
                 type="tom"
                 isWin={winners[FishPrawnCrabDice.tom]}
               ></TotalBet>
+            </Row>
+          </Col>
+          <Col align="center" className="col-2">
+            <Row className="justify-content-center">
+              <TotalBet
+                total={betList.mountain.total}
+                type="mountain"
+                isWin={
+                  winners[FishPrawnCrabDice.nai] ||
+                  winners[FishPrawnCrabDice.bau] ||
+                  winners[FishPrawnCrabDice.ga]
+                }
+              />
+            </Row>
+            <Row className="justify-content-center">
+              <TotalBet
+                total={betList.ocean.total}
+                type="ocean"
+                isWin={
+                  winners[FishPrawnCrabDice.ca] ||
+                  winners[FishPrawnCrabDice.cua] ||
+                  winners[FishPrawnCrabDice.tom]
+                }
+              />
             </Row>
           </Col>
           <Col align="center" className="col-2">
@@ -357,6 +381,30 @@ export default class VipFishPrawnCrab extends React.Component<
             dataList={betList.anyTriple.dataList}
             titles={[<div className="text-center">Any Triple</div>]}
             isWin={winners[6]}
+          />
+        </Col>
+        <Col className="col-4 col-lg">
+          <BetList
+            type="simple"
+            dataList={betList.mountain.dataList}
+            titles={[<div className="text-center">Mountain</div>]}
+            isWin={
+              winners[FishPrawnCrabDice.nai] ||
+              winners[FishPrawnCrabDice.bau] ||
+              winners[FishPrawnCrabDice.ga]
+            }
+          />
+        </Col>
+        <Col className="col-4 col-lg">
+          <BetList
+            type="simple"
+            dataList={betList.ocean.dataList}
+            titles={[<div className="text-center">Ocean</div>]}
+            isWin={
+              winners[FishPrawnCrabDice.ca] ||
+              winners[FishPrawnCrabDice.cua] ||
+              winners[FishPrawnCrabDice.tom]
+            }
           />
         </Col>
       </React.Fragment>

@@ -33,7 +33,7 @@
                     <th rowspan="2" class="col-date">Date (GMT+7)</th>
                     <th rowspan="2">Username</th>
                     <th rowspan="2" class="col-nickname">Nickname</th>
-                    <th colspan="7" class="col-number">Stake</th>
+                    <th colspan="9" class="col-number">Stake</th>
                     <th rowspan="2" class="col-number">Win</th>
                 </tr>
 
@@ -45,6 +45,8 @@
                     <th>Crab</th>
                     <th>Prawn</th>
                     <th>Any Triple</th>
+                    <th>Mountain</th>
+                    <th>Ocean</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +65,8 @@
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Crab)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.Prawn)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.AnyTriple)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Mountain)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Ocean)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }
@@ -71,7 +75,7 @@
                 @if (Model.Records.Count() == 0)
                 {
                     <tr>
-                        <td class="text-center" colspan="14">No data</td>
+                        <td class="text-center" colspan="16">No data</td>
                     </tr>
                 }
                 else
@@ -87,6 +91,8 @@
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Crab))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Prawn))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.AnyTriple))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Mountain))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Ocean))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
                     </tr>
                 }

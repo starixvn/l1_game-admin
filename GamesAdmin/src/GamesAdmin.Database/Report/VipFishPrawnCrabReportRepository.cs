@@ -37,7 +37,9 @@ namespace GamesAdmin.Database
                         Fish = x.Fish,
                         Prawn = x.Prawn,
                         Rooster = x.Rooster,
-                        AnyTriple = x.AnyTriple
+                        AnyTriple = x.AnyTriple,
+                        Mountain = x.Mountain,
+                        Ocean = x.Ocean
                     });
                 var records = await project.ToListAsync();
 

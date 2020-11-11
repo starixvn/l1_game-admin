@@ -38,5 +38,9 @@ namespace GamesAdmin.Database.Entities
         public bool Prawn { get; set; }
 
         public bool AnyTriple { get; set; }
+
+        public bool Mountain { get; set; }
+
+        public bool Ocean { get; set; }
     }
 }

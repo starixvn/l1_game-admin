@@ -11,6 +11,8 @@ class VipFishPrawnCrabBetList {
   stag: BetList;
   prawn: BetList;
   anyTriple: BetList;
+  mountain: BetList;
+  ocean: BetList;
 
   constructor() {
     this.gourd = new BetList();
@@ -20,6 +22,8 @@ class VipFishPrawnCrabBetList {
     this.stag = new BetList();
     this.prawn = new BetList();
     this.anyTriple = new BetList();
+    this.mountain = new BetList();
+    this.ocean = new BetList();
   }
 }
 
