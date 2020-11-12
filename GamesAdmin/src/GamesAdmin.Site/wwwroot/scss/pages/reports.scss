@@ -210,6 +210,12 @@
     }
 }
 
+.vip-animal {
+    @extend .animal;
+    background-color: #624152;
+}
+
+
 .dice-list {
     display: flex;
     justify-content: center;

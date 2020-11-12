@@ -101,7 +101,7 @@ export default class VipFishPrawnCrab extends React.Component<
             remainingTime: 31,
           },
         });
-      }, (waitingTime + 1) * 1000);
+      }, (waitingTime + 3) * 1000);
     }
 
     if (!!data.remainingTime) {
