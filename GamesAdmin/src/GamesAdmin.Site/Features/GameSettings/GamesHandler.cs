@@ -169,13 +169,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.Update(request.Game);
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => gameService.Add(new AutoRNGGameConfig(
+        => gameService.Add(new GameConfig(
             string.Empty,
             new Dictionary<string, double>(),
             request.GameInfo,
             request.EnableSetting,
             request.BotSettings,
-            request.BetLimit));
+            request.BetLimit,
+            request.SlotConfigs));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
@@ -194,17 +195,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
         {
             var gameConfigs = await gameService.GetAll();
-            var gameList = new List<StatusItemViewModel>();
 
-            if (gameConfigs?.Any() == true)
-            {
-                gameList = gameConfigs
+            return gameConfigs?.Any() == true
+                ? new StatusViewModel(gameConfigs
                     .Select(game => new StatusItemViewModel(game))
                     .OrderBy(game => game.DisplayName)
-                    .ToList();
-            }
-
-            return new StatusViewModel(gameList);
+                    .ToList())
+                : new StatusViewModel(new List<StatusItemViewModel>());
         }
 
         public async Task<bool> Handle(UpdateMultipleGameStatusRequest request, CancellationToken cancellationToken)

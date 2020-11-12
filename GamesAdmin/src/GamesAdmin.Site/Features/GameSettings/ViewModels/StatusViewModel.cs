@@ -15,12 +15,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class StatusItemViewModel
     {
-        public StatusItemViewModel(AutoRNGGameConfig gameConfig)
+        public StatusItemViewModel(GameConfig gameConfig)
         {
             GameConfig = gameConfig;
         }
 
-        public AutoRNGGameConfig GameConfig { get; }
+        public GameConfig GameConfig { get; }
 
         public string Name => GameConfig.Info.Name;
 

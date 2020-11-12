@@ -39,7 +39,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 //TODO input game type, input display name
-                await mediator.Send(new UpdateRequest(new AutoRNGGameConfig(
+                await mediator.Send(new UpdateRequest(new GameConfig(
                    editViewModel.Id,
                    editViewModel.Odds,
                    new GameInfo(editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
@@ -70,7 +70,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 mapper.Map<EnableSetting>(addViewModel),
                 mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
-                mapper.Map<SlotsConfigRequest>(addViewModel)));
+                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.NumberOfIcons)));
 
             return RedirectToAction(nameof(Index));
         }

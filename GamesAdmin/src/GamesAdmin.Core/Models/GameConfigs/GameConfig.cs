@@ -4,26 +4,30 @@ using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models
 {
-    public class AutoRNGGameConfig
+    public class GameConfig
     {
         [JsonConstructor]
-        public AutoRNGGameConfig(
+        public GameConfig(
             string id,
             Dictionary<string, double> odds,
             GameInfo info = null,
             EnableSetting enableSetting = null,
             BotSetting botSettings = null,
-            BetLimit betLimit = null)
+            BetLimit betLimit = null,
+            SlotsConfig slotsConfig = null)
         {
             Id = id;
+            Odds = odds;
             Info = info;
             EnableSetting = enableSetting;
             BotSetting = botSettings;
             BetLimit = betLimit;
-            Odds = odds;
+            SlotsConfig = slotsConfig;
         }
 
         public string Id { get; }
+
+        public Dictionary<string, double> Odds { get; }
 
         public GameInfo Info { get; set; }
 
@@ -33,6 +37,6 @@ namespace GamesAdmin.Core.Models
 
         public BetLimit BetLimit { get; set; }
 
-        public Dictionary<string, double> Odds { get; }
+        public SlotsConfig SlotsConfig { get; set; }
     }
 }

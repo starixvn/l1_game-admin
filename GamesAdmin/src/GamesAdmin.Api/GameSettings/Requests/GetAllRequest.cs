@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
-    public class GetAllRequest: IRequest<IEnumerable<AutoRNGGameConfig>>
+    public class GetAllRequest: IRequest<IEnumerable<GameConfig>>
     {
     }
 }

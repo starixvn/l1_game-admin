@@ -10,16 +10,22 @@ namespace GamesAdmin.Site.Features.GameSettings
     {
         public SettingMapper()
         {
-            CreateMap<AutoRNGGameConfig, EditViewModel>();
-            CreateMap<AutoRNGGameConfig, StatusItemViewModel>();
-            CreateMap<AutoRNGGameConfig, MonitorItemViewModel>();
-            CreateMap<AddViewModel, Requests.SlotsConfigRequest>()
-                .ForMember(dest => dest.Stakes, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots)));
+            CreateMap<GameConfig, EditViewModel>();
+            CreateMap<GameConfig, StatusItemViewModel>();
+            CreateMap<GameConfig, MonitorItemViewModel>();            
+
+            CreateMap<AddViewModel, SlotsConfig>()
+                .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (byte)src.Difficulty))
+                .ForMember(dest => dest.StakeLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots)))
+                .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)))
+                .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => new Jackpot(src.EnableJackpot, src.JackpotRTP, src.PlayerJackpotContribution, src.BotJackpotContribution)));
 
             CreateMap<AddViewModel, GameInfo>();
             CreateMap<AddViewModel, EnableSetting>();
             CreateMap<AddViewModel, BotSetting>();
             CreateMap<AddViewModel, BetLimit>();
+
+            CreateMap<AddViewModel, Bonus>();
         }
 
         private static List<StakeLevel> ConvertStakeLevels(double[] stakes, double[] jackpots)

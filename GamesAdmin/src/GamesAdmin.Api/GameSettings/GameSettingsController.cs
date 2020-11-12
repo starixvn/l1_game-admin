@@ -21,7 +21,7 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<AutoRNGGameConfig>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GameConfig>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var gameConfigs = (await mediator.Send(new GetAllRequest())).ToList();
@@ -30,7 +30,7 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpPost]
-        public async Task<bool> Create(AutoRNGGameConfig game)
+        public async Task<bool> Create(GameConfig game)
         {
             if (string.IsNullOrWhiteSpace(game.Info.Name))
             {
@@ -41,11 +41,11 @@ namespace GamesAdmin.Api.Games
         }
 
         [HttpPut]
-        public Task<bool> Update(AutoRNGGameConfig game)
+        public Task<bool> Update(GameConfig game)
             => mediator.Send(new UpdateRequest(game));
 
         [HttpGet("{name}")]
-        public Task<AutoRNGGameConfig> GetByName(string name)
+        public Task<GameConfig> GetByName(string name)
             => mediator.Send(new GetByNameRequest(name));
 
         [HttpPut("update_status")]

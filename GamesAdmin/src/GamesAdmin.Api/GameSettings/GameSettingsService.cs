@@ -13,13 +13,13 @@ namespace GamesAdmin.Api.Games
 {
     public interface IGameSettingsService
     {
-        Task<IEnumerable<AutoRNGGameConfig>> Get();
+        Task<IEnumerable<GameConfig>> Get();
 
-        Task<bool> Create(AutoRNGGameConfig game);
+        Task<bool> Create(GameConfig game);
 
-        Task<bool> Update(AutoRNGGameConfig game);
+        Task<bool> Update(GameConfig game);
 
-        Task<AutoRNGGameConfig> GetByName(string name);
+        Task<GameConfig> GetByName(string name);
 
         Task<bool> Delete(string name);
 
@@ -44,7 +44,7 @@ namespace GamesAdmin.Api.Games
             this.mapper = mapper;
         }
 
-        public Task<IEnumerable<AutoRNGGameConfig>> Get()
+        public Task<IEnumerable<GameConfig>> Get()
         => Task.Run(() =>
             {
                 try
@@ -52,28 +52,34 @@ namespace GamesAdmin.Api.Games
                     var gameEntities = repository.AsQueryable().ToList();
 
                     return gameEntities
-                        .Select(entity => mapper.Map<AutoRNGGameConfig>(entity));
+                        .Select(entity => mapper.Map<GameConfig>(entity));
                 }
                 catch (Exception ex)
                 {
                     sentryClient.CaptureException(ex);
 
-                    return Enumerable.Empty<AutoRNGGameConfig>();
+                    return Enumerable.Empty<GameConfig>();
                 }
             });
 
-        public async Task<bool> Create(AutoRNGGameConfig game)
+        public async Task<bool> Create(GameConfig game)
         {
             try
             {
                 var entity = new GameConfigEntity
                 {
                     Name = game.Info.Name,
+                    DisplayName = game.Info.DisplayName,
+                    Type = (byte)game.Info.Type,
+                    EnableFreeBet = game.Info.EnableFreeBet,
                     Enabled = game.EnableSetting.Enabled,
+                    DelayStartTime = game.EnableSetting.DelayStartTime,
+                    DisabledMessage = game.EnableSetting.DisabledMessage,
                     Maxbet = game.BetLimit.MaxBet,
                     Minbet = game.BetLimit.MinBet,
                     Botenabled = game.BotSetting.BotEnabled,
-                    DisabledMessage = game.EnableSetting.DisabledMessage,
+                    BotMaxBet = game.BotSetting.BotMaxBet,
+                    SlotsConfig = game.SlotsConfig,
                     Time = DateTime.Now
                 };
 
@@ -89,7 +95,7 @@ namespace GamesAdmin.Api.Games
             return true;
         }
 
-        public async Task<bool> Update(AutoRNGGameConfig game)
+        public async Task<bool> Update(GameConfig game)
         {
             try
             {
@@ -115,11 +121,11 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<AutoRNGGameConfig> GetByName(string name)
+        public async Task<GameConfig> GetByName(string name)
         {
             var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
 
-            return gameEntity != null ? mapper.Map<AutoRNGGameConfig>(gameEntity) : default;
+            return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
         }
 
         public async Task<bool> Delete(string name)

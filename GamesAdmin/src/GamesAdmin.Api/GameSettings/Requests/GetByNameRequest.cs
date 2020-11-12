@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
-    public class GetByNameRequest : IRequest<AutoRNGGameConfig>
+    public class GetByNameRequest : IRequest<GameConfig>
     {
         public GetByNameRequest(string name)
         {

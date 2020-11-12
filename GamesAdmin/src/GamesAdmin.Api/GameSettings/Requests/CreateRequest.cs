@@ -5,11 +5,11 @@ namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class CreateRequest: IRequest<bool>
     {
-        public CreateRequest(AutoRNGGameConfig game)
+        public CreateRequest(GameConfig game)
         {
             Game = game;
         }
 
-        public AutoRNGGameConfig Game { get; }
+        public GameConfig Game { get; }
     }
 }

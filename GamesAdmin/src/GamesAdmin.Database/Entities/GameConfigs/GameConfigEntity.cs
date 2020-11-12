@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database.Attributes;
-using GamesAdmin.Database.Entities.GameConfigs;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities

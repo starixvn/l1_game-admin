@@ -5,11 +5,11 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class UpdateRequest : IRequest<bool>
     {
-        public UpdateRequest(AutoRNGGameConfig game)
+        public UpdateRequest(GameConfig game)
         {
             Game = game;
         }
 
-        public AutoRNGGameConfig Game { get; }
+        public GameConfig Game { get; }
     }
 }

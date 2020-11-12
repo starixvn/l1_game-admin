@@ -12,19 +12,19 @@ namespace GamesAdmin.Site.Features.GameSettings
     public interface IGameSettingApi : IBaseAuthorizationApi
     {
         [Get("/game_settings")]
-        Task<IList<AutoRNGGameConfig>> GetAll();
+        Task<IList<GameConfig>> GetAll();
 
         [Post("/game_settings/")]
-        Task<bool> Add([Body] AutoRNGGameConfig game);
+        Task<bool> Add([Body] GameConfig game);
 
         [Put("/game_settings/")]
-        Task<bool> Update([Body] AutoRNGGameConfig game);
+        Task<bool> Update([Body] GameConfig game);
 
         [Post("/game_settings/{id}/delete")]
         Task<bool> Delete(string id);
 
         [Get("/game_settings/{name}")]
-        Task<AutoRNGGameConfig> GetByName(string name);
+        Task<GameConfig> GetByName(string name);
 
         [Put("/game_settings/update_status")]
         Task<bool> UpdateStatus(string[] names, bool enabled);
@@ -47,15 +47,15 @@ namespace GamesAdmin.Site.Features.GameSettings
 
     public interface IGameSettingService
     {
-        Task<IList<AutoRNGGameConfig>> GetAll();
+        Task<IList<GameConfig>> GetAll();
 
-        Task<bool> Update(AutoRNGGameConfig game);
+        Task<bool> Update(GameConfig game);
 
-        Task<bool> Add(AutoRNGGameConfig game);
+        Task<bool> Add(GameConfig game);
 
         Task<bool> Delete(string id);
 
-        Task<AutoRNGGameConfig> GetByName(string name);
+        Task<GameConfig> GetByName(string name);
 
         Task<bool> IsExistName(string name);
 
@@ -83,10 +83,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.gameApi = gameApi;
         }
 
-        public async Task<bool> Add(AutoRNGGameConfig game)
+        public async Task<bool> Add(GameConfig game)
         => await gameApi.Add(game);
 
-        public async Task<IList<AutoRNGGameConfig>> GetAll()
+        public async Task<IList<GameConfig>> GetAll()
         {
             try
             {
@@ -96,17 +96,17 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 sentryClient.CaptureException(ex);
 
-                return new List<AutoRNGGameConfig>();
+                return new List<GameConfig>();
             }
         }
 
-        public async Task<bool> Update(AutoRNGGameConfig game)
+        public async Task<bool> Update(GameConfig game)
         => await gameApi.Update(game);
 
         public async Task<bool> Delete(string id)
         => await gameApi.Delete(id);
 
-        public async Task<AutoRNGGameConfig> GetByName(string name)
+        public async Task<GameConfig> GetByName(string name)
         => await gameApi.GetByName(name);
 
         public async Task<bool> IsExistName(string name)

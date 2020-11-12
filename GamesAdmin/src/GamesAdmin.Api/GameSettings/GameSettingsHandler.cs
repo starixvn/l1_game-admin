@@ -8,15 +8,14 @@ using MediatR;
 namespace GamesAdmin.Api.Games
 {
     public class GameSettingsHandler
-        : IRequestHandler<GetAllRequest, IEnumerable<AutoRNGGameConfig>>
+        : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
-        , IRequestHandler<GetByNameRequest, AutoRNGGameConfig>
+        , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
     {
-        private const int MaxLengthOfMessage = 1000;
         private readonly IGameSettingsService gameService;
 
         public GameSettingsHandler(IGameSettingsService gamesService)
@@ -24,7 +23,7 @@ namespace GamesAdmin.Api.Games
             this.gameService = gamesService;
         }
 
-        public Task<IEnumerable<AutoRNGGameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
@@ -36,7 +35,7 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Name);
 
-        public Task<AutoRNGGameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
+        public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);
 
         public Task<bool> Handle(UpdateStatusRequest request, CancellationToken cancellationToken)
