@@ -1,13 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Games
 {
@@ -79,6 +79,7 @@ namespace GamesAdmin.Api.Games
                     Minbet = game.BetLimit.MinBet,
                     Botenabled = game.BotSetting.BotEnabled,
                     BotMaxBet = game.BotSetting.BotMaxBet,
+                    HoursMaxBot = game.BotSetting.HoursMaxBot,
                     SlotsConfig = game.SlotsConfig,
                     Time = DateTime.Now
                 };

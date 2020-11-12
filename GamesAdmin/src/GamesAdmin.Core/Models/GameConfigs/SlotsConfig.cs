@@ -22,10 +22,19 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
             for (var i = 0; i < total; i++)
             {
-                Icons.Add(i.ToString(), new Dictionary<string, float>());
+                Icons.Add(i.ToString(), GenerateDefaultOdds());
             }
 
             return this;
+        }
+
+        private Dictionary<string, float> GenerateDefaultOdds()
+        {
+            return new Dictionary<string, float> {
+                { "3" , 5},
+               { "4" , 10},
+               { "5" , 15},
+            };
         }
     }
 
