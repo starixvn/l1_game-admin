@@ -10,13 +10,13 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
     {
         public CreateRequest(
             GameInfo gameInfo, 
-            EnableSettings enableSettings,
-            BotSettings botSettings,
+            EnableSetting enableSetting,
+            BotSetting botSettings,
             BetLimit betLimit,
             SlotsConfigRequest slotsConfig)
         {
             GameInfo = gameInfo;
-            EnableSettings = enableSettings;
+            EnableSetting = enableSetting;
             BotSettings = botSettings;
             BetLimit = betLimit;
             SlotConfigs = slotsConfig;
@@ -24,9 +24,9 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 
         public GameInfo GameInfo { get; }
 
-        public EnableSettings EnableSettings { get; }
+        public EnableSetting EnableSetting { get; }
 
-        public BotSettings BotSettings { get; }
+        public BotSetting BotSettings { get; }
 
         public BetLimit BetLimit { get; }
 

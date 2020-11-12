@@ -17,16 +17,6 @@ namespace GamesAdmin.Site._Shared
     {
         public AutoMapping()
         {
-            CreateMap<AutoRNGGameConfig, Features.GameSettings.ViewModels.EditViewModel>();
-            CreateMap<AutoRNGGameConfig, StatusItemViewModel>();
-            CreateMap<AutoRNGGameConfig, MonitorItemViewModel>();
-            CreateMap<Features.GameSettings.ViewModels.AddViewModel, Features.GameSettings.Requests.SlotsConfigRequest>()
-                .ForMember(dest => dest.Stakes, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots)));
-            CreateMap<Features.GameSettings.ViewModels.AddViewModel, GameInfo>();
-            CreateMap<Features.GameSettings.ViewModels.AddViewModel, EnableSettings>();
-            CreateMap<Features.GameSettings.ViewModels.AddViewModel, BotSettings>();
-            CreateMap<Features.GameSettings.ViewModels.AddViewModel, BetLimit>();
-
             CreateMap<OnlineUser, OnlineUserViewModel>();
             CreateMap<BotUser, BotUserViewModel>();
 
@@ -85,16 +75,6 @@ namespace GamesAdmin.Site._Shared
 
         }
 
-        private static List<StakeLevel> ConvertStakeLevels(double[] stakes, double[] jackpots)
-        {
-            var stakeLevels = new List<StakeLevel>();
-
-            for (var i = 0; i < stakes.Length; i++)
-            {
-                stakeLevels.Add(new StakeLevel(stakes[i], jackpots[i]));
-            }
-
-            return stakeLevels;
-        }
+        
     }
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -36,7 +35,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UnderMaintenanceRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
-        private const string DefaultDisabledMessage = "Game đang được bảo trì, vui lòng quay lại sau 10 phút.";
         private const int DefaultBotMaxBet = 10;
 
         private readonly IMapper mapper;
@@ -88,11 +86,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (game != null)
             {
-                viewModel.BotMaxBet = game.BotMaxBet <= 0 ? DefaultBotMaxBet : game.BotMaxBet;
+                viewModel.BotMaxBet = game.BotSetting.BotMaxBet <= 0 ? DefaultBotMaxBet : game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
-                viewModel.BotRatioItems = GenerateBotRatioItems(game.HoursMaxBot, viewModel.BotCount);
-                viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Name, game.MaxBetChoices, game.MaxBet);
-                viewModel.BetChoiceOdds = GenerateOdds(game.Name, game.Odds);
+                viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
+                viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Info.Name, game.BetLimit.MaxBetChoices, game.BetLimit.MaxBet);
+                viewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
             }
 
             return viewModel;
@@ -166,24 +164,18 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
-        //TODO convert game type
+        //TODO input game type
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-        => gameService.Update(new AutoRNGGameConfig(
-            request.Game.Id,
-            new GameInfo(GameType.AutoRNG, request.Game.Name, request.Game.DisplayName, request.Game.EnableFreeBet),
-            new EnableSettings(request.Game.Enabled, request.Game.DisabledRound, request.Game.DelayStartTime, request.Game.DisabledMessage),
-            new BotSettings(request.Game.BotEnabled, request.Game.MaxBet, request.Game.HoursMaxBot),
-            new BetLimit(request.Game.MinBet, request.Game.MaxBet, request.Game.MaxBetChoices),
-            request.Game.Odds));
+        => gameService.Update(request.Game);
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new AutoRNGGameConfig(
             string.Empty,
+            new Dictionary<string, double>(),
             request.GameInfo,
-            request.EnableSettings,
+            request.EnableSetting,
             request.BotSettings,
-            request.BetLimit,
-            new Dictionary<string, double>()));
+            request.BetLimit));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);
@@ -194,7 +186,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<bool> Handle(UpdateBotRatioRequest request, CancellationToken cancellationToken)
         {
             var game = await gameService.GetByName(request.Name);
-            game.HoursMaxBot = request.BotRatios;
+            game.BotSetting.HoursMaxBot = request.BotRatios;
 
             return await gameService.Update(game);
         }
@@ -207,7 +199,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             if (gameConfigs?.Any() == true)
             {
                 gameList = gameConfigs
-                    .Select(game => mapper.Map<StatusItemViewModel>(game))
+                    .Select(game => new StatusItemViewModel(game))
                     .OrderBy(game => game.DisplayName)
                     .ToList();
             }
@@ -247,6 +239,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return await gameService.UpdateDisabledMessage(request.Name, request.DisabledMessage);
         }
 
+        //TODO remove load all games when update disable message
         public async Task<bool> Handle(UpdateAllDisabledMessageRequest request, CancellationToken cancellationToken)
         {
             if (request.DisabledMessage?.Length > MaxLengthOfMessage)
@@ -258,7 +251,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             foreach (var game in games)
             {
-                await gameService.UpdateDisabledMessage(game.Name, request.DisabledMessage);
+                await gameService.UpdateDisabledMessage(game.Info.Name, request.DisabledMessage);
             }
 
             return true;

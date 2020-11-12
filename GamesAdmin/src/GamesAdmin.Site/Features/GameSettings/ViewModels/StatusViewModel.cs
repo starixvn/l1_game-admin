@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -15,32 +15,30 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class StatusItemViewModel
     {
-        public StatusItemViewModel(string name, bool enabled, string disabledMessage)
+        public StatusItemViewModel(AutoRNGGameConfig gameConfig)
         {
-            Name = name;
-            Enabled = enabled;
-            DisabledMessage = disabledMessage;
+            GameConfig = gameConfig;
         }
 
-        public string Name { get; }
+        public AutoRNGGameConfig GameConfig { get; }
 
-        public string DisplayName =>  string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<Game>(Name)
-            ? Name
-            : Enumeration.FromValue<Game>(Name).DisplayName;
+        public string Name => GameConfig.Info.Name;
 
-        public bool Enabled { get; }
+        public string DisplayName => GameConfig.Info.DisplayName ?? GameConfig.Info.Name;
 
-        public bool BotEnabled { get; set; }
+        public bool Enabled => GameConfig.EnableSetting.Enabled;
+
+        public bool BotEnabled => GameConfig.BotSetting.BotEnabled;
 
         public string BotEnabledDisplay => BotEnabled ? "Yes" : "No";
 
         public string StatusDisplay => Enabled ? "Yes" : "No";
 
-        public string DisabledMessage { get; }
+        public string DisabledMessage => GameConfig.EnableSetting.DisabledMessage;
 
-        public double MinBet { get; set; }
+        public double MinBet => GameConfig.BetLimit.MinBet;
 
-        public double MaxBet { get; set; }
+        public double MaxBet => GameConfig.BetLimit.MaxBet;
     }
 
     public class GameDisableMessage

@@ -32,7 +32,7 @@ namespace GamesAdmin.Api.Games
         [HttpPost]
         public async Task<bool> Create(AutoRNGGameConfig game)
         {
-            if (string.IsNullOrWhiteSpace(game.Name))
+            if (string.IsNullOrWhiteSpace(game.Info.Name))
             {
                 return false;
             }

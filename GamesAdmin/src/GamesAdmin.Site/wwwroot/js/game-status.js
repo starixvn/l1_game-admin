@@ -406,10 +406,8 @@
         toogleSlotsConfig: function () {
             if ($('#Type').val() === "2") {
                 $('#slots-config').show();
-                $('#min-max-bet').hide();
             } else {
                 $('#slots-config').hide();
-                $('#min-max-bet').show();
             }
         },
 

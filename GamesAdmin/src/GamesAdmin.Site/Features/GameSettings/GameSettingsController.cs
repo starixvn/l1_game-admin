@@ -19,8 +19,6 @@ namespace GamesAdmin.Site.Features.GameSettings
     [Authorize]
     public class GameSettingsController : Controller
     {
-        private const int DefaultBotMaxBet = 10;
-
         private readonly IMediator mediator;
         private readonly ISentryClient sentryClient;
         private readonly IAppSettings appSettings;
@@ -43,11 +41,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                 //TODO input game type, input display name
                 await mediator.Send(new UpdateRequest(new AutoRNGGameConfig(
                    editViewModel.Id,
-                   new GameInfo(Core.Enumeration.GameType.AutoRNG, editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
-                   new EnableSettings(editViewModel.Enabled, null, editViewModel.DelayStartTime, editViewModel.DisabledMessage),
-                   new BotSettings(editViewModel.BotEnabled, editViewModel.BotMaxBet, null),
-                   new BetLimit(editViewModel.MinBet, editViewModel.MaxBet, editViewModel.MaxBetChoices),
-                   editViewModel.Odds)));
+                   editViewModel.Odds,
+                   new GameInfo(editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
+                   new EnableSetting(editViewModel.Enabled, null, editViewModel.DelayStartTime, editViewModel.DisabledMessage),
+                   new BotSetting(editViewModel.BotEnabled, editViewModel.BotMaxBet, null),
+                   new BetLimit(editViewModel.MinBet, editViewModel.MaxBet, editViewModel.MaxBetChoices)
+                   )));
 
                 return Json(true);
             }
@@ -68,8 +67,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             await mediator.Send(new CreateRequest(
                 mapper.Map<GameInfo>(addViewModel),
-                mapper.Map<EnableSettings>(addViewModel),
-                mapper.Map<BotSettings>(addViewModel),
+                mapper.Map<EnableSetting>(addViewModel),
+                mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
                 mapper.Map<SlotsConfigRequest>(addViewModel)));
 

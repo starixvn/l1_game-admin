@@ -2,17 +2,9 @@
 
 namespace GamesAdmin.Database.Entities.GameConfigs
 {
-    public class SlotsGameConfig
+    public class SlotsConfig
     {
-        public bool EnabledJackpot { get; set; }
-
         public byte Difficulty { get; set; }
-
-        public byte JackpotRTP { get; set; }
-
-        public float PlayerContributionRatio { get; set; }
-
-        public float BotContributionRatio { get; set; }
 
         public float BigWinRatio { get; set; }
 
@@ -21,6 +13,8 @@ namespace GamesAdmin.Database.Entities.GameConfigs
         public List<SlotIcon> Icons { get; set; }
 
         public Bonus Bonus { get; set; }
+
+        public Jacpot Jackpot { get; set; }
     }
 
     public class SlotsStakeLevel
@@ -32,7 +26,7 @@ namespace GamesAdmin.Database.Entities.GameConfigs
 
     public class SlotIcon
     {
-        public string Name { get; set; }
+        public int Index { get; set; }
 
         public List<SlotIconOdds> Odds { get; set; }
     }
@@ -49,5 +43,16 @@ namespace GamesAdmin.Database.Entities.GameConfigs
         public float Min { get; set; }
 
         public float Max { get; set; }
+    }
+
+    public class Jacpot
+    {
+        public bool Enabled { get; set; }
+
+        public byte RTP { get; set; }
+
+        public float PlayerContributionRatio { get; set; }
+
+        public float BotContributionRatio { get; set; }
     }
 }

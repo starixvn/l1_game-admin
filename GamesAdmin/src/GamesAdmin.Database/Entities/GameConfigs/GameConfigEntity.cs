@@ -42,6 +42,6 @@ namespace GamesAdmin.Database.Entities
 
         public bool EnableFreeBet { get; set; }
 
-        public SlotsGameConfig SlotsConfig { get; set; }
+        public SlotsConfig SlotsConfig { get; set; }
     }
 }
