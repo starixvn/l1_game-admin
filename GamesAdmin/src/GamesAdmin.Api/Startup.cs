@@ -1,4 +1,3 @@
-using System.Reflection;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
@@ -41,7 +40,7 @@ namespace GamesAdmin.Api
             var appSettings = new AppSettings(Configuration);
             services.AddSingleton<IAppSettings>(appSettings);
 
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(Startup));
             services.AddAutoMapper(typeof(Startup));
 
             services.AddDatabase(dbSettings);

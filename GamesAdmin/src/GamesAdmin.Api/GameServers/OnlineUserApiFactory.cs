@@ -13,7 +13,9 @@ namespace GamesAdmin.Api.GameServers
     {
         private readonly Dictionary<string, Type> onlineUserServices = new Dictionary<string, Type>
         {
-            { GameType.SeDieValue, typeof(ISedieOnlineUserApi) }
+            { GameType.SeDieValue, typeof(ISedieOnlineUserApi) },
+            { GameType.VipSeDieValue, typeof(IVipSedieOnlineUserApi) },
+            { GameType.SpecialSeDieValue, typeof(ISpecialSedieOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

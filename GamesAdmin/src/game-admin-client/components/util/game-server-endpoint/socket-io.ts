@@ -1,7 +1,7 @@
 import io from "socket.io-client";
-
 import logger from "../logger";
 import Websocket from "./websocket";
+
 
 export default class SocketIO extends Websocket {
   private socketIO: SocketIOClient.Socket;
@@ -9,7 +9,7 @@ export default class SocketIO extends Websocket {
   connect() {
     return new Promise((resolve) => {
       if (!this.isConnected) {
-        this.socketIO = io(this.endpoint, { transports: ["websocket"], upgrade: false });
+        this.socketIO = io(this.endpoint, { transports: ["websocket"], upgrade: false, path: this.endpointRoute });
         this.socketIO.on("connect", () => {
           this.isConnected = true;
           this.socketIO.on("message", this.onReceiveMessage.bind(this));

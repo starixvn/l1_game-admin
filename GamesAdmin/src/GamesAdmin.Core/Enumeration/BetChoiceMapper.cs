@@ -15,6 +15,7 @@ namespace GamesAdmin.Core.Enumeration
 
                 case GameType.OddEvenValue:
                 case GameType.OddEvenTurboValue:
+                case GameType.SpecialSeDieValue:
                     return Enumeration.GetAll<OddEvenBetChoice>();
 
                 case GameType.SeDieValue:
@@ -46,6 +47,9 @@ namespace GamesAdmin.Core.Enumeration
 
                 case GameType.RouletteValue:
                     return Enumeration.GetAll<RouletteBetChoice>();
+
+                case GameType.VipSeDieValue:
+                    return Enumeration.GetAll<VipSeDieBetChoice>();
 
                 default: return default;
             }

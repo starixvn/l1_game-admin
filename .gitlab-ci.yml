@@ -3,7 +3,7 @@ services:
   - docker:19.03.12-dind
 
 variables:
-  PROJECT_NAME: l1-game-admin
+  PROJECT_NAME: l2-game-admin
   SOLUTION_NAME: ./GamesAdmin/GamesAdmin.sln
 
 stages:
@@ -31,6 +31,9 @@ include:
   - project: 'lumi-ops/ci-scripts'
     ref: master
     file: 'docker/deploy-docker-cocos.gitlab-ci.yml'
+  - project: "lumi-ops/ci-scripts"
+    ref: master
+    file: "docker/deploy-swarm-service.gitlab-ci.yml"
   - .gitlab-ci/build-dotnet.gitlab-ci.yml
   - .gitlab-ci/admin-site/admin-site.gitlab-ci.yml
   - .gitlab-ci/admin-api/admin-api.gitlab-ci.yml

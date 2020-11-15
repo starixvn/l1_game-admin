@@ -18,12 +18,16 @@ post_build_admin_worker_uat:
 deploy_admin_worker_uat:
   extends:
     - .deploy_vars_admin_worker
-    - .base_deploy_kbt
+    - .base_deploy_swarm_service
     - .deploy-worker:uat:rules
   needs: ['post_build_admin_worker_uat']
   variables:
-    SERVER_IP: $SIT_IP
-    SERVER_USER: $SIT_USER
-    SERVER_PORT: $SIT_SSH_PORT
+    SERVER_IP: $SC_SWARM_LEADER_SIT
+    SERVER_USER: $SC_SWARM_LEADER_SIT_SSH_USER
+    SERVER_PORT: $SC_SWARM_LEADER_SIT_SSH_PORT
+    SWARM_NODES: $SC_SWARM_CLUSTER_SIT
+    SWARM_REPLICAS: 1
+    NODE_LABEL: L2
+    DOCKER_NETWORK_NAME: lumi-network
   environment:
     name: UAT

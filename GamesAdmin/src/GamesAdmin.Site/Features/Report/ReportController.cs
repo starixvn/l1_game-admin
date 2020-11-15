@@ -3,12 +3,11 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    [Authorize]
+    //[Authorize]
     public class ReportController : Controller
     {
         private readonly IMediator mediator;
@@ -131,6 +130,30 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult VipSeDie()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_VipSeDieRecords", await mediator.Send(new GetVipSeDieReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public IActionResult SpecialSeDie()
+        {
+            return View(new ReportViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSpecialSeDieBetHistory(long roundId, string userId)
+        {
+            return PartialView("_SpecialSeDieBetHistory", await mediator.Send(new GetSpecialSeDieBetHistoryRequest(roundId, userId)));
         }
 
         [HttpGet]

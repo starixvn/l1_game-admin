@@ -94,6 +94,39 @@ namespace GamesAdmin.Api._Shared
             CreateMap<RouletteBetEntity, RouletteBetHistoryRecord>();
 
             CreateMap<SpinResultEntity, SpinResult>();
+
+            CreateMap<VipSeDieRoundEntity, SeDieRoundResult>()
+                .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]
+                {
+                    source.Result.FirstRedChip,
+                    source.Result.SecondRedChip,
+                    source.Result.ThirdRedChip,
+                    source.Result.FourthRedChip
+                }))
+                .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
+                .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even))
+                .ForMember(x => x.TwoRed, opt => opt.MapFrom((source) => source.SettlementResult.TwoRed))
+                .ForMember(x => x.ThreeRed, opt => opt.MapFrom((source) => source.SettlementResult.ThreeRed))
+                .ForMember(x => x.FourRed, opt => opt.MapFrom((source) => source.SettlementResult.FourRed))
+                .ForMember(x => x.ThreeWhite, opt => opt.MapFrom((source) => source.SettlementResult.ThreeWhite))
+                .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite));
+
+            CreateMap<VipSeDieBetReportEntity, VipSeDieBetRecord>();
+
+            CreateMap<SpecialSeDieRoundEntity, SeDieRoundResult>()
+              .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]
+              {
+                    source.Result.FirstRedChip,
+                    source.Result.SecondRedChip,
+                    source.Result.ThirdRedChip,
+                    source.Result.FourthRedChip
+              }))
+              .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
+              .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even));
+            CreateMap<SpecialSeDieBetReportEntity, SpecialSeDieBetRecord>();
+
+            CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
+
         }
     }
 }
