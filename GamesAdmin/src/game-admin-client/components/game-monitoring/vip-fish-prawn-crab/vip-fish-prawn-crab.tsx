@@ -79,7 +79,7 @@ export default class VipFishPrawnCrab extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 8;
+      const waitingTime = 9;
       const result = this.getResult(data.finish.result);
       this.setState({
         result,
@@ -98,10 +98,10 @@ export default class VipFishPrawnCrab extends React.Component<
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 31,
+            remainingTime: 30,
           },
         });
-      }, (waitingTime + 3) * 1000);
+      }, (waitingTime + 4) * 1000);
     }
 
     if (!!data.remainingTime) {
