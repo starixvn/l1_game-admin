@@ -97,15 +97,15 @@
         @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
         {
             <div class="form-group">
-                <label asp-for="Mode" class="control-label"></label>
-                <select asp-items="@Model.ModeItems" asp-for="Mode" class="form-control"></select>
+                <label asp-for="@Model.SlotViewModel.Mode" class="control-label"></label>
+                <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.Mode" class="form-control"></select>
             </div>
 
             <fieldset class="slots-jackpot">
                 <legend>Stakes and Jackpot</legend>
 
                 <div class="form-group row">
-                    @foreach (var stake in Model.SlotsConfig.StakeLevels)
+                    @foreach (var stake in Model.SlotViewModel?.StakeLevels)
                     {
                         <div class="col-lg-4">
                             <label class="control-label">Stake: @stake.Stake - Jackpot: @stake.Jackpot</label>
@@ -113,30 +113,30 @@
                     }
                 </div>
 
-                @if (Model.SlotsConfig.Jackpot.Enabled)
+                @if (Model.SlotViewModel != null)
                 {
                     <div class="form-group row">
                         <div class="col-lg-4">
-                            <label class="control-label" asp-for="JackpotRTP"></label>
-                            <input type="number" asp-for="JackpotRTP" class="form-control" />
-                            <span asp-validation-for="JackpotRTP" class="text-danger"></span>
+                            <label class="control-label" asp-for="@Model.SlotViewModel.JackpotRTP"></label>
+                            <input type="number" asp-for="@Model.SlotViewModel.JackpotRTP" class="form-control" />
+                            <span asp-validation-for="@Model.SlotViewModel.JackpotRTP" class="text-danger"></span>
                         </div>
 
                         <div class="col-lg-4">
-                            <label class="control-label" asp-for="BotJackpotContribution"></label>
-                            <input type="number" asp-for="BotJackpotContribution" class="form-control" />
-                            <span asp-validation-for="BotJackpotContribution" class="text-danger"></span>
+                            <label class="control-label" asp-for="@Model.SlotViewModel.BotJackpotContribution"></label>
+                            <input type="number" asp-for="@Model.SlotViewModel.BotJackpotContribution" class="form-control" />
+                            <span asp-validation-for="@Model.SlotViewModel.BotJackpotContribution" class="text-danger"></span>
                         </div>
 
                         <div class="col-lg-4">
-                            <label class="control-label" asp-for="PlayerJackpotContribution"></label>
-                            <input type="number" asp-for="PlayerJackpotContribution" class="form-control" />
-                            <span asp-validation-for="PlayerJackpotContribution" class="text-danger"></span>
+                            <label class="control-label" asp-for="@Model.SlotViewModel.PlayerJackpotContribution"></label>
+                            <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
+                            <span asp-validation-for="@Model.SlotViewModel.PlayerJackpotContribution" class="text-danger"></span>
                         </div>
                     </div>
                 }
 
-                @foreach (var icon in Model.SlotsConfig.Icons)
+                @foreach (var icon in Model.SlotViewModel?.Icons)
                 {
                     <legend>Icon @icon.Key</legend>
                     <div class="form-group row">
@@ -161,22 +161,22 @@
                 <div class="form-group row">
                     <div class="col-lg-6">
                         <label class="control-label">Min</label>
-                        <input type="number" asp-for="MinBonus" class="form-control" />
-                        <span asp-validation-for="MinBonus" class="text-danger"></span>
+                        <input type="number" asp-for="@Model.SlotViewModel.MinBonus" class="form-control" />
+                        <span asp-validation-for="@Model.SlotViewModel.MinBonus" class="text-danger"></span>
                     </div>
 
                     <div class="col-lg-6">
                         <label class="control-label">Max</label>
-                        <input type="number" asp-for="MaxBonus" class="form-control" />
-                        <span asp-validation-for="MaxBonus" class="text-danger"></span>
+                        <input type="number" asp-for="@Model.SlotViewModel.MaxBonus" class="form-control" />
+                        <span asp-validation-for="@Model.SlotViewModel.MaxBonus" class="text-danger"></span>
                     </div>
                 </div>
             </fieldset>
             <br />
 
             <div class="form-group">
-                <label asp-for="BigWinRatio" class="control-label"></label>
-                <input type="number" asp-for="BigWinRatio" class="form-control" />
+                <label asp-for="@Model.SlotViewModel.BigWinRatio" class="control-label"></label>
+                <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
             </div>
         }
 

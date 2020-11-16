@@ -1,0 +1,37 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.GameConfigs;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace GamesAdmin.Site.Features.GameSettings.ViewModels
+{
+    public class SlotViewModel
+    {
+        public GameMode Mode { get; set; }
+
+        public List<SelectListItem> ModeItems { get; set; }
+
+        public List<StakeLevel> StakeLevels { get; set; }
+
+        public Dictionary<string, Dictionary<string, float>> Icons { get; set; }
+
+        public double MinBonus { get; set; }
+
+        public double MaxBonus { get; set; }
+
+        public bool JackpotEnabled { get; set; }
+
+        [DisplayName("RTP")]
+        public double JackpotRTP { get; set; }
+
+        [DisplayName("Bot Contribution")]
+        public double BotJackpotContribution { get; set; }
+
+        [DisplayName("Player Contribution")]
+        public double PlayerJackpotContribution { get; set; }       
+
+        [DisplayName("Big Win Ratio")]
+        public double BigWinRatio { get; set; }
+    }
+}

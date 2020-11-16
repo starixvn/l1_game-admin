@@ -23,14 +23,16 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.DelayStartTime, opt => opt.MapFrom(src => src.EnableSetting.DelayStartTime))
                 .ForMember(dest => dest.BotMaxBet, opt => opt.MapFrom(src => src.BotSetting.BotMaxBet))
                 .ForMember(dest => dest.BotEnabled, opt => opt.MapFrom(src => src.BotSetting.BotEnabled))
-                .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotSetting.HoursMaxBot))
-                .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.SlotsConfig.Bonus.Min))
-                .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.SlotsConfig.Bonus.Max))
-                .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.RTP))
-                .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.PlayerContributionRatio))
-                .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.BotContributionRatio))
-                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.SlotsConfig.Mode))
-                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.SlotsConfig.BigWinRatio.Round()));
+                .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotSetting.HoursMaxBot));
+
+            CreateMap<SlotsConfig, SlotViewModel>()
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
+                .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.Bonus.Min))
+                .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.Bonus.Max))
+                .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.Jackpot.RTP))
+                .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio))
+                .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio))
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.Round()));
 
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<GameConfig, MonitorItemViewModel>();

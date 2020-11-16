@@ -90,11 +90,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
-                viewModel.ModeItems = difficultyItems;
 
-                var choices = GetBetChoices(game.Info.Name);
-                viewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
-                viewModel.BetChoiceOdds = GenerateOdds(choices, game.Odds);
+                if (game.Info.Type == GameType.Slots)
+                {
+                    viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
+                    viewModel.SlotViewModel.ModeItems = difficultyItems;
+                }
+                else
+                {
+                    var choices = GetBetChoices(game.Info.Name);
+                    viewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
+                    viewModel.BetChoiceOdds = GenerateOdds(choices, game.Odds);
+                }
             }
 
             return viewModel;

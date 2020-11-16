@@ -78,25 +78,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public SlotsConfig SlotsConfig { get; set; }
 
-        public double MinBonus { get; set; }
-
-        public double MaxBonus { get; set; }
-
-        [DisplayName("RTP")]
-        public double JackpotRTP { get; set; }
-
-        [DisplayName("Bot Contribution")]
-        public double BotJackpotContribution { get; set; }
-
-        [DisplayName("Player Contribution")]
-        public double PlayerJackpotContribution { get; set; }
-
-        public GameMode Mode { get; set; }
-
-        public List<SelectListItem> ModeItems { get; set; }
-
-        [DisplayName("Big Win Ratio")]
-        public double BigWinRatio { get; set; }
+        public SlotViewModel SlotViewModel { get; set; }
     }
 
     public class BotRatioItemViewModel
