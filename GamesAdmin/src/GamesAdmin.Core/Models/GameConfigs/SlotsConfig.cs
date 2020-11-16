@@ -29,13 +29,12 @@ namespace GamesAdmin.Core.Models.GameConfigs
         }
 
         private Dictionary<string, float> GenerateDefaultOdds()
-        {
-            return new Dictionary<string, float> {
-                { "3" , 5},
-               { "4" , 10},
-               { "5" , 15},
+        => new Dictionary<string, float> {
+                { "2" , 0},
+                { "3" , 0},
+                { "4" , 0},
+                { "5" , 0},
             };
-        }
     }
 
     public class SlotIconOdds

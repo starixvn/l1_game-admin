@@ -410,8 +410,6 @@
                 $('#slots-config').hide();
             }
         },
-
-        onAddSettings: function () { }
     }
 }(jQuery));
 

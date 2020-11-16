@@ -162,8 +162,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return BetChoiceMapper.Map(Enumeration.FromValue<Game>(name));
         }
-
-        //TODO input game type
+        
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(request.Game);
 

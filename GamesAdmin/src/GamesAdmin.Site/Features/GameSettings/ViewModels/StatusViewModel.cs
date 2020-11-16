@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
@@ -30,15 +32,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool BotEnabled => GameConfig.BotSetting.BotEnabled;
 
-        public string BotEnabledDisplay => BotEnabled ? "Yes" : "No";
-
-        public string StatusDisplay => Enabled ? "Yes" : "No";
-
         public string DisabledMessage => GameConfig.EnableSetting.DisabledMessage;
 
-        public double MinBet => GameConfig.BetLimit.MinBet;
-
-        public double MaxBet => GameConfig.BetLimit.MaxBet;
+        public string MinMaxBet => GameConfig.Info.Type == GameType.Slots
+            ? string.Join(" - ", GameConfig.SlotsConfig.StakeLevels.Select(x => x.Stake).ToArray())
+            : $"{GameConfig.BetLimit.MinBet} - {GameConfig.BetLimit.MaxBet}";
     }
 
     public class GameDisableMessage
