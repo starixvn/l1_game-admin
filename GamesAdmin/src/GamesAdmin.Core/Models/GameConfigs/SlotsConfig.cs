@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
     {
         public byte Difficulty { get; set; }
 
-        public float BigWinRatio { get; set; }
+        public double BigWinRatio { get; set; }
 
         public List<StakeLevel> StakeLevels { get; set; }
 

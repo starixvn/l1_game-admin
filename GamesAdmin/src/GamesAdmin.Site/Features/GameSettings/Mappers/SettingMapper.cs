@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -10,9 +12,28 @@ namespace GamesAdmin.Site.Features.GameSettings
     {
         public SettingMapper()
         {
-            CreateMap<GameConfig, EditViewModel>();
+            CreateMap<GameConfig, EditViewModel>()
+                .ForMember(dest => dest.EnableFreeBet, opt => opt.MapFrom(src => src.Info.EnableFreeBet))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type))
+                .ForMember(dest => dest.MinBet, opt => opt.MapFrom(src => src.BetLimit.MinBet))
+                .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
+                .ForMember(dest => dest.MaxBetChoices, opt => opt.MapFrom(src => src.BetLimit.MaxBetChoices))
+                .ForMember(dest => dest.Enabled, opt => opt.MapFrom(src => src.EnableSetting.Enabled))
+                .ForMember(dest => dest.DisabledMessage, opt => opt.MapFrom(src => src.EnableSetting.DisabledMessage))
+                .ForMember(dest => dest.DelayStartTime, opt => opt.MapFrom(src => src.EnableSetting.DelayStartTime))
+                .ForMember(dest => dest.BotMaxBet, opt => opt.MapFrom(src => src.BotSetting.BotMaxBet))
+                .ForMember(dest => dest.BotEnabled, opt => opt.MapFrom(src => src.BotSetting.BotEnabled))
+                .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotSetting.HoursMaxBot))
+                .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.SlotsConfig.Bonus.Min))
+                .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.SlotsConfig.Bonus.Max))
+                .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.RTP))
+                .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.PlayerContributionRatio))
+                .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.BotContributionRatio))
+                .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (SlotDifficulties)src.SlotsConfig.Difficulty))
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.SlotsConfig.BigWinRatio.Round()));
+
             CreateMap<GameConfig, StatusItemViewModel>();
-            CreateMap<GameConfig, MonitorItemViewModel>();            
+            CreateMap<GameConfig, MonitorItemViewModel>();
 
             CreateMap<AddViewModel, SlotsConfig>()
                 .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (byte)src.Difficulty))

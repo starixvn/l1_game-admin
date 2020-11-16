@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -39,18 +41,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
-        public int BotCount { get; set; }
-
         [Required(ErrorMessage = "Maximum Bet could not empty")]
         [Range(MinBetAmount, int.MaxValue)]
         [DisplayName("Bot Maximum Bet Limit")]
         public double BotMaxBet { get; set; }
-
-        public double[] HoursMaxBot { get; set; }
-
-        public List<BotRatioItemViewModel> BotRatioItems { get; set; }
-
-        public string DisabledMessage { get; set; }
 
         public List<MaxBetChoiceViewModel> BetChoiceBetSettings { get; set; }
 
@@ -69,13 +63,49 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Enable Free Bet")]
         public bool EnableFreeBet { get; set; }
+
+        public GameType Type { get; set; }
+
+        public string TypeDisplay => Type == 0 ? Enum.GetName(typeof(GameType), GameType.AutoRNG) : Enum.GetName(typeof(GameType), Type);
+
+        public string DisabledMessage { get; set; }
+
+        public int BotCount { get; set; }
+
+        public double[] HoursMaxBot { get; set; }
+
+        public List<BotRatioItemViewModel> BotRatioItems { get; set; }
+
+        public SlotsConfig SlotsConfig { get; set; }
+
+        public double MinBonus { get; set; }
+
+        public double MaxBonus { get; set; }
+
+        [DisplayName("RTP")]
+        public double JackpotRTP { get; set; }
+
+        [DisplayName("Bot Contribution")]
+        public double BotJackpotContribution { get; set; }
+
+        [DisplayName("Player Contribution")]
+        public double PlayerJackpotContribution { get; set; }
+
+        public SlotDifficulties Difficulty { get; set; }
+
+        public List<SelectListItem> DifficultyItems { get; set; }
+
+        [DisplayName("Big Win Ratio")]
+        public double BigWinRatio { get; set; }
     }
 
     public class BotRatioItemViewModel
     {
         private const int MaxPercentage = 100;
 
-        public BotRatioItemViewModel() { }
+        public BotRatioItemViewModel()
+        {
+        }
 
         public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot)
         {

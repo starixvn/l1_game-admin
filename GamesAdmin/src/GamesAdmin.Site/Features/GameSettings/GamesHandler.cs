@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -35,7 +36,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UnderMaintenanceRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
-        private const int DefaultBotMaxBet = 10;
 
         private readonly IMapper mapper;
 
@@ -64,33 +64,37 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<GameType>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            var dificultyItems = Enum.GetValues(typeof(SlotDifficulties))
+            var difficultyItems = Enum.GetValues(typeof(SlotDifficulties))
                 .Cast<SlotDifficulties>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            return Task.FromResult(new AddViewModel(types, dificultyItems));
+            return Task.FromResult(new AddViewModel(types, difficultyItems));
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
         {
-            var game = string.IsNullOrWhiteSpace(request.Name)
-                ? (await gameService.GetAll()).FirstOrDefault()
-                : await gameService.GetByName(request.Name);
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                return new EditViewModel();
+            }
+
+            var game = await gameService.GetByName(request.Name);
+            var difficultyItems = Enum.GetValues(typeof(SlotDifficulties))
+                .Cast<SlotDifficulties>()
+                .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
-            if (viewModel == null)
-            {
-                viewModel = new EditViewModel();
-            }
-
             if (game != null)
             {
-                viewModel.BotMaxBet = game.BotSetting.BotMaxBet <= 0 ? DefaultBotMaxBet : game.BotSetting.BotMaxBet;
+                viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
-                viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Info.Name, game.BetLimit.MaxBetChoices, game.BetLimit.MaxBet);
-                viewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                viewModel.DifficultyItems = difficultyItems;
+
+                var choices = GetBetChoices(game.Info.Name);
+                viewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
+                viewModel.BetChoiceOdds = GenerateOdds(choices, game.Odds);
             }
 
             return viewModel;
@@ -116,52 +120,40 @@ namespace GamesAdmin.Site.Features.GameSettings
             return botRatioItems.OrderBy(item => item.GreenwichHour).ToList();
         }
 
-        private List<MaxBetChoiceViewModel> GenerateBetSettings(string name, Dictionary<string, double> maxBetChoices, double maxbet)
+        private List<MaxBetChoiceViewModel> GenerateBetSettings(IEnumerable<Enumeration> betChoices, BetLimit betLimit)
         {
-            var items = new List<MaxBetChoiceViewModel>();
-
-            if (string.IsNullOrWhiteSpace(name))
+            if (betChoices == default)
             {
-                return items;
+                return new List<MaxBetChoiceViewModel>();
             }
 
-            var gameType = Enumeration.FromValue<Game>(name);
-            var betChoices = BetChoiceMapper.Map(gameType);
-
-            if (betChoices != default)
-            {
-                foreach (var choice in betChoices)
-                {
-                    var maxBet = maxBetChoices.ContainsKey(choice.Value) ? maxBetChoices[choice.Value] : maxbet;
-                    items.Add(new MaxBetChoiceViewModel(choice.Value, maxBet, choice.DisplayName));
-                }
-            }
-
-            return items;
+            return betChoices.Select(choice => new MaxBetChoiceViewModel(
+                choice.Value,
+                betLimit.MaxBetChoices.ContainsKey(choice.Value) ? betLimit.MaxBetChoices[choice.Value] : betLimit.MaxBet,
+                choice.DisplayName)).ToList();
         }
 
-        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
+        private List<OddsViewModel> GenerateOdds(IEnumerable<Enumeration> betChoices, Dictionary<string, double> oddsSettings)
         {
-            var items = new List<OddsViewModel>();
-
-            if (string.IsNullOrWhiteSpace(name))
+            if (betChoices == default)
             {
-                return items;
+                return new List<OddsViewModel>();
             }
 
-            var gameType = Enumeration.FromValue<Game>(name);
-            var betOdds = BetOddsMapper.Map(gameType);
+            return betChoices.Select(choice => new OddsViewModel(
+                choice.Value,
+                oddsSettings.ContainsKey(choice.Value) ? oddsSettings[choice.Value] : 0,
+                choice.DisplayName)).ToList();
+        }
 
-            if (betOdds != default)
+        private IEnumerable<Enumeration> GetBetChoices(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || !Enumeration.Contains<Game>(name))
             {
-                foreach (var odd in betOdds)
-                {
-                    var odds = oddsSettings.ContainsKey(odd.Value) ? oddsSettings[odd.Value] : 0;
-                    items.Add(new OddsViewModel(odd.Value, odds, odd.DisplayName));
-                }
+                return default;
             }
 
-            return items;
+            return BetChoiceMapper.Map(Enumeration.FromValue<Game>(name));
         }
 
         //TODO input game type

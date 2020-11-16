@@ -9,5 +9,8 @@ namespace GamesAdmin.Site.Extensions
 
         public static double ToPercentage(this double number)
         => Math.Round(number * Hundredth, RoundDigits);
+
+        public static double Round(this double number)
+       => Math.Round(number, RoundDigits);
     }
 }
