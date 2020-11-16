@@ -64,8 +64,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<GameType>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            var difficultyItems = Enum.GetValues(typeof(SlotDifficulties))
-                .Cast<SlotDifficulties>()
+            var difficultyItems = Enum.GetValues(typeof(GameMode))
+                .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
             return Task.FromResult(new AddViewModel(types, difficultyItems));
@@ -79,8 +79,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             var game = await gameService.GetByName(request.Name);
-            var difficultyItems = Enum.GetValues(typeof(SlotDifficulties))
-                .Cast<SlotDifficulties>()
+            var difficultyItems = Enum.GetValues(typeof(GameMode))
+                .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
             var viewModel = mapper.Map<EditViewModel>(game);
@@ -90,7 +90,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
-                viewModel.DifficultyItems = difficultyItems;
+                viewModel.ModeItems = difficultyItems;
 
                 var choices = GetBetChoices(game.Info.Name);
                 viewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);

@@ -16,8 +16,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public AddViewModel(List<SelectListItem> gameTypes, List<SelectListItem> difficultyItems)
         {
             GameTypes = gameTypes;
-            DifficultyItems = difficultyItems;
-            Difficulty = SlotDifficulties.Medium;
+            ModeItems = difficultyItems;
+            Mode = GameMode.Medium;
             Stakes = new double[] { 0, 0, 0 };
             Jackpots = new double[] { 0, 0, 0 };
         }
@@ -52,9 +52,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Enable Free Bet")]
         public bool EnableFreeBet { get; set; }
 
-        public SlotDifficulties Difficulty { get; set; }
+        public GameMode Mode { get; set; }
 
-        public List<SelectListItem> DifficultyItems { get; set; }
+        public List<SelectListItem> ModeItems { get; set; }
 
         [DisplayName("Number of Slot Icons")]
         public byte NumberOfIcons { get; set; }

@@ -29,14 +29,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.RTP))
                 .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.PlayerContributionRatio))
                 .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.SlotsConfig.Jackpot.BotContributionRatio))
-                .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (SlotDifficulties)src.SlotsConfig.Difficulty))
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.SlotsConfig.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.SlotsConfig.BigWinRatio.Round()));
 
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<GameConfig, MonitorItemViewModel>();
 
             CreateMap<AddViewModel, SlotsConfig>()
-                .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (byte)src.Difficulty))
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.StakeLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots)))
                 .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)))
                 .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => new Jackpot(src.EnableJackpot, src.JackpotRTP, src.PlayerJackpotContribution, src.BotJackpotContribution)));

@@ -91,9 +91,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Player Contribution")]
         public double PlayerJackpotContribution { get; set; }
 
-        public SlotDifficulties Difficulty { get; set; }
+        public GameMode Mode { get; set; }
 
-        public List<SelectListItem> DifficultyItems { get; set; }
+        public List<SelectListItem> ModeItems { get; set; }
 
         [DisplayName("Big Win Ratio")]
         public double BigWinRatio { get; set; }

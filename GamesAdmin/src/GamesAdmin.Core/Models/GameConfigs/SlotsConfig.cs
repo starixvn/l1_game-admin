@@ -4,7 +4,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class SlotsConfig
     {
-        public byte Difficulty { get; set; }
+        public byte Mode { get; set; }
 
         public double BigWinRatio { get; set; }
 

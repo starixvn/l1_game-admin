@@ -1,6 +1,6 @@
 ﻿namespace GamesAdmin.Core.Enumeration
 {
-    public enum SlotDifficulties
+    public enum GameMode
     {
         Easy = 1,
         Medium,
