@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name => GameConfig.Info.Name;
 
-        public string DisplayName => GameConfig.Info.DisplayName ?? GameConfig.Info.Name;
+        public string DisplayName => GameConfig.Info.DisplayName ?? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName;
 
         public bool Enabled => GameConfig.EnableSetting.Enabled;
 

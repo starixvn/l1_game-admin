@@ -162,7 +162,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return BetChoiceMapper.Map(Enumeration.FromValue<Game>(name));
         }
-        
+
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(request.Game);
 
@@ -234,7 +234,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             return await gameService.UpdateDisabledMessage(request.Name, request.DisabledMessage);
         }
 
-        //TODO remove load all games when update disable message
         public async Task<bool> Handle(UpdateAllDisabledMessageRequest request, CancellationToken cancellationToken)
         {
             if (request.DisabledMessage?.Length > MaxLengthOfMessage)
@@ -242,14 +241,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return false;
             }
 
-            var games = await gameService.GetAll();
-
-            foreach (var game in games)
-            {
-                await gameService.UpdateDisabledMessage(game.Info.Name, request.DisabledMessage);
-            }
-
-            return true;
+            return await gameService.UpdateDisabledMessage(string.Empty, request.DisabledMessage, true);
         }
 
         public Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)

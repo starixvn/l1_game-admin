@@ -9,7 +9,6 @@
     <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
-
 <div class="col-md-12 col-lg-12 game-status">
     <div class="list-actions">
         <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
@@ -17,7 +16,6 @@
         <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
         <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
     </div>
-
 
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
     {
@@ -182,12 +180,10 @@
                                                 </td>
                                             </tr>
                                         }
-
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
@@ -283,7 +279,7 @@
     </div>
 </div>
 
-
 @section Scripts{
-    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    @*<script src="~/js/game-status.min.js" asp-append-version="true"></script>*@
+    <script src="~/js/game-status.js"></script>
 }

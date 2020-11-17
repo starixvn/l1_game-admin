@@ -51,9 +51,13 @@ namespace GamesAdmin.Api.Games
         [HttpPut("update_status")]
         public Task<bool> UpdateStatus(string[] names, bool enabled)
            => mediator.Send(new UpdateStatusRequest(names, enabled));
-
+        
         [HttpPut("{name}/update_message")]
         public Task<bool> UpdateMessage(string name, string disabledMessage)
            => mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+
+        [HttpPut("update_message_all")]
+        public Task<bool> UpdateMessage(string disabledMessage)
+           => mediator.Send(new UpdateDisabledMessageRequest(string.Empty, disabledMessage, true));
     }
 }

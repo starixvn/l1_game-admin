@@ -42,6 +42,6 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateStatus(request.Names, request.Enabled);
 
         public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateDisbledMessage(request.Name, request.Message);
+        => gameService.UpdateDisbledMessage(request.Name, request.Message, request.IsApplyAll);
     }
 }

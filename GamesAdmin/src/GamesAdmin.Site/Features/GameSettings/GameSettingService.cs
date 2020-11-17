@@ -32,6 +32,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Put("/game_settings/{name}/update_message")]
         Task<bool> UpdateMessage(string name, string disabledMessage);
 
+        [Put("/game_settings/update_message_all")]
+        Task<bool> UpdateMessage(string disabledMessage);
+
         [Post("/game_server/reload")]
         Task<bool> Reload();
 
@@ -61,7 +64,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisabledMessage(string name, string message);
+        Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false);
 
         Task<bool> Reload();
 
@@ -119,8 +122,19 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateStatus(string[] names, bool enabled)
         => gameApi.UpdateStatus(names, enabled);
 
-        public Task<bool> UpdateDisabledMessage(string name, string message)
-        => gameApi.UpdateMessage(name, message);
+        public async Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false)
+        {
+            try
+            {
+                return isApplyAll ? await gameApi.UpdateMessage(message) : await gameApi.UpdateMessage(name, message);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+
+            return false;
+        }
 
         public Task<bool> Reload()
         => gameApi.Reload();

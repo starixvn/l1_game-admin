@@ -25,7 +25,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisbledMessage(string name, string disabledMessage);
+        Task<bool> UpdateDisbledMessage(string name, string disabledMessage, bool isApplyAll = false);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -164,12 +164,20 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateDisbledMessage(string name, string disabledMessage)
+        public async Task<bool> UpdateDisbledMessage(string name, string disabledMessage, bool isApplyAll = false)
         {
             try
             {
                 var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.DisabledMessage), disabledMessage);
-                await repository.UpdateAsync(config => config.Name == name, update);
+
+                if (isApplyAll)
+                {
+                    await repository.UpdateManyAsync(config => true, update);
+                }
+                else
+                {
+                    await repository.UpdateAsync(config => config.Name == name, update);
+                }
 
                 return true;
             }
