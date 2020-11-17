@@ -142,13 +142,10 @@ export default class VipFishPrawnCrab extends React.Component<
     });
 
     for (const user in data) {
-      const { currency, betTracks } = data[user];
+      const { betTracks } = data[user];
       Object.keys(betTracks).forEach((key) => {
         if (betTracks[key]) {
-          if (!currency || currency.toUpperCase() !== "UUS") {
-            currentData[key].total += betTracks[key];
-          }
-
+          currentData[key].total += betTracks[key];
           currentData[key].dataList.unshift(
             new BetItem(data[user].name, betTracks[key])
           );
