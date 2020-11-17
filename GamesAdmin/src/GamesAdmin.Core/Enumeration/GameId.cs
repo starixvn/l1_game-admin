@@ -25,6 +25,7 @@
         VipSeDie, 
         Blackjack,
         SpecialSeDie = 24,
-        VipFishPrawnCrab = 26
+        VipFishPrawnCrab = 26,
+        VipSicBo
     }
 }
