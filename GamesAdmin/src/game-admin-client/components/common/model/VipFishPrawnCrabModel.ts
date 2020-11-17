@@ -27,6 +27,18 @@ class VipFishPrawnCrabBetList {
   }
 }
 
+class VipFishPrawnCrabSettlementResult {
+  gourd: boolean;
+  fish: boolean;
+  crab: boolean;
+  rooster: boolean;
+  stag: boolean;
+  prawn: boolean;
+  anyTriple: boolean;
+  mountain: boolean;
+  ocean: boolean;
+}
+
 class GameResult {
   "dice-0": number;
   "dice-1": number;
@@ -48,8 +60,8 @@ export default class VipFishPrawnCrabModel {
   currentDiceNumber: number;
   isHandleNextRoundResult: boolean;
   nextRoudResult: GameResult;
-  winners: Array<boolean>;
   gameState: number;
+  settlementResult: VipFishPrawnCrabSettlementResult
 
   constructor() {
     this.result = [
@@ -62,8 +74,8 @@ export default class VipFishPrawnCrabModel {
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
     this.nextRoudResult = new GameResult();
-    this.winners = [false, false, false, false, false, false, false];
     this.gameState = 0;
+    this.settlementResult = new VipFishPrawnCrabSettlementResult();
   }
 }
 
