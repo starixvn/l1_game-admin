@@ -269,7 +269,7 @@ export default class VipFishPrawnCrab extends React.Component<
               <TotalBet
                 total={betList.prawn.total}
                 type="tom"
-                isWin={settlementResult.fish}
+                isWin={settlementResult.prawn}
               ></TotalBet>
             </Row>
           </Col>
