@@ -117,6 +117,17 @@ export class Home extends React.Component<Props, State> {
                             ? process.env.NEXT_PUBLIC_VIP_FISH_PRAWN_CRAB_SERVER_PROXY_ROUTE
                             : Cookies.get('vip-fish-prawn-crab-server-endpoint-route'),
                 };
+            case gameNameMapper.vipsicbo:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_VIP_SIC_BO_SERVER_ENDPOINT
+                            : Cookies.get('vip-sic-bo-server-endpoint'),
+                    route:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_VIP_SIC_BO_SERVER_PROXY_ROUTE
+                            : Cookies.get('vip-sic-bo-server-endpoint-route'),
+                };        
             default:
                 return {
                     endpoint:
