@@ -55,6 +55,9 @@ namespace GamesAdmin.Core.Enumeration
                 case GameType.VipFishPrawnCrabValue:
                     return Enumeration.GetAll<VipFishPrawnCrabBetOdds>();
 
+                case GameType.BlackJackValue:
+                    return Enumeration.GetAll<BlackjackBetChoice>();
+
                 default: return default;
             }
         }
