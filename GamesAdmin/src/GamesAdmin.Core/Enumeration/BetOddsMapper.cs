@@ -59,7 +59,7 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<BlackjackBetChoice>();
                     
                 case GameType.VipSicBoValue:
-                    return Enumeration.GetAll<VipSicBoBetChoice>();
+                    return Enumeration.GetAll<VipSicBoBetOdds>();
 
                 default: return default;
             }
