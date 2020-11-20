@@ -3,43 +3,46 @@ import TimeModel from "./TimeModel";
 import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
 
-class VipSicBoBetList {
-  "1point": BetList;
-  "2points": BetList;
-  "3points": BetList;
-  "4points": BetList;
-  "5points": BetList;
-  "6points": BetList;
+class SicBoBetList {
+  specificNumber: BetList;
   big: BetList;
   small: BetList;
-  odd: BetList;
-  even: BetList;
+  anyTriple: BetList;
+  totalPoints: BetList;
 
   constructor() {
-    this["1point"] = new BetList();
-    this["2points"] = new BetList();
-    this["3points"] = new BetList();
-    this["4points"] = new BetList();
-    this["5points"] = new BetList();
-    this["6points"] = new BetList();
+    this.specificNumber = new BetList();
     this.big = new BetList();
     this.small = new BetList();
-    this.odd = new BetList();
-    this.even = new BetList();
+    this.anyTriple = new BetList();
+    this.totalPoints = new BetList();
   }
 }
 
-class VipSicBoSettlementResult {
-  "1point": boolean;
-  "2points": boolean;
-  "3points": boolean;
-  "4points": boolean;
-  "5points": boolean;
-  "6points": boolean;
+class SicBoSettlementResult {
+  specific1: boolean;
+  specific2: boolean;
+  specific3: boolean;
+  specific4: boolean;
+  specific5: boolean;
+  specific6: boolean;
   big: boolean;
   small: boolean;
-  odd: boolean;
-  even: boolean;
+  anyTriple: boolean;
+  total4: boolean;
+  total5: boolean;
+  total6: boolean;
+  total7: boolean;
+  total8: boolean;
+  total9: boolean;
+  total10: boolean;
+  total11: boolean;
+  total12: boolean;
+  total13: boolean;
+  total14: boolean;
+  total15: boolean;
+  total16: boolean;
+  total17: boolean;
 }
 
 class GameResult {
@@ -54,17 +57,17 @@ class GameResult {
   }
 }
 
-export default class VipSicBoModel {
+export default class SicBoModel {
   roundNumber: number;
   time: TimeModel;
-  betList: VipSicBoBetList;
+  betList: SicBoBetList;
   result: DiceModel[];
   isOpenModal: boolean;
   currentDiceNumber: number;
   isHandleNextRoundResult: boolean;
   nextRoudResult: DiceModel[];
   gameState: number;
-  settlementResult: VipSicBoSettlementResult;
+  settlementResult: SicBoSettlementResult;
 
   constructor() {
     this.result = [
@@ -72,14 +75,14 @@ export default class VipSicBoModel {
       new DiceModel(-1, DiceType.TaiXiu),
       new DiceModel(-1, DiceType.TaiXiu),
     ];
-    this.betList = new VipSicBoBetList();
+    this.betList = new SicBoBetList();
     this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
     this.gameState = 0;
     this.nextRoudResult = [];
-    this.settlementResult = new VipSicBoSettlementResult();
+    this.settlementResult = new SicBoSettlementResult();
   }
 }
 
-export { VipSicBoModel, VipSicBoBetList, GameResult };
+export { SicBoModel, SicBoBetList, GameResult };

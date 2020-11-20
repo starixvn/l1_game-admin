@@ -16,7 +16,7 @@ import ShakeThePlate from './shake-the-plate/shake-the-plate';
 import SpecialSeDie from './special-sedie';
 import VipFishPrawnCrab from './vip-fish-prawn-crab/vip-fish-prawn-crab';
 import VipSeDie from './vip-sedie/vip-sedie';
-import VipSicBo from './vip-sic-bo';
+import SicBo from './sic-bo';
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (message: any) => {
     const object = _.get(message, path);
@@ -133,8 +133,8 @@ const gameMapper = {
         ...getInfoByGameKey('VipFishPrawnCrab'),
     },
     27: {
-        component: VipSicBo,
-        ...getInfoByGameKey('VipSicBo'),
+        component: SicBo,
+        ...getInfoByGameKey('SicBo'),
     },
 };
 

@@ -12,29 +12,23 @@ import RoundNum from "../../shared/round-num/round-num";
 import DiceType from "../../common/model/DiceType";
 import DiceModel from "../../common/model/DiceModel";
 import { GameState } from "../../shared/common/GameState";
-import {
-  VipSicBoBetList,
-  VipSicBoModel,
-} from "../../common/model/VipSicBoModel";
+import { SicBoBetList, SicBoModel } from "../../common/model/SicBoModel";
 import { Notice } from "../../shared/notice/notice";
 
-type VipSicBoProps = {
+type SicBoProps = {
   onMessage: Function;
   sendMessage: Function;
   isProduction: boolean;
 };
 
-export default class VipSicBo extends React.Component<
-  VipSicBoProps,
-  VipSicBoModel
-> {
+export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
-    this.state = new VipSicBoModel();
+    this.state = new SicBoModel();
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -48,7 +42,7 @@ export default class VipSicBo extends React.Component<
     if (!!data.um) {
       if (this.isFirstLoad || this.state.time.remainingTime == 30) {
         clearTimeout(this.timeout);
-        const model = new VipSicBoModel();
+        const model = new SicBoModel();
         this.setState({
           time: { remainingTime: 0 },
           gameState: GameState.disabled,
@@ -80,7 +74,7 @@ export default class VipSicBo extends React.Component<
       });
 
       setTimeout(() => {
-        const newState = new VipSicBoModel();
+        const newState = new SicBoModel();
 
         this.setState({
           ...newState,
@@ -95,12 +89,10 @@ export default class VipSicBo extends React.Component<
 
     if (!!data.remainingTime) {
       if (data.remainingTime > 31) {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
-          result: data.result
-            ? this.getResult(data.result)
-            : prevState.result,
+          result: data.result ? this.getResult(data.result) : prevState.result,
           time: {
             remainingTime: data.remainingTime - 31,
           },
@@ -137,7 +129,7 @@ export default class VipSicBo extends React.Component<
     return result;
   }
 
-  getUserBetList(data, currentData: VipSicBoBetList) {
+  getUserBetList(data, currentData: SicBoBetList) {
     Object.keys(currentData).forEach((key) => {
       currentData[key].total = 0;
       currentData[key].dataList = new Array<BetItem>();
@@ -147,6 +139,23 @@ export default class VipSicBo extends React.Component<
       const { betTracks } = data[user];
       Object.keys(betTracks).forEach((key) => {
         if (betTracks[key]) {
+          if (key.includes("specific")) {
+            const choice = key.split("specific")[1];
+            currentData.specificNumber.dataList.unshift(
+              new BetItem(data[user].name, betTracks[key], "", choice)
+            );
+            currentData.specificNumber.total += betTracks[key];
+            return;
+          }
+          if (key.includes("totalPoints")) {
+            const choice = key.split("totalPoints")[1];
+            currentData.totalPoints.dataList.unshift(
+              new BetItem(data[user].name, betTracks[key], "", choice)
+            );
+            currentData.totalPoints.total += betTracks[key];
+            return;
+          }
+
           currentData[key].total += betTracks[key];
           currentData[key].dataList.unshift(
             new BetItem(data[user].name, betTracks[key])
@@ -201,6 +210,16 @@ export default class VipSicBo extends React.Component<
     });
   }
 
+  isSpecificNumberWon() {
+    const { settlementResult } = this.state;
+    return  Object.keys(settlementResult).filter(key => key.includes("specific")).some(key => settlementResult[key]);
+  }
+
+  isTotalPointsWon() {
+    const { settlementResult } = this.state;
+    return  Object.keys(settlementResult).filter(key => key.includes("totalPoint")).some(key => settlementResult[key]);
+  }
+
   renderMonitor() {
     const {
       betList,
@@ -217,7 +236,7 @@ export default class VipSicBo extends React.Component<
           <Col align="center" className="col-12 col-md-4">
             <Row className={styles["align-middle"]}>
               <Col className={styles.timecounter}>
-                <div className={styles.title}>VIP Sic Bo</div>
+                <div className={styles.title}> Sic Bo</div>
                 <TimeCounter
                   remainingTime={time.remainingTime}
                   gameState={gameState}
@@ -232,66 +251,33 @@ export default class VipSicBo extends React.Component<
           <Col align="center" className="col-4">
             <Row className="justify-content-center">
               <TotalBet
-                total={betList["1point"].total}
-                type="1point"
-                isWin={settlementResult["1point"]}
+                total={betList.specificNumber.total}
+                type="specificNumber"
+                isWin={this.isSpecificNumberWon()}
               ></TotalBet>
-              <TotalBet
-                total={betList["2points"].total}
-                type="2points"
-                isWin={settlementResult["2points"]}
-              ></TotalBet>
-              <TotalBet
-                total={betList["3points"].total}
-                type="3points"
-                isWin={settlementResult["3points"]}
-              ></TotalBet>
-            </Row>
-            <Row className="justify-content-center">
-              <TotalBet
-                total={betList["4points"].total}
-                type="4points"
-                isWin={settlementResult["4points"]}
-              ></TotalBet>
-              <TotalBet
-                total={betList["5points"].total}
-                type="5points"
-                isWin={settlementResult["5points"]}
-              ></TotalBet>
-              <TotalBet
-                total={betList["6points"].total}
-                type="6points"
-                isWin={settlementResult["6points"]}
-              ></TotalBet>
-            </Row>
-          </Col>
-          <Col align="center" className="col-2">
-            <Row className="justify-content-center">
               <TotalBet
                 total={betList.big.total}
-                type="vipsicbobig"
+                type="sicboBig"
                 isWin={settlementResult.big}
-              />
+              ></TotalBet>
+              <TotalBet
+                total={betList.small.total}
+                type="sicboSmall"
+                isWin={settlementResult.small}
+              ></TotalBet>
             </Row>
             <Row className="justify-content-center">
               <TotalBet
-                total={betList.small.total}
-                type="vipsicbosmall"
-                isWin={settlementResult.small}
-              />
+                total={betList.anyTriple.total}
+                type="anyTriple"
+                isWin={settlementResult.anyTriple}
+              ></TotalBet>
+              <TotalBet
+                total={betList.totalPoints.total}
+                type="totalPoints"
+                isWin={this.isTotalPointsWon()}
+              ></TotalBet>
             </Row>
-          </Col>
-          <Col align="center" className="col-2">
-            <TotalBet
-              total={betList.odd.total}
-              type="vipsicboodd"
-              isWin={settlementResult.odd}
-            ></TotalBet>
-            <TotalBet
-              total={betList.even.total}
-              type="vipsicboeven"
-              isWin={settlementResult.even}
-            />
           </Col>
         </Row>
       </Container>
@@ -305,50 +291,10 @@ export default class VipSicBo extends React.Component<
       <React.Fragment>
         <Col className="col-4 col-lg">
           <BetList
-            type="simple"
-            dataList={betList["1point"].dataList}
-            titles={[<div className="text-center">1 Point</div>]}
-            isWin={settlementResult["1point"]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="simple"
-            dataList={betList["2points"].dataList}
-            titles={[<div className="text-center">2 Points</div>]}
-            isWin={settlementResult["2points"]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="simple"
-            dataList={betList["3points"].dataList}
-            titles={[<div className="text-center">3 Points</div>]}
-            isWin={settlementResult["3points"]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="simple"
-            dataList={betList["4points"].dataList}
-            titles={[<div className="text-center">4 Points</div>]}
-            isWin={settlementResult["4points"]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="simple"
-            dataList={betList["5points"].dataList}
-            titles={[<div className="text-center">5 Points</div>]}
-            isWin={settlementResult["5points"]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="simple"
-            dataList={betList["6points"].dataList}
-            titles={[<div className="text-center">6 Points</div>]}
-            isWin={settlementResult["6points"]}
+            type="withchoice"
+            dataList={betList.specificNumber.dataList}
+            titles={[<div className="text-center">Specific Number</div>]}
+            isWin={this.isSpecificNumberWon()}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -370,17 +316,17 @@ export default class VipSicBo extends React.Component<
         <Col className="col-4 col-lg">
           <BetList
             type="simple"
-            dataList={betList.odd.dataList}
-            titles={[<div className="text-center">Odd</div>]}
-            isWin={settlementResult.odd}
+            dataList={betList.anyTriple.dataList}
+            titles={[<div className="text-center">Any Triple</div>]}
+            isWin={settlementResult.anyTriple}
           />
         </Col>
         <Col className="col-4 col-lg">
           <BetList
-            type="simple"
-            dataList={betList.even.dataList}
-            titles={[<div className="text-center">Even</div>]}
-            isWin={settlementResult.even}
+            type="withchoice"
+            dataList={betList.totalPoints.dataList}
+            titles={[<div className="text-center">Total Points</div>]}
+            isWin={this.isTotalPointsWon()}
           />
         </Col>
       </React.Fragment>
@@ -434,7 +380,7 @@ export default class VipSicBo extends React.Component<
 
   render() {
     return (
-      <div className={styles["vip-sic-bo"]}>
+      <div className={styles["-sic-bo"]}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
           renderBetList={this.renderBetList()}
