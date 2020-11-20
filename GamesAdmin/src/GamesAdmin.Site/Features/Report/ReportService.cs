@@ -56,6 +56,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
 
+        Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -136,5 +137,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);
 
+        public Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetSicBoBetReport(roundId, nickname, excludeUUS);
     }
 }

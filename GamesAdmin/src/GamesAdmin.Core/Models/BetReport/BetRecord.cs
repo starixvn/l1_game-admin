@@ -176,4 +176,10 @@ namespace GamesAdmin.Core.Models
 
         public decimal Ocean { get; set; }
     }
+
+    public class SicBoBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
+    }
+
 }

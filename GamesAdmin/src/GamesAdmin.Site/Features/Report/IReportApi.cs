@@ -70,5 +70,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/vip_fish_prawn_crab/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/sic_bo/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
     }
 }

@@ -28,7 +28,7 @@ type State = {
     socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24, 26];
+const NewSocketGameIds = [2, 22, 24, 26, 27];
 
 export class Home extends React.Component<Props, State> {
     public state: State;
@@ -121,12 +121,12 @@ export class Home extends React.Component<Props, State> {
                 return {
                     endpoint:
                         process.env.NEXT_PUBLIC_ENV === 'local'
-                            ? process.env.NEXT_PUBLIC_VIP_SIC_BO_SERVER_ENDPOINT
-                            : Cookies.get('vip-sic-bo-server-endpoint'),
+                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_ENDPOINT
+                            : Cookies.get('sic-bo-server-endpoint'),
                     route:
                         process.env.NEXT_PUBLIC_ENV === 'local'
-                            ? process.env.NEXT_PUBLIC_VIP_SIC_BO_SERVER_PROXY_ROUTE
-                            : Cookies.get('vip-sic-bo-server-endpoint-route'),
+                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
+                            : Cookies.get('sic-bo-server-endpoint-route'),
                 };        
             default:
                 return {

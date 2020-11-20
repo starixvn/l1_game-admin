@@ -135,4 +135,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<byte> Result { get; set; }
     }
+
+    public class SicBoRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<byte> Result { get; set; }
+    }
 }

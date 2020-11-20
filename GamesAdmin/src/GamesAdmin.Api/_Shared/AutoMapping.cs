@@ -136,6 +136,12 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.ThirdDice, opt => opt.MapFrom((source) => source.Result.ThirdDice));
 
             CreateMap<VipFishPrawnCrabBetReportEntity, VipFishPrawnCrabBetRecord>();
+
+            CreateMap<SicBoBetReportEntity, SicBoBetRecord>();
+            CreateMap<SicBoRoundEntity, SicBoRoundResult>()
+                .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))
+                .ForMember(x => x.SecondDice, opt => opt.MapFrom((source) => source.Result.SecondDice))
+                .ForMember(x => x.ThirdDice, opt => opt.MapFrom((source) => source.Result.ThirdDice));
         }
     }
 }

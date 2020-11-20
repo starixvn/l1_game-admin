@@ -162,6 +162,19 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
+
+        [HttpGet]
+        public IActionResult SicBo()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSicBoReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_SicBoRecords", await mediator.Send(new GetSicBoReportRequest(roundId, nickname, excludeUUS)));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS)
         {

@@ -33,7 +33,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
-        IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>
+        IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>,
+        IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>
 
     {
         private readonly IReportService reportService;
@@ -468,6 +469,23 @@ namespace GamesAdmin.Site.Features.ClientSites
             return new BlackjackReportResultViewModel
             {
                 Records = result.Select(x => mapper.Map<BlackjackRecordViewModel>(x))
+            };
+        }
+
+        public async Task<SicBoReportResultViewModel> Handle(GetSicBoReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetSicBoBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new SicBoReportResultViewModel
+            {
+                RoundResult = mapper.Map<SicBoRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<SicBoRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
             };
         }
     }
