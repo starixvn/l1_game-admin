@@ -38,7 +38,7 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
             { GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabEndGameInfoService) },
-            { GameId.SicBo, typeof(VipFishPrawnCrabEndGameInfoService) },
+            { GameId.SicBo, typeof(SicBoEndGameInfoService) },
         };
 
         private readonly IServiceProvider serviceProvider;
