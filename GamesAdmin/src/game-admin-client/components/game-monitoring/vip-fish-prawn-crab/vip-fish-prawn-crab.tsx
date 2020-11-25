@@ -1,20 +1,22 @@
 import React from "react";
-import { Col, Container, Modal, Row } from "reactstrap";
-
-import BetItem from "../../common/model/BetItem";
-import DiceModel from "../../common/model/DiceModel";
-import DiceType from "../../common/model/DiceType";
-import { VipFishPrawnCrabBetList, VipFishPrawnCrabModel } from "../../common/model/VipFishPrawnCrabModel";
-import BetList from "../../shared/bet-list/bet-list";
-import { GameState } from "../../shared/common/GameState";
-import DiceResult from "../../shared/dice-result/dice-result";
-import Dice from "../../shared/dice/dice";
-import { Notice } from "../../shared/notice/notice";
-import RoundNum from "../../shared/round-num/round-num";
-import TimeCounter from "../../shared/time-counter/time-counter";
-import TotalBet from "../../shared/total-bet/total-bet";
-import GameTemplate from "../game-template/game-template";
 import styles from "./vip-fish-prawn-crab.module.scss";
+import TimeCounter from "../../shared/time-counter/time-counter";
+import DiceResult from "../../shared/dice-result/dice-result";
+import TotalBet from "../../shared/total-bet/total-bet";
+import { Col, Container, Row, Modal } from "reactstrap";
+import GameTemplate from "../game-template/game-template";
+import BetList from "../../shared/bet-list/bet-list";
+import Dice from "../../shared/dice/dice";
+import BetItem from "../../common/model/BetItem";
+import RoundNum from "../../shared/round-num/round-num";
+import DiceType from "../../common/model/DiceType";
+import DiceModel from "../../common/model/DiceModel";
+import { GameState } from "../../shared/common/GameState";
+import {
+  VipFishPrawnCrabBetList,
+  VipFishPrawnCrabModel,
+} from "../../common/model/VipFishPrawnCrabModel";
+import { Notice } from "../../shared/notice/notice";
 
 type VipFishPrawnCrabProps = {
   onMessage: Function;
@@ -95,20 +97,20 @@ export default class VipFishPrawnCrab extends React.Component<
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 45,
+            remainingTime: 30,
           },
         });
       }, (waitingTime + 4) * 1000);
     }
 
     if (!!data.remainingTime) {
-      if (data.remainingTime > 46) {
+      if (data.remainingTime > 31) {
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result: data.result ? this.getResult(data.result) : this.state.result,
           time: {
-            remainingTime: data.remainingTime - 46,
+            remainingTime: data.remainingTime - 31,
           },
         });
 
@@ -117,10 +119,10 @@ export default class VipFishPrawnCrab extends React.Component<
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 46,
+              remainingTime: 31,
             },
           });
-        }, (data.remainingTime - 46) * 1000);
+        }, (data.remainingTime - 31) * 1000);
       } else {
         this.setState({
           gameState: GameState.running,
