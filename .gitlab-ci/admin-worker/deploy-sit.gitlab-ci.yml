@@ -1,17 +1,9 @@
-build_image_admin_worker_sit:
-  extends:
-    - .deploy_vars_admin_worker
-    - .build_image
-    - .deploy-worker:sit:rules
-  environment:
-    name: SIT
-
 post_build_admin_worker_sit:
   extends:
     - .deploy_vars_admin_worker
     - .post_build
     - .deploy-worker:sit:rules
-  needs: ['build_image_admin_worker_sit']
+  needs: ['build_image_admin_worker']
   environment:
     name: SIT
 

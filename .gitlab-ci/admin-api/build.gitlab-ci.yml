@@ -1,0 +1,5 @@
+build_image_admin_api:
+    extends:
+      - .deploy_vars_admin_api
+      - .build_image_no_env
+      - .build:image-api:rules

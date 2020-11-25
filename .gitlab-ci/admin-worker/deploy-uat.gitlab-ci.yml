@@ -1,17 +1,9 @@
-build_image_admin_worker_uat:
-  extends:
-    - .deploy_vars_admin_worker
-    - .build_image
-    - .deploy-worker:uat:rules
-  environment:
-    name: UAT
-
 post_build_admin_worker_uat:
   extends:
     - .deploy_vars_admin_worker
     - .post_build
     - .deploy-worker:uat:rules
-  needs: ['build_image_admin_worker_uat']
+  needs: ['build_image_admin_worker']
   environment:
     name: UAT
 

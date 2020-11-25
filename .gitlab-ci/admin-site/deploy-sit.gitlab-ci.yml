@@ -1,17 +1,9 @@
-build_image_admin_site_sit:
-  extends:
-    - .deploy_vars_admin_site
-    - .build_image
-    - .deploy-site:sit:rules
-  environment:
-    name: SIT
-
 post_build_admin_site_sit:
   extends:
     - .deploy_vars_admin_site
     - .post_build
     - .deploy-site:sit:rules
-  needs: ['build_image_admin_site_sit']
+  needs: ['build_image_admin_site']
   environment:
     name: SIT
 

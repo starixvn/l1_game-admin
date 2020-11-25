@@ -1,17 +1,9 @@
-build_image_admin_api_prod:
-  extends:
-    - .deploy_vars_admin_api
-    - .build_image
-    - .deploy:prod-auto:rules
-  environment:
-    name: PROD
-
 post_build_admin_api_prod:
   extends:
     - .deploy_vars_admin_api
     - .post_build
     - .deploy:prod-auto:rules
-  needs: ['build_image_admin_api_prod']
+  needs: ['build_image_admin_api']
   environment:
     name: PROD
 

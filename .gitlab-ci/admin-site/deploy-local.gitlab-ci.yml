@@ -1,17 +1,9 @@
-build_image_admin_site_local:
-  extends:
-    - .deploy_vars_admin_site
-    - .build_image
-    - .deploy-site:local:rules
-  environment:
-    name: LOCAL
-
 post_build_admin_site_local:
   extends:
     - .deploy_vars_admin_site
     - .post_build
     - .deploy-site:local:rules
-  needs: ['build_image_admin_site_local']
+  needs: ['build_image_admin_site']
   environment:
     name: LOCAL
 
