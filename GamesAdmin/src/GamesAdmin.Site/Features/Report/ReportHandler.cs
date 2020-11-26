@@ -468,7 +468,12 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new BlackjackReportResultViewModel
             {
-                Records = result.Select(x => mapper.Map<BlackjackRecordViewModel>(x))
+                Records = result.Select(x => {
+                    var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
             };
         }
 
