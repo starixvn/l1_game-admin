@@ -236,6 +236,12 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetSicBoBetHistory(long roundId, string userId)
+        {
+            return PartialView("_SicBoBetHistory", await mediator.Send(new GetSicBoBetHistoryRequest(roundId, userId)));
+        }
+
+        [HttpGet]
         public IActionResult KenoProViet()
         {
             return View("KenoReport", new KenoViewModel());

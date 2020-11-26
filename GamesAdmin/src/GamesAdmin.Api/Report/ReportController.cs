@@ -130,5 +130,10 @@ namespace GamesAdmin.Api.Report
         [Route("sic_bo/round/{roundId}/users/{nickname?}")]
         public async Task<SicBoBetReport> SicBo(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new SicBoReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("bet_history/game/sicbo/round/{roundId}/user/{userId}")]
+        public async Task<SicBoBetHistory> SicBoBetHistory(long roundId, string userId)
+        => (await mediator.Send(new SicBoBetHistoryRequest(roundId, userId)));
     }
 }

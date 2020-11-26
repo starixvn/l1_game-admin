@@ -35,5 +35,9 @@
            : base(value, displayName)
         {
         }
+
+        public bool IsAnyTripleChoice => Value == AnyTripleValue;
+
+        public bool IsBigSmallChoice => Value == BigValue || Value == SmallValue;
     }
 }

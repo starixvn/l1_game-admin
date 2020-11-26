@@ -73,5 +73,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/sic_bo/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/game/sicbo/round/{roundId}/user/{userId}")]
+        Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
     }
 }

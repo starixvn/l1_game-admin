@@ -67,6 +67,7 @@ namespace GamesAdmin.Site._Shared
                 source.ThirdDice
             }));
             CreateMap<SicBoBetRecord, SicBoRecordViewModel>();
+            CreateMap<SicBoBetHistoryRecord, SicBoBetHistoryRecordViewModel>();
         }
     }
 }

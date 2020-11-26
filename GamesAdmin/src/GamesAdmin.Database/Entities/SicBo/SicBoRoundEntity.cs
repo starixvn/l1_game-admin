@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
+﻿using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
@@ -8,7 +9,7 @@ namespace GamesAdmin.Database.Entities
     {
         public SicBoResultEntity Result { get; set; }
 
-        public SicBoSettlementResultEntity SettlementResult { get; set; }
+        public Dictionary<string, bool> SettlementResult { get; set; }
     }
 
     public class SicBoResultEntity

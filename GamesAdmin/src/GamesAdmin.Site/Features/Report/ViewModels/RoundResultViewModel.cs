@@ -141,5 +141,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public long Number { get; set; }
 
         public IEnumerable<byte> Result { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
     }
 }

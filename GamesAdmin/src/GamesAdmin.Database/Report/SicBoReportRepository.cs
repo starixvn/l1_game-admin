@@ -32,7 +32,8 @@ namespace GamesAdmin.Database
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
-                        TotalBet = x.TotalAmount
+                        TotalBet = x.TotalAmount,
+                        UserId = x.Uid
                     });
                 var records = await project.ToListAsync();
 

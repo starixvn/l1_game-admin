@@ -60,6 +60,8 @@ namespace GamesAdmin.Api.Report
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -445,6 +447,18 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<SicBoRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<SicBoBetRecord>(x))
+            };
+        }
+
+        public async Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetSicBoAsync(roundId, userId);
+
+            return new SicBoBetHistory
+            {
+                RoundResult = mapper.Map<SicBoRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<SicBoBetHistoryRecord>(x))
             };
         }
     }

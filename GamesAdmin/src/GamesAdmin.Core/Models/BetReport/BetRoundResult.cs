@@ -138,5 +138,7 @@ namespace GamesAdmin.Core.Models
         public byte SecondDice { get; set; }
 
         public byte ThirdDice { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
     }
 }
