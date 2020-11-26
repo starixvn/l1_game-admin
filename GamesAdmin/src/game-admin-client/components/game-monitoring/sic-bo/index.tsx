@@ -81,20 +81,20 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 30,
+            remainingTime: 45,
           },
         });
       }, (waitingTime + 4) * 1000);
     }
 
     if (!!data.remainingTime) {
-      if (data.remainingTime > 31) {
+      if (data.remainingTime > 46) {
         this.setState((prevState) => ({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result: data.result ? this.getResult(data.result) : prevState.result,
           time: {
-            remainingTime: data.remainingTime - 31,
+            remainingTime: data.remainingTime - 46,
           },
         }));
 
@@ -103,10 +103,10 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 31,
+              remainingTime: 46,
             },
           });
-        }, (data.remainingTime - 31) * 1000);
+        }, (data.remainingTime - 46) * 1000);
       } else {
         this.setState({
           gameState: GameState.running,
@@ -147,8 +147,8 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
             currentData.specificNumber.total += betTracks[key];
             return;
           }
-          if (key.includes("totalPoints")) {
-            const choice = key.split("totalPoints")[1];
+          if (key.includes("total")) {
+            const choice = key.split("total")[1];
             currentData.totalPoints.dataList.unshift(
               new BetItem(data[user].name, betTracks[key], "", choice)
             );
@@ -217,7 +217,7 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
 
   isTotalPointsWon() {
     const { settlementResult } = this.state;
-    return  Object.keys(settlementResult).filter(key => key.includes("totalPoint")).some(key => settlementResult[key]);
+    return  Object.keys(settlementResult).filter(key => key.includes("total")).some(key => settlementResult[key]);
   }
 
   renderMonitor() {
