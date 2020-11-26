@@ -1,5 +1,0 @@
-build_image_admin_site:
-    extends:
-      - .deploy_vars_admin_site
-      - .build_image_no_env
-      - .build:image-site:rules

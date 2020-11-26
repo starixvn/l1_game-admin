@@ -1,8 +1,0 @@
-include:
-  - .gitlab-ci/admin-site/build.gitlab-ci.yml
-  - .gitlab-ci/admin-site/deploy-vars.gitlab-ci.yml
-  - .gitlab-ci/admin-site/rules.gitlab-ci.yml
-  - .gitlab-ci/admin-site/deploy-local.gitlab-ci.yml
-  - .gitlab-ci/admin-site/deploy-sit.gitlab-ci.yml
-  - .gitlab-ci/admin-site/deploy-uat.gitlab-ci.yml
-  - .gitlab-ci/admin-site/deploy-prod.gitlab-ci.yml
