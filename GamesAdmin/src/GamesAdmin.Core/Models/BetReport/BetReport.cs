@@ -43,4 +43,8 @@ namespace GamesAdmin.Core.Models
     public class SpecialSeDieBetReport : BetReport<SeDieRoundResult, SpecialSeDieBetRecord>
     {
     }
+
+    public class VipFishPrawnCrabBetReport : BetReport<VipFishPrawnCrabRoundResult, VipFishPrawnCrabBetRecord>
+    {
+    }
 }

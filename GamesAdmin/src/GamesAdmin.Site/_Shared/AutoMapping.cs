@@ -47,6 +47,18 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<SpecialSeDieBetRecord, SpecialSeDieRecordViewModel>();
             CreateMap<SpecialSeDieBetHistoryRecord, SpecialSeDieBetHistoryRecordViewModel>();
+            
+            CreateMap<BlackjackBetRecord, BlackjackRecordViewModel>();
+            CreateMap<BlackjackCard, BlackjackCardViewModel>();
+
+            CreateMap<VipFishPrawnCrabRoundResult, VipFishPrawnCrabRoundResultViewModel>()
+                .ForMember(x => x.Result, opt => opt.MapFrom((source) => new []
+                {
+                    source.FirstDice,
+                    source.SecondDice,
+                    source.ThirdDice
+                }));
+            CreateMap<VipFishPrawnCrabBetRecord, VipFishPrawnCrabRecordViewModel>();
         }
     }
 }

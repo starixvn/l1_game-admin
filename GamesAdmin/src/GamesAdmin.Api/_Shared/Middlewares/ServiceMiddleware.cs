@@ -85,7 +85,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoNorthEndGameInfoService>();
             services.AddScoped<RouletteEndGameInfoService>();
             services.AddScoped<VipSeDieEndGameInfoService>();
+            services.AddScoped<BlackjackEndGameInfoService>();
             services.AddScoped<SpecialSeDieEndGameInfoService>();
+            services.AddScoped<VipFishPrawnCrabEndGameInfoService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
@@ -93,6 +95,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
             services.AddSingleton(RestService.For<ISpecialSedieOnlineUserApi>(appSettings.GameServers.SpecialSedie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBlackjackOnlineUserApi>(appSettings.GameServers.Blackjack.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipFishPrawnCrabOnlineUserApi>(appSettings.GameServers.VipFishPrawnCrab.Api, refitSettings));
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
         }
     }

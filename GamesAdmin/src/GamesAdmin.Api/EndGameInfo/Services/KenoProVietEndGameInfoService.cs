@@ -31,6 +31,11 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1005;
             }
 
+            if (bets.Any(x => !x.Paid))
+            {
+                return EndGameInfoError.SB1005;
+            }
+
             var round = await GetRoundAsync(request.GameRoundId);
 
 

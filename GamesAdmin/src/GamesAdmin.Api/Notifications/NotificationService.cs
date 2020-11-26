@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.Notifications
 
         public Task<Notification> GetById(string id);
 
-        public Task<bool> Create(AddRequest notification);
+        public Task<bool> Create(AddRequest request);
 
         public Task<bool> Update(UpdateRequest notification);
 
@@ -36,9 +36,9 @@ namespace GamesAdmin.Api.Notifications
             this.mapper = mapper;
         }
 
-        public async Task<bool> Create(AddRequest addRequest)
+        public async Task<bool> Create(AddRequest request)
         {
-            var notificationEntity = mapper.Map<NotificationEntity>(addRequest);
+            var notificationEntity = mapper.Map<NotificationEntity>(request);
             await notificationRepository.InsertOneAsync(notificationEntity);
 
             return true;

@@ -1,16 +1,17 @@
-import React from 'react';
-import RouletteModel, { RouletteBetList } from '../../common/model/RouletteModel';
-import { GameState } from '../../shared/common/GameState';
-import GameTemplate from '../game-template/game-template';
-import { Container, Row, Col } from 'reactstrap';
-import TimeCounter from '../../shared/time-counter/time-counter';
-import RoundNum from '../../shared/round-num/round-num';
-import Title from '../../shared/title';
-import styles from './styles.module.scss';
-import RouletteResultUpdater from './result-updater';
-import TotalBet from '../../shared/total-bet/total-bet';
-import BetList from '../../shared/bet-list/bet-list';
-import BetItem from '../../common/model/BetItem';
+import React from "react";
+import { Col, Container, Row } from "reactstrap";
+
+import BetItem from "../../common/model/BetItem";
+import RouletteModel, { RouletteBetList } from "../../common/model/RouletteModel";
+import BetList from "../../shared/bet-list/bet-list";
+import { GameState } from "../../shared/common/GameState";
+import RoundNum from "../../shared/round-num/round-num";
+import TimeCounter from "../../shared/time-counter/time-counter";
+import Title from "../../shared/title";
+import TotalBet from "../../shared/total-bet/total-bet";
+import GameTemplate from "../game-template/game-template";
+import RouletteResultUpdater from "./result-updater";
+import styles from "./styles.module.scss";
 
 type Props = {
     onMessage: Function,
@@ -18,7 +19,7 @@ type Props = {
     isProduction: boolean
 };
 
-const PlacingBetDuration = 35;
+const PlacingBetDuration = 45;
 const WaitingTime = 14;
 
 const TYPE_OF_BETS = {

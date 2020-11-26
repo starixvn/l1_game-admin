@@ -181,14 +181,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             var gameType = Enumeration.FromValue<GameType>(name);
-            var betChoices = BetChoiceMapper.Map(gameType);
+            var betOdds = BetOddsMapper.Map(gameType);
 
-            if (betChoices != default)
+            if (betOdds != default)
             {
-                foreach (var choice in betChoices)
+                foreach (var odd in betOdds)
                 {
-                    var odds = oddsSettings.ContainsKey(choice.Value) ? oddsSettings[choice.Value] : 0;
-                    items.Add(new OddsViewModel(choice.Value, odds, choice.DisplayName));
+                    var odds = oddsSettings.ContainsKey(odd.Value) ? oddsSettings[odd.Value] : 0;
+                    items.Add(new OddsViewModel(odd.Value, odds, odd.DisplayName));
                 }
             }
 

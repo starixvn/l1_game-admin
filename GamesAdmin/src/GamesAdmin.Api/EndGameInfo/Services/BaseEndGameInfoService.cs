@@ -21,13 +21,13 @@ namespace GamesAdmin.Api.EndGameInfo
         protected readonly IGenericRepository<TRounEntity> roundRepository;
         protected readonly IGenericRepository<TBetEntity> betRepository;
 
-        public BaseEndGameInfoService(IGenericRepository<TRounEntity> roundRepository, IGenericRepository<TBetEntity> betRepository)
+        protected BaseEndGameInfoService(IGenericRepository<TRounEntity> roundRepository, IGenericRepository<TBetEntity> betRepository)
         {
             this.roundRepository = roundRepository;
             this.betRepository = betRepository;
         }
 
-        protected async Task<TRounEntity> GetRoundAsync(long gameRoundId)
+        protected virtual async Task<TRounEntity> GetRoundAsync(long gameRoundId)
         {
             var roundEntity = await roundRepository.FindOneAsync(x => x.Number == gameRoundId);
 

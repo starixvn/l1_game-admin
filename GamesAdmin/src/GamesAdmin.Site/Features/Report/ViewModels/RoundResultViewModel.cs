@@ -128,4 +128,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<string> BigSmall { get; set; }
     }
+
+    public class VipFishPrawnCrabRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<byte> Result { get; set; }
+    }
 }

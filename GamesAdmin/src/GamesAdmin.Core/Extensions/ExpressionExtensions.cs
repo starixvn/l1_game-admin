@@ -36,7 +36,10 @@ namespace GamesAdmin.Core.Extensions
         public override Expression Visit(Expression node)
         {
             if (node == oldValue)
+            {
                 return newValue;
+            }
+                
             return base.Visit(node);
         }
     }
