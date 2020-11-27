@@ -27,13 +27,13 @@
                 <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                 <td class="text-center">@bet.Round</td>
                 <td class="text-center">
-                    @if(betChoice.IsAnyTripleChoice)
+                    @if (betChoice.IsAnyTripleChoice)
                     {
                         @betChoice.DisplayName
                     }
                     else
                     {
-                        @if(betChoice.IsBigSmallChoice)
+                        @if (betChoice.IsBigSmallChoice)
                         {
                             @("Big/Small")
                         }
@@ -46,7 +46,9 @@
                 <td class="text-center @(Model.RoundResult.SettlementResult[bet.Choice]? "text-primary": string.Empty)">
                     @(betChoice.IsAnyTripleChoice || betChoice.IsBigSmallChoice ? betChoice.DisplayName : splitted[1])
                 </td>
-                <td class="text-right">@HtmlHelpers.formatNumber(bet.Amount)</td>
+                <td class="text-right  @(Model.RoundResult.SettlementResult[bet.Choice]? "text-primary": string.Empty)">
+                    @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
             </tr>
         }
     </tbody>
