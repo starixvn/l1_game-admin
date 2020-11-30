@@ -1,18 +1,19 @@
-import React from 'react';
-import styles from './styles.module.scss';
-import BaccaratModel from '../../common/model/BaccaratModel';
-import { GameState } from '../../shared/common/GameState';
-import BetItem from '../../common/model/BetItem';
-import { Col, Container, Row } from 'reactstrap';
-import TimeCounter from '../../shared/time-counter/time-counter';
-import RoundNum from '../../shared/round-num/round-num';
-import TotalBet from '../../shared/total-bet/total-bet';
-import BetList from '../../shared/bet-list/bet-list';
-import GameTemplate from '../game-template/game-template';
-import BaccaratCardResult from './baccarat-card-result';
-import BaccaratResultUpdater from './baccarat-result-updater';
-import DeskOfCards from './desk-of-cards';
-import CardResult from '../../common/model/CardResult';
+import React from "react";
+import { Col, Container, Row } from "reactstrap";
+
+import BaccaratModel from "../../common/model/BaccaratModel";
+import BetItem from "../../common/model/BetItem";
+import CardResult from "../../common/model/CardResult";
+import BetList from "../../shared/bet-list/bet-list";
+import { GameState } from "../../shared/common/GameState";
+import RoundNum from "../../shared/round-num/round-num";
+import TimeCounter from "../../shared/time-counter/time-counter";
+import TotalBet from "../../shared/total-bet/total-bet";
+import GameTemplate from "../game-template/game-template";
+import BaccaratCardResult from "./baccarat-card-result";
+import BaccaratResultUpdater from "./baccarat-result-updater";
+import DeskOfCards from "./desk-of-cards";
+import styles from "./styles.module.scss";
 
 type Props = {
     onMessage: Function,
@@ -34,7 +35,7 @@ const CHOICES = [
 ];
 
 export default class Baccarat extends React.Component<Props, BaccaratModel>{
-    private isFirstLoad: boolean;
+    protected isFirstLoad: boolean;
     private timeout: NodeJS.Timeout;
     constructor(props: Props) {
         super(props);

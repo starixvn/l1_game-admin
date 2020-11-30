@@ -14,6 +14,7 @@ import OddEven from "./odd-even/odd-even";
 import Roulette from "./roulette";
 import ShakeThePlate from "./shake-the-plate/shake-the-plate";
 import SpecialSeDie from "./special-sedie";
+import VipBaccarat from "./vip-baccarat";
 import VipFishPrawnCrab from "./vip-fish-prawn-crab/vip-fish-prawn-crab";
 import VipSeDie from "./vip-sedie/vip-sedie";
 import SicBo from "./sic-bo";
@@ -142,6 +143,10 @@ const gameMapper = {
   26: {
     component: VipFishPrawnCrab,
     ...getInfoByGameKey("VipFishPrawnCrab"),
+    },
+    27: {
+        component: VipBaccarat,
+        ...getInfoByGameKey('VipBaccarat'),
   },
 };
 
