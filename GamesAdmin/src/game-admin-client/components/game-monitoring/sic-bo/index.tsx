@@ -169,20 +169,20 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
 
   handleChangeResult(id, value) {
     const { currentDiceNumber } = this.state;
+    const { result } = this.state;
+    result[currentDiceNumber] = new DiceModel(value, DiceType.TaiXiu);
+    const newResult = {};
+    result.forEach((dice, index) => newResult[`dice${index + 1}`] = dice.value === -1 ? 1 : dice.value);
 
     this.props.sendMessage({
       set_result: {
         roundId: this.state.roundNumber,
-        result: {
-          [`dice${currentDiceNumber + 1}`]: value,
-        },
+        result: newResult
       },
     });
 
-    const newResult = this.state.result;
-    newResult[currentDiceNumber] = new DiceModel(value, DiceType.TaiXiu);
     this.setState({
-      result: newResult,
+      result,
       isOpenModal: false,
     });
 
@@ -212,12 +212,16 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
 
   isSpecificNumberWon() {
     const { settlementResult } = this.state;
-    return  Object.keys(settlementResult).filter(key => key.includes("specific")).some(key => settlementResult[key]);
+    return Object.keys(settlementResult)
+      .filter((key) => key.includes("specific"))
+      .some((key) => settlementResult[key]);
   }
 
   isTotalPointsWon() {
     const { settlementResult } = this.state;
-    return  Object.keys(settlementResult).filter(key => key.includes("total")).some(key => settlementResult[key]);
+    return Object.keys(settlementResult)
+      .filter((key) => key.includes("total"))
+      .some((key) => settlementResult[key]);
   }
 
   renderMonitor() {
