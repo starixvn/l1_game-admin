@@ -10,6 +10,17 @@
 }
 
 <div>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">General</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Payouts</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Jackpot</a>
+        </li>
+    </ul>
 
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
@@ -18,193 +29,203 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="form-group row">
-            <div class="col-lg-6">
-                Game Status: <strong>@Model.StatusDisplay</strong>
+        <div id="general">
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    Game Status: <strong>@Model.StatusDisplay</strong>
+                </div>
+
+                <div class="col-lg-6">
+                    Game Type: <strong>@Model.TypeDisplay</strong>
+                </div>
             </div>
-
-            <div class="col-lg-6">
-                Game Type: <strong>@Model.TypeDisplay</strong>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-lg-6">
-                <label asp-for="MinBet" class="control-label"></label>
-                <input type="number" asp-for="MinBet" class="form-control" />
-                <span asp-validation-for="MinBet" class="text-danger"></span>
-                <input asp-for="Name" type="hidden" class="form-control" />
-                <input asp-for="Id" type="hidden" class="form-control" />
-                <input type="hidden" asp-for="Enabled" class="form-control" />
-                <input type="hidden" asp-for="DisabledMessage" class="form-control" />
-            </div>
-            <div class="col-lg-6">
-                <label asp-for="MaxBet" class="control-label"></label>
-                <input type="number" asp-for="MaxBet" class="form-control" />
-                <span asp-validation-for="MaxBet" class="text-danger"></span>
-            </div>
-        </div>
-
-        @if (Model.DisplayMaxBetChoices)
-        {
-            <fieldset>
-                <legend>Bet Choices</legend>
-                @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
-                {
-                    <div class="form-group row">
-                        @for (var j = 0; j < 2; j++)
-                        {
-                            var index = i * 2 + j;
-                            if (index < Model.BetChoiceBetSettings.Count)
-                            {
-                                <div class="col-lg-6">
-                                    <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
-                                    <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
-                                    <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
-                                </div>
-                            }
-                        }
-                    </div>
-                }
-            </fieldset>
-        }
-
-        <br />
-        @if (Model.BetChoiceOdds != null && Model.BetChoiceOdds.Any())
-        {
-            <fieldset>
-                <legend>Odds</legend>
-                @for (var i = 0; i < (Model.BetChoiceOdds.Count / 2 + 1); i++)
-                {
-                    <div class="form-group row">
-                        @for (var j = 0; j < 2; j++)
-                        {
-                            var index = i * 2 + j;
-                            if (index < Model.BetChoiceOdds.Count)
-                            {
-                                <div class="col-lg-6">
-                                    <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
-                                    <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
-                                    <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
-                                    <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
-                                </div>}
-                        }
-                    </div>}
-            </fieldset>
-
-            <br />}
-
-        @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
-        {
             <div class="form-group">
-                <label asp-for="@Model.SlotViewModel.Mode" class="control-label"></label>
-                <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.Mode" class="form-control"></select>
+                <label asp-for="DelayStartTime" class="control-label"></label>
+                <input type="number" asp-for="DelayStartTime" class="form-control" />
             </div>
 
-            <fieldset class="slots-jackpot">
-                <legend>Stakes and Jackpot</legend>
+            <div class="form-group">
+                <label asp-for="BotMaxBet" class="control-label"></label>
+                <input type="number" asp-for="BotMaxBet" class="form-control" />
+                <span asp-validation-for="BotMaxBet" class="text-danger"></span>
+            </div>
 
-                <div class="form-group row">
-                    @foreach (var stake in Model.SlotViewModel?.StakeLevels)
+            <div class="form-group">
+                <div>
+                    <input type="checkbox" asp-for="BotEnabled" />
+                    <label asp-for="BotEnabled" class="control-label"></label>
+                </div>
+                <span asp-validation-for="BotEnabled" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <input type="checkbox" asp-for="EnableFreeBet" />
+                    <label asp-for="EnableFreeBet" class="control-label"></label>
+                </div>
+                <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
+            </div>
+            @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+            {
+                <div class="form-group">
+                    <label asp-for="@Model.SlotViewModel.Mode" class="control-label"></label>
+                    <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.Mode" class="form-control"></select>
+                </div>
+
+                <fieldset>
+                    <legend>Bonus</legend>
+
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="control-label">Min</label>
+                            <input type="number" asp-for="@Model.SlotViewModel.MinBonus" class="form-control" />
+                            <span asp-validation-for="@Model.SlotViewModel.MinBonus" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="control-label">Max</label>
+                            <input type="number" asp-for="@Model.SlotViewModel.MaxBonus" class="form-control" />
+                            <span asp-validation-for="@Model.SlotViewModel.MaxBonus" class="text-danger"></span>
+                        </div>
+                    </div>
+                </fieldset>
+                <br />
+
+                <div class="form-group">
+                    <label asp-for="@Model.SlotViewModel.BigWinRatio" class="control-label"></label>
+                    <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
+                </div>
+            }
+        </div>
+
+        <div id="payouts">
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label asp-for="MinBet" class="control-label"></label>
+                    <input type="number" asp-for="MinBet" class="form-control" />
+                    <span asp-validation-for="MinBet" class="text-danger"></span>
+                    <input asp-for="Name" type="hidden" class="form-control" />
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                    <input type="hidden" asp-for="Enabled" class="form-control" />
+                    <input type="hidden" asp-for="DisabledMessage" class="form-control" />
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="MaxBet" class="control-label"></label>
+                    <input type="number" asp-for="MaxBet" class="form-control" />
+                    <span asp-validation-for="MaxBet" class="text-danger"></span>
+                </div>
+            </div>
+            @if (Model.DisplayMaxBetChoices)
+            {
+                <fieldset>
+                    <legend>Bet Choices</legend>
+                    @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
                     {
-                        <div class="col-lg-4">
-                            <label class="control-label">Stake: @stake.Stake - Jackpot: @stake.Jackpot</label>
+                        <div class="form-group row">
+                            @for (var j = 0; j < 2; j++)
+                            {
+                                var index = i * 2 + j;
+                                if (index < Model.BetChoiceBetSettings.Count)
+                                {
+                                    <div class="col-lg-6">
+                                        <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
+                                        <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                                    </div>
+                                }
+                            }
                         </div>
                     }
-                </div>
+                </fieldset>
+            }
 
-                @if (Model.SlotViewModel != null)
-                {
+            <br />
+            @if (Model.BetChoiceOdds != null && Model.BetChoiceOdds.Any())
+            {
+                <fieldset>
+                    <legend>Odds</legend>
+                    @for (var i = 0; i < (Model.BetChoiceOdds.Count / 2 + 1); i++)
+                    {
+                        <div class="form-group row">
+                            @for (var j = 0; j < 2; j++)
+                            {
+                                var index = i * 2 + j;
+                                if (index < Model.BetChoiceOdds.Count)
+                                {
+                                    <div class="col-lg-6">
+                                        <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
+                                        <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
+                                        <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                                    </div>}
+                            }
+                        </div>}
+                </fieldset>
+
+                <br />
+            }
+        </div>
+
+        <div id="jackpots">
+            @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+            {
+
+                <fieldset class="slots-jackpot">
+                    <legend>Stakes and Jackpot</legend>
+
                     <div class="form-group row">
-                        <div class="col-lg-4">
-                            <label class="control-label" asp-for="@Model.SlotViewModel.JackpotRTP"></label>
-                            <input type="number" asp-for="@Model.SlotViewModel.JackpotRTP" class="form-control" />
-                            <span asp-validation-for="@Model.SlotViewModel.JackpotRTP" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <label class="control-label" asp-for="@Model.SlotViewModel.BotJackpotContribution"></label>
-                            <input type="number" asp-for="@Model.SlotViewModel.BotJackpotContribution" class="form-control" />
-                            <span asp-validation-for="@Model.SlotViewModel.BotJackpotContribution" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <label class="control-label" asp-for="@Model.SlotViewModel.PlayerJackpotContribution"></label>
-                            <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
-                            <span asp-validation-for="@Model.SlotViewModel.PlayerJackpotContribution" class="text-danger"></span>
-                        </div>
-                    </div>
-                }
-
-                @foreach (var icon in Model.SlotViewModel?.Icons)
-                {
-                    <legend>Icon @icon.Key</legend>
-                    <div class="form-group row">
-                        @foreach (var odds in icon.Value)
+                        @foreach (var stake in Model.SlotViewModel?.StakeLevels)
                         {
-                            <div class="col-lg-6">
-                                <label class="control-label">Count</label>
-                                <input type="number" value="@odds.Key" class="form-control" />
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="control-label">Odds</label>
-                                <input type="number" value="@odds.Value" class="form-control" />
+                            <div class="col-lg-4">
+                                <label class="control-label">Stake: @stake.Stake - Jackpot: @stake.Jackpot</label>
                             </div>
                         }
                     </div>
-                }
-            </fieldset>
-            <br />
-            <fieldset>
-                <legend>Bonus</legend>
 
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <label class="control-label">Min</label>
-                        <input type="number" asp-for="@Model.SlotViewModel.MinBonus" class="form-control" />
-                        <span asp-validation-for="@Model.SlotViewModel.MinBonus" class="text-danger"></span>
-                    </div>
+                    @if (Model.SlotViewModel != null)
+                    {
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label class="control-label" asp-for="@Model.SlotViewModel.JackpotRTP"></label>
+                                <input type="number" asp-for="@Model.SlotViewModel.JackpotRTP" class="form-control" />
+                                <span asp-validation-for="@Model.SlotViewModel.JackpotRTP" class="text-danger"></span>
+                            </div>
 
-                    <div class="col-lg-6">
-                        <label class="control-label">Max</label>
-                        <input type="number" asp-for="@Model.SlotViewModel.MaxBonus" class="form-control" />
-                        <span asp-validation-for="@Model.SlotViewModel.MaxBonus" class="text-danger"></span>
-                    </div>
-                </div>
-            </fieldset>
-            <br />
+                            <div class="col-lg-4">
+                                <label class="control-label" asp-for="@Model.SlotViewModel.BotJackpotContribution"></label>
+                                <input type="number" asp-for="@Model.SlotViewModel.BotJackpotContribution" class="form-control" />
+                                <span asp-validation-for="@Model.SlotViewModel.BotJackpotContribution" class="text-danger"></span>
+                            </div>
 
-            <div class="form-group">
-                <label asp-for="@Model.SlotViewModel.BigWinRatio" class="control-label"></label>
-                <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
-            </div>
-        }
+                            <div class="col-lg-4">
+                                <label class="control-label" asp-for="@Model.SlotViewModel.PlayerJackpotContribution"></label>
+                                <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
+                                <span asp-validation-for="@Model.SlotViewModel.PlayerJackpotContribution" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
 
-        <div class="form-group">
-            <label asp-for="DelayStartTime" class="control-label"></label>
-            <input type="number" asp-for="DelayStartTime" class="form-control" />
-        </div>
+                    @foreach (var icon in Model.SlotViewModel?.Icons)
+                    {
+                        <legend>Icon @icon.Key</legend>
+                        <div class="form-group row">
+                            @foreach (var odds in icon.Value)
+                            {
+                                <div class="col-lg-6">
+                                    <label class="control-label">Count</label>
+                                    <input type="number" value="@odds.Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">Odds</label>
+                                    <input type="number" value="@odds.Value" class="form-control" />
+                                </div>
+                            }
+                        </div>
+                    }
+                </fieldset>
+                <br />
 
-        <div class="form-group">
-            <label asp-for="BotMaxBet" class="control-label"></label>
-            <input type="number" asp-for="BotMaxBet" class="form-control" />
-            <span asp-validation-for="BotMaxBet" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <div>
-                <input type="checkbox" asp-for="BotEnabled" />
-                <label asp-for="BotEnabled" class="control-label"></label>
-            </div>
-            <span asp-validation-for="BotEnabled" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <div>
-                <input type="checkbox" asp-for="EnableFreeBet" />
-                <label asp-for="EnableFreeBet" class="control-label"></label>
-            </div>
-            <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
+            }
         </div>
 
         <input type="hidden" id="gameName" value="@Model.Name" />
