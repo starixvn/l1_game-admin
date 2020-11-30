@@ -1,19 +1,19 @@
-import Cookies from 'js-cookie';
-import { NextRouter, withRouter } from 'next/router';
-import React from 'react';
-import { Modal, Row } from 'reactstrap';
+import Cookies from "js-cookie";
+import { NextRouter, withRouter } from "next/router";
+import React from "react";
+import { Modal, Row } from "reactstrap";
 
 import {
     GameMonitoringInfo,
     getGameInfoByGameId,
     getGameInfoByGameName,
-} from '../components/game-monitoring/game-monitoring';
-import gameNameMapper from '../components/game-monitoring/game-name-mapper';
-import Loading from '../components/game-monitoring/game-template/game-template-loading';
-import GameMenu from '../components/game-monitoring/menu/menu';
-import SocketIO from '../components/util/game-server-endpoint/socket-io';
-import GameWsEndpoint from '../components/util/game-server-endpoint/websocket';
-import MessageTransmitter, { MessageTransmitterType } from '../components/util/message-transmitter';
+} from "../components/game-monitoring/game-monitoring";
+import gameNameMapper from "../components/game-monitoring/game-name-mapper";
+import Loading from "../components/game-monitoring/game-template/game-template-loading";
+import GameMenu from "../components/game-monitoring/menu/menu";
+import SocketIO from "../components/util/game-server-endpoint/socket-io";
+import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
+import MessageTransmitter, { MessageTransmitterType } from "../components/util/message-transmitter";
 
 type Props = {
     router: NextRouter;
@@ -28,7 +28,7 @@ type State = {
     socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24, 26, 25];
+const NewSocketGameIds = [2, 22, 24, 25, 26, 27];
 
 export class Home extends React.Component<Props, State> {
     public state: State;
@@ -116,6 +116,17 @@ export class Home extends React.Component<Props, State> {
                         process.env.NEXT_PUBLIC_ENV === 'local'
                             ? process.env.NEXT_PUBLIC_VIP_FISH_PRAWN_CRAB_SERVER_PROXY_ROUTE
                             : Cookies.get('vip-fish-prawn-crab-server-endpoint-route'),
+                };
+            case gameNameMapper.vipbaccarat:
+            return {
+                endpoint:
+                    process.env.NEXT_PUBLIC_ENV === 'local'
+                        ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_ENDPOINT
+                        : Cookies.get('vip-baccarat-server-endpoint'),
+                route:
+                    process.env.NEXT_PUBLIC_ENV === 'local'
+                        ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_PROXY_ROUTE
+                        : Cookies.get('vip-baccarat-server-endpoint-route'),
                 };
             case gameNameMapper.sicbo:
                 return {
