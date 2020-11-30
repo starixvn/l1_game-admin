@@ -26,6 +26,7 @@
         public const string VipSeDieValue = "vipsedie";
         public const string SpecialSeDieValue = "specialsedie";
         public const string BlackJackValue = "blackjack";
+        public const string VipFishPrawnCrabValue = "vipfishprawncrab";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small");
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small");        
@@ -51,6 +52,7 @@
         public static readonly Game VipSeDie = new Game(VipSeDieValue, "Vip Se Die");
         public static readonly Game SpecialSeDie = new Game(SpecialSeDieValue, "Special SeDie");
         public static readonly Game BlackJack = new Game(BlackJackValue, "Blackjack");
+        public static readonly Game VipFishPrawnCrab = new Game(VipFishPrawnCrabValue, "Vip Fish Prawn Crab");
 
         public Game()
         {

@@ -18,10 +18,10 @@ namespace GamesAdmin.Core.Enumeration
             {Game.RouletteValue, Enumeration.GetAll<RouletteBetChoice>() },
             {Game.VipSeDieValue, Enumeration.GetAll<VipSeDieBetChoice>() },
             {Game.BlackJackValue, Enumeration.GetAll<BlackjackBetChoice>() },
-            {GameType.VipFishPrawnCrabValue, Enumeration.GetAll<VipFishPrawnCrabBetChoice>() },
-            {GameType.SicBoValue, Enumeration.GetAll<SicBoBetChoice>() },
-            {GameType.VipBaccaratValue, Enumeration.GetAll<VipBaccaratBetChoice>() },
-            {GameType.VipSeDieWarValue, Enumeration.GetAll<VipSeDieWarBetChoice>() },
+            {Game.VipFishPrawnCrabValue, Enumeration.GetAll<VipFishPrawnCrabBetChoice>() },
+            {Game.SicBoValue, Enumeration.GetAll<SicBoBetChoice>() },
+            {Game.VipBaccaratValue, Enumeration.GetAll<VipBaccaratBetChoice>() },
+            {Game.VipSeDieWarValue, Enumeration.GetAll<VipSeDieWarBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

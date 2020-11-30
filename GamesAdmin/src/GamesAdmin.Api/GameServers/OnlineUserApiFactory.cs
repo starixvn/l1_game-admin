@@ -17,10 +17,10 @@ namespace GamesAdmin.Api.GameServers
             { Game.VipSeDieValue, typeof(IVipSedieOnlineUserApi) },
             { Game.SpecialSeDieValue, typeof(ISpecialSedieOnlineUserApi) },
             { Game.BlackJackValue, typeof(IBlackjackOnlineUserApi) },
-            { GameType.VipFishPrawnCrabValue, typeof(IVipFishPrawnCrabOnlineUserApi) },
-            { GameType.SicBoValue, typeof(ISicBoOnlineUserApi) },
-            { GameType.VipBaccaratValue, typeof(IVipBaccaratOnlineUserApi) },
-            { GameType.VipSeDieWarValue, typeof(IVipSedieWarOnlineUserApi) },
+            { Game.VipFishPrawnCrabValue, typeof(IVipFishPrawnCrabOnlineUserApi) },
+            { Game.SicBoValue, typeof(ISicBoOnlineUserApi) },
+            { Game.VipBaccaratValue, typeof(IVipBaccaratOnlineUserApi) },
+            { Game.VipSeDieWarValue, typeof(IVipSedieWarOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

@@ -6,56 +6,56 @@ namespace GamesAdmin.Core.Enumeration
 {
     public static class BetOddsMapper
     {
-        public static IEnumerable<Enumeration> Map(GameType gameType)
+        public static IEnumerable<Enumeration> Map(Game gameType)
         {
             switch (gameType.Value)
             {
-                case GameType.BigSmallValue:
-                case GameType.BigSmallTurboValue:
+                case Game.BigSmallValue:
+                case Game.BigSmallTurboValue:
                     return Enumeration.GetAll<BigSmallBetChoice>();
 
-                case GameType.OddEvenValue:
-                case GameType.OddEvenTurboValue:
-                case GameType.SpecialSeDieValue:
+                case Game.OddEvenValue:
+                case Game.OddEvenTurboValue:
+                case Game.SpecialSeDieValue:
                     return Enumeration.GetAll<OddEvenBetChoice>();
 
-                case GameType.SeDieValue:
+                case Game.SeDieValue:
                     return Enumeration.GetAll<SeDieBetChoice>();
 
-                case GameType.FishPrawnCrabValue:
+                case Game.FishPrawnCrabValue:
                     return Enumeration.GetAll<FishPrawnCrabBetChoice>();
 
-                case GameType.DragonTigerValue:
+                case Game.DragonTigerValue:
                     return Enumeration.GetAll<DragonTigerBetChoice>();
 
-                case GameType.KenoProMaxValue:
-                case GameType.KenoProVietValue:
-                case GameType.KenoMaxValue:
-                case GameType.KenoMax2Value:
-                case GameType.KenoMiniValue:
-                case GameType.KenoMini2Value:
-                case GameType.KenoEastValue:
-                case GameType.KenoWestValue:
-                case GameType.KenoSouthValue:
-                case GameType.KenoNorthValue:
+                case Game.KenoProMaxValue:
+                case Game.KenoProVietValue:
+                case Game.KenoMaxValue:
+                case Game.KenoMax2Value:
+                case Game.KenoMiniValue:
+                case Game.KenoMini2Value:
+                case Game.KenoEastValue:
+                case Game.KenoWestValue:
+                case Game.KenoSouthValue:
+                case Game.KenoNorthValue:
                     return Enumeration.GetAll<KenoBetChoice>();
 
-                case GameType.MiniSeDieValue:
+                case Game.MiniSeDieValue:
                     return Enumeration.GetAll<MiniSeDieBetChoice>();
 
-                case GameType.BaccaratValue:
+                case Game.BaccaratValue:
                     return Enumeration.GetAll<BaccaratBetChoice>();
 
-                case GameType.RouletteValue:
+                case Game.RouletteValue:
                     return Enumeration.GetAll<RouletteBetChoice>();
 
-                case GameType.VipSeDieValue:
+                case Game.VipSeDieValue:
                     return Enumeration.GetAll<VipSeDieBetChoice>();
 
-                case GameType.VipFishPrawnCrabValue:
+                case Game.VipFishPrawnCrabValue:
                     return Enumeration.GetAll<VipFishPrawnCrabBetOdds>();
 
-                case GameType.BlackJackValue:
+                case Game.BlackJackValue:
                     return Enumeration.GetAll<BlackjackBetChoice>();
                     
                 case GameType.SicBoValue:
