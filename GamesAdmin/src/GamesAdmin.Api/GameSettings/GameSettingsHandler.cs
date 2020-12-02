@@ -11,10 +11,15 @@ namespace GamesAdmin.Api.Games
         : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<UpdateRequest, bool>
-        , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
+        , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
+        , IRequestHandler<UpdateBotRatiosRequest, bool>
+        , IRequestHandler<UpdateGeneralSettingRequest, bool>
+        , IRequestHandler<UpdateJackpotRequest, bool>
+        , IRequestHandler<UpdateSlotConfigRequest, bool>
+        , IRequestHandler<UpdateSlotIconOddsRequest, bool>
     {
         private readonly IGameSettingsService gameService;
 
@@ -32,9 +37,6 @@ namespace GamesAdmin.Api.Games
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => gameService.Update(request.Game);
 
-        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
-        => gameService.Delete(request.Name);
-
         public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);
 
@@ -43,5 +45,23 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.UpdateDisbledMessage(request.Name, request.Message, request.IsApplyAll);
+
+        public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBetLimitAndOdds(request.Name, request.BetLimit, request.Odds);
+
+        public Task<bool> Handle(UpdateBotRatiosRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBotRatios(request.Name, request.Ratios);
+
+        public Task<bool> Handle(UpdateGeneralSettingRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateGeneralSetting(request.Name, request.GameInfo, request.BotSetting, request.EnableSetting);
+
+        public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
+
+        public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig);
+
+        public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
     }
 }

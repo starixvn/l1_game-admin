@@ -15,26 +15,6 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public Bonus Bonus { get; set; }
 
         public Jackpot Jackpot { get; set; }
-
-        public SlotsConfig GenerateDefaultSlotIcons(int total)
-        {
-            Icons = new Dictionary<string, Dictionary<string, float>>();
-
-            for (var i = 0; i < total; i++)
-            {
-                Icons.Add(i.ToString(), GenerateDefaultOdds());
-            }
-
-            return this;
-        }
-
-        private Dictionary<string, float> GenerateDefaultOdds()
-        => new Dictionary<string, float> {
-                { "2" , 0},
-                { "3" , 0},
-                { "4" , 0},
-                { "5" , 0},
-            };
     }
 
     public class SlotIconOdds
@@ -59,17 +39,17 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
     public class Jackpot
     {
-        public Jackpot(bool enabled, double rtp, double playerContribution, double botContribution)
+        public Jackpot(bool enabled, double winingAmount, double playerContribution, double botContribution)
         {
             Enabled = enabled;
-            RTP = rtp;
+            WinningAmount = winingAmount;
             PlayerContributionRatio = playerContribution;
             BotContributionRatio = botContribution;
         }
 
         public bool Enabled { get; set; }
 
-        public double RTP { get; set; }
+        public double WinningAmount { get; set; }
 
         public double PlayerContributionRatio { get; set; }
 

@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.Bonus.Min))
                 .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.Bonus.Max))
-                .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.Jackpot.RTP))
+                .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.Jackpot.WinningAmount))
                 .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio))
                 .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.Round()));

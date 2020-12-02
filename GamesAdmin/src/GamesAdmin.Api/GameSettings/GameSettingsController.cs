@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,7 @@ namespace GamesAdmin.Api.Games
         [HttpPut("update_status")]
         public Task<bool> UpdateStatus(string[] names, bool enabled)
            => mediator.Send(new UpdateStatusRequest(names, enabled));
-        
+
         [HttpPut("{name}/update_message")]
         public Task<bool> UpdateMessage(string name, string disabledMessage)
            => mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
@@ -59,5 +60,29 @@ namespace GamesAdmin.Api.Games
         [HttpPut("update_message_all")]
         public Task<bool> UpdateMessage(string disabledMessage)
            => mediator.Send(new UpdateDisabledMessageRequest(string.Empty, disabledMessage, true));
+
+        [HttpPost("{name}/update_bet_limit_odds")]
+        public Task<bool> UpdateBetLimitAndOdds(string name, BetLimit betLimit, Dictionary<string, double> odds)
+           => mediator.Send(new UpdateBetLimitAndOddsRequest(name, betLimit, odds));
+
+        [HttpPost("{name}/update_bot_ratios")]
+        public Task<bool> UpdateBetLimitAndOdds(string name, double[] ratios)
+           => mediator.Send(new UpdateBotRatiosRequest(name, ratios));
+
+        [HttpPost("{name}/update_general_settings")]
+        public Task<bool> UpdateGeneralSettings(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting)
+           => mediator.Send(new UpdateGeneralSettingRequest(name, gameInfo, botSetting, enableSetting));
+
+        [HttpPost("{name}/update_jackpot")]
+        public Task<bool> UpdateGeneralSettings(string name, Jackpot jackpot, List<StakeLevel> stakeLevels)
+           => mediator.Send(new UpdateJackpotRequest(name, jackpot, stakeLevels));
+
+        [HttpPost("{name}/update_slot_settings")]
+        public Task<bool> UpdateSlotSettings(string name, bool botEnabled, SlotsConfig slotsConfig)
+           => mediator.Send(new UpdateSlotConfigRequest(name, botEnabled, slotsConfig));
+
+        [HttpPost("{name}/update_slot_odds")]
+        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, float>> iconOdds)
+           => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));
     }
 }
