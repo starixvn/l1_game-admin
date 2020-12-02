@@ -64,6 +64,8 @@ namespace GamesAdmin.Core.Enumeration
 
                 case GameType.VipBaccaratValue:
                     return Enumeration.GetAll<VipBaccaratBetChoice>();
+                case GameType.VipSeDieWarValue:
+                    return Enumeration.GetAll<VipSeDieWarBetChoice>();
 
                 default: return default;
             }
