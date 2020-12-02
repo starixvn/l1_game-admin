@@ -29,6 +29,7 @@
         public const string VipFishPrawnCrabValue = "vipfishprawncrab";
         public const string SicBoValue = "sicbo";
         public const string VipBaccaratValue = "vipbaccarat";
+        public const string VipSeDieWarValue = "vipsediewar";
 
         public static readonly GameType BigSmall = new GameType(BigSmallValue, "Big Small");
         public static readonly GameType BigSmallTurbo = new GameType(BigSmallTurboValue, "Turbo Big Small");        
@@ -57,6 +58,7 @@
         public static readonly GameType VipFishPrawnCrab = new GameType(VipFishPrawnCrabValue, "Vip Fish Prawn Crab");
         public static readonly GameType SicBo = new GameType(SicBoValue, "Sic Bo");
         public static readonly GameType VipBaccarat = new GameType(VipBaccaratValue, "Vip Baccarat");
+        public static readonly GameType VipSeDieWar = new GameType(VipSeDieWarValue, "Vip Se Die War");
 
         public GameType()
         {

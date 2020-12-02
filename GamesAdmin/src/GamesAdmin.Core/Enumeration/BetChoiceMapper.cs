@@ -21,6 +21,7 @@ namespace GamesAdmin.Core.Enumeration
             {GameType.VipFishPrawnCrabValue, Enumeration.GetAll<VipFishPrawnCrabBetChoice>() },
             {GameType.SicBoValue, Enumeration.GetAll<SicBoBetChoice>() },
             {GameType.VipBaccaratValue, Enumeration.GetAll<VipBaccaratBetChoice>() },
+            {GameType.VipSeDieWarValue, Enumeration.GetAll<VipSeDieWarBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>
