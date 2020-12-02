@@ -20,6 +20,6 @@ export default {
     roulette: 21,
     vipsedie: 22,
     specialsedie: 24,
+    sicbo: 25,
     vipfishprawncrab: 26,
-    sicbo: 27
 };
