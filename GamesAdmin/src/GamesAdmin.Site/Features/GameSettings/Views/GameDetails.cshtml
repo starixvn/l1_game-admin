@@ -17,9 +17,12 @@
         <li class="nav-item">
             <a class="nav-link" href="#" onclick="gameStatus.toggleSettingTabs('payouts')">Payouts</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="gameStatus.toggleSettingTabs('jackpots')">Jackpot</a>
-        </li>
+        @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots && Model.SlotsConfig.Jackpot.Enabled)
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="gameStatus.toggleSettingTabs('jackpots')">Jackpot</a>
+            </li>
+        }
     </ul>
 
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
@@ -39,32 +42,7 @@
                     Game Type: <strong>@Model.TypeDisplay</strong>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="DelayStartTime" class="control-label"></label>
-                <input type="number" asp-for="DelayStartTime" class="form-control" />
-            </div>
 
-            <div class="form-group">
-                <label asp-for="BotMaxBet" class="control-label"></label>
-                <input type="number" asp-for="BotMaxBet" class="form-control" />
-                <span asp-validation-for="BotMaxBet" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <input type="checkbox" asp-for="BotEnabled" />
-                    <label asp-for="BotEnabled" class="control-label"></label>
-                </div>
-                <span asp-validation-for="BotEnabled" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <input type="checkbox" asp-for="EnableFreeBet" />
-                    <label asp-for="EnableFreeBet" class="control-label"></label>
-                </div>
-                <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
-            </div>
             @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
             {
                 <div class="form-group">
@@ -96,6 +74,23 @@
                     <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
                 </div>
             }
+
+            <div class="form-group">
+                <input type="checkbox" asp-for="BotEnabled" />
+                <label asp-for="BotEnabled" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" asp-for="EnableFreeBet" />
+                <label asp-for="EnableFreeBet" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <label asp-for="DelayStartTime" class="control-label"></label>
+                <input type="number" asp-for="DelayStartTime" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="BotMaxBet" class="control-label"></label>
+                <input type="number" asp-for="BotMaxBet" class="form-control" />
+            </div>
         </div>
 
         <div id="payouts" style="display:none">
@@ -103,7 +98,6 @@
                 <div class="col-lg-6">
                     <label asp-for="MinBet" class="control-label"></label>
                     <input type="number" asp-for="MinBet" class="form-control" />
-                    <span asp-validation-for="MinBet" class="text-danger"></span>
                     <input asp-for="Name" type="hidden" class="form-control" />
                     <input asp-for="Id" type="hidden" class="form-control" />
                     <input type="hidden" asp-for="Enabled" class="form-control" />
@@ -112,7 +106,6 @@
                 <div class="col-lg-6">
                     <label asp-for="MaxBet" class="control-label"></label>
                     <input type="number" asp-for="MaxBet" class="form-control" />
-                    <span asp-validation-for="MaxBet" class="text-danger"></span>
                 </div>
             </div>
 

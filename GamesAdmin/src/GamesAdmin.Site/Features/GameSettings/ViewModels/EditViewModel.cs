@@ -6,14 +6,12 @@ using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel : ViewModelBase
     {
         private const int MinChoices = 2;
-        private const double MinBetAmount = 0.01;
 
         public string Id { get; set; }
 
@@ -28,22 +26,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string StatusDisplay => Enabled ? "Enabled" : "Disabled";
 
-        [Required(ErrorMessage = "Mininum Bet could not empty")]
-        [Range(MinBetAmount, int.MaxValue)]
-        [DisplayName("Minimum Bet Limit")]
+        [DisplayName("Min Bet Limit")]
         public double MinBet { get; set; }
 
-        [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(MinBetAmount, int.MaxValue)]
-        [DisplayName("Maximum Bet Limit")]
+        [DisplayName("Max Bet Limit")]
         public double MaxBet { get; set; }
 
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
-        [Required(ErrorMessage = "Maximum Bet could not empty")]
-        [Range(MinBetAmount, int.MaxValue)]
-        [DisplayName("Bot Maximum Bet Limit")]
+        [DisplayName("Bot Max Bet Limit")]
         public double BotMaxBet { get; set; }
 
         public List<MaxBetChoiceViewModel> BetChoiceBetSettings { get; set; }
