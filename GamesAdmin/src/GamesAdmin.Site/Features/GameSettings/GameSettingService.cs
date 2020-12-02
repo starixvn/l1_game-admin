@@ -20,9 +20,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Put("/game_settings/")]
         Task<bool> Update([Body] GameConfig game);
 
-        [Post("/game_settings/{id}/delete")]
-        Task<bool> Delete(string id);
-
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
 
@@ -46,6 +43,24 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Get("/game_server/online_users/{game}")]
         Task<OnlineUsers> GetOnlineUsers(string game = null);
+
+        [Post("/game_settings/{name}/update_bot_ratios")]
+        Task<bool> UpdateBotRatios(string name, double[] ratios);
+
+        [Post("/game_settings/update_bet_limit_odds")]
+        Task<bool> UpdateBetLimitAndOdds([Body] UpdateBetLimitAndOddsRequest request);
+
+        //[Post("/game_settings/{name}/update_general_settings")]
+        //Task<bool> UpdateGeneralSettings(string name, [Body] GameInfo gameInfo, [Body] BotSetting botSetting, [Body] EnableSetting enableSetting);
+
+        //[Post("/game_settings/{name}/update_jackpot")]
+        //Task<bool> UpdateJackpot(string name, [Body] Jackpot jackpot, [Body] List<StakeLevel> stakeLevels);
+
+        //[Post("/game_settings/{name}/update_slot_settings")]
+        //Task<bool> UpdateSlotSettings(string name, bool botEnabled, [Body] SlotsConfig slotsConfig);
+
+        //[Post("/game_settings/{name}/update_slot_odds")]
+        //Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, float>> iconOdds);
     }
 
     public interface IGameSettingService
@@ -55,8 +70,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> Update(GameConfig game);
 
         Task<bool> Add(GameConfig game);
-
-        Task<bool> Delete(string id);
 
         Task<GameConfig> GetByName(string name);
 
@@ -73,6 +86,18 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UnderMaintenance(UnderMaintenanceRequest request);
 
         Task<OnlineUsers> GetOnlineUsers(string game = null);
+
+        Task<bool> UpdateBotRatios(string name, double[] ratios);
+
+        Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request);
+
+        //Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, float>> iconOdds);
+
+        //Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
+
+        //Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
+
+        //Task<bool> UpdateGeneralSetting(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
     }
 
     public class GameSettingService : IGameSettingService
@@ -105,9 +130,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Update(GameConfig game)
         => await gameApi.Update(game);
-
-        public async Task<bool> Delete(string id)
-        => await gameApi.Delete(id);
 
         public async Task<GameConfig> GetByName(string name)
         => await gameApi.GetByName(name);
@@ -147,5 +169,23 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<OnlineUsers> GetOnlineUsers(string game = null)
         => gameApi.GetOnlineUsers(game);
+
+        public Task<bool> UpdateBotRatios(string name, double[] ratios)
+       => gameApi.UpdateBotRatios(name, ratios);
+
+        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+        => gameApi.UpdateBetLimitAndOdds(request);
+
+        //public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, float>> iconOdds)
+        //=> gameApi.UpdateSlotOddss(name, iconOdds);
+
+        //public Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels)
+        //=> gameApi.UpdateJackpot(name, jackpot, stakeLevels);
+
+        //public Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
+        //=> gameApi.UpdateSlotSettings(name, botEnabled, slotsConfig);
+
+        //public Task<bool> UpdateGeneralSetting(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting)
+        //=> gameApi.UpdateGeneralSettings(name, gameInfo, botSetting, enableSetting);
     }
 }

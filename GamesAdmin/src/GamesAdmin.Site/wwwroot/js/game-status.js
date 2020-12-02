@@ -410,6 +410,16 @@
                 $('#slots-config').hide();
             }
         },
+
+        toggleSettingTabs: function (name) {
+            $('#general').hide();
+            $('#jackpots').hide();
+            $('#payouts').hide();
+
+            const id = '#' + name;
+
+            $(id).show();
+        }
     }
 }(jQuery));
 

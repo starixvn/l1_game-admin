@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -219,6 +219,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
+        }
+
+        [HttpPost]
+        [Route("payouts/update")]
+        public async Task<IActionResult> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+        {
+            await mediator.Send(request);
+            return Json(true);
         }
     }
 }

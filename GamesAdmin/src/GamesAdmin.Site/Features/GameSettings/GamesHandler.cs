@@ -23,7 +23,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<AddRequest, AddViewModel>
         , IRequestHandler<CreateRequest, bool>
-        , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<IsExistRequest, bool>
         , IRequestHandler<UpdateBotRatioRequest, bool>
         , IRequestHandler<GetStatusRequest, StatusViewModel>
@@ -34,6 +33,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetJWTRequest, GameServerToken>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
+        , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -176,19 +176,11 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.BetLimit,
             request.SlotConfigs));
 
-        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
-        => gameService.Delete(request.Id);
-
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);
 
-        public async Task<bool> Handle(UpdateBotRatioRequest request, CancellationToken cancellationToken)
-        {
-            var game = await gameService.GetByName(request.Name);
-            game.BotSetting.HoursMaxBot = request.BotRatios;
-
-            return await gameService.Update(game);
-        }
+        public Task<bool> Handle(UpdateBotRatioRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBotRatios(request.Name, request.BotRatios);
 
         public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
         {
@@ -283,5 +275,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
         => gameService.UnderMaintenance(request);
+
+        public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBetLimitAndOdds(request);
     }
 }

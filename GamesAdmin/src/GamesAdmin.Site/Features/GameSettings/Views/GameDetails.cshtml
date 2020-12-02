@@ -12,13 +12,13 @@
 <div>
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link active" href="#">General</a>
+            <a class="nav-link active" href="#" onclick="gameStatus.toggleSettingTabs('general')">General</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Payouts</a>
+            <a class="nav-link" href="#" onclick="gameStatus.toggleSettingTabs('payouts')">Payouts</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Jackpot</a>
+            <a class="nav-link" href="#" onclick="gameStatus.toggleSettingTabs('jackpots')">Jackpot</a>
         </li>
     </ul>
 
@@ -98,7 +98,7 @@
             }
         </div>
 
-        <div id="payouts">
+        <div id="payouts" style="display:none">
             <div class="form-group row">
                 <div class="col-lg-6">
                     <label asp-for="MinBet" class="control-label"></label>
@@ -115,6 +115,31 @@
                     <span asp-validation-for="MaxBet" class="text-danger"></span>
                 </div>
             </div>
+
+            @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+            {
+
+                <fieldset>
+                    @foreach (var icon in Model.SlotViewModel?.Icons)
+                    {
+                        <legend>Icon @icon.Key</legend>
+                        <div class="form-group row">
+                            @foreach (var odds in icon.Value)
+                            {
+                                <div class="col-lg-6">
+                                    <label class="control-label">Count</label>
+                                    <input type="number" value="@odds.Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">Odds</label>
+                                    <input type="number" value="@odds.Value" class="form-control" />
+                                </div>
+                            }
+                        </div>
+                    }
+                </fieldset>
+                <br />
+            }
             @if (Model.DisplayMaxBetChoices)
             {
                 <fieldset>
@@ -166,7 +191,7 @@
             }
         </div>
 
-        <div id="jackpots">
+        <div id="jackpots" style="display:none;">
             @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
             {
 
@@ -202,24 +227,6 @@
                                 <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
                                 <span asp-validation-for="@Model.SlotViewModel.PlayerJackpotContribution" class="text-danger"></span>
                             </div>
-                        </div>
-                    }
-
-                    @foreach (var icon in Model.SlotViewModel?.Icons)
-                    {
-                        <legend>Icon @icon.Key</legend>
-                        <div class="form-group row">
-                            @foreach (var odds in icon.Value)
-                            {
-                                <div class="col-lg-6">
-                                    <label class="control-label">Count</label>
-                                    <input type="number" value="@odds.Key" class="form-control" />
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="control-label">Odds</label>
-                                    <input type="number" value="@odds.Value" class="form-control" />
-                                </div>
-                            }
                         </div>
                     }
                 </fieldset>
