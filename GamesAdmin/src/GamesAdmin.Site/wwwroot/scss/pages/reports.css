@@ -186,6 +186,9 @@
     .dice {
       width: 3.9rem;
       height: 3.9rem; } }
+  .dice.sicbo {
+    border: 1px solid #ddd;
+    border-radius: 2px; }
 
 .red-chip, .white-chip {
   display: inline-block;
