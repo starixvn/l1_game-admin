@@ -22,5 +22,6 @@ export default {
     specialsedie: 24,
     sicbo: 25,
     vipfishprawncrab: 26,
-    vipbaccarat: 27
+    vipbaccarat: 27,
+    vipsediewar: 28
 };
