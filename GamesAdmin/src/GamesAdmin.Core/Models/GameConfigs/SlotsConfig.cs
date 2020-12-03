@@ -49,6 +49,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public bool Enabled { get; set; }
 
+        public bool ExcludeUUS { get; set; }
+
         public double WinningAmount { get; set; }
 
         public double PlayerContributionRatio { get; set; }

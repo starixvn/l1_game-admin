@@ -73,7 +73,7 @@ namespace GamesAdmin.Api.Games
            => mediator.Send(request);
 
         [HttpPost("update_jackpot")]
-        public Task<bool> UpdateGeneralSettings(UpdateJackpotRequest request)
+        public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
            => mediator.Send(request);
 
         [HttpPost("update_slot_settings")]

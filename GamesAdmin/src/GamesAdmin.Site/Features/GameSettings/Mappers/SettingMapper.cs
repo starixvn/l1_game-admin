@@ -28,6 +28,13 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
                 .ForMember(dest => dest.Icons, opt => opt.MapFrom(src => src.SlotsConfig.Icons));
 
+            CreateMap<SlotsConfig, JackpotViewModel>()               
+                .ForMember(dest => dest.WinningAmount, opt => opt.MapFrom(src => src.Jackpot.WinningAmount))
+                .ForMember(dest => dest.PlayerContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio))
+                .ForMember(dest => dest.BotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio))
+                .ForMember(dest => dest.ExcludeUUS, opt => opt.MapFrom(src => src.Jackpot.ExcludeUUS))
+                .ForMember(dest => dest.JackpotEnabled, opt => opt.MapFrom(src => src.Jackpot.Enabled));
+
             CreateMap<SlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.Bonus.Min))

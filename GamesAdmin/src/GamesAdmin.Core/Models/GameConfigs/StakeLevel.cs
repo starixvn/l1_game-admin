@@ -2,14 +2,16 @@
 {
     public class StakeLevel
     {
+        public StakeLevel() { }
+
         public StakeLevel(double stake, double jackpot) 
         {
             Stake = stake;
             Jackpot = jackpot;
         }
 
-        public double Stake { get; }
+        public double Stake { get; set; }
 
-        public double Jackpot { get; }
+        public double Jackpot { get; set; }
     }
 }

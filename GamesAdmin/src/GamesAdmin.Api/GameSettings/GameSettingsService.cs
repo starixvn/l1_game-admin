@@ -269,6 +269,8 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
+                    .Set(field => field.SlotsConfig.Jackpot.ExcludeUUS, jackpot.ExcludeUUS)                    
                     .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.WinningAmount, jackpot.WinningAmount);
@@ -291,7 +293,7 @@ namespace GamesAdmin.Api.Games
 
             var updatedStakes = stakeLevels.OrderBy(x => x.Stake).Select(x => x.Stake).ToArray();
             var currentStakes = gameConfig.SlotsConfig.StakeLevels.OrderBy(x => x.Stake).Select(x => x.Stake).ToArray();
-            var diffs = updatedStakes.Intersect(currentStakes);
+            var diffs = updatedStakes.Except(currentStakes);
 
             return diffs.Any();
         }

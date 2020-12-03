@@ -34,6 +34,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
         , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
+        , IRequestHandler<UpdateJackpotRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -101,6 +102,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
                     viewModel.SlotViewModel.ModeItems = difficultyItems;
                     viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
+
+                    viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
                 }
                 else
                 {
@@ -300,5 +303,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         => request.Type == GameType.AutoRNG
                 ? gameService.UpdateBetLimitAndOdds(request)
                 : gameService.UpdateSlotIconOdds(request.Name, request.Icons);
+
+        public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateJackpot(request);
     }
 }

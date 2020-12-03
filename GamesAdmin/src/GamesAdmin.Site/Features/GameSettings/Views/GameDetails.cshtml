@@ -110,7 +110,7 @@
                 </div>
             </div>
 
-            @if (Model.PayoutViewModel.IconOdds.Count > 0)
+            @if (Model.PayoutViewModel.IconOdds?.Count > 0)
             {
                 @for (var i = 0; i < Model.PayoutViewModel.IconOdds.Count; i++)
                 {<fieldset>
@@ -185,40 +185,43 @@
         </div>
 
         <div id="jackpots" style="display:none;">
-            @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+            @if (Model.JackpotViewModel != null)
             {
 
+                <div class="form-group">
+                    <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeUUS" />
+                    <label asp-for="@Model.JackpotViewModel.ExcludeUUS" class="control-label"></label>
+                </div>
                 <fieldset class="slots-jackpot">
                     <legend>Jackpot (initial value)</legend>
-                    @foreach (var stake in Model.SlotViewModel?.StakeLevels)
+                    @for (var i = 0; i < Model.JackpotViewModel.StakeLevels.Count; i++)
                     {
                         <div class="form-group">
-                            <label class="control-label">Stake level @stake.Stake</label>
-                            <input type="number" asp-for="@stake.Jackpot" class="form-control" />
+                            <label class="control-label">Stake level @Model.JackpotViewModel.StakeLevels[i].Stake</label>
+                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
+                            <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
                         </div>
                     }
                 </fieldset>
                 <br />
 
-                @if (Model.SlotViewModel != null)
-                {
-                    <div class="form-group">
-                        <label class="control-label" asp-for="@Model.SlotViewModel.JackpotWinningAmount"></label>
-                        <input type="number" asp-for="@Model.SlotViewModel.JackpotWinningAmount" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" asp-for="@Model.SlotViewModel.JackpotServiceFee"></label>
-                        <input type="number" asp-for="@Model.SlotViewModel.JackpotServiceFee" readonly class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" asp-for="@Model.SlotViewModel.BotJackpotContribution"></label>
-                        <input type="number" asp-for="@Model.SlotViewModel.BotJackpotContribution" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" asp-for="@Model.SlotViewModel.PlayerJackpotContribution"></label>
-                        <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
-                    </div>
-                }
+                <div class="form-group">
+                    <label class="control-label" asp-for="@Model.JackpotViewModel.WinningAmount"></label>
+                    <input type="number" asp-for="@Model.JackpotViewModel.WinningAmount" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="@Model.JackpotViewModel.JackpotServiceFee"></label>
+                    <input type="number" asp-for="@Model.JackpotViewModel.JackpotServiceFee" readonly class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="@Model.JackpotViewModel.BotContribution"></label>
+                    <input type="number" asp-for="@Model.JackpotViewModel.BotContribution" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="@Model.JackpotViewModel.PlayerContribution"></label>
+                    <input type="number" asp-for="@Model.JackpotViewModel.PlayerContribution" class="form-control" />
+                </div>
+
             }
         </div>
 

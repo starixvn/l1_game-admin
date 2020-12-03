@@ -51,6 +51,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public SlotViewModel SlotViewModel { get; set; }
 
         public PayoutViewModel PayoutViewModel { get; set; }
+
+        public JackpotViewModel JackpotViewModel { get; set; }
     }
 
     public class BotRatioItemViewModel

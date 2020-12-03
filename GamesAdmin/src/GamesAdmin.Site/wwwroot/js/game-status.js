@@ -254,8 +254,13 @@
         submit: function () {
             $('#updateBtn').prop('disabled', true);
             let requestUrl = "/update";
+
             if ($('#payouts').css('display') !== 'none') {
                 requestUrl = "/payouts/update";
+            }
+
+            if ($('#jackpots').css('display') !== 'none') {
+                requestUrl = "/jackpot/update";
             }
 
             $.ajax({

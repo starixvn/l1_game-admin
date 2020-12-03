@@ -53,8 +53,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         //[Post("/game_settings/{name}/update_general_settings")]
         //Task<bool> UpdateGeneralSettings(string name, [Body] GameInfo gameInfo, [Body] BotSetting botSetting, [Body] EnableSetting enableSetting);
 
-        //[Post("/game_settings/{name}/update_jackpot")]
-        //Task<bool> UpdateJackpot(string name, [Body] Jackpot jackpot, [Body] List<StakeLevel> stakeLevels);
+        [Post("/game_settings/update_jackpot")]
+        Task<bool> UpdateJackpot([Body] UpdateJackpotRequest request);
 
         //[Post("/game_settings/{name}/update_slot_settings")]
         //Task<bool> UpdateSlotSettings(string name, bool botEnabled, [Body] SlotsConfig slotsConfig);
@@ -93,7 +93,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
-        //Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
+        Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
         //Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
 
@@ -179,8 +179,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         => gameApi.UpdateSlotOddss(name, iconOdds);
 
-        //public Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels)
-        //=> gameApi.UpdateJackpot(name, jackpot, stakeLevels);
+        public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
+        => gameApi.UpdateJackpot(request);
 
         //public Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
         //=> gameApi.UpdateSlotSettings(name, botEnabled, slotsConfig);

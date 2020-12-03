@@ -201,11 +201,36 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 await mediator.Send(new UpdateBetLimitAndOddsRequest(
-                    viewModel.Name, 
-                    viewModel.Type, 
+                    viewModel.Name,
+                    viewModel.Type,
                     new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
                     viewModel.PayoutViewModel.Odds,
                     viewModel.PayoutViewModel.Icons));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("/jackpot/update")]
+        public async Task<IActionResult> UpdateJackpot([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateJackpotRequest(
+                    viewModel.Name,
+                    new Jackpot(
+                        viewModel.JackpotViewModel.JackpotEnabled,
+                        viewModel.JackpotViewModel.WinningAmount,
+                        viewModel.JackpotViewModel.PlayerContribution,
+                        viewModel.JackpotViewModel.BotContribution),
+                    viewModel.JackpotViewModel.StakeLevels));
 
                 return Json(true);
             }
