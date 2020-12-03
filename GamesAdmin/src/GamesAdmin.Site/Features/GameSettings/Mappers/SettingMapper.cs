@@ -15,9 +15,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<GameConfig, EditViewModel>()
                 .ForMember(dest => dest.EnableFreeBet, opt => opt.MapFrom(src => src.Info.EnableFreeBet))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type))
-                .ForMember(dest => dest.MinBet, opt => opt.MapFrom(src => src.BetLimit.MinBet))
-                .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
-                .ForMember(dest => dest.MaxBetChoices, opt => opt.MapFrom(src => src.BetLimit.MaxBetChoices))
                 .ForMember(dest => dest.Enabled, opt => opt.MapFrom(src => src.EnableSetting.Enabled))
                 .ForMember(dest => dest.DisabledMessage, opt => opt.MapFrom(src => src.EnableSetting.DisabledMessage))
                 .ForMember(dest => dest.DelayStartTime, opt => opt.MapFrom(src => src.EnableSetting.DelayStartTime))
@@ -25,11 +22,17 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.BotEnabled, opt => opt.MapFrom(src => src.BotSetting.BotEnabled))
                 .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotSetting.HoursMaxBot));
 
+            CreateMap<GameConfig, PayoutViewModel>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type))
+                .ForMember(dest => dest.MinBet, opt => opt.MapFrom(src => src.BetLimit.MinBet))
+                .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
+                .ForMember(dest => dest.Icons, opt => opt.MapFrom(src => src.SlotsConfig.Icons));
+
             CreateMap<SlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.Bonus.Min))
                 .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.Bonus.Max))
-                .ForMember(dest => dest.JackpotRTP, opt => opt.MapFrom(src => src.Jackpot.WinningAmount))
+                .ForMember(dest => dest.JackpotWinningAmount, opt => opt.MapFrom(src => src.Jackpot.WinningAmount))
                 .ForMember(dest => dest.PlayerJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio))
                 .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.Round()));

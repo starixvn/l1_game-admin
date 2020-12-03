@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
@@ -6,17 +7,32 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class UpdateBetLimitAndOddsRequest : IRequest<bool>
     {
-        public UpdateBetLimitAndOddsRequest(string name, BetLimit betLimit, Dictionary<string, double> odds)
+        public UpdateBetLimitAndOddsRequest()
         {
-            Name = name;
-            BetLimit = betLimit;
-            Odds = odds;
         }
 
-        public string Name { get; }
+        public UpdateBetLimitAndOddsRequest(
+            string name,
+            GameType type,
+            BetLimit betLimit,
+            Dictionary<string, double> odds,
+            Dictionary<string, Dictionary<string, double>> icons)
+        {
+            Name = name;
+            Type = type;
+            BetLimit = betLimit;
+            Odds = odds;
+            Icons = icons;
+        }
 
-        public BetLimit BetLimit { get; }
+        public string Name { get; set; }
 
-        public Dictionary<string, double> Odds { get; }
+        public GameType Type { get; set; }
+
+        public BetLimit BetLimit { get; set; }
+
+        public Dictionary<string, double> Odds { get; set; }
+
+        public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
     }
 }

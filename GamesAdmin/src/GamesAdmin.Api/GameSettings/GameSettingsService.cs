@@ -30,7 +30,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
-        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, float>> iconOdds);
+        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
@@ -146,7 +146,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.Enabled), enabled);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.Enabled, enabled);
                 await repository.UpdateManyAsync(config => names.Contains(config.Name), update);
 
                 sentryClient.CaptureMessage($"Game {string.Join(", ", names)} enabled: {enabled}");
@@ -165,7 +165,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.DisabledMessage), disabledMessage);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.DisabledMessage, disabledMessage);
 
                 if (isApplyAll)
                 {
@@ -196,10 +196,10 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(nameof(GameConfigEntity.Odds), odds)
-                    .Set(nameof(GameConfigEntity.Minbet), betLimit.MinBet)
-                    .Set(nameof(GameConfigEntity.Maxbet), betLimit.MaxBet)
-                    .Set(nameof(GameConfigEntity.MaxBetChoices), betLimit.MaxBetChoices);
+                    .Set(field => field.Odds, odds)
+                    .Set(field => field.Minbet, betLimit.MinBet)
+                    .Set(field => field.Maxbet, betLimit.MaxBet)
+                    .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -222,7 +222,7 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"{nameof(ratios)} not fullfill {HoursOfDay} hours.");
                 }
 
-                var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.HoursMaxBot), ratios);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -236,7 +236,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, float>> iconOdds)
+        public async Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         {
             try
             {
@@ -245,7 +245,7 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
-                var update = Builders<GameConfigEntity>.Update.Set(nameof(GameConfigEntity.SlotsConfig.Icons), iconOdds);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -269,9 +269,9 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(nameof(GameConfigEntity.SlotsConfig.Jackpot.BotContributionRatio), jackpot.BotContributionRatio)
-                    .Set(nameof(GameConfigEntity.SlotsConfig.Jackpot.PlayerContributionRatio), jackpot.PlayerContributionRatio)
-                    .Set(nameof(GameConfigEntity.SlotsConfig.Jackpot.WinningAmount), jackpot.WinningAmount);
+                    .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
+                    .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
+                    .Set(field => field.SlotsConfig.Jackpot.WinningAmount, jackpot.WinningAmount);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -301,10 +301,10 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(nameof(GameConfigEntity.SlotsConfig.Bonus), slotsConfig.Bonus)
-                    .Set(nameof(GameConfigEntity.SlotsConfig.BigWinRatio), slotsConfig.BigWinRatio)
-                    .Set(nameof(GameConfigEntity.SlotsConfig.Mode), slotsConfig.Mode)
-                    .Set(nameof(GameConfigEntity.Botenabled), botEnabled);
+                    .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
+                    .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
+                    .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
+                    .Set(field => field.Botenabled, botEnabled);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -323,11 +323,11 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(nameof(GameConfigEntity.DisplayName), gameInfo.DisplayName)
-                    .Set(nameof(GameConfigEntity.EnableFreeBet), gameInfo.EnableFreeBet)
-                    .Set(nameof(GameConfigEntity.DelayStartTime), enableSetting.DelayStartTime)
-                    .Set(nameof(GameConfigEntity.Botenabled), botSetting.BotEnabled)
-                    .Set(nameof(GameConfigEntity.BotMaxBet), botSetting.BotMaxBet);
+                    .Set(field => field.DisplayName, gameInfo.DisplayName)
+                    .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
+                    .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
+                    .Set(field => field.Botenabled, botSetting.BotEnabled)
+                    .Set(field => field.BotMaxBet, botSetting.BotMaxBet);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

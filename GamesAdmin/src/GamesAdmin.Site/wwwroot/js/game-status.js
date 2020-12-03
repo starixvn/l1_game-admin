@@ -253,9 +253,14 @@
         },
         submit: function () {
             $('#updateBtn').prop('disabled', true);
+            let requestUrl = "/update";
+            if ($('#payouts').css('display') !== 'none') {
+                requestUrl = "/payouts/update";
+            }
+
             $.ajax({
                 method: "POST",
-                url: "/update",
+                url: requestUrl,
                 dataType: 'json',
                 data: $('#gameForm').serialize(),
             }).done(function (result) {

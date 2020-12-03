@@ -87,20 +87,28 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             if (game != null)
             {
+                viewModel.PayoutViewModel = mapper.Map<PayoutViewModel>(game);
+
                 viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
+                viewModel.DisplayName = string.IsNullOrWhiteSpace(game.Info.DisplayName)
+                                        ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
+                                        : game.Info.DisplayName;
 
                 if (game.Info.Type == GameType.Slots)
                 {
                     viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
                     viewModel.SlotViewModel.ModeItems = difficultyItems;
+                    viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
                 }
                 else
                 {
+                    viewModel.Type = GameType.AutoRNG;
                     var choices = GetBetChoices(game.Info.Name);
-                    viewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
-                    viewModel.BetChoiceOdds = GenerateOdds(choices, game.Odds);
+
+                    viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
+                    viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(choices, game.Odds);
                 }
             }
 
@@ -151,6 +159,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                 choice.Value,
                 oddsSettings.ContainsKey(choice.Value) ? oddsSettings[choice.Value] : 0,
                 choice.DisplayName)).ToList();
+        }
+
+        private List<IconOddsViewModel> GenerateIconOdds(Dictionary<string, Dictionary<string, double>> iconOdds)
+        {
+            if (iconOdds == default)
+            {
+                return new List<IconOddsViewModel>();
+            }
+
+            return iconOdds.Select(icon => new IconOddsViewModel(
+                icon.Key,
+                icon.Value)).ToList();
         }
 
         private IEnumerable<Enumeration> GetBetChoices(string name)
@@ -277,6 +297,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.UnderMaintenance(request);
 
         public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateBetLimitAndOdds(request);
+        => request.Type == GameType.AutoRNG
+                ? gameService.UpdateBetLimitAndOdds(request)
+                : gameService.UpdateSlotIconOdds(request.Name, request.Icons);
     }
 }

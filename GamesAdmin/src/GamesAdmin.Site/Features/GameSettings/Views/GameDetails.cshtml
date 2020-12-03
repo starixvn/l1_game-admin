@@ -30,8 +30,6 @@
 
     <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
 
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
         <div id="general">
             <div class="form-group row">
                 <div class="col-lg-6">
@@ -41,6 +39,11 @@
                 <div class="col-lg-6">
                     Game Type: <strong>@Model.TypeDisplay</strong>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DisplayName" class="control-label"></label>
+                <input type="text" asp-for="DisplayName" class="form-control" />
             </div>
 
             @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
@@ -96,59 +99,56 @@
         <div id="payouts" style="display:none">
             <div class="form-group row">
                 <div class="col-lg-6">
-                    <label asp-for="MinBet" class="control-label"></label>
-                    <input type="number" asp-for="MinBet" class="form-control" />
+                    <label asp-for="@Model.PayoutViewModel.MinBet" class="control-label"></label>
+                    <input type="number" asp-for="@Model.PayoutViewModel.MinBet" class="form-control" />
                     <input asp-for="Name" type="hidden" class="form-control" />
-                    <input asp-for="Id" type="hidden" class="form-control" />
-                    <input type="hidden" asp-for="Enabled" class="form-control" />
-                    <input type="hidden" asp-for="DisabledMessage" class="form-control" />
+                    <input asp-for="Type" type="hidden" class="form-control" />
                 </div>
                 <div class="col-lg-6">
-                    <label asp-for="MaxBet" class="control-label"></label>
-                    <input type="number" asp-for="MaxBet" class="form-control" />
+                    <label asp-for="@Model.PayoutViewModel.MaxBet" class="control-label"></label>
+                    <input type="number" asp-for="@Model.PayoutViewModel.MaxBet" class="form-control" />
                 </div>
             </div>
 
-            @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+            @if (Model.PayoutViewModel.IconOdds.Count > 0)
             {
-
-                <fieldset>
-                    @foreach (var icon in Model.SlotViewModel?.Icons)
-                    {
-                        <legend>Icon @icon.Key</legend>
+                @for (var i = 0; i < Model.PayoutViewModel.IconOdds.Count; i++)
+                {<fieldset>
+                        <legend>Icon @Model.PayoutViewModel.IconOdds[i].Index</legend>
                         <div class="form-group row">
-                            @foreach (var odds in icon.Value)
+                            <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
+                            @for (var j = 0; j < Model.PayoutViewModel.IconOdds[i].Odds.Count; j++)
                             {
                                 <div class="col-lg-6">
                                     <label class="control-label">Count</label>
-                                    <input type="number" value="@odds.Key" class="form-control" />
+                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Count" class="form-control" />
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="control-label">Odds</label>
-                                    <input type="number" value="@odds.Value" class="form-control" />
+                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Odds" class="form-control" />
                                 </div>
                             }
                         </div>
-                    }
-                </fieldset>
+                    </fieldset>
+                }
                 <br />
             }
-            @if (Model.DisplayMaxBetChoices)
+            @if (Model.PayoutViewModel.DisplayMaxBetChoices)
             {
                 <fieldset>
                     <legend>Bet Choices</legend>
-                    @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
+                    @for (var i = 0; i < (Model.PayoutViewModel.BetChoiceBetSettings.Count / 2 + 1); i++)
                     {
                         <div class="form-group row">
                             @for (var j = 0; j < 2; j++)
                             {
                                 var index = i * 2 + j;
-                                if (index < Model.BetChoiceBetSettings.Count)
+                                if (index < Model.PayoutViewModel.BetChoiceBetSettings.Count)
                                 {
                                     <div class="col-lg-6">
-                                        <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
-                                        <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                                        <label class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name" class="form-control" />
+                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet" class="form-control" />
                                     </div>
                                 }
                             }
@@ -158,23 +158,23 @@
             }
 
             <br />
-            @if (Model.BetChoiceOdds != null && Model.BetChoiceOdds.Any())
+            @if (Model.PayoutViewModel.BetChoiceOdds != null && Model.PayoutViewModel.BetChoiceOdds.Any())
             {
                 <fieldset>
                     <legend>Odds</legend>
-                    @for (var i = 0; i < (Model.BetChoiceOdds.Count / 2 + 1); i++)
+                    @for (var i = 0; i < (Model.PayoutViewModel.BetChoiceOdds.Count / 2 + 1); i++)
                     {
                         <div class="form-group row">
                             @for (var j = 0; j < 2; j++)
                             {
                                 var index = i * 2 + j;
-                                if (index < Model.BetChoiceOdds.Count)
+                                if (index < Model.PayoutViewModel.BetChoiceOdds.Count)
                                 {
                                     <div class="col-lg-6">
-                                        <label class="control-label">@Model.BetChoiceOdds[index].DisplayName</label>
-                                        <input type="text" hidden asp-for="@Model.BetChoiceOdds[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.BetChoiceOdds[index].Odds" class="form-control" />
-                                        <span asp-validation-for="@Model.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                                        <label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
+                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control" />
+                                        <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>
                                     </div>}
                             }
                         </div>}
@@ -189,42 +189,36 @@
             {
 
                 <fieldset class="slots-jackpot">
-                    <legend>Stakes and Jackpot</legend>
-
-                    <div class="form-group row">
-                        @foreach (var stake in Model.SlotViewModel?.StakeLevels)
-                        {
-                            <div class="col-lg-4">
-                                <label class="control-label">Stake: @stake.Stake - Jackpot: @stake.Jackpot</label>
-                            </div>
-                        }
-                    </div>
-
-                    @if (Model.SlotViewModel != null)
+                    <legend>Jackpot (initial value)</legend>
+                    @foreach (var stake in Model.SlotViewModel?.StakeLevels)
                     {
-                        <div class="form-group row">
-                            <div class="col-lg-4">
-                                <label class="control-label" asp-for="@Model.SlotViewModel.JackpotRTP"></label>
-                                <input type="number" asp-for="@Model.SlotViewModel.JackpotRTP" class="form-control" />
-                                <span asp-validation-for="@Model.SlotViewModel.JackpotRTP" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="control-label" asp-for="@Model.SlotViewModel.BotJackpotContribution"></label>
-                                <input type="number" asp-for="@Model.SlotViewModel.BotJackpotContribution" class="form-control" />
-                                <span asp-validation-for="@Model.SlotViewModel.BotJackpotContribution" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="control-label" asp-for="@Model.SlotViewModel.PlayerJackpotContribution"></label>
-                                <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
-                                <span asp-validation-for="@Model.SlotViewModel.PlayerJackpotContribution" class="text-danger"></span>
-                            </div>
+                        <div class="form-group">
+                            <label class="control-label">Stake level @stake.Stake</label>
+                            <input type="number" asp-for="@stake.Jackpot" class="form-control" />
                         </div>
                     }
                 </fieldset>
                 <br />
 
+                @if (Model.SlotViewModel != null)
+                {
+                    <div class="form-group">
+                        <label class="control-label" asp-for="@Model.SlotViewModel.JackpotWinningAmount"></label>
+                        <input type="number" asp-for="@Model.SlotViewModel.JackpotWinningAmount" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" asp-for="@Model.SlotViewModel.JackpotServiceFee"></label>
+                        <input type="number" asp-for="@Model.SlotViewModel.JackpotServiceFee" readonly class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" asp-for="@Model.SlotViewModel.BotJackpotContribution"></label>
+                        <input type="number" asp-for="@Model.SlotViewModel.BotJackpotContribution" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" asp-for="@Model.SlotViewModel.PlayerJackpotContribution"></label>
+                        <input type="number" asp-for="@Model.SlotViewModel.PlayerJackpotContribution" class="form-control" />
+                    </div>
+                }
             }
         </div>
 

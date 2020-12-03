@@ -22,13 +22,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool JackpotEnabled { get; set; }
 
-        [DisplayName("RTP")]
-        public double JackpotRTP { get; set; }
+        [DisplayName("Jackpot Winning Amount (%)")]
+        public double JackpotWinningAmount { get; set; }
 
-        [DisplayName("Bot Contribution")]
+        [DisplayName("Jackpot Service Fee (%)")]
+        public double JackpotServiceFee => 100 - JackpotWinningAmount;
+
+        [DisplayName("Bot Contribution (%)")]
         public double BotJackpotContribution { get; set; }
 
-        [DisplayName("Player Contribution")]
+        [DisplayName("Player Contribution (%)")]
         public double PlayerJackpotContribution { get; set; }       
 
         [DisplayName("Big Win Ratio")]

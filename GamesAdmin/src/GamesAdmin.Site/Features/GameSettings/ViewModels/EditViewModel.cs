@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
@@ -11,44 +10,23 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel : ViewModelBase
     {
-        private const int MinChoices = 2;
-
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name)
-            ? string.Empty
-            : Enumeration.FromValue<Game>(Name).DisplayName;
+        [DisplayName("Name")]
+        public string DisplayName { get; set; }
 
         [DisplayName("Game Status:")]
         public bool Enabled { get; set; }
 
-        public string StatusDisplay => Enabled ? "Enabled" : "Disabled";
-
-        [DisplayName("Min Bet Limit")]
-        public double MinBet { get; set; }
-
-        [DisplayName("Max Bet Limit")]
-        public double MaxBet { get; set; }
+        public string StatusDisplay => Enabled ? "Enabled" : "Disabled";     
 
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
         [DisplayName("Bot Max Bet Limit")]
-        public double BotMaxBet { get; set; }
-
-        public List<MaxBetChoiceViewModel> BetChoiceBetSettings { get; set; }
-
-        public bool DisplayMaxBetChoices => MaxBetChoices?.Count > MinChoices;
-
-        public Dictionary<string, double> MaxBetChoices
-            => BetChoiceBetSettings?.ToDictionary(x => x.Name, x => x.MaxBet);
-
-        public List<OddsViewModel> BetChoiceOdds { get; set; }
-
-        public Dictionary<string, double> Odds
-            => BetChoiceOdds?.ToDictionary(x => x.Name, x => x.Odds);
+        public double BotMaxBet { get; set; }   
 
         [DisplayName("Delay Start Time")]
         public int DelayStartTime { get; set; }
@@ -71,6 +49,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public SlotsConfig SlotsConfig { get; set; }
 
         public SlotViewModel SlotViewModel { get; set; }
+
+        public PayoutViewModel PayoutViewModel { get; set; }
     }
 
     public class BotRatioItemViewModel

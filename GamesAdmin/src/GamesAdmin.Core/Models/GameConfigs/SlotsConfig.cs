@@ -10,7 +10,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public List<StakeLevel> StakeLevels { get; set; }
 
-        public Dictionary<string, Dictionary<string, float>> Icons { get; set; }
+        public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
 
         public Bonus Bonus { get; set; }
 

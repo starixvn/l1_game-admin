@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Extensions;
-using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.GameSettings.Requests;
@@ -31,32 +30,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.sentryClient = sentryClient;
             this.appSettings = appSettings;
             this.mapper = mapper;
-        }
-
-        [HttpPost]
-        [Route("/update")]
-        public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
-        {
-            try
-            {
-                //TODO input game type, input display name
-                await mediator.Send(new UpdateRequest(new GameConfig(
-                   editViewModel.Id,
-                   editViewModel.Odds,
-                   new GameInfo(editViewModel.Name, editViewModel.DisplayName, editViewModel.EnableFreeBet),
-                   new EnableSetting(editViewModel.Enabled, null, editViewModel.DelayStartTime, editViewModel.DisabledMessage),
-                   new BotSetting(editViewModel.BotEnabled, editViewModel.BotMaxBet, null),
-                   new BetLimit(editViewModel.MinBet, editViewModel.MaxBet, editViewModel.MaxBetChoices)
-                   )));
-
-                return Json(true);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-            }
-
-            return Json(false);
         }
 
         [HttpGet]
@@ -222,11 +195,26 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost]
-        [Route("payouts/update")]
-        public async Task<IActionResult> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+        [Route("/payouts/update")]
+        public async Task<IActionResult> UpdatePayouts([Bind] EditViewModel viewModel)
         {
-            await mediator.Send(request);
-            return Json(true);
+            try
+            {
+                await mediator.Send(new UpdateBetLimitAndOddsRequest(
+                    viewModel.Name, 
+                    viewModel.Type, 
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
+                    viewModel.PayoutViewModel.Odds,
+                    viewModel.PayoutViewModel.Icons));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
         }
     }
 }

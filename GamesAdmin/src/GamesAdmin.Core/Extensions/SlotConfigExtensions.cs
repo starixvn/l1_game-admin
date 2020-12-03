@@ -7,7 +7,7 @@ namespace GamesAdmin.Core.Extensions
     {
         public static SlotsConfig GenerateDefaultSlotIcons(this SlotsConfig config, int total)
         {
-            config.Icons = new Dictionary<string, Dictionary<string, float>>();
+            config.Icons = new Dictionary<string, Dictionary<string, double>>();
 
             for (var i = 0; i < total; i++)
             {
@@ -17,8 +17,8 @@ namespace GamesAdmin.Core.Extensions
             return config;
         }
 
-        private static Dictionary<string, float> GenerateDefaultOdds()
-        => new Dictionary<string, float> {
+        private static Dictionary<string, double> GenerateDefaultOdds()
+        => new Dictionary<string, double> {
                 { "2" , 0},
                 { "3" , 0},
                 { "4" , 0},

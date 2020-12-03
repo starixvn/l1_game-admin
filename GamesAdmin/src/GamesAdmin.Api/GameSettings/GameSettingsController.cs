@@ -80,8 +80,8 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateSlotSettings(UpdateSlotConfigRequest request)
            => mediator.Send(request);
 
-        [HttpPost("update_slot_odds")]
-        public Task<bool> UpdateSlotIconOdds(UpdateSlotIconOddsRequest request)
-           => mediator.Send(request);
+        [HttpPost("{name}/update_slot_odds")]
+        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+           => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));
     }
 }

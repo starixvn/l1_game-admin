@@ -5,7 +5,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class UpdateSlotIconOddsRequest : IRequest<bool>
     {
-        public UpdateSlotIconOddsRequest(string name, Dictionary<string, Dictionary<string, float>> iconOdds)
+        public UpdateSlotIconOddsRequest(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         {
             Name = name;
             IconOdds = iconOdds;
@@ -13,6 +13,6 @@ namespace GamesAdmin.Api.GameSettings.Requests
 
         public string Name { get; }
 
-        public Dictionary<string, Dictionary<string, float>> IconOdds { get; }
+        public Dictionary<string, Dictionary<string, double>> IconOdds { get; }
     }
 }
