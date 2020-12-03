@@ -28,7 +28,7 @@ type State = {
     socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24, 26, 27];
+const NewSocketGameIds = [2, 22, 24, 26, 25];
 
 export class Home extends React.Component<Props, State> {
     public state: State;
