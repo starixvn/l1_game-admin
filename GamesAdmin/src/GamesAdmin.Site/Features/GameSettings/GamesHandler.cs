@@ -187,7 +187,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-        => gameService.Update(request.Game);
+        => request.GameInfo.Type == GameType.AutoRNG
+                ? gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting))
+                : gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.GameInfo.DisplayName, request.BotSetting.BotEnabled, request.SlotsConfig));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(

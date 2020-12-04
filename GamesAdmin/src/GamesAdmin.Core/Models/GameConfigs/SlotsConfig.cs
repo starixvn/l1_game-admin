@@ -4,6 +4,17 @@ namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class SlotsConfig
     {
+        public SlotsConfig()
+        {
+        }
+
+        public SlotsConfig(byte mode, double bigWinRatio, Bonus bonus)
+        {
+            Mode = mode;
+            BigWinRatio = bigWinRatio;
+            Bonus = bonus;
+        }
+
         public byte Mode { get; set; }
 
         public double BigWinRatio { get; set; }

@@ -18,8 +18,6 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> Create(GameConfig game);
 
-        Task<bool> Update(GameConfig game);
-
         Task<GameConfig> GetByName(string name);
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
@@ -34,9 +32,9 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
-        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
+        Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig);
 
-        Task<bool> UpdateGeneralSetting(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
+        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -107,32 +105,6 @@ namespace GamesAdmin.Api.Games
             }
 
             return true;
-        }
-
-        public async Task<bool> Update(GameConfig game)
-        {
-            try
-            {
-                var existEntity = await GetByName(game.Info.Name);
-
-                var entity = mapper.Map<GameConfigEntity>(game);
-                entity.Time = DateTime.Now;
-
-                if (entity.HoursMaxBot == null || entity.HoursMaxBot.Length < HoursOfDay)
-                {
-                    entity.HoursMaxBot = existEntity.BotSetting.HoursMaxBot;
-                }
-
-                await repository.ReplaceOneAsync(entity);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
         }
 
         public async Task<GameConfig> GetByName(string name)
@@ -270,7 +242,7 @@ namespace GamesAdmin.Api.Games
 
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
-                    .Set(field => field.SlotsConfig.Jackpot.ExcludeUUS, jackpot.ExcludeUUS)                    
+                    .Set(field => field.SlotsConfig.Jackpot.ExcludeUUS, jackpot.ExcludeUUS)
                     .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.WinningAmount, jackpot.WinningAmount);
@@ -298,11 +270,12 @@ namespace GamesAdmin.Api.Games
             return diffs.Any();
         }
 
-        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
+        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig)
         {
             try
             {
                 var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.DisplayName, displayName)
                     .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                     .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
                     .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
@@ -320,7 +293,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateGeneralSetting(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting)
+        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting)
         {
             try
             {
@@ -331,7 +304,7 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.Botenabled, botSetting.BotEnabled)
                     .Set(field => field.BotMaxBet, botSetting.BotMaxBet);
 
-                await repository.UpdateAsync(config => config.Name == name, update);
+                await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
                 return true;
             }

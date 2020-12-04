@@ -17,9 +17,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/")]
         Task<bool> Add([Body] GameConfig game);
 
-        [Put("/game_settings/")]
-        Task<bool> Update([Body] GameConfig game);
-
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
 
@@ -50,14 +47,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/update_bet_limit_odds")]
         Task<bool> UpdateBetLimitAndOdds([Body] UpdateBetLimitAndOddsRequest request);
 
-        //[Post("/game_settings/{name}/update_general_settings")]
-        //Task<bool> UpdateGeneralSettings(string name, [Body] GameInfo gameInfo, [Body] BotSetting botSetting, [Body] EnableSetting enableSetting);
+        [Post("/game_settings/update_general_config")]
+        Task<bool> UpdateGeneralConfig([Body] UpdateGeneralConfigRequest request);
 
         [Post("/game_settings/update_jackpot")]
         Task<bool> UpdateJackpot([Body] UpdateJackpotRequest request);
 
-        //[Post("/game_settings/{name}/update_slot_settings")]
-        //Task<bool> UpdateSlotSettings(string name, bool botEnabled, [Body] SlotsConfig slotsConfig);
+        [Post("/game_settings/update_slot_config")]
+        Task<bool> UpdateSlotConfig([Body] UpdateSlotConfigRequest request);
 
         [Post("/game_settings/{name}/update_slot_odds")]
         Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
@@ -66,8 +63,6 @@ namespace GamesAdmin.Site.Features.GameSettings
     public interface IGameSettingService
     {
         Task<IList<GameConfig>> GetAll();
-
-        Task<bool> Update(GameConfig game);
 
         Task<bool> Add(GameConfig game);
 
@@ -95,9 +90,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
-        //Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
+        Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request);
 
-        //Task<bool> UpdateGeneralSetting(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
+        Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -127,9 +122,6 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return new List<GameConfig>();
             }
         }
-
-        public async Task<bool> Update(GameConfig game)
-        => await gameApi.Update(game);
 
         public async Task<GameConfig> GetByName(string name)
         => await gameApi.GetByName(name);
@@ -182,10 +174,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
         => gameApi.UpdateJackpot(request);
 
-        //public Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
-        //=> gameApi.UpdateSlotSettings(name, botEnabled, slotsConfig);
+        public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
+        => gameApi.UpdateSlotConfig(request);
 
-        //public Task<bool> UpdateGeneralSetting(string name, GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting)
-        //=> gameApi.UpdateGeneralSettings(name, gameInfo, botSetting, enableSetting);
+        public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
+        => gameApi.UpdateGeneralConfig(request);
     }
 }

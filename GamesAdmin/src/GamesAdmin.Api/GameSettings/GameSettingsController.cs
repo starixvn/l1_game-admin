@@ -40,10 +40,6 @@ namespace GamesAdmin.Api.Games
             return await mediator.Send(new CreateRequest(game));
         }
 
-        [HttpPut]
-        public Task<bool> Update(GameConfig game)
-            => mediator.Send(new UpdateRequest(game));
-
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)
             => mediator.Send(new GetByNameRequest(name));
@@ -68,16 +64,16 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
            => mediator.Send(request);
 
-        [HttpPost("update_general_settings")]
-        public Task<bool> UpdateGeneralSettings(UpdateGeneralSettingRequest request)
+        [HttpPost("update_general_config")]
+        public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
            => mediator.Send(request);
 
         [HttpPost("update_jackpot")]
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
            => mediator.Send(request);
 
-        [HttpPost("update_slot_settings")]
-        public Task<bool> UpdateSlotSettings(UpdateSlotConfigRequest request)
+        [HttpPost("update_slot_config")]
+        public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
            => mediator.Send(request);
 
         [HttpPost("{name}/update_slot_odds")]

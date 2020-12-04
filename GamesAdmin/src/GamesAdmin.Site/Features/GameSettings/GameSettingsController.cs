@@ -241,5 +241,30 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return Json(false);
         }
+
+        [HttpPost]
+        [Route("/update")]
+        public async Task<IActionResult> Update([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateRequest(
+                    new GameInfo(viewModel.Name, viewModel.DisplayName, viewModel.EnableFreeBet, viewModel.Type),
+                    new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet),
+                    new EnableSetting(viewModel.Enabled),
+                    viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(
+                        (byte)viewModel.SlotViewModel.Mode,
+                        viewModel.SlotViewModel.BigWinRatio,
+                        new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus))));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
     }
 }
