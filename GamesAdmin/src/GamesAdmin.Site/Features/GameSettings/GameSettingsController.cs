@@ -228,6 +228,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("sic-bo-server-endpoint-route", appSettings.GameServers.SicBo.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-baccarat-server-endpoint", appSettings.GameServers.VipBaccarat.Socket);
             HttpContext.Response.Cookies.Append("vip-baccarat-server-endpoint-route", appSettings.GameServers.VipBaccarat.SocketRoute);
+            HttpContext.Response.Cookies.Append("vip-sedie-war-server-endpoint", appSettings.GameServers.VipSeDieWar.Socket);
+            HttpContext.Response.Cookies.Append("vip-sedie-war-server-endpoint-route", appSettings.GameServers.VipSeDieWar.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

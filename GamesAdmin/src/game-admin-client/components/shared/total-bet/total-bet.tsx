@@ -47,6 +47,20 @@ const classNames = {
   totalPoints: 'totalPointsBg',
   sicboBig: 'sicboBigBg',
   sicboSmallBg: 'sicboSmallBg'
+  odd: 'oddBg',
+  even: 'evenBg',
+  playerOdd: 'playerOddBg',
+  playerEven: 'playerEvenBg',
+  bankerOdd: 'bankerOddBg',
+  bankerEven: 'bankerEvenBg',
+  playerRed4: 'playerRed4Bg',
+  playerRed3: 'playerRed3Bg',
+  playerWhite3: 'playerWhite3Bg',
+  playerWhite4: 'playerWhite4Bg',
+  bankerRed4: 'bankerRed4Bg',
+  bankerRed3: 'bankerRed3Bg',
+  bankerWhite3: 'bankerWhite3Bg',
+  bankerWhite4: 'bankerWhite4Bg',
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {
