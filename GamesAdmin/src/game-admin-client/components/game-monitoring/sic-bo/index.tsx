@@ -389,9 +389,9 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
         <GameTemplate
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
-          disabled={this.state.gameState == GameState.disabled}
+          disabled={this.state.gameState === GameState.disabled}
         />
-        {this.state.gameState == GameState.disabled && (
+        {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />
         )}
       </div>
