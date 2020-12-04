@@ -134,7 +134,7 @@ export class Home extends React.Component<Props, State> {
           endpoint:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_VIP_SEDIE_WAR_SERVER_ENDPOINT
-              : Cookies.get("vip-sedie-server-war-endpoint"),
+              : Cookies.get("vip-sedie-war-server-war-endpoint"),
           route:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_VIP_SEDIE_WAR_SERVER_PROXY_ROUTE
@@ -252,7 +252,6 @@ export class Home extends React.Component<Props, State> {
 
   render() {
     const { gameId, gameName, token, socket } = this.state;
-    debugger;
 
     const info = getGameInfoByGameId(gameId) || getGameInfoByGameName(gameName);
 
