@@ -40,7 +40,7 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
 
   handleData(data) {
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 45) {
         clearTimeout(this.timeout);
         const model = new SicBoModel();
         this.setState({
@@ -383,6 +383,7 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
   }
 
   render() {
+    debugger;
     return (
       <div className={styles["-sic-bo"]}>
         {!this.props.isProduction && this.renderGameControl()}
