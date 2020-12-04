@@ -28,7 +28,7 @@ export default function Dice(props: DiceProps) {
       case DiceType.BauCua:
         return rootURL.replace('{0}', BauCuaDice[value]);
       case DiceType.XocXoc:
-        return rootURL.replace('{0}', value ? 'red' : 'white');
+        return rootURL.replace('{0}', value === 1 ? 'red' : 'white');
       case DiceType.TaiXiu:
         return rootURL.replace('{0}', value);
       default:

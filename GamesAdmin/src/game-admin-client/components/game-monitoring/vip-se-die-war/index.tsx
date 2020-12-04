@@ -148,11 +148,11 @@ export default class VipSeDieWar extends React.Component<
     result.player = [];
 
     Object.keys(data.player).forEach((key) => {
-      result.player.push(new DiceModel(data.player[key], DiceType.XocXoc));
+      result.player.push(new DiceModel(data.player[key] ? 1 : 0, DiceType.XocXoc));
     });
 
     Object.keys(data.banker).forEach((key) => {
-      result.banker.push(new DiceModel(data.banker[key], DiceType.XocXoc));
+      result.banker.push(new DiceModel(data.banker[key] ? 1 : 0, DiceType.XocXoc));
     });
 
     return result;
@@ -481,14 +481,10 @@ export default class VipSeDieWar extends React.Component<
     const newResult = { player: {}, banker: {} };
 
     result.player.forEach(
-      (dice, index) =>
-        (newResult.player[`red${index + 1}`] =
-          dice.value === -1 ? false : dice.value)
+      (dice, index) => (newResult.player[`red${index + 1}`] = dice.value === 1)
     );
     result.banker.forEach(
-      (dice, index) =>
-        (newResult.banker[`red${index + 1}`] =
-          dice.value === -1 ? false : dice.value)
+      (dice, index) => (newResult.banker[`red${index + 1}`] = dice.value === 1)
     );
 
     this.props.sendMessage({
@@ -527,12 +523,12 @@ export default class VipSeDieWar extends React.Component<
       >
         <Row>
           <Dice
-            diceModel={new DiceModel(true, DiceType.XocXoc)}
+            diceModel={new DiceModel(1, DiceType.XocXoc)}
             isSmall={false}
             onClickHandle={this.handleChangeResult}
           />
           <Dice
-            diceModel={new DiceModel(false, DiceType.XocXoc)}
+            diceModel={new DiceModel(0, DiceType.XocXoc)}
             isSmall={false}
             onClickHandle={this.handleChangeResult}
           />
