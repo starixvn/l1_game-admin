@@ -73,6 +73,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<MiniSeDieEndGameInfoService>();
             services.AddScoped<DragonTigerEndGameInfoService>();
             services.AddScoped<BaccaratEndGameInfoService>();
+            services.AddScoped<VipBaccaratEndGameInfoService>();
             services.AddScoped<KenoProMaxEndGameInfoService>();
             services.AddScoped<KenoProVietEndGameInfoService>();
             services.AddScoped<KenoMaxEndGameInfoService>();

@@ -39,6 +39,7 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabEndGameInfoService) },
             { GameId.SicBo, typeof(SicBoEndGameInfoService) },
+            { GameId.VipBaccarat, typeof(VipBaccaratEndGameInfoService) },
         };
 
         private readonly IServiceProvider serviceProvider;
@@ -49,6 +50,6 @@ namespace GamesAdmin.Api.EndGameInfo
         }
 
         public IEndGameInfoService GetService(GameId game)
-        => (IEndGameInfoService) serviceProvider.GetRequiredService(services[game]);
+        => (IEndGameInfoService)serviceProvider.GetRequiredService(services[game]);
     }
 }

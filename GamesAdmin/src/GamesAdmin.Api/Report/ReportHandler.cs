@@ -24,6 +24,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
         IRequestHandler<DragonTigerReportRequest, DragonTigerBetReport>,
         IRequestHandler<BaccaratReportRequest, BaccaratBetReport>,
+        IRequestHandler<VipBaccaratReportRequest, VipBaccaratBetReport>,
         IRequestHandler<RouletteReportRequest, RouletteBetReport>,
         IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>,
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
@@ -98,7 +99,7 @@ namespace GamesAdmin.Api.Report
 
         public Task<SpecialSeDieBetHistory> Handle(SpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);
-        
+
         public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
         => reportService.GetBlackjackReportAsync(request.HandId, request.Nickname, request.ExcludeUUS);
 
@@ -107,6 +108,9 @@ namespace GamesAdmin.Api.Report
 
         public Task<SicBoBetReport> Handle(SicBoReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        
+        public Task<VipBaccaratBetReport> Handle(VipBaccaratReportRequest request, CancellationToken cancellationToken)
+         => reportService.GetVipBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SicBoBetHistory> Handle(SicBoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoBetHistoryAsync(request.RoundId, request.UserId);

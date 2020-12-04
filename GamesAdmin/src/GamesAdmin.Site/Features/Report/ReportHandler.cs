@@ -27,6 +27,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetFishPrawnCrabReportRequest, FishPrawnCrabReportResultViewModel>,
         IRequestHandler<GetDragonTigerReportRequest, DragonTigerReportResultViewModel>,
         IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
+        IRequestHandler<GetVipBaccaratReportRequest, VipBaccaratReportResultViewModel>,
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>,
@@ -462,7 +463,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 })
             };
         }
-        
+
         public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetBlackjackReport(request.HandId, request.Nickname, request.ExcludeUUS);
@@ -503,6 +504,23 @@ namespace GamesAdmin.Site.Features.ClientSites
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;
+                })
+            };
+        }
+        
+        public async Task<VipBaccaratReportResultViewModel> Handle(GetVipBaccaratReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new VipBaccaratReportResultViewModel
+            {
+                RoundResult = mapper.Map<VipBaccaratRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<BaccaratRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
                 })
             };
         }

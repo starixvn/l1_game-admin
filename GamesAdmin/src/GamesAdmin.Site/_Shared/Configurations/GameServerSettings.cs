@@ -13,10 +13,12 @@
         public GameServerConfigs VipFishPrawnCrab { get; set; }
 
         public GameServerConfigs SicBo { get; set; }
+        
+        public GameServerConfigs VipBaccarat { get; set; }
     }
 
-    public class GameServerConfigs 
-    { 
+    public class GameServerConfigs
+    {
         public string Api { get; set; }
 
         public string Socket { get; set; }

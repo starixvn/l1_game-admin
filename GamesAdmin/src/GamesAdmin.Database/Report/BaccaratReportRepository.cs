@@ -12,6 +12,7 @@ namespace GamesAdmin.Database
     {
         Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
+
     public class BaccaratReportRepository : BaseBetReportRepository, IBaccaratReportRepository
     {
         public BaccaratReportRepository(IMongoDatabase database) : base(database)
