@@ -6,6 +6,15 @@
 
 @{
     var betChoices = Enumeration.GetAll<SicBoBetChoice>();
+
+    var betTypeDisplayDictionary = new Dictionary<string, string>
+{
+        { "specific", "Specific Number" },
+        { "total", "Total Points" },
+        {"big", "Big/Small" },
+        {"small", "Big/Small" },
+        {"anyTriple", "Any Triple" },
+    };
 }
 
 <table class="table table-bordered table-hover">
@@ -27,21 +36,7 @@
                 <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                 <td class="text-center">@bet.Round</td>
                 <td class="text-center">
-                    @if (betChoice.IsAnyTripleChoice)
-                    {
-                        @betChoice.DisplayName
-                    }
-                    else
-                    {
-                        @if (betChoice.IsBigSmallChoice)
-                        {
-                            @("Big/Small")
-                        }
-                        else
-                        {
-                            @splitted[0]
-                        }
-                    }
+                    @betTypeDisplayDictionary[splitted[0]]
                 </td>
                 <td class="text-center @(Model.RoundResult.SettlementResult[bet.Choice]? "text-primary": string.Empty)">
                     @(betChoice.IsAnyTripleChoice || betChoice.IsBigSmallChoice ? betChoice.DisplayName : splitted[1])
