@@ -13,7 +13,7 @@
         public GameServerConfigs VipFishPrawnCrab { get; set; }
 
         public GameServerConfigs SicBo { get; set; }
-        
+        public GameServerConfigs VipSeDieWar { get; set; }
         public GameServerConfigs VipBaccarat { get; set; }
     }
 

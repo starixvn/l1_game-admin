@@ -79,7 +79,8 @@ export default class VipSeDieWarModel {
   result: VipSeDieWarResult;
   gameState: number;
   settlementResult: VipSeDieWarSettlementResult;
-
+  isOpenModal: boolean;
+  selectedDice: string
   constructor() {
     this.result = {
       banker: [
@@ -99,6 +100,7 @@ export default class VipSeDieWarModel {
     this.betList = new VipSeDieWarBetList();
     this.time = new TimeModel();
     this.gameState = 0;
+    this.settlementResult = new VipSeDieWarSettlementResult();
   }
 }
 

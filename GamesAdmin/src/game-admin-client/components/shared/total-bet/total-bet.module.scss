@@ -342,3 +342,17 @@
 @include totalBet("totalPoints", "white", "Total Points");
 @include totalBet("sicboBig", "white", "Big");
 @include totalBet("sicboSmall", "white", "Small");
+@include totalBet("even", "white", "Even");
+@include totalBet("odd", "white", "Odd");
+@include totalBet("playerOdd", "white", "Player Odd");
+@include totalBet("playerEven", "white", "Player Even");
+@include totalBet("bankerOdd", "white", "Banker Odd");
+@include totalBet("bankerEven", "white", "Banker Even");
+@include totalBet("playerRed4", "white", "Player - 4 Red");
+@include totalBet("playerRed3", "white", "Player - 3 Red");
+@include totalBet("playerWhite3", "white", "Player - 1 Red");
+@include totalBet("playerWhite4", "white", "Player - 4 White");
+@include totalBet("bankerRed4", "white", "Banker - 4 Red");
+@include totalBet("bankerRed3", "white", "Banker - 3 Red");
+@include totalBet("bankerWhite3", "white", "Banker - 1 Red");
+@include totalBet("bankerWhite4", "white", "Banker - 4 White");
