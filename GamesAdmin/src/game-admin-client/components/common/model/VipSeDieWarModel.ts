@@ -49,10 +49,25 @@ class VipSeDieWarBetList {
   constructor() {
     this.even = new BetList();
     this.odd = new BetList();
+    this.tie = new BetList();
+    this.player = new BetList();
+    this.banker = new BetList();
+    this.playerOdd = new BetList();
+    this.playerEven = new BetList();
+    this.playerRed3 = new BetList();
+    this.playerRed4 = new BetList();
+    this.playerWhite3 = new BetList();
+    this.playerWhite4 = new BetList();
+    this.bankerOdd = new BetList();
+    this.bankerEven = new BetList();
+    this.bankerRed3 = new BetList();
+    this.bankerRed4 = new BetList();
+    this.bankerWhite3 = new BetList();
+    this.bankerWhite4 = new BetList();
   }
 }
 
-class VipSeDieWarResult {
+export class VipSeDieWarResult {
   banker: Array<DiceModel>;
   player: Array<DiceModel>;
 }
@@ -87,4 +102,4 @@ export default class VipSeDieWarModel {
   }
 }
 
-export { VipSeDieWarModel, VipSeDieWarBetList };
+export { VipSeDieWarBetList };
