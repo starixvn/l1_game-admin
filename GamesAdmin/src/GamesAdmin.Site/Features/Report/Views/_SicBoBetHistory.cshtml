@@ -21,7 +21,6 @@
     <thead>
         <tr>
             <th>Date (GMT+7)</th>
-            <th>Round</th>
             <th>Bet Type</th>
             <th>Bet Choice</th>
             <th>Bet Amount</th>
@@ -34,7 +33,6 @@
             var splitted = betChoice.DisplayName.Split(" ");
             <tr>
                 <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                <td class="text-center">@bet.Round</td>
                 <td class="text-center">
                     @betTypeDisplayDictionary[splitted[0]]
                 </td>
