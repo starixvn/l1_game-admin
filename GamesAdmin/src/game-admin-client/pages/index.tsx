@@ -134,7 +134,7 @@ export class Home extends React.Component<Props, State> {
           endpoint:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_VIP_SEDIE_WAR_SERVER_ENDPOINT
-              : Cookies.get("vip-sedie-war-server-war-endpoint"),
+              : Cookies.get("vip-sedie-war-server-endpoint"),
           route:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_VIP_SEDIE_WAR_SERVER_PROXY_ROUTE
