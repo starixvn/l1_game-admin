@@ -544,7 +544,7 @@ export default class VipSeDieWar extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
-          disabled={this.state.gameState == GameState.disabled}
+          disabled={this.state.gameState === GameState.disabled}
         ></GameTemplate>
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />
