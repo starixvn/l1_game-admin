@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.GameSettings;
@@ -67,6 +66,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(GameType.BlackJack.DisplayName, GameType.BlackJack.Value),
                 new SelectListItem(GameType.VipFishPrawnCrab.DisplayName, GameType.VipFishPrawnCrab.Value),
                 new SelectListItem(GameType.SicBo.DisplayName, GameType.SicBo.Value),
+                new SelectListItem(GameType.VipBaccarat.DisplayName, GameType.VipBaccarat.Value),
                 };
     }
 }

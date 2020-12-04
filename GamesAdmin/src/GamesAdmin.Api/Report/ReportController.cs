@@ -87,6 +87,11 @@ namespace GamesAdmin.Api.Report
        => (await mediator.Send(new BaccaratReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
+        [Route("vip_baccarat/round/{roundId}/users/{nickname?}")]
+        public async Task<VipBaccaratBetReport> VipBaccarat(long roundId, string nickname, bool excludeUUS)
+      => (await mediator.Send(new VipBaccaratReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
         [Route("roulette/round/{roundId}/users/{nickname?}")]
         public async Task<RouletteBetReport> Roulette(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new RouletteReportRequest(roundId, nickname, excludeUUS)));
@@ -115,17 +120,16 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/game/specialsedie/round/{roundId}/user/{userId}")]
         public async Task<SpecialSeDieBetHistory> SpecialSeDieBetHistory(long roundId, string userId)
          => (await mediator.Send(new SpecialSeDieBetHistoryRequest(roundId, userId)));
-         
-         [HttpGet]
+
+        [HttpGet]
         [Route("blackjack/hand/{handId}/users/{nickname?}")]
         public async Task<IEnumerable<BlackjackBetRecord>> Blackjack(long handId, string nickname, bool excludeUUS)
-        => (await mediator.Send(new BlackjackReportRequest(handId, nickname, excludeUUS)));
+       => (await mediator.Send(new BlackjackReportRequest(handId, nickname, excludeUUS)));
 
         [HttpGet]
         [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]
         public async Task<VipFishPrawnCrabBetReport> VipFishPrawnCrab(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
-
         [HttpGet]
         [Route("sic_bo/round/{roundId}/users/{nickname?}")]
         public async Task<SicBoBetReport> SicBo(long roundId, string nickname, bool excludeUUS)

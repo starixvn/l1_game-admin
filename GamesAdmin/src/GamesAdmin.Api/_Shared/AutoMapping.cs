@@ -126,7 +126,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<SpecialSeDieBetReportEntity, SpecialSeDieBetRecord>();
 
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
-            
+
             CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
             CreateMap<BlackjackCardEntity, BlackjackCard>();
 
@@ -137,6 +137,8 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<VipFishPrawnCrabBetReportEntity, VipFishPrawnCrabBetRecord>();
 
+            CreateMap<VipBaccaratRoundEntity, VipBaccaratRoundResult>();
+            CreateMap<VipBaccaratResultEntity, VipBaccaratResult>();
             CreateMap<SicBoBetReportEntity, SicBoBetRecord>();
             CreateMap<SicBoRoundEntity, SicBoRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))

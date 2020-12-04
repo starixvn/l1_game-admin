@@ -97,9 +97,21 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult VipBaccarat()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetBaccaratReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_BaccaratRecords", await mediator.Send(new GetBaccaratReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipBaccaratReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_BaccaratRecords", await mediator.Send(new GetVipBaccaratReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
@@ -119,7 +131,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, userId)));
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)

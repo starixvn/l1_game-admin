@@ -43,6 +43,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
 
+        Task<VipBaccaratBetReport> GetVipBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
+
         Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
@@ -54,11 +56,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
-        
+
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
-
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
@@ -138,13 +139,16 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId)
         => reportApi.GetSpecialSeDieBetHistory(roundId, userId);
-        
+
         public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS)
         => reportApi.GetBlackjackReport(handId, nickname, excludeUUS);
 
         public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);
 
+        public Task<VipBaccaratBetReport> GetVipBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetVipBaccaratReport(roundId, nickname, excludeUUS);
+        
         public Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetSicBoBetReport(roundId, nickname, excludeUUS);
 
