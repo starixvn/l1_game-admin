@@ -110,7 +110,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetVipBaccaratReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_BaccaratRecords", await mediator.Send(new GetVipBaccaratReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_VipBaccaratRecords", await mediator.Send(new GetVipBaccaratReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
