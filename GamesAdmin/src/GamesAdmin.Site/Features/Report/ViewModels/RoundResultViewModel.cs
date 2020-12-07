@@ -144,4 +144,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
+    public class VipSeDieWarRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<bool> PlayerChips { get; set; }
+        public IEnumerable<bool> BankerChips { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
+    }
 }

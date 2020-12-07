@@ -58,8 +58,10 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+        Task<VipSeDieWarBetReport> GetVipSeDieWarBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
+        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -139,6 +141,13 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);
+
+
+        public Task<VipSeDieWarBetReport> GetVipSeDieWarBetReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetVipSeDieWarReport(roundId, nickname, excludeUUS);
+
+        public async Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId)
+            => await reportApi.GetVipSeDieWarBetHistory(roundId, userId);
 
         public Task<VipBaccaratBetReport> GetVipBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipBaccaratReport(roundId, nickname, excludeUUS);

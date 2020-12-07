@@ -68,6 +68,11 @@ namespace GamesAdmin.Site._Shared
             }));
             CreateMap<SicBoBetRecord, SicBoRecordViewModel>();
             CreateMap<SicBoBetHistoryRecord, SicBoBetHistoryRecordViewModel>();
+            
+            CreateMap<VipSeDieWarRoundResult, VipSeDieWarRoundResultViewModel>();
+            CreateMap<VipSeDieWarBetRecord, VipSeDieWarRecordViewModel>();
+            CreateMap<VipSeDieWarBetHistoryRecord, VipSeDieWarBetHistoryRecordViewModel>();
+
         }
     }
 }

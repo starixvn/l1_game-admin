@@ -141,4 +141,13 @@ namespace GamesAdmin.Core.Models
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
+    
+     public class VipSeDieWarRoundResult : RoundResult
+    {
+        public IEnumerable<bool> PlayerChips { get; set; }
+
+        public IEnumerable<bool> BankerChips { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
+    }
 }

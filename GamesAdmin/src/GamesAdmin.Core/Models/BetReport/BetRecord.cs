@@ -116,7 +116,6 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
 
-
     public class BlackjackBetRecord : BetRecord
     {
         public long HandId { get; set; }
@@ -175,6 +174,11 @@ namespace GamesAdmin.Core.Models
         public decimal Mountain { get; set; }
 
         public decimal Ocean { get; set; }
+    }
+
+    public class VipSeDieWarBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
     }
 
     public class SicBoBetRecord : BetRecord

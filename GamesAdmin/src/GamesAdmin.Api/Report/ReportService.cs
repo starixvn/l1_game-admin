@@ -61,8 +61,10 @@ namespace GamesAdmin.Api.Report
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
         Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
+        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -460,6 +462,30 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<SicBoRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<SicBoBetHistoryRecord>(x))
+            };
+        }
+        
+         public async Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IVipSeDieWarReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+
+            return new VipSeDieWarBetReport
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<VipSeDieWarBetRecord>(x))
+            };
+        }
+
+        public async Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetVipSeDieWarAsync(roundId, userId);
+
+            return new VipSeDieWarBetHistory
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<VipSeDieWarBetHistoryRecord>(x))
             };
         }
 

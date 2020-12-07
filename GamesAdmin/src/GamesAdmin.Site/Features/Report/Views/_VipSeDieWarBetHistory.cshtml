@@ -1,0 +1,33 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Core.Enumeration
+@using GamesAdmin.Core.Enumeration.BetChoices
+
+@model VipSeDieWarBetHistoryViewModel
+
+@{
+    var betChoices = Enumeration.GetAll<VipSeDieWarBetChoice>();
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Bet Choice</th>
+            <th>BetAmount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+
+            var betChoice = betChoices.FirstOrDefault(x => x.Value == bet.Choice);
+            var isWin = Model.RoundResult.SettlementResult[bet.Choice];
+
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="@(isWin? "text-primary": string.Empty)">@betChoice?.DisplayName</td>
+                <td class="@(isWin? "text-primary": string.Empty)">@HtmlHelpers.formatNumber(bet.Amount)</td>
+            </tr>
+        }
+    </tbody>
+</table>
