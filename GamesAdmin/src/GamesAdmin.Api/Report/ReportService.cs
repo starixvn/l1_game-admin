@@ -465,7 +465,7 @@ namespace GamesAdmin.Api.Report
         
         public async Task<VipBaccaratBetReport> GetVipBaccaratReportAsync(long roundId, string nickname, bool excludeUUS)
         {
-            var repository = serviceProvider.GetService<IBaccaratReportRepository>();
+            var repository = serviceProvider.GetService<IVipBaccaratReportRepository>();
             var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
             return new VipBaccaratBetReport

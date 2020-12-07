@@ -510,7 +510,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         
         public async Task<VipBaccaratReportResultViewModel> Handle(GetVipBaccaratReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetVipBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new VipBaccaratReportResultViewModel
             {
