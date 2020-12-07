@@ -131,6 +131,17 @@ namespace GamesAdmin.Api.Report
         public async Task<VipFishPrawnCrabBetReport> VipFishPrawnCrab(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
         [HttpGet]
+        [Route("vipsediewar/round/{roundId}/users/{nickname?}")]
+        public async Task<VipSeDieWarBetReport> VipSeDieWar(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new VipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
+
+
+        [HttpGet]
+        [Route("bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
+        public async Task<VipSeDieWarBetHistory> VipSeDieWarBetHistory(string userId, long roundId)
+         => (await mediator.Send(new VipSeDieWarBetHistoryRequest(roundId, userId)));
+
+        [HttpGet]
         [Route("sic_bo/round/{roundId}/users/{nickname?}")]
         public async Task<SicBoBetReport> SicBo(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new SicBoReportRequest(roundId, nickname, excludeUUS)));

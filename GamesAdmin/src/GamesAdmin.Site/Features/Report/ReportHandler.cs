@@ -38,7 +38,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>,
         IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>,
         IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>
-
+        IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
+        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -514,6 +515,40 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Bets = result.Bets.Select(x =>
                 {
                     var betViewModel = mapper.Map<SicBoBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+        
+        public async Task<VipSeDieWarReportResultViewModel> Handle(GetVipSeDieWarReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetVipSeDieWarBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new VipSeDieWarReportResultViewModel
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<VipSeDieWarRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<VipSeDieWarBetHistoryViewModel> Handle(GetVipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetVipSeDieWarBetHistory(request.RoundId, request.UserId);
+
+            return new VipSeDieWarBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<VipSeDieWarBetHistoryRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;

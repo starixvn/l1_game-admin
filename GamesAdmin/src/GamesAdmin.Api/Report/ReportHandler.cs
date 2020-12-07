@@ -35,6 +35,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<VipFishPrawnCrabReportRequest, VipFishPrawnCrabBetReport>,
         IRequestHandler<SicBoReportRequest, SicBoBetReport>,
         IRequestHandler<SicBoBetHistoryRequest, SicBoBetHistory>
+        IRequestHandler<VipSeDieWarReportRequest, VipSeDieWarBetReport>,
+        IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -108,11 +110,15 @@ namespace GamesAdmin.Api.Report
 
         public Task<SicBoBetReport> Handle(SicBoReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        public Task<VipSeDieWarBetReport> Handle(VipSeDieWarReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetVipSeDieWarReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
         
         public Task<VipBaccaratBetReport> Handle(VipBaccaratReportRequest request, CancellationToken cancellationToken)
          => reportService.GetVipBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SicBoBetHistory> Handle(SicBoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoBetHistoryAsync(request.RoundId, request.UserId);
+        public Task<VipSeDieWarBetHistory> Handle(VipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
+        => reportService.GetVipSeDieWarBetHistoryAsync(request.RoundId, request.UserId);
     }
 }

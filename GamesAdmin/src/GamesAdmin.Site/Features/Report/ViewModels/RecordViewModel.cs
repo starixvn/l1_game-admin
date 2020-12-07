@@ -166,5 +166,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalBet { get; set; }
     }
+    
+    public class VipSeDieWarRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
 
 }

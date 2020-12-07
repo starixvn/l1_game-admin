@@ -102,6 +102,11 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
+        public IActionResult VipSeDieWar()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetBaccaratReport(long roundId, string nickname, bool excludeUUS)
         {
@@ -185,6 +190,18 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetSicBoReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_SicBoRecords", await mediator.Send(new GetSicBoReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipSeDieWarReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_VipSeDieWarRecords", await mediator.Send(new GetVipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVipSeDieWarBetHistory(long roundId, string userId)
+        {
+            return PartialView("_VipSeDieWarBetHistory", await mediator.Send(new GetVipSeDieWarBetHistoryRequest(roundId, userId)));
         }
 
         [HttpGet]

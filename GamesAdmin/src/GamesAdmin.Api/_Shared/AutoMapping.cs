@@ -136,7 +136,7 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.ThirdDice, opt => opt.MapFrom((source) => source.Result.ThirdDice));
 
             CreateMap<VipFishPrawnCrabBetReportEntity, VipFishPrawnCrabBetRecord>();
-
+            
             CreateMap<VipBaccaratRoundEntity, BaccaratRoundResult>()
                 .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
                 .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
@@ -178,6 +178,26 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.ThirdDice, opt => opt.MapFrom((source) => source.Result.ThirdDice));
 
             CreateMap<SicBoBetEntity, SicBoBetHistoryRecord>();
+
+
+            CreateMap<VipSeDieWarRoundEntity, VipSeDieWarRoundResult>()
+                .ForMember(x => x.PlayerChips, opt => opt.MapFrom((source) => new[]
+                {
+                    source.Result.Player.FirstChip,
+                    source.Result.Player.SecondChip,
+                    source.Result.Player.ThirdChip,
+                    source.Result.Player.FourthChip
+                }))
+                .ForMember(x => x.BankerChips, opt => opt.MapFrom((source) => new[]
+                {
+                    source.Result.Banker.FirstChip,
+                    source.Result.Banker.SecondChip,
+                    source.Result.Banker.ThirdChip,
+                    source.Result.Banker.FourthChip
+                }));
+
+            CreateMap<VipSeDieWarBetReportEntity, VipSeDieWarBetRecord>();
+            CreateMap<VipSeDieWarBetEntity, VipSeDieWarBetHistoryRecord>();
         }
     }
 }

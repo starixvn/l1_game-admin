@@ -1,0 +1,165 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration.BetChoices
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model VipSeDieWarReportResultViewModel
+
+@{
+    var settlementResult = Model.RoundResult.SettlementResult;
+}GetVipSeDieWarBetHistory
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover table-se-die" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Player</th>
+                        <th>Banker</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">
+                            @foreach (var chip in Model.RoundResult.PlayerChips)
+                            {
+                                if (chip)
+                                {
+                                    <i class="red-chip"></i>
+                                }
+                                else
+                                {
+                                    <i class="white-chip"></i>
+                                }
+                            }
+                        </td>
+                        <td class="text-center">
+                            @foreach (var chip in Model.RoundResult.BankerChips)
+                            {
+                                if (chip)
+                                {
+                                    <i class="red-chip"></i>
+                                }
+                                else
+                                {
+                                    <i class="white-chip"></i>
+                                }
+                            }
+                        </td>
+                        <td class="text-center">
+                            @{
+                                var oddEvenResult = settlementResult[VipSeDieWarBetChoice.OddValue] ? VipSeDieWarBetChoice.Odd.DisplayName : VipSeDieWarBetChoice.Even.DisplayName;
+                            }
+                            @if (settlementResult[VipSeDieWarBetChoice.PlayerValue])
+                            {
+                                @($"{VipSeDieWarBetChoice.Player.DisplayName}, {oddEvenResult}")
+                            }
+                            else
+                            {
+                                @($"{(settlementResult[VipSeDieWarBetChoice.BankerEvenValue] ? VipSeDieWarBetChoice.Banker.DisplayName : VipSeDieWarBetChoice.Tie.DisplayName)}, {oddEvenResult}")
+                            }
+
+                            <br />
+                            @{
+                                var playerOddEvenResult = settlementResult[VipSeDieWarBetChoice.PlayerEvenValue] ? VipSeDieWarBetChoice.PlayerEven.DisplayName : VipSeDieWarBetChoice.PlayerOdd.DisplayName;
+                                var bankerOddEvenResult = settlementResult[VipSeDieWarBetChoice.BankerEvenValue] ? VipSeDieWarBetChoice.BankerEven.DisplayName : VipSeDieWarBetChoice.BankerOdd.DisplayName;
+                            }
+
+                            @($"{playerOddEvenResult}, {bankerOddEvenResult}")
+                            <br />
+                            @{
+                                var redChipResult = new List<string>();
+                                if (settlementResult[VipSeDieWarBetChoice.PlayerRed3Value])
+                                {
+                                    redChipResult.Add(VipSeDieWarBetChoice.PlayerRed3.DisplayName);
+                                }
+                                else
+                                {
+                                    if (settlementResult[VipSeDieWarBetChoice.PlayerRed4Value])
+                                    {
+                                        redChipResult.Add(VipSeDieWarBetChoice.PlayerRed4.DisplayName);
+                                    }
+
+                                    if (settlementResult[VipSeDieWarBetChoice.PlayerWhite3Value])
+                                    {
+                                        redChipResult.Add(VipSeDieWarBetChoice.PlayerWhite3.DisplayName);
+                                    }
+
+                                    if (settlementResult[VipSeDieWarBetChoice.PlayerWhite4Value])
+                                    {
+                                        redChipResult.Add(VipSeDieWarBetChoice.PlayerWhite4.DisplayName);
+                                    }
+                                }
+
+                                if (settlementResult[VipSeDieWarBetChoice.BankerRed3Value])
+                                {
+                                    redChipResult.Add(VipSeDieWarBetChoice.BankerRed3.DisplayName);
+                                }
+                                else
+                                {
+                                    if (settlementResult[VipSeDieWarBetChoice.BankerRed4Value])
+                                    {
+                                        redChipResult.Add(VipSeDieWarBetChoice.BankerRed4.DisplayName);
+                                    }
+
+                                    if (settlementResult[VipSeDieWarBetChoice.BankerWhite3Value])
+                                    {
+                                        redChipResult.Add(VipSeDieWarBetChoice.BankerWhite3.DisplayName);
+                                    }
+
+                                    if (settlementResult[VipSeDieWarBetChoice.BankerWhite4Value])
+                                    {
+                                        redChipResult.Add(VipSeDieWarBetChoice.BankerWhite4.DisplayName);
+                                    }
+                                }
+
+                                @string.Join(", ", redChipResult)
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Total Bets</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetVipSeDieWarBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                                @HtmlHelpers.formatNumber(bet.TotalBet)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
+
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="5">No data</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
