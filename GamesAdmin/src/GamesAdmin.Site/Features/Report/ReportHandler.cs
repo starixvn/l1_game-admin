@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
         IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>,
         IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>,
-        IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>
+        IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
         IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>
     {
