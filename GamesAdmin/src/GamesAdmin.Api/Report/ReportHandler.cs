@@ -34,7 +34,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
         IRequestHandler<VipFishPrawnCrabReportRequest, VipFishPrawnCrabBetReport>,
         IRequestHandler<SicBoReportRequest, SicBoBetReport>,
-        IRequestHandler<SicBoBetHistoryRequest, SicBoBetHistory>
+        IRequestHandler<SicBoBetHistoryRequest, SicBoBetHistory>,
         IRequestHandler<VipSeDieWarReportRequest, VipSeDieWarBetReport>,
         IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>
     {
