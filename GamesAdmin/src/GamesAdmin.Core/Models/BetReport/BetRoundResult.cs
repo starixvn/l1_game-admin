@@ -76,20 +76,6 @@ namespace GamesAdmin.Core.Models
         public BaccaratSettlementResult Result { get; set; }
     }
 
-    public class VipBaccaratRoundResult : RoundResult
-    {
-        public VipBaccaratResult Result { get; set; }
-
-        public BaccaratSettlementResult SettlementResult { get; set; }
-    }
-
-    public class VipBaccaratResult
-    {
-        public IEnumerable<CardResult> Player { get; set; }
-
-        public IEnumerable<CardResult> Banker { get; set; }
-    }
-
     public class BaccaratSettlementResult
     {
         public bool Player { get; set; }

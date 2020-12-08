@@ -37,9 +37,6 @@ namespace GamesAdmin.Site._Shared
             CreateMap<BaccaratSettlementResult, BaccaratSettlementResultViewModel>();
             CreateMap<BaccaratBetRecord, BaccaratRecordViewModel>();
 
-            CreateMap<VipBaccaratRoundResult, VipBaccaratRoundResultViewModel>();
-            CreateMap<VipBaccaratResult, VipBaccaratResultViewModel>();
-
             CreateMap<RouletteRoundResult, RouletteRoundResultViewModel>();
             CreateMap<RouletteSettlementResult, RouletteSettlementResultViewModel>();
             CreateMap<RouletteBetRecord, RouletteRecordViewModel>();

@@ -462,7 +462,7 @@ namespace GamesAdmin.Api.Report
                 Bets = result.Item2.Select(x => mapper.Map<SicBoBetHistoryRecord>(x))
             };
         }
-        
+
         public async Task<VipBaccaratBetReport> GetVipBaccaratReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IVipBaccaratReportRepository>();
@@ -470,7 +470,7 @@ namespace GamesAdmin.Api.Report
 
             return new VipBaccaratBetReport
             {
-                RoundResult = mapper.Map<VipBaccaratRoundResult>(result.Item1),
+                RoundResult = mapper.Map<BaccaratRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<BaccaratBetRecord>(x))
             };
         }

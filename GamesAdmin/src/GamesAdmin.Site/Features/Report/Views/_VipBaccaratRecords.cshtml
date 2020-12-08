@@ -9,70 +9,70 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Round ID</th>
-            <th>Result (Player | Banker)</th>
-            <th>Winning Options</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="text-center">@Model.RoundResult.Number</td>
-            <td>
-                <div class="baccarat-result">
-                    <div class="cards">
-                        @foreach (var card in Model.RoundResult.Result.Player)
-                        {
-        <div class="card card-type-@card.Type">
-            <span>@cardLabels[card.Number]</span>
-            <img class="img" src="~/images/card_@(card.Type).png" />
-        </div>}
-                    </div>
-                    <div class="cards">
-                        @foreach (var card in Model.RoundResult.Result.Banker)
-                        {
-        <div class="card card-type-@card.Type">
-            <span>@cardLabels[card.Number]</span>
-            <img class="img" src="~/images/card_@(card.Type).png" />
-        </div>}
-                    </div>
-                </div>
-            </td>
-            <td class="text-center">
-                @{ var winningOptionsText = string.Empty;
-                    var settlementResult = Model.RoundResult.SettlementResult;
-                    if (settlementResult.Player)
-                    {
-                        winningOptionsText = "Player";
-                    }
-                    else
-                    {
-                        if (settlementResult.Banker)
-                        {
-                            winningOptionsText = "Banker";
-                        }
-                        else
-                        {
-                            winningOptionsText = "Tie";
-                        }
-                    }
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Result (Player | Banker)</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td>
+                            <div class="baccarat-result">
+                                <div class="cards">
+                                    @foreach (var card in Model.RoundResult.PlayerCards)
+                                    {
+                                        <div class="card card-type-@card.Type">
+                                            <span>@cardLabels[card.Number]</span>
+                                            <img class="img" src="~/images/card_@(card.Type).png" />
+                                        </div>}
+                                </div>
+                                <div class="cards">
+                                    @foreach (var card in Model.RoundResult.BankerCards)
+                                    {
+                                        <div class="card card-type-@card.Type">
+                                            <span>@cardLabels[card.Number]</span>
+                                            <img class="img" src="~/images/card_@(card.Type).png" />
+                                        </div>}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            @{ var winningOptionsText = string.Empty;
+                                var settlementResult = Model.RoundResult.Result;
+                                if (settlementResult.Player)
+                                {
+                                    winningOptionsText = "Player";
+                                }
+                                else
+                                {
+                                    if (settlementResult.Banker)
+                                    {
+                                        winningOptionsText = "Banker";
+                                    }
+                                    else
+                                    {
+                                        winningOptionsText = "Tie";
+                                    }
+                                }
 
-    @if (settlementResult.PlayerPair)
-    {
-        winningOptionsText = $"{winningOptionsText}, Player Pair";
-    }
+                                @if (settlementResult.PlayerPair)
+                                {
+                                    winningOptionsText = $"{winningOptionsText}, Player Pair";
+                                }
 
-                    @if (settlementResult.BankerPair)
-                    {
-                        winningOptionsText = $"{winningOptionsText}, Banker Pair";
-                    } winningOptionsText = $"{winningOptionsText}, {(settlementResult.Big ? "Big" : "Small")}"; }
-                @winningOptionsText
-            </td>
-        </tr>
-    </tbody>
-</table>}
+                                @if (settlementResult.BankerPair)
+                                {
+                                    winningOptionsText = $"{winningOptionsText}, Banker Pair";
+                                } winningOptionsText = $"{winningOptionsText}, {(settlementResult.Big ? "Big" : "Small")}"; }
+                            @winningOptionsText
+                        </td>
+                    </tr>
+                </tbody>
+            </table>}
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
@@ -96,46 +96,46 @@
             <tbody>
                 @foreach (var bet in Model.Records)
                 {
-    <tr>
-        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-        <td>@bet.Username</td>
-        <td>
-            @bet.Nickname
-        </td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.Player)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.Banker)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.Tie)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.PlayerPair)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.BankerPair)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.Big)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.Small)</td>
-        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
-    </tr>
-}
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Player)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Banker)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Tie)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.PlayerPair)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BankerPair)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Big)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Small)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
             </tbody>
             <tfoot>
                 @if (!Model.Records.Any())
                 {
-    <tr>
-        <td class="text-center" colspan="13">No data</td>
-    </tr>
- }
-else
-{
-<tr class="total">
-    <td>Total</td>
-    <td></td>
-    <td></td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Player))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Banker))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Tie))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.PlayerPair))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BankerPair))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Big))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Small))</td>
-    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
-</tr>
-}
+                    <tr>
+                        <td class="text-center" colspan="13">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Player))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Banker))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Tie))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.PlayerPair))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BankerPair))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Big))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Small))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
+                    </tr>
+                }
             </tfoot>
         </table>
     </div>

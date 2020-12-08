@@ -81,22 +81,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public BaccaratSettlementResultViewModel Result { get; set; }
     }
 
-    public class VipBaccaratRoundResultViewModel
-    {
-        public long Number { get; set; }
-
-        public VipBaccaratResultViewModel Result { get; set; }
-
-        public BaccaratSettlementResultViewModel SettlementResult { get; set; }
-    }
-
-    public class VipBaccaratResultViewModel
-    {
-        public IEnumerable<CardViewModel> Player { get; set; }
-
-        public IEnumerable<CardViewModel> Banker { get; set; }
-    }
-
     public class BaccaratSettlementResultViewModel
     {
         public bool Player { get; set; }

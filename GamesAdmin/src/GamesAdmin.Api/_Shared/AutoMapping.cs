@@ -137,8 +137,40 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<VipFishPrawnCrabBetReportEntity, VipFishPrawnCrabBetRecord>();
 
-            CreateMap<VipBaccaratRoundEntity, VipBaccaratRoundResult>();
-            CreateMap<VipBaccaratResultEntity, VipBaccaratResult>();
+            CreateMap<VipBaccaratRoundEntity, BaccaratRoundResult>()
+                .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
+                .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
+                {
+                    if (source.Result.Player != null)
+                    {
+                        var mapper = context.Mapper;
+                        var result = new List<CardResult> { mapper.Map<CardResult>(source.Result.Player.FirstCard), mapper.Map<CardResult>(source.Result.Player.SecondCard) };
+                        if (source.Result.Player.ThirdCard != null)
+                        {
+                            result.Add(mapper.Map<CardResult>(source.Result.Player.ThirdCard));
+                        }
+
+                        return result;
+                    }
+
+                    return Enumerable.Empty<CardResult>();
+                }))
+                .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
+                {
+                    if (source.Result.Banker != null)
+                    {
+                        var mapper = context.Mapper;
+                        var result = new List<CardResult> { mapper.Map<CardResult>(source.Result.Banker.FirstCard), mapper.Map<CardResult>(source.Result.Banker.SecondCard) };
+                        if (source.Result.Banker.ThirdCard != null)
+                        {
+                            result.Add(mapper.Map<CardResult>(source.Result.Banker.ThirdCard));
+                        }
+
+                        return result;
+                    }
+
+                    return Enumerable.Empty<CardResult>();
+                }));
             CreateMap<SicBoBetReportEntity, SicBoBetRecord>();
             CreateMap<SicBoRoundEntity, SicBoRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))

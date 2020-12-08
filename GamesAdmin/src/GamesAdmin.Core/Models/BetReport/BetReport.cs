@@ -32,7 +32,7 @@ namespace GamesAdmin.Core.Models
     {
     }
 
-    public class VipBaccaratBetReport : BetReport<VipBaccaratRoundResult, BaccaratBetRecord>
+    public class VipBaccaratBetReport : BetReport<BaccaratRoundResult, BaccaratBetRecord>
     {
     }
 
