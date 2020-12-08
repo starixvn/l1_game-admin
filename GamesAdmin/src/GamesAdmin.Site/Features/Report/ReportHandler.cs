@@ -520,14 +520,14 @@ namespace GamesAdmin.Site.Features.ClientSites
                 })
             };
         }
-        
+
         public async Task<VipBaccaratReportResultViewModel> Handle(GetVipBaccaratReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetVipBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
             return new VipBaccaratReportResultViewModel
             {
-                RoundResult = mapper.Map<VipBaccaratRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<BaccaratRoundResultViewModel>(result.RoundResult),
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<BaccaratRecordViewModel>(x);
