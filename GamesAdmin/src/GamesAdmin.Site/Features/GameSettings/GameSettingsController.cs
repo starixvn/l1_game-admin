@@ -222,6 +222,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("vip-sedie-server-endpoint-route", appSettings.GameServers.VipSedie.SocketRoute);
             HttpContext.Response.Cookies.Append("special-sedie-server-endpoint", appSettings.GameServers.SpecialSedie.Socket);
             HttpContext.Response.Cookies.Append("special-sedie-server-endpoint-route", appSettings.GameServers.SpecialSedie.SocketRoute);
+            HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint", appSettings.GameServers.VipFishPrawnCrab.Socket);
+            HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint-route", appSettings.GameServers.VipFishPrawnCrab.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

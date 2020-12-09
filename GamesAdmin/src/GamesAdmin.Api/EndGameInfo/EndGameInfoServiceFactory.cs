@@ -35,7 +35,9 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
             { GameId.Roulette, typeof(RouletteEndGameInfoService) },
             { GameId.VipSeDie, typeof(VipSeDieEndGameInfoService) },
-            { GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) }
+            { GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
+            { GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
+            { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabEndGameInfoService) }
         };
 
         private readonly IServiceProvider serviceProvider;

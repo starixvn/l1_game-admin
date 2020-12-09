@@ -1,0 +1,102 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model VipFishPrawnCrabReportResultViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Results</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">
+                            @foreach (var dice in Model.RoundResult.Result)
+                            {
+                                <img class="vip-animal" src="~/images/vip_animal_@(dice).png" />
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Username</th>
+                    <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th colspan="9" class="col-number">Stake</th>
+                    <th rowspan="2" class="col-number">Win</th>
+                </tr>
+
+                <tr>
+                    <th>Stag</th>
+                    <th>Gourd</th>
+                    <th>Rooster</th>
+                    <th>Fish</th>
+                    <th>Crab</th>
+                    <th>Prawn</th>
+                    <th>Any Triple</th>
+                    <th>Mountain</th>
+                    <th>Ocean</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Stag)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Gourd)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Rooster)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Fish)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Crab)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Prawn)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.AnyTriple)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Mountain)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Ocean)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (Model.Records.Count() == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="16">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Stag))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Gourd))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Rooster))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Fish))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Crab))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Prawn))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.AnyTriple))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Mountain))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Ocean))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

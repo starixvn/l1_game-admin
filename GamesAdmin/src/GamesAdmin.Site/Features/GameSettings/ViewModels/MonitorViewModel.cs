@@ -24,7 +24,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         private static string[] disableMonitoring = new string[]
         {
             GameType.LuckyWheelValue,
-            GameType.KenoProVietValue
+            GameType.KenoProVietValue,
+            GameType.BlackJackValue
         };
 
         public MonitorItemViewModel(string name)
