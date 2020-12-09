@@ -11,7 +11,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
         {
             scheduler
                 .Schedule<ReviseBotBalance>()
-                .EveryThirtyMinutes();
+                .EveryFifteenMinutes();
 
             scheduler
                 .Schedule<DisableBot>()

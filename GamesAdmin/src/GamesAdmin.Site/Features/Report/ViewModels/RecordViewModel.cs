@@ -162,4 +162,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Ocean { get; set; }
     }
 
+    public class SicBoRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
+
 }

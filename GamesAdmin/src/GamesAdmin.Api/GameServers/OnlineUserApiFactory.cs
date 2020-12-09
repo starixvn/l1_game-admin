@@ -18,6 +18,7 @@ namespace GamesAdmin.Api.GameServers
             { GameType.SpecialSeDieValue, typeof(ISpecialSedieOnlineUserApi) },
             { GameType.BlackJackValue, typeof(IBlackjackOnlineUserApi) },
             { GameType.VipFishPrawnCrabValue, typeof(IVipFishPrawnCrabOnlineUserApi) },
+            { GameType.SicBoValue, typeof(ISicBoOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

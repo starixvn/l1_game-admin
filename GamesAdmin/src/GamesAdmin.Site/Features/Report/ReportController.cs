@@ -162,6 +162,19 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
+
+        [HttpGet]
+        public IActionResult SicBo()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSicBoReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_SicBoRecords", await mediator.Send(new GetSicBoReportRequest(roundId, nickname, excludeUUS)));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS)
         {
@@ -220,6 +233,12 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetOddEvenTurboBetHistory(long roundId, string nickname)
         {
             return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSicBoBetHistory(long roundId, string userId)
+        {
+            return PartialView("_SicBoBetHistory", await mediator.Send(new GetSicBoBetHistoryRequest(roundId, userId)));
         }
 
         [HttpGet]
