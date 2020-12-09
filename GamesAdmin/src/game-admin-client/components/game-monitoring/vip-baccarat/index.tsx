@@ -8,6 +8,11 @@ const TOTAL_TIME = 30;
 const WAITING_TIME = 15;
 
 export default class VipBaccarat extends Baccarat {
+
+    get gameName(){
+        return "Vip Baccarat";
+    }
+
     handleMessage(message) {
         super.handleMessage(message);
         

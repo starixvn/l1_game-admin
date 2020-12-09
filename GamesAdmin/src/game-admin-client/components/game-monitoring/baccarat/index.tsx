@@ -50,6 +50,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         this.onPickCard = this.onPickCard.bind(this);
     }
 
+    get gameName(){
+        return "Baccarat";
+    }
+
     componentDidMount() {
         this.props.onMessage((message) => this.handleMessage(message));
     }
@@ -224,7 +228,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                         </Row>
                     </Col>
                     <Col align="center" className='col-12 col-lg-1'>
-                        <div className={styles.title}>Baccarat</div>
+                        <div className={styles.title}>{this.gameName}</div>
                         {!this.props.isProduction && <input type="button" value="Set Result" className={styles['set-button']} onClick={this.showUpdater}></input>}
                     </Col>
                     <Col className='p-0 col-12 col-lg-7'>
