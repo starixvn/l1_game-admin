@@ -21,7 +21,7 @@ export default class VipBaccarat extends Baccarat {
         const { result, settlementResult } = data;
 
         this.setState({
-            result: { bankerCards: Object.values(result.player), playerCards: Object.values(result.banker) },
+            result: { bankerCards: Object.values(result.banker), playerCards: Object.values(result.player) },
             settlementResult: settlementResult,
             gameState: GameState.waiting,
             time: {
