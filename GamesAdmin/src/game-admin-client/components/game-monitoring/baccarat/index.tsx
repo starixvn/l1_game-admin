@@ -54,6 +54,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         return "Baccarat";
     }
 
+    get setResultObjectKey(){
+        return "setResult";
+    }
+
     componentDidMount() {
         this.props.onMessage((message) => this.handleMessage(message));
     }
@@ -281,7 +285,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
 
     updaterSubmit(result) {
         const obj = {
-            setResult: {
+            [this.setResultObjectKey]: {
                 result: {
                     banker: result.banker,
                     player: result.player
