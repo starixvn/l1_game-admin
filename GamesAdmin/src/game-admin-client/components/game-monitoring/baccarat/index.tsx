@@ -316,7 +316,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         })
 
         const message = {
-            setResult: {
+            [this.setResultObjectKey]: {
                 result: {
                     banker: result.bankerCards,
                     player: result.playerCards
