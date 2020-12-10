@@ -38,8 +38,8 @@ namespace GamesAdmin.Api.GameUser
         private const int minAddAmount = 1000;
         private const int maxAddAmount = 8000;        
 
-        private const int minAmountScale = 2;
-        private const int maxAmountScale = 20;
+        private const int minAmountScale = 1;
+        private const int maxAmountScale = 8;
         private const int minCharNameLength = 3;
         private const int maxCharNameLength = 14;
         private const int defaultMaxBet = 1000;

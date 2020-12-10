@@ -330,3 +330,15 @@
 @include totalBet("anyTriple", "white", "Any Triple");
 @include totalBet("mountain", "white", "Mountain");
 @include totalBet("ocean", "white", "Ocean");
+
+
+@include totalBet("1point", "white", "1 Point");
+@include totalBet("2points", "white", "2 Points");
+@include totalBet("3points", "white", "3 Points");
+@include totalBet("4points", "white", "4 Points");
+@include totalBet("5points", "white", "5 Points");
+@include totalBet("6points", "white", "6 Points");
+@include totalBet("specificNumber", "white", "Specific Number");
+@include totalBet("totalPoints", "white", "Total Points");
+@include totalBet("sicboBig", "white", "Big");
+@include totalBet("sicboSmall", "white", "Small");

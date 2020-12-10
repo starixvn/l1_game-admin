@@ -1,0 +1,48 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration
+@using GamesAdmin.Core.Enumeration.BetChoices
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model SicBoBetHistoryViewModel
+
+@{
+    var betChoices = Enumeration.GetAll<SicBoBetChoice>();
+
+    var betTypeDisplayDictionary = new Dictionary<string, string>
+{
+        { "Specific", "Specific Number" },
+        { "Total", "Total Points" },
+        {"Big", "Big/Small" },
+        {"Small", "Big/Small" },
+        {"Any", "Any Triple" },
+    };
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Bet Type</th>
+            <th>Bet Choice</th>
+            <th>Bet Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            var betChoice = betChoices.FirstOrDefault(x => x.Value == bet.Choice);
+            var splitted = betChoice.DisplayName.Split(" ");
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="text-center">
+                    @betTypeDisplayDictionary[splitted[0]]
+                </td>
+                <td class="text-center @(Model.RoundResult.SettlementResult[bet.Choice]? "text-primary": string.Empty)">
+                    @(betChoice.IsAnyTripleChoice || betChoice.IsBigSmallChoice ? betChoice.DisplayName : splitted[1])
+                </td>
+                <td class="text-right  @(Model.RoundResult.SettlementResult[bet.Choice]? "text-primary": string.Empty)">
+                    @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

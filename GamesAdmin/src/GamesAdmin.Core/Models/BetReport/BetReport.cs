@@ -47,4 +47,8 @@ namespace GamesAdmin.Core.Models
     public class VipFishPrawnCrabBetReport : BetReport<VipFishPrawnCrabRoundResult, VipFishPrawnCrabBetRecord>
     {
     }
+
+    public class SicBoBetReport : BetReport<SicBoRoundResult, SicBoBetRecord>
+    {
+    }
 }

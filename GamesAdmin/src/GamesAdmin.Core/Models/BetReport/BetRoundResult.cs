@@ -130,4 +130,15 @@ namespace GamesAdmin.Core.Models
 
         public byte ThirdDice { get; set; }
     }
+
+    public class SicBoRoundResult : RoundResult
+    {
+        public byte FirstDice { get; set; }
+
+        public byte SecondDice { get; set; }
+
+        public byte ThirdDice { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
+    }
 }

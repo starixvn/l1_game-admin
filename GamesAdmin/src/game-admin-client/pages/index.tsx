@@ -28,7 +28,7 @@ type State = {
     socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24, 26];
+const NewSocketGameIds = [2, 22, 24, 26, 25];
 
 export class Home extends React.Component<Props, State> {
     public state: State;
@@ -117,6 +117,17 @@ export class Home extends React.Component<Props, State> {
                             ? process.env.NEXT_PUBLIC_VIP_FISH_PRAWN_CRAB_SERVER_PROXY_ROUTE
                             : Cookies.get('vip-fish-prawn-crab-server-endpoint-route'),
                 };
+            case gameNameMapper.sicbo:
+                return {
+                    endpoint:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_ENDPOINT
+                            : Cookies.get('sic-bo-server-endpoint'),
+                    route:
+                        process.env.NEXT_PUBLIC_ENV === 'local'
+                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
+                            : Cookies.get('sic-bo-server-endpoint-route'),
+                };        
             default:
                 return {
                     endpoint:

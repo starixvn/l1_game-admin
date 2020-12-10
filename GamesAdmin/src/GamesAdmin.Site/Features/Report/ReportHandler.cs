@@ -34,7 +34,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
-        IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>
+        IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>,
+        IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>,
+        IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>
 
     {
         private readonly IReportService reportService;
@@ -477,11 +479,45 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
+		public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);
 
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
+		}
+
+        public async Task<SicBoReportResultViewModel> Handle(GetSicBoReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetSicBoBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new SicBoReportResultViewModel
+            {
+                RoundResult = mapper.Map<SicBoRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<SicBoRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<SicBoBetHistoryViewModel> Handle(GetSicBoBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetSicBoBetHistory(request.RoundId, request.UserId);
+
+            return new SicBoBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<SicBoRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<SicBoBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
         }
     }
 }

@@ -43,6 +43,10 @@ const classNames = {
   anyTriple: 'anyTripleBg',
   mountain: 'mountainBg',
   ocean: 'oceanBg',
+  specificNumber: 'specificNumberBg',
+  totalPoints: 'totalPointsBg',
+  sicboBig: 'sicboBigBg',
+  sicboSmallBg: 'sicboSmallBg'
 }
 
 export default function TotalBet(props: { type: string, total: number, isWin?: boolean }) {

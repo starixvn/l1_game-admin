@@ -19,6 +19,8 @@ namespace GamesAdmin.Database
         Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId);
 
         Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetEntity>)> GetSpecialSeDieAsync(long roundId, string userId);
+
+        Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId);
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -222,6 +224,17 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<SpecialSeDieBetEntity>(Document.GetCollectionName(typeof(SpecialSeDieBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
+
+            return (roundResult, bets);
+        }
+
+        public async Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId)
+        {
+            var roundCollection = database.GetCollection<SicBoRoundEntity>(Document.GetCollectionName(typeof(SicBoRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<SicBoBetEntity>(Document.GetCollectionName(typeof(SicBoBetEntity)));
             var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
 
             return (roundResult, bets);
