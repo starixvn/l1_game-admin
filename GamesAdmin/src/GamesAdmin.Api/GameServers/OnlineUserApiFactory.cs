@@ -20,6 +20,7 @@ namespace GamesAdmin.Api.GameServers
             { GameType.VipFishPrawnCrabValue, typeof(IVipFishPrawnCrabOnlineUserApi) },
             { GameType.SicBoValue, typeof(ISicBoOnlineUserApi) },
             { GameType.VipBaccaratValue, typeof(IVipBaccaratOnlineUserApi) },
+            { GameType.VipSeDieWarValue, typeof(IVipSedieWarOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

@@ -17,6 +17,8 @@
         public GameServerConfigs SicBo { get; set; }
         
         public GameServerConfigs VipBaccarat { get; set; }
+
+        public GameServerConfigs VipSedieWar { get; set; }
     }
 
     public class GameServerConfigs
