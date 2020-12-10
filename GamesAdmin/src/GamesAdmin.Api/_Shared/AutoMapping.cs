@@ -141,7 +141,7 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
                 .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
                 {
-                    if (source.Result.Player != null)
+                    if (source.Result != null && source.Result.Player != null)
                     {
                         var mapper = context.Mapper;
                         var result = new List<CardResult> { mapper.Map<CardResult>(source.Result.Player.FirstCard), mapper.Map<CardResult>(source.Result.Player.SecondCard) };
@@ -157,7 +157,7 @@ namespace GamesAdmin.Api._Shared
                 }))
                 .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
                 {
-                    if (source.Result.Banker != null)
+                    if (source.Result != null && source.Result.Banker != null)
                     {
                         var mapper = context.Mapper;
                         var result = new List<CardResult> { mapper.Map<CardResult>(source.Result.Banker.FirstCard), mapper.Map<CardResult>(source.Result.Banker.SecondCard) };
