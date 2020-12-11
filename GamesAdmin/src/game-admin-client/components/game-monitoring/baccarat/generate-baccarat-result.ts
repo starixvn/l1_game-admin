@@ -148,7 +148,9 @@ export const generateResult = function (options) {
             banker: game.playerValue() < game.bankerValue(),
             playerPair: game.playerHasPair(),
             bankerPair: game.bankerHasPair(),
-            big: game.totalCards() > 4
+            big: game.totalCards() > 4,
+            small: game.totalCards() === 4,
+            tie: game.playerValue() === game.bankerValue()
         };
 
         return Object.keys(conditionMapper).reduce((result, key) => {
