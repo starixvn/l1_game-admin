@@ -177,7 +177,7 @@ export default class VipSeDieWar extends React.Component<
               gameState={gameState}
             />
             <div>
-              <div className={styles.title}>VIP Se Die War</div>
+              <div className={styles.title}>Se Die War</div>
               <div className={styles.title}>Player</div>
               <Row className={styles.result}>
                 <Dice
