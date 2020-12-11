@@ -44,7 +44,7 @@ export default class VipSeDieWar extends React.Component<
 
   handleData(data) {
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 45) {
         clearTimeout(this.timeout);
         this.setState({
           time: { remainingTime: 0 },
@@ -66,13 +66,13 @@ export default class VipSeDieWar extends React.Component<
     }
 
     if (!!data.remainingTime) {
-      if (data.remainingTime > 31) {
+      if (data.remainingTime > 46) {
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result: data.result ? this.getResult(data.result) : this.state.result,
           time: {
-            remainingTime: data.remainingTime - 31,
+            remainingTime: data.remainingTime - 46,
           },
         });
 
@@ -81,10 +81,10 @@ export default class VipSeDieWar extends React.Component<
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 31,
+              remainingTime: 46,
             },
           });
-        }, (data.remainingTime - 31) * 1000);
+        }, (data.remainingTime - 46) * 1000);
       } else {
         this.setState({
           gameState: GameState.running,
@@ -98,7 +98,7 @@ export default class VipSeDieWar extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 9;
+      const waitingTime = 7;
       this.setState({
         result: this.getResult(data.finish.result),
         settlementResult: data.finish.settlementResult,
@@ -114,10 +114,10 @@ export default class VipSeDieWar extends React.Component<
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 30,
+            remainingTime: 45,
           },
         });
-      }, (waitingTime + 4) * 1000);
+      }, (waitingTime + 3) * 1000);
     }
   }
 
