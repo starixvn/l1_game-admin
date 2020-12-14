@@ -148,11 +148,15 @@ export default class VipSeDieWar extends React.Component<
     result.player = [];
 
     Object.keys(data.player).forEach((key) => {
-      result.player.push(new DiceModel(data.player[key] ? 1 : 0, DiceType.XocXoc));
+      result.player.push(
+        new DiceModel(data.player[key] ? 1 : 0, DiceType.XocXoc)
+      );
     });
 
     Object.keys(data.banker).forEach((key) => {
-      result.banker.push(new DiceModel(data.banker[key] ? 1 : 0, DiceType.XocXoc));
+      result.banker.push(
+        new DiceModel(data.banker[key] ? 1 : 0, DiceType.XocXoc)
+      );
     });
 
     return result;
@@ -236,91 +240,95 @@ export default class VipSeDieWar extends React.Component<
             </div>
           </Col>
           <Col align="center" className={styles["sedie-betList"]}>
-            <TotalBet
-              total={betList.even.total}
-              type="even"
-              isWin={settlementResult.even}
-            ></TotalBet>
-            <TotalBet
-              total={betList.odd.total}
-              type="odd"
-              isWin={settlementResult.odd}
-            ></TotalBet>
-            <TotalBet
-              total={betList.player.total}
-              type="player"
-              isWin={settlementResult.player}
-            />
-            <TotalBet
-              total={betList.banker.total}
-              type="banker"
-              isWin={settlementResult.banker}
-            />
-            <TotalBet
-              total={betList.tie.total}
-              type="tie"
-              isWin={settlementResult.tie}
-            />
-            <TotalBet
-              total={betList.playerOdd.total}
-              type="playerOdd"
-              isWin={settlementResult.playerOdd}
-            />
-            <TotalBet
-              total={betList.playerEven.total}
-              type="playerEven"
-              isWin={settlementResult.playerEven}
-            />
-            <TotalBet
-              total={betList.bankerOdd.total}
-              type="bankerOdd"
-              isWin={settlementResult.bankerOdd}
-            />
-            <TotalBet
-              total={betList.bankerEven.total}
-              type="bankerEven"
-              isWin={settlementResult.bankerEven}
-            />
-            <TotalBet
-              total={betList.playerRed4.total}
-              type="playerRed4"
-              isWin={settlementResult.playerRed4}
-            />
-            <TotalBet
-              total={betList.playerRed3.total}
-              type="playerRed3"
-              isWin={settlementResult.playerRed3}
-            />
-            <TotalBet
-              total={betList.playerWhite3.total}
-              type="playerWhite3"
-              isWin={settlementResult.playerWhite3}
-            />
-            <TotalBet
-              total={betList.playerWhite4.total}
-              type="playerWhite4"
-              isWin={settlementResult.playerWhite4}
-            />
-            <TotalBet
-              total={betList.bankerRed4.total}
-              type="bankerRed4"
-              isWin={settlementResult.bankerRed4}
-            />
-            <TotalBet
-              total={betList.bankerRed3.total}
-              type="bankerRed3"
-              isWin={settlementResult.bankerRed3}
-            />
-            <TotalBet
-              total={betList.bankerWhite3.total}
-              type="bankerWhite3"
-              isWin={settlementResult.bankerWhite3}
-            />
-            <TotalBet
-              total={betList.bankerWhite4.total}
-              type="bankerWhite4"
-              isWin={settlementResult.bankerWhite4}
-            />
+            <Row>
+              <TotalBet
+                total={betList.player.total}
+                type="player"
+                isWin={settlementResult.player}
+              />
+              <TotalBet
+                total={betList.banker.total}
+                type="banker"
+                isWin={settlementResult.banker}
+              />
+              <TotalBet
+                total={betList.tie.total}
+                type="tie"
+                isWin={settlementResult.tie}
+              />
+              <TotalBet
+                total={betList.even.total}
+                type="totalEven"
+                isWin={settlementResult.even}
+              ></TotalBet>
+              <TotalBet
+                total={betList.odd.total}
+                type="totalOdd"
+                isWin={settlementResult.odd}
+              ></TotalBet>
+              <TotalBet
+                total={betList.playerEven.total}
+                type="playerEven"
+                isWin={settlementResult.playerEven}
+              />
+              <TotalBet
+                total={betList.playerOdd.total}
+                type="playerOdd"
+                isWin={settlementResult.playerOdd}
+              />
+              <TotalBet
+                total={betList.bankerEven.total}
+                type="bankerEven"
+                isWin={settlementResult.bankerEven}
+              />
+              <TotalBet
+                total={betList.bankerOdd.total}
+                type="bankerOdd"
+                isWin={settlementResult.bankerOdd}
+              />
+            </Row>
+            <Row>
+              <TotalBet
+                total={betList.playerRed4.total}
+                type="playerRed4"
+                isWin={settlementResult.playerRed4}
+              />
+              <TotalBet
+                total={betList.playerRed3.total}
+                type="playerRed3"
+                isWin={settlementResult.playerRed3}
+              />
+              <TotalBet
+                total={betList.playerWhite3.total}
+                type="playerWhite3"
+                isWin={settlementResult.playerWhite3}
+              />
+              <TotalBet
+                total={betList.playerWhite4.total}
+                type="playerWhite4"
+                isWin={settlementResult.playerWhite4}
+              />
+              <TotalBet
+                total={betList.bankerRed4.total}
+                type="bankerRed4"
+                isWin={settlementResult.bankerRed4}
+              />
+              <TotalBet
+                total={betList.bankerRed3.total}
+                type="bankerRed3"
+                isWin={settlementResult.bankerRed3}
+              />
+              <TotalBet
+                total={betList.bankerWhite3.total}
+                type="bankerWhite3"
+                isWin={settlementResult.bankerWhite3}
+              />
+              <TotalBet
+                total={betList.bankerWhite4.total}
+                type="bankerWhite4"
+                isWin={settlementResult.bankerWhite4}
+              />
+            </Row>
           </Col>
         </Row>
       </Container>
@@ -332,142 +340,191 @@ export default class VipSeDieWar extends React.Component<
 
     return (
       <React.Fragment>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Even</div>]}
-            type="simple"
-            dataList={betList.even.dataList}
-            isWin={settlementResult.even}
-          />
+        <Col className="col-12">
+          <Row>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Player</div>]}
+                type="simple"
+                dataList={betList.player.dataList}
+                isWin={settlementResult.player}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Banker</div>]}
+                type="simple"
+                dataList={betList.banker.dataList}
+                isWin={settlementResult.banker}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Tie</div>]}
+                type="simple"
+                dataList={betList.tie.dataList}
+                isWin={settlementResult.tie}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Total Even</div>]}
+                type="simple"
+                dataList={betList.even.dataList}
+                isWin={settlementResult.even}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Total Odd</div>]}
+                type="simple"
+                dataList={betList.odd.dataList}
+                isWin={settlementResult.odd}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Player Even</div>]}
+                type="simple"
+                dataList={betList.playerEven.dataList}
+                isWin={settlementResult.playerEven}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Player Odd</div>]}
+                type="simple"
+                dataList={betList.playerOdd.dataList}
+                isWin={settlementResult.playerOdd}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Banker Even</div>]}
+                type="simple"
+                dataList={betList.bankerEven.dataList}
+                isWin={settlementResult.bankerEven}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[<div className="text-center">Banker Odd</div>]}
+                type="simple"
+                dataList={betList.bankerOdd.dataList}
+                isWin={settlementResult.bankerOdd}
+              />
+            </Col>
+          </Row>
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col className="col-12">
+          <Row>
+          <Col>
           <BetList
-            titles={[<div className="text-center">Odd</div>]}
-            type="simple"
-            dataList={betList.odd.dataList}
-            isWin={settlementResult.odd}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Player</div>]}
-            type="simple"
-            dataList={betList.player.dataList}
-            isWin={settlementResult.player}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Banker</div>]}
-            type="simple"
-            dataList={betList.banker.dataList}
-            isWin={settlementResult.banker}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Tie</div>]}
-            type="simple"
-            dataList={betList.tie.dataList}
-            isWin={settlementResult.tie}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Player Odd</div>]}
-            type="simple"
-            dataList={betList.playerOdd.dataList}
-            isWin={settlementResult.playerOdd}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Player Even</div>]}
-            type="simple"
-            dataList={betList.playerEven.dataList}
-            isWin={settlementResult.playerEven}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Banker Odd</div>]}
-            type="simple"
-            dataList={betList.bankerOdd.dataList}
-            isWin={settlementResult.bankerOdd}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Banker Even</div>]}
-            type="simple"
-            dataList={betList.bankerEven.dataList}
-            isWin={settlementResult.bankerEven}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            titles={[<div className="text-center">Player - 4 Red</div>]}
+            titles={[
+              <div className="text-center">
+                Player
+                <div className={styles.bondo}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.playerRed4.dataList}
             isWin={settlementResult.playerRed4}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Player - 3 Red</div>]}
+            titles={[
+              <div className="text-center">
+                Player
+                <div className={styles.mottrangbado}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.playerRed3.dataList}
             isWin={settlementResult.playerRed3}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Player - 1 Red</div>]}
+            titles={[
+              <div className="text-center">
+                Player
+                <div className={styles.motdobatrang}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.playerWhite3.dataList}
             isWin={settlementResult.playerWhite3}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Player - 4 White</div>]}
+            titles={[
+              <div className="text-center">
+                Player
+                <div className={styles.bontrang}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.playerWhite4.dataList}
             isWin={settlementResult.playerWhite4}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Banker - 4 Red</div>]}
+            titles={[
+              <div className="text-center">
+                Banker
+                <div className={styles.bondo}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.bankerRed4.dataList}
             isWin={settlementResult.bankerRed4}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Banker - 3 Red</div>]}
+            titles={[
+              <div className="text-center">
+                Banker
+                <div className={styles.mottrangbado}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.bankerRed3.dataList}
             isWin={settlementResult.bankerRed3}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Banker - 1 Red</div>]}
+            titles={[
+              <div className="text-center">
+                Banker
+                <div className={styles.motdobatrang}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.bankerWhite3.dataList}
             isWin={settlementResult.bankerWhite3}
           />
         </Col>
-        <Col className="col-4 col-lg-2">
+        <Col>
           <BetList
-            titles={[<div className="text-center">Banker - 4 White</div>]}
+            titles={[
+              <div className="text-center">
+                Banker
+                <div className={styles.bontrang}></div>
+              </div>,
+            ]}
             type="simple"
             dataList={betList.bankerWhite4.dataList}
             isWin={settlementResult.bankerWhite4}
           />
         </Col>
+          </Row>
+        </Col>
+        
       </React.Fragment>
     );
   }
