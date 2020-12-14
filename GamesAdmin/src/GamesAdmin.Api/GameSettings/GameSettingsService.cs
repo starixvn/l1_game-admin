@@ -245,7 +245,7 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SlotsConfig.Jackpot.ExcludeUUS, jackpot.ExcludeUUS)
                     .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.WinningAmount, jackpot.WinningAmount);
+                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

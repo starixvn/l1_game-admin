@@ -6,6 +6,7 @@ using AutoMapper;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -227,9 +228,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.Name,
                     new Jackpot(
                         viewModel.JackpotViewModel.JackpotEnabled,
-                        viewModel.JackpotViewModel.WinningAmount,
-                        viewModel.JackpotViewModel.PlayerContribution,
-                        viewModel.JackpotViewModel.BotContribution),
+                        viewModel.JackpotViewModel.WinningRatio.ConvertPercentValue(),
+                        viewModel.JackpotViewModel.PlayerContribution.ConvertPercentValue(),
+                        viewModel.JackpotViewModel.BotContribution.ConvertPercentValue()),
                     viewModel.JackpotViewModel.StakeLevels));
 
                 return Json(true);
@@ -254,7 +255,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     new EnableSetting(viewModel.Enabled),
                     viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(
                         (byte)viewModel.SlotViewModel.Mode,
-                        viewModel.SlotViewModel.BigWinRatio,
+                        viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue(),
                         new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus))));
 
                 return Json(true);

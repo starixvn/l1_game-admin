@@ -9,6 +9,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class AddViewModel : ViewModelBase
     {
+        private readonly double[] DefaultBotRatios = new double[] { 40, 40, 20 };
+
         public AddViewModel()
         {
         }
@@ -62,6 +64,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double[] Stakes { get; set; }
 
         public double[] Jackpots { get; set; }
+
+        public double[] BotRatios => DefaultBotRatios;
 
         public double MinBonus { get; set; }
 

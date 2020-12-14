@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -14,10 +15,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public bool ExcludeUUS { get; set; }
 
         [DisplayName("Jackpot Winning Amount (%)")]
-        public double WinningAmount { get; set; }
+        public double WinningRatio { get; set; }
 
         [DisplayName("Jackpot Service Fee (%)")]
-        public double JackpotServiceFee => 100 - WinningAmount;
+        public double JackpotServiceFee => WinningRatio.ReversePercent();
 
         [DisplayName("Bot Contribution (%)")]
         public double BotContribution { get; set; }

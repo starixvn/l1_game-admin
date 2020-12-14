@@ -53,7 +53,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public Jackpot(bool enabled, double winingAmount, double playerContribution, double botContribution)
         {
             Enabled = enabled;
-            WinningAmount = winingAmount;
+            WinningRatio = winingAmount;
             PlayerContributionRatio = playerContribution;
             BotContributionRatio = botContribution;
         }
@@ -62,7 +62,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public bool ExcludeUUS { get; set; }
 
-        public double WinningAmount { get; set; }
+        public double WinningRatio { get; set; }
 
         public double PlayerContributionRatio { get; set; }
 
