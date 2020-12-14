@@ -65,7 +65,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.SpecialSeDie.DisplayName, Game.SpecialSeDie.Value),
                 new SelectListItem(Game.BlackJack.DisplayName, Game.BlackJack.Value),
                 new SelectListItem(Game.VipFishPrawnCrab.DisplayName, Game.VipFishPrawnCrab.Value),
-                new SelectListItem(Game.SicBo.DisplayName, GameType.SicBo.Value),
+                new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
                 new SelectListItem(Game.VipBaccarat.DisplayName, GameType.VipBaccarat.Value),
                 new SelectListItem(Game.VipSeDieWar.DisplayName, GameType.VipSeDieWar.Value),
                 };
