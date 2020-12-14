@@ -214,7 +214,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<RouletteBetEntity>(Document.GetCollectionName(typeof(RouletteBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -225,7 +225,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<SpecialSeDieBetEntity>(Document.GetCollectionName(typeof(SpecialSeDieBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -236,7 +236,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<SicBoBetEntity>(Document.GetCollectionName(typeof(SicBoBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -247,7 +247,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<VipSeDieWarBetEntity>(Document.GetCollectionName(typeof(VipSeDieWarBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Time).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
