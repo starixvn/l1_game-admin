@@ -26,7 +26,7 @@
         public static readonly VipSeDieWarBetChoice Banker = new VipSeDieWarBetChoice(BankerValue, "Banker");
         public static readonly VipSeDieWarBetChoice Tie = new VipSeDieWarBetChoice(TieValue, "Tie");
         public static readonly VipSeDieWarBetChoice Even = new VipSeDieWarBetChoice(EvenValue, "Total Even");
-        public static readonly VipSeDieWarBetChoice Odd = new VipSeDieWarBetChoice(OddValue, "Toal Odd");
+        public static readonly VipSeDieWarBetChoice Odd = new VipSeDieWarBetChoice(OddValue, "Total Odd");
 
         public static readonly VipSeDieWarBetChoice PlayerEven = new VipSeDieWarBetChoice(PlayerEvenValue, "Player Even");
         public static readonly VipSeDieWarBetChoice PlayerOdd = new VipSeDieWarBetChoice(PlayerOddValue, "Player Odd");

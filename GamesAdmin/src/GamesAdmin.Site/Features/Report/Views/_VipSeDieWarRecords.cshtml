@@ -6,7 +6,7 @@
 
 @{
     var settlementResult = Model.RoundResult.SettlementResult;
-}GetVipSeDieWarBetHistory
+}
 
 <div class="row">
     <div class="col-sm-12">
@@ -60,7 +60,7 @@
                             }
                             else
                             {
-                                @($"{(settlementResult[VipSeDieWarBetChoice.BankerEvenValue] ? VipSeDieWarBetChoice.Banker.DisplayName : VipSeDieWarBetChoice.Tie.DisplayName)}, {oddEvenResult}")
+                                @($"{(settlementResult[VipSeDieWarBetChoice.BankerValue] ? VipSeDieWarBetChoice.Banker.DisplayName : VipSeDieWarBetChoice.Tie.DisplayName)}, {oddEvenResult}")
                             }
 
                             <br />
