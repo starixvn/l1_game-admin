@@ -2,11 +2,8 @@ import React from "react";
 
 import BaccaratModel from "../../common/model/BaccaratModel";
 import BetItem from "../../common/model/BetItem";
-import { GameState } from "../../shared/common/GameState";
 import Baccarat from "../baccarat";
 
-const TOTAL_TIME = 30;
-const WAITING_TIME = 15;
 const CHOICES = [
     { name: "player", displayName: "Player" },
     { name: "banker", displayName: "Banker" },
@@ -52,29 +49,7 @@ export default class VipBaccarat extends Baccarat {
         this.setState({ betList: betList });
     }
 
-    handleStop(data) {
-        this.isFirstLoad = false;
-        const { result, settlementResult } = data;
-
-        this.setState({
-            result: { bankerCards: Object.values(result.banker), playerCards: Object.values(result.player) },
-            settlementResult: settlementResult,
-            gameState: GameState.waiting,
-            time: {
-                remainingTime: WAITING_TIME
-            }
-        });
-
-        setTimeout(() => {
-            this.setState({
-                time: {
-                    remainingTime: TOTAL_TIME
-                },
-                result: new BaccaratModel().result,
-                settlementResult: {},
-                roundNumber: this.state.roundNumber + 1,
-                gameState: GameState.running
-            });
-        }, (WAITING_TIME + 1) * 1000);
+    mapResult(result){
+        return { bankerCards: Object.values(result.banker), playerCards: Object.values(result.player) };
     }
 }
