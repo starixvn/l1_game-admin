@@ -59,9 +59,9 @@ export default class VipSeDieWar extends React.Component<
       }
     }
 
-    if (!!data.ingame) {
+    if (!!data.inGame) {
       this.setState({
-        betList: this.getUserBetList(data.ingame, this.state.betList),
+        betList: this.getUserBetList(data.inGame, this.state.betList),
       });
     }
 
