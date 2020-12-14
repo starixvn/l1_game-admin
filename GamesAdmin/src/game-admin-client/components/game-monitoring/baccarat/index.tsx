@@ -98,7 +98,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
             this.setState({
                 gameState: GameState.waiting,
                 roundNumber: roundId - 1,
-                result: result ? result : new BaccaratModel().result,
+                result: result ? this.mapResult(result) : new BaccaratModel().result,
                 settlementResult: settlementResult ? settlementResult : {},
                 time: {
                     remainingTime: remainingTime - TOTAL_TIME
@@ -148,7 +148,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
         const { result, settlementResult } = data;
 
         this.setState({
-            result: result,
+            result: this.mapResult(result),
             settlementResult: settlementResult,
             gameState: GameState.waiting,
             time: {
@@ -167,6 +167,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel>{
                 gameState: GameState.running
             });
         }, (WAITING_TIME + 1) * 1000);
+    }
+
+    mapResult(result){
+        return result;
     }
 
     getSettlementResult(result) {
