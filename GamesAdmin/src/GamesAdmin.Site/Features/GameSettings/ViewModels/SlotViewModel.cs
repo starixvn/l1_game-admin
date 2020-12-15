@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Player Contribution (%)")]
         public double PlayerJackpotContribution { get; set; }       
 
-        [DisplayName("Big Win Ratio")]
+        [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }
     }
 }

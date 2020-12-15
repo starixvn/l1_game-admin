@@ -45,7 +45,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 mapper.Map<EnableSetting>(addViewModel),
                 mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
-                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.NumberOfIcons)));
+                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon)));
 
             return RedirectToAction(nameof(Index));
         }

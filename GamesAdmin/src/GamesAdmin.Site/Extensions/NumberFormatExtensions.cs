@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Extensions
         => Math.Round(number, RoundDigits);
 
         public static double ConvertPercentValue(this double number)
-        => Math.Round(number / Hundredth, RoundDigits);
+        =>number / Hundredth;
 
         public static double ReversePercent(this double percentage)
         => Hundredth - percentage;

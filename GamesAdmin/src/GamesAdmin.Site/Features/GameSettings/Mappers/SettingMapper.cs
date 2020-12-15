@@ -49,11 +49,12 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             CreateMap<AddViewModel, SlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
                 .ForMember(dest => dest.StakeLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots, src.BotRatios)))
                 .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)))
                 .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => new Jackpot(
                     src.EnableJackpot, 
-                    src.JackpotRTP.ConvertPercentValue(), 
+                    src.WinningRatio.ConvertPercentValue(), 
                     src.PlayerJackpotContribution.ConvertPercentValue(), 
                     src.BotJackpotContribution.ConvertPercentValue())));
 

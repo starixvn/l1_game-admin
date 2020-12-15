@@ -61,6 +61,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Number of Slot Icons")]
         public byte NumberOfIcons { get; set; }
 
+        [DisplayName("Max number of odds per Icon")]
+        public byte OddsPerIcon { get; set; }
+
         public double[] Stakes { get; set; }
 
         public double[] Jackpots { get; set; }
@@ -74,16 +77,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Enable Jackpot")]
         public bool EnableJackpot { get; set; }
 
-        [DisplayName("Big Win Ratio")]
+        [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }
 
-        [DisplayName("RTP")]
-        public double JackpotRTP { get; set; }
+        [DisplayName("Winning Ratio (%)")]
+        public double WinningRatio { get; set; }
 
-        [DisplayName("Bot Contribution")]
+        [DisplayName("Bot Contribution (%)")]
         public double BotJackpotContribution { get; set; }
 
-        [DisplayName("Player Contribution")]
+        [DisplayName("Player Contribution (%)")]
         public double PlayerJackpotContribution { get; set; }
     }
 }

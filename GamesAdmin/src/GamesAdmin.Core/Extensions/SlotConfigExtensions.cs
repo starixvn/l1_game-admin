@@ -5,24 +5,28 @@ namespace GamesAdmin.Core.Extensions
 {
     public static class SlotConfigExtensions
     {
-        public static SlotsConfig GenerateDefaultSlotIcons(this SlotsConfig config, int total)
+        public static SlotsConfig GenerateDefaultSlotIcons(this SlotsConfig config, int total, int maxNumber = 4)
         {
             config.Icons = new Dictionary<string, Dictionary<string, double>>();
 
             for (var i = 0; i < total; i++)
             {
-                config.Icons.Add(i.ToString(), GenerateDefaultOdds());
+                config.Icons.Add(i.ToString(), GenerateDefaultOdds(maxNumber));
             }
 
             return config;
         }
 
-        private static Dictionary<string, double> GenerateDefaultOdds()
-        => new Dictionary<string, double> {
-                { "2" , 0},
-                { "3" , 0},
-                { "4" , 0},
-                { "5" , 0},
-            };
+        private static Dictionary<string, double> GenerateDefaultOdds(int maxNumber)
+        {
+            var iconOdds = new Dictionary<string, double>();
+
+            for (var i = 1; i <= maxNumber; i++)
+            {
+                iconOdds.Add((i + 1).ToString(), 0);
+            }
+
+            return iconOdds;
+        }
     }
 }

@@ -72,9 +72,14 @@
                     <input type="number" asp-for="NumberOfIcons" class="form-control" />
                 </div>
                 <div class="col-lg-6">
-                    <label class="control-label" asp-for="BigWinRatio"></label>
-                    <input type="number" asp-for="BigWinRatio" class="form-control" />
+                    <label asp-for="OddsPerIcon" class="control-label"></label>
+                    <input type="number" asp-for="OddsPerIcon" class="form-control" />
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" asp-for="BigWinRatio"></label>
+                <input type="number" asp-for="BigWinRatio" class="form-control" />
             </div>
 
             <fieldset>
@@ -112,9 +117,9 @@
 
                 <div class="form-group row">
                     <div class="col-lg-4">
-                        <label class="control-label" asp-for="JackpotRTP"></label>
-                        <input type="number" asp-for="JackpotRTP" class="form-control" />
-                        <span asp-validation-for="JackpotRTP" class="text-danger"></span>
+                        <label class="control-label" asp-for="WinningRatio"></label>
+                        <input type="number" asp-for="WinningRatio" class="form-control" />
+                        <span asp-validation-for="WinningRatio" class="text-danger"></span>
                     </div>
 
                     <div class="col-lg-4">
