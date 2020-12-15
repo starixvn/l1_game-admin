@@ -3,11 +3,12 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    //[Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly IMediator mediator;
