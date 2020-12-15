@@ -120,17 +120,25 @@
                         <legend>Icon @Model.PayoutViewModel.IconOdds[i].Index</legend>
                         <div class="form-group row">
                             <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
-                            @for (var j = 0; j < Model.PayoutViewModel.IconOdds[i].Odds.Count; j++)
-                            {
-                                <div class="col-lg-6">
-                                    <label class="control-label">Count</label>
-                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Count" class="form-control" />
+                            <div class="col-lg-4">
+                                <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
+                            </div>
+
+                            <div class="col-lg-8">
+                                <div class="form-group row">
+                                    @for (var j = 0; j < Model.PayoutViewModel.IconOdds[i].Odds.Count; j++)
+                                    {                                        
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Count</label>
+                                            <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Count" class="form-control" />
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Odds</label>
+                                            <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Odds" class="form-control" />
+                                        </div>
+                                    }
                                 </div>
-                                <div class="col-lg-6">
-                                    <label class="control-label">Odds</label>
-                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Odds" class="form-control" />
-                                </div>
-                            }
+                            </div>
                         </div>
                     </fieldset>
                 }

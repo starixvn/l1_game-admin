@@ -15,6 +15,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<GameConfig, EditViewModel>()
                 .ForMember(dest => dest.EnableFreeBet, opt => opt.MapFrom(src => src.Info.EnableFreeBet))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
                 .ForMember(dest => dest.Enabled, opt => opt.MapFrom(src => src.EnableSetting.Enabled))
                 .ForMember(dest => dest.DisabledMessage, opt => opt.MapFrom(src => src.EnableSetting.DisabledMessage))
                 .ForMember(dest => dest.DelayStartTime, opt => opt.MapFrom(src => src.EnableSetting.DelayStartTime))
