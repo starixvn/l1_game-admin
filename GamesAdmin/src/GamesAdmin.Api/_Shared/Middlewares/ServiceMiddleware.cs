@@ -102,6 +102,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IVipBaccaratOnlineUserApi>(appSettings.GameServers.VipBaccarat.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieWarOnlineUserApi>(appSettings.GameServers.VipSedieWar.Api, refitSettings));
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
+
+            AddSlotServices(services, appSettings);
+        }
+
+        private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings) 
+        {
+            services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
         }
     }
 }

@@ -10,7 +10,6 @@
     <link href="~/scss/pages/game-status.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
-
 <div class="col-md-12 col-lg-6 game-status">
     <table id="status-tbl" class="table table-bordered">
         <thead>
@@ -24,11 +23,19 @@
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
                 <tr>
-                    <td>@Model.GameList[index].DisplayName</td>
+                    <td>@(Model.GameList[index].DisplayName ?? Model.GameList[index].Name)</td>
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledMonitoring)
                         {
-                            <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                            if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                            {
+                                <a class="icon-action" href="~/ResultMonitor/SlotResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                            }
+                            else
+                            {
+                                <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                            }
+
                         }
                     </td>
                     <td class="text-center">
@@ -42,7 +49,6 @@
         </tbody>
     </table>
 </div>
-
 
 @section Scripts{
     <environment include="Development">

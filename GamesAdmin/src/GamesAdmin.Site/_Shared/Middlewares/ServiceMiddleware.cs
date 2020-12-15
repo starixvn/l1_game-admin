@@ -9,6 +9,7 @@ using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
+using GamesAdmin.Site.Features.ResultMonitor;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,6 +59,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IGameRoundResultApi>(appSettings.ResultPageConfiguration.BaseUrl));
             services.AddScoped<IGameRoundResultService, GameRoundResultService>();
+
+            services.AddSingleton(RestService.For<IResultMonitorApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IResultMonitorService, ResultMonitorService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
         }

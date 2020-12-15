@@ -21,6 +21,8 @@ namespace GamesAdmin.Api.GameServers
         Task<OnlineUsers> GetOnlineUsers(Game gameType = null);
 
         Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
+
+        Task<bool> SetSlotBoard(SetSlotBoardRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -28,15 +30,18 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGameServerApi serverApi;
         private readonly ISentryClient sentryClient;
         private readonly IOnlineUserApiFactory onlineUserApiFactory;
+        private readonly ISlotBoardApiFactory slotBoardApiFactory;
 
         public GameServerService(
             IGameServerApi serverApi,
             ISentryClient sentryClient,
-            IOnlineUserApiFactory onlineUserApiFactory)
+            IOnlineUserApiFactory onlineUserApiFactory,
+            ISlotBoardApiFactory slotBoardApiFactory)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
+            this.slotBoardApiFactory = slotBoardApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -159,6 +164,23 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return true;
+        }
+
+        public async Task<bool> SetSlotBoard(SetSlotBoardRequest request)
+        {
+            try
+            {
+                var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
+                await slotBoardApiFactory.GetBoardApi(gameEnum).SetBoard(request);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return false;
         }
     }
 }

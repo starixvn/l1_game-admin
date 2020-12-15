@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,5 +33,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("notify_proviet_results")]
         public Task<bool> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)
            => mediator.Send(new NotifyRoundsRequest(kenoRounds));
+
+        [HttpPost("slot/set_board")]
+        public Task<bool> SetSlotResult([FromBody] SetSlotBoardRequest request)
+           => mediator.Send(request);
     }
 }

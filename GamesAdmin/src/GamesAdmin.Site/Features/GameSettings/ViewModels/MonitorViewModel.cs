@@ -28,21 +28,22 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Game.BlackJackValue
         };
 
-        public MonitorItemViewModel(string name)
+        public MonitorItemViewModel()
         {
-            Name = name;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<Game>(Name)
-            ? Name
-            : Enumeration.FromValue<Game>(Name).DisplayName;
+        public string DisplayName { get; set; }
+
+        public GameType Type { get; set; }
 
         public bool EnabledMonitoring => !disableMonitoring.Contains(Name);
 
         public bool EnabledHistory => !disableHistory.Contains(Name);
 
-        public string GameHistoryUrl => DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
+        public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName) 
+            ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
+            : DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
     }
 }

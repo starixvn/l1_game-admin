@@ -12,6 +12,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<JWTRequest, JsonWebToken>
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
         , IRequestHandler<NotifyRoundsRequest, bool>
+        , IRequestHandler<SetSlotBoardRequest, bool>
     {
         private readonly IGameServerService gameServerService;
 
@@ -37,5 +38,8 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
         => gameServerService.NotifyRoundResult(request.Rounds);
+
+        public Task<bool> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
+        => gameServerService.SetSlotBoard(request);
     }
 }
