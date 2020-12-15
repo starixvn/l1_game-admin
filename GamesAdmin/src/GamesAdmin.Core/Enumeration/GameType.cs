@@ -58,7 +58,7 @@
         public static readonly GameType VipFishPrawnCrab = new GameType(VipFishPrawnCrabValue, "Vip Fish Prawn Crab");
         public static readonly GameType SicBo = new GameType(SicBoValue, "Sic Bo");
         public static readonly GameType VipBaccarat = new GameType(VipBaccaratValue, "Vip Baccarat");
-        public static readonly GameType VipSeDieWar = new GameType(VipSeDieWarValue, "Vip Se Die War");
+        public static readonly GameType VipSeDieWar = new GameType(VipSeDieWarValue, "Se Die War");
 
         public GameType()
         {
