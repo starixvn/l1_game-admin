@@ -102,6 +102,7 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
+        [HttpGet]
         public IActionResult VipSeDieWar()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
