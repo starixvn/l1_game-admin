@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Site.Features.ResultMonitor.Requests;
 using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
 using MediatR;
@@ -22,7 +23,10 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         => View(new SlotResultViewModel(gameConfigName));
 
         [HttpPost]
-        public Task<bool> SetSlotResult([Bind] SetSlotResultRequest request)
-        => mediator.Send(request);
+        public Task<bool> SetSlotResult([Bind] SlotResultViewModel viewModel)
+        => mediator.Send(new SetSlotResultRequest(
+            viewModel.GameName,
+            viewModel.Nickname,
+            viewModel.Results.Trim().Split(',').Select(x => byte.Parse(x)).ToArray()));
     }
 }

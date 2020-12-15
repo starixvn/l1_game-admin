@@ -4,10 +4,17 @@ namespace GamesAdmin.Site.Features.ResultMonitor.Requests
 {
     public class SetSlotResultRequest : IRequest<bool>
     {
-        public string GameConfigName { get; set; }
+        public SetSlotResultRequest(string gameConfigName, string nickname, byte[] results)
+        {
+            GameConfigName = gameConfigName;
+            Nickname = nickname;
+            Results = results;
+        }
 
-        public string Nickname { get; set; }
+        public string GameConfigName { get; }
 
-        public byte[] Results { get; set; }
+        public string Nickname { get; }
+
+        public byte[] Results { get; }
     }
 }
