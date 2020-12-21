@@ -93,9 +93,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
-                viewModel.DisplayName = string.IsNullOrWhiteSpace(game.Info.DisplayName)
+                viewModel.DisplayName = Enumeration.Contains<Game>(game.Info.Name)
                                         ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
-                                        : game.Info.DisplayName;
+                                        : game.Info.Name;
 
                 if (game.Info.Type == GameType.Slots)
                 {
@@ -189,7 +189,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => request.GameInfo.Type == GameType.AutoRNG
                 ? gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting))
-                : gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.GameInfo.DisplayName, request.BotSetting.BotEnabled, request.SlotsConfig));
+                : gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -297,7 +297,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return new MonitorViewModel(gameList);
         }
-        
+
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
         => gameService.UnderMaintenance(request);
 

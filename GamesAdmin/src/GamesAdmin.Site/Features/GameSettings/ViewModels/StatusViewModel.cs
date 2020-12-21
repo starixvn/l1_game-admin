@@ -26,9 +26,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name => GameConfig.Info.Name;
 
-        public string DisplayName => string.IsNullOrWhiteSpace(GameConfig.Info.DisplayName)
-            ? ParseGameConfigName()
-            : GameConfig.Info.DisplayName;
+        public string DisplayName => ParseGameConfigName();
 
         private string ParseGameConfigName() 
             => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.Name;

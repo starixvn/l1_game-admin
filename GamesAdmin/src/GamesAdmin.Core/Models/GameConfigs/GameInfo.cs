@@ -6,21 +6,17 @@ namespace GamesAdmin.Core.Models.GameConfigs
     {
         public GameInfo(
             string name,
-            string displayName,
             bool enableFreeBet,
             GameType type = GameType.AutoRNG)
         {
-            Type = type;
             Name = name;
-            DisplayName = displayName;
             EnableFreeBet = enableFreeBet;
+            Type = type;            
         }
 
         public GameType Type { get; }
 
         public string Name { get; }
-
-        public string DisplayName { get; }
 
         public bool EnableFreeBet { get; }
     }

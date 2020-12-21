@@ -16,7 +16,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class MonitorItemViewModel
     {
-
         private static string[] disableHistory = new string[]
         {
         };
@@ -34,7 +33,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; set; }
 
-        public string DisplayName { get; set; }
+        public string DisplayName => Enumeration.Contains<Game>(Name)
+                                        ? Enumeration.FromValue<Game>(Name).DisplayName
+                                        : Name;
 
         public GameType Type { get; set; }
 
@@ -42,7 +43,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool EnabledHistory => !disableHistory.Contains(Name);
 
-        public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName) 
+        public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
             ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
             : DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
     }

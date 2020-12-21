@@ -48,7 +48,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<GameConfig, MonitorItemViewModel>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
-                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Info.DisplayName))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type));
 
             CreateMap<AddViewModel, SlotsConfig>()

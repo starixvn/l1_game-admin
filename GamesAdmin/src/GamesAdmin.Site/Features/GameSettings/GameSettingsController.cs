@@ -183,7 +183,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("special-sedie-server-endpoint", appSettings.GameServers.SpecialSedie.Socket);
             HttpContext.Response.Cookies.Append("special-sedie-server-endpoint-route", appSettings.GameServers.SpecialSedie.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint", appSettings.GameServers.VipFishPrawnCrab.Socket);
-            HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint-route", appSettings.GameServers.VipFishPrawnCrab.SocketRoute); 
+            HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint-route", appSettings.GameServers.VipFishPrawnCrab.SocketRoute);
             HttpContext.Response.Cookies.Append("sic-bo-server-endpoint", appSettings.GameServers.SicBo.Socket);
             HttpContext.Response.Cookies.Append("sic-bo-server-endpoint-route", appSettings.GameServers.SicBo.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-baccarat-server-endpoint", appSettings.GameServers.VipBaccarat.Socket);
@@ -250,7 +250,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 await mediator.Send(new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.DisplayName, viewModel.EnableFreeBet, viewModel.Type),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet),
                     new EnableSetting(viewModel.Enabled),
                     viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(

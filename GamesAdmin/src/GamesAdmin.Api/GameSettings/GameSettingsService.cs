@@ -80,7 +80,6 @@ namespace GamesAdmin.Api.Games
                 var entity = new GameConfigEntity
                 {
                     Name = game.Info.Name,
-                    DisplayName = game.Info.DisplayName,
                     Type = (byte)game.Info.Type,
                     EnableFreeBet = game.Info.EnableFreeBet,
                     Enabled = game.EnableSetting.Enabled,
@@ -275,7 +274,6 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.DisplayName, displayName)
                     .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                     .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
                     .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
@@ -298,7 +296,6 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.DisplayName, gameInfo.DisplayName)
                     .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
                     .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
                     .Set(field => field.Botenabled, botSetting.BotEnabled)
