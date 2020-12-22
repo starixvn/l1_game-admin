@@ -39,7 +39,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>,
         IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
-        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>
+        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
+        IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -454,6 +455,22 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<FourGuardiansReportResultViewModel> Handle(GetFourGuardiansReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetFourGuardiansReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new FourGuardiansReportResultViewModel
+            {
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<FourGuardiansRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;

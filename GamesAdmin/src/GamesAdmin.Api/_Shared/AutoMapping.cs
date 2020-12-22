@@ -193,6 +193,16 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<VipSeDieWarBetReportEntity, VipSeDieWarBetRecord>();
             CreateMap<VipSeDieWarBetEntity, VipSeDieWarBetHistoryRecord>();
+            
+             CreateMap<FourGuardiansBetReportEntity, FourGuardiansBetRecord>()
+                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
+            CreateMap<FourGuardiansSettlementResultEntity, FourGuardiansSettlementResult>();
+            CreateMap<FourGuardiansFreeSpinEntity, FourGuardiansFreeSpin>();
+            CreateMap<FourGuardiansBonusEntity, FourGuardiansBonus>();
+            CreateMap<FourGuardiansWinningLineEntity, FourGuardiansWinningLine>();
+            CreateMap<FourGuardiansBonusChestEntity, FourGuardiansBonusChest>();
+            CreateMap<FourGuardiansJackpotEntity, FourGuardiansJackpot>();
+
 
             CreateMap<SeDieRoundEntity, SeDieRoundResult>()
                 .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]

@@ -1,0 +1,52 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model FourGuardiansReportResultViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Round</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Payline</th>
+                    <th class="col-number">Total Stake</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>@bet.Nickname</td>
+                        <td class="text-center">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetFourGuardiansBetHistory" asp-route-roundId="@bet.RoundId" asp-route-nickname="@bet.Nickname">
+                                @bet.RoundId
+                            </a>
+                        </td>
+                        <td class="text-right">@(!bet.FreeSpin ? HtmlHelpers.formatNumber(bet.Bet): "0")</td>
+                        <td class="text-center">@bet.Paylines.Count()</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.TotalAmount)</td>
+                        <td class="text-right">@(!bet.FreeSpin ? HtmlHelpers.formatNumber(bet.BetWin): "0")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="10">No data</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

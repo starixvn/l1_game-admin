@@ -127,6 +127,11 @@ namespace GamesAdmin.Api.Report
        => (await mediator.Send(new BlackjackReportRequest(handId, nickname, excludeUUS)));
 
         [HttpGet]
+        [Route("four_guardians/round/{roundId}/users/{nickname?}")]
+        public async Task<IEnumerable<FourGuardiansBetRecord>> FourGuardians(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new FourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
         [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]
         public async Task<VipFishPrawnCrabBetReport> VipFishPrawnCrab(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));

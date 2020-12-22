@@ -65,6 +65,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -163,5 +164,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId)
         => reportApi.GetSicBoBetHistory(roundId, userId);
+
+        public Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetFourGuardiansReport(roundId, nickname, excludeUUS);
     }
 }

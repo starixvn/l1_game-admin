@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -185,6 +186,26 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult SicBo()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+
+        [HttpGet]
+        public IActionResult FourGuardians()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_FourGuardiansRecords", await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_FourGuardiansBetHistory", 
+                (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
         }
 
         [HttpGet]

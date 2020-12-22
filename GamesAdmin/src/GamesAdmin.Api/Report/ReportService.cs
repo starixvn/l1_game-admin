@@ -64,6 +64,7 @@ namespace GamesAdmin.Api.Report
 
         Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -439,6 +440,15 @@ namespace GamesAdmin.Api.Report
 
             return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
+
+        public async Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IFourGuardiansReportRepository>();
+            var result = await repository.GetAsync(handId, nickname, excludeUUS);
+
+            return result.Select(x => mapper.Map<FourGuardiansBetRecord>(x));
+        }
+
 
         public async Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS)
         {

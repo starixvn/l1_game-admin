@@ -85,5 +85,8 @@ namespace GamesAdmin.Site.Features.Report
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
         [Get("/report/bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
+
+        [Get("/report/four_guardians/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
     }
 }
