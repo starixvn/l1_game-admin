@@ -171,7 +171,8 @@ namespace GamesAdmin.Api.GameServers
             try
             {
                 var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
-                await slotBoardApiFactory.GetBoardApi(gameEnum).SetBoard(request);
+
+                await slotBoardApiFactory.SetBoardApi(gameEnum).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
 
                 return true;
             }

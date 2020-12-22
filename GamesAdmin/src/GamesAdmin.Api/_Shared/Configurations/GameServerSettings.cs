@@ -19,6 +19,8 @@
         public GameServerConfigs VipBaccarat { get; set; }
 
         public GameServerConfigs VipSedieWar { get; set; }
+        
+        public GameServerConfigs FourGuardians { get; set; }
     }
 
     public class GameServerConfigs

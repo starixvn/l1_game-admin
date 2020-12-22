@@ -6,7 +6,7 @@ namespace GamesAdmin.Api.GameServers
 {
     public interface ISlotBoardApiFactory
     {
-        ISlotBoardApi GetBoardApi(Game game);
+        ISlotBoardApi SetBoardApi(Game game);
     }
 
     public class SlotBoardApiFactory : ISlotBoardApiFactory
@@ -25,7 +25,7 @@ namespace GamesAdmin.Api.GameServers
             this.serviceProvider = serviceProvider;
         }
 
-        public ISlotBoardApi GetBoardApi(Game game)
+        public ISlotBoardApi SetBoardApi(Game game)
         => slotServices.ContainsKey(game.Value)
             ? (ISlotBoardApi)serviceProvider.GetService(slotServices[game.Value])
             : (ISlotBoardApi)serviceProvider.GetService(defaultSlotBoardApi);

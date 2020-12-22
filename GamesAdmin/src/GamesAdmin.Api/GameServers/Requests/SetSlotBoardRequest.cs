@@ -4,17 +4,17 @@ namespace GamesAdmin.Api.GameServers.Requests
 {
     public class SetSlotBoardRequest : IRequest<bool>
     {
-        public SetSlotBoardRequest(string gameConfigName, string nickname, byte[] result)
+        public SetSlotBoardRequest(string gameConfigName, string nickname, byte[] results)
         {
             GameConfigName = gameConfigName;
             Nickname = nickname;
-            Result = result;
+            Results = results;
         }
 
         public string GameConfigName { get; }
 
         public string Nickname { get; }
 
-        public byte[] Result { get; }
+        public byte[] Results { get; }
     }
 }

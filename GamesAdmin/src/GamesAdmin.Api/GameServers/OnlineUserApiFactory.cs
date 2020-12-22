@@ -21,6 +21,8 @@ namespace GamesAdmin.Api.GameServers
             { Game.SicBoValue, typeof(ISicBoOnlineUserApi) },
             { Game.VipBaccaratValue, typeof(IVipBaccaratOnlineUserApi) },
             { Game.VipSeDieWarValue, typeof(IVipSedieWarOnlineUserApi) },
+            { Game.FourGuardiansValue, typeof(IFourGuardiansOnlineUserApi) },
+
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

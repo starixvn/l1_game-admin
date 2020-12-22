@@ -68,6 +68,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
                 new SelectListItem(Game.VipBaccarat.DisplayName, GameType.VipBaccarat.Value),
                 new SelectListItem(Game.VipSeDieWar.DisplayName, GameType.VipSeDieWar.Value),
+                new SelectListItem(Game.FourGuadians.DisplayName, Game.FourGuadians.Value)
+
                 };
     }
 }

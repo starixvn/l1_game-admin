@@ -22,8 +22,5 @@ namespace GamesAdmin.Api.GameServers
 
         [Post("/api/proviet-keno/round-result")]
         Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
-
-        [Post("/api/set-board")]
-        Task SetBoard([Body] SetSlotBoardRequest request);
     }
 }

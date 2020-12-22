@@ -8,10 +8,12 @@ namespace GamesAdmin.Api.GameServers
     public interface ISlotBoardApi
     {
         [Post("/api/set-board")]
-        Task SetBoard([Body] SetSlotBoardRequest request);
+        Task SetBoard([Body] SetSlotBoardServerRequest request);
     }
 
     public interface IFourGuardiansBoardApi : ISlotBoardApi
     {
+        [Post("/api/set-board")]
+        new Task SetBoard([Body] SetSlotBoardServerRequest request);
     }
 }

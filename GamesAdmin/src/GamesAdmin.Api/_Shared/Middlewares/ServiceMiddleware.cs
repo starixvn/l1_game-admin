@@ -90,8 +90,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<SicBoEndGameInfoService>();
             services.AddScoped<VipSeDieWarEndGameInfoService>();
 
-            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddScoped<IGameServerService, GameServerService>();
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
+            
             services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
@@ -101,14 +102,16 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IVipBaccaratOnlineUserApi>(appSettings.GameServers.VipBaccarat.Api, refitSettings));
             services.AddSingleton(RestService.For<ISicBoOnlineUserApi>(appSettings.GameServers.SicBo.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieWarOnlineUserApi>(appSettings.GameServers.VipSedieWar.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFourGuardiansOnlineUserApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
-            AddSlotServices(services, appSettings);
+            AddSlotServices(services, appSettings, refitSettings);
         }
 
-        private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings) 
+        private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings) 
         {
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
+            services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
         }
     }
 }
