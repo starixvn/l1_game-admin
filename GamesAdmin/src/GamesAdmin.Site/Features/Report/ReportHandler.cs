@@ -451,7 +451,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new BlackjackReportResultViewModel
             {
-                Records = result.Select(x => {
+                Records = result.Select(x =>
+                {
                     var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
@@ -460,12 +461,12 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-		public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
+        public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);
 
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
-		}
+        }
 
         public async Task<SicBoReportResultViewModel> Handle(GetSicBoReportRequest request, CancellationToken cancellationToken)
         {

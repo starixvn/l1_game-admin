@@ -61,6 +61,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
+            var names = Enumeration.GetAll<Game>()
+                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Value }).ToList();
+
             var types = Enum.GetValues(typeof(GameType))
                 .Cast<GameType>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
@@ -69,7 +72,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            return Task.FromResult(new AddViewModel(types, difficultyItems));
+            return Task.FromResult(new AddViewModel(names, types, difficultyItems));
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
