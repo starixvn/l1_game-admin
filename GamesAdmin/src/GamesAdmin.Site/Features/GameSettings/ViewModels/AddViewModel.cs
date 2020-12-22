@@ -15,8 +15,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         {
         }
 
-        public AddViewModel(List<SelectListItem> gameTypes, List<SelectListItem> difficultyItems)
+        public AddViewModel(List<SelectListItem> gameNames, List<SelectListItem> gameTypes, List<SelectListItem> difficultyItems)
         {
+            GameNames = gameNames;
             GameTypes = gameTypes;
             ModeItems = difficultyItems;
             Mode = GameMode.Medium;
@@ -27,9 +28,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Required]
         public string Name { get; set; }
 
-        [Required]
-        [DisplayName("Display Name")]
-        public string DisplayName { get; set; }
+        public List<SelectListItem> GameNames { get; set; }
 
         [DisplayName("Type")]
         public GameType Type { get; set; }

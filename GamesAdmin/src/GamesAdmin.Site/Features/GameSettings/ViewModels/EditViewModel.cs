@@ -14,7 +14,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Name { get; set; }
 
-        [DisplayName("Name")]
         public string DisplayName { get; set; }
 
         [DisplayName("Game Status:")]
