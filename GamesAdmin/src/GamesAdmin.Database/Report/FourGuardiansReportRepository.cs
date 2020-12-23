@@ -38,7 +38,7 @@ namespace GamesAdmin.Database
                     Number = x.Number,
                     Paylines = x.Paylines,
                     SettlementResult = x.SettlementResult,
-                    Results = x.Results,
+                    Result = x.Result,
                     UserId = x.Uid,
                 });
 

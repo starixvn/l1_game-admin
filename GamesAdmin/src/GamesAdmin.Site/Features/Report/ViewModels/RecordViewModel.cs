@@ -187,7 +187,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool FreeSpin { get; set; }
 
-        public IEnumerable<byte> Results { get; set; }
+        public IEnumerable<byte> Result { get; set; }
 
         public FourGuardiansSettlementResultViewModel SettlementResult { get; set; }
 
@@ -197,7 +197,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public byte[,] GetFormatResults()
         {
-            var array = Results.ToArray();
+            var array = Result.ToArray();
 
             var formatResult = new byte[3, 5];
 

@@ -16,7 +16,7 @@ namespace GamesAdmin.Database.Entities
 
         public bool FreeSpin { get; set; }
 
-        public IEnumerable<byte> Results { get; set; }
+        public IEnumerable<byte> Result { get; set; }
 
         public FourGuardiansSettlementResultEntity SettlementResult { get; set; }
 
