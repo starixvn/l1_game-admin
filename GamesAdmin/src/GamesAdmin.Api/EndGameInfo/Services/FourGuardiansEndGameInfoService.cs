@@ -22,12 +22,16 @@ namespace GamesAdmin.Api.EndGameInfo
                 .FilterByAsync(x => x.Number == request.GameRoundId
                     && x.MemberId == request.ObCustId
                     && x.SiteId == request.SiteId
-                    && x.FreeSpin == request.FreeBet
-                    && x.Paid)).FirstOrDefault();
+                    && x.FreeSpin == request.FreeBet)).FirstOrDefault();
 
             if (round == null)
             {
                 return EndGameInfoError.SB1001;
+            }
+
+            if(!round.Paid)
+            {
+                return EndGameInfoError.SB1005;
             }
 
             return new EndGameInfoResult
