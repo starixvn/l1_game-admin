@@ -1,4 +1,5 @@
 ﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 @model ReportViewModel
 @{
     ViewData["Title"] = "Four Guardians";
@@ -7,6 +8,8 @@
 @section Styles {
     <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
 }
+
+
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
@@ -50,7 +53,9 @@
         </div>
 
     </div>
-    <div class="tab-pane fade" id="jackpot" role="tabpanel" aria-labelledby="jackpot-tab"></div>
+    <div class="tab-pane fade" id="jackpot" role="tabpanel" aria-labelledby="jackpot-tab">
+        <partial name="Jackpot" model="new JackpotReportViewModel() { GameId = (byte) GameId.FourGuardians }" />
+    </div>
 </div>
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">

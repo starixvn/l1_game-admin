@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -204,7 +205,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_FourGuardiansBetHistory", 
+            return PartialView("_FourGuardiansBetHistory",
                 (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
         }
 
@@ -379,5 +380,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_LuckyWheelRecords", await mediator.Send(new GetLuckyWheelHistoryRequest(nickname)));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetJackpotReport(JackpotReportViewModel model)
+        {
+            return PartialView("_JackpotRecords",
+                await mediator.Send(
+                    new GetJackpotReportRequest(model.GameId,
+                        model.FromDate.Date.ToUniversalTime(),
+                        model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(), 
+                        model.ExcludeUUS, model.ExcludeBot)));
+        }
+
     }
 }

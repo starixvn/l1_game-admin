@@ -6,6 +6,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
+using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
@@ -203,6 +204,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FourGuardiansBonusChestEntity, FourGuardiansBonusChest>();
             CreateMap<FourGuardiansJackpotEntity, FourGuardiansJackpot>();
 
+            CreateMap<JackpotReportEntity, JackpotRecord>();
 
             CreateMap<SeDieRoundEntity, SeDieRoundResult>()
                 .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]

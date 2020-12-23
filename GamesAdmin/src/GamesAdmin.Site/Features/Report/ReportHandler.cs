@@ -40,7 +40,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
         IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
-        IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>
+        IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>,
+        IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -568,6 +569,19 @@ namespace GamesAdmin.Site.Features.ClientSites
                     return recordViewModel;
                 })
             };
+        }
+
+        public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
+
+            return result.Select(x =>
+            {
+                var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
+                betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                return betViewModel;
+            });
         }
     }
 }

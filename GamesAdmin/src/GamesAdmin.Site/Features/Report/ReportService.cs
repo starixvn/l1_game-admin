@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -50,7 +51,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
 
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
-        
+
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
@@ -66,6 +67,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
         Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -133,7 +136,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
         => reportApi.GetLuckyWheelBetHistory(nickname);
-        
+
         public Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipSeDieReport(roundId, nickname, excludeUUS);
 
@@ -167,5 +170,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetFourGuardiansReport(roundId, nickname, excludeUUS);
+
+        public Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+            => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
     }
 }

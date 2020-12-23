@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Requests;
@@ -155,5 +156,10 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/game/sicbo/round/{roundId}/user/{userId}")]
         public async Task<SicBoBetHistory> SicBoBetHistory(long roundId, string userId)
         => (await mediator.Send(new SicBoBetHistoryRequest(roundId, userId)));
+
+        [HttpGet]
+        [Route("jackpot/game/{gameId}")]
+        public async Task<IEnumerable<JackpotRecord>> JackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+       => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot)));
     }
 }

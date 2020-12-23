@@ -78,6 +78,8 @@ namespace GamesAdmin.Site._Shared
             CreateMap<FourGuardiansWinningLine, FourGuardiansWinningLineViewModel>();
             CreateMap<FourGuardiansBonusChest, FourGuardiansBonusChestViewModel>();
             CreateMap<FourGuardiansJackpot, FourGuardiansJackpotViewModel>();
+
+            CreateMap<JackpotRecord, JackpotRecordViewModel>();
         }
     }
 }
