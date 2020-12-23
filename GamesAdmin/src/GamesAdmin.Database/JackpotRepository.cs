@@ -27,7 +27,7 @@ namespace GamesAdmin.Database
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
-            var aggregateBuilder = jackpotCollection.Aggregate().Match(x => x.CreatedTime >= fromDate && x.CreatedTime <= toDate && x.GameId == gameId)
+            var aggregateBuilder = jackpotCollection.Aggregate().Match(x => x.CreatedTime >= fromDate && x.CreatedTime <= toDate && x.GameId == gameId && x.HitAt.HasValue)
                 .SortByDescending(x => x.Id)
                 .Lookup<JackpotEntity, AccountInfoEntity, JackpotEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
@@ -50,9 +50,9 @@ namespace GamesAdmin.Database
                 Time = x.CreatedTime,
                 Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                 Nickname = x.WinnerName,
-                RoundId = x.CreatedAt,
+                RoundId = x.HitAt.Value,
                 Pool = x.Pool,
-                WinningAmount = x.Amount * x.WinningRatio
+                WinningAmount = x.Amount * x.WinningRatio.Value
             }).ToListAsync();
         }
     }

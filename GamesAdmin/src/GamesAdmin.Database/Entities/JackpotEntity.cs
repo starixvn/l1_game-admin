@@ -19,7 +19,7 @@ namespace GamesAdmin.Database.Entities
 
         public decimal Amount { get; set; }
 
-        public decimal WinningRatio { get; set; }
+        public decimal? WinningRatio { get; set; }
 
         public string WinnerName { get; set; }
 
