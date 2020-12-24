@@ -36,7 +36,7 @@ namespace GamesAdmin.Api.EndGameInfo
 
             return new EndGameInfoResult
             {
-                EndTime = round.Time,
+                EndTime = round.EndTime,
                 ValidBetAmount = round.TotalAmount,
                 TotalAmount = request.FreeBet ? 0 : round.TotalAmount,
                 TotalWin = round.BetWin

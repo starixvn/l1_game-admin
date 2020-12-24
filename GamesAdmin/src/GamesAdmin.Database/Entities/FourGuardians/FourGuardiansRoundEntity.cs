@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -34,6 +35,9 @@ namespace GamesAdmin.Database.Entities
         public int? MemberId { get; set; }
 
         public string SiteId { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        public DateTime EndTime { get; set; }
     }
 
     public class FourGuardiansBonusChestEntity
