@@ -7,6 +7,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Spins;
@@ -451,7 +452,6 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<FourGuardiansBetRecord>(x));
         }
 
-
         public async Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<ISicBoReportRepository>();
@@ -479,7 +479,7 @@ namespace GamesAdmin.Api.Report
         public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
             var repository = serviceProvider.GetService<IJackpotRepository>();
-            var result = await repository.GetAsync(gameId, fromDate, toDate,  excludeUUS, excludeBot);
+            var result = await repository.GetAsync(gameId, fromDate, toDate, excludeUUS, excludeBot);
 
             return result.Select(x => mapper.Map<JackpotRecord>(x));
         }

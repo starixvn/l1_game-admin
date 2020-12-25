@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
@@ -187,7 +188,7 @@ namespace GamesAdmin.Api.GameServers
                     var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
 
                     var result = await slotBoardApiFactory.SetBoardApi(gameEnum).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
-                    result.result = request.Results;
+                    result.result = request.Results.ToList();
 
                     return result;
                 }

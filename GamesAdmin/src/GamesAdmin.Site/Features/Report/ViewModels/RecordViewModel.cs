@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -195,22 +196,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool Paid { get; set; }
 
-        public byte[,] GetFormatResults()
-        {
-            var array = Result.ToArray();
-
-            var formatResult = new byte[3, 5];
-
-            for (var row = 0; row < 3; row++)
-            {
-                for (var column = 0; column < 5; column++)
-                {
-                    formatResult[row, column] = array[row + column * 3];
-                }
-            }
-
-            return formatResult;
-        }
+        public byte[,] GetFormatResults() => Result.ToArray().FormatBoard();
     }
 
     public class FourGuardiansBonusChestViewModel

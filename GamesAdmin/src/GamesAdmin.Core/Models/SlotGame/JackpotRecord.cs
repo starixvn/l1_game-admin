@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GamesAdmin.Core.Models
+namespace GamesAdmin.Core.Models.SlotGame
 {
     public class JackpotRecord
     {

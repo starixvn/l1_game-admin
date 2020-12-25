@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.Notifications.Requests;

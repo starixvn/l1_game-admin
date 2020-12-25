@@ -12,7 +12,7 @@ namespace GamesAdmin.Core.Models.SlotGame
 
         public Payline freeSpins { get; set; }
 
-        public bool jackpot { get; set; }
+        public int jackpot { get; set; }
     }
 
     public class Payline 

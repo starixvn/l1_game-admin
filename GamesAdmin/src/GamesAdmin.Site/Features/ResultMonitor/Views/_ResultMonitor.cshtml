@@ -1,0 +1,48 @@
+﻿@using GamesAdmin.Site.Features.ResultMonitor.ViewModels
+@model SettlementBoardViewModel
+
+<table class="table table-bordered table-four-guardians">
+    <thead>
+        <tr>
+            <th>Winning Paylines</th>
+            <th>Free Spins</th>
+            <th>Bonus</th>
+            <th>Jackpot</th>
+            <th>Board</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.WinningPaylines
+            </td>
+            <td>
+                @Model.NumberOfFreeSpins
+            </td>
+            <td>
+                @Model.NumberOfBonus
+            </td>
+            <td>
+                @Model.Jackpot
+            </td>
+            <td>
+                <table class="table-paylines">
+                    <tbody>
+                        @{
+                            for (var row = 0; row < Model.FormattedBoard.GetLength(0); row++)
+                            {
+                                <tr>
+                                    @for (var column = 0; column < Model.FormattedBoard.GetLength(1); column++)
+                                    {
+                                        <td><img class="symbol" src="~/images/slot-icons/fourguardians/@(Model.FormattedBoard[row,column]).png" /></td>
+                                    }
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

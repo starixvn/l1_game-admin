@@ -4,6 +4,7 @@ using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database;

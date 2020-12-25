@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.ResultMonitor.Requests;
+using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.ResultMonitor
 {
-    public class ResultMonitorHandler : IRequestHandler<SetSlotResultRequest, bool>
+    public class ResultMonitorHandler : IRequestHandler<SetSlotResultRequest, SettlementBoardViewModel>
     {
         private readonly IResultMonitorService service;
 
@@ -14,7 +15,11 @@ namespace GamesAdmin.Site.Features.ResultMonitor
             this.service = service;
         }
 
-        public Task<bool> Handle(SetSlotResultRequest request, CancellationToken cancellationToken)
-        => service.SetSlotResult(request);
+        public async Task<SettlementBoardViewModel> Handle(SetSlotResultRequest request, CancellationToken cancellationToken)
+        {
+            var settlementBoard = await service.SetSlotResult(request);
+
+            return new SettlementBoardViewModel(request.GameConfigName, settlementBoard);
+        }
     }
 }

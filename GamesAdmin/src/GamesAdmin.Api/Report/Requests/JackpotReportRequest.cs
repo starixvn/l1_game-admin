@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
