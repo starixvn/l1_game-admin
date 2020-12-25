@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using GamesAdmin.Core.Models.SlotGame;
+using MediatR;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {
-    public class SetSlotBoardRequest : IRequest<bool>
+    public class SetSlotBoardRequest : IRequest<SettlementBoard>
     {
         public SetSlotBoardRequest(string gameConfigName, string nickname, byte[] results)
         {

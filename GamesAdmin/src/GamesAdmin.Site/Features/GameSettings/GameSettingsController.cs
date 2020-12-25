@@ -230,7 +230,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.JackpotViewModel.JackpotEnabled,
                         viewModel.JackpotViewModel.WinningRatio.ConvertPercentValue(),
                         viewModel.JackpotViewModel.PlayerContribution.ConvertPercentValue(),
-                        viewModel.JackpotViewModel.BotContribution.ConvertPercentValue()),
+                        viewModel.JackpotViewModel.BotContribution.ConvertPercentValue(),
+                        viewModel.JackpotViewModel.ExcludeUUS),
                     viewModel.JackpotViewModel.StakeLevels));
 
                 return Json(true);

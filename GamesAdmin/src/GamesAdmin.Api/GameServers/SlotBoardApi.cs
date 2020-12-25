@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Core.Models.SlotGame;
 using Refit;
 
 namespace GamesAdmin.Api.GameServers
@@ -8,12 +9,12 @@ namespace GamesAdmin.Api.GameServers
     public interface ISlotBoardApi
     {
         [Post("/api/set-board")]
-        Task SetBoard([Body] SetSlotBoardServerRequest request);
+        Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
     }
 
     public interface IFourGuardiansBoardApi : ISlotBoardApi
     {
         [Post("/api/set-board")]
-        new Task SetBoard([Body] SetSlotBoardServerRequest request);
+        new Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
     }
 }

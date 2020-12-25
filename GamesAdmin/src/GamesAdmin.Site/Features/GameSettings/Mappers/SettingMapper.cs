@@ -59,7 +59,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     src.EnableJackpot, 
                     src.WinningRatio.ConvertPercentValue(), 
                     src.PlayerJackpotContribution.ConvertPercentValue(), 
-                    src.BotJackpotContribution.ConvertPercentValue())));
+                    src.BotJackpotContribution.ConvertPercentValue(),
+                    false)));
 
             CreateMap<AddViewModel, GameInfo>();
             CreateMap<AddViewModel, EnableSetting>();

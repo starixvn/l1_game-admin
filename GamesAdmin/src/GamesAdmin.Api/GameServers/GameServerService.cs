@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.SlotGame;
 using Refit;
 using Sentry;
 
@@ -22,7 +25,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
-        Task<bool> SetSlotBoard(SetSlotBoardRequest request);
+        Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -31,17 +34,23 @@ namespace GamesAdmin.Api.GameServers
         private readonly ISentryClient sentryClient;
         private readonly IOnlineUserApiFactory onlineUserApiFactory;
         private readonly ISlotBoardApiFactory slotBoardApiFactory;
+        private readonly IGameUserService gameUserService;
+        private readonly IGameSettingsService gameSettingService;
 
         public GameServerService(
             IGameServerApi serverApi,
             ISentryClient sentryClient,
             IOnlineUserApiFactory onlineUserApiFactory,
-            ISlotBoardApiFactory slotBoardApiFactory)
+            ISlotBoardApiFactory slotBoardApiFactory,
+            IGameUserService gameUserService,
+            IGameSettingsService gameSettingService)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
             this.slotBoardApiFactory = slotBoardApiFactory;
+            this.gameUserService = gameUserService;
+            this.gameSettingService = gameSettingService;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -166,22 +175,29 @@ namespace GamesAdmin.Api.GameServers
             return true;
         }
 
-        public async Task<bool> SetSlotBoard(SetSlotBoardRequest request)
+        public async Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request)
         {
             try
             {
-                var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
+                var config = await gameSettingService.GetByName(request.GameConfigName);
+                var isExcludeUUS = config?.SlotsConfig?.Jackpot.ExcludeUUS == false;
 
-                await slotBoardApiFactory.SetBoardApi(gameEnum).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
+                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
+                {
+                    var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
 
-                return true;
+                    var result = await slotBoardApiFactory.SetBoardApi(gameEnum).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
+                    result.result = request.Results;
+
+                    return result;
+                }
             }
             catch (Exception ex)
             {
                 HandleException(ex);
             }
 
-            return false;
+            return null;
         }
     }
 }

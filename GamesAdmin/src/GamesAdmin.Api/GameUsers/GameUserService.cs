@@ -23,6 +23,8 @@ namespace GamesAdmin.Api.GameUser
         Task<SpinEntity> GetMemberSpins(int memberId);
 
         Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId);
+
+        Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS);
     }
 
     public class GameUserService : IGameUserService
@@ -112,5 +114,13 @@ namespace GamesAdmin.Api.GameUser
             .FilterByAsync(spin => spin.MemberId == memberId))
             .OrderByDescending(spin => spin.ExpiryDate)
             .ToList();
+
+        public async Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS)
+        {
+            var accountInfo = await accountInfoRepository
+                    .FindOneAsync(x => (string.IsNullOrWhiteSpace(nickname) || x.Name == nickname));
+
+            return (!excludeUUS && accountInfo?.Currency == "UUS" || accountInfo?.IsBot == true);
+        }
     }
 }

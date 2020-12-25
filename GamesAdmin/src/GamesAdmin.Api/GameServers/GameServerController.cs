@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +36,7 @@ namespace GamesAdmin.Api.GameServers
            => mediator.Send(new NotifyRoundsRequest(kenoRounds));
 
         [HttpPost("slot/set_board")]
-        public Task<bool> SetSlotResult([FromBody] SetSlotBoardRequest request)
+        public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
            => mediator.Send(request);
     }
 }

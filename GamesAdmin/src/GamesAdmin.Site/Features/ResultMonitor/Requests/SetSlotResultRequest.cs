@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using GamesAdmin.Core.Models.SlotGame;
+using MediatR;
 
 namespace GamesAdmin.Site.Features.ResultMonitor.Requests
 {
-    public class SetSlotResultRequest : IRequest<bool>
+    public class SetSlotResultRequest : IRequest<SettlementBoard>
     {
         public SetSlotResultRequest(string gameConfigName, string nickname, byte[] results)
         {

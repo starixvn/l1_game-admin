@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Site.Features.ResultMonitor.Requests;
 using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
 using MediatR;
@@ -23,7 +24,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         => View(new SlotResultViewModel(gameConfigName));
 
         [HttpPost]
-        public Task<bool> SetSlotResult([Bind] SlotResultViewModel viewModel)
+        public Task<SettlementBoard> SetSlotResult([Bind] SlotResultViewModel viewModel)
         => mediator.Send(new SetSlotResultRequest(
             viewModel.GameName,
             viewModel.Nickname,
