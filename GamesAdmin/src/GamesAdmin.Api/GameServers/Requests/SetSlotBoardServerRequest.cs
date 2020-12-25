@@ -9,12 +9,12 @@ namespace GamesAdmin.Api.GameServers.Requests
         public SetSlotBoardServerRequest(string name, IEnumerable<byte> result)
         {
             this.name = name;
-            this.results = result.ToList();
+            this.result = result.ToList();
         }
 
 
         public string name { get; }
 
-        public IEnumerable<byte> results { get; }
+        public IEnumerable<byte> result { get; }
     }
 }
