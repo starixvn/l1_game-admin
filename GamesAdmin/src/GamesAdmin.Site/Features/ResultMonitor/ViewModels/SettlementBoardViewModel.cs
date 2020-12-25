@@ -24,6 +24,6 @@ namespace GamesAdmin.Site.Features.ResultMonitor.ViewModels
 
         public byte NumberOfBonus => (byte)Board.bonus.odds;
 
-        public string Jackpot => Board.jackpot > -1  ? "YES" : "NO";
+        public string Jackpot => Board.jackpotPayline > -1  ? "YES" : "NO";
     }
 }
