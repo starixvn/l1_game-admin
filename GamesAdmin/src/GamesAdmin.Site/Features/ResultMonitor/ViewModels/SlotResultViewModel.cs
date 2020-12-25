@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Site.Features.ResultMonitor.ViewModels
+﻿using GamesAdmin.Core.Enumeration;
+
+namespace GamesAdmin.Site.Features.ResultMonitor.ViewModels
 {
     public class SlotResultViewModel
     {
@@ -12,6 +14,8 @@
         }
 
         public string GameName { get; set; }
+
+        public string DisplayGameName => Enumeration.FromValue<Game>(GameName).DisplayName;
 
         public string Nickname { get; set; }
 
