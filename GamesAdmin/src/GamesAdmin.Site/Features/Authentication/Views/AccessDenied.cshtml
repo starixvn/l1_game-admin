@@ -1,5 +1,4 @@
-﻿@model ErrorViewModel
-@{
+﻿@{
     ViewData["Title"] = "Access Denied";
     Layout = null;
 }
@@ -15,10 +14,10 @@
 </head>
 <body>
     <div class="container">
-        <form asp-action="UserLogin" asp-controller="Authentication" method="get" class="block error-login">
+        <form asp-action="Index" asp-controller="Dashboard" method="get" class="block error-login">
             <img src="~/images/error-icon.png" class="icon-lock" alt="SabaClub Admin Site" />
             <div class="info">You don't have permission to access this page. Please contact your administrator.</div>
-            <button class="btn-submit">Back to Login page</button>
+            <button class="btn-submit">Back to Home</button>
         </form>
     </div>
 

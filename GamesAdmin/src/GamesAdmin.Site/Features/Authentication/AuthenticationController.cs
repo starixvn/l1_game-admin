@@ -40,5 +40,10 @@ namespace GamesAdmin.Site.Features.Authentication
 
             return RedirectToAction(nameof(UserLogin));
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

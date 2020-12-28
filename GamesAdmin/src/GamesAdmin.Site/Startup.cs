@@ -1,4 +1,3 @@
-using System.Reflection;
 using AutoMapper;
 using Coravel;
 using GamesAdmin.Site._Shared;
@@ -68,8 +67,6 @@ namespace GamesAdmin.Site
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
-            app.UseStatusCodePagesWithRedirects("/Home/AccessDenied");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
