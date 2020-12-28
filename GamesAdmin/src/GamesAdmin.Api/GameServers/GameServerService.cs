@@ -188,7 +188,7 @@ namespace GamesAdmin.Api.GameServers
                     var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
 
                     var result = await slotBoardApiFactory.SetBoardApi(gameEnum).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
-                    result.result = request.Results.ToList();
+                    result.Result = request.Results.ToList();
 
                     return result;
                 }
