@@ -120,7 +120,7 @@ namespace GamesAdmin.Api.GameServers
             return new OnlineUsers();
         }
 
-        private string ConvertTypeToGameServerName(Game gameType)
+        private static string ConvertTypeToGameServerName(Game gameType)
         {
             switch (gameType.Value)
             {

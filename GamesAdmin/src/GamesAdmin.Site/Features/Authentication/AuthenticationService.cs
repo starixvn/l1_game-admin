@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.Authentication
                     return false;
                 }
 
-                var userClaims = new List<Claim>()
+                var userClaims = new List<Claim>
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),

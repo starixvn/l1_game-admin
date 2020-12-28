@@ -80,7 +80,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var viewModel = await mediator.Send(new EditRequest(name));
             viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
-            viewModel.Success = TempData["isSuccess"] == null ? false : (bool)TempData["isSuccess"];
+            viewModel.Success = TempData["isSuccess"] != null && (bool)TempData["isSuccess"];
 
             return View(viewModel);
         }
