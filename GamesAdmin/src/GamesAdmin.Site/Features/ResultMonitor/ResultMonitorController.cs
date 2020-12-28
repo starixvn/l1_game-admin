@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.ResultMonitor
 {
-    [Authorize]
+    [Authorize(Roles ="admin")]
     public class ResultMonitorController : Controller
     {
         private readonly IMediator mediator;

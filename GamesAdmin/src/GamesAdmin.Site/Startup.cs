@@ -68,6 +68,9 @@ namespace GamesAdmin.Site
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithRedirects("/Home/AccessDenied");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -8,5 +8,10 @@ namespace GamesAdmin.Site.Features._Shared
         {
             return View();
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
