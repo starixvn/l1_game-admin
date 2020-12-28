@@ -19,6 +19,7 @@ namespace GamesAdmin.Site.Features.Authentication
 
     public class AuthenticationService : IAuthenticationService
     {
+        private const byte ExpiredHours = 3;
         private readonly IUserService userService;
         private readonly ISentryClient sentryClient;
 
@@ -55,7 +56,7 @@ namespace GamesAdmin.Site.Features.Authentication
                     new AuthenticationProperties
                     {
                         IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(ExpiredHours)
                     });
 
                 sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
