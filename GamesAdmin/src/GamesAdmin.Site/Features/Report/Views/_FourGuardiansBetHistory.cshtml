@@ -88,7 +88,7 @@
                 <td class="text-right">0</td>
             </tr>
         }
-        @if (Model.SettlementResult.Bonus.Count >= 3)
+        @if (Model.SettlementResult.Bonus.Odds > 0)
         {
             <tr>
                 <td></td>
@@ -99,7 +99,7 @@
                 <td>@HtmlHelpers.formatNumber(Model.BonusChests.Where(x => x.Picked).Sum(x => x.Amount))</td>
             </tr>
         }
-        @if (Model.SettlementResult.FreeSpins.Count >= 3)
+        @if (Model.SettlementResult.FreeSpins.Odds > 0)
         {
             <tr>
                 <td></td>
