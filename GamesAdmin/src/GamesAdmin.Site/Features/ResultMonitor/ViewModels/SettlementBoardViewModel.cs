@@ -16,14 +16,16 @@ namespace GamesAdmin.Site.Features.ResultMonitor.ViewModels
 
         public SettlementBoard Board { get; }
 
-        public byte[,] FormattedBoard => Board.result.ToArray().FormatBoard();
+        public bool IsError => Board == null;
 
-        public string WinningPaylines => string.Join(", ", Board.paylines.Where(x => x.odds > 0).Select(x => x.payline));
+        public byte[,] FormattedBoard => Board?.result.ToArray().FormatBoard();
 
-        public byte NumberOfFreeSpins => (byte)Board.freeSpins.odds;
+        public string WinningPaylines => string.Join(", ", Board?.paylines.Where(x => x.odds > 0).Select(x => x.payline));
 
-        public byte NumberOfBonus => (byte)Board.bonus.odds;
+        public byte NumberOfFreeSpins => (byte)(IsError ? 0 : Board.freeSpins.odds);
 
-        public string Jackpot => Board.jackpotPayline > -1  ? "YES" : "NO";
+        public byte NumberOfBonus => (byte)(IsError ? 0 : Board.bonus.odds);
+
+        public string Jackpot => Board?.jackpotPayline > -1 ? "YES" : "NO";
     }
 }
