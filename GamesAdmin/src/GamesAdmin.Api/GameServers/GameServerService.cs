@@ -122,31 +122,20 @@ namespace GamesAdmin.Api.GameServers
 
         private static string ConvertTypeToGameServerName(Game gameType)
         {
-            switch (gameType.Value)
+            return gameType.Value switch
             {
-                case Game.KenoProMaxValue:
-                    return "keno";
-
-                case Game.BaccaratValue:
-                    return "baccarat";
-
-                case Game.RouletteValue:
-                    return Game.RouletteValue;
-
-                default: return string.Empty;
-            }
+                Game.KenoProMaxValue => "keno",
+                Game.BaccaratValue => "baccarat",
+                Game.RouletteValue => Game.RouletteValue,
+                _ => string.Empty,
+            };
         }
 
         private void HandleException(Exception ex, string title = null)
         {
-            if (ex is ApiException)
+            if (ex is ApiException apiEx)
             {
-                var apiEx = ex as ApiException;
-
-                if (apiEx != null)
-                {
-                    sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
-                }
+                sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
             }
 
             if (!string.IsNullOrWhiteSpace(title))
