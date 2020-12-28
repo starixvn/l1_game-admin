@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor.ViewModels
 
         public bool IsError => Board == null;
 
-        public byte[,] FormattedBoard => Board?.Result.ToArray().FormatBoard();
+        public byte[][] FormattedBoard => Board?.Result.ToArray().FormatBoard();
 
         public string WinningPaylines => string.Join(", ", Board?.Paylines.Where(x => x.Odds > 0).Select(x => x.Payline));
 

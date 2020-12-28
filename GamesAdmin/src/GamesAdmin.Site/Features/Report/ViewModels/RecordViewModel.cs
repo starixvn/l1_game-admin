@@ -196,7 +196,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool Paid { get; set; }
 
-        public byte[,] GetFormatResults() => Result.ToArray().FormatBoard();
+        public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
     }
 
     public class FourGuardiansBonusChestViewModel

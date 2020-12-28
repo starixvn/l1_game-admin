@@ -20,13 +20,13 @@
                 <table class="table-paylines">
                     <tbody>
                         @{
-                            var array = Model.GetFormatResults();
-                            for (var row = 0; row < array.GetLength(0); row++)
+                            var array = Model.GetFormatResults();                           
+                            for (var row = 0; row < array.Length; row++)
                             {
                                 <tr>
-                                    @for (var column = 0; column < array.GetLength(1); column++)
+                                    @for (var column = 0; column < array[row].Length; column++)
                                     {
-                                        <td><img class="symbol" src="~/images/slot-icons/fourguardians/@(array[row,column]).png" /></td>
+                                        <td><img class="symbol" src="~/images/slot-icons/fourguardians/@(array[row][column]).png" /></td>
                                     }
                                 </tr>
 

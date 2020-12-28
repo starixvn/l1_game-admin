@@ -40,12 +40,12 @@ else
                     <table class="table-paylines">
                         <tbody>
                             @{
-                                for (var row = 0; row < Model.FormattedBoard.GetLength(0); row++)
+                                for (var row = 0; row < Model.FormattedBoard.Length; row++)
                                 {
                                     <tr>
-                                        @for (var column = 0; column < Model.FormattedBoard.GetLength(1); column++)
+                                        @for (var column = 0; column < Model.FormattedBoard[row].Length; column++)
                                         {
-                                            <td><img class="symbol" src="~/images/slot-icons/fourguardians/@(Model.FormattedBoard[row,column]).png" /></td>
+                                            <td><img class="symbol" src="~/images/slot-icons/fourguardians/@(Model.FormattedBoard[row][column]).png" /></td>
                                         }
                                     </tr>
 
