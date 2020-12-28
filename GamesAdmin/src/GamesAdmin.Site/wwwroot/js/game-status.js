@@ -421,14 +421,20 @@
             }
         },
 
-        toggleSettingTabs: function (name) {
+        toggleSettingTabs: function (name, element) {
             $('#general').hide();
             $('#jackpots').hide();
             $('#payouts').hide();
 
+            $('#general-tab-header').removeClass("active");
+            $('#jackpots-tab-header').removeClass("active");
+            $('#payouts-tab-header').removeClass("active");
+
             const id = '#' + name;
+            const headerId = '#' + name + '-tab-header';
 
             $(id).show();
+            $(headerId).addClass("active");
         }
     }
 }(jQuery));
