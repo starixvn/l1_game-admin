@@ -41,7 +41,7 @@ namespace GamesAdmin.Core.Enumeration
                 var matchingItem = Parse<T, string>(value, "value", item => item.Value == value);
                 return matchingItem != null ;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }            

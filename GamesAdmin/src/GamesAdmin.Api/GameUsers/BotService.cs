@@ -36,7 +36,7 @@ namespace GamesAdmin.Api.GameUser
         private const int minAmount = 500;
         private const int maxAmount = 12000;
         private const int minAddAmount = 1000;
-        private const int maxAddAmount = 8000;        
+        private const int maxAddAmount = 8000;
 
         private const int minAmountScale = 1;
         private const int maxAmountScale = 8;
@@ -88,8 +88,6 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> ResetBalance()
         {
-            const int maxLogs = 100;
-            var index = 0;
             var resetMessage = string.Empty;
             var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
             var strBuilder = new StringBuilder($"ResetBalance for {botList.Count}");
