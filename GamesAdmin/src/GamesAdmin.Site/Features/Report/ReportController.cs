@@ -293,64 +293,36 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult KenoProViet()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoProViet() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMax()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMax() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMax2()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMax2() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMini()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMini() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMini2()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMini2() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoEast()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoEast() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoWest()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoWest() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoSouth()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoSouth() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoNorth()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoNorth() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoProMax()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoProMax() => ToKenoReport();
+
+        private IActionResult ToKenoReport() => View("KenoReport", new KenoViewModel());
 
         [HttpGet]
         public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)

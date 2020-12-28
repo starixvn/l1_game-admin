@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.Authentication
         {
             try
             {
-                var userSignin = await userService.SignIn(user.UserName.ToLower(), user.Password);
+                var userSignin = await userService.SignIn(user.UserName.ToLowerInvariant(), user.Password);
 
                 if (userSignin == null)
                 {
