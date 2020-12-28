@@ -77,14 +77,7 @@ namespace GamesAdmin.Core.Enumeration
 
         public static bool operator ==(Enumeration left, Enumeration right)
         {
-            if (left is null)
-            {
-                return right is null;
-            }
-            else
-            {
-                return right is null ? false : left.Value == right.Value;
-            }
+            return left is null ? right is null : !(right is null) && left.Value == right.Value;
         }
 
         public static bool operator !=(Enumeration left, Enumeration right)
