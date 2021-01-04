@@ -1,4 +1,6 @@
-﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+﻿@using System.Security.Claims;
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 @model MonitorViewModel;
 
 @{
@@ -29,7 +31,11 @@
                         {
                             if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots)
                             {
-                                <a class="icon-action" href="~/ResultMonitor/SlotResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                                if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == Role.Admin.Value)
+                                {
+                                    <a class="icon-action" href="~/ResultMonitor/SlotResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                                }
+
                             }
                             else
                             {

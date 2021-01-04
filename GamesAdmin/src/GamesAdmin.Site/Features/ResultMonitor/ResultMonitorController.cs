@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.ResultMonitor.Requests;
 using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
 using MediatR;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.ResultMonitor
 {
-    [Authorize(Roles ="admin")]
+    [Authorize(Roles = Role.AdminValue)]
     public class ResultMonitorController : Controller
     {
         private readonly IMediator mediator;

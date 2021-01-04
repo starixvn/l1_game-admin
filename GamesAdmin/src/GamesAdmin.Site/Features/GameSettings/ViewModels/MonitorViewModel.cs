@@ -16,20 +16,15 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class MonitorItemViewModel
     {
-        private static string[] disableHistory = new string[]
+        private static readonly string[] disableHistory = new string[]
         {
         };
 
-        private static string[] disableMonitoring = new string[]
-        {
+        private static readonly string[] disableMonitoring = new[] {
             Game.LuckyWheelValue,
             Game.KenoProVietValue,
             Game.BlackJackValue
         };
-
-        public MonitorItemViewModel()
-        {
-        }
 
         public string Name { get; set; }
 

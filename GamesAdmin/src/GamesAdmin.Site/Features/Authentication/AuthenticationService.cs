@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Site.Features.Users;
+﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -45,7 +46,7 @@ namespace GamesAdmin.Site.Features.Authentication
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
-                    new Claim(ClaimTypes.Role, userSignin.IsAdmin ? "admin" : "operation")
+                    new Claim(ClaimTypes.Role, userSignin.IsAdmin ? Role.Admin.Value : Role.Operation.Value)
                  };
 
                 var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
