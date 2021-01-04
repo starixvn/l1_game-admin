@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
@@ -69,6 +70,7 @@ namespace GamesAdmin.Database
 
         public long RoundId { get; set; }
 
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal WinningAmount { get; set; }
     }
 

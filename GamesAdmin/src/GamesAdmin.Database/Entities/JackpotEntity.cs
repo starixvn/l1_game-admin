@@ -17,6 +17,7 @@ namespace GamesAdmin.Database.Entities
 
         public decimal InitAmount { get; set; }
 
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Amount { get; set; }
 
         public decimal? WinningRatio { get; set; }
