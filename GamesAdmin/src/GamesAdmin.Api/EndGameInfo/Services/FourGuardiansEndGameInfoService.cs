@@ -21,8 +21,7 @@ namespace GamesAdmin.Api.EndGameInfo
             var round = (await roundRepository
                 .FilterByAsync(x => x.Number == request.GameRoundId
                     && x.MemberId == request.ObCustId
-                    && x.SiteId == request.SiteId
-                    && x.FreeSpin == request.FreeBet)).FirstOrDefault();
+                    && x.SiteId == request.SiteId)).FirstOrDefault();
 
             if (round == null)
             {
@@ -38,7 +37,7 @@ namespace GamesAdmin.Api.EndGameInfo
             {
                 EndTime = round.EndTime,
                 ValidBetAmount = round.TotalAmount,
-                TotalAmount = request.FreeBet ? 0 : round.TotalAmount,
+                TotalAmount = round.FreeSpin ? 0 : round.TotalAmount,
                 TotalWin = round.BetWin
             };
         }
