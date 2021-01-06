@@ -11,19 +11,20 @@ namespace GamesAdmin.Api.Report.Extensions
             return new SeDieRoundResult
             {
                 Number = entity.Number,
-                Chips = new bool[]
+                Chips = new[]
                 {
-                    entity.Result?.FirstRedChip ?? entity.FirstRedChip,
-                    entity.Result?.SecondRedChip ?? entity.SecondRedChip,
-                    entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
-                    entity.Result?.FourthRedChip ?? entity.FourthRedChip
+                    entity.Result.FirstRedChip ,
+                    entity.Result.SecondRedChip,
+                    entity.Result.ThirdRedChip ,
+                    entity.Result.FourthRedChip
                 },
                 Even = entity.SettlementResult.Even,
                 Odd = entity.SettlementResult.Odd,
                 ThreeRed = entity.SettlementResult.ThreeRed,
                 FourRed = entity.SettlementResult.FourRed,
                 ThreeWhite = entity.SettlementResult.ThreeWhite,
-                FourWhite = entity.SettlementResult.FourWhite
+                FourWhite = entity.SettlementResult.FourWhite,
+                TwoRed = entity.SettlementResult.TwoRed
             };
         }
 
@@ -41,6 +42,7 @@ namespace GamesAdmin.Api.Report.Extensions
                 FourWhite = entity.FourWhite,
                 ThreeRed = entity.ThreeRed,
                 ThreeWhite = entity.ThreeWhite,
+                TwoRed = entity.TwoRed,
                 FreeBet = entity.FreeBet
             };
         }
@@ -65,6 +67,5 @@ namespace GamesAdmin.Api.Report.Extensions
                 FourWhite = entity.SettlementResult.FourWhite
             };
         }
-
     }
 }

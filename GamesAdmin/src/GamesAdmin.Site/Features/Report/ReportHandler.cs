@@ -254,19 +254,12 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Number = result.RoundResult.Number,
                     Chips = result.RoundResult.Chips
                 },
-                Records = result.Records.Select(x => new SeDieRecordViewModel
+                Records = result.Records.Select(x =>
                 {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
-                    Username = x.Username,
-                    Nickname = x.Nickname,
-                    BetWin = x.BetWin,
-                    Even = x.Even,
-                    Odd = x.Odd,
-                    ThreeRed = x.ThreeRed,
-                    ThreeWhite = x.ThreeWhite,
-                    FourRed = x.FourRed,
-                    FourWhite = x.FourWhite,
-                    FreeBet = x.FreeBet
+                    var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
                 })
             };
         }
@@ -508,7 +501,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 })
             };
         }
-        
+
         public async Task<VipSeDieWarReportResultViewModel> Handle(GetVipSeDieWarReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetVipSeDieWarBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);

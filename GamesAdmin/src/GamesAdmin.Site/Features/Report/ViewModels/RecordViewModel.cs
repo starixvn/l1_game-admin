@@ -26,6 +26,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Even { get; set; }
 
+        public decimal TwoRed { get; set; }
+
         public decimal ThreeRed { get; set; }
 
         public decimal FourRed { get; set; }

@@ -87,6 +87,8 @@ namespace GamesAdmin.Database
         public decimal ThreeWhite { get; set; }
 
         public decimal FourWhite { get; set; }
+
+        public decimal TwoRed { get; set; }
     }
 
     internal class FishPrawnCrabRoundWithBetsEntity : FishPrawnCrabRoundEntity
@@ -142,10 +144,11 @@ namespace GamesAdmin.Database
                 FourRed = Bet.FourRed,
                 ThreeWhite = Bet.ThreeWhite,
                 FourWhite = Bet.FourWhite,
-                FirstRedChip = Result?.FirstRedChip ?? FirstRedChip,
-                SecondRedChip = Result?.SecondRedChip ?? SecondRedChip,
-                ThirdRedChip = Result?.ThirdRedChip ?? ThirdRedChip,
-                FourthRedChip = Result?.FourthRedChip ?? FourthRedChip
+                TwoRed = Bet.TwoRed,
+                FirstRedChip = Result.FirstRedChip,
+                SecondRedChip = Result.SecondRedChip,
+                ThirdRedChip = Result.ThirdRedChip,
+                FourthRedChip = Result.FourthRedChip
             };
         }
     }

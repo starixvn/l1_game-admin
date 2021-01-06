@@ -39,6 +39,7 @@ namespace GamesAdmin.Database
                         FourRed = x.FourRed,
                         ThreeWhite = x.ThreeWhite,
                         FourWhite = x.FourWhite,
+                        TwoRed = x.TwoRed,
                         FreeBet = x.FreeBet ?? false
                     });
 
