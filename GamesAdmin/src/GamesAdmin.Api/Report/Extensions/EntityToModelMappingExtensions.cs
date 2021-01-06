@@ -52,12 +52,12 @@ namespace GamesAdmin.Api.Report.Extensions
             return new SeDieRoundResult
             {
                 Number = entity.Number,
-                Chips = new bool[]
+                Chips = new[]
                 {
-                    entity.Result?.FirstRedChip ?? entity.FirstRedChip,
-                    entity.Result?.SecondRedChip ?? entity.SecondRedChip,
-                    entity.Result?.ThirdRedChip ?? entity.ThirdRedChip,
-                    entity.Result?.FourthRedChip ?? entity.FourthRedChip
+                    entity.FirstRedChip,
+                    entity.SecondRedChip,
+                    entity.ThirdRedChip,
+                    entity.FourthRedChip
                 },
                 Even = entity.SettlementResult.Even,
                 Odd = entity.SettlementResult.Odd,
