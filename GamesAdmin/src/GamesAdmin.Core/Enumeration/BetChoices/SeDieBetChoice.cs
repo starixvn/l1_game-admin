@@ -15,6 +15,7 @@
         public static readonly SeDieBetChoice Red3 = new SeDieBetChoice(Red3Value, "Red3");
         public static readonly SeDieBetChoice White3 = new SeDieBetChoice(White3Value, "White3");
         public static readonly SeDieBetChoice Red4 = new SeDieBetChoice(Red4Value, "Red4");
+        public static readonly SeDieBetChoice White4 = new SeDieBetChoice(White4Value, "White4");
         public static readonly SeDieBetChoice Red2 = new SeDieBetChoice(Red2Value, "Red2");
 
         public SeDieBetChoice() { }
