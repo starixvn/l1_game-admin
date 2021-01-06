@@ -2,6 +2,11 @@
 @using GamesAdmin.Site.Features.Report.ViewModels
 @model FourGuardiansRecordViewModel
 
+@{ 
+    var totalBetWin = Model.BetWin + Model.SettlementResult.Jackpot?.WinningAmount ?? 0;
+}
+
+
 <table class="table table-bordered table-four-guardians">
     <thead>
         <tr>
@@ -116,7 +121,7 @@
             <td></td>
             <td class="bold text-right">Total</td>
             <td class="bold text-right">@HtmlHelpers.formatNumber(Model.FreeSpin ? 0m : Model.TotalAmount)</td>
-            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.BetWin)</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(totalBetWin)</td>
         </tr>
         <tr class="total">
             <td></td>
@@ -124,7 +129,7 @@
             <td></td>
             <td class="bold text-right">Win Loss</td>
             <td></td>
-            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.FreeSpin ? Model.BetWin : Model.TotalAmount - Model.BetWin)</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.FreeSpin ? totalBetWin : totalBetWin - Model.TotalAmount)</td>
         </tr>
     </tbody>
 </table>
