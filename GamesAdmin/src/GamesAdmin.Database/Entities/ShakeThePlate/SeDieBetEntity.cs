@@ -11,6 +11,9 @@ namespace GamesAdmin.Database.Entities
 
         public decimal Even { get; set; }
 
+        [BsonElement("red2")]
+        public decimal TwoRed { get; set; }
+
         [BsonElement("red3")]
         public decimal ThreeRed { get; set; }
 
