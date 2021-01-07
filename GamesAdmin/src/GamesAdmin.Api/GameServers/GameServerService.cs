@@ -181,6 +181,9 @@ namespace GamesAdmin.Api.GameServers
 
                     return result;
                 }
+                else {
+                    sentryClient.CaptureMessage($"SetSlotBoard failed for {request.Nickname} - ExcludeUUS is {isExcludeUUS}");
+                }
             }
             catch (Exception ex)
             {

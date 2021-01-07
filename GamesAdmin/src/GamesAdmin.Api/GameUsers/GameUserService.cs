@@ -117,10 +117,9 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS)
         {
-            var accountInfo = await accountInfoRepository
-                    .FindOneAsync(x => (string.IsNullOrWhiteSpace(nickname) || x.Name == nickname));
+            var accountInfo = await accountInfoRepository.FindOneAsync(x =>  x.Name == nickname);
 
-            return (!excludeUUS && accountInfo?.Currency == "UUS" || accountInfo?.IsBot == true);
+            return (!excludeUUS && accountInfo?.Currency == "UUS") || accountInfo?.IsBot == true;
         }
     }
 }
