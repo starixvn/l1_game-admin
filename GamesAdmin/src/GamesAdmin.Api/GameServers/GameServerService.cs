@@ -170,7 +170,7 @@ namespace GamesAdmin.Api.GameServers
             try
             {
                 var config = await gameSettingService.GetByName(request.GameConfigName);
-                var isExcludeUUS = config?.SlotsConfig?.Jackpot == null ? false : config.SlotsConfig.Jackpot.ExcludeUUS;
+                var isExcludeUUS = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeUUS;
 
                 if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
                 {

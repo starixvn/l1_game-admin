@@ -31,14 +31,11 @@ namespace GamesAdmin.Api.Users
     {
         private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ISentryClient sentryClient;
-        private readonly IMapper mapper;
 
         public UserService(
-            IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<AdminUserEntity> userRepository)
         {
-            this.mapper = mapper;
             this.sentryClient = sentryClient;
             this.userRepository = userRepository;
         }
