@@ -3,11 +3,10 @@
 
 @if (Model.IsError)
 {
-<div class="message-error" id="failedMsg">    
-    Cannot send result to game service. There are some causes:<br />
-    - Cannot set result for real user and banned bot. <br />
-    - Setting result for UUS user but "Exclude UUS" is TRUE. <br />
-    Please double check.
+<div class="message-error" id="failedMsg">
+    Sending result unsuccessfully. The following conditions that must be satisfied in order to monitor board result.<br />
+    - Result cannot be set for real user and banned bot. <br />
+    - Result cannot be set for UUS user when the "Exclude UUS" setting is TRUE. <br />
 </div>
 }
 else
