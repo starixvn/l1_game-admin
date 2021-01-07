@@ -170,7 +170,7 @@ namespace GamesAdmin.Api.GameServers
             try
             {
                 var config = await gameSettingService.GetByName(request.GameConfigName);
-                var isExcludeUUS = config?.SlotsConfig?.Jackpot.ExcludeUUS == false;
+                var isExcludeUUS = config?.SlotsConfig?.Jackpot == null ? false : config.SlotsConfig.Jackpot.ExcludeUUS;
 
                 if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
                 {
@@ -180,10 +180,7 @@ namespace GamesAdmin.Api.GameServers
                     result.Result = request.Results.ToList();
 
                     return result;
-                }
-                else {
-                    sentryClient.CaptureMessage($"SetSlotBoard failed for {request.Nickname} - ExcludeUUS is {isExcludeUUS}");
-                }
+                }                
             }
             catch (Exception ex)
             {
