@@ -80,5 +80,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Report\Extensions\" />
+  </ItemGroup>
+
 
 </Project>

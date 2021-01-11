@@ -249,11 +249,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new SeDieReportResultViewModel
             {
-                RoundResult = new SeDieRoundResultViewModel
-                {
-                    Number = result.RoundResult.Number,
-                    Chips = result.RoundResult.Chips
-                },
+                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
@@ -270,23 +266,13 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new SeDieReportResultViewModel
             {
-                RoundResult = new SeDieRoundResultViewModel
+                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
                 {
-                    Number = result.RoundResult.Number,
-                    Chips = result.RoundResult.Chips
-                },
-                Records = result.Records.Select(x => new SeDieRecordViewModel
-                {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
-                    Username = x.Username,
-                    Nickname = x.Nickname,
-                    BetWin = x.BetWin,
-                    Even = x.Even,
-                    Odd = x.Odd,
-                    ThreeRed = x.ThreeRed,
-                    ThreeWhite = x.ThreeWhite,
-                    FourRed = x.FourRed,
-                    FourWhite = x.FourWhite
+                    var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
                 })
             };
         }
