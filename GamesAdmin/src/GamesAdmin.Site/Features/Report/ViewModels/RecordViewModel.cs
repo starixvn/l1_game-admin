@@ -197,6 +197,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Paid { get; set; }
 
         public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
+
+        public decimal TotalBetWin => BetWin + SettlementResult.Jackpot?.WinningAmount ?? 0;
+
+        public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
     }
 
     public class FourGuardiansBonusChestViewModel
