@@ -114,7 +114,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     var choices = GetBetChoices(game.Info.Name);
 
                     viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
-                    viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(choices, game.Odds);
+                    viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
                 }
             }
 
@@ -154,17 +154,28 @@ namespace GamesAdmin.Site.Features.GameSettings
                 choice.DisplayName)).ToList();
         }
 
-        private List<OddsViewModel> GenerateOdds(IEnumerable<Enumeration> betChoices, Dictionary<string, double> oddsSettings)
+        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
         {
-            if (betChoices == default)
+            var items = new List<OddsViewModel>();
+
+            if (string.IsNullOrWhiteSpace(name))
             {
-                return new List<OddsViewModel>();
+                return items;
             }
 
-            return betChoices.Select(choice => new OddsViewModel(
-                choice.Value,
-                oddsSettings.ContainsKey(choice.Value) ? oddsSettings[choice.Value] : 0,
-                choice.DisplayName)).ToList();
+            var gameType = Enumeration.FromValue<Game>(name);
+            var betOdds = BetOddsMapper.Map(gameType);
+
+            if (betOdds != default)
+            {
+                foreach (var odd in betOdds)
+                {
+                    var odds = oddsSettings.ContainsKey(odd.Value) ? oddsSettings[odd.Value] : 0;
+                    items.Add(new OddsViewModel(odd.Value, odds, odd.DisplayName));
+                }
+            }
+
+            return items;
         }
 
         private List<IconOddsViewModel> GenerateIconOdds(Dictionary<string, Dictionary<string, double>> iconOdds)

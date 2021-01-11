@@ -57,13 +57,13 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.BlackJackValue:
                     return Enumeration.GetAll<BlackjackBetChoice>();
-                    
+
                 case Game.SicBoValue:
                     return Enumeration.GetAll<SicBoBetOdds>();
-                    
 
                 case Game.VipBaccaratValue:
                     return Enumeration.GetAll<VipBaccaratBetChoice>();
+
                 case Game.VipSeDieWarValue:
                     return Enumeration.GetAll<VipSeDieWarBetChoice>();
 
