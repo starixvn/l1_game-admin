@@ -137,11 +137,11 @@ namespace GamesAdmin.Api.Report
         [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]
         public async Task<VipFishPrawnCrabBetReport> VipFishPrawnCrab(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
+
         [HttpGet]
         [Route("vipsediewar/round/{roundId}/users/{nickname?}")]
         public async Task<VipSeDieWarBetReport> VipSeDieWar(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
-
 
         [HttpGet]
         [Route("bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]

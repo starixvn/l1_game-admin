@@ -62,9 +62,9 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<SicBoBetOdds>();
                     
 
-                case GameType.VipBaccaratValue:
+                case Game.VipBaccaratValue:
                     return Enumeration.GetAll<VipBaccaratBetChoice>();
-                case GameType.VipSeDieWarValue:
+                case Game.VipSeDieWarValue:
                     return Enumeration.GetAll<VipSeDieWarBetChoice>();
 
                 default: return default;

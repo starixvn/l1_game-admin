@@ -54,7 +54,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             GameTypeItems = GenerateGameItems()
         };
 
-        private List<SelectListItem> GenerateGameItems()
+        private static List<SelectListItem> GenerateGameItems()
             => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(Game.SeDie.DisplayName, Game.SeDie.Value),
@@ -66,10 +66,9 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.BlackJack.DisplayName, Game.BlackJack.Value),
                 new SelectListItem(Game.VipFishPrawnCrab.DisplayName, Game.VipFishPrawnCrab.Value),
                 new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
-                new SelectListItem(Game.VipBaccarat.DisplayName, GameType.VipBaccarat.Value),
-                new SelectListItem(Game.VipSeDieWar.DisplayName, GameType.VipSeDieWar.Value),
+                new SelectListItem(Game.VipBaccarat.DisplayName, Game.VipBaccarat.Value),
+                new SelectListItem(Game.VipSeDieWar.DisplayName, Game.VipSeDieWar.Value),
                 new SelectListItem(Game.FourGuadians.DisplayName, Game.FourGuadians.Value)
-
                 };
     }
 }
