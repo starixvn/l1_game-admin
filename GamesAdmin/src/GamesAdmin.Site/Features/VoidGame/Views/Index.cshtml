@@ -1,0 +1,47 @@
+﻿@using GamesAdmin.Site.Features.VoidGame.ViewModels;
+@model IndexViewModel;
+
+@{
+    ViewData["Title"] = "Void Game Ticket";
+}
+
+<div class="col-md-12 col-lg-5 card">
+    <form class="card-body form" asp-action="VoidTicket" asp-controller="VoidGame" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="MemberId" class="control-label"></label>
+            <input type="number" asp-for="MemberId" class="form-control" />
+            <span asp-validation-for="MemberId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SiteId" class="control-label"></label>
+            <input type="number" asp-for="SiteId" class="form-control" />
+            <span asp-validation-for="SiteId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GameRoundId" class="control-label"></label>
+            <input type="number" asp-for="GameRoundId" class="form-control" />
+            <span asp-validation-for="GameRoundId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GameId" class="control-label"></label>
+            <select asp-items="@Model.GameIds" asp-for="GameId" class="form-control"></select>
+            <span asp-validation-for="GameId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Reason" class="control-label"></label>
+            <input type="text" asp-for="Reason" class="form-control" />
+            <span asp-validation-for="Reason" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn-submit" />
+        </div>
+    </form>
+</div>
