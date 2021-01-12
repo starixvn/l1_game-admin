@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
-using GamesAdmin.Api.VoidGame.Results;
+using GamesAdmin.Core.OWResults;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
 
@@ -9,8 +10,8 @@ namespace GamesAdmin.Api.VoidGame
     [Headers("Authorization: Bearer")]
     public interface IVoidGameApi
     {
-        [Get("/SabaClub/VoidGame")]
-        Task<VoidGameResult> VoidGameTicket([FromBody] VoidTicketRequest request);
+        [Post("/Member/VoidGame")]
+        Task<VoidGameResult> VoidGameTicket([Body] VoidTicketRequest request);
     }
 
     public interface IVoidGameService
@@ -27,7 +28,20 @@ namespace GamesAdmin.Api.VoidGame
             this.voidGameApi = voidGameApi;
         }
 
-        public Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
-        => voidGameApi.VoidGameTicket(request);
+        public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
+        {
+            try
+            {
+                var result = await voidGameApi.VoidGameTicket(request);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+
+            return default;
+        }
     }
 }

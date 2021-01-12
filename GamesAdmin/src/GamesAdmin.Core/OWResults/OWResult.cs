@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Api._Shared
+﻿namespace GamesAdmin.Core.OWResults
 {
     public interface IOWResult
     {

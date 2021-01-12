@@ -1,6 +1,4 @@
-﻿using GamesAdmin.Api._Shared;
-
-namespace GamesAdmin.Api.VoidGame.Results
+﻿namespace GamesAdmin.Core.OWResults
 {
     public class VoidGameResult : OWResult
     {

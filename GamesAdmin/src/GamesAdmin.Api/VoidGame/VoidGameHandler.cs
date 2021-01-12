@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
-using GamesAdmin.Api.VoidGame.Results;
+using GamesAdmin.Core.OWResults;
 using MediatR;
 
 namespace GamesAdmin.Api.VoidGame

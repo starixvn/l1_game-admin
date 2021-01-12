@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.VoidGame.Requests;
-using GamesAdmin.Api.VoidGame.Results;
+using GamesAdmin.Core.OWResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

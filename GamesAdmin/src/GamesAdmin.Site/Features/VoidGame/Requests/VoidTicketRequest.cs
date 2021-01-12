@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using GamesAdmin.Core.OWResults;
+using MediatR;
 
 namespace GamesAdmin.Site.Features.VoidGame.Requests
 {
-    public class VoidTicketRequest : IRequest<bool>
+    public class VoidTicketRequest : IRequest<VoidGameResult>
     {
         public VoidTicketRequest(int memberId, string siteId, long gameRoundId, byte gameTypeId, string reason, bool freeBet)
         {

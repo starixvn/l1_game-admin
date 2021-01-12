@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Api.VoidGame.Results;
+﻿using GamesAdmin.Core.OWResults;
 using MediatR;
 
 namespace GamesAdmin.Api.VoidGame.Requests

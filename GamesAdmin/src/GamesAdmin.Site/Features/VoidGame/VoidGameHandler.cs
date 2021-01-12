@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Core.OWResults;
 using GamesAdmin.Site.Features.VoidGame.Requests;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.VoidGame
 {
-    public class VoidGameHandler : IRequestHandler<VoidTicketRequest, bool>
+    public class VoidGameHandler : IRequestHandler<VoidTicketRequest, VoidGameResult>
     {
         private readonly IVoidGameService voidGameService;
 
@@ -14,9 +15,7 @@ namespace GamesAdmin.Site.Features.VoidGame
             this.voidGameService = voidGameService;
         }
 
-        public Task<bool> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
+        public Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
+        => voidGameService.VoidTicket(request);
     }
 }
