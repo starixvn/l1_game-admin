@@ -1,27 +1,29 @@
-﻿using GamesAdmin.Core.Enumeration;
-using MediatR;
+﻿using MediatR;
 
 namespace GamesAdmin.Site.Features.VoidGame.Requests
 {
     public class VoidTicketRequest : IRequest<bool>
     {
-        public VoidTicketRequest(int memberId, int siteId, long gameRoundId, GameId gameId, string reason)
+        public VoidTicketRequest(int memberId, string siteId, long gameRoundId, byte gameTypeId, string reason, bool freeBet)
         {
-            MemberId = memberId;
+            ObCustId = memberId;
             SiteId = siteId;
             GameRoundId = gameRoundId;
-            GameId = gameId;
+            GameTypeId = gameTypeId;
             Reason = reason;
+            FreeBet = freeBet;
         }
 
-        public int MemberId { get; }
+        public int ObCustId { get; }
 
-        public int SiteId { get; }
+        public string SiteId { get; }
 
         public long GameRoundId { get; }
 
-        public GameId GameId { get; }
+        public byte GameTypeId { get; }
 
         public string Reason { get; }
+
+        public bool FreeBet { get; }
     }
 }

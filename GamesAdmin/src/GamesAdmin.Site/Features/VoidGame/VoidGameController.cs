@@ -23,7 +23,13 @@ namespace GamesAdmin.Site.Features.VoidGame
         [HttpPost]
         public Task<bool> VoidTicket([Bind] IndexViewModel viewModel)
         {
-            return mediator.Send(new VoidTicketRequest(viewModel.MemberId, viewModel.SiteId, viewModel.GameRoundId, viewModel.GameId, viewModel.Reason));
+            return mediator.Send(new VoidTicketRequest(
+                viewModel.MemberId, 
+                viewModel.SiteId, 
+                viewModel.GameRoundId, 
+                (byte)viewModel.GameId, 
+                viewModel.Reason,
+                viewModel.FreeBet));
         }
     }
 }

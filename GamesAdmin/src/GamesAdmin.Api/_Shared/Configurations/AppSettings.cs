@@ -10,6 +10,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         IdentityServerAuth IdentityServerAuth { get; }
 
         GameServerSettings GameServers { get; }
+
+        SabaApiSettings SabaApiSettings { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -19,14 +21,17 @@ namespace GamesAdmin.Api._Shared.Configurations
         public AppSettings(IConfiguration configuration)
         {
             this.configuration = configuration;
-            
+
             GameServers = configuration.GetSection(nameof(GameServers)).Get<GameServerSettings>();
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
+            SabaApiSettings = configuration.GetSection(nameof(SabaApiSettings)).Get<SabaApiSettings>();
         }
 
         public IdentityServerAuth IdentityServerAuth { get; }
 
         public GameServerSettings GameServers { get; }
+
+        public SabaApiSettings SabaApiSettings { get; }
 
         public T GetValue<T>(string key)
         {

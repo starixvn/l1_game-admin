@@ -24,8 +24,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [DisplayName("Site Id")]
         [Required]
-        [Range(1, int.MaxValue)]
-        public int SiteId { get; set; }
+        public string SiteId { get; set; }
 
         [DisplayName("Game Round Id")]
         [Required]
@@ -39,5 +38,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [Required]
         public string Reason { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 }
