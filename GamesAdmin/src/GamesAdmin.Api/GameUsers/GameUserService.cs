@@ -119,7 +119,7 @@ namespace GamesAdmin.Api.GameUser
         {
             var accountInfo = await accountInfoRepository.FindOneAsync(x =>  x.Name == nickname);
 
-            return (!excludeUUS && accountInfo?.Currency == "UUS") || accountInfo?.IsBot == true;
+            return (!excludeUUS && accountInfo?.Currency == "UUS") || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
         }
     }
 }
