@@ -5,11 +5,11 @@ namespace GamesAdmin.Api.UM.Requests
 {
     public class UMRequest : IRequest<bool>
     {
-        public UMRequest(bool IsUM, DateTimeOffset StartTime, DateTimeOffset EndTime)
+        public UMRequest(bool IsUM, DateTimeOffset? StartTime, DateTimeOffset? EndTime)
         {
             this.IsUM = IsUM;
-            this.StartTime = StartTime;
-            this.EndTime = EndTime;
+            this.StartTime = StartTime ?? default;
+            this.EndTime = EndTime ?? default;
         }
 
         public bool IsUM { get; }
