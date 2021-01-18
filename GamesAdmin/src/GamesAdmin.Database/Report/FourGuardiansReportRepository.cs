@@ -52,7 +52,7 @@ namespace GamesAdmin.Database
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"^(?i){nickname}$");
 
-            var aggregateBuilder = betCollection.Aggregate().Match(x => x.Number == roundId || roundId == 0)
+            var aggregateBuilder = betCollection.Aggregate().Match(x => (x.Number == roundId || roundId == 0) && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)))
                 .SortByDescending(x => x.Id)
                 .Lookup<FourGuardiansRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
@@ -60,7 +60,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.AccountInfos.Name)) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
+                 .Match(x =>  !excludeUUS || x.AccountInfos.Currency != "UUS")
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,
