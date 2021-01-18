@@ -34,8 +34,8 @@
                         </td>
                         <td class="text-right">@(!bet.FreeSpin ? HtmlHelpers.formatNumber(bet.Bet): "0")</td>
                         <td class="text-center">@bet.Paylines.Count()</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.TotalAmount)</td>
-                        <td class="text-right">@(!bet.FreeSpin ? HtmlHelpers.formatNumber(bet.BetWin): "0")</td>
+                        <td class="text-right">@(bet.FreeSpin ? "0" : HtmlHelpers.formatNumber(bet.TotalAmount))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }
             </tbody>
