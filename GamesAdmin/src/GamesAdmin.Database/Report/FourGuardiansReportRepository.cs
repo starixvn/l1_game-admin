@@ -40,7 +40,8 @@ namespace GamesAdmin.Database
                     SettlementResult = x.SettlementResult,
                     Result = x.Result,
                     UserId = x.Uid,
-                });
+                    Paid = x.Paid
+                }); 
 
             return await project.ToListAsync();
         }

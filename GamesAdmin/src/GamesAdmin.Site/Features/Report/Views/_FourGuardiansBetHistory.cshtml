@@ -44,7 +44,7 @@
         <tr>
             <th>Payline</th>
             <th>Symbol</th>
-            <th>NoSymbol</th>
+            <th>No. of Symbol</th>
             <th>Odds</th>
             <th>Stake</th>
             <th>Win</th>
@@ -71,7 +71,7 @@
                 <td class="text-center"><img class="payline" src="~/images/slot-icons/fourguardians/dong@(payline + 1).png" /></td>
                 <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/@(winningPayline.Symbol).png" /></td>
                 <td class="text-center">@winningPayline.Count</td>
-                <td class="text-center">x@(winningPayline.Odds)</td>
+                <td class="text-center">x@(winningPayline.Odds.ToString("D"))</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet * winningPayline.Odds)</td>
             </tr>
@@ -83,7 +83,7 @@
                 <td></td>
                 <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/8.png" /></td>
                 <td class="text-center">@Model.SettlementResult.Bonus.Count</td>
-                <td class="text-center">@Model.SettlementResult.Bonus.Odds Bonus</td>
+                <td class="text-center">@Model.SettlementResult.Bonus.Odds.ToString("D") Bonus</td>
                 <td class="text-center">-</td>
                 <td>@HtmlHelpers.formatNumber(Model.BonusChests.Where(x => x.Picked).Sum(x => x.Amount))</td>
             </tr>
@@ -96,12 +96,12 @@
                 <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/7.png" /></td>
                 <td class="text-center">@Model.SettlementResult.FreeSpins.Count</td>
                 <td class="text-center">@Model.SettlementResult.FreeSpins.Odds Free spins</td>
-                <td>-</td>
-                <td>-</td>
+                <td class="text-center">-</td>
+                <td class="text-center">-</td>
             </tr>
         }
 
-        @foreach (var payline in Model.Paylines.Where(x => !Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x)))
+        @foreach (var payline in Model.Paylines.Where(x => !Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x) && x != Model.SettlementResult.Jackpot?.WinningLine))
         {
 
             <tr>
