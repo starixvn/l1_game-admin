@@ -416,8 +416,10 @@
         toogleSlotsConfig: function () {
             if ($('#Type').val() === "2") {
                 $('#slots-config').show();
+                $('#rng-game').hide();
             } else {
                 $('#slots-config').hide();
+                $('#rng-game').show();
             }
         },
 

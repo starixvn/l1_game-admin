@@ -10,6 +10,11 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <select asp-items="@Model.GameNames" asp-for="Name" class="form-control"></select>
+        </div>
+
         <div class="form-group row">
             <div class="col-lg-4">
                 <input type="checkbox" asp-for="Enabled" />
@@ -30,7 +35,7 @@
             <input type="number" asp-for="DelayStartTime" class="form-control" />
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row" id="rng-game">
             <div class="col-lg-6">
                 <label asp-for="MinBet" class="control-label"></label>
                 <input type="number" asp-for="MinBet" class="form-control" />
@@ -125,7 +130,11 @@
 
             <fieldset>
                 <legend>Bonus</legend>
-
+                <div class="form-group row">
+                    <div class="col-lg-8">
+                        Note: Bonus = (random (from &nbsp; <b>Min</b> &nbsp; to &nbsp; <b>Max</b>) * Stake Level)
+                    </div>
+                </div>
                 <div class="form-group row">
                     <div class="col-lg-6">
                         <label class="control-label">Min</label>
@@ -138,7 +147,6 @@
                         <input type="number" asp-for="MaxBonus" class="form-control" />
                         <span asp-validation-for="MaxBonus" class="text-danger"></span>
                     </div>
-
                 </div>
             </fieldset>
             <br />

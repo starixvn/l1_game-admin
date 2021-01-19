@@ -59,10 +59,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.appSettings = appSettings;
         }
 
-        public Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
+        public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
         {
+            var existingGames = (await gameService.GetAll()).Select(game => game.Info.Name);
+
             var names = Enumeration.GetAll<Game>()
-                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Value }).ToList();
+                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Value })
+                .Where(x => !existingGames.Contains(x.Value))
+                .ToList();
 
             var types = Enum.GetValues(typeof(GameType))
                 .Cast<GameType>()
@@ -72,7 +76,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
-            return Task.FromResult(new AddViewModel(names, types, difficultyItems));
+            return new AddViewModel(names, types, difficultyItems);
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
@@ -150,7 +154,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return betChoices.Select(choice => new MaxBetChoiceViewModel(
                 choice.Value,
-                betLimit.MaxBetChoices.ContainsKey(choice.Value) ? betLimit.MaxBetChoices[choice.Value] : betLimit.MaxBet,
+                betLimit.MaxBetChoices?.ContainsKey(choice.Value) == true ? betLimit.MaxBetChoices[choice.Value] : betLimit.MaxBet,
                 choice.DisplayName)).ToList();
         }
 
