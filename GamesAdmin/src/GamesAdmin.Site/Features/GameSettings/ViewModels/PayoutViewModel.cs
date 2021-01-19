@@ -32,6 +32,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public List<OddsViewModel> BetChoiceOdds { get; set; }
 
         public bool DisplayMaxBetChoices => MaxBetChoices?.Count > MinChoices;
+
+        public bool DisplayMinMaxBet => Type == GameType.AutoRNG;
     }
 
     public class IconOddsViewModel

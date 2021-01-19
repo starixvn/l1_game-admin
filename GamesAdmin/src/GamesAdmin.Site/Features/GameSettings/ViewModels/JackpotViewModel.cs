@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Exclude UUS Contribution")]
         public bool ExcludeUUS { get; set; }
 
-        [DisplayName("Jackpot Winning Amount (%)")]
+        [DisplayName("Jackpot Winning (%)")]
         public double WinningRatio { get; set; }
 
         [DisplayName("Jackpot Service Fee (%)")]
