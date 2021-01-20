@@ -100,14 +100,14 @@
         </div>
 
         <div id="payouts" style="display:none">
+            <input asp-for="Name" type="hidden" class="form-control" />
+            <input asp-for="Type" type="hidden" class="form-control" />
             @if (Model.PayoutViewModel.DisplayMinMaxBet)
             {
                 <div class="form-group row">
                     <div class="col-lg-6">
                         <label asp-for="@Model.PayoutViewModel.MinBet" class="control-label"></label>
                         <input type="number" asp-for="@Model.PayoutViewModel.MinBet" class="form-control" />
-                        <input asp-for="Name" type="hidden" class="form-control" />
-                        <input asp-for="Type" type="hidden" class="form-control" />
                     </div>
                     <div class="col-lg-6">
                         <label asp-for="@Model.PayoutViewModel.MaxBet" class="control-label"></label>
