@@ -85,7 +85,7 @@
                 <td class="text-center">@Model.SettlementResult.Bonus.Count</td>
                 <td class="text-center">@Model.SettlementResult.Bonus.Odds.ToString("D") Bonus</td>
                 <td class="text-center">-</td>
-                <td>@HtmlHelpers.formatNumber(Model.BonusChests.Where(x => x.Picked).Sum(x => x.Amount))</td>
+                <td class="text-right">@HtmlHelpers.formatNumber(Model.BonusChests.Where(x => x.Picked).Sum(x => x.Amount))</td>
             </tr>
         }
 
