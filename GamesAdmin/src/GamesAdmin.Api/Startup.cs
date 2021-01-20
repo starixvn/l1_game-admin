@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api._Shared.Converters;
 using GamesAdmin.Api._Shared.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace GamesAdmin.Api
 {
@@ -55,7 +58,13 @@ namespace GamesAdmin.Api
 
             services
                 .AddControllers()
-                .AddNewtonsoftJson(options => options.UseMemberCasing());
+                .AddNewtonsoftJson(options =>
+                {
+                    options.UseMemberCasing();
+                    options.SerializerSettings.Converters = new List<JsonConverter> {
+                       new DecimalFormatConverter()
+                    };
+                });
 
             services.AddSwaggerGen(c =>
             {

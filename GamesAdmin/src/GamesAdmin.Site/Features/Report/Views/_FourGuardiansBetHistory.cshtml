@@ -1,5 +1,6 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels
+@using System.Globalization
 @model FourGuardiansRecordViewModel
 
 <table class="table table-bordered table-four-guardians">
@@ -71,7 +72,7 @@
                 <td class="text-center"><img class="payline" src="~/images/slot-icons/fourguardians/dong@(payline + 1).png" /></td>
                 <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/@(winningPayline.Symbol).png" /></td>
                 <td class="text-center">@winningPayline.Count</td>
-                <td class="text-center">x@(winningPayline.Odds.ToString("D"))</td>
+                <td class="text-center">x@(winningPayline.Odds)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet * winningPayline.Odds)</td>
             </tr>
@@ -83,7 +84,7 @@
                 <td></td>
                 <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/8.png" /></td>
                 <td class="text-center">@Model.SettlementResult.Bonus.Count</td>
-                <td class="text-center">@Model.SettlementResult.Bonus.Odds.ToString("D") Bonus</td>
+                <td class="text-center">@Model.SettlementResult.Bonus.Odds Bonus</td>
                 <td class="text-center">-</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.BonusChests.Where(x => x.Picked).Sum(x => x.Amount))</td>
             </tr>
