@@ -119,6 +119,8 @@ namespace GamesAdmin.Api.GameUser
         {
             var accountInfo = await accountInfoRepository.FindOneAsync(x =>  x.Name == nickname);
 
+            sentryClient.CaptureMessage($"Unable to set board for {nickname}, currency {accountInfo?.Currency} with excludeUUS {excludeUUS}");
+
             return (!excludeUUS && accountInfo?.Currency == "UUS") || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
         }
     }
