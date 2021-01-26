@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             CreateMap<GameConfig, EditViewModel>()
                 .ForMember(dest => dest.EnableFreeBet, opt => opt.MapFrom(src => src.Info.EnableFreeBet))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
                 .ForMember(dest => dest.Enabled, opt => opt.MapFrom(src => src.EnableSetting.Enabled))
                 .ForMember(dest => dest.DisabledMessage, opt => opt.MapFrom(src => src.EnableSetting.DisabledMessage))
@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotSetting.HoursMaxBot));
 
             CreateMap<GameConfig, PayoutViewModel>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))
                 .ForMember(dest => dest.MinBet, opt => opt.MapFrom(src => src.BetLimit.MinBet))
                 .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
                 .ForMember(dest => dest.Icons, opt => opt.MapFrom(src => src.SlotsConfig.Icons));
@@ -48,7 +48,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<GameConfig, MonitorItemViewModel>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type));
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type));
 
             CreateMap<AddViewModel, SlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
