@@ -4,6 +4,7 @@ using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.OWResults;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
+using Sentry;
 
 namespace GamesAdmin.Api.VoidGame
 {
@@ -22,10 +23,12 @@ namespace GamesAdmin.Api.VoidGame
     public class VoidGameService : IVoidGameService
     {
         private readonly IVoidGameApi voidGameApi;
+        private readonly ISentryClient sentryClient;
 
-        public VoidGameService(IVoidGameApi voidGameApi)
+        public VoidGameService(IVoidGameApi voidGameApi, ISentryClient sentryClient)
         {
             this.voidGameApi = voidGameApi;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
@@ -38,7 +41,7 @@ namespace GamesAdmin.Api.VoidGame
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
+                sentryClient.CaptureException(ex);
             }
 
             return default;
