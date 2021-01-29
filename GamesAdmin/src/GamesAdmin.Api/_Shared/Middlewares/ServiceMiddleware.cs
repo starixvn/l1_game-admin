@@ -108,6 +108,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
+            services.AddScoped<ITicketHandler, TicketHandler>();
         }
     }
 }

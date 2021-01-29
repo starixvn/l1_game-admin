@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.OWResults;
-using Microsoft.AspNetCore.Mvc;
+using GamesAdmin.Database.Entities;
 using Refit;
 using Sentry;
 
@@ -22,13 +22,15 @@ namespace GamesAdmin.Api.VoidGame
 
     public class VoidGameService : IVoidGameService
     {
-        private readonly IVoidGameApi voidGameApi;
         private readonly ISentryClient sentryClient;
+        private readonly IVoidGameApi voidGameApi;
+        private readonly ITicketHandler ticketHandler;
 
-        public VoidGameService(IVoidGameApi voidGameApi, ISentryClient sentryClient)
+        public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketFinder)
         {
-            this.voidGameApi = voidGameApi;
             this.sentryClient = sentryClient;
+            this.voidGameApi = voidGameApi;
+            this.ticketHandler = ticketFinder;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
@@ -36,6 +38,23 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var result = await voidGameApi.VoidGameTicket(request);
+
+                if (result.IsSuccessful())
+                {
+                    var tickets = await ticketHandler.Find<BigSmallOnesEntity, BigSmallBetEntity>(
+                        request.ObCustId, 
+                        request.SiteId, 
+                        request.GameRoundId, 
+                        request.GameTypeId, 
+                        request.FreeBet);
+
+                    var moveToRm = await ticketHandler.Remove<BigSmallOnesEntity, BigSmallBetEntity>(
+                        request.ObCustId,
+                        request.SiteId,
+                        request.GameRoundId,
+                        request.GameTypeId,
+                        request.FreeBet);
+                }
 
                 return result;
             }
