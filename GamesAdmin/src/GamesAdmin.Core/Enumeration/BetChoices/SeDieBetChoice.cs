@@ -8,6 +8,7 @@
         public const string White3Value = "white3";
         public const string Red4Value = "red4";
         public const string White4Value = "white4";
+        public const string Red2Value = "red2";
 
         public static readonly SeDieBetChoice Even = new SeDieBetChoice(EvenValue, "Even");
         public static readonly SeDieBetChoice Odd = new SeDieBetChoice(OddValue, "Odd");
@@ -15,6 +16,7 @@
         public static readonly SeDieBetChoice White3 = new SeDieBetChoice(White3Value, "White3");
         public static readonly SeDieBetChoice Red4 = new SeDieBetChoice(Red4Value, "Red4");
         public static readonly SeDieBetChoice White4 = new SeDieBetChoice(White4Value, "White4");
+        public static readonly SeDieBetChoice Red2 = new SeDieBetChoice(Red2Value, "Red2");
 
         public SeDieBetChoice() { }
 

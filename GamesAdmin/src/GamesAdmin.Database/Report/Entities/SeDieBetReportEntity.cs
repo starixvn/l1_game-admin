@@ -14,6 +14,8 @@ namespace GamesAdmin.Database.Report.Entities
 
         public decimal Even { get; set; }
 
+        public decimal TwoRed { get; set; }
+
         public decimal ThreeRed { get; set; }
 
         public decimal FourRed { get; set; }

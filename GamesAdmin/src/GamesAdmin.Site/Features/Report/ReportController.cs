@@ -238,7 +238,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_SeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_MiniSeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

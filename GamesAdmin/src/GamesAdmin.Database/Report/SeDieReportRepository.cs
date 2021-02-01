@@ -33,12 +33,13 @@ namespace GamesAdmin.Database
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
-                        Even = x.Even + x.OldEven,
-                        Odd = x.Odd + x.OldOdd,
+                        Even = x.Even,
+                        Odd = x.Odd,
                         ThreeRed = x.ThreeRed,
                         FourRed = x.FourRed,
                         ThreeWhite = x.ThreeWhite,
                         FourWhite = x.FourWhite,
+                        TwoRed = x.TwoRed,
                         FreeBet = x.FreeBet ?? false
                     });
 

@@ -19,8 +19,25 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("red4")]
         public bool FourthRedChip { get; set; }
 
-        public SeDieResultEntity Result { get; set; }
+        public MiniSeDieSettlementResultEntity SettlementResult { get; set; }
+    }
 
-        public SeDieSettlementResultEntity SettlementResult { get; set; }
+    public class MiniSeDieSettlementResultEntity
+    {
+        public bool Odd { get; set; }
+
+        public bool Even { get; set; }
+
+        [BsonElement("red3")]
+        public bool ThreeRed { get; set; }
+
+        [BsonElement("red4")]
+        public bool FourRed { get; set; }
+
+        [BsonElement("white3")]
+        public bool ThreeWhite { get; set; }
+
+        [BsonElement("white4")]
+        public bool FourWhite { get; set; }
     }
 }

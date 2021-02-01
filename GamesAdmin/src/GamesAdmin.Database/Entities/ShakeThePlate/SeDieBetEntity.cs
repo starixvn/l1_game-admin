@@ -11,6 +11,9 @@ namespace GamesAdmin.Database.Entities
 
         public decimal Even { get; set; }
 
+        [BsonElement("red2")]
+        public decimal TwoRed { get; set; }
+
         [BsonElement("red3")]
         public decimal ThreeRed { get; set; }
 
@@ -22,12 +25,6 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("white4")]
         public decimal FourWhite { get; set; }
-
-        [BsonElement("le")]
-        public decimal OldOdd { get; set; }
-
-        [BsonElement("chan")]
-        public decimal OldEven { get; set; }
 
         public bool? FreeBet { get; set; }
     }

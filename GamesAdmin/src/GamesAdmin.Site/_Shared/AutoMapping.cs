@@ -44,6 +44,7 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<VipSeDieBetRecord, VipSeDieRecordViewModel>();
             CreateMap<SeDieRoundResult, SeDieRoundResultViewModel>();
+            CreateMap<SeDieBetRecord, SeDieRecordViewModel>();
 
             CreateMap<SpecialSeDieBetRecord, SpecialSeDieRecordViewModel>();
             CreateMap<SpecialSeDieBetHistoryRecord, SpecialSeDieBetHistoryRecordViewModel>();

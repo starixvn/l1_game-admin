@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Api.Report.Extensions;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -201,8 +200,8 @@ namespace GamesAdmin.Api.Report
 
             return new SeDieBetReport
             {
-                RoundResult = result.Item1.ToModel(),
-                Records = result.Item2.Select(x => x.ToModel())
+                RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<SeDieBetRecord>(x))
             };
         }
 
@@ -213,8 +212,8 @@ namespace GamesAdmin.Api.Report
 
             return new SeDieBetReport
             {
-                RoundResult = result.Item1.ToModel(),
-                Records = result.Item2.Select(x => x.ToModel())
+                RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<SeDieBetRecord>(x))
             };
         }
 
