@@ -14,9 +14,29 @@ namespace GamesAdmin.Api.VoidGame.Models
             IsFromArchive = isFromArchive;
         }
 
+        public GameTicketRecord(IList<T2> betRecords, bool isFromArchive)
+        {
+            BetRecords = betRecords;
+            IsFromArchive = isFromArchive;
+        }
+
         public T1 OneRecord { get; }
 
         public IList<T2> BetRecords { get; }
+
+        public bool IsFromArchive { get; }
+    }
+
+    public class GameTicketRecord<T1>
+        where T1 : BaseBetEntity
+    {
+        public GameTicketRecord(IList<T1> betRecords, bool isFromArchive)
+        {
+            BetRecords = betRecords;
+            IsFromArchive = isFromArchive;
+        }
+
+        public IList<T1> BetRecords { get; }
 
         public bool IsFromArchive { get; }
     }

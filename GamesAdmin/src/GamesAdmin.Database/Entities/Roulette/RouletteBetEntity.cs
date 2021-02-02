@@ -1,23 +1,11 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("roulette_cuocs")]
-    public class RouletteBetEntity : MiniGameBaseEntity
+    public class RouletteBetEntity : BaseBetEntity
     {
-        [BsonElement("phien")]
-        public long Round { get; set; }
-
-        public string Uid { get; set; }
-
-        public string Name { get; set; }
-
-        public int? MemberId { get; set; }
-
-        public string SiteId { get; set; }
-
         public Dictionary<string, decimal> StraightUp { get; set; }
 
         public Dictionary<string, decimal> Split { get; set; }

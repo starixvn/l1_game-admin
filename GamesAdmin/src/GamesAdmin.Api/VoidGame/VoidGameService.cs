@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.OWResults;
-using GamesAdmin.Database.Entities;
 using Refit;
 using Sentry;
 
@@ -44,16 +43,16 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (result.IsSuccessful())
                 {
-                    var moveToRm = await ticketHandler.Move<BigSmallOnesEntity, BigSmallBetEntity>(
+                    await ticketHandler.Void(
                         request.ObCustId,
                         request.SiteId,
                         request.GameRoundId,
                         request.GameTypeId,
                         request.FreeBet);
-                }
 
-                await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, result);
-                sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
+                    await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, result);
+                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
+                }
 
                 return result;
             }

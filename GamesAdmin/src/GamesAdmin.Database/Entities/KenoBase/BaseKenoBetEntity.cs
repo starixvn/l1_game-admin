@@ -1,21 +1,9 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities.Keno
 {
-    public abstract class BaseKenoBetEntity : MiniGameBaseEntity
+    public abstract class BaseKenoBetEntity : BaseBetEntity
     {
-        [BsonElement("phien")]
-        public long Round { get; set; }
-
-        public string Uid { get; set; }
-
-        public string Name { get; set; }
-
-        public int? MemberId { get; set; }
-
-        public string SiteId { get; set; }
-
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }
