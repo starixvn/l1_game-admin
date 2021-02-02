@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.VoidGame
             where T1 : BaseBetEntity
             where T2 : BaseBetEntity;
 
-        Task<bool> Remove<T1, T2>(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+        Task<bool> Move<T1, T2>(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
             where T1 : BaseBetEntity
             where T2 : BaseBetEntity;
     }
@@ -50,7 +50,7 @@ namespace GamesAdmin.Api.VoidGame
             removedDatabase = removedClient.GetDatabase(appSettings.RemovedDatabaseSettings.DatabaseName);
         }
 
-        public async Task<bool> Remove<One, Bet>(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+        public async Task<bool> Move<One, Bet>(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
             where One : BaseBetEntity
             where Bet : BaseBetEntity
         {
@@ -65,17 +65,48 @@ namespace GamesAdmin.Api.VoidGame
                     await oneCollection.InsertOneAsync(gameTickets.OneRecord);
                 }
 
-                if (gameTickets.BetRecord != null)
+                if (gameTickets.BetRecords != null)
                 {
                     var betCollection = removedDatabase.GetCollection<Bet>($"{gameCollection.Bet}{RemovePostfix}");
-                    await betCollection.InsertOneAsync(gameTickets.BetRecord);
+                    await betCollection.InsertManyAsync(gameTickets.BetRecords);
                 }
+
+                await Remove<One, Bet>(obCustId, siteId, gameRoundId, gameTypeId, freeBet, gameTickets.IsFromArchive, gameCollection);
 
                 return true;
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> Remove<One, Bet>(
+            int obCustId,
+            string siteId,
+            long gameRoundId,
+            byte gameTypeId,
+            bool freeBet,
+            bool isFromArchive,
+            GameTicketCollection gameCollection)
+                where One : BaseBetEntity
+                where Bet : BaseBetEntity
+        {
+            var database = isFromArchive ? archiveDatabase : activeDatabase;
+            var postfix = isFromArchive ? ArchivePostfix : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.One))
+            {
+                var oneCollection = database.GetCollection<One>($"{gameCollection.One}{postfix}");
+                await RemoveTicket(oneCollection, obCustId, siteId, gameRoundId, freeBet);
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.Bet))
+            {
+                var betCollection = database.GetCollection<Bet>($"{gameCollection.Bet}{postfix}");
+                await RemoveTicket(betCollection, obCustId, siteId, gameRoundId, freeBet);
             }
 
             return false;
@@ -94,14 +125,14 @@ namespace GamesAdmin.Api.VoidGame
         {
             var gameCollection = GetCollections(gameTypeId);
 
-            var gameTicketRecord = await FindInActiveOrArchive<One, Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet);
+            var gameTickets = await FindInActiveOrArchive<One, Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet);
 
-            if (gameTicketRecord == default)
+            if (gameTickets == default)
             {
-                gameTicketRecord = await FindInActiveOrArchive<One, Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet, true);
+                gameTickets = await FindInActiveOrArchive<One, Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet, true);
             }
 
-            return gameTicketRecord;
+            return gameTickets;
         }
 
         private async Task<GameTicketRecord<One, Bet>> FindInActiveOrArchive<One, Bet>(
@@ -121,9 +152,9 @@ namespace GamesAdmin.Api.VoidGame
             var oneRecord = await FindTicket(oneCollection, obCustId, siteId, gameRoundId, freeBet);
 
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
-            var betRecord = await FindTicket(betCollection, obCustId, siteId, gameRoundId, freeBet);
+            var betRecords = await FindTicketList(betCollection, obCustId, siteId, gameRoundId, freeBet);
 
-            return oneRecord == null && betRecord == null ? default : new GameTicketRecord<One, Bet>(oneRecord, betRecord);
+            return oneRecord == null && betRecords == null ? default : new GameTicketRecord<One, Bet>(oneRecord, betRecords, isArchive);
         }
 
         private async Task<T> FindTicket<T>(
@@ -142,6 +173,41 @@ namespace GamesAdmin.Api.VoidGame
                 .FirstOrDefault();
 
             return record;
+        }
+
+        private async Task<List<T>> FindTicketList<T>(
+                IMongoCollection<T> collection,
+                int obCustId,
+                string siteId,
+                long gameRoundId,
+                bool freeBet)
+            where T : BaseBetEntity
+        {
+            var record = (await collection
+                .FindAsync(record => record.MemberId == obCustId
+                                    && record.SiteId == siteId
+                                    && record.Round == gameRoundId
+                                    && (!freeBet || record.FreeBet == freeBet)))
+                .ToList();
+
+            return record;
+        }
+
+        private async Task<bool> RemoveTicket<T>(
+                IMongoCollection<T> collection,
+                int obCustId,
+                string siteId,
+                long gameRoundId,
+                bool freeBet)
+            where T : BaseBetEntity
+        {
+            var result = (await collection
+                .DeleteManyAsync(record => record.MemberId == obCustId
+                                    && record.SiteId == siteId
+                                    && record.Round == gameRoundId
+                                    && (!freeBet || record.FreeBet == freeBet)));
+
+            return result.DeletedCount > 0;
         }
 
 #pragma warning restore S1067 // Expressions should not be too complex

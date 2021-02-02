@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database.Entities;
+﻿using System.Collections.Generic;
+using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.VoidGame.Models
 {
@@ -6,14 +7,17 @@ namespace GamesAdmin.Api.VoidGame.Models
         where T1 : BaseBetEntity
         where T2 : BaseBetEntity
     {
-        public GameTicketRecord(T1 oneRecord, T2 betRecord)
+        public GameTicketRecord(T1 oneRecord, IList<T2> betRecords, bool isFromArchive)
         {
             OneRecord = oneRecord;
-            BetRecord = betRecord;
+            BetRecords = betRecords;
+            IsFromArchive = isFromArchive;
         }
 
         public T1 OneRecord { get; }
 
-        public T2 BetRecord { get; }
+        public IList<T2> BetRecords { get; }
+
+        public bool IsFromArchive { get; }
     }
 }

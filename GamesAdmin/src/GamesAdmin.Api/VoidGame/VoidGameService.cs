@@ -25,36 +25,35 @@ namespace GamesAdmin.Api.VoidGame
         private readonly ISentryClient sentryClient;
         private readonly IVoidGameApi voidGameApi;
         private readonly ITicketHandler ticketHandler;
+        private readonly IVoidTicketLogger voidTicketLogger;
 
-        public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketFinder)
+        public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler, IVoidTicketLogger voidTicketLogger)
         {
             this.sentryClient = sentryClient;
             this.voidGameApi = voidGameApi;
-            this.ticketHandler = ticketFinder;
+            this.ticketHandler = ticketHandler;
+            this.voidTicketLogger = voidTicketLogger;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
         {
             try
             {
+                var requestTime = DateTimeOffset.UtcNow;
                 var result = await voidGameApi.VoidGameTicket(request);
 
                 if (result.IsSuccessful())
                 {
-                    var tickets = await ticketHandler.Find<BigSmallOnesEntity, BigSmallBetEntity>(
-                        request.ObCustId, 
-                        request.SiteId, 
-                        request.GameRoundId, 
-                        request.GameTypeId, 
-                        request.FreeBet);
-
-                    var moveToRm = await ticketHandler.Remove<BigSmallOnesEntity, BigSmallBetEntity>(
+                    var moveToRm = await ticketHandler.Move<BigSmallOnesEntity, BigSmallBetEntity>(
                         request.ObCustId,
                         request.SiteId,
                         request.GameRoundId,
                         request.GameTypeId,
                         request.FreeBet);
                 }
+
+                await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, result);
+                sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
 
                 return result;
             }
