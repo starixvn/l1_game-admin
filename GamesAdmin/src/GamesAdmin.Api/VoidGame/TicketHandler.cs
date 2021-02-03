@@ -5,6 +5,7 @@ using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
 using MongoDB.Driver;
@@ -100,6 +101,8 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.OddEvenTurbo => await Move<OddEvenTurboOnesEntity, OddEvenTurboBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.DragonTiger => await Move<DragonTigerBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoProMax => await Move<KenoProMaxBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.Baccarat => await Move<BaccaratBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.MiniSeDie => await Move<MiniSeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoProViet => await Move<KenoProVietOnesEntity, KenoProVietBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMax => await Move<KenoMaxOnesEntity, KenoMaxBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMax2 => await Move<KenoMax2OnesEntity, KenoMax2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
