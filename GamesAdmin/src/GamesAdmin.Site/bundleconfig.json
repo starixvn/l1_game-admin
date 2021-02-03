@@ -82,5 +82,11 @@
     "inputFiles": [
       "wwwroot/js/report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/voidgame.min.js",
+    "inputFiles": [
+      "wwwroot/js/voidgame.js"
+    ]
   }
 ]
