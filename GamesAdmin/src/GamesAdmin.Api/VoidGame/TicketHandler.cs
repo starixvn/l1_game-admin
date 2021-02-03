@@ -22,6 +22,10 @@ namespace GamesAdmin.Api.VoidGame
             where T1 : BaseBetEntity
             where T2 : BaseBetEntity;
 
+        Task<GameRoundTicketRecord<Round, Bet>> FindRoundAndBet<Round, Bet>(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+           where Round : BaseRoundEntity
+           where Bet : BaseBetEntity;
+
         Task<bool> Void(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet);
     }
 
@@ -32,33 +36,33 @@ namespace GamesAdmin.Api.VoidGame
 
         private static Dictionary<GameId, GameTicketCollection> gameCollections = new Dictionary<GameId, GameTicketCollection>
         {
-            { GameId.BigSmall, new GameTicketCollection("taixiu_phiens", "taixiu_ones", "taixiu_cuocs") },
-            { GameId.SeDie, new GameTicketCollection("xocxoc_phiens", string.Empty, "xocxoc_cuocs") },
-            { GameId.FishPrawnCrab, new GameTicketCollection("baucua_phiens", string.Empty, "baucua_cuocs") },
-            { GameId.BigSmallTurbo, new GameTicketCollection("txturbo_phiens", "txturbo_ones", "txturbo_cuocs") },
-            { GameId.OddEven, new GameTicketCollection("chanle_phiens", "chanle_ones", "chanle_cuocs") },
-            { GameId.OddEvenTurbo, new GameTicketCollection("chanleturbo_phiens", "chanleturbo_ones", "chanleturbo_cuocs") },
-            { GameId.DragonTiger, new GameTicketCollection("minidragontiger_phiens", string.Empty, "minidragontiger_cuocs") },
-            { GameId.KenoProMax, new GameTicketCollection("kenopromax_phiens", string.Empty, "kenopromax_cuocs") },
-            { GameId.MiniSeDie, new GameTicketCollection("minisedie_phiens", string.Empty, "minisedie_cuocs") },
-            { GameId.Baccarat, new GameTicketCollection("baccarat_phiens", string.Empty, "baccarat_cuocs") },
-            { GameId.KenoProViet, new GameTicketCollection("kenoproviet_phiens", "kenoproviet_ones", "kenoproviet_cuocs") },
-            { GameId.KenoMax, new GameTicketCollection("kenomax_phiens", "kenomax_ones", "kenomax_cuocs") },
-            { GameId.KenoMax2, new GameTicketCollection("kenomax2_phiens", "kenomax2_ones", "kenomax2_cuocs") },
-            { GameId.KenoMini, new GameTicketCollection("kenomini_phiens", "kenomini_ones", "kenomini_cuocs") },
-            { GameId.KenoMini2, new GameTicketCollection("kenomini2_phiens", "kenomini2_ones", "kenomini2_cuocs") },
-            { GameId.KenoEast, new GameTicketCollection("kenoeast_phiens", "kenoeast_ones", "kenoeast_cuocs") },
-            { GameId.KenoWest, new GameTicketCollection("kenowest_phiens", "kenowest_ones", "kenowest_cuocs") },
-            { GameId.KenoSouth, new GameTicketCollection("kenosouth_phiens", "kenosouth_ones", "kenosouth_cuocs") },
-            { GameId.KenoNorth, new GameTicketCollection("kenonorth_phiens", "kenonorth_ones", "kenonorth_cuocs") },
-            { GameId.Roulette, new GameTicketCollection("roulette_phiens", "roulette_ones", "roulette_cuocs") },
-            { GameId.VipSeDie, new GameTicketCollection("vipsedie_phiens", string.Empty, "vipsedie_cuocs") },
+            { GameId.BigSmall, new GameTicketCollection(string.Empty, "taixiu_ones", "taixiu_cuocs") },
+            { GameId.SeDie, new GameTicketCollection(string.Empty, string.Empty, "xocxoc_cuocs") },
+            { GameId.FishPrawnCrab, new GameTicketCollection(string.Empty, string.Empty, "baucua_cuocs") },
+            { GameId.BigSmallTurbo, new GameTicketCollection(string.Empty, "txturbo_ones", "txturbo_cuocs") },
+            { GameId.OddEven, new GameTicketCollection(string.Empty, "chanle_ones", "chanle_cuocs") },
+            { GameId.OddEvenTurbo, new GameTicketCollection(string.Empty, "chanleturbo_ones", "chanleturbo_cuocs") },
+            { GameId.DragonTiger, new GameTicketCollection(string.Empty, string.Empty, "minidragontiger_cuocs") },
+            { GameId.KenoProMax, new GameTicketCollection(string.Empty, string.Empty, "kenopromax_cuocs") },
+            { GameId.MiniSeDie, new GameTicketCollection(string.Empty, string.Empty, "minisedie_cuocs") },
+            { GameId.Baccarat, new GameTicketCollection(string.Empty, string.Empty, "baccarat_cuocs") },
+            { GameId.KenoProViet, new GameTicketCollection(string.Empty, "kenoproviet_ones", "kenoproviet_cuocs") },
+            { GameId.KenoMax, new GameTicketCollection(string.Empty, "kenomax_ones", "kenomax_cuocs") },
+            { GameId.KenoMax2, new GameTicketCollection(string.Empty, "kenomax2_ones", "kenomax2_cuocs") },
+            { GameId.KenoMini, new GameTicketCollection(string.Empty, "kenomini_ones", "kenomini_cuocs") },
+            { GameId.KenoMini2, new GameTicketCollection(string.Empty, "kenomini2_ones", "kenomini2_cuocs") },
+            { GameId.KenoEast, new GameTicketCollection(string.Empty, "kenoeast_ones", "kenoeast_cuocs") },
+            { GameId.KenoWest, new GameTicketCollection(string.Empty, "kenowest_ones", "kenowest_cuocs") },
+            { GameId.KenoSouth, new GameTicketCollection(string.Empty, "kenosouth_ones", "kenosouth_cuocs") },
+            { GameId.KenoNorth, new GameTicketCollection(string.Empty, "kenonorth_ones", "kenonorth_cuocs") },
+            { GameId.Roulette, new GameTicketCollection(string.Empty, "roulette_ones", "roulette_cuocs") },
+            { GameId.VipSeDie, new GameTicketCollection(string.Empty, string.Empty, "vipsedie_cuocs") },
             { GameId.Blackjack, new GameTicketCollection("blackjack_phiens", string.Empty, "blackjack_cuocs") },
-            { GameId.SpecialSeDie, new GameTicketCollection("specialsedie_phiens", "specialsedie_ones", "specialsedie_cuocs") },
-            { GameId.SicBo, new GameTicketCollection("sicbo_phiens", "sicbo_ones", "sicbo_cuocs") },
-            { GameId.VipFishPrawnCrab, new GameTicketCollection("vipfishprawncrab_phiens", string.Empty, "vipfishprawncrab_cuocs") },
-            { GameId.VipBaccarat, new GameTicketCollection("vipbaccarat_phiens", string.Empty, "vipbaccarat_cuocs") },
-            { GameId.VipSeDieWar, new GameTicketCollection("vipsediewar_phiens", "vipsediewar_ones", "vipsediewar_cuocs") },
+            { GameId.SpecialSeDie, new GameTicketCollection(string.Empty, "specialsedie_ones", "specialsedie_cuocs") },
+            { GameId.SicBo, new GameTicketCollection(string.Empty, "sicbo_ones", "sicbo_cuocs") },
+            { GameId.VipFishPrawnCrab, new GameTicketCollection(string.Empty, string.Empty, "vipfishprawncrab_cuocs") },
+            { GameId.VipBaccarat, new GameTicketCollection(string.Empty, string.Empty, "vipbaccarat_cuocs") },
+            { GameId.VipSeDieWar, new GameTicketCollection(string.Empty, "vipsediewar_ones", "vipsediewar_cuocs") },
         };
 
         private readonly ISentryClient sentryClient;
@@ -107,7 +111,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoNorth => await Move<KenoNorthOnesEntity, KenoNorthBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.Roulette => await Move<RouletteOnesEntity, RouletteBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipSeDie => await Move<VipSeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.Blackjack => await Move<BlackjackBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet), //TODO also move round entity
+                    GameId.Blackjack => await MoveRoundAndBet<BlackjackRoundEntity, BlackjackBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.SpecialSeDie => await Move<SpecialSeDieOnesEntity, SpecialSeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.SicBo => await Move<SicBoOnesEntity, SicBoBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipFishPrawnCrab => await Move<VipFishPrawnCrabBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -183,6 +187,40 @@ namespace GamesAdmin.Api.VoidGame
             return false;
         }
 
+        public async Task<bool> MoveRoundAndBet<Round, Bet>(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+            where Round : BaseRoundEntity
+            where Bet : BaseBetEntity
+        {
+            try
+            {
+                var gameCollection = GetCollections(gameTypeId);
+                var gameTickets = await FindRoundAndBet<Round, Bet>(obCustId, siteId, gameRoundId, gameTypeId, freeBet);
+
+                if (gameTickets.RoundRecord != null)
+                {
+                    var roundCollection = removedDatabase.GetCollection<Round>($"{gameCollection.Round}{RemovePostfix}");
+                    await roundCollection.InsertOneAsync(gameTickets.RoundRecord);
+                }
+
+                if (gameTickets.BetRecords != null)
+                {
+                    var betCollection = removedDatabase.GetCollection<Bet>($"{gameCollection.Bet}{RemovePostfix}");
+                    await betCollection.InsertManyAsync(gameTickets.BetRecords);
+                }
+
+                await Remove<Bet>(obCustId, siteId, gameRoundId, gameTypeId, freeBet, gameTickets.IsFromArchive, gameCollection);
+                await RemoveRound<Round>(gameRoundId, gameTickets.IsFromArchive, gameCollection);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
         public async Task<bool> Remove<One, Bet>(
             int obCustId,
             string siteId,
@@ -234,6 +272,53 @@ namespace GamesAdmin.Api.VoidGame
             return false;
         }
 
+        public async Task<bool> RemoveRound<Round>(
+           long gameRoundId,
+           bool isFromArchive,
+           GameTicketCollection gameCollection)
+               where Round : BaseRoundEntity
+        {
+            var database = isFromArchive ? archiveDatabase : activeDatabase;
+            var postfix = isFromArchive ? ArchivePostfix : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.Round))
+            {
+                var betCollection = database.GetCollection<Round>($"{gameCollection.Round}{postfix}");
+                return await RemoveRound(betCollection, gameRoundId);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> RemoveRoundAndBet<Round, Bet>(
+            int obCustId,
+            string siteId,
+            long gameRoundId,
+            byte gameTypeId,
+            bool freeBet,
+            bool isFromArchive,
+            GameTicketCollection gameCollection)
+                where Round : BaseRoundEntity
+                where Bet : BaseBetEntity
+        {
+            var database = isFromArchive ? archiveDatabase : activeDatabase;
+            var postfix = isFromArchive ? ArchivePostfix : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.Round))
+            {
+                var roundCollection = database.GetCollection<Round>($"{gameCollection.Round}{postfix}");
+                await RemoveRound(roundCollection, gameRoundId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.Bet))
+            {
+                var betCollection = database.GetCollection<Bet>($"{gameCollection.Bet}{postfix}");
+                await RemoveTicket(betCollection, obCustId, siteId, gameRoundId, freeBet);
+            }
+
+            return false;
+        }
+
         public async Task<GameTicketRecord<One, Bet>> Find<One, Bet>(
                 int obCustId,
                 string siteId,
@@ -270,6 +355,27 @@ namespace GamesAdmin.Api.VoidGame
             if (gameTickets == default)
             {
                 gameTickets = await FindInActiveOrArchive<Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet, true);
+            }
+
+            return gameTickets;
+        }
+
+        public async Task<GameRoundTicketRecord<Round, Bet>> FindRoundAndBet<Round, Bet>(
+               int obCustId,
+               string siteId,
+               long gameRoundId,
+               byte gameTypeId,
+               bool freeBet)
+           where Round : BaseRoundEntity
+           where Bet : BaseBetEntity
+        {
+            var gameCollection = GetCollections(gameTypeId);
+
+            var gameTickets = await FindRoundInActiveOrArchive<Round, Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet);
+
+            if (gameTickets == default)
+            {
+                gameTickets = await FindRoundInActiveOrArchive<Round, Bet>(gameCollection, obCustId, siteId, gameRoundId, freeBet, true);
             }
 
             return gameTickets;
@@ -313,6 +419,38 @@ namespace GamesAdmin.Api.VoidGame
             var bets = await FindTicketList(betCollection, obCustId, siteId, gameRoundId, freeBet);
 
             return new GameTicketRecord<Bet>(bets, isArchive);
+        }
+
+        private async Task<GameRoundTicketRecord<Round, Bet>> FindRoundInActiveOrArchive<Round, Bet>(
+                GameTicketCollection collections,
+                int obCustId,
+                string siteId,
+                long gameRoundId,
+                bool freeBet,
+                bool isArchive = false)
+            where Round : BaseRoundEntity
+            where Bet : BaseBetEntity
+        {
+            var database = isArchive ? archiveDatabase : activeDatabase;
+            var postfix = isArchive ? ArchivePostfix : string.Empty;
+
+            var roundCollection = database.GetCollection<Round>($"{collections.Bet}{postfix}");
+            var round = await FindRound(roundCollection, gameRoundId);
+
+            var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
+            var bets = await FindTicketList(betCollection, obCustId, siteId, gameRoundId, freeBet);
+
+            return new GameRoundTicketRecord<Round, Bet>(round, bets, isArchive);
+        }
+
+        private async Task<T> FindRound<T>(IMongoCollection<T> collection, long gameRoundId)
+            where T : BaseRoundEntity
+        {
+            var record = (await collection
+                .FindAsync(record => record.Number == gameRoundId))
+                .FirstOrDefault();
+
+            return record;
         }
 
 #pragma warning disable S1067 // Expressions should not be too complex
@@ -366,6 +504,14 @@ namespace GamesAdmin.Api.VoidGame
                                     && record.SiteId == siteId
                                     && record.Round == gameRoundId
                                     && (!freeBet || record.FreeBet == freeBet)));
+
+            return result.DeletedCount > 0;
+        }
+
+        private async Task<bool> RemoveRound<T>(IMongoCollection<T> collection, long gameRoundId)
+            where T : BaseRoundEntity
+        {
+            var result = (await collection.DeleteManyAsync(record => record.Number == gameRoundId));
 
             return result.DeletedCount > 0;
         }

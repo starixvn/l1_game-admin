@@ -40,4 +40,22 @@ namespace GamesAdmin.Api.VoidGame.Models
 
         public bool IsFromArchive { get; }
     }
+
+    public class GameRoundTicketRecord<T1, T2>
+        where T1 : BaseRoundEntity
+        where T2 : BaseBetEntity
+    {
+        public GameRoundTicketRecord(T1 roundRecord, IList<T2> betRecords, bool isFromArchive)
+        {
+            RoundRecord = roundRecord;
+            BetRecords = betRecords;
+            IsFromArchive = isFromArchive;
+        }
+
+        public T1 RoundRecord { get; }
+
+        public IList<T2> BetRecords { get; }
+
+        public bool IsFromArchive { get; }
+    }
 }

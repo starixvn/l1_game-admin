@@ -18,6 +18,10 @@ namespace GamesAdmin.Database.Entities
         public string Name { get; set; }
 
         public byte SettlementResult { get; set; }
+
+        public int? MemberId { get; set; }
+
+        public string SiteId { get; set; }
     }
 
     public class BlackjackCardEntity
