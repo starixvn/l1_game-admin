@@ -43,15 +43,20 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (result.IsSuccessful())
                 {
-                    await ticketHandler.Void(
+                    await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, result);
+                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
+
+                    var moved = await ticketHandler.Void(
                         request.ObCustId,
                         request.SiteId,
                         request.GameRoundId,
                         request.GameTypeId,
                         request.FreeBet);
 
-                    await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, result);
-                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
+                    if (!moved) 
+                    {
+                        return new VoidGameResult { ErrorCode = 1000, ErrorMessage = "Tickets was moved unsuccessfully." };
+                    }
                 }
 
                 return result;
