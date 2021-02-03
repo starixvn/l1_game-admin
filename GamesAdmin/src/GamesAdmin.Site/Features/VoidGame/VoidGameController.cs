@@ -21,17 +21,17 @@ namespace GamesAdmin.Site.Features.VoidGame
         public IActionResult Index() => View(new IndexViewModel());
 
         [HttpPost]
-        public async Task<bool> VoidTicket([Bind] IndexViewModel viewModel)
+        public async Task<IActionResult> VoidTicket([Bind] IndexViewModel viewModel)
         {
-            var result = await mediator.Send(new VoidTicketRequest(
-                viewModel.MemberId, 
-                viewModel.SiteId, 
-                viewModel.GameRoundId, 
-                (byte)viewModel.GameId, 
+            viewModel.Result = await mediator.Send(new VoidTicketRequest(
+                viewModel.MemberId,
+                viewModel.SiteId,
+                viewModel.GameRoundId,
+                (byte)viewModel.GameId,
                 viewModel.Reason,
                 viewModel.FreeBet));
 
-            return result.IsSuccessful();
+            return View(viewModel);
         }
     }
 }

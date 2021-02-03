@@ -6,6 +6,19 @@
 }
 
 <div class="col-md-12 col-lg-5 card">
+    @if (Model.Result != null && Model.Result.IsSuccessful() == true)
+    {
+        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Voided successfully</span></div>
+    }
+
+    @if (Model.Result != null && Model.Result.IsSuccessful() == false)
+    {
+        <div class="message-error hidden-cls" id="failedMsg">
+            <i class="icon-cancel"></i>
+            <span>Error: @Model.Result.ErrorCode - @Model.Result.ErrorMessage - @Model.Result.ErrorDescription</span>
+        </div>
+    }
+
     <form class="card-body form" asp-action="VoidTicket" asp-controller="VoidGame" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>

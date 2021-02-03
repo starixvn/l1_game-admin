@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.OWResults;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.VoidGame.ViewModels
@@ -40,5 +41,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
         public string Reason { get; set; }
 
         public bool FreeBet { get; set; }
+
+        public VoidGameResult Result { get; set; }
     }
 }

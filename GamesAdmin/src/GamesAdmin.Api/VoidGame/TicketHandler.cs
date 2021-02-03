@@ -434,7 +434,7 @@ namespace GamesAdmin.Api.VoidGame
             var database = isArchive ? archiveDatabase : activeDatabase;
             var postfix = isArchive ? ArchivePostfix : string.Empty;
 
-            var roundCollection = database.GetCollection<Round>($"{collections.Bet}{postfix}");
+            var roundCollection = database.GetCollection<Round>($"{collections.Round}{postfix}");
             var round = await FindRound(roundCollection, gameRoundId);
 
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
