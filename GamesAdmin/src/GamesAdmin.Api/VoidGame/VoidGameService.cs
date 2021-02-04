@@ -11,7 +11,7 @@ namespace GamesAdmin.Api.VoidGame
     public interface IVoidGameApi
     {
         [Post("/Member/VoidGame")]
-        Task<VoidGameResult> VoidGameTicket([Body] VoidTicketRequest request);
+        Task<VoidGameApiResult> VoidGameTicket([Body] VoidTicketRequest request);
     }
 
     public interface IVoidGameService
@@ -39,11 +39,11 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var requestTime = DateTimeOffset.UtcNow;
-                var result = await voidGameApi.VoidGameTicket(request);
+                var apiResult = await voidGameApi.VoidGameTicket(request);
+                await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, apiResult.Result);
 
-                if (result.IsSuccessful())
+                if (apiResult.Result.IsSuccessful())
                 {
-                    await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, result);
                     sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
 
                     var moved = await ticketHandler.Void(
@@ -53,13 +53,13 @@ namespace GamesAdmin.Api.VoidGame
                         request.GameTypeId,
                         request.FreeBet);
 
-                    if (!moved) 
+                    if (!moved)
                     {
                         return new VoidGameResult { ErrorCode = 1000, ErrorMessage = "Tickets was moved unsuccessfully." };
                     }
                 }
 
-                return result;
+                return apiResult.Result;
             }
             catch (Exception ex)
             {
