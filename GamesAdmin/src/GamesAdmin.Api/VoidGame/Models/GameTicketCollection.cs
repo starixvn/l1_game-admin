@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Database.Entities
+﻿namespace GamesAdmin.Api.VoidGame.Models
 {
     public class GameTicketCollection
     {

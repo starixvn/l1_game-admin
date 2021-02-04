@@ -38,6 +38,17 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
+                var isExistTicket = await ticketHandler.Exist(request.ObCustId,
+                        request.SiteId,
+                        request.GameRoundId,
+                        request.GameTypeId,
+                        request.FreeBet);
+
+                if (!isExistTicket) 
+                {
+                    return new VoidGameResult { ErrorCode = 1001, ErrorMessage = "No such ticket." };
+                }
+
                 var requestTime = DateTimeOffset.UtcNow;
                 var apiResult = await voidGameApi.VoidGameTicket(request);
                 await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, apiResult.Result);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
-using GamesAdmin.Database.Entities;
+using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
@@ -28,6 +28,8 @@ namespace GamesAdmin.Api.VoidGame
            where Bet : BaseBetEntity;
 
         Task<bool> Void(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet);
+
+        Task<bool> Exist(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet);
     }
 
     public class TicketHandler : ITicketHandler
@@ -122,6 +124,54 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.VipSeDieWar => await Move<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> Exist(int obCustId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+        {
+            try
+            {
+                var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
+
+                IGameTicket gameTicket = gameId switch
+                {
+                    GameId.BigSmall => await Find<BigSmallOnesEntity, BigSmallBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.SeDie => await Find<SeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.FishPrawnCrab => await Find<FishPrawnCrabBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.BigSmallTurbo => await Find<BigSmallTurboOnesEntity, BigSmallTurboBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.OddEven => await Find<OddEvenOnesEntity, OddEvenBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.OddEvenTurbo => await Find<OddEvenTurboOnesEntity, OddEvenTurboBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.DragonTiger => await Find<DragonTigerBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoProMax => await Find<KenoProMaxBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.Baccarat => await Find<BaccaratBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.MiniSeDie => await Find<MiniSeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoProViet => await Find<KenoProVietOnesEntity, KenoProVietBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMax => await Find<KenoMaxOnesEntity, KenoMaxBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMax2 => await Find<KenoMax2OnesEntity, KenoMax2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMini => await Find<KenoMiniOnesEntity, KenoMiniBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMini2 => await Find<KenoMini2OnesEntity, KenoMini2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoEast => await Find<KenoEastOnesEntity, KenoEastBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoWest => await Find<KenoWestOnesEntity, KenoWestBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoSouth => await Find<KenoSouthOnesEntity, KenoSouthBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoNorth => await Find<KenoNorthOnesEntity, KenoNorthBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.Roulette => await Find<RouletteOnesEntity, RouletteBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.VipSeDie => await Find<VipSeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.Blackjack => await FindRoundAndBet<BlackjackRoundEntity, BlackjackBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.SpecialSeDie => await Find<SpecialSeDieOnesEntity, SpecialSeDieBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.SicBo => await Find<SicBoOnesEntity, SicBoBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.VipFishPrawnCrab => await Find<VipFishPrawnCrabBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.VipBaccarat => await Find<VipBaccaratBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.VipSeDieWar => await Find<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    _ => default,
+                };
+
+                return gameTicket?.Exist() == true;
             }
             catch (Exception ex)
             {
