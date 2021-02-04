@@ -1,13 +1,11 @@
 ﻿using System;
 using GamesAdmin.Core.OWResults;
 using GamesAdmin.Database.Attributes;
-using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace GamesAdmin.Api.VoidGame.Models
+namespace GamesAdmin.Database.Entities
 {
-    [BsonDatabase("log")]
     [BsonCollection("void_games")]
     public class VoidLogEntity : MiniGameBaseEntity
     {

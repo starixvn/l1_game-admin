@@ -29,6 +29,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ISicBoReportRepository, SicBoReportRepository>();
             services.AddScoped<IVipBaccaratReportRepository, VipBaccaratReportRepository>();
             services.AddScoped<IVipSeDieWarReportRepository, VipSeDieWarReportRepository>();
+
+            services.AddScoped<IVoidLogRepository, VoidLogRepository>();
         }
     }
 }

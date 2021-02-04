@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
-using GamesAdmin.Api.VoidGame.Models;
+using GamesAdmin.Database.Entities;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;

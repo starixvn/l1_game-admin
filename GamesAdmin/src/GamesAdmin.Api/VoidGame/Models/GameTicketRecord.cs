@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Database.Entities;
 
-namespace GamesAdmin.Api.VoidGame.Models
+namespace GamesAdmin.Database.Entities
 {
     public class GameTicketRecord<T1, T2>
         where T1 : BaseBetEntity
