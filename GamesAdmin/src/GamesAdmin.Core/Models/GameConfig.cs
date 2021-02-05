@@ -18,11 +18,13 @@ namespace GamesAdmin.Core.Models
             double botMinBet,
             double botMaxBet,
             double[] hoursMaxBot,
-            string disabledMessage, 
+            string disabledMessage,
             Dictionary<string, double> maxBetChoices,
             Dictionary<string, double> odds,
             int delayStartTime,
-            bool enableFreeBet)
+            bool enableFreeBet,
+            bool smartBotEnabled,
+            int smartBotTotalGroup)
         {
             Id = id;
             Name = name;
@@ -40,6 +42,8 @@ namespace GamesAdmin.Core.Models
             Odds = odds;
             DelayStartTime = delayStartTime;
             EnableFreeBet = enableFreeBet;
+            SmartBotEnabled = smartBotEnabled;
+            SmartBotTotalGroup = smartBotTotalGroup;
         }
 
         public string Id { get; }
@@ -73,5 +77,9 @@ namespace GamesAdmin.Core.Models
         public int DelayStartTime { get; }
 
         public bool EnableFreeBet { get; }
+
+        public bool SmartBotEnabled { get; }
+
+        public int SmartBotTotalGroup { get; }
     }
 }

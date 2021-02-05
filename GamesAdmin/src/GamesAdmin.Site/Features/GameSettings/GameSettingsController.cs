@@ -50,7 +50,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                    editViewModel.MaxBetChoices,
                    editViewModel.Odds,
                    editViewModel.DelayStartTime,
-                   editViewModel.EnableFreeBet)));
+                   editViewModel.EnableFreeBet,
+                   editViewModel.SmartBotEnabled,
+                   editViewModel.SmartBotTotalGroup)));
 
                 return Json(true);
             }
@@ -85,7 +87,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 new Dictionary<string, double>(),
                 new Dictionary<string, double>(),
                 addViewModel.DelayStartTime,
-                false)));
+                false,
+                false,
+                0)));
 
             return RedirectToAction(nameof(Index));
         }

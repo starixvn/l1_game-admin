@@ -71,13 +71,21 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Enable Free Bet")]
         public bool EnableFreeBet { get; set; }
+
+        [DisplayName("Enable Smart Bot")]
+        public bool SmartBotEnabled { get; set; }
+
+        [DisplayName("Total Date Pattern For Smart Bot")]
+        public int SmartBotTotalGroup { get; set; }
     }
 
     public class BotRatioItemViewModel
     {
         private const int MaxPercentage = 100;
 
-        public BotRatioItemViewModel() { }
+        public BotRatioItemViewModel()
+        {
+        }
 
         public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot)
         {

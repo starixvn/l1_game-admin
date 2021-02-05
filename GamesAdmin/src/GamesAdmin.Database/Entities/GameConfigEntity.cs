@@ -34,12 +34,16 @@ namespace GamesAdmin.Database.Entities
         public string DisabledMessage { get; set; }
 
         [BsonElement("choices_maxbet")]
-        public Dictionary<string, double> MaxBetChoices {get; set;}
+        public Dictionary<string, double> MaxBetChoices { get; set; }
 
         public Dictionary<string, double> Odds { get; set; }
 
         public int DelayStartTime { get; set; }
 
         public bool EnableFreeBet { get; set; }
+
+        public bool SmartBotEnabled { get; set; }
+
+        public int SmartBotTotalGroup { get; set; }
     }
 }
