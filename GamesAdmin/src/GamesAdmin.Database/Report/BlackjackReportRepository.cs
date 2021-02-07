@@ -37,7 +37,7 @@ namespace GamesAdmin.Database
                         Cards = x.Cards,
                         SplitForm = x.SplitFrom,
                         Round = x.Round,
-                        HandId = x.HandId,
+                        HandId = x.Round,
                         Point = x.Total,
                         Actions = x.Actions,
                         SoftPoints = x.SoftPoints
@@ -69,7 +69,7 @@ namespace GamesAdmin.Database
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"^(?i){nickname}$");
 
-            var aggregateBuilder = betCollection.Aggregate().Match(x => x.HandId == handId || handId == 0)
+            var aggregateBuilder = betCollection.Aggregate().Match(x => x.Round == handId || handId == 0)
                 .SortByDescending(x => x.Id)
                 .Lookup<BlackjackBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
