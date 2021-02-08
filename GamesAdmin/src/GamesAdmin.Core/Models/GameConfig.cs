@@ -24,7 +24,7 @@ namespace GamesAdmin.Core.Models
             int delayStartTime,
             bool enableFreeBet,
             bool smartBotEnabled,
-            int smartBotTotalGroup)
+            double smartBotTotalGroup)
         {
             Id = id;
             Name = name;
@@ -80,6 +80,6 @@ namespace GamesAdmin.Core.Models
 
         public bool SmartBotEnabled { get; }
 
-        public int SmartBotTotalGroup { get; }
+        public double SmartBotTotalGroup { get; }
     }
 }

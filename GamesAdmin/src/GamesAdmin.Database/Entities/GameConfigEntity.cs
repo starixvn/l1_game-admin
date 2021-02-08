@@ -44,6 +44,6 @@ namespace GamesAdmin.Database.Entities
 
         public bool SmartBotEnabled { get; set; }
 
-        public int SmartBotTotalGroup { get; set; }
+        public double SmartBotTotalGroup { get; set; }
     }
 }
