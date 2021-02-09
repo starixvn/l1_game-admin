@@ -38,7 +38,7 @@ namespace GamesAdmin.Api
             services.AddMediatR(typeof(Startup));
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddDatabase(dbSettings);
+            services.AddDatabase(appSettings);
             services.AddRepositories();
             services.AddServices(appSettings);
 

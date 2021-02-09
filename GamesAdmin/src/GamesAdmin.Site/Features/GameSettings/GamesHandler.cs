@@ -101,6 +101,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.HoursMaxBot, viewModel.BotCount, viewModel.MaxBot);
                 viewModel.BetChoiceBetSettings = GenerateBetSettings(game.Name, game.MaxBetChoices, game.MaxBet);
                 viewModel.BetChoiceOdds = GenerateOdds(game.Name, game.Odds);
+                viewModel.SmartBotTotalGroup = game.SmartBotTotalGroup == 0 ? 0 : (int)(game.SmartBotTotalGroup * 100);
             }
 
             return viewModel;
@@ -212,7 +213,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.Game.MaxBetChoices,
             request.Game.Odds,
             request.Game.DelayStartTime,
-            request.Game.EnableFreeBet));
+            request.Game.EnableFreeBet,
+            request.Game.SmartBotEnabled,
+            request.Game.SmartBotTotalGroup / 100));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
         => gameService.Add(new GameConfig(
@@ -231,7 +234,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             new Dictionary<string, double>(),
             new Dictionary<string, double>(),
             request.Game.DelayStartTime,
-            request.Game.EnableFreeBet));
+            request.Game.EnableFreeBet,
+            false,
+            0));
 
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => gameService.Delete(request.Id);

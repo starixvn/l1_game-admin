@@ -12,6 +12,7 @@ using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
+using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -104,6 +105,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IVipBaccaratOnlineUserApi>(appSettings.GameServers.VipBaccarat.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieWarOnlineUserApi>(appSettings.GameServers.VipSedieWar.Api, refitSettings));
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
+
+            services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
+            services.AddScoped<IVoidGameService, VoidGameService>();
+            services.AddScoped<ITicketHandler, TicketHandler>();
+            services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     {
         private const int MinChoices = 2;
         private const double MinBetAmount = 0.01;
+        private const int MaxPercentage = 100;
 
         public string Id { get; set; }
 
@@ -71,13 +72,22 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Enable Free Bet")]
         public bool EnableFreeBet { get; set; }
+
+        [DisplayName("Enable Smart Bot")]
+        public bool SmartBotEnabled { get; set; }
+
+        [DisplayName("Ratio Of Groups Picked By Date (%)")]
+        [Range(0, MaxPercentage, ErrorMessage = "Number range [0..100]")]
+        public double SmartBotTotalGroup { get; set; }
     }
 
     public class BotRatioItemViewModel
     {
         private const int MaxPercentage = 100;
 
-        public BotRatioItemViewModel() { }
+        public BotRatioItemViewModel()
+        {
+        }
 
         public BotRatioItemViewModel(int utcHour, int greenwichHour, int asiaHour, double botRatio, int totalBot)
         {

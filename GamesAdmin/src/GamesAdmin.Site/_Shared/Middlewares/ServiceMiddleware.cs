@@ -11,6 +11,7 @@ using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
+using GamesAdmin.Site.Features.VoidGame;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
@@ -48,7 +49,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IUmService, UmService>();
 
             services.AddSingleton(RestService.For<INotificationApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<INotificationService, NotificationService>();            
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
@@ -58,6 +59,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IGameRoundResultApi>(appSettings.ResultPageConfiguration.BaseUrl));
             services.AddScoped<IGameRoundResultService, GameRoundResultService>();
+
+            services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IVoidGameService, VoidGameService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
         }

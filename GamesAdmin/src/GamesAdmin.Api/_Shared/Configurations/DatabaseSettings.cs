@@ -13,4 +13,18 @@
 
         public string DatabaseName { get; set; }
     }
+
+    public class ArchiveDatabaseSettings : IDatabaseSettings
+    {
+        public string ConnectionString { get; set; }
+
+        public string DatabaseName { get; set; }
+    }
+
+    public class RemovedDatabaseSettings : IDatabaseSettings
+    {
+        public string ConnectionString { get; set; }
+
+        public string DatabaseName { get; set; }
+    }
 }

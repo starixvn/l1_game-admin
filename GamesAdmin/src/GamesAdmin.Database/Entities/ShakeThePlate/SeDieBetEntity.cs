@@ -25,7 +25,5 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("white4")]
         public decimal FourWhite { get; set; }
-
-        public bool? FreeBet { get; set; }
     }
 }
