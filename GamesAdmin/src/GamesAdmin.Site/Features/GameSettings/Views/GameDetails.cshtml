@@ -112,21 +112,6 @@
             <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <div>
-                <input type="checkbox" asp-for="SmartBotEnabled" />
-                <label asp-for="SmartBotEnabled" class="control-label"></label>
-            </div>
-            <span asp-validation-for="SmartBotEnabled" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="SmartBotTotalGroup" class="control-label"></label>
-            <input type="number" asp-for="SmartBotTotalGroup" class="form-control" />
-        </div>
-
         <input type="hidden" id="gameName" value="@Model.Name" />
     </form>
 </div>
-
-
