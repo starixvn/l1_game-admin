@@ -31,7 +31,7 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1005;
             }
 
-            var round = await GetRoundAsync(bets.FirstOrDefault().HandId);
+            var round = await GetRoundAsync(bets.FirstOrDefault().Round);
 
             var totalBetAmount = bets.Sum(x => x.Bet);
             var totalBetWin = bets.Sum(x => x.Betwin);

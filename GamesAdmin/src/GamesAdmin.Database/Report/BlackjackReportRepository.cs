@@ -36,7 +36,7 @@ namespace GamesAdmin.Database
                         Bet = x.Bet,
                         Cards = x.Cards,
                         SplitForm = x.SplitFrom,
-                        Round = x.HandId,
+                        Round = x.Round,
                         HandId = x.HandId,
                         Point = x.Total,
                         Actions = x.Actions,
