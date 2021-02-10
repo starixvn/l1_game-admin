@@ -8,7 +8,7 @@ namespace GamesAdmin.Database.Entities
     public class BlackjackBetEntity : BaseBetEntity
     {
         [BsonElement("id")]
-        public new long Round { get; set; }
+        public long HandId { get; set; }
 
         public byte Pos { get; set; }
 
