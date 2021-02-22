@@ -96,7 +96,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             if (game != null)
             {
                 viewModel.PayoutViewModel = mapper.Map<PayoutViewModel>(game);
-                viewModel.SmartBotTotalGroup = game.SmartBotTotalGroup == 0 ? 0 : (int)(game.SmartBotTotalGroup * 100);
 
                 viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
@@ -146,7 +145,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return botRatioItems.OrderBy(item => item.GreenwichHour).ToList();
         }
 
-        private List<MaxBetChoiceViewModel> GenerateBetSettings(IEnumerable<Enumeration> betChoices, BetLimit betLimit)
+        private static List<MaxBetChoiceViewModel> GenerateBetSettings(IEnumerable<Enumeration> betChoices, BetLimit betLimit)
         {
             if (betChoices == default)
             {
@@ -159,7 +158,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 choice.DisplayName)).ToList();
         }
 
-        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
+        private static List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
         {
             var items = new List<OddsViewModel>();
 
@@ -183,7 +182,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return items;
         }
 
-        private List<IconOddsViewModel> GenerateIconOdds(Dictionary<string, Dictionary<string, double>> iconOdds)
+        private static List<IconOddsViewModel> GenerateIconOdds(Dictionary<string, Dictionary<string, double>> iconOdds)
         {
             if (iconOdds == default)
             {
@@ -195,7 +194,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 icon.Value)).ToList();
         }
 
-        private IEnumerable<Enumeration> GetBetChoices(string name)
+        private static IEnumerable<Enumeration> GetBetChoices(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || !Enumeration.Contains<Game>(name))
             {
