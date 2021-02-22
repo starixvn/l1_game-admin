@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -15,32 +17,29 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class StatusItemViewModel
     {
-        public StatusItemViewModel(string name, bool enabled, string disabledMessage)
+        public StatusItemViewModel(GameConfig gameConfig)
         {
-            Name = name;
-            Enabled = enabled;
-            DisabledMessage = disabledMessage;
+            GameConfig = gameConfig;
         }
 
-        public string Name { get; }
+        public GameConfig GameConfig { get; }
 
-        public string DisplayName =>  string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
-            ? Name
-            : Enumeration.FromValue<GameType>(Name).DisplayName;
+        public string Name => GameConfig.Info.Name;
 
-        public bool Enabled { get; }
+        public string DisplayName => ParseGameConfigName();
 
-        public bool BotEnabled { get; set; }
+        private string ParseGameConfigName() 
+            => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.Name;
 
-        public string BotEnabledDisplay => BotEnabled ? "Yes" : "No";
+        public bool Enabled => GameConfig.EnableSetting.Enabled;
 
-        public string StatusDisplay => Enabled ? "Yes" : "No";
+        public bool BotEnabled => GameConfig.BotSetting.BotEnabled;
 
-        public string DisabledMessage { get; }
+        public string DisabledMessage => GameConfig.EnableSetting.DisabledMessage;
 
-        public double MinBet { get; set; }
-
-        public double MaxBet { get; set; }
+        public string MinMaxBet => GameConfig.Info.Type == GameType.Slots
+            ? string.Join(" - ", GameConfig.SlotsConfig.StakeLevels.Select(x => x.Stake).ToArray())
+            : $"{GameConfig.BetLimit.MinBet} - {GameConfig.BetLimit.MaxBet}";
     }
 
     public class GameDisableMessage

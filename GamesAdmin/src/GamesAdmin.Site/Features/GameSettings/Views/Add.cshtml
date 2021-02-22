@@ -2,18 +2,8 @@
 @model AddViewModel;
 
 @{
-    ViewData["Title"] = "Games";
+    ViewData["Title"] = "Add Game Settings";
 }
-<div class="header-bar">
-    <ul class="nav">
-        <li class="nav-item">
-            <a role="tab" data-toggle="tab" class="nav-link active" href="#setting">
-                <span>Setting</span>
-            </a>
-        </li>
-    </ul>
-</div>
-
 
 <div class="col-md-12 col-lg-5 card">
     <form class="card-body form" asp-action="Add" asp-controller="GameSettings" method="post">
@@ -22,41 +12,22 @@
 
         <div class="form-group">
             <label asp-for="Name" class="control-label"></label>
-            <select asp-items="@Model.GameTypeItems" asp-for="Name" class="form-control"></select>
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <select asp-items="@Model.GameNames" asp-for="Name" class="form-control"></select>
         </div>
 
-        <div class="form-group">
-            <div>
+        <div class="form-group row">
+            <div class="col-lg-4">
                 <input type="checkbox" asp-for="Enabled" />
                 <label asp-for="Enabled" class="control-label"></label>
             </div>
-            <span asp-validation-for="Enabled" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="MinBet" class="control-label"></label>
-            <input type="number" asp-for="MinBet" class="form-control" />
-            <span asp-validation-for="MinBet" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="MaxBet" class="control-label"></label>
-            <input type="number" asp-for="MaxBet" class="form-control" />
-            <span asp-validation-for="MaxBet" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <div>
+            <div class="col-lg-4">
                 <input type="checkbox" asp-for="BotEnabled" />
                 <label asp-for="BotEnabled" class="control-label"></label>
             </div>
-            <span asp-validation-for="BotEnabled" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="MaxBot" class="control-label"></label>
-            <select asp-items="@Model.BotPercentageItems" asp-for="MaxBot" class="form-control"></select>
+            <div class="col-lg-4">
+                <input type="checkbox" asp-for="EnableFreeBet" />
+                <label asp-for="EnableFreeBet" class="control-label"></label>
+            </div>
         </div>
 
         <div class="form-group">
@@ -64,12 +35,121 @@
             <input type="number" asp-for="DelayStartTime" class="form-control" />
         </div>
 
-        <div class="form-group">
-            <div>
-                <input type="checkbox" asp-for="EnableFreeBet" />
-                <label asp-for="EnableFreeBet" class="control-label"></label>
+        <div class="form-group row" id="rng-game">
+            <div class="col-lg-6">
+                <label asp-for="MinBet" class="control-label"></label>
+                <input type="number" asp-for="MinBet" class="form-control" />
             </div>
-            <span asp-validation-for="EnableFreeBet" class="text-danger"></span>
+
+            <div class="col-lg-6">
+                <label asp-for="MaxBet" class="control-label"></label>
+                <input type="number" asp-for="MaxBet" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Type" class="control-label"></label>
+            <select asp-items="@Model.GameTypes" asp-for="Type" onchange="gameStatus.toogleSlotsConfig();" class="form-control"></select>
+        </div>
+
+        <div id="slots-config" class="slots-game" style="display:none;">
+            <div class="form-group">
+                <label asp-for="Mode" class="control-label"></label>
+                <select asp-items="@Model.ModeItems" asp-for="Mode" class="form-control"></select>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label asp-for="NumberOfIcons" class="control-label"></label>
+                    <input type="number" asp-for="NumberOfIcons" class="form-control" />
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="OddsPerIcon" class="control-label"></label>
+                    <input type="number" asp-for="OddsPerIcon" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" asp-for="BigWinRatio"></label>
+                <input type="number" asp-for="BigWinRatio" class="form-control" />
+            </div>
+
+            <fieldset>
+                <legend>Stake Levels</legend>
+                <div class="form-group row">
+                    @for (var i = 0; i < Model.Stakes.Length; i++)
+                    {
+                        <div class="col-lg-4">
+                            <label class="control-label">@($"Level {i + 1}")</label>
+                            <input type="number" asp-for="@Model.Stakes[i]" class="form-control" />
+                        </div>
+                    }
+                </div>
+            </fieldset>
+            <br />
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <input type="checkbox" asp-for="EnableJackpot" onclick="gameStatus.toogleJackpot();" />
+                    <label asp-for="EnableJackpot" class="control-label"></label>
+                </div>
+            </div>
+
+            <fieldset class="slots-jackpot" style="display: none">
+                <legend>Jackpot</legend>
+
+                <div class="form-group row">
+                    @for (var i = 0; i < Model.Jackpots.Length; i++)
+                    {
+                        <div class="col-lg-4">
+                            <label class="control-label">@($"Level {i + 1}")</label>
+                            <input type="number" asp-for="@Model.Jackpots[i]" class="form-control" />
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label class="control-label" asp-for="WinningRatio"></label>
+                        <input type="number" asp-for="WinningRatio" class="form-control" />
+                        <span asp-validation-for="WinningRatio" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="control-label" asp-for="BotJackpotContribution"></label>
+                        <input type="number" asp-for="BotJackpotContribution" class="form-control" />
+                        <span asp-validation-for="BotJackpotContribution" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="control-label" asp-for="PlayerJackpotContribution"></label>
+                        <input type="number" asp-for="PlayerJackpotContribution" class="form-control" />
+                        <span asp-validation-for="PlayerJackpotContribution" class="text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Bonus</legend>
+                <div class="form-group row">
+                    <div class="col-lg-8">
+                        Note: Bonus = (random (from &nbsp; <b>Min</b> &nbsp; to &nbsp; <b>Max</b>) * Stake Level)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <label class="control-label">Min</label>
+                        <input type="number" asp-for="MinBonus" class="form-control" />
+                        <span asp-validation-for="MinBonus" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label class="control-label">Max</label>
+                        <input type="number" asp-for="MaxBonus" class="form-control" />
+                        <span asp-validation-for="MaxBonus" class="text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+            <br />
         </div>
 
         <div class="form-group">
@@ -78,4 +158,6 @@
     </form>
 </div>
 
-
+@section Scripts{
+    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+}

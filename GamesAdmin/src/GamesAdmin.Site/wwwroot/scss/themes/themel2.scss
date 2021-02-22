@@ -9,18 +9,73 @@
 .content-container {
     position: absolute;
     top: 0;
-    left: 28rem;
+    left: 0;
     right: 0;
     height: 100%;
     transition: all .2s;
+
+    > .btn-hamburger {
+        display: none;
+
+        .hamburger-inner,
+        .hamburger-inner::before,
+        .hamburger-inner::after {
+            background-color: $theme-color;
+        }
+    }
 }
 
 .sidebar.active + .content-container {
-    left: 8rem;
+    left: 0;
+
+    > .btn-hamburger {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 0;
+        z-index: 20;
+    }
 }
 
 .inner-content {
     overflow: auto;
-    height: calc(100% - 9.5rem);
+    height: calc(100vh - 5.6rem);
     padding: 2rem;
 }
+
+.table.sticky-table th {
+    top: -2rem !important;
+}
+
+@media screen and (max-device-width: 767px) {
+    .inner-content {
+        overflow: initial;
+
+        .table.sticky-table th {
+            top: 0 !important;
+        }
+
+        &.android-device {
+            overflow: auto;
+
+            .table.sticky-table th {
+                top: -2rem !important;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .content-container {
+        left: 28rem;
+    }
+
+    .sidebar.active + .content-container {
+        left: 8rem;
+
+        > .btn-hamburger {
+            display: none;
+        }
+    }
+}
+

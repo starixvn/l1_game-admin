@@ -9,7 +9,6 @@
     <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
-
 <div class="col-md-12 col-lg-12 game-status">
     <div class="list-actions">
         <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
@@ -17,7 +16,6 @@
         <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
         <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
     </div>
-
 
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
     {
@@ -46,7 +44,7 @@
                         <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
                     </td>
                     <td>@Model.GameList[index].DisplayName</td>
-                    <td class="text-center">@Model.GameList[index].MinBet - @Model.GameList[index].MaxBet</td>
+                    <td class="text-center">@Model.GameList[index].MinMaxBet</td>
                     <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
                     <td class="text-center">
                         <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
@@ -182,12 +180,10 @@
                                                 </td>
                                             </tr>
                                         }
-
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
@@ -283,7 +279,7 @@
     </div>
 </div>
 
-
 @section Scripts{
-    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    @*<script src="~/js/game-status.min.js" asp-append-version="true"></script>*@
+    <script src="~/js/game-status.js" asp-append-version="true"></script>
 }

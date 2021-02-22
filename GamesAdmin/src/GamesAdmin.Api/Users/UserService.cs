@@ -3,6 +3,7 @@ using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Driver;
 using Sentry;
 using System;
 using System.Collections.Generic;
@@ -22,20 +23,19 @@ namespace GamesAdmin.Api.Users
         Task<User> Get(string username);
 
         Task<User> SignIn(string username, string password);
+
+        Task<bool> ChangePassword(string username, string password, string newPassword);
     }
 
     public class UserService : IUserService
     {
         private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ISentryClient sentryClient;
-        private readonly IMapper mapper;
 
         public UserService(
-            IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<AdminUserEntity> userRepository)
         {
-            this.mapper = mapper;
             this.sentryClient = sentryClient;
             this.userRepository = userRepository;
         }
@@ -134,6 +134,21 @@ namespace GamesAdmin.Api.Users
             }
 
             return default;
+        }
+
+        public async Task<bool> ChangePassword(string username, string password, string newPassword)
+        {
+            var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
+
+            if (userEntity == null || !PasswordHelper.VerifyHashPassword(password, userEntity.Password))
+            {
+                return false;
+            }
+
+            var update = Builders<AdminUserEntity>.Update.Set(nameof(AdminUserEntity.Password), PasswordHelper.HashPassword(newPassword));
+            await userRepository.UpdateAsync(user => user.Username == username, update);
+
+            return true;
         }
     }
 }

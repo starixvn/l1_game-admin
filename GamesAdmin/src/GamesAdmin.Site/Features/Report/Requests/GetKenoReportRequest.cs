@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
     public class GetKenoReportRequest : IRequest<KenoReportViewModel>
     {
         public GetKenoReportRequest(
-            GameType game, 
+            Game game, 
             long roundId, 
             string nickname, 
             bool excludeUUS = true)
@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
             ExcludeUUS = excludeUUS;
         }
 
-        public GameType Game { get; }
+        public Game Game { get; }
 
         public long RoundId { get; }
 

@@ -1,15 +1,28 @@
-﻿using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class UpdateRequest : IRequest<bool>
     {
-        public UpdateRequest(GameConfig game)
+        public UpdateRequest(
+            GameInfo gameInfo,
+            BotSetting botSetting,
+            EnableSetting enableSetting,
+            SlotsConfig slotsConfig)
         {
-            Game = game;
+            GameInfo = gameInfo;
+            BotSetting = botSetting;
+            EnableSetting = enableSetting;
+            SlotsConfig = slotsConfig;
         }
 
-        public GameConfig Game { get; }
+        public GameInfo GameInfo { get; }
+
+        public BotSetting BotSetting { get; }
+
+        public EnableSetting EnableSetting { get; }
+
+        public SlotsConfig SlotsConfig { get; }
     }
 }

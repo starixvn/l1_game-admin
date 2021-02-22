@@ -14,6 +14,8 @@ namespace GamesAdmin.Api.DailySummarize
 
     public class DailySummaryService : IDailySummaryService
     {
+        private const int RoundDecimals = 2;
+
         private readonly IDailySummaryRepository repository;
 
         public DailySummaryService(IDailySummaryRepository repository)
@@ -29,8 +31,8 @@ namespace GamesAdmin.Api.DailySummarize
                 .GroupBy(x => x.Currency)
                 .Select(g => new DailySummaryResult(
                     g.Key,
-                    decimal.Round(g.Sum(i => i.Stake), 2),
-                    decimal.Round(g.Sum(i => i.Payout), 2),
+                    decimal.Round(g.Sum(i => i.Stake), RoundDecimals),
+                    decimal.Round(g.Sum(i => i.Payout), RoundDecimals),
                     g.Sum(i => i.Tickets)));
         }
     }

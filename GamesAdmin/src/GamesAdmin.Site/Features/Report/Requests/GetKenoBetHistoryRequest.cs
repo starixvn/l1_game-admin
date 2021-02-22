@@ -6,14 +6,14 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetKenoBetHistoryRequest : IRequest<KenoBetHistoryViewModel>
     {
-        public GetKenoBetHistoryRequest(GameType game, long roundId, string nickname)
+        public GetKenoBetHistoryRequest(Game game, long roundId, string nickname)
         {
             Game = game;
             RoundId = roundId;
             Nickname = nickname;
         }
 
-        public GameType Game { get; }
+        public Game Game { get; }
 
         public long RoundId { get; }
 

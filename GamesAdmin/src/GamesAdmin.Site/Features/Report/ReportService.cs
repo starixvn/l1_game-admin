@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.SlotGame;
+using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report;
 
 namespace GamesAdmin.Site.Features.ClientSites
@@ -24,7 +27,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(Game game, long roundId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
@@ -34,9 +37,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
 
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname);
 
-        Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId);
+        Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId);
 
         Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeUUS);
 
@@ -47,6 +50,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
+
+        Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
 
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
 
@@ -62,6 +67,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -103,13 +111,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
-        public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(GameType game, long roundId, string nickname, bool excludeUUS)
+        public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(Game game, long roundId, string nickname, bool excludeUUS)
         => reportApi.GetKenoReport(game.Value, roundId, nickname, excludeUUS);
 
-        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(GameType game, long roundId, string nickname)
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname)
         => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
 
-        public Task<KenoRoundResult> GetKenoRoundResult(GameType game, long roundId)
+        public Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId)
         => reportApi.GetKenoRoundResult(game.Value, roundId);
 
         public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
@@ -126,6 +134,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
         => await reportApi.GetRouletteBetHistory(roundId, userId);
+
+        public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
+        => reportApi.GetLuckyWheelBetHistory(nickname);
 
         public Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipSeDieReport(roundId, nickname, excludeUUS);
@@ -157,5 +168,11 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId)
         => reportApi.GetSicBoBetHistory(roundId, userId);
+
+        public Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetFourGuardiansReport(roundId, nickname, excludeUUS);
+
+        public Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+            => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
     }
 }

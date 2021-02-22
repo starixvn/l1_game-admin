@@ -188,4 +188,74 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
 
+    public class FourGuardiansBetRecord : BetRecord
+    {
+        public long RoundId { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public IEnumerable<byte> Paylines { get; set; }
+
+        public bool FreeSpin { get; set; }
+
+        public IEnumerable<byte> Result { get; set; }
+
+        public FourGuardiansSettlementResult SettlementResult { get; set; }
+
+        public IEnumerable<FourGuardiansBonusChest> BonusChests { get; set; }
+
+        public bool Paid { get; set; }
+    }
+
+    public class FourGuardiansBonusChest
+    {
+        public decimal Amount { get; set; }
+
+        public bool Picked { get; set; }
+    }
+
+    public class FourGuardiansSettlementResult
+    {
+        public IEnumerable<FourGuardiansWinningLine> WinningPaylines { get; set; }
+
+        public FourGuardiansBonus Bonus { get; set; }
+
+        public FourGuardiansFreeSpin FreeSpins { get; set; }
+
+        public FourGuardiansJackpot Jackpot { get; set; }
+    }
+
+    public class FourGuardiansJackpot
+    {
+        public byte WinningLine { get; set; }
+
+        public decimal WinningAmount { get; set; }
+    }
+
+    public class FourGuardiansWinningLine
+    {
+        public byte Payline { get; set; }
+
+        public string Symbol { get; set; }
+
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
+
+    public class FourGuardiansBonus
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
+
+    public class FourGuardiansFreeSpin
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
 }

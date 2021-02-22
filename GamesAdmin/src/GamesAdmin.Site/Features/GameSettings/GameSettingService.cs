@@ -17,12 +17,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/")]
         Task<bool> Add([Body] GameConfig game);
 
-        [Put("/game_settings/")]
-        Task<bool> Update([Body] GameConfig game);
-
-        [Post("/game_settings/{id}/delete")]
-        Task<bool> Delete(string id);
-
         [Get("/game_settings/{name}")]
         Task<GameConfig> GetByName(string name);
 
@@ -31,6 +25,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Put("/game_settings/{name}/update_message")]
         Task<bool> UpdateMessage(string name, string disabledMessage);
+
+        [Put("/game_settings/update_message_all")]
+        Task<bool> UpdateMessage(string disabledMessage);
 
         [Post("/game_server/reload")]
         Task<bool> Reload();
@@ -43,17 +40,31 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Get("/game_server/online_users/{game}")]
         Task<OnlineUsers> GetOnlineUsers(string game = null);
+
+        [Post("/game_settings/{name}/update_bot_ratios")]
+        Task<bool> UpdateBotRatios(string name, double[] ratios);
+
+        [Post("/game_settings/update_bet_limit_odds")]
+        Task<bool> UpdateBetLimitAndOdds([Body] UpdateBetLimitAndOddsRequest request);
+
+        [Post("/game_settings/update_general_config")]
+        Task<bool> UpdateGeneralConfig([Body] UpdateGeneralConfigRequest request);
+
+        [Post("/game_settings/update_jackpot")]
+        Task<bool> UpdateJackpot([Body] UpdateJackpotRequest request);
+
+        [Post("/game_settings/update_slot_config")]
+        Task<bool> UpdateSlotConfig([Body] UpdateSlotConfigRequest request);
+
+        [Post("/game_settings/{name}/update_slot_odds")]
+        Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
     }
 
     public interface IGameSettingService
     {
         Task<IList<GameConfig>> GetAll();
 
-        Task<bool> Update(GameConfig game);
-
         Task<bool> Add(GameConfig game);
-
-        Task<bool> Delete(string id);
 
         Task<GameConfig> GetByName(string name);
 
@@ -61,7 +72,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisabledMessage(string name, string message);
+        Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false);
 
         Task<bool> Reload();
 
@@ -70,6 +81,18 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UnderMaintenance(UnderMaintenanceRequest request);
 
         Task<OnlineUsers> GetOnlineUsers(string game = null);
+
+        Task<bool> UpdateBotRatios(string name, double[] ratios);
+
+        Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request);
+
+        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        Task<bool> UpdateJackpot(UpdateJackpotRequest request);
+
+        Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request);
+
+        Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -100,12 +123,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
-        public async Task<bool> Update(GameConfig game)
-        => await gameApi.Update(game);
-
-        public async Task<bool> Delete(string id)
-        => await gameApi.Delete(id);
-
         public async Task<GameConfig> GetByName(string name)
         => await gameApi.GetByName(name);
 
@@ -119,8 +136,19 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateStatus(string[] names, bool enabled)
         => gameApi.UpdateStatus(names, enabled);
 
-        public Task<bool> UpdateDisabledMessage(string name, string message)
-        => gameApi.UpdateMessage(name, message);
+        public async Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false)
+        {
+            try
+            {
+                return isApplyAll ? await gameApi.UpdateMessage(message) : await gameApi.UpdateMessage(name, message);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+
+            return false;
+        }
 
         public Task<bool> Reload()
         => gameApi.Reload();
@@ -133,5 +161,23 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<OnlineUsers> GetOnlineUsers(string game = null)
         => gameApi.GetOnlineUsers(game);
+
+        public Task<bool> UpdateBotRatios(string name, double[] ratios)
+       => gameApi.UpdateBotRatios(name, ratios);
+
+        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+        => gameApi.UpdateBetLimitAndOdds(request);
+
+        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+        => gameApi.UpdateSlotOddss(name, iconOdds);
+
+        public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
+        => gameApi.UpdateJackpot(request);
+
+        public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
+        => gameApi.UpdateSlotConfig(request);
+
+        public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
+        => gameApi.UpdateGeneralConfig(request);
     }
 }

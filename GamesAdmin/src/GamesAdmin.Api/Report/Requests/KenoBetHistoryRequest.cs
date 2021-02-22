@@ -9,12 +9,12 @@ namespace GamesAdmin.Api.Report.Requests
     {
         public KenoBetHistoryRequest(string game, long roundId, string nickname)
         {
-            Game = Enumeration.FromValue<GameType>(game);
+            Game = Enumeration.FromValue<Game>(game);
             RoundId = roundId;
             Nickname = nickname;
         }
 
-        public GameType Game { get; }
+        public Game Game { get; }
 
         public long RoundId { get; }
 

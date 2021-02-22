@@ -2,26 +2,22 @@
 
 // Notification
 
-.back-button .material-icons {
-    left: 0.9rem;
-}
-
 .tbl-notification {
     .col-display {
-        width: 15rem;
+        width: 15rem
     }
 
     .col-options {
-        width: 10rem;
+        width: 10rem
     }
 
     .action-link {
-        margin: 0.6rem;
+        margin: .6rem;
         font-size: 2rem;
-        color: #6c757d;
+        color: #8f8f8f;
+    }
 
-        &:hover {
-            color: #da624a;
-        }
+    .action-link:hover {
+        color: $theme-color;
     }
 }

@@ -1,0 +1,38 @@
+﻿@using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
+@model SlotResultViewModel
+
+@{
+    ViewData["Title"] = $"{Model.DisplayGameName} Result Controller";
+}
+
+@section Styles {
+    <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<form class="form filter" data-ajax="true" data-ajax-method="POST" asp-action="SetSlotResult" data-ajax-mode="replace" data-ajax-update="#set-result"
+      data-ajax-loading="#spinner"
+      method="POST">
+    <div class="form-row align-items-center">
+        <input type="hidden" asp-for="GameName" />
+        <div class="col-auto">
+            <label asp-for="Nickname" class="control-label"></label>
+            <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+        </div>
+        <div class="col-auto">
+            <label asp-for="Results" class="control-label"></label>
+            <input type="text" class="form-control" asp-for="Results">
+        </div>
+        <div class="col-auto mt-5">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="set-result" class="col-sm-12 report-container">
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+}

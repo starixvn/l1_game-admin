@@ -1,0 +1,23 @@
+﻿using AutoMapper;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Database.Entities;
+
+namespace GamesAdmin.Api.GameSettings.Mappers
+{
+    public class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<GameConfigEntity, GameInfo>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type));
+
+            CreateMap<GameConfigEntity, GameConfig>()
+                .ForMember(dest => dest.Info, opt => opt.MapFrom(src => new GameInfo(src.Name, src.EnableFreeBet, (GameType)src.Type)))
+                .ForMember(dest => dest.BetLimit, opt => opt.MapFrom(src => new BetLimit(src.Minbet, src.Maxbet, src.MaxBetChoices)))
+                .ForMember(dest => dest.BotSetting, opt => opt.MapFrom(src => new BotSetting(src.Botenabled, src.BotMaxBet, src.HoursMaxBot)))
+                .ForMember(dest => dest.EnableSetting, opt => opt.MapFrom(src => new EnableSetting(src.Enabled, src.DisabledRound, src.DelayStartTime, src.DisabledMessage)));
+        }
+    }
+}

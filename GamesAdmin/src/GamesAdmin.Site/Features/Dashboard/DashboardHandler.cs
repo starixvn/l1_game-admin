@@ -54,20 +54,21 @@ namespace GamesAdmin.Site.Features.Dashboard
             GameTypeItems = GenerateGameItems()
         };
 
-        private List<SelectListItem> GenerateGameItems()
+        private static List<SelectListItem> GenerateGameItems()
             => new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
-                new SelectListItem(GameType.SeDie.DisplayName, GameType.SeDie.Value),
-                new SelectListItem(GameType.VipSeDie.DisplayName, GameType.VipSeDie.Value),
-                new SelectListItem(GameType.KenoProMax.DisplayName, GameType.KenoProMax.Value),
-                new SelectListItem(GameType.Baccarat.DisplayName, GameType.Baccarat.Value),
-                new SelectListItem(GameType.Roulette.DisplayName, GameType.Roulette.Value),
-                new SelectListItem(GameType.SpecialSeDie.DisplayName, GameType.SpecialSeDie.Value),
-                new SelectListItem(GameType.BlackJack.DisplayName, GameType.BlackJack.Value),
-                new SelectListItem(GameType.VipFishPrawnCrab.DisplayName, GameType.VipFishPrawnCrab.Value),
-                new SelectListItem(GameType.SicBo.DisplayName, GameType.SicBo.Value),
-                new SelectListItem(GameType.VipBaccarat.DisplayName, GameType.VipBaccarat.Value),
-                new SelectListItem(GameType.VipSeDieWar.DisplayName, GameType.VipSeDieWar.Value),
+                new SelectListItem(Game.SeDie.DisplayName, Game.SeDie.Value),
+                new SelectListItem(Game.VipSeDie.DisplayName, Game.VipSeDie.Value),
+                new SelectListItem(Game.KenoProMax.DisplayName, Game.KenoProMax.Value),
+                new SelectListItem(Game.Baccarat.DisplayName, Game.Baccarat.Value),
+                new SelectListItem(Game.Roulette.DisplayName, Game.Roulette.Value),
+                new SelectListItem(Game.SpecialSeDie.DisplayName, Game.SpecialSeDie.Value),
+                new SelectListItem(Game.BlackJack.DisplayName, Game.BlackJack.Value),
+                new SelectListItem(Game.VipFishPrawnCrab.DisplayName, Game.VipFishPrawnCrab.Value),
+                new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
+                new SelectListItem(Game.VipBaccarat.DisplayName, Game.VipBaccarat.Value),
+                new SelectListItem(Game.VipSeDieWar.DisplayName, Game.VipSeDieWar.Value),
+                new SelectListItem(Game.FourGuadians.DisplayName, Game.FourGuadians.Value)
                 };
     }
 }

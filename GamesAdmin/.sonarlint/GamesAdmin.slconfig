@@ -1,5 +1,5 @@
 {
-  "ServerUri": "https://sonarqube.lumigame.com/",
+  "ServerUri": "http://sonarqube.lumigame.com/",
   "Organization": null,
   "ProjectKey": "l1-game-admin",
   "ProjectName": "l1-game-admin",

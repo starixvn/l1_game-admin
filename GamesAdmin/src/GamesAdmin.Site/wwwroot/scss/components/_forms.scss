@@ -14,6 +14,11 @@
         @media screen and (min-device-width: 1300px) {
             font-size: 1.4rem;
         }
+
+        &.small {
+            height: 2.8rem;
+            margin-bottom: 1rem;
+        }
     }
 
     .form-control:disabled,

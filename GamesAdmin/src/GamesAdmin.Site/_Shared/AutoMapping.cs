@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
-using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using GamesAdmin.Site.Features.UmSchedule.Requests;
@@ -15,13 +15,10 @@ namespace GamesAdmin.Site._Shared
     {
         public AutoMapping()
         {
-            CreateMap<GameConfig, Features.GameSettings.ViewModels.EditViewModel>();
-            CreateMap<GameConfig, StatusItemViewModel>();
-            CreateMap<GameConfig, MonitorItemViewModel>();
             CreateMap<OnlineUser, OnlineUserViewModel>();
             CreateMap<BotUser, BotUserViewModel>();
-            CreateMap<CreateRequest, UmSchedule>();
 
+            CreateMap<CreateRequest, UmSchedule>();
             CreateMap<UmSchedule, UmScheduleItemViewModel>();
 
             CreateMap<AddRequest, Notification>();
@@ -74,6 +71,16 @@ namespace GamesAdmin.Site._Shared
             CreateMap<VipSeDieWarBetRecord, VipSeDieWarRecordViewModel>();
             CreateMap<VipSeDieWarBetHistoryRecord, VipSeDieWarBetHistoryRecordViewModel>();
 
+
+            CreateMap<FourGuardiansBetRecord, FourGuardiansRecordViewModel>();
+            CreateMap<FourGuardiansSettlementResult, FourGuardiansSettlementResultViewModel>();
+            CreateMap<FourGuardiansFreeSpin, FourGuardiansFreeSpinViewModel>();
+            CreateMap<FourGuardiansBonus, FourGuardiansBonusViewModel>();
+            CreateMap<FourGuardiansWinningLine, FourGuardiansWinningLineViewModel>();
+            CreateMap<FourGuardiansBonusChest, FourGuardiansBonusChestViewModel>();
+            CreateMap<FourGuardiansJackpot, FourGuardiansJackpotViewModel>();
+
+            CreateMap<JackpotRecord, JackpotRecordViewModel>();
         }
     }
 }

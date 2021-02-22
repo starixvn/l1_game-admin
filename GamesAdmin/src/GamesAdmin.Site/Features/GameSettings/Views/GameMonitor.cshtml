@@ -1,4 +1,6 @@
-﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+﻿@using System.Security.Claims;
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 @model MonitorViewModel;
 
 @{
@@ -9,7 +11,6 @@
     <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
     <link href="~/scss/pages/game-status.min.css" rel="stylesheet" asp-append-version="true" />
 }
-
 
 <div class="col-md-12 col-lg-6 game-status">
     <table id="status-tbl" class="table table-bordered">
@@ -24,11 +25,23 @@
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
                 <tr>
-                    <td>@Model.GameList[index].DisplayName</td>
+                    <td>@(Model.GameList[index].DisplayName ?? Model.GameList[index].Name)</td>
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledMonitoring)
                         {
-                            <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                            if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                            {
+                                if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == Role.Admin.Value)
+                                {
+                                    <a class="icon-action" href="~/ResultMonitor/SlotResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                                }
+
+                            }
+                            else
+                            {
+                                <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                            }
+
                         }
                     </td>
                     <td class="text-center">
@@ -42,7 +55,6 @@
         </tbody>
     </table>
 </div>
-
 
 @section Scripts{
     <environment include="Development">
