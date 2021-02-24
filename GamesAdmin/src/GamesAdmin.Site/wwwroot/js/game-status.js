@@ -437,7 +437,45 @@
 
             $(id).show();
             $(headerId).addClass("active");
-        }
+        },
+
+        showSiteExclusions: function (textMsg, name, displayName) {
+            $('#siteExclusions').val(textMsg);
+            $('#siteExclusionGameName').val(name);
+            $('#siteExclusionGameNameLabel').html(displayName);
+
+            $('#siteExclusionModal').modal('show');
+        },
+
+        updateSiteExclusions: function () {
+            const exclutions = $('#siteExclusions').val();
+            const name = $('#siteExclusionGameName').val();
+            const url = "/exclusions/update";
+            const data = { configName: name, siteExclusions: exclutions };
+            $('#updateExclusionsBtn').prop('disabled', true);
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                dataType: 'json',
+                data: data,
+            }).done(function (result) {
+                if (result) {
+                    $('#updateExclusionsSuccess').show();
+                }
+                else {
+                    $('#updateExclusionsFailed').show();
+                }
+
+                setTimeout(function () {
+                    $('#updateExclusionsBtn').prop('disabled', false);
+                    $('#updateExclusionsSuccess').hide();
+                    $('#updateExclusionsFailed').hide();
+                    $('#siteExclusionModal').modal('hide');
+                    location.reload();
+                }, 1000);
+            });
+        },
     }
 }(jQuery));
 

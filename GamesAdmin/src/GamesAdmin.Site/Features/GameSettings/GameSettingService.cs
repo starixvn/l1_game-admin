@@ -58,6 +58,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/game_settings/{name}/update_slot_odds")]
         Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        [Post("/game_settings/{name}/update_site_exclusions")]
+        Task<bool> UpdateSiteExclusions(string name, string[] exclusions);
     }
 
     public interface IGameSettingService
@@ -93,6 +96,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request);
 
         Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
+
+        Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -179,5 +184,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
         => gameApi.UpdateGeneralConfig(request);
+
+        public Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request)
+         => gameApi.UpdateSiteExclusions(request.ConfigName, request.SiteExclusions.Trim().Split(","));
     }
 }

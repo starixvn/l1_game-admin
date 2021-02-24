@@ -68,7 +68,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
                 new SelectListItem(Game.VipBaccarat.DisplayName, Game.VipBaccarat.Value),
                 new SelectListItem(Game.VipSeDieWar.DisplayName, Game.VipSeDieWar.Value),
-                new SelectListItem(Game.FourGuadians.DisplayName, Game.FourGuadians.Value)
+                new SelectListItem(Game.FourGuardians.DisplayName, Game.FourGuardians.Value)
                 };
     }
 }

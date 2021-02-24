@@ -35,6 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UnderMaintenanceRequest, bool>
         , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
         , IRequestHandler<UpdateJackpotRequest, bool>
+        , IRequestHandler<UpdateSiteExclusionRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -326,5 +327,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request);
+
+        public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSiteExclusions(request);
     }
 }

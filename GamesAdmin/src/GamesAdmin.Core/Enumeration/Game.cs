@@ -33,35 +33,35 @@
         public const string FourGuardiansValue = "fourguardians";
 
 
-        public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small");
-        public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small");        
-        public static readonly Game FishPrawnCrab = new Game(FishPrawnCrabValue, "Fish Prawn Crab");
-        public static readonly Game SeDie = new Game(SeDieValue, "Se Die");
-        public static readonly Game OddEven = new Game(OddEvenValue, "Odd Even");
-        public static readonly Game OddEvenTurbo = new Game(OddEvenTurboValue, "Turbo Odd Even");
-        public static readonly Game DragonTiger = new Game(DragonTigerValue, "Dragon Tiger");
-        public static readonly Game KenoProMax = new Game(KenoProMaxValue, "Keno Pro Max");
-        public static readonly Game Baccarat = new Game(BaccaratValue, "Baccarat");
-        public static readonly Game MiniSeDie = new Game(MiniSeDieValue, "Mini Se Die");
-        public static readonly Game KenoProViet = new Game(KenoProVietValue, "Keno Pro Viet");
-        public static readonly Game KenoMax = new Game(KenoMaxValue, "Keno Max");
-        public static readonly Game KenoMax2 = new Game(KenoMax2Value, "Keno Max2");
-        public static readonly Game KenoMini = new Game(KenoMiniValue, "Keno Mini");
-        public static readonly Game KenoMini2 = new Game(KenoMini2Value, "Keno Mini 2");
-        public static readonly Game KenoEast = new Game(KenoEastValue, "Keno East");
-        public static readonly Game KenoWest = new Game(KenoWestValue, "Keno West");
-        public static readonly Game KenoSouth = new Game(KenoSouthValue, "Keno South");
-        public static readonly Game KenoNorth = new Game(KenoNorthValue, "Keno North");
-        public static readonly Game Roulette = new Game(RouletteValue, "Roulette");
+        public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
+        public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);        
+        public static readonly Game FishPrawnCrab = new Game(FishPrawnCrabValue, "Fish Prawn Crab", GameId.FishPrawnCrab);
+        public static readonly Game SeDie = new Game(SeDieValue, "Se Die", GameId.SeDie);
+        public static readonly Game OddEven = new Game(OddEvenValue, "Odd Even", GameId.OddEven);
+        public static readonly Game OddEvenTurbo = new Game(OddEvenTurboValue, "Turbo Odd Even", GameId.OddEvenTurbo);
+        public static readonly Game DragonTiger = new Game(DragonTigerValue, "Dragon Tiger", GameId.DragonTiger);
+        public static readonly Game KenoProMax = new Game(KenoProMaxValue, "Keno Pro Max", GameId.KenoProMax);
+        public static readonly Game Baccarat = new Game(BaccaratValue, "Baccarat", GameId.Baccarat);
+        public static readonly Game MiniSeDie = new Game(MiniSeDieValue, "Mini Se Die", GameId.MiniSeDie);
+        public static readonly Game KenoProViet = new Game(KenoProVietValue, "Keno Pro Viet", GameId.KenoProViet);
+        public static readonly Game KenoMax = new Game(KenoMaxValue, "Keno Max", GameId.KenoMax);
+        public static readonly Game KenoMax2 = new Game(KenoMax2Value, "Keno Max2", GameId.KenoMax2);
+        public static readonly Game KenoMini = new Game(KenoMiniValue, "Keno Mini", GameId.KenoMini);
+        public static readonly Game KenoMini2 = new Game(KenoMini2Value, "Keno Mini 2", GameId.KenoMini2);
+        public static readonly Game KenoEast = new Game(KenoEastValue, "Keno East", GameId.KenoEast);
+        public static readonly Game KenoWest = new Game(KenoWestValue, "Keno West", GameId.KenoWest);
+        public static readonly Game KenoSouth = new Game(KenoSouthValue, "Keno South", GameId.KenoSouth);
+        public static readonly Game KenoNorth = new Game(KenoNorthValue, "Keno North", GameId.KenoNorth);
+        public static readonly Game Roulette = new Game(RouletteValue, "Roulette", GameId.Roulette);
         public static readonly Game LuckyWheel = new Game(LuckyWheelValue, "Lucky Wheel");
-        public static readonly Game VipSeDie = new Game(VipSeDieValue, "Vip Se Die");
-        public static readonly Game SpecialSeDie = new Game(SpecialSeDieValue, "Special SeDie");
-        public static readonly Game BlackJack = new Game(BlackJackValue, "Blackjack");
-        public static readonly Game VipFishPrawnCrab = new Game(VipFishPrawnCrabValue, "Vip Fish Prawn Crab");
-        public static readonly Game SicBo = new Game(SicBoValue, "Sic Bo");
-        public static readonly Game VipBaccarat = new Game(VipBaccaratValue, "Vip Baccarat");
-        public static readonly Game VipSeDieWar = new Game(VipSeDieWarValue, "Se Die War");
-        public static readonly Game FourGuadians = new Game(FourGuardiansValue, "Four Guardians");
+        public static readonly Game VipSeDie = new Game(VipSeDieValue, "Vip Se Die", GameId.VipSeDie);
+        public static readonly Game SpecialSeDie = new Game(SpecialSeDieValue, "Special SeDie", GameId.SpecialSeDie);
+        public static readonly Game BlackJack = new Game(BlackJackValue, "Blackjack", GameId.Blackjack);
+        public static readonly Game VipFishPrawnCrab = new Game(VipFishPrawnCrabValue, "Vip Fish Prawn Crab", GameId.VipFishPrawnCrab);
+        public static readonly Game SicBo = new Game(SicBoValue, "Sic Bo", GameId.SicBo);
+        public static readonly Game VipBaccarat = new Game(VipBaccaratValue, "Vip Baccarat", GameId.VipBaccarat);
+        public static readonly Game VipSeDieWar = new Game(VipSeDieWarValue, "Se Die War", GameId.VipSeDieWar);
+        public static readonly Game FourGuardians = new Game(FourGuardiansValue, "Four Guardians", GameId.FourGuardians);
 
         public Game()
         {
@@ -71,5 +71,13 @@
             : base(value, displayName)
         {
         }
+
+        public Game(string value, string displayName, GameId id)
+            : base(value, displayName)
+        {
+            GameId = id;
+        }
+
+        public GameId GameId { get; }
     }
 }

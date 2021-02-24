@@ -268,5 +268,23 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return Json(false);
         }
+
+        [HttpPost]
+        [Route("exclusions/update")]
+        public async Task<IActionResult> UpdateSiteExclusions([Bind] UpdateSiteExclusionRequest request)
+        {
+            try
+            {
+                await mediator.Send(request);
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
     }
 }
