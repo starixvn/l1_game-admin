@@ -95,6 +95,8 @@ namespace GamesAdmin.Api.Games
                 };
 
                 await repository.InsertOneAsync(entity);
+
+                //TODO add new config site exclusion for game
             }
             catch (Exception ex)
             {

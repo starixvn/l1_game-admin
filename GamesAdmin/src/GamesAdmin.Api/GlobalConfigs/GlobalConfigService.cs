@@ -46,7 +46,7 @@ namespace GamesAdmin.Api.GlobalConfigs
                 {
                     throw new InvalidOperationException($"Cannot find {GlobalConfigType.SiteExclusion.DisplayName}.");
                 }
-               
+
                 globalConfig.Configs[((int)gameEnum.GameId).ToString()] = exclusions;
 
                 var update = Builders<GlobalConfigEntity>.Update
