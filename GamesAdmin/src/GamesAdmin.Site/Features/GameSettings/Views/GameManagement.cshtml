@@ -58,7 +58,7 @@
                         <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
                     </td>
                     <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GetSiteExclutionsByGame(Model.GameList[index].Name)', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                     </td>
                 </tr>
             }

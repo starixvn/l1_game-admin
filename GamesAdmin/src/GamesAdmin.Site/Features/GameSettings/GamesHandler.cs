@@ -229,12 +229,25 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
         {
             var gameConfigs = await gameService.GetAll();
+            var globalConfig = await gameService.GetSiteExclusion();
+
+            var siteExlusions = new Dictionary<string, IList<string>>();
+            foreach (var gameConfig in gameConfigs)
+            {
+                var gameEnum = Enumeration.Contains<Game>(gameConfig.Info.Name) ? Enumeration.FromValue<Game>(gameConfig.Info.Name) : null;
+
+                if (gameEnum != null && (int)gameEnum.GameId > 0)
+                {
+                    siteExlusions.Add(gameEnum.Value, globalConfig.Configs[((int)gameEnum.GameId).ToString()]);
+                }
+            }
 
             return gameConfigs?.Any() == true
-                ? new StatusViewModel(gameConfigs
-                    .Select(game => new StatusItemViewModel(game))
-                    .OrderBy(game => game.DisplayName)
-                    .ToList())
+                ? new StatusViewModel(
+                    gameConfigs.Select(game => new StatusItemViewModel(game))
+                        .OrderBy(game => game.DisplayName)
+                        .ToList(),
+                    siteExlusions)
                 : new StatusViewModel(new List<StatusItemViewModel>());
         }
 

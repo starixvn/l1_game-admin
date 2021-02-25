@@ -1,10 +1,10 @@
 ﻿using MediatR;
 
-namespace GamesAdmin.Api.GameSettings.Requests
+namespace GamesAdmin.Api.GlobalConfigs.Requests
 {
     public class UpdateSiteExclusionRequest : IRequest<bool>
     {
-        public UpdateSiteExclusionRequest(string name, string[] exclusions) 
+        public UpdateSiteExclusionRequest(string name, string[] exclusions)
         {
             Name = name;
             Exclusions = exclusions;

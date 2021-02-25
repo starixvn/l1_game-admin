@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -36,8 +35,6 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
-
-        Task<bool> UpdateSiteExclusions(string name, string[] exclusions);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -47,18 +44,15 @@ namespace GamesAdmin.Api.Games
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<GameConfigEntity> repository;
-        private readonly IGenericRepository<GlobalConfigEntity> globalConfigRepository;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<GameConfigEntity> repository,
-            IGenericRepository<GlobalConfigEntity> globalConfigRepository)
+            IGenericRepository<GameConfigEntity> repository)
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
-            this.globalConfigRepository = globalConfigRepository;
         }
 
         public Task<IEnumerable<GameConfig>> Get()
@@ -317,67 +311,6 @@ namespace GamesAdmin.Api.Games
 
                 return false;
             }
-        }
-
-        public async Task<bool> UpdateSiteExclusions(string name, string[] exclusions)
-        {
-            try
-            {
-                var globalConfig = await GetOrCreateSiteExclusions();
-
-                if (globalConfig == null)
-                {
-                    throw new InvalidOperationException($"Cannot find {GlobalConfigType.SiteExclusion.DisplayName}.");
-                }
-
-                var gameEnum = Enumeration.FromValue<Game>(name);
-                globalConfig.Configs[((int)gameEnum.GameId).ToString()] = exclusions;
-
-                var update = Builders<GlobalConfigEntity>.Update.Set(field => field.Configs, globalConfig.Configs);
-
-                await globalConfigRepository.UpdateAsync(config => config.Type == GlobalConfigType.SiteExclusion.Value, update);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
-        }
-
-        private async Task<GlobalConfigEntity> GetOrCreateSiteExclusions()
-        {
-            try
-            {
-                var globalConfig = await globalConfigRepository.FindOneAsync(config => config.Type == GlobalConfigType.SiteExclusion.Value);
-
-                if (globalConfig == null)
-                {
-                    var siteExclusions = new Dictionary<string, IList<string>>();
-                    var gameIds = Enum.GetValues(typeof(GameId)).Cast<GameId>();
-
-                    foreach (var id in gameIds)
-                    {
-                        siteExclusions.Add(((int)id).ToString(), new List<string>());
-                    }
-
-                    var newConfig = new GlobalConfigEntity { Type = GlobalConfigType.SiteExclusion.Value, Configs = siteExclusions };
-
-                    await globalConfigRepository.InsertOneAsync(newConfig);
-
-                    return newConfig;
-                }
-
-                return globalConfig;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-            }
-
-            return default;
         }
     }
 }

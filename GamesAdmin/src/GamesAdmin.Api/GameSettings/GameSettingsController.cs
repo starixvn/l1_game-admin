@@ -79,9 +79,5 @@ namespace GamesAdmin.Api.Games
         [HttpPost("{name}/update_slot_odds")]
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
            => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));
-
-        [HttpPost("{name}/update_site_exclusions")]
-        public Task<bool> UpdateSiteExclusions(string name, string[] exclusions)
-          => mediator.Send(new UpdateSiteExclusionRequest(name, exclusions));
     }
 }

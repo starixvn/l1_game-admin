@@ -19,7 +19,6 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSlotConfigRequest, bool>
         , IRequestHandler<UpdateSlotIconOddsRequest, bool>
-        , IRequestHandler<UpdateSiteExclusionRequest, bool>
     {
         private readonly IGameSettingsService gameService;
 
@@ -56,12 +55,9 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
 
         public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateSlotConfig(request.Name,  request.BotEnabled, request.DisplayName, request.SlotsConfig);
+        => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.DisplayName, request.SlotsConfig);
 
         public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
-
-        public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateSiteExclusions(request.Name, request.Exclusions);
     }
 }

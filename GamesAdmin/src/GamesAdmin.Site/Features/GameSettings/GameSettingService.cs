@@ -1,68 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
-using Refit;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    public interface IGameSettingApi : IBaseAuthorizationApi
-    {
-        [Get("/game_settings")]
-        Task<IList<GameConfig>> GetAll();
-
-        [Post("/game_settings/")]
-        Task<bool> Add([Body] GameConfig game);
-
-        [Get("/game_settings/{name}")]
-        Task<GameConfig> GetByName(string name);
-
-        [Put("/game_settings/update_status")]
-        Task<bool> UpdateStatus(string[] names, bool enabled);
-
-        [Put("/game_settings/{name}/update_message")]
-        Task<bool> UpdateMessage(string name, string disabledMessage);
-
-        [Put("/game_settings/update_message_all")]
-        Task<bool> UpdateMessage(string disabledMessage);
-
-        [Post("/game_server/reload")]
-        Task<bool> Reload();
-
-        [Post("/game_server/jwt")]
-        Task<JsonWebToken> GetToken([Body] RequestJWT request);
-
-        [Post("/um")]
-        Task<bool> UnderMaintenance([Body] UnderMaintenanceRequest request);
-
-        [Get("/game_server/online_users/{game}")]
-        Task<OnlineUsers> GetOnlineUsers(string game = null);
-
-        [Post("/game_settings/{name}/update_bot_ratios")]
-        Task<bool> UpdateBotRatios(string name, double[] ratios);
-
-        [Post("/game_settings/update_bet_limit_odds")]
-        Task<bool> UpdateBetLimitAndOdds([Body] UpdateBetLimitAndOddsRequest request);
-
-        [Post("/game_settings/update_general_config")]
-        Task<bool> UpdateGeneralConfig([Body] UpdateGeneralConfigRequest request);
-
-        [Post("/game_settings/update_jackpot")]
-        Task<bool> UpdateJackpot([Body] UpdateJackpotRequest request);
-
-        [Post("/game_settings/update_slot_config")]
-        Task<bool> UpdateSlotConfig([Body] UpdateSlotConfigRequest request);
-
-        [Post("/game_settings/{name}/update_slot_odds")]
-        Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
-
-        [Post("/game_settings/{name}/update_site_exclusions")]
-        Task<bool> UpdateSiteExclusions(string name, string[] exclusions);
-    }
-
     public interface IGameSettingService
     {
         Task<IList<GameConfig>> GetAll();
@@ -98,17 +43,21 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
 
         Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request);
+
+        Task<GlobalConfig> GetSiteExclusion();
     }
 
     public class GameSettingService : IGameSettingService
     {
         private readonly IGameSettingApi gameApi;
+        private readonly IGlobalConfigApi globalConfigApi;
         private readonly ISentryClient sentryClient;
 
-        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi)
+        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi)
         {
             this.sentryClient = sentryClient;
             this.gameApi = gameApi;
+            this.globalConfigApi = globalConfigApi;
         }
 
         public async Task<bool> Add(GameConfig game)
@@ -186,6 +135,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameApi.UpdateGeneralConfig(request);
 
         public Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request)
-         => gameApi.UpdateSiteExclusions(request.ConfigName, request.SiteExclusions.Trim().Split(","));
+        {
+            var formattedExlusions = request.SiteExclusions.Trim().Split(",").Select(exclusion => exclusion.Trim()).ToArray();
+
+            return globalConfigApi.UpdateSiteExclusions(request.ConfigName, formattedExlusions);
+        }
+
+        public Task<GlobalConfig> GetSiteExclusion()
+        => globalConfigApi.GetSiteExclusions();
     }
 }
