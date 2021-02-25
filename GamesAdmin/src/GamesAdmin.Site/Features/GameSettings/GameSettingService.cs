@@ -136,7 +136,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request)
         {
-            var formattedExlusions = request.SiteExclusions.Trim().Split(";").Select(exclusion => exclusion.Trim()).ToArray();
+            var formattedExlusions = string.IsNullOrWhiteSpace(request.SiteExclusions)
+                ? new string[] { }
+                : request.SiteExclusions.Trim().Split(";").Select(exclusion => exclusion.Trim()).ToArray();
 
             return globalConfigApi.UpdateSiteExclusions(request.ConfigName, formattedExlusions);
         }
