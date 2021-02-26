@@ -35,6 +35,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
+
+        Task<bool> UpdateSiteExclusion(string name, string[] exclusions);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -95,8 +97,6 @@ namespace GamesAdmin.Api.Games
                 };
 
                 await repository.InsertOneAsync(entity);
-
-                //TODO add new config site exclusion for game
             }
             catch (Exception ex)
             {
@@ -304,6 +304,24 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.BotMaxBet, botSetting.BotMaxBet);
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateSiteExclusion(string name, string[] exclusions)
+        {
+            try
+            {
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.SiteExclusions, exclusions);
+
+                await repository.UpdateAsync(config => config.Name == name, update);
 
                 return true;
             }

@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public Dictionary<string, IList<string>> SiteExclusions { get; }
 
-        public string GetSiteExclutionsByGame(string name) => SiteExclusions.ContainsKey(name) ? string.Join(", ", SiteExclusions[name]) : string.Empty;
+        public string GetSiteExclutionsByGame(string name) => SiteExclusions.ContainsKey(name) ? string.Join("; ", SiteExclusions[name]) : string.Empty;
     }
 
     public class StatusItemViewModel
