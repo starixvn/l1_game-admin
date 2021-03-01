@@ -45,6 +45,7 @@ namespace GamesAdmin.Database.Entities
         
         public SlotsConfig SlotsConfig { get; set; }
 
+        public string[] SiteExclusions { get; set; }
         public bool SmartBotEnabled { get; set; }        
 
         public double SmartBotTotalGroup { get; set; }

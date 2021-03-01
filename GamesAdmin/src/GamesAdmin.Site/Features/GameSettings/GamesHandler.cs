@@ -35,6 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UnderMaintenanceRequest, bool>
         , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
         , IRequestHandler<UpdateJackpotRequest, bool>
+        , IRequestHandler<UpdateSiteExclusionRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -228,13 +229,36 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<StatusViewModel> Handle(GetStatusRequest request, CancellationToken cancellationToken)
         {
             var gameConfigs = await gameService.GetAll();
+            var siteExlusions = await GetSiteExlusionsByGame(gameConfigs);
 
             return gameConfigs?.Any() == true
-                ? new StatusViewModel(gameConfigs
-                    .Select(game => new StatusItemViewModel(game))
-                    .OrderBy(game => game.DisplayName)
-                    .ToList())
+                ? new StatusViewModel(
+                    gameConfigs.Select(game => new StatusItemViewModel(game))
+                        .OrderBy(game => game.DisplayName)
+                        .ToList(),
+                    siteExlusions)
                 : new StatusViewModel(new List<StatusItemViewModel>());
+        }
+
+        private async Task<Dictionary<string, IList<string>>> GetSiteExlusionsByGame(IList<GameConfig> gameConfigs)
+        {
+            var siteExlusions = new Dictionary<string, IList<string>>();
+            var globalConfig = await gameService.GetSiteExclusion();
+
+            if (globalConfig != null)
+            {
+                foreach (var gameConfig in gameConfigs)
+                {
+                    var gameEnum = Enumeration.Contains<Game>(gameConfig.Info.Name) ? Enumeration.FromValue<Game>(gameConfig.Info.Name) : null;
+
+                    if (gameEnum != null && (int)gameEnum.GameId > 0)
+                    {
+                        siteExlusions.Add(gameEnum.Value, globalConfig.Configs[((int)gameEnum.GameId).ToString()]);
+                    }
+                }
+            }
+
+            return siteExlusions;
         }
 
         public async Task<bool> Handle(UpdateMultipleGameStatusRequest request, CancellationToken cancellationToken)
@@ -326,5 +350,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request);
+
+        public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSiteExclusions(request);
     }
 }

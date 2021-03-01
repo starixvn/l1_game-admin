@@ -7,12 +7,17 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class StatusViewModel
     {
-        public StatusViewModel(IList<StatusItemViewModel> gameList)
+        public StatusViewModel(IList<StatusItemViewModel> gameList, Dictionary<string, IList<string>> siteExclusions = null)
         {
             GameList = gameList;
+            SiteExclusions = siteExclusions;
         }
 
         public IList<StatusItemViewModel> GameList { get; }
+
+        public Dictionary<string, IList<string>> SiteExclusions { get; }
+
+        public string GetSiteExclutionsByGame(string name) => SiteExclusions.ContainsKey(name) ? string.Join("; ", SiteExclusions[name]) : string.Empty;
     }
 
     public class StatusItemViewModel
@@ -28,7 +33,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => ParseGameConfigName();
 
-        private string ParseGameConfigName() 
+        private string ParseGameConfigName()
             => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.Name;
 
         public bool Enabled => GameConfig.EnableSetting.Enabled;

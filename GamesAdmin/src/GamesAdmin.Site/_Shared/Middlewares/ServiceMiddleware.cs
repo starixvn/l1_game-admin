@@ -67,6 +67,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IResultMonitorService, ResultMonitorService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
+            services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
         }
     }
 }

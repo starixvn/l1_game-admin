@@ -7,11 +7,13 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public GameInfo(
             string name,
             bool enableFreeBet,
-            GameType type = GameType.AutoRNG)
+            GameType type = GameType.AutoRNG,
+            string[] siteExclusions = null)
         {
             Name = name;
             EnableFreeBet = enableFreeBet;
-            Type = type;            
+            Type = type;
+            SiteExclusions = siteExclusions;
         }
 
         public GameType Type { get; }
@@ -19,5 +21,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public string Name { get; }
 
         public bool EnableFreeBet { get; }
+
+        public string[] SiteExclusions { get; }
     }
 }

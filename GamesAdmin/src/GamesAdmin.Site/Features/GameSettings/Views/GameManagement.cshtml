@@ -33,6 +33,7 @@
                 <th>Disabled Message</th>
                 <th class="col-status">Bot Enabled</th>
                 <th>Bot Ratio</th>
+                <th>Site Exclusions</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +56,9 @@
                     <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
                     <td class="text-center">
                         <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GetSiteExclutionsByGame(Model.GameList[index].Name)', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                     </td>
                 </tr>
             }
@@ -273,6 +277,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.underMaintenance()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade site-exclusions-modal" id="siteExclusionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Site Exclusions: <span id="siteExclusionGameNameLabel"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-success hidden-cls" id="updateExclusionsSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+                    <div class="message-error hidden-cls" id="updateExclusionsFailed"><i class="icon-cancel"></i><span>Error</span></div>
+
+                    <div class="text-message">
+                        <label class="font-weight-bold">Input Site Name To Exclude</label>
+                        <br />
+                        <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'"></textarea>
+                    </div>                   
+                    <input type="hidden" id="siteExclusionGameName" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="gameStatus.updateSiteExclusions()">Save</button>
                 </div>
             </div>
         </div>
