@@ -30,7 +30,7 @@ type State = {
   socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24, 25, 26, 27, 28];
+const NewSocketGameIds = [2, 8, 22, 24, 25, 26, 27, 28];
 
 export class Home extends React.Component<Props, State> {
   public state: State;
@@ -139,29 +139,40 @@ export class Home extends React.Component<Props, State> {
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_VIP_SEDIE_WAR_SERVER_PROXY_ROUTE
               : Cookies.get("vip-sedie-war-server-endpoint-route"),
-                };
-            case gameNameMapper.vipbaccarat:
-            return {
-                endpoint:
-                    process.env.NEXT_PUBLIC_ENV === 'local'
-                        ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_ENDPOINT
-                        : Cookies.get('vip-baccarat-server-endpoint'),
-                route:
-                    process.env.NEXT_PUBLIC_ENV === 'local'
-                        ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_PROXY_ROUTE
-                        : Cookies.get('vip-baccarat-server-endpoint-route'),
         };
-            case gameNameMapper.sicbo:
-                return {
-                    endpoint:
-                        process.env.NEXT_PUBLIC_ENV === 'local'
-                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_ENDPOINT
-                            : Cookies.get('sic-bo-server-endpoint'),
-                    route:
-                        process.env.NEXT_PUBLIC_ENV === 'local'
-                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
-                            : Cookies.get('sic-bo-server-endpoint-route'),
-                };        
+      case gameNameMapper.vipbaccarat:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_ENDPOINT
+              : Cookies.get("vip-baccarat-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_PROXY_ROUTE
+              : Cookies.get("vip-baccarat-server-endpoint-route"),
+        };
+      case gameNameMapper.sicbo:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_ENDPOINT
+              : Cookies.get("sic-bo-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
+              : Cookies.get("sic-bo-server-endpoint-route"),
+        };
+      case gameNameMapper.kenopromax:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENO_PRO_MAX_SERVER_ENDPOINT
+              : Cookies.get("keno-pro-max-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENO_PRO_MAX_SERVER_PROXY_ROUTE
+              : Cookies.get("keno-pro-max-endpoint-route"),
+        };
       default:
         return {
           endpoint:

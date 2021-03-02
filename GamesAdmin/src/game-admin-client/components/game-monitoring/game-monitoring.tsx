@@ -17,7 +17,7 @@ import SpecialSeDie from "./special-sedie";
 import VipBaccarat from "./vip-baccarat";
 import VipFishPrawnCrab from "./vip-fish-prawn-crab/vip-fish-prawn-crab";
 import VipSeDie from "./vip-sedie/vip-sedie";
-import VipSeDieWar from './vip-se-die-war';
+import VipSeDieWar from "./vip-se-die-war";
 import SicBo from "./sic-bo";
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (
@@ -144,15 +144,15 @@ const gameMapper = {
   26: {
     component: VipFishPrawnCrab,
     ...getInfoByGameKey("VipFishPrawnCrab"),
-    },
-    27: {
-        component: VipBaccarat,
-        ...getInfoByGameKey('VipBaccarat'),
   },
-    28: {
-        component: VipSeDieWar,
-        ...getInfoByGameKey('VipSedieWar'),
-    }
+  27: {
+    component: VipBaccarat,
+    ...getInfoByGameKey("VipBaccarat"),
+  },
+  28: {
+    component: VipSeDieWar,
+    ...getInfoByGameKey("VipSedieWar"),
+  },
 };
 
 export function getGameInfoByGameId(gameId: number | string) {
