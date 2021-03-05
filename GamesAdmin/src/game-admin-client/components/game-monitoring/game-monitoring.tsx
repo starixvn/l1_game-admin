@@ -83,7 +83,7 @@ const gameMapper = {
   },
   8: {
     component: KenoProMax,
-    ...getInfoByGameKey("kenoProMax"),
+    ...getInfoByGameKey("KenoProMax"),
   },
   9: {
     component: MiniSedie,

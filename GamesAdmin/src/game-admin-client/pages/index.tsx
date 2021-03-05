@@ -171,7 +171,7 @@ export class Home extends React.Component<Props, State> {
           route:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_KENO_PRO_MAX_SERVER_PROXY_ROUTE
-              : Cookies.get("keno-pro-max-endpoint-route"),
+              : Cookies.get("keno-pro-max-server-endpoint-route"),
         };
       default:
         return {

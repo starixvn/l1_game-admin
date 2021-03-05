@@ -123,7 +123,7 @@ export default class KenoProMax extends React.Component<Props, State> {
     Object.keys(message.inGame).forEach(function (key) {
       const userObj = message.inGame[key];
       TYPES.forEach((type) => {
-        if (userObj[type] > 0) {
+        if (userObj.betTracks[type] > 0) {
           newData[type].dataList.unshift(_this.getBet(type, userObj));
         }
       });
@@ -186,7 +186,7 @@ export default class KenoProMax extends React.Component<Props, State> {
   getBet(type, userObj) {
     const betItem = new BetItem();
     betItem.name = userObj.name;
-    betItem.bet = userObj[type];
+    betItem.bet = userObj.betTracks[type];
 
     return betItem;
   }

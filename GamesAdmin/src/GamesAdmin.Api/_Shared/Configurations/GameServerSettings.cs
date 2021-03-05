@@ -21,6 +21,8 @@
         public GameServerConfigs VipSedieWar { get; set; }
         
         public GameServerConfigs FourGuardians { get; set; }
+
+        public GameServerConfigs KenoProMax { get; set; }
     }
 
     public class GameServerConfigs

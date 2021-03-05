@@ -3,18 +3,14 @@
     public class GameServerSettings
     {
         public GameServerConfigs Main { get; set; }
-
         public GameServerConfigs Sedie { get; set; }
-
         public GameServerConfigs VipSedie { get; set; }
-
         public GameServerConfigs SpecialSedie { get; set; }
-
         public GameServerConfigs VipFishPrawnCrab { get; set; }
-
         public GameServerConfigs SicBo { get; set; }
         public GameServerConfigs VipSeDieWar { get; set; }
         public GameServerConfigs VipBaccarat { get; set; }
+        public GameServerConfigs KenoProMax { get; set; }
     }
 
     public class GameServerConfigs
