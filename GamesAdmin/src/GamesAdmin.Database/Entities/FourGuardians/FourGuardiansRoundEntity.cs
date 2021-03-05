@@ -11,6 +11,7 @@ namespace GamesAdmin.Database.Entities
     {
         public decimal Bet { get; set; }
 
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal TotalAmount { get; set; }
 
         public IEnumerable<byte> Paylines { get; set; }
@@ -42,6 +43,7 @@ namespace GamesAdmin.Database.Entities
 
     public class FourGuardiansBonusChestEntity
     {
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Amount { get; set; }
 
         public bool Picked { get; set; }
