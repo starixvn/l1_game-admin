@@ -23,6 +23,8 @@
         public GameServerConfigs FourGuardians { get; set; }
 
         public GameServerConfigs KenoProMax { get; set; }
+
+        public GameServerConfigs MiniSeDie { get; set; }
     }
 
     public class GameServerConfigs

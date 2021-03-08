@@ -33,7 +33,10 @@ export default class {
       if (!this.isConnected) {
         this.socket = new WebSocket(this.endpoint);
         this.socket.onmessage = this.onReceiveMessage.bind(this);
-        this.socket.onerror = (event) => logger.error(event);
+        this.socket.onerror = (event) => {
+          logger.error(event);
+          console.log(event);
+        };
         this.socket.onclose = this.disconnect.bind(this);
         this.socket.onopen = () => {
           this.isConnected = true;

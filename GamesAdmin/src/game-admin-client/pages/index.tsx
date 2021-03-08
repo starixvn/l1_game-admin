@@ -30,7 +30,7 @@ type State = {
   socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 8, 22, 24, 25, 26, 27, 28];
+const NewSocketGameIds = [2, 8, 9, 22, 24, 25, 26, 27, 28];
 
 export class Home extends React.Component<Props, State> {
   public state: State;
@@ -172,6 +172,17 @@ export class Home extends React.Component<Props, State> {
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_KENO_PRO_MAX_SERVER_PROXY_ROUTE
               : Cookies.get("keno-pro-max-server-endpoint-route"),
+        };
+      case gameNameMapper.minisedie:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_MINI_SEDIE_SERVER_ENDPOINT
+              : Cookies.get("mini-sedie-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_MINI_SEDIE_SERVER_PROXY_ROUTE
+              : Cookies.get("mini-sedie-server-endpoint-route"),
         };
       default:
         return {

@@ -87,7 +87,7 @@ const gameMapper = {
   },
   9: {
     component: MiniSedie,
-    ...getInfoByGameKey("miniSedie"),
+    ...getInfoByGameKey("MiniSeDie"),
   },
   10: {
     component: Baccarat,

@@ -192,6 +192,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("vip-sedie-war-server-endpoint-route", appSettings.GameServers.VipSeDieWar.SocketRoute);
             HttpContext.Response.Cookies.Append("keno-pro-max-server-endpoint", appSettings.GameServers.KenoProMax.Socket);
             HttpContext.Response.Cookies.Append("keno-pro-max-server-endpoint-route", appSettings.GameServers.KenoProMax.SocketRoute);
+            HttpContext.Response.Cookies.Append("mini-sedie-server-endpoint", appSettings.GameServers.MiniSeDie.Socket);
+            HttpContext.Response.Cookies.Append("mini-sedie-server-endpoint-route", appSettings.GameServers.MiniSeDie.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
