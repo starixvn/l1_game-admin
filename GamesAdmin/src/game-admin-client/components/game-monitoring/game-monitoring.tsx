@@ -63,7 +63,7 @@ const gameMapper = {
   },
   3: {
     component: FishPrawnCrab,
-    ...getInfoByGameKey("baucua"),
+    ...getInfoByGameKey("BauCua"),
   },
   4: {
     component: BigSmallTurbo,

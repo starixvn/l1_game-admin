@@ -12,7 +12,7 @@
         public GameServerConfigs VipBaccarat { get; set; }
         public GameServerConfigs KenoProMax { get; set; }
         public GameServerConfigs MiniSeDie { get; set; }
-
+        public GameServerConfigs FishPrawnCrab { get; set; }
     }
 
     public class GameServerConfigs
