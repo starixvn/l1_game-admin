@@ -9,22 +9,20 @@ import { Container, Row, Col } from "reactstrap";
 import TotalUser from "../../shared/total-user/total-user";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceModel from "../../common/model/DiceModel";
-import BigSmallBaseModel from '../../common/model/BigSmallBaseModel';
-import DiceType from '../../common/model/DiceType';
-import BetItem from '../../common/model/BetItem';
-import { types, gameMapping, gameFlagMapping } from '../game-monitoring-config';
-import { GameState } from '../../shared/common/GameState'
-import { Notice } from "../../shared/notice/notice";
-import { time } from "console";
+import BigSmallBaseModel from "../../common/model/BigSmallBaseModel";
+import DiceType from "../../common/model/DiceType";
+import BetItem from "../../common/model/BetItem";
+import { types, gameMapping, gameFlagMapping } from "../game-monitoring-config";
+import { GameState } from "../../shared/common/GameState";
 
-type BigSmalllProps = {
-  turbo: boolean,
-  type: string,
-  onMessage: Function
-}
+type BigSmallProps = {
+  turbo: boolean;
+  type: string;
+  onMessage: Function;
+};
 
 const betListMapping = (gameType: string, flag: boolean) => {
-  const betListLabels = ['firstBetType', 'secondBetType'];
+  const betListLabels = ["firstBetType", "secondBetType"];
   const reducer = (result: number, gameName: string) => {
     if (gameType === gameName) {
       const mapping: Array<string> = gameMapping[gameName];
@@ -33,14 +31,17 @@ const betListMapping = (gameType: string, flag: boolean) => {
     }
 
     return result;
-  }
+  };
 
   const index = Object.keys(gameMapping).reduce(reducer, 0);
 
   return betListLabels[index];
-}
+};
 
-export default class BigSmallBase extends React.Component<BigSmalllProps, BigSmallBaseModel> {
+export default class BigSmallBase extends React.Component<
+  BigSmallProps,
+  BigSmallBaseModel
+> {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
 
@@ -59,21 +60,26 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     const { turbo, type } = this.props;
     const totalRemainingTime = this.props.turbo ? 30 : 50;
     const totalWaitingTime = this.props.turbo ? 5 : 10;
-    const gameType = turbo && type == 'chanle' ? 'clturbo' : type;
+    const gameType = turbo && type == "chanle" ? "clturbo" : type;
 
     if (data.taixiu != null || data.chanle != null || data.clturbo != null) {
       this.setState({
-        betList: this.getTotalBetList(data[gameType], this.state.betList, gameType),
-        firstBetTypeUsers: data[gameType][`red_player_${gameMapping[gameType][0]}`],
-        secondBetTypeUsers: data[gameType][`red_player_${gameMapping[gameType][1]}`]
-      })
-
+        betList: this.getTotalBetList(
+          data[gameType],
+          this.state.betList,
+          gameType
+        ),
+        firstBetTypeUsers:
+          data[gameType][`red_player_${gameMapping[gameType][0]}`],
+        secondBetTypeUsers:
+          data[gameType][`red_player_${gameMapping[gameType][1]}`],
+      });
     }
 
     if (!!data.list) {
       this.setState({
-        betList: this.getUserBetList(data.list, this.state.betList)
-      })
+        betList: this.getUserBetList(data.list, this.state.betList),
+      });
     }
 
     if (!!data.finish) {
@@ -84,68 +90,74 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
           isHavingResult: false,
           currentState: GameState.running,
           time: {
-            remainingTime: totalRemainingTime
-          }
-        })
+            remainingTime: totalRemainingTime,
+          },
+        });
       }, (totalWaitingTime + 1) * 1000);
 
       this.setState({
-        result: this.getResult(data.finish.dices),
+        result: this.getResult(data.finish.result),
         isHavingResult: true,
         currentState: GameState.waiting,
         time: {
-          remainingTime: totalWaitingTime
-        }
+          remainingTime: totalWaitingTime,
+        },
       });
     }
 
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == totalRemainingTime) {
+      if (
+        this.isFirstLoad ||
+        this.state.time.remainingTime == totalRemainingTime
+      ) {
         clearTimeout(this.timeout);
         this.setState({
           time: { remainingTime: 0 },
           result: new BigSmallBaseModel().result,
           isHavingResult: false,
-          currentState: GameState.disabled
+          currentState: GameState.disabled,
         });
         this.isFirstLoad = false;
       }
     }
 
-    if (!!data.time_remain) {
-      const { time_remain, phien, dices } = data;
-      if ((this.props.turbo && time_remain > totalRemainingTime + 6) || time_remain > totalRemainingTime) {
+    if (!!data.remainingTime) {
+      const { remainingTime, roundId, result } = data;
+      if (
+        (this.props.turbo && remainingTime > totalRemainingTime + 6) ||
+        remainingTime > totalRemainingTime
+      ) {
         this.setState({
           time: {
-            remainingTime: time_remain - totalRemainingTime - 1
+            remainingTime: remainingTime - totalRemainingTime - 1,
           },
-          result: dices ? this.getResult(dices) : this.state.result,
-          isHavingResult: dices ? true : this.state.isHavingResult,
-          roundNumber: phien - 1,
-          currentState: GameState.waiting
-        })
+          result: result ? this.getResult(result) : this.state.result,
+          isHavingResult: result ? true : this.state.isHavingResult,
+          roundNumber: roundId - 1,
+          currentState: GameState.waiting,
+        });
 
         this.timeout = setTimeout(() => {
           this.setState({
             time: {
               remainingTime: totalRemainingTime,
             },
-            roundNumber: phien,
+            roundNumber: roundId,
             currentState: GameState.running,
             isHavingResult: false,
-            result: new BigSmallBaseModel().result
-          })
-        }, (time_remain - totalRemainingTime - 1) * 1000)
+            result: new BigSmallBaseModel().result,
+          });
+        }, (remainingTime - totalRemainingTime - 1) * 1000);
       } else {
         this.setState({
           currentState: GameState.running,
           time: {
-            remainingTime: time_remain - 1
+            remainingTime: remainingTime - 1,
           },
-          roundNumber: phien,
+          roundNumber: roundId,
           isHavingResult: false,
-          result: new BigSmallBaseModel().result
-        })
+          result: new BigSmallBaseModel().result,
+        });
       }
     }
   }
@@ -160,25 +172,27 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
   getUserBetList(data, currentData) {
     const { type } = this.props;
 
-    Object.keys(currentData).forEach(key => {
+    Object.keys(currentData).forEach((key) => {
       currentData[key].dataList = new Array<BetItem>();
     });
 
-    data.forEach(user => {
-      currentData[betListMapping(type, user.select)].dataList.push(new BetItem(user.name, user.bet, user.time));
+    data.forEach((user) => {
+      currentData[betListMapping(type, user.select)].dataList.push(
+        new BetItem(user.name, user.bet, user.time)
+      );
     });
 
     return currentData;
   }
 
-  getResult(dices) {
-    const result = new Array<DiceModel>();
+  getResult(result) {
+    const dices = new Array<DiceModel>();
 
-    result.push(new DiceModel(dices[0], DiceType.TaiXiu));
-    result.push(new DiceModel(dices[1], DiceType.TaiXiu));
-    result.push(new DiceModel(dices[2], DiceType.TaiXiu));
+    dices.push(new DiceModel(result.dice1, DiceType.TaiXiu));
+    dices.push(new DiceModel(result.dice2, DiceType.TaiXiu));
+    dices.push(new DiceModel(result.dice3, DiceType.TaiXiu));
 
-    return result;
+    return dices;
   }
 
   getWiner() {
@@ -186,21 +200,39 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
     const { result } = this.state;
 
     const sumDicesValue = result.reduce((sum, dice) => sum + dice.value, 0);
-    const winner = type == types.taixiu
-      ? sumDicesValue >= 11 ? 'tai' : 'xiu'
-      : sumDicesValue % 2 == 1 ? 'le' : 'chan';
+    const winner =
+      type == types.taixiu
+        ? sumDicesValue >= 11
+          ? "tai"
+          : "xiu"
+        : sumDicesValue % 2 == 1
+        ? "le"
+        : "chan";
 
     return winner;
   }
 
   renderMonitor() {
     const { turbo, type } = this.props;
-    const { betList, time, roundNumber, result, firstBetTypeUsers, secondBetTypeUsers, isHavingResult, currentState } = this.state;
+    const {
+      betList,
+      time,
+      roundNumber,
+      result,
+      firstBetTypeUsers,
+      secondBetTypeUsers,
+      isHavingResult,
+      currentState,
+    } = this.state;
 
-    const gameName = `${turbo ? "Turbo " : ""}${type == types.taixiu ? "Big Small" : "Odd Even"}`;
-    const type1 = type == types.taixiu ? gameMapping.taixiu[0] : gameMapping.chanle[0];
-    const type2 = type == types.taixiu ? gameMapping.taixiu[1] : gameMapping.chanle[1];
-    let winner = '';
+    const gameName = `${turbo ? "Turbo " : ""}${
+      type == types.taixiu ? "Big Small" : "Odd Even"
+    }`;
+    const type1 =
+      type == types.taixiu ? gameMapping.taixiu[0] : gameMapping.chanle[0];
+    const type2 =
+      type == types.taixiu ? gameMapping.taixiu[1] : gameMapping.chanle[1];
+    let winner = "";
 
     if (isHavingResult) {
       winner = this.getWiner();
@@ -213,29 +245,41 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
             <div>{gameName}</div>
           </span>
           <Col align="center" className={styles["flex-col"]}>
-            <TotalBet type={type1} total={betList.firstBetType.total} isWin={gameMapping[type][0] == winner} />
+            <TotalBet
+              type={type1}
+              total={betList.firstBetType.total}
+              isWin={gameMapping[type][0] == winner}
+            />
             <TotalUser totalUser={firstBetTypeUsers} />
           </Col>
           <Col align="center" className={styles["shared-result"]}>
             <div>
-              <TimeCounter remainingTime={time.remainingTime} gameState={currentState} key={currentState} />
+              <TimeCounter
+                remainingTime={time.remainingTime}
+                gameState={currentState}
+                key={currentState}
+              />
               <RoundNum roundNumber={roundNumber} />
             </div>
             <DiceResult dices={result} />
           </Col>
           <Col align="center" className={styles["flex-col"]}>
-            <TotalBet type={type2} total={betList.secondBetType.total} isWin={gameMapping[type][1] == winner} />
+            <TotalBet
+              type={type2}
+              total={betList.secondBetType.total}
+              isWin={gameMapping[type][1] == winner}
+            />
             <TotalUser totalUser={secondBetTypeUsers} />
           </Col>
         </Row>
       </Container>
     );
-  };
+  }
 
   renderBetList() {
     const { type } = this.props;
     const { betList, isHavingResult } = this.state;
-    let winner = '';
+    let winner = "";
 
     if (isHavingResult) {
       winner = this.getWiner();
@@ -263,20 +307,20 @@ export default class BigSmallBase extends React.Component<BigSmalllProps, BigSma
         </Row>
       </Container>
     );
-  };
+  }
 
   getTitles() {
-    return [
-      'Time',
-      'Nickname',
-      'Stake'
-    ]
-  };
+    return ["Time", "Nickname", "Stake"];
+  }
 
   render() {
     return (
       <div className={styles.bigsmallturbo}>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.currentState == GameState.disabled} />
+        <GameTemplate
+          renderBetList={this.renderBetList()}
+          renderMonitor={this.renderMonitor()}
+          disabled={this.state.currentState == GameState.disabled}
+        />
       </div>
     );
   }

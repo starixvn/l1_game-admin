@@ -30,7 +30,7 @@ type State = {
   socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 3, 8, 9, 22, 24, 25, 26, 27, 28];
+const NewSocketGameIds = [1, 2, 3, 8, 9, 22, 24, 25, 26, 27, 28];
 
 export class Home extends React.Component<Props, State> {
   public state: State;
@@ -194,6 +194,18 @@ export class Home extends React.Component<Props, State> {
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_FISH_PRAWN_CRAB_SERVER_PROXY_ROUTE
               : Cookies.get("fish-prawn-crab-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.taixiu: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_BIG_SMALL_SERVER_ENDPOINT
+              : Cookies.get("big-small-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_BIG_SMALL_SERVER_PROXY_ROUTE
+              : Cookies.get("big-small-server-endpoint-route"),
         };
       }
       default:
