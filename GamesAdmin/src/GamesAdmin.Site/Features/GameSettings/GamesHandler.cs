@@ -97,8 +97,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             if (game != null)
             {
                 viewModel.PayoutViewModel = mapper.Map<PayoutViewModel>(game);
-
-                viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
                 viewModel.DisplayName = Enumeration.Contains<Game>(game.Info.Name)

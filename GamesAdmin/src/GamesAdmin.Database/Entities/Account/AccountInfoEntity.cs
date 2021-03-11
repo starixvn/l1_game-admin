@@ -47,6 +47,8 @@ namespace GamesAdmin.Database.Entities
         public byte Spins { get; set; }
 
         public bool Banned { get; set; }
+
+        public int PatternId { get; set; }
     }
 
     public class Security

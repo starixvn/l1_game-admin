@@ -88,7 +88,7 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> ResetBalance()
         {
-            var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount)).ToList();
+            var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount && entity.PatternId == 0)).ToList();
             var strBuilder = new StringBuilder($"ResetBalance for {botList.Count}");
 
             foreach (var bot in botList)

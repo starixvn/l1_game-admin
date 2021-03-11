@@ -302,7 +302,9 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
                     .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
                     .Set(field => field.Botenabled, botSetting.BotEnabled)
-                    .Set(field => field.BotMaxBet, botSetting.BotMaxBet);
+                    .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
+                    .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
+                    .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio);
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
