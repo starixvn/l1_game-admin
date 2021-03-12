@@ -15,6 +15,7 @@
         public GameServerConfigs FishPrawnCrab { get; set; }
         public GameServerConfigs BigSmall { get; set; }
         public GameServerConfigs TurboBigSmall { get; set; }
+        public GameServerConfigs DragonTiger { get; set; }
     }
 
     public class GameServerConfigs

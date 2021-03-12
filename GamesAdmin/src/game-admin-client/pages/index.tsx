@@ -30,7 +30,7 @@ type State = {
   socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [1, 2, 3, 4, 8, 9, 22, 24, 25, 26, 27, 28];
+const NewSocketGameIds = [1, 2, 3, 4, 7, 8, 9, 22, 24, 25, 26, 27, 28];
 
 export class Home extends React.Component<Props, State> {
   public state: State;
@@ -218,6 +218,18 @@ export class Home extends React.Component<Props, State> {
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_TURBO_BIG_SMALL_SERVER_PROXY_ROUTE
               : Cookies.get("turbo-big-small-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.dragontiger: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_DRAGON_TIGER_SERVER_ENDPOINT
+              : Cookies.get("dragon-tiger-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_DRAGON_TIGER_SERVER_PROXY_ROUTE
+              : Cookies.get("dragon-tiger-server-endpoint-route"),
         };
       }
       default:

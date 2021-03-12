@@ -12,7 +12,6 @@ import DragonTigerModel from "../../common/model/DragonTigerModel";
 import BetItem from "../../common/model/BetItem";
 import { upperFirstLetter } from "../../util/util";
 import { GameState } from '../../shared/common/GameState';
-import { Notice } from "../../shared/notice/notice";
 
 type Props = {
   onMessage: Function;
@@ -58,7 +57,7 @@ export default class DragonTiger extends React.Component<Props, State> {
         });
         this.isFirstLoad = false;
       }
-    } else if (message.phien !== undefined) {
+    } else if (message.roundId !== undefined) {
       this.handleStart(message);
     } else if (message.finish !== undefined) {
       this.handleStop(message);
@@ -72,15 +71,16 @@ export default class DragonTiger extends React.Component<Props, State> {
     newData.roundNumber = this.state.data.roundNumber;
     newData.time.remainingTime = this.state.data.time.remainingTime;
 
-    TYPES.forEach((type) => {
-      newData[type].total = message.info[type];
-    });
-
-    Object.keys(message.ingame).forEach(key => {
-      const userObj = message.ingame[key];
+    Object.keys(message.inGame).forEach(key => {
+      const userObj = message.inGame[key];
+      const nameObj = userObj.name;
       TYPES.forEach((type) => {
-        if (userObj[type] > 0) {
-          newData[type].dataList.unshift(this.getBet(type, userObj));
+        const betItem = new BetItem();
+        if (userObj.betTracks[type] > 0) {
+          betItem.bet = userObj.betTracks[type];
+          betItem.name = nameObj;
+          newData[type].dataList.unshift(betItem);
+          newData[type].total = userObj.betTracks[type];
         }
       });
     });
@@ -90,9 +90,9 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   handleStart(message) {
     const newData = new DragonTigerModel();
-    let isFinished = message.time_remain > TOTAL_TIME;
-    newData.time.remainingTime = isFinished ? message.time_remain - TOTAL_TIME - 1 : message.time_remain;
-    newData.roundNumber = isFinished ? message.phien - 1 : message.phien;
+    let isFinished = message.remainingTime > TOTAL_TIME;
+    newData.time.remainingTime = isFinished ? message.remainingTime - TOTAL_TIME - 1 : message.remainingTime;
+    newData.roundNumber = isFinished ? message.roundId - 1 : message.roundId;
     newData.result = this.state.data.result;
     if (isFinished && message.result) {
       newData.result = this.getResult(message.result);
@@ -110,7 +110,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   handleStop(message) {
     const newData = this.state.data;
-    newData.roundNumber = message.finish.round;
+    newData.roundNumber = message.finish.roundId;
     newData.result = this.getResult(message.finish.result);
     newData.time.remainingTime = WAITING_TIME;
     this.isFirstLoad = false;
@@ -140,8 +140,8 @@ export default class DragonTiger extends React.Component<Props, State> {
   }
 
   getResult(result) {
-    return [this.getCardResult(result[0]),
-    this.getCardResult(result[1])];
+    return [this.getCardResult(result.dragon),
+    this.getCardResult(result.tiger)];
   }
 
   countDownToStart(newData, time) {
@@ -229,6 +229,7 @@ export default class DragonTiger extends React.Component<Props, State> {
   renderTitle(title) {
     return <div>{title}</div>;
   }
+
 
   render() {
     return (

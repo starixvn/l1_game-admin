@@ -79,7 +79,7 @@ const gameMapper = {
   },
   7: {
     component: DragonTiger,
-    ...getInfoByGameKey("mini_dragon_tiger"),
+    ...getInfoByGameKey("DragonTiger"),
   },
   8: {
     component: KenoProMax,

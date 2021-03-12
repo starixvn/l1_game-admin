@@ -196,10 +196,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("mini-sedie-server-endpoint-route", appSettings.GameServers.MiniSeDie.SocketRoute);
             HttpContext.Response.Cookies.Append("fish-prawn-crab-server-endpoint", appSettings.GameServers.FishPrawnCrab.Socket);
             HttpContext.Response.Cookies.Append("fish-prawn-crab-server-endpoint-route", appSettings.GameServers.FishPrawnCrab.SocketRoute);
-            HttpContext.Response.Cookies.Append("big-small-endpoint", appSettings.GameServers.FishPrawnCrab.Socket);
-            HttpContext.Response.Cookies.Append("big-small-server-endpoint-route", appSettings.GameServers.FishPrawnCrab.SocketRoute);
-            HttpContext.Response.Cookies.Append("turbo-big-small-endpoint", appSettings.GameServers.FishPrawnCrab.Socket);
-            HttpContext.Response.Cookies.Append("turbo-big-small-server-endpoint-route", appSettings.GameServers.FishPrawnCrab.SocketRoute);
+            HttpContext.Response.Cookies.Append("big-small-endpoint", appSettings.GameServers.BigSmall.Socket);
+            HttpContext.Response.Cookies.Append("big-small-server-endpoint-route", appSettings.BigSmall.SocketRoute);
+            HttpContext.Response.Cookies.Append("turbo-big-small-endpoint", appSettings.GameServers.TurboBigSmall.Socket);
+            HttpContext.Response.Cookies.Append("turbo-big-small-server-endpoint-route", appSettings.GameServers.TurboBigSmall.SocketRoute);
+            HttpContext.Response.Cookies.Append("dragon-tiger-endpoint", appSettings.GameServers.DragonTiger.Socket);
+            HttpContext.Response.Cookies.Append("dragon-tiger-server-endpoint-route", appSettings.GameServers.DragonTiger.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
