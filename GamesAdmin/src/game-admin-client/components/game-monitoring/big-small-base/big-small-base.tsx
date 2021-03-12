@@ -21,21 +21,13 @@ type BigSmallProps = {
   onMessage: Function;
 };
 
-const betListMapping = (gameType: string, flag: boolean) => {
+const optionChoice = ["big", "odd"];
+
+const betListMapping = (flag: boolean) => {
   const betListLabels = ["firstBetType", "secondBetType"];
-  const reducer = (result: number, gameName: string) => {
-    if (gameType === gameName) {
-      const mapping: Array<string> = gameMapping[gameName];
-      const choice = gameFlagMapping[gameName][flag ? 1 : 0];
-      result = mapping.indexOf(choice);
-    }
+  const choice = flag ? 0 : 1;
 
-    return result;
-  };
-
-  const index = Object.keys(gameMapping).reduce(reducer, 0);
-
-  return betListLabels[index];
+  return betListLabels[choice];
 };
 
 export default class BigSmallBase extends React.Component<
@@ -57,28 +49,13 @@ export default class BigSmallBase extends React.Component<
   }
 
   handleData(data) {
-    const { turbo, type } = this.props;
-    const totalRemainingTime = this.props.turbo ? 30 : 50;
-    const totalWaitingTime = this.props.turbo ? 5 : 10;
-    const gameType = turbo && type == "chanle" ? "clturbo" : type;
+    const { turbo } = this.props;
+    const totalRemainingTime = turbo ? 30 : 50;
+    const totalWaitingTime = turbo ? 5 : 10;
 
-    if (data.taixiu != null || data.chanle != null || data.clturbo != null) {
+    if (!!data.inGame) {
       this.setState({
-        betList: this.getTotalBetList(
-          data[gameType],
-          this.state.betList,
-          gameType
-        ),
-        firstBetTypeUsers:
-          data[gameType][`red_player_${gameMapping[gameType][0]}`],
-        secondBetTypeUsers:
-          data[gameType][`red_player_${gameMapping[gameType][1]}`],
-      });
-    }
-
-    if (!!data.list) {
-      this.setState({
-        betList: this.getUserBetList(data.list, this.state.betList),
+        betList: this.getUserBetList(data.inGame, this.state.betList),
       });
     }
 
@@ -162,25 +139,28 @@ export default class BigSmallBase extends React.Component<
     }
   }
 
-  getTotalBetList(data, currentData, gameType) {
-    currentData.firstBetType.total = data[`red_${gameMapping[gameType][0]}`];
-    currentData.secondBetType.total = data[`red_${gameMapping[gameType][1]}`];
-
-    return currentData;
-  }
 
   getUserBetList(data, currentData) {
-    const { type } = this.props;
-
     Object.keys(currentData).forEach((key) => {
       currentData[key].dataList = new Array<BetItem>();
     });
 
-    data.forEach((user) => {
-      currentData[betListMapping(type, user.select)].dataList.push(
-        new BetItem(user.name, user.bet, user.time)
-      );
-    });
+    for (const user in data) {
+      let betTracks = data[user].betTracks;
+      Object.keys(betTracks).forEach((key) => {
+        if (betTracks[key]) {
+          let select = false;
+          if(optionChoice.indexOf(key) !== -1){
+            select = true;
+          }
+
+          currentData[betListMapping(select)].total = betTracks[key];
+          currentData[betListMapping(select)].dataList.unshift(
+            new BetItem(data[user].name, betTracks[key])
+          );
+        }
+      });
+    }
 
     return currentData;
   }
@@ -291,7 +271,7 @@ export default class BigSmallBase extends React.Component<
           <Col className="col-12 col-sm-6">
             <BetList
               dataList={betList.firstBetType.dataList}
-              type="withtime"
+              type="simple"
               titles={this.getTitles()}
               isWin={gameMapping[type][0] == winner}
             ></BetList>
@@ -299,7 +279,7 @@ export default class BigSmallBase extends React.Component<
           <Col className="col-12 col-sm-6">
             <BetList
               dataList={betList.secondBetType.dataList}
-              type="withtime"
+              type="simple"
               titles={this.getTitles()}
               isWin={gameMapping[type][1] == winner}
             ></BetList>
@@ -310,7 +290,7 @@ export default class BigSmallBase extends React.Component<
   }
 
   getTitles() {
-    return ["Time", "Nickname", "Stake"];
+    return [ "Nickname", "Stake"];
   }
 
   render() {

@@ -13,6 +13,8 @@
         public GameServerConfigs KenoProMax { get; set; }
         public GameServerConfigs MiniSeDie { get; set; }
         public GameServerConfigs FishPrawnCrab { get; set; }
+        public GameServerConfigs BigSmall { get; set; }
+        public GameServerConfigs TurboBigSmall { get; set; }
     }
 
     public class GameServerConfigs

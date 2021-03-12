@@ -67,7 +67,7 @@ const gameMapper = {
   },
   4: {
     component: BigSmallTurbo,
-    ...getInfoByGameKey("taixiu_turbo"),
+    ...getInfoByGameKey("TXTurbo"),
   },
   5: {
     component: OddEven,
