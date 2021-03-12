@@ -75,7 +75,7 @@ const gameMapper = {
   },
   6: {
     component: OddEvenTurbo,
-    ...getInfoByGameKey("clturbo"),
+    ...getInfoByGameKey("OETurbo"),
   },
   7: {
     component: DragonTiger,

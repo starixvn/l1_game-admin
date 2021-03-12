@@ -16,6 +16,7 @@
         public GameServerConfigs BigSmall { get; set; }
         public GameServerConfigs TurboBigSmall { get; set; }
         public GameServerConfigs DragonTiger { get; set; }
+        public GameServerConfigs TurboOddEven { get; set; }
     }
 
     public class GameServerConfigs

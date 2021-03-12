@@ -21,7 +21,7 @@ type BigSmallProps = {
   onMessage: Function;
 };
 
-const optionChoice = ["big", "odd"];
+const optionChoice = ["big", "even"];
 
 const betListMapping = (flag: boolean) => {
   const betListLabels = ["firstBetType", "secondBetType"];
