@@ -107,16 +107,15 @@ namespace GamesAdmin.Api.GameUser
         public async Task<int> DisableRandomly()
         {
             var disabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Disabled && !entity.Banned)).ToList();
-            var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled)).ToList();
-            enabledBots.Shuffle();
-
+            var enabledBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Disabled && entity.PatternId == 0)).ToList();
             var maxRemoval = DisabledBotRatio * enabledBots.Count / 100;
             var strBuilder = new StringBuilder($"Disabled {maxRemoval} bots.");
+
+            enabledBots.Shuffle();
 
             for (var i = 0; i < maxRemoval; i++)
             {
                 strBuilder.Append($" {enabledBots[i]?.Name};");
-
                 await ToogleEnableDisable(enabledBots[i], true);
             }
 
