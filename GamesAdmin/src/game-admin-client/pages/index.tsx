@@ -30,7 +30,7 @@ type State = {
   socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [1, 2, 3, 4, 6, 7, 8, 9, 22, 24, 25, 26, 27, 28];
+const NewSocketGameIds = [1, 2, 3, 4, 6, 7, 8, 9, 21, 22, 24, 25, 26, 27, 28];
 
 export class Home extends React.Component<Props, State> {
   public state: State;
@@ -243,7 +243,18 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_TURBO_ODD_EVEN_SERVER_PROXY_ROUTE
               : Cookies.get("turbo-odd-even-server-endpoint-route"),
         };
-      }
+      },
+      case gameNameMapper.roulette:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_ROULETTE_SERVER_ENDPOINT
+              : Cookies.get("roulette-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_ROULETTE_SERVER_PROXY_ROUTE
+              : Cookies.get("roulette-server-endpoint-route"),
+	};
       default:
         return {
           endpoint:

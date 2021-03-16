@@ -127,7 +127,7 @@ const gameMapper = {
   },
   21: {
     component: Roulette,
-    ...getInfoByGameKey("roulette"),
+    ...getInfoByGameKey("Roulette"),
   },
   22: {
     component: VipSeDie,

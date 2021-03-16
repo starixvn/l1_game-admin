@@ -23,7 +23,8 @@ namespace GamesAdmin.Api.GameServers
             { Game.VipSeDieWarValue, typeof(IVipSedieWarOnlineUserApi) },
             { Game.FourGuardiansValue, typeof(IFourGuardiansOnlineUserApi) },
             { Game.KenoProMaxValue, typeof(IKenoProMaxOnlineUserApi) },
-            { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) }
+            { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) },
+            { Game.RouletteValue, typeof(IRouletteOnlineUserApi) }
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

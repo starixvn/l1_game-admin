@@ -204,6 +204,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("dragon-tiger-server-endpoint-route", appSettings.GameServers.DragonTiger.SocketRoute);
             HttpContext.Response.Cookies.Append("turbo-odd-even-endpoint", appSettings.GameServers.TurboOddEven.Socket);
             HttpContext.Response.Cookies.Append("turbo-odd-even-server-endpoint-route", appSettings.GameServers.TurboOddEven.SocketRoute);
+            HttpContext.Response.Cookies.Append("roulette-endpoint", appSettings.GameServers.Roulette.Socket);
+            HttpContext.Response.Cookies.Append("roulette-server-endpoint-route", appSettings.GameServers.Roulette.SocketRoute);
+
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

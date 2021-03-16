@@ -25,6 +25,9 @@
         public GameServerConfigs KenoProMax { get; set; }
 
         public GameServerConfigs MiniSeDie { get; set; }
+
+        public GameServerConfigs Roulette { get; set; }
+
     }
 
     public class GameServerConfigs
