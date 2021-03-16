@@ -243,18 +243,18 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_TURBO_ODD_EVEN_SERVER_PROXY_ROUTE
               : Cookies.get("turbo-odd-even-server-endpoint-route"),
         };
-      },
+      }
       case gameNameMapper.roulette:
         return {
           endpoint:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_ROULETTE_SERVER_ENDPOINT
-              : Cookies.get("roulette-server-endpoint"),
+              : Cookies.get("roulette-endpoint"),
           route:
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_ROULETTE_SERVER_PROXY_ROUTE
               : Cookies.get("roulette-server-endpoint-route"),
-	};
+        };
       default:
         return {
           endpoint:
