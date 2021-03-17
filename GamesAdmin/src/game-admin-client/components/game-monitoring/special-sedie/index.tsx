@@ -15,10 +15,13 @@ import GameTemplate from "../game-template/game-template";
 import styles from "./styles.module.scss";
 
 type Props = {
-  onMessage: Function
+  onMessage: Function;
 };
 
-export default class SpecialSeDie extends React.Component<Props, SpecialSeDieModel> {
+export default class SpecialSeDie extends React.Component<
+  Props,
+  SpecialSeDieModel
+> {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
 
@@ -35,13 +38,15 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
 
   handleData(data) {
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 31) {
         clearTimeout(this.timeout);
         this.setState({
           time: { remainingTime: 0 },
           gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad ? this.state.roundNumber : this.state.roundNumber - 1,
-          result: new SpecialSeDieModel().result
+          roundNumber: this.isFirstLoad
+            ? this.state.roundNumber
+            : this.state.roundNumber - 1,
+          result: new SpecialSeDieModel().result,
         });
 
         this.isFirstLoad = false;
@@ -50,8 +55,8 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
 
     if (!!data.inGame) {
       this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList)
-      })
+        betList: this.getUserBetList(data.inGame, this.state.betList),
+      });
     }
 
     if (!!data.remainingTime) {
@@ -61,27 +66,26 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
           roundNumber: data.roundId - 1,
           result: data.result ? this.getResult(data.result) : this.state.result,
           time: {
-            remainingTime: data.remainingTime - 31
-          }
-        })
+            remainingTime: data.remainingTime - 31,
+          },
+        });
 
         this.timeout = setTimeout(() => {
           this.setState({
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 31
-            }
-          })
-        }, (data.remainingTime - 31) * 1000)
-      }
-      else {
+              remainingTime: 31,
+            },
+          });
+        }, (data.remainingTime - 31) * 1000);
+      } else {
         this.setState({
           gameState: GameState.running,
           roundNumber: data.roundId,
           time: {
-            remainingTime: data.remainingTime
-          }
+            remainingTime: data.remainingTime,
+          },
         });
       }
     }
@@ -93,8 +97,8 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
         result: this.getResult(data.finish.result),
         gameState: GameState.waiting,
         time: {
-          remainingTime: waitingTime
-        }
+          remainingTime: waitingTime,
+        },
       });
 
       setTimeout(() => {
@@ -103,28 +107,30 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 31
-          }
-        })
-      }, (waitingTime + 1) * 1000)
+            remainingTime: 31,
+          },
+        });
+      }, (waitingTime + 1) * 1000);
     }
   }
 
   getUserBetList(data, currentData) {
-    Object.keys(currentData).forEach(key => {
+    Object.keys(currentData).forEach((key) => {
       currentData[key].total = 0;
       currentData[key].dataList = new Array<BetItem>();
     });
 
     for (const user in data) {
       const { currency, betTracks } = data[user];
-      Object.keys(betTracks).forEach(key => {
+      Object.keys(betTracks).forEach((key) => {
         if (betTracks[key]) {
           if (!currency || currency.toUpperCase() !== "UUS") {
             currentData[key].total += betTracks[key];
           }
 
-          currentData[key].dataList.unshift(new BetItem(data[user].name, betTracks[key]));
+          currentData[key].dataList.unshift(
+            new BetItem(data[user].name, betTracks[key])
+          );
         }
       });
     }
@@ -135,7 +141,7 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
   getResult(data) {
     const result = new Array<DiceModel>();
 
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       result.push(new DiceModel(data[key], DiceType.XocXoc));
     });
 
@@ -146,22 +152,22 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
     const { result } = this.state;
     const sumDicesValue = result.reduce((sum, dice) => sum + dice.value, 0);
 
-    let winner = '';
+    let winner = "";
     switch (sumDicesValue) {
       case 0:
-        winner = 'white4';
+        winner = "white4";
         break;
       case 1:
-        winner = 'white3';
+        winner = "white3";
         break;
       case 2:
-        winner = 'draw';
+        winner = "draw";
         break;
       case 3:
-        winner = 'red3';
+        winner = "red3";
         break;
       case 4:
-        winner = 'red4';
+        winner = "red4";
         break;
     }
 
@@ -170,44 +176,51 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
 
   renderBetList() {
     const { betList, gameState } = this.state;
-    const winner = gameState == GameState.waiting ? this.getWinner() : '';
+    const winner = gameState == GameState.waiting ? this.getWinner() : "";
 
     return (
       <React.Fragment>
-        <Col className='col-12 col-sm-6'>
+        <Col className="col-12 col-sm-6">
           <BetList
-            titles={[(<div className={styles['title-chan']}>Even</div>)]}
-            type='simple'
+            titles={[<div className={styles["title-chan"]}>Even</div>]}
+            type="simple"
             dataList={betList.even.dataList}
-            isWin={winner != '' && winner != 'white3' && winner != 'red3'}
+            isWin={winner != "" && winner != "white3" && winner != "red3"}
           />
         </Col>
-        <Col className='col-12 col-sm-6'>
+        <Col className="col-12 col-sm-6">
           <BetList
-            titles={[(<div className={styles['title-le']}>Odd</div>)]}
-            type='simple'
+            titles={[<div className={styles["title-le"]}>Odd</div>]}
+            type="simple"
             dataList={betList.odd.dataList}
-            isWin={winner == 'white3' || winner == 'red3'}
+            isWin={winner == "white3" || winner == "red3"}
           />
         </Col>
       </React.Fragment>
-    )
+    );
   }
 
   renderMonitor() {
     const { betList, roundNumber, time, result, gameState } = this.state;
-    const winer = gameState == GameState.waiting ? this.getWinner() : '';
+    const winer = gameState == GameState.waiting ? this.getWinner() : "";
 
     return (
-      <Container className={styles['shakeThePlate-container']}>
+      <Container className={styles["shakeThePlate-container"]}>
         <Row>
           <Col>
-            <TotalBet type='plateeven' total={betList.even.total} isWin={winer != '' && winer != 'white3' && winer != 'red3'} />
+            <TotalBet
+              type="plateeven"
+              total={betList.even.total}
+              isWin={winer != "" && winer != "white3" && winer != "red3"}
+            />
           </Col>
-          <Col align='center' className={styles['shakeThePlate-timmer']}>
-            <div >
+          <Col align="center" className={styles["shakeThePlate-timmer"]}>
+            <div>
               <div className={styles.title}>Special Se Die</div>
-              <TimeCounter remainingTime={time.remainingTime} gameState={gameState} />
+              <TimeCounter
+                remainingTime={time.remainingTime}
+                gameState={gameState}
+              />
               <Row className={styles.result}>
                 <Dice diceModel={result[0]} isSmall={false} />
                 <Dice diceModel={result[1]} isSmall={false} />
@@ -218,17 +231,25 @@ export default class SpecialSeDie extends React.Component<Props, SpecialSeDieMod
             </div>
           </Col>
           <Col>
-            <TotalBet type='plateodd' total={betList.odd.total} isWin={winer == 'white3' || winer == 'red3'} />
+            <TotalBet
+              type="plateodd"
+              total={betList.odd.total}
+              isWin={winer == "white3" || winer == "red3"}
+            />
           </Col>
         </Row>
       </Container>
-    )
+    );
   }
 
   render() {
     return (
       <div>
-        <GameTemplate renderBetList={this.renderBetList()} renderMonitor={this.renderMonitor()} disabled={this.state.gameState == GameState.disabled}></GameTemplate>
+        <GameTemplate
+          renderBetList={this.renderBetList()}
+          renderMonitor={this.renderMonitor()}
+          disabled={this.state.gameState == GameState.disabled}
+        ></GameTemplate>
       </div>
     );
   }

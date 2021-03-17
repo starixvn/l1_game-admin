@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+using AutoMapper;
+using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
@@ -20,48 +23,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IMediator mediator;
         private readonly ISentryClient sentryClient;
         private readonly IAppSettings appSettings;
+        private readonly IMapper mapper;
 
-        public GameSettingsController(IMediator mediator, ISentryClient sentryClient, IAppSettings appSettings)
+        public GameSettingsController(IMediator mediator, ISentryClient sentryClient, IAppSettings appSettings, IMapper mapper)
         {
             this.mediator = mediator;
             this.sentryClient = sentryClient;
             this.appSettings = appSettings;
-        }
-
-        [HttpPost]
-        [Route("/update")]
-        public async Task<IActionResult> Update([Bind] EditViewModel editViewModel)
-        {
-            try
-            {
-                await mediator.Send(new UpdateRequest(new GameConfig(
-                   editViewModel.Id,
-                   editViewModel.Name,
-                   editViewModel.MinBet,
-                   editViewModel.MaxBet,
-                   editViewModel.Enabled,
-                   editViewModel.BotEnabled,
-                   editViewModel.MaxBot,
-                   null,
-                   0,
-                   editViewModel.BotMaxBet,
-                   null,
-                   editViewModel.DisabledMessage,
-                   editViewModel.MaxBetChoices,
-                   editViewModel.Odds,
-                   editViewModel.DelayStartTime,
-                   editViewModel.EnableFreeBet,
-                   editViewModel.SmartBotEnabled,
-                   editViewModel.SmartBotTotalGroup)));
-
-                return Json(true);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-            }
-
-            return Json(false);
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -71,25 +40,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            await mediator.Send(new CreateRequest(new GameConfig(
-                string.Empty,
-                addViewModel.Name,
-                addViewModel.MinBet,
-                addViewModel.MaxBet,
-                addViewModel.Enabled,
-                addViewModel.BotEnabled,
-                addViewModel.MaxBot,
-                null,
-                0,
-                0,
-                new double[] { },
-                string.Empty,
-                new Dictionary<string, double>(),
-                new Dictionary<string, double>(),
-                addViewModel.DelayStartTime,
-                false,
-                false,
-                0)));
+            await mediator.Send(new CreateRequest(
+                mapper.Map<GameInfo>(addViewModel),
+                mapper.Map<EnableSetting>(addViewModel),
+                mapper.Map<BotSetting>(addViewModel),
+                mapper.Map<BetLimit>(addViewModel),
+                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon)));
 
             return RedirectToAction(nameof(Index));
         }
@@ -124,7 +80,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var viewModel = await mediator.Send(new EditRequest(name));
             viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
-            viewModel.Success = TempData["isSuccess"] == null ? false : (bool)TempData["isSuccess"];
+            viewModel.Success = TempData["isSuccess"] != null && (bool)TempData["isSuccess"];
 
             return View(viewModel);
         }
@@ -227,7 +183,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("special-sedie-server-endpoint", appSettings.GameServers.SpecialSedie.Socket);
             HttpContext.Response.Cookies.Append("special-sedie-server-endpoint-route", appSettings.GameServers.SpecialSedie.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint", appSettings.GameServers.VipFishPrawnCrab.Socket);
-            HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint-route", appSettings.GameServers.VipFishPrawnCrab.SocketRoute); 
+            HttpContext.Response.Cookies.Append("vip-fish-prawn-crab-server-endpoint-route", appSettings.GameServers.VipFishPrawnCrab.SocketRoute);
             HttpContext.Response.Cookies.Append("sic-bo-server-endpoint", appSettings.GameServers.SicBo.Socket);
             HttpContext.Response.Cookies.Append("sic-bo-server-endpoint-route", appSettings.GameServers.SicBo.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-baccarat-server-endpoint", appSettings.GameServers.VipBaccarat.Socket);
@@ -237,6 +193,98 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
+        }
+
+        [HttpPost]
+        [Route("/payouts/update")]
+        public async Task<IActionResult> UpdatePayouts([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateBetLimitAndOddsRequest(
+                    viewModel.Name,
+                    viewModel.Type,
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
+                    viewModel.PayoutViewModel.Odds,
+                    viewModel.PayoutViewModel.Icons));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("/jackpot/update")]
+        public async Task<IActionResult> UpdateJackpot([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateJackpotRequest(
+                    viewModel.Name,
+                    new Jackpot(
+                        viewModel.JackpotViewModel.JackpotEnabled,
+                        viewModel.JackpotViewModel.WinningRatio.ConvertPercentValue(),
+                        viewModel.JackpotViewModel.PlayerContribution.ConvertPercentValue(),
+                        viewModel.JackpotViewModel.BotContribution.ConvertPercentValue(),
+                        viewModel.JackpotViewModel.ExcludeUUS),
+                    viewModel.JackpotViewModel.StakeLevels));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("/update")]
+        public async Task<IActionResult> Update([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateRequest(
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type),
+                    new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet),
+                    new EnableSetting(viewModel.Enabled),
+                    viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(
+                        (byte)viewModel.SlotViewModel.Mode,
+                        viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue(),
+                        new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus))));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("exclusions/update")]
+        public async Task<IActionResult> UpdateSiteExclusions([Bind] UpdateSiteExclusionRequest request)
+        {
+            try
+            {
+                await mediator.Send(request);
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
         }
     }
 }

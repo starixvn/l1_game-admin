@@ -9,6 +9,7 @@ using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
+using GamesAdmin.Site.Features.ResultMonitor;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using GamesAdmin.Site.Features.VoidGame;
@@ -62,8 +63,11 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
+            services.AddSingleton(RestService.For<IResultMonitorApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IResultMonitorService, ResultMonitorService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
+            services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
         }
     }
 }

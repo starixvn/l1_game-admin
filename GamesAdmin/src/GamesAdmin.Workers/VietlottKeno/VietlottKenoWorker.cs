@@ -128,7 +128,6 @@ namespace GamesAdmin.VietlottKeno
         private CreateProVietKenoRound ToCreateModel(VietLottKenoRoundResult kenoRound)
         {
             var result = kenoRound.Data.Split("|").Select(x => byte.Parse(x)).OrderBy(x => x);
-            var sum = result.Sum(x => x);
 
             var entity = new CreateProVietKenoRound
             {

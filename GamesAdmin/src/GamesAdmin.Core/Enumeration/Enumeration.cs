@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace GamesAdmin.Core.Enumeration
 {
-    public abstract class Enumeration : IComparable
+    public class Enumeration : IComparable
     {
         protected Enumeration()
         {
@@ -41,7 +41,7 @@ namespace GamesAdmin.Core.Enumeration
                 var matchingItem = Parse<T, string>(value, "value", item => item.Value == value);
                 return matchingItem != null ;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }            
@@ -77,28 +77,7 @@ namespace GamesAdmin.Core.Enumeration
 
         public static bool operator ==(Enumeration left, Enumeration right)
         {
-            if (ReferenceEquals(left, null))
-            {
-                if (ReferenceEquals(right, null))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (ReferenceEquals(right, null))
-                {
-                    return false;
-                }
-                else
-                {
-                    return left.Value == right.Value;
-                }
-            }
+            return left is null ? right is null : !(right is null) && left.Value == right.Value;
         }
 
         public static bool operator !=(Enumeration left, Enumeration right)

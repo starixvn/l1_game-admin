@@ -32,17 +32,13 @@ namespace GamesAdmin.Api.Games
         [HttpPost]
         public async Task<bool> Create(GameConfig game)
         {
-            if (string.IsNullOrWhiteSpace(game.Name))
+            if (string.IsNullOrWhiteSpace(game.Info.Name))
             {
                 return false;
             }
 
             return await mediator.Send(new CreateRequest(game));
         }
-
-        [HttpPut]
-        public Task<bool> Update(GameConfig game)
-            => mediator.Send(new UpdateRequest(game));
 
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)
@@ -55,5 +51,33 @@ namespace GamesAdmin.Api.Games
         [HttpPut("{name}/update_message")]
         public Task<bool> UpdateMessage(string name, string disabledMessage)
            => mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+
+        [HttpPut("update_message_all")]
+        public Task<bool> UpdateMessage(string disabledMessage)
+           => mediator.Send(new UpdateDisabledMessageRequest(string.Empty, disabledMessage, true));
+
+        [HttpPost("{name}/update_bot_ratios")]
+        public Task<bool> UpdateBetLimitAndOdds(string name, double[] ratios)
+           => mediator.Send(new UpdateBotRatiosRequest(name, ratios));
+
+        [HttpPost("update_bet_limit_odds")]
+        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+           => mediator.Send(request);
+
+        [HttpPost("update_general_config")]
+        public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
+           => mediator.Send(request);
+
+        [HttpPost("update_jackpot")]
+        public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
+           => mediator.Send(request);
+
+        [HttpPost("update_slot_config")]
+        public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
+           => mediator.Send(request);
+
+        [HttpPost("{name}/update_slot_odds")]
+        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+           => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));
     }
 }

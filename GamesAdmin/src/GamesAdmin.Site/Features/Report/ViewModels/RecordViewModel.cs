@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -174,4 +176,80 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBet { get; set; }
     }
 
+    public class FourGuardiansRecordViewModel : BetRecordViewModel
+    {
+        public long RoundId { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public IEnumerable<byte> Paylines { get; set; }
+
+        public bool FreeSpin { get; set; }
+
+        public IEnumerable<byte> Result { get; set; }
+
+        public FourGuardiansSettlementResultViewModel SettlementResult { get; set; }
+
+        public IEnumerable<FourGuardiansBonusChestViewModel> BonusChests { get; set; }
+
+        public bool Paid { get; set; }
+
+        public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
+
+        public decimal TotalBetWin => BetWin + (SettlementResult.Jackpot?.WinningAmount ?? 0);
+
+        public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
+    }
+
+    public class FourGuardiansBonusChestViewModel
+    {
+        public decimal Amount { get; set; }
+
+        public bool Picked { get; set; }
+    }
+
+    public class FourGuardiansSettlementResultViewModel
+    {
+        public IEnumerable<FourGuardiansWinningLineViewModel> WinningPaylines { get; set; }
+
+        public FourGuardiansBonusViewModel Bonus { get; set; }
+
+        public FourGuardiansFreeSpinViewModel FreeSpins { get; set; }
+
+        public FourGuardiansJackpotViewModel Jackpot { get; set; }
+    }
+
+    public class FourGuardiansJackpotViewModel
+    {
+        public byte WinningLine { get; set; }
+
+        public decimal WinningAmount { get; set; }
+    }
+
+    public class FourGuardiansWinningLineViewModel
+    {
+        public byte Payline { get; set; }
+
+        public string Symbol { get; set; }
+
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
+
+    public class FourGuardiansBonusViewModel
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
+
+    public class FourGuardiansFreeSpinViewModel
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
 }

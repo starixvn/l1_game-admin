@@ -37,7 +37,7 @@
   color: #ff0000; }
 
 .table.sticky-table th {
-  top: 0;
+  top: -2rem;
   position: sticky;
   z-index: 1;
   background: #fff; }
@@ -66,6 +66,35 @@
 
 .table-hover tbody:hover td[rowspan] {
   background-color: rgba(0, 0, 0, 0.075); }
+
+.nav-custom {
+  padding-bottom: 0.8rem; }
+
+.nav-custom .nav-link {
+  border: initial;
+  background: initial !important;
+  padding-right: 4rem;
+  padding-left: 4rem;
+  padding-bottom: 1rem;
+  color: #495057; }
+  .nav-custom .nav-link.active {
+    border: initial;
+    position: relative;
+    color: #145388; }
+    .nav-custom .nav-link.active:before {
+      content: " ";
+      background: #145388;
+      color: #fff;
+      border-radius: 0.5rem;
+      position: absolute;
+      width: calc(100% - 1rem);
+      height: 0.4rem;
+      top: auto;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%); }
+  .nav-custom .nav-link:hover {
+    color: #145388; }
 
 .table.dataTable {
   border-collapse: collapse; }

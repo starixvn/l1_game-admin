@@ -8,11 +8,11 @@ namespace GamesAdmin.Api.Report.Requests
     {
         public KenoRoundResultRequest(string game, long roundId)
         {
-            Game = Enumeration.FromValue<GameType>(game);
+            Game = Enumeration.FromValue<Game>(game);
             RoundId = roundId;
         }
 
-        public GameType Game { get; }
+        public Game Game { get; }
 
         public long RoundId { get; }
     }

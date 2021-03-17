@@ -19,6 +19,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
                   {
                       config.Cookie.Name = "UserLoginCookie";
                       config.LoginPath = "/Authentication/UserLogin";
+
+                      config.AccessDeniedPath = "/Authentication/AccessDenied";
                   });
         }
     }

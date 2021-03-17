@@ -23,6 +23,9 @@ namespace GamesAdmin.Site.Features.Users
 
         [Post("/users/signin")]
         Task<User> SignIn(string username, string password);
+
+        [Post("/users/change_password")]
+        Task<bool> ChangePassword(string username, string password, string newPassword);
     }
 
     public interface IUserService
@@ -36,6 +39,8 @@ namespace GamesAdmin.Site.Features.Users
         Task<User> Get(string username);
 
         Task<User> SignIn(string username, string password);
+
+        Task<bool> ChangePassword(string username, string password, string newPassword);
     }
 
     public class UserService : IUserService
@@ -49,17 +54,20 @@ namespace GamesAdmin.Site.Features.Users
             this.sentryClient = sentryClient;
         }
 
-        public async Task<bool> Create(User user)
-        => await userApi.Add(user);
+        public Task<bool> ChangePassword(string username, string password, string newPassword)
+        => userApi.ChangePassword(username, password, newPassword);
 
-        public async Task<bool> Delete(User user)
-        => await userApi.Delete(user);
+        public Task<bool> Create(User user)
+        => userApi.Add(user);
 
-        public async Task<User> Get(string username)
-        => await userApi.Get(username);
+        public Task<bool> Delete(User user)
+        => userApi.Delete(user);
 
-        public async Task<IEnumerable<User>> GetAll()
-        => await userApi.GetAll();
+        public Task<User> Get(string username)
+        => userApi.Get(username);
+
+        public Task<IEnumerable<User>> GetAll()
+        => userApi.GetAll();
 
         public async Task<User> SignIn(string username, string password)
         {
@@ -72,6 +80,6 @@ namespace GamesAdmin.Site.Features.Users
                 sentryClient.CaptureException(ex);
                 return null;
             }
-        } 
+        }
     }
 }

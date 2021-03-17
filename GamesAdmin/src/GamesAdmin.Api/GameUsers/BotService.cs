@@ -33,10 +33,10 @@ namespace GamesAdmin.Api.GameUser
 
         private const int minBalance = 500;
         private const int maxBalance = 3000;
-        private const int minAmount = 300;
-        private const int maxAmount = 7000;
+        private const int minAmount = 500;
+        private const int maxAmount = 12000;
         private const int minAddAmount = 1000;
-        private const int maxAddAmount = 3000;
+        private const int maxAddAmount = 8000;
 
         private const int minAmountScale = 1;
         private const int maxAmountScale = 8;

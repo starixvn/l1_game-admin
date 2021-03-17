@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Site.Features.Users;
+﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@ namespace GamesAdmin.Site.Features.Authentication
 
     public class AuthenticationService : IAuthenticationService
     {
+        private const byte ExpiredHours = 3;
         private readonly IUserService userService;
         private readonly ISentryClient sentryClient;
 
@@ -32,7 +34,7 @@ namespace GamesAdmin.Site.Features.Authentication
         {
             try
             {
-                var userSignin = await userService.SignIn(user.UserName.ToLower(), user.Password);
+                var userSignin = await userService.SignIn(user.UserName.ToLowerInvariant(), user.Password);
 
                 if (userSignin == null)
                 {
@@ -40,11 +42,11 @@ namespace GamesAdmin.Site.Features.Authentication
                     return false;
                 }
 
-                var userClaims = new List<Claim>()
+                var userClaims = new List<Claim>
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
-                    new Claim(ClaimTypes.Role, userSignin.IsAdmin ? "admin" : "operation")
+                    new Claim(ClaimTypes.Role, userSignin.IsAdmin ? Role.Admin.Value : Role.Operation.Value)
                  };
 
                 var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -55,7 +57,7 @@ namespace GamesAdmin.Site.Features.Authentication
                     new AuthenticationProperties
                     {
                         IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3)
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(ExpiredHours)
                     });
 
                 sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");

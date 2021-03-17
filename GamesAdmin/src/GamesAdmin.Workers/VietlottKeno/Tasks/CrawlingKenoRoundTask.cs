@@ -31,8 +31,8 @@ namespace GamesAdmin.VietlottKeno.Tasks
         {
             this.crawlApi = crawlApi;
             this.kenoService = kenoService;
-            this.sentryClient = sentryClient;
             configuration = options.Value;
+            this.sentryClient = sentryClient;
         }
 
         public async Task Invoke()

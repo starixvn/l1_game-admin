@@ -1,4 +1,6 @@
 ﻿@using System.Security.Claims;
+@using GamesAdmin.Core.Enumeration;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +22,7 @@
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
-                    @await Component.InvokeAsync("GameMenu", new { })
+                    <partial name="_VerticalMenu" />
                 </div>
             </div>
         </div>
@@ -38,7 +40,7 @@
                             <span>Online users: </span>
                             <a asp-controller="Dashboard" asp-action="OnlineUsers" id="online-users"></a>
                         </div>
-                        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == Role.Admin.Value)
                         {
                             <div class="number">
                                 <i class="icon icon-bot"></i>
@@ -46,25 +48,34 @@
                             </div>
                         }
                     </div>
+
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-account-circle icon-user"></i>
                             <span class="username">@Context.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value</span>
                         </button>
-                        <form asp-action="Logout" asp-controller="Authentication" method="post">
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <form asp-action="Logout" asp-controller="Authentication" method="post">
                                     <button type="submit" value="Sign out" class="logout">
                                         <i class="icon-logout"></i> Logout
                                     </button>
-                                </li>
-                            </ul>
-                        </form>
+                                </form>
+                            </li>
+
+                            <li>
+                                <a asp-action="ChangePassword" asp-controller="User">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-name">Change Password</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="inner-content">
+            <div class="inner-content">                
                 @RenderBody()
             </div>
         </div>

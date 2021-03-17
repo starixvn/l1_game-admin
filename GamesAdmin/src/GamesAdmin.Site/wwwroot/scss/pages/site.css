@@ -181,7 +181,7 @@
   color: #ff0000; }
 
 .table.sticky-table th {
-  top: 0;
+  top: -2rem;
   position: sticky;
   z-index: 1;
   background: #fff; }
@@ -225,6 +225,9 @@
   @media screen and (min-device-width: 1300px) {
     .form .form-control {
       font-size: 1.4rem; } }
+  .form .form-control.small {
+    height: 2.8rem;
+    margin-bottom: 1rem; }
 
 .form .form-control:disabled,
 .form .form-control[readonly] {

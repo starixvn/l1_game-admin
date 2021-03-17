@@ -40,7 +40,8 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabEndGameInfoService) },
             { GameId.SicBo, typeof(SicBoEndGameInfoService) },
             { GameId.VipBaccarat, typeof(VipBaccaratEndGameInfoService) },
-            { GameId.VipSeDieWar, typeof(VipSeDieWarEndGameInfoService) }
+            { GameId.VipSeDieWar, typeof(VipSeDieWarEndGameInfoService) },
+            { GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) }
         };
 
         private readonly IServiceProvider serviceProvider;

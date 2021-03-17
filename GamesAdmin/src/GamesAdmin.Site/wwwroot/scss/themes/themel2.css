@@ -310,15 +310,48 @@
 .content-container {
   position: absolute;
   top: 0;
-  left: 28rem;
+  left: 0;
   right: 0;
   height: 100%;
   transition: all .2s; }
+  .content-container > .btn-hamburger {
+    display: none; }
+    .content-container > .btn-hamburger .hamburger-inner,
+    .content-container > .btn-hamburger .hamburger-inner::before,
+    .content-container > .btn-hamburger .hamburger-inner::after {
+      background-color: #da624a; }
 
 .sidebar.active + .content-container {
-  left: 8rem; }
+  left: 0; }
+  .sidebar.active + .content-container > .btn-hamburger {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    z-index: 20; }
 
 .inner-content {
   overflow: auto;
-  height: calc(100% - 9.5rem);
+  height: calc(100vh - 5.6rem);
   padding: 2rem; }
+
+.table.sticky-table th {
+  top: -2rem !important; }
+
+@media screen and (max-device-width: 767px) {
+  .inner-content {
+    overflow: initial; }
+    .inner-content .table.sticky-table th {
+      top: 0 !important; }
+    .inner-content.android-device {
+      overflow: auto; }
+      .inner-content.android-device .table.sticky-table th {
+        top: -2rem !important; } }
+
+@media screen and (min-width: 1200px) {
+  .content-container {
+    left: 28rem; }
+  .sidebar.active + .content-container {
+    left: 8rem; }
+    .sidebar.active + .content-container > .btn-hamburger {
+      display: none; } }

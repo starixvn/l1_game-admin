@@ -1,4 +1,3 @@
-using System.Reflection;
 using AutoMapper;
 using Coravel;
 using GamesAdmin.Site._Shared;
@@ -25,7 +24,7 @@ namespace GamesAdmin.Site
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(Startup));
             services.AddAutoMapper(typeof(Startup));
 
             var appSettings = new AppSettings(Configuration);
@@ -68,6 +67,7 @@ namespace GamesAdmin.Site
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

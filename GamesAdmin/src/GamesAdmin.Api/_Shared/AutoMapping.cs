@@ -4,8 +4,10 @@ using AutoMapper;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
+using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
@@ -22,10 +24,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ObjectId, string>().ConvertUsing(o => o.ToString());
             CreateMap<string, ObjectId>().ConvertUsing(s => ObjectId.Parse(s));
 
-            CreateMap<GameConfigEntity, GameConfig>()
-                 .ForMember(dest => dest.DisabledRound, opt => opt.MapFrom(src => src.Disabledround));
-
-            CreateMap<GameConfig, GameConfigEntity>();
+            CreateMap<GameConfigEntity, GameConfig>().ReverseMap();
 
             CreateMap<BigSmallRoundEntity, Round>();
             CreateMap<BigSmallOnesEntity, BetInfo>();
@@ -129,14 +128,13 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
             CreateMap<BlackjackCardEntity, BlackjackCard>();
-
             CreateMap<VipFishPrawnCrabRoundEntity, VipFishPrawnCrabRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))
                 .ForMember(x => x.SecondDice, opt => opt.MapFrom((source) => source.Result.SecondDice))
                 .ForMember(x => x.ThirdDice, opt => opt.MapFrom((source) => source.Result.ThirdDice));
 
             CreateMap<VipFishPrawnCrabBetReportEntity, VipFishPrawnCrabBetRecord>();
-
+            
             CreateMap<VipBaccaratRoundEntity, BaccaratRoundResult>()
                 .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
                 .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
@@ -197,6 +195,17 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<VipSeDieWarBetReportEntity, VipSeDieWarBetRecord>();
             CreateMap<VipSeDieWarBetEntity, VipSeDieWarBetHistoryRecord>();
+            
+             CreateMap<FourGuardiansBetReportEntity, FourGuardiansBetRecord>()
+                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
+            CreateMap<FourGuardiansSettlementResultEntity, FourGuardiansSettlementResult>();
+            CreateMap<FourGuardiansFreeSpinEntity, FourGuardiansFreeSpin>();
+            CreateMap<FourGuardiansBonusEntity, FourGuardiansBonus>();
+            CreateMap<FourGuardiansWinningLineEntity, FourGuardiansWinningLine>();
+            CreateMap<FourGuardiansBonusChestEntity, FourGuardiansBonusChest>();
+            CreateMap<FourGuardiansJackpotEntity, FourGuardiansJackpot>();
+
+            CreateMap<JackpotReportEntity, JackpotRecord>();
 
             CreateMap<SeDieRoundEntity, SeDieRoundResult>()
                 .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]

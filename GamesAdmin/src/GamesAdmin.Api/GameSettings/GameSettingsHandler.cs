@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameSettings.Requests;
+using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Core.Models;
 using MediatR;
 
@@ -10,31 +11,35 @@ namespace GamesAdmin.Api.Games
     public class GameSettingsHandler
         : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
         , IRequestHandler<CreateRequest, bool>
-        , IRequestHandler<UpdateRequest, bool>
-        , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
+        , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
+        , IRequestHandler<UpdateBotRatiosRequest, bool>
+        , IRequestHandler<UpdateGeneralConfigRequest, bool>
+        , IRequestHandler<UpdateJackpotRequest, bool>
+        , IRequestHandler<UpdateSlotConfigRequest, bool>
+        , IRequestHandler<UpdateSlotIconOddsRequest, bool>
     {
-        private const int MaxLengthOfMessage = 1000;
         private readonly IGameSettingsService gameService;
+        private readonly IGlobalConfigService globalConfigService;
 
-        public GameSettingsHandler(IGameSettingsService gamesService)
+        public GameSettingsHandler(IGameSettingsService gamesService, IGlobalConfigService globalConfigService)
         {
             this.gameService = gamesService;
+            this.globalConfigService = globalConfigService;
         }
 
         public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
 
-        public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => gameService.Create(request.Game);
+        public async Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
+        {
+            var createResult = await gameService.Create(request.Game);
+            await globalConfigService.UpdateSiteExclusions(request.Game.Info.Name, new string[] { });
 
-        public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-        => gameService.Update(request.Game);
-
-        public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
-        => gameService.Delete(request.Name);
+            return createResult;
+        }
 
         public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);
@@ -43,6 +48,24 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateStatus(request.Names, request.Enabled);
 
         public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateDisbledMessage(request.Name, request.Message);
+        => gameService.UpdateDisbledMessage(request.Name, request.Message, request.IsApplyAll);
+
+        public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBetLimitAndOdds(request.Name, request.BetLimit, request.Odds);
+
+        public Task<bool> Handle(UpdateBotRatiosRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBotRatios(request.Name, request.Ratios);
+
+        public Task<bool> Handle(UpdateGeneralConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateGeneralConfig(request.GameInfo, request.BotSetting, request.EnableSetting);
+
+        public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
+
+        public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.DisplayName, request.SlotsConfig);
+
+        public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
     }
 }

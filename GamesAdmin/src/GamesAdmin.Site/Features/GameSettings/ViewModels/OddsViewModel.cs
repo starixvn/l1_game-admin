@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
