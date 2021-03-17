@@ -1,29 +1,31 @@
-﻿.simple-tabs {
-  margin: 0 0 2rem;
-  border-color: #dee2e6; }
-  .simple-tabs .nav-link {
+﻿.nav-custom {
+  padding-bottom: 0.8rem; }
+
+.nav-custom .nav-link {
+  border: initial;
+  background: initial !important;
+  padding-right: 4rem;
+  padding-left: 4rem;
+  padding-bottom: 1rem;
+  color: #27303f; }
+  .nav-custom .nav-link.active {
+    border: initial;
     position: relative;
-    min-width: 8rem;
-    padding: 1.5rem 1rem;
-    border: none;
-    text-align: center;
-    color: #495057; }
-    .simple-tabs .nav-link.active {
-      background-color: transparent;
-      color: #1b55e2; }
-  .simple-tabs .nav-link::before {
-    content: '';
-    border-radius: 1.5rem;
-    background: #1b55e2;
-    transition: all .2s;
-    height: .4rem;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: -0.2rem;
-    opacity: 0; }
-  .simple-tabs .nav-link.active::before {
-    opacity: 1; }
+    color: #145388; }
+    .nav-custom .nav-link.active:before {
+      content: " ";
+      background: #145388;
+      color: #fff;
+      border-radius: 0.5rem;
+      position: absolute;
+      width: calc(100% - 1rem);
+      height: 0.4rem;
+      top: auto;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%); }
+  .nav-custom .nav-link:hover {
+    color: #145388; }
 
 .form .form-check {
   padding-left: 2rem; }
@@ -203,3 +205,15 @@
 
 .blackjack-result .cards .card:last-child:before {
   display: none; }
+
+.table-four-guardians .table-paylines {
+  margin: auto; }
+  .table-four-guardians .table-paylines td {
+    border: none; }
+
+.table-four-guardians .payline {
+  width: 50px; }
+
+.table-four-guardians .symbol {
+  width: 50px;
+  height: 50px; }

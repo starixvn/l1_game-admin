@@ -1,26 +1,22 @@
-﻿using GamesAdmin.Site.Features._Shared;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Users.Requests;
 using GamesAdmin.Site.Features.Users.ViewModels;
 using MediatR;
-using Sentry;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Users
 {
     public class UserHandler
         : IRequestHandler<IndexRequest, IndexViewModel>
         , IRequestHandler<AddUserRequest, ResultBase>
+        , IRequestHandler<ChangePasswordRequest, ResultBase>
     {
-        private readonly ISentryClient sentryClient;
         private readonly IUserService userService;
 
-        public UserHandler(
-            ISentryClient sentryClient,
-            IUserService userService)
+        public UserHandler(IUserService userService)
         {
-            this.sentryClient = sentryClient;
             this.userService = userService;
         }
 
@@ -44,6 +40,18 @@ namespace GamesAdmin.Site.Features.Users
             }
 
             return new ResultBase("Cannot add new user");
+        }
+
+        public async Task<ResultBase> Handle(ChangePasswordRequest request, CancellationToken cancellationToken)
+        {
+            var updated = await userService.ChangePassword(request.Username, request.Password, request.NewPassword);
+
+            if (updated)
+            {
+                return new ResultBase(string.Empty);
+            }
+
+            return new ResultBase("Cannot update password.");
         }
     }
 }

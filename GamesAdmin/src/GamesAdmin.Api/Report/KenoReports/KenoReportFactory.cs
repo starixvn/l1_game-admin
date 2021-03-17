@@ -7,23 +7,23 @@ namespace GamesAdmin.Api.Report
 {
     public interface IKenoReportFactory
     {
-        IKenoReport GetReportService(GameType game);
+        IKenoReport GetReportService(Game game);
     }
 
     public class KenoReportFactory : IKenoReportFactory
     {
         private readonly Dictionary<string, Type> reports = new Dictionary<string, Type>
         {
-            { GameType.KenoProVietValue, typeof(KenoProVietReport) },
-            { GameType.KenoMaxValue, typeof(KenoMaxReport) },
-            { GameType.KenoMax2Value, typeof(KenoMax2Report) },
-            { GameType.KenoMiniValue, typeof(KenoMiniReport) },
-            { GameType.KenoMini2Value, typeof(KenoMini2Report) },
-            { GameType.KenoEastValue, typeof(KenoEastReport) },
-            { GameType.KenoWestValue, typeof(KenoWestReport) },
-            { GameType.KenoSouthValue, typeof(KenoSouthReport) },
-            { GameType.KenoNorthValue, typeof(KenoNorthReport) },
-            { GameType.KenoProMaxValue, typeof(KenoProMaxReport) }
+            { Game.KenoProVietValue, typeof(KenoProVietReport) },
+            { Game.KenoMaxValue, typeof(KenoMaxReport) },
+            { Game.KenoMax2Value, typeof(KenoMax2Report) },
+            { Game.KenoMiniValue, typeof(KenoMiniReport) },
+            { Game.KenoMini2Value, typeof(KenoMini2Report) },
+            { Game.KenoEastValue, typeof(KenoEastReport) },
+            { Game.KenoWestValue, typeof(KenoWestReport) },
+            { Game.KenoSouthValue, typeof(KenoSouthReport) },
+            { Game.KenoNorthValue, typeof(KenoNorthReport) },
+            { Game.KenoProMaxValue, typeof(KenoProMaxReport) }
         };
 
         private readonly IServiceProvider serviceProvider;
@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.Report
             this.serviceProvider = serviceProvider;
         }
 
-        public IKenoReport GetReportService(GameType game)
+        public IKenoReport GetReportService(Game game)
         => reports.ContainsKey(game.Value)
             ? (IKenoReport)serviceProvider.GetService(reports[game.Value])
             : default;

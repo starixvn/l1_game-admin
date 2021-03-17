@@ -16,33 +16,30 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class MonitorItemViewModel
     {
-
-        private static string[] disableHistory = new string[]
+        private static readonly string[] disableHistory = new string[]
         {
         };
 
-        private static string[] disableMonitoring = new string[]
-        {
-            GameType.LuckyWheelValue,
-            GameType.KenoProVietValue,
-            GameType.BlackJackValue
+        private static readonly string[] disableMonitoring = new[] {
+            Game.LuckyWheelValue,
+            Game.KenoProVietValue,
+            Game.BlackJackValue
         };
 
-        public MonitorItemViewModel(string name)
-        {
-            Name = name;
-        }
+        public string Name { get; set; }
 
-        public string Name { get; }
+        public string DisplayName => Enumeration.Contains<Game>(Name)
+                                        ? Enumeration.FromValue<Game>(Name).DisplayName
+                                        : Name;
 
-        public string DisplayName => string.IsNullOrWhiteSpace(Name) || !Enumeration.Contains<GameType>(Name)
-            ? Name
-            : Enumeration.FromValue<GameType>(Name).DisplayName;
+        public GameType Type { get; set; }
 
         public bool EnabledMonitoring => !disableMonitoring.Contains(Name);
 
         public bool EnabledHistory => !disableHistory.Contains(Name);
 
-        public string GameHistoryUrl => DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
+        public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
+            ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
+            : DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
     }
 }

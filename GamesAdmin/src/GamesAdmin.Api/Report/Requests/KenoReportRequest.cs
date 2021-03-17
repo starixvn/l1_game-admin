@@ -13,13 +13,13 @@ namespace GamesAdmin.Api.Report.Requests
             string nickname,
             bool excludeUUS)
         {
-            Game = Enumeration.FromValue<GameType>(game);
+            Game = Enumeration.FromValue<Game>(game);
             RoundId = roundId;
             Nickname = nickname;
             ExcludeUUS = excludeUUS;
         }
 
-        public GameType Game { get; }
+        public Game Game { get; }
 
         public long RoundId { get; }
 

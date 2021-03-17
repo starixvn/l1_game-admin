@@ -1,59 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
-using Refit;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
-    public interface IGameSettingApi : IBaseAuthorizationApi
-    {
-        [Get("/game_settings")]
-        Task<IList<GameConfig>> GetAll();
-
-        [Post("/game_settings/")]
-        Task<bool> Add([Body] GameConfig game);
-
-        [Put("/game_settings/")]
-        Task<bool> Update([Body] GameConfig game);
-
-        [Post("/game_settings/{id}/delete")]
-        Task<bool> Delete(string id);
-
-        [Get("/game_settings/{name}")]
-        Task<GameConfig> GetByName(string name);
-
-        [Put("/game_settings/update_status")]
-        Task<bool> UpdateStatus(string[] names, bool enabled);
-
-        [Put("/game_settings/{name}/update_message")]
-        Task<bool> UpdateMessage(string name, string disabledMessage);
-
-        [Post("/game_server/reload")]
-        Task<bool> Reload();
-
-        [Post("/game_server/jwt")]
-        Task<JsonWebToken> GetToken([Body] RequestJWT request);
-
-        [Post("/um")]
-        Task<bool> UnderMaintenance([Body] UnderMaintenanceRequest request);
-
-        [Get("/game_server/online_users/{game}")]
-        Task<OnlineUsers> GetOnlineUsers(string game = null);
-    }
-
     public interface IGameSettingService
     {
         Task<IList<GameConfig>> GetAll();
 
-        Task<bool> Update(GameConfig game);
-
         Task<bool> Add(GameConfig game);
-
-        Task<bool> Delete(string id);
 
         Task<GameConfig> GetByName(string name);
 
@@ -61,7 +20,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisabledMessage(string name, string message);
+        Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false);
 
         Task<bool> Reload();
 
@@ -70,17 +29,35 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UnderMaintenance(UnderMaintenanceRequest request);
 
         Task<OnlineUsers> GetOnlineUsers(string game = null);
+
+        Task<bool> UpdateBotRatios(string name, double[] ratios);
+
+        Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request);
+
+        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        Task<bool> UpdateJackpot(UpdateJackpotRequest request);
+
+        Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request);
+
+        Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
+
+        Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request);
+
+        Task<GlobalConfig> GetSiteExclusion();
     }
 
     public class GameSettingService : IGameSettingService
     {
         private readonly IGameSettingApi gameApi;
+        private readonly IGlobalConfigApi globalConfigApi;
         private readonly ISentryClient sentryClient;
 
-        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi)
+        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi)
         {
             this.sentryClient = sentryClient;
             this.gameApi = gameApi;
+            this.globalConfigApi = globalConfigApi;
         }
 
         public async Task<bool> Add(GameConfig game)
@@ -100,12 +77,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
-        public async Task<bool> Update(GameConfig game)
-        => await gameApi.Update(game);
-
-        public async Task<bool> Delete(string id)
-        => await gameApi.Delete(id);
-
         public async Task<GameConfig> GetByName(string name)
         => await gameApi.GetByName(name);
 
@@ -119,8 +90,19 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateStatus(string[] names, bool enabled)
         => gameApi.UpdateStatus(names, enabled);
 
-        public Task<bool> UpdateDisabledMessage(string name, string message)
-        => gameApi.UpdateMessage(name, message);
+        public async Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false)
+        {
+            try
+            {
+                return isApplyAll ? await gameApi.UpdateMessage(message) : await gameApi.UpdateMessage(name, message);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+
+            return false;
+        }
 
         public Task<bool> Reload()
         => gameApi.Reload();
@@ -133,5 +115,35 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<OnlineUsers> GetOnlineUsers(string game = null)
         => gameApi.GetOnlineUsers(game);
+
+        public Task<bool> UpdateBotRatios(string name, double[] ratios)
+       => gameApi.UpdateBotRatios(name, ratios);
+
+        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+        => gameApi.UpdateBetLimitAndOdds(request);
+
+        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+        => gameApi.UpdateSlotOddss(name, iconOdds);
+
+        public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
+        => gameApi.UpdateJackpot(request);
+
+        public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
+        => gameApi.UpdateSlotConfig(request);
+
+        public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
+        => gameApi.UpdateGeneralConfig(request);
+
+        public Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request)
+        {
+            var formattedExlusions = string.IsNullOrWhiteSpace(request.SiteExclusions)
+                ? new string[] { }
+                : request.SiteExclusions.Trim().Split(";").Select(exclusion => exclusion.Trim()).ToArray();
+
+            return globalConfigApi.UpdateSiteExclusions(request.ConfigName, formattedExlusions);
+        }
+
+        public Task<GlobalConfig> GetSiteExclusion()
+        => globalConfigApi.GetSiteExclusions();
     }
 }

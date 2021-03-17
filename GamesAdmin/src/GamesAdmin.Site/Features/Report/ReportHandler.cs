@@ -39,7 +39,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>,
         IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
-        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>
+        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
+        IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>,
+        IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -451,7 +453,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
             return new BlackjackReportResultViewModel
             {
-                Records = result.Select(x => {
+                Records = result.Select(x =>
+                {
                     var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
@@ -460,12 +463,28 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-		public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
+        public async Task<FourGuardiansReportResultViewModel> Handle(GetFourGuardiansReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetFourGuardiansReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new FourGuardiansReportResultViewModel
+            {
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<FourGuardiansRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);
 
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
-		}
+        }
 
         public async Task<SicBoReportResultViewModel> Handle(GetSicBoReportRequest request, CancellationToken cancellationToken)
         {
@@ -550,6 +569,19 @@ namespace GamesAdmin.Site.Features.ClientSites
                     return recordViewModel;
                 })
             };
+        }
+
+        public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
+
+            return result.Select(x =>
+            {
+                var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
+                betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                return betViewModel;
+            });
         }
     }
 }

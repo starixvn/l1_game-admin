@@ -19,8 +19,8 @@ namespace GamesAdmin.Api.Users
         }
 
         [HttpGet]
-        public async Task<IEnumerable<User>> GetAll()
-           => (await mediator.Send(new GetAllRequest()));
+        public Task<IEnumerable<User>> GetAll()
+           => mediator.Send(new GetAllRequest());
 
         [HttpPost("add")]
         public Task<bool> Create(User user)
@@ -31,11 +31,15 @@ namespace GamesAdmin.Api.Users
           => mediator.Send(new DeleteRequest(user));
 
         [HttpGet("{username}")]
-        public async Task<User> Get(string username)
-           => (await mediator.Send(new GetByNameRequest(username)));
+        public Task<User> Get(string username)
+           => mediator.Send(new GetByNameRequest(username));
 
         [HttpPost("signin/")]
-        public async Task<User> Get(string username, string password)
-           => (await mediator.Send(new SignInRequest(username, password)));
+        public Task<User> Get(string username, string password)
+           => mediator.Send(new SignInRequest(username, password));
+
+        [HttpPost("change_password/")]
+        public Task<bool> ChangePassword(string username, string password, string newPassword)
+          => mediator.Send(new ChangePasswordRequest(username, password, newPassword));
     }
 }

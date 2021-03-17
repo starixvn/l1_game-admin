@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 
 namespace GamesAdmin.Api.GameServers
@@ -12,6 +13,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<JWTRequest, JsonWebToken>
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
         , IRequestHandler<NotifyRoundsRequest, bool>
+        , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
     {
         private readonly IGameServerService gameServerService;
 
@@ -33,9 +35,12 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
         => string.IsNullOrWhiteSpace(request.Game)
                 ? gameServerService.GetOnlineUsers()
-                : gameServerService.GetOnlineUsers(Enumeration.FromValue<GameType>(request.Game));
+                : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
 
         public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
         => gameServerService.NotifyRoundResult(request.Rounds);
+
+        public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
+        => gameServerService.SetSlotBoard(request);
     }
 }

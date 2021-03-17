@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -187,6 +188,26 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
+
+        [HttpGet]
+        public IActionResult FourGuardians()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_FourGuardiansRecords", await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_FourGuardiansBetHistory",
+                (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetSicBoReport(long roundId, string nickname, bool excludeUUS)
         {
@@ -272,70 +293,42 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult KenoProViet()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoProViet() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMax()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMax() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMax2()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMax2() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMini()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMini() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoMini2()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoMini2() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoEast()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoEast() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoWest()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoWest() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoSouth()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoSouth() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoNorth()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoNorth() => ToKenoReport();
 
         [HttpGet]
-        public IActionResult KenoProMax()
-        {
-            return View("KenoReport", new KenoViewModel());
-        }
+        public IActionResult KenoProMax() => ToKenoReport();
+
+        private IActionResult ToKenoReport() => View("KenoReport", new KenoViewModel());
 
         [HttpGet]
         public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
         {
             return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(
-                Enumeration.FromValue<GameType>(game),
+                Enumeration.FromValue<Game>(game),
                 roundId,
                 nickname,
                 excludeUUS)));
@@ -344,7 +337,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)
         {
-            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<GameType>(game), roundId, nickname)));
+            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<Game>(game), roundId, nickname)));
         }
 
         [HttpGet]
@@ -358,5 +351,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_LuckyWheelRecords", await mediator.Send(new GetLuckyWheelHistoryRequest(nickname)));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetJackpotReport(JackpotReportViewModel model)
+        {
+            return PartialView("_JackpotRecords",
+                await mediator.Send(
+                    new GetJackpotReportRequest(model.GameId,
+                        model.FromDate.Date.ToUniversalTime(),
+                        model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(), 
+                        model.ExcludeUUS, model.ExcludeBot)));
+        }
+
     }
 }

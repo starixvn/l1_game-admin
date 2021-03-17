@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.DailySummarize
 {
     public class DailySummaryHandler : IRequestHandler<DailySummaryRequest, IEnumerable<DailySummaryResult>>
     {
-        private IDailySummaryService service;
+        private readonly IDailySummaryService service;
 
         public DailySummaryHandler(IDailySummaryService service)
         {

@@ -7,6 +7,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Spins;
@@ -30,11 +31,11 @@ namespace GamesAdmin.Api.Report
 
         Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(GameType game, long roundId, string nickname, bool excludeUUS = false);
+        Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false);
 
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname);
 
-        Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId);
+        Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId);
 
         Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
 
@@ -64,6 +65,9 @@ namespace GamesAdmin.Api.Report
 
         Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS);
+
+        Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
     }
 
     public class ReportService : IReportService
@@ -296,21 +300,21 @@ namespace GamesAdmin.Api.Report
             });
         }
 
-        public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(GameType game, long roundId, string nickname, bool excludeUUS = false)
+        public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false)
         {
             var service = kenoReportFactory.GetReportService(game);
 
             return service == default ? default : service.GetReportAsync(roundId, nickname, excludeUUS);
         }
 
-        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(GameType game, long roundId, string nickname)
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname)
         {
             var service = kenoReportFactory.GetReportService(game);
 
             return service == default ? default : service.GetBetHistoryAsync(roundId, nickname);
         }
 
-        public Task<KenoRoundResult> GetKenoRoundResultAsync(GameType game, long roundId)
+        public Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId)
         {
             var service = kenoReportFactory.GetReportService(game);
 
@@ -440,6 +444,14 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
 
+        public async Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IFourGuardiansReportRepository>();
+            var result = await repository.GetAsync(handId, nickname, excludeUUS);
+
+            return result.Select(x => mapper.Map<FourGuardiansBetRecord>(x));
+        }
+
         public async Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<ISicBoReportRepository>();
@@ -462,6 +474,14 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<SicBoRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<SicBoBetHistoryRecord>(x))
             };
+        }
+
+        public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IJackpotRepository>();
+            var result = await repository.GetAsync(gameId, fromDate, toDate, excludeUUS, excludeBot);
+
+            return result.Select(x => mapper.Map<JackpotRecord>(x));
         }
         
          public async Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS)

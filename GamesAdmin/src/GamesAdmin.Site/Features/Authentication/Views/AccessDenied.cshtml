@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/scss/base/roboto.min.css" rel="stylesheet" />
+    <link href="~/scss/pages/login.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <form asp-action="Index" asp-controller="Dashboard" method="get" class="block error-login">
+            <img src="~/images/error-icon.png" class="icon-lock" alt="SabaClub Admin Site" />
+            <div class="info">You don't have permission to access this page. Please contact your administrator.</div>
+            <button class="btn-submit">Back to Home</button>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

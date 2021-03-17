@@ -10,7 +10,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class KenoReportViewModel
     {
         public KenoReportViewModel(
-            GameType game, 
+            Game game, 
             long roundId, 
             KenoRoundResult roundResult, 
             IEnumerable<KenoBetRecord> betTickets,
@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             TimeZoneInfo = timeZoneInfo;
         }
 
-        public GameType Game { get; }
+        public Game Game { get; }
 
         public long RoundId { get; }
 

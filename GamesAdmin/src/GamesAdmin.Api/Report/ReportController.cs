@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -127,14 +129,19 @@ namespace GamesAdmin.Api.Report
        => (await mediator.Send(new BlackjackReportRequest(handId, nickname, excludeUUS)));
 
         [HttpGet]
+        [Route("four_guardians/round/{roundId}/users/{nickname?}")]
+        public async Task<IEnumerable<FourGuardiansBetRecord>> FourGuardians(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new FourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
         [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]
         public async Task<VipFishPrawnCrabBetReport> VipFishPrawnCrab(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
+
         [HttpGet]
         [Route("vipsediewar/round/{roundId}/users/{nickname?}")]
         public async Task<VipSeDieWarBetReport> VipSeDieWar(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new VipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
-
 
         [HttpGet]
         [Route("bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
@@ -150,5 +157,10 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/game/sicbo/round/{roundId}/user/{userId}")]
         public async Task<SicBoBetHistory> SicBoBetHistory(long roundId, string userId)
         => (await mediator.Send(new SicBoBetHistoryRequest(roundId, userId)));
+
+        [HttpGet]
+        [Route("jackpot/game/{gameId}")]
+        public async Task<IEnumerable<JackpotRecord>> JackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+       => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot)));
     }
 }

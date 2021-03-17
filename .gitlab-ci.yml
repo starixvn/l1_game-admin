@@ -1,5 +1,5 @@
 include:
-  - project: "ci/luminet/game-admin-ci"
-    ref: L2
+  - project: "ci/repos-ci/pentagon_l2_admin_site"
+    ref: master
     file: "gitlab-ci.yml"
     

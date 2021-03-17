@@ -13,10 +13,11 @@ namespace GamesAdmin.Api.Users
         , IRequestHandler<DeleteRequest, bool>
         , IRequestHandler<GetByNameRequest, User>
         , IRequestHandler<SignInRequest, User>
+        , IRequestHandler<ChangePasswordRequest, bool>
     {
         private readonly IUserService userService;
 
-        public UserHandler(IUserService userService) 
+        public UserHandler(IUserService userService)
         {
             this.userService = userService;
         }
@@ -35,5 +36,8 @@ namespace GamesAdmin.Api.Users
 
         public Task<User> Handle(SignInRequest request, CancellationToken cancellationToken)
         => userService.SignIn(request.Username, request.Password);
+
+        public Task<bool> Handle(ChangePasswordRequest request, CancellationToken cancellationToken)
+        => userService.ChangePassword(request.Username, request.Password, request.NewPassword);
     }
 }

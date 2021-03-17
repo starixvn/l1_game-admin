@@ -1,4 +1,4 @@
-FROM git3.nexdev.net:5050/lumi-ops/docker-images/dotnet/core/sdk:3.1 AS builder
+FROM registry.nexdev.net:5050/docker/dotnet/core/sdk:3.1 AS builder
 WORKDIR /src
 
 COPY ./GamesAdmin/src/GamesAdmin.Core ./GamesAdmin.Core
@@ -12,7 +12,7 @@ COPY ./GamesAdmin/src/GamesAdmin.Workers .
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app 
 
-FROM git3.nexdev.net:5050/lumi-ops/docker-images/dotnet/core/aspnet:3.1 AS base
+FROM registry.nexdev.net:5050/docker/dotnet/core/aspnet:3.1-buster-slim AS base
 
 WORKDIR /app
 COPY --from=builder /app .
