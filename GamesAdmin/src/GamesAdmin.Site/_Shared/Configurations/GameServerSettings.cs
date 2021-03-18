@@ -18,6 +18,7 @@
         public GameServerConfigs DragonTiger { get; set; }
         public GameServerConfigs TurboOddEven { get; set; }
         public GameServerConfigs Roulette { get; set; }
+        public GameServerConfigs Baccarat { get; set; }
     }
 
     public class GameServerConfigs

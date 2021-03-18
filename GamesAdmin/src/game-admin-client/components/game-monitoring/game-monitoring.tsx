@@ -91,7 +91,7 @@ const gameMapper = {
   },
   10: {
     component: Baccarat,
-    ...getInfoByGameKey("baccarat"),
+    ...getInfoByGameKey("Baccarat"),
   },
   12: {
     component: MiniKeno("kenoMax", 20),

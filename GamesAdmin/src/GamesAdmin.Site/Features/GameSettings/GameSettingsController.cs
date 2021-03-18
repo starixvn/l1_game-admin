@@ -206,6 +206,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("turbo-odd-even-server-endpoint-route", appSettings.GameServers.TurboOddEven.SocketRoute);
             HttpContext.Response.Cookies.Append("roulette-endpoint", appSettings.GameServers.Roulette.Socket);
             HttpContext.Response.Cookies.Append("roulette-server-endpoint-route", appSettings.GameServers.Roulette.SocketRoute);
+            HttpContext.Response.Cookies.Append("baccarat-server-endpoint", appSettings.GameServers.Baccarat.Socket);
+            HttpContext.Response.Cookies.Append("baccarat-server-endpoint-route", appSettings.GameServers.Baccarat.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
