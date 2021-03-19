@@ -218,7 +218,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.EnableSetting,
             request.BotSettings,
             request.BetLimit,
-            request.SlotConfigs));
+            request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
 
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);

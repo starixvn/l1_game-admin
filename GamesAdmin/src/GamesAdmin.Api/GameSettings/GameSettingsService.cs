@@ -93,6 +93,7 @@ namespace GamesAdmin.Api.Games
                     BotMaxBet = game.BotSetting.BotMaxBet,
                     HoursMaxBot = game.BotSetting.HoursMaxBot,
                     SlotsConfig = game.SlotsConfig,
+                    SiteExclusions = new string[] { },
                     Time = DateTime.Now
                 };
 
