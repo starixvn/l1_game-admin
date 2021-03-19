@@ -29,6 +29,7 @@
         VipFishPrawnCrab = 26,
         VipBaccarat,
         VipSeDieWar = 28,        
-        FourGuardians = 29
+        FourGuardians = 29,
+        Lottery = 31
     }
 }

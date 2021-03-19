@@ -67,6 +67,10 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.VipSeDieWarValue:
                     return Enumeration.GetAll<VipSeDieWarBetChoice>();
 
+
+                case Game.LotteryValue:
+                    return Enumeration.GetAll<LotteryBetChoice>();
+
                 default: return default;
             }
         }
