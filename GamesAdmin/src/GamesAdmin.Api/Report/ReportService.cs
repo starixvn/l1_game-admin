@@ -99,9 +99,9 @@ namespace GamesAdmin.Api.Report
                 RoundResult = new BigSmallRoundResult
                 {
                     Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1,
-                    Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
+                    Dice1 = (int)(result.Item1.Dice1 ?? result.Item1.Result?.Dice1),
+                    Dice2 = (int)(result.Item1.Dice2 ?? result.Item1.Result?.Dice2),
+                    Dice3 = (int)(result.Item1.Dice3 ?? result.Item1.Result?.Dice3)
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord
                 {
@@ -126,16 +126,16 @@ namespace GamesAdmin.Api.Report
                 RoundResult = new BigSmallRoundResult
                 {
                     Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1,
-                    Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
+                    Dice1 = (int)(result.Item1.Dice1 ?? result.Item1.Result?.Dice1),
+                    Dice2 = (int)(result.Item1.Dice2 ?? result.Item1.Result?.Dice2),
+                    Dice3 = (int)(result.Item1.Dice3 ?? result.Item1.Result?.Dice3)
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord
                 {
                     Time = x.Time,
                     Nickname = x.Nickname,
                     Username = x.Username,
-                    Select = x.Select,
+                    Select = x.Select ,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
                     Back = x.Back

@@ -8,6 +8,25 @@ namespace GamesAdmin.Database.Entities
     public class MiniSeDieRoundEntity : BaseRoundEntity
     {
         [BsonElement("red1")]
+        public bool? FirstRedChip { get; set; }
+
+        [BsonElement("red2")]
+        public bool? SecondRedChip { get; set; }
+
+        [BsonElement("red3")]
+        public bool? ThirdRedChip { get; set; }
+
+        [BsonElement("red4")]
+        public bool? FourthRedChip { get; set; }
+
+        public MiniSedieResult Result { get; set; }
+
+        public MiniSeDieSettlementResultEntity SettlementResult { get; set; }
+    }
+
+    public class MiniSedieResult
+    {
+        [BsonElement("red1")]
         public bool FirstRedChip { get; set; }
 
         [BsonElement("red2")]
@@ -18,8 +37,6 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("red4")]
         public bool FourthRedChip { get; set; }
-
-        public MiniSeDieSettlementResultEntity SettlementResult { get; set; }
     }
 
     public class MiniSeDieSettlementResultEntity

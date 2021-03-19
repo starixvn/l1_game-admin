@@ -9,6 +9,15 @@ namespace GamesAdmin.Database.Entities
         public Card Dragon { get; set; }
 
         public Card Tiger { get; set; }
+
+        public DragonTigerResult Result { get; set; }
+    }
+
+    public class DragonTigerResult
+    {
+        public Card Dragon { get; set; }
+
+        public Card Tiger { get; set; }
     }
 
     public class Card

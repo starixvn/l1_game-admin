@@ -30,10 +30,10 @@ namespace GamesAdmin.Database
                         Time = x.Time,
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
-                        Select = x.Select,
-                        Bet = x.Bet,
+                        Select = x.Select ?? x.Choice == "big",
+                        Bet = x.Bet ?? x.Amount,
                         BetWin = x.Betwin,
-                        Back = x.Back
+                        Back = x.Back ?? x.Refund
                     }).ToListAsync();
 
                 return (roundResult, records);
