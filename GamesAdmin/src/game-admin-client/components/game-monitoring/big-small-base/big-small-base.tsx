@@ -139,7 +139,6 @@ export default class BigSmallBase extends React.Component<
     }
   }
 
-
   getUserBetList(data, currentData) {
     Object.keys(currentData).forEach((key) => {
       currentData[key].total = 0;
@@ -151,11 +150,11 @@ export default class BigSmallBase extends React.Component<
       Object.keys(betTracks).forEach((key) => {
         if (betTracks[key]) {
           let select = false;
-          if(optionChoice.indexOf(key) !== -1){
+          if (optionChoice.indexOf(key) !== -1) {
             select = true;
           }
 
-          currentData[betListMapping(select)].total = betTracks[key];
+          currentData[betListMapping(select)].total += betTracks[key];
           currentData[betListMapping(select)].dataList.unshift(
             new BetItem(data[user].name, betTracks[key])
           );
@@ -291,7 +290,7 @@ export default class BigSmallBase extends React.Component<
   }
 
   getTitles() {
-    return [ "Nickname", "Stake"];
+    return ["Nickname", "Stake"];
   }
 
   render() {
