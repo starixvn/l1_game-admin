@@ -142,6 +142,7 @@ export default class BigSmallBase extends React.Component<
 
   getUserBetList(data, currentData) {
     Object.keys(currentData).forEach((key) => {
+      currentData[key].total = 0;
       currentData[key].dataList = new Array<BetItem>();
     });
 
