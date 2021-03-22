@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Content Remove="appsettings - Copy.LOCAL.json" />
+    <Content Remove="appsettings - Copy.PROD.json" />
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
     <Content Remove="appsettings.LOCAL.json" />
