@@ -235,7 +235,7 @@ namespace GamesAdmin.Api._Shared
                    source.FirstRedChip ?? source.Result.FirstRedChip,
                    source.SecondRedChip ?? source.Result.SecondRedChip,
                    source.ThirdRedChip ?? source.Result.ThirdRedChip,
-                   source.FourthRedChip ?? source.Result.FirstRedChip
+                   source.FourthRedChip ?? source.Result.FourthRedChip
                }))
                .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
                .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even))
