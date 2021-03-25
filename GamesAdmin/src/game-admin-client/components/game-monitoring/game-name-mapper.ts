@@ -24,4 +24,5 @@ export default {
   vipfishprawncrab: 26,
   vipbaccarat: 27,
   vipsediewar: 28,
+    lottery: 31
 };

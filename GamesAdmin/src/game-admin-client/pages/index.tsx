@@ -47,6 +47,7 @@ const NewSocketGameIds = [
   26,
   27,
   28,
+  31
 ];
 
 export class Home extends React.Component<Props, State> {
@@ -179,7 +180,18 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
               : Cookies.get("sic-bo-server-endpoint-route"),
         };
-      case gameNameMapper.kenopromax:
+      case gameNameMapper.lottery:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_LOTTERY_SERVER_ENDPOINT
+              : Cookies.get("lottery-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_LOTTERY_SERVER_PROXY_ROUTE
+              : Cookies.get("lottery-server-endpoint-route"),
+        };
+        case gameNameMapper.kenopromax:
         return {
           endpoint:
             process.env.NEXT_PUBLIC_ENV === "local"
