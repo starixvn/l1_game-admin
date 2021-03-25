@@ -24,7 +24,9 @@ namespace GamesAdmin.Api.GameServers
             { Game.FourGuardiansValue, typeof(IFourGuardiansOnlineUserApi) },
             { Game.KenoProMaxValue, typeof(IKenoProMaxOnlineUserApi) },
             { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) },
-            { Game.RouletteValue, typeof(IRouletteOnlineUserApi) }
+            { Game.RouletteValue, typeof(IRouletteOnlineUserApi) },
+            { Game.BaccaratValue, typeof(IBaccaratOnlineUserApi) }
+
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);
