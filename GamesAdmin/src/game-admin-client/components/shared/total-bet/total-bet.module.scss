@@ -404,3 +404,14 @@
 @include sediewar("bankerRed3", "white", "Banker", "mottrangbado");
 @include sediewar("bankerWhite3", "white", "Banker", "motdobatrang");
 @include sediewar("bankerWhite4", "white", "Banker", "bontrang");
+
+@include totalBet("4Sets", "white", "4 Sets");
+@include totalBet("special", "white", "Special");
+@include totalBet("head", "white", "Head");
+@include totalBet("tail", "white", "Tail");
+@include totalBet("27Sets", "white", "27 Sets");
+@include totalBet("parlay2", "white", "Parlay 2");
+@include totalBet("parlay3", "white", "Parlay 3");
+@include totalBet("parlay4", "white", "Parlay 4");
+@include totalBet("others", "white", "Others");
+
