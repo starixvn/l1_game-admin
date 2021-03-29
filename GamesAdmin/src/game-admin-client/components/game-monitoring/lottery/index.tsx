@@ -11,6 +11,7 @@ import { GameState } from "../../shared/common/GameState";
 import { LotteryBetList, LotteryModel } from "../../common/model/LotteryModel";
 import { Notice } from "../../shared/notice/notice";
 import LotteryRoundResult from "../../shared/lottery-round-result";
+import generateBoard from "./lottery-number-generator";
 
 type LotteryProps = {
   onMessage: Function;
@@ -31,6 +32,7 @@ export default class Lottery extends React.Component<
     this.state = new LotteryModel();
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.handlePrizeNumberChange = this.handlePrizeNumberChange.bind(this);
+    this.handleGenerateResult = this.handleGenerateResult.bind(this);
   }
 
   componentDidMount() {
@@ -62,7 +64,7 @@ export default class Lottery extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 5;
+      const waitingTime = 6;
       this.setState({
         result: data.finish.result,
         gameState: GameState.waiting,
@@ -86,13 +88,13 @@ export default class Lottery extends React.Component<
     }
 
     if (!!data.remainingTime) {
-      if (data.remainingTime > 46) {
+      if (data.remainingTime > 41) {
         this.setState((prevState) => ({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result: data.result ? data.result : prevState.result,
           time: {
-            remainingTime: data.remainingTime - 46,
+            remainingTime: data.remainingTime - 41,
           },
         }));
 
@@ -101,10 +103,10 @@ export default class Lottery extends React.Component<
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 46,
+              remainingTime: 41,
             },
           });
-        }, (data.remainingTime - 46) * 1000);
+        }, (data.remainingTime - 41) * 1000);
       } else {
         this.setState({
           gameState: GameState.running,
@@ -135,7 +137,7 @@ export default class Lottery extends React.Component<
                   data[user].name,
                   amountOnChoice as number,
                   "",
-                  betChoice
+                  betChoice.replace("-", ", ")
                 )
               );
               currentData[betTypeKey].total += amountOnChoice;
@@ -147,7 +149,11 @@ export default class Lottery extends React.Component<
     return currentData;
   }
 
-  handleChangeResult(id, value) {
+  handleGenerateResult() {
+    this.setState({ result: generateBoard() });
+  }
+
+  handleChangeResult() {
     const { result } = this.state;
 
     this.props.sendMessage({
@@ -164,7 +170,6 @@ export default class Lottery extends React.Component<
 
     if (this.state.gameState == GameState.waiting) {
       const gameResult = this.state.nextRoudResult;
-      //gameResult[currentDiceNumber] = new DiceModel(value, DiceType.TaiXiu);
 
       this.setState({
         isHandleNextRoundResult: true,
@@ -182,6 +187,21 @@ export default class Lottery extends React.Component<
     this.setState({ result });
   }
 
+  calculateTotalBet() {
+    const { betList } = this.state;
+    return (
+      betList["4Sets"].total +
+      betList.special.total +
+      betList["27Sets"].total +
+      betList.head.total +
+      betList.tail.total +
+      betList.parlay2.total +
+      betList.parlay3.total +
+      betList.parlay4.total +
+      betList.others.total
+    );
+  }
+
   renderMonitor() {
     const { betList, roundNumber, time, result, gameState } = this.state;
 
@@ -194,6 +214,18 @@ export default class Lottery extends React.Component<
               result={this.state.result}
               onChange={this.handlePrizeNumberChange}
             />
+            <button
+              className="btn btn-success mr-1"
+              onClick={this.handleGenerateResult}
+            >
+              Generate
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={this.handleChangeResult}
+            >
+              Save
+            </button>
           </Col>
           <Col align="center" className="col-12 col-md-3">
             <Row className={styles["align-middle"]}>
@@ -213,15 +245,16 @@ export default class Lottery extends React.Component<
               <TotalBet total={betList.special.total} type="special" />
               <TotalBet total={betList.head.total} type="head" />
               <TotalBet total={betList.tail.total} type="tail" />
+              <TotalBet total={betList["27Sets"].total} type="27Sets" />
             </Row>
             <Row className="justify-content-center">
-              <TotalBet total={betList["27Sets"].total} type="27Sets" />
               <TotalBet total={betList.parlay2.total} type="parlay2" />
               <TotalBet total={betList.parlay3.total} type="parlay3" />
+              <TotalBet total={betList.others.total} type="others" />
               <TotalBet total={betList.parlay4.total} type="parlay4" />
             </Row>
             <Row className="justify-content-center">
-              <TotalBet total={betList.others.total} type="others" />
+              <TotalBet total={this.calculateTotalBet()} type="turnover" />
             </Row>
           </Col>
         </Row>
