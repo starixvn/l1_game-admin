@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.AWS.json" />
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
     <Content Remove="appsettings.LOCAL.json" />
@@ -22,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="appsettings.AWS.json" />
     <None Include="appsettings.LOCAL.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
