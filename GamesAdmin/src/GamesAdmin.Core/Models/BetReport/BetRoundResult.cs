@@ -150,4 +150,50 @@ namespace GamesAdmin.Core.Models
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
+
+    public class LotteryRoundResult : RoundResult
+    {
+        public IEnumerable<string> Special { get; set; }
+        public IEnumerable<string> First { get; set; }
+        public IEnumerable<string> Second { get; set; }
+        public IEnumerable<string> Third { get; set; }
+        public IEnumerable<string> Fourth { get; set; }
+        public IEnumerable<string> Fifth { get; set; }
+        public IEnumerable<string> Sixth { get; set; }
+        public IEnumerable<string> Seventh { get; set; }
+
+        public LotterySettlementResult SettlementResult { get; set; }
+    }
+
+
+    public class LotterySettlementResult
+    {
+        public IEnumerable<string> FourSets { get; set; }
+
+        public string Special { get; set; }
+
+        public string Head { get; set; }
+
+        public string Tail { get; set; }
+
+        public LotteryOthersSettlementResult Others { get; set; }
+
+        public IEnumerable<string> TwentySevenSets { get; set; }
+
+        public LotteryOccurrences Occurrences { get; set; }
+    }
+
+    public class LotteryOthersSettlementResult
+    {
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+    }
+
+    public class LotteryOccurrences
+    {
+        public Dictionary<string, byte> All { get; set; }
+        public Dictionary<string, byte> Seventh { get; set; }
+    }
 }

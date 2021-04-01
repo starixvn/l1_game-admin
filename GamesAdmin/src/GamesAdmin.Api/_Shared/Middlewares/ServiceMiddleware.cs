@@ -93,6 +93,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<SicBoEndGameInfoService>();
             services.AddScoped<VipSeDieWarEndGameInfoService>();
             services.AddScoped<FourGuardiansEndGameInfoService>();
+            services.AddScoped<LotteryEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));

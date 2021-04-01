@@ -162,5 +162,10 @@ namespace GamesAdmin.Api.Report
         [Route("jackpot/game/{gameId}")]
         public async Task<IEnumerable<JackpotRecord>> JackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
        => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot)));
+
+        [HttpGet]
+        [Route("lottery/round/{roundId}/users/{nickname?}")]
+        public async Task<LotteryBetReport> Lottery(long roundId, string nickname, bool excludeUUS)
+            => (await mediator.Send(new LotteryReportRequest(roundId, nickname, excludeUUS)));
     }
 }

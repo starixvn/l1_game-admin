@@ -129,5 +129,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<JackpotRecord>> Handle(JackpotReportRequest request, CancellationToken cancellationToken)
         => reportService.GetJackpotReportAsync(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
+
+        public Task<LotteryBetReport> Handle(LotteryReportRequest request, CancellationToken cancellationToken)
+            => reportService.GetLotteryReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }
