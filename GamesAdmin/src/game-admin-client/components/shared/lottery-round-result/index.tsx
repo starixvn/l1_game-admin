@@ -133,8 +133,8 @@ export default class LotteryRoundResult extends React.Component<LotteryProps> {
       >
         <thead>
           <tr>
-            <td>Prizes</td>
-            <td colSpan={12}>Saba.club Lottery</td>
+            <th>Prizes</th>
+            <th colSpan={12}>Saba.club Lottery</th>
           </tr>
         </thead>
         <tbody>

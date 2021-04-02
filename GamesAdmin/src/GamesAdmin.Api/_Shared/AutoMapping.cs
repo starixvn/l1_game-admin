@@ -261,6 +261,10 @@ namespace GamesAdmin.Api._Shared
             CreateMap<LotteryOthersSettlementResultEntity, LotteryOthersSettlementResult>();
 
             CreateMap<LotteryBetReportEntity, LotteryBetRecord>();
+
+            CreateMap<LotteryBetEntity, LotteryBetHistoryRecord>();
+            CreateMap<LotteryOddsEntity, LotteryOdds>();
+            CreateMap<LotteryChoicesEntity, LotteryChoices>();
         }
     }
 }

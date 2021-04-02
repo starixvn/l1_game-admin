@@ -5,6 +5,6 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("lottery_cuocs")]
     public class LotteryBetEntity : BaseBetEntity
     {
-        public LotteryChoices Choices { get; set; }
+        public LotteryChoicesEntity Choices { get; set; }
     }
 }

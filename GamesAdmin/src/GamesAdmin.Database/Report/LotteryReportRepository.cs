@@ -25,7 +25,7 @@ namespace GamesAdmin.Database
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<LotteryOnesEntity, LotteryBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
+                var project = GetBaseAggregateBuilder<LotteryOnesEntity, LotteryBetWithUnwindAccountsEntity>(roundId, nickname, true,  excludeUUS)
                     .Project(x => new LotteryBetReportEntity
                     {
                         Time = x.Time,

@@ -104,6 +104,13 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [ActionName("saba.clublottery")]
+        public IActionResult Lottery()
+        {
+            return View("Lottery", new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
         public IActionResult SeDieWar()
         {
             return View("VipSeDieWar", new ReportViewModel { ExcludeUUS = true });
@@ -211,6 +218,12 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetSicBoReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_SicBoRecords", await mediator.Send(new GetSicBoReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLotteryReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_LotteryRecords", await mediator.Send(new GetLotteryReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

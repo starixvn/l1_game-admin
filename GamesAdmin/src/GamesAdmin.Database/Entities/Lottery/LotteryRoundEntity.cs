@@ -9,7 +9,7 @@ namespace GamesAdmin.Database.Entities
     {
         public LotteryResultEntity Result { get; set; }
 
-        public Dictionary<string, bool> SettlementResult { get; set; }
+        public LotterySettlementResultEntity SettlementResult { get; set; }
     }
 
     public class LotteryResultEntity

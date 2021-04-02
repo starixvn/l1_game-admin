@@ -81,6 +81,12 @@ namespace GamesAdmin.Site._Shared
             CreateMap<FourGuardiansJackpot, FourGuardiansJackpotViewModel>();
 
             CreateMap<JackpotRecord, JackpotRecordViewModel>();
+
+            CreateMap<LotteryRoundResult, LotteryRoundResultViewModel>();
+            CreateMap<LotterySettlementResult, LotterySettlementResultViewModel>();
+            CreateMap<LotteryOthersSettlementResult, LotteryOthersSettlementResultViewModel>();
+            CreateMap<LotteryOccurrences, LotteryOccurrencesViewModel>();
+            CreateMap<LotteryBetRecord, LotteryRecordViewModel>();
         }
     }
 }
