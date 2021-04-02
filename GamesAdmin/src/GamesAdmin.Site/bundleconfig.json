@@ -16,28 +16,22 @@
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
-      "wwwroot/scss/base/material-icon.css",
-      "wwwroot/scss/base/roboto.css",
-      "wwwroot/scss/pages/site.css",
-      "wwwroot/scss/themes/themel2.css"
+      "wwwroot/scss/base/material-icon.min.css",
+      "wwwroot/scss/base/roboto.min.css",
+      "wwwroot/scss/themes/themel1.min.css",
+      "wwwroot/scss/pages/site.min.css"
     ]
   },
   {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
     "inputFiles": [
-      "wwwroot/scss/pages/reports.css"
+      "wwwroot/scss/pages/reports.min.css"
     ]
   },
   {
     "outputFileName": "wwwroot/css/adjust-bot.min.css",
     "inputFiles": [
-      "wwwroot/scss/pages/adjust-bot.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/notification.min.css",
-    "inputFiles": [
-      "wwwroot/scss/pages/notification.css"
+      "wwwroot/scss/pages/adjust-bot.min.css"
     ]
   },
   {
@@ -87,6 +81,12 @@
     "outputFileName": "wwwroot/js/report.min.js",
     "inputFiles": [
       "wwwroot/js/report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/voidgame.min.js",
+    "inputFiles": [
+      "wwwroot/js/voidgame.js"
     ]
   }
 ]

@@ -44,11 +44,17 @@ namespace GamesAdmin.Api._Shared
             CreateMap<Notification, NotificationEntity>()
                 .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
 
-            CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>();
+            CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>()
+                .ForMember(dest => dest.FirstDice, opt => opt.MapFrom(src => src.Result.FirstDice))
+                .ForMember(dest => dest.SecondDice, opt => opt.MapFrom(src => src.Result.SecondDice))
+                .ForMember(dest => dest.ThirdDice, opt => opt.MapFrom(src => src.Result.ThirdDice));
+
             CreateMap<FishPrawnCrabBetReportEntity, FishPrawnCrabBetRecord>();
 
             CreateMap<Card, CardResult>();
-            CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>();
+            CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>()
+                .ForMember(dest => dest.Dragon, opt => opt.MapFrom(src => src.Dragon ?? src.Result.Dragon))
+                .ForMember(dest => dest.Tiger, opt => opt.MapFrom(src => src.Tiger ?? src.Result.Tiger));
             CreateMap<DragonTigerBetReportEntity, DragonTigerBetRecord>();
 
             CreateMap<BaccaratSettlementResultEntity, BaccaratSettlementResult>();
@@ -226,10 +232,10 @@ namespace GamesAdmin.Api._Shared
             CreateMap<MiniSeDieRoundEntity, SeDieRoundResult>()
                .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]
                {
-                   source.FirstRedChip,
-                   source.SecondRedChip,
-                   source.ThirdRedChip,
-                   source.FourthRedChip
+                   source.FirstRedChip ?? source.Result.FirstRedChip,
+                   source.SecondRedChip ?? source.Result.SecondRedChip,
+                   source.ThirdRedChip ?? source.Result.ThirdRedChip,
+                   source.FourthRedChip ?? source.Result.FourthRedChip
                }))
                .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
                .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even))

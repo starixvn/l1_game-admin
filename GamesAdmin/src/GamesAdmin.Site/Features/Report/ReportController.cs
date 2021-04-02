@@ -181,7 +181,6 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
-
         [HttpGet]
         public IActionResult SicBo()
         {

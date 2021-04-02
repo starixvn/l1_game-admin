@@ -42,7 +42,14 @@
         </a>
     </li>
 
-    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == Role.Admin.Value)
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="VoidGame">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Void Game Ticket</span>
+        </a>
+    </li>
+
+    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
     {
         <li class="menu-item">
             <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">

@@ -18,7 +18,7 @@ export default class {
   };
   protected readonly onDisconnectedMessage: string;
 
-  constructor(endpoint: string, route: string = '') {
+  constructor(endpoint: string, route: string = "") {
     this.isConnected = false;
     this.isLogged = false;
     this.endpoint = endpoint;
@@ -33,7 +33,10 @@ export default class {
       if (!this.isConnected) {
         this.socket = new WebSocket(this.endpoint);
         this.socket.onmessage = this.onReceiveMessage.bind(this);
-        this.socket.onerror = (event) => logger.error(event);
+        this.socket.onerror = (event) => {
+          logger.error(event);
+          console.log(event);
+        };
         this.socket.onclose = this.disconnect.bind(this);
         this.socket.onopen = () => {
           this.isConnected = true;
@@ -45,7 +48,11 @@ export default class {
     });
   }
 
-  public addObserver(key: string | number, handler: Function, selector: ObserverSelector = () => true) {
+  public addObserver(
+    key: string | number,
+    handler: Function,
+    selector: ObserverSelector = () => true
+  ) {
     if (!this.observers[key]) {
       this.observers[key] = { handler, selector };
     } else {
@@ -60,7 +67,11 @@ export default class {
     }
   }
 
-  public addOrReplaceObserver(key: string | number, handler: Function, selector: ObserverSelector = () => true) {
+  public addOrReplaceObserver(
+    key: string | number,
+    handler: Function,
+    selector: ObserverSelector = () => true
+  ) {
     this.observers[key] = { handler, selector };
   }
 
@@ -99,7 +110,8 @@ export default class {
   }
 
   public onDisconnected(handler: () => void) {
-    const key = `${this.onDisconnectedMessage}:${this.disconnectListenterCounter++}`;
+    const key = `${this.onDisconnectedMessage}:${this
+      .disconnectListenterCounter++}`;
     this.addObserver(
       key,
       handler,

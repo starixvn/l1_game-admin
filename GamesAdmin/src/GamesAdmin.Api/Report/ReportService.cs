@@ -60,11 +60,15 @@ namespace GamesAdmin.Api.Report
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(long handId, string nickname, bool excludeUUS);
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
+
         Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS);
+
         Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
+
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
+
         Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
@@ -99,9 +103,9 @@ namespace GamesAdmin.Api.Report
                 RoundResult = new BigSmallRoundResult
                 {
                     Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1,
-                    Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
+                    Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
+                    Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
+                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord
                 {
@@ -126,9 +130,9 @@ namespace GamesAdmin.Api.Report
                 RoundResult = new BigSmallRoundResult
                 {
                     Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1,
-                    Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
+                    Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
+                    Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
+                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord
                 {
@@ -483,8 +487,8 @@ namespace GamesAdmin.Api.Report
 
             return result.Select(x => mapper.Map<JackpotRecord>(x));
         }
-        
-         public async Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS)
+
+        public async Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IVipSeDieWarReportRepository>();
             var result = await repository.GetAsync(roundId, nickname, excludeUUS);

@@ -30,12 +30,12 @@ namespace GamesAdmin.Database
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
-                        Stag = x.Stag,
-                        Gourd = x.Gourd,
-                        Crab = x.Crab,
-                        Fish = x.Fish,
-                        Prawn = x.Prawn,
-                        Rooster = x.Rooster
+                        Stag = x.OldStag ?? x.Stag,
+                        Gourd = x.OldGourd ?? x.Gourd,
+                        Crab = x.OldCrab ?? x.Crab,
+                        Fish = x.OldFish ?? x.Fish,
+                        Prawn = x.OldPrawn ?? x.Prawn,
+                        Rooster = x.OldRooster ?? x.Rooster
                     });
                 var records = await project.ToListAsync();
 

@@ -1,5 +1,5 @@
 include:
-  - project: "ci/repos-ci/pentagon_l2_admin_site"
+  - project: "ci/repos-ci/pentagon_l1_admin_site"
     ref: master
     file: "gitlab-ci.yml"
     

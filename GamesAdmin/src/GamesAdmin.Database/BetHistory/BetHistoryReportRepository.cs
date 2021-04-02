@@ -21,6 +21,7 @@ namespace GamesAdmin.Database
         Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetEntity>)> GetSpecialSeDieAsync(long roundId, string userId);
 
         Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId);
+
         Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId);
     }
 
@@ -65,12 +66,12 @@ namespace GamesAdmin.Database
                     BetWin = x.One.Betwin,
                     Round = x.Number,
                     Time = x.One.Time,
-                    Bet = x.One.Bet,
-                    FirstDice = (byte)x.Dice1,
-                    SecondDice = (byte)x.Dice2,
-                    ThirdDice = (byte)x.Dice3,
-                    Refund = x.One.Back,
-                    Select = x.One.Select
+                    Bet = x.One.Bet ?? x.One.Amount,
+                    FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
+                    SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
+                    ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                    Refund = x.One.Back ?? x.One.Refund,
+                    Select = x.One.Select ?? x.One.Choice == "big"
                 }
             );
 
@@ -108,12 +109,12 @@ namespace GamesAdmin.Database
                     BetWin = x.One.Betwin,
                     Round = x.Number,
                     Time = x.One.Time,
-                    Bet = x.One.Bet,
-                    FirstDice = (byte)x.Dice1,
-                    SecondDice = (byte)x.Dice2,
-                    ThirdDice = (byte)x.Dice3,
-                    Refund = x.One.Back,
-                    Select = x.One.Select
+                    Bet = x.One.Bet ?? x.One.Amount,
+                    FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
+                    SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
+                    ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                    Refund = x.One.Back ?? x.One.Refund,
+                    Select = x.One.Select ?? x.One.Choice == "big"
                 }
             );
 
@@ -196,12 +197,12 @@ namespace GamesAdmin.Database
                    BetWin = x.One.Betwin,
                    Round = x.Number,
                    Time = x.One.Time,
-                   Bet = x.One.Bet,
+                   Bet = x.One.Bet ?? x.One.Amount,
                    FirstDice = (byte)x.Dice1,
                    SecondDice = (byte)x.Dice2,
                    ThirdDice = (byte)x.Dice3,
-                   Refund = x.One.Back,
-                   Select = x.One.Select
+                   Refund = x.One.Back ?? x.One.Refund,
+                   Select = x.One.Select ?? x.One.Choice == "even"
                }
             );
 
@@ -240,7 +241,7 @@ namespace GamesAdmin.Database
 
             return (roundResult, bets);
         }
-        
+
         public async Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId)
         {
             var roundCollection = database.GetCollection<VipSeDieWarRoundEntity>(Document.GetCollectionName(typeof(VipSeDieWarRoundEntity)));

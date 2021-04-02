@@ -10,6 +10,14 @@ namespace GamesAdmin.Api._Shared.Configurations
         IdentityServerAuth IdentityServerAuth { get; }
 
         GameServerSettings GameServers { get; }
+
+        SabaApiSettings SabaApiSettings { get; }
+
+        DatabaseSettings DatabaseSettings { get; }
+
+        ArchiveDatabaseSettings ArchiveDatabaseSettings { get; }
+
+        RemovedDatabaseSettings RemovedDatabaseSettings { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -19,14 +27,26 @@ namespace GamesAdmin.Api._Shared.Configurations
         public AppSettings(IConfiguration configuration)
         {
             this.configuration = configuration;
-            
+
             GameServers = configuration.GetSection(nameof(GameServers)).Get<GameServerSettings>();
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
+            SabaApiSettings = configuration.GetSection(nameof(SabaApiSettings)).Get<SabaApiSettings>();
+            DatabaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+            ArchiveDatabaseSettings = configuration.GetSection(nameof(ArchiveDatabaseSettings)).Get<ArchiveDatabaseSettings>();
+            RemovedDatabaseSettings = configuration.GetSection(nameof(RemovedDatabaseSettings)).Get<RemovedDatabaseSettings>();
         }
 
         public IdentityServerAuth IdentityServerAuth { get; }
 
         public GameServerSettings GameServers { get; }
+
+        public SabaApiSettings SabaApiSettings { get; }
+
+        public DatabaseSettings DatabaseSettings { get; }
+
+        public ArchiveDatabaseSettings ArchiveDatabaseSettings { get; }
+
+        public RemovedDatabaseSettings RemovedDatabaseSettings { get; }
 
         public T GetValue<T>(string key)
         {

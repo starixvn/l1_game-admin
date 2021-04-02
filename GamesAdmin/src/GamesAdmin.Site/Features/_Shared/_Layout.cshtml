@@ -15,8 +15,10 @@
     <div class="main-container">
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="site-name">Saba.Club Admin (<span class="highlight">CASH</span>)</a>
-                <span class="env">CASH</span>
+                <a href="/" class="site-name">Saba.Club <span class="highlight">Admin</span></a>
+                <button type="button" class="btn btn-hamburger sidebarCollapse">
+                    <span class="hamburger-inner"></span>
+                </button>
             </div>
             <div class="scrollbar-sidebar">
                 <div class="sidebar__inner">
@@ -29,10 +31,9 @@
                 <span class="hamburger-inner"></span>
             </button>
             <div class="header">
-                <div class="left-header">
-                    <button type="button" class="btn btn-hamburger sidebarCollapse">
-                        <span class="hamburger-inner"></span>
-                    </button>
+                <div class="page-title">@ViewData["Title"]</div>
+
+                <div class="user-info">
                     <div class="header-online-user">
                         <div class="number user-online">
                             <i class="icon icon-account-group"></i>
@@ -47,9 +48,7 @@
                             </div>
                         }
                     </div>
-                </div>
 
-                <div class="user-info">
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="icon-account-circle icon-user"></i>
@@ -72,13 +71,11 @@
                                 </a>
                             </li>
                         </ul>
-
                     </div>
                 </div>
             </div>
 
-            <div class="inner-content">
-                <div class="page-title">@ViewData["Title"]</div>
+            <div class="inner-content">                
                 @RenderBody()
             </div>
         </div>

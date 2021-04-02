@@ -190,6 +190,25 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("vip-baccarat-server-endpoint-route", appSettings.GameServers.VipBaccarat.SocketRoute);
             HttpContext.Response.Cookies.Append("vip-sedie-war-server-endpoint", appSettings.GameServers.VipSeDieWar.Socket);
             HttpContext.Response.Cookies.Append("vip-sedie-war-server-endpoint-route", appSettings.GameServers.VipSeDieWar.SocketRoute);
+            HttpContext.Response.Cookies.Append("keno-pro-max-server-endpoint", appSettings.GameServers.KenoProMax.Socket);
+            HttpContext.Response.Cookies.Append("keno-pro-max-server-endpoint-route", appSettings.GameServers.KenoProMax.SocketRoute);
+            HttpContext.Response.Cookies.Append("mini-sedie-server-endpoint", appSettings.GameServers.MiniSeDie.Socket);
+            HttpContext.Response.Cookies.Append("mini-sedie-server-endpoint-route", appSettings.GameServers.MiniSeDie.SocketRoute);
+            HttpContext.Response.Cookies.Append("fish-prawn-crab-server-endpoint", appSettings.GameServers.FishPrawnCrab.Socket);
+            HttpContext.Response.Cookies.Append("fish-prawn-crab-server-endpoint-route", appSettings.GameServers.FishPrawnCrab.SocketRoute);
+            HttpContext.Response.Cookies.Append("big-small-endpoint", appSettings.GameServers.BigSmall.Socket);
+            HttpContext.Response.Cookies.Append("big-small-server-endpoint-route", appSettings.GameServers.BigSmall.SocketRoute);
+            HttpContext.Response.Cookies.Append("turbo-big-small-endpoint", appSettings.GameServers.TurboBigSmall.Socket);
+            HttpContext.Response.Cookies.Append("turbo-big-small-server-endpoint-route", appSettings.GameServers.TurboBigSmall.SocketRoute);
+            HttpContext.Response.Cookies.Append("dragon-tiger-endpoint", appSettings.GameServers.DragonTiger.Socket);
+            HttpContext.Response.Cookies.Append("dragon-tiger-server-endpoint-route", appSettings.GameServers.DragonTiger.SocketRoute);
+            HttpContext.Response.Cookies.Append("turbo-odd-even-endpoint", appSettings.GameServers.TurboOddEven.Socket);
+            HttpContext.Response.Cookies.Append("turbo-odd-even-server-endpoint-route", appSettings.GameServers.TurboOddEven.SocketRoute);
+            HttpContext.Response.Cookies.Append("roulette-endpoint", appSettings.GameServers.Roulette.Socket);
+            HttpContext.Response.Cookies.Append("roulette-server-endpoint-route", appSettings.GameServers.Roulette.SocketRoute);
+            HttpContext.Response.Cookies.Append("baccarat-server-endpoint", appSettings.GameServers.Baccarat.Socket);
+            HttpContext.Response.Cookies.Append("baccarat-server-endpoint-route", appSettings.GameServers.Baccarat.SocketRoute);
+
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

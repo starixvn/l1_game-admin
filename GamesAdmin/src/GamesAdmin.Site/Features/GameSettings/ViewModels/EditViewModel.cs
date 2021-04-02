@@ -10,6 +10,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel : ViewModelBase
     {
+        private const int MaxPercentage = 100;
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -52,6 +53,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public PayoutViewModel PayoutViewModel { get; set; }
 
         public JackpotViewModel JackpotViewModel { get; set; }
+
+        [DisplayName("Enable Smart Bot")]
+        public bool SmartBotEnabled { get; set; }
+
+        [DisplayName("Ratio Of Groups Picked By Date (%)")]
+        [Range(0, MaxPercentage, ErrorMessage = "Number range [0..100]")]
+        public double SmartBotTotalGroup { get; set; }
     }
 
     public class BotRatioItemViewModel

@@ -21,6 +21,15 @@
         public GameServerConfigs VipSedieWar { get; set; }
         
         public GameServerConfigs FourGuardians { get; set; }
+
+        public GameServerConfigs KenoProMax { get; set; }
+
+        public GameServerConfigs MiniSeDie { get; set; }
+
+        public GameServerConfigs Roulette { get; set; }
+
+        public GameServerConfigs Baccarat { get; set; }
+
     }
 
     public class GameServerConfigs

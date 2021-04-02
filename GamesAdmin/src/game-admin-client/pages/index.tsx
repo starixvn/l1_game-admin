@@ -30,7 +30,24 @@ type State = {
   socket: GameWsEndpoint;
 };
 
-const NewSocketGameIds = [2, 22, 24, 25, 26, 27, 28];
+const NewSocketGameIds = [
+  1,
+  2,
+  3,
+  4,
+  6,
+  7,
+  8,
+  9,
+  10,
+  21,
+  22,
+  24,
+  25,
+  26,
+  27,
+  28,
+];
 
 export class Home extends React.Component<Props, State> {
   public state: State;
@@ -139,29 +156,133 @@ export class Home extends React.Component<Props, State> {
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_VIP_SEDIE_WAR_SERVER_PROXY_ROUTE
               : Cookies.get("vip-sedie-war-server-endpoint-route"),
-                };
-            case gameNameMapper.vipbaccarat:
-            return {
-                endpoint:
-                    process.env.NEXT_PUBLIC_ENV === 'local'
-                        ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_ENDPOINT
-                        : Cookies.get('vip-baccarat-server-endpoint'),
-                route:
-                    process.env.NEXT_PUBLIC_ENV === 'local'
-                        ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_PROXY_ROUTE
-                        : Cookies.get('vip-baccarat-server-endpoint-route'),
         };
-            case gameNameMapper.sicbo:
-                return {
-                    endpoint:
-                        process.env.NEXT_PUBLIC_ENV === 'local'
-                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_ENDPOINT
-                            : Cookies.get('sic-bo-server-endpoint'),
-                    route:
-                        process.env.NEXT_PUBLIC_ENV === 'local'
-                            ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
-                            : Cookies.get('sic-bo-server-endpoint-route'),
-                };        
+      case gameNameMapper.vipbaccarat:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_ENDPOINT
+              : Cookies.get("vip-baccarat-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_VIP_BACCARAT_SERVER_PROXY_ROUTE
+              : Cookies.get("vip-baccarat-server-endpoint-route"),
+        };
+      case gameNameMapper.sicbo:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_ENDPOINT
+              : Cookies.get("sic-bo-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_SIC_BO_SERVER_PROXY_ROUTE
+              : Cookies.get("sic-bo-server-endpoint-route"),
+        };
+      case gameNameMapper.kenopromax:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENO_PRO_MAX_SERVER_ENDPOINT
+              : Cookies.get("keno-pro-max-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENO_PRO_MAX_SERVER_PROXY_ROUTE
+              : Cookies.get("keno-pro-max-server-endpoint-route"),
+        };
+      case gameNameMapper.minisedie:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_MINI_SEDIE_SERVER_ENDPOINT
+              : Cookies.get("mini-sedie-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_MINI_SEDIE_SERVER_PROXY_ROUTE
+              : Cookies.get("mini-sedie-server-endpoint-route"),
+        };
+      case gameNameMapper.baucua: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_FISH_PRAWN_CRAB_SERVER_ENDPOINT
+              : Cookies.get("fish-prawn-crab-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_FISH_PRAWN_CRAB_SERVER_PROXY_ROUTE
+              : Cookies.get("fish-prawn-crab-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.taixiu: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_BIG_SMALL_SERVER_ENDPOINT
+              : Cookies.get("big-small-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_BIG_SMALL_SERVER_PROXY_ROUTE
+              : Cookies.get("big-small-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.txturbo: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_TURBO_BIG_SMALL_SERVER_ENDPOINT
+              : Cookies.get("turbo-big-small-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_TURBO_BIG_SMALL_SERVER_PROXY_ROUTE
+              : Cookies.get("turbo-big-small-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.dragontiger: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_DRAGON_TIGER_SERVER_ENDPOINT
+              : Cookies.get("dragon-tiger-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_DRAGON_TIGER_SERVER_PROXY_ROUTE
+              : Cookies.get("dragon-tiger-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.oeturbo: {
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_TURBO_ODD_EVEN_SERVER_ENDPOINT
+              : Cookies.get("turbo-odd-even-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_TURBO_ODD_EVEN_SERVER_PROXY_ROUTE
+              : Cookies.get("turbo-odd-even-server-endpoint-route"),
+        };
+      }
+      case gameNameMapper.roulette:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_ROULETTE_SERVER_ENDPOINT
+              : Cookies.get("roulette-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_ROULETTE_SERVER_PROXY_ROUTE
+              : Cookies.get("roulette-server-endpoint-route"),
+        };
+      case gameNameMapper.baccarat:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_BACCARAT_SERVER_ENDPOINT
+              : Cookies.get("baccarat-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_BACCARAT_SERVER_PROXY_ROUTE
+              : Cookies.get("baccarat-server-endpoint-route"),
+        };
       default:
         return {
           endpoint:

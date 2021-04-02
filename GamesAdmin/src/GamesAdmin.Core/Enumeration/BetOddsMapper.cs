@@ -23,7 +23,7 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<SeDieBetChoice>();
 
                 case Game.FishPrawnCrabValue:
-                    return Enumeration.GetAll<FishPrawnCrabBetChoice>();
+                    return Enumeration.GetAll<FishPrawnCrabBetOdds>();
 
                 case Game.DragonTigerValue:
                     return Enumeration.GetAll<DragonTigerBetChoice>();

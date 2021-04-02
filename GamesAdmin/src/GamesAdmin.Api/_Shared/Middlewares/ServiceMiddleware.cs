@@ -12,6 +12,7 @@ using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
+using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -106,8 +107,17 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ISicBoOnlineUserApi>(appSettings.GameServers.SicBo.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieWarOnlineUserApi>(appSettings.GameServers.VipSedieWar.Api, refitSettings));
             services.AddSingleton(RestService.For<IFourGuardiansOnlineUserApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoProMaxOnlineUserApi>(appSettings.GameServers.KenoProMax.Api, refitSettings));
+            services.AddSingleton(RestService.For<IMiniSeDieOnlineUserApi>(appSettings.GameServers.MiniSeDie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IRouletteOnlineUserApi>(appSettings.GameServers.Roulette.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBaccaratOnlineUserApi>(appSettings.GameServers.Baccarat.Api, refitSettings));
+
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
+            services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
+            services.AddScoped<IVoidGameService, VoidGameService>();
+            services.AddScoped<ITicketHandler, TicketHandler>();
+            services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
             AddSlotServices(services, appSettings, refitSettings);
         }
 

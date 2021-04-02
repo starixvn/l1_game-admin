@@ -7,7 +7,7 @@ namespace GamesAdmin.Database.Entities
     public class BigSmallTurboOnesEntity : BaseBetEntity
     {
         [BsonElement("tralai")]
-        public decimal Back { get; set; }
+        public decimal? Back { get; set; }
 
         [BsonElement("thuong")]
         public decimal Bonus { get; set; }
@@ -17,8 +17,12 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("taixiu")]
         public bool BigSmall { get; set; }
 
-        public bool Select { get; set; }
+        public bool? Select { get; set; }
 
-        public decimal Bet { get; set; }
+        public decimal? Bet { get; set; }
+
+        public decimal Amount { get; set; }
+        public string Choice { get; set; }
+        public decimal Refund { get; set; }
     }
 }

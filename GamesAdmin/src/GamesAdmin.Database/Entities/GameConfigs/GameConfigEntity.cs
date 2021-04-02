@@ -42,9 +42,12 @@ namespace GamesAdmin.Database.Entities
         public int DelayStartTime { get; set; }
 
         public bool EnableFreeBet { get; set; }
-
+        
         public SlotsConfig SlotsConfig { get; set; }
 
         public string[] SiteExclusions { get; set; }
+        public bool SmartBotEnabled { get; set; }        
+
+        public double SmartBotTotalGroup { get; set; }
     }
 }

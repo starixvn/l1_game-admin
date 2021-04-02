@@ -12,13 +12,12 @@
   max-width: 87rem; }
 
 .adjust-bot-hours .modal-body {
-  max-height: 52rem;
+  max-height: 50rem;
   overflow: auto; }
 
 .adjust-bot-hours .ratio {
   width: 5rem;
-  height: 2.2rem;
-  line-height: 2.2rem;
+  line-height: 1.5rem;
   border-radius: .2rem;
   border: 1px solid #ced4da;
   text-align: center; }
@@ -30,22 +29,22 @@
   .adjust-bot-hours .table td.ratio-cell {
     text-align: left; }
 
-.adjust-bot-hours .table .options {
+.adjust-bot-hours .options {
   margin-left: -12px;
   margin-right: -12px; }
 
-.adjust-bot-hours .table .bot-number {
+.adjust-bot-hours .bot-number {
   margin-top: 2px;
   font-size: 1.1rem;
   color: #6c757d; }
 
-.adjust-bot-hours .table .col-gmt {
+.adjust-bot-hours .col-gmt {
   width: 120px; }
 
-.adjust-bot-hours .table .input-validation-error {
+.adjust-bot-hours .input-validation-error {
   border: 1px solid #dc3545; }
 
-.adjust-bot-hours .table .text-danger {
+.adjust-bot-hours .text-danger {
   font-size: 1.1rem; }
 
 .hidden-cls {
