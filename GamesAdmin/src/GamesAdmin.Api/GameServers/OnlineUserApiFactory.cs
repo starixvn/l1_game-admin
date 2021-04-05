@@ -26,6 +26,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) },
             { Game.RouletteValue, typeof(IRouletteOnlineUserApi) },
             { Game.BaccaratValue, typeof(IBaccaratOnlineUserApi) },
+            { Game.LotteryValue, typeof(ILotteryOnlineUserApi) },
             { Game.FishPrawnCrabValue, typeof(IFishPrawnCrabOnlineUserApi) },
             { Game.DragonTigerValue, typeof(IDragonTigerOnlineUserApi) },
             { Game.BigSmallValue, typeof(IBigSmallOnlineUserApi) },

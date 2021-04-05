@@ -95,6 +95,12 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
+    public interface ILotteryOnlineUserApi : IOnlineUserApi
+     {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+    
     public interface IFishPrawnCrabOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
