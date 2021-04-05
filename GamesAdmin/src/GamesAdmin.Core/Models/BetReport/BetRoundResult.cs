@@ -176,7 +176,7 @@ namespace GamesAdmin.Core.Models
 
         public string Tail { get; set; }
 
-        public LotteryOthersSettlementResult Others { get; set; }
+        public Dictionary<string, bool> Others { get; set; }
 
         public IEnumerable<string> TwentySevenSets { get; set; }
 

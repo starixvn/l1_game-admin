@@ -35,9 +35,8 @@ namespace GamesAdmin.Database.Entities
 
         public string Tail { get; set; }
 
-        public LotteryOthersSettlementResultEntity Others { get; set; }
+        public Dictionary<string, bool> Others { get; set; }
 
-        [BsonElement("27Sets")]
         public IEnumerable<string> TwentySevenSets { get; set; }
 
         public LotteryOccurrencesEntity Occurrences { get; set; }

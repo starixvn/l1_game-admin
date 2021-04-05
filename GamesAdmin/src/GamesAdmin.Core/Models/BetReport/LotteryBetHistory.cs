@@ -19,6 +19,8 @@ namespace GamesAdmin.Core.Models.BetReport
         public DateTime Time { get; set; }
 
         public LotteryChoices Choices { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class LotteryChoices

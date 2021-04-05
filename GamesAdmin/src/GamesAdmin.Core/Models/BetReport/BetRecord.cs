@@ -261,7 +261,7 @@ namespace GamesAdmin.Core.Models
 
     public class LotteryBetRecord : BetRecord
     {
-        public decimal TotalAmount { get; set; }
+        public decimal TotalBet { get; set; }
     }
 
 }

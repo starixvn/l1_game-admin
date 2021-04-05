@@ -181,7 +181,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string Tail { get; set; }
 
-        public LotteryOthersSettlementResultViewModel Others { get; set; }
+        public Dictionary<string, bool> Others { get; set; }
 
         public IEnumerable<string> TwentySevenSets { get; set; }
 

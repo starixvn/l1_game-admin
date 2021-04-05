@@ -305,6 +305,12 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetLotteryBetHistory(long roundId, string userId)
+        {
+            return PartialView("_LotteryBetHistory", await mediator.Send(new GetLotteryBetHistoryRequest(roundId, userId)));
+        }
+
+        [HttpGet]
         public IActionResult KenoProViet() => ToKenoReport();
 
         [HttpGet]

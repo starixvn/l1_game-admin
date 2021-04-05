@@ -265,7 +265,7 @@ namespace GamesAdmin.Database
             var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
 
             var oneCollection = database.GetCollection<LotteryOnesEntity>(Document.GetCollectionName(typeof(LotteryOnesEntity)));
-            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).FirstOrDefaultAsync();
+            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
         }

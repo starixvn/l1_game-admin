@@ -19,6 +19,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public DateTime Time { get; set; }
 
         public LotteryChoicesViewModel Choices { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class LotteryChoicesViewModel
