@@ -165,7 +165,7 @@ export default class Lottery extends React.Component<
 
     this.setState({
       result,
-      isOpenModal: false,
+      isOpenModal: true,
     });
 
     if (this.state.gameState == GameState.waiting) {
@@ -176,10 +176,11 @@ export default class Lottery extends React.Component<
         nextRoudResult: gameResult,
       });
     }
+
+    setTimeout(() => this.setState({ isOpenModal: false }), 1000);
   }
 
   handlePrizeNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
-    debugger;
     const [prize, index] = event.target.name.split(".");
     const { result } = this.state;
     result[prize][index] = event.target.value;
@@ -211,7 +212,7 @@ export default class Lottery extends React.Component<
           <Col className="col-12 col-md-5">
             <LotteryRoundResult
               isProduction={this.props.isProduction}
-              result={this.state.result}
+              result={result}
               onChange={this.handlePrizeNumberChange}
             />
             <button
@@ -271,7 +272,7 @@ export default class Lottery extends React.Component<
           <BetList
             type="withchoice"
             dataList={betList["4Sets"].dataList}
-            titles={[<div className="text-center">4Sets</div>]}
+            titles={[<div className="text-center">4 Sets</div>]}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -345,6 +346,10 @@ export default class Lottery extends React.Component<
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />
         )}
+        <Notice
+          isOpen={this.state.isOpenModal}
+          message="Generated result has been saved!"
+        />
       </div>
     );
   }
