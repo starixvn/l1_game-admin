@@ -7,7 +7,7 @@
   padding-right: 4rem;
   padding-left: 4rem;
   padding-bottom: 1rem;
-  color: #495057; }
+  color: #27303f; }
   .nav-custom .nav-link.active {
     border: initial;
     position: relative;
@@ -205,3 +205,15 @@
 
 .blackjack-result .cards .card:last-child:before {
   display: none; }
+
+.table-four-guardians .table-paylines {
+  margin: auto; }
+  .table-four-guardians .table-paylines td {
+    border: none; }
+
+.table-four-guardians .payline {
+  width: 50px; }
+
+.table-four-guardians .symbol {
+  width: 50px;
+  height: 50px; }

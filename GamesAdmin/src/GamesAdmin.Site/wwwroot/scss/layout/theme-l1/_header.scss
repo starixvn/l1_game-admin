@@ -3,8 +3,63 @@
     align-items: flex-start;
     flex-direction: column-reverse;
     padding: 12px 0;
-    height: auto;
+    height: 5.6rem;
+    background: $theme-color;
+    box-shadow: 0 1px 0 0 #e2e8f0;
 }
+
+.btn-hamburger {
+    position: relative;
+    height: 2.4rem;
+    width: 2.4rem;
+    margin-left: 2rem;
+    padding: 0;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+    position: absolute;
+    left: 0;
+    width: 2.4rem;
+    height: .2rem;
+    background-color: #fff;
+    transition-property: transform;
+    transition-duration: 0.15s;
+    transition-timing-function: ease;
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+    content: "";
+    display: block;
+}
+
+.hamburger-inner::before {
+    top: -0.6rem;
+    transition: opacity 0.125s 0.275s ease;
+}
+
+.hamburger-inner::after {
+    top: .7rem;
+    bottom: -0.6rem;
+    transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.sidebar.active + .content-container {
+    .hamburger-inner {
+        transform: translate3d(0, -1px, 0) rotate(135deg);
+        transition-delay: 0.075s;
+    }
+
+    .hamburger-inner::before {
+        transition-delay: 0s;
+        opacity: 0;
+    }
 
 .header-online-user {
     display: flex;
@@ -50,6 +105,16 @@
     justify-content: space-between;
     width: 100%;
 
+
+        @media only screen and (min-width: 768px) {
+            display: inline-block;
+        }
+    }
+
+    .dropdown-toggle {
+        color: #fff;
+    }
+
     .dropdown-toggle,
     .logout {
         background: none;
@@ -69,10 +134,9 @@
         width: 100%;
         padding: 1.2rem 1.6rem;
         text-align: left;
-        color: $text-color;
 
         &:hover {
-            color: #da624a;
+            color: $theme-color;
         }
     }
 
@@ -104,6 +168,7 @@
 }
 
 .page-title {
+    margin-bottom: 2rem;
     font-size: 2rem;
     font-weight: 600;
     position: relative;
@@ -130,7 +195,7 @@
     }
 
     .nav .nav-item .nav-link.active {
-        color: #da624a;
+        color: #1b55e2;
 
         &:before {
             opacity: 1;
@@ -173,7 +238,7 @@
         content: '';
         position: absolute;
         transition: all .2s;
-        background: #da624a;
+        background: #1b55e2;
         top: -0.8rem;
         height: 0.4rem;
         border-radius: 3rem;
@@ -241,3 +306,5 @@
         padding-left: 0;
     }
 }
+
+

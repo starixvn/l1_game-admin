@@ -1,21 +1,25 @@
-﻿$font-size: 1.4rem;
-$font-family: 'Roboto', Arial, sans-serif;
-$page-bg: #f5f5f5;
-$text-color: #495057;
-$sidebar-bg: #fff;
-$theme-color: #da624a;
+﻿// L2
 
-$btn-submit-bg-color: #da624a;
-$btn-submit-color: #da624a;
+$font-size: 1.4rem;
+$font-family: 'Roboto', Arial, sans-serif;
+$page-bg: #f8f8f8;
+$text-color: #27303f;
+
+$theme-color: #0c3253;
+
+$sidebar-bg: #fff;
+
+$btn-submit-bg-color: #0c3253;
+$btn-submit-color: #fff;
 $btn-submit-bg-color-hover: darken($btn-submit-bg-color, 4%);
 $btn-submit-color-hover: #fff;
 
-$btn-add-bg-color: #3ac47d;
+$btn-add-bg-color: #8cbe42;
 $btn-add-color: #fff;
 $btn-add-bg-color-hover: darken($btn-add-bg-color, 4%);
 $btn-add-color-hover: #fff;
 
-$btn-yellow-bg-color: #f7b924;
+$btn-yellow-bg-color: #e2a03f;
 $btn-yellow-color: #fff;
 $btn-yellow-bg-color-hover: darken($btn-yellow-bg-color, 4%);
 $btn-yellow-color-hover: #fff;
