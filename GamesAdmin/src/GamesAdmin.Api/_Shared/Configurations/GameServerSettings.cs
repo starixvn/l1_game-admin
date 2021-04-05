@@ -15,11 +15,11 @@
         public GameServerConfigs VipFishPrawnCrab { get; set; }
 
         public GameServerConfigs SicBo { get; set; }
-        
+
         public GameServerConfigs VipBaccarat { get; set; }
 
         public GameServerConfigs VipSedieWar { get; set; }
-        
+
         public GameServerConfigs FourGuardians { get; set; }
 
         public GameServerConfigs KenoProMax { get; set; }
@@ -30,6 +30,15 @@
 
         public GameServerConfigs Baccarat { get; set; }
 
+        public GameServerConfigs FishPrawnCrab { get; set; }
+
+        public GameServerConfigs DragonTiger { get; set; }
+
+        public GameServerConfigs BigSmall { get; set; }
+
+        public GameServerConfigs TurboBigSmall { get; set; }
+
+        public GameServerConfigs TurboOddEven { get; set; }
     }
 
     public class GameServerConfigs

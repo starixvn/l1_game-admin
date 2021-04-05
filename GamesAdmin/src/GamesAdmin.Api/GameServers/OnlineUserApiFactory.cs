@@ -25,8 +25,12 @@ namespace GamesAdmin.Api.GameServers
             { Game.KenoProMaxValue, typeof(IKenoProMaxOnlineUserApi) },
             { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) },
             { Game.RouletteValue, typeof(IRouletteOnlineUserApi) },
-            { Game.BaccaratValue, typeof(IBaccaratOnlineUserApi) }
-
+            { Game.BaccaratValue, typeof(IBaccaratOnlineUserApi) },
+            { Game.FishPrawnCrabValue, typeof(IFishPrawnCrabOnlineUserApi) },
+            { Game.DragonTigerValue, typeof(IDragonTigerOnlineUserApi) },
+            { Game.BigSmallValue, typeof(IBigSmallOnlineUserApi) },
+            { Game.BigSmallTurboValue, typeof(ITurboBigSmallOnlineUserApi) },
+            { Game.OddEvenTurboValue, typeof(ITurboOddEvenOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);
