@@ -184,9 +184,9 @@ namespace GamesAdmin.Api.Report
                 RoundResult = new OddEvenRoundResult
                 {
                     Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1,
-                    Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
+                    Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
+                    Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
+                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0
                 },
                 Records = result.Item2.Select(x => new OddEvenBetRecord
                 {
