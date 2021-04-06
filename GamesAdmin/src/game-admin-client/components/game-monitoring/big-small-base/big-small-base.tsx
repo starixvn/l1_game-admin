@@ -146,7 +146,10 @@ export default class BigSmallBase extends React.Component<
     });
 
     for (const user in data) {
+      const currency = data[user].currency;
+
       let betTracks = data[user].betTracks;
+
       Object.keys(betTracks).forEach((key) => {
         if (betTracks[key]) {
           let select = false;
@@ -154,7 +157,10 @@ export default class BigSmallBase extends React.Component<
             select = true;
           }
 
-          currentData[betListMapping(select)].total += betTracks[key];
+          if (!currency || currency.toUpperCase() !== "UUS") {
+            currentData[betListMapping(select)].total += betTracks[key];
+          }
+
           currentData[betListMapping(select)].dataList.unshift(
             new BetItem(data[user].name, betTracks[key])
           );
