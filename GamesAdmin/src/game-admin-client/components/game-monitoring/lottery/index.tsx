@@ -64,7 +64,7 @@ export default class Lottery extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 6;
+      const waitingTime = 7;
       this.setState({
         result: data.finish.result,
         gameState: GameState.waiting,
@@ -81,20 +81,20 @@ export default class Lottery extends React.Component<
           gameState: GameState.running,
           roundNumber: this.state.roundNumber + 1,
           time: {
-            remainingTime: 40,
+            remainingTime: 45,
           },
         });
-      }, waitingTime * 1000);
+      }, (waitingTime + 1 )* 1000);
     }
 
     if (!!data.remainingTime) {
-      if (data.remainingTime > 41) {
+      if (data.remainingTime > 46) {
         this.setState((prevState) => ({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result: data.result ? data.result : prevState.result,
           time: {
-            remainingTime: data.remainingTime - 41,
+            remainingTime: data.remainingTime - 46,
           },
         }));
 
@@ -103,10 +103,10 @@ export default class Lottery extends React.Component<
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 41,
+              remainingTime: 46,
             },
           });
-        }, (data.remainingTime - 41) * 1000);
+        }, (data.remainingTime - 46) * 1000);
       } else {
         this.setState({
           gameState: GameState.running,
@@ -251,8 +251,8 @@ export default class Lottery extends React.Component<
             <Row className="justify-content-center">
               <TotalBet total={betList.parlay2.total} type="parlay2" />
               <TotalBet total={betList.parlay3.total} type="parlay3" />
-              <TotalBet total={betList.others.total} type="others" />
               <TotalBet total={betList.parlay4.total} type="parlay4" />
+              <TotalBet total={betList.others.total} type="others" />
             </Row>
             <Row className="justify-content-center">
               <TotalBet total={this.calculateTotalBet()} type="turnover" />
