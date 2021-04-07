@@ -169,11 +169,11 @@
                             Special
                         </td>
                     }
-                    <td>
-                        @Model.Odds.Special
-                    </td>
                     <td class="text-center">
                         @betChoice.Key
+                    </td>
+                    <td>
+                        @Model.Odds.Special
                     </td>
                     <td class="text-center">
                         @HtmlHelpers.formatNumber(betChoice.Value)
@@ -206,11 +206,11 @@
                             Head
                         </td>
                     }
-                    <td>
-                        @Model.Odds.Head
-                    </td>
                     <td class="text-center">
                         @betChoice.Key
+                    </td>
+                    <td>
+                        @Model.Odds.Head
                     </td>
                     <td class="text-center">
                         @HtmlHelpers.formatNumber(betChoice.Value)
@@ -243,11 +243,12 @@
                             Tail
                         </td>
                     }
-                    <td>
-                        @Model.Odds.Tail
-                    </td>
+
                     <td class="text-center">
                         @betChoice.Key
+                    </td>
+                    <td>
+                        @Model.Odds.Tail
                     </td>
                     <td class="text-center">
                         @HtmlHelpers.formatNumber(betChoice.Value)
@@ -280,7 +281,9 @@
                             27 Sets
                         </td>
                     }
-
+                    <td class="text-center">
+                        @betChoice.Key
+                    </td>
                     <td>
                         @Model.Odds.TwentySevenSets
                         @{
@@ -291,9 +294,7 @@
                             }
                         }
                     </td>
-                    <td class="text-center">
-                        @betChoice.Key
-                    </td>
+
                     <td class="text-center">
                         @HtmlHelpers.formatNumber(betChoice.Value)
                     </td>
@@ -318,11 +319,12 @@
                             Parlay 2
                         </td>
                     }
-                    <td>
-                        @Model.Odds.Parlay2
+
+                    <td class="text-center">
+                        @betChoice.Key.Replace("-", ", ")
                     </td>
                     <td class="text-center">
-                        @betChoice.Key.Replace("-", " ,")
+                        @Model.Odds.Parlay2
                     </td>
                     <td class="text-center">
                         @HtmlHelpers.formatNumber(betChoice.Value)
@@ -357,7 +359,7 @@
                     }
 
                     <td class="text-center">
-                        @betChoice.Key.Replace("-", " ,")
+                        @betChoice.Key.Replace("-", ", ")
                     </td>
                     <td class="text-center">
                         @Model.Odds.Parlay3
@@ -369,6 +371,44 @@
                         @if (betChoice.Key.Split("-").All(number => settlementResult.TwentySevenSets.Contains(number)))
                         {
                             @HtmlHelpers.formatNumber(betChoice.Value * Model.Odds.Parlay3)
+                        }
+                        else
+                        {
+                            @(0)
+                        }
+                    </td>
+                </tr>
+            }
+
+            foreach (var betChoice in bet.Choices.Parlay4)
+            {
+                var rowSpan = bet.Choices.Parlay4.Count();
+                <tr>
+                    @if (renderGroupInfo)
+                    {
+                        renderGroupInfo = false;
+                        <td rowspan="@rowSpan">@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td rowspan="@rowSpan" class="text-center">
+                            @bet.Name
+                        </td>
+                        <td rowspan="@rowSpan" class="text-center">
+                            Parlay 3
+                        </td>
+                    }
+
+                    <td class="text-center">
+                        @betChoice.Key.Replace("-", ", ")
+                    </td>
+                    <td class="text-center">
+                        @Model.Odds.Parlay4
+                    </td>
+                    <td class="text-center">
+                        @HtmlHelpers.formatNumber(betChoice.Value)
+                    </td>
+                    <td class="text-center">
+                        @if (betChoice.Key.Split("-").All(number => settlementResult.TwentySevenSets.Contains(number)))
+                        {
+                            @HtmlHelpers.formatNumber(betChoice.Value * Model.Odds.Parlay4)
                         }
                         else
                         {
