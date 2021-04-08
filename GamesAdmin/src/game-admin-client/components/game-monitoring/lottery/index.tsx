@@ -137,7 +137,7 @@ export default class Lottery extends React.Component<
                   data[user].name,
                   amountOnChoice as number,
                   "",
-                  betChoice.replace("-", ", ")
+                  betChoice.replaceAll("-", ",")
                 )
               );
               currentData[betTypeKey].total += amountOnChoice;
