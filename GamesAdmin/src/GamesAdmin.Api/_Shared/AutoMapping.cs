@@ -45,9 +45,9 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.DisplayKind, opt => opt.MapFrom(src => byte.Parse(src.DisplayKind.Value)));
 
             CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>()
-                .ForMember(dest => dest.FirstDice, opt => opt.MapFrom(src => src.Result.FirstDice))
-                .ForMember(dest => dest.SecondDice, opt => opt.MapFrom(src => src.Result.SecondDice))
-                .ForMember(dest => dest.ThirdDice, opt => opt.MapFrom(src => src.Result.ThirdDice));
+                .ForMember(dest => dest.FirstDice, opt => opt.MapFrom(src => src.FirstDice ?? src.Result.FirstDice))
+                .ForMember(dest => dest.SecondDice, opt => opt.MapFrom(src => src.SecondDice ?? src.Result.SecondDice))
+                .ForMember(dest => dest.ThirdDice, opt => opt.MapFrom(src => src.ThirdDice ?? src.Result.ThirdDice));
 
             CreateMap<FishPrawnCrabBetReportEntity, FishPrawnCrabBetRecord>();
 
