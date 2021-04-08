@@ -66,12 +66,12 @@ namespace GamesAdmin.Database
                     BetWin = x.One.Betwin,
                     Round = x.Number,
                     Time = x.One.Time,
-                    Bet = x.One.Bet,
-                    FirstDice = (byte)x.Dice1,
-                    SecondDice = (byte)x.Dice2,
-                    ThirdDice = (byte)x.Dice3,
-                    Refund = x.One.Back,
-                    Select = x.One.Select
+                    Bet = x.One.Bet ?? x.One.Amount,
+                    FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
+                    SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
+                    ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                    Refund = x.One.Back ?? x.One.Refund,
+                    Select = x.One.Select ?? x.One.Choice == "big"
                 }
             );
 
@@ -109,12 +109,12 @@ namespace GamesAdmin.Database
                     BetWin = x.One.Betwin,
                     Round = x.Number,
                     Time = x.One.Time,
-                    Bet = x.One.Bet,
-                    FirstDice = (byte)x.Dice1,
-                    SecondDice = (byte)x.Dice2,
-                    ThirdDice = (byte)x.Dice3,
-                    Refund = x.One.Back,
-                    Select = x.One.Select
+                    Bet = x.One.Bet ?? x.One.Amount,
+                    FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
+                    SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
+                    ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                    Refund = x.One.Back ?? x.One.Refund,
+                    Select = x.One.Select ?? x.One.Choice == "big"
                 }
             );
 
@@ -197,12 +197,12 @@ namespace GamesAdmin.Database
                    BetWin = x.One.Betwin,
                    Round = x.Number,
                    Time = x.One.Time,
-                   Bet = x.One.Bet,
-                   FirstDice = (byte)x.Dice1,
-                   SecondDice = (byte)x.Dice2,
-                   ThirdDice = (byte)x.Dice3,
-                   Refund = x.One.Back,
-                   Select = x.One.Select
+                   Bet = x.One.Bet ?? x.One.Amount,
+                   FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
+                   SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
+                   ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                   Refund = x.One.Back ?? x.One.Refund,
+                   Select = x.One.Select ?? x.One.Choice == "even"
                }
             );
 

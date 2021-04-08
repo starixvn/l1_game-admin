@@ -70,4 +70,58 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
+
+    public interface IKenoProMaxOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IMiniSeDieOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IRouletteOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IBaccaratOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IFishPrawnCrabOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IDragonTigerOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IBigSmallOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface ITurboBigSmallOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface ITurboOddEvenOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 }

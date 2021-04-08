@@ -1,35 +1,35 @@
-import BetList from './BetList'
-import TimeModel from './TimeModel'
-import DiceModel from './DiceModel'
-import DiceType from './DiceType';
+import BetList from "./BetList";
+import TimeModel from "./TimeModel";
+import DiceModel from "./DiceModel";
+import DiceType from "./DiceType";
 
 class FishPrawnCrabBetList {
-  redBau: BetList;
-  redCa: BetList;
-  redCua: BetList;
-  redGa: BetList;
-  redHuou: BetList;
-  redTom: BetList;
+  gourd: BetList;
+  fish: BetList;
+  crab: BetList;
+  rooster: BetList;
+  stag: BetList;
+  prawn: BetList;
 
   constructor() {
-    this.redBau = new BetList();
-    this.redCa = new BetList();
-    this.redCua = new BetList();
-    this.redGa = new BetList();
-    this.redHuou = new BetList();
-    this.redTom = new BetList();
+    this.fish = new BetList();
+    this.gourd = new BetList();
+    this.rooster = new BetList();
+    this.crab = new BetList();
+    this.stag = new BetList();
+    this.prawn = new BetList();
   }
 }
 
 class GameResult {
-  'dice-0': number;
-  'dice-1': number;
-  'dice-2': number;
+  "dice1": number;
+  "dice2": number;
+  "dice3": number;
 
-  constructor(dice0 = -1, dice1 = -1, dice2 = -1) {
-    this["dice-0"] = dice0;
-    this["dice-1"] = dice1;
-    this["dice-2"] = dice2;
+  constructor(dice0 = 0, dice1 = 0, dice2 = 0) {
+    this["dice1"] = dice0;
+    this["dice2"] = dice1;
+    this["dice3"] = dice2;
   }
 }
 
@@ -41,7 +41,7 @@ export default class FishPrawnCrabModel {
   isOpenModal: boolean;
   currentDiceNumber: number;
   isHandleNextRoundResult: boolean;
-  nextRoudResult: GameResult;
+  nextRoundResult: GameResult;
   winners: Array<boolean>;
   gameState: number;
 
@@ -49,16 +49,16 @@ export default class FishPrawnCrabModel {
     this.result = [
       new DiceModel(-1, DiceType.BauCua),
       new DiceModel(-1, DiceType.BauCua),
-      new DiceModel(-1, DiceType.BauCua)
-    ]
+      new DiceModel(-1, DiceType.BauCua),
+    ];
     this.betList = new FishPrawnCrabBetList();
     this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
-    this.nextRoudResult = new GameResult();
-    this.winners = [false, false, false, false, false, false]
+    this.nextRoundResult = new GameResult();
+    this.winners = [false, false, false, false, false, false];
     this.gameState = 0;
   }
 }
 
-export { FishPrawnCrabModel, FishPrawnCrabBetList, GameResult }
+export { FishPrawnCrabModel, FishPrawnCrabBetList, GameResult };

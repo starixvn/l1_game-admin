@@ -7,21 +7,33 @@ namespace GamesAdmin.Database.Entities
     public class FishPrawnCrabBetEntity : BaseBetEntity
     {
         [BsonElement("0")]
-        public decimal Stag { get; set; }
+        public decimal? OldStag { get; set; }
 
         [BsonElement("1")]
-        public decimal Gourd { get; set; }
+        public decimal? OldGourd { get; set; }
 
         [BsonElement("2")]
-        public decimal Rooster { get; set; }
+        public decimal? OldRooster { get; set; }
 
         [BsonElement("3")]
-        public decimal Fish { get; set; }
+        public decimal? OldFish { get; set; }
 
         [BsonElement("4")]
-        public decimal Crab { get; set; }
+        public decimal? OldCrab { get; set; }
 
         [BsonElement("5")]
+        public decimal? OldPrawn { get; set; }
+
+        public decimal Stag { get; set; }
+
+        public decimal Gourd { get; set; }
+
+        public decimal Rooster { get; set; }
+
+        public decimal Fish { get; set; }
+
+        public decimal Crab { get; set; }
+
         public decimal Prawn { get; set; }
     }
 }

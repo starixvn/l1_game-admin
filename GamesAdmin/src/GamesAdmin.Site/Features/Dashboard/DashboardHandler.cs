@@ -68,7 +68,13 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
                 new SelectListItem(Game.VipBaccarat.DisplayName, Game.VipBaccarat.Value),
                 new SelectListItem(Game.VipSeDieWar.DisplayName, Game.VipSeDieWar.Value),
-                new SelectListItem(Game.FourGuardians.DisplayName, Game.FourGuardians.Value)
+                new SelectListItem(Game.FourGuardians.DisplayName, Game.FourGuardians.Value),
+                new SelectListItem(Game.FishPrawnCrab.DisplayName, Game.FishPrawnCrab.Value),
+                new SelectListItem(Game.DragonTiger.DisplayName, Game.DragonTiger.Value),
+                new SelectListItem(Game.BigSmall.DisplayName, Game.BigSmall.Value),
+                new SelectListItem(Game.BigSmallTurbo.DisplayName, Game.BigSmallTurbo.Value),
+                new SelectListItem(Game.OddEvenTurbo.DisplayName, Game.OddEvenTurbo.Value),
+                new SelectListItem(Game.MiniSeDie.DisplayName, Game.MiniSeDie.Value),
                 };
     }
 }

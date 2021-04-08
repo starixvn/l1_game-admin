@@ -17,7 +17,7 @@ import SpecialSeDie from "./special-sedie";
 import VipBaccarat from "./vip-baccarat";
 import VipFishPrawnCrab from "./vip-fish-prawn-crab/vip-fish-prawn-crab";
 import VipSeDie from "./vip-sedie/vip-sedie";
-import VipSeDieWar from './vip-se-die-war';
+import VipSeDieWar from "./vip-se-die-war";
 import SicBo from "./sic-bo";
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (
@@ -63,11 +63,11 @@ const gameMapper = {
   },
   3: {
     component: FishPrawnCrab,
-    ...getInfoByGameKey("baucua"),
+    ...getInfoByGameKey("BauCua"),
   },
   4: {
     component: BigSmallTurbo,
-    ...getInfoByGameKey("taixiu_turbo"),
+    ...getInfoByGameKey("TXTurbo"),
   },
   5: {
     component: OddEven,
@@ -75,23 +75,23 @@ const gameMapper = {
   },
   6: {
     component: OddEvenTurbo,
-    ...getInfoByGameKey("clturbo"),
+    ...getInfoByGameKey("OETurbo"),
   },
   7: {
     component: DragonTiger,
-    ...getInfoByGameKey("mini_dragon_tiger"),
+    ...getInfoByGameKey("DragonTiger"),
   },
   8: {
     component: KenoProMax,
-    ...getInfoByGameKey("kenoProMax"),
+    ...getInfoByGameKey("KenoProMax"),
   },
   9: {
     component: MiniSedie,
-    ...getInfoByGameKey("miniSedie"),
+    ...getInfoByGameKey("MiniSeDie"),
   },
   10: {
     component: Baccarat,
-    ...getInfoByGameKey("baccarat"),
+    ...getInfoByGameKey("Baccarat"),
   },
   12: {
     component: MiniKeno("kenoMax", 20),
@@ -127,7 +127,7 @@ const gameMapper = {
   },
   21: {
     component: Roulette,
-    ...getInfoByGameKey("roulette"),
+    ...getInfoByGameKey("Roulette"),
   },
   22: {
     component: VipSeDie,
@@ -144,15 +144,15 @@ const gameMapper = {
   26: {
     component: VipFishPrawnCrab,
     ...getInfoByGameKey("VipFishPrawnCrab"),
-    },
-    27: {
-        component: VipBaccarat,
-        ...getInfoByGameKey('VipBaccarat'),
   },
-    28: {
-        component: VipSeDieWar,
-        ...getInfoByGameKey('VipSedieWar'),
-    }
+  27: {
+    component: VipBaccarat,
+    ...getInfoByGameKey("VipBaccarat"),
+  },
+  28: {
+    component: VipSeDieWar,
+    ...getInfoByGameKey("VipSedieWar"),
+  },
 };
 
 export function getGameInfoByGameId(gameId: number | string) {

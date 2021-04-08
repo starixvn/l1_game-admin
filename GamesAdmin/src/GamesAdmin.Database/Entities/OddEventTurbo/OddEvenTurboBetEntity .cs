@@ -12,5 +12,11 @@ namespace GamesAdmin.Database.Entities
         public decimal Bet { get; set; }
 
         public bool Select { get; set; }
+
+        public decimal Refund { get; set; }
+
+        public string Choice { get; set; }
+
+        public decimal Amount { get; set; }
     }
 }

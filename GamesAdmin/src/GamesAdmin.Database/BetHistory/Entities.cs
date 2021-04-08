@@ -108,15 +108,15 @@ namespace GamesAdmin.Database
                 BetWin = Bet.Betwin,
                 Round = Number,
                 Time = Time,
-                FirstDice = (byte)(FirstDice + 1),
-                SecondDice = (byte)(SecondDice + 1),
-                ThirdDice = (byte)(ThirdDice + 1),
-                Stag = Bet.Stag,
-                Gourd = Bet.Gourd,
-                Crab = Bet.Crab,
-                Fish = Bet.Fish,
-                Prawn = Bet.Prawn,
-                Rooster = Bet.Rooster
+                FirstDice = (byte)((FirstDice ?? Result.FirstDice) + 1),
+                SecondDice = (byte)((SecondDice ?? Result.SecondDice) + 1),
+                ThirdDice = (byte)((ThirdDice ?? Result.ThirdDice) + 1),
+                Stag = Bet.OldStag ?? Bet.Stag,
+                Gourd = Bet.OldGourd ?? Bet.Gourd,
+                Crab = Bet.OldCrab ?? Bet.Crab,
+                Fish = Bet.OldFish ?? Bet.Fish,
+                Prawn = Bet.OldPrawn ?? Bet.Prawn,
+                Rooster = Bet.OldRooster ?? Bet.Rooster
             };
         }
     }

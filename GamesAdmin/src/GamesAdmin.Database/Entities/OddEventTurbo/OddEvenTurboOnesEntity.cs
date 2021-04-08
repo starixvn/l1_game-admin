@@ -7,15 +7,18 @@ namespace GamesAdmin.Database.Entities
     public class OddEvenTurboOnesEntity : BaseBetEntity
     {
         [BsonElement("tralai")]
-        public decimal Back { get; set; }
+        public decimal? Back { get; set; }
 
         [BsonElement("thuong")]
         public decimal Bonus { get; set; }
 
         public bool Win { get; set; }
 
-        public bool Select { get; set; }
+        public bool? Select { get; set; }
 
-        public decimal Bet { get; set; }
+        public decimal? Bet { get; set; }
+        public decimal Amount { get; set; }
+        public string Choice { get; set; }
+        public decimal Refund { get; set; }
     }
 }
