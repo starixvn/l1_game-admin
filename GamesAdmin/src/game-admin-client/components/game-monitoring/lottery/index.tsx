@@ -64,7 +64,7 @@ export default class Lottery extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 5;
+      const waitingTime = 7;
       this.setState({
         result: data.finish.result,
         gameState: GameState.waiting,
