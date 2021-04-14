@@ -23,7 +23,8 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1001;
             }
 
-            var totalBetAmount = bets.Sum(x => x.Stag + x.Rooster + x.Prawn + x.Gourd + x.Crab + x.Fish);
+            var totalBetAmount = bets.Sum(x => (x.OldStag ?? x.Stag) + (x.OldRooster ?? x.Rooster) + (x.OldPrawn ?? x.Prawn) + (x.OldGourd ?? x.Gourd) + (x.OldCrab ?? x.Crab) + (x.OldFish ?? x.Fish));
+
             var totalBetWin = bets.Sum(x => x.Betwin);
 
             return new EndGameInfoResult
