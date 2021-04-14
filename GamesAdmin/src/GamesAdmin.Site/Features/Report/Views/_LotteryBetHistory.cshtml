@@ -212,10 +212,10 @@
                     <td class="text-center">
                         @Model.Odds.Head
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                         @HtmlHelpers.formatNumber(betChoice.Value)
                     </td>
-                    <td class="text-center">
+                    <td class="text-right">
                         @if (settlementResult.Head == betChoice.Key)
                         {
                             @HtmlHelpers.formatNumber(betChoice.Value * Model.Odds.Head)
