@@ -34,8 +34,6 @@ namespace GamesAdmin.VietlottKeno
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            sentryClient.CaptureMessage($"{DateTime.Now} Starting Admin Worker...");
-
             if (!vietlottKenoConfiguration.Enable)
             {
                 return;
