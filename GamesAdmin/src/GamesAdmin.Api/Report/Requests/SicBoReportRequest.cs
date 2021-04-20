@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class LotteryReportRequest : IRequest<LotteryBetReport>
+    public class SicBoReportRequest : IRequest<SicBoBetReport>
     {
-        public LotteryReportRequest(long roundId, string nickname, bool excludeUUS)
+        public SicBoReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;
