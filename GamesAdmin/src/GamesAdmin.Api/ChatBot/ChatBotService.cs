@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
+using GamesAdmin.Core.Enumeration;
 using Refit;
 
 namespace GamesAdmin.Api.ChatBot
@@ -30,8 +32,9 @@ namespace GamesAdmin.Api.ChatBot
 
         public Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
+            var game = Enum.Parse<GameId>(request.GameTypeId.ToString());
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
-            var message = string.Format(conversationSetting.MessageTemplate, request.GameTypeId);
+            var message = string.Format(conversationSetting.MessageTemplate, game.ToString());
 
             return chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message);
         }
