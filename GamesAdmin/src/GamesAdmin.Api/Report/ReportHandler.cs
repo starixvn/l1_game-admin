@@ -39,7 +39,9 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<VipSeDieWarReportRequest, VipSeDieWarBetReport>,
         IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>,
         IRequestHandler<FourGuardiansReportRequest, IEnumerable<FourGuardiansBetRecord>>,
-        IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>
+        IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
+        IRequestHandler<LotteryReportRequest, LotteryBetReport>,
+        IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -129,5 +131,11 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<JackpotRecord>> Handle(JackpotReportRequest request, CancellationToken cancellationToken)
         => reportService.GetJackpotReportAsync(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
+
+        public Task<LotteryBetReport> Handle(LotteryReportRequest request, CancellationToken cancellationToken)
+            => reportService.GetLotteryReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<LotteryBetHistory> Handle(LotteryBetHistoryRequest request, CancellationToken cancellationToken)
+            => reportService.GetLotteryBetHistoryAsync(request.RoundId, request.UserId);
     }
 }

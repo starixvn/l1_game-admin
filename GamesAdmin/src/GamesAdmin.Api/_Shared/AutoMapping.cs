@@ -140,7 +140,7 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.ThirdDice, opt => opt.MapFrom((source) => source.Result.ThirdDice));
 
             CreateMap<VipFishPrawnCrabBetReportEntity, VipFishPrawnCrabBetRecord>();
-            
+
             CreateMap<VipBaccaratRoundEntity, BaccaratRoundResult>()
                 .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
                 .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
@@ -201,9 +201,9 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<VipSeDieWarBetReportEntity, VipSeDieWarBetRecord>();
             CreateMap<VipSeDieWarBetEntity, VipSeDieWarBetHistoryRecord>();
-            
-             CreateMap<FourGuardiansBetReportEntity, FourGuardiansBetRecord>()
-                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
+
+            CreateMap<FourGuardiansBetReportEntity, FourGuardiansBetRecord>()
+               .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
             CreateMap<FourGuardiansSettlementResultEntity, FourGuardiansSettlementResult>();
             CreateMap<FourGuardiansFreeSpinEntity, FourGuardiansFreeSpin>();
             CreateMap<FourGuardiansBonusEntity, FourGuardiansBonus>();
@@ -245,6 +245,26 @@ namespace GamesAdmin.Api._Shared
                .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite)); ;
 
             CreateMap<SeDieBetReportEntity, SeDieBetRecord>();
+
+            CreateMap<LotteryRoundEntity, LotteryRoundResult>()
+                .ForMember(x => x.Special, opt => opt.MapFrom((source) => source.Result.Special))
+                .ForMember(x => x.First, opt => opt.MapFrom((source) => source.Result.First))
+                .ForMember(x => x.Second, opt => opt.MapFrom((source) => source.Result.Second))
+                .ForMember(x => x.Third, opt => opt.MapFrom((source) => source.Result.Third))
+                .ForMember(x => x.Fourth, opt => opt.MapFrom((source) => source.Result.Fourth))
+                .ForMember(x => x.Fifth, opt => opt.MapFrom((source) => source.Result.Fifth))
+                .ForMember(x => x.Sixth, opt => opt.MapFrom((source) => source.Result.Sixth))
+                .ForMember(x => x.Seventh, opt => opt.MapFrom((source) => source.Result.Seventh));
+
+            CreateMap<LotterySettlementResultEntity, LotterySettlementResult>();
+            CreateMap<LotteryOccurrencesEntity, LotteryOccurrences>();
+            CreateMap<LotteryOthersSettlementResultEntity, LotteryOthersSettlementResult>();
+
+            CreateMap<LotteryBetReportEntity, LotteryBetRecord>();
+
+            CreateMap<LotteryBetEntity, LotteryBetHistoryRecord>();
+            CreateMap<LotteryOddsEntity, LotteryOdds>();
+            CreateMap<LotteryChoicesEntity, LotteryChoices>();
         }
     }
 }

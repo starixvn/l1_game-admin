@@ -59,4 +59,8 @@ namespace GamesAdmin.Core.Models
     public class VipSeDieWarBetReport : BetReport<VipSeDieWarRoundResult, VipSeDieWarBetRecord>
     {
     }
+
+    public class LotteryBetReport : BetReport<LotteryRoundResult, LotteryBetRecord>
+    {
+    }
 }

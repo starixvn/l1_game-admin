@@ -144,6 +144,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
+
     public class VipSeDieWarRoundResultViewModel
     {
         public long Number { get; set; }
@@ -152,5 +153,52 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<bool> BankerChips { get; set; }
 
         public Dictionary<string, bool> SettlementResult { get; set; }
+    }
+
+    public class LotteryRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<string> Special { get; set; }
+        public IEnumerable<string> First { get; set; }
+        public IEnumerable<string> Second { get; set; }
+        public IEnumerable<string> Third { get; set; }
+        public IEnumerable<string> Fourth { get; set; }
+        public IEnumerable<string> Fifth { get; set; }
+        public IEnumerable<string> Sixth { get; set; }
+        public IEnumerable<string> Seventh { get; set; }
+
+        public LotterySettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class LotterySettlementResultViewModel
+    {
+        public IEnumerable<string> FourSets { get; set; }
+
+        public string Special { get; set; }
+
+        public string Head { get; set; }
+
+        public string Tail { get; set; }
+
+        public Dictionary<string, bool> Others { get; set; }
+
+        public IEnumerable<string> TwentySevenSets { get; set; }
+
+        public LotteryOccurrencesViewModel Occurrences { get; set; }
+    }
+
+    public class LotteryOthersSettlementResultViewModel
+    {
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+    }
+
+    public class LotteryOccurrencesViewModel
+    {
+        public Dictionary<string, byte> All { get; set; }
+        public Dictionary<string, byte> Seventh { get; set; }
     }
 }

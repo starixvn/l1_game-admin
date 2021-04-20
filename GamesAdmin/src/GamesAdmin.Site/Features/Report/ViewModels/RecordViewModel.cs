@@ -252,4 +252,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Odds { get; set; }
     }
+
+    public class LotteryRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
 }

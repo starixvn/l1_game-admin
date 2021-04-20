@@ -93,5 +93,11 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+
+        [Get("/report/lottery/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/game/lottery/round/{roundId}/user/{userId}")]
+        Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
     }
 }
