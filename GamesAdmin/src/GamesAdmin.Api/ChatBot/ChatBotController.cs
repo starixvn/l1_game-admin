@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.ChatBot
 {
-    [Route("api/[controller]")]
+    [Route("api/chatbot")]
 
     public class ChatBotController : BaseAuthorizeController
     {
@@ -17,7 +17,7 @@ namespace GamesAdmin.Api.ChatBot
             this.mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("notify_high_stake")]
         public async Task<IActionResult> NotifyHighStake([FromBody] NotifyHighStakeRequest request)
             => Ok(await mediator.Send(request));
     }
