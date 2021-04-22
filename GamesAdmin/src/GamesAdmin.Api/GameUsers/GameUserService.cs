@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GamesAdmin.Api.GameUser.Results;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -22,6 +20,8 @@ namespace GamesAdmin.Api.GameUser
         Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId);
 
         Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS);
+
+        Task<string> GetCharacterNameAsync(int memberId);
     }
 
     public class GameUserService : IGameUserService
@@ -73,7 +73,6 @@ namespace GamesAdmin.Api.GameUser
             );
         }
 
-        
         public Task<SpinEntity> GetMemberSpins(int memberId)
         => spinRepository.FindOneAsync(spin => spin.MemberId == memberId);
 
@@ -90,6 +89,20 @@ namespace GamesAdmin.Api.GameUser
             sentryClient.CaptureMessage($"Unable to set board for {nickname}, currency {accountInfo?.Currency} with excludeUUS {excludeUUS}");
 
             return (!excludeUUS && accountInfo?.Currency == "UUS") || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
+        }
+
+        public async Task<string> GetCharacterNameAsync(int memberId)
+        {
+            var account = await accountRepository.FindOneAsync(user => user.Local.MemberId == memberId);
+
+            if (account != null)
+            {
+                var accountInfo = await accountInfoRepository.FindOneAsync(x => x.UserId == account.Id.ToString());
+
+                return accountInfo.Name;
+            }
+
+            return string.Empty;
         }
     }
 }

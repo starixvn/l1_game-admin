@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GamesAdmin.Api._Shared.Configurations
+﻿namespace GamesAdmin.Api._Shared.Configurations
 {
     public class ChatBotApiSettings
     {
@@ -14,7 +12,5 @@ namespace GamesAdmin.Api._Shared.Configurations
     public class MessageSettings
     {
         public string ConversationId { get; set; }
-
-        public string MessageTemplate { get; set; }
     }
 }

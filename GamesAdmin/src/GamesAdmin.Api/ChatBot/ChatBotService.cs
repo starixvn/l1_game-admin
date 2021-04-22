@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
+using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using Refit;
 
@@ -21,22 +22,27 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
+        private const string HighStakeMessageTemplate = "VIP {0} is playing game {1}. Betting {2}.";
+
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
+        private readonly IGameUserService gameUserService;
 
-        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi)
+        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
+            this.gameUserService = gameUserService;
         }
 
-        public Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
+        public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
             var game = Enum.Parse<GameId>(request.GameTypeId.ToString());
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
-            var message = string.Format(conversationSetting.MessageTemplate, game.ToString());
+            var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
+            var message = string.Format(HighStakeMessageTemplate, charName, game.ToString(), request.Amount);
 
-            return chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message);
+            return await chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message);
         }
     }
 }
