@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
-        private const string HighStakeMessageTemplate = "VIP {0} is betting {1} {2} on game {3}";
+        private const string HighStakeMessageTemplate = "{0} - {1}{2} - {3}";
 
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
