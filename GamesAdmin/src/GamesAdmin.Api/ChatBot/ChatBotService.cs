@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
-        private const string HighStakeMessageTemplate = "VIP {0} is playing game {1}. Betting {2}.";
+        private const string HighStakeMessageTemplate = "VIP {0} is betting {1} {2} on game {3}";
 
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
@@ -37,10 +37,15 @@ namespace GamesAdmin.Api.ChatBot
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
+            if (request.Currency == "UUS")
+            {
+                return await Task.FromResult<ChatBotResult>(default);
+            }
+
             var game = Enum.Parse<GameId>(request.GameTypeId.ToString());
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
-            var message = string.Format(HighStakeMessageTemplate, charName, game.ToString(), request.Amount);
+            var message = string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency, game.ToString());
 
             return await chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message);
         }
