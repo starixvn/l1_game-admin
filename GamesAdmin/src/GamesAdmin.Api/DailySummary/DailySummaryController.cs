@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.DailySummarize
     [Route("api/daily_summary")]
     public class DailySummaryController : BaseAuthorizeController
     {
-        private IMediator mediator;
+        private readonly IMediator mediator;
 
         public DailySummaryController(IMediator mediator)
         {

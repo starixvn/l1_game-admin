@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.GameSettings.Mappers
             CreateMap<GameConfigEntity, GameConfig>()
                 .ForMember(dest => dest.Info, opt => opt.MapFrom(src => new GameInfo(src.Name, src.EnableFreeBet, (GameType)src.Type, src.SiteExclusions)))
                 .ForMember(dest => dest.BetLimit, opt => opt.MapFrom(src => new BetLimit(src.Minbet, src.Maxbet, src.MaxBetChoices)))
-                .ForMember(dest => dest.BotSetting, opt => opt.MapFrom(src => new BotSetting(src.Botenabled, src.BotMaxBet, src.HoursMaxBot)))
+                .ForMember(dest => dest.BotSetting, opt => opt.MapFrom(src => new BotSetting(src.Botenabled, src.BotMaxBet, src.HoursMaxBot, src.SmartBotEnabled, src.SmartBotGroupRatio)))
                 .ForMember(dest => dest.EnableSetting, opt => opt.MapFrom(src => new EnableSetting(src.Enabled, src.DisabledRound, src.DelayStartTime, src.DisabledMessage)));
         }
     }
