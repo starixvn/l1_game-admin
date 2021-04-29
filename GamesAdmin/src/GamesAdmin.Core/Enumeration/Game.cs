@@ -63,7 +63,7 @@
         public static readonly Game VipBaccarat = new Game(VipBaccaratValue, "Vip Baccarat", GameId.VipBaccarat);
         public static readonly Game VipSeDieWar = new Game(VipSeDieWarValue, "Se Die War", GameId.VipSeDieWar);
         public static readonly Game FourGuardians = new Game(FourGuardiansValue, "Four Guardians", GameId.FourGuardians);
-        public static readonly Game Lottery = new Game(LotteryValue, "Saba.club Lottery", GameId.Lottery);
+        public static readonly Game Lottery = new Game(LotteryValue, "RNG Lottery", GameId.Lottery);
 
         public Game()
         {

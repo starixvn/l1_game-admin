@@ -104,7 +104,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        [ActionName("saba.clublottery")]
+        [ActionName("rnglottery")]
         public IActionResult Lottery()
         {
             return View("Lottery", new ReportViewModel { ExcludeUUS = true });
