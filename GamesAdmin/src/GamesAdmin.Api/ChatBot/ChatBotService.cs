@@ -23,6 +23,7 @@ namespace GamesAdmin.Api.ChatBot
     public class ChatBotService : IChatBotService
     {
         private const string HighStakeMessageTemplate = "{0} - {1}{2} - {3}";
+        private const int MinBetAmount = 2000;
 
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
@@ -37,7 +38,7 @@ namespace GamesAdmin.Api.ChatBot
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
-            if (request.Currency == "UUS")
+            if (request.Currency == "UUS" || request.Amount < MinBetAmount)
             {
                 return await Task.FromResult<ChatBotResult>(default);
             }
