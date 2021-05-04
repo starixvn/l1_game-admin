@@ -84,7 +84,7 @@ export default class Lottery extends React.Component<
             remainingTime: 45,
           },
         });
-      }, (waitingTime + 1 )* 1000);
+      }, (waitingTime + 1) * 1000);
     }
 
     if (!!data.remainingTime) {
@@ -246,12 +246,9 @@ export default class Lottery extends React.Component<
               <TotalBet total={betList.special.total} type="special" />
               <TotalBet total={betList.head.total} type="head" />
               <TotalBet total={betList.tail.total} type="tail" />
-              <TotalBet total={betList["27Sets"].total} type="27Sets" />
             </Row>
             <Row className="justify-content-center">
-              <TotalBet total={betList.parlay2.total} type="parlay2" />
-              <TotalBet total={betList.parlay3.total} type="parlay3" />
-              <TotalBet total={betList.parlay4.total} type="parlay4" />
+              <TotalBet total={betList["27Sets"].total} type="27Sets" />
               <TotalBet total={betList.others.total} type="others" />
             </Row>
             <Row className="justify-content-center">
@@ -301,27 +298,6 @@ export default class Lottery extends React.Component<
             type="withchoice"
             dataList={betList["27Sets"].dataList}
             titles={[<div className="text-center">27 Sets</div>]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="withchoice"
-            dataList={betList.parlay2.dataList}
-            titles={[<div className="text-center">Parlay 2</div>]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="withchoice"
-            dataList={betList.parlay3.dataList}
-            titles={[<div className="text-center">Parlay 3</div>]}
-          />
-        </Col>
-        <Col className="col-4 col-lg">
-          <BetList
-            type="withchoice"
-            dataList={betList.parlay4.dataList}
-            titles={[<div className="text-center">Parlay 4</div>]}
           />
         </Col>
         <Col className="col-4 col-lg">
