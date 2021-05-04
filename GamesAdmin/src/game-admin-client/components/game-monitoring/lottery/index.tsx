@@ -196,9 +196,6 @@ export default class Lottery extends React.Component<
       betList["27Sets"].total +
       betList.head.total +
       betList.tail.total +
-      betList.parlay2.total +
-      betList.parlay3.total +
-      betList.parlay4.total +
       betList.others.total
     );
   }
