@@ -231,7 +231,7 @@ export default class Lottery extends React.Component<
           <Col align="center" className="col-12 col-md-3">
             <Row className={styles["align-middle"]}>
               <Col className={styles.timecounter}>
-                <div className={styles.title}>Saba.club Lottery</div>
+                <div className={styles.title}>RNG Lottery</div>
                 <TimeCounter
                   remainingTime={time.remainingTime}
                   gameState={gameState}
