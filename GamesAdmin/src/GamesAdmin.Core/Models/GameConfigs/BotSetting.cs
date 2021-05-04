@@ -2,13 +2,20 @@
 {
     public class BotSetting
     {
-        private const byte MaxHours = 24;
+        private const byte TotalHoursInDay = 24;
 
-        public BotSetting(bool botEnabled, double botMaxBet = 10, double[] hoursMaxBot = null)
+        public BotSetting(
+            bool botEnabled, 
+            double botMaxBet = 10, 
+            double[] hoursMaxBot = null,
+            bool smartBotEnabled = false, 
+            double smartBotGroupRatio = 0 )
         {
             BotEnabled = botEnabled;
             BotMaxBet = botMaxBet;
-            HoursMaxBot = hoursMaxBot?.Length == 0 ? GenerateDefaultMaxBot() : hoursMaxBot;
+            HoursMaxBot = hoursMaxBot?.Length == 0 ? GenerateDefaultBotRatioPerHour() : hoursMaxBot;
+            SmartBotEnabled = smartBotEnabled;
+            SmartBotGroupRatio = smartBotGroupRatio;
         }
 
         public bool BotEnabled { get; }
@@ -17,16 +24,20 @@
 
         public double[] HoursMaxBot { get; set; }
 
-        private double[] GenerateDefaultMaxBot()
+        private static double[] GenerateDefaultBotRatioPerHour()
         {
-            var maxBots = new double[24];
+            var botRatio = new double[24];
 
-            for (var i = 0; i < MaxHours; i++)
+            for (var i = 0; i < TotalHoursInDay; i++)
             {
-                maxBots[i] = 0;
+                botRatio[i] = 0;
             }
 
-            return maxBots;
+            return botRatio;
         }
+
+        public bool SmartBotEnabled { get; }
+
+        public double SmartBotGroupRatio { get; }
     }
 }

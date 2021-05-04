@@ -18,6 +18,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         ArchiveDatabaseSettings ArchiveDatabaseSettings { get; }
 
         RemovedDatabaseSettings RemovedDatabaseSettings { get; }
+
+        ChatBotApiSettings ChatBotApiSettings { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -34,6 +36,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             DatabaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
             ArchiveDatabaseSettings = configuration.GetSection(nameof(ArchiveDatabaseSettings)).Get<ArchiveDatabaseSettings>();
             RemovedDatabaseSettings = configuration.GetSection(nameof(RemovedDatabaseSettings)).Get<RemovedDatabaseSettings>();
+            ChatBotApiSettings = configuration.GetSection(nameof(ChatBotApiSettings)).Get<ChatBotApiSettings>();
         }
 
         public IdentityServerAuth IdentityServerAuth { get; }
@@ -47,6 +50,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         public ArchiveDatabaseSettings ArchiveDatabaseSettings { get; }
 
         public RemovedDatabaseSettings RemovedDatabaseSettings { get; }
+
+        public ChatBotApiSettings ChatBotApiSettings { get; }
 
         public T GetValue<T>(string key)
         {

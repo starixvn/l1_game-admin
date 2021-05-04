@@ -208,6 +208,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("roulette-server-endpoint-route", appSettings.GameServers.Roulette.SocketRoute);
             HttpContext.Response.Cookies.Append("baccarat-server-endpoint", appSettings.GameServers.Baccarat.Socket);
             HttpContext.Response.Cookies.Append("baccarat-server-endpoint-route", appSettings.GameServers.Baccarat.SocketRoute);
+            HttpContext.Response.Cookies.Append("lottery-server-endpoint", appSettings.GameServers.Lottery.Socket);
+            HttpContext.Response.Cookies.Append("lottery-server-endpoint-route", appSettings.GameServers.Lottery.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
@@ -271,7 +273,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 await mediator.Send(new UpdateRequest(
                     new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type),
-                    new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet),
+                    new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled),
                     viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(
                         (byte)viewModel.SlotViewModel.Mode,

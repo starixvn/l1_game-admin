@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -23,7 +25,17 @@ namespace GamesAdmin.Database
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"(?i){nickname}");
 
-            var aggregateBuilder = betCollection.Aggregate().Match(x => x.Round == roundId)
+            Expression<Func<TBetEntity, bool>> expression;
+            if (string.IsNullOrWhiteSpace(nickname))
+            {
+                expression = x => x.Round == roundId;
+            }
+            else
+            {
+                expression = x => x.Round == roundId && nickNameRegex.IsMatch(x.Name);
+            }
+
+            var aggregateBuilder = betCollection.Aggregate().Match(expression)
                 .SortBy(x => x.Id)
                 .Lookup<TBetEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
@@ -31,7 +43,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.AccountInfos.Name)) && (!excludeBot || !x.AccountInfos.IsBot) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
+                 .Match(x => (!excludeBot || !x.AccountInfos.IsBot) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,

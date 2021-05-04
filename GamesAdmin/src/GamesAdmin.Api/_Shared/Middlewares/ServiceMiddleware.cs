@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.EndGameInfo;
@@ -93,6 +94,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<SicBoEndGameInfoService>();
             services.AddScoped<VipSeDieWarEndGameInfoService>();
             services.AddScoped<FourGuardiansEndGameInfoService>();
+            services.AddScoped<LotteryEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -116,6 +118,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IBigSmallOnlineUserApi>(appSettings.GameServers.BigSmall.Api, refitSettings));
             services.AddSingleton(RestService.For<ITurboBigSmallOnlineUserApi>(appSettings.GameServers.TurboBigSmall.Api, refitSettings));
             services.AddSingleton(RestService.For<ITurboOddEvenOnlineUserApi>(appSettings.GameServers.TurboOddEven.Api, refitSettings));
+            services.AddSingleton(RestService.For<ILotteryOnlineUserApi>(appSettings.GameServers.Lottery.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -124,12 +127,19 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ITicketHandler, TicketHandler>();
             services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
             AddSlotServices(services, appSettings, refitSettings);
+            AddChatBotServices(services, appSettings);
         }
 
         private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings) 
         {
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
+        }
+
+        private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings) 
+        {
+            services.AddSingleton(RestService.For<IChatBotApi>(appSettings.ChatBotApiSettings.Url));
+            services.AddScoped<IChatBotService, ChatBotService>();
         }
     }
 }
