@@ -7,9 +7,6 @@ class LotteryBetList {
   special: BetList;
   head: BetList;
   tail: BetList;
-  parlay2: BetList;
-  parlay3: BetList;
-  parlay4: BetList;
   others: BetList;
 
   constructor() {
@@ -18,9 +15,6 @@ class LotteryBetList {
     this.special = new BetList();
     this.head = new BetList();
     this.tail = new BetList();
-    this.parlay2 = new BetList();
-    this.parlay3 = new BetList();
-    this.parlay4 = new BetList();
     this.others = new BetList();
   }
 }
