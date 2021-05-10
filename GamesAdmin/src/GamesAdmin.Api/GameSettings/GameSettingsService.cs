@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.Notifications.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -22,7 +25,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisbledMessage(string name, string disabledMessage, bool isApplyAll = false);
+        Task<bool> UpdateDisbledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false);
 
         Task<bool> UpdateBetLimitAndOdds(string name, BetLimit betLimit, Dictionary<string, double> odds);
 
@@ -37,6 +40,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
 
         Task<bool> UpdateSiteExclusion(string name, string[] exclusions);
+
+        Task<Dictionary<string, string>> GetDisaledMessage(string name);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -46,15 +51,18 @@ namespace GamesAdmin.Api.Games
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<GameConfigEntity> repository;
+        private readonly INotificationService notificationService;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
-            IGenericRepository<GameConfigEntity> repository)
+            IGenericRepository<GameConfigEntity> repository,
+            INotificationService notificationService)
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
+            this.notificationService = notificationService;
         }
 
         public Task<IEnumerable<GameConfig>> Get()
@@ -135,19 +143,27 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateDisbledMessage(string name, string disabledMessage, bool isApplyAll = false)
+        public async Task<bool> UpdateDisbledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false)
         {
             try
             {
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.DisabledMessage, disabledMessage);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.DisabledMessage, messages[Language.VnValue]);
+                var notificationUpdate = new UpdateRequest
+                {
+                    DisplayKind = NotificationDisplayKind.DisabledGame,
+                    Messages = messages,
+                    GameName = name
+                };
 
                 if (isApplyAll)
                 {
                     await repository.UpdateManyAsync(config => true, update);
+                    await notificationService.UpdateForGame(notificationUpdate);
                 }
                 else
                 {
                     await repository.UpdateAsync(config => config.Name == name, update);
+                    await notificationService.UpdateForGame(notificationUpdate);
                 }
 
                 return true;
@@ -334,6 +350,20 @@ namespace GamesAdmin.Api.Games
 
                 return false;
             }
+        }
+
+        public async Task<Dictionary<string, string>> GetDisaledMessage(string name)
+        {
+            var notification = await notificationService.GetByGameName(name, NotificationDisplayKind.DisabledGame);
+
+            if (notification != null)
+            {
+                return notification.Messages;
+            }
+
+            var gameConfig = await GetByName(name);
+
+            return new Dictionary<string, string> { { Language.VnValue, gameConfig.EnableSetting.DisabledMessage } };
         }
     }
 }

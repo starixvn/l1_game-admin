@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
@@ -114,35 +115,36 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("status")]
-        public async Task<IActionResult> UpdateDisabledMessage(string name, string disabledMessage)
+        public async Task<IActionResult> UpdateDisabledMessage(string name, string vnMessage, string enMessage)
         {
-            if (string.IsNullOrWhiteSpace(disabledMessage))
+            if (string.IsNullOrWhiteSpace(vnMessage))
             {
                 TempData["errorMessage"] = "Message cannot be empty.";
+
                 return Json(false);
             }
             else
             {
-                await mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
+                var messages = new Dictionary<string, string>
+                {
+                    {Language.VnValue, vnMessage },
+                    { Language.EnValue, enMessage }
+                };
+
+                await mediator.Send(new UpdateDisabledMessageRequest(name, messages));
+
                 return Json(true);
             }
         }
 
-        [HttpPost]
-        [Route("status/update")]
-        public async Task<IActionResult> UpdateAllDisabledMessage(string disabledMessage)
+        [HttpGet]
+        [Route("status/disableMessage")]
+        public async Task<IActionResult> GetDisabledMessage(string name)
         {
-            if (string.IsNullOrWhiteSpace(disabledMessage))
-            {
-                TempData["errorMessage"] = "Message cannot be empty.";
-                return Json(false);
-            }
-            else
-            {
-                await mediator.Send(new UpdateAllDisabledMessageRequest(disabledMessage));
-                return Json(true);
-            }
-        }
+            var disabledMessages = await mediator.Send(new GetDisabledMessageRequest(name));
+
+            return Json(disabledMessages);
+        }        
 
         [HttpPost]
         [Route("status/reload")]

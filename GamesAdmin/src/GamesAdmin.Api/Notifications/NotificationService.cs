@@ -7,6 +7,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Api.Notifications
 {
@@ -21,6 +22,10 @@ namespace GamesAdmin.Api.Notifications
         public Task<bool> Update(UpdateRequest notification);
 
         public Task<bool> Delete(string id);
+
+        public Task<bool> UpdateForGame(UpdateRequest notification);
+
+        public Task<Notification> GetByGameName(string gameName, NotificationDisplayKind displayKind);
     }
 
     public class NotificationService : INotificationService
@@ -79,6 +84,30 @@ namespace GamesAdmin.Api.Notifications
             => new Notification(
                 entity.Id.ToString(),
                 entity.Message,
-                Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()));
+                Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()),
+                entity.Messages);
+
+        public async Task<bool> UpdateForGame(UpdateRequest notification)
+        {
+            var update = Builders<NotificationEntity>.Update.Set(field => field.Messages, notification.Messages);
+
+            if (string.IsNullOrWhiteSpace(notification.GameName))
+            {
+                await notificationRepository.UpdateManyAsync(entity => entity.DisplayKind == byte.Parse(notification.DisplayKind.Value), update);
+            }
+            else
+            {
+                await notificationRepository.UpdateManyAsync(entity => entity.GameName == notification.GameName, update);
+            }
+
+            return true;
+        }
+
+        public async Task<Notification> GetByGameName(string gameName, NotificationDisplayKind displayKind)
+        {
+            var entity = await notificationRepository.FindOneAsync(entity => entity.GameName == gameName && entity.DisplayKind == byte.Parse(displayKind.Value));
+
+            return entity == null ? null : Convert(entity);
+        }
     }
 }
