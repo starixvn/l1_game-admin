@@ -128,7 +128,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 var messages = new Dictionary<string, string>
                 {
                     {Language.VnValue, vnMessage },
-                    { Language.EnValue, enMessage }
+                    {Language.EnValue, enMessage }
                 };
 
                 await mediator.Send(new UpdateDisabledMessageRequest(name, messages));
@@ -144,7 +144,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             var disabledMessages = await mediator.Send(new GetDisabledMessageRequest(name));
 
             return Json(disabledMessages);
-        }        
+        }
 
         [HttpPost]
         [Route("status/reload")]

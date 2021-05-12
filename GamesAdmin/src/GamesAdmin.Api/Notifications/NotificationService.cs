@@ -23,7 +23,7 @@ namespace GamesAdmin.Api.Notifications
 
         public Task<bool> Delete(string id);
 
-        public Task<bool> UpdateForGame(UpdateRequest notification);
+        public Task<bool> AddOrUpdateForGame(UpdateRequest notification);
 
         public Task<Notification> GetByGameName(string gameName, NotificationDisplayKind displayKind);
     }
@@ -87,7 +87,7 @@ namespace GamesAdmin.Api.Notifications
                 Enumeration.FromValue<NotificationDisplayKind>(entity.DisplayKind.ToString()),
                 entity.Messages);
 
-        public async Task<bool> UpdateForGame(UpdateRequest notification)
+        public async Task<bool> AddOrUpdateForGame(UpdateRequest notification)
         {
             var update = Builders<NotificationEntity>.Update.Set(field => field.Messages, notification.Messages);
 
@@ -97,7 +97,22 @@ namespace GamesAdmin.Api.Notifications
             }
             else
             {
-                await notificationRepository.UpdateManyAsync(entity => entity.GameName == notification.GameName, update);
+                var existNotification = await GetByGameName(notification.GameName, notification.DisplayKind);
+
+                if (existNotification != null)
+                {
+                    //TODO insert for game which not has notification
+                    await notificationRepository.UpdateAsync(entity => entity.GameName == notification.GameName, update);
+                }
+                else
+                {
+                    await notificationRepository.InsertOneAsync(new NotificationEntity
+                    {
+                        GameName = notification.GameName,
+                        DisplayKind = byte.Parse(notification.DisplayKind.Value),
+                        Messages = notification.Messages
+                    });
+                }
             }
 
             return true;

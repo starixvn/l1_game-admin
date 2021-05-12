@@ -158,12 +158,12 @@ namespace GamesAdmin.Api.Games
                 if (isApplyAll)
                 {
                     await repository.UpdateManyAsync(config => true, update);
-                    await notificationService.UpdateForGame(notificationUpdate);
+                    await notificationService.AddOrUpdateForGame(notificationUpdate);
                 }
                 else
                 {
                     await repository.UpdateAsync(config => config.Name == name, update);
-                    await notificationService.UpdateForGame(notificationUpdate);
+                    await notificationService.AddOrUpdateForGame(notificationUpdate);
                 }
 
                 return true;
