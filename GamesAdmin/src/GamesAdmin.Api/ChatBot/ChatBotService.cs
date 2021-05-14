@@ -48,7 +48,9 @@ namespace GamesAdmin.Api.ChatBot
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var message = string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency, game.ToString());
 
-            return await chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message));
+
+            return await Task.FromResult(new ChatBotResult());
         }
     }
 }
