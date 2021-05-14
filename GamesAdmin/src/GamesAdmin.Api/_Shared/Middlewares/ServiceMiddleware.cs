@@ -1,4 +1,6 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Net.Http;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.DailySummarize;
@@ -138,7 +140,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings) 
         {
-            services.AddSingleton(RestService.For<IChatBotApi>(appSettings.ChatBotApiSettings.Url));
+            services.AddSingleton(RestService.For<IChatBotApi>(new HttpClient 
+            {
+                BaseAddress = new Uri(appSettings.ChatBotApiSettings.Url),
+                Timeout = TimeSpan.FromSeconds(appSettings.ChatBotApiSettings.TimeoutInSeconds)
+            } ));
+
             services.AddScoped<IChatBotService, ChatBotService>();
         }
     }
