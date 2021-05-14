@@ -30,7 +30,8 @@ namespace GamesAdmin.Site.Features.ClientSites
             {
                 ClientId = x.ClientId,
                 SiteId = x.SiteId,
-                GameClientUrl = x.GameClientUrl
+                GameClientUrl = x.GameClientUrl,
+                GameMobiClientUrl = x.GameMobiClientUrl
             });
         }
 
@@ -42,7 +43,8 @@ namespace GamesAdmin.Site.Features.ClientSites
             {
                 ClientId = clientSite.ClientId,
                 SiteId = clientSite.SiteId,
-                GameClientUrl = clientSite.GameClientUrl
+                GameClientUrl = clientSite.GameClientUrl,
+                GameMobiClientUrl = clientSite.GameMobiClientUrl
             };
         }
 
