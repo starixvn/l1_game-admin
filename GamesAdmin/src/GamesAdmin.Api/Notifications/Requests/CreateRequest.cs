@@ -12,6 +12,6 @@ namespace GamesAdmin.Api.Notifications.Requests
 
         public string GameName { get; set; }
 
-        public Dictionary<string, string> Translations { get; set; }
+        public Dictionary<string, string> Messages { get; set; }
     }
 }

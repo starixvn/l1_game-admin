@@ -16,8 +16,14 @@
         </div>
         <div class="form-group">
             <label class="control-label">Message</label>
-            <textarea class="form-control" asp-for="Message"> </textarea>
-            <span asp-validation-for="Message" class="text-danger"></span>
+            <textarea class="form-control" rows="4" asp-for="VnMessage"> </textarea>
+            <span asp-validation-for="VnMessage" class="text-danger"></span>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Message</label>
+            <textarea class="form-control" rows="4" asp-for="EnMessage"> </textarea>
+            <span asp-validation-for="EnMessage" class="text-danger"></span>
             <input type="hidden" asp-for="Id" />
         </div>
         <div class="form-group">

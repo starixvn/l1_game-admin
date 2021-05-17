@@ -52,7 +52,7 @@ namespace GamesAdmin.Api.Notifications
         public async Task<IList<Notification>> Get()
         {
             var notifications = (await notificationRepository
-                .FilterByAsync(n => true))
+                .FilterByAsync(n => n.DisplayKind != byte.Parse(NotificationDisplayKind.DisabledGame.Value)))
                 .ToList();
 
             return notifications.Select(entity => Convert(entity)).ToList();
