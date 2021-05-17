@@ -22,6 +22,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<IActionResult> Index()
         {
             var clientSites = await mediator.Send(new GetAllRequest());
+
             return View(clientSites);
         }
 
@@ -33,7 +34,8 @@ namespace GamesAdmin.Site.Features.ClientSites
             {
                 ClientId = clientSite.ClientId,
                 SiteId = clientSite.SiteId,
-                GameClientUrl = clientSite.GameClientUrl
+                GameClientUrl = clientSite.GameClientUrl,
+                GameMobiClientUrl = clientSite.GameMobiClientUrl
             });
         }
 
@@ -46,7 +48,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                 {
                     ClientId = viewModel.ClientId,
                     SiteId = viewModel.SiteId,
-                    GameClientUrl = viewModel.GameClientUrl
+                    GameClientUrl = viewModel.GameClientUrl,
+                    GameMobiClientUrl = viewModel.GameMobiClientUrl
                 }));
 
                 return RedirectToAction("Index");
