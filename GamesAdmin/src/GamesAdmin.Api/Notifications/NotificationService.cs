@@ -99,12 +99,7 @@ namespace GamesAdmin.Api.Notifications
             {
                 var existNotification = await GetByGameName(notification.GameName, notification.DisplayKind);
 
-                if (existNotification != null)
-                {
-                    //TODO insert for game which not has notification
-                    await notificationRepository.UpdateAsync(entity => entity.GameName == notification.GameName, update);
-                }
-                else
+                if (existNotification == null)
                 {
                     await notificationRepository.InsertOneAsync(new NotificationEntity
                     {
@@ -112,6 +107,10 @@ namespace GamesAdmin.Api.Notifications
                         DisplayKind = byte.Parse(notification.DisplayKind.Value),
                         Messages = notification.Messages
                     });
+                }
+                else
+                {
+                    await notificationRepository.UpdateAsync(entity => entity.GameName == notification.GameName, update);
                 }
             }
 

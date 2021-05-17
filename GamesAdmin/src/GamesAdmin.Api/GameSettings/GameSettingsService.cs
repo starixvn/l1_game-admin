@@ -155,10 +155,16 @@ namespace GamesAdmin.Api.Games
                     GameName = name
                 };
 
-                if (isApplyAll)
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     await repository.UpdateManyAsync(config => true, update);
-                    await notificationService.AddOrUpdateForGame(notificationUpdate);
+
+                    var games = await Get();
+                    foreach (var game in games)
+                    {
+                        notificationUpdate.GameName = game.Info.Name;
+                        await notificationService.AddOrUpdateForGame(notificationUpdate);
+                    }
                 }
                 else
                 {
