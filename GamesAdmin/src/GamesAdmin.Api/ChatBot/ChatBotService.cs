@@ -7,6 +7,7 @@ using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using Refit;
+using Sentry;
 
 namespace GamesAdmin.Api.ChatBot
 {
@@ -30,12 +31,14 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
         private readonly IGameUserService gameUserService;
+        private readonly ISentryClient sentryClient;
 
-        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService)
+        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService, ISentryClient sentryClient)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
             this.gameUserService = gameUserService;
+            this.sentryClient = sentryClient;
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
@@ -53,6 +56,8 @@ namespace GamesAdmin.Api.ChatBot
             msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency));
             msgBuilder.Append($"{Separator}{game}");
             msgBuilder.Append(GetSystemName(request.System));
+
+            sentryClient.CaptureMessage($"Received highstake {charName} - {request.System}");
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
