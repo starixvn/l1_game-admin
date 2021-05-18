@@ -23,6 +23,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
+        private const string Separator = " - ";
         private const string HighStakeMessageTemplate = "{0} - {1}{2}";
         private const int MinBetAmount = 2000;
 
@@ -50,8 +51,8 @@ namespace GamesAdmin.Api.ChatBot
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
 
             msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency));
-            msgBuilder.Append($" {game}");
-            msgBuilder.Append($" {GetSystemName(request.System)}");
+            msgBuilder.Append($"{Separator}{game}");
+            msgBuilder.Append($"{Separator}{GetSystemName(request.System)}");
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
