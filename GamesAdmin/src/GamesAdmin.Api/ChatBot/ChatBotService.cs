@@ -57,8 +57,6 @@ namespace GamesAdmin.Api.ChatBot
             msgBuilder.Append($"{Separator}{game}");
             msgBuilder.Append(GetSystemName(request.System));
 
-            sentryClient.CaptureMessage($"Received highstake {charName} - {request.System}");
-
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
             return await Task.FromResult(new ChatBotResult());
