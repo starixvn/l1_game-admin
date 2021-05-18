@@ -52,7 +52,7 @@ namespace GamesAdmin.Api.ChatBot
 
             msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency));
             msgBuilder.Append($"{Separator}{game}");
-            msgBuilder.Append($"{Separator}{GetSystemName(request.System)}");
+            msgBuilder.Append(GetSystemName(request.System));
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
@@ -63,7 +63,7 @@ namespace GamesAdmin.Api.ChatBot
         {
             var systemName = Enum.Parse<Systems>(system.ToString());
 
-            return (systemName == Systems.Mobi) ? "Mobi" : string.Empty;
+            return (systemName == Systems.Mobi) ? $"{Separator}Mobi" : string.Empty;
         }
     }
 }
