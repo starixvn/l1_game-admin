@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot.Requests;
@@ -22,7 +23,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
-        private const string HighStakeMessageTemplate = "{0} - {1}{2} - {3}";
+        private const string HighStakeMessageTemplate = "{0} - {1}{2}";
         private const int MinBetAmount = 2000;
 
         private readonly IAppSettings appSettings;
@@ -43,14 +44,25 @@ namespace GamesAdmin.Api.ChatBot
                 return await Task.FromResult<ChatBotResult>(default);
             }
 
+            var msgBuilder = new StringBuilder();
             var game = Enum.Parse<GameId>(request.GameTypeId.ToString());
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
-            var message = string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency, game.ToString());
 
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, message));
+            msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency));
+            msgBuilder.Append($" {game}");
+            msgBuilder.Append($" {GetSystemName(request.System)}");
+
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
             return await Task.FromResult(new ChatBotResult());
+        }
+
+        private static string GetSystemName(byte system)
+        {
+            var systemName = Enum.Parse<Systems>(system.ToString());
+
+            return (systemName == Systems.Mobi) ? "Mobi" : string.Empty;
         }
     }
 }
