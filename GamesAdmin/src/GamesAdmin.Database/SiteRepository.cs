@@ -6,7 +6,7 @@ namespace GamesAdmin.Database
 {
     public interface ISiteRepository : IGenericRepository<ClientSiteEntity>
     {
-        Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl);
+        Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl, string mobiClientUrl);
     }
 
     public class SiteRepository : GenericRepository<ClientSiteEntity>, ISiteRepository
@@ -15,9 +15,13 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl)
+        public async Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl, string mobiClientUrl)
         {
-            await UpdateAsync(x => x.ClientId == clientId && x.SiteId == siteId, Builders<ClientSiteEntity>.Update.Set(x => x.GameClientUrl, gameClientUrl));
+            var updates = Builders<ClientSiteEntity>.Update
+                .Set(x => x.GameClientUrl, gameClientUrl)
+                .Set(x => x.GameMobiClientUrl, mobiClientUrl);
+
+            await UpdateAsync(x => x.ClientId == clientId && x.SiteId == siteId, updates);
         }
     }
 }

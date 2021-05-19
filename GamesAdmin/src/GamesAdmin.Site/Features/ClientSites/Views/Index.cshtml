@@ -12,6 +12,7 @@
                 <th>Client</th>
                 <th>Site</th>
                 <th>Game Client Url</th>
+                <th>Mobi Client Url</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                     <td>@item.ClientId</td>
                     <td>@item.SiteId</td>
                     <td>@item.GameClientUrl</td>
+                    <td>@item.GameMobiClientUrl</td>
                     <td class="text-center"><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId"><i class="icon-edit"></i></a></td>
                 </tr>
             }

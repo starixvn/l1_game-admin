@@ -7,5 +7,7 @@
         public string SiteId { get; set; }
 
         public string GameClientUrl { get; set; }
+
+        public string GameMobiClientUrl { get; set; }
     }
 }

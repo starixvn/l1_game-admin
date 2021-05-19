@@ -7,6 +7,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Driver;
 using Sentry;
 
 namespace GamesAdmin.Api.UM
@@ -107,14 +108,9 @@ namespace GamesAdmin.Api.UM
 
         private async Task UpdateEnableConfig(bool enable)
         {
-            var configs = configRepository.AsQueryable().ToList();
+            var update = Builders<GameConfigEntity>.Update.Set(field => field.Enabled, enable);
 
-            foreach (var game in configs)
-            {
-                game.Enabled = enable;
-
-                await configRepository.ReplaceOneAsync(game);
-            }
+            await configRepository.UpdateManyAsync(config => true, update);
         }
 
         public async Task<bool> AddSchedule(UmSchedule umSchedule)

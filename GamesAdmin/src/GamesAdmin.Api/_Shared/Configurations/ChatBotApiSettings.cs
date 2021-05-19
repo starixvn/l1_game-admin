@@ -7,6 +7,8 @@
         public string Url { get; set; }
 
         public MessageSettings HighStake { get; set; }
+
+        public int TimeoutInSeconds { get; set; }
     }
 
     public class MessageSettings
