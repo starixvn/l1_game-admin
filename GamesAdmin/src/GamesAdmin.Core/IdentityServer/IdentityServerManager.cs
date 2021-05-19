@@ -12,10 +12,15 @@ namespace GamesAdmin.Core.IdentityServer
         private static IdentityServerAuth auth;
         private static TokenResponse tokenResponse;
         private static DateTime lastTokenRequest;
+        private static IDiscoveryCache discoveryCache;
 
         public static void Initialize(IdentityServerAuth identityServerAuth)
         {
             auth = identityServerAuth;
+            discoveryCache = new DiscoveryCache(identityServerAuth.Url, new DiscoveryPolicy
+            {
+                RequireHttps = false
+            });
         }
 
         public static async Task<string> GetAccessToken()
@@ -24,16 +29,7 @@ namespace GamesAdmin.Core.IdentityServer
             {
                 var client = GetIdentityClient();
 
-                var request = new DiscoveryDocumentRequest
-                {
-                    Address = auth.Url,
-                    Policy = new DiscoveryPolicy
-                    {
-                        RequireHttps = false
-                    }
-                };
-
-                var disco = await client.GetDiscoveryDocumentAsync(request);
+                var disco = await discoveryCache.GetAsync();
 
                 if (disco.IsError)
                 {

@@ -57,9 +57,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Enable Smart Bot")]
         public bool SmartBotEnabled { get; set; }
 
-        [DisplayName("Ratio Of Groups Picked By Date (%)")]
+        [DisplayName("Smart Bot Group Ratio (%)")]
         [Range(0, MaxPercentage, ErrorMessage = "Number range [0..100]")]
-        public double SmartBotTotalGroup { get; set; }
+        public double SmartBotGroupRatio { get; set; }
     }
 
     public class BotRatioItemViewModel

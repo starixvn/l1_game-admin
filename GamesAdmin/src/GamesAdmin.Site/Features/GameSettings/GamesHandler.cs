@@ -97,8 +97,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             if (game != null)
             {
                 viewModel.PayoutViewModel = mapper.Map<PayoutViewModel>(game);
-
-                viewModel.BotMaxBet = game.BotSetting.BotMaxBet;
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
                 viewModel.DisplayName = Enumeration.Contains<Game>(game.Info.Name)
@@ -218,7 +216,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             request.EnableSetting,
             request.BotSettings,
             request.BetLimit,
-            request.SlotConfigs));
+            request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
 
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);

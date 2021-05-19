@@ -70,6 +70,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+
+        Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -174,5 +178,11 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
             => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
+
+        public Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetLotteryBetReport(roundId, nickname, excludeUUS);
+
+        public Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId)
+            => reportApi.GetLotteryBetHistory(roundId, userId);
     }
 }

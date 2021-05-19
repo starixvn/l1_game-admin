@@ -258,4 +258,10 @@ namespace GamesAdmin.Core.Models
 
         public decimal Odds { get; set; }
     }
+
+    public class LotteryBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
+    }
+
 }

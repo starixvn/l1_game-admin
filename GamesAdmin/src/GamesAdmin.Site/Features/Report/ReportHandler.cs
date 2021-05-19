@@ -41,7 +41,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
         IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
         IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>,
-        IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>
+        IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
+        IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
+        IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>
+
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -582,6 +585,41 @@ namespace GamesAdmin.Site.Features.ClientSites
 
                 return betViewModel;
             });
+        }
+
+        public async Task<LotteryReportResultViewModel> Handle(GetLotteryReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetLotteryBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new LotteryReportResultViewModel
+            {
+                RoundResult = mapper.Map<LotteryRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<LotteryRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<LotteryBetHistoryViewModel> Handle(GetLotteryBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetLotteryBetHistory(request.RoundId, request.UserId);
+
+            return new LotteryBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<LotteryRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<LotteryBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
+                Odds = mapper.Map<LotteryOddsViewModel>(result.Odds),
+            };
         }
     }
 }

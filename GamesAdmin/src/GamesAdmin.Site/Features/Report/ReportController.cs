@@ -104,6 +104,13 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [ActionName("rnglottery")]
+        public IActionResult Lottery()
+        {
+            return View("Lottery", new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
         public IActionResult SeDieWar()
         {
             return View("VipSeDieWar", new ReportViewModel { ExcludeUUS = true });
@@ -214,6 +221,12 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetLotteryReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_LotteryRecords", await mediator.Send(new GetLotteryReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetVipSeDieWarReport(long roundId, string nickname, bool excludeUUS)
         {
             return PartialView("_VipSeDieWarRecords", await mediator.Send(new GetVipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
@@ -289,6 +302,12 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetSicBoBetHistory(long roundId, string userId)
         {
             return PartialView("_SicBoBetHistory", await mediator.Send(new GetSicBoBetHistoryRequest(roundId, userId)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLotteryBetHistory(long roundId, string userId)
+        {
+            return PartialView("_LotteryBetHistory", await mediator.Send(new GetLotteryBetHistoryRequest(roundId, userId)));
         }
 
         [HttpGet]
