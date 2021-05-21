@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
-import BetItem from "../../common/model/BetItem";
+import BetItem, { SystemId } from "../../common/model/BetItem";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
 import ShakeThePlateModel from "../../common/model/ShakeThePlateModel";
@@ -11,6 +11,7 @@ import Dice from "../../shared/dice/dice";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
+import { getTotalBetOnSystem } from "../../util/util";
 import GameTemplate from "../game-template/game-template";
 import styles from "./shake-the-plate.module.scss";
 
@@ -18,11 +19,14 @@ type ShakeThePlateProps = {
   onMessage: Function;
 };
 
+const CHOICES = ["even", "odd", "red4", "red3", "red2", "white3", "white4"];
+
 export default class ShakeThePlate extends React.Component<
   ShakeThePlateProps,
   ShakeThePlateModel
 > {
   private timeout: NodeJS.Timeout;
+  private systemFilter: SystemId;
   constructor(props) {
     super(props);
 
@@ -151,14 +155,18 @@ export default class ShakeThePlate extends React.Component<
   }
 
   renderMonitor() {
-    const {
-      betList,
-      roundNumber,
-      time,
-      result,
-      gameState,
-      settlementResult,
-    } = this.state;
+    const { betList, roundNumber, time, result, gameState, settlementResult } =
+      this.state;
+
+    if (!this.systemFilter) {
+      CHOICES.forEach(
+        (choice) =>
+          (betList[choice].total = getTotalBetOnSystem(
+            betList[choice].dataList,
+            this.systemFilter
+          ))
+      );
+    }
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -247,6 +255,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.red4.dataList}
             isWin={settlementResult.red4}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -255,6 +264,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.red3.dataList}
             isWin={settlementResult.red3}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -263,6 +273,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.red2.dataList}
             isWin={settlementResult.red2}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -271,6 +282,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.even.dataList}
             isWin={settlementResult.even}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -279,6 +291,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.odd.dataList}
             isWin={settlementResult.odd}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -287,6 +300,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.white3.dataList}
             isWin={settlementResult.white3}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -295,6 +309,7 @@ export default class ShakeThePlate extends React.Component<
             type="simple"
             dataList={betList.white4.dataList}
             isWin={settlementResult.white4}
+            systemFilter={this.systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -308,6 +323,7 @@ export default class ShakeThePlate extends React.Component<
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
           disabled={this.state.disabled}
+          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
         ></GameTemplate>
       </div>
     );

@@ -11,14 +11,16 @@ import RoundNum from "../../shared/round-num/round-num";
 import DiceModel from "../../common/model/DiceModel";
 import BigSmallBaseModel from "../../common/model/BigSmallBaseModel";
 import DiceType from "../../common/model/DiceType";
-import BetItem from "../../common/model/BetItem";
-import { types, gameMapping, gameFlagMapping } from "../game-monitoring-config";
+import BetItem, { SystemId } from "../../common/model/BetItem";
+import { types, gameMapping } from "../game-monitoring-config";
 import { GameState } from "../../shared/common/GameState";
+import { getTotalBetOnSystem } from "../../util/util";
 
 type BigSmallProps = {
   turbo: boolean;
   type: string;
   onMessage: Function;
+  enableFilter?: boolean;
 };
 
 const optionChoice = ["big", "even"];
@@ -36,12 +38,14 @@ export default class BigSmallBase extends React.Component<
 > {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
+  private systemFilter: SystemId;
 
   constructor(props) {
     super(props);
 
     this.state = new BigSmallBaseModel();
     this.isFirstLoad = true;
+    this.systemFilter = SystemId.None;
   }
 
   componentDidMount() {
@@ -162,7 +166,13 @@ export default class BigSmallBase extends React.Component<
           }
 
           currentData[betListMapping(select)].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
+            new BetItem(
+              data[user].name,
+              betTracks[key],
+              null,
+              null,
+              data[user].system
+            )
           );
         }
       });
@@ -224,6 +234,18 @@ export default class BigSmallBase extends React.Component<
       winner = this.getWiner();
     }
 
+    if (this.systemFilter !== SystemId.None) {
+      betList.firstBetType.total = getTotalBetOnSystem(
+        betList.firstBetType.dataList,
+        this.systemFilter
+      );
+
+      betList.secondBetType.total = getTotalBetOnSystem(
+        betList.secondBetType.dataList,
+        this.systemFilter
+      );
+    }
+
     return (
       <Container>
         <Row>
@@ -280,6 +302,7 @@ export default class BigSmallBase extends React.Component<
               type="simple"
               titles={this.getTitles()}
               isWin={gameMapping[type][0] == winner}
+              systemFilter={this.systemFilter}
             ></BetList>
           </Col>
           <Col className="col-12 col-sm-6">
@@ -288,6 +311,7 @@ export default class BigSmallBase extends React.Component<
               type="simple"
               titles={this.getTitles()}
               isWin={gameMapping[type][1] == winner}
+              systemFilter={this.systemFilter}
             ></BetList>
           </Col>
         </Row>
@@ -305,6 +329,7 @@ export default class BigSmallBase extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
+          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
           disabled={this.state.currentState == GameState.disabled}
         />
       </div>
