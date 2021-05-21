@@ -155,12 +155,12 @@ export default class FishPrawnCrab extends React.Component<
     const betInfo = new FishPrawnCrabBetList();
 
     Object.keys(data).forEach(function (userName) {
-      const { name, betTracks } = data[userName];
+      const { name, betTracks, system } = data[userName];
 
       CHOICES.forEach((choice) => {
         if (betTracks[choice] > 0) {
           betInfo[choice].dataList.unshift(
-            new BetItem(name, betTracks[choice])
+            new BetItem(name, betTracks[choice], null, null, system)
           );
 
           betInfo[choice].total += betTracks[choice];
@@ -242,7 +242,7 @@ export default class FishPrawnCrab extends React.Component<
     !this.systemFilter &&
       CHOICES.forEach((choice) => {
         betList[choice].total = getTotalBetOnSystem(
-          betList[choice],
+          betList[choice].dataList,
           this.systemFilter
         );
       });

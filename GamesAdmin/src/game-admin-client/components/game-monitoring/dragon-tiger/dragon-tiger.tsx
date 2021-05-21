@@ -86,6 +86,7 @@ export default class DragonTiger extends React.Component<Props, State> {
         if (userObj.betTracks[type] > 0) {
           betItem.bet = userObj.betTracks[type];
           betItem.name = nameObj;
+          betItem.system = userObj.system;
           newData[type].dataList.unshift(betItem);
           newData[type].total += userObj.betTracks[type];
         }
@@ -245,7 +246,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
     const result = [];
     const _this = this;
-    TYPES.forEach(function (type, i) {
+    TYPES.forEach((type, i) => {
       result.push(
         <Col className="p-1" key={i}>
           <BetList

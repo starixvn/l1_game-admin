@@ -135,7 +135,13 @@ export default class ShakeThePlate extends React.Component<
         if (betTracks[key]) {
           currentData[key].total += betTracks[key];
           currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
+            new BetItem(
+              data[user].name,
+              betTracks[key],
+              null,
+              null,
+              data[user].system
+            )
           );
         }
       });
