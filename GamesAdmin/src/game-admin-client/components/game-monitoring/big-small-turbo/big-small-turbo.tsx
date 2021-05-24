@@ -19,6 +19,7 @@ export default class BigSmallTurbo extends React.Component<
         type="taixiu"
         turbo={true}
         onMessage={this.props.onMessage}
+        enableFilter={true}
       />
     );
   }

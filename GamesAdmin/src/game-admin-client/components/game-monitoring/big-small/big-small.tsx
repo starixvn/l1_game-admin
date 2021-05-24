@@ -23,6 +23,7 @@ export default class BigSmall extends React.Component<
         type="taixiu"
         turbo={false}
         onMessage={this.props.onMessage}
+        enableFilter={true}
       />
     );
   }
