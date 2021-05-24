@@ -182,7 +182,7 @@ export default class DragonTiger extends React.Component<Props, State> {
     const winer =
       this.state.gameState == GameState.waiting ? this.getWiner() : "";
 
-    if (!this.systemFilter) {
+    if (this.systemFilter) {
       TYPES.forEach((type) => {
         data[type].total = getTotalBetOnSystem(
           data[type].dataList,
