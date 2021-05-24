@@ -239,7 +239,7 @@ export default class FishPrawnCrab extends React.Component<
     const { betList, roundNumber, time, result, winners, gameState } =
       this.state;
 
-    !this.systemFilter &&
+    this.systemFilter &&
       CHOICES.forEach((choice) => {
         betList[choice].total = getTotalBetOnSystem(
           betList[choice].dataList,
