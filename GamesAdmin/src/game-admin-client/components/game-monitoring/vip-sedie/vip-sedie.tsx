@@ -163,7 +163,7 @@ export default class VipSeDie extends React.Component<
     const { betList, roundNumber, time, result, gameState, settlementResult } =
       this.state;
 
-    if (!this.systemFilter) {
+    if (this.systemFilter) {
       CHOICES.forEach((choice) => {
         betList[choice].total = getTotalBetOnSystem(
           betList[choice].dataList,

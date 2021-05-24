@@ -234,7 +234,7 @@ export default class BigSmallBase extends React.Component<
       winner = this.getWiner();
     }
 
-    if (this.systemFilter !== SystemId.None) {
+    if (this.systemFilter) {
       betList.firstBetType.total = getTotalBetOnSystem(
         betList.firstBetType.dataList,
         this.systemFilter
