@@ -324,14 +324,20 @@ export default class BigSmallBase extends React.Component<
   }
 
   render() {
+    const gameTemplateProps = {
+      renderBetList: this.renderBetList(),
+      renderMonitor: this.renderMonitor(),
+      disabled: this.state.currentState == GameState.disabled,
+    };
+
+    this.props.enableFilter &&
+      Object.assign(gameTemplateProps, {
+        onUpdateFilter: (value: SystemId) => (this.systemFilter = value),
+      });
+
     return (
       <div className={styles.bigsmallturbo}>
-        <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
-          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
-          disabled={this.state.currentState == GameState.disabled}
-        />
+        <GameTemplate {...gameTemplateProps} />
       </div>
     );
   }
