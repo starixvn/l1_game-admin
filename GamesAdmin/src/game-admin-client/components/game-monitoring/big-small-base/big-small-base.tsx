@@ -171,7 +171,8 @@ export default class BigSmallBase extends React.Component<
               betTracks[key],
               null,
               null,
-              data[user].system
+              data[user].system,
+              currency
             )
           );
         }
@@ -237,12 +238,14 @@ export default class BigSmallBase extends React.Component<
     if (this.systemFilter) {
       betList.firstBetType.total = getTotalBetOnSystem(
         betList.firstBetType.dataList,
-        this.systemFilter
+        this.systemFilter,
+        true
       );
 
       betList.secondBetType.total = getTotalBetOnSystem(
         betList.secondBetType.dataList,
-        this.systemFilter
+        this.systemFilter,
+        true
       );
     }
 

@@ -10,18 +10,21 @@ export default class BetItem {
   time: string;
   choice: string;
   system: SystemId;
+  currency: string;
 
   constructor(
     name: string = "",
     bet: number = 0,
     time: string = "",
     choice = "",
-    system = SystemId.None
+    system = SystemId.None,
+    currency = ""
   ) {
     this.name = name;
     this.bet = bet;
     this.time = time;
     this.choice = choice;
     this.system = system;
+    this.currency = currency;
   }
 }

@@ -152,7 +152,6 @@ export default class ShakeThePlate extends React.Component<
 
   getResult(data) {
     const result = new Array<DiceModel>();
-
     Object.keys(data).forEach((key) => {
       result.push(new DiceModel(data[key] ? 1 : 0, DiceType.XocXoc));
     });
