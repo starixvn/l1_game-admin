@@ -6,11 +6,15 @@ export function upperFirstLetter(text: string) {
 
 export const getTotalBetOnSystem = (
   betList: Array<BetItem>,
-  systemFilter: SystemId
+  systemFilter: SystemId,
+  excludeUSS?: boolean
 ) => {
   return betList.reduce(
     (total, betInfo) =>
-      betInfo.system == systemFilter ? total + betInfo.bet : total,
+      betInfo.system == systemFilter &&
+      (!excludeUSS || betInfo.currency.toLocaleUpperCase() != "UUS")
+        ? total + betInfo.bet
+        : total,
     0
   );
 };

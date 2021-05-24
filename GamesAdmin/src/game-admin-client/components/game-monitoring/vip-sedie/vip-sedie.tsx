@@ -19,7 +19,7 @@ type VipSeDieProps = {
   onMessage: Function;
 };
 
-const CHOICES = ["stag", "gourd", "rooster", "fish", "crab", "prawn"];
+const CHOICES = ["even", "odd", "red4", "red3", "red2", "white3", "white4"];
 
 export default class VipSeDie extends React.Component<
   VipSeDieProps,
