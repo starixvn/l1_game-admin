@@ -123,7 +123,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
 
             CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
-            CreateMap<BlackjackCardEntity, BlackjackCard>();
+            CreateMap<CardEntity, BlackjackCard>();
             CreateMap<VipFishPrawnCrabRoundEntity, VipFishPrawnCrabRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))
                 .ForMember(x => x.SecondDice, opt => opt.MapFrom((source) => source.Result.SecondDice))
