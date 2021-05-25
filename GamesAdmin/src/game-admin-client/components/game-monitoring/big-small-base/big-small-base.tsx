@@ -70,6 +70,7 @@ export default class BigSmallBase extends React.Component<
           result: new BigSmallBaseModel().result,
           isHavingResult: false,
           currentState: GameState.running,
+          roundNumber: this.state.roundNumber + 1,
           time: {
             remainingTime: totalRemainingTime,
           },
