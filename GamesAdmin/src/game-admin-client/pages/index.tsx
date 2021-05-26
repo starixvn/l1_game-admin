@@ -31,23 +31,7 @@ type State = {
 };
 
 const NewSocketGameIds = [
-  1,
-  2,
-  3,
-  4,
-  6,
-  7,
-  8,
-  9,
-  10,
-  21,
-  22,
-  24,
-  25,
-  26,
-  27,
-  28,
-  31
+  1, 2, 3, 4, 6, 7, 8, 9, 10, 21, 22, 24, 25, 26, 27, 28, 31, 35,
 ];
 
 export class Home extends React.Component<Props, State> {
@@ -191,7 +175,7 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_LOTTERY_SERVER_PROXY_ROUTE
               : Cookies.get("lottery-server-endpoint-route"),
         };
-        case gameNameMapper.kenopromax:
+      case gameNameMapper.kenopromax:
         return {
           endpoint:
             process.env.NEXT_PUBLIC_ENV === "local"
@@ -295,6 +279,17 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_BACCARAT_SERVER_PROXY_ROUTE
               : Cookies.get("baccarat-server-endpoint-route"),
         };
+      case gameNameMapper.threecards:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_THREE_CARDS_SERVER_ENDPOINT
+              : Cookies.get("three-cards-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_THREE_CARDS_SERVER_PROXY_ROUTE
+              : Cookies.get("three-cards-server-endpoint-route"),
+        };
       default:
         return {
           endpoint:
@@ -331,13 +326,8 @@ export class Home extends React.Component<Props, State> {
 
   renderGameMonitoringComponent(info: GameMonitoringInfo) {
     const { gameId, socket } = this.state;
-    const {
-      onMessage,
-      selector,
-      initialMessage,
-      endMessage,
-      generateMessage,
-    } = info;
+    const { onMessage, selector, initialMessage, endMessage, generateMessage } =
+      info;
     const key = `game-monitoring:${gameId}`;
     const onStopReceiveMessage = () => {
       socket.send(endMessage);

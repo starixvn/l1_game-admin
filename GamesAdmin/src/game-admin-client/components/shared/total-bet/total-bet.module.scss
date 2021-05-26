@@ -415,3 +415,9 @@
 @include totalBet("parlay4", "white", "Parlay 4");
 @include totalBet("others", "white", "Others");
 @include totalBet("turnover", "white", "Turnover");
+@include totalBet("red", "red", "Red");
+@include totalBet("black", "black", "Black");
+@include totalBet("diamonds", "red", "♦️");
+@include totalBet("hearts", "red", "♥️");
+@include totalBet("spades", "black", "♠️");
+@include totalBet("clubs", "black", "♣️");

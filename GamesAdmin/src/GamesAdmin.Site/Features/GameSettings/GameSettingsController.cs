@@ -212,6 +212,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("baccarat-server-endpoint-route", appSettings.GameServers.Baccarat.SocketRoute);
             HttpContext.Response.Cookies.Append("lottery-server-endpoint", appSettings.GameServers.Lottery.Socket);
             HttpContext.Response.Cookies.Append("lottery-server-endpoint-route", appSettings.GameServers.Lottery.SocketRoute);
+            HttpContext.Response.Cookies.Append("three-cards-server-endpoint", appSettings.GameServers.ThreeCards.Socket);
+            HttpContext.Response.Cookies.Append("three-cards-server-endpoint-route", appSettings.GameServers.ThreeCards.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
