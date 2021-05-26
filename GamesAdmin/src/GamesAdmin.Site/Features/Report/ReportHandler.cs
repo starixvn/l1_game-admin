@@ -43,7 +43,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
-        IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>
+        IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
+        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>
 
     {
         private readonly IReportService reportService;
@@ -619,6 +620,23 @@ namespace GamesAdmin.Site.Features.ClientSites
                     return betViewModel;
                 }),
                 Odds = mapper.Map<LotteryOddsViewModel>(result.Odds),
+            };
+        }
+
+        public async Task<ThreeCardsReportResultViewModel> Handle(GetThreeCardsReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetThreeCardsBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new ThreeCardsReportResultViewModel
+            {
+                RoundResult = mapper.Map<ThreeCardsRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<ThreeCardsRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
             };
         }
     }

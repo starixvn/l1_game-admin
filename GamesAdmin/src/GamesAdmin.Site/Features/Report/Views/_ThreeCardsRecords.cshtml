@@ -1,0 +1,124 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model ThreeCardsReportResultViewModel
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered  table-hover table-se-die" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Results</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center threecards-result">
+                            <div class="cards">
+                                @foreach (var card in Model.RoundResult.Result)
+                                {
+                                    <div class="card card-type-@card.Suit">
+                                        <span>@card.Rank</span>
+                                        <img class="img" src="~/images/card_@(card.Suit).png" />
+                                    </div>
+                                }
+                            </div>
+
+                        </td>
+                        <td class="text-center">
+                            @(Model.RoundResult.SettlementResult.Red ? "Red" : "Black")
+                            @if (Model.RoundResult.SettlementResult.Diamonds)
+                            {
+                                @(", Diamonds")
+                            }
+                            @if (Model.RoundResult.SettlementResult.Hearts)
+                            {
+                                @(", Hearts")
+                            }
+                            @if (Model.RoundResult.SettlementResult.Spades)
+                            {
+                                @(", Spades")
+                            }
+                            @if (Model.RoundResult.SettlementResult.Clubs)
+                            {
+                                @(", Clubs")
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th rowspan="2">Round ID</th>
+                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Username</th>
+                    <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th colspan="6" class="col-number">Stake</th>
+                    <th rowspan="2" class="col-number">Win</th>
+                </tr>
+
+                <tr>
+                    <th>Red</th>
+                    <th>Black</th>
+                    <th>Diamonds</th>
+                    <th>Hearts</th>
+                    <th>Spades</th>
+                    <th>Clubs</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @Model.RoundResult.Number
+                        </td>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Red)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Black)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Diamonds)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Hearts)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Spades)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Clubs)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="11">No data</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Red))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Black))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Diamonds))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Hearts))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Spades))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Clubs))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

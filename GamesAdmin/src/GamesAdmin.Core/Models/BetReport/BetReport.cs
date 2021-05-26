@@ -63,4 +63,8 @@ namespace GamesAdmin.Core.Models
     public class LotteryBetReport : BetReport<LotteryRoundResult, LotteryBetRecord>
     {
     }
+
+    public class ThreeCardsBetReport : BetReport<ThreeCardsRoundResult, ThreeCardsBetRecord>
+    {
+    }
 }

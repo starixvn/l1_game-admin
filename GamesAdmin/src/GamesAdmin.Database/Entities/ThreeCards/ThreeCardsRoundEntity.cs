@@ -8,10 +8,10 @@ namespace GamesAdmin.Database.Entities
     public class ThreeCardsRoundEntity : BaseRoundEntity
     {
         public IEnumerable<CardEntity> Result { get; set; }
-        public ThreeCardsSettlementResult SettlementResult { get; set; }
+        public ThreeCardsSettlementResultEntity SettlementResult { get; set; }
     }
 
-    public class ThreeCardsSettlementResult
+    public class ThreeCardsSettlementResultEntity
     {
         public bool Red { get; set; }
         public bool Black { get; set; }

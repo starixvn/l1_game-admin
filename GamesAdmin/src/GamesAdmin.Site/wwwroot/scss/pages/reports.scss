@@ -256,7 +256,7 @@
     background: url(../../images/chip_trang.png) no-repeat;
 }
 
-.blackjack-result {
+.blackjack-result, .threecards-result {
     .cards {
         .card:last-child:before {
             display: none;

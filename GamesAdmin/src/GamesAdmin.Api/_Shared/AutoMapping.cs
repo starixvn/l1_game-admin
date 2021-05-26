@@ -41,7 +41,7 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<FishPrawnCrabBetReportEntity, FishPrawnCrabBetRecord>();
 
-            CreateMap<Card, CardResult>();
+            CreateMap<Database.Entities.Card, DragonTigerCardResult>();
             CreateMap<DragonTigerRoundEntity, DragonTigerRoundResult>()
                 .ForMember(dest => dest.Dragon, opt => opt.MapFrom(src => src.Dragon ?? src.Result.Dragon))
                 .ForMember(dest => dest.Tiger, opt => opt.MapFrom(src => src.Tiger ?? src.Result.Tiger));
@@ -55,32 +55,32 @@ namespace GamesAdmin.Api._Shared
                   if (source.Player != null)
                   {
                       var mapper = context.Mapper;
-                      var result = new List<CardResult> { mapper.Map<CardResult>(source.Player.FirstCard), mapper.Map<CardResult>(source.Player.SecondCard) };
+                      var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Player.SecondCard) };
                       if (source.Player.ThirdCard != null)
                       {
-                          result.Add(mapper.Map<CardResult>(source.Player.ThirdCard));
+                          result.Add(mapper.Map<DragonTigerCardResult>(source.Player.ThirdCard));
                       }
 
                       return result;
                   }
 
-                  return Enumerable.Empty<CardResult>();
+                  return Enumerable.Empty<DragonTigerCardResult>();
               }))
               .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
               {
                   if (source.Banker != null)
                   {
                       var mapper = context.Mapper;
-                      var result = new List<CardResult> { mapper.Map<CardResult>(source.Banker.FirstCard), mapper.Map<CardResult>(source.Banker.SecondCard) };
+                      var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Banker.SecondCard) };
                       if (source.Banker.ThirdCard != null)
                       {
-                          result.Add(mapper.Map<CardResult>(source.Banker.ThirdCard));
+                          result.Add(mapper.Map<DragonTigerCardResult>(source.Banker.ThirdCard));
                       }
 
                       return result;
                   }
 
-                  return Enumerable.Empty<CardResult>();
+                  return Enumerable.Empty<DragonTigerCardResult>();
               }));
 
             CreateMap<RouletteBetReportEntity, RouletteBetRecord>();
@@ -123,7 +123,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
 
             CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
-            CreateMap<CardEntity, BlackjackCard>();
+            CreateMap<CardEntity, Core.Models.Card>();
             CreateMap<VipFishPrawnCrabRoundEntity, VipFishPrawnCrabRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))
                 .ForMember(x => x.SecondDice, opt => opt.MapFrom((source) => source.Result.SecondDice))
@@ -138,32 +138,32 @@ namespace GamesAdmin.Api._Shared
                     if (source.Result != null && source.Result.Player != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<CardResult> { mapper.Map<CardResult>(source.Result.Player.FirstCard), mapper.Map<CardResult>(source.Result.Player.SecondCard) };
+                        var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard) };
                         if (source.Result.Player.ThirdCard != null)
                         {
-                            result.Add(mapper.Map<CardResult>(source.Result.Player.ThirdCard));
+                            result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Player.ThirdCard));
                         }
 
                         return result;
                     }
 
-                    return Enumerable.Empty<CardResult>();
+                    return Enumerable.Empty<DragonTigerCardResult>();
                 }))
                 .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
                 {
                     if (source.Result != null && source.Result.Banker != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<CardResult> { mapper.Map<CardResult>(source.Result.Banker.FirstCard), mapper.Map<CardResult>(source.Result.Banker.SecondCard) };
+                        var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard) };
                         if (source.Result.Banker.ThirdCard != null)
                         {
-                            result.Add(mapper.Map<CardResult>(source.Result.Banker.ThirdCard));
+                            result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Banker.ThirdCard));
                         }
 
                         return result;
                     }
 
-                    return Enumerable.Empty<CardResult>();
+                    return Enumerable.Empty<DragonTigerCardResult>();
                 }));
             CreateMap<SicBoBetReportEntity, SicBoBetRecord>();
             CreateMap<SicBoRoundEntity, SicBoRoundResult>()
@@ -255,6 +255,10 @@ namespace GamesAdmin.Api._Shared
             CreateMap<LotteryBetEntity, LotteryBetHistoryRecord>();
             CreateMap<LotteryOddsEntity, LotteryOdds>();
             CreateMap<LotteryChoicesEntity, LotteryChoices>();
+
+            CreateMap<ThreeCardsRoundEntity, ThreeCardsRoundResult>();
+            CreateMap<ThreeCardsSettlementResultEntity, ThreeCardsSettlementResult>();
+            CreateMap<ThreeCardsBetReportEntity, ThreeCardsBetRecord>();
         }
     }
 }
