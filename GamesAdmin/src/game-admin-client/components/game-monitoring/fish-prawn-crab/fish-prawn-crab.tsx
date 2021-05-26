@@ -7,7 +7,7 @@ import { Col, Container, Row, Modal } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
-import BetItem from "../../common/model/BetItem";
+import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceType from "../../common/model/DiceType";
 import DiceModel from "../../common/model/DiceModel";
@@ -18,6 +18,7 @@ import {
   FishPrawnCrabBetList,
 } from "../../common/model/FishPrawnCrabModel";
 import { Notice } from "../../shared/notice/notice";
+import { getTotalBetOnSystem } from "../../util/util";
 
 type FishPrawnCrabProps = {
   onMessage: Function;
@@ -42,11 +43,14 @@ export default class FishPrawnCrab extends React.Component<
 > {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
+  private systemFilter: SystemId;
+
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
     this.state = new FishPrawnCrabModel();
+    this.systemFilter = SystemId.None;
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -151,12 +155,12 @@ export default class FishPrawnCrab extends React.Component<
     const betInfo = new FishPrawnCrabBetList();
 
     Object.keys(data).forEach(function (userName) {
-      const { name, betTracks } = data[userName];
+      const { name, betTracks, system } = data[userName];
 
       CHOICES.forEach((choice) => {
         if (betTracks[choice] > 0) {
           betInfo[choice].dataList.unshift(
-            new BetItem(name, betTracks[choice])
+            new BetItem(name, betTracks[choice], null, null, system)
           );
 
           betInfo[choice].total += betTracks[choice];
@@ -232,14 +236,16 @@ export default class FishPrawnCrab extends React.Component<
   }
 
   renderMonitor() {
-    const {
-      betList,
-      roundNumber,
-      time,
-      result,
-      winners,
-      gameState,
-    } = this.state;
+    const { betList, roundNumber, time, result, winners, gameState } =
+      this.state;
+
+    this.systemFilter &&
+      CHOICES.forEach((choice) => {
+        betList[choice].total = getTotalBetOnSystem(
+          betList[choice].dataList,
+          this.systemFilter
+        );
+      });
 
     return (
       <Container>
@@ -303,58 +309,19 @@ export default class FishPrawnCrab extends React.Component<
   renderBetList() {
     const { betList, winners } = this.state;
 
-    return (
-      <React.Fragment>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            type="simple"
-            dataList={betList.stag.dataList}
-            titles={[this.renderBetListBau(FishPrawnCrabDice.stag)]}
-            isWin={winners[FishPrawnCrabDice.stag]}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            type="simple"
-            dataList={betList.gourd.dataList}
-            titles={[this.renderBetListBau(FishPrawnCrabDice.gourd)]}
-            isWin={winners[FishPrawnCrabDice.gourd]}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            type="simple"
-            dataList={betList.rooster.dataList}
-            titles={[this.renderBetListBau(FishPrawnCrabDice.rooster)]}
-            isWin={winners[FishPrawnCrabDice.rooster]}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            type="simple"
-            dataList={betList.fish.dataList}
-            titles={[this.renderBetListBau(FishPrawnCrabDice.fish)]}
-            isWin={winners[FishPrawnCrabDice.fish]}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            type="simple"
-            dataList={betList.crab.dataList}
-            titles={[this.renderBetListBau(FishPrawnCrabDice.crab)]}
-            isWin={winners[FishPrawnCrabDice.crab]}
-          />
-        </Col>
-        <Col className="col-4 col-lg-2">
-          <BetList
-            type="simple"
-            dataList={betList.prawn.dataList}
-            titles={[this.renderBetListBau(FishPrawnCrabDice.prawn)]}
-            isWin={winners[FishPrawnCrabDice.prawn]}
-          />
-        </Col>
-      </React.Fragment>
-    );
+    const renderBetList = CHOICES.map((choice) => (
+      <Col className="col-4 col-lg-2">
+        <BetList
+          type="simple"
+          dataList={betList[choice].dataList}
+          titles={[this.renderBetListBau(FishPrawnCrabDice[choice])]}
+          isWin={winners[FishPrawnCrabDice[choice]]}
+          systemFilter={this.systemFilter}
+        />
+      </Col>
+    ));
+
+    return <React.Fragment>{renderBetList}</React.Fragment>;
   }
 
   renderBetListBau(diceValue) {
@@ -416,6 +383,7 @@ export default class FishPrawnCrab extends React.Component<
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
           disabled={this.state.gameState == GameState.disabled}
+          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
         />
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

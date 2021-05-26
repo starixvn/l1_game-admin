@@ -16,6 +16,17 @@
   border-radius: 20px;
   padding: 15px;
 
+  .filter {
+    position: absolute;
+    top: 35px;
+    right: 35px;
+
+    select {
+      border-radius: 5px;
+      font-weight: 600;
+    }
+  }
+
   @media screen and (max-width: 650px) {
     padding: 10px;
   }
