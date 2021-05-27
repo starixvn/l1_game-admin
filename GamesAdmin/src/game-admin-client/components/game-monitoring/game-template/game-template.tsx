@@ -32,8 +32,8 @@ export default function GameTemplate(props: Props) {
               onChange={(event) => onChangeFilter(event)}
             >
               <option value={SystemId.None}>All</option>
-              <option value={SystemId.SC}>Cocos</option>
-              <option value={SystemId.SM}>Mobile</option>
+              <option value={SystemId.SC}>SC</option>
+              <option value={SystemId.SM}>SM</option>
             </select>
           </div>
         )}
