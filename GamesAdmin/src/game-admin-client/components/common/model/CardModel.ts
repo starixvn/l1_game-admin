@@ -7,6 +7,5 @@ export default class CardModel {
   constructor() {
     this.value = -1;
     this.suit = -1;
-    this.key = "";
   }
 }
