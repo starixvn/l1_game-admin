@@ -12,19 +12,30 @@ import DragonTigerModel from "../../common/model/DragonTigerModel";
 import BetItem, { SystemId } from "../../common/model/BetItem";
 import { getTotalBetOnSystem, upperFirstLetter } from "../../util/util";
 import { GameState } from "../../shared/common/GameState";
+import DragonTigerCardResult from "./dragon-tiger-card-result";
+import DeskOfCards from "../baccarat//desk-of-cards";
 
 type Props = {
   onMessage: Function;
+  isProduction: boolean;
+  sendMessage: Function;
 };
 
 type State = {
   data: DragonTigerModel;
   gameState: number;
+  isShowDeskOfCards: boolean;
+  selectedCard: string;
 };
 
 const TYPES = ["dragon", "tie", "tiger"];
 const TOTAL_TIME = 30;
 const WAITING_TIME = 5;
+
+enum CardResultMapping {
+  dragon,
+  tiger,
+}
 
 export default class DragonTiger extends React.Component<Props, State> {
   private isFirstLoad: boolean;
@@ -39,7 +50,13 @@ export default class DragonTiger extends React.Component<Props, State> {
     this.state = {
       data: new DragonTigerModel(),
       gameState: 0,
+      isShowDeskOfCards: false,
+      selectedCard: "",
     };
+
+    this.showDeskOfCards = this.showDeskOfCards.bind(this);
+    this.updaterDeskOfCardsToggle = this.updaterDeskOfCardsToggle.bind(this);
+    this.onPickCard = this.onPickCard.bind(this);
   }
 
   componentDidMount() {
@@ -166,6 +183,20 @@ export default class DragonTiger extends React.Component<Props, State> {
       });
     }, time * 1000);
   }
+  updaterDeskOfCardsToggle() {
+    this.setState({
+      isShowDeskOfCards: !this.state.isShowDeskOfCards,
+    });
+  }
+
+  showDeskOfCards(selectedCard: string) {
+    const newData = this.state.data;
+    this.setState({
+      data: newData,
+      isShowDeskOfCards: true,
+      selectedCard: selectedCard,
+    });
+  }
 
   getWiner() {
     const { result } = this.state.data;
@@ -179,6 +210,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   renderMonitor() {
     const { gameState, data } = this.state;
+    const { result } = data;
     const winer =
       this.state.gameState == GameState.waiting ? this.getWiner() : "";
 
@@ -194,15 +226,38 @@ export default class DragonTiger extends React.Component<Props, State> {
     return (
       <Container className={styles["dragonTiger-container"]}>
         <Row>
-          <div className={styles.counter}>
-            <div className={styles.title}>Dragon Tiger</div>
-            <TimeCounter
-              remainingTime={data.time.remainingTime}
-              gameState={gameState}
-              key={gameState}
-            />
-            <RoundNum roundNumber={data.roundNumber} />
-          </div>
+          <Col className="col-12 col-lg-4">
+            <Row>
+              <div className={styles.counter}>
+                <div className={styles.title}>Dragon Tiger</div>
+                <TimeCounter
+                  remainingTime={data.time.remainingTime}
+                  gameState={gameState}
+                  key={gameState}
+                />
+                <RoundNum roundNumber={data.roundNumber} />
+              </div>
+            </Row>
+            <Row>
+              <Col align="center" className="col-12 col-xl-6">
+                <div className={styles.title}>Dragon</div>
+                <DragonTigerCardResult
+                  cardResult={result[0]}
+                  onCardClick={this.showDeskOfCards}
+                  selectedCard="dragon"
+                />
+              </Col>
+              <Col align="center" className="col-12 col-xl-6">
+                <div className={styles.title}>Tiger</div>
+                <DragonTigerCardResult
+                  cardResult={result[1]}
+                  onCardClick={this.showDeskOfCards}
+                  selectedCard="tiger"
+                />
+              </Col>
+            </Row>
+          </Col>
+
           <Col align="center">
             <TotalBet
               type="dragon"
@@ -267,6 +322,40 @@ export default class DragonTiger extends React.Component<Props, State> {
     );
   }
 
+  onPickCard(card: number, type: number) {
+    const { gameState, selectedCard } = this.state;
+    const { result, roundNumber } = this.state.data;
+    const newData = this.state.data;
+    console.log(newData);
+    console.log(
+      CardResultMapping[selectedCard],
+      "CardResultMapping[selectedCard]"
+    );
+    let cardResult = new CardResult();
+    cardResult.card = card;
+    cardResult.type = type;
+    result[CardResultMapping[selectedCard]] = cardResult;
+
+    newData.result = result;
+    console.log(newData);
+    this.setState({
+      data: newData,
+      isShowDeskOfCards: false,
+    });
+
+    const message = {
+      set_result: {
+        result: {
+          dragon: result[CardResultMapping.dragon],
+          tiger: result[CardResultMapping.tiger],
+        },
+        roundId: gameState == GameState.running ? roundNumber : roundNumber + 1,
+      },
+    };
+
+    this.props.sendMessage(message);
+  }
+
   renderTitle(title) {
     return <div>{title}</div>;
   }
@@ -280,6 +369,13 @@ export default class DragonTiger extends React.Component<Props, State> {
           disabled={this.state.gameState == GameState.disabled}
           onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
         />
+        {!this.props.isProduction && (
+          <DeskOfCards
+            modal={this.state.isShowDeskOfCards}
+            toggle={this.updaterDeskOfCardsToggle}
+            onPickCard={this.onPickCard}
+          />
+        )}
       </div>
     );
   }
