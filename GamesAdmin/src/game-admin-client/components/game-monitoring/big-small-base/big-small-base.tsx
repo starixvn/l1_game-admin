@@ -40,7 +40,7 @@ export default class BigSmallBase extends React.Component<
   BigSmallBaseModel
 > {
   private isFirstLoad: boolean;
-  private timeout: number;
+  private timeout: NodeJS.Timeout;
   private systemFilter: SystemId;
 
   constructor(props) {
@@ -220,7 +220,6 @@ export default class BigSmallBase extends React.Component<
   }
 
   openModal(id) {
-    debugger;
     this.setState({
       isOpenControlResultModal: true,
       currentDiceNumber: +id.split("-")[1],

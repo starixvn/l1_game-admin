@@ -172,12 +172,15 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
     const { result } = this.state;
     result[currentDiceNumber] = new DiceModel(value, DiceType.TaiXiu);
     const newResult = {};
-    result.forEach((dice, index) => newResult[`dice${index + 1}`] = dice.value === -1 ? 1 : dice.value);
+    result.forEach(
+      (dice, index) =>
+        (newResult[`dice${index + 1}`] = dice.value === -1 ? 1 : dice.value)
+    );
 
     this.props.sendMessage({
       set_result: {
         roundId: this.state.roundNumber,
-        result: newResult
+        result: newResult,
       },
     });
 
@@ -225,14 +228,8 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
   }
 
   renderMonitor() {
-    const {
-      betList,
-      roundNumber,
-      time,
-      result,
-      gameState,
-      settlementResult,
-    } = this.state;
+    const { betList, roundNumber, time, result, gameState, settlementResult } =
+      this.state;
 
     return (
       <Container>
@@ -383,7 +380,6 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
   }
 
   render() {
-    debugger;
     return (
       <div className={styles["-sic-bo"]}>
         {!this.props.isProduction && this.renderGameControl()}
