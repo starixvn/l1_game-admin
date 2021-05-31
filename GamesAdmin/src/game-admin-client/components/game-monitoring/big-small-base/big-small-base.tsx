@@ -5,7 +5,7 @@ import DiceResult from "../../shared/dice-result/dice-result";
 import TotalBet from "../../shared/total-bet/total-bet";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Modal } from "reactstrap";
 import TotalUser from "../../shared/total-user/total-user";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceModel from "../../common/model/DiceModel";
@@ -15,15 +15,18 @@ import BetItem, { SystemId } from "../../common/model/BetItem";
 import { types, gameMapping } from "../game-monitoring-config";
 import { GameState } from "../../shared/common/GameState";
 import { getTotalBetOnSystem } from "../../util/util";
+import Dice from "../../shared/dice/dice";
 
 type BigSmallProps = {
   turbo: boolean;
   type: string;
   onMessage: Function;
   enableFilter?: boolean;
+  sendMessage: Function;
 };
 
 const optionChoice = ["big", "even"];
+const DiceValue = [1, 2, 3, 4, 5, 6];
 
 const betListMapping = (flag: boolean) => {
   const betListLabels = ["firstBetType", "secondBetType"];
@@ -37,7 +40,7 @@ export default class BigSmallBase extends React.Component<
   BigSmallBaseModel
 > {
   private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+  private timeout: number;
   private systemFilter: SystemId;
 
   constructor(props) {
@@ -210,6 +213,81 @@ export default class BigSmallBase extends React.Component<
     return winner;
   }
 
+  toggleModal() {
+    this.setState({
+      isOpenControlResultModal: !this.state.isOpenControlResultModal,
+    });
+  }
+
+  openModal(id) {
+    debugger;
+    this.setState({
+      isOpenControlResultModal: true,
+      currentDiceNumber: +id.split("-")[1],
+    });
+  }
+
+  handleChangeResult(id, value) {
+    const { currentDiceNumber, result } = this.state;
+    const gameResult = this.state.nextRoundResult;
+
+    const newResult = result.map((diceInfo, index) => {
+      if (index === currentDiceNumber || diceInfo.value === -1) {
+        diceInfo.value = value;
+        gameResult[`dice${index + 1}`] = value;
+      }
+
+      return diceInfo;
+    });
+
+    this.setState({
+      result: newResult,
+      isOpenControlResultModal: false,
+    });
+
+    if (this.state.currentState == GameState.waiting) {
+      this.setState({
+        isHandleNextRoundResult: true,
+        nextRoundResult: gameResult,
+      });
+    }
+
+    this.props.sendMessage({
+      set_result: {
+        result: gameResult,
+        roundId:
+          this.state.currentState == GameState.running
+            ? this.state.roundNumber
+            : this.state.roundNumber + 1,
+      },
+    });
+  }
+
+  renderGameControl() {
+    const { isOpenControlResultModal } = this.state;
+
+    return (
+      <Modal
+        isOpen={isOpenControlResultModal}
+        toggle={() => this.toggleModal()}
+        className={styles["game-control-panel"]}
+      >
+        <Row>
+          {DiceValue.map((diceValue) => (
+            <Dice
+              key={`dice-select-${diceValue}`}
+              diceModel={new DiceModel(diceValue, DiceType.TaiXiu)}
+              isSmall={false}
+              onClickHandle={(id: string, value: number) =>
+                this.handleChangeResult(id, value)
+              }
+            />
+          ))}
+        </Row>
+      </Modal>
+    );
+  }
+
   renderMonitor() {
     const { turbo, type } = this.props;
     const {
@@ -253,7 +331,7 @@ export default class BigSmallBase extends React.Component<
     return (
       <Container>
         <Row>
-          <span className={styles.turbo}>
+          <span className={styles["turbo"]}>
             <div>{gameName}</div>
           </span>
           <Col align="center" className={styles["flex-col"]}>
@@ -273,7 +351,10 @@ export default class BigSmallBase extends React.Component<
               />
               <RoundNum roundNumber={roundNumber} />
             </div>
-            <DiceResult dices={result} />
+            <DiceResult
+              dices={result}
+              diceClickHandle={(id: string) => this.openModal(id)}
+            />
           </Col>
           <Col align="center" className={styles["flex-col"]}>
             <TotalBet
@@ -340,7 +421,8 @@ export default class BigSmallBase extends React.Component<
       });
 
     return (
-      <div className={styles.bigsmallturbo}>
+      <div className={styles["bigsmallturbo"]}>
+        {this.state.isOpenControlResultModal && this.renderGameControl()}
         <GameTemplate {...gameTemplateProps} />
       </div>
     );
