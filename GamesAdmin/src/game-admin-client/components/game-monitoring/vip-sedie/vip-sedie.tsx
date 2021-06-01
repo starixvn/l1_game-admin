@@ -265,7 +265,11 @@ export default class VipSeDie extends React.Component<
             <div>
               <div className={styles.title}>VIP Se Die</div>
               <Row className={styles.result}>
-                <Dice diceModel={result[0]} isSmall={false} />
+                <Dice
+                  diceModel={result[0]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(0)}
+                />
                 <Dice
                   diceModel={result[1]}
                   isSmall={false}
