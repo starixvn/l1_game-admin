@@ -31,7 +31,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                 ClientId = x.ClientId,
                 SiteId = x.SiteId,
                 GameClientUrl = x.GameClientUrl,
-                GameMobiClientUrl = x.GameMobiClientUrl
+                GameMobiClientUrl = x.GameMobiClientUrl,
+                ValidCurrencies = x.ValidCurrencies != null ? string.Join(";", x.ValidCurrencies) : string.Empty
             });
         }
 
@@ -44,7 +45,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                 ClientId = clientSite.ClientId,
                 SiteId = clientSite.SiteId,
                 GameClientUrl = clientSite.GameClientUrl,
-                GameMobiClientUrl = clientSite.GameMobiClientUrl
+                GameMobiClientUrl = clientSite.GameMobiClientUrl,
+                ValidCurrencies = clientSite.ValidCurrencies != null ? string.Join(";", clientSite.ValidCurrencies) : string.Empty
             };
         }
 
