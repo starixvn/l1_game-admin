@@ -52,7 +52,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     SiteId = viewModel.SiteId,
                     GameClientUrl = viewModel.GameClientUrl,
                     GameMobiClientUrl = viewModel.GameMobiClientUrl,
-                    ValidCurrencies = viewModel.ValidCurrencies.Split(";").Select(x => x.Trim())
+                    ValidCurrencies = viewModel.ValidCurrencies.Split(";").Select(x => x.Trim().ToUpperInvariant())
                 }));
 
                 return RedirectToAction("Index");
