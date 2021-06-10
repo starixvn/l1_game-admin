@@ -3,7 +3,7 @@ import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, CardLink } from "reactstrap";
 import RoundNum from "../../shared/round-num/round-num";
 import DragonTigerResult from "../../shared/dragon-tiger-result/dragon-tiger-result";
 import styles from "./dragon-tiger.module.scss";
@@ -12,19 +12,29 @@ import DragonTigerModel from "../../common/model/DragonTigerModel";
 import BetItem, { SystemId } from "../../common/model/BetItem";
 import { getTotalBetOnSystem, upperFirstLetter } from "../../util/util";
 import { GameState } from "../../shared/common/GameState";
+import DeskOfCards from "../baccarat//desk-of-cards";
 
 type Props = {
   onMessage: Function;
+  isProduction: boolean;
+  sendMessage: Function;
 };
 
 type State = {
   data: DragonTigerModel;
   gameState: number;
+  isShowDeskOfCards: boolean;
+  selectedCard: string;
 };
 
 const TYPES = ["dragon", "tie", "tiger"];
 const TOTAL_TIME = 30;
 const WAITING_TIME = 5;
+
+enum CardResultMapping {
+  dragon,
+  tiger,
+}
 
 export default class DragonTiger extends React.Component<Props, State> {
   private isFirstLoad: boolean;
@@ -39,7 +49,13 @@ export default class DragonTiger extends React.Component<Props, State> {
     this.state = {
       data: new DragonTigerModel(),
       gameState: 0,
+      isShowDeskOfCards: false,
+      selectedCard: "",
     };
+
+    this.showDeskOfCards = this.showDeskOfCards.bind(this);
+    this.updaterDeskOfCardsToggle = this.updaterDeskOfCardsToggle.bind(this);
+    this.onPickCard = this.onPickCard.bind(this);
   }
 
   componentDidMount() {
@@ -77,6 +93,7 @@ export default class DragonTiger extends React.Component<Props, State> {
     const newData = new DragonTigerModel();
     newData.roundNumber = this.state.data.roundNumber;
     newData.time.remainingTime = this.state.data.time.remainingTime;
+    newData.result = this.state.data.result;
 
     Object.keys(message.inGame).forEach((key) => {
       const userObj = message.inGame[key];
@@ -160,11 +177,24 @@ export default class DragonTiger extends React.Component<Props, State> {
     this.timeOut = setTimeout(() => {
       newData.time.remainingTime = TOTAL_TIME;
       newData.roundNumber += 1;
+      newData.result = [new CardResult(), new CardResult()];
       this.setState({
         data: newData,
         gameState: GameState.running,
       });
     }, time * 1000);
+  }
+  updaterDeskOfCardsToggle() {
+    this.setState({
+      isShowDeskOfCards: !this.state.isShowDeskOfCards,
+    });
+  }
+
+  showDeskOfCards(selectedCard: string) {
+    this.setState({
+      isShowDeskOfCards: true,
+      selectedCard: selectedCard,
+    });
   }
 
   getWiner() {
@@ -179,6 +209,7 @@ export default class DragonTiger extends React.Component<Props, State> {
 
   renderMonitor() {
     const { gameState, data } = this.state;
+    const { result } = data;
     const winer =
       this.state.gameState == GameState.waiting ? this.getWiner() : "";
 
@@ -194,15 +225,20 @@ export default class DragonTiger extends React.Component<Props, State> {
     return (
       <Container className={styles["dragonTiger-container"]}>
         <Row>
-          <div className={styles.counter}>
-            <div className={styles.title}>Dragon Tiger</div>
-            <TimeCounter
-              remainingTime={data.time.remainingTime}
-              gameState={gameState}
-              key={gameState}
-            />
-            <RoundNum roundNumber={data.roundNumber} />
-          </div>
+          <Col className="col-12 col-lg-4">
+            <Row>
+              <div className={styles.counter}>
+                <div className={styles.title}>Dragon Tiger</div>
+                <TimeCounter
+                  remainingTime={data.time.remainingTime}
+                  gameState={gameState}
+                  key={gameState}
+                />
+                <RoundNum roundNumber={data.roundNumber} />
+              </div>
+            </Row>
+          </Col>
+
           <Col align="center">
             <TotalBet
               type="dragon"
@@ -214,7 +250,10 @@ export default class DragonTiger extends React.Component<Props, State> {
           <Col align="center">
             <Row>
               <Col>
-                <DragonTigerResult result={data.result} />
+                <DragonTigerResult
+                  result={result}
+                  onClickCard={this.showDeskOfCards}
+                />
               </Col>
             </Row>
             <Row>
@@ -267,6 +306,40 @@ export default class DragonTiger extends React.Component<Props, State> {
     );
   }
 
+  onPickCard(card: number, type: number) {
+    const { gameState, selectedCard } = this.state;
+    const { result, roundNumber } = this.state.data;
+    const newData = this.state.data;
+
+    const newResult = result.map((cardInfo, index) => {
+      if (CardResultMapping[selectedCard] == index || !cardInfo.card) {
+        cardInfo.card = card;
+        cardInfo.type = type;
+      }
+
+      return cardInfo;
+    });
+
+    newData.result = newResult;
+
+    this.setState({
+      data: newData,
+      isShowDeskOfCards: false,
+    });
+
+    const message = {
+      set_result: {
+        result: {
+          dragon: result[CardResultMapping.dragon],
+          tiger: result[CardResultMapping.tiger],
+        },
+        roundId: gameState == GameState.running ? roundNumber : roundNumber + 1,
+      },
+    };
+
+    this.props.sendMessage(message);
+  }
+
   renderTitle(title) {
     return <div>{title}</div>;
   }
@@ -280,6 +353,13 @@ export default class DragonTiger extends React.Component<Props, State> {
           disabled={this.state.gameState == GameState.disabled}
           onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
         />
+        {!this.props.isProduction && (
+          <DeskOfCards
+            isOpen={this.state.isShowDeskOfCards}
+            toggle={this.updaterDeskOfCardsToggle}
+            onPickCard={this.onPickCard}
+          />
+        )}
       </div>
     );
   }

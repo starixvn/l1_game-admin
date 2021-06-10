@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
+﻿using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -16,5 +17,6 @@ namespace GamesAdmin.Database.Entities
         public string GameClientUrl { get; set; }
 
         public string GameMobiClientUrl { get; set; }
+        public IEnumerable<string> ValidCurrencies { get; set; }
     }
 }

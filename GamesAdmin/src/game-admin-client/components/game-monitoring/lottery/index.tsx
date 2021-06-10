@@ -191,9 +191,9 @@ export default class Lottery extends React.Component<
   calculateTotalBet() {
     const { betList } = this.state;
     return (
-      betList["4Sets"].total +
+      betList["Sets4"].total +
       betList.special.total +
-      betList["27Sets"].total +
+      betList["Sets27"].total +
       betList.head.total +
       betList.tail.total +
       betList.others.total
@@ -239,13 +239,13 @@ export default class Lottery extends React.Component<
           </Col>
           <Col align="center" className="col-4">
             <Row className="justify-content-center">
-              <TotalBet total={betList["4Sets"].total} type="4Sets" />
+              <TotalBet total={betList["Sets4"].total} type="Sets4" />
               <TotalBet total={betList.special.total} type="special" />
               <TotalBet total={betList.head.total} type="head" />
               <TotalBet total={betList.tail.total} type="tail" />
             </Row>
             <Row className="justify-content-center">
-              <TotalBet total={betList["27Sets"].total} type="27Sets" />
+              <TotalBet total={betList["Sets27"].total} type="Sets27" />
               <TotalBet total={betList.others.total} type="others" />
             </Row>
             <Row className="justify-content-center">
@@ -265,7 +265,7 @@ export default class Lottery extends React.Component<
         <Col className="col-4 col-lg">
           <BetList
             type="withchoice"
-            dataList={betList["4Sets"].dataList}
+            dataList={betList["Sets4"].dataList}
             titles={[<div className="text-center">4 Sets</div>]}
           />
         </Col>
@@ -293,7 +293,7 @@ export default class Lottery extends React.Component<
         <Col className="col-4 col-lg">
           <BetList
             type="withchoice"
-            dataList={betList["27Sets"].dataList}
+            dataList={betList["Sets27"].dataList}
             titles={[<div className="text-center">27 Sets</div>]}
           />
         </Col>

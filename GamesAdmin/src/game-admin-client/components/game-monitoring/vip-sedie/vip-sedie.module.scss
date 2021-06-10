@@ -47,19 +47,29 @@
   max-width: 50%;
 }
 
-// .col-plateeven {
-//   grid-column: 3 / span 2;
+.game-control-panel {
+  width: 200px;
 
-//   @media screen and (max-width: 640px) {
-//     grid-column: 2;
-//   }
-// }
+  & > div {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #411212;
+    border: 5px solid #660f10;
+    border-radius: 20px;
+    z-index: 99;
+    padding: 5px;
+  }
+
+  div[class^="dice_dice"] {
+    margin: 0;
+  }
+}
 
 @mixin shaketheplate($col1) {
   .#{$col1} {
-    //position: absolute;
     background: url("/game-admin/images/xocxoc/#{$col1}.png") center no-repeat;
-    //width: 100px;
     height: 24px;
     background-size: contain;
   }

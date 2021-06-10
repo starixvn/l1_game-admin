@@ -1,62 +1,65 @@
-import React from 'react';
-import styles from './card.module.scss';
-import CardModel from '../../common/model/CardModel';
+import React from "react";
+import styles from "./card.module.scss";
+import CardModel from "../../common/model/CardModel";
 
 export default function Card(props: CardModel) {
-  const { value, suit } = props;
+  const { value, suit, onClickHandle, cardName } = props;
 
-  const suitEmojis = ['♥️', '♦️', '♣️', '♠️'];
+  const suitEmojis = ["♥️", "♦️", "♣️", "♠️"];
 
-  const getCard = value => {
-    let result = '';
+  const getCard = (value) => {
+    let result = "";
 
     switch (value) {
       case 0:
-        result = 'A';
+        result = "A";
         break;
       case 12:
-        result = 'K';
+        result = "K";
         break;
       case 11:
-        result = 'Q';
+        result = "Q";
         break;
       case 10:
-        result = 'J';
+        result = "J";
         break;
       default:
         result = value + 1;
     }
 
     return result;
-  }
+  };
 
-  const getColor = suit => {
+  const getColor = (suit) => {
     if (suit === 0 || suit === 1) {
-      return 'red';
+      return "red";
     }
 
-    return 'black';
-  }
+    return "black";
+  };
 
   const renderCard = (value, suit) => {
     if (value == undefined || value == -1) {
       return (
-        <div className={styles.card}>
+        <div
+          className={styles.card}
+          onClick={() => onClickHandle && onClickHandle(cardName)}
+        >
           <div className={styles.back}></div>
         </div>
-      )
-    }
-    else {
+      );
+    } else {
       return (
-        <div className={`${styles.card} ${styles[getColor(suit)]}`}>
-          <span className={styles['card-title']}>{getCard(value)}</span>
-          <div className={styles['card-suit']}>{suitEmojis[suit]}</div>
+        <div
+          className={`${styles.card} ${styles[getColor(suit)]}`}
+          onClick={() => onClickHandle && onClickHandle(cardName)}
+        >
+          <span className={styles["card-title"]}>{getCard(value)}</span>
+          <div className={styles["card-suit"]}>{suitEmojis[suit]}</div>
         </div>
-      )
+      );
     }
-  }
+  };
 
-  return (
-    renderCard(value, suit)
-  );
+  return renderCard(value, suit);
 }

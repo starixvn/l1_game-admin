@@ -10,6 +10,8 @@ namespace GamesAdmin.Site.Features.Notifications.Requests
         public NotificationDisplayKind DisplayKind 
             => Enumeration.FromValue<NotificationDisplayKind>(DisplayKindValue.ToString());
 
-        public string Message { get; set; }
+        public string VnMessage { get; set; }
+
+        public string EnMessage { get; set; }
     }
 }

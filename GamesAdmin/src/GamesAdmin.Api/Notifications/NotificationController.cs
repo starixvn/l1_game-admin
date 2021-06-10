@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Notifications
         [Route("update")]
         public async Task<bool> Update([FromBody]UpdateRequest updateRequest)
         {
-            if (string.IsNullOrWhiteSpace(updateRequest.Message))
+            if (updateRequest.Messages.Count == 0)
             {
                 return false;
             }

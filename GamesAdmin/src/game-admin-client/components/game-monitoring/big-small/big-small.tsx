@@ -3,6 +3,7 @@ import BigSmallBase from "../big-small-base/big-small-base";
 
 type BigSmallProps = {
   onMessage: Function;
+  sendMessage: Function;
 };
 
 export default class BigSmall extends React.Component<
@@ -20,6 +21,7 @@ export default class BigSmall extends React.Component<
   render() {
     return (
       <BigSmallBase
+        sendMessage={this.props.sendMessage}
         type="taixiu"
         turbo={false}
         onMessage={this.props.onMessage}

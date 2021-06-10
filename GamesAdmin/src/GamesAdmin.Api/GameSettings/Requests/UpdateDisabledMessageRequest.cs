@@ -1,19 +1,20 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class UpdateDisabledMessageRequest: IRequest<bool>
     {
-        public UpdateDisabledMessageRequest(string name, string message, bool isApplyAll = false) 
+        public UpdateDisabledMessageRequest(Dictionary<string, string> messages, string name = "", bool isApplyAll = false) 
         {
             Name = name;
-            Message = message;
+            Messages = messages;
             IsApplyAll = isApplyAll;
         }
 
         public string Name { get; }
 
-        public string Message { get; }
+        public Dictionary<string, string> Messages { get; }
 
         public bool IsApplyAll { get; }
     }

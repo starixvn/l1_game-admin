@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -39,8 +40,18 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Handle(AddRequest request, CancellationToken cancellationToken)
         {
-            request.Message = Regex.Replace(request.Message, NewLinePattern, Space);
-            var notification = mapper.Map<Notification>(request);
+            request.EnMessage = Regex.Replace(request.EnMessage, NewLinePattern, Space);
+            request.VnMessage = Regex.Replace(request.VnMessage, NewLinePattern, Space);
+            var notification = new Notification
+            {
+                DisplayKind = request.DisplayKind,
+                Messages = new Dictionary<string, string> 
+                {
+                    {Language.VnValue, request.VnMessage },
+                    {Language.EnValue, request.EnMessage }
+                },
+                Message = request.VnMessage
+            };
 
             return notificationService.Add(notification);
         }
@@ -54,8 +65,20 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
-            request.Message = Regex.Replace(request.Message, NewLinePattern, Space);
-            var notification = mapper.Map<Notification>(request);
+            request.EnMessage = Regex.Replace(request.EnMessage, NewLinePattern, Space);
+            request.VnMessage = Regex.Replace(request.VnMessage, NewLinePattern, Space);
+
+            var notification = new Notification
+            {
+                Id = request.Id,
+                DisplayKind = request.DisplayKind,
+                Messages = new Dictionary<string, string>
+                {
+                    {Language.VnValue, request.VnMessage },
+                    {Language.EnValue, request.EnMessage }
+                },
+                Message = request.VnMessage
+            };
 
             return notificationService.Update(notification);
         }

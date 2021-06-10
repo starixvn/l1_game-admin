@@ -48,13 +48,9 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateStatus(string[] names, bool enabled)
            => mediator.Send(new UpdateStatusRequest(names, enabled));
 
-        [HttpPut("{name}/update_message")]
-        public Task<bool> UpdateMessage(string name, string disabledMessage)
-           => mediator.Send(new UpdateDisabledMessageRequest(name, disabledMessage));
-
-        [HttpPut("update_message_all")]
-        public Task<bool> UpdateMessage(string disabledMessage)
-           => mediator.Send(new UpdateDisabledMessageRequest(string.Empty, disabledMessage, true));
+        [HttpPut("update_message")]
+        public Task<bool> UpdateMessage(UpdateDisabledMessageRequest request)
+           => mediator.Send(request);
 
         [HttpPost("{name}/update_bot_ratios")]
         public Task<bool> UpdateBetLimitAndOdds(string name, double[] ratios)
@@ -79,5 +75,9 @@ namespace GamesAdmin.Api.Games
         [HttpPost("{name}/update_slot_odds")]
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
            => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));
+
+        [HttpGet("{name}/disabled_message")]
+        public Task<Dictionary<string, string>> GetDisableMessage(string name)
+            => mediator.Send(new GetDisabledMessageRequest(name));
     }
 }

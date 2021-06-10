@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false);
+        Task<bool> UpdateDisabledMessage(UpdateDisabledMessageRequest request);
 
         Task<bool> Reload();
 
@@ -45,6 +45,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request);
 
         Task<GlobalConfig> GetSiteExclusion();
+
+        Task<Dictionary<string, string>> GetDisabledMessage(string name);
     }
 
     public class GameSettingService : IGameSettingService
@@ -90,11 +92,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateStatus(string[] names, bool enabled)
         => gameApi.UpdateStatus(names, enabled);
 
-        public async Task<bool> UpdateDisabledMessage(string name, string message, bool isApplyAll = false)
+        public async Task<bool> UpdateDisabledMessage(UpdateDisabledMessageRequest request)
         {
             try
             {
-                return isApplyAll ? await gameApi.UpdateMessage(message) : await gameApi.UpdateMessage(name, message);
+                return await gameApi.UpdateMessage(request);
             }
             catch (Exception ex)
             {
@@ -145,5 +147,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<GlobalConfig> GetSiteExclusion()
         => globalConfigApi.GetSiteExclusions();
+
+        public Task<Dictionary<string, string>> GetDisabledMessage(string name)
+        => gameApi.GetDisableMessage(name);
     }
 }
