@@ -7,7 +7,7 @@
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
-            <table class="table table-bordered  table-hover table-se-die" style="width:100%">
+            <table class="table table-bordered  table-hover table-three-cards" style="width:100%">
                 <thead>
                     <tr>
                         <th>Round ID</th>
@@ -34,19 +34,19 @@
                             @(Model.RoundResult.SettlementResult.Red ? "Red" : "Black")
                             @if (Model.RoundResult.SettlementResult.Diamonds)
                             {
-                                <img class="img" src="~/images/card_1.png" />
+                                <img class="img card-suit" src="~/images/card_1.png" />
                             }
                             @if (Model.RoundResult.SettlementResult.Hearts)
                             {
-                                <img class="img" src="~/images/card_0.png" />
+                                <img class="img card-suit" src="~/images/card_0.png" />
                             }
                             @if (Model.RoundResult.SettlementResult.Spades)
                             {
-                                <img class="img" src="~/images/card_3.png" />
+                                <img class="img card-suit" src="~/images/card_3.png" />
                             }
                             @if (Model.RoundResult.SettlementResult.Clubs)
                             {
-                                <img class="img" src="~/images/card_2.png" />
+                                <img class="img card-suit" src="~/images/card_2.png" />
                             }
                         </td>
                     </tr>

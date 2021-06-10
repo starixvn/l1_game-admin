@@ -205,3 +205,7 @@
 
 .blackjack-result .cards .card:last-child:before, .threecards-result .cards .card:last-child:before {
   display: none; }
+
+.table-three-cards .card-suit {
+  width: 30px;
+  height: 30px; }
