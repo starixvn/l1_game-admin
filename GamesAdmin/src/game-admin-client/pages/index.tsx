@@ -47,11 +47,7 @@ export class Home extends React.Component<Props, State> {
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
         : Cookies.get("token");
-    this.protocol = (globalThis.location || { protocol: "" }).protocol.endsWith(
-      "s:"
-    )
-      ? "wss"
-      : "ws";
+    this.protocol = "wss";
     this.isProduction =
       Cookies.get("env") && Cookies.get("env").toLocaleUpperCase() === "PRO";
     this.messageTransmitter = MessageTransmitter();

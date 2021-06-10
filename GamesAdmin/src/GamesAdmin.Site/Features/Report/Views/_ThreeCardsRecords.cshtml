@@ -34,19 +34,19 @@
                             @(Model.RoundResult.SettlementResult.Red ? "Red" : "Black")
                             @if (Model.RoundResult.SettlementResult.Diamonds)
                             {
-                                @(", Diamonds")
+                                <img class="img" src="~/images/card_1.png" />
                             }
                             @if (Model.RoundResult.SettlementResult.Hearts)
                             {
-                                @(", Hearts")
+                                <img class="img" src="~/images/card_0.png" />
                             }
                             @if (Model.RoundResult.SettlementResult.Spades)
                             {
-                                @(", Spades")
+                                <img class="img" src="~/images/card_3.png" />
                             }
                             @if (Model.RoundResult.SettlementResult.Clubs)
                             {
-                                @(", Clubs")
+                                <img class="img" src="~/images/card_2.png" />
                             }
                         </td>
                     </tr>
