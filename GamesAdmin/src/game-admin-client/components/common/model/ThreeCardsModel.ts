@@ -1,7 +1,7 @@
 import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 
-export class ThreeCardsBetList {
+export class ThreeCardsBetListModel {
   red: BetList;
   black: BetList;
   diamonds: BetList;
@@ -19,33 +19,39 @@ export class ThreeCardsBetList {
   }
 }
 
-export class Card {
-    rank: string;
-    suit: number;
+export class CardModel {
+  rank: string;
+  suit: number;
+  constructor(rank, suit) {
+    this.rank = rank;
+    this.suit = suit;
+  }
 }
 
-class SettlementResult {
-    red: boolean;
-    black: boolean;
-    diamonds: boolean;
-    hearts: boolean;
-    spades: boolean;
-    clubs: boolean;
+class SettlementResultModel {
+  red: boolean;
+  black: boolean;
+  diamonds: boolean;
+  hearts: boolean;
+  spades: boolean;
+  clubs: boolean;
 }
 
 export class ThreeCardsModel {
   roundNumber: number;
-  betList: ThreeCardsBetList;
+  betList: ThreeCardsBetListModel;
   time: TimeModel;
-  result: Array<Card>;
+  result: Array<CardModel>;
   gameState: number;
-  settlementResult: SettlementResult;
-
+  settlementResult: SettlementResultModel;
+  isOpenModal: boolean;
+  currentSelectedIndex: number;
   constructor() {
-    this.result = [new Card(), new Card(), new Card()];
-    this.betList = new ThreeCardsBetList();
+    this.result = [new CardModel(), new CardModel(), new CardModel()];
+    this.betList = new ThreeCardsBetListModel();
     this.time = new TimeModel();
     this.gameState = 0;
-    this.settlementResult = new SettlementResult();
+    this.settlementResult = new SettlementResultModel();
+    this.isOpenModal = false;
   }
 }
