@@ -22,10 +22,6 @@ export class ThreeCardsBetListModel {
 export class CardModel {
   rank: string;
   suit: number;
-  constructor(rank, suit) {
-    this.rank = rank;
-    this.suit = suit;
-  }
 }
 
 class SettlementResultModel {

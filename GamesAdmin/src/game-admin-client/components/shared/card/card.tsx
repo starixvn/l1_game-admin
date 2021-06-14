@@ -39,7 +39,7 @@ export default function Card(props: CardModel) {
   };
 
   const renderCard = (value, suit) => {
-    if (value == undefined || value == -1) {
+    if (value == -1 || !value) {
       return (
         <div
           className={styles.card}

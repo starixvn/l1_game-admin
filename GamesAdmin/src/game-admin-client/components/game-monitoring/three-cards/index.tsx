@@ -374,7 +374,7 @@ export default class ThreeCards extends React.Component<
       if (card.rank) {
         newResult.push(card);
       } else {
-        newResult.push(new CardModel(cardRank[0], cardSuit[0]));
+        newResult.push({ rank: cardRank[0], suit: cardSuit[0] });
       }
     }
     this.props.sendMessage({
