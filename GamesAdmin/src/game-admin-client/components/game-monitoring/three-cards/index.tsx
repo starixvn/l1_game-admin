@@ -63,7 +63,7 @@ export default class ThreeCards extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 5;
+      const waitingTime = 6;
       this.setState({
         result: data.finish.result,
         settlementResult: data.finish.settlementResult,
