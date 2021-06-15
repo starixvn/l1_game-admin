@@ -38,9 +38,8 @@ const renderTitle = (titles, type) => {
   return result;
 };
 
-const getSystemDisplay = (systemId: SystemId) => {
-  return systemId != SystemId.None ? `[${SystemId[systemId]}] ` : "";
-};
+const getSystemDisplay = (systemId: SystemId) =>
+  systemId == SystemId.SM ? `[${SystemId[systemId]}] ` : "";
 
 export default function BetList(props) {
   const { type, titles, dataList, isWin, systemFilter } = props;
@@ -64,9 +63,7 @@ export default function BetList(props) {
                         <Moment format="HH:mm:ss">{data.time}</Moment>
                       </Col>
                       <Col className={style.colname}>
-                        {`${data.name} ${getSystemDisplay(
-                          !systemFilter ? data.system : SystemId.None
-                        )}`}
+                        {`${data.name} ${getSystemDisplay(data.system)}`}
                       </Col>
                       <Col className={style.colamount}>{betAmount}</Col>
                     </Row>
@@ -76,9 +73,7 @@ export default function BetList(props) {
                   return (
                     <Row key={index} className={style.rowSimple}>
                       <div className={style.colname}>
-                        {`${data.name} ${getSystemDisplay(
-                          !systemFilter ? data.system : SystemId.None
-                        )}`}
+                        {`${data.name} ${getSystemDisplay(data.system)}`}
                       </div>
                       <div className={style.money}>{betAmount}</div>
                     </Row>
@@ -88,9 +83,7 @@ export default function BetList(props) {
                   return (
                     <Row key={index} className={style.rowSimple}>
                       <div className={style.colname}>
-                        {`${data.name} ${getSystemDisplay(
-                          !systemFilter ? data.system : SystemId.None
-                        )}`}
+                        {`${data.name} ${getSystemDisplay(data.system)}`}
                       </div>
                       <div>
                         <span className={style.money}>{betAmount}</span>
@@ -104,9 +97,7 @@ export default function BetList(props) {
                     <Row key={index} className={style.row}>
                       <Col className={style.onecol}>
                         <div>
-                          {`${data.name} ${getSystemDisplay(
-                            systemFilter ? data.system : SystemId.None
-                          )}`}
+                          {`${data.name} ${getSystemDisplay(data.system)}`}
                         </div>
                         <div className={style.money}>{betAmount}</div>
                       </Col>
