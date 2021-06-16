@@ -71,6 +71,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.LotteryValue:
                     return Enumeration.GetAll<LotteryBetChoice>();
 
+                case Game.ThreeCardsValue:
+                    return Enumeration.GetAll<ThreeCardsBetChoice>();
+
                 default: return default;
             }
         }

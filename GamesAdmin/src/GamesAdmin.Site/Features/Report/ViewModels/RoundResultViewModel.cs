@@ -58,12 +58,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long Number { get; set; }
 
-        public CardViewModel Dragon { get; set; }
+        public DragonTigerCardViewModel Dragon { get; set; }
 
-        public CardViewModel Tiger { get; set; }
+        public DragonTigerCardViewModel Tiger { get; set; }
     }
 
-    public class CardViewModel
+    public class DragonTigerCardViewModel
     {
         public byte Number { get; set; }
 
@@ -74,9 +74,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long Number { get; set; }
 
-        public IEnumerable<CardViewModel> PlayerCards { get; set; }
+        public IEnumerable<DragonTigerCardViewModel> PlayerCards { get; set; }
 
-        public IEnumerable<CardViewModel> BankerCards { get; set; }
+        public IEnumerable<DragonTigerCardViewModel> BankerCards { get; set; }
 
         public BaccaratSettlementResultViewModel Result { get; set; }
     }
@@ -200,5 +200,24 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public Dictionary<string, byte> All { get; set; }
         public Dictionary<string, byte> Seventh { get; set; }
+    }
+
+    public class ThreeCardsRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<CardViewModel> Result { get; set; }
+
+        public  ThreeCardsSettlementResultViewModel SettlementResult {get;set;}
+    }
+
+    public class ThreeCardsSettlementResultViewModel
+    {
+        public bool Red { get; set; }
+        public bool Black { get; set; }
+        public bool Diamonds { get; set; }
+        public bool Hearts { get; set; }
+        public bool Spades { get; set; }
+        public bool Clubs { get; set; }
     }
 }

@@ -103,6 +103,8 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
+        
+
         [HttpGet]
         [ActionName("rnglottery")]
         public IActionResult Lottery()
@@ -114,6 +116,18 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult SeDieWar()
         {
             return View("VipSeDieWar", new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public IActionResult ThreeCards()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetThreeCardsReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_ThreeCardsRecords", await mediator.Send(new GetThreeCardsReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

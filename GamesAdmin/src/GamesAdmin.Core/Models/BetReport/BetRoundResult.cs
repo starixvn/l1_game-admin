@@ -55,12 +55,12 @@ namespace GamesAdmin.Core.Models
 
     public class DragonTigerRoundResult : RoundResult
     {
-        public CardResult Dragon { get; set; }
+        public DragonTigerCardResult Dragon { get; set; }
 
-        public CardResult Tiger { get; set; }
+        public DragonTigerCardResult Tiger { get; set; }
     }
 
-    public class CardResult
+    public class DragonTigerCardResult
     {
         public byte Number { get; set; }
 
@@ -69,9 +69,9 @@ namespace GamesAdmin.Core.Models
 
     public class BaccaratRoundResult : RoundResult
     {
-        public IEnumerable<CardResult> PlayerCards { get; set; }
+        public IEnumerable<DragonTigerCardResult> PlayerCards { get; set; }
 
-        public IEnumerable<CardResult> BankerCards { get; set; }
+        public IEnumerable<DragonTigerCardResult> BankerCards { get; set; }
 
         public BaccaratSettlementResult Result { get; set; }
     }
@@ -195,5 +195,21 @@ namespace GamesAdmin.Core.Models
     {
         public Dictionary<string, byte> All { get; set; }
         public Dictionary<string, byte> Seventh { get; set; }
+    }
+
+    public class ThreeCardsRoundResult : RoundResult
+    {
+        public IEnumerable<Card> Result { get; set; }
+        public ThreeCardsSettlementResult SettlementResult { get; set; }
+    }
+
+    public class ThreeCardsSettlementResult
+    {
+        public bool Red { get; set; }
+        public bool Black { get; set; }
+        public bool Diamonds { get; set; }
+        public bool Hearts { get; set; }
+        public bool Spades { get; set; }
+        public bool Clubs { get; set; }
     }
 }

@@ -76,6 +76,8 @@ namespace GamesAdmin.Api.Report
         Task<LotteryBetReport> GetLotteryReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId);
+
+        Task<ThreeCardsBetReport> GetThreeCardsReportAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -550,6 +552,18 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<LotteryRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<LotteryBetHistoryRecord>(x)),
                 Odds = mapper.Map<LotteryOdds>(result.Item3)
+            };
+        }
+
+        public async Task<ThreeCardsBetReport> GetThreeCardsReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IThreeCardsReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+
+            return new ThreeCardsBetReport
+            {
+                RoundResult = mapper.Map<ThreeCardsRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<ThreeCardsBetRecord>(x))
             };
         }
     }

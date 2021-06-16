@@ -28,7 +28,7 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<DragonTigerRoundResult, DragonTigerRoundResultViewModel>();
             CreateMap<DragonTigerBetRecord, DragonTigerRecordViewModel>();
-            CreateMap<CardResult, CardViewModel>();
+            CreateMap<DragonTigerCardResult, DragonTigerCardViewModel>();
 
             CreateMap<BaccaratRoundResult, BaccaratRoundResultViewModel>();
             CreateMap<BaccaratSettlementResult, BaccaratSettlementResultViewModel>();
@@ -47,7 +47,7 @@ namespace GamesAdmin.Site._Shared
             CreateMap<SpecialSeDieBetHistoryRecord, SpecialSeDieBetHistoryRecordViewModel>();
 
             CreateMap<BlackjackBetRecord, BlackjackRecordViewModel>();
-            CreateMap<BlackjackCard, BlackjackCardViewModel>();
+            CreateMap<Card, CardViewModel>();
 
             CreateMap<VipFishPrawnCrabRoundResult, VipFishPrawnCrabRoundResultViewModel>()
                 .ForMember(x => x.Result, opt => opt.MapFrom((source) => new[]
@@ -91,6 +91,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<LotteryBetHistoryRecord, LotteryBetHistoryRecordViewModel>();
             CreateMap<LotteryOdds, LotteryOddsViewModel>();
             CreateMap<LotteryChoices, LotteryChoicesViewModel>();
+
+            CreateMap<ThreeCardsRoundResult, ThreeCardsRoundResultViewModel>();
+            CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
+            CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
         }
     }
 }

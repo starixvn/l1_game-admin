@@ -1,6 +1,6 @@
 export default class CardModel {
   cardName?: string;
-  value: Number;
+  value: Number | String;
   suit: Number;
   onClickHandle?: Function;
 
