@@ -8,6 +8,9 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
 {
     public class AddViewModel
     {
+        private const int MinLength = 20;
+        private const int MaxLength = 1000;
+
         public AddViewModel()
         {
             DisplayKinds = EnumerationHelper.ToSelectList<NotificationDisplayKind>();
@@ -18,8 +21,13 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         public byte DisplayKindValue { get; set; }
 
         [Required]
-        [MinLength(20)]
-        [MaxLength(1000)]
-        public string Message { get; set; }
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string VnMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string EnMessage { get; set; }
     }
 }

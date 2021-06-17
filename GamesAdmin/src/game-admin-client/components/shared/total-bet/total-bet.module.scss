@@ -380,12 +380,12 @@
 @include totalBet("mountain", "white", "Mountain");
 @include totalBet("ocean", "white", "Ocean");
 
-@include totalBet("1point", "white", "1 Point");
-@include totalBet("2points", "white", "2 Points");
-@include totalBet("3points", "white", "3 Points");
-@include totalBet("4points", "white", "4 Points");
-@include totalBet("5points", "white", "5 Points");
-@include totalBet("6points", "white", "6 Points");
+@include totalBet("point1", "white", "1 Point");
+@include totalBet("points2", "white", "2 Points");
+@include totalBet("points3", "white", "3 Points");
+@include totalBet("points4", "white", "4 Points");
+@include totalBet("points5", "white", "5 Points");
+@include totalBet("points6", "white", "6 Points");
 @include totalBet("specificNumber", "white", "Specific Number");
 @include totalBet("totalPoints", "white", "Total Points");
 @include totalBet("sicboBig", "white", "Big");
@@ -405,14 +405,19 @@
 @include sediewar("bankerWhite3", "white", "Banker", "motdobatrang");
 @include sediewar("bankerWhite4", "white", "Banker", "bontrang");
 
-@include totalBet("4Sets", "white", "4 Sets");
+@include totalBet("Sets4", "white", "4 Sets");
 @include totalBet("special", "white", "Special");
 @include totalBet("head", "white", "Head");
 @include totalBet("tail", "white", "Tail");
-@include totalBet("27Sets", "white", "27 Sets");
+@include totalBet("Sets27", "white", "27 Sets");
 @include totalBet("parlay2", "white", "Parlay 2");
 @include totalBet("parlay3", "white", "Parlay 3");
 @include totalBet("parlay4", "white", "Parlay 4");
 @include totalBet("others", "white", "Others");
 @include totalBet("turnover", "white", "Turnover");
-
+@include totalBet("red", "red", "Red");
+@include totalBet("black", "black", "Black");
+@include totalBet("diamonds", "red", "♦️");
+@include totalBet("hearts", "red", "♥️");
+@include totalBet("spades", "black", "♠️");
+@include totalBet("clubs", "black", "♣️");

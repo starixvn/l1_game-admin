@@ -418,7 +418,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
         $
         {!this.props.isProduction && (
           <DeskOfCards
-            modal={this.state.isShowDeskOfCards}
+            isOpen={this.state.isShowDeskOfCards}
             toggle={this.updaterDeskOfCardsToggle}
             onPickCard={this.onPickCard}
           />

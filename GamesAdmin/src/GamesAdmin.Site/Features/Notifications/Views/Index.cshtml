@@ -1,4 +1,5 @@
 ﻿@using GamesAdmin.Site.Features.Notifications.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 @model IndexViewModel;
 
 @{
@@ -19,7 +20,8 @@
 <table id="status-tbl" class="table table-bordered has-background tbl-notification col-sm-12">
     <thead>
         <tr>
-            <th>Message</th>
+            <th>Message (Vn)</th>
+            <th>Message (En)</th>
             <th class="col-display">Display As</th>
             <th class="col-options">Actions</th>
         </tr>
@@ -35,7 +37,8 @@
         @foreach (var notification in Model.Notifications)
         {
             <tr>
-                <td>@notification.Message</td>
+                <td>@(notification.Messages?[Language.VnValue] != null ? notification.Messages[Language.VnValue] : notification.Message) </td>
+                <td>@(notification.Messages?[Language.EnValue] != null ? notification.Messages[Language.EnValue] : string.Empty)</td>
                 <td class="text-center">@notification.DisplayKind.DisplayName</td>
                 <td class="text-center">
                     <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id" class="action-link"><i class="icon-edit"></i></a>

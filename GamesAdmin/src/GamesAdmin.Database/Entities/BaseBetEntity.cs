@@ -18,8 +18,6 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("phien")]
         public long Round { get; set; }
 
-        public bool Red { get; set; }
-
         public int? MemberId { get; set; }
 
         public string SiteId { get; set; }

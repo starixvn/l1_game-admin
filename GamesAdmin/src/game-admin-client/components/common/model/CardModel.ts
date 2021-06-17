@@ -1,9 +1,11 @@
 export default class CardModel {
-    value: Number;
-    suit: Number;
+  cardName?: string;
+  value: Number | String;
+  suit: Number;
+  onClickHandle?: Function;
 
-    constructor() {
-        this.value = -1;
-        this.suit = -1;
-    }
+  constructor() {
+    this.value = -1;
+    this.suit = -1;
+  }
 }

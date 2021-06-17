@@ -128,11 +128,11 @@ namespace GamesAdmin.Core.Models
 
         public long? SplitForm { get; set; }
 
-        public IEnumerable<BlackjackCard> Cards { get; set; }
+        public IEnumerable<Card> Cards { get; set; }
 
         public IEnumerable<string> Actions { get; set; }
 
-        public IEnumerable<BlackjackCard> DealerCards { get; set; }
+        public IEnumerable<Card> DealerCards { get; set; }
 
         public bool Ended { get; set; }
 
@@ -141,7 +141,7 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<byte> SoftPoints { get; set; }
     }
 
-    public class BlackjackCard
+    public class Card
     {
         public string Rank { get; set; }
 
@@ -262,6 +262,21 @@ namespace GamesAdmin.Core.Models
     public class LotteryBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
+    }
+
+    public class ThreeCardsBetRecord : BetRecord
+    {
+        public decimal Red { get; set; }
+
+        public decimal Black { get; set; }
+
+        public decimal Diamonds { get; set; }
+
+        public decimal Hearts { get; set; }
+
+        public decimal Spades { get; set; }
+
+        public decimal Clubs { get; set; }
     }
 
 }

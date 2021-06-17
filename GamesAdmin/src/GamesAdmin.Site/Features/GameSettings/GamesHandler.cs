@@ -28,7 +28,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetStatusRequest, StatusViewModel>
         , IRequestHandler<UpdateMultipleGameStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
-        , IRequestHandler<UpdateAllDisabledMessageRequest, bool>
         , IRequestHandler<ReloadGameClientRequest, bool>
         , IRequestHandler<GetJWTRequest, GameServerToken>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
@@ -36,6 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
+        , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -249,7 +249,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 {
                     var gameEnum = Enumeration.Contains<Game>(gameConfig.Info.Name) ? Enumeration.FromValue<Game>(gameConfig.Info.Name) : null;
 
-                    if (gameEnum != null && (int)gameEnum.GameId > 0)
+                    if (gameEnum != null && (int)gameEnum.GameId > 0 && globalConfig.Configs.ContainsKey(((int)gameEnum.GameId).ToString()))
                     {
                         siteExlusions.Add(gameEnum.Value, globalConfig.Configs[((int)gameEnum.GameId).ToString()]);
                     }
@@ -283,22 +283,12 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(request.Name) || request.DisabledMessage?.Length > MaxLengthOfMessage)
+            if (request.Messages[Language.VnValue]?.Length > MaxLengthOfMessage)
             {
                 return false;
             }
 
-            return await gameService.UpdateDisabledMessage(request.Name, request.DisabledMessage);
-        }
-
-        public async Task<bool> Handle(UpdateAllDisabledMessageRequest request, CancellationToken cancellationToken)
-        {
-            if (request.DisabledMessage?.Length > MaxLengthOfMessage)
-            {
-                return false;
-            }
-
-            return await gameService.UpdateDisabledMessage(string.Empty, request.DisabledMessage, true);
+            return await gameService.UpdateDisabledMessage(request);
         }
 
         public Task<bool> Handle(ReloadGameClientRequest request, CancellationToken cancellationToken)
@@ -351,5 +341,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSiteExclusions(request);
+
+        public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
+        => gameService.GetDisabledMessage(request.Name);
     }
 }

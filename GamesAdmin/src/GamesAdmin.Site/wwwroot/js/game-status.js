@@ -285,16 +285,15 @@
         },
 
         updateMessage: function () {
-            var message = $('#textMessage').val();
-            var applyAll = $('#applyAllCheckbox').is(":checked");
-            var name = $('#msgGameName').val();
-            var url = applyAll ? "/status/update" : "/status";
-            var data = { name: name, disabledMessage: message };
+            var vnMessage = $('#vnMessage').val();
+            var enMessage = $('#enMessage').val();
+            var name = $('#applyAllCheckbox').is(":checked") ? "" : $('#msgGameName').val();
+            var data = { name, vnMessage, enMessage };
             $('#updateMsgBtn').prop('disabled', true);
 
             $.ajax({
                 method: "POST",
-                url: url,
+                url: "/status",
                 dataType: 'json',
                 data: data,
             }).done(function (result) {
@@ -316,11 +315,18 @@
         },
 
         showUpdateMessage: function (textMsg, name, displayName) {
-            $('#textMessage').val(textMsg);
-            $('#msgGameName').val(name);
-            $('#updateMsgGameName').html(displayName);
+            $.ajax({
+                method: "GET",
+                url: "/status/disableMessage?name=" + name
+            }).done(function (result) {                
+                $('#msgGameName').val(name);
+                $('#updateMsgGameName').html(displayName);
+                $('#vnMessage').val(result["vi-VN"]);
+                $('#enMessage').val(result["en-US"]);
 
-            $('#messageModal').modal('show');
+                $('#messageModal').modal('show');
+            });
+            
         },
 
         submitReload: function () {

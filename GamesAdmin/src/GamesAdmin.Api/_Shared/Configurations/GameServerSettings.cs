@@ -41,6 +41,8 @@
         public GameServerConfigs TurboOddEven { get; set; }
 
         public GameServerConfigs Lottery { get; set; }
+
+        public GameServerConfigs ThreeCards { get; set; }
     }
 
     public class GameServerConfigs

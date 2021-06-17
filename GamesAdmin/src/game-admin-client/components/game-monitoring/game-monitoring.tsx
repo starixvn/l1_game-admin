@@ -20,6 +20,7 @@ import VipSeDie from "./vip-sedie/vip-sedie";
 import VipSeDieWar from "./vip-se-die-war";
 import SicBo from "./sic-bo";
 import Lottery from "./lottery";
+import ThreeCards from "./three-cards";
 
 const getObjectOfGame = (path: string) => (onMessage: Function) => (
   message: any
@@ -157,6 +158,10 @@ const gameMapper = {
   31: {
     component: Lottery,
     ...getInfoByGameKey("Lottery"),
+  },
+  35: {
+    component: ThreeCards,
+    ...getInfoByGameKey("ThreeCards"),
   },
 };
 

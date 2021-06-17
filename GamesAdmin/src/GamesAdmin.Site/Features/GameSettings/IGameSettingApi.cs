@@ -21,11 +21,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Put("/game_settings/update_status")]
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        [Put("/game_settings/{name}/update_message")]
-        Task<bool> UpdateMessage(string name, string disabledMessage);
-
-        [Put("/game_settings/update_message_all")]
-        Task<bool> UpdateMessage(string disabledMessage);
+        [Put("/game_settings/update_message")]
+        Task<bool> UpdateMessage([Body] UpdateDisabledMessageRequest request);
 
         [Post("/game_server/reload")]
         Task<bool> Reload();
@@ -55,6 +52,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateSlotConfig([Body] UpdateSlotConfigRequest request);
 
         [Post("/game_settings/{name}/update_slot_odds")]
-        Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);        
+        Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        [Get("/game_settings/{name}/disabled_message")]
+        Task<Dictionary<string, string>> GetDisableMessage(string name);
     }
 }

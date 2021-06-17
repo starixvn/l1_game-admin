@@ -24,9 +24,9 @@ namespace GamesAdmin.Database.Report.Entities
 
         public long Round { get; set; }
 
-        public IEnumerable<BlackjackCardEntity> Cards { get; set; }
+        public IEnumerable<CardEntity> Cards { get; set; }
 
-        public IEnumerable<BlackjackCardEntity> DealerCards { get; set; }
+        public IEnumerable<CardEntity> DealerCards { get; set; }
 
         public bool Ended { get; set; }
 

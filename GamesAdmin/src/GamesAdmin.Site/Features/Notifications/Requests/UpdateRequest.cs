@@ -7,7 +7,9 @@ namespace GamesAdmin.Site.Features.Notifications.Requests
     {
         public string Id { get; set; }
 
-        public string Message { get; set; }
+        public string VnMessage { get; set; }
+
+        public string EnMessage { get; set; }
 
         public byte DisplayKindValue { get; set; }
 

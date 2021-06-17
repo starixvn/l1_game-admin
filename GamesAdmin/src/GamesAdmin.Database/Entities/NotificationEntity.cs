@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
@@ -14,5 +15,9 @@ namespace GamesAdmin.Database.Entities
         public string Message { get; set; }
 
         public byte DisplayKind { get; set; }
+
+        public string GameName { get; set; }
+
+        public Dictionary<string, string> Messages { get; set; }
     }
 }
