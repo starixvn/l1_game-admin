@@ -14,7 +14,7 @@ namespace GamesAdmin.Database.Entities
 
         public IEnumerable<string> Actions { get; set; }
 
-        public IEnumerable<BlackjackCardEntity> Cards { get; set; }
+        public IEnumerable<CardEntity> Cards { get; set; }
 
         public IEnumerable<byte> SoftPoints { get; set; }
 

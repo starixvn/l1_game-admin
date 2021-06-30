@@ -23,6 +23,7 @@ namespace GamesAdmin.Core.Enumeration
             {Game.VipBaccaratValue, Enumeration.GetAll<VipBaccaratBetChoice>() },
             {Game.VipSeDieWarValue, Enumeration.GetAll<VipSeDieWarBetChoice>() },
             {Game.LotteryValue, Enumeration.GetAll<LotteryBetChoice>() },
+            {Game.ThreeCardsValue, Enumeration.GetAll<ThreeCardsBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

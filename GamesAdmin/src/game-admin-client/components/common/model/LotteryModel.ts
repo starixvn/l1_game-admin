@@ -2,16 +2,16 @@ import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 
 class LotteryBetList {
-  "4Sets": BetList;
-  "27Sets": BetList;
+  "Sets4": BetList;
+  "Sets27": BetList;
   special: BetList;
   head: BetList;
   tail: BetList;
   others: BetList;
 
   constructor() {
-    this["4Sets"] = new BetList();
-    this["27Sets"] = new BetList();
+    this["Sets4"] = new BetList();
+    this["Sets27"] = new BetList();
     this.special = new BetList();
     this.head = new BetList();
     this.tail = new BetList();

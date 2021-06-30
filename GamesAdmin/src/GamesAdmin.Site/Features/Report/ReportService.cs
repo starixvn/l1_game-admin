@@ -74,6 +74,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
+
+        Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+
     }
 
     public class ReportService : IReportService
@@ -184,5 +187,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId)
             => reportApi.GetLotteryBetHistory(roundId, userId);
+
+        public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
     }
 }

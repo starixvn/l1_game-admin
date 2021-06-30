@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.ClientSites.Requests;
 using GamesAdmin.Site.Features.ClientSites.ViewModels;
@@ -35,7 +36,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                 ClientId = clientSite.ClientId,
                 SiteId = clientSite.SiteId,
                 GameClientUrl = clientSite.GameClientUrl,
-                GameMobiClientUrl = clientSite.GameMobiClientUrl
+                GameMobiClientUrl = clientSite.GameMobiClientUrl,
+                ValidCurrencies = clientSite.ValidCurrencies
             });
         }
 
@@ -49,7 +51,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                     ClientId = viewModel.ClientId,
                     SiteId = viewModel.SiteId,
                     GameClientUrl = viewModel.GameClientUrl,
-                    GameMobiClientUrl = viewModel.GameMobiClientUrl
+                    GameMobiClientUrl = viewModel.GameMobiClientUrl,
+                    ValidCurrencies = viewModel.ValidCurrencies.Split(";").Select(x => x.Trim().ToUpperInvariant())
                 }));
 
                 return RedirectToAction("Index");

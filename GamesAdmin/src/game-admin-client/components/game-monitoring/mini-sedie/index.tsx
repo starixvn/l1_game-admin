@@ -134,7 +134,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
     const result = new Array<DiceModel>();
 
     Object.keys(data).forEach((key) => {
-      result.push(new DiceModel(data[key], DiceType.XocXoc));
+      result.push(new DiceModel(data[key] ? 1 : 0, DiceType.XocXoc));
     });
 
     return result;

@@ -1,17 +1,18 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class UpdateDisabledMessageRequest: IRequest<bool>
     {
-        public UpdateDisabledMessageRequest(string name, string disabledMessage) 
+        public UpdateDisabledMessageRequest(string name, Dictionary<string, string> messages) 
         {
             Name = name;
-            DisabledMessage = disabledMessage;
+            Messages = messages;
         }
 
         public string Name { get; }
 
-        public string DisabledMessage { get; }
+        public Dictionary<string, string> Messages { get; }
     }
 }

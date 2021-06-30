@@ -75,7 +75,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.BigSmallTurbo.DisplayName, Game.BigSmallTurbo.Value),
                 new SelectListItem(Game.OddEvenTurbo.DisplayName, Game.OddEvenTurbo.Value),
                 new SelectListItem(Game.MiniSeDie.DisplayName, Game.MiniSeDie.Value),
-                new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value)
+                new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value),
+                new SelectListItem(Game.ThreeCards.DisplayName, Game.ThreeCards.Value),
                 };
     }
 }

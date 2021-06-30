@@ -23,13 +23,25 @@
   justify-content: center;
 }
 
-// .wrap-result {
-//   height: 100%;
+.game-control-panel {
+  width: 350px;
 
-//   > div {
-//     margin-bottom: 10px;
-//   }
-// }
+  & > div {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background-color: #411212;
+    border: 5px solid #660f10;
+    border-radius: 20px;
+    z-index: 99;
+    padding: 5px;
+  }
+
+  div[class^="dice_dice"] {
+    margin: 0;
+  }
+}
 
 .base-result {
   display: flex;

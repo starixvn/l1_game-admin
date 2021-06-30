@@ -1,7 +1,7 @@
 import React from "react";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Modal, Row } from "reactstrap";
 
-import BetItem from "../../common/model/BetItem";
+import BetItem, { SystemId } from "../../common/model/BetItem";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
 import ShakeThePlateModel from "../../common/model/ShakeThePlateModel";
@@ -11,22 +11,28 @@ import Dice from "../../shared/dice/dice";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
+import { getTotalBetOnSystem } from "../../util/util";
 import GameTemplate from "../game-template/game-template";
 import styles from "./vip-sedie.module.scss";
 
 type VipSeDieProps = {
   onMessage: Function;
+  sendMessage: Function;
 };
+
+const CHOICES = ["even", "odd", "red4", "red3", "red2", "white3", "white4"];
 
 export default class VipSeDie extends React.Component<
   VipSeDieProps,
   ShakeThePlateModel
 > {
   private timeout: NodeJS.Timeout;
+  private systemFilter: SystemId;
   constructor(props) {
     super(props);
 
     this.state = new ShakeThePlateModel();
+    this.systemFilter = SystemId.None;
   }
 
   componentDidMount() {
@@ -129,7 +135,13 @@ export default class VipSeDie extends React.Component<
         if (betTracks[key]) {
           currentData[key].total += betTracks[key];
           currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
+            new BetItem(
+              data[user].name,
+              betTracks[key],
+              null,
+              null,
+              data[user].system
+            )
           );
         }
       });
@@ -148,9 +160,98 @@ export default class VipSeDie extends React.Component<
     return result;
   }
 
- 
+  toggleModal() {
+    this.setState({
+      isOpenControlResultModal: !this.state.isOpenControlResultModal,
+    });
+  }
+
+  openModal(diceIndex) {
+    this.setState({
+      isOpenControlResultModal: true,
+      currentDiceNumber: diceIndex,
+    });
+  }
+
+  handleChangeResult(id, value) {
+    const { currentDiceNumber, result } = this.state;
+    const gameResult = this.state.nextRoundResult;
+
+    const newResult = result.map((diceInfo, index) => {
+      if (index === currentDiceNumber || diceInfo.value === -1) {
+        diceInfo.value = value;
+        gameResult[`red${index + 1}`] = !!value;
+      }
+
+      return diceInfo;
+    });
+
+    this.setState({
+      result: newResult,
+      isOpenControlResultModal: false,
+    });
+
+    if (this.state.gameState == GameState.waiting) {
+      this.setState({
+        isHandleNextRoundResult: true,
+        nextRoundResult: gameResult,
+      });
+    }
+
+    this.props.sendMessage({
+      set_result: {
+        result: gameResult,
+        roundId:
+          this.state.gameState == GameState.running
+            ? this.state.roundNumber
+            : this.state.roundNumber + 1,
+      },
+    });
+  }
+
+  renderGameControl() {
+    const { isOpenControlResultModal } = this.state;
+
+    return (
+      <Modal
+        isOpen={isOpenControlResultModal}
+        toggle={() => this.toggleModal()}
+        className={styles["game-control-panel"]}
+      >
+        <Row>
+          <Dice
+            key={`dice-select-${0}`}
+            diceModel={new DiceModel(0, DiceType.XocXoc)}
+            isSmall={false}
+            onClickHandle={(id: string, value: number) =>
+              this.handleChangeResult(id, value)
+            }
+          />
+          <Dice
+            key={`dice-select-${1}`}
+            diceModel={new DiceModel(1, DiceType.XocXoc)}
+            isSmall={false}
+            onClickHandle={(id: string, value: number) =>
+              this.handleChangeResult(id, value)
+            }
+          />
+        </Row>
+      </Modal>
+    );
+  }
+
   renderMonitor() {
-    const { betList, roundNumber, time, result, gameState, settlementResult } = this.state;
+    const { betList, roundNumber, time, result, gameState, settlementResult } =
+      this.state;
+
+    if (this.systemFilter) {
+      CHOICES.forEach((choice) => {
+        betList[choice].total = getTotalBetOnSystem(
+          betList[choice].dataList,
+          this.systemFilter
+        );
+      });
+    }
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -164,10 +265,26 @@ export default class VipSeDie extends React.Component<
             <div>
               <div className={styles.title}>VIP Se Die</div>
               <Row className={styles.result}>
-                <Dice diceModel={result[0]} isSmall={false} />
-                <Dice diceModel={result[1]} isSmall={false} />
-                <Dice diceModel={result[2]} isSmall={false} />
-                <Dice diceModel={result[3]} isSmall={false} />
+                <Dice
+                  diceModel={result[0]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(0)}
+                />
+                <Dice
+                  diceModel={result[1]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(1)}
+                />
+                <Dice
+                  diceModel={result[2]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(2)}
+                />
+                <Dice
+                  diceModel={result[3]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(3)}
+                />
               </Row>
               <RoundNum roundNumber={roundNumber} />
             </div>
@@ -239,6 +356,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red4.dataList}
             isWin={settlementResult.red4}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -247,6 +365,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red3.dataList}
             isWin={settlementResult.red3}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -255,6 +374,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red2.dataList}
             isWin={settlementResult.red2}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -263,6 +383,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.even.dataList}
             isWin={settlementResult.even}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -271,6 +392,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.odd.dataList}
             isWin={settlementResult.odd}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -279,6 +401,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.white3.dataList}
             isWin={settlementResult.white3}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col">
@@ -287,6 +410,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.white4.dataList}
             isWin={settlementResult.white4}
+            systemFilter={this.systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -296,10 +420,12 @@ export default class VipSeDie extends React.Component<
   render() {
     return (
       <div>
+        {this.state.isOpenControlResultModal && this.renderGameControl()}
         <GameTemplate
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
           disabled={this.state.disabled}
+          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
         ></GameTemplate>
       </div>
     );

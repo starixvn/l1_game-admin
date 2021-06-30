@@ -99,5 +99,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/bet_history/game/lottery/round/{roundId}/user/{userId}")]
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
+
+        [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
     }
 }

@@ -32,6 +32,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.BigSmallTurboValue, typeof(ITurboBigSmallOnlineUserApi) },
             { Game.OddEvenTurboValue, typeof(ITurboOddEvenOnlineUserApi) },
             { Game.LotteryValue, typeof(ILotteryOnlineUserApi) },
+            { Game.ThreeCardsValue, typeof(IThreeCardsOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

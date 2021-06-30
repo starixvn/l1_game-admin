@@ -20,6 +20,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSlotConfigRequest, bool>
         , IRequestHandler<UpdateSlotIconOddsRequest, bool>
+        , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
     {
         private readonly IGameSettingsService gameService;
         private readonly IGlobalConfigService globalConfigService;
@@ -48,7 +49,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateStatus(request.Names, request.Enabled);
 
         public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateDisbledMessage(request.Name, request.Message, request.IsApplyAll);
+        => gameService.UpdateDisbledMessage(request.Name, request.Messages, request.IsApplyAll);
 
         public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateBetLimitAndOdds(request.Name, request.BetLimit, request.Odds);
@@ -67,5 +68,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
+
+        public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
+        => gameService.GetDisaledMessage(request.Name);
     }
 }

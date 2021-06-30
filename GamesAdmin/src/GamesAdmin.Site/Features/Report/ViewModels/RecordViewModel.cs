@@ -114,11 +114,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public long Round { get; set; }
 
-        public IEnumerable<BlackjackCardViewModel> Cards { get; set; }
+        public IEnumerable<CardViewModel> Cards { get; set; }
 
         public IEnumerable<string> Actions { get; set; }
 
-        public IEnumerable<BlackjackCardViewModel> DealerCards { get; set; }
+        public IEnumerable<CardViewModel> DealerCards { get; set; }
 
         public bool Ended { get; set; }
 
@@ -129,7 +129,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<byte> SoftPoints { get; set; }
     }
 
-    public class BlackjackCardViewModel
+    public class CardViewModel
     {
         public string Rank { get; set; }
 
@@ -256,5 +256,20 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class LotteryRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
+    }
+
+    public class ThreeCardsRecordViewModel : BetRecordViewModel
+    {
+        public decimal Red { get; set; }
+
+        public decimal Black { get; set; }
+
+        public decimal Diamonds { get; set; }
+
+        public decimal Hearts { get; set; }
+
+        public decimal Spades { get; set; }
+
+        public decimal Clubs { get; set; }
     }
 }

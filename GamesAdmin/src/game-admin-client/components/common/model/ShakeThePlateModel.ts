@@ -1,5 +1,6 @@
 import BetList from "./BetList";
 import DiceModel from "./DiceModel";
+import DiceType from "./DiceType";
 import TimeModel from "./TimeModel";
 
 class SeDieBetList {
@@ -40,15 +41,28 @@ export default class ShakeThePlateModel {
   gameState: number;
   disabled: boolean;
   settlementResult: SeDieSettlementResult;
+  isOpenControlResultModal: boolean;
+  currentDiceNumber: number;
+  isHandleNextRoundResult: boolean;
+  nextRoundResult: { [key: string]: boolean };
 
   constructor() {
-    this.result = [new DiceModel(), new DiceModel(), new DiceModel(), new DiceModel()];
+    this.result = [
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+    ];
     this.betList = new SeDieBetList();
     this.time = new TimeModel();
     this.gameState = 0;
     this.disabled = false;
     this.settlementResult = new SeDieSettlementResult();
+    this.isOpenControlResultModal = false;
+    this.currentDiceNumber = -1;
+    this.isHandleNextRoundResult = false;
+    this.nextRoundResult = {};
   }
 }
 
-export { ShakeThePlateModel, SeDieBetList as ShakeThePlateBetList }
+export { ShakeThePlateModel, SeDieBetList as ShakeThePlateBetList };
