@@ -34,6 +34,9 @@
         public const string LotteryValue = "lottery";
         public const string ThreeCardsValue = "threecards";
         public const string HeroesSlotValue = "heroesslot";
+        public const string MyDinhValue = "mydinh";
+        public const string HangDayValue = "hangday";
+        public const string ThongNhatValue = "thongnhat";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -67,6 +70,9 @@
         public static readonly Game Lottery = new Game(LotteryValue, "RNG Lottery", GameId.Lottery);
         public static readonly Game ThreeCards = new Game(ThreeCardsValue, "Three Cards", GameId.ThreeCards);
         public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "Heroes Slot", GameId.HeroesSlot);
+        public static readonly Game MyDinh = new Game(MyDinhValue, "My Dinh", GameId.MyDinh);
+        public static readonly Game HangDay = new Game(HangDayValue, "Hang Day", GameId.HangDay);
+        public static readonly Game ThongNhat = new Game(ThongNhatValue, "Thong nhat", GameId.ThongNhat);
 
         public Game()
         {

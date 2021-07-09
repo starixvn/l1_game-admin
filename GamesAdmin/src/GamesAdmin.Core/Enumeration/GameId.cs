@@ -33,5 +33,8 @@
         Lottery = 31,
         ThreeCards = 35,
         HeroesSlot = 38
+        MyDinh,
+        HangDay,
+        ThongNhat
     }
 }
