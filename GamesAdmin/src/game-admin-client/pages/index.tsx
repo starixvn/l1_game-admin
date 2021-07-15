@@ -287,6 +287,39 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_THREE_CARDS_SERVER_PROXY_ROUTE
               : Cookies.get("three-cards-server-endpoint-route"),
         };
+      case gameNameMapper.mydinh:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_MYDINH_SERVER_ENDPOINT
+              : Cookies.get("mydinh-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_MYDINH_SERVER_PROXY_ROUTE
+              : Cookies.get("mydinh-server-endpoint-route"),
+        };
+      case gameNameMapper.hangday:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_HANGDAY_SERVER_ENDPOINT
+              : Cookies.get("hangday-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_HANGDAY_SERVER_PROXY_ROUTE
+              : Cookies.get("hangday-server-endpoint-route"),
+        };
+        case gameNameMapper.thongnhat:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_THONGNHAT_SERVER_ENDPOINT
+              : Cookies.get("thongnhat-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_THONGNHAT_SERVER_PROXY_ROUTE
+              : Cookies.get("thongnhat-server-endpoint-route"),
+        };
       case gameNameMapper.kenomax:
         return process.env.NEXT_PUBLIC_ENV === "local"
           ? {
