@@ -44,6 +44,9 @@
 
         public GameServerConfigs ThreeCards { get; set; }
 
+        public GameServerConfigs MyDinh { get; set; }
+        public GameServerConfigs HangDay { get; set; }
+        public GameServerConfigs ThongNhat { get; set; }
         public GameServerConfigs HeroesSlot { get; set; }
         
         public GameServerConfigs KenoMax { get; set; }

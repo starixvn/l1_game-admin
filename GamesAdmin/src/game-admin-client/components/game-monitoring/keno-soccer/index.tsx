@@ -1,8 +1,21 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import styles from "./styles.module.scss";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
-import { Col, Container, Row, Modal, ModalHeader, ModalBody } from "reactstrap";
+import {
+  Col,
+  Container,
+  Row,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  FormProps,
+} from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import BetItem, { SystemId } from "../../common/model/BetItem";
@@ -13,7 +26,6 @@ import {
   KenoSoccerModel,
 } from "../../common/model/KenoSoccerModel";
 import { Notice } from "../../shared/notice/notice";
-import KennoResult from "../../shared/keno-result/keno-result";
 import KenoSoccerResult from "./keno-soccer-result";
 
 type KenoSoccerProps = {
@@ -255,6 +267,62 @@ export default class KenoSoccer extends React.Component<
     return currentData;
   }
 
+  renderResultSummary() {
+    const { result: htResult, settlementResult: htSettlementResult } =
+      this.state.result.halfTime;
+
+    if (Object.values(htSettlementResult).some(x => x)) {
+      const htHomeTotal = htResult.home.reduce((num1, num2) => num1 + num2, 0);
+      const htAwayTotal = htResult.away.reduce((num1, num2) => num1 + num2, 0);
+
+      const { result: ftResult, settlementResult: ftSettlementResult } =
+        this.state.result.fullTime;
+      const ftHomeTotal =
+        ftResult.home.reduce((num1, num2) => num1 + num2, 0) + htHomeTotal;
+      const ftAwayTotal =
+        ftResult.away.reduce((num1, num2) => num1 + num2, 0) + htAwayTotal;
+
+      return (
+        <>
+          <Col xs={12} className={styles["result-summary"]}>
+            <div>
+              HT: Total {htHomeTotal + htAwayTotal} - Home {htHomeTotal} - Away{" "}
+              {htAwayTotal}
+            </div>
+            <div className="font-weight-bold">
+              {this.getSettlementResultString(htSettlementResult)}
+            </div>
+          </Col>
+          {Object.values(ftSettlementResult).some(x => x) && (
+            <Col xs={12} className={styles["result-summary"]}>
+              <div>
+                FT: Total {ftHomeTotal + ftAwayTotal} - Home {ftHomeTotal} -
+                Away {ftAwayTotal}
+              </div>
+              <div className="font-weight-bold">
+                {this.getSettlementResultString(ftSettlementResult)}
+              </div>
+            </Col>
+          )}
+        </>
+      );
+    }
+
+    return null;
+  }
+
+  getSettlementResultString(settlementResult) {
+    const homeAway = settlementResult.home
+      ? "Home - "
+      : settlementResult.away
+      ? "Away - "
+      : "";
+    const overUnder = settlementResult.over ? "Over" : "Under";
+    const oddEven = settlementResult.odd ? "Odd" : "Even";
+
+    return `${homeAway}${overUnder} - ${oddEven}`;
+  }
+
   renderMonitor() {
     const { betList, roundNumber, time, result, gameState } = this.state;
 
@@ -272,7 +340,7 @@ export default class KenoSoccer extends React.Component<
           <Col align="center" className="my-auto">
             <div className={styles.title}>My Dinh</div>
             <Row className={styles.result} noGutters>
-              <Col xs={12} xl={6}>
+              <Col xs={12} xl={6} onClick={this.openModal}>
                 <div className={styles.title}>Home</div>
                 <KenoSoccerResult
                   listResult={result.halfTime.result.home}
@@ -283,7 +351,7 @@ export default class KenoSoccer extends React.Component<
                   maxLength={10}
                 />
               </Col>
-              <Col xs={12} xl={6}>
+              <Col xs={12} xl={6} onClick={this.openModal}>
                 <div className={styles.title}>Away</div>
                 <KenoSoccerResult
                   listResult={result.halfTime.result.away}
@@ -294,6 +362,7 @@ export default class KenoSoccer extends React.Component<
                   maxLength={10}
                 />
               </Col>
+              {this.renderResultSummary()}
             </Row>
           </Col>
           <Col align="center" className="col-5">
@@ -515,10 +584,9 @@ export default class KenoSoccer extends React.Component<
     );
   }
 
-  openModal(cardIndex) {
+  openModal() {
     this.setState({
       isOpenModal: true,
-      currentSelectedIndex: cardIndex,
     });
   }
 
@@ -535,31 +603,65 @@ export default class KenoSoccer extends React.Component<
       <Modal
         isOpen={isOpenModal}
         toggle={this.toggleModal}
-        className={styles["desk-of-cards"]}
+        className={styles["result-control"]}
       >
         <ModalHeader
           toggle={this.toggleModal}
           className={styles["modal-header"]}
         />
-        <ModalBody></ModalBody>
+        <ModalBody>
+          <Form onSubmit={this.handleChangeResult}>
+            <div className={styles.title}>Half Time</div>
+            <FormGroup>
+              <Label for="htHome">Home</Label>
+              <Input name="htHome" data-period="halfTime" />
+            </FormGroup>
+            <FormGroup>
+              <Label for="htAway">Away</Label>
+              <Input name="htAway" />
+            </FormGroup>
+            <div className={styles.title}>Full Time</div>
+            <FormGroup>
+              <Label for="ftHome">Home</Label>
+              <Input name="ftHome" />
+            </FormGroup>
+            <FormGroup>
+              <Label for="ftAway">Away</Label>
+              <Input name="ftAway" />
+            </FormGroup>
+            <Button type="submit">Submit</Button>
+          </Form>
+        </ModalBody>
       </Modal>
     );
   }
 
-  handleChangeResult(rank, suit) {
-    const { result, currentSelectedIndex } = this.state;
-    result[currentSelectedIndex].rank = rank;
-    result[currentSelectedIndex].suit = suit;
-
-    const newResult = [];
+  handleChangeResult(event: FormEvent) {
+    event.preventDefault();
+    const newResult = {
+      halfTime: {
+        result: {
+          home: event.target["htHome"].value.split(",").map((x) => parseInt(x)),
+          away: event.target["htAway"].value.split(",").map((x) => parseInt(x)),
+        },
+      },
+      fullTime: {
+        result: {
+          home: event.target["ftHome"].value.split(",").map((x) => parseInt(x)),
+          away: event.target["ftAway"].value.split(",").map((x) => parseInt(x)),
+        },
+      },
+    };
 
     this.props.sendMessage({
       set_result: {
         roundId: this.state.roundNumber,
-        result: newResult,
+        result: newResult
       },
     });
-
+    const {result} = this.state;
+    result.halfTime.result = newResult.halfTime.result;
+    result.fullTime.result = newResult.fullTime.result;
     this.setState({
       result,
       isOpenModal: false,

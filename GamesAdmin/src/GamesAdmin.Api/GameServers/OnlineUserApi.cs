@@ -190,4 +190,10 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/kenonorth/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
+
+    public interface IKenoSoccerOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/{name}/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 }

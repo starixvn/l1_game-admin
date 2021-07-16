@@ -22,6 +22,9 @@
         public GameServerConfigs Lottery { get; set; }
         public GameServerConfigs ThreeCards { get; set; }
         public GameServerConfigs MiniKeno { get; set; }
+        public GameServerConfigs MyDinh { get; set; }
+        public GameServerConfigs HangDay { get; set; }
+        public GameServerConfigs ThongNhat { get; set; }
     }
 
     public class GameServerConfigs
