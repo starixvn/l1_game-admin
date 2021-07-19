@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -102,5 +103,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/kenosoccer/{game}/round/{roundId}/user/{nickname}?excludeUUS={excludeUUS}")]
+        Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -177,5 +178,11 @@ namespace GamesAdmin.Api.Report
         [Route("threecards/round/{roundId}/users/{nickname?}")]
         public async Task<ThreeCardsBetReport> ThreeCards(long roundId, string nickname, bool excludeUUS)
             => (await mediator.Send(new ThreeCardsReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("kenosoccer/{game}/round/{roundId}/users/{nickname?}")]
+        public Task<KenoSoccerBetReport> KenoSoccer(GameId game, long roundId, string nickname, bool excludeUUS)
+            => mediator.Send(new KenoSoccerReportRequest(game, roundId, nickname, excludeUUS));
+
     }
 }

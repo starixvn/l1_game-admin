@@ -55,7 +55,7 @@ namespace GamesAdmin.Core.Models
     public class SicBoBetReport : BetReport<SicBoRoundResult, SicBoBetRecord>
     {
     }
-    
+
     public class VipSeDieWarBetReport : BetReport<VipSeDieWarRoundResult, VipSeDieWarBetRecord>
     {
     }
@@ -65,6 +65,10 @@ namespace GamesAdmin.Core.Models
     }
 
     public class ThreeCardsBetReport : BetReport<ThreeCardsRoundResult, ThreeCardsBetRecord>
+    {
+    }
+
+    public class KenoSoccerBetReport : BetReport<KenoSoccerRoundResult, KenoSoccerBetRecord>
     {
     }
 }

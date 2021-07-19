@@ -62,10 +62,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
+
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+
         Task<VipSeDieWarBetReport> GetVipSeDieWarBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
+
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, Game game);
 
@@ -76,6 +79,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+        Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -159,7 +163,6 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);
 
-
         public Task<VipSeDieWarBetReport> GetVipSeDieWarBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetVipSeDieWarReport(roundId, nickname, excludeUUS);
 
@@ -189,5 +192,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
+
+        public Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetKenoSoccerBetReport(game, roundId, nickname, excludeUUS);
     }
 }
