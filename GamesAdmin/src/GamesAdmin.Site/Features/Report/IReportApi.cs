@@ -104,7 +104,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/kenosoccer/{game}/round/{roundId}/user/{nickname}?excludeUUS={excludeUUS}")]
-        Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
+        [Get("/report/kenosoccer/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<KenoSoccerBetReport> GetKenoSoccerBetReport(string game, long roundId, string nickname, bool excludeUUS);
     }
 }

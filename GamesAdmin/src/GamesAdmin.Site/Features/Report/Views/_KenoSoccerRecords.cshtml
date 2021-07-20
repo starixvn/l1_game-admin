@@ -1,0 +1,168 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model KenoSoccerReportResultViewModel
+@{
+    var htResult = Model.RoundResult.HalfTime;
+    var ftResult = Model.RoundResult.FullTime;
+}
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Round ID</th>
+                        <th rowspan="2">Results</th>
+                        <th colspan="2">Winning Options</th>
+                    </tr>
+                    <tr>
+                        <th>Half Time</th>
+                        <th>Full Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" colspan="10">Home</td>
+                                    </tr>
+                                    <tr class="text-center font-weight-bold">
+                                        @foreach (var number in htResult.Result.Home)
+                                        {
+                                            <td>@number</td>
+                                        }
+                                    </tr>
+                                    <tr class="text-center font-weight-bold">
+                                        @foreach (var number in ftResult.Result.Home)   
+                                        {
+                                            <td>@number</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="10">Away</td>
+                                    </tr>
+                                    <tr class="text-center font-weight-bold">
+                                        @foreach (var number in htResult.Result.Away)
+                                        {
+                                            <td>@number</td>
+                                        }
+                                    </tr>
+                                    <tr class="text-center font-weight-bold">
+                                        @foreach (var number in ftResult.Result.Away)
+                                        {
+                                            <td>@number</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="10">
+                                            Half Time: Sum @htResult.Total - Home @htResult.Result.Home.Sum() - Away @htResult.Result.Away.Sum()
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="10">
+                                            Full Time: Sum @ftResult.Total - Home @(htResult.Result.Home.Sum() + ftResult.Result.Home.Sum()) - Away @(htResult.Result.Away.Sum() + ftResult.Result.Away.Sum())
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="text-center font-weight-bold">
+                            @if (htResult.SettlementResult.Home)
+                            {
+                                <div>Home</div>
+                            }
+                            @if (htResult.SettlementResult.Away)
+                            {
+                                <div>Away</div>
+                            }
+                            @if (htResult.SettlementResult.Over)
+                            {
+                                <div>Over</div>
+                            }
+                            else
+                            {
+                                <div>Under</div>
+                            }
+                            @if (htResult.SettlementResult.Odd)
+                            {
+                                <div>Odd</div>
+                            }
+                            else
+                            {
+                                <div>Even</div>
+                            }
+                        </td>
+                        <td class="text-center font-weight-bold">
+                            @if (Model.RoundResult.FullTime.SettlementResult.Home)
+                            {
+                                <div>Home</div>
+                            }
+                            @if (Model.RoundResult.FullTime.SettlementResult.Away)
+                            {
+                                <div>Away</div>
+                            }
+                            @if (Model.RoundResult.FullTime.SettlementResult.Over)
+                            {
+                                <div>Over</div>
+                            }
+                            else
+                            {
+                                <div>Under</div>
+                            }
+                            @if (Model.RoundResult.FullTime.SettlementResult.Odd)
+                            {
+                                <div>Odd</div>
+                            }
+                            else
+                            {
+                                <div>Even</div>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Total Bets</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetKenoSoccerBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                                @HtmlHelpers.formatNumber(bet.TotalBet)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
+
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="5">No data</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

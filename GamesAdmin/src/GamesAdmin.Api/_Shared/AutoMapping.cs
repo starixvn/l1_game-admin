@@ -273,6 +273,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoSoccerPeriodResultEntity, KenoSoccerPeriodResult>();
             CreateMap<KenoSoccerPeriodSettlementResultEntity, KenoSoccerPeriodSettlementResult>();
             CreateMap<KenoSoccerBetReportEntity, KenoSoccerBetRecord>();
+            CreateMap<KenoSoccerBetEntity, KenoSoccerBetHistoryRecord>();
         }
     }
 }

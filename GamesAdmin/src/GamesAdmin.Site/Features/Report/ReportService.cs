@@ -194,6 +194,6 @@ namespace GamesAdmin.Site.Features.ClientSites
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
 
         public Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
-        => reportApi.GetKenoSoccerBetReport(game, roundId, nickname, excludeUUS);
+        => reportApi.GetKenoSoccerBetReport(game.ToString(), roundId, nickname, excludeUUS);
     }
 }

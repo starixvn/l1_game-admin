@@ -275,4 +275,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Clubs { get; set; }
     }
+
+
+    public class KenoSoccerRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
 }

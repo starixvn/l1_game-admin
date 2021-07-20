@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
@@ -219,5 +220,43 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Hearts { get; set; }
         public bool Spades { get; set; }
         public bool Clubs { get; set; }
+    }
+
+    public class KenoSoccerRoundResultViewModel 
+    {
+
+        public long Number { get; set; }
+        public KenoSoccerPeriodViewModel HalfTime { get; set; }
+
+        public KenoSoccerPeriodViewModel FullTime { get; set; }
+
+        public Dictionary<string, decimal> Odds { get; set; }
+    }
+
+    public class KenoSoccerPeriodViewModel
+    {
+        public DateTime Time { get; set; }
+
+        public int Total { get; set; }
+
+        public KenoSoccerPeriodResultViewModel Result { get; set; }
+
+        public KenoSoccerPeriodSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class KenoSoccerPeriodResultViewModel
+    {
+        public IEnumerable<int> Home { get; set; }
+        public IEnumerable<int> Away { get; set; }
+    }
+
+    public class KenoSoccerPeriodSettlementResultViewModel
+    {
+        public bool Home { get; set; }
+        public bool Away { get; set; }
+        public bool Over { get; set; }
+        public bool Under { get; set; }
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
     }
 }

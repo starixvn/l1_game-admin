@@ -25,6 +25,10 @@ namespace GamesAdmin.Database
         Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId);
 
         Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId);
+
+        Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoSoccerAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
+            where TRoundEntity : KenoSoccerRoundEntity
+            where TBetEntity : KenoSoccerBetEntity;
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -268,6 +272,19 @@ namespace GamesAdmin.Database
             var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
+        }
+
+        public async Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoSoccerAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
+            where TRoundEntity : KenoSoccerRoundEntity
+            where TBetEntity : KenoSoccerBetEntity
+        {
+            var roundCollection = database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+
+            return (roundResult, bets);
         }
     }
 }

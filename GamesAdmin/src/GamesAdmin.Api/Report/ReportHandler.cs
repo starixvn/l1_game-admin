@@ -45,7 +45,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
         IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
-        IRequestHandler<KenoSoccerReportRequest, KenoSoccerBetReport>
+        IRequestHandler<KenoSoccerReportRequest, KenoSoccerBetReport>,
+        IRequestHandler<KenoSoccerBetHistoryRequest, KenoSoccerBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -154,6 +155,17 @@ namespace GamesAdmin.Api.Report
                 GameId.MyDinh => reportService.GetMyDinhReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
                 GameId.HangDay => reportService.GetHangDayReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
                 GameId.ThongNhat => reportService.GetThongNhatReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                _ => throw new ArgumentException(nameof(request.Game)),
+            };
+        }
+
+        public Task<KenoSoccerBetHistory> Handle(KenoSoccerBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            return request.Game switch
+            {
+                GameId.MyDinh => reportService.GetMyDinhBetHistoryAsync(request.RoundId, request.UserId),
+                GameId.HangDay => reportService.GetHangDayBetHistoryAsync(request.RoundId, request.UserId),
+                GameId.ThongNhat => reportService.GetThongNhatBetHistoryAsync(request.RoundId, request.UserId),
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
         }

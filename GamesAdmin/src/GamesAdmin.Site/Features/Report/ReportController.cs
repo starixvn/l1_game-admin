@@ -104,7 +104,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
 
-
         [HttpGet]
         [ActionName("rnglottery")]
         public IActionResult Lottery()
@@ -122,6 +121,19 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult ThreeCards()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public IActionResult MyDinh()
+        {
+            ViewData["Title"] = "My Dinh";
+            return View("KenoSoccer", new KenoSoccerReportViewModel { Game = GameId.MyDinh, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoSoccerReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_KenoSoccerRecords", await mediator.Send(new GetKenoSoccerReportRequest(game, roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
@@ -399,6 +411,5 @@ namespace GamesAdmin.Site.Features.Report
                         model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
                         model.ExcludeUUS, model.ExcludeBot)));
         }
-
     }
 }

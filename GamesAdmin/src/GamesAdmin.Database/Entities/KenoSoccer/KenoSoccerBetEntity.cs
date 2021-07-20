@@ -10,17 +10,17 @@ namespace GamesAdmin.Database.Entities
     }
 
     [BsonCollection("mydinh_cuocs")]
-    public class KenoSoccerMyDinhBet : KenoSoccerBetEntity
+    public class KenoSoccerMyDinhBetEntity : KenoSoccerBetEntity
     {
     }
 
     [BsonCollection("hangday_cuocs")]
-    public class KenoSoccerHangDayBet : KenoSoccerBetEntity
+    public class KenoSoccerHangDayBetEntity : KenoSoccerBetEntity
     {
     }
 
     [BsonCollection("thongnhat_cuocs")]
-    public class KenoSoccerThongNhatBet : KenoSoccerBetEntity
+    public class KenoSoccerThongNhatBetEntity : KenoSoccerBetEntity
     {
     }
 }

@@ -44,7 +44,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
-        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>
+        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
+        IRequestHandler<GetKenoSoccerReportRequest, KenoSoccerReportResultViewModel>
 
     {
         private readonly IReportService reportService;
@@ -634,6 +635,24 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<ThreeCardsRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<KenoSoccerReportResultViewModel> Handle(GetKenoSoccerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoSoccerBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+
+            return new KenoSoccerReportResultViewModel
+            {
+                Game = request.Game,
+                RoundResult = mapper.Map<KenoSoccerRoundResultViewModel>(result.RoundResult),
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<KenoSoccerRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return recordViewModel;
