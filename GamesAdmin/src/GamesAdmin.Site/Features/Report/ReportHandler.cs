@@ -45,7 +45,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
         IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
-        IRequestHandler<GetKenoSoccerReportRequest, KenoSoccerReportResultViewModel>
+        IRequestHandler<GetKenoSoccerReportRequest, KenoSoccerReportResultViewModel>,
+        IRequestHandler<GetKenoSoccerBetHistoryRequest, KenoSoccerBetHistoryViewModel>
 
     {
         private readonly IReportService reportService;
@@ -657,6 +658,23 @@ namespace GamesAdmin.Site.Features.ClientSites
 
                     return recordViewModel;
                 })
+            };
+        }
+
+        public async Task<KenoSoccerBetHistoryViewModel> Handle(GetKenoSoccerBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoSoccerBetHistory(request.Game, request.RoundId, request.UserId);
+
+            return new KenoSoccerBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<KenoSoccerRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<KenoSoccerBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
             };
         }
     }

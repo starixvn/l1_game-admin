@@ -98,6 +98,7 @@ namespace GamesAdmin.Site._Shared
             CreateMap<KenoSoccerPeriodResult, KenoSoccerPeriodResultViewModel>();
             CreateMap<KenoSoccerPeriodSettlementResult, KenoSoccerPeriodSettlementResultViewModel>();
             CreateMap<KenoSoccerBetRecord, KenoSoccerRecordViewModel>();
+            CreateMap<KenoSoccerBetHistoryRecord, KenoSoccerBetHistoryRecordViewModel>();
         }
     }
 }

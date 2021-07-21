@@ -209,7 +209,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<CardViewModel> Result { get; set; }
 
-        public  ThreeCardsSettlementResultViewModel SettlementResult {get;set;}
+        public ThreeCardsSettlementResultViewModel SettlementResult { get; set; }
     }
 
     public class ThreeCardsSettlementResultViewModel
@@ -222,10 +222,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Clubs { get; set; }
     }
 
-    public class KenoSoccerRoundResultViewModel 
+    public class KenoSoccerRoundResultViewModel
     {
-
         public long Number { get; set; }
+
         public KenoSoccerPeriodViewModel HalfTime { get; set; }
 
         public KenoSoccerPeriodViewModel FullTime { get; set; }

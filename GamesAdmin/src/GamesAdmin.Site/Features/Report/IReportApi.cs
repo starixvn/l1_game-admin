@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -55,6 +54,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/vip_baccarat/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipBaccaratBetReport> GetVipBaccaratReport(long roundId, string nickname, bool excludeUUS);
+
         [Get("/report/roulette/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<RouletteBetReport> GetRouletteReport(long roundId, string nickname, bool excludeUUS);
 
@@ -81,11 +81,13 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/sic_bo/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+
         [Get("/report/vipsediewar/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipSeDieWarBetReport> GetVipSeDieWarReport(long roundId, string nickname, bool excludeUUS);
 
         [Get("/report/bet_history/game/sicbo/round/{roundId}/user/{userId}")]
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
+
         [Get("/report/bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
 
@@ -106,5 +108,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/kenosoccer/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<KenoSoccerBetReport> GetKenoSoccerBetReport(string game, long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/kenosoccer/{game}/round/{roundId}/user/{userId}")]
+        Task<KenoSoccerBetHistory> GetKenoSoccerBetHistory(string game, long roundId, string userId);
     }
 }

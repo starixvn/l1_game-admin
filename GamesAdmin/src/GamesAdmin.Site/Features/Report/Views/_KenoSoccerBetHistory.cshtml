@@ -1,0 +1,108 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model KenoSoccerBetHistoryViewModel
+
+@{
+    var betChoiceMapper = new Dictionary<string, string>
+{
+        { "preHTHome", "Home" },
+        { "preHTAway", "Away" },
+        { "preHTOver", "Over" },
+        { "preHTUnder", "Under" },
+        { "preHTOdd", "Odd" },
+        { "preHTEven", "Even" },
+        { "preFTHome", "Home" },
+        { "preFTAway", "Away" },
+        { "preFTOver", "Over" },
+        { "preFTUnder", "Under" },
+        { "preFTOdd", "Odd" },
+        { "preFTEven", "Even" },
+        { "liveFTHome", "Home" },
+        { "liveFTAway", "Away" },
+        { "liveFTOver", "Over" },
+        { "liveFTUnder", "Under" },
+        { "liveFTOdd", "Odd" },
+        { "liveFTEven", "Even" },
+    };
+
+    var betTypeMapper = new Dictionary<string, string>
+{
+        { "preHTHome", "Pre-match - Half Time Home/Away" },
+        { "preHTAway", "Pre-match - Half Time Home/Away" },
+        { "preHTOver", "Pre-match - Half Time Over/Under" },
+        { "preHTUnder", "Pre-match - Half Time Over/Under" },
+        { "preHTOdd", "Pre-match - Half Time Odd/Even" },
+        { "preHTEven", "Pre-match - Half Time Odd/Even" },
+        { "preFTHome", "Pre-match - Full Time Home/Away" },
+        { "preFTAway", "Pre-match - Full Time Home/Away" },
+        { "preFTOver", "Pre-match - Full Time Over/Under" },
+        { "preFTUnder", "Pre-match - Full Time Over/Under" },
+        { "preFTOdd", "Pre-match - Full Time Odd/Even" },
+        { "preFTEven", "Pre-match - Full Time Odd/Even" },
+        { "liveFTHome", "Live - Full Time Home/Away" },
+        { "liveFTAway", "Live - Full Time Home/Away" },
+        { "liveFTOver", "Live - Full Time Over/Under" },
+        { "liveFTUnder", "Live - Full Time Over/Under" },
+        { "liveFTOdd", "Live - Full Time Odd/Even" },
+        { "liveFTEven", "Live - Full Time Odd/Even" },
+    };
+
+    var htSettlementResult = Model.RoundResult.HalfTime.SettlementResult;
+    var ftSettlementResult = Model.RoundResult.FullTime.SettlementResult;
+
+    var settlmentResultMapper = new Dictionary<string, bool>
+{
+        { "preHTHome", htSettlementResult.Home },
+        { "preHTAway", htSettlementResult.Away },
+        { "preHTOver", htSettlementResult.Over},
+        { "preHTUnder", htSettlementResult.Under },
+        { "preHTOdd", htSettlementResult.Odd},
+        { "preHTEven", htSettlementResult.Even },
+        { "preFTHome", ftSettlementResult.Home },
+        { "preFTAway", ftSettlementResult.Away },
+        { "preFTOver", ftSettlementResult.Over},
+        { "preFTUnder", ftSettlementResult.Under },
+        { "preFTOdd", ftSettlementResult.Odd},
+        { "preFTEven", ftSettlementResult.Even },
+        { "liveFTHome", ftSettlementResult.Home },
+        { "liveFTAway", ftSettlementResult.Away },
+        { "liveFTOver", ftSettlementResult.Over},
+        { "liveFTUnder", ftSettlementResult.Under },
+        { "liveFTOdd", ftSettlementResult.Odd},
+        { "liveFTEven", ftSettlementResult.Even },
+    };
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Nickname</th>
+            <th>Bet Type</th>
+            <th>Bet Choice</th>
+            <th>Odds</th>
+            <th>Bet Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            var winCssClass = settlmentResultMapper[bet.Choice] ? "text-primary" : string.Empty;
+
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="@winCssClass text-center ">
+                    @betTypeMapper[bet.Choice]
+                </td>
+                <td class="@winCssClass text-center">
+                    @betChoiceMapper[bet.Choice]
+                </td>
+                <td class="@winCssClass">@Model.RoundResult.Odds[bet.Choice]</td>
+                <td class="text-right @winCssClass">
+                    @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
