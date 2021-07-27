@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 
@@ -7,7 +7,7 @@ namespace GamesAdmin.Database
 {
     public interface ISiteRepository : IGenericRepository<ClientSiteEntity>
     {
-        Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl, string mobiClientUrl, IEnumerable<string> currencies);
+        Task UpdateGameClientUrlAsync(ClientSite clientSite);
     }
 
     public class SiteRepository : GenericRepository<ClientSiteEntity>, ISiteRepository
@@ -16,14 +16,15 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task UpdateGameClientUrlAsync(string clientId, string siteId, string gameClientUrl, string mobiClientUrl, IEnumerable<string> currencies)
+        public async Task UpdateGameClientUrlAsync(ClientSite clientSite)
         {
             var updates = Builders<ClientSiteEntity>.Update
-                .Set(x => x.GameClientUrl, gameClientUrl)
-                .Set(x => x.GameMobiClientUrl, mobiClientUrl)
-                .Set(x => x.ValidCurrencies, currencies);
+                .Set(x => x.GameClientUrl, clientSite.GameClientUrl)
+                .Set(x => x.GameMobiClientUrl, clientSite.GameMobiClientUrl)
+                .Set(x => x.ValidCurrencies, clientSite.ValidCurrencies)
+                .Set(x => x.MiniSabaGameClientUrl, clientSite.MiniSabaGameClientUrl);
 
-            await UpdateAsync(x => x.ClientId == clientId && x.SiteId == siteId, updates);
+            await UpdateAsync(x => x.ClientId == clientSite.ClientId && x.SiteId == clientSite.SiteId, updates);
         }
     }
 }

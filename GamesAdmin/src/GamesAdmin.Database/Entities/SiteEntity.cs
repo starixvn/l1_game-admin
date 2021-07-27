@@ -17,6 +17,9 @@ namespace GamesAdmin.Database.Entities
         public string GameClientUrl { get; set; }
 
         public string GameMobiClientUrl { get; set; }
+
+        public string MiniSabaGameClientUrl { get; set; }
+
         public IEnumerable<string> ValidCurrencies { get; set; }
     }
 }
