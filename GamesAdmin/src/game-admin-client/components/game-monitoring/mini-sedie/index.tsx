@@ -8,10 +8,11 @@ import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
-import BetItem from "../../common/model/BetItem";
+import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import MiniSedieModel from "../../common/model/MiniSedieModel";
+import { getTotalBetOnSystem } from "../../util/util";
 
 type Props = {
   onMessage: Function;
@@ -20,10 +21,13 @@ type Props = {
 export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
+  private systemFilter: SystemId;
+
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
+    this.systemFilter = SystemId.None;
     this.state = new MiniSedieModel();
   }
 
@@ -121,7 +125,13 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
         if (betTracks[key]) {
           currentData[key].total += betTracks[key];
           currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
+            new BetItem(
+              data[user].name,
+              betTracks[key],
+              null,
+              null,
+              data[user].system
+            )
           );
         }
       });
@@ -169,6 +179,15 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
   renderMonitor() {
     const { betList, roundNumber, time, result, gameState } = this.state;
     const winer = gameState == GameState.waiting ? this.getWinner() : "";
+
+    if (this.systemFilter) {
+      Object.values(betList).forEach((betsOnType) => {
+        betsOnType.total = getTotalBetOnSystem(
+          betsOnType.dataList,
+          this.systemFilter
+        );
+      });
+    }
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -250,6 +269,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.red4.dataList}
             isWin={winer == "red4"}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -258,6 +278,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.red3.dataList}
             isWin={winer == "red3"}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -266,6 +287,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.even.dataList}
             isWin={winer != "" && winer != "white3" && winer != "red3"}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -274,6 +296,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.odd.dataList}
             isWin={winer == "white3" || winer == "red3"}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -282,6 +305,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.white3.dataList}
             isWin={winer == "white3"}
+            systemFilter={this.systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -290,6 +314,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.white4.dataList}
             isWin={winer == "white4"}
+            systemFilter={this.systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -303,6 +328,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
           renderBetList={this.renderBetList()}
           renderMonitor={this.renderMonitor()}
           disabled={this.state.gameState == GameState.disabled}
+          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
         ></GameTemplate>
       </div>
     );

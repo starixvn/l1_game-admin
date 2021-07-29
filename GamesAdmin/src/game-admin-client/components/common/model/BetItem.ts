@@ -2,6 +2,7 @@ export enum SystemId {
   None,
   SC,
   SM,
+  MiniSC
 }
 
 export default class BetItem {
