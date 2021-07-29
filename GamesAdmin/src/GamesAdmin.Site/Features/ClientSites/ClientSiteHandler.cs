@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 SiteId = x.SiteId,
                 GameClientUrl = x.GameClientUrl,
                 GameMobiClientUrl = x.GameMobiClientUrl,
-                MiniSabaGameClientUrl = x.MiniSabaGameClientUrl
+                MiniSabaGameClientUrl = x.MiniSabaGameClientUrl,
                 ValidCurrencies = x.ValidCurrencies != null ? string.Join(";", x.ValidCurrencies) : string.Empty
             });
         }
