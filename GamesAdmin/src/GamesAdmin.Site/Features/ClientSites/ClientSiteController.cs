@@ -52,6 +52,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     SiteId = viewModel.SiteId,
                     GameClientUrl = viewModel.GameClientUrl,
                     GameMobiClientUrl = viewModel.GameMobiClientUrl,
+                    MiniSabaGameClientUrl = viewModel.MiniSabaGameClientUrl,
                     ValidCurrencies = viewModel.ValidCurrencies.Split(";").Select(x => x.Trim().ToUpperInvariant())
                 }));
 
