@@ -1,0 +1,57 @@
+﻿@using GamesAdmin.Site.Features.ResultMonitor.ViewModels
+@model SettlementBoardViewModel
+
+@if (Model.IsError)
+{
+    <div class="message-error" id="failedMsg">
+        Sending result unsuccessfully. The following conditions that must be satisfied in order to monitor board result.<br />
+        - Result cannot be set for real user and banned bot. <br />
+        - Result cannot be set for UUS user when the "Exclude UUS" setting is TRUE. <br />
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-four-guardians">
+        <thead>
+            <tr>
+                <th>Winning Paylines</th>
+                <th>Free Spins</th>
+                <th>Bonus</th>
+
+                <th>Board</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.WinningPaylines
+                </td>
+                <td>
+                    @Model.NumberOfFreeSpins
+                </td>
+                <td>
+                    @Model.NumberOfBonus
+                </td>
+                <td>
+                    <table class="table-paylines">
+                        <tbody>
+                            @{
+                                for (var row = 0; row < Model.FormattedBoard.Length; row++)
+                                {
+                                    <tr>
+                                        @for (var column = 0; column < Model.FormattedBoard[row].Length; column++)
+                                        {
+                                            <td><img class="symbol" src="~/images/slot-icons/vietnameseheroes/@(Model.FormattedBoard[row][column]).png" /></td>
+                                        }
+                                    </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

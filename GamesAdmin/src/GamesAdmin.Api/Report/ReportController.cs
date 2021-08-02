@@ -177,5 +177,10 @@ namespace GamesAdmin.Api.Report
         [Route("threecards/round/{roundId}/users/{nickname?}")]
         public async Task<ThreeCardsBetReport> ThreeCards(long roundId, string nickname, bool excludeUUS)
             => (await mediator.Send(new ThreeCardsReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("vietnamese_heroes/round/{roundId}/users/{nickname?}")]
+        public async Task<IEnumerable<VietnameseHeroesBetRecord>> VietnameseHeroes(long roundId, string nickname, bool excludeUUS)
+            => (await mediator.Send(new VietnameseHeroesReportRequest(roundId, nickname, excludeUUS)));
     }
 }

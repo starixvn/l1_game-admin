@@ -96,11 +96,11 @@ namespace GamesAdmin.Api.GameServers
     }
 
     public interface ILotteryOnlineUserApi : IOnlineUserApi
-     {
+    {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
+
     public interface IFishPrawnCrabOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
@@ -132,6 +132,12 @@ namespace GamesAdmin.Api.GameServers
     }
 
     public interface IThreeCardsOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IVietnameseHeroesOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");

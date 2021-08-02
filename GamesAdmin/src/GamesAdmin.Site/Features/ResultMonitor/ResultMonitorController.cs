@@ -21,12 +21,14 @@ namespace GamesAdmin.Site.Features.ResultMonitor
 
         [HttpGet]
         public IActionResult SlotResult(string gameConfigName)
-        => View(new SlotResultViewModel(gameConfigName));
+            => View(new SlotResultViewModel(gameConfigName));
 
         [HttpPost]
         public async Task<IActionResult> SetSlotResult([Bind] SlotResultViewModel viewModel)
         {
-            return PartialView("_ResultMonitor", await mediator.Send(new SetSlotResultRequest(
+            var viewName = viewModel.GameName == Game.VietnameseHeroesValue ?
+                "_VietnameseHeroesResultMonitor" : "_ResultMonitor";
+            return PartialView(viewName, await mediator.Send(new SetSlotResultRequest(
                 viewModel.GameName,
                 viewModel.Nickname,
                 viewModel.Results.Trim().Split(',').Select(x => byte.Parse(x)).ToArray())));

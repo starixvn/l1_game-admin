@@ -43,6 +43,8 @@
         public GameServerConfigs Lottery { get; set; }
 
         public GameServerConfigs ThreeCards { get; set; }
+
+        public GameServerConfigs VietnameseHeroes { get; set; }
     }
 
     public class GameServerConfigs

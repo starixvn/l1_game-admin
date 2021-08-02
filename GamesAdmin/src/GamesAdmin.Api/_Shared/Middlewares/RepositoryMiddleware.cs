@@ -35,6 +35,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ILotteryReportRepository, LotteryReportRepository>();
             services.AddScoped<IJackpotRepository, JackpotRepository>();
             services.AddScoped<IThreeCardsReportRepository, ThreeCardsReportRepository>();
+            services.AddScoped<IVietnameseHeroesReportRepository, VietnameseHeroesReportRepository>();
         }
     }
 }

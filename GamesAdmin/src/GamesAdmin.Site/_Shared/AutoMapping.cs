@@ -66,11 +66,10 @@ namespace GamesAdmin.Site._Shared
             }));
             CreateMap<SicBoBetRecord, SicBoRecordViewModel>();
             CreateMap<SicBoBetHistoryRecord, SicBoBetHistoryRecordViewModel>();
-            
+
             CreateMap<VipSeDieWarRoundResult, VipSeDieWarRoundResultViewModel>();
             CreateMap<VipSeDieWarBetRecord, VipSeDieWarRecordViewModel>();
             CreateMap<VipSeDieWarBetHistoryRecord, VipSeDieWarBetHistoryRecordViewModel>();
-
 
             CreateMap<FourGuardiansBetRecord, FourGuardiansRecordViewModel>();
             CreateMap<FourGuardiansSettlementResult, FourGuardiansSettlementResultViewModel>();
@@ -95,6 +94,14 @@ namespace GamesAdmin.Site._Shared
             CreateMap<ThreeCardsRoundResult, ThreeCardsRoundResultViewModel>();
             CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
             CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
+
+            CreateMap<VietnameseHeroesBetRecord, VietnameseHeroesRecordViewModel>();
+            CreateMap<VietnameseHeroesSettlementResult, VietnameseHeroesSettlementResultViewModel>();
+            CreateMap<VietnameseHeroesFreeSpin, VietnameseHeroesFreeSpinViewModel>();
+            CreateMap<VietnameseHeroesBonus, VietnameseHeroesBonusViewModel>();
+            CreateMap<VietnameseHeroesWinningLine, VietnameseHeroesWinningLineViewModel>();
+            CreateMap<VietnameseHeroesBonusChest, VietnameseHeroesBonusChestViewModel>();
+            CreateMap<VietnameseHeroesJackpot, VietnameseHeroesJackpotViewModel>();
         }
     }
 }
