@@ -7,11 +7,11 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class VietnameseHeroesEndGameInfoService : IEndGameInfoService
+    public class HeroesSlotEndGameInfoService : IEndGameInfoService
     {
-        private readonly IGenericRepository<VietnameseHeroesRoundEntity> roundRepository;
+        private readonly IGenericRepository<HeroesSlotRoundEntity> roundRepository;
 
-        public VietnameseHeroesEndGameInfoService(IGenericRepository<VietnameseHeroesRoundEntity> roundRepository)
+        public HeroesSlotEndGameInfoService(IGenericRepository<HeroesSlotRoundEntity> roundRepository)
         {
             this.roundRepository = roundRepository;
         }

@@ -44,7 +44,7 @@
 
         public GameServerConfigs ThreeCards { get; set; }
 
-        public GameServerConfigs VietnameseHeroes { get; set; }
+        public GameServerConfigs HeroesSlot { get; set; }
     }
 
     public class GameServerConfigs

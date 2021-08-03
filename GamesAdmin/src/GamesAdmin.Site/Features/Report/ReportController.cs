@@ -324,22 +324,22 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult VietnameseHeroes()
+        public IActionResult HeroesSlot()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVietnameseHeroesReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_VietnameseHeroesRecords", await mediator.Send(new GetVietnameseHeroesReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_HeroesSlotRecords", await mediator.Send(new GetHeroesSlotReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVietnameseHeroesBetHistory(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetHeroesSlotBetHistory(long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_VietnameseHeroesBetHistory",
-                (await mediator.Send(new GetVietnameseHeroesReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
+            return PartialView("_HeroesSlotBetHistory",
+                (await mediator.Send(new GetHeroesSlotReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
         }
 
         [HttpGet]

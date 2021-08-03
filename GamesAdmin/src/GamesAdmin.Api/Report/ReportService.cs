@@ -79,7 +79,7 @@ namespace GamesAdmin.Api.Report
 
         Task<ThreeCardsBetReport> GetThreeCardsReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<IEnumerable<VietnameseHeroesBetRecord>> GetVietnameseHeroesReportAsync(long handId, string nickname, bool excludeUUS);
+        Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReportAsync(long handId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -569,12 +569,12 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<IEnumerable<VietnameseHeroesBetRecord>> GetVietnameseHeroesReportAsync(long handId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReportAsync(long handId, string nickname, bool excludeUUS)
         {
-            var repository = serviceProvider.GetService<IVietnameseHeroesReportRepository>();
+            var repository = serviceProvider.GetService<IHeroesSlotReportRepository>();
             var result = await repository.GetAsync(handId, nickname, excludeUUS);
 
-            return result.Select(x => mapper.Map<VietnameseHeroesBetRecord>(x));
+            return result.Select(x => mapper.Map<HeroesSlotBetRecord>(x));
         }
     }
 }

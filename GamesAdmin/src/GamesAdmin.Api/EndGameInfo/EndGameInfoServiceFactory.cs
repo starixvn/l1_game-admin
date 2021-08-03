@@ -44,7 +44,7 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) },
             { GameId.Lottery, typeof(LotteryEndGameInfoService) },
             { GameId.ThreeCards, typeof(ThreeCardsEndGameInfoService) },
-            { GameId.VietnameseHeroes, typeof(VietnameseHeroesEndGameInfoService) },
+            { GameId.HeroesSlot, typeof(HeroesSlotEndGameInfoService) },
         };
 
         private readonly IServiceProvider serviceProvider;

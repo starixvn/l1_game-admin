@@ -95,13 +95,13 @@ namespace GamesAdmin.Site._Shared
             CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
             CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
 
-            CreateMap<VietnameseHeroesBetRecord, VietnameseHeroesRecordViewModel>();
-            CreateMap<VietnameseHeroesSettlementResult, VietnameseHeroesSettlementResultViewModel>();
-            CreateMap<VietnameseHeroesFreeSpin, VietnameseHeroesFreeSpinViewModel>();
-            CreateMap<VietnameseHeroesBonus, VietnameseHeroesBonusViewModel>();
-            CreateMap<VietnameseHeroesWinningLine, VietnameseHeroesWinningLineViewModel>();
-            CreateMap<VietnameseHeroesBonusChest, VietnameseHeroesBonusChestViewModel>();
-            CreateMap<VietnameseHeroesJackpot, VietnameseHeroesJackpotViewModel>();
+            CreateMap<HeroesSlotBetRecord, HeroesSlotRecordViewModel>();
+            CreateMap<HeroesSlotSettlementResult, HeroesSlotSettlementResultViewModel>();
+            CreateMap<HeroesSlotFreeSpin, HeroesSlotFreeSpinViewModel>();
+            CreateMap<HeroesSlotBonus, HeroesSlotBonusViewModel>();
+            CreateMap<HeroesSlotWinningLine, HeroesSlotWinningLineViewModel>();
+            CreateMap<HeroesSlotBonusChest, HeroesSlotBonusChestViewModel>();
+            CreateMap<HeroesSlotJackpot, HeroesSlotJackpotViewModel>();
         }
     }
 }

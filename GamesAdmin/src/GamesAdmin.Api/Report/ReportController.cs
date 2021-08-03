@@ -179,8 +179,8 @@ namespace GamesAdmin.Api.Report
             => (await mediator.Send(new ThreeCardsReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
-        [Route("vietnamese_heroes/round/{roundId}/users/{nickname?}")]
-        public async Task<IEnumerable<VietnameseHeroesBetRecord>> VietnameseHeroes(long roundId, string nickname, bool excludeUUS)
-            => (await mediator.Send(new VietnameseHeroesReportRequest(roundId, nickname, excludeUUS)));
+        [Route("heroes_slot/round/{roundId}/users/{nickname?}")]
+        public async Task<IEnumerable<HeroesSlotBetRecord>> HeroesSlot(long roundId, string nickname, bool excludeUUS)
+            => (await mediator.Send(new HeroesSlotReportRequest(roundId, nickname, excludeUUS)));
     }
 }

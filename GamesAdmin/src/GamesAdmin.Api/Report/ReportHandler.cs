@@ -43,7 +43,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
         IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
-        IRequestHandler<VietnameseHeroesReportRequest, IEnumerable<VietnameseHeroesBetRecord>>
+        IRequestHandler<HeroesSlotReportRequest, IEnumerable<HeroesSlotBetRecord>>
     {
         private readonly IReportService reportService;
 
@@ -143,7 +143,7 @@ namespace GamesAdmin.Api.Report
         public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken)
             => reportService.GetThreeCardsReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
-        public Task<IEnumerable<VietnameseHeroesBetRecord>> Handle(VietnameseHeroesReportRequest request, CancellationToken cancellationToken)
-            => reportService.GetVietnameseHeroesReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        public Task<IEnumerable<HeroesSlotBetRecord>> Handle(HeroesSlotReportRequest request, CancellationToken cancellationToken)
+            => reportService.GetHeroesSlotReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

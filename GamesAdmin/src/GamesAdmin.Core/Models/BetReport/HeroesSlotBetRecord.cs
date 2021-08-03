@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public class VietnameseHeroesBetRecord : BetRecord
+    public class HeroesSlotBetRecord : BetRecord
     {
         public long RoundId { get; set; }
 
@@ -16,39 +16,39 @@ namespace GamesAdmin.Core.Models
 
         public IEnumerable<byte> Result { get; set; }
 
-        public VietnameseHeroesSettlementResult SettlementResult { get; set; }
+        public HeroesSlotSettlementResult SettlementResult { get; set; }
 
-        public IEnumerable<VietnameseHeroesBonusChest> BonusChests { get; set; }
+        public IEnumerable<HeroesSlotBonusChest> BonusChests { get; set; }
 
         public bool Paid { get; set; }
     }
 
-    public class VietnameseHeroesBonusChest
+    public class HeroesSlotBonusChest
     {
         public decimal Amount { get; set; }
 
         public bool Picked { get; set; }
     }
 
-    public class VietnameseHeroesSettlementResult
+    public class HeroesSlotSettlementResult
     {
-        public IEnumerable<VietnameseHeroesWinningLine> WinningPaylines { get; set; }
+        public IEnumerable<HeroesSlotWinningLine> WinningPaylines { get; set; }
 
-        public VietnameseHeroesBonus Bonus { get; set; }
+        public HeroesSlotBonus Bonus { get; set; }
 
-        public VietnameseHeroesFreeSpin FreeSpins { get; set; }
+        public HeroesSlotFreeSpin FreeSpins { get; set; }
 
-        public VietnameseHeroesJackpot Jackpot { get; set; }
+        public HeroesSlotJackpot Jackpot { get; set; }
     }
 
-    public class VietnameseHeroesJackpot
+    public class HeroesSlotJackpot
     {
         public byte WinningLine { get; set; }
 
         public decimal WinningAmount { get; set; }
     }
 
-    public class VietnameseHeroesWinningLine
+    public class HeroesSlotWinningLine
     {
         public byte Payline { get; set; }
 
@@ -59,14 +59,14 @@ namespace GamesAdmin.Core.Models
         public decimal Odds { get; set; }
     }
 
-    public class VietnameseHeroesBonus
+    public class HeroesSlotBonus
     {
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
     }
 
-    public class VietnameseHeroesFreeSpin
+    public class HeroesSlotFreeSpin
     {
         public byte Count { get; set; }
 

@@ -77,7 +77,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.OddEvenTurbo.DisplayName, Game.OddEvenTurbo.Value),
                 new SelectListItem(Game.MiniSeDie.DisplayName, Game.MiniSeDie.Value),
                 new SelectListItem(Game.ThreeCards.DisplayName, Game.ThreeCards.Value),
-                new SelectListItem(Game.VietnameseHeroes.DisplayName, Game.VietnameseHeroes.Value),
+                new SelectListItem(Game.HeroesSlot.DisplayName, Game.HeroesSlot.Value),
                 };
     }
 }

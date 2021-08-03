@@ -103,7 +103,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/vietnamese_heroes/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<IEnumerable<VietnameseHeroesBetRecord>> GetVietnameseHeroesReport(long roundId, string nickname, bool excludeUUS);
+        [Get("/report/heroes_slot/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS);
     }
 }

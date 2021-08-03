@@ -33,7 +33,7 @@
         public const string FourGuardiansValue = "fourguardians";
         public const string LotteryValue = "lottery";
         public const string ThreeCardsValue = "threecards";
-        public const string VietnameseHeroesValue = "vietnameseheroes";
+        public const string HeroesSlotValue = "heroesslot";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -66,7 +66,7 @@
         public static readonly Game FourGuardians = new Game(FourGuardiansValue, "Four Guardians", GameId.FourGuardians);
         public static readonly Game Lottery = new Game(LotteryValue, "RNG Lottery", GameId.Lottery);
         public static readonly Game ThreeCards = new Game(ThreeCardsValue, "Three Cards", GameId.ThreeCards);
-        public static readonly Game VietnameseHeroes = new Game(VietnameseHeroesValue, "Vietnamese Heroes", GameId.VietnameseHeroes);
+        public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "The Legend of Heroes", GameId.HeroesSlot);
 
         public Game()
         {

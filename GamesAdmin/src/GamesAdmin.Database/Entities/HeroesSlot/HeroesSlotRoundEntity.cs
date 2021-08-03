@@ -6,8 +6,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("vietnameseheroes_rounds")]
-    public class VietnameseHeroesRoundEntity : BaseRoundEntity
+    [BsonCollection("heroesslot_rounds")]
+    public class HeroesSlotRoundEntity : BaseRoundEntity
     {
         public decimal Bet { get; set; }
 
@@ -20,9 +20,9 @@ namespace GamesAdmin.Database.Entities
 
         public IEnumerable<byte> Result { get; set; }
 
-        public VietnameseHeroesSettlementResultEntity SettlementResult { get; set; }
+        public HeroesSlotSettlementResultEntity SettlementResult { get; set; }
 
-        public IEnumerable<VietnameseHeroesBonusChestEntity> BonusChests { get; set; }
+        public IEnumerable<HeroesSlotBonusChestEntity> BonusChests { get; set; }
 
         public bool Paid { get; set; }
 
@@ -41,7 +41,7 @@ namespace GamesAdmin.Database.Entities
         public DateTime EndTime { get; set; }
     }
 
-    public class VietnameseHeroesBonusChestEntity
+    public class HeroesSlotBonusChestEntity
     {
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Amount { get; set; }
@@ -49,18 +49,18 @@ namespace GamesAdmin.Database.Entities
         public bool Picked { get; set; }
     }
 
-    public class VietnameseHeroesSettlementResultEntity
+    public class HeroesSlotSettlementResultEntity
     {
-        public IEnumerable<VietnameseHeroesWinningLineEntity> WinningPaylines { get; set; }
+        public IEnumerable<HeroesSlotWinningLineEntity> WinningPaylines { get; set; }
 
-        public VietnameseHeroesBonusEntity Bonus { get; set; }
+        public HeroesSlotBonusEntity Bonus { get; set; }
 
-        public VietnameseHeroesFreeSpinEntity FreeSpins { get; set; }
+        public HeroesSlotFreeSpinEntity FreeSpins { get; set; }
 
-        public VietnameseHeroesJackpotEntity Jackpot { get; set; }
+        public HeroesSlotJackpotEntity Jackpot { get; set; }
     }
 
-    public class VietnameseHeroesJackpotEntity
+    public class HeroesSlotJackpotEntity
     {
         public byte WinningLine { get; set; }
 
@@ -68,7 +68,7 @@ namespace GamesAdmin.Database.Entities
         public decimal WinningAmount { get; set; }
     }
 
-    public class VietnameseHeroesWinningLineEntity
+    public class HeroesSlotWinningLineEntity
     {
         public byte Payline { get; set; }
 
@@ -79,14 +79,14 @@ namespace GamesAdmin.Database.Entities
         public decimal Odds { get; set; }
     }
 
-    public class VietnameseHeroesBonusEntity
+    public class HeroesSlotBonusEntity
     {
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
     }
 
-    public class VietnameseHeroesFreeSpinEntity
+    public class HeroesSlotFreeSpinEntity
     {
         public byte Count { get; set; }
 

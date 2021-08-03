@@ -8,24 +8,24 @@ using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
-    public interface IVietnameseHeroesReportRepository
+    public interface IHeroesSlotReportRepository
     {
-        Task<IEnumerable<VietnameseHeroesBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<HeroesSlotBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
 
-    public class VietnameseHeroesReportRepository : IVietnameseHeroesReportRepository
+    public class HeroesSlotReportRepository : IHeroesSlotReportRepository
     {
         private readonly IMongoDatabase database;
 
-        public VietnameseHeroesReportRepository(IMongoDatabase database)
+        public HeroesSlotReportRepository(IMongoDatabase database)
         {
             this.database = database;
         }
 
-        public async Task<IEnumerable<VietnameseHeroesBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<HeroesSlotBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var project = GetAggregateBuilder(roundId, nickname, excludeUUS: excludeUUS)
-                .Project(x => new VietnameseHeroesBetReportEntity
+                .Project(x => new HeroesSlotBetReportEntity
                 {
                     Time = x.Time,
                     Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -46,16 +46,17 @@ namespace GamesAdmin.Database
             return await project.ToListAsync();
         }
 
-        private IAggregateFluent<VietnameseHeroesBetWithUnWindAccountsEntity> GetAggregateBuilder(long roundId, string nickname, bool excludeUUS)
+        private IAggregateFluent<HeroesSlotBetWithUnWindAccountsEntity> GetAggregateBuilder(long roundId, string nickname, bool excludeUUS)
         {
-            var betCollection = database.GetCollection<VietnameseHeroesRoundEntity>(Document.GetCollectionName(typeof(VietnameseHeroesRoundEntity)));
+            var betCollection = database.GetCollection<HeroesSlotRoundEntity>(Document.GetCollectionName(typeof(HeroesSlotRoundEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"^(?i){nickname}$");
 
-            var aggregateBuilder = betCollection.Aggregate().Match(x => (x.Number == roundId || roundId == 0) && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)))
+            var aggregateBuilder = betCollection.Aggregate()
+                .Match(x => (x.Number == roundId || roundId == 0) && (string.IsNullOrWhiteSpace(nickname) || nickNameRegex.IsMatch(x.Name)))
                 .SortByDescending(x => x.Id)
-                .Lookup<VietnameseHeroesRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
+                .Lookup<HeroesSlotRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
                        localField: x => x.Uid,
                        foreignField: x => x.UserId,
@@ -69,7 +70,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.Id,
                        @as: r => r.Accounts
                  )
-                .Unwind<BetEntityWithAccountInfoUnwind, VietnameseHeroesBetWithUnWindAccountsEntity>(x => x.Accounts);
+                .Unwind<BetEntityWithAccountInfoUnwind, HeroesSlotBetWithUnWindAccountsEntity>(x => x.Accounts);
 
             return aggregateBuilder;
         }

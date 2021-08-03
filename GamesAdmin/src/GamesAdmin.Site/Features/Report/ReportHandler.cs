@@ -45,7 +45,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
         IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
-        IRequestHandler<GetVietnameseHeroesReportRequest, VietnameseHeroesReportResultViewModel>
+        IRequestHandler<GetHeroesSlotReportRequest, HeroesSlotReportResultViewModel>
 
     {
         private readonly IReportService reportService;
@@ -641,15 +641,15 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<VietnameseHeroesReportResultViewModel> Handle(GetVietnameseHeroesReportRequest request, CancellationToken cancellationToken)
+        public async Task<HeroesSlotReportResultViewModel> Handle(GetHeroesSlotReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetVietnameseHeroesReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetHeroesSlotReport(request.RoundId, request.Nickname, request.ExcludeUUS);
 
-            return new VietnameseHeroesReportResultViewModel
+            return new HeroesSlotReportResultViewModel
             {
                 Records = result.Select(x =>
                 {
-                    var betViewModel = mapper.Map<VietnameseHeroesRecordViewModel>(x);
+                    var betViewModel = mapper.Map<HeroesSlotRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;

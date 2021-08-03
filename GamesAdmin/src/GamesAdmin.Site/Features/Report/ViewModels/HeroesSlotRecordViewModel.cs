@@ -4,7 +4,7 @@ using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class VietnameseHeroesRecordViewModel : BetRecordViewModel
+    public class HeroesSlotRecordViewModel : BetRecordViewModel
     {
         public long RoundId { get; set; }
 
@@ -18,9 +18,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<byte> Result { get; set; }
 
-        public VietnameseHeroesSettlementResultViewModel SettlementResult { get; set; }
+        public HeroesSlotSettlementResultViewModel SettlementResult { get; set; }
 
-        public IEnumerable<VietnameseHeroesBonusChestViewModel> BonusChests { get; set; }
+        public IEnumerable<HeroesSlotBonusChestViewModel> BonusChests { get; set; }
 
         public bool Paid { get; set; }
 
@@ -31,32 +31,32 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
     }
 
-    public class VietnameseHeroesBonusChestViewModel
+    public class HeroesSlotBonusChestViewModel
     {
         public decimal Amount { get; set; }
 
         public bool Picked { get; set; }
     }
 
-    public class VietnameseHeroesSettlementResultViewModel
+    public class HeroesSlotSettlementResultViewModel
     {
-        public IEnumerable<VietnameseHeroesWinningLineViewModel> WinningPaylines { get; set; }
+        public IEnumerable<HeroesSlotWinningLineViewModel> WinningPaylines { get; set; }
 
-        public VietnameseHeroesBonusViewModel Bonus { get; set; }
+        public HeroesSlotBonusViewModel Bonus { get; set; }
 
-        public VietnameseHeroesFreeSpinViewModel FreeSpins { get; set; }
+        public HeroesSlotFreeSpinViewModel FreeSpins { get; set; }
 
-        public VietnameseHeroesJackpotViewModel Jackpot { get; set; }
+        public HeroesSlotJackpotViewModel Jackpot { get; set; }
     }
 
-    public class VietnameseHeroesJackpotViewModel
+    public class HeroesSlotJackpotViewModel
     {
         public byte WinningLine { get; set; }
 
         public decimal WinningAmount { get; set; }
     }
 
-    public class VietnameseHeroesWinningLineViewModel
+    public class HeroesSlotWinningLineViewModel
     {
         public byte Payline { get; set; }
 
@@ -67,14 +67,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Odds { get; set; }
     }
 
-    public class VietnameseHeroesBonusViewModel
+    public class HeroesSlotBonusViewModel
     {
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
     }
 
-    public class VietnameseHeroesFreeSpinViewModel
+    public class HeroesSlotFreeSpinViewModel
     {
         public byte Count { get; set; }
 

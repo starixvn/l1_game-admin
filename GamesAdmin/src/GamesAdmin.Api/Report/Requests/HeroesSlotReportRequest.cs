@@ -4,9 +4,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class VietnameseHeroesReportRequest : IRequest<IEnumerable<VietnameseHeroesBetRecord>>
+    public class HeroesSlotReportRequest : IRequest<IEnumerable<HeroesSlotBetRecord>>
     {
-        public VietnameseHeroesReportRequest(long roundId, string nickname, bool excludeUUS)
+        public HeroesSlotReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;

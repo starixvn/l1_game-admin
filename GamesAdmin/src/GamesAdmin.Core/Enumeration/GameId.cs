@@ -32,6 +32,6 @@
         FourGuardians = 29,
         Lottery = 31,
         ThreeCards = 35,
-        VietnameseHeroes = 29
+        HeroesSlot = 38
     }
 }

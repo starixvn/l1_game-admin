@@ -26,8 +26,8 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         [HttpPost]
         public async Task<IActionResult> SetSlotResult([Bind] SlotResultViewModel viewModel)
         {
-            var viewName = viewModel.GameName == Game.VietnameseHeroesValue ?
-                "_VietnameseHeroesResultMonitor" : "_ResultMonitor";
+            var viewName = viewModel.GameName == Game.HeroesSlotValue ?
+                "_HeroesSlotResultMonitor" : "_ResultMonitor";
             return PartialView(viewName, await mediator.Send(new SetSlotResultRequest(
                 viewModel.GameName,
                 viewModel.Nickname,

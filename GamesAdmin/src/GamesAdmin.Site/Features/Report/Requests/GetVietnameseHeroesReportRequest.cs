@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetVietnameseHeroesReportRequest : IRequest<VietnameseHeroesReportResultViewModel>
+    public class GetHeroesSlotReportRequest : IRequest<HeroesSlotReportResultViewModel>
     {
-        public GetVietnameseHeroesReportRequest(long roundId, string nickname, bool excludeUUS)
+        public GetHeroesSlotReportRequest(long roundId, string nickname, bool excludeUUS)
         {
             RoundId = roundId;
             Nickname = nickname;
