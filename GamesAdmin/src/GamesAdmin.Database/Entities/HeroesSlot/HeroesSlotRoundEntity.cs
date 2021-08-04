@@ -56,16 +56,6 @@ namespace GamesAdmin.Database.Entities
         public HeroesSlotBonusEntity Bonus { get; set; }
 
         public HeroesSlotFreeSpinEntity FreeSpins { get; set; }
-
-        public HeroesSlotJackpotEntity Jackpot { get; set; }
-    }
-
-    public class HeroesSlotJackpotEntity
-    {
-        public byte WinningLine { get; set; }
-
-        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
-        public decimal WinningAmount { get; set; }
     }
 
     public class HeroesSlotWinningLineEntity

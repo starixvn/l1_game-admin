@@ -37,15 +37,6 @@ namespace GamesAdmin.Core.Models
         public HeroesSlotBonus Bonus { get; set; }
 
         public HeroesSlotFreeSpin FreeSpins { get; set; }
-
-        public HeroesSlotJackpot Jackpot { get; set; }
-    }
-
-    public class HeroesSlotJackpot
-    {
-        public byte WinningLine { get; set; }
-
-        public decimal WinningAmount { get; set; }
     }
 
     public class HeroesSlotWinningLine

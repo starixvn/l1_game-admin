@@ -267,7 +267,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<HeroesSlotBonusEntity, HeroesSlotBonus>();
             CreateMap<HeroesSlotWinningLineEntity, HeroesSlotWinningLine>();
             CreateMap<HeroesSlotBonusChestEntity, HeroesSlotBonusChest>();
-            CreateMap<HeroesSlotJackpotEntity, HeroesSlotJackpot>();
         }
     }
 }

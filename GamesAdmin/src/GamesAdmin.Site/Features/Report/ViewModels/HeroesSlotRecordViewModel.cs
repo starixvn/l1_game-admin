@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
 
-        public decimal TotalBetWin => BetWin + (SettlementResult.Jackpot?.WinningAmount ?? 0);
+        public decimal TotalBetWin => BetWin;
 
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
     }
@@ -45,15 +45,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public HeroesSlotBonusViewModel Bonus { get; set; }
 
         public HeroesSlotFreeSpinViewModel FreeSpins { get; set; }
-
-        public HeroesSlotJackpotViewModel Jackpot { get; set; }
-    }
-
-    public class HeroesSlotJackpotViewModel
-    {
-        public byte WinningLine { get; set; }
-
-        public decimal WinningAmount { get; set; }
     }
 
     public class HeroesSlotWinningLineViewModel

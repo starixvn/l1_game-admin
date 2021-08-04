@@ -101,7 +101,6 @@ namespace GamesAdmin.Site._Shared
             CreateMap<HeroesSlotBonus, HeroesSlotBonusViewModel>();
             CreateMap<HeroesSlotWinningLine, HeroesSlotWinningLineViewModel>();
             CreateMap<HeroesSlotBonusChest, HeroesSlotBonusChestViewModel>();
-            CreateMap<HeroesSlotJackpot, HeroesSlotJackpotViewModel>();
         }
     }
 }
