@@ -66,7 +66,7 @@
         public static readonly Game FourGuardians = new Game(FourGuardiansValue, "Four Guardians", GameId.FourGuardians);
         public static readonly Game Lottery = new Game(LotteryValue, "RNG Lottery", GameId.Lottery);
         public static readonly Game ThreeCards = new Game(ThreeCardsValue, "Three Cards", GameId.ThreeCards);
-        public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "The Legend of Heroes", GameId.HeroesSlot);
+        public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "Heroes Slot", GameId.HeroesSlot);
 
         public Game()
         {
