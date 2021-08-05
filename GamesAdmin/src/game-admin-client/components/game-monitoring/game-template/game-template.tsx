@@ -34,7 +34,7 @@ export default function GameTemplate(props: Props) {
               <option value={SystemId.None}>All</option>
               <option value={SystemId.SC}>SC</option>
               <option value={SystemId.SM}>SM</option>
-              <option value={SystemId.MiniSC}>Mini SC</option>
+              <option value={SystemId.Mini}>Mini SC</option>
             </select>
           </div>
         )}
