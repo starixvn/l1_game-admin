@@ -18,7 +18,7 @@ import {
   FishPrawnCrabBetList,
 } from "../../common/model/FishPrawnCrabModel";
 import { Notice } from "../../shared/notice/notice";
-import { getTotalBetOnSystem } from "../../util/util";
+import { getTotalBetOnSystem, updateTotalBetOfBetList } from "../../util/util";
 
 type FishPrawnCrabProps = {
   onMessage: Function;
@@ -43,17 +43,17 @@ export default class FishPrawnCrab extends React.Component<
 > {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
-  private systemFilter: SystemId;
 
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
     this.state = new FishPrawnCrabModel();
-    this.systemFilter = SystemId.None;
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -235,17 +235,11 @@ export default class FishPrawnCrab extends React.Component<
     });
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
     const { betList, roundNumber, time, result, winners, gameState } =
       this.state;
 
-    this.systemFilter &&
-      CHOICES.forEach((choice) => {
-        betList[choice].total = getTotalBetOnSystem(
-          betList[choice].dataList,
-          this.systemFilter
-        );
-      });
+    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container>
@@ -306,7 +300,7 @@ export default class FishPrawnCrab extends React.Component<
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const { betList, winners } = this.state;
 
     const renderBetList = CHOICES.map((choice) => (
@@ -316,7 +310,7 @@ export default class FishPrawnCrab extends React.Component<
           dataList={betList[choice].dataList}
           titles={[this.renderBetListBau(FishPrawnCrabDice[choice])]}
           isWin={winners[FishPrawnCrabDice[choice]]}
-          systemFilter={this.systemFilter}
+          systemFilter={systemFilter}
         />
       </Col>
     ));
@@ -380,10 +374,10 @@ export default class FishPrawnCrab extends React.Component<
       <div className={styles["fish-prawn-crab"]}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState == GameState.disabled}
-          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
+          enableFilter={true}
         />
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

@@ -36,6 +36,8 @@ export default class VipSeDieWar extends React.Component<
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
@@ -163,14 +165,8 @@ export default class VipSeDieWar extends React.Component<
   }
 
   renderMonitor() {
-    const {
-      betList,
-      roundNumber,
-      time,
-      result,
-      gameState,
-      settlementResult,
-    } = this.state;
+    const { betList, roundNumber, time, result, gameState, settlementResult } =
+      this.state;
 
     return (
       <Container className={styles["sedie-container"]}>
@@ -418,113 +414,112 @@ export default class VipSeDieWar extends React.Component<
         </Col>
         <Col className="col-12">
           <Row>
-          <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Player
-                <div className={styles.bondo}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.playerRed4.dataList}
-            isWin={settlementResult.playerRed4}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Player
-                <div className={styles.mottrangbado}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.playerRed3.dataList}
-            isWin={settlementResult.playerRed3}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Player
-                <div className={styles.motdobatrang}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.playerWhite3.dataList}
-            isWin={settlementResult.playerWhite3}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Player
-                <div className={styles.bontrang}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.playerWhite4.dataList}
-            isWin={settlementResult.playerWhite4}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Banker
-                <div className={styles.bondo}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.bankerRed4.dataList}
-            isWin={settlementResult.bankerRed4}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Banker
-                <div className={styles.mottrangbado}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.bankerRed3.dataList}
-            isWin={settlementResult.bankerRed3}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Banker
-                <div className={styles.motdobatrang}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.bankerWhite3.dataList}
-            isWin={settlementResult.bankerWhite3}
-          />
-        </Col>
-        <Col>
-          <BetList
-            titles={[
-              <div className="text-center">
-                Banker
-                <div className={styles.bontrang}></div>
-              </div>,
-            ]}
-            type="simple"
-            dataList={betList.bankerWhite4.dataList}
-            isWin={settlementResult.bankerWhite4}
-          />
-        </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Player
+                    <div className={styles.bondo}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.playerRed4.dataList}
+                isWin={settlementResult.playerRed4}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Player
+                    <div className={styles.mottrangbado}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.playerRed3.dataList}
+                isWin={settlementResult.playerRed3}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Player
+                    <div className={styles.motdobatrang}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.playerWhite3.dataList}
+                isWin={settlementResult.playerWhite3}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Player
+                    <div className={styles.bontrang}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.playerWhite4.dataList}
+                isWin={settlementResult.playerWhite4}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Banker
+                    <div className={styles.bondo}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.bankerRed4.dataList}
+                isWin={settlementResult.bankerRed4}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Banker
+                    <div className={styles.mottrangbado}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.bankerRed3.dataList}
+                isWin={settlementResult.bankerRed3}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Banker
+                    <div className={styles.motdobatrang}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.bankerWhite3.dataList}
+                isWin={settlementResult.bankerWhite3}
+              />
+            </Col>
+            <Col>
+              <BetList
+                titles={[
+                  <div className="text-center">
+                    Banker
+                    <div className={styles.bontrang}></div>
+                  </div>,
+                ]}
+                type="simple"
+                dataList={betList.bankerWhite4.dataList}
+                isWin={settlementResult.bankerWhite4}
+              />
+            </Col>
           </Row>
         </Col>
-        
       </React.Fragment>
     );
   }
@@ -599,8 +594,8 @@ export default class VipSeDieWar extends React.Component<
       <div>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState === GameState.disabled}
         ></GameTemplate>
         {this.state.gameState == GameState.disabled && (

@@ -11,7 +11,7 @@ import Dice from "../../shared/dice/dice";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
-import { getTotalBetOnSystem } from "../../util/util";
+import { getTotalBetOnSystem, updateTotalBetOfBetList } from "../../util/util";
 import GameTemplate from "../game-template/game-template";
 import styles from "./vip-sedie.module.scss";
 
@@ -27,12 +27,12 @@ export default class VipSeDie extends React.Component<
   ShakeThePlateModel
 > {
   private timeout: NodeJS.Timeout;
-  private systemFilter: SystemId;
   constructor(props) {
     super(props);
 
     this.state = new ShakeThePlateModel();
-    this.systemFilter = SystemId.None;
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
@@ -240,18 +240,11 @@ export default class VipSeDie extends React.Component<
     );
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
     const { betList, roundNumber, time, result, gameState, settlementResult } =
       this.state;
 
-    if (this.systemFilter) {
-      CHOICES.forEach((choice) => {
-        betList[choice].total = getTotalBetOnSystem(
-          betList[choice].dataList,
-          this.systemFilter
-        );
-      });
-    }
+    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -345,7 +338,7 @@ export default class VipSeDie extends React.Component<
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const { betList, settlementResult } = this.state;
 
     return (
@@ -356,7 +349,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red4.dataList}
             isWin={settlementResult.red4}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -365,7 +358,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red3.dataList}
             isWin={settlementResult.red3}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -374,7 +367,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red2.dataList}
             isWin={settlementResult.red2}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -383,7 +376,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.even.dataList}
             isWin={settlementResult.even}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -392,7 +385,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.odd.dataList}
             isWin={settlementResult.odd}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -401,7 +394,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.white3.dataList}
             isWin={settlementResult.white3}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -410,7 +403,7 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.white4.dataList}
             isWin={settlementResult.white4}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -422,10 +415,10 @@ export default class VipSeDie extends React.Component<
       <div>
         {this.state.isOpenControlResultModal && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.disabled}
-          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
+          enableFilter={true}
         ></GameTemplate>
       </div>
     );

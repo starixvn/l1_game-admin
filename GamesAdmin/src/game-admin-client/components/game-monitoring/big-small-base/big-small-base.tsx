@@ -41,14 +41,12 @@ export default class BigSmallBase extends React.Component<
 > {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
-  private systemFilter: SystemId;
 
   constructor(props) {
     super(props);
 
     this.state = new BigSmallBaseModel();
     this.isFirstLoad = true;
-    this.systemFilter = SystemId.None;
   }
 
   componentDidMount() {
@@ -287,7 +285,7 @@ export default class BigSmallBase extends React.Component<
     );
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
     const { turbo, type } = this.props;
     const {
       betList,
@@ -313,16 +311,16 @@ export default class BigSmallBase extends React.Component<
       winner = this.getWiner();
     }
 
-    if (this.systemFilter) {
+    if (systemFilter) {
       betList.firstBetType.total = getTotalBetOnSystem(
         betList.firstBetType.dataList,
-        this.systemFilter,
+        systemFilter,
         true
       );
 
       betList.secondBetType.total = getTotalBetOnSystem(
         betList.secondBetType.dataList,
-        this.systemFilter,
+        systemFilter,
         true
       );
     }
@@ -368,7 +366,7 @@ export default class BigSmallBase extends React.Component<
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const { type } = this.props;
     const { betList, isHavingResult } = this.state;
     let winner = "";
@@ -386,7 +384,7 @@ export default class BigSmallBase extends React.Component<
               type="simple"
               titles={this.getTitles()}
               isWin={gameMapping[type][0] == winner}
-              systemFilter={this.systemFilter}
+              systemFilter={systemFilter}
             ></BetList>
           </Col>
           <Col className="col-12 col-sm-6">
@@ -395,7 +393,7 @@ export default class BigSmallBase extends React.Component<
               type="simple"
               titles={this.getTitles()}
               isWin={gameMapping[type][1] == winner}
-              systemFilter={this.systemFilter}
+              systemFilter={systemFilter}
             ></BetList>
           </Col>
         </Row>
@@ -409,15 +407,11 @@ export default class BigSmallBase extends React.Component<
 
   render() {
     const gameTemplateProps = {
-      renderBetList: this.renderBetList(),
-      renderMonitor: this.renderMonitor(),
+      renderBetList: this.renderBetList.bind(this),
+      renderMonitor: this.renderMonitor.bind(this),
       disabled: this.state.currentState == GameState.disabled,
+      enableFilter: this.props.enableFilter,
     };
-
-    this.props.enableFilter &&
-      Object.assign(gameTemplateProps, {
-        onUpdateFilter: (value: SystemId) => (this.systemFilter = value),
-      });
 
     return (
       <div className={styles["bigsmallturbo"]}>

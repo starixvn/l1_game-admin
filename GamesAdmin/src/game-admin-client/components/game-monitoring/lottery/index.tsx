@@ -33,6 +33,8 @@ export default class Lottery extends React.Component<
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.handlePrizeNumberChange = this.handlePrizeNumberChange.bind(this);
     this.handleGenerateResult = this.handleGenerateResult.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -312,8 +314,8 @@ export default class Lottery extends React.Component<
     return (
       <div className={styles["-sic-bo"]}>
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState === GameState.disabled}
         />
         {this.state.gameState === GameState.disabled && (

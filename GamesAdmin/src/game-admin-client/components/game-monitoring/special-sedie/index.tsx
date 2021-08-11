@@ -11,6 +11,7 @@ import Dice from "../../shared/dice/dice";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
+import { updateTotalBetOfBetList } from "../../util/util";
 import GameTemplate from "../game-template/game-template";
 import styles from "./styles.module.scss";
 
@@ -30,6 +31,8 @@ export default class SpecialSeDie extends React.Component<
 
     this.isFirstLoad = true;
     this.state = new SpecialSeDieModel();
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -129,7 +132,13 @@ export default class SpecialSeDie extends React.Component<
           }
 
           currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
+            new BetItem(
+              data[user].name,
+              betTracks[key],
+              null,
+              null,
+              data[user].system
+            )
           );
         }
       });
@@ -174,7 +183,7 @@ export default class SpecialSeDie extends React.Component<
     return winner;
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const { betList, gameState } = this.state;
     const winner = gameState == GameState.waiting ? this.getWinner() : "";
 
@@ -186,6 +195,7 @@ export default class SpecialSeDie extends React.Component<
             type="simple"
             dataList={betList.even.dataList}
             isWin={winner != "" && winner != "white3" && winner != "red3"}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-12 col-sm-6">
@@ -194,15 +204,18 @@ export default class SpecialSeDie extends React.Component<
             type="simple"
             dataList={betList.odd.dataList}
             isWin={winner == "white3" || winner == "red3"}
+            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
     );
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
     const { betList, roundNumber, time, result, gameState } = this.state;
     const winer = gameState == GameState.waiting ? this.getWinner() : "";
+
+    updateTotalBetOfBetList(betList, systemFilter, true);
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -246,9 +259,10 @@ export default class SpecialSeDie extends React.Component<
     return (
       <div>
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState == GameState.disabled}
+          enableFilter={true}
         ></GameTemplate>
       </div>
     );
