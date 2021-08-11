@@ -18,7 +18,7 @@ import {
   FishPrawnCrabBetList,
 } from "../../common/model/FishPrawnCrabModel";
 import { Notice } from "../../shared/notice/notice";
-import { getTotalBetOnSystem, updateTotalBetOfBetList } from "../../util/util";
+import { updateTotalBetOfBetList } from "../../util/util";
 
 type FishPrawnCrabProps = {
   onMessage: Function;

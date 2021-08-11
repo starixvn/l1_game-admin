@@ -18,6 +18,7 @@ import styles from "./vip-sedie.module.scss";
 type VipSeDieProps = {
   onMessage: Function;
   sendMessage: Function;
+  isProduction: boolean;
 };
 
 const CHOICES = ["even", "odd", "red4", "red3", "red2", "white3", "white4"];
@@ -413,7 +414,7 @@ export default class VipSeDie extends React.Component<
   render() {
     return (
       <div>
-        {this.state.isOpenControlResultModal && this.renderGameControl()}
+        {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}

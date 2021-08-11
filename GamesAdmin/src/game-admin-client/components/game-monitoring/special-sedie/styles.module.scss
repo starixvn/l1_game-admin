@@ -1,52 +1,71 @@
 .title {
-    color: #ffffff;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    padding-bottom: 5px;
-  }
-  
-  .result {
-    margin-top: 15px;
-    justify-content: center;
-  }
-  
-  .shakeThePlate-container {
-    max-width: 100%;
-    padding: 0;
-  }
-  
-  .shakeThePlate-timmer {
+  color: #ffffff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.result {
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.shakeThePlate-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+.shakeThePlate-timmer {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 35%;
+  flex-basis: 35%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.shakeThePlate-betList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.col-plateodd,
+.col-plateeven {
+  flex-basis: 50%;
+  max-width: 50%;
+}
+
+.game-control-panel {
+  width: 200px;
+
+  & > div {
     display: flex;
-    flex-wrap: wrap;
-    max-width: 35%;
-    flex-basis: 35%;
-    justify-content: space-around;
+    position: absolute;
     align-items: center;
+    justify-content: space-between;
+    background-color: #411212;
+    border: 5px solid #660f10;
+    border-radius: 20px;
+    z-index: 99;
+    padding: 5px;
   }
-  
-  .shakeThePlate-betList {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+
+  div[class^="dice_dice"] {
+    margin: 0;
   }
-  
-  .col-plateodd,
-  .col-plateeven {
-    flex-basis: 50%;
-    max-width: 50%;
+}
+
+@mixin shaketheplate($col1) {
+  .#{$col1} {
+    background: url("/game-admin/images/xocxoc/#{$col1}.png") center no-repeat;
+    height: 24px;
+    background-size: contain;
   }
-  
-  @mixin shaketheplate($col1) {
-    .#{$col1} {
-      background: url("/game-admin/images/xocxoc/#{$col1}.png") center no-repeat;
-      height: 24px;
-      background-size: contain;
-    }
-  }
-  
-  @include shaketheplate("mottrangbado");
-  @include shaketheplate("motdobatrang");
-  @include shaketheplate("bontrang");
-  @include shaketheplate("bondo");
-  
+}
+
+@include shaketheplate("mottrangbado");
+@include shaketheplate("motdobatrang");
+@include shaketheplate("bontrang");
+@include shaketheplate("bondo");

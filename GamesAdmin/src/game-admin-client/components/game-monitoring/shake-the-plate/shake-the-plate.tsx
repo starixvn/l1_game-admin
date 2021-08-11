@@ -18,6 +18,7 @@ import styles from "./shake-the-plate.module.scss";
 type ShakeThePlateProps = {
   onMessage: Function;
   sendMessage: Function;
+  isProduction: boolean;
 };
 
 export default class ShakeThePlate extends React.Component<
@@ -413,7 +414,7 @@ export default class ShakeThePlate extends React.Component<
   render() {
     return (
       <div>
-        {this.state.isOpenControlResultModal && this.renderGameControl()}
+        {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}

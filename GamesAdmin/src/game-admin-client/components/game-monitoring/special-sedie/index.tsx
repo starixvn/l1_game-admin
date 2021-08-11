@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Modal, Row } from "reactstrap";
 
 import BetItem from "../../common/model/BetItem";
 import DiceModel from "../../common/model/DiceModel";
@@ -17,6 +17,8 @@ import styles from "./styles.module.scss";
 
 type Props = {
   onMessage: Function;
+  sendMessage: Function;
+  isProduction: boolean;
 };
 
 export default class SpecialSeDie extends React.Component<
@@ -211,6 +213,86 @@ export default class SpecialSeDie extends React.Component<
     );
   }
 
+  toggleModal() {
+    this.setState({
+      isOpenControlResultModal: !this.state.isOpenControlResultModal,
+    });
+  }
+
+  openModal(diceIndex) {
+    this.setState({
+      isOpenControlResultModal: true,
+      currentDiceNumber: diceIndex,
+    });
+  }
+
+  handleChangeResult(id, value) {
+    const { currentDiceNumber, result } = this.state;
+    const gameResult = this.state.nextRoundResult;
+
+    const newResult = result.map((diceInfo, index) => {
+      if (index === currentDiceNumber || diceInfo.value === -1) {
+        diceInfo.value = value;
+        gameResult[`red${index + 1}`] = !!value;
+      }
+
+      return diceInfo;
+    });
+
+    this.setState({
+      result: newResult,
+      isOpenControlResultModal: false,
+    });
+
+    if (this.state.gameState == GameState.waiting) {
+      this.setState({
+        isHandleNextRoundResult: true,
+        nextRoundResult: gameResult,
+      });
+    }
+
+    this.props.sendMessage({
+      set_result: {
+        result: gameResult,
+        roundId:
+          this.state.gameState == GameState.running
+            ? this.state.roundNumber
+            : this.state.roundNumber + 1,
+      },
+    });
+  }
+
+  renderGameControl() {
+    const { isOpenControlResultModal } = this.state;
+
+    return (
+      <Modal
+        isOpen={isOpenControlResultModal}
+        toggle={() => this.toggleModal()}
+        className={styles["game-control-panel"]}
+      >
+        <Row>
+          <Dice
+            key={`dice-select-${0}`}
+            diceModel={new DiceModel(0, DiceType.XocXoc)}
+            isSmall={false}
+            onClickHandle={(id: string, value: number) =>
+              this.handleChangeResult(id, value)
+            }
+          />
+          <Dice
+            key={`dice-select-${1}`}
+            diceModel={new DiceModel(1, DiceType.XocXoc)}
+            isSmall={false}
+            onClickHandle={(id: string, value: number) =>
+              this.handleChangeResult(id, value)
+            }
+          />
+        </Row>
+      </Modal>
+    );
+  }
+
   renderMonitor(systemFilter) {
     const { betList, roundNumber, time, result, gameState } = this.state;
     const winer = gameState == GameState.waiting ? this.getWinner() : "";
@@ -235,10 +317,26 @@ export default class SpecialSeDie extends React.Component<
                 gameState={gameState}
               />
               <Row className={styles.result}>
-                <Dice diceModel={result[0]} isSmall={false} />
-                <Dice diceModel={result[1]} isSmall={false} />
-                <Dice diceModel={result[2]} isSmall={false} />
-                <Dice diceModel={result[3]} isSmall={false} />
+                <Dice
+                  diceModel={result[0]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(0)}
+                />
+                <Dice
+                  diceModel={result[1]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(1)}
+                />
+                <Dice
+                  diceModel={result[2]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(2)}
+                />
+                <Dice
+                  diceModel={result[3]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(3)}
+                />
               </Row>
               <RoundNum roundNumber={roundNumber} />
             </div>
@@ -258,6 +356,7 @@ export default class SpecialSeDie extends React.Component<
   render() {
     return (
       <div>
+        {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}

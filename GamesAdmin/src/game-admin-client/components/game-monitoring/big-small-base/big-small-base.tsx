@@ -23,6 +23,7 @@ type BigSmallProps = {
   onMessage: Function;
   enableFilter?: boolean;
   sendMessage: Function;
+  isProduction: boolean;
 };
 
 const optionChoice = ["big", "even"];
@@ -415,7 +416,7 @@ export default class BigSmallBase extends React.Component<
 
     return (
       <div className={styles["bigsmallturbo"]}>
-        {this.state.isOpenControlResultModal && this.renderGameControl()}
+        {this.props.isProduction && this.renderGameControl()}
         <GameTemplate {...gameTemplateProps} />
       </div>
     );
