@@ -13,6 +13,7 @@
                 <th>Site</th>
                 <th>Game Client Url</th>
                 <th>Mobi Client Url</th>
+                <td>Mini Saba Client Url</td>
                 <th>Valid Currencies</th>
                 <th></th>
             </tr>
@@ -25,6 +26,7 @@
                     <td>@item.SiteId</td>
                     <td>@item.GameClientUrl</td>
                     <td>@item.GameMobiClientUrl</td>
+                    <td>@item.MiniSabaGameClientUrl</td>
                     <td>@item.ValidCurrencies</td>
                     <td class="text-center"><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId"><i class="icon-edit"></i></a></td>
                 </tr>

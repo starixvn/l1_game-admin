@@ -15,6 +15,8 @@ namespace GamesAdmin.Site.Features.ClientSites.ViewModels
 
         public string GameMobiClientUrl { get; set; }
 
+        public string MiniSabaGameClientUrl { get; set; }
+
         public string ValidCurrencies { get; set; }
     }
 }
