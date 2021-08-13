@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./keno-soccer-result.module.scss";
 
-export default function KenoSoccerResult(props: {
+export default function KenoMatchResult(props: {
   listResult: Array<number>;
   maxLength?: number;
 }) {

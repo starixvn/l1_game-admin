@@ -26,7 +26,6 @@ export default {
   vipsediewar: 28,
   lottery: 31,
   threecards: 35,
-  mydinh: 36,
-  hangday: 37,
-  thongnhat: 38,
+  kenomatch1: 36,
+  kenomatch2: 37,
 };

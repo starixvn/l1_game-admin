@@ -22,58 +22,43 @@ import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import {
-  KenoSoccerBetListModel,
-  KenoSoccerModel,
-} from "../../common/model/KenoSoccerModel";
+  KenoMatchBetListModel,
+  KenoMatchModel,
+} from "../../common/model/KenoMatchModel";
 import { Notice } from "../../shared/notice/notice";
-import KenoSoccerResult from "./keno-soccer-result";
+import KenoMatchResult from "./keno-match-result";
 
-type KenoSoccerProps = {
+type KenoMatchProps = {
   onMessage: Function;
   sendMessage: Function;
   isProduction: boolean;
+  gameName: string;
 };
 
 const choiceLabelMapper = {
-  preHTHome: "Home",
-  preHTAway: "Away",
-  preHTOver: "Over",
-  preHTUnder: "Under",
-  preHTOdd: "Odd",
-  preHTEven: "Even",
-  preFTHome: "Home",
-  preFTAway: "Away",
-  preFTOver: "Over",
-  preFTUnder: "Under",
-  preFTOdd: "Odd",
-  preFTEven: "Even",
-  liveFTHome: "Home",
-  liveFTAway: "Away",
+  fhBlue: "Blue",
+  fhRed: "Red",
+  fhOver: "Over",
+  fhUnder: "Under",
+  fhOdd: "Odd",
+  fhEven: "Even",
+  ftBlue: "Blue",
+  ftRed: "Red",
+  ftOver: "Over",
+  ftUnder: "Under",
+  ftOdd: "Odd",
+  ftEven: "Even",
+  liveFTBlue: "Blue",
+  liveFTRed: "Red",
   liveFTOver: "Over",
   liveFTUnder: "Under",
   liveFTOdd: "Odd",
   liveFTEven: "Even",
 };
 
-const cardSuit = [0, 1, 2, 3];
-const cardRank = [
-  "A",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "J",
-  "Q",
-  "K",
-];
-export default class KenoSoccer extends React.Component<
-  KenoSoccerProps,
-  KenoSoccerModel
+export default class KenoMatch extends React.Component<
+  KenoMatchProps,
+  KenoMatchModel
 > {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
@@ -82,7 +67,7 @@ export default class KenoSoccer extends React.Component<
     super(props);
 
     this.isFirstLoad = true;
-    this.state = new KenoSoccerModel();
+    this.state = new KenoMatchModel();
     this.systemId = SystemId.None;
     this.handleUpdateFilter = this.handleUpdateFilter.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -102,7 +87,7 @@ export default class KenoSoccer extends React.Component<
     if (!!data.um) {
       if (this.isFirstLoad || this.state.time.remainingTime == 52) {
         clearTimeout(this.timeout);
-        const model = new KenoSoccerModel();
+        const model = new KenoMatchModel();
         this.setState({
           time: { remainingTime: 0 },
           gameState: GameState.disabled,
@@ -158,7 +143,7 @@ export default class KenoSoccer extends React.Component<
       });
 
       setTimeout(() => {
-        const newState = new KenoSoccerModel();
+        const newState = new KenoMatchModel();
 
         this.setState({
           ...newState,
@@ -240,7 +225,7 @@ export default class KenoSoccer extends React.Component<
     }
   }
 
-  getUserBetList(data, currentData: KenoSoccerBetListModel) {
+  getUserBetList(data, currentData: KenoMatchBetListModel) {
     Object.keys(currentData).forEach((key) => {
       currentData[key].total = 0;
       currentData[key].dataList = new Array<BetItem>();
@@ -272,22 +257,22 @@ export default class KenoSoccer extends React.Component<
       this.state.result.halfTime;
 
     if (Object.values(htSettlementResult).some(x => x)) {
-      const htHomeTotal = htResult.home.reduce((num1, num2) => num1 + num2, 0);
-      const htAwayTotal = htResult.away.reduce((num1, num2) => num1 + num2, 0);
+      const htBlueTotal = htResult.blue.reduce((num1, num2) => num1 + num2, 0);
+      const htRedTotal = htResult.red.reduce((num1, num2) => num1 + num2, 0);
 
       const { result: ftResult, settlementResult: ftSettlementResult } =
         this.state.result.fullTime;
-      const ftHomeTotal =
-        ftResult.home.reduce((num1, num2) => num1 + num2, 0) + htHomeTotal;
-      const ftAwayTotal =
-        ftResult.away.reduce((num1, num2) => num1 + num2, 0) + htAwayTotal;
+      const ftBlueTotal =
+        ftResult.blue.reduce((num1, num2) => num1 + num2, 0) + htBlueTotal;
+      const ftRedTotal =
+        ftResult.red.reduce((num1, num2) => num1 + num2, 0) + htRedTotal;
 
       return (
         <>
           <Col xs={12} className={styles["result-summary"]}>
             <div>
-              HT: Total {htHomeTotal + htAwayTotal} - Home {htHomeTotal} - Away{" "}
-              {htAwayTotal}
+              HT: Total {htBlueTotal + htRedTotal} - Blue {htBlueTotal} - Red{" "}
+              {htRedTotal}
             </div>
             <div className="font-weight-bold">
               {this.getSettlementResultString(htSettlementResult)}
@@ -296,8 +281,8 @@ export default class KenoSoccer extends React.Component<
           {Object.values(ftSettlementResult).some(x => x) && (
             <Col xs={12} className={styles["result-summary"]}>
               <div>
-                FT: Total {ftHomeTotal + ftAwayTotal} - Home {ftHomeTotal} -
-                Away {ftAwayTotal}
+                FT: Total {ftBlueTotal + ftRedTotal} - Blue {ftBlueTotal} -
+                Red {ftRedTotal}
               </div>
               <div className="font-weight-bold">
                 {this.getSettlementResultString(ftSettlementResult)}
@@ -312,15 +297,15 @@ export default class KenoSoccer extends React.Component<
   }
 
   getSettlementResultString(settlementResult) {
-    const homeAway = settlementResult.home
-      ? "Home - "
-      : settlementResult.away
-      ? "Away - "
+    const blueRed = settlementResult.blue
+      ? "Blue - "
+      : settlementResult.red
+      ? "Red - "
       : "";
     const overUnder = settlementResult.over ? "Over" : "Under";
     const oddEven = settlementResult.odd ? "Odd" : "Even";
 
-    return `${homeAway}${overUnder} - ${oddEven}`;
+    return `${blueRed}${overUnder} - ${oddEven}`;
   }
 
   renderMonitor() {
@@ -338,27 +323,27 @@ export default class KenoSoccer extends React.Component<
             <RoundNum roundNumber={roundNumber} />
           </Col>
           <Col align="center" className="my-auto">
-            <div className={styles.title}>My Dinh</div>
+            <div className={styles.title}>{this.props.gameName}</div>
             <Row className={styles.result} noGutters>
               <Col xs={12} xl={6} onClick={this.openModal}>
-                <div className={styles.title}>Home</div>
-                <KenoSoccerResult
-                  listResult={result.halfTime.result.home}
+                <div className={styles.title}>Blue</div>
+                <KenoMatchResult
+                  listResult={result.halfTime.result.blue}
                   maxLength={10}
                 />
-                <KenoSoccerResult
-                  listResult={result.fullTime.result.home}
+                <KenoMatchResult
+                  listResult={result.fullTime.result.blue}
                   maxLength={10}
                 />
               </Col>
               <Col xs={12} xl={6} onClick={this.openModal}>
-                <div className={styles.title}>Away</div>
-                <KenoSoccerResult
-                  listResult={result.halfTime.result.away}
+                <div className={styles.title}>Red</div>
+                <KenoMatchResult
+                  listResult={result.halfTime.result.red}
                   maxLength={10}
                 />
-                <KenoSoccerResult
-                  listResult={result.fullTime.result.away}
+                <KenoMatchResult
+                  listResult={result.fullTime.result.red}
                   maxLength={10}
                 />
               </Col>
@@ -371,32 +356,32 @@ export default class KenoSoccer extends React.Component<
                 Pre-match HT
               </Col>
               <TotalBet
-                total={betList.preHTHome.total}
-                type="home"
-                isWin={result.halfTime.settlementResult.home}
+                total={betList.fhBlue.total}
+                type="blue"
+                isWin={result.halfTime.settlementResult.blue}
               />
               <TotalBet
-                total={betList.preHTAway.total}
-                type="away"
-                isWin={result.halfTime.settlementResult.away}
+                total={betList.fhRed.total}
+                type="red"
+                isWin={result.halfTime.settlementResult.red}
               />
               <TotalBet
-                total={betList.preHTOver.total}
+                total={betList.fhOver.total}
                 type="over"
                 isWin={result.halfTime.settlementResult.over}
               />
               <TotalBet
-                total={betList.preHTUnder.total}
+                total={betList.fhUnder.total}
                 type="under"
                 isWin={result.halfTime.settlementResult.under}
               />
               <TotalBet
-                total={betList.preHTOdd.total}
+                total={betList.fhOdd.total}
                 type="odd"
                 isWin={result.halfTime.settlementResult.odd}
               />
               <TotalBet
-                total={betList.preHTEven.total}
+                total={betList.fhEven.total}
                 type="even"
                 isWin={result.halfTime.settlementResult.even}
               />
@@ -406,32 +391,32 @@ export default class KenoSoccer extends React.Component<
                 Pre-match FT
               </Col>
               <TotalBet
-                total={betList.preFTHome.total}
-                type="home"
-                isWin={result.fullTime.settlementResult.home}
+                total={betList.ftBlue.total}
+                type="blue"
+                isWin={result.fullTime.settlementResult.blue}
               />
               <TotalBet
-                total={betList.preFTAway.total}
-                type="away"
-                isWin={result.fullTime.settlementResult.away}
+                total={betList.ftRed.total}
+                type="red"
+                isWin={result.fullTime.settlementResult.red}
               />
               <TotalBet
-                total={betList.preFTOver.total}
+                total={betList.ftOver.total}
                 type="over"
                 isWin={result.fullTime.settlementResult.over}
               />
               <TotalBet
-                total={betList.preFTUnder.total}
+                total={betList.ftUnder.total}
                 type="under"
                 isWin={result.fullTime.settlementResult.under}
               />
               <TotalBet
-                total={betList.preFTOdd.total}
+                total={betList.ftOdd.total}
                 type="odd"
                 isWin={result.fullTime.settlementResult.odd}
               />
               <TotalBet
-                total={betList.preFTEven.total}
+                total={betList.ftEven.total}
                 type="even"
                 isWin={result.fullTime.settlementResult.even}
               />
@@ -441,32 +426,32 @@ export default class KenoSoccer extends React.Component<
                 Live - FT
               </Col>
               <TotalBet
-                total={betList.preFTHome.total}
-                type="home"
-                isWin={result.fullTime.settlementResult.home}
+                total={betList.ftBlue.total}
+                type="blue"
+                isWin={result.fullTime.settlementResult.blue}
               />
               <TotalBet
-                total={betList.preFTAway.total}
-                type="away"
-                isWin={result.fullTime.settlementResult.away}
+                total={betList.ftRed.total}
+                type="red"
+                isWin={result.fullTime.settlementResult.red}
               />
               <TotalBet
-                total={betList.preFTOver.total}
+                total={betList.ftOver.total}
                 type="over"
                 isWin={result.fullTime.settlementResult.over}
               />
               <TotalBet
-                total={betList.preFTUnder.total}
+                total={betList.ftUnder.total}
                 type="under"
                 isWin={result.fullTime.settlementResult.under}
               />
               <TotalBet
-                total={betList.preFTOdd.total}
+                total={betList.ftOdd.total}
                 type="odd"
                 isWin={result.fullTime.settlementResult.odd}
               />
               <TotalBet
-                total={betList.preFTEven.total}
+                total={betList.ftEven.total}
                 type="even"
                 isWin={result.fullTime.settlementResult.even}
               />
@@ -484,22 +469,22 @@ export default class KenoSoccer extends React.Component<
       <div className={styles["bet-list-container"]}>
         <Row>
           <Col xs={12} md={6} lg={4}>
-            <div className={styles.title}>Pre-match - HT</div>
+            <div className={styles.title}>First Half</div>
             <Row noGutters>
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.preHTHome.dataList.concat(
-                    betList.preHTAway.dataList
+                  dataList={betList.fhBlue.dataList.concat(
+                    betList.fhRed.dataList
                   )}
-                  titles={[<div>Home/Away</div>]}
+                  titles={[<div>Blue/Red</div>]}
                 />
               </Col>
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.preHTOver.dataList.concat(
-                    betList.preHTUnder.dataList
+                  dataList={betList.fhOver.dataList.concat(
+                    betList.fhUnder.dataList
                   )}
                   titles={[<div>Over/Under</div>]}
                 />
@@ -507,8 +492,8 @@ export default class KenoSoccer extends React.Component<
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.preHTOdd.dataList.concat(
-                    betList.preHTEven.dataList
+                  dataList={betList.fhOdd.dataList.concat(
+                    betList.fhEven.dataList
                   )}
                   titles={[<div>Odd/Even</div>]}
                 />
@@ -516,22 +501,22 @@ export default class KenoSoccer extends React.Component<
             </Row>
           </Col>
           <Col xs={12} md={6} lg={4}>
-            <div className={styles.title}>Pre-match - FT</div>
+            <div className={styles.title}>Full Time</div>
             <Row noGutters>
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.preFTHome.dataList.concat(
-                    betList.preFTAway.dataList
+                  dataList={betList.ftBlue.dataList.concat(
+                    betList.ftRed.dataList
                   )}
-                  titles={[<div>Home/Away</div>]}
+                  titles={[<div>Blue/Red</div>]}
                 />
               </Col>
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.preFTOver.dataList.concat(
-                    betList.preFTUnder.dataList
+                  dataList={betList.ftOver.dataList.concat(
+                    betList.ftUnder.dataList
                   )}
                   titles={[<div>Over/Under</div>]}
                 />
@@ -539,8 +524,8 @@ export default class KenoSoccer extends React.Component<
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.preFTOdd.dataList.concat(
-                    betList.preFTEven.dataList
+                  dataList={betList.ftOdd.dataList.concat(
+                    betList.ftEven.dataList
                   )}
                   titles={[<div>Odd/Even</div>]}
                 />
@@ -548,15 +533,15 @@ export default class KenoSoccer extends React.Component<
             </Row>
           </Col>
           <Col xs={12} md={6} lg={4}>
-            <div className={styles.title}>Live - FT</div>
+            <div className={styles.title}>Live - Full Time</div>
             <Row noGutters>
               <Col className="col">
                 <BetList
                   type="withchoice"
-                  dataList={betList.liveFTHome.dataList.concat(
-                    betList.liveFTAway.dataList
+                  dataList={betList.liveFTBlue.dataList.concat(
+                    betList.liveFTRed.dataList
                   )}
-                  titles={[<div>Home/Away</div>]}
+                  titles={[<div>Blue/Red</div>]}
                 />
               </Col>
               <Col className="col">
@@ -613,21 +598,21 @@ export default class KenoSoccer extends React.Component<
           <Form onSubmit={this.handleChangeResult}>
             <div className={styles.title}>Half Time</div>
             <FormGroup>
-              <Label for="htHome">Home</Label>
-              <Input name="htHome" data-period="halfTime" />
+              <Label for="htBlue">Blue</Label>
+              <Input name="htBlue" data-period="halfTime" />
             </FormGroup>
             <FormGroup>
-              <Label for="htAway">Away</Label>
-              <Input name="htAway" />
+              <Label for="htRed">Red</Label>
+              <Input name="htRed" />
             </FormGroup>
             <div className={styles.title}>Full Time</div>
             <FormGroup>
-              <Label for="ftHome">Home</Label>
-              <Input name="ftHome" />
+              <Label for="ftBlue">Blue</Label>
+              <Input name="ftBlue" />
             </FormGroup>
             <FormGroup>
-              <Label for="ftAway">Away</Label>
-              <Input name="ftAway" />
+              <Label for="ftRed">Red</Label>
+              <Input name="ftRed" />
             </FormGroup>
             <Button type="submit">Submit</Button>
           </Form>
@@ -641,14 +626,14 @@ export default class KenoSoccer extends React.Component<
     const newResult = {
       halfTime: {
         result: {
-          home: event.target["htHome"].value.split(",").map((x) => parseInt(x)),
-          away: event.target["htAway"].value.split(",").map((x) => parseInt(x)),
+          blue: event.target["htBlue"].value.split(",").map((x) => parseInt(x)),
+          red: event.target["htRed"].value.split(",").map((x) => parseInt(x)),
         },
       },
       fullTime: {
         result: {
-          home: event.target["ftHome"].value.split(",").map((x) => parseInt(x)),
-          away: event.target["ftAway"].value.split(",").map((x) => parseInt(x)),
+          blue: event.target["ftBlue"].value.split(",").map((x) => parseInt(x)),
+          red: event.target["ftRed"].value.split(",").map((x) => parseInt(x)),
         },
       },
     };
