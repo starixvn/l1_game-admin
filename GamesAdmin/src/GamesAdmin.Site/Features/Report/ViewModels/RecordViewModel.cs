@@ -277,7 +277,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     }
 
 
-    public class KenoSoccerRecordViewModel : BetRecordViewModel
+    public class KenoMatchRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
     }

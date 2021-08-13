@@ -124,36 +124,29 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult MyDinh()
+        public IActionResult KenoMatch1()
         {
-            ViewData["Title"] = "My Dinh";
-            return View("KenoSoccer", new KenoSoccerReportViewModel { Game = GameId.MyDinh, ExcludeUUS = true });
+            ViewData["Title"] = "Keno Match 1";
+            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch1, ExcludeUUS = true });
         }
 
         [HttpGet]
-        public IActionResult HangDay()
+        public IActionResult KenoMatch2()
         {
-            ViewData["Title"] = "Hang Day";
-            return View("KenoSoccer", new KenoSoccerReportViewModel { Game = GameId.MyDinh, ExcludeUUS = true });
+            ViewData["Title"] = "Keno Match 2";
+            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch1, ExcludeUUS = true });
         }
 
         [HttpGet]
-        public IActionResult ThongNhat()
+        public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
         {
-            ViewData["Title"] = "Thong Nhat";
-            return View("KenoSoccer", new KenoSoccerReportViewModel { Game = GameId.MyDinh, ExcludeUUS = true });
+            return PartialView("_KenoMatchBetHistory", await mediator.Send(new GetKenoSoccerBetHistoryRequest(game, roundId, userId)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetKenoSoccerBetHistory(GameId game, long roundId, string userId)
+        public async Task<IActionResult> GetKenoMatchReport(GameId game, long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_KenoSoccerBetHistory", await mediator.Send(new GetKenoSoccerBetHistoryRequest(game, roundId, userId)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetKenoSoccerReport(GameId game, long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_KenoSoccerRecords", await mediator.Send(new GetKenoSoccerReportRequest(game, roundId, nickname, excludeUUS)));
+            return PartialView("_KenoMatchRecords", await mediator.Send(new GetKenoSoccerReportRequest(game, roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

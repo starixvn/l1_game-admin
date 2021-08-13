@@ -279,7 +279,7 @@ namespace GamesAdmin.Core.Models
         public decimal Clubs { get; set; }
     }
 
-    public class KenoSoccerBetRecord : BetRecord
+    public class KenoMatchBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
     }

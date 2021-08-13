@@ -191,7 +191,7 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
-    public interface IKenoSoccerOnlineUserApi : IOnlineUserApi
+    public interface IKenoMatchOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/{name}/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");

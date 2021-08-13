@@ -1,7 +1,7 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model KenoSoccerReportResultViewModel
+@model KenoMatchReportResultViewModel
 @{
     var htResult = Model.RoundResult.HalfTime;
     var ftResult = Model.RoundResult.FullTime;
@@ -29,56 +29,56 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <td class="text-center" colspan="10">Home</td>
+                                        <td class="text-center" colspan="10">Blue</td>
                                     </tr>
                                     <tr class="text-center font-weight-bold">
-                                        @foreach (var number in htResult.Result.Home)
+                                        @foreach (var number in htResult.Result.Blue)
                                         {
                                             <td>@number</td>
                                         }
                                     </tr>
                                     <tr class="text-center font-weight-bold">
-                                        @foreach (var number in ftResult.Result.Home)   
+                                        @foreach (var number in ftResult.Result.Blue)   
                                         {
                                             <td>@number</td>
                                         }
                                     </tr>
                                     <tr>
-                                        <td class="text-center" colspan="10">Away</td>
+                                        <td class="text-center" colspan="10">Red</td>
                                     </tr>
                                     <tr class="text-center font-weight-bold">
-                                        @foreach (var number in htResult.Result.Away)
+                                        @foreach (var number in htResult.Result.Red)
                                         {
                                             <td>@number</td>
                                         }
                                     </tr>
                                     <tr class="text-center font-weight-bold">
-                                        @foreach (var number in ftResult.Result.Away)
+                                        @foreach (var number in ftResult.Result.Red)
                                         {
                                             <td>@number</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="10">
-                                            Half Time: Sum @htResult.Total - Home @htResult.Result.Home.Sum() - Away @htResult.Result.Away.Sum()
+                                            Half Time: Sum @htResult.Total - Blue @htResult.Result.Blue.Sum() - Red @htResult.Result.Red.Sum()
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="10">
-                                            Full Time: Sum @ftResult.Total - Home @(htResult.Result.Home.Sum() + ftResult.Result.Home.Sum()) - Away @(htResult.Result.Away.Sum() + ftResult.Result.Away.Sum())
+                                            Full Time: Sum @ftResult.Total - Blue @(htResult.Result.Blue.Sum() + ftResult.Result.Blue.Sum()) - Red @(htResult.Result.Red.Sum() + ftResult.Result.Red.Sum())
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </td>
                         <td class="text-center font-weight-bold">
-                            @if (htResult.SettlementResult.Home)
+                            @if (htResult.SettlementResult.Blue)
                             {
-                                <div>Home</div>
+                                <div>Team Blue</div>
                             }
-                            @if (htResult.SettlementResult.Away)
+                            @if (htResult.SettlementResult.Red)
                             {
-                                <div>Away</div>
+                                <div>Team Red</div>
                             }
                             @if (htResult.SettlementResult.Over)
                             {
@@ -98,13 +98,13 @@
                             }
                         </td>
                         <td class="text-center font-weight-bold">
-                            @if (Model.RoundResult.FullTime.SettlementResult.Home)
+                            @if (Model.RoundResult.FullTime.SettlementResult.Blue)
                             {
-                                <div>Home</div>
+                                <div>Team Blue</div>
                             }
-                            @if (Model.RoundResult.FullTime.SettlementResult.Away)
+                            @if (Model.RoundResult.FullTime.SettlementResult.Red)
                             {
-                                <div>Away</div>
+                                <div>Team Red</div>
                             }
                             @if (Model.RoundResult.FullTime.SettlementResult.Over)
                             {
@@ -148,7 +148,7 @@
                         </td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetKenoSoccerBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                               asp-action="GetKenoMatchBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
                                 @HtmlHelpers.formatNumber(bet.TotalBet)
                             </a>
                         </td>

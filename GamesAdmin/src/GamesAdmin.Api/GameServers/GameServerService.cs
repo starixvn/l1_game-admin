@@ -127,9 +127,8 @@ namespace GamesAdmin.Api.GameServers
                 Game.KenoProMaxValue => "keno",
                 Game.BaccaratValue => "baccarat",
                 Game.RouletteValue => Game.RouletteValue,
-                Game.HangDayValue => Game.HangDayValue,
-                Game.MyDinhValue => Game.MyDinhValue,
-                Game.ThongNhatValue => Game.ThongNhatValue,
+                Game.KenoMatch1Value => Game.KenoMatch1Value,
+                Game.KenoMatch2Value => Game.KenoMatch2Value,
                 _ => string.Empty,
             };
         }

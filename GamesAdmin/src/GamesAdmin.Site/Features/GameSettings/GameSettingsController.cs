@@ -215,12 +215,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint", appSettings.GameServers.ThreeCards.Socket);
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint-route", appSettings.GameServers.ThreeCards.SocketRoute);
             AddMiniKenoCookie();
-            HttpContext.Response.Cookies.Append("mydinh-server-endpoint", appSettings.GameServers.MyDinh.Socket);
-            HttpContext.Response.Cookies.Append("mydinh-server-endpoint-route", appSettings.GameServers.MyDinh.SocketRoute);
-            HttpContext.Response.Cookies.Append("hangday-server-endpoint", appSettings.GameServers.HangDay.Socket);
-            HttpContext.Response.Cookies.Append("hangday-server-endpoint-route", appSettings.GameServers.HangDay.SocketRoute);
-            HttpContext.Response.Cookies.Append("thongnhat-server-endpoint", appSettings.GameServers.ThongNhat.Socket);
-            HttpContext.Response.Cookies.Append("thongnhat-server-endpoint-route", appSettings.GameServers.ThongNhat.SocketRoute);
+            HttpContext.Response.Cookies.Append("kenomatch1-server-endpoint", appSettings.GameServers.KenoMatch1.Socket);
+            HttpContext.Response.Cookies.Append("kenomatch1-server-endpoint-route", appSettings.GameServers.KenoMatch1.SocketRoute);
+            HttpContext.Response.Cookies.Append("kenomatch2-server-endpoint", appSettings.GameServers.KenoMatch2.Socket);
+            HttpContext.Response.Cookies.Append("kenomatch2-server-endpoint-route", appSettings.GameServers.KenoMatch2.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 

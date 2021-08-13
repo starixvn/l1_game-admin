@@ -80,17 +80,15 @@ namespace GamesAdmin.Api.Report
 
         Task<ThreeCardsBetReport> GetThreeCardsReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoSoccerBetReport> GetMyDinhReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoSoccerBetReport> GetHangDayReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoSoccerBetReport> GetThongNhatReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoSoccerBetHistory> GetMyDinhBetHistoryAsync(long roundId, string userId);
+        Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId);
 
-        Task<KenoSoccerBetHistory> GetHangDayBetHistoryAsync(long roundId, string userId);
+        Task<KenoMatchBetHistory> GetKenoMatch2BetHistoryAsync(long roundId, string userId);
 
-        Task<KenoSoccerBetHistory> GetThongNhatBetHistoryAsync(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -583,75 +581,51 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<KenoSoccerBetReport> GetMyDinhReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS)
         {
-            var repository = serviceProvider.GetService<IKenoSoccerReportRepository>();
-            var result = await repository.GetAsync<KenoSoccerMyDinhRoundEntity, KenoSoccerMyDinhOneEntity>(roundId, nickname, excludeUUS);
+            var repository = serviceProvider.GetService<IKenoMatchReportRepository>();
+            var result = await repository.GetAsync<KenoMatch1RoundEntity, KenoMatch1OneEntity>(roundId, nickname, excludeUUS);
 
-            return new KenoSoccerBetReport
+            return new KenoMatchBetReport
             {
-                RoundResult = mapper.Map<KenoSoccerRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<KenoSoccerBetRecord>(x))
+                RoundResult = mapper.Map<KenoMatchRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<KenoMatchBetRecord>(x))
             };
         }
 
-        public async Task<KenoSoccerBetReport> GetHangDayReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS)
         {
-            var repository = serviceProvider.GetService<IKenoSoccerReportRepository>();
-            var result = await repository.GetAsync<KenoSoccerHangDayRoundEntity, KenoSoccerHangDayOneEntity>(roundId, nickname, excludeUUS);
+            var repository = serviceProvider.GetService<IKenoMatchReportRepository>();
+            var result = await repository.GetAsync<KenoMatch2RoundEntity, KenoMatch2OneEntity>(roundId, nickname, excludeUUS);
 
-            return new KenoSoccerBetReport
+            return new KenoMatchBetReport
             {
-                RoundResult = mapper.Map<KenoSoccerRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<KenoSoccerBetRecord>(x))
+                RoundResult = mapper.Map<KenoMatchRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<KenoMatchBetRecord>(x))
             };
         }
 
-        public async Task<KenoSoccerBetReport> GetThongNhatReportAsync(long roundId, string nickname, bool excludeUUS)
-        {
-            var repository = serviceProvider.GetService<IKenoSoccerReportRepository>();
-            var result = await repository.GetAsync<KenoSoccerThongNhatRoundEntity, KenoSoccerThongNhatOneEntity>(roundId, nickname, excludeUUS);
-
-            return new KenoSoccerBetReport
-            {
-                RoundResult = mapper.Map<KenoSoccerRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<KenoSoccerBetRecord>(x))
-            };
-        }
-
-        public async Task<KenoSoccerBetHistory> GetMyDinhBetHistoryAsync(long roundId, string userId)
+        public async Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId)
         {
             var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
-            var result = await repository.GetKenoSoccerAsync<KenoSoccerMyDinhRoundEntity, KenoSoccerMyDinhBetEntity>(roundId, userId);
+            var result = await repository.GetKenoMatchAsync<KenoMatch1RoundEntity, KenoMatch1BetEntity>(roundId, userId);
 
-            return new KenoSoccerBetHistory
+            return new KenoMatchBetHistory
             {
-                RoundResult = mapper.Map<KenoSoccerRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<KenoSoccerBetHistoryRecord>(x)),
+                RoundResult = mapper.Map<KenoMatchRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<KenoMatchBetHistoryRecord>(x)),
             };
         }
 
-        public async Task<KenoSoccerBetHistory> GetHangDayBetHistoryAsync(long roundId, string userId)
+        public async Task<KenoMatchBetHistory> GetKenoMatch2BetHistoryAsync(long roundId, string userId)
         {
             var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
-            var result = await repository.GetKenoSoccerAsync<KenoSoccerHangDayRoundEntity, KenoSoccerHangDayBetEntity>(roundId, userId);
+            var result = await repository.GetKenoMatchAsync<KenoMatch2RoundEntity, KenoMatch2BetEntity>(roundId, userId);
 
-            return new KenoSoccerBetHistory
+            return new KenoMatchBetHistory
             {
-                RoundResult = mapper.Map<KenoSoccerRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<KenoSoccerBetHistoryRecord>(x)),
-            };
-        }
-
-        public async Task<KenoSoccerBetHistory> GetThongNhatBetHistoryAsync(long roundId, string userId)
-        {
-            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
-            var result = await repository.GetKenoSoccerAsync<KenoSoccerThongNhatRoundEntity, KenoSoccerThongNhatBetEntity>(roundId, userId);
-
-            return new KenoSoccerBetHistory
-            {
-                RoundResult = mapper.Map<KenoSoccerRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<KenoSoccerBetHistoryRecord>(x)),
+                RoundResult = mapper.Map<KenoMatchRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<KenoMatchBetHistoryRecord>(x)),
             };
         }
     }

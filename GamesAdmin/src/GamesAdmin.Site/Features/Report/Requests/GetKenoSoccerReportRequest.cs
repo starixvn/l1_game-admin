@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetKenoSoccerReportRequest : IRequest<KenoSoccerReportResultViewModel>
+    public class GetKenoSoccerReportRequest : IRequest<KenoMatchReportResultViewModel>
     {
         public GetKenoSoccerReportRequest(GameId game, long roundId, string nickname, bool excludeUUS)
         {

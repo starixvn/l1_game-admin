@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class KenoSoccerBetHistory
+    public class KenoMatchBetHistory
     {
-        public KenoSoccerRoundResult RoundResult { get; set; }
+        public KenoMatchRoundResult RoundResult { get; set; }
 
-        public IEnumerable<KenoSoccerBetHistoryRecord> Bets { get; set; }
+        public IEnumerable<KenoMatchBetHistoryRecord> Bets { get; set; }
     }
 
-    public class KenoSoccerBetHistoryRecord
+    public class KenoMatchBetHistoryRecord
     {
         public long Round { get; set; }
 

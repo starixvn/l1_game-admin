@@ -26,9 +26,9 @@ namespace GamesAdmin.Database
 
         Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId);
 
-        Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoSoccerAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
-            where TRoundEntity : KenoSoccerRoundEntity
-            where TBetEntity : KenoSoccerBetEntity;
+        Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
+            where TRoundEntity : KenoMatchRoundEntity
+            where TBetEntity : KenoMatchBetEntity;
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -274,9 +274,9 @@ namespace GamesAdmin.Database
             return (roundResult, bets, one.Odds);
         }
 
-        public async Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoSoccerAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
-            where TRoundEntity : KenoSoccerRoundEntity
-            where TBetEntity : KenoSoccerBetEntity
+        public async Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
+            where TRoundEntity : KenoMatchRoundEntity
+            where TBetEntity : KenoMatchBetEntity
         {
             var roundCollection = database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();

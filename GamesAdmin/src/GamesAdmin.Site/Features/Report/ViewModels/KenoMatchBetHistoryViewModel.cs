@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class KenoSoccerBetHistoryViewModel
+    public class KenoMatchBetHistoryViewModel
     {
-        public KenoSoccerRoundResultViewModel RoundResult { get; set; }
+        public KenoMatchRoundResultViewModel RoundResult { get; set; }
 
-        public IEnumerable<KenoSoccerBetHistoryRecordViewModel> Bets { get; set; }
+        public IEnumerable<KenoMatchBetHistoryRecordViewModel> Bets { get; set; }
 
     }
 
-    public class KenoSoccerBetHistoryRecordViewModel
+    public class KenoMatchBetHistoryRecordViewModel
     {
         public long Round { get; set; }
 

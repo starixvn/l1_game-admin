@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class KenoSoccerBetReportEntity
+    public class KenoMatchBetReportEntity
     {
         public DateTime Time { get; set; }
 

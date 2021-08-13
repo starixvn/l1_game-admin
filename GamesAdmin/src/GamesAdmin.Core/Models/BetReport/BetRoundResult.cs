@@ -214,37 +214,37 @@ namespace GamesAdmin.Core.Models
         public bool Clubs { get; set; }
     }
 
-    public class KenoSoccerRoundResult: RoundResult
+    public class KenoMatchRoundResult: RoundResult
     {
 
-        public KenoSoccerPeriod HalfTime { get; set; }
+        public KenoMatchPeriod HalfTime { get; set; }
 
-        public KenoSoccerPeriod FullTime { get; set; }
+        public KenoMatchPeriod FullTime { get; set; }
 
         public Dictionary<string, decimal> Odds { get; set; }
     }
 
-    public class KenoSoccerPeriod
+    public class KenoMatchPeriod
     {
         public DateTime Time { get; set; }
 
         public int Total { get; set; }
 
-        public KenoSoccerPeriodResult Result { get; set; }
+        public KenoMatchPeriodResult Result { get; set; }
 
-        public KenoSoccerPeriodSettlementResult SettlementResult { get; set; }
+        public KenoMatchPeriodSettlementResult SettlementResult { get; set; }
     }
 
-    public class KenoSoccerPeriodResult
+    public class KenoMatchPeriodResult
     {
-        public IEnumerable<int> Home { get; set; }
-        public IEnumerable<int> Away { get; set; }
+        public IEnumerable<int> Blue { get; set; }
+        public IEnumerable<int> Red { get; set; }
     }
 
-    public class KenoSoccerPeriodSettlementResult
+    public class KenoMatchPeriodSettlementResult
     {
-        public bool Home { get; set; }
-        public bool Away { get; set; }
+        public bool Blue { get; set; }
+        public bool Red  { get; set; }
         public bool Over { get; set; }
         public bool Under { get; set; }
         public bool Odd { get; set; }

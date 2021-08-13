@@ -68,7 +68,7 @@ namespace GamesAdmin.Core.Models
     {
     }
 
-    public class KenoSoccerBetReport : BetReport<KenoSoccerRoundResult, KenoSoccerBetRecord>
+    public class KenoMatchBetReport : BetReport<KenoMatchRoundResult, KenoMatchBetRecord>
     {
     }
 }

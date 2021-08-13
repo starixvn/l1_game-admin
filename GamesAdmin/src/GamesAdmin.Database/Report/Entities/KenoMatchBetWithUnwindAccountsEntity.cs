@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class KenoSoccerBetWithUnwindAccountsEntity : KenoSoccerOneEntity
+    public class KenoMatchBetWithUnwindAccountsEntity : KenoMatchOneEntity
     {
         public ObjectId UserId { get; set; }
 

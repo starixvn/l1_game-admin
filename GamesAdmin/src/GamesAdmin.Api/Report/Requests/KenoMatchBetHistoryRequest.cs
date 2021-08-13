@@ -4,9 +4,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class KenoSoccerBetHistoryRequest : IRequest<KenoSoccerBetHistory>
+    public class KenoMatchBetHistoryRequest : IRequest<KenoMatchBetHistory>
     {
-        public KenoSoccerBetHistoryRequest(GameId game, long roundId, string userId)
+        public KenoMatchBetHistoryRequest(GameId game, long roundId, string userId)
         {
             RoundId = roundId;
             UserId = userId;

@@ -222,38 +222,38 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Clubs { get; set; }
     }
 
-    public class KenoSoccerRoundResultViewModel
+    public class KenoMatchRoundResultViewModel
     {
         public long Number { get; set; }
 
-        public KenoSoccerPeriodViewModel HalfTime { get; set; }
+        public KenoMatchPeriodViewModel HalfTime { get; set; }
 
-        public KenoSoccerPeriodViewModel FullTime { get; set; }
+        public KenoMatchPeriodViewModel FullTime { get; set; }
 
         public Dictionary<string, decimal> Odds { get; set; }
     }
 
-    public class KenoSoccerPeriodViewModel
+    public class KenoMatchPeriodViewModel
     {
         public DateTime Time { get; set; }
 
         public int Total { get; set; }
 
-        public KenoSoccerPeriodResultViewModel Result { get; set; }
+        public KenoMatchPeriodResultViewModel Result { get; set; }
 
-        public KenoSoccerPeriodSettlementResultViewModel SettlementResult { get; set; }
+        public KenoMatchPeriodSettlementResultViewModel SettlementResult { get; set; }
     }
 
-    public class KenoSoccerPeriodResultViewModel
+    public class KenoMatchPeriodResultViewModel
     {
-        public IEnumerable<int> Home { get; set; }
-        public IEnumerable<int> Away { get; set; }
+        public IEnumerable<int> Blue { get; set; }
+        public IEnumerable<int> Red { get; set; }
     }
 
-    public class KenoSoccerPeriodSettlementResultViewModel
+    public class KenoMatchPeriodSettlementResultViewModel
     {
-        public bool Home { get; set; }
-        public bool Away { get; set; }
+        public bool Blue { get; set; }
+        public bool Red { get; set; }
         public bool Over { get; set; }
         public bool Under { get; set; }
         public bool Odd { get; set; }

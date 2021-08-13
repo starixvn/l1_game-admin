@@ -38,7 +38,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ExcludeUUS { get; set; } = true;
     }
 
-    public class KenoSoccerReportViewModel :ReportViewModel
+    public class KenoMatchReportViewModel :ReportViewModel
     {
         public GameId Game { get; set; }
     }

@@ -79,9 +79,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
-        Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
+        Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoSoccerBetHistory> GetKenoSoccerBetHistory(GameId game, long roundId, string userId);
+        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -195,10 +195,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
 
-        public Task<KenoSoccerBetReport> GetKenoSoccerBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
-        => reportApi.GetKenoSoccerBetReport(game.ToString(), roundId, nickname, excludeUUS);
+        public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
 
-        public Task<KenoSoccerBetHistory> GetKenoSoccerBetHistory(GameId game, long roundId, string userId)
-        => reportApi.GetKenoSoccerBetHistory(game.ToString(), roundId, userId);
+        public Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
+        => reportApi.GetKenoMatchBetHistory(game.ToString(), roundId, userId);
     }
 }

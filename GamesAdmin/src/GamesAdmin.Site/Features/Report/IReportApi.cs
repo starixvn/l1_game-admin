@@ -106,10 +106,10 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/kenosoccer/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<KenoSoccerBetReport> GetKenoSoccerBetReport(string game, long roundId, string nickname, bool excludeUUS);
+        [Get("/report/kenomatch/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<KenoMatchBetReport> GetKenoMatchBetReport(string game, long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/bet_history/kenosoccer/{game}/round/{roundId}/user/{userId}")]
-        Task<KenoSoccerBetHistory> GetKenoSoccerBetHistory(string game, long roundId, string userId);
+        [Get("/report/bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
+        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(string game, long roundId, string userId);
     }
 }
