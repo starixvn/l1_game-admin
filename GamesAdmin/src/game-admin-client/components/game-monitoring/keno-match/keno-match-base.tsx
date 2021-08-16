@@ -271,7 +271,7 @@ export default class KenoMatch extends React.Component<
         <>
           <Col xs={12} className={styles["result-summary"]}>
             <div>
-              HT: Total {htBlueTotal + htRedTotal} - Blue {htBlueTotal} - Red{" "}
+              First Half: Total {htBlueTotal + htRedTotal} - Blue {htBlueTotal} - Red{" "}
               {htRedTotal}
             </div>
             <div className="font-weight-bold">
@@ -281,7 +281,7 @@ export default class KenoMatch extends React.Component<
           {Object.values(ftSettlementResult).some(x => x) && (
             <Col xs={12} className={styles["result-summary"]}>
               <div>
-                FT: Total {ftBlueTotal + ftRedTotal} - Blue {ftBlueTotal} -
+                Full Time: Total {ftBlueTotal + ftRedTotal} - Blue {ftBlueTotal} -
                 Red {ftRedTotal}
               </div>
               <div className="font-weight-bold">
