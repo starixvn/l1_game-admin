@@ -253,29 +253,29 @@ export default class KenoMatch extends React.Component<
   }
 
   renderResultSummary() {
-    const { result: htResult, settlementResult: htSettlementResult } =
+    const { result: hfResult, settlementResult: hfSettlementResult } =
       this.state.result.halfTime;
 
-    if (Object.values(htSettlementResult).some(x => x)) {
-      const htBlueTotal = htResult.blue.reduce((num1, num2) => num1 + num2, 0);
-      const htRedTotal = htResult.red.reduce((num1, num2) => num1 + num2, 0);
+    if (Object.values(hfSettlementResult).some(x => x)) {
+      const hfBlueTotal = hfResult.blue.reduce((num1, num2) => num1 + num2, 0);
+      const hfRedTotal = hfResult.red.reduce((num1, num2) => num1 + num2, 0);
 
       const { result: ftResult, settlementResult: ftSettlementResult } =
         this.state.result.fullTime;
       const ftBlueTotal =
-        ftResult.blue.reduce((num1, num2) => num1 + num2, 0) + htBlueTotal;
+        ftResult.blue.reduce((num1, num2) => num1 + num2, 0) + hfBlueTotal;
       const ftRedTotal =
-        ftResult.red.reduce((num1, num2) => num1 + num2, 0) + htRedTotal;
+        ftResult.red.reduce((num1, num2) => num1 + num2, 0) + hfRedTotal;
 
       return (
         <>
           <Col xs={12} className={styles["result-summary"]}>
             <div>
-              First Half: Total {htBlueTotal + htRedTotal} - Blue {htBlueTotal} - Red{" "}
-              {htRedTotal}
+              First Half: Total {hfBlueTotal + hfRedTotal} - Blue {hfBlueTotal} - Red{" "}
+              {hfRedTotal}
             </div>
             <div className="font-weight-bold">
-              {this.getSettlementResultString(htSettlementResult)}
+              {this.getSettlementResultString(hfSettlementResult)}
             </div>
           </Col>
           {Object.values(ftSettlementResult).some(x => x) && (
@@ -353,7 +353,7 @@ export default class KenoMatch extends React.Component<
           <Col align="center" className="col-5">
             <Row className="justify-content-center" noGutters>
               <Col className={styles.title} xs={12}>
-                Pre-match HT
+                First Half
               </Col>
               <TotalBet
                 total={betList.fhBlue.total}
@@ -388,7 +388,7 @@ export default class KenoMatch extends React.Component<
             </Row>
             <Row className="justify-content-center" noGutters>
               <Col className={styles.title} xs={12}>
-                Pre-match FT
+                Full Time
               </Col>
               <TotalBet
                 total={betList.ftBlue.total}
@@ -423,7 +423,7 @@ export default class KenoMatch extends React.Component<
             </Row>
             <Row className="justify-content-center" noGutters>
               <Col className={styles.title} xs={12}>
-                Live - FT
+                Full Time (Live)
               </Col>
               <TotalBet
                 total={betList.ftBlue.total}
@@ -533,7 +533,7 @@ export default class KenoMatch extends React.Component<
             </Row>
           </Col>
           <Col xs={12} md={6} lg={4}>
-            <div className={styles.title}>Live - Full Time</div>
+            <div className={styles.title}>Full Time (Live)</div>
             <Row noGutters>
               <Col className="col">
                 <BetList
@@ -596,14 +596,14 @@ export default class KenoMatch extends React.Component<
         />
         <ModalBody>
           <Form onSubmit={this.handleChangeResult}>
-            <div className={styles.title}>Half Time</div>
+            <div className={styles.title}>First Half</div>
             <FormGroup>
-              <Label for="htBlue">Blue</Label>
-              <Input name="htBlue" data-period="halfTime" />
+              <Label for="hfBlue">Blue</Label>
+              <Input name="hfBlue" />
             </FormGroup>
             <FormGroup>
-              <Label for="htRed">Red</Label>
-              <Input name="htRed" />
+              <Label for="hfRed">Red</Label>
+              <Input name="hfRed" />
             </FormGroup>
             <div className={styles.title}>Full Time</div>
             <FormGroup>
@@ -626,8 +626,8 @@ export default class KenoMatch extends React.Component<
     const newResult = {
       halfTime: {
         result: {
-          blue: event.target["htBlue"].value.split(",").map((x) => parseInt(x)),
-          red: event.target["htRed"].value.split(",").map((x) => parseInt(x)),
+          blue: event.target["hfBlue"].value.split(",").map((x) => parseInt(x)),
+          red: event.target["hfRed"].value.split(",").map((x) => parseInt(x)),
         },
       },
       fullTime: {
