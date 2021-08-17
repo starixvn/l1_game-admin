@@ -66,7 +66,13 @@ namespace GamesAdmin.Api.ChatBot
         {
             var systemName = Enum.Parse<Systems>(system.ToString());
 
-            return (systemName == Systems.Mobi) ? $"{Separator}SM" : string.Empty;
+            return systemName switch
+            {
+                Systems.Mobi => $"{Separator}SM",
+                Systems.Instant => $"{Separator}SI",
+                Systems.Cocos => string.Empty,
+                _ => string.Empty,
+            };
         }
     }
 }
