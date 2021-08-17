@@ -108,7 +108,7 @@ export default class KenoMatch extends React.Component<
 
     if (!!data.finishHalfTime) {
       this.isFirstLoad = false;
-      const waitingTime = 6;
+      const waitingTime = 7;
       const { result } = this.state;
       result.halfTime = data.finishHalfTime;
       this.setState({
@@ -131,7 +131,7 @@ export default class KenoMatch extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 6;
+      const waitingTime = 7;
       const { result } = this.state;
       result.fullTime = data.finish;
       this.setState({
