@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./keno-soccer-result.module.scss";
+import styles from "./keno-match-result.module.scss";
 
 export default function KenoMatchResult(props: {
   listResult: Array<number>;
