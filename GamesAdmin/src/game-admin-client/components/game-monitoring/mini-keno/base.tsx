@@ -42,7 +42,7 @@ type KenoMessage = {
     placingBets: number;
     lockingBet: number;
   };
-  ingame: { [username: string]: { [box: string]: number } };
+  inGame: { [username: string]: { [box: string]: number } };
   finish: {
     result: Array<number>;
     roundId: number;
@@ -151,11 +151,11 @@ export default class extends React.Component<Props, State> {
         handle: () => this.props.sendMessage({ sync: true }),
       },
       {
-        selector: () => message.ingame && message.totalBets,
+        selector: () => message.inGame && message.totalBets,
         handle: () => {
-          const { ingame } = message;
+          const { inGame } = message;
           const choices = this.state.choices.map((choice) => {
-            const bets = Object.values(ingame)
+            const bets = Object.values(inGame)
               .reverse()
               .map((bet) => ({
                 name: bet.name.toString(),

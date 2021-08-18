@@ -33,6 +33,14 @@ namespace GamesAdmin.Api.GameServers
             { Game.BigSmallTurboValue, typeof(ITurboBigSmallOnlineUserApi) },
             { Game.OddEvenTurboValue, typeof(ITurboOddEvenOnlineUserApi) },
             { Game.ThreeCardsValue, typeof(IThreeCardsOnlineUserApi) },
+            { Game.KenoMaxValue, typeof(IKenoMaxOnlineUserApi) },
+            { Game.KenoMax2Value, typeof(IKenoMax2OnlineUserApi) },
+            { Game.KenoMiniValue, typeof(IKenoMiniOnlineUserApi) },
+            { Game.KenoMini2Value, typeof(IKenoMini2OnlineUserApi) },
+            { Game.KenoEastValue, typeof(IKenoEastOnlineUserApi) },
+            { Game.KenoWestValue, typeof(IKenoWestOnlineUserApi) },
+            { Game.KenoSouthValue, typeof(IKenoSouthOnlineUserApi) },
+            { Game.KenoNorthValue, typeof(IKenoNorthOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);
