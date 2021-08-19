@@ -5,6 +5,7 @@ namespace GamesAdmin.Core.Models
 {
     public class RoundResult
     {
+        public DateTime Time { get; set; }
         public long Number { get; set; }
     }
 
@@ -216,7 +217,6 @@ namespace GamesAdmin.Core.Models
 
     public class KenoMatchRoundResult: RoundResult
     {
-
         public KenoMatchPeriod HalfTime { get; set; }
 
         public KenoMatchPeriod FullTime { get; set; }

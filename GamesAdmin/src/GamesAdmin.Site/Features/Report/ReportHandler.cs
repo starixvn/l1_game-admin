@@ -646,11 +646,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<KenoMatchReportResultViewModel> Handle(GetKenoSoccerReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetKenoMatchBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+            var roundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult);
+            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
 
             return new KenoMatchReportResultViewModel
             {
                 Game = request.Game,
-                RoundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult),
+                RoundResult = roundResult,
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<KenoMatchRecordViewModel>(x);

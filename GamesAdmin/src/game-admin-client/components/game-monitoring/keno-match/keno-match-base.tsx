@@ -108,7 +108,7 @@ export default class KenoMatch extends React.Component<
 
     if (!!data.finishHalfTime) {
       this.isFirstLoad = false;
-      const waitingTime = 7;
+      const waitingTime = 6;
       const { result } = this.state;
       result.halfTime = data.finishHalfTime;
       this.setState({
@@ -131,7 +131,7 @@ export default class KenoMatch extends React.Component<
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 7;
+      const waitingTime = 6;
       const { result } = this.state;
       result.fullTime = data.finish;
       this.setState({
@@ -172,14 +172,17 @@ export default class KenoMatch extends React.Component<
         });
 
         this.timeout = setTimeout(() => {
+          const newState = new KenoMatchModel();
+
           this.setState({
+            ...newState,
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
               remainingTime: 27,
             },
           });
-        }, (data.remainingTime - 53) * 1000);
+        }, (data.remainingTime - 52) * 1000);
       } else {
         if (data.remainingTime > 26) {
           this.setState({

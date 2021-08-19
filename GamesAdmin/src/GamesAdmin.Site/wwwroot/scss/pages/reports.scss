@@ -270,3 +270,32 @@
         height: 30px;
     }
 }
+
+
+.table-keno-match-result {
+    .list-numbers {
+        display: grid;
+        grid-template-columns: repeat(5, 3rem);
+        flex-wrap: wrap;
+        grid-gap: .4rem;
+        justify-content: center;
+
+        .number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3rem;
+            width: 3rem;
+            border-radius: 50%;
+            border: 1px solid;
+
+            &.red {
+                border-color: #dc3545;
+            }
+
+            &.blue {
+                border-color: #16aaff;
+            }
+        }
+    }
+}

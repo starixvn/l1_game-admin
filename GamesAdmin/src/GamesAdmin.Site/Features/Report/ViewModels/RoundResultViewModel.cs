@@ -224,6 +224,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class KenoMatchRoundResultViewModel
     {
+        public DateTime Time { get; set; }
+
         public long Number { get; set; }
 
         public KenoMatchPeriodViewModel HalfTime { get; set; }

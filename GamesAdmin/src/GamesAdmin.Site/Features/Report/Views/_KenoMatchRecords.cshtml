@@ -13,65 +13,91 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th rowspan="2">Date</th>
                         <th rowspan="2">Round ID</th>
                         <th rowspan="2">Results</th>
                         <th colspan="2">Winning Options</th>
                     </tr>
                     <tr>
-                        <th>Half Time</th>
+                        <th>First Half</th>
                         <th>Full Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="text-center">@Model.RoundResult.Time</td>
                         <td class="text-center">@Model.RoundResult.Number</td>
                         <td>
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-keno-match-result">
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center" colspan="10">Blue</td>
-                                    </tr>
                                     <tr class="text-center font-weight-bold">
-                                        @foreach (var number in htResult.Result.Blue)
-                                        {
-                                            <td>@number</td>
-                                        }
-                                    </tr>
-                                    <tr class="text-center font-weight-bold">
-                                        @foreach (var number in ftResult.Result.Blue)   
-                                        {
-                                            <td>@number</td>
-                                        }
+                                        <td>Team Blue</td>
+                                        <td>Team Red</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center" colspan="10">Red</td>
-                                    </tr>
-                                    <tr class="text-center font-weight-bold">
-                                        @foreach (var number in htResult.Result.Red)
-                                        {
-                                            <td>@number</td>
-                                        }
-                                    </tr>
-                                    <tr class="text-center font-weight-bold">
-                                        @foreach (var number in ftResult.Result.Red)
-                                        {
-                                            <td>@number</td>
-                                        }
+                                        <td colspan="2" class="text-center font-weight-bold">First Half</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center" colspan="10">
-                                            Half Time: Sum @htResult.Total - Blue @htResult.Result.Blue.Sum() - Red @htResult.Result.Red.Sum()
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in htResult.Result.Blue)
+                                                {
+                                                    <span class="number blue">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in htResult.Result.Red)
+                                                {
+                                                    <span class="number red">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="2">
+                                            Team Blue @htResult.Result.Blue.Sum() - Total @htResult.Total - Team Red @htResult.Result.Red.Sum()
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center font-weight-bold">Full Time</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in ftResult.Result.Blue)
+                                                {
+                                                    <span class="number blue">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in ftResult.Result.Red)
+                                                {
+                                                    <span class="number red">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="10">
-                                            Full Time: Sum @ftResult.Total - Blue @(htResult.Result.Blue.Sum() + ftResult.Result.Blue.Sum()) - Red @(htResult.Result.Red.Sum() + ftResult.Result.Red.Sum())
+                                            Team Blue @(htResult.Result.Blue.Sum() + ftResult.Result.Blue.Sum()) - Total @ftResult.Total - Team Red @(htResult.Result.Red.Sum() + ftResult.Result.Red.Sum())
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </td>
-                        <td class="text-center font-weight-bold">
+                        <td class="text-center">
                             @if (htResult.SettlementResult.Blue)
                             {
                                 <div>Team Blue</div>
@@ -97,7 +123,7 @@
                                 <div>Even</div>
                             }
                         </td>
-                        <td class="text-center font-weight-bold">
+                        <td class="text-center">
                             @if (Model.RoundResult.FullTime.SettlementResult.Blue)
                             {
                                 <div>Team Blue</div>

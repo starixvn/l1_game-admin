@@ -134,7 +134,7 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult KenoMatch2()
         {
             ViewData["Title"] = "Keno Match 2";
-            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch1, ExcludeUUS = true });
+            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch2, ExcludeUUS = true });
         }
 
         [HttpGet]

@@ -1,3 +1,4 @@
+import React from "react";
 import KenoMatch from "./keno-match-base";
 
 export default (gameName: string) => (props) => {
