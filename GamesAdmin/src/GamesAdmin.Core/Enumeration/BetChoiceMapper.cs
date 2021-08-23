@@ -26,6 +26,8 @@ namespace GamesAdmin.Core.Enumeration
             {Game.ThreeCardsValue, Enumeration.GetAll<ThreeCardsBetChoice>() },
             {Game.KenoMatch1Value, Enumeration.GetAll<KenoMatchBetOdds>() },
             {Game.KenoMatch2Value, Enumeration.GetAll<KenoMatchBetOdds>() },
+            {Game.KenoPower1Value, Enumeration.GetAll<KenoPowerBetChoice>() },
+            {Game.KenoPower2Value, Enumeration.GetAll<KenoPowerBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

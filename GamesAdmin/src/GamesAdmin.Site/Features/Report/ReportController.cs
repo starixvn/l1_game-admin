@@ -126,14 +126,14 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult KenoMatch1()
         {
-            ViewData["Title"] = "Keno Match 1";
+            ViewData["Title"] = "Keno Match";
             return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch1, ExcludeUUS = true });
         }
 
         [HttpGet]
         public IActionResult KenoMatch2()
         {
-            ViewData["Title"] = "Keno Match 2";
+            ViewData["Title"] = "Keno Match MD5";
             return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch2, ExcludeUUS = true });
         }
 

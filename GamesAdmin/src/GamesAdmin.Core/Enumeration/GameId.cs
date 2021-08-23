@@ -35,5 +35,7 @@
         HeroesSlot = 38
         KenoMatch1,
         KenoMatch2,
+        KenoPower1 = 40,
+        KenoPower2
     }
 }
