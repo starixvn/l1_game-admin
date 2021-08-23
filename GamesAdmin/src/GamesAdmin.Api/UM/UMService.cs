@@ -29,6 +29,7 @@ namespace GamesAdmin.Api.UM
         private readonly IGenericRepository<GameConfigEntity> configRepository;
         private readonly IGenericRepository<EventScheduleEntity> scheduleRepository;
         private readonly IGenericRepository<NotificationEntity> notificationRepository;
+        private readonly IGenericRepository<UserSessionEntity> usersessionRepository;
 
         public UMService(
             ISentryClient sentryClient,
@@ -36,7 +37,8 @@ namespace GamesAdmin.Api.UM
             IGenericRepository<UMInfoEntity> umRepository,
             IGenericRepository<GameConfigEntity> configRepository,
             IGenericRepository<EventScheduleEntity> scheduleRepository,
-            IGenericRepository<NotificationEntity> notificationRepository)
+            IGenericRepository<NotificationEntity> notificationRepository,
+            IGenericRepository<UserSessionEntity> usersessionRepository)
         {
             this.sentryClient = sentryClient;
             this.mapper = mapper;
@@ -44,6 +46,7 @@ namespace GamesAdmin.Api.UM
             this.configRepository = configRepository;
             this.scheduleRepository = scheduleRepository;
             this.notificationRepository = notificationRepository;
+            this.usersessionRepository = usersessionRepository;
         }
 
         public Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime) => isUM ? Start(startTime, endTime) : End();
@@ -55,6 +58,7 @@ namespace GamesAdmin.Api.UM
                 sentryClient.CaptureMessage($"{DateTime.Now} UM Start: {startTime} End: {endTime}");
 
                 await UpdateEnableConfig(false);
+                await UpdateUserSessions();
 
                 var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
 
@@ -113,6 +117,14 @@ namespace GamesAdmin.Api.UM
             await configRepository.UpdateManyAsync(config => true, update);
         }
 
+        private async Task UpdateUserSessions()
+        {
+            const int sessionExpiredTimeInMinutes = 20;
+            var minTime = DateTime.Now.AddMinutes(-sessionExpiredTimeInMinutes);
+            var update = Builders<UserSessionEntity>.Update.Set(field => field.RecheckInTime, minTime);
+            await usersessionRepository.UpdateManyAsync(ss => minTime < ss.RecheckInTime, update);
+        }
+
         public async Task<bool> AddSchedule(UmSchedule umSchedule)
         {
             var schedule = mapper.Map<EventScheduleEntity>(umSchedule);
@@ -124,7 +136,7 @@ namespace GamesAdmin.Api.UM
                 DisplayKind = byte.Parse(NotificationDisplayKind.Marquee.Value)
             };
 
-            await scheduleRepository.InsertOneAsync(schedule);            
+            await scheduleRepository.InsertOneAsync(schedule);
             await notificationRepository.InsertOneAsync(notification);
 
             return true;
