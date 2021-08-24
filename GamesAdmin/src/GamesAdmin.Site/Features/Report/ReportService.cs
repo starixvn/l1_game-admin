@@ -83,7 +83,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
 
-        Task<KenoPowerBetReport> GetKenoPowerBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        Task<KenoPowerBetReport> GetKenoPowerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
