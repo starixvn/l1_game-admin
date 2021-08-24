@@ -77,6 +77,14 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.MiniSeDie.DisplayName, Game.MiniSeDie.Value),
                 new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value),
                 new SelectListItem(Game.ThreeCards.DisplayName, Game.ThreeCards.Value),
+                new SelectListItem(Game.KenoMax.DisplayName, Game.KenoMax.Value),
+                new SelectListItem(Game.KenoMax2.DisplayName, Game.KenoMax2.Value),
+                new SelectListItem(Game.KenoMini.DisplayName, Game.KenoMini.Value),
+                new SelectListItem(Game.KenoMini2.DisplayName, Game.KenoMini2.Value),
+                new SelectListItem(Game.KenoEast.DisplayName, Game.KenoEast.Value),
+                new SelectListItem(Game.KenoWest.DisplayName, Game.KenoWest.Value),
+                new SelectListItem(Game.KenoSouth.DisplayName, Game.KenoSouth.Value),
+                new SelectListItem(Game.KenoNorth.DisplayName, Game.KenoNorth.Value),
                 };
     }
 }

@@ -33,7 +33,7 @@ type State = {
 };
 
 type KenoMessage = {
-  um: boolean,
+  um: boolean;
   totalBets: { [key: string]: number };
   remainingTime: number;
   roundId: number;
@@ -42,7 +42,7 @@ type KenoMessage = {
     placingBets: number;
     lockingBet: number;
   };
-  ingame: { [username: string]: { [box: string]: number } };
+  inGame: { [username: string]: { [box: string]: number } };
   finish: {
     result: Array<number>;
     roundId: number;
@@ -74,7 +74,7 @@ export default class extends React.Component<Props, State> {
       result: [],
       boxes: null,
       isShowSetResultPanel: false,
-      disabled: false
+      disabled: false,
     };
 
     this.showSetResultPanel = this.showSetResultPanel.bind(this);
@@ -99,7 +99,9 @@ export default class extends React.Component<Props, State> {
             this.setState({
               disabled: message.um,
               remainingTime: 0,
-              roundId: this.isFirstLoad ? this.state.roundId : this.state.roundId - 1
+              roundId: this.isFirstLoad
+                ? this.state.roundId
+                : this.state.roundId - 1,
             });
             this.reset();
             this.isFirstLoad = false;
@@ -119,13 +121,15 @@ export default class extends React.Component<Props, State> {
 
           if (message.remainingTime > durations.placingBets) {
             const { result, settlementResult } = message;
-            const choices = settlementResult ? this.updateWinningChoice(this.state.choices, settlementResult) : this.state.choices;
+            const choices = settlementResult
+              ? this.updateWinningChoice(this.state.choices, settlementResult)
+              : this.state.choices;
             this.setState({
               roundId: message.roundId - 1,
               remainingTime: message.remainingTime + 1,
               result: result ? result : this.state.result,
               choices: choices,
-              resultText: this.getResultText(choices)
+              resultText: this.getResultText(choices),
             });
 
             this.timeout = setTimeout(() => {
@@ -147,11 +151,11 @@ export default class extends React.Component<Props, State> {
         handle: () => this.props.sendMessage({ sync: true }),
       },
       {
-        selector: () => message.ingame && message.totalBets,
+        selector: () => message.inGame && message.totalBets,
         handle: () => {
-          const { ingame } = message;
+          const { inGame } = message;
           const choices = this.state.choices.map((choice) => {
-            const bets = Object.values(ingame)
+            const bets = Object.values(inGame)
               .reverse()
               .map((bet) => ({
                 name: bet.name.toString(),
@@ -171,7 +175,10 @@ export default class extends React.Component<Props, State> {
         handle: () => {
           this.isFirstLoad = false;
           const { settlementResult, result } = message.finish;
-          const choices = this.updateWinningChoice(this.state.choices, settlementResult);
+          const choices = this.updateWinningChoice(
+            this.state.choices,
+            settlementResult
+          );
           const resultText = this.getResultText(choices);
 
           this.setState({ choices, result, resultText });
@@ -199,13 +206,13 @@ export default class extends React.Component<Props, State> {
   }
 
   getResultText(choices) {
-    return choices.reduce(
-      (result, choice) =>
-        choice.isWin
-          ? `${result} - ${choice.name.toUpperCase()}`
-          : result,
-      ""
-    ).substr(3);
+    return choices
+      .reduce(
+        (result, choice) =>
+          choice.isWin ? `${result} - ${choice.name.toUpperCase()}` : result,
+        ""
+      )
+      .substr(3);
   }
 
   reset() {
@@ -261,7 +268,7 @@ export default class extends React.Component<Props, State> {
       placingBetTime: durations.placingBets,
       lockingBetTime: durations.lockingBet,
       reset: this.reset,
-      disabled
+      disabled,
     };
 
     const betTableProps = {
