@@ -138,15 +138,35 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult KenoPower1()
+        {
+            ViewData["Title"] = "Keno Power";
+            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower1, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public IActionResult KenoPower2()
+        {
+            ViewData["Title"] = "Keno Power MD5";
+            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower2, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoPowerReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_KenoPowerRecords", await mediator.Send(new GetKenoPowerReportRequest(game, roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
         {
-            return PartialView("_KenoMatchBetHistory", await mediator.Send(new GetKenoSoccerBetHistoryRequest(game, roundId, userId)));
+            return PartialView("_KenoMatchBetHistory", await mediator.Send(new GetKenoMatchBetHistoryRequest(game, roundId, userId)));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetKenoMatchReport(GameId game, long roundId, string nickname, bool excludeUUS)
         {
-            return PartialView("_KenoMatchRecords", await mediator.Send(new GetKenoSoccerReportRequest(game, roundId, nickname, excludeUUS)));
+            return PartialView("_KenoMatchRecords", await mediator.Send(new GetKenoMatchReportRequest(game, roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]

@@ -274,6 +274,11 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoMatchPeriodSettlementResultEntity, KenoMatchPeriodSettlementResult>();
             CreateMap<KenoMatchBetReportEntity, KenoMatchBetRecord>();
             CreateMap<KenoMatchBetEntity, KenoMatchBetHistoryRecord>();
+
+            CreateMap<KenoPowerRoundEntity, KenoPowerRoundResult>();
+            CreateMap<KenoPowerResultEntity, KenoPowerResult>();
+            CreateMap<KenoPowerSettlementResultEntity, KenoPowerSettlementResult>();
+            CreateMap<KenoPowerBetEntity, KenoPowerBetRecord>();
         }
     }
 }

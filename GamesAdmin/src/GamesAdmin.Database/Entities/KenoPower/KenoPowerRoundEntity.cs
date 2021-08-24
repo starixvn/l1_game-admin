@@ -32,6 +32,10 @@ namespace GamesAdmin.Database.Entities
         public bool Blue { get; set; }
         public bool Indigo { get; set; }
         public bool Violet { get; set; }
+        public bool PlayerBig { get; set; }
+        public bool PlayerSmall { get; set; }
+        public bool BankerBig { get; set; }
+        public bool BankerSmall { get; set; }
     }
 
 

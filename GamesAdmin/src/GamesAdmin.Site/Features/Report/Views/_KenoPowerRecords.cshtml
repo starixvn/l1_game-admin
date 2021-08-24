@@ -1,0 +1,198 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model KenoPowerReportResultViewModel
+
+@{
+    var playerResult = Model.RoundResult.Result.Player;
+    var bankerResult = Model.RoundResult.Result.Banker;
+    var playerSum = playerResult.Sum(x => x);
+    var bankerSum = bankerResult.Sum(x => x);
+    var settlementResult = Model.RoundResult.SettlementResult;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Date</th>
+                        <th rowspan="2">Round ID</th>
+                        <th rowspan="2">Results</th>
+                        <th colspan="4">Winning Options</th>
+                    </tr>
+                    <tr>
+                        <th>Player/Banker</th>
+                        <th>Player</th>
+                        <th>Banker</th>
+                        <th>Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Time</td>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td>
+                            <table class="table table-bordered table-keno-power-result">
+                                <tbody>
+                                    <tr class="text-center font-weight-bold">
+                                        <td>Team Blue</td>
+                                        <td>Team Red</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center font-weight-bold">First Half</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in playerResult)
+                                                {
+                                                    <span class="number blue">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in bankerResult)
+                                                {
+                                                    <span class="number red">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="2">
+                                            Player @playerSum - Total @(playerSum + bankerSum) - Banker @bankerSum
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="text-center">
+                            @if (settlementResult.Banker)
+                            {
+                                <span>Banker</span>
+                            }
+
+                            @if (settlementResult.Player)
+                            {
+                                <span>Player</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (settlementResult.PlayerBig)
+                            {
+                                <span>Big</span>
+                            }
+                            else
+                            {
+                                <span>Small</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (settlementResult.BankerBig)
+                            {
+                                <span>Big</span>
+                            }
+                            else
+                            {
+                                <span>Small</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (settlementResult.Big)
+                            {
+                                <div>Big</div>
+                            }
+                            else
+                            {
+                                <div>Small</div>
+                            }
+
+                            @if (settlementResult.Odd)
+                            {
+                                <div>Odd</div>
+                            }
+                            else
+                            {
+                                <div>Even</div>
+                            }
+
+                            @if (settlementResult.Red)
+                            {
+                                <div>Red</div>
+                            }
+                            @if (settlementResult.Orange)
+                            {
+                                <div>Orange</div>
+                            }
+                            @if (settlementResult.Yellow)
+                            {
+                                <div>Yellow</div>
+                            }
+                            @if (settlementResult.Green)
+                            {
+                                <div>Green</div>
+                            }
+                            @if (settlementResult.Blue)
+                            {
+                                <div>Blue</div>
+                            }
+                            @if (settlementResult.Indigo)
+                            {
+                                <div>Indigo</div>
+                            }
+                            @if (settlementResult.Violet)
+                            {
+                                <div>Violet</div>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Total Bets</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetKenoPowerBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                                @HtmlHelpers.formatNumber(bet.TotalBet)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                    </tr>
+                }
+
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="5">No data</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

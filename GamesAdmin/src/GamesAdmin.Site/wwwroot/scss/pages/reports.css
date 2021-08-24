@@ -210,13 +210,13 @@
   width: 30px;
   height: 30px; }
 
-.table-keno-match-result .list-numbers {
+.table-keno-match-result .list-numbers, .table-keno-power-result .list-numbers {
   display: grid;
   grid-template-columns: repeat(5, 3rem);
   flex-wrap: wrap;
   grid-gap: .4rem;
   justify-content: center; }
-  .table-keno-match-result .list-numbers .number {
+  .table-keno-match-result .list-numbers .number, .table-keno-power-result .list-numbers .number {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -224,7 +224,7 @@
     width: 3rem;
     border-radius: 50%;
     border: 1px solid; }
-    .table-keno-match-result .list-numbers .number.red {
+    .table-keno-match-result .list-numbers .number.red, .table-keno-power-result .list-numbers .number.red {
       border-color: #dc3545; }
-    .table-keno-match-result .list-numbers .number.blue {
+    .table-keno-match-result .list-numbers .number.blue, .table-keno-power-result .list-numbers .number.blue {
       border-color: #16aaff; }

@@ -42,4 +42,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public GameId Game { get; set; }
     }
+
+    public class KenoPowerReportViewModel : ReportViewModel
+    {
+        public GameId Game { get; set; }
+    }
 }

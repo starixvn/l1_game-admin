@@ -1,12 +1,12 @@
 ﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Features.Report.ViewModels;
+using GamesAdmin.Core.Models;
 using MediatR;
 
-namespace GamesAdmin.Site.Features.Report.Requests
+namespace GamesAdmin.Api.Report.Requests
 {
-    public class GetKenoSoccerReportRequest : IRequest<KenoMatchReportResultViewModel>
+    public class KenoMatchReportRequest : IRequest<KenoMatchBetReport>
     {
-        public GetKenoSoccerReportRequest(GameId game, long roundId, string nickname, bool excludeUUS)
+        public KenoMatchReportRequest(GameId game, long roundId, string nickname, bool excludeUUS)
         {
             Game = game;
             RoundId = roundId;
@@ -14,7 +14,8 @@ namespace GamesAdmin.Site.Features.Report.Requests
             ExcludeUUS = excludeUUS;
         }
 
-        public GameId Game { get; set; }
+
+        public GameId Game { get; }
 
         public long RoundId { get; }
 

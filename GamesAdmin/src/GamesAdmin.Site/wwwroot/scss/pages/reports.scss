@@ -272,7 +272,7 @@
 }
 
 
-.table-keno-match-result {
+.table-keno-match-result, .table-keno-power-result {
     .list-numbers {
         display: grid;
         grid-template-columns: repeat(5, 3rem);

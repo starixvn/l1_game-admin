@@ -84,11 +84,13 @@ namespace GamesAdmin.Api.Report
 
         Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS);
 
-
         Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId);
 
         Task<KenoMatchBetHistory> GetKenoMatch2BetHistoryAsync(long roundId, string userId);
 
+        Task<KenoPowerBetReport> GetKenoPower1ReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<KenoPowerBetReport> GetKenoPower2ReportAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -626,6 +628,30 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<KenoMatchRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<KenoMatchBetHistoryRecord>(x)),
+            };
+        }
+
+        public async Task<KenoPowerBetReport> GetKenoPower1ReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IKenoPowerReportRepository>();
+            var result = await repository.GetAsync<KenoPower1RoundEntity, KenoPower1OneEntity>(roundId, nickname, excludeUUS);
+
+            return new KenoPowerBetReport
+            {
+                RoundResult = mapper.Map<KenoPowerRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<KenoPowerBetRecord>(x))
+            };
+        }
+
+        public async Task<KenoPowerBetReport> GetKenoPower2ReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            var repository = serviceProvider.GetService<IKenoPowerReportRepository>();
+            var result = await repository.GetAsync<KenoPower2RoundEntity, KenoPower2OneEntity>(roundId, nickname, excludeUUS);
+
+            return new KenoPowerBetReport
+            {
+                RoundResult = mapper.Map<KenoPowerRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<KenoPowerBetRecord>(x))
             };
         }
     }

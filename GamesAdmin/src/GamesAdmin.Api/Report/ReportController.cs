@@ -188,5 +188,10 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
         public async Task<KenoMatchBetHistory> KenoMatchBetHistory(GameId game, string userId, long roundId)
         => (await mediator.Send(new KenoMatchBetHistoryRequest(game, roundId, userId)));
+
+        [HttpGet]
+        [Route("kenopower/{game}/round/{roundId}/users/{nickname?}")]
+        public Task<KenoPowerBetReport> KenoPower(GameId game, long roundId, string nickname, bool excludeUUS)
+          => mediator.Send(new KenoPowerReportRequest(game, roundId, nickname, excludeUUS));
     }
 }

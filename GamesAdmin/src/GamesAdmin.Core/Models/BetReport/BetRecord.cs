@@ -283,4 +283,9 @@ namespace GamesAdmin.Core.Models
     {
         public decimal TotalBet { get; set; }
     }
+
+    public class KenoPowerBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
+    }
 }

@@ -45,9 +45,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
         IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
-        IRequestHandler<GetKenoSoccerReportRequest, KenoMatchReportResultViewModel>,
-        IRequestHandler<GetKenoSoccerBetHistoryRequest, KenoMatchBetHistoryViewModel>
-
+        IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
+        IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
+        IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -643,7 +643,7 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<KenoMatchReportResultViewModel> Handle(GetKenoSoccerReportRequest request, CancellationToken cancellationToken)
+        public async Task<KenoMatchReportResultViewModel> Handle(GetKenoMatchReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetKenoMatchBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
             var roundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult);
@@ -663,7 +663,7 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<KenoMatchBetHistoryViewModel> Handle(GetKenoSoccerBetHistoryRequest request, CancellationToken cancellationToken)
+        public async Task<KenoMatchBetHistoryViewModel> Handle(GetKenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetKenoMatchBetHistory(request.Game, request.RoundId, request.UserId);
 
@@ -677,6 +677,26 @@ namespace GamesAdmin.Site.Features.ClientSites
 
                     return betViewModel;
                 }),
+            };
+        }
+
+        public async Task<KenoPowerReportResultViewModel> Handle(GetKenoPowerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoPowerBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+            var roundResult = mapper.Map<KenoPowerRoundResultViewModel>(result.RoundResult);
+            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
+
+            return new KenoPowerReportResultViewModel
+            {
+                Game = request.Game,
+                RoundResult = roundResult,
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<KenoPowerRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
             };
         }
     }
