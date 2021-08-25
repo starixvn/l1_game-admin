@@ -129,6 +129,8 @@ namespace GamesAdmin.Api.GameServers
                 Game.RouletteValue => Game.RouletteValue,
                 Game.KenoMatch1Value => Game.KenoMatch1Value,
                 Game.KenoMatch2Value => Game.KenoMatch2Value,
+                Game.KenoPower1Value => Game.KenoPower1Value,
+                Game.KenoPower2Value => Game.KenoPower2Value,
                 _ => string.Empty,
             };
         }

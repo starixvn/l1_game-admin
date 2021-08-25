@@ -91,6 +91,9 @@ namespace GamesAdmin.Api.Report
         Task<KenoPowerBetReport> GetKenoPower1ReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<KenoPowerBetReport> GetKenoPower2ReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<KenoPowerBetHistory> GetKenoPower1BetHistoryAsync(long roundId, string userId);
+        Task<KenoPowerBetHistory> GetKenoPower2BetHistoryAsync(long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -652,6 +655,32 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<KenoPowerRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<KenoPowerBetRecord>(x))
+            };
+        }
+
+
+        public async Task<KenoPowerBetHistory> GetKenoPower1BetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetKenoPowerAsync<KenoPower1RoundEntity, KenoPower1BetEntity, KenoPower1OneEntity>(roundId, userId);
+
+            return new KenoPowerBetHistory
+            {
+                RoundResult = mapper.Map<KenoPowerRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<KenoPowerBetHistoryRecord>(x)),
+            };
+        }
+
+        public async Task<KenoPowerBetHistory> GetKenoPower2BetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetKenoPowerAsync<KenoPower2RoundEntity, KenoPower2BetEntity, KenoPower2OneEntity>(roundId, userId);
+
+            return new KenoPowerBetHistory
+            {
+                RoundResult = mapper.Map<KenoPowerRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<KenoPowerBetHistoryRecord>(x)),
+                Odds = result.Item3
             };
         }
     }

@@ -29,6 +29,11 @@ namespace GamesAdmin.Database
         Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity;
+
+        Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, bool>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
+          where TRoundEntity : KenoPowerRoundEntity
+          where TBetEntity : KenoPowerBetEntity
+          where TOneEntity : KenoPowerOneEntity;
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -285,6 +290,23 @@ namespace GamesAdmin.Database
             var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
+        }
+
+        public async Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, bool>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
+          where TRoundEntity : KenoPowerRoundEntity
+          where TBetEntity : KenoPowerBetEntity
+          where TOneEntity : KenoPowerOneEntity
+        {
+            var roundCollection = database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+
+            var oneCollection = database.GetCollection<TOneEntity>(Document.GetCollectionName(typeof(TOneEntity)));
+            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
+
+            return (roundResult, bets, one.Odds);
         }
     }
 }

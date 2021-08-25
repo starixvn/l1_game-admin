@@ -104,6 +104,7 @@ namespace GamesAdmin.Site._Shared
             CreateMap<KenoPowerResult, KenoPowerResultViewModel>();
             CreateMap<KenoPowerSettlementResult, KenoPowerSettlementResultViewModel>();
             CreateMap<KenoPowerBetRecord, KenoPowerRecordViewModel>();
+            CreateMap<KenoPowerBetHistoryRecord, KenoPowerBetHistoryRecordViewModel>();
         }
     }
 }

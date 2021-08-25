@@ -47,7 +47,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
         IRequestHandler<KenoMatchReportRequest, KenoMatchBetReport>,
         IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
-        IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>
+        IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
+        IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -175,6 +176,16 @@ namespace GamesAdmin.Api.Report
             {
                 GameId.KenoMatch1 => reportService.GetKenoPower1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
                 GameId.KenoMatch2 => reportService.GetKenoPower2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                _ => throw new ArgumentException(nameof(request.Game)),
+            };
+        }
+
+        public Task<KenoPowerBetHistory> Handle(KenoPowerBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            return request.Game switch
+            {
+                GameId.KenoPower1 => reportService.GetKenoPower1BetHistoryAsync(request.RoundId, request.UserId),
+                GameId.KenoPower2 => reportService.GetKenoPower2BetHistoryAsync(request.RoundId, request.UserId),
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
         }

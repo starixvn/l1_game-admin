@@ -1,0 +1,104 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model KenoPowerBetHistoryViewModel
+
+@{
+    var betChoiceMapper = new Dictionary<string, string>
+{
+        { "player", "Player" },
+        { "banker", "Banker" },
+        { "big", "Big" },
+        { "small", "Small" },
+        { "odd", "Odd" },
+        { "even", "Even" },
+        { "red", "Red" },
+        { "orange", "Orange" },
+        { "yellow", "Yellow" },
+        { "green", "Green" },
+        { "blue", "Blue" },
+        { "indigo", "Indigo" },
+        { "violet", "Violet" },
+        { "playerBig", "Big" },
+        { "playerSmall", "Small" },
+        { "bankerBig", "Big" },
+        { "bankerSmall", "Small" },
+    };
+
+    var betTypeMapper = new Dictionary<string, string>
+{
+        { "player", "Player/Banker" },
+        { "banker", "Player/Banker" },
+        { "big", "Sum Big/Small" },
+        { "small", "Sum Big/Small" },
+        { "odd", "Sum Even/Odd" },
+        { "even", "Sum Even/Odd" },
+        { "red", "Sum Color" },
+        { "orange", "Sum Color" },
+        { "yellow", "Sum Color" },
+        { "green", "Sum Color" },
+        { "blue", "Sum Color" },
+        { "indigo", "Sum Color" },
+        { "violet", "Sum Color" },
+        { "playerBig", "Player Big/Small" },
+        { "playerSmall", "Player Big/Small" },
+        { "bankerBig", "Banker Big/Small" },
+        { "bankerSmall", "Banker Big/Small" },
+    };
+
+    var settlementResult = Model.RoundResult.SettlementResult;
+
+    var settlmentResultMapper = new Dictionary<string, bool>
+    {
+        { "player", settlementResult.Player },
+        { "banker", settlementResult.Banker },
+        { "big", settlementResult.Big },
+        { "small", settlementResult.Small },
+        { "odd", settlementResult.Odd },
+        { "even", settlementResult.Even },
+        { "red", .settlementResult.Red},
+        { "orange", settlementResult.Orange },
+        { "yellow", settlementResult.Yellow },
+        { "green", settlementResult.Green },
+        { "blue", settlementResult.Blue },
+        { "indigo", settlementResult.Indigo },
+        { "violet", settlementResult.Violet },
+        { "playerBig", settlementResult.PlayerBig },
+        { "playerSmall", settlementResult.PlayerSmall },
+        { "bankerBig", settlementResult.BankerBig },
+        { "bankerSmall", settlementResult.BankerSmall },
+    };
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Nickname</th>
+            <th>Bet Type</th>
+            <th>Bet Choice</th>
+            <th>Odds</th>
+            <th>Bet Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            var winCssClass = settlmentResultMapper[bet.Choice] ? "text-primary" : string.Empty;
+
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="@winCssClass text-center ">
+                    @betTypeMapper[bet.Choice]
+                </td>
+                <td class="@winCssClass text-center">
+                    @betChoiceMapper[bet.Choice]
+                </td>
+                <td class="@winCssClass">@Model.Odds[bet.Choice]</td>
+                <td class="text-right @winCssClass">
+                    @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>

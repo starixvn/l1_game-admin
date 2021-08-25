@@ -130,6 +130,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ILotteryOnlineUserApi>(appSettings.GameServers.Lottery.Api, refitSettings));
             services.AddSingleton(RestService.For<IThreeCardsOnlineUserApi>(appSettings.GameServers.ThreeCards.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoMatchOnlineUserApi>(appSettings.GameServers.KenoMatch1.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoPowerOnlineUserApi>(appSettings.GameServers.KenoPower1.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotOnlineUserApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoMaxOnlineUserApi>(appSettings.GameServers.KenoMax.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoMax2OnlineUserApi>(appSettings.GameServers.KenoMax2.Api, refitSettings));

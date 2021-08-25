@@ -47,6 +47,7 @@
         public GameServerConfigs KenoMatch1 { get; set; }
 
         public GameServerConfigs KenoMatch2 { get; set; }
+        public GameServerConfigs KenoPower1 { get; set; }
         public GameServerConfigs HeroesSlot { get; set; }
         
         public GameServerConfigs KenoMax { get; set; }
@@ -63,6 +64,7 @@
 
         public GameServerConfigs KenoSouth { get; set; }
 
+        public GameServerConfigs KenoPower2 { get; set; }
         public GameServerConfigs KenoNorth { get; set; }
     }
 

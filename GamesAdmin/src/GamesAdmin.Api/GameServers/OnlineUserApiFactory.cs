@@ -35,6 +35,8 @@ namespace GamesAdmin.Api.GameServers
             { Game.ThreeCardsValue, typeof(IThreeCardsOnlineUserApi) },
             { Game.KenoMatch1Value, typeof(IKenoMatchOnlineUserApi) },
             { Game.KenoMatch2Value, typeof(IKenoMatchOnlineUserApi) },
+            { Game.KenoPower1Value, typeof(IKenoPowerOnlineUserApi) },
+            { Game.KenoPower2Value, typeof(IKenoPowerOnlineUserApi) },
             { Game.HeroesSlotValue, typeof(IHeroesSlotOnlineUserApi) },
             { Game.KenoMaxValue, typeof(IKenoMaxOnlineUserApi) },
             { Game.KenoMax2Value, typeof(IKenoMax2OnlineUserApi) },

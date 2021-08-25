@@ -157,6 +157,14 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_KenoPowerRecords", await mediator.Send(new GetKenoPowerReportRequest(game, roundId, nickname, excludeUUS)));
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
+        {
+            return PartialView("_KenoPowerBetHistory", await mediator.Send(new GetKenoPowerBetHistoryRequest(game, roundId, userId)));
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
         {
