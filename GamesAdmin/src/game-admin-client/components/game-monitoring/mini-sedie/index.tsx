@@ -2,33 +2,35 @@ import React from "react";
 import styles from "./index.module.scss";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Modal, Row } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
-import BetItem, { SystemId } from "../../common/model/BetItem";
+import BetItem from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import MiniSedieModel from "../../common/model/MiniSedieModel";
-import { getTotalBetOnSystem } from "../../util/util";
+import { updateTotalBetOfBetList } from "../../util/util";
 
 type Props = {
   onMessage: Function;
+  sendMessage: Function;
+  isProduction: boolean;
 };
 
 export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
-  private systemFilter: SystemId;
-
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
-    this.systemFilter = SystemId.None;
     this.state = new MiniSedieModel();
+
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
@@ -176,18 +178,91 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
     return winner;
   }
 
-  renderMonitor() {
+  toggleModal() {
+    this.setState({
+      isOpenControlResultModal: !this.state.isOpenControlResultModal,
+    });
+  }
+
+  openModal(diceIndex) {
+    this.setState({
+      isOpenControlResultModal: true,
+      currentDiceNumber: diceIndex,
+    });
+  }
+
+  handleChangeResult(id, value) {
+    const { currentDiceNumber, result } = this.state;
+    const gameResult = this.state.nextRoundResult;
+
+    const newResult = result.map((diceInfo, index) => {
+      if (index === currentDiceNumber || diceInfo.value === -1) {
+        diceInfo.value = value;
+        gameResult[`red${index + 1}`] = !!value;
+      }
+
+      return diceInfo;
+    });
+
+    this.setState({
+      result: newResult,
+      isOpenControlResultModal: false,
+    });
+
+    if (this.state.gameState == GameState.waiting) {
+      this.setState({
+        isHandleNextRoundResult: true,
+        nextRoundResult: gameResult,
+      });
+    }
+
+    this.props.sendMessage({
+      set_result: {
+        result: gameResult,
+        roundId:
+          this.state.gameState == GameState.running
+            ? this.state.roundNumber
+            : this.state.roundNumber + 1,
+      },
+    });
+  }
+
+  renderGameControl() {
+    const { isOpenControlResultModal } = this.state;
+
+    return (
+      <Modal
+        isOpen={isOpenControlResultModal}
+        toggle={() => this.toggleModal()}
+        className={styles["game-control-panel"]}
+      >
+        <Row>
+          <Dice
+            key={`dice-select-${0}`}
+            diceModel={new DiceModel(0, DiceType.XocXoc)}
+            isSmall={false}
+            onClickHandle={(id: string, value: number) =>
+              this.handleChangeResult(id, value)
+            }
+          />
+          <Dice
+            key={`dice-select-${1}`}
+            diceModel={new DiceModel(1, DiceType.XocXoc)}
+            isSmall={false}
+            onClickHandle={(id: string, value: number) =>
+              this.handleChangeResult(id, value)
+            }
+          />
+        </Row>
+      </Modal>
+    );
+  }
+
+  renderMonitor(systemFilter) {
     const { betList, roundNumber, time, result, gameState } = this.state;
     const winer = gameState == GameState.waiting ? this.getWinner() : "";
 
-    if (this.systemFilter) {
-      Object.values(betList).forEach((betsOnType) => {
-        betsOnType.total = getTotalBetOnSystem(
-          betsOnType.dataList,
-          this.systemFilter
-        );
-      });
-    }
+    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -200,10 +275,26 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             <div>
               <div className={styles.title}>Mini Se Die</div>
               <Row className={styles.result}>
-                <Dice diceModel={result[0]} isSmall={false} />
-                <Dice diceModel={result[1]} isSmall={false} />
-                <Dice diceModel={result[2]} isSmall={false} />
-                <Dice diceModel={result[3]} isSmall={false} />
+                <Dice
+                  diceModel={result[0]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(0)}
+                />
+                <Dice
+                  diceModel={result[1]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(1)}
+                />
+                <Dice
+                  diceModel={result[2]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(2)}
+                />
+                <Dice
+                  diceModel={result[3]}
+                  isSmall={false}
+                  onClickHandle={() => this.openModal(3)}
+                />
               </Row>
               <RoundNum roundNumber={roundNumber} />
             </div>
@@ -257,7 +348,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const { betList, gameState } = this.state;
     const winer = gameState == GameState.waiting ? this.getWinner() : "";
 
@@ -269,7 +360,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.red4.dataList}
             isWin={winer == "red4"}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -278,7 +369,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.red3.dataList}
             isWin={winer == "red3"}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -287,7 +378,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.even.dataList}
             isWin={winer != "" && winer != "white3" && winer != "red3"}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -296,7 +387,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.odd.dataList}
             isWin={winer == "white3" || winer == "red3"}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -305,7 +396,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.white3.dataList}
             isWin={winer == "white3"}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg-2">
@@ -314,7 +405,7 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
             type="simple"
             dataList={betList.white4.dataList}
             isWin={winer == "white4"}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -324,11 +415,12 @@ export default class MiniSedie extends React.Component<Props, MiniSedieModel> {
   render() {
     return (
       <div>
+        {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState == GameState.disabled}
-          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
+          enableFilter={true}
         ></GameTemplate>
       </div>
     );

@@ -19,6 +19,10 @@ export default class SpecialSeDieModel {
   betList: SpecialSeDieBetList;
   result: Array<DiceModel>;
   gameState: number;
+  isOpenControlResultModal: boolean;
+  currentDiceNumber: number;
+  isHandleNextRoundResult: boolean;
+  nextRoundResult: { [key: string]: boolean };
 
   constructor() {
     this.result = [
@@ -30,5 +34,9 @@ export default class SpecialSeDieModel {
     this.betList = new SpecialSeDieBetList();
     this.time = new TimeModel();
     this.gameState = 0;
+    this.isOpenControlResultModal = false;
+    this.currentDiceNumber = -1;
+    this.isHandleNextRoundResult = false;
+    this.nextRoundResult = {};
   }
 }
