@@ -14,7 +14,6 @@ import {
   Label,
   Input,
   Button,
-  FormProps,
 } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
@@ -32,7 +31,6 @@ type KenoMatchProps = {
   onMessage: Function;
   sendMessage: Function;
   isProduction: boolean;
-  gameName: string;
 };
 
 const choiceLabelMapper = {
@@ -60,8 +58,10 @@ export default class KenoMatch extends React.Component<
   KenoMatchProps,
   KenoMatchModel
 > {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+  isFirstLoad: boolean;
+  timeout: NodeJS.Timeout;
+  gameName: string;
+
   private systemId: SystemId;
   constructor(props) {
     super(props);
@@ -83,150 +83,7 @@ export default class KenoMatch extends React.Component<
     this.systemId = value;
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 52) {
-        clearTimeout(this.timeout);
-        const model = new KenoMatchModel();
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: model.result,
-        });
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!data.inGame && Object.keys(data.inGame).length > 0) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
-      });
-    }
-
-    if (!!data.finishHalfTime) {
-      this.isFirstLoad = false;
-      const waitingTime = 6;
-      const { result } = this.state;
-      result.halfTime = data.finishHalfTime;
-      this.setState({
-        result,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
-
-      setTimeout(() => {
-        this.setState({
-          gameState: GameState.running,
-          time: {
-            remainingTime: 18,
-          },
-        });
-      }, (waitingTime + 1) * 1000);
-    }
-
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      const waitingTime = 6;
-      const { result } = this.state;
-      result.fullTime = data.finish;
-      this.setState({
-        result,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
-
-      setTimeout(() => {
-        const newState = new KenoMatchModel();
-
-        this.setState({
-          ...newState,
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 27,
-          },
-        });
-      }, (waitingTime + 1) * 1000);
-    }
-
-    if (!!data.remainingTime) {
-      const { result } = this.state;
-
-      if (data.remainingTime > 53) {
-        result.halfTime = data.halfTime;
-        result.fullTime = data.fullTime;
-        this.setState({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          result,
-          time: {
-            remainingTime: data.remainingTime - 53,
-          },
-        });
-
-        this.timeout = setTimeout(() => {
-          const newState = new KenoMatchModel();
-
-          this.setState({
-            ...newState,
-            gameState: GameState.running,
-            roundNumber: data.roundId,
-            time: {
-              remainingTime: 27,
-            },
-          });
-        }, (data.remainingTime - 52) * 1000);
-      } else {
-        if (data.remainingTime > 26) {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: data.roundId,
-            time: {
-              remainingTime: data.remainingTime - 26,
-            },
-          });
-        } else {
-          if (data.remainingTime > 19 && data.remainingTime <= 26) {
-            result.halfTime = data.halfTime;
-            this.setState({
-              gameState: GameState.waiting,
-              roundNumber: data.roundId,
-              result,
-              time: {
-                remainingTime: data.remainingTime - 19,
-              },
-            });
-
-            this.timeout = setTimeout(() => {
-              this.setState({
-                gameState: GameState.running,
-                roundNumber: data.roundId,
-                time: {
-                  remainingTime: 18,
-                },
-              });
-            }, (data.remainingTime - 19) * 1000);
-          } else {
-            result.halfTime = data.halfTime;
-            this.setState({
-              gameState: GameState.running,
-              roundNumber: data.roundId,
-              time: {
-                remainingTime: data.remainingTime,
-              },
-            });
-          }
-        }
-      }
-    }
-  }
+  handleData(data) {}
 
   getUserBetList(data, currentData: KenoMatchBetListModel) {
     Object.keys(currentData).forEach((key) => {
@@ -259,7 +116,7 @@ export default class KenoMatch extends React.Component<
     const { result: hfResult, settlementResult: hfSettlementResult } =
       this.state.result.halfTime;
 
-    if (Object.values(hfSettlementResult).some(x => x)) {
+    if (Object.values(hfSettlementResult).some((x) => x)) {
       const hfBlueTotal = hfResult.blue.reduce((num1, num2) => num1 + num2, 0);
       const hfRedTotal = hfResult.red.reduce((num1, num2) => num1 + num2, 0);
 
@@ -274,18 +131,18 @@ export default class KenoMatch extends React.Component<
         <>
           <Col xs={12} className={styles["result-summary"]}>
             <div>
-              First Half: Total {hfBlueTotal + hfRedTotal} - Blue {hfBlueTotal} - Red{" "}
-              {hfRedTotal}
+              First Half: Total {hfBlueTotal + hfRedTotal} - Blue {hfBlueTotal}{" "}
+              - Red {hfRedTotal}
             </div>
             <div className="font-weight-bold">
               {this.getSettlementResultString(hfSettlementResult)}
             </div>
           </Col>
-          {Object.values(ftSettlementResult).some(x => x) && (
+          {Object.values(ftSettlementResult).some((x) => x) && (
             <Col xs={12} className={styles["result-summary"]}>
               <div>
-                Full Time: Total {ftBlueTotal + ftRedTotal} - Blue {ftBlueTotal} -
-                Red {ftRedTotal}
+                Full Time: Total {ftBlueTotal + ftRedTotal} - Blue {ftBlueTotal}{" "}
+                - Red {ftRedTotal}
               </div>
               <div className="font-weight-bold">
                 {this.getSettlementResultString(ftSettlementResult)}
@@ -326,7 +183,7 @@ export default class KenoMatch extends React.Component<
             <RoundNum roundNumber={roundNumber} />
           </Col>
           <Col align="center" className="my-auto">
-            <div className={styles.title}>{this.props.gameName}</div>
+            <div className={styles.title}>{this.gameName}</div>
             <Row className={styles.result} noGutters>
               <Col xs={12} xl={6} onClick={this.openModal}>
                 <div className={styles.title}>Blue</div>
@@ -585,7 +442,7 @@ export default class KenoMatch extends React.Component<
   }
 
   renderGameControl() {
-    const { isOpenModal } = this.state;
+    const { isOpenModal, roundNumber } = this.state;
 
     return (
       <Modal
@@ -599,6 +456,7 @@ export default class KenoMatch extends React.Component<
         />
         <ModalBody>
           <Form onSubmit={this.handleChangeResult}>
+            <h3>#{roundNumber + 1}</h3>
             <div className={styles.title}>First Half</div>
             <FormGroup>
               <Label for="hfBlue">Blue</Label>
@@ -643,15 +501,12 @@ export default class KenoMatch extends React.Component<
 
     this.props.sendMessage({
       set_result: {
-        roundId: this.state.roundNumber,
-        result: newResult
+        roundId: this.state.roundNumber + 1,
+        result: newResult,
       },
     });
-    const {result} = this.state;
-    result.halfTime.result = newResult.halfTime.result;
-    result.fullTime.result = newResult.fullTime.result;
+
     this.setState({
-      result,
       isOpenModal: false,
     });
   }

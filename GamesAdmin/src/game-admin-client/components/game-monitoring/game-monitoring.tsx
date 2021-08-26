@@ -21,7 +21,7 @@ import VipSeDieWar from "./vip-se-die-war";
 import SicBo from "./sic-bo";
 import Lottery from "./lottery";
 import ThreeCards from "./three-cards";
-import KenoMatch from "./keno-match";
+import { KenoMatch1, KenoMatch2 } from "./keno-match";
 
 const getObjectOfGame =
   (path: string) => (onMessage: Function) => (message: any) => {
@@ -164,11 +164,11 @@ const gameMapper = {
     ...getInfoByGameKey("ThreeCards"),
   },
   36: {
-    component: KenoMatch("Keno Match 1"),
+    component: KenoMatch1,
     ...getInfoByGameKey("KenoMatch1"),
   },
   37: {
-    component: KenoMatch("Keno Match 2"),
+    component: KenoMatch2,
     ...getInfoByGameKey("KenoMatch2"),
   },
 };
