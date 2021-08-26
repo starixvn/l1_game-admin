@@ -181,11 +181,14 @@ export default class KenoMatch extends React.Component<
               key={gameState}
             />
             <RoundNum roundNumber={roundNumber} />
+            {!this.props.isProduction && (
+              <Button onClick={this.openModal}>Set Result</Button>
+            )}
           </Col>
           <Col align="center" className="my-auto">
             <div className={styles.title}>{this.gameName}</div>
             <Row className={styles.result} noGutters>
-              <Col xs={12} xl={6} onClick={this.openModal}>
+              <Col xs={12} xl={6}>
                 <div className={styles.title}>Blue</div>
                 <KenoMatchResult
                   listResult={result.halfTime.result.blue}
@@ -196,7 +199,7 @@ export default class KenoMatch extends React.Component<
                   maxLength={10}
                 />
               </Col>
-              <Col xs={12} xl={6} onClick={this.openModal}>
+              <Col xs={12} xl={6}>
                 <div className={styles.title}>Red</div>
                 <KenoMatchResult
                   listResult={result.halfTime.result.red}
