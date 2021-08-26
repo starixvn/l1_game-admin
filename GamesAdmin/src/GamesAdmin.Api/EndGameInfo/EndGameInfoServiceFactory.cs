@@ -48,6 +48,8 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.HeroesSlot, typeof(HeroesSlotEndGameInfoService) },
             { GameId.KenoMatch1, typeof(KenoMatchEndGameInfoService<KenoMatch1RoundEntity, KenoMatch1OneEntity>) },
             { GameId.KenoMatch2, typeof(KenoMatchEndGameInfoService<KenoMatch2RoundEntity, KenoMatch2OneEntity>) },
+            { GameId.KenoPower1, typeof(KenoPowerEndGameInfoService<KenoPower1RoundEntity, KenoPower1OneEntity>) },
+            { GameId.KenoPower2, typeof(KenoPowerEndGameInfoService<KenoPower2RoundEntity, KenoPower2OneEntity>) },
         };
 
         private readonly IServiceProvider serviceProvider;

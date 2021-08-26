@@ -104,6 +104,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ThreeCardsEndGameInfoService>();
             services.AddScoped<HeroesSlotEndGameInfoService>();
             services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
+            services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
