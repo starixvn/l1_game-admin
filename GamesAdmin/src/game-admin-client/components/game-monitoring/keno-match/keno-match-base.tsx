@@ -114,7 +114,7 @@ export default class KenoMatch extends React.Component<
 
   renderResultSummary() {
     const { result: hfResult, settlementResult: hfSettlementResult } =
-      this.state.result.halfTime;
+      this.state.result.firstHalf;
 
     if (Object.values(hfSettlementResult).some((x) => x)) {
       const hfBlueTotal = hfResult.blue.reduce((num1, num2) => num1 + num2, 0);
@@ -191,7 +191,7 @@ export default class KenoMatch extends React.Component<
               <Col xs={12} xl={6}>
                 <div className={styles.title}>Blue</div>
                 <KenoMatchResult
-                  listResult={result.halfTime.result.blue}
+                  listResult={result.firstHalf.result.blue}
                   maxLength={10}
                 />
                 <KenoMatchResult
@@ -202,7 +202,7 @@ export default class KenoMatch extends React.Component<
               <Col xs={12} xl={6}>
                 <div className={styles.title}>Red</div>
                 <KenoMatchResult
-                  listResult={result.halfTime.result.red}
+                  listResult={result.firstHalf.result.red}
                   maxLength={10}
                 />
                 <KenoMatchResult
@@ -221,32 +221,32 @@ export default class KenoMatch extends React.Component<
               <TotalBet
                 total={betList.fhBlue.total}
                 type="blue"
-                isWin={result.halfTime.settlementResult.blue}
+                isWin={result.firstHalf.settlementResult.blue}
               />
               <TotalBet
                 total={betList.fhRed.total}
                 type="red"
-                isWin={result.halfTime.settlementResult.red}
+                isWin={result.firstHalf.settlementResult.red}
               />
               <TotalBet
                 total={betList.fhOver.total}
                 type="over"
-                isWin={result.halfTime.settlementResult.over}
+                isWin={result.firstHalf.settlementResult.over}
               />
               <TotalBet
                 total={betList.fhUnder.total}
                 type="under"
-                isWin={result.halfTime.settlementResult.under}
+                isWin={result.firstHalf.settlementResult.under}
               />
               <TotalBet
                 total={betList.fhOdd.total}
                 type="odd"
-                isWin={result.halfTime.settlementResult.odd}
+                isWin={result.firstHalf.settlementResult.odd}
               />
               <TotalBet
                 total={betList.fhEven.total}
                 type="even"
-                isWin={result.halfTime.settlementResult.even}
+                isWin={result.firstHalf.settlementResult.even}
               />
             </Row>
             <Row className="justify-content-center" noGutters>
@@ -488,7 +488,7 @@ export default class KenoMatch extends React.Component<
   handleChangeResult(event: FormEvent) {
     event.preventDefault();
     const newResult = {
-      halfTime: {
+      firstHalf: {
         result: {
           blue: event.target["hfBlue"].value.split(",").map((x) => parseInt(x)),
           red: event.target["hfRed"].value.split(",").map((x) => parseInt(x)),

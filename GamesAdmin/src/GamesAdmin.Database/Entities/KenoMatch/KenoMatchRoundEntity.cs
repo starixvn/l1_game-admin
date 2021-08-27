@@ -7,6 +7,7 @@ namespace GamesAdmin.Database.Entities
 {
     public class KenoMatchRoundEntity : BaseRoundEntity
     {
+        [BsonElement("firstHalf")]
         public KenoMatchPeriodEntity HalfTime { get; set; }
         public KenoMatchPeriodEntity FullTime { get; set; }
 

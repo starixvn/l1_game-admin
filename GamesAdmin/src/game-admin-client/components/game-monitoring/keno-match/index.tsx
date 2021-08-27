@@ -5,7 +5,7 @@ import KenoMatch from "./keno-match-base";
 export class KenoMatch1 extends KenoMatch {
   constructor(props) {
     super(props);
-    this.gameName = "Keno Match 1";
+    this.gameName = "Keno Match";
   }
 
   handleData(data) {
@@ -31,11 +31,13 @@ export class KenoMatch1 extends KenoMatch {
       });
     }
 
-    if (!!data.finishHalfTime) {
+    if (!!data.firstHalfResult) {
       this.isFirstLoad = false;
       const waitingTime = 8;
       const { result } = this.state;
-      result.halfTime = data.finishHalfTime;
+      result.firstHalf.result.blue = data.firstHalfResult.blue;
+      result.firstHalf.result.red = data.firstHalfResult.red;
+      result.firstHalf.settlementResult = data.firstHalfResult.settlementResult;
       this.setState({
         result,
         gameState: GameState.waiting,
@@ -56,7 +58,7 @@ export class KenoMatch1 extends KenoMatch {
 
     if (!!data.finish) {
       this.isFirstLoad = false;
-      const waitingTime = 7;
+      const waitingTime = 6;
       const { result } = this.state;
       result.fullTime = data.finish;
       this.setState({
@@ -84,15 +86,15 @@ export class KenoMatch1 extends KenoMatch {
     if (!!data.remainingTime) {
       const { result } = this.state;
 
-      if (data.remainingTime > 54) {
-        result.halfTime = data.halfTime;
+      if (data.remainingTime > 56) {
+        result.firstHalf = data.firstHalf;
         result.fullTime = data.fullTime;
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result,
           time: {
-            remainingTime: data.remainingTime - 54,
+            remainingTime: data.remainingTime - 56,
           },
         });
 
@@ -107,25 +109,25 @@ export class KenoMatch1 extends KenoMatch {
               remainingTime: 27,
             },
           });
-        }, (data.remainingTime - 53) * 1000);
+        }, (data.remainingTime -  55) * 1000);
       } else {
-        if (data.remainingTime > 27) {
+        if (data.remainingTime > 28) {
           this.setState({
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: data.remainingTime - 27,
+              remainingTime: data.remainingTime - 28,
             },
           });
         } else {
-          if (data.remainingTime > 18 && data.remainingTime <= 27) {
-            result.halfTime = data.halfTime;
+          if (data.remainingTime > 18 && data.remainingTime <= 28) {
+            result.firstHalf = data.firstHalf;
             this.setState({
               gameState: GameState.waiting,
               roundNumber: data.roundId,
               result,
               time: {
-                remainingTime: data.remainingTime - 18,
+                remainingTime: data.remainingTime - 19,
               },
             });
 
@@ -139,7 +141,7 @@ export class KenoMatch1 extends KenoMatch {
               });
             }, (data.remainingTime - 18) * 1000);
           } else {
-            result.halfTime = data.halfTime;
+            result.firstHalf = data.firstHalf;
             this.setState({
               gameState: GameState.running,
               roundNumber: data.roundId,
@@ -157,7 +159,7 @@ export class KenoMatch1 extends KenoMatch {
 export class KenoMatch2 extends KenoMatch {
   constructor(props) {
     super(props);
-    this.gameName = "Keno Match 2";
+    this.gameName = "Keno Match MD5";
   }
 
   handleData(data) {
@@ -183,11 +185,13 @@ export class KenoMatch2 extends KenoMatch {
       });
     }
 
-    if (!!data.finishHalfTime) {
+    if (!!data.firstHalfResult) {
       this.isFirstLoad = false;
-      const waitingTime = 6;
+      const waitingTime = 12;
       const { result } = this.state;
-      result.halfTime = data.finishHalfTime;
+      result.firstHalf.result.blue = data.firstHalfResult.blue;
+      result.firstHalf.result.red = data.firstHalfResult.red;
+      result.firstHalf.settlementResult = data.firstHalfResult.settlementResult;
       this.setState({
         result,
         gameState: GameState.waiting,
@@ -236,15 +240,15 @@ export class KenoMatch2 extends KenoMatch {
     if (!!data.remainingTime) {
       const { result } = this.state;
 
-      if (data.remainingTime > 58) {
-        result.halfTime = data.halfTime;
+      if (data.remainingTime > 60) {
+        result.firstHalf = data.firstHalf;
         result.fullTime = data.fullTime;
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
           result,
           time: {
-            remainingTime: data.remainingTime - 58,
+            remainingTime: data.remainingTime - 60,
           },
         });
 
@@ -259,25 +263,25 @@ export class KenoMatch2 extends KenoMatch {
               remainingTime: 27,
             },
           });
-        }, (data.remainingTime - 57) * 1000);
+        }, (data.remainingTime - 59) * 1000);
       } else {
-        if (data.remainingTime > 31) {
+        if (data.remainingTime > 32) {
           this.setState({
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: data.remainingTime - 27,
+              remainingTime: data.remainingTime - 32,
             },
           });
         } else {
-          if (data.remainingTime > 18 && data.remainingTime <= 31) {
-            result.halfTime = data.halfTime;
+          if (data.remainingTime > 18 && data.remainingTime <= 32) {
+            result.firstHalf = data.firstHalf;
             this.setState({
               gameState: GameState.waiting,
               roundNumber: data.roundId,
               result,
               time: {
-                remainingTime: data.remainingTime - 18,
+                remainingTime: data.remainingTime - 19,
               },
             });
 
@@ -291,7 +295,7 @@ export class KenoMatch2 extends KenoMatch {
               });
             }, (data.remainingTime - 18) * 1000);
           } else {
-            result.halfTime = data.halfTime;
+            result.firstHalf = data.firstHalf;
             this.setState({
               gameState: GameState.running,
               roundNumber: data.roundId,

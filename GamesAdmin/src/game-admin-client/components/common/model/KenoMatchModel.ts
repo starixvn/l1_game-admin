@@ -73,11 +73,11 @@ class KenoMatchPeriod {
 }
 
 class KenoMatchResult {
-  halfTime: KenoMatchPeriod;
+  firstHalf: KenoMatchPeriod;
   fullTime: KenoMatchPeriod;
 
   constructor() {
-    this.halfTime = new KenoMatchPeriod();
+    this.firstHalf = new KenoMatchPeriod();
     this.fullTime = new KenoMatchPeriod();
   }
 }
