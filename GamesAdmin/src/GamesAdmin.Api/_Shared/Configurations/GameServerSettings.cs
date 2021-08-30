@@ -44,6 +44,8 @@
 
         public GameServerConfigs ThreeCards { get; set; }
 
+        public GameServerConfigs HeroesSlot { get; set; }
+        
         public GameServerConfigs KenoMax { get; set; }
 
         public GameServerConfigs KenoMax2 { get; set; }

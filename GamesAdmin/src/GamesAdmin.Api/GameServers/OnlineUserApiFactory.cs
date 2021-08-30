@@ -33,6 +33,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.BigSmallTurboValue, typeof(ITurboBigSmallOnlineUserApi) },
             { Game.OddEvenTurboValue, typeof(ITurboOddEvenOnlineUserApi) },
             { Game.ThreeCardsValue, typeof(IThreeCardsOnlineUserApi) },
+            { Game.HeroesSlotValue, typeof(IHeroesSlotOnlineUserApi) },
             { Game.KenoMaxValue, typeof(IKenoMaxOnlineUserApi) },
             { Game.KenoMax2Value, typeof(IKenoMax2OnlineUserApi) },
             { Game.KenoMiniValue, typeof(IKenoMiniOnlineUserApi) },

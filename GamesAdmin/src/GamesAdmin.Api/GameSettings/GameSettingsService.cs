@@ -106,6 +106,9 @@ namespace GamesAdmin.Api.Games
                 };
 
                 await repository.InsertOneAsync(entity);
+
+                var message = await GetDisaledMessage(game.Info.Name);
+                await notificationService.AddDisableMessage(game.Info.Name, message);
             }
             catch (Exception ex)
             {

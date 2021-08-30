@@ -26,6 +26,8 @@ namespace GamesAdmin.Api.Notifications
         public Task<bool> AddOrUpdateForGame(UpdateRequest notification);
 
         public Task<Notification> GetByGameName(string gameName, NotificationDisplayKind displayKind);
+
+        Task<bool> AddDisableMessage(string gameName, Dictionary<string, string> messages);
     }
 
     public class NotificationService : INotificationService
@@ -122,6 +124,20 @@ namespace GamesAdmin.Api.Notifications
             var entity = await notificationRepository.FindOneAsync(entity => entity.GameName == gameName && entity.DisplayKind == byte.Parse(displayKind.Value));
 
             return entity == null ? null : Convert(entity);
+        }
+
+        public async Task<bool> AddDisableMessage(string gameName, Dictionary<string, string> messages)
+        {
+            var notificationEntity = new NotificationEntity
+            {
+                Message = null,
+                DisplayKind = byte.Parse(NotificationDisplayKind.DisabledGame.Value),
+                GameName = gameName,
+                Messages = messages
+            };
+
+            await notificationRepository.InsertOneAsync(notificationEntity);
+            return true;
         }
     }
 }

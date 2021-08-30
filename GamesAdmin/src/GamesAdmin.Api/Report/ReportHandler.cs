@@ -42,7 +42,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
-        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>
+        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
+        IRequestHandler<HeroesSlotReportRequest, IEnumerable<HeroesSlotBetRecord>>
     {
         private readonly IReportService reportService;
 
@@ -121,14 +122,14 @@ namespace GamesAdmin.Api.Report
         => reportService.GetSicBoReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
         public Task<VipSeDieWarBetReport> Handle(VipSeDieWarReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipSeDieWarReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-        
+
         public Task<VipBaccaratBetReport> Handle(VipBaccaratReportRequest request, CancellationToken cancellationToken)
          => reportService.GetVipBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SicBoBetHistory> Handle(SicBoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoBetHistoryAsync(request.RoundId, request.UserId);
         public Task<VipSeDieWarBetHistory> Handle(VipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
-        => reportService.GetVipSeDieWarBetHistoryAsync(request.RoundId, request.UserId);        
+        => reportService.GetVipSeDieWarBetHistoryAsync(request.RoundId, request.UserId);
 
         public Task<IEnumerable<JackpotRecord>> Handle(JackpotReportRequest request, CancellationToken cancellationToken)
         => reportService.GetJackpotReportAsync(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
@@ -139,7 +140,10 @@ namespace GamesAdmin.Api.Report
         public Task<LotteryBetHistory> Handle(LotteryBetHistoryRequest request, CancellationToken cancellationToken)
             => reportService.GetLotteryBetHistoryAsync(request.RoundId, request.UserId);
 
-        public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken) 
+        public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken)
             => reportService.GetThreeCardsReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<IEnumerable<HeroesSlotBetRecord>> Handle(HeroesSlotReportRequest request, CancellationToken cancellationToken)
+            => reportService.GetHeroesSlotReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

@@ -77,6 +77,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
+        Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -169,7 +170,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<VipBaccaratBetReport> GetVipBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipBaccaratReport(roundId, nickname, excludeUUS);
-        
+
         public Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetSicBoBetReport(roundId, nickname, excludeUUS);
 
@@ -190,5 +191,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
+
+        public Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetHeroesSlotReport(roundId, nickname, excludeUUS);
     }
 }

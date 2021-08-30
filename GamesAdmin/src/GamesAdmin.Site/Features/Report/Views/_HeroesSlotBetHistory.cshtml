@@ -1,0 +1,123 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@using System.Globalization
+@model HeroesSlotRecordViewModel
+
+<table class="table table-bordered table-four-guardians">
+    <thead>
+        <tr>
+            <th class="col-date">Time</th>
+            <th class="col-round-id">RoundId</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Time.ToString(Constants.DateTimeFormat)
+            </td>
+            <td class="text-center">@Model.RoundId @(Model.FreeSpin ? "(Free spin)" : string.Empty)</td>
+            <td>
+                <table class="table-paylines">
+                    <tbody>
+                        @{
+                            var array = Model.GetFormatResults();
+                            for (var row = 0; row < array.Length; row++)
+                            {
+                                <tr>
+                                    @for (var column = 0; column < array[row].Length; column++)
+                                    {
+                                        <td><img class="symbol" src="~/images/slot-icons/heroesslot/@(array[row][column]).png" /></td>
+                                    }
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-four-guardians">
+    <thead>
+        <tr>
+            <th>Payline</th>
+            <th>Symbol</th>
+            <th>No. of Symbol</th>
+            <th>Odds</th>
+            <th>Stake</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payline in Model.Paylines.Where(x => Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x)))
+        {
+            var winningPayline = Model.SettlementResult.WinningPaylines.FirstOrDefault(x => x.Payline == payline);
+
+            <tr>
+                <td class="text-center"><img class="payline" src="~/images/slot-icons/heroesslot/dong@(payline + 1).png" /></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/heroesslot/@(winningPayline.Symbol).png" /></td>
+                <td class="text-center">@winningPayline.Count</td>
+                <td class="text-center">x@(winningPayline.Odds)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet * winningPayline.Odds)</td>
+            </tr>
+        }
+
+        @if (Model.SettlementResult.Bonus.Odds > 0)
+        {
+            <tr>
+                <td></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/heroesslot/8.png" /></td>
+                <td class="text-center">@Model.SettlementResult.Bonus.Count</td>
+                <td class="text-center">@Model.SettlementResult.Bonus.Odds Bonus</td>
+                <td class="text-center">-</td>
+                <td class="text-right">@HtmlHelpers.formatNumber(Model.BonusChests.Where(x => x.Picked).Sum(x => x.Amount))</td>
+            </tr>
+        }
+
+        @if (Model.SettlementResult.FreeSpins.Odds > 0)
+        {
+            <tr>
+                <td></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/heroesslot/7.png" /></td>
+                <td class="text-center">@Model.SettlementResult.FreeSpins.Count</td>
+                <td class="text-center">@Model.SettlementResult.FreeSpins.Odds Free spins</td>
+                <td class="text-center">-</td>
+                <td class="text-center">-</td>
+            </tr>
+        }
+
+        @foreach (var payline in Model.Paylines.Where(x => !Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x)))
+        {
+
+            <tr>
+                <td class="text-center"><img class="payline" src="~/images/slot-icons/heroesslot/dong@(payline + 1).png" /></td>
+                <td class="text-center">-</td>
+                <td class="text-center">-</td>
+                <td class="text-center">-</td>
+                <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
+                <td class="text-right">0</td>
+            </tr>
+        }
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="bold text-right">Total</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.FreeSpin ? 0m : Model.TotalAmount)</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.TotalBetWin)</td>
+        </tr>
+        <tr class="total">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="bold text-right">Win Loss</td>
+            <td></td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.WinLoss)</td>
+        </tr>
+    </tbody>
+</table>

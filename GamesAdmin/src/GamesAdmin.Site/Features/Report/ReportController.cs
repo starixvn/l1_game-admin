@@ -103,7 +103,7 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
-        
+
 
         [HttpGet]
         [ActionName("rnglottery")]
@@ -207,7 +207,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             return View(new ReportViewModel { ExcludeUUS = true });
         }
-
 
         [HttpGet]
         public IActionResult FourGuardians()
@@ -325,6 +324,25 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult HeroesSlot()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_HeroesSlotRecords", await mediator.Send(new GetHeroesSlotReportRequest(roundId, nickname, excludeUUS)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHeroesSlotBetHistory(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_HeroesSlotBetHistory",
+                (await mediator.Send(new GetHeroesSlotReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
+        }
+
+        [HttpGet]
         public IActionResult KenoProViet() => ToKenoReport();
 
         [HttpGet]
@@ -391,7 +409,7 @@ namespace GamesAdmin.Site.Features.Report
                 await mediator.Send(
                     new GetJackpotReportRequest(model.GameId,
                         model.FromDate.Date.ToUniversalTime(),
-                        model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(), 
+                        model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
                         model.ExcludeUUS, model.ExcludeBot)));
         }
 
