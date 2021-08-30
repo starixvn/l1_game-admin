@@ -89,7 +89,7 @@ namespace GamesAdmin.Site.Features.Report
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
 
         [Get("/report/four_guardians/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS, string game);
 
         [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
@@ -102,8 +102,5 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
-
-        [Get("/report/heroes_slot/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS);
     }
 }

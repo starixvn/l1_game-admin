@@ -42,8 +42,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
-        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
-        IRequestHandler<HeroesSlotReportRequest, IEnumerable<HeroesSlotBetRecord>>
+        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>
     {
         private readonly IReportService reportService;
 
@@ -113,7 +112,7 @@ namespace GamesAdmin.Api.Report
         => reportService.GetBlackjackReportAsync(request.HandId, request.Nickname, request.ExcludeUUS);
 
         public Task<IEnumerable<FourGuardiansBetRecord>> Handle(FourGuardiansReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetFourGuardiansReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        => reportService.GetFourGuardiansReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
 
         public Task<VipFishPrawnCrabBetReport> Handle(VipFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
@@ -142,8 +141,5 @@ namespace GamesAdmin.Api.Report
 
         public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken)
             => reportService.GetThreeCardsReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-        public Task<IEnumerable<HeroesSlotBetRecord>> Handle(HeroesSlotReportRequest request, CancellationToken cancellationToken)
-            => reportService.GetHeroesSlotReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

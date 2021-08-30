@@ -67,7 +67,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
-        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS, Game game);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
@@ -76,8 +76,6 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
-
-        Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -177,8 +175,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId)
         => reportApi.GetSicBoBetHistory(roundId, userId);
 
-        public Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
-            => reportApi.GetFourGuardiansReport(roundId, nickname, excludeUUS);
+        public Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS, Game game)
+            => reportApi.GetFourGuardiansReport(roundId, nickname, excludeUUS, game.Value);
 
         public Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
             => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
@@ -191,8 +189,5 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
-
-        public Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS)
-            => reportApi.GetHeroesSlotReport(roundId, nickname, excludeUUS);
     }
 }

@@ -130,8 +130,8 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("four_guardians/round/{roundId}/users/{nickname?}")]
-        public async Task<IEnumerable<FourGuardiansBetRecord>> FourGuardians(long roundId, string nickname, bool excludeUUS)
-        => (await mediator.Send(new FourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+        public async Task<IEnumerable<FourGuardiansBetRecord>> FourGuardians(long roundId, string nickname, bool excludeUUS, string game)
+        => (await mediator.Send(new FourGuardiansReportRequest(roundId, nickname, excludeUUS, game)));
 
         [HttpGet]
         [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]
@@ -177,10 +177,5 @@ namespace GamesAdmin.Api.Report
         [Route("threecards/round/{roundId}/users/{nickname?}")]
         public async Task<ThreeCardsBetReport> ThreeCards(long roundId, string nickname, bool excludeUUS)
             => (await mediator.Send(new ThreeCardsReportRequest(roundId, nickname, excludeUUS)));
-
-        [HttpGet]
-        [Route("heroes_slot/round/{roundId}/users/{nickname?}")]
-        public async Task<IEnumerable<HeroesSlotBetRecord>> HeroesSlot(long roundId, string nickname, bool excludeUUS)
-            => (await mediator.Send(new HeroesSlotReportRequest(roundId, nickname, excludeUUS)));
     }
 }

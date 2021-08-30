@@ -10,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IHeroesSlotReportRepository
     {
-        Task<IEnumerable<HeroesSlotBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<FourGuardiansBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class HeroesSlotReportRepository : IHeroesSlotReportRepository
@@ -22,10 +22,10 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IEnumerable<HeroesSlotBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<FourGuardiansBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var project = GetAggregateBuilder(roundId, nickname, excludeUUS: excludeUUS)
-                .Project(x => new HeroesSlotBetReportEntity
+                .Project(x => new FourGuardiansBetReportEntity
                 {
                     Time = x.Time,
                     Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -46,7 +46,7 @@ namespace GamesAdmin.Database
             return await project.ToListAsync();
         }
 
-        private IAggregateFluent<HeroesSlotBetWithUnWindAccountsEntity> GetAggregateBuilder(long roundId, string nickname, bool excludeUUS)
+        private IAggregateFluent<FourGuardiansBetWithUnWindAccountsEntity> GetAggregateBuilder(long roundId, string nickname, bool excludeUUS)
         {
             var betCollection = database.GetCollection<HeroesSlotRoundEntity>(Document.GetCollectionName(typeof(HeroesSlotRoundEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
@@ -70,7 +70,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.Id,
                        @as: r => r.Accounts
                  )
-                .Unwind<BetEntityWithAccountInfoUnwind, HeroesSlotBetWithUnWindAccountsEntity>(x => x.Accounts);
+                .Unwind<BetEntityWithAccountInfoUnwind, FourGuardiansBetWithUnWindAccountsEntity>(x => x.Accounts);
 
             return aggregateBuilder;
         }

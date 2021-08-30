@@ -259,14 +259,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ThreeCardsRoundEntity, ThreeCardsRoundResult>();
             CreateMap<ThreeCardsSettlementResultEntity, ThreeCardsSettlementResult>();
             CreateMap<ThreeCardsBetReportEntity, ThreeCardsBetRecord>();
-
-            CreateMap<HeroesSlotBetReportEntity, HeroesSlotBetRecord>()
-               .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
-            CreateMap<HeroesSlotSettlementResultEntity, HeroesSlotSettlementResult>();
-            CreateMap<HeroesSlotFreeSpinEntity, HeroesSlotFreeSpin>();
-            CreateMap<HeroesSlotBonusEntity, HeroesSlotBonus>();
-            CreateMap<HeroesSlotWinningLineEntity, HeroesSlotWinningLine>();
-            CreateMap<HeroesSlotBonusChestEntity, HeroesSlotBonusChest>();
         }
     }
 }

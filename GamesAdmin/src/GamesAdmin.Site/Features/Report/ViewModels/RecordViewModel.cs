@@ -170,7 +170,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalBet { get; set; }
     }
-    
+
     public class VipSeDieWarRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
@@ -201,6 +201,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBetWin => BetWin + (SettlementResult.Jackpot?.WinningAmount ?? 0);
 
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
+
+        public string Game { get; set; }
+        public string IconsFolder => Game?.ToLowerInvariant();
     }
 
     public class FourGuardiansBonusChestViewModel

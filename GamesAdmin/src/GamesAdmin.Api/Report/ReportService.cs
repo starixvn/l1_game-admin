@@ -69,7 +69,7 @@ namespace GamesAdmin.Api.Report
 
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
 
-        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS);
+        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS, Game game);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
@@ -78,8 +78,6 @@ namespace GamesAdmin.Api.Report
         Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId);
 
         Task<ThreeCardsBetReport> GetThreeCardsReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReportAsync(long handId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -88,17 +86,20 @@ namespace GamesAdmin.Api.Report
         private readonly IKenoReportFactory kenoReportFactory;
         private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
+        private readonly IFourGuardiansReportFactory fourGuardiansReportFactory;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IKenoReportFactory kenoReportFactory,
             IMapper mapper,
-            IGenericRepository<SpinResultEntity> spinResultRepository)
+            IGenericRepository<SpinResultEntity> spinResultRepository,
+            IFourGuardiansReportFactory fourGuardiansReportFactory)
         {
             this.serviceProvider = serviceProvider;
             this.kenoReportFactory = kenoReportFactory;
             this.mapper = mapper;
             this.spinResultRepository = spinResultRepository;
+            this.fourGuardiansReportFactory = fourGuardiansReportFactory;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -456,10 +457,10 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
 
-        public async Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS, Game game)
         {
-            var repository = serviceProvider.GetService<IFourGuardiansReportRepository>();
-            var result = await repository.GetAsync(handId, nickname, excludeUUS);
+            var service = fourGuardiansReportFactory.GetReportService(game);
+            var result = service == default ? default : await service.GetReportAsync(handId, nickname, excludeUUS);
 
             return result.Select(x => mapper.Map<FourGuardiansBetRecord>(x));
         }
@@ -567,14 +568,6 @@ namespace GamesAdmin.Api.Report
                 RoundResult = mapper.Map<ThreeCardsRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<ThreeCardsBetRecord>(x))
             };
-        }
-
-        public async Task<IEnumerable<HeroesSlotBetRecord>> GetHeroesSlotReportAsync(long handId, string nickname, bool excludeUUS)
-        {
-            var repository = serviceProvider.GetService<IHeroesSlotReportRepository>();
-            var result = await repository.GetAsync(handId, nickname, excludeUUS);
-
-            return result.Select(x => mapper.Map<HeroesSlotBetRecord>(x));
         }
     }
 }

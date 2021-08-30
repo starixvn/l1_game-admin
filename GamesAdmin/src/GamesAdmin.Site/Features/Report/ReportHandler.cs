@@ -44,8 +44,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
-        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
-        IRequestHandler<GetHeroesSlotReportRequest, HeroesSlotReportResultViewModel>
+        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>
 
     {
         private readonly IReportService reportService;
@@ -470,7 +469,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<FourGuardiansReportResultViewModel> Handle(GetFourGuardiansReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetFourGuardiansReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetFourGuardiansReport(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
 
             return new FourGuardiansReportResultViewModel
             {
@@ -478,6 +477,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 {
                     var betViewModel = mapper.Map<FourGuardiansRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Game = request.Game.Value;
 
                     return betViewModel;
                 })
@@ -637,22 +637,6 @@ namespace GamesAdmin.Site.Features.ClientSites
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return recordViewModel;
-                })
-            };
-        }
-
-        public async Task<HeroesSlotReportResultViewModel> Handle(GetHeroesSlotReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetHeroesSlotReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new HeroesSlotReportResultViewModel
-            {
-                Records = result.Select(x =>
-                {
-                    var betViewModel = mapper.Map<HeroesSlotRecordViewModel>(x);
-                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return betViewModel;
                 })
             };
         }

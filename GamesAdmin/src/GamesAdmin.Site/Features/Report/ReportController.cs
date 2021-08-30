@@ -215,16 +215,16 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS, string game)
         {
-            return PartialView("_FourGuardiansRecords", await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_FourGuardiansRecords", await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS, game)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS, string game)
         {
             return PartialView("_FourGuardiansBetHistory",
-                (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
+                (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS, game))).Records.FirstOrDefault());
         }
 
         [HttpGet]
@@ -327,19 +327,6 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult HeroesSlot()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetHeroesSlotReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_HeroesSlotRecords", await mediator.Send(new GetHeroesSlotReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetHeroesSlotBetHistory(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_HeroesSlotBetHistory",
-                (await mediator.Send(new GetHeroesSlotReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
         }
 
         [HttpGet]
