@@ -28,4 +28,6 @@ export default {
   threecards: 35,
   kenomatch1: 36,
   kenomatch2: 37,
+  kenopower1: 40,
+  kenopower2: 41
 };

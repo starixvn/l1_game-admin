@@ -33,6 +33,7 @@ type State = {
 const NewSocketGameIds = [
   1, 2, 3, 4, 6, 7, 8, 9, 10, 21, 22, 24, 25, 26, 27, 28, 31, 35, 12, 13, 14,
   15, 16, 17, 18, 19,
+  40, 41,
 ];
 
 export class Home extends React.Component<Props, State> {
@@ -308,6 +309,28 @@ export class Home extends React.Component<Props, State> {
             process.env.NEXT_PUBLIC_ENV === "local"
               ? process.env.NEXT_PUBLIC_KENOMATCH2_SERVER_PROXY_ROUTE
               : Cookies.get("kenomatch2-server-endpoint-route"),
+        };
+      case gameNameMapper.kenopower1:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENOPOWER1_SERVER_ENDPOINT
+              : Cookies.get("kenopower1-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENOPOWER1_SERVER_PROXY_ROUTE
+              : Cookies.get("kenopower1-server-endpoint-route"),
+        };
+      case gameNameMapper.kenopower2:
+        return {
+          endpoint:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENOPOWER2_SERVER_ENDPOINT
+              : Cookies.get("kenopower2-server-endpoint"),
+          route:
+            process.env.NEXT_PUBLIC_ENV === "local"
+              ? process.env.NEXT_PUBLIC_KENOPOWER2_SERVER_PROXY_ROUTE
+              : Cookies.get("kenopower2-server-endpoint-route"),
         };
       case gameNameMapper.kenomax:
         return process.env.NEXT_PUBLIC_ENV === "local"

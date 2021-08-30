@@ -22,6 +22,7 @@ import SicBo from "./sic-bo";
 import Lottery from "./lottery";
 import ThreeCards from "./three-cards";
 import { KenoMatch1, KenoMatch2 } from "./keno-match";
+import { KenoPower1, KenoPower2 } from "./keno-power";
 
 const getObjectOfGame =
   (path: string) => (onMessage: Function) => (message: any) => {
@@ -170,6 +171,14 @@ const gameMapper = {
   37: {
     component: KenoMatch2,
     ...getInfoByGameKey("KenoMatch2"),
+  },
+  40: {
+    component: KenoPower1,
+    ...getInfoByGameKey("KenoPower1"),
+  },
+  41: {
+    component: KenoPower2,
+    ...getInfoByGameKey("KenoPower2"),
   },
 };
 
