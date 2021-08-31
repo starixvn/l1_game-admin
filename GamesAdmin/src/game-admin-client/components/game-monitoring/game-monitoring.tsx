@@ -96,35 +96,35 @@ const gameMapper = {
   },
   12: {
     component: MiniKeno("kenoMax", 20),
-    ...getInfoByGameKey("kenoMax"),
+    ...getInfoByGameKey("KenoMax"),
   },
   13: {
     component: MiniKeno("kenoMax2", 20),
-    ...getInfoByGameKey("kenoMax2"),
+    ...getInfoByGameKey("KenoMax2"),
   },
   14: {
     component: MiniKeno("kenoMini", 10),
-    ...getInfoByGameKey("kenoMini"),
+    ...getInfoByGameKey("KenoMini"),
   },
   15: {
     component: MiniKeno("kenoMini2", 10),
-    ...getInfoByGameKey("kenoMini2"),
+    ...getInfoByGameKey("KenoMini2"),
   },
   16: {
     component: MiniKeno("kenoEast", 20),
-    ...getInfoByGameKey("kenoEast"),
+    ...getInfoByGameKey("KenoEast"),
   },
   17: {
     component: MiniKeno("kenoWest", 20),
-    ...getInfoByGameKey("kenoWest"),
+    ...getInfoByGameKey("KenoWest"),
   },
   18: {
     component: MiniKeno("kenoSouth", 20),
-    ...getInfoByGameKey("kenoSouth"),
+    ...getInfoByGameKey("KenoSouth"),
   },
   19: {
     component: MiniKeno("kenoNorth", 20),
-    ...getInfoByGameKey("kenoNorth"),
+    ...getInfoByGameKey("KenoNorth"),
   },
   21: {
     component: Roulette,
