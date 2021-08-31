@@ -69,7 +69,7 @@ namespace GamesAdmin.Api.Report
 
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
 
-        Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS, Game game);
+        Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(long handId, string nickname, bool excludeUUS, Game game);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
@@ -86,20 +86,20 @@ namespace GamesAdmin.Api.Report
         private readonly IKenoReportFactory kenoReportFactory;
         private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
-        private readonly IFourGuardiansReportFactory fourGuardiansReportFactory;
+        private readonly ISlotGameReportFactory slotGameReportFactory;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IKenoReportFactory kenoReportFactory,
             IMapper mapper,
             IGenericRepository<SpinResultEntity> spinResultRepository,
-            IFourGuardiansReportFactory fourGuardiansReportFactory)
+            ISlotGameReportFactory slotGameReportFactory)
         {
             this.serviceProvider = serviceProvider;
             this.kenoReportFactory = kenoReportFactory;
             this.mapper = mapper;
             this.spinResultRepository = spinResultRepository;
-            this.fourGuardiansReportFactory = fourGuardiansReportFactory;
+            this.slotGameReportFactory = slotGameReportFactory;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
@@ -457,12 +457,12 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
 
-        public async Task<IEnumerable<FourGuardiansBetRecord>> GetFourGuardiansReportAsync(long handId, string nickname, bool excludeUUS, Game game)
+        public async Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(long handId, string nickname, bool excludeUUS, Game game)
         {
-            var service = fourGuardiansReportFactory.GetReportService(game);
+            var service = slotGameReportFactory.GetReportService(game);
             var result = service == default ? default : await service.GetReportAsync(handId, nickname, excludeUUS);
 
-            return result.Select(x => mapper.Map<FourGuardiansBetRecord>(x));
+            return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }
 
         public async Task<SicBoBetReport> GetSicBoReportAsync(long roundId, string nickname, bool excludeUUS)

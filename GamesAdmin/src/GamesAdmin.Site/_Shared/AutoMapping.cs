@@ -71,13 +71,13 @@ namespace GamesAdmin.Site._Shared
             CreateMap<VipSeDieWarBetRecord, VipSeDieWarRecordViewModel>();
             CreateMap<VipSeDieWarBetHistoryRecord, VipSeDieWarBetHistoryRecordViewModel>();
 
-            CreateMap<FourGuardiansBetRecord, FourGuardiansRecordViewModel>();
-            CreateMap<FourGuardiansSettlementResult, FourGuardiansSettlementResultViewModel>();
-            CreateMap<FourGuardiansFreeSpin, FourGuardiansFreeSpinViewModel>();
-            CreateMap<FourGuardiansBonus, FourGuardiansBonusViewModel>();
-            CreateMap<FourGuardiansWinningLine, FourGuardiansWinningLineViewModel>();
-            CreateMap<FourGuardiansBonusChest, FourGuardiansBonusChestViewModel>();
-            CreateMap<FourGuardiansJackpot, FourGuardiansJackpotViewModel>();
+            CreateMap<SlotGameBetRecord, SlotGameRecordViewModel>();
+            CreateMap<SlotGameSettlementResult, SlotGameSettlementResultViewModel>();
+            CreateMap<SlotGameFreeSpin, SlotGameFreeSpinViewModel>();
+            CreateMap<SlotGameBonus, SlotGameBonusViewModel>();
+            CreateMap<SlotGameWinningLine, SlotGameWinningLineViewModel>();
+            CreateMap<SlotGameBonusChest, SlotGameBonusChestViewModel>();
+            CreateMap<SlotGameJackpot, SlotGameJackpotViewModel>();
 
             CreateMap<JackpotRecord, JackpotRecordViewModel>();
 

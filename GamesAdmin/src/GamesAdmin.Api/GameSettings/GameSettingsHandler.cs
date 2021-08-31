@@ -70,6 +70,6 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
-        => gameService.GetDisaledMessage(request.Name);
+        => gameService.GetDisabledMessage(request.Name);
     }
 }

@@ -215,16 +215,16 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS, string game)
+        public async Task<IActionResult> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, string game)
         {
-            return PartialView("_FourGuardiansRecords", await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS, game)));
+            return PartialView("_SlotGameRecords", await mediator.Send(new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS, string game)
+        public async Task<IActionResult> GetSlotGameBetHistory(long roundId, string nickname, bool excludeUUS, string game)
         {
-            return PartialView("_FourGuardiansBetHistory",
-                (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS, game))).Records.FirstOrDefault());
+            return PartialView("_SlotGameBetHistory",
+                (await mediator.Send(new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game))).Records.FirstOrDefault());
         }
 
         [HttpGet]

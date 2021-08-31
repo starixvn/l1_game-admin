@@ -38,7 +38,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<SicBoBetHistoryRequest, SicBoBetHistory>,
         IRequestHandler<VipSeDieWarReportRequest, VipSeDieWarBetReport>,
         IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>,
-        IRequestHandler<FourGuardiansReportRequest, IEnumerable<FourGuardiansBetRecord>>,
+        IRequestHandler<SlotGameReportRequest, IEnumerable<SlotGameBetRecord>>,
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
@@ -111,8 +111,8 @@ namespace GamesAdmin.Api.Report
         public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
         => reportService.GetBlackjackReportAsync(request.HandId, request.Nickname, request.ExcludeUUS);
 
-        public Task<IEnumerable<FourGuardiansBetRecord>> Handle(FourGuardiansReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetFourGuardiansReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
+        public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetSlotGameReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
 
         public Task<VipFishPrawnCrabBetReport> Handle(VipFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);

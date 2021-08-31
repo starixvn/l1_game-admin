@@ -67,9 +67,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoProMaxReport>()
                         .AddScoped<IKenoReport, KenoProMaxReport>(s => s.GetService<KenoProMaxReport>());
 
-            services.AddScoped<IFourGuardiansReportFactory, FourGuardiansReportFactory>();
-            services.AddScoped<FourGuardiansReport>().AddScoped<IFourGuardiansReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
-            services.AddScoped<HeroesSlotReport>().AddScoped<IFourGuardiansReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
+            services.AddScoped<ISlotGameReportFactory, SlotGameReportFactory>();
+            services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
+            services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
 
             services.AddScoped<IEndGameInfoServiceFactory, EndGameInfoServiceFactory>();
             services.AddScoped<BigSmallEndGameInfoService>();

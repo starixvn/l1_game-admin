@@ -4,9 +4,9 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetFourGuardiansReportRequest : IRequest<FourGuardiansReportResultViewModel>
+    public class GetSlotGameReportRequest : IRequest<SlotGameReportResultViewModel>
     {
-        public GetFourGuardiansReportRequest(long roundId, string nickname, bool excludeUUS, string game)
+        public GetSlotGameReportRequest(long roundId, string nickname, bool excludeUUS, string game)
         {
             RoundId = roundId;
             Nickname = nickname;

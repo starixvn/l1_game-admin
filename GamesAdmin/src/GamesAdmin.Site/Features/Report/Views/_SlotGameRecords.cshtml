@@ -1,7 +1,7 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model FourGuardiansReportResultViewModel
+@model SlotGameReportResultViewModel
 
 <div class="row">
     <div class="col-sm-12">
@@ -28,7 +28,7 @@
                         <td>@bet.Nickname</td>
                         <td class="text-center">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetFourGuardiansBetHistory"
+                               asp-action="GetSlotGameBetHistory"
                                asp-route-roundId="@bet.RoundId"
                                asp-route-nickname="@bet.Nickname"
                                asp-route-game="@bet.Game">

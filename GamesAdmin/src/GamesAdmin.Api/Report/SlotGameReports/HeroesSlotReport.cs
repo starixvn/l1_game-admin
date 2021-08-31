@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace GamesAdmin.Api.Report
 {
-    public class HeroesSlotReport : IFourGuardiansReport
+    public class HeroesSlotReport : ISlotGameReport
     {
         private readonly IHeroesSlotReportRepository repository;
         private readonly IMapper mapper;
@@ -18,11 +18,11 @@ namespace GamesAdmin.Api.Report
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<FourGuardiansBetRecord>> GetReportAsync(long handId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<SlotGameBetRecord>> GetReportAsync(long handId, string nickname, bool excludeUUS)
         {
             var result = await repository.GetAsync(handId, nickname, excludeUUS);
 
-            return result.Select(x => mapper.Map<FourGuardiansBetRecord>(x));
+            return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }
     }
 }

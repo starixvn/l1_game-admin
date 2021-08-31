@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateSiteExclusion(string name, string[] exclusions);
 
-        Task<Dictionary<string, string>> GetDisaledMessage(string name);
+        Task<Dictionary<string, string>> GetDisabledMessage(string name);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -107,8 +107,8 @@ namespace GamesAdmin.Api.Games
 
                 await repository.InsertOneAsync(entity);
 
-                var message = await GetDisaledMessage(game.Info.Name);
-                await notificationService.AddDisableMessage(game.Info.Name, message);
+                var messages = new Dictionary<string, string> { [Language.VnValue] = game.EnableSetting.DisabledMessage };
+                await notificationService.AddDisableMessage(game.Info.Name, messages);
             }
             catch (Exception ex)
             {
@@ -361,7 +361,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<Dictionary<string, string>> GetDisaledMessage(string name)
+        public async Task<Dictionary<string, string>> GetDisabledMessage(string name)
         {
             var notification = await notificationService.GetByGameName(name, NotificationDisplayKind.DisabledGame);
 

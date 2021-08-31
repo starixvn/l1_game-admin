@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Report
 {
-    public interface IFourGuardiansReportFactory
+    public interface ISlotGameReportFactory
     {
-        IFourGuardiansReport GetReportService(Game game);
+        ISlotGameReport GetReportService(Game game);
     }
 
-    public class FourGuardiansReportFactory : IFourGuardiansReportFactory
+    public class SlotGameReportFactory : ISlotGameReportFactory
     {
         private readonly Dictionary<string, Type> reports = new Dictionary<string, Type>
         {
@@ -19,14 +19,14 @@ namespace GamesAdmin.Api.Report
 
         private readonly IServiceProvider serviceProvider;
 
-        public FourGuardiansReportFactory(IServiceProvider serviceProvider)
+        public SlotGameReportFactory(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
         }
 
-        public IFourGuardiansReport GetReportService(Game game)
+        public ISlotGameReport GetReportService(Game game)
             => reports.ContainsKey(game.Value)
-            ? (IFourGuardiansReport)serviceProvider.GetService(reports[game.Value])
+            ? (ISlotGameReport)serviceProvider.GetService(reports[game.Value])
             : default;
     }
 }
