@@ -310,18 +310,8 @@ export default class KenoPower extends React.Component<
   handleChangeResult(event: FormEvent) {
     event.preventDefault();
     const newResult = {
-      halfTime: {
-        result: {
-          blue: event.target["hfBlue"].value.split(",").map((x) => parseInt(x)),
-          red: event.target["hfRed"].value.split(",").map((x) => parseInt(x)),
-        },
-      },
-      fullTime: {
-        result: {
-          blue: event.target["ftBlue"].value.split(",").map((x) => parseInt(x)),
-          red: event.target["ftRed"].value.split(",").map((x) => parseInt(x)),
-        },
-      },
+      player: event.target["player"].value.split(",").map((x) => parseInt(x)),
+      banker: event.target["banker"].value.split(",").map((x) => parseInt(x)),
     };
 
     this.props.sendMessage({
