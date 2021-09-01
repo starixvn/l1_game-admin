@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Core.Enumeration.BetChoices
+﻿namespace GamesAdmin.Core.Enumeration.BetOdds
 {
     public class KenoMatchBetOdds : Enumeration
     {
@@ -15,6 +15,8 @@
         public const string FTUnderValue = "ftUnder";
         public const string FTOddValue = "ftOdd";
         public const string FTEvenValue = "ftEven";
+        public const string LiveFTOddValue = "liveFTOdd";
+        public const string LiveFTEvenValue = "liveFTEven";
 
         public static readonly KenoMatchBetOdds FHBlue = new KenoMatchBetOdds(FHBlueValue, "First Half Team Blue");
         public static readonly KenoMatchBetOdds FHRed = new KenoMatchBetOdds(FHRedValue, "First Half Team Red");
@@ -29,6 +31,9 @@
         public static readonly KenoMatchBetOdds FTUnder = new KenoMatchBetOdds(FTUnderValue, "Full Time Under");
         public static readonly KenoMatchBetOdds FTOdd = new KenoMatchBetOdds(FTOddValue, "Full Time Odd");
         public static readonly KenoMatchBetOdds FTEven = new KenoMatchBetOdds(FTEvenValue, "Full Time Even");
+
+        public static readonly KenoMatchBetOdds LiveFTOdd = new KenoMatchBetOdds(LiveFTOddValue, "Full Time (Live) Odd");
+        public static readonly KenoMatchBetOdds LiveFTEven = new KenoMatchBetOdds(LiveFTEvenValue, "Full Time (Live) Even");
 
         public KenoMatchBetOdds()
         {

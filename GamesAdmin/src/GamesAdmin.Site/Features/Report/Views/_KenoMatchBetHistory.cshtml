@@ -71,6 +71,16 @@
         { "liveFTOdd", ftSettlementResult.Odd},
         { "liveFTEven", ftSettlementResult.Even },
     };
+
+    var settlmentResultRefund = new Dictionary<string, KenoMatchPeriodSettlementResultViewModel>
+{
+        { "fhBlue", htSettlementResult },
+        { "fhRed", htSettlementResult },
+        { "ftBlue", ftSettlementResult },
+        { "ftRed", ftSettlementResult },
+        { "liveFTBlue", ftSettlementResult },
+        { "liveFTRed", ftSettlementResult },
+    };
 }
 
 <table class="table table-bordered table-hover">
@@ -82,6 +92,7 @@
             <th>Bet Choice</th>
             <th>Odds</th>
             <th>Bet Amount</th>
+            <th>Refund</th>
         </tr>
     </thead>
     <tbody>
@@ -100,6 +111,9 @@
                 <td class="@winCssClass">@Model.RoundResult.Odds[bet.Choice]</td>
                 <td class="text-right @winCssClass">
                     @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
+                <td class="text-right @winCssClass">
+                    @HtmlHelpers.formatNumber(bet.GetRefund(settlmentResultRefund[bet.Choice]))
                 </td>
             </tr>
 

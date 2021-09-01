@@ -3,7 +3,7 @@
     public class KenoPowerBetChoice : Enumeration
     {
         public const string PlayerValue = "player";
-        public const string BankValue = "banker";
+        public const string BankerValue = "banker";
         public const string BigValue = "big";
         public const string SmallValue = "small";
         public const string OddValue = "odd";
@@ -21,7 +21,7 @@
         public const string BankerSmallValue = "bankerSmall";
 
         public static readonly KenoPowerBetChoice Player = new KenoPowerBetChoice(PlayerValue, "Player");
-        public static readonly KenoPowerBetChoice Bank = new KenoPowerBetChoice(BankValue, "Banker");
+        public static readonly KenoPowerBetChoice Banker = new KenoPowerBetChoice(BankerValue, "Banker");
         public static readonly KenoPowerBetChoice Big = new KenoPowerBetChoice(BigValue, "Sum Big");
         public static readonly KenoPowerBetChoice Small = new KenoPowerBetChoice(SmallValue, "Sum Small");
         public static readonly KenoPowerBetChoice Odd = new KenoPowerBetChoice(OddValue, "Sum Odd");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -21,5 +22,16 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }
+
+        public decimal GetRefund(KenoPowerSettlementResultViewModel settlementResult)
+        {
+            if (!settlementResult.Banker && !settlementResult.Player &&
+                (Choice == KenoPowerBetChoice.PlayerValue || Choice == KenoPowerBetChoice.BankerValue))
+            {
+                return Amount;
+            }
+
+            return 0;
+        }
     }
 }
