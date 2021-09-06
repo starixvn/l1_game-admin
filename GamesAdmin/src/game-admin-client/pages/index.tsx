@@ -287,64 +287,69 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_THREE_CARDS_SERVER_PROXY_ROUTE
               : Cookies.get("three-cards-server-endpoint-route"),
         };
-      default:
-        const result =
-          process.env.NEXT_PUBLIC_ENV === "local"
-            ? this.getGameSocketLocal(gameId, process)
-            : this.getGameSocketCookie(gameId);
-        return result;
-    }
-  }
-
-  getGameSocketLocal(gameId, process) {
-    const penv = process.env;
-
-    switch (gameId) {
       case gameNameMapper.kenomax:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_MAX_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_MAX_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MAX_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MAX_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenomax2:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_MAX2_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_MAX2_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MAX2_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MAX2_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenomini:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_MINI_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_MINI_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MINI_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MINI_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenomini2:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_MINI2_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_MINI2_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MINI2_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MINI2_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenoeast:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_EAST_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_EAST_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_EAST_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_EAST_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenowest:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_WEST_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_WEST_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_WEST_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_WEST_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenosouth:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_SOUTH_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_SOUTH_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_SOUTH_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_SOUTH_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       case gameNameMapper.kenonorth:
-        return {
-          endpoint: penv.NEXT_PUBLIC_KENO_NORTH_SERVER_ENDPOINT,
-          route: penv.NEXT_PUBLIC_KENO_NORTH_SERVER_PROXY_ROUTE,
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_NORTH_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_NORTH_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       default:
-        return {
-          endpoint: penv.NEXT_PUBLIC_GAME_SERVER_ENDPOINT,
-          route: "",
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT,
+              route: "",
+            }
+          : this.getGameSocketCookie(gameId);
     }
   }
 

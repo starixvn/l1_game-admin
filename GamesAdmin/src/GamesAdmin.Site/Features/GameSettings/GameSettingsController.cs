@@ -318,7 +318,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             var cookies = new[] { "keno-max", "keno-max2", "keno-mini", "keno-mini2", "keno-east", "keno-west", "keno-south", "keno-north" };
             foreach (var c in cookies)
             {
-                var socketKey = c.Remove('-');
+                var socketKey = c.Replace("-", string.Empty);
                 HttpContext.Response.Cookies.Append($"{c}-server-endpoint", $"{appSettings.GameServers.MiniKeno.Socket}{socketKey}");
                 HttpContext.Response.Cookies.Append($"{c}-server-endpoint-route", appSettings.GameServers.MiniKeno.SocketRoute);
             }
