@@ -40,6 +40,16 @@ const choiceLabelMapper = {
   bankerSmall: "small",
 };
 
+const colorSettlement = {
+  red: "Red",
+  orange: "Orange",
+  yellow: "Yellow",
+  green: "Green",
+  blue: "Blue",
+  indigo: "Indigo",
+  violet: "Violet",
+};
+
 export default class KenoPower extends React.Component<
   KenoPowerProps,
   KenoPowerModel
@@ -59,6 +69,8 @@ export default class KenoPower extends React.Component<
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -102,15 +114,19 @@ export default class KenoPower extends React.Component<
     const { result, settlementResult } = this.state;
 
     if (Object.values(settlementResult).some((x) => x)) {
+      const playerTotal = result.player.reduce((num1, num2) => num1 + num2, 0);
+      const bankerTotal = result.banker.reduce((num1, num2) => num1 + num2, 0);
+
       return (
-        <>
-          <Col xs={12} className={styles["result-summary"]}>
-            <div></div>
-            <div className="font-weight-bold">
-              {this.getSettlementResultString(settlementResult)}
-            </div>
-          </Col>
-        </>
+        <Col xs={12} className={styles["result-summary"]}>
+          <div>
+            Total {playerTotal + bankerTotal} - Player {playerTotal} - Banker{" "}
+            {bankerTotal}
+          </div>
+          <div className="font-weight-bold">
+            {this.getSettlementResultString(settlementResult)}
+          </div>
+        </Col>
       );
     }
 
@@ -118,15 +134,25 @@ export default class KenoPower extends React.Component<
   }
 
   getSettlementResultString(settlementResult) {
-    const blueRed = settlementResult.blue
-      ? "Blue - "
-      : settlementResult.red
-      ? "Red - "
+    const playerBanker = settlementResult.player
+      ? "Player"
+      : settlementResult.banker
+      ? "Banker"
       : "";
-    const overUnder = settlementResult.over ? "Over" : "Under";
+    const bigSmall = settlementResult.big ? "Big" : "Small";
     const oddEven = settlementResult.odd ? "Odd" : "Even";
+    const color =
+      colorSettlement[
+        Object.keys(colorSettlement).find((x) => settlementResult[x])
+      ];
+    const playerBigSmall = settlementResult.playerBig
+      ? "Player Big"
+      : " Player Small";
+    const bankerBigSmall = settlementResult.bankerBig
+      ? "Banker Big"
+      : " Banker Small";
 
-    return `${blueRed}${overUnder} - ${oddEven}`;
+    return `${playerBanker} - ${bigSmall} - ${oddEven} - ${color} - ${playerBigSmall} - ${bankerBigSmall}`;
   }
 
   renderMonitor() {
@@ -177,16 +203,84 @@ export default class KenoPower extends React.Component<
             <Row className="justify-content-center" noGutters>
               <TotalBet
                 total={betList.big.total}
-                type="big"
+                type="kenobig"
                 isWin={settlementResult.big}
               />
               <TotalBet
                 total={betList.small.total}
-                type="small"
+                type="kenosmall"
                 isWin={settlementResult.small}
               />
+              <TotalBet
+                total={betList.odd.total}
+                type="odd"
+                isWin={settlementResult.odd}
+              />
+              <TotalBet
+                total={betList.even.total}
+                type="even"
+                isWin={settlementResult.even}
+              />
             </Row>
-            <Row className="justify-content-center" noGutters></Row>
+            <Row className="justify-content-center" noGutters>
+              <TotalBet
+                total={betList.red.total}
+                type="red"
+                isWin={settlementResult.red}
+              />
+              <TotalBet
+                total={betList.orange.total}
+                type="orange"
+                isWin={settlementResult.orange}
+              />
+              <TotalBet
+                total={betList.yellow.total}
+                type="yellow"
+                isWin={settlementResult.yellow}
+              />
+              <TotalBet
+                total={betList.green.total}
+                type="green"
+                isWin={settlementResult.green}
+              />
+              <TotalBet
+                total={betList.blue.total}
+                type="blue"
+                isWin={settlementResult.blue}
+              />
+              <TotalBet
+                total={betList.indigo.total}
+                type="indigo"
+                isWin={settlementResult.indigo}
+              />
+              <TotalBet
+                total={betList.violet.total}
+                type="violet"
+                isWin={settlementResult.violet}
+              />
+            </Row>
+            <Row className="justify-content-center" noGutters>
+              <TotalBet
+                total={betList.playerBig.total}
+                type="playerBig"
+                isWin={settlementResult.playerBig}
+              />
+              <TotalBet
+                total={betList.playerSmall.total}
+                type="playerSmall"
+                isWin={settlementResult.playerSmall}
+              />
+              <TotalBet
+                total={betList.bankerBig.total}
+                type="bankerBig"
+                isWin={settlementResult.bankerBig}
+              />
+              <TotalBet
+                total={betList.bankerSmall.total}
+                type="bankerSmall"
+                isWin={settlementResult.bankerSmall}
+              />
+            </Row>
           </Col>
         </Row>
       </Container>
@@ -195,69 +289,63 @@ export default class KenoPower extends React.Component<
 
   renderBetList() {
     const { betList } = this.state;
+    const colorBetList = betList.red.dataList.concat(
+      betList.orange.dataList,
+      betList.yellow.dataList,
+      betList.green.dataList,
+      betList.blue.dataList,
+      betList.indigo.dataList,
+      betList.violet.dataList
+    );
 
     return (
       <div className={styles["bet-list-container"]}>
         <Row>
-          <Col xs={12} md={6} lg={4}>
-            <div className={styles.title}>First Half</div>
-            <Row noGutters>
-              <Col className="col">
-                <BetList
-                  type="withchoice"
-                  dataList={betList.player.dataList.concat(
-                    betList.banker.dataList
-                  )}
-                  titles={[<div>Player/Banker</div>]}
-                />
-              </Col>
-              <Col className="col">
-                <BetList
-                  type="withchoice"
-                  dataList={betList.big.dataList.concat(betList.small.dataList)}
-                  titles={[<div>Big/Small</div>]}
-                />
-              </Col>
-              <Col className="col">
-                <BetList
-                  type="withchoice"
-                  dataList={betList.even.dataList.concat(betList.odd.dataList)}
-                  titles={[<div>Even/Odd</div>]}
-                />
-              </Col>
-            </Row>
+          <Col className="col">
+            <BetList
+              type="withchoice"
+              dataList={betList.player.dataList.concat(betList.banker.dataList)}
+              titles={[<div>Player/Banker</div>]}
+            />
           </Col>
-          <Col xs={12} md={6} lg={4}>
-            <div className={styles.title}>Full Time</div>
-            <Row noGutters>
-              <Col className="col">
-                <BetList
-                  type="withchoice"
-                  dataList={betList.red.dataList.concat(
-                    betList.orange.dataList
-                  )}
-                  titles={[<div>Color</div>]}
-                />
-              </Col>
-              <Col className="col">
-                <BetList
-                  type="withchoice"
-                  dataList={betList.playerBig.dataList.concat(
-                    betList.playerSmall.dataList
-                  )}
-                  titles={[<div>Player Big/Small</div>]}
-                />
-              </Col>
-              <Col className="col">
-                <BetList
-                  type="withchoice"
-                  dataList={betList.bankerBig.dataList.concat(
-                    betList.bankerSmall.dataList
-                  )}
-                  titles={[<div>Banker Big/Small</div>]}
-                />
-              </Col>
-            </Row>
+          <Col className="col">
+            <BetList
+              type="withchoice"
+              dataList={betList.big.dataList.concat(betList.small.dataList)}
+              titles={[<div>Big/Small</div>]}
+            />
+          </Col>
+          <Col className="col">
+            <BetList
+              type="withchoice"
+              dataList={betList.even.dataList.concat(betList.odd.dataList)}
+              titles={[<div>Even/Odd</div>]}
+            />
+          </Col>
+          <Col className="col">
+            <BetList
+              type="withchoice"
+              dataList={colorBetList}
+              titles={[<div>Color</div>]}
+            />
+          </Col>
+          <Col className="col">
+            <BetList
+              type="withchoice"
+              dataList={betList.playerBig.dataList.concat(
+                betList.playerSmall.dataList
+              )}
+              titles={[<div>Player Big/Small</div>]}
+            />
+          </Col>
+          <Col className="col">
+            <BetList
+              type="withchoice"
+              dataList={betList.bankerBig.dataList.concat(
+                betList.bankerSmall.dataList
+              )}
+              titles={[<div>Banker Big/Small</div>]}
+            />
           </Col>
         </Row>
       </div>
@@ -331,8 +419,8 @@ export default class KenoPower extends React.Component<
       <div>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState === GameState.disabled}
         />
         {this.state.gameState === GameState.disabled && (

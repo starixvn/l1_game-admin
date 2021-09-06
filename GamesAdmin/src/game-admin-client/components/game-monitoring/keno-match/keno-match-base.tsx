@@ -73,6 +73,8 @@ export default class KenoMatch extends React.Component<
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -519,8 +521,8 @@ export default class KenoMatch extends React.Component<
       <div className={styles["three-cards"]}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState === GameState.disabled}
         />
         {this.state.gameState === GameState.disabled && (

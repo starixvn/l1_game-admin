@@ -427,3 +427,12 @@
 @include totalBet("under", "white", "Under");
 @include totalBet("odd", "white", "Odd");
 @include totalBet("even", "white", "Even");
+@include totalBet("playerBig", "white", "Player Big");
+@include totalBet("playerSmall", "white", "Player Small");
+@include totalBet("bankerBig", "white", "Banker Big");
+@include totalBet("bankerSmall", "white", "Banker Small");
+@include totalBet("orange", "white", "Orange");
+@include totalBet("yellow", "white", "Yellow");
+@include totalBet("green", "white", "Green");
+@include totalBet("indigo", "white", "Indigo");
+@include totalBet("violet", "white", "Violet");
