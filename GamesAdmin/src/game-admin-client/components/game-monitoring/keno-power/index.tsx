@@ -10,7 +10,7 @@ export class KenoPower1 extends KenoPower {
 
   handleData(data) {
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 52) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 42) {
         clearTimeout(this.timeout);
         const model = new KenoPowerModel();
         this.setState({
