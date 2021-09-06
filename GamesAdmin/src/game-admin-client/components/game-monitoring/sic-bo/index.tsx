@@ -32,6 +32,8 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
@@ -384,8 +386,8 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
       <div className={styles["-sic-bo"]}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState === GameState.disabled}
         />
         {this.state.gameState === GameState.disabled && (

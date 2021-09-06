@@ -76,6 +76,8 @@ export default class Roulette extends React.Component<Props, RouletteModel> {
     this.updaterToggle = this.updaterToggle.bind(this);
     this.updaterSubmit = this.updaterSubmit.bind(this);
     this.showUpdater = this.showUpdater.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -315,8 +317,8 @@ export default class Roulette extends React.Component<Props, RouletteModel> {
     return (
       <div>
         <GameTemplate
-          renderMonitor={this.renderMonitor()}
-          renderBetList={this.renderBetList()}
+          renderMonitor={this.renderMonitor}
+          renderBetList={this.renderBetList}
           disabled={this.state.gameState == GameState.disabled}
         />
         {!this.props.isProduction && (

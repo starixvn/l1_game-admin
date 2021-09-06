@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using GamesAdmin.Database.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("fourguardians_rounds")]
-    public class FourGuardiansRoundEntity : BaseRoundEntity
+    public class SlotGameRoundEntity : BaseRoundEntity
     {
         public decimal Bet { get; set; }
 
@@ -20,9 +18,9 @@ namespace GamesAdmin.Database.Entities
 
         public IEnumerable<byte> Result { get; set; }
 
-        public FourGuardiansSettlementResultEntity SettlementResult { get; set; }
+        public SlotGameSettlementResultEntity SettlementResult { get; set; }
 
-        public IEnumerable<FourGuardiansBonusChestEntity> BonusChests { get; set; }
+        public IEnumerable<SlotGameBonusChestEntity> BonusChests { get; set; }
 
         public bool Paid { get; set; }
 
@@ -41,7 +39,7 @@ namespace GamesAdmin.Database.Entities
         public DateTime EndTime { get; set; }
     }
 
-    public class FourGuardiansBonusChestEntity
+    public class SlotGameBonusChestEntity
     {
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Amount { get; set; }
@@ -49,18 +47,16 @@ namespace GamesAdmin.Database.Entities
         public bool Picked { get; set; }
     }
 
-    public class FourGuardiansSettlementResultEntity
+    public class SlotGameSettlementResultEntity
     {
-        public IEnumerable<FourGuardiansWinningLineEntity> WinningPaylines { get; set; }
+        public IEnumerable<SlotGameWinningLineEntity> WinningPaylines { get; set; }
 
-        public FourGuardiansBonusEntity Bonus { get; set; }
+        public SlotGameBonusEntity Bonus { get; set; }
 
-        public FourGuardiansFreeSpinEntity FreeSpins { get; set; }
-
-        public FourGuardiansJackpotEntity Jackpot { get; set; }
+        public SlotGameFreeSpinEntity FreeSpins { get; set; }
     }
 
-    public class FourGuardiansJackpotEntity
+    public class SlotGameJackpotEntity
     {
         public byte WinningLine { get; set; }
 
@@ -68,7 +64,7 @@ namespace GamesAdmin.Database.Entities
         public decimal WinningAmount { get; set; }
     }
 
-    public class FourGuardiansWinningLineEntity
+    public class SlotGameWinningLineEntity
     {
         public byte Payline { get; set; }
 
@@ -79,14 +75,14 @@ namespace GamesAdmin.Database.Entities
         public decimal Odds { get; set; }
     }
 
-    public class FourGuardiansBonusEntity
+    public class SlotGameBonusEntity
     {
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
     }
 
-    public class FourGuardiansFreeSpinEntity
+    public class SlotGameFreeSpinEntity
     {
         public byte Count { get; set; }
 

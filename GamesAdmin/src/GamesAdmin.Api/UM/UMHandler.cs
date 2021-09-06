@@ -12,6 +12,7 @@ namespace GamesAdmin.Api.UM
         : IRequestHandler<UMRequest, bool>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<GetAllRequest, IList<UmSchedule>>
+        , IRequestHandler<GetUnfinishedUmRequest, IList<UmSchedule>>
     {
         private readonly IUMService umService;
         private readonly IGameServerService gameServerService;
@@ -34,5 +35,8 @@ namespace GamesAdmin.Api.UM
 
         public Task<IList<UmSchedule>> Handle(GetAllRequest request, CancellationToken cancellationToken)
         => umService.GetAll();
+
+        public Task<IList<UmSchedule>> Handle(GetUnfinishedUmRequest request, CancellationToken cancellationToken)
+        => umService.GetUnfinished();
     }
 }

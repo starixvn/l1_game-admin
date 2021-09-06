@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -12,6 +11,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ExcludeBot { get; set; }
 
         public bool ExcludeUUS { get; set; }
+
+        public string Game { get; set; }
     }
 
     public class BlackjackReportViewModel

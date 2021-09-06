@@ -9,9 +9,9 @@ namespace GamesAdmin.Api.EndGameInfo
 {
     public class FourGuardiansEndGameInfoService : IEndGameInfoService
     {
-        private readonly IGenericRepository<FourGuardiansRoundEntity> roundRepository;
+        private readonly IGenericRepository<SlotGameRoundEntity> roundRepository;
 
-        public FourGuardiansEndGameInfoService(IGenericRepository<FourGuardiansRoundEntity> roundRepository)
+        public FourGuardiansEndGameInfoService(IGenericRepository<SlotGameRoundEntity> roundRepository)
         {
             this.roundRepository = roundRepository;
         }

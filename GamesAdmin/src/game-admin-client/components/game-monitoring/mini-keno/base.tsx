@@ -275,11 +275,19 @@ export default class extends React.Component<Props, State> {
       choices,
     };
 
+    const renderMonitor = () => {
+      return React.createElement(MonitorBoard, monitorProps);
+    };
+
+    const renderBetList = () => {
+      return React.createElement(BetTable, betTableProps);
+    };
+
     return (
       <div>
         <GameTemplate
-          renderMonitor={React.createElement(MonitorBoard, monitorProps)}
-          renderBetList={React.createElement(BetTable, betTableProps)}
+          renderMonitor={renderMonitor}
+          renderBetList={renderBetList}
           disabled={this.state.disabled}
         />
         {!this.props.isProduction && (

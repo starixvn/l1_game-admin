@@ -170,13 +170,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalBet { get; set; }
     }
-    
+
     public class VipSeDieWarRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
     }
 
-    public class FourGuardiansRecordViewModel : BetRecordViewModel
+    public class SlotGameRecordViewModel : BetRecordViewModel
     {
         public long RoundId { get; set; }
 
@@ -190,9 +190,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<byte> Result { get; set; }
 
-        public FourGuardiansSettlementResultViewModel SettlementResult { get; set; }
+        public SlotGameSettlementResultViewModel SettlementResult { get; set; }
 
-        public IEnumerable<FourGuardiansBonusChestViewModel> BonusChests { get; set; }
+        public IEnumerable<SlotGameBonusChestViewModel> BonusChests { get; set; }
 
         public bool Paid { get; set; }
 
@@ -201,34 +201,37 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBetWin => BetWin + (SettlementResult.Jackpot?.WinningAmount ?? 0);
 
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
+
+        public string Game { get; set; }
+        public string IconsFolder => Game?.ToLowerInvariant();
     }
 
-    public class FourGuardiansBonusChestViewModel
+    public class SlotGameBonusChestViewModel
     {
         public decimal Amount { get; set; }
 
         public bool Picked { get; set; }
     }
 
-    public class FourGuardiansSettlementResultViewModel
+    public class SlotGameSettlementResultViewModel
     {
-        public IEnumerable<FourGuardiansWinningLineViewModel> WinningPaylines { get; set; }
+        public IEnumerable<SlotGameWinningLineViewModel> WinningPaylines { get; set; }
 
-        public FourGuardiansBonusViewModel Bonus { get; set; }
+        public SlotGameBonusViewModel Bonus { get; set; }
 
-        public FourGuardiansFreeSpinViewModel FreeSpins { get; set; }
+        public SlotGameFreeSpinViewModel FreeSpins { get; set; }
 
-        public FourGuardiansJackpotViewModel Jackpot { get; set; }
+        public SlotGameJackpotViewModel Jackpot { get; set; }
     }
 
-    public class FourGuardiansJackpotViewModel
+    public class SlotGameJackpotViewModel
     {
         public byte WinningLine { get; set; }
 
         public decimal WinningAmount { get; set; }
     }
 
-    public class FourGuardiansWinningLineViewModel
+    public class SlotGameWinningLineViewModel
     {
         public byte Payline { get; set; }
 
@@ -239,14 +242,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Odds { get; set; }
     }
 
-    public class FourGuardiansBonusViewModel
+    public class SlotGameBonusViewModel
     {
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
     }
 
-    public class FourGuardiansFreeSpinViewModel
+    public class SlotGameFreeSpinViewModel
     {
         public byte Count { get; set; }
 

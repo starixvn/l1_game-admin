@@ -77,6 +77,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.MiniSeDie.DisplayName, Game.MiniSeDie.Value),
                 new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value),
                 new SelectListItem(Game.ThreeCards.DisplayName, Game.ThreeCards.Value),
+                new SelectListItem(Game.HeroesSlot.DisplayName, Game.HeroesSlot.Value),
                 new SelectListItem(Game.KenoMax.DisplayName, Game.KenoMax.Value),
                 new SelectListItem(Game.KenoMax2.DisplayName, Game.KenoMax2.Value),
                 new SelectListItem(Game.KenoMini.DisplayName, Game.KenoMini.Value),

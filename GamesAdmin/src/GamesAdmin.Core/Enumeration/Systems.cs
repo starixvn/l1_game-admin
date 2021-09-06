@@ -3,6 +3,7 @@
     public enum Systems
     {
         Cocos = 1,
-        Mobi
+        Mobi,
+        Instant
     }
 }

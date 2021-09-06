@@ -10,8 +10,6 @@ namespace GamesAdmin.Site.Features.UmSchedule
 {
     public class UmHandler
         : IRequestHandler<IndexRequest, IndexViewModel>
-        , IRequestHandler<CreateRequest, bool>
-        , IRequestHandler<EditRequest, EditViewModel>
     {
         private readonly IUmService umService;
         private readonly IMapper mapper;
@@ -24,15 +22,9 @@ namespace GamesAdmin.Site.Features.UmSchedule
 
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         {
-            var schedules = (await umService.GetAll());
+            var schedules = (await umService.GetUnfinished());
 
             return new IndexViewModel(mapper.Map<List<UmScheduleItemViewModel>>(schedules));
         }
-
-        public Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new EditViewModel());
-
-        public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => umService.Add(mapper.Map<Core.Models.Um.UmSchedule>(request));
     }
 }

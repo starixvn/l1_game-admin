@@ -16,6 +16,7 @@ import {
 import { Notice } from "../../shared/notice/notice";
 import Card from "../../shared/card/card";
 import Chance from "chance";
+import { updateTotalBetOfBetList } from "../../util/util";
 
 type ThreeCardsProps = {
   onMessage: Function;
@@ -45,25 +46,20 @@ export default class ThreeCards extends React.Component<
 > {
   private isFirstLoad: boolean;
   private timeout: NodeJS.Timeout;
-  private systemId: SystemId;
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
     this.state = new ThreeCardsModel();
-    this.systemId = SystemId.None;
-    this.handleUpdateFilter = this.handleUpdateFilter.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
     this.props.onMessage((message) => this.handleData(message));
-  }
-
-  handleUpdateFilter(value: SystemId) {
-    this.systemId = value;
   }
 
   handleData(data) {
@@ -174,9 +170,11 @@ export default class ThreeCards extends React.Component<
     return currentData;
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
     const { betList, roundNumber, time, result, settlementResult, gameState } =
       this.state;
+
+    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container className={styles["threecards-container"]}>
@@ -240,7 +238,7 @@ export default class ThreeCards extends React.Component<
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const { betList, settlementResult } = this.state;
 
     return (
@@ -251,7 +249,7 @@ export default class ThreeCards extends React.Component<
             dataList={betList.red.dataList}
             titles={[<div className={styles["text-red"]}>Red</div>]}
             isWin={settlementResult.red}
-            systemFilter={this.systemId}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -260,7 +258,7 @@ export default class ThreeCards extends React.Component<
             dataList={betList.black.dataList}
             titles={[<div className={styles["text-black"]}>Black</div>]}
             isWin={settlementResult.black}
-            systemFilter={this.systemId}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -273,7 +271,7 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.diamonds}
-            systemFilter={this.systemId}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -286,7 +284,7 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.hearts}
-            systemFilter={this.systemId}
+            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -299,7 +297,7 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.spades}
-            systemFilter={this.systemId}
+            systemFilter={systemFilter}
           />
         </Col>{" "}
         <Col className="col-4 col-lg">
@@ -312,7 +310,7 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.clubs}
-            systemFilter={this.systemId}
+            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -395,10 +393,10 @@ export default class ThreeCards extends React.Component<
       <div className={styles["three-cards"]}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState === GameState.disabled}
-          onUpdateFilter={this.handleUpdateFilter}
+          enableFilter={true}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

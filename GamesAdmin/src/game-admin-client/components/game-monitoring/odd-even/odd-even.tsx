@@ -4,6 +4,7 @@ import BigSmallBase from "../big-small-base/big-small-base";
 type Props = {
   onMessage: Function;
   sendMessage: Function;
+  isProduction: boolean;
 };
 
 export default class BigSmallTurbo extends React.Component<
@@ -21,6 +22,7 @@ export default class BigSmallTurbo extends React.Component<
         turbo={false}
         onMessage={this.props.onMessage}
         sendMessage={this.props.sendMessage}
+        isProduction={this.props.isProduction}
       />
     );
   }

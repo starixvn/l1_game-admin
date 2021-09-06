@@ -10,7 +10,7 @@ import styles from "./dragon-tiger.module.scss";
 import CardResult from "../../common/model/CardResult";
 import DragonTigerModel from "../../common/model/DragonTigerModel";
 import BetItem, { SystemId } from "../../common/model/BetItem";
-import { getTotalBetOnSystem, upperFirstLetter } from "../../util/util";
+import { updateTotalBetOfBetList, upperFirstLetter } from "../../util/util";
 import { GameState } from "../../shared/common/GameState";
 import DeskOfCards from "../baccarat//desk-of-cards";
 
@@ -39,13 +39,11 @@ enum CardResultMapping {
 export default class DragonTiger extends React.Component<Props, State> {
   private isFirstLoad: boolean;
   private timeOut: NodeJS.Timeout;
-  private systemFilter: SystemId;
 
   constructor(props: any) {
     super(props);
 
     this.isFirstLoad = true;
-    this.systemFilter = SystemId.None;
     this.state = {
       data: new DragonTigerModel(),
       gameState: 0,
@@ -56,6 +54,8 @@ export default class DragonTiger extends React.Component<Props, State> {
     this.showDeskOfCards = this.showDeskOfCards.bind(this);
     this.updaterDeskOfCardsToggle = this.updaterDeskOfCardsToggle.bind(this);
     this.onPickCard = this.onPickCard.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
@@ -104,8 +104,8 @@ export default class DragonTiger extends React.Component<Props, State> {
           betItem.bet = userObj.betTracks[type];
           betItem.name = nameObj;
           betItem.system = userObj.system;
-          newData[type].dataList.unshift(betItem);
-          newData[type].total += userObj.betTracks[type];
+          newData.betList[type].dataList.unshift(betItem);
+          newData.betList[type].total += userObj.betTracks[type];
         }
       });
     });
@@ -207,20 +207,13 @@ export default class DragonTiger extends React.Component<Props, State> {
     return winer;
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
     const { gameState, data } = this.state;
     const { result } = data;
     const winer =
       this.state.gameState == GameState.waiting ? this.getWiner() : "";
 
-    if (this.systemFilter) {
-      TYPES.forEach((type) => {
-        data[type].total = getTotalBetOnSystem(
-          data[type].dataList,
-          this.systemFilter
-        );
-      });
-    }
+    updateTotalBetOfBetList(data.betList, systemFilter);
 
     return (
       <Container className={styles["dragonTiger-container"]}>
@@ -242,7 +235,7 @@ export default class DragonTiger extends React.Component<Props, State> {
           <Col align="center">
             <TotalBet
               type="dragon"
-              total={data.dragon.total}
+              total={data.betList.dragon.total}
               isWin={winer == "dragon"}
             />
           </Col>
@@ -260,7 +253,7 @@ export default class DragonTiger extends React.Component<Props, State> {
               <Col className={styles.draw}>
                 <TotalBet
                   type="draw"
-                  total={data.tie.total}
+                  total={data.betList.tie.total}
                   isWin={winer == "tie"}
                 />
               </Col>
@@ -270,7 +263,7 @@ export default class DragonTiger extends React.Component<Props, State> {
           <Col align="center">
             <TotalBet
               type="tiger"
-              total={data.tiger.total}
+              total={data.betList.tiger.total}
               isWin={winer == "tiger"}
             />
           </Col>
@@ -279,7 +272,7 @@ export default class DragonTiger extends React.Component<Props, State> {
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const winer =
       this.state.gameState == GameState.waiting ? this.getWiner() : "";
 
@@ -291,9 +284,9 @@ export default class DragonTiger extends React.Component<Props, State> {
           <BetList
             type="simple"
             titles={[_this.renderTitle(upperFirstLetter(type))]}
-            dataList={_this.state.data[type].dataList}
+            dataList={_this.state.data.betList[type].dataList}
             isWin={winer == type}
-            systemFilter={this.systemFilter}
+            systemFilter={systemFilter}
           />
         </Col>
       );
@@ -348,10 +341,10 @@ export default class DragonTiger extends React.Component<Props, State> {
     return (
       <div className={styles.dragontiger}>
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState == GameState.disabled}
-          onUpdateFilter={(value: SystemId) => (this.systemFilter = value)}
+          enableFilter={true}
         />
         {!this.props.isProduction && (
           <DeskOfCards

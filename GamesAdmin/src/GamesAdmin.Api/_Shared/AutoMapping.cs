@@ -138,7 +138,11 @@ namespace GamesAdmin.Api._Shared
                     if (source.Result != null && source.Result.Player != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard) };
+                        var result = new List<DragonTigerCardResult> 
+                        { 
+                            mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard) 
+                        };
+
                         if (source.Result.Player.ThirdCard != null)
                         {
                             result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Player.ThirdCard));
@@ -154,7 +158,11 @@ namespace GamesAdmin.Api._Shared
                     if (source.Result != null && source.Result.Banker != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard) };
+                        var result = new List<DragonTigerCardResult> 
+                        { 
+                            mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard) 
+                        };
+
                         if (source.Result.Banker.ThirdCard != null)
                         {
                             result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Banker.ThirdCard));
@@ -192,14 +200,14 @@ namespace GamesAdmin.Api._Shared
             CreateMap<VipSeDieWarBetReportEntity, VipSeDieWarBetRecord>();
             CreateMap<VipSeDieWarBetEntity, VipSeDieWarBetHistoryRecord>();
 
-            CreateMap<FourGuardiansBetReportEntity, FourGuardiansBetRecord>()
+            CreateMap<SlotGameBetReportEntity, SlotGameBetRecord>()
                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
-            CreateMap<FourGuardiansSettlementResultEntity, FourGuardiansSettlementResult>();
-            CreateMap<FourGuardiansFreeSpinEntity, FourGuardiansFreeSpin>();
-            CreateMap<FourGuardiansBonusEntity, FourGuardiansBonus>();
-            CreateMap<FourGuardiansWinningLineEntity, FourGuardiansWinningLine>();
-            CreateMap<FourGuardiansBonusChestEntity, FourGuardiansBonusChest>();
-            CreateMap<FourGuardiansJackpotEntity, FourGuardiansJackpot>();
+            CreateMap<SlotGameSettlementResultEntity, SlotGameSettlementResult>();
+            CreateMap<SlotGameFreeSpinEntity, SlotGameFreeSpin>();
+            CreateMap<SlotGameBonusEntity, SlotGameBonus>();
+            CreateMap<SlotGameWinningLineEntity, SlotGameWinningLine>();
+            CreateMap<SlotGameBonusChestEntity, SlotGameBonusChest>();
+            CreateMap<SlotGameJackpotEntity, SlotGameJackpot>();
 
             CreateMap<JackpotReportEntity, JackpotRecord>();
 
@@ -232,7 +240,7 @@ namespace GamesAdmin.Api._Shared
                .ForMember(x => x.ThreeRed, opt => opt.MapFrom((source) => source.SettlementResult.ThreeRed))
                .ForMember(x => x.FourRed, opt => opt.MapFrom((source) => source.SettlementResult.FourRed))
                .ForMember(x => x.ThreeWhite, opt => opt.MapFrom((source) => source.SettlementResult.ThreeWhite))
-               .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite)); ;
+               .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite));
 
             CreateMap<SeDieBetReportEntity, SeDieBetRecord>();
 

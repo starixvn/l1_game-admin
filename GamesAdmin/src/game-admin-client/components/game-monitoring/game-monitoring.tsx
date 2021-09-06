@@ -22,12 +22,11 @@ import SicBo from "./sic-bo";
 import Lottery from "./lottery";
 import ThreeCards from "./three-cards";
 
-const getObjectOfGame = (path: string) => (onMessage: Function) => (
-  message: any
-) => {
-  const object = _.get(message, path);
-  onMessage && onMessage(object);
-};
+const getObjectOfGame =
+  (path: string) => (onMessage: Function) => (message: any) => {
+    const object = _.get(message, path);
+    onMessage && onMessage(object);
+  };
 
 const getInfoByGameKey = (key: string) => {
   const info = {
