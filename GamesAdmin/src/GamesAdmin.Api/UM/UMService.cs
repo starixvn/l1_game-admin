@@ -19,6 +19,8 @@ namespace GamesAdmin.Api.UM
         Task<bool> AddSchedule(UmSchedule umSchedule);
 
         Task<IList<UmSchedule>> GetAll();
+
+        Task<IList<UmSchedule>> GetUnfinished();
     }
 
     public class UMService : IUMService
@@ -57,21 +59,16 @@ namespace GamesAdmin.Api.UM
             {
                 sentryClient.CaptureMessage($"{DateTime.Now} UM Start: {startTime} End: {endTime}");
 
-                await UpdateEnableConfig(false);
+                await UpdateEnableConfig(enable: false);
                 await UpdateUserSessions();
 
-                var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
+                var update = Builders<UMInfoEntity>.Update
+                    .Set(field => field.Finish, false)
+                    .Set(field => field.Start, startTime)
+                    .Set(field => field.End, endTime)
+                    .Set(field => field.Time, DateTime.UtcNow);
 
-                if (umInfo == null)
-                {
-                    await umRepository.InsertOneAsync(new UMInfoEntity
-                    {
-                        Start = startTime == default ? default : startTime.ToUniversalTime().UtcDateTime,
-                        End = endTime == default ? default : endTime.ToUniversalTime().UtcDateTime,
-                        Finish = false,
-                        Time = DateTime.UtcNow
-                    });
-                }
+                await umRepository.UpdateAsync(um => um.Start == startTime, update, new UpdateOptions { IsUpsert = true });
 
                 return true;
             }
@@ -88,17 +85,10 @@ namespace GamesAdmin.Api.UM
             try
             {
                 sentryClient.CaptureMessage($"{DateTime.Now} UM Finished");
+                var update = Builders<UMInfoEntity>.Update.Set(field => field.Finish, true);
 
-                await UpdateEnableConfig(true);
-
-                var umInfo = umRepository.FilterBy(um => !um.Finish).FirstOrDefault();
-
-                if (umInfo != null)
-                {
-                    umInfo.Finish = true;
-
-                    await umRepository.ReplaceOneAsync(umInfo);
-                }
+                await UpdateEnableConfig(enable: true);
+                await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow, update);
 
                 return true;
             }
@@ -146,6 +136,12 @@ namespace GamesAdmin.Api.UM
         => (await scheduleRepository
             .FilterByAsync(schedule => schedule.EventType == byte.Parse(EventScheduleType.UnderMaintenance.Value)))
             .Select(schedule => mapper.Map<UmSchedule>(schedule))
+            .ToList();
+
+        public async Task<IList<UmSchedule>> GetUnfinished()
+        => (await umRepository
+            .FilterByAsync(um => !um.Finish))
+            .Select(um => new UmSchedule(um.Start, um.End))
             .ToList();
     }
 }

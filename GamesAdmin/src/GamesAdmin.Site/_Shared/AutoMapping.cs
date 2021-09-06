@@ -6,7 +6,6 @@ using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
-using GamesAdmin.Site.Features.UmSchedule.Requests;
 using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 
 namespace GamesAdmin.Site._Shared
@@ -18,7 +17,6 @@ namespace GamesAdmin.Site._Shared
             CreateMap<OnlineUser, OnlineUserViewModel>();
             CreateMap<BotUser, BotUserViewModel>();
 
-            CreateMap<CreateRequest, UmSchedule>();
             CreateMap<UmSchedule, UmScheduleItemViewModel>();
 
             CreateMap<AddRequest, Notification>();

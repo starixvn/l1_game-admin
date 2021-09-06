@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Api.UM
 {
-    [Route("api/um")]   
+    [Route("api/um")]
     public class UMController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
@@ -31,5 +31,10 @@ namespace GamesAdmin.Api.UM
         [Route("all")]
         public Task<IList<UmSchedule>> GetAll()
         => mediator.Send(new GetAllRequest());
+
+        [HttpGet]
+        [Route("unfinished")]
+        public Task<IList<UmSchedule>> GetUnfinished()
+        => mediator.Send(new GetUnfinishedUmRequest());
     }
 }
