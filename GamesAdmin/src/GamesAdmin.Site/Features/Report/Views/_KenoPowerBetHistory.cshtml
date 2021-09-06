@@ -48,7 +48,7 @@
     var settlementResult = Model.RoundResult.SettlementResult;
 
     var settlmentResultMapper = new Dictionary<string, bool>
-    {
+{
         { "player", settlementResult.Player },
         { "banker", settlementResult.Banker },
         { "big", settlementResult.Big },
@@ -78,6 +78,7 @@
             <th>Bet Choice</th>
             <th>Odds</th>
             <th>Bet Amount</th>
+            <th>Refund</th>
         </tr>
     </thead>
     <tbody>
@@ -96,6 +97,9 @@
                 <td class="@winCssClass">@Model.Odds[bet.Choice]</td>
                 <td class="text-right @winCssClass">
                     @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
+                <td class="text-right @winCssClass">
+                    @HtmlHelpers.formatNumber(bet.GetRefund(settlementResult))
                 </td>
             </tr>
 
