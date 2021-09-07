@@ -6,6 +6,7 @@ import BetTable from "./shared/bet-table";
 import KenoResult from "../../shared/keno-result/keno-result";
 import style from "./base.module.scss";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
+import gameSettings from "./game-settings";
 
 type Props = {
   onMessage: Function;
@@ -61,18 +62,19 @@ export default class extends React.Component<Props, State> {
     super(props);
 
     this.isFirstLoad = true;
+
+    const choices = gameSettings.choices.map(
+      (choice) => new BetChoice([], choice, false)
+    );
+
     this.state = {
       remainingTime: 0,
       roundId: 0,
-      choices: [],
-      durations: {
-        wholeRound: 0,
-        placingBets: 0,
-        lockingBet: 0,
-      },
+      choices,
+      durations: gameSettings[props.gameName].durations,
       resultText: "",
       result: [],
-      boxes: null,
+      boxes: gameSettings.choices,
       isShowSetResultPanel: false,
       disabled: false,
     };
@@ -103,14 +105,10 @@ export default class extends React.Component<Props, State> {
                 ? this.state.roundId
                 : this.state.roundId - 1,
             });
-            this.reset();
+            this.reset(0);
             this.isFirstLoad = false;
           }
         },
-      },
-      {
-        selector: () => message.durations,
-        handle: () => this.setState({ durations: message.durations }),
       },
       {
         selector: () => message.remainingTime,
@@ -151,7 +149,7 @@ export default class extends React.Component<Props, State> {
         handle: () => this.props.sendMessage({ sync: true }),
       },
       {
-        selector: () => message.inGame && message.totalBets,
+        selector: () => message.inGame,
         handle: () => {
           const { inGame } = message;
           const choices = this.state.choices.map((choice) => {
@@ -184,15 +182,6 @@ export default class extends React.Component<Props, State> {
           this.setState({ choices, result, resultText });
         },
       },
-      {
-        selector: () => message.choices && !this.state.boxes,
-        handle: () => {
-          const choices = message.choices.map(
-            (choice) => new BetChoice([], choice, false)
-          );
-          this.setState({ boxes: message.choices, choices });
-        },
-      },
     ];
 
     actions.forEach((action) => action.selector() && action.handle());
@@ -215,14 +204,27 @@ export default class extends React.Component<Props, State> {
       .substr(3);
   }
 
-  reset() {
-    const choices = this.state.choices.map((choice) => {
-      choice.bets = [];
-      choice.isWin = false;
-      return choice;
-    });
+  reset(time: number) {
+    if (time === this.state.durations.placingBets && time !== 0) {
+      const choices = this.state.choices.map((choice) => {
+        choice.bets = [];
+        choice.isWin = false;
+        return choice;
+      });
 
-    this.setState({ choices, result: [], resultText: "" });
+      this.setState({ choices, result: [], resultText: "" });
+    }
+
+    if (time === 0) {
+      this.setState({ remainingTime: this.state.durations.wholeRound + 1 });
+
+      this.timeout = setTimeout(() => {
+        this.setState({
+          roundId: this.state.roundId + 1,
+          remainingTime: this.state.durations.placingBets + 1,
+        });
+      }, (this.state.durations.wholeRound - this.state.durations.placingBets + 1) * 1000);
+    }
   }
 
   showSetResultPanel() {
@@ -249,7 +251,7 @@ export default class extends React.Component<Props, State> {
       .substr(3);
     this.setState({ result: list, resultText, isShowSetResultPanel: false });
     this.props.sendMessage({
-      setResult: { result: list, roundId: this.state.roundId },
+      set_result: { result: list, roundId: this.state.roundId },
     });
   }
 
