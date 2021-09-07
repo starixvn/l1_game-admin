@@ -124,6 +124,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [ActionName("kenomatch")]
         public IActionResult KenoMatch1()
         {
             ViewData["Title"] = "Keno Match";
@@ -131,6 +132,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [ActionName("kenomatchmd5")]
         public IActionResult KenoMatch2()
         {
             ViewData["Title"] = "Keno Match MD5";
@@ -138,6 +140,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [ActionName("kenompower")]
         public IActionResult KenoPower1()
         {
             ViewData["Title"] = "Keno Power";
@@ -145,6 +148,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [ActionName("kenompowermd5")]
         public IActionResult KenoPower2()
         {
             ViewData["Title"] = "Keno Power MD5";
