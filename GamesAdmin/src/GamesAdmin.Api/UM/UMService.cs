@@ -64,8 +64,8 @@ namespace GamesAdmin.Api.UM
 
                 var update = Builders<UMInfoEntity>.Update
                     .Set(field => field.Finish, false)
-                    .Set(field => field.Start, startTime)
-                    .Set(field => field.End, endTime)
+                    .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
+                    .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
                     .Set(field => field.Time, DateTime.UtcNow);
 
                 await umRepository.UpdateAsync(um => um.Start == startTime, update, new UpdateOptions { IsUpsert = true });
