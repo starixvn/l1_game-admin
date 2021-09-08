@@ -104,7 +104,7 @@ export default class extends React.Component<Props, State> {
                 ? this.state.roundId
                 : this.state.roundId - 1,
             });
-            this.reset(0);
+            this.reset();
             this.isFirstLoad = false;
           }
         },
@@ -145,7 +145,18 @@ export default class extends React.Component<Props, State> {
       },
       {
         selector: () => message.finish,
-        handle: () => this.props.sendMessage({ sync: true }),
+        handle: () => {
+          this.props.sendMessage({ sync: true });
+
+          this.setState({ remainingTime: this.state.durations.wholeRound + 1 });
+
+          this.timeout = setTimeout(() => {
+            this.setState({
+              roundId: this.state.roundId + 1,
+              remainingTime: this.state.durations.placingBets,
+            });
+          }, (this.state.durations.wholeRound - this.state.durations.placingBets + 1) * 1000);
+        },
       },
       {
         selector: () => message.inGame && message.totalBets,
@@ -203,27 +214,14 @@ export default class extends React.Component<Props, State> {
       .substr(3);
   }
 
-  reset(time: number) {
-    if (time === this.state.durations.placingBets && time !== 0) {
-      const choices = this.state.choices.map((choice) => {
-        choice.bets = [];
-        choice.isWin = false;
-        return choice;
-      });
+  reset() {
+    const choices = this.state.choices.map((choice) => {
+      choice.bets = [];
+      choice.isWin = false;
+      return choice;
+    });
 
-      this.setState({ choices, result: [], resultText: "" });
-    }
-
-    if (time === 0) {
-      this.setState({ remainingTime: this.state.durations.wholeRound + 1 });
-
-      this.timeout = setTimeout(() => {
-        this.setState({
-          roundId: this.state.roundId + 1,
-          remainingTime: this.state.durations.placingBets + 1,
-        });
-      }, (this.state.durations.wholeRound - this.state.durations.placingBets + 1) * 1000);
-    }
+    this.setState({ choices, result: [], resultText: "" });
   }
 
   showSetResultPanel() {

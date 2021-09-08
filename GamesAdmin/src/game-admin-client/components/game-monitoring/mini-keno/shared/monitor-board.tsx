@@ -54,7 +54,9 @@ export default function (props: Props) {
 
   useEffect(() => {
     timeCounterRef.current.onCountDown((time) => {
-      reset(time);
+      if (time === placingBetTime && time !== 0) {
+        reset();
+      }
     });
   }, [props.placingBetTime]);
 
