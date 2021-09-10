@@ -9,9 +9,9 @@ namespace GamesAdmin.Api.EndGameInfo
 {
     public class FourGuardiansEndGameInfoService : IEndGameInfoService
     {
-        private readonly IGenericRepository<SlotGameRoundEntity> roundRepository;
+        private readonly IGenericRepository<FourGuardiansRoundEntity> roundRepository;
 
-        public FourGuardiansEndGameInfoService(IGenericRepository<SlotGameRoundEntity> roundRepository)
+        public FourGuardiansEndGameInfoService(IGenericRepository<FourGuardiansRoundEntity> roundRepository)
         {
             this.roundRepository = roundRepository;
         }
@@ -28,7 +28,7 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1001;
             }
 
-            if(!round.Paid)
+            if (!round.Paid)
             {
                 return EndGameInfoError.SB1005;
             }
