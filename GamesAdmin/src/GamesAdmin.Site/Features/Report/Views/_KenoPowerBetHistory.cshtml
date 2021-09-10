@@ -5,67 +5,44 @@
 @{
     var betChoiceMapper = new Dictionary<string, string>
 {
-        { "player", "Player" },
-        { "banker", "Banker" },
+        { "blue", "Blue" },
+        { "red", "Red" },
         { "big", "Big" },
         { "small", "Small" },
         { "odd", "Odd" },
         { "even", "Even" },
-        { "red", "Red" },
-        { "orange", "Orange" },
-        { "yellow", "Yellow" },
-        { "green", "Green" },
-        { "blue", "Blue" },
-        { "indigo", "Indigo" },
-        { "violet", "Violet" },
-        { "playerBig", "Big" },
-        { "playerSmall", "Small" },
-        { "bankerBig", "Big" },
-        { "bankerSmall", "Small" },
+        { "blueBig", "Big" },
+        { "blueSmall", "Small" },
+        { "redBig", "Big" },
+        { "redSmall", "Small" },
     };
 
     var betTypeMapper = new Dictionary<string, string>
 {
-        { "player", "Player/Banker" },
-        { "banker", "Player/Banker" },
+        { "blue", "Blue/Red" },
+        { "red", "Blue/Red" },
         { "big", "Sum Big/Small" },
         { "small", "Sum Big/Small" },
-        { "odd", "Sum Even/Odd" },
-        { "even", "Sum Even/Odd" },
-        { "red", "Sum Color" },
-        { "orange", "Sum Color" },
-        { "yellow", "Sum Color" },
-        { "green", "Sum Color" },
-        { "blue", "Sum Color" },
-        { "indigo", "Sum Color" },
-        { "violet", "Sum Color" },
-        { "playerBig", "Player Big/Small" },
-        { "playerSmall", "Player Big/Small" },
-        { "bankerBig", "Banker Big/Small" },
-        { "bankerSmall", "Banker Big/Small" },
+        { "blueBig", "Blue Big/Small" },
+        { "blueSmall", "Blue Big/Small" },
+        { "redBig", "Red Big/Small" },
+        { "redSmall", "Red Big/Small" },
     };
 
     var settlementResult = Model.RoundResult.SettlementResult;
 
     var settlmentResultMapper = new Dictionary<string, bool>
 {
-        { "player", settlementResult.Player },
-        { "banker", settlementResult.Banker },
+        { "blue", settlementResult.Blue },
+        { "red", settlementResult.Red },
         { "big", settlementResult.Big },
         { "small", settlementResult.Small },
         { "odd", settlementResult.Odd },
         { "even", settlementResult.Even },
-        { "red", settlementResult.Red},
-        { "orange", settlementResult.Orange },
-        { "yellow", settlementResult.Yellow },
-        { "green", settlementResult.Green },
-        { "blue", settlementResult.Blue },
-        { "indigo", settlementResult.Indigo },
-        { "violet", settlementResult.Violet },
-        { "playerBig", settlementResult.PlayerBig },
-        { "playerSmall", settlementResult.PlayerSmall },
-        { "bankerBig", settlementResult.BankerBig },
-        { "bankerSmall", settlementResult.BankerSmall },
+        { "blueBig", settlementResult.BlueBig },
+        { "blueSmall", settlementResult.BlueSmall },
+        { "redBig", settlementResult.RedBig },
+        { "redSmall", settlementResult.RedSmall },
     };
 }
 

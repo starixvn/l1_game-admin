@@ -25,8 +25,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal GetRefund(KenoPowerSettlementResultViewModel settlementResult)
         {
-            if (!settlementResult.Banker && !settlementResult.Player &&
-                (Choice == KenoPowerBetChoice.PlayerValue || Choice == KenoPowerBetChoice.BankerValue))
+            if (!settlementResult.Blue && !settlementResult.Red &&
+                (Choice == KenoPowerBetChoice.BlueValue || Choice == KenoPowerBetChoice.RedValue))
             {
                 return Amount;
             }

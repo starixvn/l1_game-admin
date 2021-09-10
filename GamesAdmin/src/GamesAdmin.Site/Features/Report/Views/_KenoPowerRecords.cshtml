@@ -4,10 +4,10 @@
 @model KenoPowerReportResultViewModel
 
 @{
-    var playerResult = Model.RoundResult.Result.Player;
-    var bankerResult = Model.RoundResult.Result.Banker;
-    var playerSum = playerResult.Sum(x => x);
-    var bankerSum = bankerResult.Sum(x => x);
+    var blueResult = Model.RoundResult.Result.Blue;
+    var redResult = Model.RoundResult.Result.Red;
+    var blueSum = blueResult.Sum(x => x);
+    var redSum = redResult.Sum(x => x);
     var settlementResult = Model.RoundResult.SettlementResult;
 }
 
@@ -24,9 +24,9 @@
                         <th colspan="4">Winning Options</th>
                     </tr>
                     <tr>
-                        <th>Player/Banker</th>
-                        <th>Player</th>
-                        <th>Banker</th>
+                        <th>Team Blue/Team Red</th>
+                        <th>Team Blue</th>
+                        <th>Team Red</th>
                         <th>Sum</th>
                     </tr>
                 </thead>
@@ -47,7 +47,7 @@
                                     <tr>
                                         <td>
                                             <div class="list-numbers">
-                                                @foreach (var number in playerResult)
+                                                @foreach (var number in blueResult)
                                                 {
                                                     <span class="number blue">
                                                         @number
@@ -57,7 +57,7 @@
                                         </td>
                                         <td>
                                             <div class="list-numbers">
-                                                @foreach (var number in bankerResult)
+                                                @foreach (var number in redResult)
                                                 {
                                                     <span class="number red">
                                                         @number
@@ -68,25 +68,25 @@
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="2">
-                                            Player @playerSum - Total @(playerSum + bankerSum) - Banker @bankerSum
+                                            Blue @blueSum - Total @(blueSum + redSum) - Red @redSum
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </td>
                         <td class="text-center">
-                            @if (settlementResult.Banker)
+                            @if (settlementResult.Red)
                             {
-                                <span>Banker</span>
+                                <span>Red</span>
                             }
 
-                            @if (settlementResult.Player)
+                            @if (settlementResult.Blue)
                             {
-                                <span>Player</span>
+                                <span>Blue</span>
                             }
                         </td>
                         <td class="text-center">
-                            @if (settlementResult.PlayerBig)
+                            @if (settlementResult.BlueBig)
                             {
                                 <span>Big</span>
                             }
@@ -96,7 +96,7 @@
                             }
                         </td>
                         <td class="text-center">
-                            @if (settlementResult.BankerBig)
+                            @if (settlementResult.RedBig)
                             {
                                 <span>Big</span>
                             }
@@ -122,35 +122,6 @@
                             else
                             {
                                 <div>Even</div>
-                            }
-
-                            @if (settlementResult.Red)
-                            {
-                                <div>Red</div>
-                            }
-                            @if (settlementResult.Orange)
-                            {
-                                <div>Orange</div>
-                            }
-                            @if (settlementResult.Yellow)
-                            {
-                                <div>Yellow</div>
-                            }
-                            @if (settlementResult.Green)
-                            {
-                                <div>Green</div>
-                            }
-                            @if (settlementResult.Blue)
-                            {
-                                <div>Blue</div>
-                            }
-                            @if (settlementResult.Indigo)
-                            {
-                                <div>Indigo</div>
-                            }
-                            @if (settlementResult.Violet)
-                            {
-                                <div>Violet</div>
                             }
                         </td>
                     </tr>
