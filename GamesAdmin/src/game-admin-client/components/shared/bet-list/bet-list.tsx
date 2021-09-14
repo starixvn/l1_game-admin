@@ -39,13 +39,12 @@ const renderTitle = (titles, type) => {
 };
 
 const getSystemDisplay = (systemId) => {
-  if(systemId) {
-    return systemId == SystemId.SC ? "" : `[${SystemId[systemId]}] `;
+  if (systemId) {
+    return systemId == SystemId.VG ? "" : `[${SystemId[systemId]}] `;
   }
 
   return "";
-}
-
+};
 
 export default function BetList(props) {
   const { type, titles, dataList, isWin, systemFilter } = props;

@@ -28,9 +28,9 @@ export default function GameTemplate(props: Props) {
           <div className={styles.filter}>
             <select value={systemFilter} onChange={onChangeFilter}>
               <option value={SystemId.None}>All</option>
-              <option value={SystemId.SC}>SC</option>
-              <option value={SystemId.SM}>SM</option>
-              <option value={SystemId.Mini}>Mini SC</option>
+              <option value={SystemId.VG}>VG</option>
+              <option value={SystemId.VGM}>VGM</option>
+              <option value={SystemId.Mini}>Mini VG</option>
             </select>
           </div>
         )}
