@@ -159,7 +159,7 @@ export default class extends React.Component<Props, State> {
         },
       },
       {
-        selector: () => message.inGame && message.totalBets,
+        selector: () => message.inGame,
         handle: () => {
           const { inGame } = message;
           const choices = this.state.choices.map((choice) => {
