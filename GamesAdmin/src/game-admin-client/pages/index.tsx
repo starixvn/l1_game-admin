@@ -31,7 +31,8 @@ type State = {
 };
 
 const NewSocketGameIds = [
-  1, 2, 3, 4, 6, 7, 8, 9, 10, 21, 22, 24, 25, 26, 27, 28, 31, 35,
+  1, 2, 3, 4, 6, 7, 8, 9, 10, 21, 22, 24, 25, 26, 27, 28, 31, 35, 12, 13, 14,
+  15, 16, 17, 18, 19,
 ];
 
 export class Home extends React.Component<Props, State> {
@@ -286,15 +287,101 @@ export class Home extends React.Component<Props, State> {
               ? process.env.NEXT_PUBLIC_THREE_CARDS_SERVER_PROXY_ROUTE
               : Cookies.get("three-cards-server-endpoint-route"),
         };
+      case gameNameMapper.kenomax:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MAX_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MAX_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenomax2:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MAX2_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MAX2_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenomini:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MINI_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MINI_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenomini2:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_MINI2_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_MINI2_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenoeast:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_EAST_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_EAST_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenowest:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_WEST_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_WEST_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenosouth:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_SOUTH_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_SOUTH_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
+      case gameNameMapper.kenonorth:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_KENO_NORTH_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_KENO_NORTH_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       default:
-        return {
-          endpoint:
-            process.env.NEXT_PUBLIC_ENV === "local"
-              ? process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT
-              : Cookies.get("game-server-endpoint"),
-          route: "",
-        };
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_GAME_SERVER_ENDPOINT,
+              route: "",
+            }
+          : this.getGameSocketCookie(gameId);
     }
+  }
+
+  getGameSocketCookie(gameId) {
+    const cookieKeys = {
+      kenomax: "keno-max",
+      kenomax2: "keno-max2",
+      kenomini: "keno-mini",
+      kenomini2: "keno-mini2",
+      kenoeast: "keno-east",
+      kenowest: "keno-west",
+      kenosouth: "keno-south",
+      kenonorth: "keno-north",
+    };
+
+    const gameNames = Object.keys(gameNameMapper).filter(
+      (k) => gameNameMapper[k] === gameId
+    );
+
+    if (gameNames.length == 0) {
+      return {
+        endpoint: Cookies.get("game-server-endpoint"),
+        route: "",
+      };
+    }
+
+    const cookieKey = cookieKeys[gameNames[0]];
+
+    return {
+      endpoint: Cookies.get(`${cookieKey}-server-endpoint`),
+      route: Cookies.get(`${cookieKey}-server-endpoint-route`),
+    };
   }
 
   async componentDidUpdate(prevProps) {

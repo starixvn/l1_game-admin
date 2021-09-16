@@ -47,6 +47,8 @@ export default class VipFishPrawnCrab extends React.Component<
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   componentDidMount() {
@@ -210,14 +212,8 @@ export default class VipFishPrawnCrab extends React.Component<
   }
 
   renderMonitor() {
-    const {
-      betList,
-      roundNumber,
-      time,
-      result,
-      gameState,
-      settlementResult,
-    } = this.state;
+    const { betList, roundNumber, time, result, gameState, settlementResult } =
+      this.state;
 
     return (
       <Container>
@@ -438,8 +434,8 @@ export default class VipFishPrawnCrab extends React.Component<
       <div className={styles["fish-prawn-crab"]}>
         {!this.props.isProduction && this.renderGameControl()}
         <GameTemplate
-          renderBetList={this.renderBetList()}
-          renderMonitor={this.renderMonitor()}
+          renderBetList={this.renderBetList}
+          renderMonitor={this.renderMonitor}
           disabled={this.state.gameState == GameState.disabled}
         />
         {this.state.gameState == GameState.disabled && (

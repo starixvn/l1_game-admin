@@ -26,13 +26,22 @@ namespace GamesAdmin.Api.GameServers
             { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) },
             { Game.RouletteValue, typeof(IRouletteOnlineUserApi) },
             { Game.BaccaratValue, typeof(IBaccaratOnlineUserApi) },
+            { Game.LotteryValue, typeof(ILotteryOnlineUserApi) },
             { Game.FishPrawnCrabValue, typeof(IFishPrawnCrabOnlineUserApi) },
             { Game.DragonTigerValue, typeof(IDragonTigerOnlineUserApi) },
             { Game.BigSmallValue, typeof(IBigSmallOnlineUserApi) },
             { Game.BigSmallTurboValue, typeof(ITurboBigSmallOnlineUserApi) },
             { Game.OddEvenTurboValue, typeof(ITurboOddEvenOnlineUserApi) },
-            { Game.LotteryValue, typeof(ILotteryOnlineUserApi) },
             { Game.ThreeCardsValue, typeof(IThreeCardsOnlineUserApi) },
+            { Game.HeroesSlotValue, typeof(IHeroesSlotOnlineUserApi) },
+            { Game.KenoMaxValue, typeof(IKenoMaxOnlineUserApi) },
+            { Game.KenoMax2Value, typeof(IKenoMax2OnlineUserApi) },
+            { Game.KenoMiniValue, typeof(IKenoMiniOnlineUserApi) },
+            { Game.KenoMini2Value, typeof(IKenoMini2OnlineUserApi) },
+            { Game.KenoEastValue, typeof(IKenoEastOnlineUserApi) },
+            { Game.KenoWestValue, typeof(IKenoWestOnlineUserApi) },
+            { Game.KenoSouthValue, typeof(IKenoSouthOnlineUserApi) },
+            { Game.KenoNorthValue, typeof(IKenoNorthOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

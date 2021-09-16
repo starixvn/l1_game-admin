@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class FourGuardiansBetReportEntity : FourGuardiansRoundEntity
+    public class SlotGameBetReportEntity : SlotGameRoundEntity
     {
         public string Username { get; set; }
 

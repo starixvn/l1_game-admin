@@ -28,7 +28,7 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1001;
             }
 
-            if(!round.Paid)
+            if (!round.Paid)
             {
                 return EndGameInfoError.SB1005;
             }

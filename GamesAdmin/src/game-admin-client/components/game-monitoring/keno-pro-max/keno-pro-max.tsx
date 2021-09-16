@@ -10,7 +10,7 @@ import RoundNum from "../../shared/round-num/round-num";
 import KenoProMaxModel from "../../common/model/KenoProMaxModel";
 import BetItem from "../../common/model/BetItem";
 import { GameState } from "../../shared/common/GameState";
-import { upperFirstLetter } from "../../util/util";
+import { updateTotalBetOfBetList, upperFirstLetter } from "../../util/util";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
 
 type Props = {
@@ -56,6 +56,8 @@ export default class KenoProMax extends React.Component<Props, State> {
     this.showUpdater = this.showUpdater.bind(this);
     this.updaterToggle = this.updaterToggle.bind(this);
     this.updaterSubmit = this.updaterSubmit.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
   componentDidMount() {
@@ -124,13 +126,13 @@ export default class KenoProMax extends React.Component<Props, State> {
       const userObj = message.inGame[key];
       TYPES.forEach((type) => {
         if (userObj.betTracks[type] > 0) {
-          newData[type].dataList.unshift(_this.getBet(type, userObj));
+          newData.betList[type].dataList.unshift(_this.getBet(type, userObj));
         }
       });
     });
 
     TYPES.forEach((type) => {
-      newData[type].total = newData[type].dataList.reduce(
+      newData.betList[type].total = newData.betList[type].dataList.reduce(
         (sum, x) => sum + x.bet,
         0
       );
@@ -187,6 +189,7 @@ export default class KenoProMax extends React.Component<Props, State> {
     const betItem = new BetItem();
     betItem.name = userObj.name;
     betItem.bet = userObj.betTracks[type];
+    betItem.system = userObj.system;
 
     return betItem;
   }
@@ -225,7 +228,9 @@ export default class KenoProMax extends React.Component<Props, State> {
     return result ? result.split(" - ").includes(betType.toUpperCase()) : false;
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter) {
+    updateTotalBetOfBetList(this.state.data.betList, systemFilter);
+
     return (
       <Container>
         <Row>
@@ -257,49 +262,49 @@ export default class KenoProMax extends React.Component<Props, State> {
             <Row className={styles["row-style"]}>
               <TotalBet
                 type="kenogold"
-                total={this.state.data.gold.total}
+                total={this.state.data.betList.gold.total}
                 isWin={this.checkWinner("gold")}
               />
               <TotalBet
                 type="kenowood"
-                total={this.state.data.wood.total}
+                total={this.state.data.betList.wood.total}
                 isWin={this.checkWinner("wood")}
               />
               <TotalBet
                 type="kenowater"
-                total={this.state.data.water.total}
+                total={this.state.data.betList.water.total}
                 isWin={this.checkWinner("water")}
               />
               <TotalBet
                 type="kenofire"
-                total={this.state.data.fire.total}
+                total={this.state.data.betList.fire.total}
                 isWin={this.checkWinner("fire")}
               />
               <TotalBet
                 type="kenoearth"
-                total={this.state.data.earth.total}
+                total={this.state.data.betList.earth.total}
                 isWin={this.checkWinner("earth")}
               />
             </Row>
             <Row className={styles["row-style"]}>
               <TotalBet
                 type="kenobig"
-                total={this.state.data.big.total}
+                total={this.state.data.betList.big.total}
                 isWin={this.checkWinner("big")}
               />
               <TotalBet
                 type="kenosmall"
-                total={this.state.data.small.total}
+                total={this.state.data.betList.small.total}
                 isWin={this.checkWinner("small")}
               />
               <TotalBet
                 type="kenoeven"
-                total={this.state.data.even.total}
+                total={this.state.data.betList.even.total}
                 isWin={this.checkWinner("even")}
               />
               <TotalBet
                 type="kenoodd"
-                total={this.state.data.odd.total}
+                total={this.state.data.betList.odd.total}
                 isWin={this.checkWinner("odd")}
               />
             </Row>
@@ -309,9 +314,10 @@ export default class KenoProMax extends React.Component<Props, State> {
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const result = [];
     const _this = this;
+
     TYPES.forEach(function (type, i) {
       result.push(
         <Col className={styles["keno-betlist"]} key={i}>
@@ -319,7 +325,8 @@ export default class KenoProMax extends React.Component<Props, State> {
             type="onecolumn"
             isWin={_this.checkWinner(type)}
             titles={[<div>{_this.renderTitle(upperFirstLetter(type))}</div>]}
-            dataList={_this.state.data[type].dataList}
+            dataList={_this.state.data.betList[type].dataList}
+            systemFilter={systemFilter}
           />
         </Col>
       );
@@ -336,9 +343,10 @@ export default class KenoProMax extends React.Component<Props, State> {
     return (
       <div>
         <GameTemplate
-          renderMonitor={this.renderMonitor()}
-          renderBetList={this.renderBetList()}
+          renderMonitor={this.renderMonitor}
+          renderBetList={this.renderBetList}
           disabled={this.state.gameState == GameState.disabled}
+          enableFilter={true}
         />
         $
         {!this.props.isProduction && (

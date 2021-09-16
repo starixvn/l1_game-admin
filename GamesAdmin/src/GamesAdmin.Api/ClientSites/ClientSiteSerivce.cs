@@ -39,6 +39,7 @@ namespace GamesAdmin.Api.ClientSites
                 SiteId = x.SiteId,
                 GameClientUrl = x.GameClientUrl,
                 GameMobiClientUrl = x.GameMobiClientUrl,
+                MiniSabaGameClientUrl = x.MiniSabaGameClientUrl,
                 ValidCurrencies = x.ValidCurrencies
             }).ToList();
 
@@ -54,6 +55,7 @@ namespace GamesAdmin.Api.ClientSites
                 SiteId = clientSiteEntity.SiteId, 
                 GameClientUrl = clientSiteEntity.GameClientUrl,
                 GameMobiClientUrl = clientSiteEntity.GameMobiClientUrl,
+                MiniSabaGameClientUrl = clientSiteEntity.MiniSabaGameClientUrl,
                 ValidCurrencies = clientSiteEntity.ValidCurrencies
             };
         }
@@ -62,7 +64,7 @@ namespace GamesAdmin.Api.ClientSites
         {
             try
             {
-                await siteRepository.UpdateGameClientUrlAsync(site.ClientId, site.SiteId, site.GameClientUrl, site.GameMobiClientUrl, site.ValidCurrencies);
+                await siteRepository.UpdateGameClientUrlAsync(site);
 
                 return true;
             }

@@ -95,6 +95,12 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
+    public interface ILotteryOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
     public interface IFishPrawnCrabOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
@@ -124,16 +130,64 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
-    public interface ILotteryOnlineUserApi : IOnlineUserApi
-     {
-        [Get("/api/onlineusers")]
-        new Task<OnlineUsers> GetOnlineUsers(string name = "");
-    }
 
     public interface IThreeCardsOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IHeroesSlotOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoMaxOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenomax/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoMax2OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenomax2/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoMiniOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenomini/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoMini2OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenomini2/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoEastOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenoeast/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoWestOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenowest/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoSouthOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenosouth/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IKenoNorthOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/kenonorth/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 }

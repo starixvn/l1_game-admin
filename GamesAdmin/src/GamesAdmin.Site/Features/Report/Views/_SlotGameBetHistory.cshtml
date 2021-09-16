@@ -1,7 +1,6 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels
-@using System.Globalization
-@model FourGuardiansRecordViewModel
+@model SlotGameRecordViewModel
 
 <table class="table table-bordered table-four-guardians">
     <thead>
@@ -27,7 +26,7 @@
                                 <tr>
                                     @for (var column = 0; column < array[row].Length; column++)
                                     {
-                                        <td><img class="symbol" src="~/images/slot-icons/fourguardians/@(array[row][column]).png" /></td>
+                                        <td><img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/@(array[row][column]).png" /></td>
                                     }
                                 </tr>
 
@@ -56,8 +55,8 @@
         @if (Model.SettlementResult.Jackpot != null)
         {
             <tr>
-                <td class="text-center"><img class="payline" src="~/images/slot-icons/fourguardians/dong@(Model.SettlementResult.Jackpot.WinningLine + 1).png" /></td>
-                <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/10.png" /></td>
+                <td class="text-center"><img class="payline" src="~/images/slot-icons/@Model.IconsFolder/dong@(Model.SettlementResult.Jackpot.WinningLine + 1).png" /></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/10.png" /></td>
                 <td class="text-center">5</td>
                 <td class="text-center">Jackpot</td>
                 <td class="text-right">@Model.Bet</td>
@@ -69,8 +68,8 @@
             var winningPayline = Model.SettlementResult.WinningPaylines.FirstOrDefault(x => x.Payline == payline);
 
             <tr>
-                <td class="text-center"><img class="payline" src="~/images/slot-icons/fourguardians/dong@(payline + 1).png" /></td>
-                <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/@(winningPayline.Symbol).png" /></td>
+                <td class="text-center"><img class="payline" src="~/images/slot-icons/@Model.IconsFolder/dong@(payline + 1).png" /></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/@(winningPayline.Symbol).png" /></td>
                 <td class="text-center">@winningPayline.Count</td>
                 <td class="text-center">x@(winningPayline.Odds)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
@@ -82,7 +81,7 @@
         {
             <tr>
                 <td></td>
-                <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/8.png" /></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/8.png" /></td>
                 <td class="text-center">@Model.SettlementResult.Bonus.Count</td>
                 <td class="text-center">@Model.SettlementResult.Bonus.Odds Bonus</td>
                 <td class="text-center">-</td>
@@ -94,7 +93,7 @@
         {
             <tr>
                 <td></td>
-                <td class="text-center"><img class="symbol" src="~/images/slot-icons/fourguardians/7.png" /></td>
+                <td class="text-center"><img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/7.png" /></td>
                 <td class="text-center">@Model.SettlementResult.FreeSpins.Count</td>
                 <td class="text-center">@Model.SettlementResult.FreeSpins.Odds Free spins</td>
                 <td class="text-center">-</td>
@@ -106,7 +105,7 @@
         {
 
             <tr>
-                <td class="text-center"><img class="payline" src="~/images/slot-icons/fourguardians/dong@(payline + 1).png" /></td>
+                <td class="text-center"><img class="payline" src="~/images/slot-icons/@Model.IconsFolder/dong@(payline + 1).png" /></td>
                 <td class="text-center">-</td>
                 <td class="text-center">-</td>
                 <td class="text-center">-</td>

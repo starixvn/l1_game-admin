@@ -27,7 +27,7 @@ namespace GamesAdmin.Api.Report
             IGameUserService accountService)
         {
             this.kenoProVietOnesRepository = kenoProVietOnesRepository;
-            this.kenoProvietRoundRepository = kenoProvietRoundRepository;            
+            this.kenoProvietRoundRepository = kenoProvietRoundRepository;
             this.kenoProVietBetRepository = kenoProVietBetRepository;
 
             this.accountService = accountService;

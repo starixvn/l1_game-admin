@@ -25,7 +25,7 @@ namespace GamesAdmin.Api.ChatBot
     public class ChatBotService : IChatBotService
     {
         private const string Separator = " - ";
-        private const string HighStakeMessageTemplate = "{0} - {1}{2}";
+        private const string HighStakeMessageTemplate = "{0} - {1}";
         private const int MinBetAmount = 2000;
 
         private readonly IAppSettings appSettings;
@@ -53,7 +53,7 @@ namespace GamesAdmin.Api.ChatBot
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
 
-            msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount, request.Currency));
+            msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount));
             msgBuilder.Append($"{Separator}{game}");
             msgBuilder.Append(GetSystemName(request.System));
 
@@ -66,7 +66,13 @@ namespace GamesAdmin.Api.ChatBot
         {
             var systemName = Enum.Parse<Systems>(system.ToString());
 
-            return (systemName == Systems.Mobi) ? $"{Separator}Mobi" : string.Empty;
+            return systemName switch
+            {
+                Systems.Mobi => $"{Separator}SM",
+                Systems.Instant => $"{Separator}SI",
+                Systems.Cocos => string.Empty,
+                _ => string.Empty,
+            };
         }
     }
 }

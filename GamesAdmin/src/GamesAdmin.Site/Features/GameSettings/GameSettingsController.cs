@@ -214,6 +214,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("lottery-server-endpoint-route", appSettings.GameServers.Lottery.SocketRoute);
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint", appSettings.GameServers.ThreeCards.Socket);
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint-route", appSettings.GameServers.ThreeCards.SocketRoute);
+            AddMiniKenoCookie();
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
@@ -310,6 +311,17 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return Json(false);
+        }
+
+        private void AddMiniKenoCookie()
+        {
+            var cookies = new[] { "keno-max", "keno-max2", "keno-mini", "keno-mini2", "keno-east", "keno-west", "keno-south", "keno-north" };
+            foreach (var c in cookies)
+            {
+                var socketKey = c.Replace("-", string.Empty);
+                HttpContext.Response.Cookies.Append($"{c}-server-endpoint", $"{appSettings.GameServers.MiniKeno.Socket}{socketKey}");
+                HttpContext.Response.Cookies.Append($"{c}-server-endpoint-route", appSettings.GameServers.MiniKeno.SocketRoute);
+            }
         }
     }
 }

@@ -2,13 +2,14 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import BaccaratModel from "../../common/model/BaccaratModel";
-import BetItem from "../../common/model/BetItem";
+import BetItem, { SystemId } from "../../common/model/BetItem";
 import CardResult from "../../common/model/CardResult";
 import BetList from "../../shared/bet-list/bet-list";
 import { GameState } from "../../shared/common/GameState";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
+import { updateTotalBetOfBetList } from "../../util/util";
 import GameTemplate from "../game-template/game-template";
 import BaccaratCardResult from "./baccarat-card-result";
 import BaccaratResultUpdater from "./baccarat-result-updater";
@@ -48,6 +49,8 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     this.showDeskOfCards = this.showDeskOfCards.bind(this);
     this.updaterDeskOfCardsToggle = this.updaterDeskOfCardsToggle.bind(this);
     this.onPickCard = this.onPickCard.bind(this);
+    this.renderMonitor = this.renderMonitor.bind(this);
+    this.renderBetList = this.renderBetList.bind(this);
   }
 
   get gameName() {
@@ -138,7 +141,13 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
         if (betTracks && betTracks[choice.name] > 0) {
           betList[choice.name].total += betTracks[choice.name];
           betList[choice.name].dataList.unshift(
-            new BetItem(userObj.name, betTracks[choice.name])
+            new BetItem(
+              userObj.name,
+              betTracks[choice.name],
+              null,
+              null,
+              userObj.system
+            )
           );
         }
       });
@@ -221,8 +230,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     });
   }
 
-  renderMonitor() {
+  renderMonitor(systemFilter: SystemId = SystemId.None) {
     const { time, roundNumber, betList, result } = this.state;
+    updateTotalBetOfBetList(betList, systemFilter);
+
     return (
       <Container fluid>
         <Row>
@@ -313,7 +324,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     );
   }
 
-  renderBetList() {
+  renderBetList(systemFilter) {
     const result = [];
     const _this = this;
     CHOICES.forEach(function (choice, i) {
@@ -324,6 +335,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
             isWin={_this.checkWinner(choice.name)}
             titles={[<div>{choice.displayName}</div>]}
             dataList={_this.state.betList[choice.name].dataList}
+            systemFilter={systemFilter}
           />
         </Col>
       );
@@ -403,9 +415,10 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     return (
       <div>
         <GameTemplate
-          renderMonitor={this.renderMonitor()}
-          renderBetList={this.renderBetList()}
+          renderMonitor={this.renderMonitor}
+          renderBetList={this.renderBetList}
           disabled={this.state.gameState == GameState.disabled}
+          enableFilter={true}
         />
         $
         {!this.props.isProduction && (

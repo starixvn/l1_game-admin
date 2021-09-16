@@ -12,6 +12,8 @@ namespace GamesAdmin.Core.Models
 
         public string GameMobiClientUrl { get; set; }
 
+        public string MiniSabaGameClientUrl { get; set; }
+
         public IEnumerable<string> ValidCurrencies { get; set; }
     }
 }
