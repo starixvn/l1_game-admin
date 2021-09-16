@@ -67,6 +67,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoProMaxReport>()
                         .AddScoped<IKenoReport, KenoProMaxReport>(s => s.GetService<KenoProMaxReport>());
 
+            services.AddScoped<ISlotGameReportFactory, SlotGameReportFactory>();
+            services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
+            services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
+
             services.AddScoped<IEndGameInfoServiceFactory, EndGameInfoServiceFactory>();
             services.AddScoped<BigSmallEndGameInfoService>();
             services.AddScoped<BigSmallTurboEndGameInfoService>();
@@ -98,10 +102,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<FourGuardiansEndGameInfoService>();
             services.AddScoped<LotteryEndGameInfoService>();
             services.AddScoped<ThreeCardsEndGameInfoService>();
+            services.AddScoped<HeroesSlotEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
-            
+
             services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
@@ -123,6 +128,15 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ITurboOddEvenOnlineUserApi>(appSettings.GameServers.TurboOddEven.Api, refitSettings));
             services.AddSingleton(RestService.For<ILotteryOnlineUserApi>(appSettings.GameServers.Lottery.Api, refitSettings));
             services.AddSingleton(RestService.For<IThreeCardsOnlineUserApi>(appSettings.GameServers.ThreeCards.Api, refitSettings));
+            services.AddSingleton(RestService.For<IHeroesSlotOnlineUserApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMaxOnlineUserApi>(appSettings.GameServers.KenoMax.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMax2OnlineUserApi>(appSettings.GameServers.KenoMax2.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMiniOnlineUserApi>(appSettings.GameServers.KenoMini.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMini2OnlineUserApi>(appSettings.GameServers.KenoMini2.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoEastOnlineUserApi>(appSettings.GameServers.KenoEast.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoWestOnlineUserApi>(appSettings.GameServers.KenoWest.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoSouthOnlineUserApi>(appSettings.GameServers.KenoSouth.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -134,19 +148,20 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddChatBotServices(services, appSettings);
         }
 
-        private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings) 
+        private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
+            services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
         }
 
-        private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings) 
+        private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
         {
-            services.AddSingleton(RestService.For<IChatBotApi>(new HttpClient 
+            services.AddSingleton(RestService.For<IChatBotApi>(new HttpClient
             {
                 BaseAddress = new Uri(appSettings.ChatBotApiSettings.Url),
                 Timeout = TimeSpan.FromSeconds(appSettings.ChatBotApiSettings.TimeoutInSeconds)
-            } ));
+            }));
 
             services.AddScoped<IChatBotService, ChatBotService>();
         }

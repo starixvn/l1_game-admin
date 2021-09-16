@@ -14,6 +14,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly Dictionary<string, Type> slotServices = new Dictionary<string, Type>
         {
             { Game.FourGuardiansValue, typeof(IFourGuardiansBoardApi) },
+            { Game.HeroesSlotValue, typeof(IHeroesSlotBoardApi) },
         };
 
         private readonly Type defaultSlotBoardApi = typeof(ISlotBoardApi);

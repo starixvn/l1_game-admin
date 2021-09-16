@@ -10,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IFourGuardiansReportRepository
     {
-        Task<IEnumerable<FourGuardiansBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS);
     }
 
     public class FourGuardiansReportRepository : IFourGuardiansReportRepository
@@ -22,10 +22,10 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IEnumerable<FourGuardiansBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(long roundId, string nickname, bool excludeUUS)
         {
             var project = GetAggregateBuilder(roundId, nickname, excludeUUS: excludeUUS)
-                .Project(x => new FourGuardiansBetReportEntity
+                .Project(x => new SlotGameBetReportEntity
                 {
                     Time = x.Time,
                     Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -41,12 +41,12 @@ namespace GamesAdmin.Database
                     Result = x.Result,
                     UserId = x.Uid,
                     Paid = x.Paid
-                }); 
+                });
 
             return await project.ToListAsync();
         }
 
-        private IAggregateFluent<FourGuardiansBetWithUnWindAccountsEntity> GetAggregateBuilder(long roundId, string nickname, bool excludeUUS)
+        private IAggregateFluent<SlotGameBetWithUnWindAccountsEntity> GetAggregateBuilder(long roundId, string nickname, bool excludeUUS)
         {
             var betCollection = database.GetCollection<FourGuardiansRoundEntity>(Document.GetCollectionName(typeof(FourGuardiansRoundEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
@@ -61,7 +61,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x =>  !excludeUUS || x.AccountInfos.Currency != "UUS")
+                 .Match(x => !excludeUUS || x.AccountInfos.Currency != "UUS")
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,
@@ -69,7 +69,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.Id,
                        @as: r => r.Accounts
                  )
-                .Unwind<BetEntityWithAccountInfoUnwind, FourGuardiansBetWithUnWindAccountsEntity>(x => x.Accounts);
+                .Unwind<BetEntityWithAccountInfoUnwind, SlotGameBetWithUnWindAccountsEntity>(x => x.Accounts);
 
             return aggregateBuilder;
         }

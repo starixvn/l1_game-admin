@@ -103,7 +103,7 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
-        
+
 
         [HttpGet]
         [ActionName("rnglottery")]
@@ -208,7 +208,6 @@ namespace GamesAdmin.Site.Features.Report
             return View(new ReportViewModel { ExcludeUUS = true });
         }
 
-
         [HttpGet]
         public IActionResult FourGuardians()
         {
@@ -216,16 +215,16 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFourGuardiansReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, string game)
         {
-            return PartialView("_FourGuardiansRecords", await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_SlotGameRecords", await mediator.Send(new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFourGuardiansBetHistory(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetSlotGameBetHistory(long roundId, string nickname, bool excludeUUS, string game)
         {
-            return PartialView("_FourGuardiansBetHistory",
-                (await mediator.Send(new GetFourGuardiansReportRequest(roundId, nickname, excludeUUS))).Records.FirstOrDefault());
+            return PartialView("_SlotGameBetHistory",
+                (await mediator.Send(new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game))).Records.FirstOrDefault());
         }
 
         [HttpGet]
@@ -325,6 +324,12 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public IActionResult HeroesSlot()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
         public IActionResult KenoProViet() => ToKenoReport();
 
         [HttpGet]
@@ -391,7 +396,7 @@ namespace GamesAdmin.Site.Features.Report
                 await mediator.Send(
                     new GetJackpotReportRequest(model.GameId,
                         model.FromDate.Date.ToUniversalTime(),
-                        model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(), 
+                        model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
                         model.ExcludeUUS, model.ExcludeBot)));
         }
 

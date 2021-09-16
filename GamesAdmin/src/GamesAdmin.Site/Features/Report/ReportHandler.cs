@@ -40,7 +40,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
         IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
         IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
-        IRequestHandler<GetFourGuardiansReportRequest, FourGuardiansReportResultViewModel>,
+        IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
@@ -467,16 +467,17 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
-        public async Task<FourGuardiansReportResultViewModel> Handle(GetFourGuardiansReportRequest request, CancellationToken cancellationToken)
+        public async Task<SlotGameReportResultViewModel> Handle(GetSlotGameReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetFourGuardiansReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetSlotGameReport(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
 
-            return new FourGuardiansReportResultViewModel
+            return new SlotGameReportResultViewModel
             {
                 Records = result.Select(x =>
                 {
-                    var betViewModel = mapper.Map<FourGuardiansRecordViewModel>(x);
+                    var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Game = request.Game.Value;
 
                     return betViewModel;
                 })

@@ -28,9 +28,10 @@
         SicBo,
         VipFishPrawnCrab = 26,
         VipBaccarat,
-        VipSeDieWar = 28,        
+        VipSeDieWar = 28,
         FourGuardians = 29,
         Lottery = 31,
-        ThreeCards = 35
+        ThreeCards = 35,
+        HeroesSlot = 38
     }
 }

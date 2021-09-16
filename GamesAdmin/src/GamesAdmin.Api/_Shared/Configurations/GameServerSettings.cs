@@ -43,6 +43,24 @@
         public GameServerConfigs Lottery { get; set; }
 
         public GameServerConfigs ThreeCards { get; set; }
+
+        public GameServerConfigs HeroesSlot { get; set; }
+        
+        public GameServerConfigs KenoMax { get; set; }
+
+        public GameServerConfigs KenoMax2 { get; set; }
+
+        public GameServerConfigs KenoMini { get; set; }
+
+        public GameServerConfigs KenoMini2 { get; set; }
+
+        public GameServerConfigs KenoEast { get; set; }
+
+        public GameServerConfigs KenoWest { get; set; }
+
+        public GameServerConfigs KenoSouth { get; set; }
+
+        public GameServerConfigs KenoNorth { get; set; }
     }
 
     public class GameServerConfigs

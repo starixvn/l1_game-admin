@@ -11,7 +11,7 @@
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="normal" role="tabpanel" aria-labelledby="home-tab">
-        <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetFourGuardiansReport" data-ajax-mode="replace" data-ajax-update="#report-result"
+        <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetSlotGameReport" data-ajax-mode="replace" data-ajax-update="#report-result"
               data-ajax-loading="#spinner"
               method="get">
             <div class="form-row align-items-center">
@@ -30,6 +30,7 @@
                         </label>
                     </div>
                 </div>
+                <input type="hidden" class="form-control" asp-for="Game" value="fourguardians">
                 <div class="col-auto mt-5">
                     <button type="submit" class="btn-submit">Submit</button>
                     <div id="spinner" class="spinner-border" style="display: none">

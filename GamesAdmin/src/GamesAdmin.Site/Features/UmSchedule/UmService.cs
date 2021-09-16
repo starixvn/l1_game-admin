@@ -12,6 +12,9 @@ namespace GamesAdmin.Site.Features.UmSchedule
 
         [Get("/um/all")]
         Task<IList<Core.Models.Um.UmSchedule>> GetAll();
+
+        [Get("/um/unfinished")]
+        Task<IList<Core.Models.Um.UmSchedule>> GetUnfinished();
     }
 
     public interface IUmService
@@ -19,6 +22,8 @@ namespace GamesAdmin.Site.Features.UmSchedule
         Task<bool> Add(Core.Models.Um.UmSchedule schedule);
 
         Task<IList<Core.Models.Um.UmSchedule>> GetAll();
+
+        Task<IList<Core.Models.Um.UmSchedule>> GetUnfinished();
     }
 
     public class UmService : IUmService
@@ -35,5 +40,8 @@ namespace GamesAdmin.Site.Features.UmSchedule
 
         public Task<IList<Core.Models.Um.UmSchedule>> GetAll()
         => umApi.GetAll();
+
+        public Task<IList<Core.Models.Um.UmSchedule>> GetUnfinished()
+        => umApi.GetUnfinished();
     }
 }
