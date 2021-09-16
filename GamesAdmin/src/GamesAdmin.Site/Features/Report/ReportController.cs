@@ -140,7 +140,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        [ActionName("kenompower")]
+        [ActionName("kenopower")]
         public IActionResult KenoPower1()
         {
             ViewData["Title"] = "Keno Power";
@@ -148,7 +148,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        [ActionName("kenompowermd5")]
+        [ActionName("kenopowermd5")]
         public IActionResult KenoPower2()
         {
             ViewData["Title"] = "Keno Power MD5";
