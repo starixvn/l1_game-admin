@@ -25,9 +25,9 @@
                     </tr>
                     <tr>
                         <th>Team Blue/Team Red</th>
+                        <th>Sum</th>
                         <th>Team Blue</th>
                         <th>Team Red</th>
-                        <th>Sum</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,7 +68,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="2">
-                                            Blue @blueSum - Total @(blueSum + redSum) - Red @redSum
+                                            Team Blue @blueSum - Total @(blueSum + redSum) - Team Red @redSum
                                         </td>
                                     </tr>
                                 </tbody>
@@ -77,12 +77,31 @@
                         <td class="text-center">
                             @if (settlementResult.Red)
                             {
-                                <span>Red</span>
+                                <span>Team Red</span>
                             }
 
                             @if (settlementResult.Blue)
                             {
-                                <span>Blue</span>
+                                <span>Team Blue</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (settlementResult.Big)
+                            {
+                                <div>Big</div>
+                            }
+                            else
+                            {
+                                <div>Small</div>
+                            }
+
+                            @if (settlementResult.Odd)
+                            {
+                                <div>Odd</div>
+                            }
+                            else
+                            {
+                                <div>Even</div>
                             }
                         </td>
                         <td class="text-center">
@@ -105,25 +124,7 @@
                                 <span>Small</span>
                             }
                         </td>
-                        <td class="text-center">
-                            @if (settlementResult.Big)
-                            {
-                                <div>Big</div>
-                            }
-                            else
-                            {
-                                <div>Small</div>
-                            }
 
-                            @if (settlementResult.Odd)
-                            {
-                                <div>Odd</div>
-                            }
-                            else
-                            {
-                                <div>Even</div>
-                            }
-                        </td>
                     </tr>
                 </tbody>
             </table>

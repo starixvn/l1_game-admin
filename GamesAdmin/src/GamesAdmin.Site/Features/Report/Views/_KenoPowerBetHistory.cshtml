@@ -5,8 +5,8 @@
 @{
     var betChoiceMapper = new Dictionary<string, string>
 {
-        { "blue", "Blue" },
-        { "red", "Red" },
+        { "blue", "Team Blue" },
+        { "red", "Team Red" },
         { "big", "Big" },
         { "small", "Small" },
         { "odd", "Odd" },
@@ -19,16 +19,16 @@
 
     var betTypeMapper = new Dictionary<string, string>
 {
-        { "blue", "Blue/Red" },
-        { "red", "Blue/Red" },
+        { "blue", "Team Blue/Team Red" },
+        { "red", "Team Blue/Team Red" },
         { "big", "Sum Big/Small" },
         { "small", "Sum Big/Small" },
         { "odd", "Sum Even/Odd" },
         { "even", "Sum Even/Odd" },
-        { "blueBig", "Blue Big/Small" },
-        { "blueSmall", "Blue Big/Small" },
-        { "redBig", "Red Big/Small" },
-        { "redSmall", "Red Big/Small" },
+        { "blueBig", "Team Blue Big/Small" },
+        { "blueSmall", "Team Blue Big/Small" },
+        { "redBig", "Team Red Big/Small" },
+        { "redSmall", "Team Red Big/Small" },
     };
 
     var settlementResult = Model.RoundResult.SettlementResult;
