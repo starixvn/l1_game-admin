@@ -318,7 +318,7 @@
             $.ajax({
                 method: "GET",
                 url: "/status/disableMessage?name=" + name
-            }).done(function (result) {                
+            }).done(function (result) {
                 $('#msgGameName').val(name);
                 $('#updateMsgGameName').html(displayName);
                 $('#vnMessage').val(result["vi-VN"]);
@@ -326,7 +326,7 @@
 
                 $('#messageModal').modal('show');
             });
-            
+
         },
 
         submitReload: function () {
@@ -482,6 +482,42 @@
                 }, 1000);
             });
         },
+
+        showUpdateSuperPlayersForm: function () {
+            $.ajax({
+                method: "GET",
+                url: "/status/super_players"
+            }).done(function (content) {
+                if (content) {
+                    $('#super-players').html(content);
+                    $('#super-players-modal').modal('show');
+                }
+            });
+        },
+        updateSuperPlayers: function () {
+            const players = $('#super-players-names').val();
+            const url = "/status/super_players";
+            const data = { superPlayers: players };
+            $('#update-super-players-btn').prop('disabled', true);
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                dataType: 'json',
+                data: data,
+            }).done(function (result) {
+                var msg = result ? '#update-super-players-success' : '#update-super-players-failed';
+                $(msg).show();
+                $("#super-players-msg-container").show();
+
+                setTimeout(function () {
+                    $('#update-super-players-btn').prop('disabled', false);
+                    $("#super-players-msg-container").hide();
+                    $(msg).hide();
+                    $('#super-players-modal').modal('hide');
+                }, 1000);
+            });
+        },
     }
 }(jQuery));
 
@@ -491,7 +527,7 @@ $(document).ready(function () {
             "paging": false,
             "ordering": false
         });
-    }    
+    }
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);

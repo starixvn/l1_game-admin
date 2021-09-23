@@ -59,7 +59,7 @@ namespace GamesAdmin.Api.Report
             var betRecords = bets
                 .Select(bet => new KenoBetRecord(bet.ConvertAmountToDictionary(), bet.Odds)
                 {
-                    UserId = bet.Uid.ToString(),
+                    UserId = bet.Uid,
                     Nickname = bet.Name,
                     BetWin = bet.Betwin,
                     Time = bet.Time

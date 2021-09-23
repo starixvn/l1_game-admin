@@ -47,6 +47,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<GlobalConfig> GetSiteExclusion();
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
+
+        Task<GlobalConfig> GetSuperPlayers();
+
+        Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -80,7 +84,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public async Task<GameConfig> GetByName(string name)
-        => await gameApi.GetByName(name);
+            => await gameApi.GetByName(name);
 
         public async Task<bool> IsExistName(string name)
         {
@@ -146,9 +150,20 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public Task<GlobalConfig> GetSiteExclusion()
-        => globalConfigApi.GetSiteExclusions();
+            => globalConfigApi.GetSiteExclusions();
 
         public Task<Dictionary<string, string>> GetDisabledMessage(string name)
-        => gameApi.GetDisableMessage(name);
+            => gameApi.GetDisableMessage(name);
+
+        public Task<GlobalConfig> GetSuperPlayers() => globalConfigApi.GetSuperPlayers();
+
+        public Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request)
+        {
+            var formattedNames = string.IsNullOrWhiteSpace(request.SuperPlayers)
+                ? new string[] { }
+                : request.SuperPlayers.Trim().Split(";").Select(p => p.Trim()).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
+
+            return globalConfigApi.UpdateSuperPlayers(formattedNames);
+        }
     }
 }

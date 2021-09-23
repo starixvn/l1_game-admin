@@ -36,6 +36,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
+        , IRequestHandler<GetSuperPlayersRequest, SuperPlayersViewModel>
+        , IRequestHandler<UpdateSuperPlayersRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -344,5 +346,16 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
+
+        public async Task<SuperPlayersViewModel> Handle(GetSuperPlayersRequest request, CancellationToken cancellationToken)
+        {
+            var configs = await gameService.GetSuperPlayers();
+            var names = configs == null ? Enumerable.Empty<string>() : configs.Configs["Names"];
+
+            return new SuperPlayersViewModel(names);
+        }
+
+        public Task<bool> Handle(UpdateSuperPlayersRequest request, CancellationToken cancellationToken)
+            => gameService.UpdateSuperPlayers(request);
     }
 }
