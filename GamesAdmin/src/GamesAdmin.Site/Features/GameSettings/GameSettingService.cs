@@ -51,6 +51,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<GlobalConfig> GetSuperPlayers();
 
         Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request);
+
+        Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
     }
 
     public class GameSettingService : IGameSettingService
@@ -161,9 +163,19 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var formattedNames = string.IsNullOrWhiteSpace(request.SuperPlayers)
                 ? new string[] { }
-                : request.SuperPlayers.Trim().Split(";").Select(p => p.Trim()).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
+                : request.SuperPlayers.Trim().Split(";").Select(p => p.Trim().ToLowerInvariant()).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
 
             return globalConfigApi.UpdateSuperPlayers(formattedNames);
+        }
+
+        public async Task<bool> UpdateBetaVersion(string[] names, bool enabled)
+        {
+            if (names?.Length == 0)
+            {
+                return false;
+            }
+
+            return await gameApi.UpdateBetaVersion(names, enabled);
         }
     }
 }
