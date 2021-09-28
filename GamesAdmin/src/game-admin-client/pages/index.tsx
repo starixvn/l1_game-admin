@@ -32,8 +32,7 @@ type State = {
 
 const NewSocketGameIds = [
   1, 2, 3, 4, 6, 7, 8, 9, 10, 21, 22, 24, 25, 26, 27, 28, 31, 35, 12, 13, 14,
-  15, 16, 17, 18, 19,
-  40, 41,
+  15, 16, 17, 18, 19, 36, 37, 40, 41,
 ];
 
 export class Home extends React.Component<Props, State> {

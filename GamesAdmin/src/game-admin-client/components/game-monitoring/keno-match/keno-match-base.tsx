@@ -117,6 +117,7 @@ export default class KenoMatch extends React.Component<
   renderResultSummary() {
     const { result: hfResult, settlementResult: hfSettlementResult } =
       this.state.result.firstHalf;
+    console.log(this.state.result);
 
     if (Object.values(hfSettlementResult).some((x) => x)) {
       const hfBlueTotal = hfResult.blue.reduce((num1, num2) => num1 + num2, 0);

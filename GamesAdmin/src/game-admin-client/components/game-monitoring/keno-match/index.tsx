@@ -35,8 +35,8 @@ export class KenoMatch1 extends KenoMatch {
       this.isFirstLoad = false;
       const waitingTime = 8;
       const { result } = this.state;
-      result.firstHalf.result.blue = data.firstHalfResult.blue;
-      result.firstHalf.result.red = data.firstHalfResult.red;
+      result.firstHalf.result.blue = data.firstHalfResult.result.blue;
+      result.firstHalf.result.red = data.firstHalfResult.result.red;
       result.firstHalf.settlementResult = data.firstHalfResult.settlementResult;
       this.setState({
         result,
@@ -189,8 +189,8 @@ export class KenoMatch2 extends KenoMatch {
       this.isFirstLoad = false;
       const waitingTime = 12;
       const { result } = this.state;
-      result.firstHalf.result.blue = data.firstHalfResult.blue;
-      result.firstHalf.result.red = data.firstHalfResult.red;
+      result.firstHalf.result.blue = data.firstHalfResult.result.blue;
+      result.firstHalf.result.red = data.firstHalfResult.result.red;
       result.firstHalf.settlementResult = data.firstHalfResult.settlementResult;
       this.setState({
         result,
