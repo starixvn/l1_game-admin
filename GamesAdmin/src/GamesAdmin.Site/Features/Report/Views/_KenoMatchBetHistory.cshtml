@@ -87,7 +87,6 @@
     <thead>
         <tr>
             <th>Date (GMT+7)</th>
-            <th>Nickname</th>
             <th>Bet Type</th>
             <th>Bet Choice</th>
             <th>Odds</th>
@@ -113,7 +112,14 @@
                     @HtmlHelpers.formatNumber(bet.Amount)
                 </td>
                 <td class="text-right @winCssClass">
-                    @HtmlHelpers.formatNumber(bet.GetRefund(settlmentResultRefund[bet.Choice]))
+                    @if (settlmentResultRefund.ContainsKey(bet.Choice))
+                    {
+                        @HtmlHelpers.formatNumber(bet.GetRefund(settlmentResultRefund[bet.Choice]))
+                    }
+                    else
+                    {
+                        @HtmlHelpers.formatNumber(0);
+                    }
                 </td>
             </tr>
 

@@ -8,6 +8,7 @@ namespace GamesAdmin.Api.Report.Requests
     {
         public KenoMatchBetHistoryRequest(GameId game, long roundId, string userId)
         {
+            Game = game;
             RoundId = roundId;
             UserId = userId;
         }
