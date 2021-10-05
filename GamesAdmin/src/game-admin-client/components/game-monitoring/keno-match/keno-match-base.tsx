@@ -462,7 +462,7 @@ export default class KenoMatch extends React.Component<
         />
         <ModalBody>
           <Form onSubmit={this.handleChangeResult}>
-            <h3>#{roundNumber + 1}</h3>
+            <h3 className={styles.title}>#{roundNumber + 1}</h3>
             <div className={styles.title}>First Half</div>
             <FormGroup>
               <Label for="hfBlue">Blue</Label>
