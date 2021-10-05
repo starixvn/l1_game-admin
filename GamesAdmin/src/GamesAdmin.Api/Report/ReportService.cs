@@ -84,7 +84,11 @@ namespace GamesAdmin.Api.Report
 
         Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId);
+        Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS);
+
+        Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS);
+
+  	Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId);
 
         Task<KenoMatchBetHistory> GetKenoMatch2BetHistoryAsync(long roundId, string userId);
 
@@ -586,6 +590,44 @@ namespace GamesAdmin.Api.Report
             };
         }
 
+         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot)
+        {
+            var repository = serviceProvider.GetService<IBitcoinMasterReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+
+            return new BitcoinMasterBetReport
+            {
+                RoundResult = new BitcoinMasterRoundResult
+                {
+                    Number = result.Item1.Number,
+                    ResultPrice = result.Item1.Result?.ResultPrice ?? 0,
+                    BettingPrice = result.Item1.Result?.BettingPrice ?? 0,
+                    SettlementResult = result.Item1.SettlementResult
+                },
+                Records = result.Item2.Select(x => new BitcoinMasterBetRecord
+                {
+                    Time = x.Time,
+                    Nickname = x.Nickname,
+                    Username = x.Username,
+                    Bet = x.Bet,
+                    BetWin = x.BetWin,
+                    Back = x.Back
+                })
+            };
+        }
+
+        public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetBitcoinMasterBetHistoryAsync(roundId, nickname);
+
+            return new BitcoinMasterBetHistory
+            {
+                RoundResult = mapper.Map<BitcoinMasterRoundResult>(result.Item1.Result),
+                Bets = result.Item2.Select(x => mapper.Map<BitcoinMasterBetHistoryRecord>(x))
+            };
+        }
+                
         public async Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IKenoMatchReportRepository>();

@@ -222,6 +222,23 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Clubs { get; set; }
     }
 
+    public class BitcoinMasterRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public decimal BettingPrice { get; set; }
+
+        public decimal ResultPrice { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
+
+        public bool IsUp => ResultPrice > BettingPrice;
+
+        public decimal PriceDiff => Math.Abs(ResultPrice - BettingPrice);
+
+        public bool IsEven => Math.Floor(ResultPrice) % 10 == 0;
+    }
+        
     public class KenoMatchRoundResultViewModel
     {
         public DateTime Time { get; set; }

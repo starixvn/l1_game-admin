@@ -271,6 +271,20 @@
     }
 }
 
+// bitcoin-master
+.bitcoin-master-result {
+    .up {
+        color: #63E473;
+    }
+
+    .down {
+        color: #DF4A43;
+    }
+
+    .result-detail {
+        margin-left: 5px;
+    }
+}
 
 .table-keno-match-result, .table-keno-power-result {
     .list-numbers {

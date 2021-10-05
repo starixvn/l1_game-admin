@@ -1,0 +1,318 @@
+﻿@import "../base/variables";
+@import "../components/tab";
+
+.form {
+    .form-check {
+        padding-left: 2rem;
+    }
+
+    .form-check-input {
+        margin-left: -1.8rem;
+    }
+
+    .form-row > [class*=col-] {
+        padding-right: 0.8rem;
+        padding-left: 0.8rem;
+    }
+
+    .round-id {
+        width: 10rem;
+    }
+
+    .input-validation-error {
+        border-color: #dc3545;
+    }
+}
+
+.report-container {
+    margin-top: 1rem;
+    padding: 0;
+
+    .table {
+        background-color: #fff;
+
+        th {
+            text-align: center;
+        }
+    }
+
+    .col-date {
+        width: 92px;
+        text-align: center;
+    }
+
+    .col-nickname {
+        width: 19.1rem;
+    }
+
+    .col-number {
+        width: 8.4rem;
+    }
+
+    .big-small-title {
+        text-transform: uppercase;
+        font-size: 2rem;
+    }
+
+    .line-cell {
+        width: .4rem;
+        background-color: #ddd;
+        padding: 0;
+    }
+}
+
+.round-result {
+    line-height: 3rem;
+    font-size: 1.6rem;
+
+    .result {
+        font-weight: bold;
+        color: #3ac47d;
+    }
+}
+
+// Custumize UI for select 2
+.select2-container--default .select2-selection--single {
+    height: 3.5rem;
+    border-color: #ced4da;
+    border-radius: 0.5rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 3.3rem;
+}
+
+.select2-container--open .select2-dropdown {
+    width: 12rem !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 3.4rem;
+}
+
+.card {
+    position: relative;
+    float: left;
+    display: inline-block;
+    height: 3.2rem;
+    width: 2.5rem;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    border: 0.1rem solid #949494;
+    border-radius: .4rem;
+    background-color: #fff;
+    box-shadow: 0.1rem 0.2rem 0.2rem rgba(0,0,0,0.2);
+    text-align: center;
+
+    span {
+        position: relative;
+        top: -.4rem;
+        font-size: 1.2rem;
+    }
+
+    .img {
+        position: absolute;
+        bottom: 0.2rem;
+        left: 0.5rem;
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    &:last-child:before {
+        position: absolute;
+        left: -0.5rem;
+        top: 0.6rem;
+        content: "";
+        height: 1.8rem;
+        width: 0.1rem;
+        background-color: #222;
+    }
+}
+
+// co, ro
+.card-type-0,
+.card-type-1 {
+    span {
+        color: #df0000;
+    }
+}
+
+// chuon, bich
+.card-type-2,
+.card-type-3 {
+    span {
+        color: #000;
+    }
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+}
+
+// Baccarat
+.baccarat-result {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .cards {
+        .card {
+            margin-left: 0.1rem;
+            margin-right: 0.1rem;
+        }
+
+        .card:nth-child(3) {
+            margin-left: 1rem;
+        }
+
+        .card:last-child:before {
+            display: none;
+        }
+
+        &:first-child {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        &:last-child {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        &:last-child:before {
+            position: relative;
+            top: 0.8rem;
+            display: inline-block;
+            height: 1.8rem;
+            width: 0.1rem;
+            margin: 0 0.6rem;
+            background-color: #222;
+            content: "";
+        }
+    }
+}
+
+// Fish Prawn
+.animal {
+    width: 3.1rem;
+    height: 3.1rem;
+    margin-left: .2rem;
+    margin-right: .2rem;
+    border: 0.1rem solid #949494;
+    border-radius: 0.4rem;
+    padding: 0.2rem;
+
+    @media only screen and (min-width: 768px) {
+        width: 4.1rem;
+        height: 4.1rem;
+        margin-left: .4rem;
+        margin-right: .4rem;
+    }
+}
+
+.vip-animal {
+    @extend .animal;
+    background-color: #624152;
+}
+
+
+.dice-list {
+    display: flex;
+    justify-content: center;
+}
+
+.dice {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    margin-left: .4rem;
+    margin-right: .4rem;
+
+    @media only screen and (min-width: 768px) {
+        width: 3.9rem;
+        height: 3.9rem;
+    }
+
+    &.sicbo {
+        border: 1px solid #ddd;
+        border-radius: 2px;
+    }
+}
+
+// Se die
+%chip {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.6rem;
+}
+
+.red-chip {
+    @extend %chip;
+    background: url(../../images/chip_do.png) no-repeat;
+}
+
+.white-chip {
+    @extend %chip;
+    background: url(../../images/chip_trang.png) no-repeat;
+}
+
+.blackjack-result, .threecards-result {
+    .cards {
+        .card:last-child:before {
+            display: none;
+        }
+    }
+}
+
+.table-three-cards {
+    .card-suit {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+<<<<<<< HEAD
+
+.table-keno-match-result, .table-keno-power-result {
+    .list-numbers {
+        display: grid;
+        grid-template-columns: repeat(5, 3rem);
+        flex-wrap: wrap;
+        grid-gap: .4rem;
+        justify-content: center;
+
+        .number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3rem;
+            width: 3rem;
+            border-radius: 50%;
+            border: 1px solid;
+
+            &.red {
+                border-color: #dc3545;
+            }
+
+            &.blue {
+                border-color: #16aaff;
+            }
+        }
+    }
+}
+=======
+// bitcoin-master
+.bitcoin-master-result {
+    .up {
+        color: #63E473;
+    }
+
+    .down {
+        color: #DF4A43;
+    }
+
+    .result-detail {
+        margin-left: 5px;
+    }
+}
+>>>>>>> 27382387 (fix: bitcoin master)

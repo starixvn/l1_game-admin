@@ -45,6 +45,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
         IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
+        IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
+        IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>
         IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
         IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
         IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
@@ -640,6 +642,54 @@ namespace GamesAdmin.Site.Features.ClientSites
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetBitcoinMasterReport(request.RoundId, request.Nickname, request.ExcludeBot);
+
+            return new BitcoinMasterReportResultViewModel
+            {
+                RoundResult = new BitcoinMasterRoundResultViewModel
+                {
+                    Number = result.RoundResult.Number,
+                    BettingPrice = result.RoundResult.BettingPrice,
+                    ResultPrice = result.RoundResult.ResultPrice,
+                    SettlementResult = result.RoundResult.SettlementResult
+                },
+                Records = result.Records.Select(x => new BitcoinMasterRecordViewModel
+                {
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                    Username = x.Username,
+                    Nickname = x.Nickname,
+                    Back = x.Back,
+                    Bet = x.Bet,
+                    BetWin = x.BetWin
+                })
+            };
+        }
+
+        public async Task<BitcoinMasterBetHistoryViewModel> Handle(GetBitcoinMasterBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetBitcoinMasterBetHistory(request.RoundId, request.Nickname);
+
+            return new BitcoinMasterBetHistoryViewModel
+            {
+                RoundResult = new BitcoinMasterRoundResultViewModel
+                {
+                    Number = result.RoundResult.Number,
+                    BettingPrice = result.RoundResult.BettingPrice,
+                    ResultPrice = result.RoundResult.ResultPrice
+                },
+                Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
+                {
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                    BetWin = x.BetWin,
+                    Refund = x.Refund,
+                    Bet = x.Bet,
+                    Choice = x.Choice
                 })
             };
         }

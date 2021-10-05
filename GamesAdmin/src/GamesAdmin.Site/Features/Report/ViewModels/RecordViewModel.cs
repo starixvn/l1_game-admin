@@ -276,13 +276,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Clubs { get; set; }
     }
 
+    public class BitcoinMasterRecordViewModel : BetRecordViewModel
+    {
+        public decimal Bet { get; set; }
+        public decimal Back { get; set; }
+    }
 
     public class KenoMatchRecordViewModel : BetRecordViewModel
     {
         public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
-
     }
+    
     public class KenoPowerRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }

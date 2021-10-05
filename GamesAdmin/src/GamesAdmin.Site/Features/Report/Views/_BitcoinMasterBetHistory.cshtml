@@ -1,0 +1,58 @@
+﻿@using GamesAdmin.Core
+@using  GamesAdmin.Core.Enumeration.BetChoices
+@using GamesAdmin.Core.Enumeration
+@model GamesAdmin.Site.Features.Report.ViewModels.BitcoinMasterBetHistoryViewModel
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Round ID</th>
+            <th>Betting Price</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="text-center">@Model.RoundResult.Number</td>
+            <td class="text-center">@HtmlHelpers.formatNumber2(Model.RoundResult.BettingPrice)</td>
+            <td class="text-center bitcoin-master-result">
+                <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span> <span class="@(Model.RoundResult.IsUp ? "up" :"down")">(<img src="~/images/@(Model.RoundResult.IsUp ? "up":"down").png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Bet Choice</th>
+            <th>Result</th>
+            <th>Stake</th>
+            <th>Refund</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            <tr>
+                <td class="text-center">@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="text-center">@(Enumeration.FromValue<BitcoinMasterBetChoice>(bet.Choice).DisplayName)</td>
+                <td class="text-center bitcoin-master-result">
+                    @if (string.Equals(BitcoinMasterBetChoice.UpValue, bet.Choice, StringComparison.OrdinalIgnoreCase) ||
+string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.OrdinalIgnoreCase))
+                    {
+                        <span>@HtmlHelpers.formatNumber(Model.RoundResult.ResultPrice)</span> <span class="@(Model.RoundResult.IsUp ? "up" :"down")">(<img src="~/images/@(Model.RoundResult.IsUp ? "up":"down").png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                    }
+                    else
+                    {
+                        <span>@(Model.RoundResult.IsEven ? "Even" : "Odd")</span> <span>(@(Math.Floor(Model.RoundResult.ResultPrice) % 10))</span>
+                    }
+                </td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(bet.Bet)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(bet.Refund)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(bet.BetWin)</td>
+            </tr>
+        }
+    </tbody>
+</table>

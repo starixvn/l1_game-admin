@@ -215,6 +215,15 @@ namespace GamesAdmin.Core.Models
         public bool Clubs { get; set; }
     }
 
+    public class BitcoinMasterRoundResult : RoundResult
+    {
+        public decimal BettingPrice { get; set; }
+
+        public decimal ResultPrice { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
+    }
+
     public class KenoMatchRoundResult : RoundResult
     {
         public KenoMatchPeriod HalfTime { get; set; }

@@ -103,6 +103,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<LotteryEndGameInfoService>();
             services.AddScoped<ThreeCardsEndGameInfoService>();
             services.AddScoped<HeroesSlotEndGameInfoService>();
+            services.AddScoped<BitcoinMasterEndGameInfoService>();
             services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
             services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
 
@@ -141,6 +142,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IKenoWestOnlineUserApi>(appSettings.GameServers.KenoWest.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoSouthOnlineUserApi>(appSettings.GameServers.KenoSouth.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 

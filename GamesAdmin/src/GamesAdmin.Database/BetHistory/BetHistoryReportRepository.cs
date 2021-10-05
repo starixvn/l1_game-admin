@@ -26,6 +26,8 @@ namespace GamesAdmin.Database
 
         Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId);
 
+        Task<(BitcoinMasterRoundEntity, IEnumerable<BitcoinMasterOnesEntity>)> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
+        
         Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity;
@@ -135,7 +137,12 @@ namespace GamesAdmin.Database
         public async Task<IEnumerable<OddEvenBetHistoryReportEntity>> GetOddEvenAsync(long roundId, string name)
         {
             var roundCollection = database.GetCollection<OddEvenRoundEntity>(Document.GetCollectionName(typeof(OddEvenRoundEntity)));
-            var oneCollection = database.GetCollection<OddEvenOnesEntity>(Document.GetCollectionName(typeof(OddEvenOnesEntity)));
+            var oneCollection = database.GetCollection<OddEvenOnesEntity>(Document.GetCollectionName(typeof(OddEvenOnesEntity)));  [Get("/report/kenomatch/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<KenoMatchBetReport> GetKenoMatchBetReport(string game, long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
+        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(string game, long roundId, string userId);
+
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
             var aggregateBuilder = roundCollection.Aggregate()
@@ -307,6 +314,18 @@ namespace GamesAdmin.Database
             var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
+        }
+
+        public async Task<(BitcoinMasterRoundEntity, IEnumerable<BitcoinMasterOnesEntity>)> GetBitcoinMasterBetHistoryAsync(
+            long roundId, string nickname)
+        {
+            var roundCollection = database.GetCollection<BitcoinMasterRoundEntity>(Document.GetCollectionName(typeof(BitcoinMasterRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var oneCollection = database.GetCollection<BitcoinMasterOnesEntity>(Document.GetCollectionName(typeof(BitcoinMasterOnesEntity)));
+            var ones = await oneCollection.Find(x => x.Round == roundId && x.Name == nickname).SortByDescending(x => x.Id).ToListAsync();
+
+            return (roundResult, ones);
         }
     }
 }

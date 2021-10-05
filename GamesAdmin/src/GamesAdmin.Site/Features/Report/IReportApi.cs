@@ -106,13 +106,19 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/kenomatch/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        [Get("/report/bitcoin_master/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
+        Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot);
+
+        [Get("/report/bitcoin_master/round/{roundId}/user/{nickname}")]
+        Task<BitcoinMasterBetHistory> GetBitcoinMasterBetReport(long roundId, string nickname);
+
+       [Get("/report/kenomatch/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<KenoMatchBetReport> GetKenoMatchBetReport(string game, long roundId, string nickname, bool excludeUUS);
 
         [Get("/report/bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
         Task<KenoMatchBetHistory> GetKenoMatchBetHistory(string game, long roundId, string userId);
 
-        [Get("/report/kenopower/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+   	[Get("/report/kenopower/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<KenoPowerBetReport> GetKenoPowerBetReport(string game, long roundId, string nickname, bool excludeUUS);
 
         [Get("/report/bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]

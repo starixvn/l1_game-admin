@@ -1,0 +1,85 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model BitcoinMasterReportResultViewModel
+@{
+    var totalRow = Model.Total;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Betting Price</th>
+                        <th>Result</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@HtmlHelpers.formatNumber2(Model.RoundResult.BettingPrice)</td>
+                        <td class="text-center bitcoin-master-result">
+                            <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span> <span class="@(Model.RoundResult.IsUp ? "up" :"down")">(<img src="~/images/@(Model.RoundResult.IsUp ? "up":"down").png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                        </td>
+                        <td class="text-center">@Model.WinningOptions</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th>Username</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            @if (Model.Records.Any())
+            {
+                <tbody>
+                    @foreach (var record in Model.Records)
+                    {
+                        <tr>
+                            <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
+                            <td class="text-left">@record.Nickname</td>
+                            <td class="text-left">@record.Username</td>
+
+                            <td class="text-right">
+                                <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                                   asp-action="GetBitcoinMasterBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@record.Nickname">
+                                    @HtmlHelpers.formatNumber2(record.Bet)
+                                </a>
+                            </td>
+                            <td class="text-right">@HtmlHelpers.formatNumber2(record.Back)</td>
+                            <td class="text-right">@HtmlHelpers.formatNumber2(record.BetWin)</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="total">
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(totalRow.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(totalRow.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(totalRow.BetWin)</td>
+                    </tr>
+                </tfoot>
+            }
+            else
+            {
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="6">No data</td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+</div>
