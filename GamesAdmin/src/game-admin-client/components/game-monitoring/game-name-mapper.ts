@@ -26,6 +26,7 @@ export default {
   vipsediewar: 28,
   lottery: 31,
   threecards: 35,
+  bitcoinMaster: 43,
   kenomatch1: 36,
   kenomatch2: 37,
   kenopower1: 40,

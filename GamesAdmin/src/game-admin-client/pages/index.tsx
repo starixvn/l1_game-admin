@@ -16,6 +16,7 @@ import GameWsEndpoint from "../components/util/game-server-endpoint/websocket";
 import MessageTransmitter, {
   MessageTransmitterType,
 } from "../components/util/message-transmitter";
+import cookieKeys from "../components/game-monitoring/cookie-keys";
 
 type Props = {
   router: NextRouter;
@@ -32,7 +33,7 @@ type State = {
 
 const NewSocketGameIds = [
   1, 2, 3, 4, 6, 7, 8, 9, 10, 21, 22, 24, 25, 26, 27, 28, 31, 35, 12, 13, 14,
-  15, 16, 17, 18, 19, 36, 37, 40, 41,
+  15, 16, 17, 18, 19, 36, 37, 40, 41, 43,
 ];
 
 export class Home extends React.Component<Props, State> {
@@ -48,7 +49,7 @@ export class Home extends React.Component<Props, State> {
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
         : Cookies.get("token");
-    this.protocol = "wss";
+    this.protocol = "ws";
     this.isProduction =
       Cookies.get("env") && Cookies.get("env").toLocaleUpperCase() === "PRO";
     this.messageTransmitter = MessageTransmitter();
@@ -387,6 +388,13 @@ export class Home extends React.Component<Props, State> {
               route: process.env.NEXT_PUBLIC_KENO_NORTH_SERVER_PROXY_ROUTE,
             }
           : this.getGameSocketCookie(gameId);
+      case gameNameMapper.bitcoinMaster:
+        return process.env.NEXT_PUBLIC_ENV === "local"
+          ? {
+              endpoint: process.env.NEXT_PUBLIC_BITCOIN_MASTER_SERVER_ENDPOINT,
+              route: process.env.NEXT_PUBLIC_BITCOIN_MASTER_SERVER_PROXY_ROUTE,
+            }
+          : this.getGameSocketCookie(gameId);
       default:
         return process.env.NEXT_PUBLIC_ENV === "local"
           ? {
@@ -398,17 +406,6 @@ export class Home extends React.Component<Props, State> {
   }
 
   getGameSocketCookie(gameId) {
-    const cookieKeys = {
-      kenomax: "keno-max",
-      kenomax2: "keno-max2",
-      kenomini: "keno-mini",
-      kenomini2: "keno-mini2",
-      kenoeast: "keno-east",
-      kenowest: "keno-west",
-      kenosouth: "keno-south",
-      kenonorth: "keno-north",
-    };
-
     const gameNames = Object.keys(gameNameMapper).filter(
       (k) => gameNameMapper[k] === gameId
     );

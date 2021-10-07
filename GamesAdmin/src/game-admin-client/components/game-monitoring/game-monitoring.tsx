@@ -21,6 +21,7 @@ import VipSeDieWar from "./vip-se-die-war";
 import SicBo from "./sic-bo";
 import Lottery from "./lottery";
 import ThreeCards from "./three-cards";
+import BitcoinMaster from "./bitcoin-master";
 import { KenoMatch1, KenoMatch2 } from "./keno-match";
 import { KenoPower1, KenoPower2 } from "./keno-power";
 
@@ -163,6 +164,10 @@ const gameMapper = {
   35: {
     component: ThreeCards,
     ...getInfoByGameKey("ThreeCards"),
+  },
+  43: {
+    component: BitcoinMaster,
+    ...getInfoByGameKey("KenoEast"),
   },
   36: {
     component: KenoMatch1,

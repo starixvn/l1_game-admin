@@ -15,7 +15,9 @@ namespace GamesAdmin.Database.Entities
 
         public GlobalConfigEntity(string type)
         {
+            Time = DateTime.UtcNow;
             Type = type;
+            Configs = new Dictionary<string, IList<string>>();
         }
 
         public GlobalConfigEntity(string type, Dictionary<string, IList<string>> configs)
