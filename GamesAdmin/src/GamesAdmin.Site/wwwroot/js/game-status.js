@@ -318,7 +318,7 @@
             $.ajax({
                 method: "GET",
                 url: "/status/disableMessage?name=" + name
-            }).done(function (result) {                
+            }).done(function (result) {
                 $('#msgGameName').val(name);
                 $('#updateMsgGameName').html(displayName);
                 $('#vnMessage').val(result["vi-VN"]);
@@ -326,7 +326,7 @@
 
                 $('#messageModal').modal('show');
             });
-            
+
         },
 
         submitReload: function () {
@@ -482,6 +482,86 @@
                 }, 1000);
             });
         },
+
+        showUpdateSuperPlayersForm: function () {
+            $.ajax({
+                method: "GET",
+                url: "/status/super_players"
+            }).done(function (content) {
+                if (content) {
+                    $('#super-players').html(content);
+                    $('#super-players-modal').modal('show');
+                }
+            });
+        },
+        updateSuperPlayers: function () {
+            const players = $('#super-players-names').val();
+            const url = "/status/super_players";
+            const data = { superPlayers: players };
+            $('#update-super-players-btn').prop('disabled', true);
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                dataType: 'json',
+                data: data,
+            }).done(function (result) {
+                var msg = result ? '#update-super-players-success' : '#update-super-players-failed';
+                $(msg).show();
+                $("#super-players-msg-container").show();
+
+                setTimeout(function () {
+                    $('#update-super-players-btn').prop('disabled', false);
+                    $("#super-players-msg-container").hide();
+                    $(msg).hide();
+                    $('#super-players-modal').modal('hide');
+                }, 1000);
+            });
+        },
+
+        showBetaVersion: function () {
+            const modal = $('#betaVersionModal');
+
+            const checkedGames = this.getCheckedGames();
+            if (checkedGames.message.length === 0) {
+                this.showAlert("You should choose at least one game.");
+                return;
+            }
+
+            const message = `Are you sure you want to UNMARK BETA Version of the following games<br /><ul>` + checkedGames.message + "</ul>";
+            modal.find('#betaVersionContent').html(message);
+            modal.modal('show');
+        },
+        changeBetaVersionFlag: function () {
+            const modal = $('#betaVersionModal');
+            const checkedGames = this.getCheckedGames();
+            const isBeta = modal.find('#betaVersionCheckbox').is(":checked");
+            const message = `Are you sure you want to ${isBeta ? "MARK" : "UNMARK"} BETA Version of the following games<br /><ul>` + checkedGames.message + "</ul>";
+            modal.find('#betaVersionContent').html(message);
+            modal.find('#betaVersionFlag').val(isBeta);
+        },
+        submitBetaVersion: function () {
+            const modal = $('#betaVersionModal');
+            modal.find('#confirmBtn').prop('disabled', true);
+
+            const isBeta = modal.find('#betaVersionFlag').val();
+            const checkedGames = this.getCheckedGames();
+            const params = { games: checkedGames.games, isBeta };
+
+            $.ajax({ method: "POST", url: `/status/update_beta_version`, data: params })
+                .done(function (updated) {
+                    const msg = updated ? '#updateMsgSuccess' : '#updateMsgFailed';
+                    modal.find(msg).show();
+
+                    setTimeout(function () {
+                        modal.find('#confirmBtn').prop('disabled', false);
+                        modal.find('#updateMsgSuccess').hide();
+                        modal.find('#updateMsgFailed').hide();
+                        modal.modal('hide');
+                        location.reload();
+                    }, 1000);
+                });
+        },
     }
 }(jQuery));
 
@@ -491,7 +571,7 @@ $(document).ready(function () {
             "paging": false,
             "ordering": false
         });
-    }    
+    }
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);

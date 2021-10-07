@@ -21,6 +21,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateSlotConfigRequest, bool>
         , IRequestHandler<UpdateSlotIconOddsRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
+        , IRequestHandler<UpdateBetaVersionRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly IGlobalConfigService globalConfigService;
@@ -71,5 +72,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
+
+        public Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
+            => gameService.UpdateBetaVersion(request.Names, request.IsBeta);
     }
 }

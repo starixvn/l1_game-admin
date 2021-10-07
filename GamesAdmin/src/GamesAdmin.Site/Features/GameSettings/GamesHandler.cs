@@ -36,6 +36,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
+        , IRequestHandler<GetSuperPlayersRequest, SuperPlayersViewModel>
+        , IRequestHandler<UpdateSuperPlayersRequest, bool>
+        , IRequestHandler<UpdateBetaVersionRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -209,14 +212,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                 : gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => gameService.Add(new GameConfig(
-            string.Empty,
-            new Dictionary<string, double>(),
-            request.GameInfo,
-            request.EnableSetting,
-            request.BotSettings,
-            request.BetLimit,
-            request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
+            => gameService.Add(new GameConfig(
+                string.Empty,
+                new Dictionary<string, double>(),
+                request.GameInfo,
+                request.EnableSetting,
+                request.BotSettings,
+                request.BetLimit,
+                request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
 
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);
@@ -344,5 +347,20 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
+
+        public async Task<SuperPlayersViewModel> Handle(GetSuperPlayersRequest request, CancellationToken cancellationToken)
+        {
+            var configs = await gameService.GetSuperPlayers();
+            var names = configs == null || !configs.Configs.ContainsKey("names")
+                ? Enumerable.Empty<string>() : configs.Configs["names"];
+
+            return new SuperPlayersViewModel(names);
+        }
+
+        public Task<bool> Handle(UpdateSuperPlayersRequest request, CancellationToken cancellationToken)
+            => gameService.UpdateSuperPlayers(request);
+
+        public async Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
+            => await gameService.UpdateBetaVersion(request.Names, request.IsBeta);
     }
 }

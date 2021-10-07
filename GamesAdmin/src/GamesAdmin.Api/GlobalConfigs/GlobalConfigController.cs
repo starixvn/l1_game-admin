@@ -18,12 +18,20 @@ namespace GamesAdmin.Api.GlobalConfigs
             this.mediator = mediator;
         }
 
-        [HttpPost("{name}/update_site_exclusions")]
-        public Task<bool> UpdateSiteExclusions(string name, string[] exclusions)
-          => mediator.Send(new UpdateSiteExclusionRequest(name, exclusions));
-
         [HttpGet("get_site_exclusions")]
         public Task<GlobalConfig> GetSiteExclusions()
-          => mediator.Send(new GetGlobalConfigRequest(GlobalConfigType.SiteExclusion));
+            => mediator.Send(new GetGlobalConfigRequest(GlobalConfigType.SiteExclusion));
+
+        [HttpGet("get_super_players")]
+        public Task<GlobalConfig> GetSuperPlayers()
+            => mediator.Send(new GetGlobalConfigRequest(GlobalConfigType.SuperPlayers));
+
+        [HttpPost("{name}/update_site_exclusions")]
+        public Task<bool> UpdateSiteExclusions(string name, string[] exclusions)
+            => mediator.Send(new UpdateSiteExclusionRequest(name, exclusions));
+
+        [HttpPost("update_super_players")]
+        public Task<bool> UpdateSuperPlayers(string[] superPlayers)
+            => mediator.Send(new UpdateSuperPlayersRequest(superPlayers));
     }
 }
