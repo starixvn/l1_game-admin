@@ -42,6 +42,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSiteExclusion(string name, string[] exclusions);
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
+
+        Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -102,7 +104,8 @@ namespace GamesAdmin.Api.Games
                     HoursMaxBot = game.BotSetting.HoursMaxBot,
                     SlotsConfig = game.SlotsConfig,
                     SiteExclusions = new string[] { },
-                    Time = DateTime.Now
+                    Time = DateTime.Now,
+                    IsBeta = true
                 };
 
                 await repository.InsertOneAsync(entity);
@@ -373,6 +376,31 @@ namespace GamesAdmin.Api.Games
             var gameConfig = await GetByName(name);
 
             return new Dictionary<string, string> { { Language.VnValue, gameConfig.EnableSetting.DisabledMessage } };
+        }
+
+        public async Task<bool> UpdateBetaVersion(string[] names, bool isBeta)
+        {
+            try
+            {
+                sentryClient.CaptureMessage($"Game {string.Join(", ", names)} is beta: {isBeta}");
+
+                foreach (var n in names)
+                {
+                    var update = Builders<GameConfigEntity>.Update
+                        .Set(field => field.IsBeta, isBeta)
+                        .Set(field => field.GameId, (int)Enumeration.FromValue<Game>(n).GameId);
+
+                    await repository.UpdateAsync(config => n.ToLowerInvariant() == config.Name, update);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
     }
 }

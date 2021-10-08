@@ -8,8 +8,9 @@ using MediatR;
 namespace GamesAdmin.Api.GlobalConfigs
 {
     public class GlobalConfigHandler :
-        IRequestHandler<UpdateSiteExclusionRequest, bool>
-        , IRequestHandler<GetGlobalConfigRequest, GlobalConfig>
+        IRequestHandler<GetGlobalConfigRequest, GlobalConfig>,
+        IRequestHandler<UpdateSiteExclusionRequest, bool>,
+        IRequestHandler<UpdateSuperPlayersRequest, bool>
     {
         private readonly IGlobalConfigService globalConfigService;
         private readonly IGameSettingsService gameSettingService;
@@ -20,6 +21,9 @@ namespace GamesAdmin.Api.GlobalConfigs
             this.gameSettingService = gameSettingService;
         }
 
+        public Task<GlobalConfig> Handle(GetGlobalConfigRequest request, CancellationToken cancellationToken)
+                    => globalConfigService.GetGlobalConfigByType(request.Type);
+
         public async Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
         {
             var result = await globalConfigService.UpdateSiteExclusions(request.Name, request.Exclusions);
@@ -28,7 +32,7 @@ namespace GamesAdmin.Api.GlobalConfigs
             return result;
         }
 
-        public Task<GlobalConfig> Handle(GetGlobalConfigRequest request, CancellationToken cancellationToken)
-        => globalConfigService.GetGlobalConfigByType(request.Type);
+        public async Task<bool> Handle(UpdateSuperPlayersRequest request, CancellationToken cancellationToken)
+            => await globalConfigService.UpdateSuperPlayers(request.SuperPlayers);
     }
 }

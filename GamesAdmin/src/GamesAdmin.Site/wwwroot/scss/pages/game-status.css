@@ -285,3 +285,13 @@
       transform: translateX(-50%); }
   .nav-customize .nav-link:hover {
     color: #145388; }
+
+.beta-version-modal .content-body {
+  font-size: 1.6rem; }
+  .beta-version-modal .content-body ul {
+    list-style: disc;
+    font-weight: bold;
+    font-size: 1.5rem; }
+
+.beta-version-modal .beta-version-checkbox {
+  padding: 1rem 0; }

@@ -313,6 +313,40 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
+        [Route("status/super_players")]
+        public async Task<IActionResult> SuperPlayers()
+        {
+            var superPlayers = await mediator.Send(new GetSuperPlayersRequest());
+            return View(superPlayers);
+        }
+
+        [HttpPost]
+        [Route("status/super_players")]
+        public async Task<IActionResult> SuperPlayers([Bind] UpdateSuperPlayersRequest request)
+        {
+            try
+            {
+                await mediator.Send(request);
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("status/update_beta_version")]
+        public async Task<IActionResult> BetaVersion(string[] games, bool isBeta)
+        {
+            var result = await mediator.Send(new UpdateBetaVersionRequest(games, isBeta));
+
+            return Json(result);
+        }
+
         private void AddMiniKenoCookie()
         {
             var cookies = new[] { "keno-max", "keno-max2", "keno-mini", "keno-mini2", "keno-east", "keno-west", "keno-south", "keno-north" };
