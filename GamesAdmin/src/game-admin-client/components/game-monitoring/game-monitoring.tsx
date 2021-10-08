@@ -167,7 +167,7 @@ const gameMapper = {
   },
   43: {
     component: BitcoinMaster,
-    ...getInfoByGameKey("KenoEast"),
+    ...getInfoByGameKey("BitcoinMaster"),
   },
   36: {
     component: KenoMatch1,
