@@ -1,5 +1,5 @@
 export default {
-  overTime: 61,
-  wholeRound: 60,
+  overTime: 121,
+  wholeRound: 120,
   waitingTime: 6,
 };

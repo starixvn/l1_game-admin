@@ -270,8 +270,7 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<BitcoinMasterRoundResultEntity, BitcoinMasterRoundResult>();
             CreateMap<BitcoinMasterOnesEntity, BitcoinMasterBetHistoryRecord>()
-                .ForMember(x => x.Bet, opt => opt.MapFrom((source) => source.Bet ?? source.Amount))
-                .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back ?? source.Refund));
+                  .ForMember(x => x.Bet, opt => opt.MapFrom((source) => source.Up + source.Down + source.Odd + source.Even));
                 
             CreateMap<KenoMatchRoundEntity, KenoMatchRoundResult>();
             CreateMap<KenoMatchPeriodEntity, KenoMatchPeriod>();

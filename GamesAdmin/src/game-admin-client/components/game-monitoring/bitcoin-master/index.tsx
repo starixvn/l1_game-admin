@@ -178,16 +178,16 @@ export default class BitcoinMaster extends React.Component<
   setBettingPrice(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       result: {
-        bettingPrice: parseFloat(event.target.value),
-        resultPrice: this.state.result.resultPrice,
+        open: parseFloat(event.target.value),
+        close: this.state.result.close,
       },
     });
   }
   setResultPrice(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       result: {
-        resultPrice: parseFloat(event.target.value),
-        bettingPrice: this.state.result.bettingPrice,
+        close: parseFloat(event.target.value),
+        open: this.state.result.open,
       },
     });
   }
@@ -263,13 +263,8 @@ export default class BitcoinMaster extends React.Component<
   }
 
   getPriceDiffStyle(result) {
-    const bettingPrice = result.bettingPrice
-      ? Math.floor(result.bettingPrice * 100) / 100
-      : 0;
-
-    const resultPrice = result.resultPrice
-      ? Math.floor(result.resultPrice * 100) / 100
-      : 0;
+    const bettingPrice = result.open ? Math.floor(result.open * 100) / 100 : 0;
+    const resultPrice = result.close ? Math.floor(result.close * 100) / 100 : 0;
 
     const priceDiff = result.priceDiff
       ? Math.floor(result.priceDiff * 100) / 100

@@ -268,7 +268,12 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ThreeCardsSettlementResultEntity, ThreeCardsSettlementResult>();
             CreateMap<ThreeCardsBetReportEntity, ThreeCardsBetRecord>();
 
+            CreateMap<BitcoinMasterRoundResultEntity, BitcoinMasterRoundResult>();
+            CreateMap<BitcoinMasterOnesEntity, BitcoinMasterBetHistoryRecord>()
 <<<<<<< HEAD
+                .ForMember(x => x.Bet, opt => opt.MapFrom((source) => source.Bet ?? source.Amount))
+                .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back ?? source.Refund));
+                
             CreateMap<KenoMatchRoundEntity, KenoMatchRoundResult>();
             CreateMap<KenoMatchPeriodEntity, KenoMatchPeriod>();
             CreateMap<KenoMatchPeriodResultEntity, KenoMatchPeriodResult>();
@@ -282,11 +287,8 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoPowerBetReportEntity, KenoPowerBetRecord>();
             CreateMap<KenoPowerBetEntity, KenoPowerBetHistoryRecord>();
 =======
-            CreateMap<BitcoinMasterRoundResultEntity, BitcoinMasterRoundResult>();
-            CreateMap<BitcoinMasterOnesEntity, BitcoinMasterBetHistoryRecord>()
-                .ForMember(x => x.Bet, opt => opt.MapFrom((source) => source.Bet ?? source.Amount))
-                .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back ?? source.Refund));
->>>>>>> 27382387 (fix: bitcoin master)
+                  .ForMember(x => x.Bet, opt => opt.MapFrom((source) => source.Up + source.Down + source.Odd + source.Even));
+>>>>>>> 20c95f1c (fix: bitcoin master)
         }
     }
 }

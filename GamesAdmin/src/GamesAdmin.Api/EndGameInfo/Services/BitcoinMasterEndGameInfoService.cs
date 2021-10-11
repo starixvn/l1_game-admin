@@ -25,13 +25,14 @@ namespace GamesAdmin.Api.EndGameInfo
             }
 
             var bet = bets.FirstOrDefault();
+            var amount = bet.Up + bet.Down + bet.Odd + bet.Even;
 
             return new EndGameInfoResult
             {
                 EndTime = round.Time,
-                ValidBetAmount = bet.Bet ?? bet.Amount,
-                TotalAmount = bet.Bet ?? bet.Amount,
-                TotalWin = bet.Betwin > 0 ? bet.Betwin + (bet.Bet ?? bet.Amount) : (bet.Back ?? bet.Refund)
+                ValidBetAmount = amount,
+                TotalAmount = amount,
+                TotalWin = bet.Betwin > 0 ? bet.Betwin + amount : bet.Refund
             };
         }
     }

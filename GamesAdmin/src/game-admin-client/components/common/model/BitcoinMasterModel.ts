@@ -16,8 +16,8 @@ export class BitcoinMasterBetListModel {
 }
 
 export class BitcoinMasterResultModel {
-  bettingPrice: number;
-  resultPrice: number;
+  open: number;
+  close: number;
 }
 
 class SettlementResultModel {

@@ -33,9 +33,9 @@ namespace GamesAdmin.Database
                     Time = x.Time,
                     Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                     Nickname = x.AccountInfos.Name,
-                    Bet = x.Bet ?? x.Amount,
+                    Bet = x.Amount,
                     BetWin = x.Betwin,
-                    Back = x.Back ?? x.Refund
+                    Back = x.Refund
                 });
             var records = await project.ToListAsync();
 
