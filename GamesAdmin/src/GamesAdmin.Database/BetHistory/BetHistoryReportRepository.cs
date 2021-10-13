@@ -30,7 +30,7 @@ namespace GamesAdmin.Database
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity;
 
-        Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, bool>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
+        Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, decimal>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
           where TRoundEntity : KenoPowerRoundEntity
           where TBetEntity : KenoPowerBetEntity
           where TOneEntity : KenoPowerOneEntity;
@@ -292,7 +292,7 @@ namespace GamesAdmin.Database
             return (roundResult, bets);
         }
 
-        public async Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, bool>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
+        public async Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, decimal>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
           where TRoundEntity : KenoPowerRoundEntity
           where TBetEntity : KenoPowerBetEntity
           where TOneEntity : KenoPowerOneEntity

@@ -668,6 +668,7 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<KenoPowerRoundResult>(result.Item1),
                 Bets = result.Item2.Select(x => mapper.Map<KenoPowerBetHistoryRecord>(x)),
+                Odds = result.Item3
             };
         }
 

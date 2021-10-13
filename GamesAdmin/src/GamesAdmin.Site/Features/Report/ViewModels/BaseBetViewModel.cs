@@ -11,6 +11,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Nickname { get; set; }
 
         public decimal BetWin { get; set; }
+        public decimal Refund { get; set; }
 
         public DateTimeOffset Time { get; set; }
     }

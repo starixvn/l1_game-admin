@@ -38,6 +38,7 @@ namespace GamesAdmin.Database
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
                         TotalBet = x.TotalAmount,
+                        Refund = x.Refund,
                         UserId = x.Uid
                     });
                 var records = await project.ToListAsync();

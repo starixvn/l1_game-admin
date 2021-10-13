@@ -279,6 +279,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class KenoMatchRecordViewModel : BetRecordViewModel
     {
+        public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
 
     }

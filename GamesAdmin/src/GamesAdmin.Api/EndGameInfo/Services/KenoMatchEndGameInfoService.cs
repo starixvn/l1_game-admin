@@ -28,13 +28,14 @@ namespace GamesAdmin.Api.EndGameInfo
 
             var totalBetAmount = bets.Sum(x => x.TotalAmount);
             var totalBetWin = bets.Sum(x => x.Betwin);
+            var totalRefund = bets.Sum(x => x.Refund);
 
             return new EndGameInfoResult
             {
                 EndTime = round.Time,
                 ValidBetAmount = totalBetAmount,
                 TotalAmount = totalBetAmount,
-                TotalWin = totalBetWin > 0 ? totalBetWin : bets.Sum(x => x.Refund)
+                TotalWin = totalBetWin > 0 ? totalBetWin + totalRefund : totalRefund
             };
         }
     }

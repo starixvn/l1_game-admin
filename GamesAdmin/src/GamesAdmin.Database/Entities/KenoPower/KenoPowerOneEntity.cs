@@ -20,7 +20,7 @@ namespace GamesAdmin.Database.Entities
         public decimal TotalAmount { get; set; }
         public decimal Refund { get; set; }
 
-        public Dictionary<string, bool> Odds { get; set; }
+        public Dictionary<string, decimal> Odds { get; set; }
     }
 
     [BsonCollection("kenopower1_ones")]

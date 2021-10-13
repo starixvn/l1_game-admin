@@ -174,8 +174,8 @@ namespace GamesAdmin.Api.Report
         {
             return request.Game switch
             {
-                GameId.KenoMatch1 => reportService.GetKenoPower1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
-                GameId.KenoMatch2 => reportService.GetKenoPower2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                GameId.KenoPower1 => reportService.GetKenoPower1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                GameId.KenoPower2 => reportService.GetKenoPower2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
         }

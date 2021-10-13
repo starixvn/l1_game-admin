@@ -9,7 +9,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public IEnumerable<KenoPowerBetHistoryRecord> Bets { get; set; }
 
-        public Dictionary<string, bool> Odds { get; set; }
+        public Dictionary<string, decimal> Odds { get; set; }
     }
 
     public class KenoPowerBetHistoryRecord

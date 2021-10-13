@@ -115,7 +115,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/kenopower/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<KenoPowerBetReport> GetKenoPowerBetReport(string game, long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/bet_history/kenopơer/{game}/round/{roundId}/user/{userId}")]
+        [Get("/report/bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
         Task<KenoPowerBetHistory> GetKenoPowerBetHistory(string game, long roundId, string userId);
     }
 }

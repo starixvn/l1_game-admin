@@ -18,7 +18,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th rowspan="2">Date</th>
+                        <th rowspan="2">Date (GMT+7)</th>
                         <th rowspan="2">Round ID</th>
                         <th rowspan="2">Results</th>
                         <th colspan="4">Winning Options</th>
@@ -136,26 +136,28 @@
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th class="col-number">Total Bets</th>
+                    <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var bet in Model.Records)
                 {
-                    <tr>
-                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>@bet.Username</td>
-                        <td>
-                            @bet.Nickname
-                        </td>
-                        <td class="text-right">
-                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetKenoPowerBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
-                                @HtmlHelpers.formatNumber(bet.TotalBet)
-                            </a>
-                        </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
-                    </tr>
+                <tr>
+                    <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                    <td>@bet.Username</td>
+                    <td>
+                        @bet.Nickname
+                    </td>
+                    <td class="text-right">
+                        <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                           asp-action="GetKenoPowerBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                            @HtmlHelpers.formatNumber(bet.TotalBet)
+                        </a>
+                    </td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(bet.Refund)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                </tr>
                 }
 
                 @if (!Model.Records.Any())
