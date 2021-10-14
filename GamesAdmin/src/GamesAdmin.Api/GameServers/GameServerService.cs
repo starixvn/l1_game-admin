@@ -184,10 +184,20 @@ namespace GamesAdmin.Api.GameServers
                     result.Result = request.Results.ToList();
 
                     return result;
-                }                
+                }
+
+                return new SettlementBoard
+                {
+                    InfoMessage = await gameUserService.IsAbleToSetSlotResultInfo(request.Nickname, isExcludeUUS)
+                };
             }
             catch (Exception ex)
             {
+                return new SettlementBoard
+                {
+                    InfoMessage = ex?.Message ?? "Error"
+                };
+
                 HandleException(ex);
             }
 

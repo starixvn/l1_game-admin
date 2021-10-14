@@ -22,6 +22,8 @@ namespace GamesAdmin.Api.GameUser
         Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS);
 
         Task<string> GetCharacterNameAsync(int memberId);
+
+        Task<string> IsAbleToSetSlotResultInfo(string nickname, bool excludeUUS);
     }
 
     public class GameUserService : IGameUserService
@@ -103,6 +105,13 @@ namespace GamesAdmin.Api.GameUser
             }
 
             return string.Empty;
+        }
+
+        public async Task<string> IsAbleToSetSlotResultInfo(string nickname, bool excludeUUS)
+        {
+            var accountInfo = await accountInfoRepository.FindOneAsync(x => x.Name == nickname);
+
+            return $"Unable to set board for {nickname}, currency {accountInfo?.Currency} with excludeUUS {excludeUUS}, is bot {accountInfo?.IsBot}, disabled {accountInfo?.Disabled}";
         }
     }
 }
