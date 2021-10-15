@@ -309,7 +309,7 @@ export default class KenoPower extends React.Component<
         />
         <ModalBody>
           <Form onSubmit={this.handleChangeResult}>
-            <h3>#{roundNumber + 1}</h3>
+            <h3 className={styles.title}>#{roundNumber + 1}</h3>
             <FormGroup>
               <Label for="blue">Blue</Label>
               <Input name="blue" />
