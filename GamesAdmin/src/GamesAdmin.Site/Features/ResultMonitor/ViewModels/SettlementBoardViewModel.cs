@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor.ViewModels
 
         public SettlementBoard Board { get; }
 
-        public bool IsError => Board == null || !string.IsNullOrEmpty(Board.InfoMessage);
+        public bool IsError => Board == null;
 
         public byte[][] FormattedBoard => Board?.Result?.ToArray()?.FormatBoard();
 

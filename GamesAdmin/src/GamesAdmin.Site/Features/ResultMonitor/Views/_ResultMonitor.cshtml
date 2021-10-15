@@ -4,7 +4,6 @@
 @if (Model.IsError)
 {
     <div class="message-error" id="failedMsg">
-        (@Model.Board.InfoMessage)
         Sending result unsuccessfully. The following conditions that must be satisfied in order to monitor board result.<br />
         - Result cannot be set for real user and banned bot. <br />
         - Result cannot be set for UUS user when the "Exclude UUS" setting is TRUE. <br />

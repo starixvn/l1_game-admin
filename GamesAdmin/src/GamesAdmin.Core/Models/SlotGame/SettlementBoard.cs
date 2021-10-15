@@ -18,8 +18,6 @@ namespace GamesAdmin.Core.Models.SlotGame
 
         [JsonProperty("jackpotPayline")]
         public int JackpotPayline { get; set; }
-
-        public string InfoMessage { get; set; }
     }
 
     public class PaylineItem
