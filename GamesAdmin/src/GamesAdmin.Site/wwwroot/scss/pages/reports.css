@@ -210,6 +210,15 @@
   width: 30px;
   height: 30px; }
 
+.bitcoin-master-result .up {
+  color: #63E473; }
+
+.bitcoin-master-result .down {
+  color: #DF4A43; }
+
+.bitcoin-master-result .result-detail {
+  margin-left: 5px; }
+
 .table-keno-match-result .list-numbers, .table-keno-power-result .list-numbers {
   display: grid;
   grid-template-columns: repeat(5, 3rem);

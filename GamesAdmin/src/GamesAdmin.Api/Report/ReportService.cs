@@ -80,15 +80,15 @@ namespace GamesAdmin.Api.Report
 
         Task<ThreeCardsBetReport> GetThreeCardsReportAsync(long roundId, string nickname, bool excludeUUS);
 
+        Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot);
+
+        Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
+
         Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<KenoMatchBetReport> GetKenoMatch2ReportAsync(long roundId, string nickname, bool excludeUUS);
-
-  	Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId);
+        Task<KenoMatchBetHistory> GetKenoMatch1BetHistoryAsync(long roundId, string userId);
 
         Task<KenoMatchBetHistory> GetKenoMatch2BetHistoryAsync(long roundId, string userId);
 
@@ -97,6 +97,7 @@ namespace GamesAdmin.Api.Report
         Task<KenoPowerBetReport> GetKenoPower2ReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<KenoPowerBetHistory> GetKenoPower1BetHistoryAsync(long roundId, string userId);
+
         Task<KenoPowerBetHistory> GetKenoPower2BetHistoryAsync(long roundId, string userId);
     }
 
@@ -590,7 +591,7 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot)
         {
             var repository = serviceProvider.GetService<IBitcoinMasterReportRepository>();
             var result = await repository.GetAsync(roundId, nickname, excludeBot);
@@ -627,7 +628,7 @@ namespace GamesAdmin.Api.Report
                 Bets = result.Item2.Select(x => mapper.Map<BitcoinMasterBetHistoryRecord>(x))
             };
         }
-                
+
         public async Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var repository = serviceProvider.GetService<IKenoMatchReportRepository>();
@@ -699,7 +700,6 @@ namespace GamesAdmin.Api.Report
                 Records = result.Item2.Select(x => mapper.Map<KenoPowerBetRecord>(x))
             };
         }
-
 
         public async Task<KenoPowerBetHistory> GetKenoPower1BetHistoryAsync(long roundId, string userId)
         {

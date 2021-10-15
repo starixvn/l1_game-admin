@@ -33,7 +33,7 @@
         Lottery = 31,
         ThreeCards = 35,
         HeroesSlot = 38,
-        BitcoinMaster = 43
+        BitcoinMaster = 43,
         KenoMatch1,
         KenoMatch2,
         KenoPower1 = 40,

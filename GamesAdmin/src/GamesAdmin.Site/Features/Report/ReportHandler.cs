@@ -46,7 +46,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
         IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
-        IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>
+        IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
         IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
         IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
         IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,

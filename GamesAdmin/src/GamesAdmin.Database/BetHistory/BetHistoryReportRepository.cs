@@ -27,7 +27,7 @@ namespace GamesAdmin.Database
         Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId);
 
         Task<(BitcoinMasterRoundEntity, IEnumerable<BitcoinMasterOnesEntity>)> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
-        
+
         Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity;
@@ -137,12 +137,7 @@ namespace GamesAdmin.Database
         public async Task<IEnumerable<OddEvenBetHistoryReportEntity>> GetOddEvenAsync(long roundId, string name)
         {
             var roundCollection = database.GetCollection<OddEvenRoundEntity>(Document.GetCollectionName(typeof(OddEvenRoundEntity)));
-            var oneCollection = database.GetCollection<OddEvenOnesEntity>(Document.GetCollectionName(typeof(OddEvenOnesEntity)));  [Get("/report/kenomatch/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<KenoMatchBetReport> GetKenoMatchBetReport(string game, long roundId, string nickname, bool excludeUUS);
-
-        [Get("/report/bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
-        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(string game, long roundId, string userId);
-
+            var oneCollection = database.GetCollection<OddEvenOnesEntity>(Document.GetCollectionName(typeof(OddEvenOnesEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
             var aggregateBuilder = roundCollection.Aggregate()

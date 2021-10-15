@@ -171,6 +171,8 @@ namespace GamesAdmin.Api.GameServers
 
         public async Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request)
         {
+            var infoMessage = "";
+
             try
             {
                 var config = await gameSettingService.GetByName(request.GameConfigName);
@@ -179,6 +181,8 @@ namespace GamesAdmin.Api.GameServers
                 if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
                 {
                     var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
+
+                    infoMessage += gameEnum.Value;
 
                     var result = await slotBoardApiFactory.SetBoardApi(gameEnum).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
                     result.Result = request.Results.ToList();
@@ -195,7 +199,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 return new SettlementBoard
                 {
-                    InfoMessage = ex?.Message ?? "Error"
+                    InfoMessage = infoMessage + (ex.Message ?? "Error") + (ex.InnerException?.Message ?? "")
                 };
 
                 HandleException(ex);
