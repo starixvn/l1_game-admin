@@ -26,7 +26,7 @@ namespace GamesAdmin.Api.Currencies.Handlers
                 .Set(field => field.Enabled, model.Enabled)
                 .Set(field => field.IsTest, model.IsTest)
                 .Set(field => field.PartnerId, model.PartnerId)
-                .Set(field => field.CurrencyGroupId, model.CurrencyGroupId);
+                .Set(field => field.GroupId, model.GroupId);
 
             await Repository.UpdateAsync(entity => entity.Id.Equals(ObjectId.Parse(model.Id)), update);
 

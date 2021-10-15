@@ -18,9 +18,13 @@ namespace GamesAdmin.Api.Currencies
             this.mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("/all")]
         public Task<IEnumerable<CurrencyModel>> GetAll()
             => mediator.Send(new GetAllRequest());
+
+        [HttpGet("/partner")]
+        public Task<IEnumerable<CurrencyModel>> GetByPartner(GetByPartnerModel model)
+            => mediator.Send(new GetByPartnerRequest(model));
 
         [HttpPost]
         public Task<bool> Create(CreateCurrencyModel model)

@@ -17,6 +17,6 @@ namespace GamesAdmin.Database.Entities.Currencies
 
         public string PartnerId { get; set; }
 
-        public string CurrencyGroupId { get; set; }
+        public string GroupId { get; set; }
     }
 }

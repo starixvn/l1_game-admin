@@ -2,7 +2,7 @@
 {
     public class CurrencyModel
     {
-        public CurrencyModel(string id, string name, string code, double rate, bool enabled, bool isTest, string partnerId, string currencyGroupId)
+        public CurrencyModel(string id, string name, string code, double rate, bool enabled, bool isTest, string partnerId, string groupId)
         {
             Id = id;
             Name = name;
@@ -11,7 +11,7 @@
             Enabled = enabled;
             IsTest = isTest;
             PartnerId = partnerId;
-            CurrencyGroupId = currencyGroupId;
+            GroupId = groupId;
         }
 
         public string Id { get; }
@@ -28,6 +28,6 @@
 
         public string PartnerId { get; }
 
-        public string CurrencyGroupId { get; }
+        public string GroupId { get; }
     }
 }

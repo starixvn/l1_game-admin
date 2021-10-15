@@ -14,7 +14,7 @@
 
         public string PartnerId { get; set; }
 
-        public string CurrencyGroupId { get; set; }
+        public string GroupId { get; set; }
     }
 
     public class CreateRequest : Request<CreateCurrencyModel, bool>
