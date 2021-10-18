@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Partners
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class PartnerController : Controller
     {
         private readonly IMediator mediator;

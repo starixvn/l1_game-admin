@@ -1,11 +1,10 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @model StatusViewModel;
 
-@{
-    ViewData["Title"] = "Game Management";
-}
+@{ ViewData["Title"] = "Game Management"; }
 
 @section Styles {
+    <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
     <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
@@ -21,8 +20,8 @@
 
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
     {
-        <div class="message-error"><i class="icon-cancel"></i> @TempData["errorMessage"].ToString()</div>
-        <br />}
+<div class="message-error"><i class="icon-cancel"></i> @TempData["errorMessage"].ToString()</div>
+                <br />}
 
     <table id="status-tbl" class="table table-bordered sticky-table">
         <thead>
@@ -42,30 +41,29 @@
         <tbody>
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
-                <tr>
-                    <td class="text-center">
-                        <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
-                        <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
-                    </td>
-                    <td>@Model.GameList[index].DisplayName</td>
-                    <td class="text-center">@Model.GameList[index].MinMaxBet</td>
-                    <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-                    </td>
-                    <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GetSiteExclutionsByGame(Model.GameList[index].Name)', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-                    </td>
-                    <td class="text-center"><i class='@(Model.GameList[index].GameConfig.IsBeta ? "icon-check" : "")'></i></td>
-                </tr>
-            }
+<tr>
+    <td class="text-center">
+        <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
+        <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
+    </td>
+    <td>@Model.GameList[index].DisplayName</td>
+    <td class="text-center">@Model.GameList[index].MinMaxBet</td>
+    <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
+    <td class="text-center">
+        <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+    </td>
+    <td class="text-center">
+        <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+    </td>
+    <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
+    <td class="text-center">
+        <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
+    </td>
+    <td class="text-center">
+        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GetSiteExclutionsByGame(Model.GameList[index].Name)', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+    </td>
+    <td class="text-center"><i class='@(Model.GameList[index].GameConfig.IsBeta ? "icon-check" : "")'></i></td>
+</tr>            }
         </tbody>
     </table>
 
@@ -154,19 +152,18 @@
                                     <tbody>
                                         @for (var i = 0; i < 12; i++)
                                         {
-                                            <tr id="@("bot_setting_" + i)">
-                                                <td class="time-gtm4"></td>
-                                                <td class="time-gtm7"></td>
-                                                <td class="ratio-cell">
-                                                    <div>
-                                                        <input type="number" id="bot_ratio" class="ratio" onchange="gameStatus.updateBotCount(this)" />
-                                                        <input type="hidden" class="utc-hour" />
-                                                        <span class="bot-number" id="bot_number"></span>
-                                                    </div>
-                                                    <span id="validate_ratio" class="text-danger"></span>
-                                                </td>
-                                            </tr>
-                                        }
+                            <tr id="@("bot_setting_" + i)">
+                                <td class="time-gtm4"></td>
+                                <td class="time-gtm7"></td>
+                                <td class="ratio-cell">
+                                    <div>
+                                        <input type="number" id="bot_ratio" class="ratio" onchange="gameStatus.updateBotCount(this)" />
+                                        <input type="hidden" class="utc-hour" />
+                                        <span class="bot-number" id="bot_number"></span>
+                                    </div>
+                                    <span id="validate_ratio" class="text-danger"></span>
+                                </td>
+                            </tr>}
                                     </tbody>
                                 </table>
                             </div>
@@ -182,19 +179,18 @@
                                     <tbody>
                                         @for (var i = 12; i < 24; i++)
                                         {
-                                            <tr id="@("bot_setting_" + i)">
-                                                <td class="time-gtm4"></td>
-                                                <td class="time-gtm7"></td>
-                                                <td class="ratio-cell">
-                                                    <div>
-                                                        <input type="number" class="ratio" max="100" min="0" onchange="gameStatus.updateBotCount(this)" />
-                                                        <input type="hidden" class="utc-hour" />
-                                                        <span class="bot-number" id="bot_number"></span>
-                                                    </div>
-                                                    <span id="validate_ratio" class="text-danger"></span>
-                                                </td>
-                                            </tr>
-                                        }
+                            <tr id="@("bot_setting_" + i)">
+                                <td class="time-gtm4"></td>
+                                <td class="time-gtm7"></td>
+                                <td class="ratio-cell">
+                                    <div>
+                                        <input type="number" class="ratio" max="100" min="0" onchange="gameStatus.updateBotCount(this)" />
+                                        <input type="hidden" class="utc-hour" />
+                                        <span class="bot-number" id="bot_number"></span>
+                                    </div>
+                                    <span id="validate_ratio" class="text-danger"></span>
+                                </td>
+                            </tr>}
                                     </tbody>
                                 </table>
                             </div>
@@ -370,6 +366,11 @@
 </div>
 
 @section Scripts{
-    @*<script src="~/js/game-status.min.js" asp-append-version="true"></script>*@
-    <script src="~/js/game-status.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/game-status.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    </environment>
 }
