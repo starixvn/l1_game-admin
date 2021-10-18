@@ -17,9 +17,10 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
 
         public async Task<MessageResult> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
-            var entities = await Api.GetAll();
+            var allCurrencies = await Api.GetAll();
+            var currencies = allCurrencies.Where(entity => !entity.Id.Equals(request.Model.Id));
             var model = Mapper.Map<CurrencyModel>(request.Model);
-            var isExisted = entities.Any(entity => entity.PartnerId.Equals(model.PartnerId) && entity.Name.Equals(model.Name));
+            var isExisted = currencies.Any(entity => entity.PartnerId.Equals(model.PartnerId) && entity.Name.Equals(model.Name));
             var message = string.Empty;
             var success = false;
 

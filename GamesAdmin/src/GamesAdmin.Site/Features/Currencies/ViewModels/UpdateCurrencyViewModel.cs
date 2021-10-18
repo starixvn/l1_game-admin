@@ -2,5 +2,6 @@
 {
     public class UpdateCurrencyViewModel : CreateCurrencyViewModel
     {
+        public string Id { get; set; }
     }
 }

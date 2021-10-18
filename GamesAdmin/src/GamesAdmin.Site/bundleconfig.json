@@ -96,5 +96,18 @@
     "inputFiles": [
       "wwwroot/js/voidgame.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency.min.js",
+    "inputFiles": [
+      "wwwroot/js/currency.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/currency.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/currency.css"
+    ]
   }
 ]

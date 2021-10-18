@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Currencies.ViewModels
 {
@@ -24,8 +26,6 @@ namespace GamesAdmin.Site.Features.Currencies.ViewModels
 
         public string GroupId { get; set; }
 
-        public string Message { get; set; }
-
-        public bool Success { get; set; }
+        public IEnumerable<SelectListItem> Partners { get; set; }
     }
 }

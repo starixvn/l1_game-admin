@@ -13,7 +13,10 @@ namespace GamesAdmin.Site.Features.Currencies
         Task<IEnumerable<CurrencyModel>> GetAll();
 
         [Get("/currency/partner")]
-        Task<IEnumerable<CurrencyModel>> GetByPartner([Query] GetCurrencyByPartnerModel model);
+        Task<IEnumerable<CurrencyModel>> GetByPartner(GetCurrencyByPartnerModel model);
+
+        [Get("/currency/{id}")]
+        Task<CurrencyModel> GetById(string id);
 
         [Post("/currency")]
         Task<bool> Create(CurrencyModel model);

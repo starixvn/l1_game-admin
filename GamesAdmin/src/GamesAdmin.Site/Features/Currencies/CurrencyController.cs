@@ -19,38 +19,52 @@ namespace GamesAdmin.Site.Features.Currencies
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View(await mediator.Send(new GetAllRequest()));
-
-        [HttpPost]
-        public async Task<IActionResult> Index([Bind] GetCurrencyByPartnerModel model)
-            => View(await mediator.Send(new GetByPartnerRequest(model)));
+        public async Task<IActionResult> Index() => View(await mediator.Send(new IndexRequest()));
 
         [HttpGet]
-        public IActionResult Create() => View(new CreateCurrencyViewModel());
+        public async Task<IActionResult> Create()
+        {
+            var partners = await mediator.Send(new GetAllPartnerRequest());
+            var viewModel = new CreateCurrencyViewModel {
+                Partners = partners
+            };
+
+            return PartialView("_AddNewCurrency", viewModel);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Create([Bind] CreateCurrencyViewModel model)
         {
             var result = await mediator.Send(new CreateRequest(model));
 
-            model.Success = result.Success;
-            model.Message = result.Message;
-
-            return View(model);
+            return Json(result);
         }
 
         [HttpGet]
-        public IActionResult Update() => View(new UpdateCurrencyViewModel());
+        public async Task<IActionResult> Update(string id)
+        {
+            var viewModel = await mediator.Send(new GetUpdateCurrencyViewModelRequest { Id = id });
 
-        [HttpPut]
+            return PartialView("_UpdateCurrency", viewModel);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Update([Bind] UpdateCurrencyViewModel model)
         {
             var result = await mediator.Send(new UpdateRequest(model));
 
-            model.Success = result.Success;
-            model.Message = result.Message;
+            return Json(result);
+        }
 
-            return View(model);
+        [HttpPost]
+        public async Task<IActionResult> GetCurrencies([Bind] GetCurrencyByPartnerModel model)
+        {
+            var viewModel = string.IsNullOrEmpty(model.PartnerId)
+                ? await mediator.Send(new GetAllRequest())
+                : await mediator.Send(new GetByPartnerRequest(model));
+
+            return PartialView("_Currencies", viewModel);
         }
     }
 }
