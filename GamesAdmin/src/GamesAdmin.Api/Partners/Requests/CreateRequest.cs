@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GamesAdmin.Core.Models.Partner;
+using GamesAdmin.Core.Models.Partners;
 using MediatR;
 
-namespace GamesAdmin.Api.Partner.Requests
+namespace GamesAdmin.Api.Partners.Requests
 {
     public class CreateRequest : IRequest<bool>
     {
-        public CreateRequest(PartnerInfo partner)
+        public CreateRequest(Partner partner)
         {
             Partner = partner;
         }
 
-        public PartnerInfo Partner { get; }
+        public Partner Partner { get; }
     }
 }

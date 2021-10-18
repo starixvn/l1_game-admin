@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Api.Partner.Requests;
-using GamesAdmin.Core.Models.Partner;
+using GamesAdmin.Api.Partners.Requests;
+using GamesAdmin.Core.Models.Partners;
 using MediatR;
 
-namespace GamesAdmin.Api.Partner
+namespace GamesAdmin.Api.Partners
 {
     public class PartnerHanlder
         : IRequestHandler<CreateRequest, bool>
         , IRequestHandler<DeleteRequest, bool>
-        , IRequestHandler<GetAllRequest, IEnumerable<PartnerInfo>>
+        , IRequestHandler<GetAllRequest, IEnumerable<Partner>>
         , IRequestHandler<UpdateRequest, bool>
+        , IRequestHandler<GetByIdRequest, Partner>
 
     {
         private readonly IPartnerService partnerService;
@@ -27,11 +28,14 @@ namespace GamesAdmin.Api.Partner
         public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
         => partnerService.Delete(request.PartnerId);
 
-        public Task<IEnumerable<PartnerInfo>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<Partner>> Handle(GetAllRequest request, CancellationToken cancellationToken)
         => partnerService.GetAll();
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         => partnerService.Update(request.Partner);
+
+        public Task<Partner> Handle(GetByIdRequest request, CancellationToken cancellationToken)
+        => partnerService.GetById(request.PartnerId);
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using GamesAdmin.Core.Models.Partner;
+using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
@@ -9,17 +9,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GamesAdmin.Api.Partner
+namespace GamesAdmin.Api.Partners
 {
     public interface IPartnerService
     {
-        Task<bool> Create(PartnerInfo partner);
+        Task<bool> Create(Partner partner);
 
-        Task<IEnumerable<PartnerInfo>> GetAll();
+        Task<IEnumerable<Partner>> GetAll();
 
-        Task<bool> Update(PartnerInfo partner);
+        Task<bool> Update(Partner partner);
 
         Task<bool> Delete(string partnerId);
+
+        Task<Partner> GetById(string partnerId);
     }
 
     public class PartnerService : IPartnerService
@@ -38,7 +40,7 @@ namespace GamesAdmin.Api.Partner
             this.mapper = mapper;
         }
 
-        public async Task<bool> Create(PartnerInfo partner)
+        public async Task<bool> Create(Partner partner)
         {
             try
             {
@@ -79,24 +81,24 @@ namespace GamesAdmin.Api.Partner
             }
         }
 
-        public Task<IEnumerable<PartnerInfo>> GetAll()
+        public Task<IEnumerable<Partner>> GetAll()
         => Task.Run(() =>
         {
             try
             {
                 var users = partnerRepository.AsQueryable().ToList();
 
-                return users.Select(entity => mapper.Map<PartnerInfo>(entity));
+                return users.Select(entity => mapper.Map<Partner>(entity));
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
 
-                return Enumerable.Empty<PartnerInfo>();
+                return Enumerable.Empty<Partner>();
             }
         });
 
-        public async Task<bool> Update(PartnerInfo partner)
+        public async Task<bool> Update(Partner partner)
         {
             var userEntity = await partnerRepository.FindOneAsync(entity => entity.PartnerId.Equals(partner.PartnerId));
 
@@ -117,5 +119,21 @@ namespace GamesAdmin.Api.Partner
             return false;
 
         }
+
+        public async Task<Partner> GetById(string partnerId)
+        {
+            try
+            {
+                var partnerEntity = await partnerRepository.FindOneAsync(entity => entity.PartnerId == partnerId);
+                return mapper.Map<Partner>(partnerEntity) ;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return null;
+            }
+        }
+
     }
 }

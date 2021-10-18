@@ -56,6 +56,14 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/partner.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/adjust-bot.css",
+      "wwwroot/scss/pages/partner.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/online-users.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",

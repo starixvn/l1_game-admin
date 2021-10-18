@@ -8,6 +8,7 @@ using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.ResultMonitor;
@@ -38,6 +39,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IUserService, UserService>();
+
+            services.AddSingleton(RestService.For<IPartnerApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IPartnerService, PartnerService>();
 
             services.AddSingleton(RestService.For<IClientSiteApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IClientSiteService, ClientSiteService>();

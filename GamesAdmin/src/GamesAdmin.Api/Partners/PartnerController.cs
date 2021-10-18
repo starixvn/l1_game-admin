@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
-using GamesAdmin.Core.Models.Partner;
-using GamesAdmin.Api.Partner.Requests;
+using GamesAdmin.Core.Models.Partners;
+using GamesAdmin.Api.Partners.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GamesAdmin.Api.Partner
+namespace GamesAdmin.Api.Partners
 {
+    [Route("api/partner")]
     public class PartnerController : BaseAuthorizeController
     {
         private readonly IMediator mediator;
@@ -18,11 +19,11 @@ namespace GamesAdmin.Api.Partner
         }
 
         [HttpGet]
-        public Task<IEnumerable<PartnerInfo>> GetAll()
+        public Task<IEnumerable<Partner>> GetAll()
            => mediator.Send(new GetAllRequest());
 
         [HttpPost("add")]
-        public Task<bool> Create(PartnerInfo partner)
+        public Task<bool> Create(Partner partner)
             => mediator.Send(new CreateRequest(partner));
 
         [HttpPost("delete")]
@@ -30,8 +31,12 @@ namespace GamesAdmin.Api.Partner
           => mediator.Send(new DeleteRequest(partnerId));
 
         [HttpPost("update")]
-        public Task<bool> Get(PartnerInfo partner)
+        public Task<bool> Update(Partner partner)
            => mediator.Send(new UpdateRequest(partner));
+
+        [HttpGet("{partnerId}")]
+        public Task<Partner> GetById(string partnerId)
+            => mediator.Send(new GetByIdRequest(partnerId));
 
     }
 }

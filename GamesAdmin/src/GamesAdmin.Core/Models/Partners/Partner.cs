@@ -1,8 +1,8 @@
-﻿namespace GamesAdmin.Core.Models.Partner
+﻿namespace GamesAdmin.Core.Models.Partners
 {
-    public class PartnerInfo
+    public class Partner
     {
-        public PartnerInfo(string partnerId, string name, string secretKey, string casinoVersionUrl, string mobiVersionUrl, string miniVersionUrl, string apiUrl)
+        public Partner(string partnerId, string name, string secretKey, string casinoVersionUrl, string mobiVersionUrl, string miniVersionUrl, string apiUrl)
         {
             PartnerId = partnerId;
             Name = name;

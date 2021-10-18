@@ -1,0 +1,59 @@
+﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
+@model IndexViewModel;
+
+@{ ViewData["Title"] = "Partners"; }
+
+@section Styles {
+    <link href="~/css/partner.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+
+<div class="col-md-12 col-lg-12 p-0">
+    <table class="table table-bordered has-background">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Secret Key</th>
+                <th>Casino Version URL</th>
+                <th>Mini Version URL</th>
+                <th>Mobi Version URL</th>
+                <th>API URL</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Partners)
+            {
+<tr>
+    <td>@item.PartnerId</td>
+    <td>@item.Name</td>
+    <td>@item.SecretKey</td>
+    <td>@item.CasinoVersionUrl</td>
+    <td>@item.MiniVersionUrl</td>
+    <td>@item.MobiVersionUrl</td>
+    <td>@item.ApiUrl</td>
+    <td class="text-center">
+        <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
+    </td>
+</tr>
+}
+        </tbody>
+    </table>
+
+    <div class="modal fade game-modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="editModalContent">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/partner.js" asp-append-version="true"></script>
+}
+

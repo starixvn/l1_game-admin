@@ -10,6 +10,7 @@ using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
@@ -44,6 +45,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<IGlobalConfigService, GlobalConfigService>();
+            services.AddScoped<IPartnerService, PartnerService>();
 
             services.AddScoped<IKenoReportFactory, KenoReportFactory>();
             services.AddScoped<KenoProVietReport>()

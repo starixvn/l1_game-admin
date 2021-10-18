@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GamesAdmin.Api.Partner.Requests
+namespace GamesAdmin.Api.Partners.Requests
 {
     public class DeleteRequest : IRequest<bool>
     {
