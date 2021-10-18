@@ -128,8 +128,8 @@ export default class KenoPower extends React.Component<
       : settlementResult.red
       ? "Red"
       : "";
-    const bigSmall = settlementResult.big ? "Big" : "Small";
-    const oddEven = settlementResult.odd ? "Odd" : "Even";
+    const bigSmall = settlementResult.big ? "Sum Big" : "Sum Small";
+    const oddEven = settlementResult.odd ? "Sum Odd" : " Sum Even";
 
     const blueBigSmall = settlementResult.blueBig ? "Blue Big" : " Blue Small";
     const redBigSmall = settlementResult.redBig ? "Red Big" : "Red Small";
@@ -185,22 +185,22 @@ export default class KenoPower extends React.Component<
             <Row className="justify-content-center" noGutters>
               <TotalBet
                 total={betList.big.total}
-                type="kenobig"
+                type="sumBig"
                 isWin={settlementResult.big}
               />
               <TotalBet
                 total={betList.small.total}
-                type="kenosmall"
+                type="sumSmall"
                 isWin={settlementResult.small}
               />
               <TotalBet
                 total={betList.odd.total}
-                type="odd"
+                type="sumOdd"
                 isWin={settlementResult.odd}
               />
               <TotalBet
                 total={betList.even.total}
-                type="even"
+                type="sumEven"
                 isWin={settlementResult.even}
               />
             </Row>
@@ -249,14 +249,14 @@ export default class KenoPower extends React.Component<
             <BetList
               type="withchoice"
               dataList={betList.big.dataList.concat(betList.small.dataList)}
-              titles={[<div>Big/Small</div>]}
+              titles={[<div>Sum Big/Small</div>]}
             />
           </Col>
           <Col className="col">
             <BetList
               type="withchoice"
               dataList={betList.even.dataList.concat(betList.odd.dataList)}
-              titles={[<div>Even/Odd</div>]}
+              titles={[<div>Sum Even/Odd</div>]}
             />
           </Col>
           <Col className="col">
