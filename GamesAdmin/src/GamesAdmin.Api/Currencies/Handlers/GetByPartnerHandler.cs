@@ -19,7 +19,7 @@ namespace GamesAdmin.Api.Currencies.Handlers
 
         public async Task<IEnumerable<CurrencyModel>> Handle(GetByPartnerRequest request, CancellationToken cancellationToken)
         {
-            var entities = await Repository.FilterByAsync(entity => entity.PartnerId.Equals(request.Model.PartnerId));
+            var entities = await Repository.FilterByAsync(entity => string.Equals(entity.PartnerId, request.Model.PartnerId));
 
             return entities.Select(entity => Mapper.Map<CurrencyModel>(entity));
         }

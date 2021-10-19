@@ -10,7 +10,7 @@ namespace GamesAdmin.Api.Currencies.Mappers
         public CurrencyMapper()
         {
             CreateMap<CreateCurrencyModel, CurrencyEntity>();
-
+            CreateMap<CurrencyModel, UpdateCurrencyModel>();
             CreateMap<CurrencyEntity, CurrencyModel>();
         }
     }

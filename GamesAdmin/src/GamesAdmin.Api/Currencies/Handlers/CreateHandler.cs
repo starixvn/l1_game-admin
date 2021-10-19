@@ -24,8 +24,9 @@ namespace GamesAdmin.Api.Currencies.Handlers
         {
             try
             {
+                var model = request.Model;
                 var currency = await Repository.FindOneAsync(entity
-                    => entity.PartnerId.Equals(request.Model.PartnerId) && entity.Name.Equals(request.Model.Name));
+                    => string.Equals(entity.PartnerId, model.PartnerId) && string.Equals(entity.Name, model.Name));
 
                 if (currency == null)
                 {

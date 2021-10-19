@@ -6,6 +6,11 @@ namespace GamesAdmin.Api.Currencies.Requests
     public class GetByPartnerModel
     {
         public string PartnerId { get; set; }
+
+        public GetByPartnerModel(string partnerId)
+        {
+            PartnerId = partnerId;
+        }
     }
 
     public class GetByPartnerRequest : Request<GetByPartnerModel, IEnumerable<CurrencyModel>>

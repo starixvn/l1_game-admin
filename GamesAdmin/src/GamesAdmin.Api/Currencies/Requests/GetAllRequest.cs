@@ -6,6 +6,5 @@ namespace GamesAdmin.Api.Currencies.Requests
 {
     public class GetAllRequest : IRequest<IEnumerable<CurrencyModel>>
     {
-
     }
 }
