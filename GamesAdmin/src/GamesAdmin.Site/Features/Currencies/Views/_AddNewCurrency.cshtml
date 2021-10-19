@@ -11,7 +11,7 @@
     <div class="modal-body">
         <div class="form-group row">
             <div class="col-sm-12">
-                <label asp-for="PartnerId"></label>
+                <label asp-for="PartnerId">Partner</label>
                 <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
                 <span class="text-danger" asp-validation-for="PartnerId"></span>
             </div>
