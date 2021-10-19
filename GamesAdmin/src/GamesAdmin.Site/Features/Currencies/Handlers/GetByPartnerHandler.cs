@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
                 models = new List<CurrencyModel>();
             }
 
-            var partners = await mediator.Send(new GetAllPartnerRequest());
+            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
 
             return new CurrencyManagementViewModel
             {

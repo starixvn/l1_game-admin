@@ -62,5 +62,9 @@
   {
     "outputFile": "wwwroot/scss/pages/currency.css",
     "inputFile": "wwwroot/scss/pages/currency.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/currency-group.css",
+    "inputFile": "wwwroot/scss/pages/currency-group.scss"
   }
 ]

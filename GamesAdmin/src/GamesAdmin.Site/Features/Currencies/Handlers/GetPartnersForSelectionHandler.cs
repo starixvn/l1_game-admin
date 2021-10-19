@@ -9,16 +9,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Currencies.Handlers
 {
-    public class GetAllPartnerHandler : Handler, IRequestHandler<GetAllPartnerRequest, IEnumerable<SelectListItem>>
+    public class GetPartnersForSelectionHandler : Handler, IRequestHandler<GetPartnersForSelectionRequest, IEnumerable<SelectListItem>>
     {
         private readonly IPartnerService partnerService;
 
-        public GetAllPartnerHandler(IMapper mapper, ICurrencyApi api, IPartnerService partnerService) : base(mapper, api)
+        public GetPartnersForSelectionHandler(IMapper mapper, ICurrencyApi api, IPartnerService partnerService) : base(mapper, api)
         {
             this.partnerService = partnerService;
         }
 
-        public async Task<IEnumerable<SelectListItem>> Handle(GetAllPartnerRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<SelectListItem>> Handle(GetPartnersForSelectionRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetAll();
 

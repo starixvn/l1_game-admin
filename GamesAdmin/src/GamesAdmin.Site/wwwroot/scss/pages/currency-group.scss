@@ -1,0 +1,27 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.btn-add:hover {
+    text-decoration: none;
+}
+
+.table {
+    .btn-edit {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none
+        }
+    }
+}
+
+.select2-selection__choice {
+    background-color: $btn-submit-bg-color !important;
+    border-color: $btn-submit-bg-color !important;
+    color: #fff;
+}

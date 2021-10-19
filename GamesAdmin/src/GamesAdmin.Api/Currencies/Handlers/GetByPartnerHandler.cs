@@ -21,7 +21,7 @@ namespace GamesAdmin.Api.Currencies.Handlers
         {
             var entities = await Repository.FilterByAsync(entity => string.Equals(entity.PartnerId, request.Model.PartnerId));
 
-            return entities.Select(entity => Mapper.Map<CurrencyModel>(entity));
+            return entities.Select(entity => Mapper.Map<CurrencyModel>(entity)).ToList();
         }
     }
 }

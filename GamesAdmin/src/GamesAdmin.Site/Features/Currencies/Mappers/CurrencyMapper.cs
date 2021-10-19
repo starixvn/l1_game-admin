@@ -36,6 +36,8 @@ namespace GamesAdmin.Site.Features.Currencies.Mappers
 
             CreateMap<Partner, SelectListItem>()
                 .ConstructUsing(partner => new SelectListItem(partner.Name, partner.PartnerId));
+            CreateMap<CurrencyModel, SelectListItem>()
+                .ConstructUsing(model => new SelectListItem(model.Name, model.Id));
         }
     }
 }

@@ -26,6 +26,10 @@ namespace GamesAdmin.Api.CurrencyGroups
         public Task<CurrencyGroupModel> GetById(string id)
             => mediator.Send(new GetByIdRequest(id));
 
+        [HttpPost("filter")]
+        public Task<IEnumerable<CurrencyGroupModel>> GetByCurrenciesAndPartners(GetByCurrenciesAndPartnersModel model)
+            => mediator.Send(new GetByCurrenciesAndPartnersRequest(model));
+
         [HttpPost]
         public Task<bool> Create(CreateCurrencyGroupModel model)
             => mediator.Send(new CreateRequest(model));

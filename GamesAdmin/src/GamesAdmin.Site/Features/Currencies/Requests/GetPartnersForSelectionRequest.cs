@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Currencies.Requests
 {
-    public class GetAllPartnerRequest : IRequest<IEnumerable<SelectListItem>>
+    public class GetPartnersForSelectionRequest : IRequest<IEnumerable<SelectListItem>>
     {
     }
 }

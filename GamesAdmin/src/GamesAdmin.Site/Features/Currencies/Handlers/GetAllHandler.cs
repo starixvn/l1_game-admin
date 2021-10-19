@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
         public async Task<CurrencyManagementViewModel> Handle(GetAllRequest request, CancellationToken cancellationToken)
         {
             var models = await Api.GetAll();
-            var partners = await mediator.Send(new GetAllPartnerRequest());
+            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
 
             return new CurrencyManagementViewModel
             {

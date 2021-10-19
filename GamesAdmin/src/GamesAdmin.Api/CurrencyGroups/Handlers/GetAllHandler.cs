@@ -24,7 +24,7 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
             var entities = await Repository.FilterByAsync(entity => true);
             var currencies = await Currency.GetAll();
 
-            return entities.Select(entity => TransformToModel(entity, currencies));
+            return entities.Select(entity => TransformToModel(entity, currencies)).ToList();
         }
     }
 }

@@ -4,6 +4,7 @@ using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.Currencies;
+using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
@@ -75,6 +76,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
 
             services.AddSingleton(RestService.For<ICurrencyApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<ICurrencyService, CurrencyService>();
+
+            services.AddSingleton(RestService.For<ICurrencyGroupApi>(appSettings.ApiHost, refitSettings));
         }
     }
 }

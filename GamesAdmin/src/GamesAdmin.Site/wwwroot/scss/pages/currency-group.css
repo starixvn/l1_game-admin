@@ -66,3 +66,17 @@
 
 .btn-add:hover {
   text-decoration: none; }
+
+.table .btn-edit {
+  width: 4rem;
+  background: none;
+  border: none;
+  outline: none; }
+
+.table a:hover {
+  text-decoration: none; }
+
+.select2-selection__choice {
+  background-color: #da624a !important;
+  border-color: #da624a !important;
+  color: #fff; }

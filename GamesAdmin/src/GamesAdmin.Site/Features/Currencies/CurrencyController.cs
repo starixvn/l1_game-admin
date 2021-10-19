@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.Currencies
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var partners = await mediator.Send(new GetAllPartnerRequest());
+            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
             var viewModel = new CreateCurrencyViewModel {
                 Partners = partners
             };

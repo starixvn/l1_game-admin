@@ -100,6 +100,8 @@
   {
     "outputFileName": "wwwroot/js/currency.min.js",
     "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/currency.js"
     ]
   },
@@ -108,6 +110,23 @@
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/currency.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency-group.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/select2/dist/js/select2.full.min.js",
+      "wwwroot/js/currency-group.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/currency-group.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/lib/select2/dist/css/select2.min.css",
+      "wwwroot/scss/pages/currency-group.css"
     ]
   }
 ]

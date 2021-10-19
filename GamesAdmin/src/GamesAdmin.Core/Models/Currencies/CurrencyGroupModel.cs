@@ -4,16 +4,12 @@ namespace GamesAdmin.Core.Models.Currencies
 {
     public class CurrencyGroupModel
     {
-        public CurrencyGroupModel(string id, string name, bool enabled, string partnerId)
+        public CurrencyGroupModel(string id, string name, bool enabled, string partnerId, IEnumerable<CurrencyModel> currencies)
         {
             Id = id;
             Name = name;
             Enabled = enabled;
             PartnerId = partnerId;
-        }
-
-        public CurrencyGroupModel(string id, string name, bool enabled, string partnerId, IEnumerable<CurrencyModel> currencies) : this(id, name, enabled, partnerId)
-        {
             Currencies = currencies;
         }
 
