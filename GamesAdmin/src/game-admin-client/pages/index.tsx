@@ -49,7 +49,7 @@ export class Home extends React.Component<Props, State> {
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
         : Cookies.get("token");
-    this.protocol = "ws";
+    this.protocol = "wss";
     this.isProduction =
       Cookies.get("env") && Cookies.get("env").toLocaleUpperCase() === "PRO";
     this.messageTransmitter = MessageTransmitter();
@@ -388,7 +388,7 @@ export class Home extends React.Component<Props, State> {
               route: process.env.NEXT_PUBLIC_KENO_NORTH_SERVER_PROXY_ROUTE,
             }
           : this.getGameSocketCookie(gameId);
-      case gameNameMapper.bitcoinMaster:
+      case gameNameMapper.bitcoinmaster:
         return process.env.NEXT_PUBLIC_ENV === "local"
           ? {
               endpoint: process.env.NEXT_PUBLIC_BITCOIN_MASTER_SERVER_ENDPOINT,
@@ -503,6 +503,7 @@ export class Home extends React.Component<Props, State> {
     const info = getGameInfoByGameId(gameId) || getGameInfoByGameName(gameName);
 
     socket && socket.login({ jwt: token });
+
     return info
       ? this.renderGameMonitoringComponent(info)
       : this.renderLoaderOrGameMenu();

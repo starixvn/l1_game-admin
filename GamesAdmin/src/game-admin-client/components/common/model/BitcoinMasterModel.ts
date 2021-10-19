@@ -36,7 +36,11 @@ export class BitcoinMasterModel {
   settlementResult: SettlementResultModel;
 
   constructor() {
-    this.result = new BitcoinMasterResultModel();
+    this.result = {
+      open: 0,
+      close: 0,
+    };
+
     this.betList = new BitcoinMasterBetListModel();
     this.time = new TimeModel();
     this.gameState = 0;

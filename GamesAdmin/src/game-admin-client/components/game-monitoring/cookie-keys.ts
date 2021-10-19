@@ -7,5 +7,5 @@ export default {
   kenowest: "keno-west",
   kenosouth: "keno-south",
   kenonorth: "keno-north",
-  bitcoinMaster: "bitcoin-master",
+  bitcoinmaster: "bitcoin-master",
 };
