@@ -10,7 +10,7 @@ export class KenoMatch1 extends KenoMatch {
 
   handleData(data) {
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 54) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 27) {
         clearTimeout(this.timeout);
         const model = new KenoMatchModel();
         this.setState({
@@ -164,7 +164,7 @@ export class KenoMatch2 extends KenoMatch {
 
   handleData(data) {
     if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 58) {
+      if (this.isFirstLoad || this.state.time.remainingTime == 27) {
         clearTimeout(this.timeout);
         const model = new KenoMatchModel();
         this.setState({
