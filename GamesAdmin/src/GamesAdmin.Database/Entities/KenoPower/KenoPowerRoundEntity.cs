@@ -7,6 +7,8 @@ namespace GamesAdmin.Database.Entities
     {
         public KenoPowerResultEntity Result { get; set; }
         public KenoPowerSettlementResultEntity SettlementResult { get; set; }
+
+        public bool Settled { get; set; }
     }
 
     public class KenoPowerResultEntity

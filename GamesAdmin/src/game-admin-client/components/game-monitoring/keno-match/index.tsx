@@ -87,8 +87,12 @@ export class KenoMatch1 extends KenoMatch {
       const { result } = this.state;
 
       if (data.remainingTime > 56) {
-        result.firstHalf = data.firstHalf;
-        result.fullTime = data.fullTime;
+        if (data.firstHalf) {
+          result.firstHalf = data.firstHalf;
+        }
+        if (data.fullTime) {
+          result.fullTime = data.fullTime;
+        }
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,
@@ -109,7 +113,7 @@ export class KenoMatch1 extends KenoMatch {
               remainingTime: 27,
             },
           });
-        }, (data.remainingTime -  55) * 1000);
+        }, (data.remainingTime - 55) * 1000);
       } else {
         if (data.remainingTime > 28) {
           this.setState({
@@ -241,8 +245,12 @@ export class KenoMatch2 extends KenoMatch {
       const { result } = this.state;
 
       if (data.remainingTime > 60) {
-        result.firstHalf = data.firstHalf;
-        result.fullTime = data.fullTime;
+        if (data.firstHalf) {
+          result.firstHalf = data.firstHalf;
+        }
+        if (data.fullTime) {
+          result.fullTime = data.fullTime;
+        }
         this.setState({
           gameState: GameState.waiting,
           roundNumber: data.roundId - 1,

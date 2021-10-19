@@ -3,18 +3,17 @@
 
 @model KenoPowerReportResultViewModel
 
-@{
-    var blueResult = Model.RoundResult.Result.Blue;
-    var redResult = Model.RoundResult.Result.Red;
-    var blueSum = blueResult.Sum(x => x);
-    var redSum = redResult.Sum(x => x);
-    var settlementResult = Model.RoundResult.SettlementResult;
-}
 
 <div class="row">
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
+            var blueResult = Model.RoundResult.Result.Blue;
+            var redResult = Model.RoundResult.Result.Red;
+            var blueSum = blueResult.Sum(x => x);
+            var redSum = redResult.Sum(x => x);
+            var settlementResult = Model.RoundResult.SettlementResult;
+
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>

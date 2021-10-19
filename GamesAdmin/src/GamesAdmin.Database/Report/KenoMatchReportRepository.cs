@@ -26,7 +26,7 @@ namespace GamesAdmin.Database
             where TOneEntity : KenoMatchOneEntity
         {
             var roundResult = await database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)))
-                .Find(x => x.Number == roundId && x.FullTime != null).FirstOrDefaultAsync();
+                .Find(x => x.Number == roundId && x.Settled).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {

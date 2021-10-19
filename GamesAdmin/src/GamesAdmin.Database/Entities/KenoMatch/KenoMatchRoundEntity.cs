@@ -10,7 +10,7 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("firstHalf")]
         public KenoMatchPeriodEntity HalfTime { get; set; }
         public KenoMatchPeriodEntity FullTime { get; set; }
-
+        public bool Settled { get; set; }
         public Dictionary<string, decimal> Odds { get; set; }
     }
 
