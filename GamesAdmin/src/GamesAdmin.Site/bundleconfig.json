@@ -128,5 +128,20 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/currency-group.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/chip.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/chip.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/chip.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/chip.css"
+    ]
   }
 ]

@@ -66,5 +66,9 @@
   {
     "outputFile": "wwwroot/scss/pages/currency-group.css",
     "inputFile": "wwwroot/scss/pages/currency-group.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/chip.css",
+    "inputFile": "wwwroot/scss/pages/chip.scss"
   }
 ]

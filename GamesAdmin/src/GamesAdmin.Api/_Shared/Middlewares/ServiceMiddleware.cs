@@ -2,6 +2,7 @@
 using System.Net.Http;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot;
+using GamesAdmin.Api.Chips;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroups;
@@ -50,6 +51,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IPartnerService, PartnerService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<ICurrencyGroupService, CurrencyGroupService>();
+            services.AddScoped<IChipService, ChipService>();
 
             services.AddScoped<IKenoReportFactory, KenoReportFactory>();
             services.AddScoped<KenoProVietReport>()

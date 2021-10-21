@@ -1,0 +1,38 @@
+﻿@model GamesAdmin.Site.Features.Chips.ViewModels.CreateChipViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add chip</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="Create" method="post" id="add-chip-form"
+      data-ajax-success="chip.onCreateChipSuccess">
+    <div class="modal-body">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label asp-for="Text"></label>
+                <input class="form-control" type="text" asp-for="Text">
+                <span class="text-danger" asp-validation-for="Text"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label asp-for="Value"></label>
+                <input class="form-control" type="number" asp-for="Value">
+                <span class="text-danger" asp-validation-for="Value"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Submit</button>
+    </div>
+</form>
