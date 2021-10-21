@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models.Currencies;
-using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -34,8 +33,6 @@ namespace GamesAdmin.Site.Features.Currencies.Mappers
 
             CreateMap<CurrencyModel, UpdateCurrencyViewModel>();
 
-            CreateMap<Partner, SelectListItem>()
-                .ConstructUsing(partner => new SelectListItem(partner.Name, partner.PartnerId));
             CreateMap<CurrencyModel, SelectListItem>()
                 .ConstructUsing(model => new SelectListItem(model.Name, model.Id));
         }

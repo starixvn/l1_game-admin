@@ -18,10 +18,10 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
         [Post("/currency_group/filter")]
         Task<IEnumerable<CurrencyGroupModel>> Query(QueryCurrencyGroupsModel model);
 
-        [Post("/currency")]
+        [Post("/currency_group")]
         Task<bool> Create(CreateCurrencyGroupModel model);
 
-        [Put("/currency")]
+        [Put("/currency_group")]
         Task<bool> Update(UpdateCurrencyGroupModel model);
     }
 }

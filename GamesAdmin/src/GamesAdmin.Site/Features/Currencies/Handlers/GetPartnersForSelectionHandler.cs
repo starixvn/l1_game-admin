@@ -18,11 +18,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
             this.partnerService = partnerService;
         }
 
-        public async Task<IEnumerable<SelectListItem>> Handle(GetPartnersForSelectionRequest request, CancellationToken cancellationToken)
-        {
-            var partners = await partnerService.GetAll();
-
-            return Mapper.Map<IEnumerable<SelectListItem>>(partners);
-        }
+        public Task<IEnumerable<SelectListItem>> Handle(GetPartnersForSelectionRequest request, CancellationToken cancellationToken)
+              => partnerService.GetPartnersForSelection(partner => true);
     }
 }

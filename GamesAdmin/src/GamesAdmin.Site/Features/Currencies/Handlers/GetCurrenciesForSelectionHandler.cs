@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Currencies.Handlers
 {
-    public class GetAllCurrenciesForSelectionHandler
+    public class GetCurrenciesForSelectionHandler
         : Handler, IRequestHandler<GetCurrenciesForSelectionRequest, IEnumerable<SelectListItem>>
     {
-        public GetAllCurrenciesForSelectionHandler(IMapper mapper, ICurrencyApi api) : base(mapper, api)
+        public GetCurrenciesForSelectionHandler(IMapper mapper, ICurrencyApi api) : base(mapper, api)
         {
         }
 
@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
             var models = await Api.GetAll();
             var filteredModels = models.Where(request.Criteria);
 
-            return filteredModels.Select(model => Mapper.Map<SelectListItem>(model));
+            return filteredModels.Select(model => Mapper.Map<SelectListItem>(model)).ToList();
         }
     }
 }

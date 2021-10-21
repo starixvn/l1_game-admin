@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Site.Features._Shared;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Refit;
 
 namespace GamesAdmin.Site.Features.Partners
@@ -36,15 +39,19 @@ namespace GamesAdmin.Site.Features.Partners
         Task<ResultBase> Update(Partner partner);
 
         Task<Partner> GetById(string partnerId);
+
+        Task<IEnumerable<SelectListItem>> GetPartnersForSelection(Func<Partner, bool> criteria);
     }
 
     public class PartnerService : IPartnerService
     {
         private readonly IPartnerApi partnerApi;
+        private readonly IMapper mapper;
 
-        public PartnerService(IPartnerApi partnerApi)
+        public PartnerService(IPartnerApi partnerApi, IMapper mapper)
         {
             this.partnerApi = partnerApi;
+            this.mapper = mapper;
         }
 
         public async Task<ResultBase> Add(Partner partner)
@@ -87,6 +94,14 @@ namespace GamesAdmin.Site.Features.Partners
 
         public Task<Partner> GetById(string partnerId)
         => partnerApi.GetById(partnerId);
+
+        public async Task<IEnumerable<SelectListItem>> GetPartnersForSelection(Func<Partner, bool> criteria)
+        {
+            var partners = await GetAll();
+            var filteredPartners = partners.Where(criteria);
+
+            return mapper.Map<IEnumerable<SelectListItem>>(filteredPartners);
+        }
 
         public async Task<ResultBase> Update(Partner partner)
         {

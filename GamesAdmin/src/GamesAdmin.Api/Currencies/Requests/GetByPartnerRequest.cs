@@ -7,6 +7,8 @@ namespace GamesAdmin.Api.Currencies.Requests
     {
         public string PartnerId { get; set; }
 
+        public GetByPartnerModel() { }
+
         public GetByPartnerModel(string partnerId)
         {
             PartnerId = partnerId;

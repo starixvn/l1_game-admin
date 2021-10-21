@@ -20,8 +20,32 @@
     }
 }
 
-.select2-selection__choice {
-    background-color: $btn-submit-bg-color !important;
-    border-color: $btn-submit-bg-color !important;
-    color: #fff;
+.fanex-multiselect-widget {
+    text-align: center;
+    border-radius: .5rem;
+    box-shadow: none !important;
+    border-width: 1px;
+    border-style: solid;
+    padding: .75rem 1.3rem .6rem;
+    line-height: 1;
+    display: block;
+
+    input[type="text"] {
+        border-style: none;
+        font-size: 1.3rem;
+        outline: none;
+        text-align: center;
+    }
+
+    .fanex-multiselect-icon {
+        margin-top: -20px;
+    }
+}
+
+.fanex-multiselect-treeview {
+    min-width: 200px;
+    border-radius: .5rem;
+    box-shadow: none !important;
+    border-width: 1px;
+    border-style: solid;
 }

@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 {
     public class CurrencyGroupViewModel
     {
-        public IEnumerable<SelectListItem> CurencyItems { get; set; }
+        public IEnumerable<SelectListItem> CurrencyItems { get; set; }
 
         public IEnumerable<SelectListItem> PartnerItems { get; set; }
     }

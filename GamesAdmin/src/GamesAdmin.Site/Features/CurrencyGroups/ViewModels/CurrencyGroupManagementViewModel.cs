@@ -12,6 +12,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
             => PartnerItems.FirstOrDefault(partner => partner.Value.Equals(model.PartnerId))?.Text;
 
         public string GetCurrenciesSeperatedByComma(CurrencyGroupModel model)
-            => string.Join(",", model.Currencies.Select(currency => currency.Name));
+            => string.Join(", ", model.Currencies.Select(currency => currency.Name));
     }
 }

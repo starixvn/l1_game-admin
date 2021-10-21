@@ -1,26 +1,39 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.CurrencyGroups.Requests;
 using GamesAdmin.Site.Features.CurrencyGroups.ViewModels;
+using GamesAdmin.Site.Features.Partners;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
 {
     public class QueryCurrencyGroupsHandler : Handler, IRequestHandler<QueryCurrencyGroupsRequest, CurrencyGroupManagementViewModel>
     {
-        private readonly IMediator mediator;
+        private readonly IPartnerService partnerService;
 
-        public QueryCurrencyGroupsHandler(IMapper mapper, ICurrencyGroupApi api, IMediator mediator) : base(mapper, api)
+        public QueryCurrencyGroupsHandler(IMapper mapper, ICurrencyGroupApi api, IPartnerService partnerService) : base(mapper, api)
         {
-            this.mediator = mediator;
+            this.partnerService = partnerService;
         }
 
         public async Task<CurrencyGroupManagementViewModel> Handle(QueryCurrencyGroupsRequest request, CancellationToken cancellationToken)
         {
+            var partners = await partnerService.GetPartnersForSelection(partner => true);
+
+            if (request.Model.Currencies == null || !request.Model.Currencies.Any())
+            {
+                var allGroups = await Api.GetAll();
+
+                return new CurrencyGroupManagementViewModel
+                {
+                    Models = allGroups,
+                    PartnerItems = partners,
+                };
+            }
+
             var groups = await Api.Query(request.Model);
-            var partners = await mediator.Send(new GetPartnersForSelectionRequest());
 
             return new CurrencyGroupManagementViewModel
             {

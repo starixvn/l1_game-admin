@@ -8,13 +8,15 @@ namespace GamesAdmin.Site.Features.Currencies.ViewModels
     public class CreateCurrencyViewModel
     {
         [Required]
+        [RegularExpression("[^\\s]+", ErrorMessage = "Spaces are not permitted.")]
         public string Name { get; set; }
 
         [Required]
+        [RegularExpression("[^\\s]+", ErrorMessage = "Spaces are not permitted.")]
         public string Code { get; set; }
 
         [Required]
-        [Range(0, double.MaxValue)]
+        [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The rate must be a positive number.")]
         public double Rate { get; set; }
 
         public bool Enabled { get; set; } = true;

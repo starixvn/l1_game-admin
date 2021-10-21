@@ -7,6 +7,8 @@ namespace GamesAdmin.Api.Currencies.Requests
     {
         public string GroupId { get; set; }
 
+        public GetByGroupModel() { }
+
         public GetByGroupModel(string groupId)
         {
             GroupId = groupId;

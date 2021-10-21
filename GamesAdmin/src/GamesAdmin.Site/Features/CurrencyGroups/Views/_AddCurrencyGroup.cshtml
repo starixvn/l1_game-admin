@@ -1,0 +1,53 @@
+﻿@model GamesAdmin.Site.Features.CurrencyGroups.ViewModels.CreateCurrencyGroupViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add currency group</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="Create" method="post" id="add-new-currency-group-form"
+      data-ajax-success="currencyGroup.onCreateCurrencyGroupSuccess">
+    <div class="modal-body">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label asp-for="PartnerId">Partner</label>
+                <select class="form-control" asp-for="PartnerId" asp-items="@Model.PartnerItems"></select>
+                <span class="text-danger" asp-validation-for="PartnerId"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label asp-for="Name">Currency Group</label>
+                <input class="form-control" type="text" asp-for="Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label asp-for="Currencies">Currencies</label>
+                <select class="form-control currencies-class" hidden asp-for="Currencies" asp-items="@Model.CurrencyItems" multiple></select>
+                <select class="form-control" id="currencies-add"></select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="Enabled" />
+                <label asp-for="Enabled" class="control-label"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Submit</button>
+    </div>
+</form>
