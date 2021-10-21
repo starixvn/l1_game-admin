@@ -14,7 +14,8 @@ namespace GamesAdmin.Core.Models
             EnableSetting enableSetting = null,
             BotSetting botSettings = null,
             BetLimit betLimit = null,
-            SlotsConfig slotsConfig = null)
+            SlotsConfig slotsConfig = null,
+            bool isBeta = false)
         {
             Id = id;
             Odds = odds;
@@ -23,6 +24,7 @@ namespace GamesAdmin.Core.Models
             BotSetting = botSettings;
             BetLimit = betLimit;
             SlotsConfig = slotsConfig;
+            IsBeta = isBeta;
         }
 
         public string Id { get; }
@@ -38,5 +40,7 @@ namespace GamesAdmin.Core.Models
         public BetLimit BetLimit { get; set; }
 
         public SlotsConfig SlotsConfig { get; set; }
+
+        public bool IsBeta { get; set; }
     }
 }

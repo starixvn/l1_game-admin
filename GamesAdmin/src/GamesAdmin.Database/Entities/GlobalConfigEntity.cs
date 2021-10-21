@@ -7,9 +7,24 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("global_configs")]
     public class GlobalConfigEntity : MiniGameBaseEntity
     {
-        public GlobalConfigEntity() 
+        public GlobalConfigEntity()
         {
             Time = DateTime.UtcNow;
+            Configs = new Dictionary<string, IList<string>>();
+        }
+
+        public GlobalConfigEntity(string type)
+        {
+            Time = DateTime.UtcNow;
+            Type = type;
+            Configs = new Dictionary<string, IList<string>>();
+        }
+
+        public GlobalConfigEntity(string type, Dictionary<string, IList<string>> configs)
+        {
+            Time = DateTime.UtcNow;
+            Type = type;
+            Configs = configs;
         }
 
         public string Type { get; set; }

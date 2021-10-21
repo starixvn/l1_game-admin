@@ -56,5 +56,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Get("/game_settings/{name}/disabled_message")]
         Task<Dictionary<string, string>> GetDisableMessage(string name);
+
+        [Put("/game_settings/update_beta_version")]
+        Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
     }
 }
