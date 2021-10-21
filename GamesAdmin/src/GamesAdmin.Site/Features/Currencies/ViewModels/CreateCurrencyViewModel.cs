@@ -16,8 +16,8 @@ namespace GamesAdmin.Site.Features.Currencies.ViewModels
         public string Code { get; set; }
 
         [Required]
-        [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The rate must be a positive number.")]
-        public double Rate { get; set; }
+        [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The multiplier must be a positive number.")]
+        public double Multiplier { get; set; }
 
         public bool Enabled { get; set; } = true;
 

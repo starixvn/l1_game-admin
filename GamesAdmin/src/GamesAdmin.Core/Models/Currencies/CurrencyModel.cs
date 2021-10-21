@@ -2,12 +2,12 @@
 {
     public class CurrencyModel
     {
-        public CurrencyModel(string id, string name, string code, double rate, bool enabled, bool isTest, string partnerId, string groupId)
+        public CurrencyModel(string id, string name, string code, double multiplier, bool enabled, bool isTest, string partnerId, string groupId)
         {
             Id = id;
             Name = name;
             Code = code;
-            Rate = rate;
+            Multiplier = multiplier;
             Enabled = enabled;
             IsTest = isTest;
             PartnerId = partnerId;
@@ -20,7 +20,7 @@
 
         public string Code { get; }
 
-        public double Rate { get; }
+        public double Multiplier { get; }
 
         public bool Enabled { get; }
 

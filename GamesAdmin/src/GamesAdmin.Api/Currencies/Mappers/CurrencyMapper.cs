@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.Currencies.Mappers
                     entity.Id.ToString(),
                     entity.Name,
                     entity.Code,
-                    entity.Rate,
+                    entity.Multiplier,
                     entity.Enabled,
                     entity.IsTest,
                     entity.PartnerId,

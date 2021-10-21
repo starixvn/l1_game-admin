@@ -27,7 +27,7 @@
 
             table.DataTable({
                 "order": [[0, "asc"]],
-                "lengthMenu": [100]
+                "lengthMenu": [100, 200, 500]
             });
         },
         openAddNewCurrencyForm: openModal("#add-new-currency-form"),

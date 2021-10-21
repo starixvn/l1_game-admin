@@ -88,7 +88,7 @@
     return {
         init: function () {
             $('#currency-group-table').DataTable({
-                "lengthMenu": [100]
+                "lengthMenu": [100, 200, 500]
             });
         },
         openAddNewCurrencyGroupForm: openModal("#add-new-currency-group-form"),
