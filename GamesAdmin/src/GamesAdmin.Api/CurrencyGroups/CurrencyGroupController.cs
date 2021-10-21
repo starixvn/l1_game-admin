@@ -30,6 +30,10 @@ namespace GamesAdmin.Api.CurrencyGroups
         public Task<IEnumerable<CurrencyGroupModel>> GetByCurrenciesAndPartners(GetByCurrenciesAndPartnersModel model)
             => mediator.Send(new GetByCurrenciesRequest(model));
 
+        [HttpGet("partner/{partnerId}")]
+        public Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId)
+            => mediator.Send(new GetByPartnerRequest(partnerId));
+
         [HttpPost]
         public Task<bool> Create(CreateCurrencyGroupModel model)
             => mediator.Send(new CreateRequest(model));

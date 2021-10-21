@@ -21,12 +21,17 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         {
             var partners = await mediator.Send(new GetPartnersForSelectionRequest());
-            var allPartnerItem = new SelectListItem("All", string.Empty);
-            var allSelections = partners.Prepend(allPartnerItem);
+            var enabledPartners = partners.Select(partner =>
+            {
+                partner.Selected = true;
+
+                return partner;
+            });
 
             return new IndexViewModel
             {
-                Partners = allSelections
+                Partners = enabledPartners,
+                PartnerIds = partners.Select(partner => partner.Value).AsEnumerable()
             };
         }
     }

@@ -21,6 +21,16 @@
         }
     }
 
+    function convertPartnerSelectToFanexItem(item) {
+        return ({
+            id: item.value,
+            value: item.value,
+            text: item.text,
+            enable: !item.disabled,
+            checked: item.selected
+        })
+    }
+
     return {
         init: function () {
             var table = $('#currency-table');
@@ -33,10 +43,23 @@
         openAddNewCurrencyForm: openModal("#add-new-currency-form"),
         openUpdateCurrencyForm: openModal("#update-currency-form"),
         onCreateCurrencySuccess: onUpsertCurrency,
-        onUpdateCurrencySuccess: onUpsertCurrency
+        onUpdateCurrencySuccess: onUpsertCurrency,
+        getFanexSelectData: () => partners.map(convertPartnerSelectToFanexItem)
     }
 }(jQuery));
 
 $(document).ready(function () {
     $("#currency-form").submit();
+
+    var selections = currency.getFanexSelectData();
+
+    $("#partners").fanexMultiSelect({
+        listData: selections,
+        showFilter: true,
+        onLeave: function () {
+            var value = $("#partners").fanexMultiSelect('getItems', true);
+
+            $("#PartnerIds").val(value);
+        },
+    });
 })

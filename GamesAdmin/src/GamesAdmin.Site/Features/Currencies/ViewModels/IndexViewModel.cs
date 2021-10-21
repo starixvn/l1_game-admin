@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.Currencies.ViewModels
 {
     public class IndexViewModel
     {
-        public string PartnerId { get; set; }
+        public IEnumerable<string> PartnerIds { get; set; }
 
         public IEnumerable<SelectListItem> Partners { get; set; }
     }

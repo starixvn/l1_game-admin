@@ -1,6 +1,7 @@
 ﻿@model GamesAdmin.Site.Features.Currencies.ViewModels.IndexViewModel
 
 @section Styles {
+    <link href="~/lib/fanex.multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/currency.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
@@ -17,8 +18,9 @@
       id="currency-form">
     <div class="form-row align-items-center">
         <div class="col-auto partner-id">
-            <label asp-for="PartnerId" class="control-label"></label>
-            <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
+            <label asp-for="PartnerIds" class="control-label">Partners</label>
+            <select hidden asp-items="@Model.Partners" asp-for="PartnerIds" class="form-control" multiple></select>
+            <select class="form-control" id="partners"></select>
         </div>
         <div class="col-auto list-buttons">
             <button type="submit" class="btn-submit">Submit</button>
@@ -48,11 +50,16 @@
     </div>
 </div>
 
+<script>
+    var partners = @Json.Serialize(Model.Partners);
+</script>
+
 @section Scripts
 {
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
         <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/lib/fanex.multiselect/fanex.multiSelect.js"></script>
         <script src="~/js/currency.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">

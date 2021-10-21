@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Currencies.Models;
 using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
@@ -25,13 +26,13 @@ namespace GamesAdmin.Site.Features.Currencies
         public async Task<IActionResult> Create()
         {
             var partners = await mediator.Send(new GetPartnersForSelectionRequest());
-            var viewModel = new CreateCurrencyViewModel {
+            var viewModel = new CreateCurrencyViewModel
+            {
                 Partners = partners
             };
 
             return PartialView("_AddNewCurrency", viewModel);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Create([Bind] CreateCurrencyViewModel model)
@@ -58,11 +59,9 @@ namespace GamesAdmin.Site.Features.Currencies
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetCurrencies([Bind] GetCurrencyByPartnerModel model)
+        public async Task<IActionResult> GetCurrencies([Bind] GetCurrencyByPartnersModel model)
         {
-            var viewModel = string.IsNullOrEmpty(model.PartnerId)
-                ? await mediator.Send(new GetAllRequest())
-                : await mediator.Send(new GetByPartnerRequest(model));
+            var viewModel = await mediator.Send(new GetByPartnersRequest(model));
 
             return PartialView("_Currencies", viewModel);
         }
