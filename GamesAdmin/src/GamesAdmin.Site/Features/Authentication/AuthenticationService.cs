@@ -7,6 +7,7 @@ using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Authentication
@@ -42,11 +43,13 @@ namespace GamesAdmin.Site.Features.Authentication
                     return false;
                 }
 
+                var userRole = userSignin.IsAdmin ? Role.Admin.Value : Role.Operation.Value;
                 var userClaims = new List<Claim>
                 {
                     new Claim("Username", userSignin.Username),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
-                    new Claim(ClaimTypes.Role, userSignin.IsAdmin ? Role.Admin.Value : Role.Operation.Value)
+                    new Claim(ClaimTypes.Role, userRole),
+                    new Claim(ClaimTypes.Name, userSignin.Username)
                  };
 
                 var grandmaIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);

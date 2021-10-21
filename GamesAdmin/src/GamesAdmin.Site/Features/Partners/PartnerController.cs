@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Site.Features.Partners.Requests;
+﻿using Audit.Mvc;
+using GamesAdmin.Site.Features.Partners.Requests;
 using GamesAdmin.Site.Features.Partners.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -59,7 +60,7 @@ namespace GamesAdmin.Site.Features.Partners
         public async Task<IActionResult> EditView(string partnerId)
             => View("Edit", await mediator.Send(new GetByIdRequest(partnerId)));
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> Edit([Bind] PartnerEditViewModel viewModel)
         {
             try

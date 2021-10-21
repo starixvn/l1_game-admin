@@ -27,6 +27,8 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Audit.Mvc.Core" Version="18.1.6" />
+    <PackageReference Include="Audit.NET.MongoDB" Version="18.1.6" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="1.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
