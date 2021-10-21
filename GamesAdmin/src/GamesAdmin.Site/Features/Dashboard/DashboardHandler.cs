@@ -79,6 +79,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.ThreeCards.DisplayName, Game.ThreeCards.Value),
                 new SelectListItem(Game.KenoMatch1.DisplayName, Game.KenoMatch1.Value),
                 new SelectListItem(Game.KenoMatch2.DisplayName, Game.KenoMatch2.Value),
+                new SelectListItem(Game.KenoPower1.DisplayName, Game.KenoPower1.Value),
+                new SelectListItem(Game.KenoPower2.DisplayName, Game.KenoPower2.Value),
                 new SelectListItem(Game.HeroesSlot.DisplayName, Game.HeroesSlot.Value),
                 new SelectListItem(Game.KenoMax.DisplayName, Game.KenoMax.Value),
                 new SelectListItem(Game.KenoMax2.DisplayName, Game.KenoMax2.Value),
