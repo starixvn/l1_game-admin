@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Audit.Mvc;
 using GamesAdmin.Site.Features.Currencies.Models;
 using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features.Currencies
             return PartialView("_AddNewCurrency", viewModel);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> Create([Bind] CreateCurrencyViewModel model)
         {
             var result = await mediator.Send(new CreateRequest(model));
@@ -50,7 +50,7 @@ namespace GamesAdmin.Site.Features.Currencies
             return PartialView("_UpdateCurrency", viewModel);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> Update([Bind] UpdateCurrencyViewModel model)
         {
             var result = await mediator.Send(new UpdateRequest(model));

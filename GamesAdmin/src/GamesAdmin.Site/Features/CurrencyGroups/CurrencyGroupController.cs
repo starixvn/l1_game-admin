@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Audit.Mvc;
 using GamesAdmin.Site.Features.CurrencyGroups.Models;
 using GamesAdmin.Site.Features.CurrencyGroups.Requests;
 using GamesAdmin.Site.Features.CurrencyGroups.ViewModels;
@@ -29,7 +30,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
             return PartialView("_Groups", viewModel);
         }
 
-        [HttpGet]
+        [HttpGet, Audit]
         public async Task<IActionResult> Create()
         {
             var viewModel = await mediator.Send(new CreateCurrencyGroupPageRequest());
@@ -53,7 +54,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
             return PartialView("_UpdateCurrencyGroup", viewModel);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> Update([Bind] UpdateCurrencyGroupViewModel model)
         {
             var result = await mediator.Send(new UpdateCurrencyGroupRequest(model));
