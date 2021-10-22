@@ -16,6 +16,16 @@
         return function () {
             $modal.modal('show');
             $.validator.unobtrusive.parse(formId);
+
+            $('#Color').spectrum({
+                type: "component",
+                preferredFormat: "hex",
+                showPalette: false,
+                showInput: true,
+                showInitial: true,
+                showAlpha: true,
+                allowEmpty: false
+            });
         }
     }
 
@@ -25,6 +35,16 @@
 
             table.DataTable({
                 "lengthMenu": [100, 200, 500]
+            });
+
+            $('.color').spectrum({
+                type: "text",
+                preferredFormat: "hex",
+                showPalette: false,
+                showInput: true,
+                showInitial: true,
+                showAlpha: false,
+                allowEmpty: false
             });
         },
         openAddChipForm: openModal("#add-chip-form"),

@@ -23,7 +23,8 @@ namespace GamesAdmin.Api.Chips.Handlers
             {
                 var update = Builders<ChipEntity>.Update
                     .Set(field => field.Text, request.Text)
-                    .Set(field => field.Value, request.Value);
+                    .Set(field => field.Value, request.Value)
+                    .Set(field => field.Color, request.Color);
 
                 await Repository.UpdateAsync(entity => entity.Id.Equals(ObjectId.Parse(request.Id)), update);
 

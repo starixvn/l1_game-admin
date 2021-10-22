@@ -9,10 +9,13 @@ namespace GamesAdmin.Site.Features.Chips.Requests
 
         public int Value { get; }
 
-        public CreateChipRequest(string text, int value)
+        public string Color { get; }
+
+        public CreateChipRequest(string text, int value, string color)
         {
             Text = text;
             Value = value;
+            Color = color;
         }
     }
 }

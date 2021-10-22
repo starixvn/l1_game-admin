@@ -20,7 +20,7 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
             var allCurrencies = await Api.GetAll();
             var currencies = allCurrencies.Where(entity => !entity.Id.Equals(request.Model.Id));
             var model = Mapper.Map<CurrencyModel>(request.Model);
-            var isExisted = currencies.Any(entity => entity.PartnerId.Equals(model.PartnerId) && entity.Name.Equals(model.Name));
+            var isExisted = currencies.Any(entity => string.Equals(entity.PartnerId, model.PartnerId) && string.Equals(entity.Name, model.Name));
             var message = string.Empty;
             var success = false;
 

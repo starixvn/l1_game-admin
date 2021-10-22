@@ -11,5 +11,8 @@ namespace GamesAdmin.Site.Features.Chips.ViewModels
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Value must be a postive number.")]
         public int Value { get; set; }
+
+        [Required]
+        public string Color { get; set; }
     }
 }

@@ -11,3 +11,18 @@
         text-decoration: none;
     }
 }
+
+.table {
+    .btn-edit {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none
+        }
+    }
+}

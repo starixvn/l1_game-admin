@@ -7,6 +7,8 @@ namespace GamesAdmin.Api.Chips.Requests
         public string Text { get; set; }
 
         public int Value { get; set; }
+
+        public string Color { get; set; }
     }
 
     public class CreateChipRequest : IRequest<bool>
@@ -15,10 +17,13 @@ namespace GamesAdmin.Api.Chips.Requests
 
         public int Value { get; }
 
-        public CreateChipRequest(string text, int value)
+        public string Color { get; }
+
+        public CreateChipRequest(string text, int value, string color)
         {
             Text = text;
             Value = value;
+            Color = color;
         }
     }
 }

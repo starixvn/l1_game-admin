@@ -18,14 +18,7 @@ namespace GamesAdmin.Site.Features.Chips.Handlers
         {
             var result = await Api.Update(Mapper.Map<ChipModel>(request));
 
-            if (result)
-            {
-                return new ResultBase(string.Empty);
-            }
-            else
-            {
-                return new ResultBase("Cannot update chip.");
-            }
+            return result ? new ResultBase(string.Empty) : new ResultBase("Cannot update chip.");
         }
     }
 }

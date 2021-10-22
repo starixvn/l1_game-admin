@@ -23,8 +23,6 @@ namespace GamesAdmin.Api.Currencies.Handlers
             {
                 var model = request.Model;
                 var update = Builders<CurrencyEntity>.Update
-                    .Set(field => field.Name, model.Name)
-                    .Set(field => field.Code, model.Code)
                     .Set(field => field.Multiplier, model.Multiplier)
                     .Set(field => field.Enabled, model.Enabled)
                     .Set(field => field.IsTest, model.IsTest)

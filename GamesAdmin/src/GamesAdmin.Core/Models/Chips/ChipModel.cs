@@ -8,11 +8,14 @@
 
         public int Value { get; }
 
-        public ChipModel(string id, string text, int value)
+        public string Color { get; }
+
+        public ChipModel(string id, string text, int value, string color)
         {
             Id = id;
             Text = text;
             Value = value;
+            Color = color;
         }
     }
 }

@@ -22,23 +22,27 @@
                 <tr>
                     <th>Text</th>
                     <th>Value</th>
+                    <th>Color</th>
                     <th>Edit</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Models)
                 {
-                    <tr>
-                        <td class="text-center">@item.Text</td>
-                        <td class="text-center">@item.Value</td>
-                        <td class="text-center">
-                            <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="chip.openUpdateChipForm"
-                               asp-route-id=@item.Id
-                               asp-action="Update">
-                                <i class="icon-edit"></i>
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="text-center">@item.Text</td>
+                    <td class="text-center">@item.Value</td>
+                    <td class="text-center">
+                        <input disabled class="color form-control" value="@item.Color" />
+                    </td>
+                    <td class="text-center">
+                        <a class="btn-edit" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#modal .modal-content" data-ajax-success="chip.openUpdateChipForm"
+                           asp-route-id=@item.Id
+                           asp-action="Update">
+                            <i class="icon-edit"></i>
+                        </a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -57,6 +61,7 @@
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
         <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/lib/spectrum/spectrum.min.js"></script>
         <script src="~/js/chip.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
