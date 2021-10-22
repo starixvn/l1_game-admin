@@ -2,7 +2,7 @@
 {
     public class Partner
     {
-        public Partner(string partnerId, string name, string secretKey, string casinoVersionUrl, string mobiVersionUrl, string miniVersionUrl, string apiUrl)
+        public Partner(string partnerId, string name, string secretKey, string casinoVersionUrl, string mobiVersionUrl, string miniVersionUrl, string apiUrl, string testCurrencyUrl)
         {
             PartnerId = partnerId;
             Name = name;
@@ -11,6 +11,8 @@
             MiniVersionUrl = miniVersionUrl;
             CasinoVersionUrl = casinoVersionUrl;
             ApiUrl = apiUrl;
+            TestCurrencyUrl = testCurrencyUrl;
+
         }
 
         public string PartnerId { get; }
@@ -26,5 +28,7 @@
         public string MiniVersionUrl { get; }
 
         public string ApiUrl { get; }
+
+        public string TestCurrencyUrl { get; }
     }
 }

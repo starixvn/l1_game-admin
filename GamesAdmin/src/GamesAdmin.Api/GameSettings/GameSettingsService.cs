@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.CurrencyGroupGames;
+using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Enumeration;
@@ -54,36 +56,62 @@ namespace GamesAdmin.Api.Games
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<GameConfigEntity> repository;
         private readonly INotificationService notificationService;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly ICurrencyGroupService currencyGroupService;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<GameConfigEntity> repository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            ICurrencyGroupGameService currencyGroupGameService,
+            ICurrencyGroupService currencyGroupService
+            )
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.notificationService = notificationService;
+            this.currencyGroupGameService = currencyGroupGameService;
+            this.currencyGroupService = currencyGroupService;
         }
 
-        public Task<IEnumerable<GameConfig>> Get()
-        => Task.Run(() =>
+        public async Task<IEnumerable<GameConfig>> Get()
+        {
+            try
             {
-                try
-                {
-                    var gameEntities = repository.AsQueryable().ToList();
+                var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
+                var currencyGroups = await currencyGroupService.GetAll();
+                var currencyGroupGames = await currencyGroupGameService.GetAll();
 
-                    return gameEntities
-                        .Select(entity => mapper.Map<GameConfig>(entity));
-                }
-                catch (Exception ex)
-                {
-                    sentryClient.CaptureException(ex);
+                return gameEntities
+                        .Select(entity =>
+                        {
+                            var gameConfig = mapper.Map<GameConfig>(entity);
+                            var groupGames = currencyGroupGames.Where(group => group.GameId == entity.GameId);
 
-                    return Enumerable.Empty<GameConfig>();
-                }
-            });
+                            foreach (var currencyGroupGame in groupGames)
+                            {
+                                var partnerId = currencyGroups.SingleOrDefault(group => group.Id == currencyGroupGame.CurrencyGroupId).PartnerId;
+
+                                if (gameConfig.PartnerCurrencyGroupGameConfig[partnerId] == null)
+                                {
+                                    gameConfig.PartnerCurrencyGroupGameConfig[partnerId] = new List<CurrencyGroupGame>();
+                                }
+
+                                gameConfig.PartnerCurrencyGroupGameConfig[partnerId].Add(currencyGroupGame);
+                            }
+
+                            return gameConfig;
+                        });
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return Enumerable.Empty<GameConfig>();
+            }
+        }
 
         public async Task<bool> Create(GameConfig game)
         {

@@ -1,4 +1,5 @@
 ﻿using Audit.Mvc;
+using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Site.Features.Partners.Requests;
 using GamesAdmin.Site.Features.Partners.ViewModels;
 using MediatR;
@@ -26,39 +27,30 @@ namespace GamesAdmin.Site.Features.Partners
         public async Task<IActionResult> Index() => View(await mediator.Send(new IndexRequest()));
 
         [HttpGet]
-        public IActionResult Add() => View();
+        public IActionResult Add() => PartialView();
 
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
             var addedResult = await mediator.Send(new AddPartnerRequest(
-                new Core.Models.Partners.Partner(
+                new Partner(
                     addViewModel.PartnerId,
                     addViewModel.Name,
                     addViewModel.SecretKey,
                     addViewModel.CasinoVersionUrl,
                     addViewModel.MobiVersionUrl,
                     addViewModel.MiniVersionUrl,
-                    addViewModel.ApiUrl)));
+                    addViewModel.ApiUrl,
+                    addViewModel.TestCurrencyUrl)));
 
-            addViewModel.Success = addedResult.Success;
 
-            if (addViewModel.Success)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                addViewModel.ErrorMessage = addedResult.Error;
-            }
-
-            return View(addViewModel);
+            return Json(addedResult);
         }
 
         [HttpGet]
         [Route("partner/{partnerId}")]
         public async Task<IActionResult> EditView(string partnerId)
-            => View("Edit", await mediator.Send(new GetByIdRequest(partnerId)));
+            => PartialView("Edit", await mediator.Send(new GetByIdRequest(partnerId)));
 
         [HttpPost, Audit]
         public async Task<IActionResult> Edit([Bind] PartnerEditViewModel viewModel)
@@ -72,11 +64,10 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.CasinoVersionUrl,
                    viewModel.MobiVersionUrl,
                    viewModel.MiniVersionUrl,
-                   viewModel.ApiUrl));
+                   viewModel.ApiUrl,
+                   viewModel.TestCurrencyUrl));
 
-                viewModel.Success = result.Success;
-                viewModel.ErrorMessage = result.Error;
-                return Json(result.Success);
+                return Json(result);
             }
             catch(Exception ex)
             {

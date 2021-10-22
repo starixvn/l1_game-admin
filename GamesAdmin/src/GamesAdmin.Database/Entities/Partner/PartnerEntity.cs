@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Models.GameConfigs;
-using GamesAdmin.Database.Attributes;
+﻿using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("partner")]
-    public class PartnerEntity : MiniGameBaseEntity
+    public class PartnerEntity : Document
     {
+        [BsonElement("id")]
         public string PartnerId { get; set; }
 
         public string Name { get; set; }
@@ -21,5 +20,7 @@ namespace GamesAdmin.Database.Entities
         public string MiniVersionUrl { get; set; }
 
         public string ApiUrl { get; set; }
+
+        public string TestCurrencyUrl { get; set; }
     }
 }

@@ -15,7 +15,9 @@ namespace GamesAdmin.Core.Models
             BotSetting botSettings = null,
             BetLimit betLimit = null,
             SlotsConfig slotsConfig = null,
-            bool isBeta = false)
+            bool isBeta = false,
+            Dictionary<string, List<CurrencyGroupGame>> partnerCurrencyGroupGameConfig = null
+            )
         {
             Id = id;
             Odds = odds;
@@ -25,6 +27,7 @@ namespace GamesAdmin.Core.Models
             BetLimit = betLimit;
             SlotsConfig = slotsConfig;
             IsBeta = isBeta;
+            PartnerCurrencyGroupGameConfig = partnerCurrencyGroupGameConfig;
         }
 
         public string Id { get; }
@@ -42,5 +45,7 @@ namespace GamesAdmin.Core.Models
         public SlotsConfig SlotsConfig { get; set; }
 
         public bool IsBeta { get; set; }
+
+        public Dictionary<string, List<CurrencyGroupGame>> PartnerCurrencyGroupGameConfig { get; set; }
     }
 }

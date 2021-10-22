@@ -1,63 +1,66 @@
 ﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
 
-@{ Layout = null; }
 
 @model PartnerEditViewModel;
-
-@{ ViewData["Title"] = "Partner"; }
 
 
     <div class="col-md-12 col-lg-12 card">
         <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
         <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
-        <form class="card-body form-add form" id="editForm">
+        <form class="card-body form-add form" data-ajax="true" data-ajax-success="partner.upsertResultHandle"  asp-controller="Partner"  asp-action="Edit" method="Post" id="editForm">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="PartnerId" class="control-label"></label>
-                <input type="text" asp-for="PartnerId" readonly class="form-control" required/>
+                <input type="text" asp-for="PartnerId" readonly class="form-control" />
                 <span asp-validation-for="PartnerId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input type="text" asp-for="Name" class="form-control" required/>
+                <input type="text" asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="SecretKey" class="control-label"></label>
-                <input type="text" asp-for="SecretKey" class="form-control" required/>
+                <input type="text" asp-for="SecretKey" class="form-control" />
                 <span asp-validation-for="SecretKey" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="CasinoVersionUrl" class="control-label"></label>
-                <input type="text" asp-for="CasinoVersionUrl" class="form-control" required/>
+                <input type="text" asp-for="CasinoVersionUrl" class="form-control" />
                 <span asp-validation-for="CasinoVersionUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="MiniVersionUrl" class="control-label"></label>
-                <input type="text" asp-for="MiniVersionUrl" class="form-control" required/>
+                <input type="text" asp-for="MiniVersionUrl" class="form-control" />
                 <span asp-validation-for="MiniVersionUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="MobiVersionUrl" class="control-label"></label>
-                <input type="text" asp-for="MobiVersionUrl" class="form-control" required/>
+                <input type="text" asp-for="MobiVersionUrl" class="form-control" />
                 <span asp-validation-for="MobiVersionUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="ApiUrl" class="control-label"></label>
-                <input type="text" asp-for="ApiUrl" class="form-control" required/>
+                <input type="text" asp-for="ApiUrl" class="form-control" />
                 <span asp-validation-for="ApiUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="button" id="updateBtn" value="Update" class="btn-submit" onclick="partner.updatePartner()" />
+                <label asp-for="TestCurrencyUrl" class="control-label"></label>
+                <input type="text" asp-for="TestCurrencyUrl" class="form-control" />
+                <span asp-validation-for="TestCurrencyUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" id="submitBtn" value="Update" class="btn-submit" />
             </div>
         </form>
     </div>

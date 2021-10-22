@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,7 +32,7 @@ namespace GamesAdmin.Site.Features.Partners
             => await partnerService.Add(request.PartnerInfo);
 
         public async Task<ResultBase> Handle(UpdateRequest request, CancellationToken cancellationToken)
-            => await partnerService.Update(new Core.Models.Partners.Partner(request.PartnerId, request.Name, request.SecretKey, request.CasinoVersionUrl, request.MobiVersionUrl, request.MiniVersionUrl, request.ApiUrl));
+            => await partnerService.Update(new Partner(request.PartnerId, request.Name, request.SecretKey, request.CasinoVersionUrl, request.MobiVersionUrl, request.MiniVersionUrl, request.ApiUrl, request.TestCurrencyUrl));
 
         public async Task<PartnerEditViewModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
             => mapper.Map<PartnerEditViewModel>(await partnerService.GetById(request.PartnerId));

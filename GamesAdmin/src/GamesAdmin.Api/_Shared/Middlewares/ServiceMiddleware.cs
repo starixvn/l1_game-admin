@@ -5,6 +5,7 @@ using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
 using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.Currencies;
+using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.EndGameInfo;
@@ -38,6 +39,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
+            services.AddScoped<ICurrencyGroupGameService, CurrencyGroupGameService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();

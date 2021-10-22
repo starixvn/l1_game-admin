@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
 {
     public class UpdateRequest : IRequest<ResultBase>
     {
-        public UpdateRequest(string partnerId, string name, string secretKey, string casinoVersionUrl, string mobiVersionUrl, string miniVersionUrl, string apiUrl)
+        public UpdateRequest(string partnerId, string name, string secretKey, string casinoVersionUrl, string mobiVersionUrl, string miniVersionUrl, string apiUrl, string testCurrencyUrl)
         {
             PartnerId = partnerId;
             Name = name;
@@ -14,6 +14,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
             MiniVersionUrl = miniVersionUrl;
             CasinoVersionUrl = casinoVersionUrl;
             ApiUrl = apiUrl;
+            TestCurrencyUrl = testCurrencyUrl;
         }
 
         public string PartnerId { get; }
@@ -29,5 +30,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
         public string MiniVersionUrl { get; }
 
         public string ApiUrl { get; }
+
+        public string TestCurrencyUrl { get; }
     }
 }

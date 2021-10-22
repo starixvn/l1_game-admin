@@ -11,6 +11,10 @@ namespace GamesAdmin.Api.Partners.Mappers
             CreateMap<PartnerEntity, Partner>();
 
             CreateMap<Partner, PartnerEntity>();
+
+            CreateMap<PartnerConfig, PartnerConfigEntity>();
+
+            CreateMap<PartnerConfigEntity, PartnerConfig>();
         }
     }
 }

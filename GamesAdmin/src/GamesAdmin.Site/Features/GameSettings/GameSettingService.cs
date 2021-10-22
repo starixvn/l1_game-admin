@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.Chips;
 using GamesAdmin.Site.Features.GameSettings.Requests;
+using GamesAdmin.Site.Features.Partners;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -60,12 +62,16 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingApi gameApi;
         private readonly IGlobalConfigApi globalConfigApi;
         private readonly ISentryClient sentryClient;
+        private readonly IPartnerApi partnerApi;
+        private readonly IChipApi chipApi;
 
-        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi)
+        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi, IPartnerApi partnerApi, IChipApi chipApi)
         {
             this.sentryClient = sentryClient;
             this.gameApi = gameApi;
             this.globalConfigApi = globalConfigApi;
+            this.partnerApi = partnerApi;
+            this.chipApi = chipApi;
         }
 
         public async Task<bool> Add(GameConfig game)
@@ -75,6 +81,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
+                var partners = this.partnerApi.GetAll();
+                var chips = this.chipApi.GetAll();
+
                 return await gameApi.GetAll();
             }
             catch (Exception ex)
