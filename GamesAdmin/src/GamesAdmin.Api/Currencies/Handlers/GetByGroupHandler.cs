@@ -8,6 +8,7 @@ using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
+using MongoDB.Bson;
 
 namespace GamesAdmin.Api.Currencies.Handlers
 {
@@ -19,7 +20,7 @@ namespace GamesAdmin.Api.Currencies.Handlers
 
         public async Task<IEnumerable<CurrencyModel>> Handle(GetByGroupRequest request, CancellationToken cancellationToken)
         {
-            var entities = await Repository.FilterByAsync(entity => string.Equals(entity.GroupId, request.Model.GroupId));
+            var entities = await Repository.FilterByAsync(entity => entity.GroupId == ObjectId.Parse(request.Model.GroupId));
 
             return entities.Select(entity => Mapper.Map<CurrencyModel>(entity)).ToList();
         }

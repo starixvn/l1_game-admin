@@ -1,9 +1,10 @@
 ﻿using GamesAdmin.Database.Attributes;
+using MongoDB.Bson;
 
 namespace GamesAdmin.Database.Entities.Currencies
 {
     [BsonCollection("currencies")]
-    public class CurrencyEntity : MiniGameBaseEntity
+    public class CurrencyEntity : Document
     {
         public string Name { get; set; }
 
@@ -17,6 +18,6 @@ namespace GamesAdmin.Database.Entities.Currencies
 
         public string PartnerId { get; set; }
 
-        public string GroupId { get; set; }
+        public ObjectId GroupId { get; set; }
     }
 }

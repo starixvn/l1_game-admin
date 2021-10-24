@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("partner")]
+    [BsonCollection("partners")]
     public class PartnerEntity : Document
     {
         [BsonElement("id")]

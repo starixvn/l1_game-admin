@@ -6,6 +6,7 @@ using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
 
@@ -37,7 +38,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == gameId && entity.CurrencyGroupId == currencyGroupId);
+                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == gameId && entity.CurrencyGroupId == ObjectId.Parse(currencyGroupId));
 
 
                 return mapper.Map<CurrencyGroupGame>(gameConfig);
@@ -70,7 +71,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == currencyGroupGame.GameId && entity.CurrencyGroupId == currencyGroupGame.CurrencyGroupId);
+                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == currencyGroupGame.GameId && entity.CurrencyGroupId == ObjectId.Parse(currencyGroupGame.CurrencyGroupId));
 
                 if (gameConfig != null)
                 {
@@ -80,7 +81,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
                         .Set(field => field.Chips, currencyGroupGame.Chips);
 
-                    await currencyGroupGameRepository.UpdateAsync(entity => entity.CurrencyGroupId == currencyGroupGame.CurrencyGroupId 
+                    await currencyGroupGameRepository.UpdateAsync(entity => entity.CurrencyGroupId == ObjectId.Parse(currencyGroupGame.CurrencyGroupId)
                         && entity.GameId == currencyGroupGame.GameId, update);
 
                 }

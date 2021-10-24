@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities.Currencies
 {
     [BsonCollection("currency_groups")]
-    public class CurrencyGroupEntity : MiniGameBaseEntity
+    public class CurrencyGroupEntity : Document
     {
         public string Name { get; set; }
 

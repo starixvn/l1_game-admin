@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
-using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("currency_group_games")]
-    public class CurrencyGroupGameEntity : MiniGameBaseEntity
+    public class CurrencyGroupGameEntity : Document
     {
-        public string CurrencyGroupId { get; set; }
+        public ObjectId CurrencyGroupId { get; set; }
 
         public int GameId { get; set; }
 
