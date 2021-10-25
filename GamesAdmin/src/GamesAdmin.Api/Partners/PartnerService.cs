@@ -114,7 +114,7 @@ namespace GamesAdmin.Api.Partners
                 var update = Builders<PartnerEntity>.Update.Set(field => field.Name, partner.Name)
                     .Set(field => field.SecretKey, partner.SecretKey)
                     .Set(field => field.MobiVersionUrl, partner.MobiVersionUrl)
-                    .Set(field => field.CasinoVersionUrl, partner.CasinoVersionUrl)
+                    .Set(field => field.ClubVersionUrl, partner.ClubVersionUrl)
                     .Set(field => field.MiniVersionUrl, partner.MiniVersionUrl)
                     .Set(field => field.ApiUrl, partner.ApiUrl)
                     .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl);

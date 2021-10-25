@@ -13,7 +13,7 @@ namespace GamesAdmin.Database.Entities
 
         public string SecretKey { get; set; }
 
-        public string CasinoVersionUrl { get; set; }
+        public string ClubVersionUrl { get; set; }
 
         public string MobiVersionUrl { get; set; }
 

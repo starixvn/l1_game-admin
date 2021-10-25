@@ -19,8 +19,8 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         public string SecretKey { get; set; }
 
         [Required]
-        [DisplayName("Casino Version URL")]
-        public string CasinoVersionUrl { get; set; }
+        [DisplayName("Club Version URL")]
+        public string ClubVersionUrl { get; set; }
 
         [Required]
         [DisplayName("Mobi Version URL")]
