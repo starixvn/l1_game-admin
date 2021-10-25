@@ -8,12 +8,13 @@ using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
+using Sentry;
 
 namespace GamesAdmin.Api.Currencies.Handlers
 {
     public class GetByPartnersHandler : Handler, IRequestHandler<GetByPartnersRequest, IEnumerable<CurrencyModel>>
     {
-        public GetByPartnersHandler(IMapper mapper, IGenericRepository<CurrencyEntity> repository) : base(mapper, repository)
+        public GetByPartnersHandler(IMapper mapper, IGenericRepository<CurrencyEntity> repository, ISentryClient sentry) : base(mapper, repository, sentry)
         {
         }
 

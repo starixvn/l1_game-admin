@@ -5,16 +5,18 @@ using GamesAdmin.Api.Currencies;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
+using Sentry;
 
 namespace GamesAdmin.Api.CurrencyGroups.Handlers
 {
     public class Handler
     {
-        public Handler(IMapper mapper, IGenericRepository<CurrencyGroupEntity> repository, ICurrencyService currency)
+        public Handler(IMapper mapper, IGenericRepository<CurrencyGroupEntity> repository, ICurrencyService currency, ISentryClient sentry)
         {
             Repository = repository;
             Mapper = mapper;
             Currency = currency;
+            Sentry = sentry;
         }
 
         public IGenericRepository<CurrencyGroupEntity> Repository { get; }
@@ -22,6 +24,8 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
         public IMapper Mapper { get; }
 
         public ICurrencyService Currency { get; }
+
+        public ISentryClient Sentry { get; }
 
         protected static CurrencyGroupModel TransformToModel(CurrencyGroupEntity entity, IEnumerable<CurrencyModel> currencies)
         {

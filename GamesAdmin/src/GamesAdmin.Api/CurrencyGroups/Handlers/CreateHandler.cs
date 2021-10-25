@@ -7,13 +7,14 @@ using GamesAdmin.Api.CurrencyGroups.Requests;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
+using Sentry;
 
 namespace GamesAdmin.Api.CurrencyGroups.Handlers
 {
     public class CreateHandler : Handler, IRequestHandler<CreateRequest, bool>
     {
-        public CreateHandler(IMapper mapper, IGenericRepository<CurrencyGroupEntity> repository, ICurrencyService currency)
-            : base(mapper, repository, currency)
+        public CreateHandler(IMapper mapper, IGenericRepository<CurrencyGroupEntity> repository, ICurrencyService currency, ISentryClient sentry)
+            : base(mapper, repository, currency, sentry)
         {
         }
 
@@ -32,8 +33,10 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Sentry.CaptureException(ex);
+
                 return false;
             }
         }

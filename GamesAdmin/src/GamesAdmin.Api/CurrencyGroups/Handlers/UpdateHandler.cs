@@ -10,13 +10,14 @@ using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Sentry;
 
 namespace GamesAdmin.Api.CurrencyGroups.Handlers
 {
     public class UpdateHandler : Handler, IRequestHandler<UpdateRequest, bool>
     {
-        public UpdateHandler(IMapper mapper, IGenericRepository<CurrencyGroupEntity> repository, ICurrencyService currency)
-            : base(mapper, repository, currency)
+        public UpdateHandler(IMapper mapper, IGenericRepository<CurrencyGroupEntity> repository, ICurrencyService currency, ISentryClient sentry)
+            : base(mapper, repository, currency, sentry)
         {
         }
 
@@ -48,8 +49,10 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Sentry.CaptureException(ex);
+
                 return false;
             }
         }

@@ -9,12 +9,13 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
 using MediatR;
 using MongoDB.Bson;
+using Sentry;
 
 namespace GamesAdmin.Api.Currencies.Handlers
 {
     public class GetByGroupHandler : Handler, IRequestHandler<GetByGroupRequest, IEnumerable<CurrencyModel>>
     {
-        public GetByGroupHandler(IMapper mapper, IGenericRepository<CurrencyEntity> repository) : base(mapper, repository)
+        public GetByGroupHandler(IMapper mapper, IGenericRepository<CurrencyEntity> repository, ISentryClient sentry) : base(mapper, repository, sentry)
         {
         }
 

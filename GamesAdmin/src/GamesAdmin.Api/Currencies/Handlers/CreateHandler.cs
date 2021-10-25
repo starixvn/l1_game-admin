@@ -12,12 +12,9 @@ namespace GamesAdmin.Api.Currencies.Handlers
 {
     public class CreateHandler : Handler, IRequestHandler<CreateRequest, bool>
     {
-        private readonly ISentryClient sentryClient;
-
         public CreateHandler(ISentryClient sentryClient, IMapper mapper, IGenericRepository<CurrencyEntity> repository)
-            : base(mapper, repository)
+            : base(mapper, repository, sentryClient)
         {
-            this.sentryClient = sentryClient;
         }
 
         public async Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
@@ -37,7 +34,7 @@ namespace GamesAdmin.Api.Currencies.Handlers
             }
             catch (Exception exception)
             {
-                sentryClient.CaptureException(exception);
+                Sentry.CaptureException(exception);
 
                 return false;
             }

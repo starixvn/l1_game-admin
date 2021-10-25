@@ -8,13 +8,17 @@ using GamesAdmin.Database.Entities.Chips;
 using MediatR;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Sentry;
 
 namespace GamesAdmin.Api.Chips.Handlers
 {
     public class UpdateChipHandler : ChipHandler, IRequestHandler<UpdateChipRequest, bool>
     {
-        public UpdateChipHandler(IMapper mapper, IGenericRepository<ChipEntity> repository) : base(mapper, repository)
+        private readonly ISentryClient sentry;
+
+        public UpdateChipHandler(IMapper mapper, IGenericRepository<ChipEntity> repository, ISentryClient sentry) : base(mapper, repository)
         {
+            this.sentry = sentry;
         }
 
         public async Task<bool> Handle(UpdateChipRequest request, CancellationToken cancellationToken)
@@ -30,8 +34,10 @@ namespace GamesAdmin.Api.Chips.Handlers
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                sentry.CaptureException(ex);
+
                 return false;
             }
         }

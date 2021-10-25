@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
 
             return new UpdateCurrencyGroupViewModel
             {
-                PartnerId = group.Id,
+                PartnerId = group.PartnerId,
                 CurrencyItems = currencies,
                 Currencies = group.Currencies.Select(item => item.Id).ToList(),
                 PartnerItems = parterItems,
