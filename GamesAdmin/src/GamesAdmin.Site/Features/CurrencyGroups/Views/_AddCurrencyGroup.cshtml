@@ -30,6 +30,7 @@
                 <label asp-for="Currencies">Currencies</label>
                 <select class="form-control currencies-class" hidden asp-for="Currencies" asp-items="@Model.CurrencyItems" multiple></select>
                 <select class="form-control" id="currencies-add"></select>
+                <span class="text-danger" asp-validation-for="Currencies"></span>
             </div>
         </div>
 

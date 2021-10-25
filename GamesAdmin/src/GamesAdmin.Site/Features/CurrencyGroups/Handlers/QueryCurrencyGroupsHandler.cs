@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroups.Requests;
 using GamesAdmin.Site.Features.CurrencyGroups.ViewModels;
 using GamesAdmin.Site.Features.Partners;
@@ -24,11 +26,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
 
             if (request.Model.Currencies == null || !request.Model.Currencies.Any())
             {
-                var allGroups = await Api.GetAll();
-
                 return new CurrencyGroupManagementViewModel
                 {
-                    Models = allGroups,
+                    Models = new List<CurrencyGroupModel>(),
                     PartnerItems = partners,
                 };
             }

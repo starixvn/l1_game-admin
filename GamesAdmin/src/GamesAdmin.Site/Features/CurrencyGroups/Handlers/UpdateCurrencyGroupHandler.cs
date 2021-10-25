@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Site.Features._Shared;
@@ -17,6 +18,14 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         public async Task<MessageResult> Handle(UpdateCurrencyGroupRequest request, CancellationToken cancellationToken)
         {
             var model = Mapper.Map<UpdateCurrencyGroupModel>(request.Model);
+
+            if (!model.Currencies.Any())
+            {
+                const string errorMessage = "The Currencies field is required.";
+
+                return new MessageResult(false, errorMessage);
+            }
+
             var added = await Api.Update(model);
             var message = added ? "Updated successfully." : "Cannot update currency group.";
 

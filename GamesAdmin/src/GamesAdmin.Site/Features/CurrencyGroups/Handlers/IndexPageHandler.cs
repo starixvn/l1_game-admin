@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,7 +30,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
 
             return new IndexViewModel
             {
-                Currencies = new List<string>(),
+                Currencies = currencyItems.Select(item => item.Value).AsEnumerable(),
                 CurrencyModels = currencies,
                 Partners = partners,
                 CurrencyItems = currencyItems

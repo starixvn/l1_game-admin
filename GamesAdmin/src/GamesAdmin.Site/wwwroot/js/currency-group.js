@@ -106,7 +106,7 @@ $(document).ready(function () {
     $("#currency-group-form").submit();
 
     var suportedCurrencies = $("#Currencies option").map((_, item) => item.value).toArray();
-    var selections = currencyGroup.getFanexSelectData(suportedCurrencies, false);
+    var selections = currencyGroup.getFanexSelectData(suportedCurrencies, true);
 
     $("#currencies").fanexMultiSelect({
         listData: selections,
