@@ -6,7 +6,6 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("partners")]
     public class PartnerEntity : Document
     {
-        [BsonElement("id")]
         public string PartnerId { get; set; }
 
         public string Name { get; set; }
