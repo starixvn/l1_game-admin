@@ -8,7 +8,7 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         private const string DatabaseConnectionStringKey = "AuditDatabaseSettings:ConnectionString";
         private const string DatabaseNameKey = "AuditDatabaseSettings:DatabaseName";
-        private const string CollectionName = "audit-events";
+        private const string CollectionName = "audit_events";
 
         public static void Init(IConfiguration configuration)
         {
