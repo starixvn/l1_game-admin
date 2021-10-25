@@ -15,7 +15,7 @@
         <div class="form-group row">
             <div class="col-sm-12">
                 <label asp-for="PartnerId">Partner</label>
-                <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
+                <select disabled asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
                 <span class="text-danger" asp-validation-for="PartnerId"></span>
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="form-group row">
             <div class="col-sm-12">
                 <label asp-for="Multiplier">Multiplied By</label>
-                <input class="form-control" type="number" asp-for="Multiplier">
+                <input disabled class="form-control" type="number" asp-for="Multiplier">
                 <span class="text-danger" asp-validation-for="Multiplier"></span>
             </div>
         </div>

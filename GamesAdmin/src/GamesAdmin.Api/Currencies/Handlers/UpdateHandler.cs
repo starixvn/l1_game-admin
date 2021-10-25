@@ -24,10 +24,8 @@ namespace GamesAdmin.Api.Currencies.Handlers
             {
                 var model = request.Model;
                 var update = Builders<CurrencyEntity>.Update
-                    .Set(field => field.Multiplier, model.Multiplier)
                     .Set(field => field.Enabled, model.Enabled)
                     .Set(field => field.IsTest, model.IsTest)
-                    .Set(field => field.PartnerId, model.PartnerId)
                     .Set(field => field.GroupId, string.IsNullOrWhiteSpace(model.GroupId) ? ObjectId.Empty : ObjectId.Parse(model.GroupId));
 
                 await Repository.UpdateAsync(entity => entity.Id.Equals(ObjectId.Parse(model.Id)), update);
