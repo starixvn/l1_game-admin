@@ -8,6 +8,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site.Features.Partners;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -19,40 +20,62 @@ namespace GamesAdmin.Site.Features.Dashboard
     {
         private readonly IGameSettingService gameSettingService;
         private readonly IMapper mapper;
+        private readonly IPartnerService partnerService;
 
         public DashboardHandler(
             IGameSettingService gameSettingService,
-            IMapper mapper)
+            IMapper mapper,
+            IPartnerService partnerService)
         {
             this.gameSettingService = gameSettingService;
             this.mapper = mapper;
+            this.partnerService = partnerService;
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersRequest request, CancellationToken cancellationToken)
         {
             var result = await gameSettingService.GetOnlineUsers();
 
-            return ConvertToOnlineUserViewModel(result);
+            return await ConvertToOnlineUserViewModel(result);
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
         {
             var onlineUsers = await gameSettingService.GetOnlineUsers(request.Game);
 
-            return ConvertToOnlineUserViewModel(onlineUsers);
+            return await ConvertToOnlineUserViewModel(onlineUsers);
         }
 
-        private OnlineUsersViewModel ConvertToOnlineUserViewModel(OnlineUsers onlineUsers)
-        => new OnlineUsersViewModel
+        private async Task<OnlineUsersViewModel> ConvertToOnlineUserViewModel(OnlineUsers onlineUsers)
         {
-            TotalReal = onlineUsers.TotalReal,
-            RealUsers = onlineUsers.RealUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-            TotalUUS = onlineUsers.TotalUUS,
-            UusUsers = onlineUsers.UusUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-            TotalBots = onlineUsers.TotalBots,
-            Bots = onlineUsers.Bots.Select(x => mapper.Map<BotUserViewModel>(x)),
-            GameTypeItems = GenerateGameItems()
-        };
+            var partners = await GetPartnerSelections();
+            var viewModel = new OnlineUsersViewModel
+            {
+                TotalReal = onlineUsers.TotalReal,
+                RealUsers = onlineUsers.RealUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TotalUUS = onlineUsers.TotalUUS,
+                UusUsers = onlineUsers.UusUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TotalBots = onlineUsers.TotalBots,
+                Bots = onlineUsers.Bots.Select(x => mapper.Map<BotUserViewModel>(x)),
+                GameTypeItems = GenerateGameItems(),
+                PartnerItems = partners,
+                PartnerIds = partners.Select(partner => partner.Value)
+            };
+
+            return viewModel;
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetPartnerSelections()
+        {
+            var partners = await partnerService.GetPartnersForSelection(partner => true);
+
+            return partners.Select(partner =>
+            {
+                partner.Selected = true;
+
+                return partner;
+            });
+        }
 
         private static List<SelectListItem> GenerateGameItems()
             => new List<SelectListItem> {

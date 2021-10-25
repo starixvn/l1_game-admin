@@ -33,6 +33,8 @@ namespace GamesAdmin.Core.Models
         public string Currency { get; set; }
 
         public string Character { get; set; }
+
+        public string PartnerId { get; set; }
     }
 
     public class BotUser

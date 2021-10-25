@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Dashboard.Requests;
-using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,10 +41,13 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOnlineUsers(bool includeUUS, string game)
+        public async Task<IActionResult> GetOnlineUsers(bool includeUUS, string game, IEnumerable<string> partnerIds)
         {
             var result = await mediator.Send(new GetOnlineUsersByGameRequest(game));
-            var users = result.RealUsers.ToList();
+            var users = result.RealUsers
+                .AsEnumerable()
+                .Where(user => partnerIds.Any(id => string.Equals(id, user.PartnerId)))
+                .ToList();
 
             if (includeUUS)
             {

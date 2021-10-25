@@ -19,10 +19,13 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 
         public IEnumerable<OnlineUserViewModel> UusUsers { get; set; }
 
-       
         public int TotalBots { get; set; }
 
         public IEnumerable<BotUserViewModel> Bots { get; set; }
+
+        public IEnumerable<string> PartnerIds { get; set; }
+
+        public IEnumerable<SelectListItem> PartnerItems { get; set; }
     }
 
     public class OnlineUserViewModel
@@ -34,6 +37,8 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public string Currency { get; set; }
 
         public string Character { get; set; }
+
+        public string PartnerId { get; set; }
     }
 
     public class BotUserViewModel
