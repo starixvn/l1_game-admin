@@ -4,7 +4,7 @@
     {
         public StakeLevel() { }
 
-        public StakeLevel(double stake, double jackpot, double botRatio) 
+        public StakeLevel(double stake, double jackpot, double? botRatio) 
         {
             Stake = stake;
             Jackpot = jackpot;
@@ -15,6 +15,6 @@
 
         public double Jackpot { get; set; }
 
-        public double BotRatio { get; set; }
+        public double? BotRatio { get; set; }
     }
 }

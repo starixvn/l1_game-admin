@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database.Attributes;
 using MongoDB.Bson;
 
@@ -11,6 +12,8 @@ namespace GamesAdmin.Database.Entities
 
         public int GameId { get; set; }
 
+        public string GameName { get; set; }
+
         public bool Enabled { get; set; }
 
         public double MinBet { get; set; }
@@ -20,5 +23,7 @@ namespace GamesAdmin.Database.Entities
         public Dictionary<string, double> MaxBetPerChoices { get; set; }
 
         public string[] Chips { get; set; }
+
+        public StakeLevel[] StakeLevels { get; set; }
     }
 }

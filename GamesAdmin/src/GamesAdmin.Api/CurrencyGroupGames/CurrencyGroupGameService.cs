@@ -95,7 +95,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.MinBet, currencyGroupGame.MinBet)
                         .Set(field => field.MaxBet, currencyGroupGame.MaxBet)
                         .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
-                        .Set(field => field.Chips, currencyGroupGame.Chips);
+                        .Set(field => field.Chips, currencyGroupGame.Chips)
+                        .Set(field => field.StakeLevels, currencyGroupGame.StakeLevels);
 
                     await currencyGroupGameRepository.UpdateAsync(entity => entity.CurrencyGroupId == ObjectId.Parse(currencyGroupGame.CurrencyGroupId)
                         && entity.GameId == currencyGroupGame.GameId, update);
