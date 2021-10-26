@@ -80,7 +80,13 @@
                     <button class="btn-edit"><i class="icon-edit"></i></button>
                 </td>
                 <td rowspan="@rowSpan" class="text-center">
-                    <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', 'OddSettings')"><i class="icon-edit"></i></button>
+                    @{ 
+                        if(Model.GameList[index].Name != "luckywheel")
+                        {
+                            <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', 'OddSettings')"><i class="icon-edit"></i></button>
+
+                        }
+                    }
                 </td>
                 <td rowspan="@rowSpan" class="text-center">
                     <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', 'GameDetails')"><i class="icon-edit"></i></button>
@@ -163,8 +169,11 @@
                     ...
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit()">Save</button>
+                    <button type="button" class="btn-gray" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-submit" id="updateAndContinueBtn" onclick="gameStatus.submit()">Save & Continue</button>
+                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit(true)">Save</button>
                 </div>
             </div>
         </div>

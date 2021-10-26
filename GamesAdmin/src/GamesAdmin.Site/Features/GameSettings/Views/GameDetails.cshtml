@@ -14,9 +14,13 @@
         <li class="nav-item">
             <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('general')">General</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="payouts-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('botsetting')">Bot Setting</a>
-        </li>
+        @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.AutoRNG)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="payouts-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('botsetting')">Bot Setting</a>
+            </li>
+        }
+       
         @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots && Model.SlotsConfig.Jackpot.Enabled)
         {
             <li class="nav-item">

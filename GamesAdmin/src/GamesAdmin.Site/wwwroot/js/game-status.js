@@ -251,8 +251,9 @@
                     }
                 });
         },
-        submit: function () {
+        submit: function (closeModalAfterSubmit) {
             $('#updateBtn').prop('disabled', true);
+            $('#updateAndContinueBtn').prop('disabled', true);
             let requestUrl = "/update";
 
             if ($('#botsetting').css('display') && $('#botsetting').css('display') !== 'none') {
@@ -282,8 +283,13 @@
 
                 setTimeout(function () {
                     $('#updateBtn').prop('disabled', false);
-                    $('#gameModal').modal('hide');
-                    location.reload();
+                    $('#updateAndContinueBtn').prop('disabled', false);
+                    $('#successMsg').hide();
+                    $('#failedMsg').hide();
+                    if (closeModalAfterSubmit) {
+                        $('#gameModal').modal('hide');
+                        location.reload();
+                    }
                 }, 1000);
             });
         },
