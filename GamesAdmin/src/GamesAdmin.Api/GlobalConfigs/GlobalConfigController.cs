@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GlobalConfigs.Requests;
 using GamesAdmin.Core.Enumeration;
@@ -33,5 +34,9 @@ namespace GamesAdmin.Api.GlobalConfigs
         [HttpPost("update_super_players")]
         public Task<bool> UpdateSuperPlayers(string[] superPlayers)
             => mediator.Send(new UpdateSuperPlayersRequest(superPlayers));
+
+        [HttpGet("get_exchange_codes")]
+        public Task<GlobalConfig> GetExchangeCodes()
+            => mediator.Send(new GetGlobalConfigRequest(GlobalConfigType.ExchangeCodes));
     }
 }

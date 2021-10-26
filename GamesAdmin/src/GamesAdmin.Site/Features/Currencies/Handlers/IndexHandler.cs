@@ -5,7 +5,6 @@ using AutoMapper;
 using GamesAdmin.Site.Features.Currencies.Requests;
 using GamesAdmin.Site.Features.Currencies.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Currencies.Handlers
 {

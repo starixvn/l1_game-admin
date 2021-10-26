@@ -26,9 +26,11 @@ namespace GamesAdmin.Site.Features.Currencies
         public async Task<IActionResult> Create()
         {
             var partners = await mediator.Send(new GetPartnersForSelectionRequest());
+            var codes = await mediator.Send(new GetExchangeCodesForSelectionRequest());
             var viewModel = new CreateCurrencyViewModel
             {
-                Partners = partners
+                Partners = partners,
+                ExchangeCodes = codes
             };
 
             return PartialView("_AddNewCurrency", viewModel);

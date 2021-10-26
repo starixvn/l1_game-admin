@@ -19,10 +19,12 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
         public async Task<UpdateCurrencyViewModel> Handle(GetUpdateCurrencyViewModelRequest request, CancellationToken cancellationToken)
         {
             var partners = await mediator.Send(new GetPartnersForSelectionRequest());
+            var codes = await mediator.Send(new GetExchangeCodesForSelectionRequest());
             var currency = await Api.GetById(request.Id);
             var viewModel = Mapper.Map<UpdateCurrencyViewModel>(currency);
 
             viewModel.Partners = partners;
+            viewModel.ExchangeCodes = codes;
 
             return viewModel;
         }

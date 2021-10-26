@@ -29,5 +29,7 @@ namespace GamesAdmin.Site.Features.Currencies.ViewModels
         public string GroupId { get; set; }
 
         public IEnumerable<SelectListItem> Partners { get; set; }
+
+        public IEnumerable<SelectListItem> ExchangeCodes { get; set; }
     }
 }

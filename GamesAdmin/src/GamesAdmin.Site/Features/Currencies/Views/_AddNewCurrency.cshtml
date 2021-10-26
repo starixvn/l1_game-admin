@@ -28,7 +28,7 @@
         <div class="form-group row">
             <div class="col-sm-12">
                 <label asp-for="Code"></label>
-                <input class="form-control" type="text" asp-for="Code">
+                <select asp-items="@Model.ExchangeCodes" asp-for="Code" class="form-control"></select>
                 <span class="text-danger" asp-validation-for="Code"></span>
             </div>
         </div>

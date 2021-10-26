@@ -18,5 +18,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/global_configs/update_super_players")]
         Task<bool> UpdateSuperPlayers(string[] superPlayers);
+
+        [Get("/global_configs/get_exchange_codes")]
+        Task<GlobalConfig> GetExchangeCodes();
     }
 }
