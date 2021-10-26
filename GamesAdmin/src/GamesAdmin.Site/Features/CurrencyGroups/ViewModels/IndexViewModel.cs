@@ -4,7 +4,7 @@ using GamesAdmin.Core.Models.Partners;
 
 namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 {
-    public class IndexViewModel : CurrencyGroupViewModel
+    public class IndexViewModel : CurrencyGroupFormViewModel
     {
         public IEnumerable<CurrencyModel> CurrencyModels { get; set; }
 

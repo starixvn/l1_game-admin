@@ -17,8 +17,8 @@
             <tr>
                 <td class="text-center">@Model.GetPartnerName(item)</td>
                 <td class="text-center">@item.Name</td>
-                <td class="text-center">@Model.GetCurrenciesSeperatedByComma(item)</td>
-                <td class="text-center"></td>
+                <td class="text-center">@item.GetCurrenciesSeperatedByComma()</td>
+                <td class="text-center">@item.GetGamesSeperatedByComma()</td>
                 <td class="text-center">
                     @if (item.Enabled)
                     {

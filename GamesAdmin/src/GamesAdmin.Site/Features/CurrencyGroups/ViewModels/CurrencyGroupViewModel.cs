@@ -1,12 +1,28 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+using GamesAdmin.Core.Models.Currencies;
 
 namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 {
     public class CurrencyGroupViewModel
     {
-        public IEnumerable<SelectListItem> CurrencyItems { get; set; }
+        public string Id { get; set; }
 
-        public IEnumerable<SelectListItem> PartnerItems { get; set; }
+        public string Name { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public IEnumerable<CurrencyModel> Currencies { get; set; }
+
+        public IEnumerable<string> Games { get; set; }
+
+
+        public string GetCurrenciesSeperatedByComma()
+            => string.Join(", ", Currencies.Select(currency => currency.Name));
+
+        public string GetGamesSeperatedByComma()
+            => string.Join(", ", Games);
     }
 }

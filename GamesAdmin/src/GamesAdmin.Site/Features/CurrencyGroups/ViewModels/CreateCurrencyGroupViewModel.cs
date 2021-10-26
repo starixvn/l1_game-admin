@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 {
-    public class CreateCurrencyGroupViewModel : CurrencyGroupViewModel
+    public class CreateCurrencyGroupViewModel : CurrencyGroupFormViewModel
     {
         [Required]
         public string Name { get; set; }
