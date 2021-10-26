@@ -23,5 +23,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
 
         [Put("/currency_group")]
         Task<bool> Update(UpdateCurrencyGroupModel model);
+
+        [Get("/currency_group/partner/{partnerId}")]
+        Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId);
     }
 }

@@ -87,6 +87,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<ICurrencyGroupGameService, CurrencyGroupGameService>();
 
             services.AddSingleton(RestService.For<IChipApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IChipService, ChipService>();
         }
     }
 }
