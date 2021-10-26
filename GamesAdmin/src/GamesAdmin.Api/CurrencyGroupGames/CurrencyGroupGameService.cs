@@ -19,6 +19,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId);
 
         Task<bool> Update(CurrencyGroupGame currencyGroupGame);
+
+        Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId);
     }
 
     public class CurrencyGroupGameService : ICurrencyGroupGameService
@@ -40,8 +42,22 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             {
                 var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == gameId && entity.CurrencyGroupId == ObjectId.Parse(currencyGroupId));
 
-
                 return mapper.Map<CurrencyGroupGame>(gameConfig);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
+        {
+            try
+            {
+                var gameConfigs = await currencyGroupGameRepository.FilterByAsync(entity => entity.CurrencyGroupId == ObjectId.Parse(currencyGroupId));
+
+                return gameConfigs.Select(gameConfig => mapper.Map<CurrencyGroupGame>(gameConfig));
             }
             catch (Exception ex)
             {
@@ -83,7 +99,6 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
                     await currencyGroupGameRepository.UpdateAsync(entity => entity.CurrencyGroupId == ObjectId.Parse(currencyGroupGame.CurrencyGroupId)
                         && entity.GameId == currencyGroupGame.GameId, update);
-
                 }
                 else
                 {
@@ -93,7 +108,6 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                 }
 
                 return true;
-
             }
             catch (Exception ex)
             {

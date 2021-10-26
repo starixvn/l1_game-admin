@@ -35,5 +35,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
             return new ResultBase(!updated ? "Cannot update settings" : string.Empty);
         }
+
+        public Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
+            => groupCurrencyGameApi.GetByGroup(currencyGroupId);
     }
 }

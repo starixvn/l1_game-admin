@@ -31,5 +31,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         public Task<IEnumerable<CurrencyGroupGame>> GetAll()
             => mediator.Send(new GetAllRequest());
 
+        [HttpGet("getByGroup")]
+        public Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
+            => mediator.Send(new GetByGroupRequest(currencyGroupId));
+
     }
 }

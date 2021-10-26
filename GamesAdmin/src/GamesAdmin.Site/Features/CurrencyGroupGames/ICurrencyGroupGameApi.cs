@@ -15,6 +15,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         Task<IEnumerable<CurrencyGroupGame>> GetAll();
 
         [Post("/currencyGroupGame/update")]
-        Task<bool> Update(CurrencyGroupGame currencyGroupGame); 
+        Task<bool> Update(CurrencyGroupGame currencyGroupGame);
+
+        [Get("/currencyGroupGame/getByGroup")]
+        Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId);
     }
 }
