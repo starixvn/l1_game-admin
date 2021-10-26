@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         {
             var updated = await groupCurrencyGameApi.Update(currencyGroupGame);
 
-            return new ResultBase(!updated ? "Cannot update partner" : string.Empty);
+            return new ResultBase(!updated ? "Cannot update settings" : string.Empty);
         }
     }
 }
