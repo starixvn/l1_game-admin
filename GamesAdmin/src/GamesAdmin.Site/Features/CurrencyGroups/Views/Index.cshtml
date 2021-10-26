@@ -6,7 +6,7 @@
 }
 
 @{
-    ViewData["Title"] = "Currency Group Management";
+    ViewData["Title"] = "Currency Group";
 }
 
 <form class="form filter" data-ajax="true" data-ajax-method="POST" asp-action="GetCurrencyGroups"
@@ -18,9 +18,9 @@
       id="currency-group-form">
     <div class="form-row align-items-center">
         <div class="col-auto currencies-container">
-            <label asp-for="Currencies" class="control-label"></label>
-            <select class="form-control" hidden asp-for="Currencies" asp-items="@Model.CurrencyItems" multiple></select>
-            <select class="form-control" id="currencies"></select>
+            <label asp-for="CurrencyGroups" class="control-label">Currency Group</label>
+            <select class="form-control" hidden asp-for="CurrencyGroups" asp-items="@Model.CurrencyGroupItems" multiple></select>
+            <select class="form-control" id="groups"></select>
         </div>
         <div class="col-auto list-buttons">
             <button type="submit" class="btn-submit">Submit</button>

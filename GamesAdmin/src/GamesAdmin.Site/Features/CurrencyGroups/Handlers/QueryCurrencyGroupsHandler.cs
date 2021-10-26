@@ -27,7 +27,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         {
             var partners = await partnerService.GetPartnersForSelection(partner => true);
 
-            if (request.Model.Currencies == null || !request.Model.Currencies.Any())
+            if (request.Model.CurrencyGroups == null || !request.Model.CurrencyGroups.Any())
             {
                 return new CurrencyGroupManagementViewModel
                 {

@@ -36,7 +36,6 @@
             listData: selections.map(item => {
                 item.checked = !!currencies.filter(id => id === item.id).length;
 
-                console.log(item, currencies);
                 return item;
             }),
             showFilter: true,
@@ -63,6 +62,9 @@
             (currency) => currency.partnerId === partnerId && currencyIds && currencyIds.filter((id) => id === currency.id).length
         );
 
+    const filterGroups = (partnerId) =>
+        model.currencyGroupModels.filter((group) => group.partnerId === partnerId);
+
     const convertCurrencyToItem = (defaultValue) => (currency) => ({
         id: currency.id,
         value: currency.id,
@@ -72,15 +74,24 @@
         cssClass: "currency-item",
     });
 
-    const convertPartnerToItem = (currencies, defaultValue) => (partner) => ({
+    const convertGroupToItem = (defaultValue) => (group) => ({
+        id: group.id,
+        value: group.id,
+        text: group.name,
+        checked: defaultValue,
+        enable: true,
+        cssClass: "group-item",
+    });
+
+    const convertPartnerToItem = (defaultValue) => (partner) => ({
         id: partner.partnerId,
         value: partner.partnerId,
         text: partner.name,
         checked: defaultValue,
         enable: true,
         cssClass: "partner-item",
-        items: filterCurrencies(currencies, partner.partnerId).map(
-            convertCurrencyToItem(defaultValue)
+        items: filterGroups(partner.partnerId).map(
+            convertGroupToItem(defaultValue)
         ),
     });
 
@@ -95,9 +106,9 @@
         openUpdateCurrencyGroupForm: openModal("#update-currency-group-form"),
         onCreateCurrencyGroupSuccess: onUpsertCurrencyGroup,
         onUpdateCurrencyGroupSuccess: onUpsertCurrencyGroup,
-        getFanexSelectData: (currencies, value = true) =>
+        getFanexSelectData: (value = true) =>
             model.partners
-                .map(convertPartnerToItem(currencies, value))
+                .map(convertPartnerToItem(value))
                 .filter((partner) => partner.items.length)
     }
 }(jQuery));
@@ -105,16 +116,16 @@
 $(document).ready(function () {
     $("#currency-group-form").submit();
 
-    var suportedCurrencies = $("#Currencies option").map((_, item) => item.value).toArray();
-    var selections = currencyGroup.getFanexSelectData(suportedCurrencies, true);
+    var selections = currencyGroup.getFanexSelectData(true);
 
-    $("#currencies").fanexMultiSelect({
+    $("#groups").fanexMultiSelect({
         listData: selections,
         showFilter: true,
         onLeave: function () {
-            var value = $("#currencies").fanexMultiSelect('getItems', true);
+            var value = $("#groups").fanexMultiSelect('getItems', true);
 
-            $("#Currencies").val(value);
+            console.log(value);
+            $("#CurrencyGroups").val(value);
         },
     });
 })
