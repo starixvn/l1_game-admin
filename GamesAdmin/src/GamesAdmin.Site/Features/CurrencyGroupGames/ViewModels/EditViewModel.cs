@@ -6,6 +6,10 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 {
     public class EditViewModel : ViewModelBase
     {
+        public string GameId { get; set; }
+
+        public string GroupId { get; set; }
+
         public string GameName { get; set; }
 
         public string PartnerName { get; set; }

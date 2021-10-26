@@ -81,29 +81,8 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
-                var currencyGroups = await currencyGroupService.GetAll();
-                var currencyGroupGames = await currencyGroupGameService.GetAll();
 
-                return gameEntities
-                        .Select(entity =>
-                        {
-                            var gameConfig = mapper.Map<GameConfig>(entity);
-                            var groupGames = currencyGroupGames.Where(group => group.GameId == entity.GameId);
-
-                            foreach (var currencyGroupGame in groupGames)
-                            {
-                                var partnerId = currencyGroups.SingleOrDefault(group => group.Id == currencyGroupGame.CurrencyGroupId).PartnerId;
-
-                                if (gameConfig.PartnerCurrencyGroupGameConfig[partnerId] == null)
-                                {
-                                    gameConfig.PartnerCurrencyGroupGameConfig[partnerId] = new List<CurrencyGroupGame>();
-                                }
-
-                                gameConfig.PartnerCurrencyGroupGameConfig[partnerId].Add(currencyGroupGame);
-                            }
-
-                            return gameConfig;
-                        });
+                return gameEntities.Select(entity => mapper.Map<GameConfig>(entity));
             }
             catch (Exception ex)
             {

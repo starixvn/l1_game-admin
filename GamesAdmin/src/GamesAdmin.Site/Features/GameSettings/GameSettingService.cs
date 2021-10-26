@@ -62,16 +62,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingApi gameApi;
         private readonly IGlobalConfigApi globalConfigApi;
         private readonly ISentryClient sentryClient;
-        private readonly IPartnerApi partnerApi;
-        private readonly IChipApi chipApi;
 
-        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi, IPartnerApi partnerApi, IChipApi chipApi)
+        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi)
         {
             this.sentryClient = sentryClient;
             this.gameApi = gameApi;
             this.globalConfigApi = globalConfigApi;
-            this.partnerApi = partnerApi;
-            this.chipApi = chipApi;
         }
 
         public async Task<bool> Add(GameConfig game)
@@ -81,10 +77,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                var partners = this.partnerApi.GetAll();
-                var chips = this.chipApi.GetAll();
+                var gameConfigs = await gameApi.GetAll();
 
-                return await gameApi.GetAll();
+                return gameConfigs;
             }
             catch (Exception ex)
             {

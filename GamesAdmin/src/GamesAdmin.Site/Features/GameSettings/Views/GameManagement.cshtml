@@ -28,42 +28,87 @@
             <tr>
                 <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
                 <th class="col-game-name">Name</th>
+                <th>Enabled</th>
+                <th class="col-game-name">Partner</th>
                 <th class="col-bet-limit">Bet Limit (Min - Max)</th>
-                <th class="col-status">Enabled</th>
                 <th>Setting</th>
-                <th>Disabled Message</th>
-                <th class="col-status">Bot Enabled</th>
+                <th>Odds</th>
+                <th>General Setting</th>
                 <th>Bot Ratio</th>
-                <th>Site Exclusions</th>
+                <th class="col-status">Bot Enabled</th>
+                <th >Disable Message</th>
                 <th>Is Beta</th>
             </tr>
         </thead>
         <tbody>
+            @{ var rowSpan = Model.Partners.Count() ; }
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
-<tr>
-    <td class="text-center">
-        <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
-        <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
-    </td>
-    <td>@Model.GameList[index].DisplayName</td>
-    <td class="text-center">@Model.GameList[index].MinMaxBet</td>
-    <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
-    <td class="text-center">
-        <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-    </td>
-    <td class="text-center">
-        <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-    </td>
-    <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
-    <td class="text-center">
-        <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
-    </td>
-    <td class="text-center">
-        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GetSiteExclutionsByGame(Model.GameList[index].Name)', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
-    </td>
-    <td class="text-center"><i class='@(Model.GameList[index].GameConfig.IsBeta ? "icon-check" : "")'></i></td>
-</tr>            }
+            <tr>
+                <td rowspan="@rowSpan" class="text-center">
+                    <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
+                    <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
+                </td>
+                <td rowspan="@rowSpan">@Model.GameList[index].DisplayName</td>
+                <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
+                
+                    @{ 
+                        var firstPartner = Model.Partners.FirstOrDefault();
+                        var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
+
+                        <td>
+                            @(firstPartner.Name)
+                        </td>
+
+
+                        
+                        <td>
+                           @{ foreach(var partnerGroup in partnerGroups)
+                               {
+                                    var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.CurrencyGroupId == partnerGroup.Id);
+                                    @(partnerGroup.Name)
+                                   if(setting != null)
+                                   {
+                                       @(string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                   }
+                                <br />
+                            }
+                            }
+                        </td>
+                    }
+                <td>
+                    <button class="btn-edit"><i class="icon-edit"></i></button>
+                </td>
+                <td rowspan="@rowSpan" class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showOddForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                </td>
+                <td rowspan="@rowSpan" class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                </td>
+                <td rowspan="@rowSpan" class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
+                </td>
+                <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
+                <td rowspan="@rowSpan" class="text-center">
+                    <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                </td>
+                <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].GameConfig.IsBeta ? "icon-check" : "")'></i></td>
+            </tr>            
+            { 
+                for (int j = 1; j < rowSpan; j++)
+                {
+                <tr>
+                    <td>@Model.Partners[j].Name</td>
+                    <td>
+                        Currency Group
+                    </td>
+                    <td>
+                        <button class="btn-edit"><i class="icon-edit"></i></button>
+                    </td>
+                </tr>
+                }
+            }
+            }
         </tbody>
     </table>
 

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.CurrencyGroupGames.Requests;
 using GamesAdmin.Core.Models;
@@ -24,6 +26,10 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpGet("get")]
         public Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId)
             => mediator.Send(new GetCurrenctGroupGameRequest(currencyGroupId, gameId));
+
+        [HttpGet("getAll")]
+        public Task<IEnumerable<CurrencyGroupGame>> GetAll()
+            => mediator.Send(new GetAllRequest());
 
     }
 }

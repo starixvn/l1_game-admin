@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.CurrencyGroupGames.Requests;
 using GamesAdmin.Core.Models;
@@ -8,7 +10,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 {
     public class CurrencyGroupGameHandler
         : IRequestHandler<UpdateCurrencyGroupGameRequest, bool>,
-         IRequestHandler<GetCurrenctGroupGameRequest, CurrencyGroupGame>
+        IRequestHandler<GetCurrenctGroupGameRequest, CurrencyGroupGame>,
+        IRequestHandler<GetAllRequest, IEnumerable<CurrencyGroupGame>>
     {
         private readonly ICurrencyGroupGameService currencyGroupGameService;
 
@@ -22,5 +25,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
 
         public Task<CurrencyGroupGame> Handle(GetCurrenctGroupGameRequest request, CancellationToken cancellationToken)
             => this.currencyGroupGameService.Get(request.GameId, request.CurrencyGroupId);
+
+        public Task<IEnumerable<CurrencyGroupGame>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+            => this.currencyGroupGameService.GetAll();
     }
 }

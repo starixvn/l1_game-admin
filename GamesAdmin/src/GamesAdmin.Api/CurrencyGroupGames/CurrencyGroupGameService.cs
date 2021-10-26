@@ -55,9 +55,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var users = currencyGroupGameRepository.AsQueryable().ToList();
+                var currencyGroupGames = currencyGroupGameRepository.AsQueryable().ToList();
 
-                return users.Select(entity => mapper.Map<CurrencyGroupGame>(entity));
+                return currencyGroupGames.Select(entity => mapper.Map<CurrencyGroupGame>(entity));
             }
             catch (Exception ex)
             {

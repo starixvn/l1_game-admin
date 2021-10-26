@@ -1,0 +1,54 @@
+@{ Layout = null; }
+
+@using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
+@model EditViewModel;
+
+@{ ViewData["Title"] = Model.GameName; }
+
+@section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div>
+    <ul class="nav nav-custom" id="setting-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('settings')">Setting</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="payouts-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('siteExcludsion')">Site excludsion</a>
+        </li>
+    </ul>
+
+    <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+    <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+
+    <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
+
+        <div id="settings" style="display:none">
+            <input asp-for="GameId" type="hidden" class="form-control" />
+            <input asp-for="GroupId" type="hidden" class="form-control" />
+            
+
+             <fieldset>
+                    <legend>zzz</legend>
+                    @for (var i = 0; i < (Model.MaxBetPerChoices.Count / 2 + 1); i++)
+                    {
+                        <div class="form-group row">
+                            @for (var j = 0; j < 2; j++)
+                            {
+                                var index = i * 2 + j;
+                                if (index < Model.MaxBetPerChoices.Count)
+                                {
+                                    <div class="col-lg-6">
+                                        @*<label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
+                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control" />
+                                        <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>*@
+                                    </div>}
+                            }
+                        </div>}
+                </fieldset>
+        </div>
+
+    </form>
+</div>

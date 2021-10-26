@@ -147,6 +147,19 @@
             });
         },
 
+        showOddForm: function (gameName, gameDisplayName) {
+            $.ajax({
+                method: "GET",
+                url: "/gamedetails/" + gameName
+            }).done(function (content) {
+                if (content) {
+                    $('#gamedetails').html(content);
+                    $('#gameTitleName').html(gameDisplayName);
+                    $('#gameModal').modal('show');
+                }
+            });
+        },
+
         updateBotCount: function (element) {
             const wrapper = $('#botRatioModal');
             var per = parseInt($(element).parent().find('.ratio').val());

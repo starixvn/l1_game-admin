@@ -9,9 +9,12 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
+using GamesAdmin.Site.Features.CurrencyGroupGames;
+using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,12 +51,18 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameUserService accountService;
         private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
+        private readonly IPartnerService partnerService;
+        private readonly ICurrencyGroupService currencyGroupService;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
 
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
             IGameUserService accountService,
             IProVietKenoService proVietKenoService,
+            IPartnerService partnerService,
+            ICurrencyGroupService currencyGroupService,
+            ICurrencyGroupGameService currencyGroupGameService,
             IAppSettings appSettings)
         {
             this.mapper = mapper;
@@ -61,6 +70,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.accountService = accountService;
             this.proVietKenoService = proVietKenoService;
             this.appSettings = appSettings;
+            this.partnerService = partnerService;
+            this.currencyGroupService = currencyGroupService;
+            this.currencyGroupGameService = currencyGroupGameService;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -231,13 +243,18 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var gameConfigs = await gameService.GetAll();
             var siteExlusions = await GetSiteExlusionsByGame(gameConfigs);
+            var partners = await partnerService.GetAll();
+            var currencyGroups = await currencyGroupService.GetAll();
+            var currencyGroupGames = await currencyGroupGameService.GetAll();
 
             return gameConfigs?.Any() == true
                 ? new StatusViewModel(
                     gameConfigs.Select(game => new StatusItemViewModel(game))
                         .OrderBy(game => game.DisplayName)
                         .ToList(),
-                    siteExlusions)
+                    siteExlusions,
+                    partners.ToList(),
+                    currencyGroups.ToList())
                 : new StatusViewModel(new List<StatusItemViewModel>());
         }
 
