@@ -32,8 +32,14 @@
         FourGuardians = 29,
         Lottery = 31,
         ThreeCards = 35,
+<<<<<<< HEAD
         KenoMatch1 = 36,
         KenoMatch2 = 37,
+=======
+        CasinoHoldemPoker = 39,
+        KenoMatch1,
+        KenoMatch2,
+>>>>>>> 01562e19 (feat: Casino Holdem Poker - change config)
         HeroesSlot = 38,
         CasinoHoldemPoker = 39,
         KenoPower1 = 40,

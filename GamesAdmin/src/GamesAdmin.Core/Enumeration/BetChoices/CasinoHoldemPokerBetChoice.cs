@@ -2,13 +2,13 @@
 {
     public class CasinoHoldemPokerBetChoice : Enumeration
     {
-        public const string Ante = "ante";
-        public const string AA = "aa";
-        public const string Call = "call";
+        public const string AnteBetValue = "AnteBet";
+        public const string AABetValue = "AABet";
+        public const string CallBetValue = "CallBet";
 
-        public static readonly CasinoHoldemPokerBetChoice Even = new CasinoHoldemPokerBetChoice(Ante, "Ante");
-        public static readonly CasinoHoldemPokerBetChoice Odd = new CasinoHoldemPokerBetChoice(AA, "AA");
-        public static readonly CasinoHoldemPokerBetChoice Red3 = new CasinoHoldemPokerBetChoice(Call, "Call");
+        public static readonly CasinoHoldemPokerBetChoice AnteBet = new CasinoHoldemPokerBetChoice(AnteBetValue, "AnteBet");
+        public static readonly CasinoHoldemPokerBetChoice AABet = new CasinoHoldemPokerBetChoice(AABetValue, "AABet");
+        public static readonly CasinoHoldemPokerBetChoice CallBet = new CasinoHoldemPokerBetChoice(CallBetValue, "CallBet");
 
         public CasinoHoldemPokerBetChoice() { }
 
