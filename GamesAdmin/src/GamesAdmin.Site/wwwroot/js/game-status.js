@@ -134,23 +134,10 @@
             };
         },
 
-        showGameForm: function (gameName, gameDisplayName) {
+        showGameForm: function (gameName, gameDisplayName, view) {
             $.ajax({
                 method: "GET",
-                url: "/gamedetails/" + gameName
-            }).done(function (content) {
-                if (content) {
-                    $('#gamedetails').html(content);
-                    $('#gameTitleName').html(gameDisplayName);
-                    $('#gameModal').modal('show');
-                }
-            });
-        },
-
-        showOddForm: function (gameName, gameDisplayName) {
-            $.ajax({
-                method: "GET",
-                url: "/gamedetails/" + gameName
+                url: "/gamedetails/" + gameName + "?view=" + view
             }).done(function (content) {
                 if (content) {
                     $('#gamedetails').html(content);
@@ -268,11 +255,15 @@
             $('#updateBtn').prop('disabled', true);
             let requestUrl = "/update";
 
-            if ($('#payouts').css('display') !== 'none') {
-                requestUrl = "/payouts/update";
+            if ($('#botsetting').css('display') && $('#botsetting').css('display') !== 'none') {
+                requestUrl = "/betlimit/update";
             }
 
-            if ($('#jackpots').css('display') !== 'none') {
+            if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
+                requestUrl = "/odds/update";
+            }
+
+            if ($('#jackpots').css('display') && $('#jackpots').css('display') !== 'none') {
                 requestUrl = "/jackpot/update";
             }
 
@@ -445,7 +436,7 @@
         toggleSettingTabs: function (name, element) {
             $('#general').hide();
             $('#jackpots').hide();
-            $('#payouts').hide();
+            $('#botsetting').hide();
 
             $('#general-tab-header').removeClass("active");
             $('#jackpots-tab-header').removeClass("active");

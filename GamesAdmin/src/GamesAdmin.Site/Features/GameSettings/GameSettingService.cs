@@ -34,7 +34,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
-        Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request);
+        Task<bool> UpdateBetLimit(UpdateBetLimitRequest request);
+
+        Task<bool> UpdateOdds(UpdateOddsRequest request);
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
@@ -131,8 +133,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateBotRatios(string name, double[] ratios)
        => gameApi.UpdateBotRatios(name, ratios);
 
-        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
-        => gameApi.UpdateBetLimitAndOdds(request);
+        public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
+        => gameApi.UpdateBetLimit(request);
+
+        public Task<bool> UpdateOdds(UpdateOddsRequest request)
+        => gameApi.UpdateOdds(request);
 
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         => gameApi.UpdateSlotOddss(name, iconOdds);

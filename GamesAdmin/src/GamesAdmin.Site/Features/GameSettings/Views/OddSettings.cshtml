@@ -10,28 +10,16 @@
 }
 
 <div>
-    <ul class="nav nav-custom" id="setting-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('general')">General</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="payouts-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('payouts')">Payouts</a>
-        </li>
-        @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots && Model.SlotsConfig.Jackpot.Enabled)
-        {
-            <li class="nav-item">
-                <a class="nav-link" id="jackpots-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('jackpots')">Jackpot</a>
-            </li>
-        }
-    </ul>
-
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
-    <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
-        <div id="general">
+    <form class="card-body form" id="gameForm">
+        <input asp-for="Name" type="hidden" class="form-control" />
+        <input asp-for="Type" type="hidden" class="form-control" />
+        <div id="oddSetting">
             @if (Model.PayoutViewModel.IconOdds?.Count > 0)
             {
+                
                 <div class="form-group row">
 
                     @for (var i = 0; i < Model.PayoutViewModel.IconOdds.Count; i++)
@@ -95,7 +83,5 @@
                 <br />
             }
         </div>
-
-        <input type="hidden" id="gameName" value="@Model.Name" />
     </form>
 </div>

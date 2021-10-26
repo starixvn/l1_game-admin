@@ -29,7 +29,9 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateDisbledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false);
 
-        Task<bool> UpdateBetLimitAndOdds(string name, BetLimit betLimit, Dictionary<string, double> odds);
+        Task<bool> UpdateBetLimit(string name, BetLimit betLimit);
+
+        Task<bool> UpdateOdds(string name, Dictionary<string, double> odds);
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
@@ -198,7 +200,29 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateBetLimitAndOdds(string name, BetLimit betLimit, Dictionary<string, double> odds)
+        public async Task<bool> UpdateBetLimit(string name, BetLimit betLimit)
+        {
+            try
+            {
+
+                var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.Minbet, betLimit.MinBet)
+                    .Set(field => field.Maxbet, betLimit.MaxBet)
+                    .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
+
+                await repository.UpdateAsync(config => config.Name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateOdds(string name,  Dictionary<string, double> odds)
         {
             try
             {
@@ -208,10 +232,7 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.Odds, odds)
-                    .Set(field => field.Minbet, betLimit.MinBet)
-                    .Set(field => field.Maxbet, betLimit.MaxBet)
-                    .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
+                    .Set(field => field.Odds, odds);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

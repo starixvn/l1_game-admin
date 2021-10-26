@@ -77,13 +77,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         [Route("gamedetails/{name}")]
-        public async Task<IActionResult> GameDetails(string name)
+        public async Task<IActionResult> GameDetails(string name, string view)
         {
             var viewModel = await mediator.Send(new EditRequest(name));
             viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
             viewModel.Success = TempData["isSuccess"] != null && (bool)TempData["isSuccess"];
 
-            return View(viewModel);
+            return View(view, viewModel);
         }
 
         [HttpGet]
@@ -232,17 +232,39 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost]
-        [Route("/payouts/update")]
+        [Route("/betlimit/update")]
         public async Task<IActionResult> UpdatePayouts([Bind] EditViewModel viewModel)
         {
             try
             {
-                await mediator.Send(new UpdateBetLimitAndOddsRequest(
+                await mediator.Send(new UpdateBetLimitRequest(
                     viewModel.Name,
                     viewModel.Type,
-                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices)
+            ));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("/odds/update")]
+        public async Task<IActionResult> UpdateOdds([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateOddsRequest(
+                    viewModel.Name,
+                    viewModel.Type,
                     viewModel.PayoutViewModel.Odds,
-                    viewModel.PayoutViewModel.Icons));
+                    viewModel.PayoutViewModel.Icons
+            ));
 
                 return Json(true);
             }

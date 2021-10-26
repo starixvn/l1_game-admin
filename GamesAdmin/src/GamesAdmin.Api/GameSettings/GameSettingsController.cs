@@ -56,8 +56,12 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateBetLimitAndOdds(string name, double[] ratios)
            => mediator.Send(new UpdateBotRatiosRequest(name, ratios));
 
-        [HttpPost("update_bet_limit_odds")]
-        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
+        [HttpPost("update_odds")]
+        public Task<bool> UpdateBetLimitAndOdds(UpdateOddsRequest request)
+           => mediator.Send(request);
+
+        [HttpPost("update_bet_limit")]
+        public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
            => mediator.Send(request);
 
         [HttpPost("update_general_config")]

@@ -35,7 +35,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetJWTRequest, GameServerToken>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
-        , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
+        , IRequestHandler<UpdateBetLimitRequest, bool>
+        , IRequestHandler<UpdateOddsRequest, bool>
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
@@ -351,10 +352,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
         => gameService.UnderMaintenance(request);
 
-        public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
+        public Task<bool> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
         => request.Type == GameType.AutoRNG
-                ? gameService.UpdateBetLimitAndOdds(request)
+                ? gameService.UpdateOdds(request)
                 : gameService.UpdateSlotIconOdds(request.Name, request.Icons);
+
+        public Task<bool> Handle(UpdateBetLimitRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBetLimit(request);
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request);
