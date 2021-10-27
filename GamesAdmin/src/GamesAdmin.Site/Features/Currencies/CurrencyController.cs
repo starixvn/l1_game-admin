@@ -37,6 +37,7 @@ namespace GamesAdmin.Site.Features.Currencies
         }
 
         [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind] CreateCurrencyViewModel model)
         {
             var result = await mediator.Send(new CreateRequest(model));
@@ -53,6 +54,7 @@ namespace GamesAdmin.Site.Features.Currencies
         }
 
         [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([Bind] UpdateCurrencyViewModel model)
         {
             var result = await mediator.Send(new UpdateRequest(model));

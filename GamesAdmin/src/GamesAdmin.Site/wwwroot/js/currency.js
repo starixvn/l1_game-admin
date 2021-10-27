@@ -4,8 +4,11 @@
 
     function onUpsertCurrency(data) {
         if (data.success) {
-            $currencyForm.submit();
-            $modal.modal('hide');
+            setTimeout(function () {
+                $('.modal-footer .btn-submit').prop('disabled', false);
+                $currencyForm.submit();
+                $modal.modal('hide');
+            }, 1000);
         }
         var label = $("#result-label");
 

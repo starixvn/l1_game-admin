@@ -1,11 +1,13 @@
 ﻿var currencyGroup = (function ($) {
-    var $currencyForm = $("#currency-group-form");
     var $modal = $('#modal');
 
     function onUpsertCurrencyGroup(data) {
         if (data.success) {
-            $currencyForm.submit();
-            $modal.modal('hide');
+            setTimeout(function () {
+                $('.modal-footer .btn-submit').prop('disabled', false);
+                location.reload();
+                $modal.modal('hide');
+            }, 1000);
         }
         var label = $("#result-label");
 

@@ -1,4 +1,6 @@
 ﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
+@using System.Security.Claims;
+
 @model IndexViewModel;
 
 @{ ViewData["Title"] = "Partners"; }
@@ -8,49 +10,58 @@
 }
 
 <div class="col-md-12 col-lg-12 p-0">
-    <div class="row align-items-center p-2">
-        <div class="col-auto list-buttons ">
-            <button class="btn-add" onclick="partner.showAddForm()">
-                Add Partner
-            </button>
+    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+    {
+        <div class="row align-items-center p-2">
+            <div class="col-auto list-buttons ">
+                <button class="btn-add" onclick="partner.showAddForm()">
+                    Add Partner
+                </button>
+            </div>
         </div>
-    </div>
+    }
     <div class="card">
-        <div class="card-body"><table id="partner-table" class="table table-bordered has-background">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Secret Key</th>
-            <th>Club Version URL</th>
-            <th>Mini Version URL</th>
-            <th>Mobi Version URL</th>
-            <th>API URL</th>
-            <th>Test Currency URL</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Partners)
-        {
-<tr>
-    <td>@item.PartnerId</td>
-    <td>@item.Name</td>
-    <td>@item.SecretKey</td>
-    <td>@item.ClubVersionUrl</td>
-    <td>@item.MiniVersionUrl</td>
-    <td>@item.MobiVersionUrl</td>
-    <td>@item.ApiUrl</td>
-    <td>@item.TestCurrencyUrl</td>
-    <td class="text-center">
-        <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
-    </td>
-</tr>
-}
-    </tbody>
-</table></div>
-        
-
+        <div class="card-body">
+            <table id="partner-table" class="table table-bordered has-background">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Secret Key</th>
+                        <th>Club Version URL</th>
+                        <th>Mini Version URL</th>
+                        <th>Mobi Version URL</th>
+                        <th>API URL</th>
+                        <th>Test Currency URL</th>
+                        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                        {
+                            <th></th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Partners)
+                    {
+                        <tr>
+                            <td>@item.PartnerId</td>
+                            <td>@item.Name</td>
+                            <td>@item.SecretKey</td>
+                            <td>@item.ClubVersionUrl</td>
+                            <td>@item.MiniVersionUrl</td>
+                            <td>@item.MobiVersionUrl</td>
+                            <td>@item.ApiUrl</td>
+                            <td>@item.TestCurrencyUrl</td>
+                            @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                            {
+                                <td class="text-center">
+                                    <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="modal fade game-modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -90,4 +101,3 @@
     </environment>
 
 }
-

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Partners
 {
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public class PartnerController : Controller
     {
         private readonly IMediator mediator;
@@ -53,6 +53,7 @@ namespace GamesAdmin.Site.Features.Partners
             => PartialView("Edit", await mediator.Send(new GetByIdRequest(partnerId)));
 
         [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit([Bind] PartnerEditViewModel viewModel)
         {
             try

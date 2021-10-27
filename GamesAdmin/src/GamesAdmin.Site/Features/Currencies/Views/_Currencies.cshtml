@@ -1,4 +1,5 @@
 ﻿@model GamesAdmin.Site.Features.Currencies.ViewModels.CurrencyManagementViewModel
+@using System.Security.Claims;
 
 <table id="currency-table" class="table table-bordered table-hover stripe sticky-table">
     <thead>
@@ -9,7 +10,10 @@
             <th>Multiplied By</th>
             <th>Enabled</th>
             <th>Testing</th>
-            <th>Edit</th>
+            @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+            {
+                <th>Edit</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -40,17 +44,20 @@
                         <i class="icon-cancel"></i>
                     }
                 </td>
-                <td class="text-center">
-                    <a class="btn-edit"
-                       data-ajax="true"
-                       data-ajax-mode="replace"
-                       data-ajax-update="#modal .modal-content"
-                       data-ajax-success="currency.openUpdateCurrencyForm"
-                       asp-route-id=@item.Id
-                       asp-action="Update">
-                        <i class="icon-edit"></i>
-                    </a>
-                </td>
+                @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                {
+                    <td class="text-center">
+                        <a class="btn-edit"
+                           data-ajax="true"
+                           data-ajax-mode="replace"
+                           data-ajax-update="#modal .modal-content"
+                           data-ajax-success="currency.openUpdateCurrencyForm"
+                           asp-route-id=@item.Id
+                           asp-action="Update">
+                            <i class="icon-edit"></i>
+                        </a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

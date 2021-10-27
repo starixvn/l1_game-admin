@@ -30,6 +30,7 @@ namespace GamesAdmin.Site.Features.Chips
             => PartialView("AddChip", new CreateChipViewModel());
 
         [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind] CreateChipViewModel model)
         {
             var result = await mediator.Send(mapper.Map<CreateChipRequest>(model));
@@ -42,6 +43,7 @@ namespace GamesAdmin.Site.Features.Chips
              => PartialView("UpdateChip", await mediator.Send(new GetUpdateChipPageRequest(id)));
 
         [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([Bind] UpdateChipViewModel model)
         {
             var result = await mediator.Send(mapper.Map<UpdateChipRequest>(model));

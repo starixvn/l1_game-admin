@@ -1,4 +1,5 @@
 ﻿@model GamesAdmin.Site.Features.CurrencyGroups.ViewModels.IndexViewModel
+@using System.Security.Claims;
 
 @section Styles {
     <link href="~/lib/fanex.multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
@@ -24,14 +25,17 @@
         </div>
         <div class="col-auto list-buttons">
             <button type="submit" class="btn-submit">Submit</button>
-            <a class="btn-add"
-               data-ajax="true"
-               data-ajax-mode="replace"
-               data-ajax-update="#modal .modal-content"
-               data-ajax-success="currencyGroup.openAddNewCurrencyGroupForm"
-               asp-action="Create">
-                Add Group
-            </a>
+            @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+            {
+                <a class="btn-add"
+                   data-ajax="true"
+                   data-ajax-mode="replace"
+                   data-ajax-update="#modal .modal-content"
+                   data-ajax-success="currencyGroup.openAddNewCurrencyGroupForm"
+                   asp-action="Create">
+                    Add Group
+                </a>
+            }
             <div id="spinner" class="spinner-border" style="display: none">
                 <span class="sr-only">Loading...</span>
             </div>

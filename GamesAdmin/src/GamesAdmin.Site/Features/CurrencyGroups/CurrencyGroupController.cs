@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
             return PartialView("_Groups", viewModel);
         }
 
-        [HttpGet, Audit]
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var viewModel = await mediator.Send(new CreateCurrencyGroupPageRequest());
@@ -38,7 +38,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
             return PartialView("_AddCurrencyGroup", viewModel);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind] CreateCurrencyGroupViewModel model)
         {
             var result = await mediator.Send(new CreateCurrencyGroupRequest(model));
@@ -55,6 +56,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
         }
 
         [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([Bind] UpdateCurrencyGroupViewModel model)
         {
             var result = await mediator.Send(new UpdateCurrencyGroupRequest(model));
