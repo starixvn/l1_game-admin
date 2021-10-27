@@ -106,7 +106,7 @@
         openUpdateCurrencyGroupForm: openModal("#update-currency-group-form"),
         onCreateCurrencyGroupSuccess: onUpsertCurrencyGroup,
         onUpdateCurrencyGroupSuccess: onUpsertCurrencyGroup,
-        getFanexSelectData: (value = true) =>
+        getFanexSelectData: (value) =>
             model.partners
                 .map(convertPartnerToItem(value))
                 .filter((partner) => partner.items.length)
@@ -124,7 +124,6 @@ $(document).ready(function () {
         onLeave: function () {
             var value = $("#groups").fanexMultiSelect('getItems', true);
 
-            console.log(value);
             $("#CurrencyGroups").val(value);
         },
     });
