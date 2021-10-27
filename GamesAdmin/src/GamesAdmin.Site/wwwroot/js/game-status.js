@@ -147,6 +147,24 @@
             });
         },
 
+        showPartnerSetting: function (partnerId, partnerName, gameDisplayName, gameId) {
+            $.ajax({
+                method: "GET",
+                url: "/CurrencyGroupGame/Index",
+                data: {
+                    partnerId,
+                    partnerName,
+                    gameId
+                }
+            }).done(function (content) {
+                if (content) {
+                    $('#partnerSettingContent').html(content);
+                    $('#gameName').html(gameDisplayName);
+                    $('#partnerSettingModal').modal('show');
+                }
+            });
+        },
+
         updateBotCount: function (element) {
             const wrapper = $('#botRatioModal');
             var per = parseInt($(element).parent().find('.ratio').val());
@@ -251,9 +269,8 @@
                     }
                 });
         },
-        submit: function (closeModalAfterSubmit) {
+        submit: function () {
             $('#updateBtn').prop('disabled', true);
-            $('#updateAndContinueBtn').prop('disabled', true);
             let requestUrl = "/update";
 
             if ($('#botsetting').css('display') && $('#botsetting').css('display') !== 'none') {
@@ -283,13 +300,11 @@
 
                 setTimeout(function () {
                     $('#updateBtn').prop('disabled', false);
-                    $('#updateAndContinueBtn').prop('disabled', false);
                     $('#successMsg').hide();
                     $('#failedMsg').hide();
-                    if (closeModalAfterSubmit) {
-                        $('#gameModal').modal('hide');
-                        location.reload();
-                    }
+                    $('#gameModal').modal('hide');
+                    location.reload();
+                    
                 }, 1000);
             });
         },

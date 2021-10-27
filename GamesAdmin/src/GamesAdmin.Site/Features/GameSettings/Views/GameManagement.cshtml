@@ -65,20 +65,22 @@
                         <td>
                            @{ foreach(var partnerGroup in partnerGroups)
                                {
-                                    var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.CurrencyGroupId == partnerGroup.Id);
-                                    @(partnerGroup.Name)
+                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.CurrencyGroupId == partnerGroup.Id);
                                    if(setting != null)
                                    {
+                                       @(partnerGroup.Name)
+
                                        @(string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
                                    }
                                 <br />
                             }
                             }
                         </td>
+                        <td>
+                            <button class="btn-edit"  onclick="gameStatus.showPartnerSetting('@firstPartner.PartnerId', '@firstPartner.Name','@Model.GameList[index].DisplayName', '@Model.GameList[index].GameId')"><i class="icon-edit"></i></button>
+                        </td>
                     }
-                <td>
-                    <button class="btn-edit"><i class="icon-edit"></i></button>
-                </td>
+                
                 <td rowspan="@rowSpan" class="text-center">
                     @{ 
                         if(Model.GameList[index].Name != "luckywheel")
@@ -106,10 +108,26 @@
                 <tr>
                     <td>@Model.Partners[j].Name</td>
                     <td>
-                        Currency Group
+                        @{
+                            var groups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
+
+                            foreach(var partnerGroup in groups)
+                               {
+                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.CurrencyGroupId == partnerGroup.Id);
+
+                                   if(setting != null)
+                                   {
+                                       @(partnerGroup.Name)
+
+                                       @(string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                   }
+                                <br />
+                            }
+                        }
+
                     </td>
                     <td>
-                        <button class="btn-edit"><i class="icon-edit"></i></button>
+                        <button class="btn-edit" onclick="gameStatus.showPartnerSetting('@Model.Partners[j].PartnerId', '@Model.Partners[j].Name','@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                     </td>
                 </tr>
                 }
@@ -172,7 +190,6 @@
                     <button type="button" class="btn-gray" data-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" class="btn btn-submit" id="updateAndContinueBtn" onclick="gameStatus.submit()">Save & Continue</button>
                     <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit(true)">Save</button>
                 </div>
             </div>
@@ -342,25 +359,17 @@
             </div>
         </div>
     </div>
-    <div class="modal fade site-exclusions-modal" id="siteExclusionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade site-exclusions-modal" id="partnerSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Site Exclusions: <span id="siteExclusionGameNameLabel"></span></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Setting: <span id="gameName"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="message-success hidden-cls" id="updateExclusionsSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
-                    <div class="message-error hidden-cls" id="updateExclusionsFailed"><i class="icon-cancel"></i><span>Error</span></div>
-
-                    <div class="text-message">
-                        <label class="font-weight-bold">Input Site Name To Exclude</label>
-                        <br />
-                        <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'"></textarea>
-                    </div>
-                    <input type="hidden" id="siteExclusionGameName" />
+                <div class="modal-body game-details-content" id="partnerSettingContent">
+                    ...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>

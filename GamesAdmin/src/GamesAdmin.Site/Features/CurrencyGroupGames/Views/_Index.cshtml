@@ -1,0 +1,44 @@
+@{ Layout = null; }
+
+@using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
+@model IndexViewModel;
+
+@{ ViewData["Title"] = ""; }
+
+@section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div>
+    <ul class="nav nav-custom" id="setting-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="general-tab-header" href="#" onclick="currencyGroupGame.toggleSettingTabs('setting')">Setting</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="general-tab-header" href="#" onclick="currencyGroupGame.toggleSettingTabs('site_exclusion')">Site Exclusion</a>
+        </li>
+    </ul>
+</div>
+
+<form class="card-body form">
+    <div class="row">
+        <label class="control-label" for="PartnerIds">Partner : <b>@Model.PartnerName</b></label>
+    </div>
+    <div id="setting">
+        <div class="row">
+                <label class="control-label" for="PartnerIds">Currency Group: </label>
+
+            <div class="col-4">
+                <select class="form-control" asp-items="Model.GroupSelectList" asp-for="CurrencyGroupId" onchange="currencyGroupGame.loadConfig('@Model.CurrencyGroupId', '@Model.GameId')"></select>
+            </div>
+        </div>
+        <br />
+
+        <div id="currency-group-game-setting" class="card">
+            <div class="card-body"></div>
+        </div>
+    </div>
+    <div id="site_exclusion">
+
+    </div>
+</form>

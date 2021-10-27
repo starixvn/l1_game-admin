@@ -48,6 +48,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => ParseGameConfigName();
 
+        public int GameId => Enumeration.Contains<Game>(Name) ? (int)Enumeration.FromValue<Game>(Name).GameId : 0;
+
         private string ParseGameConfigName()
             => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.Name;
 

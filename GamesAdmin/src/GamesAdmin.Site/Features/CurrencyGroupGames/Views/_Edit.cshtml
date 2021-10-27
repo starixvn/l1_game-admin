@@ -22,33 +22,50 @@
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
-    <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
-
-        <div id="settings" style="display:none">
+    @*<form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
+        <div id="botsetting" style="display:none">
             <input asp-for="GameId" type="hidden" class="form-control" />
             <input asp-for="GroupId" type="hidden" class="form-control" />
-            
+            @if (Model.DisplayMinMaxBet)
+            {
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <label asp-for="@Model.MinBet" class="control-label"></label>
+                        <input type="number" asp-for="@Model.MinBet" class="form-control" />
+                    </div>
+                    <div class="col-lg-6">
+                        <label asp-for="@Model.MaxBet" class="control-label"></label>
+                        <input type="number" asp-for="@Model.MaxBet" class="form-control" />
+                    </div>
+                </div>
+            }
 
-             <fieldset>
-                    <legend>zzz</legend>
-                    @for (var i = 0; i < (Model.MaxBetPerChoices.Count / 2 + 1); i++)
+            @if (Model.DisplayMaxBetChoices)
+            {
+                <fieldset>
+                    <legend>Bet Choices</legend>
+                    @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
                     {
                         <div class="form-group row">
                             @for (var j = 0; j < 2; j++)
                             {
                                 var index = i * 2 + j;
-                                if (index < Model.MaxBetPerChoices.Count)
+                                if (index < Model.BetChoiceBetSettings.Count)
                                 {
                                     <div class="col-lg-6">
-                                        @*<label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
-                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control" />
-                                        <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>*@
-                                    </div>}
+                                        <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
+                                        <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
+                                        <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                                    </div>
+                                }
                             }
-                        </div>}
+                        </div>
+                    }
                 </fieldset>
+            }
+
+            <br />
         </div>
 
-    </form>
+    </form>*@
 </div>
