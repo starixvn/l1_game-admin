@@ -14,5 +14,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
         public IEnumerable<string> CurrencyGroups { get; set; }
 
         public IEnumerable<SelectListItem> CurrencyGroupItems { get; set; }
+
+        public IEnumerable<CurrencyModel> CurrencyModels { get; set; }
     }
 }

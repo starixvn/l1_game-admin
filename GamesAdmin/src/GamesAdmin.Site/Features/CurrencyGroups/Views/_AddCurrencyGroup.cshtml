@@ -11,7 +11,7 @@
     <div class="modal-body">
         <div class="form-group row">
             <div class="col-sm-12">
-                <label asp-for="PartnerId">Partner</label>
+                <label class="required" asp-for="PartnerId">Partner</label>
                 <select class="form-control" asp-for="PartnerId" asp-items="@Model.PartnerItems"></select>
                 <span class="text-danger" asp-validation-for="PartnerId"></span>
             </div>
@@ -19,7 +19,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label asp-for="Name">Currency Group</label>
+                <label class="required" asp-for="Name">Currency Group</label>
                 <input class="form-control" type="text" asp-for="Name">
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
@@ -27,7 +27,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label asp-for="Currencies">Currencies</label>
+                <label class="required" asp-for="Currencies">Currency</label>
                 <select class="form-control currencies-class" hidden asp-for="Currencies" asp-items="@Model.CurrencyItems" multiple></select>
                 <select class="form-control" id="currencies-add"></select>
                 <span class="text-danger" asp-validation-for="Currencies"></span>

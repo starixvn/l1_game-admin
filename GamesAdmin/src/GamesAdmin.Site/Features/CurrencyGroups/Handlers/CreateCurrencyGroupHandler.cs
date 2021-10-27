@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
 
             if (!model.Currencies.Any())
             {
-                const string errorMessage = "The Currencies field is required.";
+                const string errorMessage = "The Currency field is required.";
 
                 return new MessageResult(false, errorMessage);
             }
