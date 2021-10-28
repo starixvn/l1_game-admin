@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.CurrencyGroupGames.Requests;
@@ -34,6 +33,5 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpGet("getByGroup")]
         public Task<IEnumerable<CurrencyGroupGame>> GetByGroup(string currencyGroupId)
             => mediator.Send(new GetByGroupRequest(currencyGroupId));
-
     }
 }

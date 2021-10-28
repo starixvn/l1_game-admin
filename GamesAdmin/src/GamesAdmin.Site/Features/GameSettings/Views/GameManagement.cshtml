@@ -77,7 +77,7 @@
                             }
                         </td>
                         <td>
-                            <button class="btn-edit"  onclick="gameStatus.showPartnerSetting('@firstPartner.PartnerId', '@firstPartner.Name','@Model.GameList[index].DisplayName', '@Model.GameList[index].GameId')"><i class="icon-edit"></i></button>
+                            <button class="btn-edit"  onclick="gameStatus.showPartnerSetting('@firstPartner.PartnerId', '@firstPartner.Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
                         </td>
                     }
                 
@@ -127,7 +127,7 @@
 
                     </td>
                     <td>
-                        <button class="btn-edit" onclick="gameStatus.showPartnerSetting('@Model.Partners[j].PartnerId', '@Model.Partners[j].Name','@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                        <button class="btn-edit" onclick="gameStatus.showPartnerSetting('@Model.Partners[j].PartnerId', '@Model.Partners[j].Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
                     </td>
                 </tr>
                 }
@@ -373,7 +373,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="gameStatus.updateSiteExclusions()">Save</button>
+                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.updateSetting()">Save & Continue</button>
+                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.updateSetting(true)">Save</button>
                 </div>
             </div>
         </div>
@@ -432,8 +433,10 @@
     <environment include="Development">
         <script src="~/lib/data-tables/datatables.js"></script>
         <script src="~/js/game-status.js" asp-append-version="true"></script>
+        <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+        <script src="~/js/currency-group-game.min.js" asp-append-version="true"></script>
     </environment>
 }

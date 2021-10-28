@@ -5,67 +5,88 @@
 
 @{ ViewData["Title"] = Model.GameName; }
 
-@section Styles {
-    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+
+ <form class="card-body form" id="currencyGroupGameForm">
+     <div>
+         <input asp-for="GameId" type="hidden" class="form-control" />
+
+         <div class="form-group">
+             <input type="checkbox" asp-for="Enabled" />
+             <label asp-for="Enabled" class="control-label"></label>
+         </div>
+         @if (Model.DisplayMinMaxBet)
+         {
+     <div class="form-group row">
+         <div class="col-lg-6">
+             <label asp-for="@Model.MinBet" class="control-label"></label>
+             <input type="number" asp-for="@Model.MinBet" class="form-control" />
+         </div>
+         <div class="col-lg-6">
+             <label asp-for="@Model.MaxBet" class="control-label"></label>
+             <input type="number" asp-for="@Model.MaxBet" class="form-control" />
+         </div>
+     </div> }
+
+         @if (Model.DisplayMaxBetPerChoice)
+         {
+     <fieldset>
+         <legend>Bet Choices</legend>
+         @for (var i = 0; i < (Model.MaxBetChoiceSetting.Count / 2 + 1); i++)
+         {
+     <div class="form-group row">
+         @for (var j = 0; j < 2; j++)
+         {
+             var index = i * 2 + j;
+             if (index < Model.MaxBetChoiceSetting.Count)
+             {
+     <div class="col-lg-6">
+         <label class="control-label">@Model.MaxBetChoiceSetting[index].DisplayName</label>
+         <input type="text" hidden asp-for="@Model.MaxBetChoiceSetting[index].Name" class="form-control" />
+         <input type="number" asp-for="@Model.MaxBetChoiceSetting[index].MaxBet" class="form-control" />
+     </div>}
 }
+     </div>}
+     </fieldset>}
+         <br />
 
-<div>
-    <ul class="nav nav-custom" id="setting-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('settings')">Setting</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="payouts-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('siteExcludsion')">Site excludsion</a>
-        </li>
-    </ul>
+         @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Slots)
+         {
+     <fieldset>
+         <legend>Stake Levels</legend>
+         <div class="form-group row">
+             @for (var i = 0; i < Model.StakeLevels.Length; i++)
+             {
+     <div class="col-lg-4">
+         <label class="control-label">@($"Level {i + 1}")</label>
+         <input type="number" asp-for="@Model.StakeLevels[i].Stake" class="form-control" />
+     </div>}
+         </div>
+     </fieldset> }
+                 else
+                 {
+                     <fieldset>
+                         <legend>Stake</legend>
+                         @for (var j = 0; j < (Model.AllChips.Count / 6 + 1); j++)
+                         {
+         <div class="form-group row">
+             @for (var k = 0; k < 6; k++)
+             {
+                 var index = j * 6 + k;
+                 if (index < Model.AllChips.Count)
+                 {
+                     var displayName = Model.AllChips[index].Text;
+     <div class="col-lg-2" id="chip-collector">
+         <input type="checkbox" name="chip-@(index)" id="chip-@(index)" value="@Model.AllChips[index].Value" checked="@Model.Chips?.Contains(Model.AllChips[index].Value)" />
+         <label class="control-label" for="chip-@(index)">@displayName</label>
 
-    <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
-    <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+         <input type="text" hidden asp-for="@Model.AllChips[index].Id" />
+     </div>}
+                         }
+         </div>}
+                     </fieldset>
+                 }
 
-    @*<form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
-        <div id="botsetting" style="display:none">
-            <input asp-for="GameId" type="hidden" class="form-control" />
-            <input asp-for="GroupId" type="hidden" class="form-control" />
-            @if (Model.DisplayMinMaxBet)
-            {
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <label asp-for="@Model.MinBet" class="control-label"></label>
-                        <input type="number" asp-for="@Model.MinBet" class="form-control" />
-                    </div>
-                    <div class="col-lg-6">
-                        <label asp-for="@Model.MaxBet" class="control-label"></label>
-                        <input type="number" asp-for="@Model.MaxBet" class="form-control" />
-                    </div>
-                </div>
-            }
+         <br />
+     </div>
+    </form>
 
-            @if (Model.DisplayMaxBetChoices)
-            {
-                <fieldset>
-                    <legend>Bet Choices</legend>
-                    @for (var i = 0; i < (Model.BetChoiceBetSettings.Count / 2 + 1); i++)
-                    {
-                        <div class="form-group row">
-                            @for (var j = 0; j < 2; j++)
-                            {
-                                var index = i * 2 + j;
-                                if (index < Model.BetChoiceBetSettings.Count)
-                                {
-                                    <div class="col-lg-6">
-                                        <label class="control-label">@Model.BetChoiceBetSettings[index].DisplayName</label>
-                                        <input type="text" hidden asp-for="@Model.BetChoiceBetSettings[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.BetChoiceBetSettings[index].MaxBet" class="form-control" />
-                                    </div>
-                                }
-                            }
-                        </div>
-                    }
-                </fieldset>
-            }
-
-            <br />
-        </div>
-
-    </form>*@
-</div>

@@ -12,33 +12,60 @@
 <div>
     <ul class="nav nav-custom" id="setting-tabs">
         <li class="nav-item">
-            <a class="nav-link active" id="general-tab-header" href="#" onclick="currencyGroupGame.toggleSettingTabs('setting')">Setting</a>
+            <a class="nav-link active" id="setting-tab-header" href="#" onclick="currencyGroupGame.toggleTab('setting')">Setting</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="general-tab-header" href="#" onclick="currencyGroupGame.toggleSettingTabs('site_exclusion')">Site Exclusion</a>
+            <a class="nav-link" id="site-exclusion-tab-header" href="#" onclick="currencyGroupGame.toggleTab('site-exclusion')">Site Exclusion</a>
         </li>
     </ul>
 </div>
 
-<form class="card-body form">
+
+
+<form class="card-body form" id="currency-group-game-edit-form">
+    <input readonly hidden id="firstGroup" asp-for="@Model.GroupSelectList.FirstOrDefault().Value" />
+    <input readonly hidden asp-for="@Model.GameType" />
+    <input readonly hidden asp-for="@Model.GameName" />
+
     <div class="row">
         <label class="control-label" for="PartnerIds">Partner : <b>@Model.PartnerName</b></label>
     </div>
     <div id="setting">
         <div class="row">
-                <label class="control-label" for="PartnerIds">Currency Group: </label>
+            <label class="control-label">Currency Group: </label>
 
             <div class="col-4">
-                <select class="form-control" asp-items="Model.GroupSelectList" asp-for="CurrencyGroupId" onchange="currencyGroupGame.loadConfig('@Model.CurrencyGroupId', '@Model.GameId')"></select>
+                <select class="form-control"
+                        asp-items="Model.GroupSelectList"
+                        asp-for="CurrencyGroupId"
+                        onchange="currencyGroupGame.onChangeGroup('@Model.GameName','@Model.GameType')">
+                </select>
             </div>
         </div>
         <br />
 
-        <div id="currency-group-game-setting" class="card">
-            <div class="card-body"></div>
+        <div class="card-body" id="currency-group-game-setting">
         </div>
     </div>
-    <div id="site_exclusion">
+    <div id="site-exclusion" style="display:none;">
+        <br />
+        <div class="message-success hidden-cls" id="updateExclusionsSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+        <div class="message-error hidden-cls" id="updateExclusionsFailed"><i class="icon-cancel"></i><span>Error</span></div>
 
+        <div class="text-message">
+            <label class="font-weight-bold">Input Site Name To Exclude</label>
+            <br />
+            <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'"></textarea>
+        </div>
     </div>
 </form>
+
+
+@section Scripts{
+    <environment include="Development">
+        <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/currency-group-game.min.js" asp-append-version="true"></script>
+    </environment>
+}

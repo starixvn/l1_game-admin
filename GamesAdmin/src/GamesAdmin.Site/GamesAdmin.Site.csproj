@@ -18,6 +18,7 @@
     <Content Remove="appsettings.UAT.json" />
     <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\js\partner - Copy.min.js" />
     <Content Remove="wwwroot\js\partner.min.js" />
   </ItemGroup>
 

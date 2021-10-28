@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.CurrencyGroupGames.Requests;
 using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
@@ -25,23 +24,27 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string partnerId, string partnerName, int gameId)
+        public async Task<IActionResult> Index(string partnerId, string partnerName, string gameName, GameType gameType)
         {
             var viewModel = await mediator.Send(new IndexRequest(partnerId, partnerName));
-            viewModel.GameId = gameId;
+            viewModel.GameName = gameName;
+            viewModel.GameType = gameType;
 
             return PartialView("_Index", viewModel);
         }
 
-        [HttpGet("Edit")]
-        public async Task<IActionResult> Edit(int gameId, string groupId)
+        [HttpGet]
+        [Route("currencyGroupGame/Edit")]
+        public async Task<IActionResult> Edit(string gameName, string groupId, GameType gameType)
         {
-            var viewModel = await mediator.Send(new GetOneRequest(groupId, gameId));
+            var viewModel = await mediator.Send(new GetOneRequest(groupId, gameName));
+            viewModel.GameType = gameType;
 
             return PartialView("_Edit", viewModel);
         }
 
-        [HttpPost("Edit")]
+        [HttpPost]
+        [Route("currencyGroupGame/Edit")]
         public async Task<IActionResult> Edit(EditViewModel viewModel)
         {
             var result = await mediator.Send(new EditRequest(mapper.Map<CurrencyGroupGame>(viewModel)));

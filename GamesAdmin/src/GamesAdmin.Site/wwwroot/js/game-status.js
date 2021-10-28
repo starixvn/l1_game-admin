@@ -147,20 +147,22 @@
             });
         },
 
-        showPartnerSetting: function (partnerId, partnerName, gameDisplayName, gameId) {
+        showPartnerSetting: function (partnerId, partnerName, gameName, displayName, gameType) {
             $.ajax({
                 method: "GET",
                 url: "/CurrencyGroupGame/Index",
                 data: {
                     partnerId,
                     partnerName,
-                    gameId
+                    gameName,
+                    gameType
                 }
             }).done(function (content) {
                 if (content) {
                     $('#partnerSettingContent').html(content);
-                    $('#gameName').html(gameDisplayName);
+                    $('#gameName').html(displayName);
                     $('#partnerSettingModal').modal('show');
+                    currencyGroupGame.loadDefaultSetting();
                 }
             });
         },
