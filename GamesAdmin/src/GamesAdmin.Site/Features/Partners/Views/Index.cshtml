@@ -1,5 +1,5 @@
 ﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
-@using System.Security.Claims;
+@using GamesAdmin.Site.Features._Shared;
 
 @model IndexViewModel;
 
@@ -10,7 +10,7 @@
 }
 
 <div class="col-md-12 col-lg-12 p-0">
-    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+    @if (Context.HasAdminPermission())
     {
         <div class="row align-items-center p-2">
             <div class="col-auto list-buttons ">
@@ -33,7 +33,7 @@
                         <th>Saba.mobi URL</th>
                         <th>API URL</th>
                         <th>Test Currency URL</th>
-                        @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                        @if (Context.HasAdminPermission())
                         {
                             <th></th>
                         }
@@ -51,7 +51,7 @@
                             <td>@item.MobiVersionUrl</td>
                             <td>@item.ApiUrl</td>
                             <td>@item.TestCurrencyUrl</td>
-                            @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                            @if (Context.HasAdminPermission())
                             {
                                 <td class="text-center">
                                     <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>

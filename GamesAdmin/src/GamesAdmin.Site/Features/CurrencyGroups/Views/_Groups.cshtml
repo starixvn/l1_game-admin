@@ -1,5 +1,5 @@
 ﻿@model GamesAdmin.Site.Features.CurrencyGroups.ViewModels.CurrencyGroupManagementViewModel
-@using System.Security.Claims;
+@using GamesAdmin.Site.Features._Shared;
 
 <table id="currency-group-table" class="table table-bordered table-hover stripe sticky-table">
     <thead>
@@ -9,7 +9,7 @@
             <th>Currency</th>
             <th>Game</th>
             <th>Enabled</th>
-            @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+            @if (Context.HasAdminPermission())
             {
                 <th>Edit</th>
             }
@@ -33,7 +33,7 @@
                         <i class="icon-cancel"></i>
                     }
                 </td>
-                @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+                @if (Context.HasAdminPermission())
                 {
                     <td class="text-center">
                         <a class="btn-edit"

@@ -1,4 +1,4 @@
-﻿@using System.Security.Claims;
+﻿@using GamesAdmin.Site.Features._Shared;
 
 <ul class="vertical-nav-menu">
     <li class="menu-item">
@@ -48,7 +48,7 @@
         </a>
     </li>
 
-    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+    @if (Context.HasAdminPermission())
     {
         <li class="menu-item">
             <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
@@ -58,7 +58,7 @@
         </li>
     }
 
-    <li class="nav-heading">ADMINSITRATION</li>
+    <li class="nav-heading">ADMINISTRATION</li>
 
     <li class="menu-item">
         <a asp-action="Index" asp-controller="Partner">
@@ -86,7 +86,7 @@
         </a>
     </li>
 
-    @if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == "admin")
+    @if (Context.HasAdminPermission())
     {
         <li class="nav-heading">Bots</li>
         <li class="menu-item">
