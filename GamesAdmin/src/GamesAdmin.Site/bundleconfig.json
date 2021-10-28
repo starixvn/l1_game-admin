@@ -116,6 +116,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/currency-group-game.min.js",
+    "inputFiles": [
+      "wwwroot/js/currency-group-game.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/currency.min.css",
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",
