@@ -292,32 +292,32 @@ export default class KenoMatch extends React.Component<
                 Full Time (Live)
               </Col>
               <TotalBet
-                total={betList.ftBlue.total}
+                total={betList.liveFTBlue.total}
                 type="blue"
                 isWin={result.fullTime.settlementResult.blue}
               />
               <TotalBet
-                total={betList.ftRed.total}
+                total={betList.liveFTRed.total}
                 type="red"
                 isWin={result.fullTime.settlementResult.red}
               />
               <TotalBet
-                total={betList.ftOver.total}
+                total={betList.liveFTOver.total}
                 type="over"
                 isWin={result.fullTime.settlementResult.over}
               />
               <TotalBet
-                total={betList.ftUnder.total}
+                total={betList.liveFTUnder.total}
                 type="under"
                 isWin={result.fullTime.settlementResult.under}
               />
               <TotalBet
-                total={betList.ftOdd.total}
+                total={betList.liveFTOdd.total}
                 type="odd"
                 isWin={result.fullTime.settlementResult.odd}
               />
               <TotalBet
-                total={betList.ftEven.total}
+                total={betList.liveFTEven.total}
                 type="even"
                 isWin={result.fullTime.settlementResult.even}
               />
