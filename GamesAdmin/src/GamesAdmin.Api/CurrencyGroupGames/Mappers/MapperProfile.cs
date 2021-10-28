@@ -10,9 +10,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames.Mappers
         public Mapping()
         {
             CreateMap<CurrencyGroupGameEntity, CurrencyGroupGame>()
-                 .ForMember(dest => dest.CurrencyGroupId, opt => opt.MapFrom(src => src.CurrencyGroupId.ToString())); ;
+                 .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId.ToString()));
             CreateMap<CurrencyGroupGame, CurrencyGroupGameEntity>()
-                 .ForMember(dest => dest.CurrencyGroupId, opt => opt.MapFrom(src => ObjectId.Parse(src.CurrencyGroupId))); ;
+                 .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => ObjectId.Parse(src.GroupId))); ;
         }
     }
 }

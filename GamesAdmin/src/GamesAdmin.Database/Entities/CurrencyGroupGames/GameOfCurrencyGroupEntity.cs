@@ -8,7 +8,7 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("currency_group_games")]
     public class CurrencyGroupGameEntity : Document
     {
-        public ObjectId CurrencyGroupId { get; set; }
+        public ObjectId GroupId { get; set; }
 
         public int GameId { get; set; }
 

@@ -5,13 +5,13 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.Requests
 {
     public class GetOneRequest : IRequest<EditViewModel>
     {
-        public GetOneRequest(string currencyGroupId, string gameName)
+        public GetOneRequest(string groupId, string gameName)
         {
-            CurrencyGroupId = currencyGroupId;
+            GroupId = groupId;
             GameName = gameName;
         }
 
-        public string CurrencyGroupId { get;  }
+        public string GroupId { get;  }
 
     
         public string GameName { get; }

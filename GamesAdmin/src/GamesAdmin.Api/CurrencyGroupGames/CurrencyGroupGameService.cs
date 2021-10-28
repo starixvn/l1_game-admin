@@ -40,7 +40,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == gameId && entity.CurrencyGroupId == ObjectId.Parse(currencyGroupId));
+                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == gameId && entity.GroupId == ObjectId.Parse(currencyGroupId));
 
                 return mapper.Map<CurrencyGroupGame>(gameConfig);
             }
@@ -55,7 +55,7 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var gameConfigs = await currencyGroupGameRepository.FilterByAsync(entity => entity.CurrencyGroupId == ObjectId.Parse(currencyGroupId));
+                var gameConfigs = await currencyGroupGameRepository.FilterByAsync(entity => entity.GroupId == ObjectId.Parse(currencyGroupId));
 
                 return gameConfigs.Select(gameConfig => mapper.Map<CurrencyGroupGame>(gameConfig));
             }
@@ -87,18 +87,24 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         {
             try
             {
-                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == currencyGroupGame.GameId && entity.CurrencyGroupId == ObjectId.Parse(currencyGroupGame.CurrencyGroupId));
+                var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == currencyGroupGame.GameId && entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId));
 
                 if (gameConfig != null)
                 {
+
                     var update = Builders<CurrencyGroupGameEntity>.Update.Set(field => field.Enabled, currencyGroupGame.Enabled)
                         .Set(field => field.MinBet, currencyGroupGame.MinBet)
                         .Set(field => field.MaxBet, currencyGroupGame.MaxBet)
                         .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
-                        .Set(field => field.Chips, currencyGroupGame.Chips)
-                        .Set(field => field.StakeLevels, currencyGroupGame.StakeLevels);
+                        .Set(field => field.Chips, currencyGroupGame.Chips);
 
-                    await currencyGroupGameRepository.UpdateAsync(entity => entity.CurrencyGroupId == ObjectId.Parse(currencyGroupGame.CurrencyGroupId)
+                    if (gameConfig.StakeLevels == null)
+                    {
+                        update.Set(field => field.StakeLevels, currencyGroupGame.StakeLevels);
+                    }
+
+
+                    await currencyGroupGameRepository.UpdateAsync(entity => entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId)
                         && entity.GameId == currencyGroupGame.GameId, update);
                 }
                 else

@@ -5,9 +5,9 @@ namespace GamesAdmin.Core.Models
 {
     public class CurrencyGroupGame
     {
-        public CurrencyGroupGame(string currencyGroupId, int gameId, string gameName, bool enabled, double minbet, double maxbet, Dictionary<string, double> maxBetPerChoices = null, string[] chips = null, StakeLevel[] stakeLevels = null)
+        public CurrencyGroupGame(string groupId, int gameId, string gameName, bool enabled, double minbet, double maxbet, Dictionary<string, double> maxBetPerChoices = null, string[] chips = null, StakeLevel[] stakeLevels = null)
         {
-            CurrencyGroupId = currencyGroupId;
+            GroupId = groupId;
             GameId = gameId;
             GameName = gameName;
             Enabled = enabled;
@@ -18,7 +18,7 @@ namespace GamesAdmin.Core.Models
             StakeLevels = stakeLevels;
         }
 
-        public string CurrencyGroupId { get; }
+        public string GroupId { get; }
 
         public int GameId { get; }
 

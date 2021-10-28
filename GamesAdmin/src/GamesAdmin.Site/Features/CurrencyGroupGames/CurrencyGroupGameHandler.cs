@@ -37,7 +37,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         public async Task<EditViewModel> Handle(GetOneRequest request, CancellationToken cancellationToken)
         {
             var gameId = (int)Enumeration.FromValue<Game>(request.GameName).GameId;
-            var currencyGroupGame = await currencyGroupGameService.Get(request.CurrencyGroupId, gameId);
+            var currencyGroupGame = await currencyGroupGameService.Get(request.GroupId, gameId);
             var result = mapper.Map<EditViewModel>(currencyGroupGame) ?? new EditViewModel();
             var chipConfigs = await chipService.GetAll();
 
@@ -51,7 +51,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             }
 
             result.GameId = gameId;
-            result.CurrencyGroupId = request.CurrencyGroupId;
+            result.GroupId = request.GroupId;
             result.AllChips = chipConfigs.OrderBy(chip => chip.Value).ToList();
             result.MaxBetChoiceSetting = GenerateMaxBetPerChoices(request.GameName, currencyGroupGame?.MaxBetPerChoices);
 

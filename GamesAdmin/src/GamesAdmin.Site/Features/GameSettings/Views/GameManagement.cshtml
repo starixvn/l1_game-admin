@@ -65,7 +65,7 @@
                         <td>
                            @{ foreach(var partnerGroup in partnerGroups)
                                {
-                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.CurrencyGroupId == partnerGroup.Id);
+                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id);
                                    if(setting != null)
                                    {
                                        @(partnerGroup.Name)
@@ -112,11 +112,11 @@
                             var groups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
 
                             foreach(var partnerGroup in groups)
-                               {
-                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.CurrencyGroupId == partnerGroup.Id);
+                            {
+                                var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id);
 
-                                   if(setting != null)
-                                   {
+                                if(setting != null)
+                                {
                                        @(partnerGroup.Name)
 
                                        @(string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))

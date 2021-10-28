@@ -57,7 +57,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         private static IEnumerable<string> GetGames(IEnumerable<CurrencyGroupGame> games, string groupId)
         {
             return games
-                .Where(game => string.Equals(game.CurrencyGroupId, groupId))
+                .Where(game => string.Equals(game.GroupId, groupId))
                 .Select(game => game.GameName)
                 .AsEnumerable();
         }

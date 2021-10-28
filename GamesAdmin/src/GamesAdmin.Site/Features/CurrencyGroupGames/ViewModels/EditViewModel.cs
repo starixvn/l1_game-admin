@@ -13,7 +13,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public GameType GameType { get; set; }
 
-        public string CurrencyGroupId { get; set; }
+        public string GroupId { get; set; }
 
         public string GameName { get; set; }
 

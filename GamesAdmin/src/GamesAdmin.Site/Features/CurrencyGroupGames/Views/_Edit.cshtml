@@ -58,7 +58,7 @@
              {
      <div class="col-lg-4">
          <label class="control-label">@($"Level {i + 1}")</label>
-         <input type="number" asp-for="@Model.StakeLevels[i].Stake" class="form-control" />
+         <input type="number" asp-for="@Model.StakeLevels[i].Stake" class="form-control" disabled="@(Model.StakeLevels[i].Stake != 0)"/>
      </div>}
          </div>
      </fieldset> }
