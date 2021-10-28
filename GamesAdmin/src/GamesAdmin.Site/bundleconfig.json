@@ -122,6 +122,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/partner.min.js",
+    "inputFiles": [
+      "wwwroot/js/partner.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/currency.min.css",
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",

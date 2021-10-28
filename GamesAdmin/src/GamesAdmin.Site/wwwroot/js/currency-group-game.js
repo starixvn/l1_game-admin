@@ -17,11 +17,11 @@
             });
         },
 
-        onChangeGroup(gameName, gameType) {
+        onChangeGroup: function(gameName, gameType) {
             this.loadConfig(gameName, $('#CurrencyGroupId')[0].value, gameType);
         },
 
-        toggleTab(tabName) {
+        toggleTab: function(tabName) {
             $('#setting').hide();
             $('#site-exclusion').hide();
 
@@ -37,11 +37,11 @@
             $(headerId).addClass("active");
         },
 
-        loadDefaultSetting() {
+        loadDefaultSetting: function() {
             this.loadConfig($('#GameName')[0].value, $('#firstGroup')[0].value, $('#GameType')[0].value);
         },
 
-        getListSelectedChips() {
+        getListSelectedChips: function() {
             var chips = [];
 
             $("#chip-collector input[type=checkbox]:checked").map(function () {
@@ -51,7 +51,7 @@
             return chips;
         },
 
-        updateSetting(isContinue) {
+        updateSetting: function(isContinue) {
             var data = $('#currency-group-game-edit-form').serializeArray();
             var chips = this.getListSelectedChips();
 
