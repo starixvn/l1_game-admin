@@ -67,17 +67,17 @@
                 dataType: 'json',
                 data,
             }).done(function (result) {
-                if (result) {
-                    $('#successMsg').show();
+                if (result.success) {
+                    $('#currency-group-game-successMsg').show();
                 }
                 else {
-                    $('#failedMsg').show();
+                    $('#currency-group-game-failedMsg').show();
                 }
 
                 setTimeout(function () {
                     $('#updateBtn').prop('disabled', false);
-                    $('#successMsg').hide();
-                    $('#failedMsg').hide();
+                    $('#currency-group-game-successMsg').hide();
+                    $('#currency-group-game-failedMsg').hide();
 
                     if (!isContinue) {
                         $('#partnerSettingModal').modal('hide');

@@ -20,7 +20,8 @@
     </ul>
 </div>
 
-
+<div class="message-success hidden-cls" id="currency-group-game-successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+<div class="message-error hidden-cls" id="currency-group-game-failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
 
 <form class="card-body form" id="currency-group-game-edit-form">
     <input readonly hidden id="firstGroup" asp-for="@Model.GroupSelectList.FirstOrDefault().Value" />
