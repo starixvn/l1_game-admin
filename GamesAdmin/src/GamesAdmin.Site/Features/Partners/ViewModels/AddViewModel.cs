@@ -19,15 +19,13 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         public string SecretKey { get; set; }
 
         [Required]
-        [DisplayName("Club Version URL")]
+        [DisplayName("Saba.club URL")]
         public string ClubVersionUrl { get; set; }
 
-        [Required]
-        [DisplayName("Mobi Version URL")]
+        [DisplayName("Saba.mobi URL")]
         public string MobiVersionUrl { get; set; }
 
-        [Required]
-        [DisplayName("Mini Version URL")]
+        [DisplayName("Instant URL")]
         public string MiniVersionUrl { get; set; }
 
         [Required]
