@@ -65,12 +65,20 @@
                         <td>
                            @{ foreach(var partnerGroup in partnerGroups)
                                {
-                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id);
-                                   if(setting != null)
+                                   var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+                                   if(setting != null && setting.Enabled)
                                    {
-                                       @(partnerGroup.Name)
+                                       <b>@(partnerGroup.Name)</b>
 
-                                       @(string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                       if(Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                       {
+                                            @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+
+                                       }
+                                       else
+                                       {
+                                            @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                       }
                                    }
                                 <br />
                             }
@@ -109,17 +117,25 @@
                     <td>@Model.Partners[j].Name</td>
                     <td>
                         @{
-                            var groups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
+                            var groups = Model.CurrencyGroups.Where(group => group.PartnerId == Model.Partners[j].PartnerId);
 
                             foreach(var partnerGroup in groups)
                             {
-                                var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id);
+                                var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
 
-                                if(setting != null)
-                                {
-                                       @(partnerGroup.Name)
+                               if(setting != null && setting.Enabled)
+                                   {
+                                       <b>@(partnerGroup.Name)</b>
 
-                                       @(string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                       if(Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                       {
+                                            @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+
+                                       }
+                                       else
+                                       {
+                                            @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                       }
                                    }
                                 <br />
                             }

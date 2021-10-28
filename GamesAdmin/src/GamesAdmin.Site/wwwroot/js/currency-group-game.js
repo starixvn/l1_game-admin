@@ -18,7 +18,7 @@
         },
 
         onChangeGroup: function(gameName, gameType) {
-            this.loadConfig(gameName, $('#CurrencyGroupId')[0].value, gameType);
+            this.loadConfig(gameName, $('#GroupId')[0].value, gameType);
         },
 
         toggleTab: function(tabName) {
