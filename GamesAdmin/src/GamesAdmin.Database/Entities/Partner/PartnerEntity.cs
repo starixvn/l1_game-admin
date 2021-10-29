@@ -18,8 +18,6 @@ namespace GamesAdmin.Database.Entities
 
         public string MiniVersionUrl { get; set; }
 
-        public string ApiUrl { get; set; }
-
         public string TestCurrencyUrl { get; set; }
     }
 }

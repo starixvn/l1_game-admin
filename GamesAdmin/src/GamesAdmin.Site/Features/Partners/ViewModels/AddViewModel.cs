@@ -29,10 +29,6 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         public string MiniVersionUrl { get; set; }
 
         [Required]
-        [DisplayName("Api URL")]
-        public string ApiUrl { get; set; }
-
-        [Required]
         [DisplayName("Test Currency URL")]
         public string TestCurrencyUrl { get; set; }
     }

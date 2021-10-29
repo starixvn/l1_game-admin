@@ -40,7 +40,6 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.ClubVersionUrl,
                     addViewModel.MobiVersionUrl,
                     addViewModel.MiniVersionUrl,
-                    addViewModel.ApiUrl,
                     addViewModel.TestCurrencyUrl)));
 
 
@@ -65,7 +64,6 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.ClubVersionUrl,
                    viewModel.MobiVersionUrl,
                    viewModel.MiniVersionUrl,
-                   viewModel.ApiUrl,
                    viewModel.TestCurrencyUrl));
 
                 return Json(result);

@@ -116,7 +116,6 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.MobiVersionUrl, partner.MobiVersionUrl)
                     .Set(field => field.ClubVersionUrl, partner.ClubVersionUrl)
                     .Set(field => field.MiniVersionUrl, partner.MiniVersionUrl)
-                    .Set(field => field.ApiUrl, partner.ApiUrl)
                     .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl);
 
 
