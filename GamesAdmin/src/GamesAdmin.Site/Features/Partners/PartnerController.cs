@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.Partners
         [HttpGet]
         public IActionResult Add() => PartialView();
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
             var addedResult = await mediator.Send(new AddPartnerRequest(

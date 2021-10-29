@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -43,8 +43,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             return PartialView("_Edit", viewModel);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("currencyGroupGame/Edit")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditViewModel viewModel)
         {
             var result = await mediator.Send(new EditRequest(mapper.Map<CurrencyGroupGame>(viewModel)));

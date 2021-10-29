@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -95,7 +96,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(gameSetting);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status/enable")]
         public async Task<IActionResult> EnableGames(string[] games, bool reload = false)
         {
@@ -104,7 +105,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status/disable")]
         public async Task<IActionResult> DisableGames(string[] games, bool reload = false)
         {
@@ -231,7 +232,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("/betlimit/update")]
         public async Task<IActionResult> UpdatePayouts([Bind] EditViewModel viewModel)
         {
@@ -253,7 +254,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("/odds/update")]
         public async Task<IActionResult> UpdateOdds([Bind] EditViewModel viewModel)
         {
@@ -276,7 +277,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("/jackpot/update")]
         public async Task<IActionResult> UpdateJackpot([Bind] EditViewModel viewModel)
         {
@@ -302,7 +303,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel viewModel)
         {
@@ -327,7 +328,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("exclusions/update")]
         public async Task<IActionResult> UpdateSiteExclusions([Bind] UpdateSiteExclusionRequest request)
         {
