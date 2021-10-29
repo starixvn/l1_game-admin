@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Currencies;
 
 namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
@@ -18,11 +19,13 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 
         public IEnumerable<string> Games { get; set; }
 
-
         public string GetCurrenciesSeperatedByComma()
             => string.Join(", ", Currencies.Select(currency => currency.Name));
 
         public string GetGamesSeperatedByComma()
-            => string.Join(", ", Games);
+            => string.Join(", ", Games.Select(GetGameName));
+
+        private static string GetGameName(string key)
+            => Enumeration.Contains<Game>(key) ? Enumeration.FromValue<Game>(key).DisplayName : key;
     }
 }
