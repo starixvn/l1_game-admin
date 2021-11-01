@@ -34,6 +34,7 @@
             var table = $('#chip-table');
 
             table.DataTable({
+                "order": [[1, "asc"]],
                 "lengthMenu": [100, 200, 500]
             });
 
