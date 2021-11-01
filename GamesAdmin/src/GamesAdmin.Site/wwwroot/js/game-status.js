@@ -597,6 +597,7 @@ $(document).ready(function () {
         $("#status-tbl").DataTable({
             "ordering": false,
             "paging": false,
+            "info": false,
             "columnDefs": [
                 { "targets": [ 3, 4, 5, 6,7,8,9,10,11], "searchable": false }
             ]
