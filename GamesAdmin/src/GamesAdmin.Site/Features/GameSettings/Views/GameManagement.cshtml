@@ -60,8 +60,6 @@
                             @(firstPartner.Name)
                         </td>
 
-
-                        
                         <td>
                            @{ foreach(var partnerGroup in partnerGroups)
                                {
@@ -85,6 +83,7 @@
                             }
                             }
                         </td>
+
                         <td>
                             <button class="btn-edit"  onclick="gameStatus.showPartnerSetting('@firstPartner.PartnerId', '@firstPartner.Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
                         </td>
@@ -115,6 +114,9 @@
                 for (int j = 1; j < rowSpan; j++)
                 {
                 <tr>
+                    <td style="display: none">@Model.GameList[index].DisplayName</td>
+                    <td style="display: none"></td>
+                    <td style="display: none"></td>
                     <td>@Model.Partners[j].Name</td>
                     <td>
                         @{
@@ -147,6 +149,13 @@
                     <td>
                         <button class="btn-edit" onclick="gameStatus.showPartnerSetting('@Model.Partners[j].PartnerId', '@Model.Partners[j].Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
                     </td>
+             
+                    <td style="display: none"></td>
+                    <td style="display: none"></td>
+                    <td style="display: none"></td>
+                    <td style="display: none"></td>
+                    <td style="display: none"></td>
+                    <td style="display: none"></td>
                 </tr>
                 }
             }

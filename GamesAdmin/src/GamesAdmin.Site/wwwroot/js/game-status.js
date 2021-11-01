@@ -595,10 +595,13 @@
 $(document).ready(function () {
     if ($("#status-tbl")) {
         $("#status-tbl").DataTable({
+            "ordering": false,
             "paging": false,
-            "ordering": false
+            "columnDefs": [
+                { "targets": [ 3, 4, 5, 6,7,8,9,10,11], "searchable": false }
+            ]
         });
-    }
+}
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
