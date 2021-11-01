@@ -1,7 +1,11 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site.Features._Shared;
+
 @model StatusViewModel;
 
-@{ ViewData["Title"] = "Game Management"; }
+@{ ViewData["Title"] = "Game Management";
+    var editPermission = Context.HasAdminPermission();
+}
 
 @section Styles {
     <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
@@ -10,12 +14,16 @@
 
 <div class="col-md-12 col-lg-12 game-status">
     <div class="list-actions">
-        <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
-        <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
-        <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
-        <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
-        <input type="button" onclick="gameStatus.showUpdateSuperPlayersForm()" value="Super Players" class="btn-add btn-enable" />
-        <input type="button" onclick="gameStatus.showBetaVersion()" value="Game Beta" class="btn-add btn-enable" />
+        @if (editPermission)
+        { 
+            <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
+            <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
+            <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
+            <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
+            <input type="button" onclick="gameStatus.showUpdateSuperPlayersForm()" value="Super Players" class="btn-add btn-enable" />
+            <input type="button" onclick="gameStatus.showBetaVersion()" value="Game Beta" class="btn-add btn-enable" />
+        }
+        
     </div>
 
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
@@ -196,7 +204,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateMsgBtn" onclick="gameStatus.updateMessage()">Save</button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateMsgBtn" onclick="gameStatus.updateMessage()">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -217,7 +228,10 @@
                     <button type="button" class="btn-gray" data-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit(true)">Save</button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit(true)">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -296,7 +310,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                        @if (editPermission)
+                        {
                         <button type="button" id="updateBotRatioBtn" class="btn btn-submit" onclick="gameStatus.updateBotRationItems()">Save</button>
+                        }
                     </div>
                 </div>
             </form>
@@ -381,7 +398,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.underMaintenance()">Save</button>
+                    @if(editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.underMaintenance()">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -400,8 +420,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    @if(editPermission)
+                    {
                     <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.updateSetting(true)">Save & Continue</button>
                     <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.updateSetting()">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -421,7 +444,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    @if(editPermission)
+                    {
                     <button type="button" class="btn btn-submit" id="update-super-players-btn" onclick="gameStatus.updateSuperPlayers()">Save</button>
+
+                    }
                 </div>
             </div>
         </div>
