@@ -18,14 +18,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         public async Task<MessageResult> Handle(CreateCurrencyGroupRequest request, CancellationToken cancellationToken)
         {
             var model = Mapper.Map<CreateCurrencyGroupModel>(request.Model);
-
-            if (!model.Currencies.Any())
-            {
-                const string errorMessage = "The Currency field is required.";
-
-                return new MessageResult(false, errorMessage);
-            }
-
             var added = await Api.Create(model);
             var message = added ? "Added successfully." : "Cannot add new currency group.";
 

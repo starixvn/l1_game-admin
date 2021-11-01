@@ -27,7 +27,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label class="required" asp-for="Currencies">Currency</label>
+                <label asp-for="Currencies">Currency</label>
                 <select class="form-control currencies-class" hidden asp-for="Currencies" asp-items="@Model.CurrencyItems" multiple></select>
                 <select class="form-control" id="currencies-add"></select>
                 <span class="text-danger" asp-validation-for="Currencies"></span>
