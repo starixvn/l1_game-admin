@@ -26,13 +26,13 @@
             <label asp-for="Game" class="control-label"></label>
             <select class="form-control" asp-items="@Model.GameTypeItems" asp-for="Game"></select>
         </div>
-        <div class="col-auto">
+        <div class="col-auto user-online-inline">
             <button type="submit" class="btn-submit">Submit</button>
             <div id="spinner" class="spinner-border" style="display: none">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <div class="col-auto">
+        <div class="col-auto user-online-inline">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" asp-for="IncludeUUS">
                 <label class="form-check-label" asp-for="IncludeUUS">
