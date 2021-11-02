@@ -9,15 +9,15 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 
         public string Game { get; set; }
 
-        public bool IncludeUUS { get; set; }
+        public bool IncludeTestAccount { get; set; }
 
-        public int TotalReal { get; set; }
+        public int TotalRealPlayer { get; set; }
 
         public IEnumerable<OnlineUserViewModel> RealUsers { get; set; }
 
-        public int TotalUUS { get; set; }
+        public int TotalTestPlayer { get; set; }
 
-        public IEnumerable<OnlineUserViewModel> UusUsers { get; set; }
+        public IEnumerable<OnlineUserViewModel> TestUsers { get; set; }
 
         public int TotalBots { get; set; }
 

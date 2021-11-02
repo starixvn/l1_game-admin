@@ -7,17 +7,17 @@ namespace GamesAdmin.Core.Models
         public OnlineUsers() 
         {
             RealUsers = new List<OnlineUser>();
-            UusUsers = new List<OnlineUser>();
+            TestUsers = new List<OnlineUser>();
             Bots = new List<BotUser>();
         }
 
-        public int TotalReal { get; set; }
+        public int TotalRealPlayer { get; set; }
 
         public IEnumerable<OnlineUser> RealUsers { get; set; }
 
-        public int TotalUUS { get; set; }
+        public int TotalTestPlayer { get; set; }
 
-        public IEnumerable<OnlineUser> UusUsers { get; set; }
+        public IEnumerable<OnlineUser> TestUsers { get; set; }
 
         public int TotalBots { get; set; }
 

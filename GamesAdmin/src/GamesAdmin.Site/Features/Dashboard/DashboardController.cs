@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         [HttpGet]
         public async Task<int> RealOnlineUsers()
         {
-            return (await mediator.Send(new GetOnlineUsersRequest())).TotalReal;
+            return (await mediator.Send(new GetOnlineUsersRequest())).TotalRealPlayer;
         }
 
         [HttpGet]
@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOnlineUsers(bool includeUUS, string game, IEnumerable<string> partnerIds)
+        public async Task<IActionResult> GetOnlineUsers(bool includeTestAccount, string game, IEnumerable<string> partnerIds)
         {
             var result = await mediator.Send(new GetOnlineUsersByGameRequest(game));
             var users = result.RealUsers
@@ -49,9 +49,9 @@ namespace GamesAdmin.Site.Features.Dashboard
                 .Where(user => partnerIds.Any(id => string.Equals(id, user.PartnerId)))
                 .ToList();
 
-            if (includeUUS)
+            if (includeTestAccount)
             {
-                users.AddRange(result.UusUsers);
+                users.AddRange(result.TestUsers);
             }
 
             return PartialView("_OnlineUserTable", users);

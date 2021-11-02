@@ -51,10 +51,10 @@ namespace GamesAdmin.Site.Features.Dashboard
             var partners = await GetPartnerSelections();
             var viewModel = new OnlineUsersViewModel
             {
-                TotalReal = onlineUsers.TotalReal,
+                TotalRealPlayer = onlineUsers.TotalRealPlayer,
                 RealUsers = onlineUsers.RealUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
-                TotalUUS = onlineUsers.TotalUUS,
-                UusUsers = onlineUsers.UusUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TotalTestPlayer = onlineUsers.TotalTestPlayer,
+                TestUsers = onlineUsers.TestUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
                 TotalBots = onlineUsers.TotalBots,
                 Bots = onlineUsers.Bots.Select(x => mapper.Map<BotUserViewModel>(x)),
                 GameTypeItems = GenerateGameItems(),
