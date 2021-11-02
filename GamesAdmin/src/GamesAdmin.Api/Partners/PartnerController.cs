@@ -38,11 +38,11 @@ namespace GamesAdmin.Api.Partners
         public Task<Partner> GetById(string partnerId)
             => mediator.Send(new GetByIdRequest(partnerId));
 
-        [HttpGet("/config")]
-        public Task<string> GetConfig(string partnerId, string name, int gameId)
+        [HttpGet("config")]
+        public Task<PartnerConfig> GetConfig(string partnerId, string name, int gameId)
             => mediator.Send(new GetConfigRequest(partnerId, name, gameId));
 
-        [HttpPost("/config")]
+        [HttpPost("config")]
         public Task<bool> UpdateConfig(PartnerConfig config)
             => mediator.Send(new UpdateConfigRequest(config));
 

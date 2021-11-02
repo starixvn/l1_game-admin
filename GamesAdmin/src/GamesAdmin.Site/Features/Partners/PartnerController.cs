@@ -1,4 +1,6 @@
-﻿using Audit.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Audit.Mvc;
 using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Site.Features.Partners.Requests;
 using GamesAdmin.Site.Features.Partners.ViewModels;
@@ -6,8 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sentry;
-using System;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Partners
 {
@@ -42,7 +42,6 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.MiniVersionUrl,
                     addViewModel.TestCurrencyUrl)));
 
-
             return Json(addedResult);
         }
 
@@ -68,12 +67,23 @@ namespace GamesAdmin.Site.Features.Partners
 
                 return Json(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
                 return Json(false);
             }
-           
         }
+
+        [HttpGet]
+        [Route("partner/site_exclusion")]
+        public async Task<IActionResult> GetSiteExclusion(string partnerId, int gameId)
+            => Json(await mediator.Send(new GetSiteExclusionRequest(partnerId, gameId)));
+
+        [HttpPost, Audit]
+        [Route("partner/site_exclusion")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
+            => Json(await mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites)));
+
     }
 }

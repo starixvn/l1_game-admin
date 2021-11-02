@@ -463,7 +463,7 @@
 
             $('#general-tab-header').removeClass("active");
             $('#jackpots-tab-header').removeClass("active");
-            $('#payouts-tab-header').removeClass("active");
+            $('#botsetting-tab-header').removeClass("active");
 
             const id = '#' + name;
             const headerId = '#' + name + '-tab-header';

@@ -13,7 +13,7 @@ namespace GamesAdmin.Api.Partners
         , IRequestHandler<GetAllRequest, IEnumerable<Partner>>
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<GetByIdRequest, Partner>
-        , IRequestHandler<GetConfigRequest, string>
+        , IRequestHandler<GetConfigRequest, PartnerConfig>
         , IRequestHandler<UpdateConfigRequest, bool>
 
     {
@@ -39,8 +39,8 @@ namespace GamesAdmin.Api.Partners
         public Task<Partner> Handle(GetByIdRequest request, CancellationToken cancellationToken)
         => partnerService.GetById(request.PartnerId);
 
-        public Task<string> Handle(GetConfigRequest request, CancellationToken cancellationToken)
-        => partnerService.GetConfig(request.PartnerId, request.Name, request.GameId);
+        public Task<PartnerConfig> Handle(GetConfigRequest request, CancellationToken cancellationToken)
+        => partnerService.GetConfig(request.PartnerId, request.Name);
 
         public Task<bool> Handle(UpdateConfigRequest request, CancellationToken cancellationToken)
         => partnerService.UpsertConfig(request.Config);

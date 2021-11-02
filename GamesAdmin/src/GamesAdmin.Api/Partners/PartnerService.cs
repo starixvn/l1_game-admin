@@ -23,7 +23,7 @@ namespace GamesAdmin.Api.Partners
 
         Task<Partner> GetById(string partnerId);
 
-        Task<string> GetConfig(string partnerId, string name, int gameID);
+        Task<PartnerConfig> GetConfig(string partnerId, string type);
 
         Task<bool> UpsertConfig(PartnerConfig config);
     }
@@ -143,14 +143,13 @@ namespace GamesAdmin.Api.Partners
             }
         }
 
-        public async Task<string> GetConfig(string partnerId, string name, int gameID)
+        public async Task<PartnerConfig> GetConfig(string partnerId, string type)
         {
             try
             {
-                var config = await partnerConfigRepository.FindOneAsync(entity => entity.PartnerId == partnerId && entity.Name == name
-               && entity.GameId == gameID);
+                var config = await partnerConfigRepository.FindOneAsync(entity => entity.PartnerId == partnerId && entity.Type == type);
 
-                return config != null ? config.Value : "";
+                return mapper.Map<PartnerConfig>(config);
             }
             catch(Exception ex)
             {
@@ -163,15 +162,13 @@ namespace GamesAdmin.Api.Partners
         {
             try
             {
-                var existedConfig = await partnerConfigRepository.FindOneAsync(entity => entity.PartnerId == config.PartnerId && entity.Name == config.Name
-               && entity.GameId == config.GameId);
+                var existedConfig = await partnerConfigRepository.FindOneAsync(entity => entity.PartnerId == config.PartnerId && entity.Type == config.Type);
 
                 if (existedConfig != null)
                 {
                     var update = Builders<PartnerConfigEntity>.Update.Set(entity => entity.Value, config.Value);
 
-                    await partnerConfigRepository.UpdateAsync(entity => entity.PartnerId == config.PartnerId && entity.Name == config.Name
-                        && entity.GameId == config.GameId, update);
+                    await partnerConfigRepository.UpdateAsync(entity => entity.PartnerId == config.PartnerId && entity.Type == config.Type, update);
                 }
                 else
                 {

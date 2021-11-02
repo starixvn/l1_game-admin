@@ -1,21 +1,20 @@
-﻿namespace GamesAdmin.Core.Models.Partners
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Models.Partners
 {
     public class PartnerConfig
     {
-        public PartnerConfig(string partnerId, string name, string value, int gameId)
+        public PartnerConfig(string partnerId, string type, Dictionary<string, IList<string>> value)
         {
             PartnerId = partnerId;
-            Name = name;
+            Type = type;
             Value = value;
-            GameId = gameId;
         }
 
         public string PartnerId { get; }
 
-        public string Name { get; }
+        public string Type { get; }
 
-        public string Value { get; }
-
-        public int GameId { get; }
+        public Dictionary<string, IList<string>> Value { get; }
     }
 }

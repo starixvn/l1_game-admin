@@ -49,7 +49,7 @@
             </tr>
         </thead>
         <tbody>
-            @{ var rowSpan = Model.Partners.Count() ; }
+            @{ var rowSpan = Model?.Partners?.Count() > 0 ? Model.Partners.Count() : 1; }
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
             <tr>
@@ -65,7 +65,7 @@
                         var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
 
                         <td>
-                            @(firstPartner.Name)
+                            @(firstPartner?.Name)
                         </td>
 
                         <td>
@@ -93,7 +93,7 @@
                         </td>
 
                         <td>
-                            <button class="btn-edit"  onclick="gameStatus.showPartnerSetting('@firstPartner.PartnerId', '@firstPartner.Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
+                            <button class="btn-edit" hidden=@(firstPartner == null) onclick="gameStatus.showPartnerSetting('@firstPartner?.PartnerId', '@firstPartner?.Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
                         </td>
                     }
                 
@@ -422,8 +422,8 @@
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
                     @if(editPermission)
                     {
-                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.updateSetting(true)">Save & Continue</button>
-                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.updateSetting()">Save</button>
+                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit(true)">Save & Continue</button>
+                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit()">Save</button>
                     }
                 </div>
             </div>

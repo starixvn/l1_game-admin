@@ -19,5 +19,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public GameType GameType { get; set; }
 
         public List<SelectListItem> GroupSelectList { get; set; }
+
+        public int GameId => (int)Enumeration.FromValue<Game>(GameName).GameId;
     }
 }

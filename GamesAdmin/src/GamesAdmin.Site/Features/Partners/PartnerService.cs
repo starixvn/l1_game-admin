@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,6 +27,12 @@ namespace GamesAdmin.Site.Features.Partners
 
         [Get("/partner/{partnerId}")]
         Task<Partner> GetById(string partnerId);
+
+        [Get("/partner/config")]
+        Task<PartnerConfig> GetPartnerConfig(string partnerId, string type);
+
+        [Post("/partner/config")]
+        Task<bool> UpdatePartnerConfig(PartnerConfig partnerConfig);
     }
 
     public interface IPartnerService
@@ -41,6 +48,10 @@ namespace GamesAdmin.Site.Features.Partners
         Task<Partner> GetById(string partnerId);
 
         Task<IEnumerable<SelectListItem>> GetPartnersForSelection(Func<Partner, bool> criteria);
+
+        Task<string[]> GetPartnerSiteExclusion(string partnerId, int gameId);
+
+        Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
     }
 
     public class PartnerService : IPartnerService
@@ -108,6 +119,34 @@ namespace GamesAdmin.Site.Features.Partners
             var updated = await partnerApi.Update(partner);
 
             return new ResultBase(!updated ? "Cannot update partner" : string.Empty);
+        }
+
+        public async Task<string[]> GetPartnerSiteExclusion(string partnerId, int gameId)
+        {
+            var partnerSiteExclusion = await partnerApi.GetPartnerConfig(partnerId, PartnerConfigType.SiteExclusion.Value);
+            var gameSiteExclusion = partnerSiteExclusion?.Value != null && partnerSiteExclusion.Value.ContainsKey(gameId.ToString()) 
+                ? partnerSiteExclusion.Value[gameId.ToString()]
+                : new List<string>();
+
+            return gameSiteExclusion?.ToArray() ?? new string[] { };
+        }
+
+        public async Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
+        {
+            var config = await partnerApi.GetPartnerConfig(partnerId, PartnerConfigType.SiteExclusion.Value);
+
+            if (config != null)
+            {
+                config.Value[gameId.ToString()] = exclusionSites.ToList();
+            }
+            else
+            {
+                config = new PartnerConfig(partnerId, PartnerConfigType.SiteExclusion.Value,
+                    new Dictionary<string, IList<string>>()
+                    { { gameId.ToString(), exclusionSites.ToList() }});
+            }
+
+            return await partnerApi.UpdatePartnerConfig(config);
         }
     }
 }
