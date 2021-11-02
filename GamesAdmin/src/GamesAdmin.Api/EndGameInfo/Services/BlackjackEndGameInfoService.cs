@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ namespace GamesAdmin.Api.EndGameInfo
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId);
+            var bets = await GetBetsAsync(request);
 
             if (!bets.Any())
             {
@@ -45,10 +44,7 @@ namespace GamesAdmin.Api.EndGameInfo
             };
         }
 
-        protected override async Task<IEnumerable<BlackjackBetEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId, 
-            Expression<Func<BlackjackBetEntity, bool>> filter = null)
-        {
-            return (await betRepository.FilterByAsync(x => x.HandId == gameRoundId && x.MemberId == memberId && x.SiteId == siteId)).ToList();
-        }
+        protected override Expression<Func<BlackjackBetEntity, bool>> GetBetFilterExpression(RetrieveEndGameInfoRequest request)
+            => (bet) => bet.HandId == request.GameRoundId && bet.MemberId == request.ObCustId && bet.SiteId == request.SiteId;
     }
 }

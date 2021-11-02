@@ -23,5 +23,7 @@ namespace GamesAdmin.Database.Entities
         public string SiteId { get; set; }
 
         public bool? FreeBet { get; set; }
+
+        public string PartnerId { get; set; }
     }
 }
