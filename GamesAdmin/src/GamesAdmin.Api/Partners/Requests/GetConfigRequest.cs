@@ -5,15 +5,13 @@ namespace GamesAdmin.Api.Partners.Requests
 {
     public class GetConfigRequest : IRequest<PartnerConfig>
     {
-        public GetConfigRequest(string partnerId, string name, int gameId)
+        public GetConfigRequest(string partnerId, string type)
         {
             PartnerId = partnerId;
-            Name = name;
-            GameId = gameId;
+            Type = type;
         }
 
         public string PartnerId { get; }
-        public string Name { get; }
-        public int GameId { get; }
+        public string Type { get; }
     }
 }

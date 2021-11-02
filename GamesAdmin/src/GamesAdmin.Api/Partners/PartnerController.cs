@@ -39,8 +39,8 @@ namespace GamesAdmin.Api.Partners
             => mediator.Send(new GetByIdRequest(partnerId));
 
         [HttpGet("config")]
-        public Task<PartnerConfig> GetConfig(string partnerId, string name, int gameId)
-            => mediator.Send(new GetConfigRequest(partnerId, name, gameId));
+        public Task<PartnerConfig> GetConfig(string partnerId, string type)
+            => mediator.Send(new GetConfigRequest(partnerId, type));
 
         [HttpPost("config")]
         public Task<bool> UpdateConfig(PartnerConfig config)

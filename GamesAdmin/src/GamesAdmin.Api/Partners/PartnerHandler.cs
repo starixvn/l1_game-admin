@@ -40,7 +40,7 @@ namespace GamesAdmin.Api.Partners
         => partnerService.GetById(request.PartnerId);
 
         public Task<PartnerConfig> Handle(GetConfigRequest request, CancellationToken cancellationToken)
-        => partnerService.GetConfig(request.PartnerId, request.Name);
+        => partnerService.GetConfig(request.PartnerId, request.Type);
 
         public Task<bool> Handle(UpdateConfigRequest request, CancellationToken cancellationToken)
         => partnerService.UpsertConfig(request.Config);
