@@ -66,6 +66,6 @@ namespace GamesAdmin.Api.EndGameInfo
             => (bet) => bet.Round == request.GameRoundId && bet.MemberId == request.ObCustId && bet.SiteId == request.SiteId && bet.Paid;
 
         protected virtual Expression<Func<TBetEntity, bool>> PartnerFilterExpression(RetrieveEndGameInfoRequest request)
-            => (bet) => string.IsNullOrEmpty(request.PartnerId) || string.Equals(request.PartnerId, bet.PartnerId);
+            => (bet) => string.IsNullOrEmpty(bet.PartnerId) || string.Equals(request.PartnerId, bet.PartnerId);
     }
 }
