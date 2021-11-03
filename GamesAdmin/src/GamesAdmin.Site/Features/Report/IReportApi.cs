@@ -54,6 +54,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/vip_baccarat/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipBaccaratBetReport> GetVipBaccaratReport(long roundId, string nickname, bool excludeUUS);
+
         [Get("/report/roulette/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<RouletteBetReport> GetRouletteReport(long roundId, string nickname, bool excludeUUS);
 
@@ -80,11 +81,13 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/sic_bo/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+
         [Get("/report/vipsediewar/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipSeDieWarBetReport> GetVipSeDieWarReport(long roundId, string nickname, bool excludeUUS);
 
         [Get("/report/bet_history/game/sicbo/round/{roundId}/user/{userId}")]
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
+
         [Get("/report/bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
 
@@ -102,5 +105,17 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/kenomatch/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<KenoMatchBetReport> GetKenoMatchBetReport(string game, long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
+        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(string game, long roundId, string userId);
+
+        [Get("/report/kenopower/{game}/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<KenoPowerBetReport> GetKenoPowerBetReport(string game, long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
+        Task<KenoPowerBetHistory> GetKenoPowerBetHistory(string game, long roundId, string userId);
     }
 }

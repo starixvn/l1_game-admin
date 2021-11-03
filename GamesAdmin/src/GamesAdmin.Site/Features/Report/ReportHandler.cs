@@ -44,8 +44,11 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
-        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>
-
+        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
+        IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
+        IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
+        IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
+        IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -638,6 +641,81 @@ namespace GamesAdmin.Site.Features.ClientSites
 
                     return recordViewModel;
                 })
+            };
+        }
+
+        public async Task<KenoMatchReportResultViewModel> Handle(GetKenoMatchReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoMatchBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+            var roundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult);
+            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
+
+            return new KenoMatchReportResultViewModel
+            {
+                Game = request.Game,
+                RoundResult = roundResult,
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<KenoMatchRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                })
+            };
+        }
+
+        public async Task<KenoMatchBetHistoryViewModel> Handle(GetKenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoMatchBetHistory(request.Game, request.RoundId, request.UserId);
+
+            return new KenoMatchBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<KenoMatchBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
+            };
+        }
+
+        public async Task<KenoPowerReportResultViewModel> Handle(GetKenoPowerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoPowerBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+            var roundResult = mapper.Map<KenoPowerRoundResultViewModel>(result.RoundResult);
+            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
+
+            return new KenoPowerReportResultViewModel
+            {
+                Game = request.Game,
+                RoundResult = roundResult,
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<KenoPowerRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                }),
+            };
+        }
+
+        public async Task<KenoPowerBetHistoryViewModel> Handle(GetKenoPowerBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetKenoPowerBetHistory(request.Game, request.RoundId, request.UserId);
+
+            return new KenoPowerBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<KenoPowerRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<KenoPowerBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
+                Odds = result.Odds
             };
         }
     }

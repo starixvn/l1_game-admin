@@ -80,6 +80,10 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.VipFishPrawnCrab => await Move<VipFishPrawnCrabBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipBaccarat => await Move<VipBaccaratBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipSeDieWar => await Move<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMatch1 => await Move<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMatch2 => await Move<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoPower2 => await Move<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -126,6 +130,10 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.VipFishPrawnCrab => await Find<VipFishPrawnCrabBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipBaccarat => await Find<VipBaccaratBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipSeDieWar => await Find<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMatch1 => await Find<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoMatch2 => await Find<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoPower1 => await Find<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.KenoPower2 => await Find<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 

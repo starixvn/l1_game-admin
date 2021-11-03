@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Report.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -42,7 +44,11 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
-        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>
+        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
+        IRequestHandler<KenoMatchReportRequest, KenoMatchBetReport>,
+        IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
+        IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
+        IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -119,6 +125,7 @@ namespace GamesAdmin.Api.Report
 
         public Task<SicBoBetReport> Handle(SicBoReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
         public Task<VipSeDieWarBetReport> Handle(VipSeDieWarReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipSeDieWarReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
@@ -127,6 +134,7 @@ namespace GamesAdmin.Api.Report
 
         public Task<SicBoBetHistory> Handle(SicBoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoBetHistoryAsync(request.RoundId, request.UserId);
+
         public Task<VipSeDieWarBetHistory> Handle(VipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetVipSeDieWarBetHistoryAsync(request.RoundId, request.UserId);
 
@@ -141,5 +149,45 @@ namespace GamesAdmin.Api.Report
 
         public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken)
             => reportService.GetThreeCardsReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<KenoMatchBetReport> Handle(KenoMatchReportRequest request, CancellationToken cancellationToken)
+        {
+            return request.Game switch
+            {
+                GameId.KenoMatch1 => reportService.GetKenoMatch1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                GameId.KenoMatch2 => reportService.GetKenoMatch2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                _ => throw new ArgumentException(nameof(request.Game)),
+            };
+        }
+
+        public Task<KenoMatchBetHistory> Handle(KenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            return request.Game switch
+            {
+                GameId.KenoMatch1 => reportService.GetKenoMatch1BetHistoryAsync(request.RoundId, request.UserId),
+                GameId.KenoMatch2 => reportService.GetKenoMatch2BetHistoryAsync(request.RoundId, request.UserId),
+                _ => throw new ArgumentException(nameof(request.Game)),
+            };
+        }
+
+        public Task<KenoPowerBetReport> Handle(KenoPowerReportRequest request, CancellationToken cancellationToken)
+        {
+            return request.Game switch
+            {
+                GameId.KenoPower1 => reportService.GetKenoPower1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                GameId.KenoPower2 => reportService.GetKenoPower2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
+                _ => throw new ArgumentException(nameof(request.Game)),
+            };
+        }
+
+        public Task<KenoPowerBetHistory> Handle(KenoPowerBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            return request.Game switch
+            {
+                GameId.KenoPower1 => reportService.GetKenoPower1BetHistoryAsync(request.RoundId, request.UserId),
+                GameId.KenoPower2 => reportService.GetKenoPower2BetHistoryAsync(request.RoundId, request.UserId),
+                _ => throw new ArgumentException(nameof(request.Game)),
+            };
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
     public class RoundResult
     {
+        public DateTime Time { get; set; }
         public long Number { get; set; }
     }
 
@@ -141,8 +143,8 @@ namespace GamesAdmin.Core.Models
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
-    
-     public class VipSeDieWarRoundResult : RoundResult
+
+    public class VipSeDieWarRoundResult : RoundResult
     {
         public IEnumerable<bool> PlayerChips { get; set; }
 
@@ -211,5 +213,69 @@ namespace GamesAdmin.Core.Models
         public bool Hearts { get; set; }
         public bool Spades { get; set; }
         public bool Clubs { get; set; }
+    }
+
+    public class KenoMatchRoundResult : RoundResult
+    {
+        public KenoMatchPeriod HalfTime { get; set; }
+
+        public KenoMatchPeriod FullTime { get; set; }
+
+        public Dictionary<string, decimal> Odds { get; set; }
+    }
+
+    public class KenoMatchPeriod
+    {
+        public DateTime Time { get; set; }
+
+        public int Total { get; set; }
+
+        public KenoMatchPeriodResult Result { get; set; }
+
+        public KenoMatchPeriodSettlementResult SettlementResult { get; set; }
+    }
+
+    public class KenoMatchPeriodResult
+    {
+        public IEnumerable<int> Blue { get; set; }
+        public IEnumerable<int> Red { get; set; }
+    }
+
+    public class KenoMatchPeriodSettlementResult
+    {
+        public bool Blue { get; set; }
+        public bool Red { get; set; }
+        public bool Over { get; set; }
+        public bool Under { get; set; }
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+    }
+
+
+    public class KenoPowerRoundResult : RoundResult
+    {
+        public KenoPowerResult Result { get; set; }
+        public KenoPowerSettlementResult SettlementResult { get; set; }
+    }
+
+    public class KenoPowerResult
+    {
+        public IEnumerable<byte> Blue { get; set; }
+        public IEnumerable<byte> Red { get; set; }
+    }
+
+
+    public class KenoPowerSettlementResult
+    {
+        public bool Blue { get; set; }
+        public bool Red { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+        public bool BlueBig { get; set; }
+        public bool BlueSmall { get; set; }
+        public bool RedBig { get; set; }
+        public bool RedSmall { get; set; }
     }
 }

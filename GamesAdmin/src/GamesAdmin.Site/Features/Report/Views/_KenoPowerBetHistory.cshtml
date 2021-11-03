@@ -1,0 +1,86 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model KenoPowerBetHistoryViewModel
+
+@{
+    var betChoiceMapper = new Dictionary<string, string>
+{
+        { "blue", "Team Blue" },
+        { "red", "Team Red" },
+        { "big", "Big" },
+        { "small", "Small" },
+        { "odd", "Odd" },
+        { "even", "Even" },
+        { "blueBig", "Big" },
+        { "blueSmall", "Small" },
+        { "redBig", "Big" },
+        { "redSmall", "Small" },
+    };
+
+    var betTypeMapper = new Dictionary<string, string>
+{
+        { "blue", "Team Blue/Team Red" },
+        { "red", "Team Blue/Team Red" },
+        { "big", "Sum Big/Small" },
+        { "small", "Sum Big/Small" },
+        { "odd", "Sum Even/Odd" },
+        { "even", "Sum Even/Odd" },
+        { "blueBig", "Team Blue Big/Small" },
+        { "blueSmall", "Team Blue Big/Small" },
+        { "redBig", "Team Red Big/Small" },
+        { "redSmall", "Team Red Big/Small" },
+    };
+
+    var settlementResult = Model.RoundResult.SettlementResult;
+
+    var settlmentResultMapper = new Dictionary<string, bool>
+{
+        { "blue", settlementResult.Blue },
+        { "red", settlementResult.Red },
+        { "big", settlementResult.Big },
+        { "small", settlementResult.Small },
+        { "odd", settlementResult.Odd },
+        { "even", settlementResult.Even },
+        { "blueBig", settlementResult.BlueBig },
+        { "blueSmall", settlementResult.BlueSmall },
+        { "redBig", settlementResult.RedBig },
+        { "redSmall", settlementResult.RedSmall },
+    };
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Bet Type</th>
+            <th>Bet Choice</th>
+            <th>Odds</th>
+            <th>Bet Amount</th>
+            <th>Refund</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            var winCssClass = settlmentResultMapper[bet.Choice] ? "text-primary" : string.Empty;
+
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="@winCssClass text-center ">
+                    @betTypeMapper[bet.Choice]
+                </td>
+                <td class="@winCssClass text-center">
+                    @betChoiceMapper[bet.Choice]
+                </td>
+                <td class="text-right @winCssClass">@Model.Odds[bet.Choice]</td>
+                <td class="text-right @winCssClass">
+                    @HtmlHelpers.formatNumber(bet.Amount)
+                </td>
+                <td class="text-right @winCssClass">
+                    @HtmlHelpers.formatNumber(bet.GetRefund(settlementResult))
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>

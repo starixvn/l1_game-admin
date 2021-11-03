@@ -1,0 +1,44 @@
+﻿@using GamesAdmin.Site.Features.ClientSites.ViewModels;
+@model IEnumerable<ClientSiteViewModel>
+
+@{
+    ViewData["Title"] = "Client Sites";
+}
+
+<div class="col-md-12 p-0">
+    <table class="table table-bordered has-background">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Site</th>
+                <th>Game Client Url</th>
+                <th>Mobi Client Url</th>
+<<<<<<< HEAD
+                <td>Mini Saba Client Url</td>
+=======
+                <th>Mobi Keno Soccer Client Url</th>
+>>>>>>> 14589992... add keno soccer url for client
+                <th>Valid Currencies</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ClientId</td>
+                    <td>@item.SiteId</td>
+                    <td>@item.GameClientUrl</td>
+                    <td>@item.GameMobiClientUrl</td>
+<<<<<<< HEAD
+                    <td>@item.MiniSabaGameClientUrl</td>
+=======
+                    <td>@item.GameMobiKenoSoccerClientUrl</td>
+>>>>>>> 14589992... add keno soccer url for client
+                    <td>@item.ValidCurrencies</td>
+                    <td class="text-center"><a asp-action="Update" asp-route-clientId="@item.ClientId" asp-route-siteId="@item.SiteId"><i class="icon-edit"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

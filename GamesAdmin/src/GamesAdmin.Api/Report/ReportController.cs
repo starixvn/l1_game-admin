@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -177,5 +178,25 @@ namespace GamesAdmin.Api.Report
         [Route("threecards/round/{roundId}/users/{nickname?}")]
         public async Task<ThreeCardsBetReport> ThreeCards(long roundId, string nickname, bool excludeUUS)
             => (await mediator.Send(new ThreeCardsReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("kenomatch/{game}/round/{roundId}/users/{nickname?}")]
+        public Task<KenoMatchBetReport> KenoMatch(GameId game, long roundId, string nickname, bool excludeUUS)
+            => mediator.Send(new KenoMatchReportRequest(game, roundId, nickname, excludeUUS));
+
+        [HttpGet]
+        [Route("bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
+        public async Task<KenoMatchBetHistory> KenoMatchBetHistory(GameId game, string userId, long roundId)
+        => (await mediator.Send(new KenoMatchBetHistoryRequest(game, roundId, userId)));
+
+        [HttpGet]
+        [Route("kenopower/{game}/round/{roundId}/users/{nickname?}")]
+        public Task<KenoPowerBetReport> KenoPower(GameId game, long roundId, string nickname, bool excludeUUS)
+          => mediator.Send(new KenoPowerReportRequest(game, roundId, nickname, excludeUUS));
+
+        [HttpGet]
+        [Route("bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
+        public async Task<KenoPowerBetHistory> KenoPowerBetHistory(GameId game, string userId, long roundId)
+        => (await mediator.Send(new KenoPowerBetHistoryRequest(game, roundId, userId)));
     }
 }
