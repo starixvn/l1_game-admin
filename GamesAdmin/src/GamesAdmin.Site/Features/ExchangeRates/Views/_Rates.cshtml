@@ -1,0 +1,24 @@
+﻿@model GamesAdmin.Site.Features.ExchangeRates.ViewModels.ExchangeRateManagementViewModel
+
+<table id="exchange-rate-table" class="table table-bordered table-hover stripe sticky-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Currency Code</th>
+            <th>USD/Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ExchangeRates)
+        {
+            @foreach (var code in item.Code)
+            {
+                <tr>
+                    <td class="text-center">@item.Time.ToShortDateString()</td>
+                    <td class="text-center">@code.Key</td>
+                    <td class="text-center">@code.Value</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

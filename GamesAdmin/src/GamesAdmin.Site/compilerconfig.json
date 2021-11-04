@@ -70,5 +70,9 @@
   {
     "outputFile": "wwwroot/scss/pages/chip.css",
     "inputFile": "wwwroot/scss/pages/chip.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/exchange-rate.css",
+    "inputFile": "wwwroot/scss/pages/exchange-rate.scss"
   }
 ]

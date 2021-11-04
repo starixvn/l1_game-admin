@@ -7,6 +7,7 @@ using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
+using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
@@ -88,6 +89,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IChipApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IChipService, ChipService>();
+
+            services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
         }
     }
 }
