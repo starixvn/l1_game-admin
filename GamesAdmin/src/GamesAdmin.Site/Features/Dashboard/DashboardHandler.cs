@@ -49,10 +49,17 @@ namespace GamesAdmin.Site.Features.Dashboard
         private async Task<OnlineUsersViewModel> ConvertToOnlineUserViewModel(OnlineUsers onlineUsers)
         {
             var partners = await GetPartnerSelections();
+            var realUsers = mapper.Map<IEnumerable<OnlineUserViewModel>>(onlineUsers.RealUsers).Select(model =>
+            {
+                model.PartnerItems = partners;
+
+                return model;
+            }).AsEnumerable();
+
             var viewModel = new OnlineUsersViewModel
             {
                 TotalRealPlayer = onlineUsers.TotalRealPlayer,
-                RealUsers = onlineUsers.RealUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                RealUsers = realUsers,
                 TotalTestPlayer = onlineUsers.TotalTestPlayer,
                 TestUsers = onlineUsers.TestUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
                 TotalBots = onlineUsers.TotalBots,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Dashboard.ViewModels
@@ -39,6 +40,11 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public string Character { get; set; }
 
         public string PartnerId { get; set; }
+
+        public IEnumerable<SelectListItem> PartnerItems { get; set; }
+
+        public string GetPartnerName()
+            => PartnerItems.FirstOrDefault(item => string.Equals(item.Value, PartnerId))?.Text;
     }
 
     public class BotUserViewModel
