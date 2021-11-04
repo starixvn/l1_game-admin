@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Audit.Mvc;
 using GamesAdmin.Core.Models.Partners;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Partners.Requests;
 using GamesAdmin.Site.Features.Partners.ViewModels;
 using MediatR;
@@ -24,7 +25,14 @@ namespace GamesAdmin.Site.Features.Partners
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View(await mediator.Send(new IndexRequest()));
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = await mediator.Send(new IndexRequest());
+
+            viewModel.EditPermission = HttpContext.User.IsInRole("admin");
+
+            return View(viewModel);
+        }
 
         [HttpGet]
         public IActionResult Add() => PartialView();
@@ -85,5 +93,10 @@ namespace GamesAdmin.Site.Features.Partners
         public async Task<IActionResult> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
             => Json(await mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites)));
 
+        [HttpPost, Audit]
+        [Route("partner/um")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdatePartnerUM(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime, string[] partners)
+            => Json(await mediator.Send(new UpdatePartnerUMRequest(isUM, startTime, endTime, partners)));
     }
 }

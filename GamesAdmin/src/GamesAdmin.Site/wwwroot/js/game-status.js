@@ -79,38 +79,6 @@
             }
         },
 
-        underMaintenance: function () {
-            const status = $("#IsUM").prop("checked") ? "ON" : "OFF";
-            let message = "You are going to set Under Maintenance to " + status + ". Are you sure?";
-
-            if (confirm(message)) {
-                $.ajax({
-                    method: "POST",
-                    url: "/status/um",
-                    dataType: 'json',
-                    data: $('#umForm').serialize(),
-                }).done(function (updated) {
-                    if (updated) {
-                        alert("Under Maintenance is " + status + " now!");
-                        $('#umModal').modal('hide');
-                        window.location.href = "/GameSettings";
-                    }
-                });
-            }
-        },
-
-        showUnderMaintenanceForm: function () {
-            $.ajax({
-                method: "GET",
-                url: "/status/um"
-            }).done(function (content) {
-                if (content) {
-                    $('#um').html(content);
-                    $('#umModal').modal('show');
-                }
-            });
-        },
-
         getCheckedGames: function () {
             var container = $("#status-tbl");
             var checkboxes = container.find('.game-status-chk');
@@ -506,42 +474,6 @@
                     $('#updateExclusionsFailed').hide();
                     $('#siteExclusionModal').modal('hide');
                     location.reload();
-                }, 1000);
-            });
-        },
-
-        showUpdateSuperPlayersForm: function () {
-            $.ajax({
-                method: "GET",
-                url: "/status/super_players"
-            }).done(function (content) {
-                if (content) {
-                    $('#super-players').html(content);
-                    $('#super-players-modal').modal('show');
-                }
-            });
-        },
-        updateSuperPlayers: function () {
-            const players = $('#super-players-names').val();
-            const url = "/status/super_players";
-            const data = { superPlayers: players };
-            $('#update-super-players-btn').prop('disabled', true);
-
-            $.ajax({
-                method: "POST",
-                url: url,
-                dataType: 'json',
-                data: data,
-            }).done(function (result) {
-                var msg = result ? '#update-super-players-success' : '#update-super-players-failed';
-                $(msg).show();
-                $("#super-players-msg-container").show();
-
-                setTimeout(function () {
-                    $('#update-super-players-btn').prop('disabled', false);
-                    $("#super-players-msg-container").hide();
-                    $(msg).hide();
-                    $('#super-players-modal').modal('hide');
                 }, 1000);
             });
         },

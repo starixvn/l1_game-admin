@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Partners;
+using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.Partners.Requests;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Refit;
 
@@ -33,6 +35,12 @@ namespace GamesAdmin.Site.Features.Partners
 
         [Post("/partner/config")]
         Task<bool> UpdatePartnerConfig(PartnerConfig partnerConfig);
+
+        [Post("/um/partners")]
+        Task<bool> UpdatePartnerUM([Body] UpdatePartnerUMRequest request);
+
+        [Get("/um/allUMInfo")]
+        Task<IEnumerable<UmInfo>> GetAllUMInfo();
     }
 
     public interface IPartnerService
@@ -52,6 +60,10 @@ namespace GamesAdmin.Site.Features.Partners
         Task<string[]> GetPartnerSiteExclusion(string partnerId, int gameId);
 
         Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
+
+        Task<bool> UpdatePartnerUM(UpdatePartnerUMRequest request);
+
+        Task<IEnumerable<UmInfo>> GetAllUMInfo();
     }
 
     public class PartnerService : IPartnerService
@@ -148,5 +160,11 @@ namespace GamesAdmin.Site.Features.Partners
 
             return await partnerApi.UpdatePartnerConfig(config);
         }
+
+        public Task<bool> UpdatePartnerUM(UpdatePartnerUMRequest request)
+            => this.partnerApi.UpdatePartnerUM(request);
+
+        public Task<IEnumerable<UmInfo>> GetAllUMInfo()
+            => this.partnerApi.GetAllUMInfo();
     }
 }

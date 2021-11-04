@@ -28,6 +28,13 @@
   .table .icon-edit:hover {
     color: #da624a; }
 
+.table .icon-info {
+  position: relative;
+  font-size: 1.6rem;
+  color: #6c757d; }
+  .table .icon-info:hover {
+    color: #da624a; }
+
 .table .icon-check {
   font-size: 1.6rem;
   color: #3ac47d; }
@@ -175,6 +182,14 @@
     width: calc(100% - 5rem); }
   .table .content-message {
     max-width: calc(100% - 5rem); }
+  .table .btn-info {
+    width: 4rem;
+    background: none;
+    border: none;
+    outline: none;
+    position: relative;
+    top: -16 px;
+    left: 5 px; }
   .table .btn-save,
   .table .btn-edit {
     width: 4rem;

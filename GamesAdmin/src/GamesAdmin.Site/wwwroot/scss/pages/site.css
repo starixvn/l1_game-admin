@@ -172,6 +172,13 @@
   .table .icon-edit:hover {
     color: #da624a; }
 
+.table .icon-info {
+  position: relative;
+  font-size: 1.6rem;
+  color: #6c757d; }
+  .table .icon-info:hover {
+    color: #da624a; }
+
 .table .icon-check {
   font-size: 1.6rem;
   color: #3ac47d; }

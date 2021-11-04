@@ -40,6 +40,16 @@
         }
     }
 
+    .icon-info {
+        position: relative;
+        font-size: 1.6rem;
+        color: #6c757d;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+
     .icon-check {
         font-size: 1.6rem;
         color: #3ac47d;

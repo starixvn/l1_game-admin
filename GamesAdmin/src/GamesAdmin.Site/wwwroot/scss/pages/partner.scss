@@ -27,6 +27,16 @@
         max-width: calc(100% - 5rem);
     }
 
+    .btn-info {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+        position: relative;
+        top: -16 px;
+        left: 5 px;
+    }
+
     .btn-save,
     .btn-edit {
         width: 4rem;

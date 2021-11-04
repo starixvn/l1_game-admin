@@ -19,8 +19,6 @@
             <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
             <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
             <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
-            <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
-            <input type="button" onclick="gameStatus.showUpdateSuperPlayersForm()" value="Super Players" class="btn-add btn-enable" />
             <input type="button" onclick="gameStatus.showBetaVersion()" value="Game Beta" class="btn-add btn-enable" />
         }
         
@@ -384,28 +382,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade game-modal" id="umModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Under Maintenance Schedule</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body game-details-content" id="um">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    @if(editPermission)
-                    {
-                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.underMaintenance()">Save</button>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="modal fade game-modal" id="partnerSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -424,30 +401,6 @@
                     {
                     <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit(true)">Save & Continue</button>
                     <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit()">Save</button>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade game-modal" id="super-players-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update Super Players</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body game-details-content" id="super-players">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    @if(editPermission)
-                    {
-                    <button type="button" class="btn btn-submit" id="update-super-players-btn" onclick="gameStatus.updateSuperPlayers()">Save</button>
-
                     }
                 </div>
             </div>

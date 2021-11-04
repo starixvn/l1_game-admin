@@ -28,6 +28,13 @@
   .table .icon-edit:hover {
     color: #da624a; }
 
+.table .icon-info {
+  position: relative;
+  font-size: 1.6rem;
+  color: #6c757d; }
+  .table .icon-info:hover {
+    color: #da624a; }
+
 .table .icon-check {
   font-size: 1.6rem;
   color: #3ac47d; }
@@ -37,7 +44,7 @@
   color: #ff0000; }
 
 .table.sticky-table th {
-  top: 0rem;
+  top: -2rem;
   position: sticky;
   z-index: 1;
   background: #fff; }

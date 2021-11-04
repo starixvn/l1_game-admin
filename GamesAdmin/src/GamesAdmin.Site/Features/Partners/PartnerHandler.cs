@@ -17,6 +17,7 @@ namespace GamesAdmin.Site.Features.Partners
         , IRequestHandler<GetByIdRequest, PartnerEditViewModel>
         , IRequestHandler<GetSiteExclusionRequest, string[]>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
+        , IRequestHandler<UpdatePartnerUMRequest, bool>
     {
         private readonly IPartnerService partnerService;
         private readonly IMapper mapper;
@@ -28,7 +29,7 @@ namespace GamesAdmin.Site.Features.Partners
         }
 
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
-            => new IndexViewModel { Partners = (await partnerService.GetAll()).ToList() };
+            => new IndexViewModel { Partners = (await partnerService.GetAll()).ToList() , UmInfos = (await partnerService.GetAllUMInfo()).ToList()};
 
         public async Task<ResultBase> Handle(AddPartnerRequest request, CancellationToken cancellationToken)
             => await partnerService.Add(request.PartnerInfo);
@@ -44,5 +45,8 @@ namespace GamesAdmin.Site.Features.Partners
 
         public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
             => partnerService.UpdatePartnerSiteExclusion(request.PartnerId, request.GameId, request.ExclusionSites);
+
+        public Task<bool> Handle(UpdatePartnerUMRequest request, CancellationToken cancellationToken)
+            => partnerService.UpdatePartnerUM(request);
     }
 }

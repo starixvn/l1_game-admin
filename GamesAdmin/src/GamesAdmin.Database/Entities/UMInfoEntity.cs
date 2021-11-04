@@ -11,5 +11,9 @@ namespace GamesAdmin.Database.Entities
         public DateTime End { get; set; }
 
         public bool Finish { get; set; }
+
+        public bool IsPartnerUM { get; set; }
+
+        public string PartnerId { get; set; }
     }
 }
