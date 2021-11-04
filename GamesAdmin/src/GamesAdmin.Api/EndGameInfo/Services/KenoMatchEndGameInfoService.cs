@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GamesAdmin.Api.EndGameInfo.Request;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.EndGameInfo;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -8,8 +11,8 @@ using GamesAdmin.Database.Entities;
 namespace GamesAdmin.Api.EndGameInfo
 {
     public class KenoMatchEndGameInfoService<TKenoMatchRoundEntity, TKenoMatchOneEntity> : BaseEndGameInfoService<TKenoMatchRoundEntity, TKenoMatchOneEntity>, IEndGameInfoService
-        where TKenoMatchRoundEntity: KenoMatchRoundEntity
-        where TKenoMatchOneEntity: KenoMatchOneEntity
+        where TKenoMatchRoundEntity : KenoMatchRoundEntity
+        where TKenoMatchOneEntity : KenoMatchOneEntity
     {
         public KenoMatchEndGameInfoService(IGenericRepository<TKenoMatchRoundEntity> roundRepository, IGenericRepository<TKenoMatchOneEntity> betRepository)
             : base(roundRepository, betRepository)
@@ -18,8 +21,8 @@ namespace GamesAdmin.Api.EndGameInfo
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var round = await GetRoundAsync(request.GameRoundId);
-            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId, x => !x.FreeBet.HasValue || x.FreeBet.Value == request.FreeBet);
+            var round = await GetRoundAsync(request);
+            var bets = await GetBetsAsync(request);
 
             if (round == null || !bets.Any())
             {
@@ -38,5 +41,8 @@ namespace GamesAdmin.Api.EndGameInfo
                 TotalWin = totalBetWin > 0 ? totalBetWin + totalRefund : totalRefund
             };
         }
+
+        protected override Expression<Func<TKenoMatchOneEntity, bool>> GetBetFilterExpression(RetrieveEndGameInfoRequest request)
+           => base.GetBetFilterExpression(request).And(FreeBetExpression(request));
     }
 }

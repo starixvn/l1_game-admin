@@ -67,5 +67,8 @@ namespace GamesAdmin.Api.EndGameInfo
 
         protected virtual Expression<Func<TBetEntity, bool>> PartnerFilterExpression(RetrieveEndGameInfoRequest request)
             => (bet) => string.IsNullOrEmpty(bet.PartnerId) || string.Equals(request.PartnerId, bet.PartnerId);
+
+        protected virtual Expression<Func<TBetEntity, bool>> FreeBetExpression(RetrieveEndGameInfoRequest request)
+            => bet => !bet.FreeBet.HasValue || bet.FreeBet.Value == request.FreeBet;
     }
 }

@@ -40,10 +40,6 @@ namespace GamesAdmin.Api.EndGameInfo
         }
 
         protected override Expression<Func<ThreeCardsBetEntity, bool>> GetBetFilterExpression(RetrieveEndGameInfoRequest request)
-           => base.GetBetFilterExpression(request)
-               .And(FreeBetExpression(request));
-
-        private static Expression<Func<ThreeCardsBetEntity, bool>> FreeBetExpression(RetrieveEndGameInfoRequest request)
-            => bet => !bet.FreeBet.HasValue || bet.FreeBet.Value == request.FreeBet;
+           => base.GetBetFilterExpression(request).And(FreeBetExpression(request));
     }
 }
