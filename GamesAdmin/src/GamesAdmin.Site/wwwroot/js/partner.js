@@ -74,6 +74,7 @@
                 url: "/status/um"
             }).done(function (content) {
                 if (content) {
+                    $('#umTitle').html("Partner Under Maintainance");
                     $('#um').html(content);
                     $('#umModal').modal('show');
                     $('#partner-info').show();
@@ -88,6 +89,7 @@
                 url: "/status/um"
             }).done(function (content) {
                 if (content) {
+                    $('#umTitle').html("SC Under Maintainance");
                     $('#partner-info').hide();
                     $('#um').html(content);
                     $('#umModal').modal('show');

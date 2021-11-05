@@ -39,7 +39,7 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
 
         public bool EditPermission { get; set; }
 
-        private string buildUmInfo(DateTimeOffset start, DateTimeOffset end) => $"Stat Time (GMT+7): {start} \n End Time (GMT+7): {end}";
+        private string buildUmInfo(DateTimeOffset start, DateTimeOffset end) => $"Stat Time (GMT+7): {start} \nEnd Time (GMT+7): {end}";
 
 
     }
