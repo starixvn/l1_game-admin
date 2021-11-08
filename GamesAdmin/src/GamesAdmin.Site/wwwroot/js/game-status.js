@@ -439,88 +439,6 @@
             $(id).show();
             $(headerId).addClass("active");
         },
-
-        showSiteExclusions: function (textMsg, name, displayName) {
-            $('#siteExclusions').val(textMsg);
-            $('#siteExclusionGameName').val(name);
-            $('#siteExclusionGameNameLabel').html(displayName);
-
-            $('#siteExclusionModal').modal('show');
-        },
-
-        updateSiteExclusions: function () {
-            const exclutions = $('#siteExclusions').val();
-            const name = $('#siteExclusionGameName').val();
-            const url = "/exclusions/update";
-            const data = { configName: name, siteExclusions: exclutions };
-            $('#updateExclusionsBtn').prop('disabled', true);
-
-            $.ajax({
-                method: "POST",
-                url: url,
-                dataType: 'json',
-                data: data,
-            }).done(function (result) {
-                if (result) {
-                    $('#updateExclusionsSuccess').show();
-                }
-                else {
-                    $('#updateExclusionsFailed').show();
-                }
-
-                setTimeout(function () {
-                    $('#updateExclusionsBtn').prop('disabled', false);
-                    $('#updateExclusionsSuccess').hide();
-                    $('#updateExclusionsFailed').hide();
-                    $('#siteExclusionModal').modal('hide');
-                    location.reload();
-                }, 1000);
-            });
-        },
-
-        showBetaVersion: function () {
-            const modal = $('#betaVersionModal');
-
-            const checkedGames = this.getCheckedGames();
-            if (checkedGames.message.length === 0) {
-                this.showAlert("You should choose at least one game.");
-                return;
-            }
-
-            const message = `Are you sure you want to UNMARK BETA Version of the following games<br /><ul>` + checkedGames.message + "</ul>";
-            modal.find('#betaVersionContent').html(message);
-            modal.modal('show');
-        },
-        changeBetaVersionFlag: function () {
-            const modal = $('#betaVersionModal');
-            const checkedGames = this.getCheckedGames();
-            const isBeta = modal.find('#betaVersionCheckbox').is(":checked");
-            const message = `Are you sure you want to ${isBeta ? "MARK" : "UNMARK"} BETA Version of the following games<br /><ul>` + checkedGames.message + "</ul>";
-            modal.find('#betaVersionContent').html(message);
-            modal.find('#betaVersionFlag').val(isBeta);
-        },
-        submitBetaVersion: function () {
-            const modal = $('#betaVersionModal');
-            modal.find('#confirmBtn').prop('disabled', true);
-
-            const isBeta = modal.find('#betaVersionFlag').val();
-            const checkedGames = this.getCheckedGames();
-            const params = { games: checkedGames.games, isBeta };
-
-            $.ajax({ method: "POST", url: `/status/update_beta_version`, data: params })
-                .done(function (updated) {
-                    const msg = updated ? '#updateMsgSuccess' : '#updateMsgFailed';
-                    modal.find(msg).show();
-
-                    setTimeout(function () {
-                        modal.find('#confirmBtn').prop('disabled', false);
-                        modal.find('#updateMsgSuccess').hide();
-                        modal.find('#updateMsgFailed').hide();
-                        modal.modal('hide');
-                        location.reload();
-                    }, 1000);
-                });
-        },
     }
 }(jQuery));
 
@@ -530,8 +448,21 @@ $(document).ready(function () {
             "ordering": false,
             "paging": false,
             "info": false,
+            "columns": [
+                { "width": "3%" },
+                { "width": "10%" },
+                { "width": "5%" },
+                { "width": "10%" },
+                { "width": "20%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+            ],
             "columnDefs": [
-                { "targets": [ 3, 4, 5, 6,7,8,9,10,11], "searchable": false }
+                { "targets": [ 3, 4, 5, 6,7,8,9,10], "searchable": false }
             ]
         });
 }
