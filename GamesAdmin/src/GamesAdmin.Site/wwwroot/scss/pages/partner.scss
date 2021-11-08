@@ -15,8 +15,14 @@
 .table {
     background-color: #fff;
 
-    &.sticky-table th {
-        top: 5rem;
+    &.sticky-table {
+        &.action-bar-invisible th {
+            top: 0rem;
+        }
+
+        &.action-bar-visible th {
+            top: 5rem;
+        }
     }
 
     .toggle-button {

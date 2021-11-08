@@ -26,7 +26,7 @@
         </div>
     }
 
-    <table id="partner-table" class="table table-bordered has-background sticky-table">
+    <table id="partner-table" class="table table-bordered has-background sticky-table @(Model.EditPermission ? "action-bar-visible" : "action-bar-invisible")">
         <thead>
             <tr>
                 <th class="col-check"><input type="checkbox" id="partner-all" value="all" onclick="partner.checkAll();" /></th>

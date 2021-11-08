@@ -186,7 +186,9 @@
 
 .table {
   background-color: #fff; }
-  .table.sticky-table th {
+  .table.sticky-table.action-bar-invisible th {
+    top: 2rem; }
+  .table.sticky-table.action-bar-visible th {
     top: 5rem; }
   .table .toggle-button {
     margin-left: auto;

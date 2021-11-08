@@ -28,7 +28,7 @@
 <div class="message-error"><i class="icon-cancel"></i> @TempData["errorMessage"].ToString()</div>
                 <br />}
 
-    <table id="status-tbl" class="table table-bordered sticky-table">
+    <table id="status-tbl" class="table table-bordered sticky-table @(editPermission ? "action-bar-visible" : "action-bar-invisible")">
         <thead>
             <tr>
                 <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
