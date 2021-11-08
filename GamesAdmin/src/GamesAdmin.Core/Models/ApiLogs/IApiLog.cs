@@ -1,0 +1,33 @@
+﻿using System;
+
+namespace GamesAdmin.Core.Models.ApiLogs
+{
+    public interface IApiLog
+    {
+        DateTimeOffset LogTimeStamp { get; }
+
+        DateTimeOffset RequestTimeStamp { get; }
+
+        DateTimeOffset ResponseTimeStamp { get; }
+    }
+
+    public interface IApiLogRequest
+    {
+        string Seq { get; }
+
+        int? ObCustId { get; }
+
+        string SiteId { get; }
+
+        int? GameRoundId { get; }
+
+        byte? GameTypeId { get; }
+
+        string RequestType { get; }
+    }
+
+    public interface IApiLogResult
+    {
+        string ResultType { get; }
+    }
+}

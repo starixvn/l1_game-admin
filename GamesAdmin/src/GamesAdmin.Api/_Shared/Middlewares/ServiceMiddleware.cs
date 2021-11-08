@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
 using GamesAdmin.Api.ClientSites;
@@ -22,6 +23,7 @@ using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Database.ApiLogs;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
@@ -162,6 +164,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
             AddSlotServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
+
+            services.InitApiLog();
         }
 
         private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
