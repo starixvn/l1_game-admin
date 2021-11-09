@@ -18,6 +18,9 @@ namespace GamesAdmin.Site.Features.Partners
         , IRequestHandler<GetSiteExclusionRequest, string[]>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<UpdatePartnerUMRequest, bool>
+        , IRequestHandler<UpdateSuperPlayerRequest, bool>
+        , IRequestHandler<GetSuperPlayerViewRequest, SuperPlayersViewModel>
+        , IRequestHandler<GetSuperPlayerRequest, string>
     {
         private readonly IPartnerService partnerService;
         private readonly IMapper mapper;
@@ -48,5 +51,22 @@ namespace GamesAdmin.Site.Features.Partners
 
         public Task<bool> Handle(UpdatePartnerUMRequest request, CancellationToken cancellationToken)
             => partnerService.UpdatePartnerUM(request);
+
+        public async Task<SuperPlayersViewModel> Handle(GetSuperPlayerViewRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetAll();
+
+            return new SuperPlayersViewModel(partners);
+        }
+
+        public Task<bool> Handle(UpdateSuperPlayerRequest request, CancellationToken cancellationToken)
+            => partnerService.UpdatePartnerSuperPlayer(request.PartnerId, request.SuperPlayers);
+
+        public async Task<string> Handle(GetSuperPlayerRequest request, CancellationToken cancellationToken)
+        {
+            var superPlayers = await partnerService.GetPartnerSuperPlayer(request.PartnerId);
+
+            return string.Join("; ", superPlayers);
+        }
     }
 }

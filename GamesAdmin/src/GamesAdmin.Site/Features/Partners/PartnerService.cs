@@ -64,6 +64,11 @@ namespace GamesAdmin.Site.Features.Partners
         Task<bool> UpdatePartnerUM(UpdatePartnerUMRequest request);
 
         Task<IEnumerable<UmInfo>> GetAllUMInfo();
+
+        Task<bool> UpdatePartnerSuperPlayer(string partnerId, string[] superPlayers);
+
+        Task<string[]> GetPartnerSuperPlayer(string partnerId);
+
     }
 
     public class PartnerService : IPartnerService
@@ -133,38 +138,51 @@ namespace GamesAdmin.Site.Features.Partners
             return new ResultBase(!updated ? "Cannot update partner" : string.Empty);
         }
 
-        public async Task<string[]> GetPartnerSiteExclusion(string partnerId, int gameId)
-        {
-            var partnerSiteExclusion = await partnerApi.GetPartnerConfig(partnerId, PartnerConfigType.SiteExclusion.Value);
-            var gameSiteExclusion = partnerSiteExclusion?.Value != null && partnerSiteExclusion.Value.ContainsKey(gameId.ToString()) 
-                ? partnerSiteExclusion.Value[gameId.ToString()]
-                : new List<string>();
+        public Task<string[]> GetPartnerSiteExclusion(string partnerId, int gameId)
+           => GetPartnerConfigValue(partnerId, PartnerConfigType.SiteExclusion.Value, gameId.ToString());
 
-            return gameSiteExclusion?.ToArray() ?? new string[] { };
-        }
+        public Task<string[]> GetPartnerSuperPlayer(string partnerId)
+           => GetPartnerConfigValue(partnerId, PartnerConfigType.SuperPlayers.Value, PartnerConfigKey.Name.Value);
 
-        public async Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
-        {
-            var config = await partnerApi.GetPartnerConfig(partnerId, PartnerConfigType.SiteExclusion.Value);
 
-            if (config != null)
-            {
-                config.Value[gameId.ToString()] = exclusionSites.ToList();
-            }
-            else
-            {
-                config = new PartnerConfig(partnerId, PartnerConfigType.SiteExclusion.Value,
-                    new Dictionary<string, IList<string>>()
-                    { { gameId.ToString(), exclusionSites.ToList() }});
-            }
+        public Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
+           => UpdatePartnerConfigValue(partnerId, PartnerConfigType.SiteExclusion.Value, gameId.ToString(), exclusionSites);
 
-            return await partnerApi.UpdatePartnerConfig(config);
-        }
+        public Task<bool> UpdatePartnerSuperPlayer(string partnerId, string[] superPlayers)
+           => UpdatePartnerConfigValue(partnerId, PartnerConfigType.SuperPlayers.Value, PartnerConfigKey.Name.Value, superPlayers);
 
         public Task<bool> UpdatePartnerUM(UpdatePartnerUMRequest request)
             => this.partnerApi.UpdatePartnerUM(request);
 
         public Task<IEnumerable<UmInfo>> GetAllUMInfo()
             => this.partnerApi.GetAllUMInfo();
+
+        private async Task<string[]> GetPartnerConfigValue(string partnerId, string configType, string configKey)
+        {
+            var partnerSiteExclusion = await partnerApi.GetPartnerConfig(partnerId, configType);
+            var gameSiteExclusion = partnerSiteExclusion?.Value != null && partnerSiteExclusion.Value.ContainsKey(configKey)
+                ? partnerSiteExclusion.Value[configKey]
+                : new List<string>();
+
+            return gameSiteExclusion?.ToArray() ?? new string[] { };
+        }
+
+        private async Task<bool> UpdatePartnerConfigValue(string partnerId, string configType, string configKey, string[] values)
+        {
+            var config = await partnerApi.GetPartnerConfig(partnerId, configType);
+
+            if (config != null)
+            {
+                config.Value[configKey] = values.ToList();
+            }
+            else
+            {
+                config = new PartnerConfig(partnerId, configType,
+                    new Dictionary<string, IList<string>>()
+                    { { configKey, values.ToList() }});
+            }
+
+            return await partnerApi.UpdatePartnerConfig(config);
+        }
     }
 }

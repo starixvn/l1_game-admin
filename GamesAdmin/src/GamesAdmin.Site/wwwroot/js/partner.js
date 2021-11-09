@@ -133,24 +133,38 @@
         showUpdateSuperPlayersForm: function () {
             $.ajax({
                 method: "GET",
-                url: "/status/super_players"
-            }).done(function (content) {
+                url: "/partner/edit_super_players"
+            }).done((content) => {
                 if (content) {
                     $('#super-players').html(content);
                     $('#super-players-modal').modal('show');
                 }
+
+                this.onChangePartner();
+            });
+        },
+
+        onChangePartner: function () {
+            $.ajax({
+                method: "GET",
+                url: "/partner/super_players",
+                data: {
+                    partnerId: $('#PartnerId').val()
+                }
+            }).done(function (content) {
+                $('#super-players-names').val(content ?? "");
             });
         },
 
         updateSuperPlayers: function () {
             const players = $('#super-players-names').val();
-            const url = "/status/super_players";
-            const data = { superPlayers: players };
+            const partnerId = $('#PartnerId').val();
+            const data = { superPlayers: players.replace(/\s/g, '').split(';'), partnerId };
             $('#update-super-players-btn').prop('disabled', true);
 
             $.ajax({
                 method: "POST",
-                url: url,
+                url: 'partner/edit_super_players',
                 dataType: 'json',
                 data: data,
             }).done(function (result) {

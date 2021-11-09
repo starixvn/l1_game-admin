@@ -1,6 +1,4 @@
-﻿@{ Layout = null; }
-
-@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
 @model SuperPlayersViewModel;
 
 @{
@@ -8,7 +6,17 @@
 }
 
 <div>
-    <form class="card-body form" asp-action="SuperPlayers" asp-controller="GameSettings" method="post" id="super-players-form">
+    <form class="card-body form" asp-action="UpdateSuperPlayer" asp-controller="Partner" method="post" id="super-players-form">
+        <div class="form-group">
+            <span class="control-label">Partners</span>
+            <div class="col-4">
+                <select class="form-control"
+                        asp-items="Model.PartnerSelectList"
+                        asp-for="PartnerId"
+                        onchange="partner.onChangePartner()">
+                </select>
+            </div>
+        </div>
         <div id="super-players-msg-container" class="form-group row" style="display: none">
             <div class="message-success hidden-cls" id="update-super-players-success"><i class="icon-check"></i><span>Updated successfully</span></div>
             <div class="message-error hidden-cls" id="update-super-players-failed"><i class="icon-cancel"></i><span>Error</span></div>

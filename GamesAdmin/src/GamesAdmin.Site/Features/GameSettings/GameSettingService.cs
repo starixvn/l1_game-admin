@@ -50,10 +50,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
-        Task<GlobalConfig> GetSuperPlayers();
-
-        Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request);
-
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
     }
 
@@ -163,17 +159,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<Dictionary<string, string>> GetDisabledMessage(string name)
             => gameApi.GetDisableMessage(name);
-
-        public Task<GlobalConfig> GetSuperPlayers() => globalConfigApi.GetSuperPlayers();
-
-        public Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request)
-        {
-            var formattedNames = string.IsNullOrWhiteSpace(request.SuperPlayers)
-                ? new string[] { }
-                : request.SuperPlayers.Trim().Split(";").Select(p => p.Trim().ToLowerInvariant()).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
-
-            return globalConfigApi.UpdateSuperPlayers(formattedNames);
-        }
 
         public async Task<bool> UpdateBetaVersion(string[] names, bool enabled)
         {

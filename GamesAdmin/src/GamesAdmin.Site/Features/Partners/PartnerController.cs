@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Audit.Mvc;
 using GamesAdmin.Core.Models.Partners;
-using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Partners.Requests;
 using GamesAdmin.Site.Features.Partners.ViewModels;
 using MediatR;
@@ -87,11 +86,28 @@ namespace GamesAdmin.Site.Features.Partners
         public async Task<IActionResult> GetSiteExclusion(string partnerId, int gameId)
             => Json(await mediator.Send(new GetSiteExclusionRequest(partnerId, gameId)));
 
+        [HttpGet]
+        [Route("partner/edit_super_players")]
+        public async Task<IActionResult> SuperPlayers()
+            => PartialView("SuperPlayers", await mediator.Send(new GetSuperPlayerViewRequest()));
+
+        [HttpGet]
+        [Route("partner/super_players")]
+        public async Task<IActionResult> GetSuperPlayers(string partnerId)
+            => Json(await mediator.Send(new GetSuperPlayerRequest(partnerId)));
+
+
         [HttpPost, Audit]
         [Route("partner/site_exclusion")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
             => Json(await mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites)));
+
+        [HttpPost, Audit]
+        [Route("partner/edit_super_players")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateSuperPlayer(string partnerId, string[] superPlayers)
+            => Json(await mediator.Send(new UpdateSuperPlayerRequest(partnerId, superPlayers)));
 
         [HttpPost, Audit]
         [Route("partner/um")]

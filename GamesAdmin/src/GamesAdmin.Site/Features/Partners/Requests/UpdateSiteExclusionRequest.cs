@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Site.Features.Partners.ViewModels;
-using MediatR;
+﻿using MediatR;
 
 namespace GamesAdmin.Site.Features.Partners.Requests
 {
