@@ -229,4 +229,10 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/set-result")]
         Task<IEnumerable<Card>> SetResult([Body] SetHiLoResultRequest request);
     }
+
+    public interface ICasinoHoldemPokerOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/{name}/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 }
