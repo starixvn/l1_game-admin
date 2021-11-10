@@ -1,7 +1,7 @@
 ﻿@model GamesAdmin.Site.Features.Currencies.ViewModels.UpdateCurrencyViewModel
 
 <div class="modal-header">
-    <h5 class="modal-title">Update currency</h5>
+    <h5 class="modal-title">Edit currency</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -38,7 +38,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label asp-for="Multiplier">Multiplied By</label>
+                <label asp-for="Multiplier"></label>
                 <input disabled class="form-control" type="number" asp-for="Multiplier">
                 <span class="text-danger" asp-validation-for="Multiplier"></span>
             </div>

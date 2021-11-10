@@ -63,20 +63,3 @@
 
 .dataTables_wrapper .dataTables_info {
   padding-top: 1.2rem; }
-
-.btn-add {
-  position: relative;
-  display: inline-block;
-  margin-left: 0.6rem;
-  margin-bottom: 1.2rem !important; }
-  .btn-add :hover {
-    text-decoration: none; }
-
-.table .btn-edit {
-  width: 4rem;
-  background: none;
-  border: none;
-  outline: none; }
-
-.table a:hover {
-  text-decoration: none; }

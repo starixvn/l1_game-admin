@@ -7,17 +7,17 @@ namespace GamesAdmin.Site.Features.Currencies.ViewModels
 {
     public class CreateCurrencyViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "The Currency is required field.")]
         [RegularExpression("[^\\s]+", ErrorMessage = "Spaces are not permitted.")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Code is required field.")]
         [RegularExpression("[^\\s]+", ErrorMessage = "Spaces are not permitted.")]
         public string Code { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Multiplier is required field.")]
         [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The multiplier must be a positive number.")]
-        public double Multiplier { get; set; }
+        public double Multiplier { get; set; } = 1;
 
         public bool Enabled { get; set; } = true;
 
