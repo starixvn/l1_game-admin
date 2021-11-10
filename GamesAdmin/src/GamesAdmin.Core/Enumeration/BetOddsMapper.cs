@@ -76,8 +76,9 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.BitcoinMasterValue:
                     return Enumeration.GetAll<BitcoinMasterBetChoice>();
+
                 case Game.CasinoHoldemPokerValue:
-                    return Enumeration.GetAll<CasinoHoldemPokerBetChoice>();
+                    return Enumeration.GetAll<CasinoHoldemPokerBetOdds>();
 
                 case Game.KenoMatch1Value:
                 case Game.KenoMatch2Value:
