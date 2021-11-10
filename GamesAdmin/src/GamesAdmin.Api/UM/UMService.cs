@@ -88,7 +88,7 @@ namespace GamesAdmin.Api.UM
                     .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
                     .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
                     .Set(field => field.Time, DateTime.UtcNow)
-                    .Set(field => field.IsPartnerUM, true);
+                    .Set(field => field.IsPartnerUm, true);
 
                 if (isUM)
                 {
@@ -96,7 +96,7 @@ namespace GamesAdmin.Api.UM
 
                     foreach (var partner in partners)
                     {
-                        await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUM == true && um.PartnerId == partner,
+                        await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUm == true && um.PartnerId == partner,
                             update,
                             new UpdateOptions { IsUpsert = true });
 
@@ -104,7 +104,7 @@ namespace GamesAdmin.Api.UM
                 }
                 else
                 {
-                    await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow && um.IsPartnerUM == true && partners.Contains(um.PartnerId), update);
+                    await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow && um.IsPartnerUm == true && partners.Contains(um.PartnerId), update);
                 }
 
 
@@ -134,9 +134,9 @@ namespace GamesAdmin.Api.UM
                     .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
                     .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
                     .Set(field => field.Time, DateTime.UtcNow)
-                    .Set(field => field.IsPartnerUM, false);
+                    .Set(field => field.IsPartnerUm, false);
 
-                await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUM == false, update, new UpdateOptions { IsUpsert = true });
+                await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUm == false, update, new UpdateOptions { IsUpsert = true });
 
                 return true;
             }
@@ -156,7 +156,7 @@ namespace GamesAdmin.Api.UM
                 var update = Builders<UMInfoEntity>.Update.Set(field => field.Finish, true);
 
                 await UpdateEnableConfig(enable: true);
-                await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow && um.IsPartnerUM == false, update);
+                await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow && um.IsPartnerUm == false, update);
 
                 return true;
             }

@@ -159,7 +159,7 @@
         updateSuperPlayers: function () {
             const players = $('#super-players-names').val();
             const partnerId = $('#PartnerId').val();
-            const data = { superPlayers: players.replace(/\s/g, '').split(';'), partnerId };
+            const data = { superPlayers: players.replace(/\s/g, '').toLowerCase().split(';'), partnerId };
             $('#update-super-players-btn').prop('disabled', true);
 
             $.ajax({
