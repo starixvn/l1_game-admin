@@ -74,5 +74,9 @@
   {
     "outputFile": "wwwroot/scss/pages/exchange-rate.css",
     "inputFile": "wwwroot/scss/pages/exchange-rate.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/api-log.css",
+    "inputFile": "wwwroot/scss/pages/api-log.scss"
   }
 ]

@@ -1,0 +1,74 @@
+﻿@model GamesAdmin.Site.Features.ApiLogs.ViewModels.ApiLogViewModel
+
+@section Styles {
+    <link href="~/css/api-log.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Event Logs";
+}
+
+<form class="form filter"
+      data-ajax="true"
+      data-ajax-mode="replace"
+      data-ajax-update="#api-log .card-body"
+      data-ajax-loading="#spinner"
+      data-ajax-success="apiLog.init"
+      asp-action="Query"
+      method="post"
+      id="api-log-form">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label asp-for="PartnerId" class="control-label">Partner</label>
+            <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
+        </div>
+        <div class="col-auto">
+            <label asp-for="LogType" class="control-label">Log Type</label>
+            <select asp-items="@Model.LogTypes" asp-for="LogType" class="form-control"></select>
+        </div>
+        <div class="col-auto">
+            <label asp-for="FromDate" class="control-label">From Date (UTC)</label>
+            <input type="date" class="form-control" asp-for="FromDate" />
+        </div>
+        <div class="col-auto">
+            <label asp-for="ToDate" class="control-label">To Date (UTC)</label>
+            <input type="date" class="form-control" asp-for="ToDate" />
+        </div>
+        <div class="col-auto">
+            <label asp-for="ObCustId" class="control-label">Customer ID</label>
+            <input class="form-control" asp-for="ObCustId" />
+        </div>
+        <div class="col-auto">
+            <label asp-for="GameTypeId" class="control-label">Game</label>
+            <select asp-items="@Model.Games" asp-for="GameTypeId" class="form-control">
+                <option selected="selected" value="0">All</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label asp-for="GameRoundId" class="control-label">Game Round</label>
+            <input class="form-control" asp-for="GameRoundId" />
+        </div>
+        <div class="col-auto list-buttons">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="api-log" class="card">
+    <div class="card-body"></div>
+</div>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/api-log.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/api-log.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.Chips;
@@ -91,6 +92,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IChipService, ChipService>();
 
             services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddSingleton(RestService.For<ILogApi>(appSettings.ApiHost, refitSettings));
         }
     }
 }

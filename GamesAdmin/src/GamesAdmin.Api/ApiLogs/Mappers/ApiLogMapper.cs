@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using GamesAdmin.Api.ApiLogs.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Database.ApiLogs.Entities;
 
@@ -12,7 +13,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
         {
             CreateMap<QueryLogModel, QueryLogRequest>()
                 .ConstructUsing(model => new QueryLogRequest(
-                    model.LogType,
+                    (ApiLogType)model.LogType,
                     model.PartnerId,
                     model.FromDate,
                     model.ToDate,
@@ -58,12 +59,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
         {
             var destinationType = GetDestinationType(entity.RequestType);
 
-            if (destinationType != null)
-            {
-                return (TRequest)mapper.Map(entity, sourceType, destinationType);
-            }
-
-            return default;
+            return destinationType != null ? (TRequest)mapper.Map(entity, sourceType, destinationType) : default;
         }
 
         private static TResult MapResult<TResult>(IRuntimeMapper mapper, ApiLogResultEntity entity, Type sourceType)
@@ -71,12 +67,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
         {
             var destinationType = GetDestinationType(entity.ResultType);
 
-            if (destinationType != null)
-            {
-                return (TResult)mapper.Map(entity, sourceType, destinationType);
-            }
-
-            return default;
+            return destinationType != null ? (TResult)mapper.Map(entity, sourceType, destinationType) : default;
         }
 
         private static Type GetDestinationType(string typeName)
@@ -89,4 +80,4 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             return null;
         }
     }
-}
+};

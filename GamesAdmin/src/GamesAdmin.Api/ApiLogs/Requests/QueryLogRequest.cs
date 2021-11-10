@@ -8,7 +8,7 @@ namespace GamesAdmin.Api.ApiLogs.Requests
 {
     public class QueryLogModel
     {
-        public ApiLogType LogType { get; set; }
+        public byte LogType { get; set; }
 
         public string PartnerId { get; set; }
 

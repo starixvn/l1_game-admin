@@ -181,5 +181,20 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/exchange-rate.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/api-log.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/api-log.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/api-log.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/api-log.css"
+    ]
   }
 ]
