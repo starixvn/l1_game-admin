@@ -1,0 +1,42 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Api.EndGameInfo.Request;
+using GamesAdmin.Core.Models.EndGameInfo;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+
+namespace GamesAdmin.Api.EndGameInfo
+{
+    public class CasinoHoldemPokerEndGameInfoService :
+        BaseEndGameInfoService<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity>, IEndGameInfoService
+    {
+        public CasinoHoldemPokerEndGameInfoService(
+            IGenericRepository<CasinoHoldemPokerRoundEntity> roundRepository,
+            IGenericRepository<CasinoHoldemPokerBetEntity> betRepository)
+            : base(roundRepository, betRepository)
+        {
+        }
+
+        public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
+        {
+            var round = await GetRoundAsync(request.GameRoundId);
+            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId);
+
+            if (round == null || !bets.Any())
+            {
+                return EndGameInfoError.SB1001;
+            }
+
+            var bet = bets.FirstOrDefault();
+            var amount = bet.AA + bet.Ante + bet.Call;
+
+            return new EndGameInfoResult
+            {
+                EndTime = round.Time,
+                ValidBetAmount = amount,
+                TotalAmount = amount,
+                TotalWin = bet.Betwin > 0 ? bet.Betwin + amount : bet.Refund
+            };
+        }
+    }
+}

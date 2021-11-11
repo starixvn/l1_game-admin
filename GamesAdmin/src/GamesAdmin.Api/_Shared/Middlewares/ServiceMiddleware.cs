@@ -118,6 +118,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BitcoinMasterEndGameInfoService>();
             services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
             services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
+            services.AddScoped<CasinoHoldemPokerEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));

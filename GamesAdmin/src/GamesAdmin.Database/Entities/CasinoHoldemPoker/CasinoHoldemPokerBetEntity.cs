@@ -12,5 +12,7 @@ namespace GamesAdmin.Database.Entities
         public decimal Call { get; set; }
 
         public bool IsFold { get; set; }
+
+        public decimal Refund { get; set; }
     }
 }
