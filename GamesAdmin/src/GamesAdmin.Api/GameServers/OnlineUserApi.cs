@@ -211,7 +211,7 @@ namespace GamesAdmin.Api.GameServers
 
     public interface ICasinoHoldemPokerOnlineUserApi : IOnlineUserApi
     {
-        [Get("/api/{name}/onlineusers")]
+        [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 }

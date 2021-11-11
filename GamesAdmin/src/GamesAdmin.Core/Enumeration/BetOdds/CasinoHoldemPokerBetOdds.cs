@@ -2,6 +2,10 @@
 {
     public class CasinoHoldemPokerBetOdds : Enumeration
     {
+        //Call Bets
+        public const string CallBetsValue = "CallBet_callBet";
+        public static readonly CasinoHoldemPokerBetOdds CallBets = new CasinoHoldemPokerBetOdds(CallBetsValue, "Call Bet");
+
         // Ante Bets
         public const string AnteBetHightCardsValue = "AnteBet_highCards";
         public const string AnteBetOnePairValue = "AnteBet_onePair";
@@ -14,16 +18,16 @@
         public const string AnteBetStraightFlushValue = "AnteBet_straightFlush";
         public const string AnteBetRoyalFlushValue = "AnteBet_royalFlush";
 
-        public static readonly CasinoHoldemPokerBetOdds AnteBetHightCards = new CasinoHoldemPokerBetOdds(AnteBetHightCardsValue, "High Cards");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetOnePair = new CasinoHoldemPokerBetOdds(AnteBetOnePairValue, "One Pair");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetTwoPairs = new CasinoHoldemPokerBetOdds(AnteBetTwoPairsValue, "Two Pairs");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetThreeKinds = new CasinoHoldemPokerBetOdds(AnteBetThreeKindsValue, "Three of a Kind");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetStraight = new CasinoHoldemPokerBetOdds(AnteBetStraightValue, "Straight");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetFlush = new CasinoHoldemPokerBetOdds(AnteBetFlushValue, "Flush");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetFullHouse = new CasinoHoldemPokerBetOdds(AnteBetFullHouseValue, "Full House");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetFourKinds = new CasinoHoldemPokerBetOdds(AnteBetFourKindsValue, "Four of a Kind");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetStraightFlush = new CasinoHoldemPokerBetOdds(AnteBetStraightFlushValue, "Straight Flush");
-        public static readonly CasinoHoldemPokerBetOdds AnteBetRoyalFlush = new CasinoHoldemPokerBetOdds(AnteBetRoyalFlushValue, "Royal Flush");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetHightCards = new CasinoHoldemPokerBetOdds(AnteBetHightCardsValue, "AnteBet High Cards");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetOnePair = new CasinoHoldemPokerBetOdds(AnteBetOnePairValue, "AnteBet One Pair");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetTwoPairs = new CasinoHoldemPokerBetOdds(AnteBetTwoPairsValue, "AnteBet Two Pairs");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetThreeKinds = new CasinoHoldemPokerBetOdds(AnteBetThreeKindsValue, "AnteBet Three of a Kind");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetStraight = new CasinoHoldemPokerBetOdds(AnteBetStraightValue, "AnteBet Straight");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetFlush = new CasinoHoldemPokerBetOdds(AnteBetFlushValue, "AnteBet Flush");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetFullHouse = new CasinoHoldemPokerBetOdds(AnteBetFullHouseValue, "AnteBet Full House");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetFourKinds = new CasinoHoldemPokerBetOdds(AnteBetFourKindsValue, "AnteBet Four of a Kind");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetStraightFlush = new CasinoHoldemPokerBetOdds(AnteBetStraightFlushValue, "AnteBet Straight Flush");
+        public static readonly CasinoHoldemPokerBetOdds AnteBetRoyalFlush = new CasinoHoldemPokerBetOdds(AnteBetRoyalFlushValue, "AnteBet Royal Flush");
 
         // AA Bets
 
@@ -37,20 +41,16 @@
         public const string AABetStraightFlushValue = "AABet_straightFlush";
         public const string AABetRoyalFlushValue = "AABet_royalFlush";
 
-        public static readonly CasinoHoldemPokerBetOdds AABetPairAces = new CasinoHoldemPokerBetOdds(AABetPairAcesValue, "Pair of Aces");
-        public static readonly CasinoHoldemPokerBetOdds AABetTwoPairs = new CasinoHoldemPokerBetOdds(AABetTwoPairsValue, "Two Pairs");
-        public static readonly CasinoHoldemPokerBetOdds AABetThreeKinds = new CasinoHoldemPokerBetOdds(AABetThreeKindsValue, "Three of a Kind");
-        public static readonly CasinoHoldemPokerBetOdds AABetStraight = new CasinoHoldemPokerBetOdds(AABetStraightValue, "Straight");
-        public static readonly CasinoHoldemPokerBetOdds AABetFlush = new CasinoHoldemPokerBetOdds(AABetFlushValue, "Flush");
-        public static readonly CasinoHoldemPokerBetOdds AABetFullHouse = new CasinoHoldemPokerBetOdds(AABetFullHouseValue, "Full House");
-        public static readonly CasinoHoldemPokerBetOdds AABetFourKinds = new CasinoHoldemPokerBetOdds(AABetFourKindsValue, "Four of a Kind");
-        public static readonly CasinoHoldemPokerBetOdds AABetStraightFlush = new CasinoHoldemPokerBetOdds(AABetStraightFlushValue, "Straight Flush");
-        public static readonly CasinoHoldemPokerBetOdds AABetRoyalFlush = new CasinoHoldemPokerBetOdds(AABetRoyalFlushValue, "Royal Flush");
+        public static readonly CasinoHoldemPokerBetOdds AABetPairAces = new CasinoHoldemPokerBetOdds(AABetPairAcesValue, "AABet Pair of Aces");
+        public static readonly CasinoHoldemPokerBetOdds AABetTwoPairs = new CasinoHoldemPokerBetOdds(AABetTwoPairsValue, "AABet Two Pairs");
+        public static readonly CasinoHoldemPokerBetOdds AABetThreeKinds = new CasinoHoldemPokerBetOdds(AABetThreeKindsValue, "AABet Three of a Kind");
+        public static readonly CasinoHoldemPokerBetOdds AABetStraight = new CasinoHoldemPokerBetOdds(AABetStraightValue, "AABet Straight");
+        public static readonly CasinoHoldemPokerBetOdds AABetFlush = new CasinoHoldemPokerBetOdds(AABetFlushValue, "AABet Flush");
+        public static readonly CasinoHoldemPokerBetOdds AABetFullHouse = new CasinoHoldemPokerBetOdds(AABetFullHouseValue, "AABet Full House");
+        public static readonly CasinoHoldemPokerBetOdds AABetFourKinds = new CasinoHoldemPokerBetOdds(AABetFourKindsValue, "AABet Four of a Kind");
+        public static readonly CasinoHoldemPokerBetOdds AABetStraightFlush = new CasinoHoldemPokerBetOdds(AABetStraightFlushValue, "AABet Straight Flush");
+        public static readonly CasinoHoldemPokerBetOdds AABetRoyalFlush = new CasinoHoldemPokerBetOdds(AABetRoyalFlushValue, "AABet Royal Flush");
 
-
-        //Call Bets
-        public const string CallBetsValue = "CallBet_callBet";
-        public static readonly CasinoHoldemPokerBetOdds CallBets = new CasinoHoldemPokerBetOdds(CallBetsValue, "Call Bet");
 
         public CasinoHoldemPokerBetOdds()
         {
