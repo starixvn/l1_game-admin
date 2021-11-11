@@ -44,13 +44,13 @@
                 <th >Disable Message</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="status-tbl-body">
             @{ var rowSpan = Model?.Partners?.Count() > 0 ? Model.Partners.Count() : 1; }
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
             <tr>
                 <td rowspan="@rowSpan" class="text-center">
-                    <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
+                    <input class="game-status-chk" type="checkbox" onclick="gameStatus.updateCheckAllStatus();" value="@Model.GameList[index].Name" />
                     <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
                 </td>
                 <td rowspan="@rowSpan">@Model.GameList[index].DisplayName</td>

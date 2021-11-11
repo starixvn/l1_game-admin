@@ -9,12 +9,13 @@
             });
         },
 
-        uncheckAll: function (element) {
-            if (!$(element).is(":checked")) {
-                $("#partner-all").prop({
-                    checked: false
-                });
-            }
+        updateCheckAllStatus: function (element) {
+            var container = $("#partner-body-content");
+            var uncheckItems = container.find("input:checkbox:not(:checked)");
+
+            $("#status-all").prop({
+                checked: !uncheckItems.length
+            });
         },
 
         showEditForm: function (partnerId) {

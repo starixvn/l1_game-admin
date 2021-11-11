@@ -55,7 +55,7 @@
                 {
                     <tr>
                         <td class="text-center">
-                            <input class="partner-chk" type="checkbox" onclick="partner.uncheckAll();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
+                            <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
                         </td>
                         <td>@firstRowData.Name</td>
                         <td>@firstRowData.PartnerId</td>
@@ -107,7 +107,7 @@
             {
                 <tr>
                     <td class="text-center">
-                        <input class="partner-chk" type="checkbox" onclick="partner.uncheckAll();" id="@item.PartnerId" value="@item.Name" />
+                        <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
                     </td>
                     <td>@item.Name</td>
                     <td>@item.PartnerId</td>

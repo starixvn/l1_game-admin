@@ -11,13 +11,15 @@
             });
         },
 
-        uncheckAll: function (element) {
-            if (!$(element).is(":checked")) {
-                $("#status-all").prop({
-                    checked: false
-                });
-            }
+        updateCheckAllStatus: function (element) {
+            var container = $("#status-tbl-body");
+            var uncheckItems = container.find("input:checkbox:not(:checked)");
+
+            $("#status-all").prop({
+                checked: !uncheckItems.length
+            });
         },
+
         enable: function () {
             var checkedGames = this.getCheckedGames();
 
