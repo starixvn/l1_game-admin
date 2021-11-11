@@ -14,7 +14,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public int? ObCustId { get; set; }
 
-        public string RequestType { get; set; }
+        public virtual string RequestType { get; set; }
     }
 
     public class Auth
@@ -52,5 +52,16 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public Auth Auth { get; set; }
 
         public bool FreeBet { get; set; }
+    }
+
+    public class TicketDetailRequest : SBRequest
+    {
+        public Auth Auth { get; set; }
+
+        public string Language { get; set; }
+
+        public bool FreeBet { get; set; }
+
+        public override string RequestType => nameof(TicketDetailRequest);
     }
 }

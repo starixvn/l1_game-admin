@@ -13,6 +13,7 @@ namespace GamesAdmin.Api.ApiLogs
         private const string VoidGamesCollectionName = "void_games";
         private const string SignInCollectionName = "signin_requests";
         private const string RetrieveEndGameCollectionName = "retrieve_requests";
+        private const string TicketDetaulCollectionName = "ticket_detail_requests";
 
         private const string PlaceBetCall = "PartnerPlaceBetCall";
         private const string PlaceBetResult = "PartnerPlaceBetResult";
@@ -32,6 +33,9 @@ namespace GamesAdmin.Api.ApiLogs
         private const string EnterPortalCall = "PartnerEnterPortalCall";
         private const string EnterPortalResult = "PartnerEnterPortalResult";
 
+        private const string TicketDetailCall = nameof(TicketDetailRequest);
+        private const string TicketDetailResultName = nameof(TicketDetailResult);
+
         private static readonly Dictionary<ApiLogType, string> collectionMappings = new Dictionary<ApiLogType, string>
         {
             { ApiLogType.Bets, BetsCollectionName },
@@ -39,7 +43,8 @@ namespace GamesAdmin.Api.ApiLogs
             { ApiLogType.EndGames, EndGamesCollectionName },
             { ApiLogType.VoidGames, VoidGamesCollectionName },
             { ApiLogType.SignInRequest, SignInCollectionName },
-            { ApiLogType.RetrieveRequests, RetrieveEndGameCollectionName }
+            { ApiLogType.RetrieveRequests, RetrieveEndGameCollectionName },
+            { ApiLogType.TicketDetailRequests, TicketDetaulCollectionName }
         };
 
         private static readonly Dictionary<string, Type> callOrRequestTypeMapping = new Dictionary<string, Type>
@@ -60,7 +65,10 @@ namespace GamesAdmin.Api.ApiLogs
             { RetrieveEndGameResult, typeof(RetrieveEndGameInfoResult) },
 
             { EnterPortalCall, typeof(PartnerEnterPortalCall) },
-            { EnterPortalResult, typeof(PartnerEnterPortalResult) }
+            { EnterPortalResult, typeof(PartnerEnterPortalResult) },
+
+            { TicketDetailCall, typeof(TicketDetailRequest) },
+            { TicketDetailResultName, typeof(TicketDetailResult) }
         };
 
         public static Dictionary<ApiLogType, string> CollectionMappings => collectionMappings;

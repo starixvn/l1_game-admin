@@ -37,7 +37,7 @@ namespace GamesAdmin.Site.Features.ApiLogs
             requestTypeForPartnerLogIdConfigs, obCustIdForPartnerLogIdConfigs, siteIdForPartnerLogConfigs
         };
 
-        private static readonly IEnumerable<ApiLogViewConfigs> voidGameView = new List<ApiLogViewConfigs>
+        private static readonly IEnumerable<ApiLogViewConfigs> voidGameAndTicketDetailView = new List<ApiLogViewConfigs>
         {
             obCustIdForPartnerLogIdConfigs, gameTypeIdForPartnerLogConfigs, gameRoundForPartnerLogIdConfigs
         };
@@ -49,7 +49,8 @@ namespace GamesAdmin.Site.Features.ApiLogs
             { ApiLogType.RetrieveRequests, commonSBLogView },
             { ApiLogType.SignInRequest, signInView },
             { ApiLogType.FailedRequests, failRequestsView },
-            { ApiLogType.VoidGames, voidGameView },
+            { ApiLogType.VoidGames, voidGameAndTicketDetailView },
+            { ApiLogType.TicketDetailRequests, voidGameAndTicketDetailView }
         };
 
         private static string GetGameName(string gameId)

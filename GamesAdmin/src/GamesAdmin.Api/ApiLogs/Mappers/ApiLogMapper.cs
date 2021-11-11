@@ -40,6 +40,14 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     entity.System,
                     entity.AccessKey));
 
+            CreateMap<TicketDetailLogEntitty, TicketDetailLog>()
+                .ConstructUsing((entity, context) => new TicketDetailLog(
+                    entity.LogTimeStamp,
+                    entity.RequestTimeStamp,
+                    MapRequest<IApiLogRequest>(context, entity.Call, typeof(TicketDetailRequestEntity), typeof(TicketDetailRequest)),
+                    entity.ResponseTimeStamp,
+                    MapResult<ISBResult>(context, entity.Result, typeof(TicketDetailResultEntity), typeof(TicketDetailResult))));
+
             CreateMap<PartnerCallEntity, PartnerEndGameCall>();
             CreateMap<PartnerCallEntity, PartnerPlaceBetCall>();
             CreateMap<PartnerCallEntity, PartnerVoidGameCall>();
@@ -55,6 +63,10 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<SBResultEntity, SingleSignOnResult>();
             CreateMap<SBResultEntity, RetrieveEndGameInfoResult>();
             CreateMap<SBResultEntity, SBResult>();
+
+            CreateMap<TicketDetailRequestEntity, TicketDetailRequest>();
+
+            CreateMap<TicketDetailResultEntity, TicketDetailResult>();
         }
 
         private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)

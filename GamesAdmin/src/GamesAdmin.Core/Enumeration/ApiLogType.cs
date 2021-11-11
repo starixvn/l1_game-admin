@@ -7,7 +7,7 @@
         FailedRequests,
         RetrieveRequests,
         SignInRequest,
-        TicketDetailRequests, // TODO
+        TicketDetailRequests,
         VoidGames,
     }
 

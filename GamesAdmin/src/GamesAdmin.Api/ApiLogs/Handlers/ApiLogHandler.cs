@@ -22,8 +22,6 @@ namespace GamesAdmin.Api.ApiLogs.Handlers
 
         protected IAppSettings AppSettings { get; }
 
-        protected static bool IsSBLog(ApiLogType type) => type == ApiLogType.SignInRequest || type == ApiLogType.RetrieveRequests;
-
         protected ILogRepository<TEntity> GetRepository<TEntity>(ApiLogType type)
         {
             var database = GetDatabase();

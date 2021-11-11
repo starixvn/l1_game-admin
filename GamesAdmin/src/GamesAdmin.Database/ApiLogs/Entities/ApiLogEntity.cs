@@ -19,7 +19,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
     public abstract class ApiLogRequestEntity
     {
         [BsonElement("_t")]
-        public string RequestType { get; set; }
+        public virtual string RequestType { get; set; }
 
         public int GameRoundId { get; set; }
 
@@ -31,6 +31,6 @@ namespace GamesAdmin.Database.ApiLogs.Entities
     public abstract class ApiLogResultEntity
     {
         [BsonElement("_t")]
-        public string ResultType { get; set; }
+        public virtual string ResultType { get; set; }
     }
 }

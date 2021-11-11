@@ -15,7 +15,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public string Message { get; set; }
 
-        public string ResultType { get; set; }
+        public virtual string ResultType { get; set; }
     }
 
     public class SingleSignOnResult : SBResult
@@ -38,5 +38,14 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string ErrorCode { get; set; }
 
         public string ErrorDescription { get; set; }
+    }
+
+    public class TicketDetailResult : SBResult
+    {
+        public string RedirectUrl { get; set; }
+
+        public string Error { get; set; }
+
+        public override string ResultType => nameof(TicketDetailResult);
     }
 }
