@@ -36,7 +36,7 @@
         </div>
         <div class="col-auto">
             <label asp-for="ObCustId" class="control-label">Customer ID</label>
-            <input class="form-control" asp-for="ObCustId"/>
+            <input class="form-control" asp-for="ObCustId" value=''/>
         </div>
         <div class="col-auto">
             <label asp-for="GameTypeId" class="control-label">Game</label>
@@ -46,16 +46,16 @@
         </div>
         <div class="col-auto">
             <label asp-for="GameRoundId" class="control-label">Game Round</label>
-            <input class="form-control" asp-for="GameRoundId"/>
+            <input class="form-control" asp-for="GameRoundId" value=''/>
         </div>
         <div class="col-auto list-buttons">
-            <button type="submit" class="btn-submit">Submit</button>
+            <button type="submit" class="btn-submit" formnovalidate="formnovalidate">Submit</button>
             <div id="spinner" class="spinner-border" style="display: none">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
     </div>
-    <span hidden id="error-message" class="text-danger">Please input Customer ID,Game and Game Round</span>
+    <span hidden id="error-message" class="text-danger">Please input Customer ID, Game and Game Round</span>
 </form>
 
 <div hidden id="api-log" class="card">
