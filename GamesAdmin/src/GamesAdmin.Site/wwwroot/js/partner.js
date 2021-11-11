@@ -13,7 +13,7 @@
             var container = $("#partner-body-content");
             var uncheckItems = container.find("input:checkbox:not(:checked)");
 
-            $("#status-all").prop({
+            $("#partner-all").prop({
                 checked: !uncheckItems.length
             });
         },
