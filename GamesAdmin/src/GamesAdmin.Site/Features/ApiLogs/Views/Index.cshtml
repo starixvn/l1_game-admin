@@ -23,7 +23,7 @@
             <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
         </div>
         <div class="col-auto">
-            <label asp-for="LogType" class="control-label">Log Type</label>
+            <label asp-for="LogType" class="control-label" data-val-query-api-log="Validation">Log Type</label>
             <select asp-items="@Model.LogTypes" asp-for="LogType" class="form-control"></select>
         </div>
         <div class="col-auto">
@@ -55,6 +55,7 @@
             </div>
         </div>
     </div>
+    <span hidden id="error-message" class="text-danger">Please input Customer ID,Game and Game Round</span>
 </form>
 
 <div hidden id="api-log" class="card">

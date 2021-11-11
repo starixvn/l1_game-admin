@@ -25,47 +25,50 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                 .ConstructUsing((entity, context) => new SBLog(
                     entity.LogTimeStamp,
                     entity.RequestTimeStamp,
-                    MapRequest<IApiLogRequest>(context, entity.Request, typeof(SBRequestEntity)),
+                    MapRequest<IApiLogRequest>(context, entity.Request, typeof(SBRequestEntity), typeof(SBRequest)),
                     entity.ResponseTimeStamp,
-                    MapResult<ISBResult>(context, entity.Result, typeof(SBResultEntity))));
+                    MapResult<ISBResult>(context, entity.Result, typeof(SBResultEntity), typeof(SBResult))));
 
             CreateMap<PartnerLogEntity, PartnerLog>()
                 .ConstructUsing((entity, context) => new PartnerLog(
                     entity.PartnerId,
                     entity.LogTimeStamp,
                     entity.RequestTimeStamp,
-                    MapRequest<IApiLogRequest>(context, entity.Call, typeof(PartnerCallEntity)),
+                    MapRequest<IApiLogRequest>(context, entity.Call, typeof(PartnerCallEntity), typeof(PartnerCall)),
                     entity.ResponseTimeStamp,
-                    MapResult<IPartnerResult>(context, entity.Result, typeof(PartnerResultEntity)),
+                    MapResult<IPartnerResult>(context, entity.Result, typeof(PartnerResultEntity), typeof(PartnerResult)),
                     entity.System,
                     entity.AccessKey));
 
             CreateMap<PartnerCallEntity, PartnerEndGameCall>();
             CreateMap<PartnerCallEntity, PartnerPlaceBetCall>();
             CreateMap<PartnerCallEntity, PartnerVoidGameCall>();
+            CreateMap<PartnerCallEntity, PartnerCall>();
 
             CreateMap<PartnerResultEntity, PartnerResult>();
             CreateMap<PartnerResultEntity, PartnerPlaceBetResult>();
 
             CreateMap<SBRequestEntity, SignInRequest>();
             CreateMap<SBRequestEntity, EndGameInfoRequest>();
+            CreateMap<SBRequestEntity, SBRequest>();
 
             CreateMap<SBResultEntity, SingleSignOnResult>();
             CreateMap<SBResultEntity, RetrieveEndGameInfoResult>();
+            CreateMap<SBResultEntity, SBResult>();
         }
 
-        private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType)
+        private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)
             where TRequest : IApiLogRequest
         {
-            var destinationType = GetDestinationType(entity.RequestType);
+            var destinationType = GetDestinationType(entity.RequestType) ?? defaulDestinationType;
 
             return destinationType != null ? (TRequest)mapper.Map(entity, sourceType, destinationType) : default;
         }
 
-        private static TResult MapResult<TResult>(IRuntimeMapper mapper, ApiLogResultEntity entity, Type sourceType)
+        private static TResult MapResult<TResult>(IRuntimeMapper mapper, ApiLogResultEntity entity, Type sourceType, Type defaulDestinationType)
             where TResult : IApiLogResult
         {
-            var destinationType = GetDestinationType(entity.ResultType);
+            var destinationType = GetDestinationType(entity.ResultType) ?? defaulDestinationType;
 
             return destinationType != null ? (TResult)mapper.Map(entity, sourceType, destinationType) : default;
         }
