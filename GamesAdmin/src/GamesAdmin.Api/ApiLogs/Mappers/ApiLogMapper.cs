@@ -65,8 +65,10 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<SBResultEntity, SBResult>();
 
             CreateMap<TicketDetailRequestEntity, TicketDetailRequest>();
+            CreateMap<TicketDetailRequestEntity, SBRequest>();
 
             CreateMap<TicketDetailResultEntity, TicketDetailResult>();
+            CreateMap<TicketDetailResultEntity, SBResult>();
         }
 
         private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)
