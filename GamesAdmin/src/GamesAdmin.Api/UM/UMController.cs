@@ -50,6 +50,6 @@ namespace GamesAdmin.Api.UM
         [HttpPost]
         [Route("partner")]
         public Task<bool> UpdatePartnerUmInfoFromAPI([FromBody] UpdatePartnerUMFromAPIRequest request)
-            => mediator.Send(new UpdatePartnerUMRequest(request.IsUM, request.StartTime, request.EndTime, new string[] {request.PartnerId}));
+            => mediator.Send(new ServerApiUMRequest(request.IsUM, true, request.StartTime, request.EndTime, new string[] {request.PartnerId}));
     }
 }
