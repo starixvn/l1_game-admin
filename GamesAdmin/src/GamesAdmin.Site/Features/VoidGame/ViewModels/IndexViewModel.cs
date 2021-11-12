@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Core.OWResults;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -15,6 +14,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
         public IndexViewModel()
         {
             GameIds = Enumeration.GetAll<Game>()
+                .Where(x => (byte)x.GameId != 0)
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.GameId.ToString() })
                 .ToList();
         }
@@ -38,6 +38,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
         public long GameRoundId { get; set; }
 
         [DisplayName("Game")]
+        [Required]
         public GameId GameId { get; set; }
 
         public List<SelectListItem> GameIds { get; set; }

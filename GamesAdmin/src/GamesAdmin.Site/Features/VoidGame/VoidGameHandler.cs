@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.VoidGame
 {
-    public class VoidGameHandler : IRequestHandler<VoidTicketRequest, VoidGameResult>
+    public class VoidGameHandler : IRequestHandler<VoidTicketRequest, VoidGameResultViewModel>
         ,IRequestHandler<IndexViewRequest, IndexViewModel>
     {
         private readonly IVoidGameService voidGameService;
@@ -22,8 +22,14 @@ namespace GamesAdmin.Site.Features.VoidGame
             this.partnerService = partnerService;
         }
 
-        public Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
-        => voidGameService.VoidTicket(request);
+        public async Task<VoidGameResultViewModel> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetAll();
+            var partnerSelectList = partners.Select(partner => new SelectListItem { Text = partner.Name, Value = partner.PartnerId }).ToList();
+            var result = await voidGameService.VoidTicket(request);
+
+            return new VoidGameResultViewModel(result, partnerSelectList);
+        }
 
         public async Task<IndexViewModel> Handle(IndexViewRequest request, CancellationToken cancellationToken)
         {

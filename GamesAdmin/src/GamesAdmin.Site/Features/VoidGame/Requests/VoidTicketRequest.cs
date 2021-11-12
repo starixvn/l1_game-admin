@@ -1,9 +1,10 @@
 ﻿using GamesAdmin.Core.OWResults;
+using GamesAdmin.Site.Features.VoidGame.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.VoidGame.Requests
 {
-    public class VoidTicketRequest : IRequest<VoidGameResult>
+    public class VoidTicketRequest : IRequest<VoidGameResultViewModel>
     {
         public VoidTicketRequest(int memberId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, string reason, bool freeBet)
         {
