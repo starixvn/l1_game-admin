@@ -11,10 +11,13 @@ namespace GamesAdmin.Database.Entities.ExchangeRates
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime Time { get; set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        public DateTime ExDate { get; set; }
+
         public int ExId { get; set; }
 
         public string Source { get; set; }
 
-        public Dictionary<string, double> Code { get; set; }
+        public Dictionary<string, decimal> Code { get; set; }
     }
 }

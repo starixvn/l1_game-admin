@@ -11,7 +11,11 @@ namespace GamesAdmin.Api.ExchangeRates.Mappers
         public ExchangeRateMapper()
         {
             CreateMap<ExchangeRateEntity, ExchangeRate>()
-                .ConstructUsing(entity => new ExchangeRate(entity.Time, entity.ExId, entity.Source, new Dictionary<string, double>(entity.Code)));
+                .ConstructUsing(entity => new ExchangeRate(entity.Time,
+                                                           entity.ExDate,
+                                                           entity.ExId,
+                                                           entity.Source,
+                                                           new Dictionary<string, decimal>(entity.Code)));
 
             CreateMap<QueryExchangeRateModel, QueryExchangeRateRequest>()
                 .ConstructUsing(model => new QueryExchangeRateRequest(model.From, model.To));

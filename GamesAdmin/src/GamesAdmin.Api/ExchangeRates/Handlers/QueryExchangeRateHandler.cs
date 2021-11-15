@@ -19,7 +19,7 @@ namespace GamesAdmin.Api.ExchangeRates.Handlers
 
         public async Task<IEnumerable<ExchangeRate>> Handle(QueryExchangeRateRequest request, CancellationToken cancellationToken)
         {
-            var result = (await Repository.FilterByAsync(entity => entity.Time >= request.From && entity.Time < request.To));
+            var result = await Repository.FilterByAsync(entity => entity.Time >= request.From && entity.Time < request.To);
 
             return Mapper.Map<IEnumerable<ExchangeRate>>(result).AsEnumerable();
         }
