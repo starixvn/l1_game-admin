@@ -22,6 +22,10 @@
         public GameServerConfigs Lottery { get; set; }
         public GameServerConfigs ThreeCards { get; set; }
         public GameServerConfigs MiniKeno { get; set; }
+        public GameServerConfigs KenoMatch1 { get; set; }
+        public GameServerConfigs KenoMatch2 { get; set; }
+        public GameServerConfigs KenoPower1 { get; set; }
+        public GameServerConfigs KenoPower2 { get; set; }
     }
 
     public class GameServerConfigs

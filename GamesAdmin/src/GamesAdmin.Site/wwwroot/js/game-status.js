@@ -483,7 +483,6 @@
             });
         },
 
-
         showUpdateSuperPlayersForm: function () {
             $.ajax({
                 method: "GET",
@@ -562,6 +561,7 @@
                         location.reload();
                     }, 1000);
                 });
+        },
         },
     }
 }(jQuery));

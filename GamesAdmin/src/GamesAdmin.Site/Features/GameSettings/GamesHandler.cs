@@ -212,14 +212,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                 : gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig));
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        => gameService.Add(new GameConfig(
-            string.Empty,
-            new Dictionary<string, double>(),
-            request.GameInfo,
-            request.EnableSetting,
-            request.BotSettings,
-            request.BetLimit,
-            request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
+            => gameService.Add(new GameConfig(
+                string.Empty,
+                new Dictionary<string, double>(),
+                request.GameInfo,
+                request.EnableSetting,
+                request.BotSettings,
+                request.BetLimit,
+                request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
 
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);

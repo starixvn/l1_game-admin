@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.GlobalConfigs
         }
 
         public Task<GlobalConfig> Handle(GetGlobalConfigRequest request, CancellationToken cancellationToken)
-                    => globalConfigService.GetGlobalConfigByType(request.Type);
+            => globalConfigService.GetGlobalConfigByType(request.Type);
 
         public async Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
         {

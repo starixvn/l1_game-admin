@@ -66,6 +66,7 @@ export default class extends React.Component<Props, State> {
       (choice) => new BetChoice([], choice, false)
     );
 
+
     this.state = {
       remainingTime: 0,
       roundId: 0,
@@ -148,7 +149,9 @@ export default class extends React.Component<Props, State> {
         handle: () => {
           this.props.sendMessage({ sync: true });
 
-          this.setState({ remainingTime: this.state.durations.wholeRound + 1 });
+          this.setState({
+            remainingTime: this.state.durations.wholeRound + 1,
+          });
 
           this.timeout = setTimeout(() => {
             this.setState({

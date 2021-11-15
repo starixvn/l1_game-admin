@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
@@ -208,7 +209,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<CardViewModel> Result { get; set; }
 
-        public  ThreeCardsSettlementResultViewModel SettlementResult {get;set;}
+        public ThreeCardsSettlementResultViewModel SettlementResult { get; set; }
     }
 
     public class ThreeCardsSettlementResultViewModel
@@ -219,5 +220,79 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Hearts { get; set; }
         public bool Spades { get; set; }
         public bool Clubs { get; set; }
+    }
+
+    public class KenoMatchRoundResultViewModel
+    {
+        public DateTime Time { get; set; }
+
+        public long Number { get; set; }
+
+        public KenoMatchPeriodViewModel HalfTime { get; set; }
+
+        public KenoMatchPeriodViewModel FullTime { get; set; }
+
+        public Dictionary<string, decimal> Odds { get; set; }
+    }
+
+    public class KenoMatchPeriodViewModel
+    {
+        public DateTime Time { get; set; }
+
+        public int Total { get; set; }
+
+        public KenoMatchPeriodResultViewModel Result { get; set; }
+
+        public KenoMatchPeriodSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class KenoMatchPeriodResultViewModel
+    {
+        public IEnumerable<int> Blue { get; set; }
+        public IEnumerable<int> Red { get; set; }
+    }
+
+    public class KenoMatchPeriodSettlementResultViewModel
+    {
+        public bool Blue { get; set; }
+        public bool Red { get; set; }
+        public bool Over { get; set; }
+        public bool Under { get; set; }
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+    }
+
+    public class KenoPowerRoundResultViewModel
+    {
+        public DateTime Time { get; set; }
+
+        public long Number { get; set; }
+
+        public KenoPowerResultViewModel Result { get; set; }
+
+        public KenoPowerSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+
+    public class KenoPowerResultViewModel
+    {
+        public IEnumerable<byte> Blue { get; set; }
+        public IEnumerable<byte> Red { get; set; }
+    }
+
+
+    public class KenoPowerSettlementResultViewModel
+    {
+        public bool Blue { get; set; }
+        public bool Red { get; set; }
+        public bool Big { get; set; }
+        public bool Small { get; set; }
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+        
+        public bool BlueBig { get; set; }
+        public bool BlueSmall { get; set; }
+        public bool RedBig { get; set; }
+        public bool RedSmall { get; set; }
     }
 }

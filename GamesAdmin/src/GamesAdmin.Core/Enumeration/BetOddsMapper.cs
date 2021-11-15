@@ -74,6 +74,14 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.ThreeCardsValue:
                     return Enumeration.GetAll<ThreeCardsBetChoice>();
 
+                case Game.KenoMatch1Value:
+                case Game.KenoMatch2Value:
+                    return Enumeration.GetAll<KenoMatchBetOdds>();
+
+                case Game.KenoPower1Value:
+                case Game.KenoPower2Value:
+                    return Enumeration.GetAll<KenoPowerBetChoice>();
+
                 default: return default;
             }
         }

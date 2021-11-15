@@ -34,6 +34,10 @@
         public const string LotteryValue = "lottery";
         public const string ThreeCardsValue = "threecards";
         public const string HeroesSlotValue = "heroesslot";
+        public const string KenoMatch1Value = "kenomatch1";
+        public const string KenoMatch2Value = "kenomatch2";
+        public const string KenoPower1Value = "kenopower1";
+        public const string KenoPower2Value = "kenopower2";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -67,6 +71,10 @@
         public static readonly Game Lottery = new Game(LotteryValue, "RNG Lottery", GameId.Lottery);
         public static readonly Game ThreeCards = new Game(ThreeCardsValue, "Three Cards", GameId.ThreeCards);
         public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "Heroes Slot", GameId.HeroesSlot);
+        public static readonly Game KenoMatch1 = new Game(KenoMatch1Value, "Keno Match", GameId.KenoMatch1);
+        public static readonly Game KenoMatch2 = new Game(KenoMatch2Value, "Keno Match MD5", GameId.KenoMatch2);
+        public static readonly Game KenoPower1 = new Game(KenoPower1Value, "Keno Power", GameId.KenoPower1);
+        public static readonly Game KenoPower2 = new Game(KenoPower2Value, "Keno Power MD5", GameId.KenoPower2);
 
         public Game()
         {

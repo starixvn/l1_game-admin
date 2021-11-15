@@ -13,9 +13,9 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
     {
         public IndexViewModel()
         {
-            GameIds = Enum.GetValues(typeof(GameId)).Cast<GameId>()
-                            .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() })
-                            .ToList();
+            GameIds = Enumeration.GetAll<Game>()
+                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.GameId.ToString() })
+                .ToList();
         }
 
         [DisplayName("Member Id")]

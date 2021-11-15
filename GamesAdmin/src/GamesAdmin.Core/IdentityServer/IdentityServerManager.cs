@@ -42,6 +42,7 @@ namespace GamesAdmin.Core.IdentityServer
                     ClientId = auth.ClientId,
                     ClientSecret = auth.ClientSecret,
                     Scope = auth.SiteId,
+                    Method = HttpMethod.Post
                 });
 
                 lastTokenRequest = DateTime.Now;

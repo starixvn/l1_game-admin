@@ -104,7 +104,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
 
-
         [HttpGet]
         [ActionName("rnglottery")]
         public IActionResult Lottery()
@@ -122,6 +121,64 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult ThreeCards()
         {
             return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        [ActionName("kenomatch")]
+        public IActionResult KenoMatch1()
+        {
+            ViewData["Title"] = "Keno Match";
+            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch1, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        [ActionName("kenomatchmd5")]
+        public IActionResult KenoMatch2()
+        {
+            ViewData["Title"] = "Keno Match MD5";
+            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch2, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        [ActionName("kenopower")]
+        public IActionResult KenoPower1()
+        {
+            ViewData["Title"] = "Keno Power";
+            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower1, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        [ActionName("kenopowermd5")]
+        public IActionResult KenoPower2()
+        {
+            ViewData["Title"] = "Keno Power MD5";
+            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower2, ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoPowerReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_KenoPowerRecords", await mediator.Send(new GetKenoPowerReportRequest(game, roundId, nickname, excludeUUS)));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
+        {
+            return PartialView("_KenoPowerBetHistory", await mediator.Send(new GetKenoPowerBetHistoryRequest(game, roundId, userId)));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
+        {
+            return PartialView("_KenoMatchBetHistory", await mediator.Send(new GetKenoMatchBetHistoryRequest(game, roundId, userId)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoMatchReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_KenoMatchRecords", await mediator.Send(new GetKenoMatchReportRequest(game, roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
@@ -399,6 +456,5 @@ namespace GamesAdmin.Site.Features.Report
                         model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
                         model.ExcludeUUS, model.ExcludeBot)));
         }
-
     }
 }

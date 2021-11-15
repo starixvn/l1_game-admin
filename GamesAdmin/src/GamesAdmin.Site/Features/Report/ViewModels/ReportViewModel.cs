@@ -1,4 +1,5 @@
 ﻿using System;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -35,5 +36,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ExcludeBot { get; set; } = true;
 
         public bool ExcludeUUS { get; set; } = true;
+    }
+
+    public class KenoMatchReportViewModel :ReportViewModel
+    {
+        public GameId Game { get; set; }
+    }
+
+    public class KenoPowerReportViewModel : ReportViewModel
+    {
+        public GameId Game { get; set; }
     }
 }
