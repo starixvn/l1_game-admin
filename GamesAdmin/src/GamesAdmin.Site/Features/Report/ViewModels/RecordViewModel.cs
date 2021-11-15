@@ -296,4 +296,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalBet { get; set; }
     }
+
+    public class CasinoHoldemPokerRecordViewModel : BetRecordViewModel
+    {
+        public decimal AA { get; set; }
+        public decimal Ante { get; set; }
+        public decimal Call { get; set; }
+    }
 }

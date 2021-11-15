@@ -301,4 +301,10 @@ namespace GamesAdmin.Core.Models
         public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
     }
+
+    public class CasinoHoldemPokerBetRecord : BetRecord
+    {
+        public decimal Dealer { get; set; }
+        public decimal Player { get; set; }
+    }
 }

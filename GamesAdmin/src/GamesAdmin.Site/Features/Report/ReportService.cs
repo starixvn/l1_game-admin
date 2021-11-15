@@ -83,7 +83,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
-        
+
         Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
 
         Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
@@ -91,6 +91,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<KenoPowerBetReport> GetKenoPowerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
 
         Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId);
+
+        Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS);
     }
 
     public class ReportService : IReportService
@@ -209,9 +211,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
-  	
-  	public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
-        => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
+
+        public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+          => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
 
         public Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
         => reportApi.GetKenoMatchBetHistory(game.ToString(), roundId, userId);
@@ -221,5 +223,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
         => reportApi.GetKenoPowerBetHistory(game.ToString(), roundId, userId);
+
+        public Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS)
+      => reportApi.GetCasinoHoldemPokerBetReport(roundId, nickname, excludeUUS);
     }
 }

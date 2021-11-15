@@ -79,4 +79,8 @@ namespace GamesAdmin.Core.Models
     public class KenoPowerBetReport : BetReport<KenoPowerRoundResult, KenoPowerBetRecord>
     {
     }
+
+    public class CasinoHoldemPokerBetReport : BetReport<CasinoHoldemPokerRoundResult, CasinoHoldemPokerBetRecord>
+    {
+    }
 }

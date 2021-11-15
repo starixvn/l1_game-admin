@@ -50,7 +50,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoMatchReportRequest, KenoMatchBetReport>,
         IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
         IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
-        IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>
+        IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>,
+        IRequestHandler<CasinoHoldemPokerReportRequest, CasinoHoldemPokerBetReport>
     {
         private readonly IReportService reportService;
 
@@ -197,5 +198,8 @@ namespace GamesAdmin.Api.Report
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
         }
+
+        public Task<CasinoHoldemPokerBetReport> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
+     => reportService.GetCasinoHoldemPokerReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
     }
 }

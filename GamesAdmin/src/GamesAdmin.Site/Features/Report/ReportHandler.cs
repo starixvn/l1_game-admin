@@ -50,7 +50,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
         IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
         IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
-        IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>
+        IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
+        IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -771,5 +772,25 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Odds = result.Odds
             };
         }
+
+        public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetCasinoHoldemPokerBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var roundResult = mapper.Map<CasinoHoldemPokerRoundResultViewModel>(result.RoundResult);
+            //roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
+
+            return new CasinoHoldemPokerReportResultViewModel
+            {
+                RoundResult = roundResult,
+                Records = result.Records.Select(x =>
+                {
+                    var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                }),
+            };
+        }
+
     }
 }

@@ -471,5 +471,17 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname)));
+
+        [HttpGet]
+        public IActionResult CasinoHoldemPoker()
+        {
+            return View(new ReportViewModel { ExcludeUUS = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCasinoHoldemPokerReport(long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(roundId, nickname, excludeUUS)));
+        }
     }
 }

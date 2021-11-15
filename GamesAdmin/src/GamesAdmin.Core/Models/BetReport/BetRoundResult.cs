@@ -167,7 +167,6 @@ namespace GamesAdmin.Core.Models
         public LotterySettlementResult SettlementResult { get; set; }
     }
 
-
     public class LotterySettlementResult
     {
         public IEnumerable<string> FourSets { get; set; }
@@ -260,7 +259,6 @@ namespace GamesAdmin.Core.Models
         public bool Even { get; set; }
     }
 
-
     public class KenoPowerRoundResult : RoundResult
     {
         public KenoPowerResult Result { get; set; }
@@ -272,7 +270,6 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<byte> Blue { get; set; }
         public IEnumerable<byte> Red { get; set; }
     }
-
 
     public class KenoPowerSettlementResult
     {
@@ -286,5 +283,33 @@ namespace GamesAdmin.Core.Models
         public bool BlueSmall { get; set; }
         public bool RedBig { get; set; }
         public bool RedSmall { get; set; }
+    }
+
+    public class CasinoHoldemPokerRoundResult : RoundResult
+    {
+        public CasinoHoldemPokerResult Result { get; set; }
+
+        public CasinoHoldemPokerSettlementResult SettlementResult { get; set; }
+    }
+
+    public class CasinoHoldemPokerResult
+    {
+        public IEnumerable<PokerCard> Dealer { get; set; }
+        public IEnumerable<PokerCard> CommunityCards { get; set; }
+    }
+
+    public class CasinoHoldemPokerSettlementResult
+    {
+        public long Number { get; set; }
+        public bool AA { get; set; }
+        public bool Ante { get; set; }
+        public bool Call { get; set; }
+    }
+
+    public class PokerCard
+    {
+        public byte Rank { get; set; }
+
+        public byte Suit { get; set; }
     }
 }
