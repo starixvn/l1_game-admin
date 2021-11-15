@@ -14,7 +14,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
             DateTimeOffset responseTimeStamp,
             IPartnerResult result,
             byte system,
-            string accessKey)
+            string accessKey,
+            IApiLogArchive archive)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             PartnerId = partnerId;
@@ -25,6 +26,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
             Result = result;
             System = system;
             AccessKey = accessKey;
+            Archive = archive;
         }
 
         public string PartnerId { get; }
@@ -42,5 +44,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public byte System { get; }
 
         public string AccessKey { get; }
+
+        public IApiLogArchive Archive { get; }
     }
 }

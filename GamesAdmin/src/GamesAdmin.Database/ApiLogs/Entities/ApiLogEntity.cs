@@ -14,6 +14,9 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         [BsonRepresentation(BsonType.String)]
         public DateTimeOffset ResponseTimeStamp { get; set; }
+
+        [BsonElement("__archive")]
+        public ApiLogArchiveEntity Archive { get; set; }
     }
 
     public abstract class ApiLogRequestEntity
@@ -32,5 +35,15 @@ namespace GamesAdmin.Database.ApiLogs.Entities
     {
         [BsonElement("_t")]
         public virtual string ResultType { get; set; }
+    }
+
+    public class ApiLogArchiveEntity
+    {
+        [BsonElement("betlogs")]
+        public int BetLogs { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonElement("eventtime")]
+        public DateTime EventTime { get; set; }
     }
 }

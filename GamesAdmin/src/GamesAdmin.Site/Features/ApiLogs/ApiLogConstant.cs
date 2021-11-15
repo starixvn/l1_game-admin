@@ -9,7 +9,7 @@ namespace GamesAdmin.Site.Features.ApiLogs
         private static readonly ApiLogViewConfigs siteIdForPartnerLogConfigs = new ApiLogViewConfigs("Site ID", "Call.SiteId");
         private static readonly ApiLogViewConfigs gameTypeIdForPartnerLogConfigs = new ApiLogViewConfigs("Game", "Call.GameTypeId", GetGameName);
         private static readonly ApiLogViewConfigs gameRoundForPartnerLogIdConfigs = new ApiLogViewConfigs("Game Round", "Call.GameRoundId");
-        private static readonly ApiLogViewConfigs requestTypeForPartnerLogIdConfigs = new ApiLogViewConfigs("Log Type", "Call.RequestType");
+        private static readonly ApiLogViewConfigs requestTypeForPartnerLogIdConfigs = new ApiLogViewConfigs("Request Type", "Call.RequestType");
         private static readonly ApiLogViewConfigs obCustIdForPartnerLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Call.ObCustId");
 
         private static readonly ApiLogViewConfigs siteIdForSBLogConfigs = new ApiLogViewConfigs("Site ID", "Request.SiteId");

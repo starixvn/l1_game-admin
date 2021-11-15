@@ -4,13 +4,20 @@ namespace GamesAdmin.Core.Models.ApiLogs
 {
     public class TicketDetailLog : IApiLog
     {
-        public TicketDetailLog(DateTimeOffset logTimeStamp, DateTimeOffset requestTimeStamp, IApiLogRequest call, DateTimeOffset responseTimeStamp, ISBResult result)
+        public TicketDetailLog(
+            DateTimeOffset logTimeStamp,
+            DateTimeOffset requestTimeStamp,
+            IApiLogRequest call,
+            DateTimeOffset responseTimeStamp,
+            ISBResult result,
+            IApiLogArchive archive)
         {
             LogTimeStamp = logTimeStamp;
             RequestTimeStamp = requestTimeStamp;
             Call = call;
             ResponseTimeStamp = responseTimeStamp;
             Result = result;
+            Archive = archive;
         }
 
         public DateTimeOffset LogTimeStamp { get; }
@@ -22,5 +29,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public DateTimeOffset ResponseTimeStamp { get; }
 
         public ISBResult Result { get; }
+
+        public IApiLogArchive Archive { get; }
     }
 }

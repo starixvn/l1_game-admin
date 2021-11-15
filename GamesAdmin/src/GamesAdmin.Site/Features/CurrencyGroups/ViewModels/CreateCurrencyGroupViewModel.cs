@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 {
     public class CreateCurrencyGroupViewModel : CurrencyGroupFormViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "The Currency Group is required field.")]
         public string Name { get; set; }
 
         public bool Enabled { get; set; } = true;

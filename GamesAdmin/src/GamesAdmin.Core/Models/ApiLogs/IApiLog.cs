@@ -9,6 +9,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         DateTimeOffset RequestTimeStamp { get; }
 
         DateTimeOffset ResponseTimeStamp { get; }
+
+        IApiLogArchive Archive { get; }
     }
 
     public interface IApiLogRequest
@@ -29,5 +31,10 @@ namespace GamesAdmin.Core.Models.ApiLogs
     public interface IApiLogResult
     {
         string ResultType { get; }
+    }
+
+    public interface IApiLogArchive
+    {
+        DateTime EventTime { get; }
     }
 }

@@ -27,7 +27,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     entity.RequestTimeStamp,
                     MapRequest<IApiLogRequest>(context, entity.Request, typeof(SBRequestEntity), typeof(SBRequest)),
                     entity.ResponseTimeStamp,
-                    MapResult<ISBResult>(context, entity.Result, typeof(SBResultEntity), typeof(SBResult))));
+                    MapResult<ISBResult>(context, entity.Result, typeof(SBResultEntity), typeof(SBResult)),
+                    MapArchive(context, entity.Archive)));
 
             CreateMap<PartnerLogEntity, PartnerLog>()
                 .ConstructUsing((entity, context) => new PartnerLog(
@@ -38,7 +39,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     entity.ResponseTimeStamp,
                     MapResult<IPartnerResult>(context, entity.Result, typeof(PartnerResultEntity), typeof(PartnerResult)),
                     entity.System,
-                    entity.AccessKey));
+                    entity.AccessKey,
+                    MapArchive(context, entity.Archive)));
 
             CreateMap<TicketDetailLogEntitty, TicketDetailLog>()
                 .ConstructUsing((entity, context) => new TicketDetailLog(
@@ -46,7 +48,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     entity.RequestTimeStamp,
                     MapRequest<IApiLogRequest>(context, entity.Call, typeof(TicketDetailRequestEntity), typeof(TicketDetailRequest)),
                     entity.ResponseTimeStamp,
-                    MapResult<ISBResult>(context, entity.Result, typeof(TicketDetailResultEntity), typeof(TicketDetailResult))));
+                    MapResult<ISBResult>(context, entity.Result, typeof(TicketDetailResultEntity), typeof(TicketDetailResult)),
+                    MapArchive(context, entity.Archive)));
 
             CreateMap<PartnerCallEntity, PartnerEndGameCall>();
             CreateMap<PartnerCallEntity, PartnerPlaceBetCall>();
@@ -69,6 +72,9 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
 
             CreateMap<TicketDetailResultEntity, TicketDetailResult>();
             CreateMap<TicketDetailResultEntity, SBResult>();
+
+            CreateMap<ApiLogArchiveEntity, ApiLogArchive>();
+            CreateMap<ApiLogArchiveEntity, BetLogArchive>();
         }
 
         private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)
@@ -85,6 +91,20 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             var destinationType = GetDestinationType(entity.ResultType) ?? defaulDestinationType;
 
             return destinationType != null ? (TResult)mapper.Map(entity, sourceType, destinationType) : default;
+        }
+
+        private static IApiLogArchive MapArchive(IRuntimeMapper mapper, ApiLogArchiveEntity entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var isBetArchive = entity.BetLogs != 0;
+            var sourceType = typeof(ApiLogArchiveEntity);
+            var destinationType = isBetArchive ? typeof(BetLogArchive) : typeof(ApiLogArchive);
+
+            return (IApiLogArchive)mapper.Map(entity, sourceType, destinationType);
         }
 
         private static Type GetDestinationType(string typeName)
