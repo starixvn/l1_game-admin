@@ -23,7 +23,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         private static readonly string[] disableMonitoring = new[] {
             Game.LuckyWheelValue,
             Game.KenoProVietValue,
-            Game.BlackJackValue
+            Game.BlackJackValue,
+            Game.CasinoHoldemPokerValue
         };
 
         public string Name { get; set; }
