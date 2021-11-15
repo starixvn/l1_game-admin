@@ -64,6 +64,19 @@ namespace GamesAdmin.Api.Report
             => mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname));
 
         [HttpGet]
+<<<<<<< HEAD
+=======
+        [Route("{game}/round/{roundId}/result")]
+        public Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
+            => mediator.Send(new KenoRoundResultRequest(game, roundId));
+
+        [HttpGet]
+        [Route("bet_history/game/roulette/round/{roundId}/user/{userId}")]
+        public async Task<RouletteBetHistory> BetHistory(string userId, long roundId)
+         => (await mediator.Send(new RouletteBetHistoryRequest(roundId, userId)));
+
+        [HttpGet]
+>>>>>>> 0932394a (feat: bet history)
         [Route("lucky_wheel/users/{nickname}")]
         public async Task<IEnumerable<SpinResult>> LuckyWheel(string nickname)
         => (await mediator.Send(new LuckyWheelReportRequest(nickname)));
@@ -125,6 +138,7 @@ namespace GamesAdmin.Api.Report
         [Route("bitcoin_master/round/{roundId}/user/{nickname}")]
         public async Task<BitcoinMasterBetHistory> BitcoinMasterBetHistory(long roundId, string nickname)
             => await mediator.Send(new BitcoinMasterBetHistoryRequest(roundId, nickname));
+<<<<<<< HEAD
 
          [HttpGet]
         [Route("holdempoker")]
@@ -139,5 +153,23 @@ namespace GamesAdmin.Api.Report
         [Route("hilo")]
         public async Task<IEnumerable<HiLoBetRecord>> HiLo([FromQuery] HiLoBetReportFilter filter)
             => (await mediator.Send(new HiLoReportRequest(filter)));
+=======
+
+        [HttpGet]
+<<<<<<< HEAD
+        [Route("casinoholdempoker")]
+        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> CasinoHoldemPoker([FromQuery] CasinoHoldemPokerBetReportFilter filter)
+       => (await mediator.Send(new CasinoHoldemPokerReportRequest(filter)));
+
+        [HttpGet]
+        [Route("bet_history/casinoholdempoker")]
+        public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory([FromQuery] CasinoHoldemPokerBetHistoryFilter filter)
+         => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(filter)));
+=======
+        [Route("casinoholdempoker/round/{roundId}/users/{nickname?}")]
+        public async Task<CasinoHoldemPokerBetReport> CasinoHoldemPoker(long roundId, string nickname, bool excludeUUS)
+       => (await mediator.Send(new CasinoHoldemPokerReportRequest(roundId, nickname, excludeUUS)));
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+>>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
     }
 }

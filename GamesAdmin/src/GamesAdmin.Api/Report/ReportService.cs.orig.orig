@@ -1,10 +1,11 @@
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,13 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
+<<<<<<< HEAD
+=======
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname);
+
+        Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId);
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS, string partnerId, string username);
@@ -35,6 +43,13 @@ namespace GamesAdmin.Api.Report
 
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter);
 
+<<<<<<< HEAD
+=======
+        Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
+
+        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
@@ -45,10 +60,14 @@ namespace GamesAdmin.Api.Report
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter);
 
         Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
->>>>>>> 0932394a (feat: bet history)
+=======
+        Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerReportAsync(long roundId, string nickname, bool excludeUUS);
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+>>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
     }
 
     public class ReportService : IReportService
@@ -273,6 +292,35 @@ namespace GamesAdmin.Api.Report
             });
         }
 
+<<<<<<< HEAD
+=======
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname)
+        {
+            var service = kenoReportFactory.GetReportService(game);
+
+            return service == default ? default : service.GetBetHistoryAsync(roundId, nickname);
+        }
+
+        public Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId)
+        {
+            var service = kenoReportFactory.GetReportService(game);
+
+            return service == default ? default : service.GetRoundResultAsync(roundId);
+        }
+
+        public async Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetRouletteAsync(roundId, userId);
+
+            return new RouletteBetHistory
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
+            };
+        }
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname)
         {
             var results = await spinResultRepository.FilterByAsync(spin => spin.Name == nickname);
@@ -328,6 +376,36 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<JackpotRecord>(x));
         }
 
+<<<<<<< HEAD
+=======
+   
+
+        public async Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetVipSeDieWarAsync(roundId, userId);
+
+            return new VipSeDieWarBetHistory
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<VipSeDieWarBetHistoryRecord>(x))
+            };
+        }
+
+        public async Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetLotteryAsync(roundId, userId);
+
+            return new LotteryBetHistory
+            {
+                RoundResult = mapper.Map<LotteryRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<LotteryBetHistoryRecord>(x)),
+                Odds = mapper.Map<LotteryOdds>(result.Item3)
+            };
+        }
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
             long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
@@ -377,6 +455,7 @@ namespace GamesAdmin.Api.Report
         }
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
 
         public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter)
         {
@@ -393,6 +472,28 @@ namespace GamesAdmin.Api.Report
 
             return mapper.Map<CasinoHoldemPokerBetHistory>(result);
         }
->>>>>>> 0932394a (feat: bet history)
+=======
+        }
+
+        public async Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerReportAsync(long roundId, string nickname, bool excludeUUS)
+        {
+            try
+            {
+                var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
+                var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+
+                return new CasinoHoldemPokerBetReport
+                {
+                    RoundResult = mapper.Map<CasinoHoldemPokerRoundResult>(result.Item1),
+                    Records = result.Item2.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x))
+                };
+            }
+            catch (Exception err)
+            {
+                return new CasinoHoldemPokerBetReport();
+            }
+          
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+>>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
     }
 }

@@ -77,5 +77,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/bethistory")]
         Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
+
+        [Get("/report/casinoholdempoker/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS);
     }
 }

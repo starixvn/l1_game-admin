@@ -1,0 +1,24 @@
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
+{
+    public class CasinoHoldemPokerReportResultViewModel
+    {
+<<<<<<< HEAD
+        public CasinoHoldemPokerReportResultViewModel(bool convertToUSD, IEnumerable<CasinoHoldemPokerRecordViewModel> records)
+        {
+            ConvertToUSD = convertToUSD;
+            Records = records;
+        }
+
+        public bool ConvertToUSD { get; }
+        public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; }
+    }
+}
+=======
+        public CasinoHoldemPokerRoundResultViewModel RoundResult { get; set; }
+
+        public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; set; }
+    }
+}
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)

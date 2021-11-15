@@ -1,0 +1,35 @@
+<<<<<<< HEAD
+﻿using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Site.Features.Report.ViewModels;
+=======
+﻿using GamesAdmin.Site.Features.Report.ViewModels;
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+using MediatR;
+
+namespace GamesAdmin.Site.Features.Report.Requests
+{
+    public class GetCasinoHoldemPokerReportRequest : IRequest<CasinoHoldemPokerReportResultViewModel>
+    {
+<<<<<<< HEAD
+        public GetCasinoHoldemPokerReportRequest(CasinoHoldemPokerBetReportFilter filter)
+        {
+            Filter = filter;
+        }
+
+        public CasinoHoldemPokerBetReportFilter Filter { get; }
+=======
+        public GetCasinoHoldemPokerReportRequest(long roundId, string nickname, bool excludeUUS)
+        {
+            RoundId = roundId;
+            Nickname = nickname;
+            ExcludeUUS = excludeUUS;
+        }
+
+        public long RoundId { get; }
+
+        public string Nickname { get; }
+
+        public bool ExcludeUUS { get; }
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+    }
+}

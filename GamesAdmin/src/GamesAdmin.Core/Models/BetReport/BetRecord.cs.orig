@@ -19,15 +19,9 @@ namespace GamesAdmin.Core.Models
 
         public string Currency { get; set; }
 
-<<<<<<< HEAD
         public string PartnerId { get; set; }
 
         public decimal Rate { get; set; }
-=======
-        public string Partner { get; set; }
-
-        public double Rate { get; set; }
->>>>>>> 830eed95 (feat: implement game history for stake balanced games)
     }
 
     public class BigSmallBetRecord : BetRecord
@@ -318,6 +312,7 @@ namespace GamesAdmin.Core.Models
 
     public class CasinoHoldemPokerBetRecord : BetRecord
     {
+<<<<<<< HEAD
         public long RoundId { get; set; }
 
         public string PlayerResult { get; set; }
@@ -331,5 +326,9 @@ namespace GamesAdmin.Core.Models
         public bool IsFold { get; set; }
 
         public bool IsQualified { get; set; }
+=======
+        public decimal Dealer { get; set; }
+        public decimal Player { get; set; }
+>>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
     }
 }
