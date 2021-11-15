@@ -1,0 +1,71 @@
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Enumeration
+{
+    public class Language : Enumeration
+    {
+<<<<<<< HEAD
+        public const string VN = "vi-VN";
+        public const string EN = "en-US";
+        public const string CN = "zh-CN";
+        public const string TW = "zh-TW";
+        public const string TH = "th-TH";
+        public const string ID = "id-ID";
+
+        public const string DefaultLanguageValue = VN;
+        public static readonly Language DefaultLanguage = new Language(DefaultLanguageValue, "VN");
+
+        public static Dictionary<string, string> SupportedLanguages = new Dictionary<string, string>
+        {
+            [VN] = "Message (VN)",
+            [EN] = "Message (EN)",
+            [CN] = "Message (CN)",
+            [TW] = "Message (TW)",
+            [TH] = "Message (TH)",
+            [ID] = "Message (ID)",
+        };
+
+        public static Dictionary<string, string> LanguageMapper = new Dictionary<string, string>
+        {
+            [VN] = "VNMessage",
+            [EN] = "ENMessage",
+            [CN] = "CNMessage",
+            [TW] = "TWMessage",
+            [TH] = "THMessage",
+            [ID] = "IDMessage",
+        };
+=======
+        public static Dictionary<string, string> SupportedLanguages = new Dictionary<string, string>
+        {
+            ["vi-VN"] = "Message (VN)",
+            ["en-US"] = "Message (EN)",
+            ["zh-CN"] = "Message (CN)",
+            ["zh-TW"] = "Message (TW)",
+            ["th-TH"] = "Message (TH)",
+            ["id-ID"] = "Message (ID)",
+        };
+
+        public static Dictionary<string, string> LanguageMapper = new Dictionary<string, string>
+        {
+            ["vi-VN"] = "VNMessage",
+            ["en-US"] = "ENMessage",
+            ["zh-CN"] = "CNMessage",
+            ["zh-TW"] = "TWMessage",
+            ["th-TH"] = "THMessage",
+            ["id-ID"] = "IDMessage",
+        };
+
+        public const string DefaultLanguageValue = "vi-VN";
+        public static readonly Language DefaultLanguage = new Language(DefaultLanguageValue, "VN");
+>>>>>>> 9f4e6da2 (fix: multiple language)
+
+        public Language()
+        {
+        }
+
+        public Language(string value, string displayName)
+            : base(value, displayName)
+        {
+        }
+    }
+}

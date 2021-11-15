@@ -1,0 +1,429 @@
+﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
+
+@model StatusViewModel;
+
+@{
+    ViewData["Title"] = "Game Management";
+    var editPermission = Context.HasAdminPermission();
+}
+
+@section Styles {
+    <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
+    <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="list-actions">
+    @if (editPermission)
+    {
+        <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
+        <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
+        <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
+    }
+
+</div>
+<div class="col-md-12 col-lg-12 game-status">
+    @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
+    {
+        <div class="message-error"><i class="icon-cancel"></i> @TempData["errorMessage"].ToString()</div>
+        <br />
+    }
+
+    <table id="status-tbl" class="table table-bordered sticky-table @(editPermission ? "action-bar-visible" : "action-bar-invisible")">
+        <thead>
+            <tr>
+                <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
+                <th class="col-game-name">Name</th>
+                <th>Enabled</th>
+                <th class="col-game-name">Partner</th>
+                <th class="col-bet-limit">Bet Limit (Min - Max)</th>
+                <th>Setting</th>
+                <th>Odds</th>
+                <th>General Setting</th>
+                <th>Bot Ratio</th>
+                <th class="col-status">Bot Enabled</th>
+                <th>Disable Message</th>
+            </tr>
+        </thead>
+        <tbody id="status-tbl-body">
+            @{
+                var rowSpan = Model?.Partners?.Count() > 0 ? Model.Partners.Count() : 1;
+            }
+            @for (var index = 0; index < Model.GameList.Count; index++)
+            {
+                <tr>
+                    <td rowspan="@rowSpan" class="text-center">
+                        <input class="game-status-chk" type="checkbox" onclick="gameStatus.updateCheckAllStatus();" value="@Model.GameList[index].Name" />
+                        <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
+                    </td>
+                    <td rowspan="@rowSpan">@Model.GameList[index].DisplayName</td>
+                    <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
+
+                    @{
+                        var firstPartner = Model.Partners.FirstOrDefault();
+                        var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
+
+                        <td>
+                            @(firstPartner?.Name)
+                        </td>
+
+                        <td>
+                            @{
+                                foreach (var partnerGroup in partnerGroups)
+                                {
+                                    var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+                                    if (setting != null && setting.Enabled)
+                                    {
+                                        <b>@(partnerGroup.Name)</b>
+
+                                        if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                        {
+                                            @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+
+                                        }
+                                        else
+                                        {
+                                            @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                        }
+                                        <br />
+
+                                    }
+                                }
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <button class="btn-edit" hidden=@(firstPartner == null) onclick='gameStatus.showPartnerSetting("@firstPartner?.PartnerId", "@firstPartner?.Name", "@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "@((int)Model.GameList[index].GameConfig.Info.Type)")'><i class="icon-edit"></i></button>
+                        </td>
+                    }
+
+                    <td rowspan="@rowSpan" class="text-center">
+                        @{
+                            if (Model.GameList[index].Name != "luckywheel")
+                            {
+                                <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "OddSettings")'><i class="icon-edit"></i></button>
+
+                            }
+                        }
+                    </td>
+                    <td rowspan="@rowSpan" class="text-center">
+                        <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "GameDetails")'><i class="icon-edit"></i></button>
+                    </td>
+                    <td rowspan="@rowSpan" class="text-center">
+                        <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
+                    </td>
+                    <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
+                    <td rowspan="@rowSpan" class="text-center">
+                        <button class="btn-edit" onclick='gameStatus.showUpdateMessage("@Model.GameList[index].DisabledMessage", "@Model.GameList[index].Name", "@Model.GameList[index].DisplayName")'><i class="icon-edit"></i></button>
+                    </td>
+                </tr>
+                {
+                    for (int j = 1; j < rowSpan; j++)
+                    {
+                        <tr>
+                            <td style="display: none">@Model.GameList[index].DisplayName</td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td>@Model.Partners[j].Name</td>
+                            <td>
+                                @{
+                                    var groups = Model.CurrencyGroups.Where(group => group.PartnerId == Model.Partners[j].PartnerId);
+
+                                    foreach (var partnerGroup in groups)
+                                    {
+                                        var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+
+                                        if (setting != null && setting.Enabled)
+                                        {
+                                            <b>@(partnerGroup.Name)</b>
+
+                                            if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                            {
+                                                @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+
+                                            }
+                                            else
+                                            {
+                                                @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                            }
+                                            <br />
+                                        }
+
+                                    }
+                                }
+
+                            </td>
+                            <td class="text-center">
+                                <button class="btn-edit" onclick='gameStatus.showPartnerSetting("@Model.Partners[j].PartnerId", "@Model.Partners[j].Name", "@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "@((int)Model.GameList[index].GameConfig.Info.Type)")'><i class="icon-edit"></i></button>
+                            </td>
+
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade message-modal" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Message: <span id="updateMsgGameName"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
+
+                    @foreach (var l in Language.SupportedLanguages)
+                    {
+                        <div class="text-message">
+                            <label class="font-weight-bold">@l.Value</label>
+                            <br />
+                            <textarea rows="3" cols="50" id="message-@l.Key.ToLowerInvariant()"></textarea>
+                        </div>
+                    }
+                    <div class="apply-all-checkbox">
+                        <input type="checkbox" id="applyAllCheckbox" name="applyAllCheckbox" /> <label for="applyAllCheckbox">Apply to All Games</label>
+                    </div>
+                    <input type="hidden" id="msgGameName" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateMsgBtn" onclick="gameStatus.updateMessage()">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="gameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="settingTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body game-details-content" id="gamedetails">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">
+                        Close
+                    </button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit(true)">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade adjust-bot-hours bot-ratio-modal" id="botRatioModal" tabindex="-1" role="dialog" aria-labelledby="botRatioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form id="updateBotRatio">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal_title"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+                        <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+                        <p>Total bots: <strong id="total_bots"></strong></p>
+                        <input type="hidden" id="total_bots_field" />
+                        <div class="row options">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-gmt">From (GMT-4)</th>
+                                            <th class="col-gmt">From (GMT+7)</th>
+                                            <th>% Bot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < 12; i++)
+                                        {
+                                            <tr id="@("bot_setting_" + i)">
+                                                <td class="time-gtm4"></td>
+                                                <td class="time-gtm7"></td>
+                                                <td class="ratio-cell">
+                                                    <div>
+                                                        <input type="number" id="bot_ratio" class="ratio" onchange="gameStatus.updateBotCount(this)" />
+                                                        <input type="hidden" class="utc-hour" />
+                                                        <span class="bot-number" id="bot_number"></span>
+                                                    </div>
+                                                    <span id="validate_ratio" class="text-danger"></span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-gmt">From (GMT-4)</th>
+                                            <th class="col-gmt">From (GMT+7)</th>
+                                            <th>% Bot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 12; i < 24; i++)
+                                        {
+                                            <tr id="@("bot_setting_" + i)">
+                                                <td class="time-gtm4"></td>
+                                                <td class="time-gtm7"></td>
+                                                <td class="ratio-cell">
+                                                    <div>
+                                                        <input type="number" class="ratio" max="100" min="0" onchange="gameStatus.updateBotCount(this)" />
+                                                        <input type="hidden" class="utc-hour" />
+                                                        <span class="bot-number" id="bot_number"></span>
+                                                    </div>
+                                                    <span id="validate_ratio" class="text-danger"></span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                        @if (editPermission)
+                        {
+                            <button type="button" id="updateBotRatioBtn" class="btn btn-submit" onclick="gameStatus.updateBotRationItems()">Save</button>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="reloadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation<span id="reloadTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reload-content-body">
+                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Users reloaded!</span></div>
+                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
+                    <div id="reloadContent" class="reload-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-submit" id="confirmBtn" onclick="gameStatus.submitReload()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade enable-disable-modal" id="enableDisableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation<span id="enableDisableTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reload-content-body">
+                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
+                    <div id="enableDisableContent" class="content-body"></div>
+                    <div class="force-reload-checkbox">
+                        <input type="checkbox" id="forceReloadCheckbox" name="forceReloadCheckbox" />
+                        <label id="forceReloadLabel" for="forceReloadCheckbox">Force users to reload after enable/disable game(s)</label>
+                    </div>
+                    <input type="hidden" id="enableDisableFlag" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-submit" id="confirmBtn" onclick="gameStatus.submitEnableDisable()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reload-content-body" id="alertContent">
+                    You should choose at least one game
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-submit" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade game-modal" id="partnerSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Setting: <span id="gameName"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body game-details-content" id="partnerSettingContent">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit(true)">Save & Continue</button>
+                        <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit()">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <environment include="Development">
+        <script src="~/lib/data-tables/datatables.js"></script>
+<<<<<<< HEAD
+=======
+        <script src="~/js/game-constants.js" asp-append-version="true"></script>
+<<<<<<< HEAD
+>>>>>>> f5d508f4... fix: multiple language
+=======
+>>>>>>> f5d508f4 (fix: multiple language)
+>>>>>>> 9f4e6da2 (fix: multiple language)
+        <script src="~/js/game-status.js" asp-append-version="true"></script>
+        <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+        <script src="~/js/currency-group-game.min.js" asp-append-version="true"></script>
+    </environment>
+}

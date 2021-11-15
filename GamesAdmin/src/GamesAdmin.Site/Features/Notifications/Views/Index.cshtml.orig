@@ -1,0 +1,65 @@
+﻿@using GamesAdmin.Site.Features.Notifications.ViewModels;
+@using GamesAdmin.Core.Enumeration;
+@model IndexViewModel;
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+@section Styles {
+    <link href="~/css/notification.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div>
+    <a asp-action="Add" asp-controller="Notification" class="btn-add add-item">
+        <i class="icon-add_alert"></i>
+        &nbsp; New Notification
+    </a>
+</div>
+
+<table id="status-tbl" class="table table-bordered has-background tbl-notification col-sm-12">
+    <thead>
+        <tr>
+            @foreach (var l in Language.SupportedLanguages)
+            {
+                <th>@l.Value</th>
+            }
+            <th class="col-display">Display As</th>
+            <th class="col-options">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.HasData)
+        {
+            <tr>
+                <td colspan="4" align="center">There is no data.</td>
+            </tr>
+        }
+
+        @foreach (var notification in Model.Notifications)
+        {
+            <tr>
+                @foreach (var l in Language.LanguageMapper)
+                {
+                    var isDefault = l.Key == Language.DefaultLanguageValue && notification.Messages?[Language.DefaultLanguageValue] == null;
+<<<<<<< HEAD
+                    var message = notification.Messages == null || !notification.Messages.ContainsKey(l.Key)
+                        ? string.Empty : notification.Messages[l.Key];
+=======
+                    var message = notification.Messages?[l.Key] ?? string.Empty;
+>>>>>>> 9f4e6da2 (fix: multiple language)
+                    <td>@(isDefault && string.IsNullOrWhiteSpace(message) ? notification.Message : message) </td>
+                }
+                <td class="text-center">@notification.DisplayKind.DisplayName</td>
+                <td class="text-center">
+                    <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id" class="action-link"><i class="icon-edit"></i></a>
+                    <a href="#" onclick="DeleteButton('@notification.Id');" class="action-link"><i class="icon-cancel"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script src="~/js/Notification.min.js" asp-append-version="true"></script>
+}
