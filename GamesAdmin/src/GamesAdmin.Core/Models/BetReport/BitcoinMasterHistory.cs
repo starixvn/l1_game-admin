@@ -16,7 +16,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public string Choice { get; set; }
 
-        public decimal Bet { get; set; }
+        public decimal Amount { get; set; }
 
         public decimal Refund { get; set; }
 

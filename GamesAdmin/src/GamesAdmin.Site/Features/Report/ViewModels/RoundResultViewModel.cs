@@ -238,7 +238,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool IsEven => Math.Floor(ResultPrice) % 10 == 0;
     }
-        
+
     public class KenoMatchRoundResultViewModel
     {
         public DateTime Time { get; set; }
@@ -306,7 +306,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Small { get; set; }
         public bool Odd { get; set; }
         public bool Even { get; set; }
-        
+
         public bool BlueBig { get; set; }
         public bool BlueSmall { get; set; }
         public bool RedBig { get; set; }

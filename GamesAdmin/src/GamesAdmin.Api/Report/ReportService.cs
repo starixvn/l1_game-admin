@@ -621,12 +621,14 @@ namespace GamesAdmin.Api.Report
         {
             var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
             var result = await repository.GetBitcoinMasterBetHistoryAsync(roundId, nickname);
-
-            return new BitcoinMasterBetHistory
+            var model = new BitcoinMasterBetHistory
             {
                 RoundResult = mapper.Map<BitcoinMasterRoundResult>(result.Item1.Result),
                 Bets = result.Item2.Select(x => mapper.Map<BitcoinMasterBetHistoryRecord>(x))
             };
+
+            model.RoundResult.Number = result.Item1.Number;
+            return model;
         }
 
         public async Task<KenoMatchBetReport> GetKenoMatch1ReportAsync(long roundId, string nickname, bool excludeUUS)

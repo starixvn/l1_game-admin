@@ -688,7 +688,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                     BetWin = x.BetWin,
                     Refund = x.Refund,
-                    Bet = x.Bet,
+                    Amount = x.Amount,
                     Choice = x.Choice
                 })
             };

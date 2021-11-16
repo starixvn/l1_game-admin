@@ -49,7 +49,7 @@ string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.Ord
                         <span>@(Model.RoundResult.IsEven ? "Even" : "Odd")</span> <span>(@(Math.Floor(Model.RoundResult.ResultPrice) % 10))</span>
                     }
                 </td>
-                <td class="text-right">@HtmlHelpers.formatNumber2(bet.Bet)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(bet.Amount)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber2(bet.Refund)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber2(bet.BetWin)</td>
             </tr>
