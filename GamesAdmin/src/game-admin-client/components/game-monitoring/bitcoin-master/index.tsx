@@ -326,7 +326,7 @@ export default class BitcoinMaster extends React.Component<
           <BetList
             type="simple"
             dataList={betList.odd.dataList}
-            titles={[<div className={styles["text-grey"]}>Odd</div>]}
+            titles={[<div className={styles["text-white"]}>Odd</div>]}
             isWin={settlementResult.odd}
             systemFilter={systemFilter}
           />
