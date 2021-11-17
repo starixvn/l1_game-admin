@@ -30,8 +30,8 @@
         <thead>
             <tr>
                 <th class="col-check"><input type="checkbox" id="partner-all" value="all" onclick="partner.checkAll();" /></th>
-                <th>Name</th>
                 <th>ID</th>
+                <th>Name</th>
                 <th>UM Status</th>
                 <th>SC UM</th>
                 <th>Secret Key</th>
@@ -57,8 +57,8 @@
                         <td class="text-center">
                             <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
                         </td>
-                        <td>@firstRowData.Name</td>
                         <td>@firstRowData.PartnerId</td>
+                        <td>@firstRowData.Name</td>
                         <td>
                             @{
                                 if (firstPartnerUmInfo != null)
@@ -109,8 +109,8 @@
                     <td class="text-center">
                         <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
                     </td>
-                    <td>@item.Name</td>
                     <td>@item.PartnerId</td>
+                    <td>@item.Name</td>
                     <td>
                         @{
                             var partnerUmInfo = Model.GetPartnerUmInfo(item.PartnerId);

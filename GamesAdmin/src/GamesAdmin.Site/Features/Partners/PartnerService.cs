@@ -90,7 +90,7 @@ namespace GamesAdmin.Site.Features.Partners
                 var existPartner = await partnerApi.GetById(partner.PartnerId);
                 if (existPartner != null)
                 {
-                    error = "Partner Id is existed";
+                    error = $"The Id ${partner.PartnerId} has existed. Please try another.";
                 }
                 else
                 {

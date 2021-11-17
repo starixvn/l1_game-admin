@@ -99,9 +99,3 @@
   box-shadow: none !important;
   border-width: 1px;
   border-style: solid; }
-
-.required::after {
-  content: " (*)";
-  font-weight: bold;
-  color: #dc3545;
-  display: inline; }

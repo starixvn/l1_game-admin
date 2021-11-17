@@ -11,7 +11,7 @@
     <div class="modal-body">
         <div class="form-group row">
             <div class="col-sm-12">
-                <label class="required" asp-for="PartnerId">Partner</label>
+                <label class="required-field-label" asp-for="PartnerId">Partner</label>
                 <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
                 <span class="text-danger" asp-validation-for="PartnerId"></span>
             </div>
@@ -19,7 +19,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label class="required" asp-for="Name">Currency</label>
+                <label class="required-field-label" asp-for="Name">Currency</label>
                 <input class="form-control" type="text" asp-for="Name">
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
@@ -27,7 +27,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label class="required" asp-for="Code"></label>
+                <label class="required-field-label" asp-for="Code"></label>
                 <select asp-items="@Model.ExchangeCodes" asp-for="Code" class="form-control"></select>
                 <span class="text-danger" asp-validation-for="Code"></span>
             </div>
@@ -35,7 +35,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label class="required" asp-for="Multiplier"></label>
+                <label class="required-field-label" asp-for="Multiplier"></label>
                 <input class="form-control" type="number" asp-for="Multiplier">
                 <span class="text-danger" asp-validation-for="Multiplier"></span>
             </div>
