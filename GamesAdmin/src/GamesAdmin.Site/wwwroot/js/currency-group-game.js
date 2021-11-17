@@ -137,6 +137,12 @@
         },
 
         onSubmit: function (isContinue) {
+            if (isContinue) {
+                $('#partnerSettingModal').on('hide.bs.modal', function (event) {
+                    location.reload();
+                });
+            }
+
             if ($('#setting').css('display') && $('#setting').css('display') !== 'none') {
                 this.updateSetting(isContinue, this.modalHandlerOnUpdate );
             }
