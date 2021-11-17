@@ -612,7 +612,9 @@ namespace GamesAdmin.Api.Report
                     Username = x.Username,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Back = x.Back
+                    Back = x.Back,
+                    Win = x.Win,
+                    Choice = x.Choice
                 })
             };
         }

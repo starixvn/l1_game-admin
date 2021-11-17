@@ -280,6 +280,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal Bet { get; set; }
         public decimal Back { get; set; }
+
+        public bool Win { get; set; }
+        public string Choice { get; set; }
+
+        public decimal GrossWin => Win ? BetWin + Refund - Bet : 0;
     }
 
     public class KenoMatchRecordViewModel : BetRecordViewModel
@@ -287,7 +292,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
     }
-    
+
     public class KenoPowerRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }

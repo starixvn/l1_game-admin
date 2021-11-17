@@ -35,7 +35,9 @@ namespace GamesAdmin.Database
                     Nickname = x.AccountInfos.Name,
                     Bet = x.Amount,
                     BetWin = x.Betwin,
-                    Back = x.Refund
+                    Back = x.Refund,
+                    Win = x.Win,
+                    Choice = x.Choice
                 });
             var records = await project.ToListAsync();
 

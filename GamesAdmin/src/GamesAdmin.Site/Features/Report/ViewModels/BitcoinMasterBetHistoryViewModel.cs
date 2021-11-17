@@ -21,5 +21,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Refund { get; set; }
 
         public decimal BetWin { get; set; }
+
+        public bool Win { get; set; }
+
+        public decimal GrossWin => Win ? BetWin + Refund - Amount : 0;
     }
 }

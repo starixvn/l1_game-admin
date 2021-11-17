@@ -284,14 +284,18 @@ namespace GamesAdmin.Core.Models
         public decimal Bet { get; set; }
 
         public decimal Back { get; set; }
+
+        public bool Win { get; set; }
+
+        public string Choice { get; set; }
     }
-    
+
     public class KenoMatchBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
         public decimal Refund { get; set; }
     }
-    
+
     public class KenoPowerBetRecord : BetRecord
     {
         public decimal Refund { get; set; }

@@ -666,7 +666,9 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Nickname = x.Nickname,
                     Back = x.Back,
                     Bet = x.Bet,
-                    BetWin = x.BetWin
+                    BetWin = x.BetWin,
+                    Win = x.Win,
+                    Choice = x.Choice
                 })
             };
         }
@@ -689,7 +691,8 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Refund = x.Refund,
                     Amount = x.Amount,
-                    Choice = x.Choice
+                    Choice = x.Choice,
+                    Win = x.Win
                 })
             };
         }

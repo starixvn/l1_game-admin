@@ -10,5 +10,7 @@ namespace GamesAdmin.Database.Entities
         public decimal Refund { get; set; }
 
         public string Choice { get; set; }
+
+        public bool Win { get; set; }
     }
 }

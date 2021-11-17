@@ -37,7 +37,7 @@
         {
             <tr>
                 <td class="text-center">@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                <td class="text-center">@(Enumeration.FromValue<BitcoinMasterBetChoice>(bet.Choice).DisplayName)</td>
+                <td class="text-center">@(Enumeration.FromValue<BitcoinMasterBetChoice>(bet.Choice).DisplayName.ToUpperInvariant())</td>
                 <td class="text-center bitcoin-master-result">
                     @if (string.Equals(BitcoinMasterBetChoice.UpValue, bet.Choice, StringComparison.OrdinalIgnoreCase) ||
 string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.OrdinalIgnoreCase))
@@ -51,7 +51,7 @@ string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.Ord
                 </td>
                 <td class="text-right">@HtmlHelpers.formatNumber2(bet.Amount)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber2(bet.Refund)</td>
-                <td class="text-right">@HtmlHelpers.formatNumber2(bet.BetWin)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(bet.GrossWin)</td>
             </tr>
         }
     </tbody>

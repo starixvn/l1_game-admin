@@ -21,5 +21,7 @@ namespace GamesAdmin.Core.Models.BetReport
         public decimal Refund { get; set; }
 
         public decimal BetWin { get; set; }
+
+        public bool Win { get; set; }
     }
 }
