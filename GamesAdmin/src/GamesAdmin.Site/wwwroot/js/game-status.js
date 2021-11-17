@@ -105,13 +105,15 @@
         },
 
         showGameForm: function (gameName, gameDisplayName, view) {
+            var settingTitle = view == 'OddSettings' ? 'Odds: ' : 'General Setting: ';
+            
             $.ajax({
                 method: "GET",
                 url: "/gamedetails/" + gameName + "?view=" + view
             }).done(function (content) {
                 if (content) {
                     $('#gamedetails').html(content);
-                    $('#gameTitleName').html(gameDisplayName);
+                    $('#settingTitle').html(settingTitle + gameDisplayName);
                     $('#gameModal').modal('show');
                 }
             });
