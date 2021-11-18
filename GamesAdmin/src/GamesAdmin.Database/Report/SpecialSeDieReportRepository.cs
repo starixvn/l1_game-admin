@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface ISpecialSeDieReportRepository
     {
-        Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
     }
 
     public class SpecialSeDieReportRepository : BaseBetReportRepository, ISpecialSeDieReportRepository
@@ -18,13 +18,18 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetReportEntity>)> GetAsync(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partnerId,
+            string username)
         {
             var roundResult = await database.GetCollection<SpecialSeDieRoundEntity>(Document.GetCollectionName(typeof(SpecialSeDieRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<SpecialSeDieBetEntity, SpecialSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeBot, true)
+                var project = GetBaseAggregateBuilder<SpecialSeDieBetEntity, SpecialSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeBot, true, partnerId, username)
                     .Project(x => new SpecialSeDieBetReportEntity
                     {
                         Time = x.Time,
@@ -34,7 +39,10 @@ namespace GamesAdmin.Database
                         Amount = x.Amount,
                         Choice = x.Choice,
                         Refund = x.Refund,
-                        UserId = x.Uid
+                        UserId = x.Uid,
+                        Currency = x.Currency,
+                        Partner = x.PartnerId,
+                        Rate = x.Rate
                     });
                 var records = await project.ToListAsync();
 

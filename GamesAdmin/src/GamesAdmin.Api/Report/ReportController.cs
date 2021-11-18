@@ -26,8 +26,8 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("big_small/round/{roundId}/users/{nickname?}")]
-        public async Task<BigSmallBetReport> BigSmall(long roundId, string nickname, bool excludeBot)
-           => (await mediator.Send(new BigSmallReportRequest(roundId, nickname, excludeBot)));
+        public async Task<BigSmallBetReport> BigSmall(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+           => (await mediator.Send(new BigSmallReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
         [Route("bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
@@ -36,18 +36,18 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("big_small_turbo/round/{roundId}/users/{nickname?}")]
-        public async Task<BigSmallBetReport> BigSmallTurbo(long roundId, string nickname, bool excludeBot)
-            => (await mediator.Send(new BigSmallTurboReportRequest(roundId, nickname, excludeBot)));
+        public async Task<BigSmallBetReport> BigSmallTurbo(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+            => (await mediator.Send(new BigSmallTurboReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
         [Route("odd_even/round/{roundId}/users/{nickname?}")]
-        public async Task<OddEvenBetReport> OddEven(long roundId, string nickname, bool excludeBot)
-            => (await mediator.Send(new OddEvenReportRequest(roundId, nickname, excludeBot)));
+        public async Task<OddEvenBetReport> OddEven(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+            => (await mediator.Send(new OddEvenReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
         [Route("odd_even_turbo/round/{roundId}/users/{nickname?}")]
-        public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot)
-            => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot)));
+        public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+            => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
         [Route("sedie/round/{roundId}/users/{nickname?}")]
@@ -116,8 +116,8 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("specialsedie/round/{roundId}/users/{nickname?}")]
-        public async Task<SpecialSeDieBetReport> SpecialSedie(long roundId, string nickname, bool excludeBot)
-        => (await mediator.Send(new SpecialSeDieReportRequest(roundId, nickname, excludeBot)));
+        public async Task<SpecialSeDieBetReport> SpecialSedie(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+        => (await mediator.Send(new SpecialSeDieReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
         [Route("bet_history/game/specialsedie/round/{roundId}/user/{userId}")]

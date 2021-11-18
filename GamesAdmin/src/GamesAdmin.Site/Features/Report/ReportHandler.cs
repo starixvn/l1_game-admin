@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
+using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -63,24 +65,34 @@ namespace GamesAdmin.Site.Features.ClientSites
         private readonly IMapper mapper;
         private readonly IPartnerService partnerService;
         private readonly ICurrencyService currencyService;
+        private readonly IExchangeRateService exchangeRateService;
 
         public ReportHandler(
             IReportService reportService,
             IAppSettings appSettings,
             IMapper mapper,
             IPartnerService partnerService,
-            ICurrencyService currencyService)
+            ICurrencyService currencyService,
+            IExchangeRateService exchangeRateService)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
             this.mapper = mapper;
             this.partnerService = partnerService;
             this.currencyService = currencyService;
+            this.exchangeRateService = exchangeRateService;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBigSmallReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetBigSmallReport(
+                request.RoundId,
+                request.Nickname,
+                request.ExcludeBot,
+                request.PartnerId,
+                request.Username);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
 
             return new BigSmallReportResultViewModel
             {
@@ -90,6 +102,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice1 = result.RoundResult.Dice1,
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
+                    ExchangeRate = exchangeRate,
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
@@ -99,14 +112,24 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Back = x.Back,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Select = x.Select
+                    Select = x.Select,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.Partner),
+                    Rate = x.Rate,
                 })
             };
         }
 
         public async Task<BigSmallTurboReportResultViewModel> Handle(GetBigSmallTurboReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBigSmallTurboReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetBigSmallTurboReport(
+                request.RoundId,
+                request.Nickname,
+                request.ExcludeBot,
+                request.PartnerId,
+                request.Username);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
 
             return new BigSmallTurboReportResultViewModel
             {
@@ -116,6 +139,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice1 = result.RoundResult.Dice1,
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
+                    ExchangeRate = exchangeRate,
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
@@ -125,14 +149,24 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Back = x.Back,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Select = x.Select
+                    Select = x.Select,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.Partner),
+                    Rate = x.Rate,
                 })
             };
         }
 
         public async Task<OddEvenReportResultViewModel> Handle(GetOddEvenReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetOddEvenReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetOddEvenReport(
+                request.RoundId,
+                request.Nickname,
+                request.ExcludeBot,
+                request.PartnerId,
+                request.Username);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
 
             return new OddEvenReportResultViewModel
             {
@@ -142,6 +176,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice1 = result.RoundResult.Dice1,
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
+                    ExchangeRate = exchangeRate,
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
@@ -151,14 +186,24 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Back = x.Back,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Select = x.Select
+                    Select = x.Select,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.Partner),
+                    Rate = x.Rate,
                 })
             };
         }
 
         public async Task<OddEvenTurboReportResultViewModel> Handle(GetOddEvenTurboReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetOddEventTurboReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetOddEventTurboReport(
+                request.RoundId,
+                request.Nickname,
+                request.ExcludeBot,
+                request.PartnerId,
+                request.Username);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
 
             return new OddEvenTurboReportResultViewModel
             {
@@ -168,6 +213,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Dice1 = result.RoundResult.Dice1,
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
+                    ExchangeRate = exchangeRate,
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
@@ -177,7 +223,10 @@ namespace GamesAdmin.Site.Features.ClientSites
                     Back = x.Back,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Select = x.Select
+                    Select = x.Select,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.Partner),
+                    Rate = x.Rate,
                 })
             };
         }
@@ -422,11 +471,21 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSpecialSeDieReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetSpecialSeDieReport(
+                request.RoundId,
+                request.Nickname,
+                request.ExcludeBot,
+                request.PartnerId,
+                request.Username);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var roundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult);
+
+            roundResult.ExchangeRate = exchangeRate;
 
             return new SpecialSeDieReportResultViewModel
             {
-                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
+                RoundResult = roundResult,
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<SpecialSeDieRecordViewModel>(x);
@@ -785,6 +844,31 @@ namespace GamesAdmin.Site.Features.ClientSites
                 }),
                 Odds = result.Odds
             };
+        }
+
+        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetPartnersForSelection(partner => true);
+            Func<CurrencyModel, SelectListItem> transformCurrency = model => new SelectListItem($"{model.Name} ({model.Code})", model.Code);
+            var currencies = await currencyService.GetCurrenciesForSelection(model => true, transformCurrency);
+
+            return new ReportSeletionsViewModel
+            {
+                Partners = partners,
+                Currencies = currencies
+            };
+        }
+
+        private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
+        => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
+
+        private async Task<decimal> GetExchangeRate(int exchangeRateId, string currency)
+        {
+            var exchangeRate = await exchangeRateService.GetByExchangeId(exchangeRateId);
+
+            return exchangeRate != null
+                   && !string.IsNullOrEmpty(currency)
+                   && exchangeRate.Code.ContainsKey(currency) ? exchangeRate.Code[currency] : 1;
         }
 
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)

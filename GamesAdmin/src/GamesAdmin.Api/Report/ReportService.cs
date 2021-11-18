@@ -18,15 +18,15 @@ namespace GamesAdmin.Api.Report
 {
     public interface IReportService
     {
-        Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, byte gameType);
 
-        Task<BigSmallBetReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<BigSmallBetReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
@@ -54,7 +54,7 @@ namespace GamesAdmin.Api.Report
 
         Task<VipSeDieBetReport> GetVipSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
-        Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS, string partnerId, string username);
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistoryAsync(long roundId, string userId);
 
@@ -127,10 +127,10 @@ namespace GamesAdmin.Api.Report
             this.slotGameReportFactory = slotGameReportFactory;
         }
 
-        public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
             var repository = serviceProvider.GetService<IBigSmallReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
 
             return new BigSmallBetReport
             {
@@ -139,7 +139,8 @@ namespace GamesAdmin.Api.Report
                     Number = result.Item1.Number,
                     Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
                     Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
-                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0
+                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0,
+                    ExchangeRateId = result.Item1.ExchangeRateId,
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord
                 {
@@ -149,15 +150,18 @@ namespace GamesAdmin.Api.Report
                     Select = x.Select,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Back = x.Back
+                    Back = x.Back,
+                    Currency = x.Currency,
+                    Partner = x.Partner,
+                    Rate = x.Rate
                 })
             };
         }
 
-        public async Task<BigSmallBetReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<BigSmallBetReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
             var repository = serviceProvider.GetService<IBigSmallTurboReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
 
             return new BigSmallBetReport
             {
@@ -166,7 +170,8 @@ namespace GamesAdmin.Api.Report
                     Number = result.Item1.Number,
                     Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
                     Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
-                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0
+                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0,
+                    ExchangeRateId = result.Item1.ExchangeRateId,
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord
                 {
@@ -176,15 +181,18 @@ namespace GamesAdmin.Api.Report
                     Select = x.Select,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Back = x.Back
+                    Back = x.Back,
+                    Currency = x.Currency,
+                    Partner = x.Partner,
+                    Rate = x.Rate
                 })
             };
         }
 
-        public async Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
             var repository = serviceProvider.GetService<IOddEvenReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
 
             return new OddEvenBetReport
             {
@@ -193,7 +201,8 @@ namespace GamesAdmin.Api.Report
                     Number = result.Item1.Number,
                     Dice1 = result.Item1.Dice1,
                     Dice2 = result.Item1.Dice2,
-                    Dice3 = result.Item1.Dice3
+                    Dice3 = result.Item1.Dice3,
+                    ExchangeRateId = result.Item1.ExchangeRateId,
                 },
                 Records = result.Item2.Select(x => new OddEvenBetRecord
                 {
@@ -203,15 +212,18 @@ namespace GamesAdmin.Api.Report
                     Select = x.Select,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Back = x.Back
+                    Back = x.Back,
+                    Currency = x.Currency,
+                    Partner = x.Partner,
+                    Rate = x.Rate
                 })
             };
         }
 
-        public async Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
             var repository = serviceProvider.GetService<IOddEvenTurboReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
 
             return new OddEvenBetReport
             {
@@ -220,7 +232,8 @@ namespace GamesAdmin.Api.Report
                     Number = result.Item1.Number,
                     Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
                     Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
-                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0
+                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0,
+                    ExchangeRateId = result.Item1.ExchangeRateId,
                 },
                 Records = result.Item2.Select(x => new OddEvenBetRecord
                 {
@@ -230,7 +243,10 @@ namespace GamesAdmin.Api.Report
                     Select = x.Select,
                     Bet = x.Bet,
                     BetWin = x.BetWin,
-                    Back = x.Back
+                    Back = x.Back,
+                    Currency = x.Currency,
+                    Partner = x.Partner,
+                    Rate = x.Rate
                 })
             };
         }
@@ -438,10 +454,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
             var repository = serviceProvider.GetService<ISpecialSeDieReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
 
             return new SpecialSeDieBetReport
             {

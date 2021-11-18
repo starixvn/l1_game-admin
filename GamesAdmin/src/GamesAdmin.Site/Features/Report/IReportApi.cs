@@ -13,17 +13,17 @@ namespace GamesAdmin.Site.Features.Report
 {
     public interface IReportApi : IBaseAuthorizationApi
     {
-        [Get("/report/big_small/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<BigSmallBetReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot);
+        [Get("/report/big_small/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
+        Task<BigSmallBetReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        [Get("/report/big_small_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<BigSmallBetReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot);
+        [Get("/report/big_small_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
+        Task<BigSmallBetReport> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        [Get("/report/odd_even/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<OddEvenBetReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot);
+        [Get("/report/odd_even/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
+        Task<OddEvenBetReport> GetOddEvenReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        [Get("/report/odd_even_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<OddEvenBetReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot);
+        [Get("/report/odd_even_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
+        Task<OddEvenBetReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         [Get("/report/sedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS);
@@ -67,8 +67,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/vipsedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/specialsedie/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot);
+        [Get("/report/specialsedie/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
+        Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         [Get("/report/bet_history/game/specialsedie/round/{roundId}/user/{userId}")]
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);

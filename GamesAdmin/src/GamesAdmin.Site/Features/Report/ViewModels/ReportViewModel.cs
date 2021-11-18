@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -12,9 +14,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<SelectListItem> Currencies { get; set; }
     }
 
+    public class StakeBalancedViewModel : ReportViewModel
+    {
+        [Required(ErrorMessage = "Please input RoundId.")]
+        public override long? RoundId { get; set; }
+    }
+
     public class ReportViewModel
     {
-        public long? RoundId { get; set; }
+        public virtual long? RoundId { get; set; }
 
         public string Nickname { get; set; }
 
@@ -23,6 +31,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ExcludeUUS { get; set; }
 
         public string Game { get; set; }
+
+        public ReportSeletionsViewModel Selections { get; set; }
+
+        public string Partner { get; set; }
+
+        [DisplayName("Convert to Currency")]
+        public string Currency { get; set; }
+
+        public string Username { get; set; }
     }
 
     public class BlackjackReportViewModel
@@ -47,7 +64,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ExcludeUUS { get; set; } = true;
     }
 
-    public class KenoMatchReportViewModel :ReportViewModel
+    public class KenoMatchReportViewModel : ReportViewModel
     {
         public GameId Game { get; set; }
     }

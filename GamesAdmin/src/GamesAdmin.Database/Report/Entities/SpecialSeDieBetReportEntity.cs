@@ -19,5 +19,11 @@ namespace GamesAdmin.Database.Report.Entities
         public decimal BetWin { get; set; }
 
         public string UserId { get; set; }
+
+        public string Currency { get; set; }
+
+        public string Partner { get; set; }
+
+        public double Rate { get; set; }
     }
 }

@@ -6,7 +6,10 @@ namespace GamesAdmin.Core.Models
     public class RoundResult
     {
         public DateTime Time { get; set; }
+
         public long Number { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 
     public class BigSmallRoundResult : RoundResult

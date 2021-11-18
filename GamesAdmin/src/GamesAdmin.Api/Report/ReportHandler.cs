@@ -62,19 +62,19 @@ namespace GamesAdmin.Api.Report
         }
 
         public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetBigSmallReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetBigSmallReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public async Task<IEnumerable<BaseBetHistory>> Handle(GameReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetBetHistoryReport(request.Name, request.RoundId, request.GameType);
 
         public async Task<BigSmallBetReport> Handle(BigSmallTurboReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetBigSmallTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetBigSmallTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public async Task<OddEvenBetReport> Handle(OddEvenTurboReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetOddEvenTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetOddEvenTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public async Task<OddEvenBetReport> Handle(OddEvenReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+            => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public async Task<SeDieBetReport> Handle(SeDieReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
@@ -113,7 +113,7 @@ namespace GamesAdmin.Api.Report
         => reportService.GetVipSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SpecialSeDieBetReport> Handle(SpecialSeDieReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetSpecialSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+        => reportService.GetSpecialSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public Task<SpecialSeDieBetHistory> Handle(SpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);

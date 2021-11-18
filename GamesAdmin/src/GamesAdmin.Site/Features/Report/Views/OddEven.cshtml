@@ -1,6 +1,6 @@
 ﻿@using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model ReportViewModel
+@model StakeBalancedViewModel
 @{
     ViewData["Title"] = "Odd Even";
 }
@@ -13,12 +13,28 @@
       method="get">
     <div class="form-row align-items-center">
         <div class="col-auto">
+            <label class="required" asp-for="Partner"></label>
+            <select asp-items="@Model.Selections.Partners" asp-for="Partner" class="form-control">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="col-auto">
             <label asp-for="RoundId" class="control-label"></label>
             <input type="number" class="form-control" asp-for="RoundId">
         </div>
         <div class="col-auto">
             <label asp-for="Nickname" class="control-label"></label>
             <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+        </div>
+        <div class="col-auto">
+            <label asp-for="Username" class="control-label"></label>
+            <input type="text" class="form-control" placeholder="Username" asp-for="Username">
+        </div>
+        <div class="col-auto">
+            <label class="required" asp-for="Currency"></label>
+            <select asp-items="@Model.Selections.Currencies" asp-for="Currency" class="form-control">
+                <option selected="selected" value="">$US (USD)</option>
+            </select>
         </div>
         <div class="col-auto mt-5">
             <div class="form-check">
@@ -32,6 +48,11 @@
             <div id="spinner" class="spinner-border" style="display: none">
                 <span class="sr-only">Loading...</span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            <span class="text-danger" asp-validation-for="RoundId"></span>
         </div>
     </div>
 </form>

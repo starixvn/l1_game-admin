@@ -6,6 +6,7 @@
     var bigRecords = Model.Records.Where(x => x.Select).ToList();
     var smallRecords = Model.Records.Where(x => !x.Select).ToList();
     var totalRow = bigRecords.Count > smallRecords.Count ? bigRecords.Count : smallRecords.Count;
+    var round = Model.RoundResult;
 }
 
 <div class="row">
@@ -40,21 +41,25 @@
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
-                    <th colspan="6" class="big-small-title">Big</th>
+                    <th colspan="8" class="big-small-title">Big</th>
                     <th class="line-cell"></th>
-                    <th colspan="6" class="big-small-title">Small</th>
+                    <th colspan="8" class="big-small-title">Small</th>
                 </tr>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
                     <th class="line-cell"></th>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
@@ -67,6 +72,7 @@
                     var smallRecord = smallRecords.ElementAtOrDefault(i);
                     <tr>
                         <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bigRecord?.Partner</td>
                         <td>@bigRecord?.Username</td>
                         <td>
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -74,21 +80,24 @@
                                 @bigRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.Bet)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.Back)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecord?.BetWin)</td>
+                        <td>@bigRecord?.Currency</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecord?.BaseBetAmount))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecord?.BaseBack))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecord?.BaseBetWin))</td>
                         <td class="line-cell"></td>
                         <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@smallRecord?.Partner</td>
                         <td>@smallRecord?.Username</td>
+                        <td>@smallRecord?.Currency</td>
                         <td>
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="GetBigSmallTurboBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@smallRecord?.Nickname">
                                 @smallRecord?.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.Bet)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.Back)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecord?.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(smallRecord?.BaseBetAmount))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(smallRecord?.BaseBack))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(smallRecord?.BaseBetWin))</td>
                     </tr>
 
                 }
@@ -106,16 +115,20 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.Bet))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.Back))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bigRecords.Sum(x => x.BetWin))</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecords.Sum(x => x.BaseBetAmount)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecords.Sum(x => x.BaseBack)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecords.Sum(x => x.BaseBetWin)))</td>
                         <td class="line-cell"></td>
                         <td>Total</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.Bet))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.Back))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(smallRecords.Sum(x => x.BetWin))</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(smallRecords.Sum(x => x.BaseBetAmount)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(smallRecords.Sum(x => x.BaseBack)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(smallRecords.Sum(x => x.BaseBetWin)))</td>
                     </tr>
                 }
             </tfoot>

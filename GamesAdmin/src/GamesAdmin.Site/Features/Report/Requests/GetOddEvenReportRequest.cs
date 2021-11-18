@@ -5,11 +5,14 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetOddEvenReportRequest : IRequest<OddEvenReportResultViewModel>
     {
-        public GetOddEvenReportRequest(long roundId, string nickname, bool excludeBot)
+        public GetOddEvenReportRequest(long roundId, string nickname, bool excludeBot, string partnerId, string username, string currency)
         {
             RoundId = roundId;
             Nickname = nickname;
             ExcludeBot = excludeBot;
+            PartnerId = partnerId;
+            Username = username;
+            Currency = currency;
         }
 
         public long RoundId { get; }
@@ -17,5 +20,11 @@ namespace GamesAdmin.Site.Features.Report.Requests
         public string Nickname { get; }
 
         public bool ExcludeBot { get; }
+
+        public string PartnerId { get; }
+
+        public string Username { get; }
+
+        public string Currency { get; }
     }
 }

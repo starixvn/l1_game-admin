@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IBigSmallReportRepository
     {
-        Task<(BigSmallRoundEntity, IEnumerable<BigSmallBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(BigSmallRoundEntity, IEnumerable<BigSmallBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
     }
 
     public class BigSmallReportRepository : BaseBetReportRepository, IBigSmallReportRepository
@@ -18,13 +18,20 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(BigSmallRoundEntity, IEnumerable<BigSmallBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(BigSmallRoundEntity, IEnumerable<BigSmallBetReportEntity>)> GetAsync(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partnerId,
+            string username)
         {
-            var roundResult = await database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<BigSmallRoundEntity>(Document.GetCollectionName(typeof(BigSmallRoundEntity)))
+                .Find(x => x.Number == roundId)
+                .FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<BigSmallBetEntity, BigSmallBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot, true)
+                var project = GetBaseAggregateBuilder<BigSmallBetEntity, BigSmallBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot, true, partnerId, username)
                     .Project(x => new BigSmallBetReportEntity
                     {
                         Time = x.Time,
@@ -33,7 +40,10 @@ namespace GamesAdmin.Database
                         Select = x.Select ?? x.Choice == "big",
                         Bet = x.Bet ?? x.Amount,
                         BetWin = x.Betwin,
-                        Back = x.Back ?? x.Refund
+                        Back = x.Back ?? x.Refund,
+                        Currency = x.Currency,
+                        Partner = x.PartnerId,
+                        Rate = x.Rate
                     });
                 var records = await project.ToListAsync();
 

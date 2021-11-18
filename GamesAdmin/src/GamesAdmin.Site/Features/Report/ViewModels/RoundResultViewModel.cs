@@ -5,7 +5,19 @@ using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class RoundResultViewModel
+    public abstract class BaseRoundResultViewModel
+    {
+        public decimal ExchangeRate { get; set; }
+
+        public decimal? ConvertByExchangeRate(decimal? value)
+        {
+            var exchangeRate = ExchangeRate == 0 ? 1 : ExchangeRate;
+
+            return value != null ? value / exchangeRate : null;
+        }
+    }
+
+    public class RoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -22,7 +34,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool IsEven => Total % 2 == 0;
     }
 
-    public class SeDieRoundResultViewModel
+    public class SeDieRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 

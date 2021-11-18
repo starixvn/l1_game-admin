@@ -9,7 +9,7 @@ namespace GamesAdmin.Database
 {
     public interface IOddEvenTurboReportRepository
     {
-        Task<(OddEvenTurboRoundEntity, IEnumerable<OddEvenBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot);
+        Task<(OddEvenTurboRoundEntity, IEnumerable<OddEvenBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
     }
 
     public class OddEvenTurboReportRepository : BaseBetReportRepository, IOddEvenTurboReportRepository
@@ -18,13 +18,18 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(OddEvenTurboRoundEntity, IEnumerable<OddEvenBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<(OddEvenTurboRoundEntity, IEnumerable<OddEvenBetReportEntity>)> GetAsync(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partnerId,
+            string username)
         {
             var roundResult = await database.GetCollection<OddEvenTurboRoundEntity>(Document.GetCollectionName(typeof(OddEvenTurboRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var records = await GetBaseAggregateBuilder<OddEvenTurboBetEntity, OddEvenBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot, true)
+                var records = await GetBaseAggregateBuilder<OddEvenTurboBetEntity, OddEvenBetWithUnwindAccountsEntity>(roundId, nickname, excludeBot, true, partnerId, username)
                     .Project(x => new OddEvenBetReportEntity
                     {
                         Time = x.Time,
@@ -33,7 +38,10 @@ namespace GamesAdmin.Database
                         Select = x.Select ?? x.Choice == "even",
                         Bet = x.Bet ?? x.Amount,
                         BetWin = x.Betwin,
-                        Back = x.Back ?? x.Refund
+                        Back = x.Back ?? x.Refund,
+                        Currency = x.Currency,
+                        Partner = x.PartnerId,
+                        Rate = x.Rate
                     }).ToListAsync();
 
                 return (roundResult, records);

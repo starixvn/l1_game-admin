@@ -1,0 +1,37 @@
+﻿using System;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
+{
+    public class BaseBetViewModel
+    {
+        public string UserId { get; set; }
+
+        public string Username { get; set; }
+
+        public string Nickname { get; set; }
+
+        public decimal BetWin { get; set; }
+
+        public decimal Refund { get; set; }
+
+        public DateTimeOffset Time { get; set; }
+
+        public string Partner { get; set; }
+
+        public string Currency { get; set; }
+
+<<<<<<< HEAD
+        public decimal Rate { get; set; }
+
+        public decimal ConvertToBase(decimal value) => value * Rate;
+=======
+        public double Rate { get; set; }
+
+        public decimal BaseRefund => ConvertToBase(Refund);
+
+        public decimal BaseBetWin => ConvertToBase(BetWin);
+
+        public decimal ConvertToBase(decimal value) => value * (decimal)Rate;
+>>>>>>> 830eed95... feat: implement game history for stake balanced games
+    }
+}

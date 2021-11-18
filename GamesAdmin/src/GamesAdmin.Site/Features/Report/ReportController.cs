@@ -21,51 +21,65 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult BigSmall()
+        public Task<IActionResult> BigSmall() => GetStakeBalancedView();
+
+        [HttpGet]
+        public async Task<IActionResult> GetBigSmallReport(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partner,
+            string username,
+            string currency)
         {
-            return View(new ReportViewModel());
+            var request = new GetBigSmallReportRequest(roundId, nickname, excludeBot, partner, username, currency);
+
+            return PartialView("_BigSmallRecords", await mediator.Send(request));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBigSmallReport(long roundId, string nickname, bool excludeBot)
+        public Task<IActionResult> TurboBigSmall() => GetStakeBalancedView();
+
+        [HttpGet]
+        public async Task<IActionResult> GetBigSmallTurboReport(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partner,
+            string username,
+            string currency)
         {
-            return PartialView("_BigSmallRecords", await mediator.Send(new GetBigSmallReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetBigSmallTurboReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
         }
 
         [HttpGet]
-        public IActionResult TurboBigSmall()
+        public Task<IActionResult> OddEven() => GetStakeBalancedView();
+
+        [HttpGet]
+        public async Task<IActionResult> GetOddEvenReport(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partner,
+            string username,
+            string currency)
         {
-            return View(new ReportViewModel());
+            return PartialView("_OddEvenRecords", await mediator.Send(new GetOddEvenReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBigSmallTurboReport(long roundId, string nickname, bool excludeBot)
-        {
-            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetBigSmallTurboReportRequest(roundId, nickname, excludeBot)));
-        }
+        public Task<IActionResult> TurboOddEven() => GetStakeBalancedView();
 
         [HttpGet]
-        public IActionResult OddEven()
+        public async Task<IActionResult> GetOddEvenTurboReport(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partner,
+            string username,
+            string currency)
         {
-            return View(new ReportViewModel());
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetOddEvenReport(long roundId, string nickname, bool excludeBot)
-        {
-            return PartialView("_OddEvenRecords", await mediator.Send(new GetOddEvenReportRequest(roundId, nickname, excludeBot)));
-        }
-
-        [HttpGet]
-        public IActionResult TurboOddEven()
-        {
-            return View(new ReportViewModel());
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot)
-        {
-            return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
         }
 
         [HttpGet]
@@ -103,7 +117,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             return View(new ReportViewModel { ExcludeUUS = true });
         }
-
 
         [HttpGet]
         [ActionName("rnglottery")]
@@ -162,13 +175,11 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_KenoPowerRecords", await mediator.Send(new GetKenoPowerReportRequest(game, roundId, nickname, excludeUUS)));
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
         {
             return PartialView("_KenoPowerBetHistory", await mediator.Send(new GetKenoPowerBetHistoryRequest(game, roundId, userId)));
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
@@ -249,10 +260,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult SpecialSeDie()
-        {
-            return View(new ReportViewModel());
-        }
+        public Task<IActionResult> SpecialSeDie() => GetStakeBalancedView();
 
         [HttpGet]
         public IActionResult VipFishPrawnCrab()
@@ -316,9 +324,15 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot)
+        public async Task<IActionResult> GetSpecialSeDieReport(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partner,
+            string username,
+            string currency)
         {
-            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot)));
+            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
         }
 
         [HttpGet]
@@ -456,6 +470,13 @@ namespace GamesAdmin.Site.Features.Report
                         model.FromDate.Date.ToUniversalTime(),
                         model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
                         model.ExcludeUUS, model.ExcludeBot)));
+        }
+
+        private async Task<IActionResult> GetStakeBalancedView()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new StakeBalancedViewModel { Selections = selections });
         }
         [HttpGet]
         public IActionResult BitcoinMaster()

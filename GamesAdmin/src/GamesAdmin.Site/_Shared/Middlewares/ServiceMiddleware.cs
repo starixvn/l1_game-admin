@@ -92,6 +92,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IChipService, ChipService>();
 
             services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
+            services.AddSingleton<IExchangeRateService, ExchangeRateService>();
 
             services.AddSingleton(RestService.For<ILogApi>(appSettings.ApiHost, refitSettings));
         }
