@@ -37,8 +37,10 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
-        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
-        IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>
+        IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>,
+        IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
+        IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
+        IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -547,11 +549,7 @@ namespace GamesAdmin.Site.Features.Report
             });
 
             return new CasinoHoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, records);
-        }
-
-        public async Task<CasinoHoldemPokerBetHistoryViewModel> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
-            => new CasinoHoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetCasinoHoldemPokerBetHistory(request.Filter));
-
+      }
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
@@ -587,6 +585,37 @@ namespace GamesAdmin.Site.Features.Report
                 })
             };
         }
+        
+        public async Task<HoldemPokerReportViewModel> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            var selections = new ReportSeletionsViewModel
+            {
+                Partners = await partnerService.GetPartnersForSelection(partner => true),
+                Currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled)
+            };
+
+            return new HoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
+        }
+
+        public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetHoldemPokerBetReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            var records = result.Select(x =>
+            {
+                var recordViewModel = mapper.Map<HoldemPokerRecordViewModel>(x);
+                recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                return recordViewModel;
+            });
+
+            return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, request.Filter.GameId, records);
+        }
+        
+        public async Task<HoldemPokerBetHistoryViewModel> Handle(GetHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+            => new HoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetHoldemPokerBetHistory(request.Filter));
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;

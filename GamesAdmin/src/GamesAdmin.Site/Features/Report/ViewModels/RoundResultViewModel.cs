@@ -7,6 +7,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public abstract class BaseRoundResultViewModel
     {
+        public decimal ExchangeRate { get; set; }
+
+        public decimal? ConvertByExchangeRate(decimal? value)
+        {
+            var exchangeRate = ExchangeRate == 0 ? 1 : ExchangeRate;
+
+            return value != null ? value / exchangeRate : null;
+        }
+    }
+
+    public class RoundResultViewModel : BaseRoundResultViewModel
+    {
         public DateTime Time { get; set; }
 
         public long Number { get; set; }

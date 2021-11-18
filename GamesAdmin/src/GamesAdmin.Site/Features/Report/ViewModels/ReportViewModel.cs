@@ -38,6 +38,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public ReportSeletionsViewModel Selections { get; set; }
 
+        public string Partner { get; set; }
+
+        [DisplayName("Convert to Currency")]
+        public string Currency { get; set; }
+
+        public string Username { get; set; }
+
+        public ReportSeletionsViewModel Selections { get; set; }
+
         [DisplayName("Partner")]
         public string PartnerId { get; set; }
 

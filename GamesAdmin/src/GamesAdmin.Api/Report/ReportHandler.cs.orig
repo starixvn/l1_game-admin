@@ -1,0 +1,150 @@
+﻿using GamesAdmin.Api.Report.Requests;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.SlotGame;
+using GamesAdmin.Core.Models.Spins;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace GamesAdmin.Api.Report
+{
+    public class ReportHandler :
+        IRequestHandler<BigSmallReportRequest, BigSmallBetReport>,
+        IRequestHandler<GameReportRequest, IEnumerable<BaseBetHistory>>,
+        IRequestHandler<BigSmallTurboReportRequest, BigSmallBetReport>,
+        IRequestHandler<OddEvenTurboReportRequest, OddEvenBetReport>,
+        IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
+        IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
+        IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
+        IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
+        IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
+        IRequestHandler<SlotGameReportRequest, IEnumerable<SlotGameBetRecord>>,
+        IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
+        IRequestHandler<BitcoinMasterReportRequest, BitcoinMasterBetReport>,
+        IRequestHandler<BitcoinMasterBetHistoryRequest, BitcoinMasterBetHistory>,
+        IRequestHandler<BetReportRequest, BetReportBase>,
+        IRequestHandler<BetHistoryRequest, BetHistory>,
+        IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
+        IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>,
+        IRequestHandler<HiLoReportRequest, IEnumerable<HiLoBetRecord>>
+    {
+        private readonly IReportService reportService;
+        private readonly IReportServiceFactory reportServiceFactory;
+        private readonly IServiceProvider serviceProvider;
+
+        public ReportHandler(IReportService reportService, IReportServiceFactory reportServiceFactory, IServiceProvider serviceProvider)
+        {
+            this.reportService = reportService;
+            this.reportServiceFactory = reportServiceFactory;
+            this.serviceProvider = serviceProvider;
+        }
+
+        public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetBigSmallReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
+
+        public async Task<IEnumerable<BaseBetHistory>> Handle(GameReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetBetHistoryReport(request.Name, request.RoundId, request.GameType);
+
+        public async Task<BigSmallBetReport> Handle(BigSmallTurboReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetBigSmallTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
+
+        public async Task<OddEvenBetReport> Handle(OddEvenTurboReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetOddEvenTurboReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
+
+        public async Task<OddEvenBetReport> Handle(OddEvenReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
+<<<<<<< HEAD
+=======
+
+        public async Task<SeDieBetReport> Handle(SeDieReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
+            => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<IEnumerable<KenoBetRecord>> Handle(KenoReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoBetHistoryAsync(request.Game, request.RoundId, request.Nickname);
+
+        public Task<KenoRoundResult> Handle(KenoRoundResultRequest request, CancellationToken cancellationToken)
+        => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
+
+        public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<DragonTigerBetReport> Handle(DragonTigerReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetDragonTigerReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<BaccaratBetReport> Handle(BaccaratReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<RouletteBetReport> Handle(RouletteReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetRouletteReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public Task<RouletteBetHistory> Handle(RouletteBetHistoryRequest request, CancellationToken cancellationToken)
+        => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.UserId);
+>>>>>>> af7f6818 (feat: implement game history for stake balanced games)
+
+     
+        public Task<IEnumerable<SpinResult>> Handle(LuckyWheelReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetLuckyWheelReportAsync(request.Nickname);
+
+        public Task<SpecialSeDieBetReport> Handle(SpecialSeDieReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetSpecialSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
+
+        public Task<SpecialSeDieBetHistory> Handle(SpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
+        => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);
+
+        public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
+        => serviceProvider.GetRequiredService<BlackjackReportService>().Get(request.Filter);
+
+        public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetSlotGameReportAsync(request.Filter);
+
+        public Task<IEnumerable<JackpotRecord>> Handle(JackpotReportRequest request, CancellationToken cancellationToken)
+        => reportService.GetJackpotReportAsync(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
+
+        public async Task<BitcoinMasterBetReport> Handle(BitcoinMasterReportRequest request, CancellationToken cancellationToken)
+               => await reportService.GetBitcoinMasterReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
+
+        public Task<BitcoinMasterBetHistory> Handle(BitcoinMasterBetHistoryRequest request, CancellationToken cancellationToken)
+                => reportService.GetBitcoinMasterBetHistoryAsync(request.RoundId, request.Nickname);
+
+        public Task<BetReportBase> Handle(BetReportRequest request, CancellationToken cancellationToken)
+        {
+            var service = reportServiceFactory.GetService(request.Filter.Game);
+            return service.Get(request.Filter);
+        }
+
+        public Task<BetHistory> Handle(BetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var service = reportServiceFactory.GetBetHistoryService(request.Filter.Game);
+            return service.Get(request.Filter);
+        }
+
+        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return reportService.GetCasinoHoldemPokerReportAsync(request.Filter);
+            }
+            catch (Exception ex)
+            {
+                var a = ex;
+                return null;
+            }
+        }
+
+        public async Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+              => await reportService.GetCasinoHoldemPokerBetHistoryAsync(request.Filter);
+
+        public Task<IEnumerable<HiLoBetRecord>> Handle(HiLoReportRequest request, CancellationToken cancellationToken)
+        => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
+    }
+}

@@ -28,6 +28,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal BaseBetWin => ConvertToBase(BetWin);
 
-        public decimal ConvertToBase(decimal value) => value * Rate;
+        public decimal BaseRefund => ConvertToBase(Refund);
+
+        public decimal BaseBetWin => ConvertToBase(BetWin);
+
+        public decimal ConvertToBase(decimal value) => value * (decimal)Rate;
     }
 }
