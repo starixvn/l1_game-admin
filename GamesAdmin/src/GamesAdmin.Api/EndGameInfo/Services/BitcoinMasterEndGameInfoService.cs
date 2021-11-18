@@ -25,7 +25,7 @@ namespace GamesAdmin.Api.EndGameInfo
             }
 
             var amount = bets.Sum(x => x.Amount);
-            var totalWin = bets.Sum(x => x.Win ? x.Betwin + x.Amount - x.Refund : 0);
+            var totalWin = bets.Sum(x => x.Win ? x.Betwin + x.Amount : x.Refund);
 
             return new EndGameInfoResult
             {
