@@ -284,7 +284,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Win { get; set; }
         public string Choice { get; set; }
 
-        public decimal GrossWin => Win ? BetWin + Refund - Bet : 0;
+        public decimal GrossWin => Win ? BetWin + Bet - Refund : 0;
     }
 
     public class KenoMatchRecordViewModel : BetRecordViewModel

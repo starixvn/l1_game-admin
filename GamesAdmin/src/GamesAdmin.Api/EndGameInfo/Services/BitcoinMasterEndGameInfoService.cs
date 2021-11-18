@@ -7,9 +7,9 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class BitcoinMasterEndGameInfoService : BaseEndGameInfoService<BitcoinMasterRoundEntity, BitcoinMasterOnesEntity>, IEndGameInfoService
+    public class BitcoinMasterEndGameInfoService : BaseEndGameInfoService<BitcoinMasterRoundEntity, BitcoinMasterBetEntity>, IEndGameInfoService
     {
-        public BitcoinMasterEndGameInfoService(IGenericRepository<BitcoinMasterRoundEntity> roundRepository, IGenericRepository<BitcoinMasterOnesEntity> betRepository)
+        public BitcoinMasterEndGameInfoService(IGenericRepository<BitcoinMasterRoundEntity> roundRepository, IGenericRepository<BitcoinMasterBetEntity> betRepository)
             : base(roundRepository, betRepository)
         {
         }
@@ -24,15 +24,15 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1001;
             }
 
-            var bet = bets.FirstOrDefault();
-            var amount = bet.Up + bet.Down + bet.Odd + bet.Even;
+            var amount = bets.Sum(x => x.Amount);
+            var totalWin = bets.Sum(x => x.Win ? x.Betwin + x.Amount - x.Refund : 0);
 
             return new EndGameInfoResult
             {
                 EndTime = round.Time,
                 ValidBetAmount = amount,
                 TotalAmount = amount,
-                TotalWin = bet.Betwin > 0 ? bet.Betwin + amount : bet.Refund
+                TotalWin = totalWin
             };
         }
     }
