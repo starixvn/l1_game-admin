@@ -45,117 +45,120 @@
                 }
             </tr>
         </thead>
-        <tbody id="partner-body-content">
-            @{
-                var rowSpan = Model.Partners.Count();
-                var firstRowData = Model.Partners[0];
-                var firstPartnerUmInfo = Model.GetPartnerUmInfo(firstRowData.PartnerId);
-
-                if (firstRowData != null)
+        
+                @if (Model.Partners != null && Model.Partners.Count > 0)
                 {
-                    <tr>
-                        <td class="text-center">
-                            <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
-                        </td>
-                        <td>@firstRowData.PartnerId</td>
-                        <td>@firstRowData.Name</td>
-                        <td>
-                            @{
-                                if (firstPartnerUmInfo != null)
-                                {
-                                    <p class="text-danger">ON</p>
-                                    <button class="btn-info" title="@(firstPartnerUmInfo)" data-toggle="tooltip">
-                                        <i class="icon-info"></i>
-                                    </button>
-                                }
-                                else
-                                {
-                                    @("OFF")
-                                }
-                            }
-                        </td>
-                        <td class="sc-um-info" rowspan="@(rowSpan)">
-                            @{
-                                if (Model.SCUmInfo != null)
-                                {
-                                    <p class="text-danger">ON</p>
-                                    <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
-                                        <i class="icon-info"></i>
-                                    </button>
-                                }
-                                else
-                                {
-                                    @("OFF")
-                                }
-                            }
-                        </td>
-                        <td>@firstRowData.SecretKey</td>
-                        <td>@firstRowData.ClubVersionUrl</td>
-                        <td>@firstRowData.MiniVersionUrl</td>
-                        <td>@firstRowData.MobiVersionUrl</td>
-                        <td>@firstRowData.TestCurrencyUrl</td>
-                        @if (Model.EditPermission)
-                        {
-                            <td class="text-center">
-                                <button class="btn-edit" onclick="partner.showEditForm('@firstRowData.PartnerId')"><i class="icon-edit"></i></button>
-                            </td>
-                        }
-                    </tr>
-                }
-            }
-            @foreach (var item in Model.Partners.TakeLast(rowSpan - 1))
-            {
-                <tr>
-                    <td class="text-center">
-                        <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
-                    </td>
-                    <td>@item.PartnerId</td>
-                    <td>@item.Name</td>
-                    <td>
-                        @{
-                            var partnerUmInfo = Model.GetPartnerUmInfo(item.PartnerId);
-                            if (partnerUmInfo != null)
-                            {
-                                <p class="text-danger">ON</p>
-                                <button class="btn-info" title="@(partnerUmInfo)" data-toggle="tooltip">
-                                    <i class="icon-info"></i>
-                                </button>
-                            }
-                            else
-                            {
-                                @("OFF")
-                            }
-                        }
-                    </td>
-                    <td class="sc-um-info" style="display:none">
-                        @{
-                            if (Model.SCUmInfo != null)
-                            {
-                                <p class="text-danger">ON</p>
-                                <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
-                                    <i class="icon-info"></i>
-                                </button>
-                            }
-                            else
-                            {
-                                @("OFF")
-                            }
-                        }
-                    </td>
-                    <td>@item.SecretKey</td>
-                    <td>@item.ClubVersionUrl</td>
-                    <td>@item.MiniVersionUrl</td>
-                    <td>@item.MobiVersionUrl</td>
-                    <td>@item.TestCurrencyUrl</td>
-                    @if (Model.EditPermission)
+                    var rowSpan = Model.Partners.Count();
+                    var firstRowData = Model.Partners[0];
+                    var firstPartnerUmInfo = Model.GetPartnerUmInfo(firstRowData.PartnerId);
+                    <tbody id="partner-body-content">
+                    @if (firstRowData != null)
                     {
-                        <td class="text-center">
-                            <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
-                        </td>
+                        <tr>
+                            <td class="text-center">
+                                <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
+                            </td>
+                            <td>@firstRowData.PartnerId</td>
+                            <td>@firstRowData.Name</td>
+                            <td>
+                                @{
+                                    if (firstPartnerUmInfo != null)
+                                    {
+                                        <p class="text-danger">ON</p>
+                                        <button class="btn-info" title="@(firstPartnerUmInfo)" data-toggle="tooltip">
+                                            <i class="icon-info"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        @("OFF")
+                                    }
+                                }
+                            </td>
+                            <td class="sc-um-info" rowspan="@(rowSpan)">
+                                @{
+                                    if (Model.SCUmInfo != null)
+                                    {
+                                        <p class="text-danger">ON</p>
+                                        <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
+                                            <i class="icon-info"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        @("OFF")
+                                    }
+                                }
+                            </td>
+                            <td>@firstRowData.SecretKey</td>
+                            <td>@firstRowData.ClubVersionUrl</td>
+                            <td>@firstRowData.MiniVersionUrl</td>
+                            <td>@firstRowData.MobiVersionUrl</td>
+                            <td>@firstRowData.TestCurrencyUrl</td>
+                            @if (Model.EditPermission)
+                            {
+                                <td class="text-center">
+                                    <button class="btn-edit" onclick="partner.showEditForm('@firstRowData.PartnerId')"><i class="icon-edit"></i></button>
+                                </td>
+                            }
+                        </tr>
                     }
-                </tr>
-            }
-        </tbody>
+
+                    @foreach (var item in Model.Partners.TakeLast(rowSpan - 1))
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
+                            </td>
+                            <td>@item.PartnerId</td>
+                            <td>@item.Name</td>
+                            <td>
+                                @{
+                                    var partnerUmInfo = Model.GetPartnerUmInfo(item.PartnerId);
+                                    if (partnerUmInfo != null)
+                                    {
+                                        <p class="text-danger">ON</p>
+                                        <button class="btn-info" title="@(partnerUmInfo)" data-toggle="tooltip">
+                                            <i class="icon-info"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        @("OFF")
+                                    }
+                                }
+                            </td>
+                            <td class="sc-um-info" style="display:none">
+                                @{
+                                    if (Model.SCUmInfo != null)
+                                    {
+                                        <p class="text-danger">ON</p>
+                                        <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
+                                            <i class="icon-info"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        @("OFF")
+                                    }
+                                }
+                            </td>
+                            <td>@item.SecretKey</td>
+                            <td>@item.ClubVersionUrl</td>
+                            <td>@item.MiniVersionUrl</td>
+                            <td>@item.MobiVersionUrl</td>
+                            <td>@item.TestCurrencyUrl</td>
+                            @if (Model.EditPermission)
+                            {
+                                <td class="text-center">
+                                    <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                     </tbody>
+
+                }
     </table>
 
 
