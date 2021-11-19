@@ -46,7 +46,7 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public IEnumerable<SelectListItem> PartnerItems { get; set; }
 
         public string GetPartnerName()
-            => PartnerItems.FirstOrDefault(item => string.Equals(item.Value, PartnerId))?.Text;
+            => PartnerItems?.FirstOrDefault(item => string.Equals(item.Value, PartnerId))?.Text;
     }
 
     public class BotUserViewModel

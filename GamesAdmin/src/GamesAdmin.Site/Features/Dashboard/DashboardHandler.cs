@@ -49,19 +49,19 @@ namespace GamesAdmin.Site.Features.Dashboard
         private async Task<OnlineUsersViewModel> ConvertToOnlineUserViewModel(OnlineUsers onlineUsers)
         {
             var partners = await GetPartnerSelections();
-            var realUsers = mapper.Map<IEnumerable<OnlineUserViewModel>>(onlineUsers.RealUsers).Select(model =>
-            {
-                model.PartnerItems = partners;
-
-                return model;
-            }).AsEnumerable();
+            var realUsers = mapper.Map<IEnumerable<OnlineUserViewModel>>(onlineUsers.RealUsers)
+                .Select(model => AddPartnerField(model, partners))
+                .AsEnumerable();
+            var testUsers = mapper.Map<IEnumerable<OnlineUserViewModel>>(onlineUsers.TestUsers)
+                .Select(model => AddPartnerField(model, partners))
+                .AsEnumerable();
 
             var viewModel = new OnlineUsersViewModel
             {
                 TotalRealPlayer = onlineUsers.TotalRealPlayer,
                 RealUsers = realUsers,
                 TotalTestPlayer = onlineUsers.TotalTestPlayer,
-                TestUsers = onlineUsers.TestUsers.Select(x => mapper.Map<OnlineUserViewModel>(x)),
+                TestUsers = testUsers,
                 TotalBots = onlineUsers.TotalBots,
                 Bots = onlineUsers.Bots.Select(x => mapper.Map<BotUserViewModel>(x)),
                 GameTypeItems = GenerateGameItems(),
@@ -70,6 +70,13 @@ namespace GamesAdmin.Site.Features.Dashboard
             };
 
             return viewModel;
+        }
+
+        private static OnlineUserViewModel AddPartnerField(OnlineUserViewModel model, IEnumerable<SelectListItem> partners)
+        {
+            model.PartnerItems = partners;
+
+            return model;
         }
 
         private async Task<IEnumerable<SelectListItem>> GetPartnerSelections()
