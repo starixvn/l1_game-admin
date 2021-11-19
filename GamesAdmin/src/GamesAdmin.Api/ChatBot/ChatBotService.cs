@@ -24,7 +24,7 @@ namespace GamesAdmin.Api.ChatBot
     public class ChatBotService : IChatBotService
     {
         private const string Separator = " - ";
-        private const string HighStakeMessageTemplate = "*VG2* {0} - {1}";
+        private const string HighStakeMessageTemplate = "\\[VG2\\] {0} - {1}";
         private const int MinBetAmount = 2000;
 
         private readonly IAppSettings appSettings;
