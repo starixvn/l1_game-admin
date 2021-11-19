@@ -80,7 +80,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.VipFishPrawnCrab => await Move<VipFishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipBaccarat => await Move<VipBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipSeDieWar => await Move<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.BitcoinMaster => await Move<BitcoinMasterOnesEntity, BitcoinMasterBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.BitcoinMaster => await Move<BitcoinMasterOnesEntity, BitcoinMasterBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMatch1 => await Move<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMatch2 => await Move<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -131,7 +131,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.VipFishPrawnCrab => await Find<VipFishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipBaccarat => await Find<VipBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipSeDieWar => await Find<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.BitcoinMaster => await Find<BitcoinMasterOnesEntity, BitcoinMasterBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.BitcoinMaster => await Find<BitcoinMasterOnesEntity, BitcoinMasterBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMatch1 => await Find<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMatch2 => await Find<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower1 => await Find<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -322,7 +322,7 @@ namespace GamesAdmin.Api.VoidGame
             var oneRecord = (await FindTicket(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet)).FirstOrDefault();
 
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
-            var betRecords = await FindTicket(betCollection,  obCustId, partnerId, siteId, gameRoundId, freeBet);
+            var betRecords = await FindTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
 
             return oneRecord == null && betRecords == null ? default : new GameTicketRecord<One, Bet>(oneRecord, betRecords, isArchive);
         }
