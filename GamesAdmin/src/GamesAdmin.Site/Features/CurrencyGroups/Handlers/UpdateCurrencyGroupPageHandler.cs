@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroups.Requests;
 using GamesAdmin.Site.Features.CurrencyGroups.ViewModels;
@@ -24,8 +26,10 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         public async Task<UpdateCurrencyGroupViewModel> Handle(UpdateCurrencyGroupPageRequest request, CancellationToken cancellationToken)
         {
             var group = await Api.GetById(request.Id);
+            Func<CurrencyModel, bool> filterCurrency = (model) => (string.IsNullOrEmpty(model.GroupId) || string.Equals(model.GroupId, group.Id)) && model.Enabled;
+
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
-            var currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) || string.Equals(model.GroupId, group.Id));
+            var currencies = await currencyService.GetCurrenciesForSelection(filterCurrency);
 
             return new UpdateCurrencyGroupViewModel
             {

@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         public async Task<CreateCurrencyGroupViewModel> Handle(CreateCurrencyGroupPageRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
-            var currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId));
+            var currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled);
 
             return new CreateCurrencyGroupViewModel
             {
