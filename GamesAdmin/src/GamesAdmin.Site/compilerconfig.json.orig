@@ -80,12 +80,22 @@
     "inputFile": "wwwroot/scss/pages/api-log.scss"
   },
   {
-<<<<<<< HEAD
     "outputFile": "wwwroot/scss/pages/casino-holdem-poker-result.css",
     "inputFile": "wwwroot/scss/pages/casino-holdem-poker-result.scss"
-=======
+  },
+  {
     "outputFile": "wwwroot/js/blackjack-report.es5.js",
     "inputFile": "wwwroot/js/blackjack-report.js"
->>>>>>> 036f1fc7... feat: blackjack report
+<<<<<<< HEAD
+  },
+  {
+    "outputFile": "wwwroot/js/slot-game-report.es5.js",
+    "inputFile": "wwwroot/js/slot-game-report.js"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/slot-game-report.css",
+    "inputFile": "wwwroot/scss/pages/slot-game-report.scss"
+=======
+>>>>>>> 6e69c080 (feat: blackjack report)
   }
 ]

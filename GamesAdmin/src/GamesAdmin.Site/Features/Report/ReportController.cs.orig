@@ -23,7 +23,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-<<<<<<< HEAD
         public async Task<IActionResult> Index(GameId game)
         {
             var viewModel = await GetReportViewModel();
@@ -100,75 +99,15 @@ namespace GamesAdmin.Site.Features.Report
         public Task<IActionResult> TurboOddEven() => GetStakeBalancedView();
 
         [HttpGet]
-=======
-        public Task<IActionResult> BigSmall() => GetStakeBalancedView();
-
-        [HttpGet]
-        public async Task<IActionResult> GetBigSmallReport(
-            long roundId,
-            string nickname,
-            bool excludeBot,
-            string partner,
-            string username,
-            string currency)
-        {
-            var request = new GetBigSmallReportRequest(roundId, nickname, excludeBot, partner, username, currency);
-
-            return PartialView("_BigSmallRecords", await mediator.Send(request));
-        }
-
-        [HttpGet]
-        public Task<IActionResult> TurboBigSmall() => GetStakeBalancedView();
-
-        [HttpGet]
-        public async Task<IActionResult> GetBigSmallTurboReport(
-            long roundId,
-            string nickname,
-            bool excludeBot,
-            string partner,
-            string username,
-            string currency)
-        {
-            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetBigSmallTurboReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
-        }
-
-        [HttpGet]
-        public Task<IActionResult> OddEven() => GetStakeBalancedView();
-
-        [HttpGet]
-        public async Task<IActionResult> GetOddEvenReport(
-            long roundId,
-            string nickname,
-            bool excludeBot,
-            string partner,
-            string username,
-            string currency)
-        {
-            return PartialView("_OddEvenRecords", await mediator.Send(new GetOddEvenReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
-        }
-
-        [HttpGet]
-        public Task<IActionResult> TurboOddEven() => GetStakeBalancedView();
-
-        [HttpGet]
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         public async Task<IActionResult> GetOddEvenTurboReport(
             long roundId,
             string nickname,
             bool excludeBot,
-<<<<<<< HEAD
             string partnerId,
             string username,
             string currency)
         {
             return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot, partnerId, username, currency)));
-=======
-            string partner,
-            string username,
-            string currency)
-        {
-            return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         }
 
         [HttpGet]
@@ -251,30 +190,7 @@ namespace GamesAdmin.Site.Features.Report
         [ActionName("kenopowermd5")]
         public IActionResult KenoPower2()
         {
-<<<<<<< HEAD
             return RedirectToAction("Index", new { game = GameId.KenoPower2 });
-=======
-            ViewData["Title"] = "Keno Power MD5";
-            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower2, ExcludeUUS = true });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetKenoPowerReport(GameId game, long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_KenoPowerRecords", await mediator.Send(new GetKenoPowerReportRequest(game, roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
-        {
-            return PartialView("_KenoPowerBetHistory", await mediator.Send(new GetKenoPowerBetHistoryRequest(game, roundId, userId)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
-        {
-            return PartialView("_KenoMatchBetHistory", await mediator.Send(new GetKenoMatchBetHistoryRequest(game, roundId, userId)));
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         }
 
         [HttpGet]
@@ -310,6 +226,12 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> Blackjack()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
+<<<<<<< HEAD
+=======
+
+            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
+        }
+>>>>>>> 6e69c080 (feat: blackjack report)
 
             return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
         }
@@ -398,19 +320,11 @@ namespace GamesAdmin.Site.Features.Report
             long roundId,
             string nickname,
             bool excludeBot,
-<<<<<<< HEAD
             string partnerId,
             string username,
             string currency)
         {
             return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot, partnerId, username, currency)));
-=======
-            string partner,
-            string username,
-            string currency)
-        {
-            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         }
 
         [HttpGet]
@@ -535,16 +449,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         private async Task<IActionResult> GetStakeBalancedView()
-<<<<<<< HEAD
-=======
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-
-            return View(new StakeBalancedViewModel { Selections = selections });
-        }
-        [HttpGet]
-        public IActionResult BitcoinMaster()
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
@@ -573,29 +477,6 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, rate)));
 
         [HttpGet]
-        [Route("Report/CasinoHoldem")]
-        public async Task<IActionResult> CasinoHoldemPoker()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-
-            return View(new CasinoHoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCasinoHoldemPokerReport(CasinoHoldemPokerBetReportFilter filter)
-        {
-            return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(filter)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> CasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
-        {
-            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(filter));
-
-            return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
-        }
-
-        [HttpGet]
         [Route("Report/Hi-Lo")]
         public async Task<IActionResult> HiLo()
         {
@@ -609,7 +490,24 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
         }
+        
+            [HttpGet]
+        [Route("Report/CasinoHoldem")]
+        public async Task<IActionResult> CasinoHoldemPoker()
+            => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
 
+        [HttpGet]
+        [Route("Report/TexasHoldem")]
+        public async Task<IActionResult> TexasHoldemPoker()
+            => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.TexasHoldemPoker)));
+
+        [HttpGet]
+        public async Task<IActionResult> GetHoldemPokerReport(HoldemPokerBetReportFilter filter)
+            => PartialView("HoldemPoker/_Report", await mediator.Send(new GetHoldemPokerReportRequest(filter)));
+
+        [HttpGet]
+        public async Task<IActionResult> HoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
+            => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

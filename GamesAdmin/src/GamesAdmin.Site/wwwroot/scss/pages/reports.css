@@ -44,9 +44,6 @@
 .form .input-validation-error {
   border-color: #dc3545; }
 
-.form .convert-to-usd {
-  width: 14rem; }
-
 .report-container {
   margin-top: 1rem;
   padding: 0; }
@@ -225,9 +222,6 @@
 
 .bitcoin-master-result .result-detail {
   margin-left: 5px; }
-
-.bitcoin-master-result .tie .result-detail {
-  margin-left: 0; }
 
 .bitcoin-master-report .display-none {
   display: none !important; }

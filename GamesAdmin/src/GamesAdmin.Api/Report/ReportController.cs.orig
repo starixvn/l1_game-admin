@@ -79,9 +79,35 @@ namespace GamesAdmin.Api.Report
          => (await mediator.Send(new SpecialSeDieBetHistoryRequest(roundId, userId)));
 
         [HttpGet]
+<<<<<<< HEAD
         [Route("blackjack")]
         public async Task<IEnumerable<BlackjackBetRecord>> Blackjack([FromQuery] BlackjackBetReportFilter filter)
         => (await mediator.Send(new BlackjackReportRequest(filter)));
+=======
+        [Route("blackjack/hand/{handId}/users/{nickname?}")]
+        public async Task<IEnumerable<BlackjackBetRecord>> Blackjack(BlackjackBetReportFilter filter)
+       => (await mediator.Send(new BlackjackReportRequest(filter)));
+
+        [HttpGet]
+        [Route("slot_game/round/{roundId}/users/{nickname?}")]
+        public async Task<IEnumerable<SlotGameBetRecord>> SlotGame(long roundId, string nickname, bool excludeUUS, string game)
+        => (await mediator.Send(new SlotGameReportRequest(roundId, nickname, excludeUUS, game)));
+
+        [HttpGet]
+        [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]
+        public async Task<VipFishPrawnCrabBetReport> VipFishPrawnCrab(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new VipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("vipsediewar/round/{roundId}/users/{nickname?}")]
+        public async Task<VipSeDieWarBetReport> VipSeDieWar(long roundId, string nickname, bool excludeUUS)
+        => (await mediator.Send(new VipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
+
+        [HttpGet]
+        [Route("bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
+        public async Task<VipSeDieWarBetHistory> VipSeDieWarBetHistory(string userId, long roundId)
+         => (await mediator.Send(new VipSeDieWarBetHistoryRequest(roundId, userId)));
+>>>>>>> 6e69c080 (feat: blackjack report)
 
         [HttpGet]
         [Route("slot_game/round/{roundId}/nick/{nickname?}")]

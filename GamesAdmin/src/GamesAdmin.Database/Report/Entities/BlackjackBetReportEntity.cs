@@ -31,5 +31,11 @@ namespace GamesAdmin.Database.Report.Entities
         public IEnumerable<string> Actions { get; set; }
 
         public IEnumerable<byte> SoftPoints { get; set; }
+
+        public string Currency { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public double Rate { get; set; }
     }
 }

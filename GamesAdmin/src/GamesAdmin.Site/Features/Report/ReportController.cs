@@ -228,6 +228,8 @@ namespace GamesAdmin.Site.Features.Report
             var selections = await mediator.Send(new GetSelectionsRequest());
 
             return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
+
+            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
