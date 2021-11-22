@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroups.Requests;
@@ -10,7 +11,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
     {
         Task<IEnumerable<CurrencyGroupModel>> GetAll();
 
-        Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId);
+        Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId, Func<CurrencyGroupModel, bool> filter = null);
     }
 
     public class CurrencyGroupService : ICurrencyGroupService
@@ -27,7 +28,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
         public Task<IEnumerable<CurrencyGroupModel>> GetAll()
             => api.GetAll();
 
-        public Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId)
-            => mediator.Send(new GetCurrencyGroupsByPartnerRequest(partnerId));
+        public Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId, Func<CurrencyGroupModel, bool> filter = null)
+            => mediator.Send(new GetCurrencyGroupsByPartnerRequest(partnerId, filter));
     }
 }

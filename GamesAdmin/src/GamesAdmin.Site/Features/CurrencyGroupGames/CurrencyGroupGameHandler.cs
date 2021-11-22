@@ -64,7 +64,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
         {
             var result = new IndexViewModel();
-            var currencyGroups = (await currencyGroupService.GetByPartner(request.PartnerId)).ToList();
+            var currencyGroups = (await currencyGroupService.GetByPartner(request.PartnerId, group => group.Enabled)).ToList();
 
             result.PartnerId = request.PartnerId;
             result.PartnerName = request.PartnerName;
@@ -84,7 +84,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
             return betChoices?.Select(choice => new GameSettings.ViewModels.MaxBetChoiceViewModel(
                 choice.Value,
-                maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice.Value)  ? maxBetPerChoices[choice.Value] : 0,
+                maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice.Value) ? maxBetPerChoices[choice.Value] : 0,
                 choice.DisplayName)).ToList();
         }
     }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,7 +16,13 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
         {
         }
 
-        public Task<IEnumerable<CurrencyGroupModel>> Handle(GetCurrencyGroupsByPartnerRequest request, CancellationToken cancellationToken)
-            => Api.GetByPartner(request.PartnerId);
+        public async Task<IEnumerable<CurrencyGroupModel>> Handle(GetCurrencyGroupsByPartnerRequest request, CancellationToken cancellationToken)
+        {
+            var groups = await Api.GetByPartner(request.PartnerId);
+            Func<CurrencyGroupModel, bool> defaultFilter = (model) => true;
+            var filter = request.Filter ?? defaultFilter;
+
+            return groups.Where(filter).AsEnumerable();
+        }
     }
 }
