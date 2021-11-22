@@ -21,6 +21,7 @@ namespace GamesAdmin.Site.Features.VoidGame
         public async Task<IActionResult> Index() => View( await mediator.Send(new IndexViewRequest()));
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> VoidTicket([Bind] IndexViewModel viewModel)
         {
             var resultModel = await mediator.Send(new VoidTicketRequest(
