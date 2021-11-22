@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.ExchangeRates
         [HttpGet]
         public async Task<IActionResult> Query(DateTime from, DateTime to)
         {
-            var request = new QueryExchangeRateRequest(from, to);
+            var request = new QueryExchangeRateRequest(from, to.AddTicks(TimeSpan.TicksPerDay));
             var viewModels = await mediator.Send(request);
 
             return PartialView("_Rates", viewModels);

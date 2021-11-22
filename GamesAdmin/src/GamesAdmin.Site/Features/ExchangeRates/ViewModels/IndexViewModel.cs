@@ -9,6 +9,6 @@ namespace GamesAdmin.Site.Features.ExchangeRates.ViewModels
         public DateTime From { get; set; } = DateTime.UtcNow;
 
         [DisplayName("To (GMT+7)")]
-        public DateTime To { get; set; } = DateTime.UtcNow.AddDays(1);
+        public DateTime To { get; set; } = DateTime.UtcNow;
     }
 }
