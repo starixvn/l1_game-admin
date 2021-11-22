@@ -58,7 +58,7 @@ namespace GamesAdmin.Api.Report
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistoryAsync(long roundId, string userId);
 
-        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(long handId, string nickname, bool excludeUUS);
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter);
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
 
@@ -490,10 +490,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(long handId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter)
         {
             var repository = serviceProvider.GetService<IBlackjackReportRepository>();
-            var result = await repository.GetAsync(handId, nickname, excludeUUS);
+            var result = await repository.GetAsync(filter);
 
             return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }

@@ -242,9 +242,11 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult Blackjack()
+        public async Task<IActionResult> Blackjack()
         {
-            return View(new BlackjackReportViewModel { ExcludeUUS = true });
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
@@ -478,6 +480,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return View(new StakeBalancedViewModel { Selections = selections });
         }
+
         [HttpGet]
         public IActionResult BitcoinMaster()
         {

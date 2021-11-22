@@ -12,12 +12,37 @@
       method="get">
     <div class="form-row align-items-center">
         <div class="col-auto">
+            <label class="required" asp-for="PartnerId"></label>
+            <select asp-items="@Model.Selections.Partners" asp-for="PartnerId" class="form-control">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label asp-for="FromDate" class="control-label"></label>
+            <input type="date" class="form-control" asp-for="FromDate">
+        </div>
+        <div class="col-auto">
+            <label asp-for="ToDate" class="control-label"></label>
+            <input type="date" class="form-control" asp-for="ToDate">
+        </div>
+        <div class="col-auto">
             <label asp-for="HandId" class="control-label"></label>
             <input type="number" class="form-control" asp-for="HandId">
         </div>
         <div class="col-auto">
             <label asp-for="Nickname" class="control-label"></label>
             <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+        </div>
+        <div class="col-auto">
+            <label asp-for="Username" class="control-label"></label>
+            <input type="text" class="form-control" placeholder="Username" asp-for="Username">
+        </div>
+        <div class="col-auto mt-5">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="ConvertToUSD">
+                <label class="form-check-label" asp-for="ConvertToUSD">
+                </label>
+            </div>
         </div>
         <div class="col-auto mt-5">
             <div class="form-check">
@@ -33,6 +58,7 @@
             </div>
         </div>
     </div>
+    <span asp-validation-for="HandId" class="text-danger"></span>
 </form>
 
 <div id="report-result" class="col-sm-12 report-container">
@@ -41,5 +67,11 @@
 <partial name="_Modal" />
 
 @section Scripts {
-    <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/js/blackjack-report.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/blackjack-report.min.js" asp-append-version="true"></script>
+    </environment>
 }

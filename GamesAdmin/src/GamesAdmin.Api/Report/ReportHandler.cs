@@ -119,7 +119,7 @@ namespace GamesAdmin.Api.Report
         => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);
 
         public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetBlackjackReportAsync(request.HandId, request.Nickname, request.ExcludeUUS);
+        => reportService.GetBlackjackReportAsync(request.Filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSlotGameReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
