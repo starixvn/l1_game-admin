@@ -2,6 +2,7 @@
     return {
         init: function () {
             $('#exchange-rate-table').DataTable({
+                order: [[0, "desc"]],
                 lengthMenu: [100, 200, 500]
             });
         }
