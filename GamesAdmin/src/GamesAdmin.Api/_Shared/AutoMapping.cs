@@ -290,8 +290,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoPowerBetReportEntity, KenoPowerBetRecord>();
             CreateMap<KenoPowerBetEntity, KenoPowerBetHistoryRecord>();
 
-            CreateMap<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerRoundResult>();
-            CreateMap<CasinoHoldemPokerResultEntity, CasinoHoldemPokerSettlementResult>();
+            CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>();
         }
     }
 }

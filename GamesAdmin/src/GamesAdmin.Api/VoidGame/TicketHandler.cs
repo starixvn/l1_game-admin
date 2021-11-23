@@ -87,7 +87,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoMatch2 => await Move<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower2 => await Move<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.CasinoHoldemPoker => await Move<CasinoHoldemPokerBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.CasinoHoldemPoker => await Move<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -141,7 +141,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoMatch2 => await Find<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower1 => await Find<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower2 => await Find<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.CasinoHoldemPoker => await Find<CasinoHoldemPokerBetEntity>(obCustId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.CasinoHoldemPoker => await Find<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 

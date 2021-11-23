@@ -100,7 +100,7 @@ namespace GamesAdmin.Api.Report
 
         Task<KenoPowerBetHistory> GetKenoPower2BetHistoryAsync(long roundId, string userId);
 
-        Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -733,24 +733,12 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter)
         {
-            try
-            {
-                var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
-                var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+            var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
+            var result = await repository.GetAsync(filter);
 
-                return new CasinoHoldemPokerBetReport
-                {
-                    RoundResult = mapper.Map<CasinoHoldemPokerRoundResult>(result.Item1),
-                    Records = result.Item2.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x))
-                };
-            }
-            catch (Exception err)
-            {
-                return new CasinoHoldemPokerBetReport();
-            }
-          
+            return result.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x));
         }
     }
 }

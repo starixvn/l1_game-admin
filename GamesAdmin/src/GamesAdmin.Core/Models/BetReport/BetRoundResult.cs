@@ -294,8 +294,15 @@ namespace GamesAdmin.Core.Models
 
     public class CasinoHoldemPokerResult
     {
+        public DateTime Time { get; set; }
+        public long Round { get; set; }
+        public bool IsQualified { get; set; }
+        public bool Ended { get; set; }
+        public bool IsFold { get; set; }
         public IEnumerable<PokerCard> Dealer { get; set; }
         public IEnumerable<PokerCard> CommunityCards { get; set; }
+        public IEnumerable<PokerCard> DealerCombinationCards { get; set; }
+        public byte HandRankId { get; set; }
     }
 
     public class CasinoHoldemPokerSettlementResult

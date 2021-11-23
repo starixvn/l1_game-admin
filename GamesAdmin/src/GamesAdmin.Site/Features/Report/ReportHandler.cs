@@ -4,10 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features.Currencies;
+using GamesAdmin.Site.Features.ExchangeRates;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
@@ -51,17 +56,27 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
         IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
         IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
-        IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>
+        IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
+        IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
         private readonly IMapper mapper;
+        private readonly IPartnerService partnerService;
+        private readonly ICurrencyService currencyService;
 
-        public ReportHandler(IReportService reportService, IAppSettings appSettings, IMapper mapper)
+        public ReportHandler(
+            IReportService reportService,
+            IAppSettings appSettings,
+            IMapper mapper,
+            IPartnerService partnerService,
+            ICurrencyService currencyService)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
             this.mapper = mapper;
+            this.partnerService = partnerService;
+            this.currencyService = currencyService;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -775,22 +790,37 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetCasinoHoldemPokerBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-            var roundResult = mapper.Map<CasinoHoldemPokerRoundResultViewModel>(result.RoundResult);
-            //roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
+            var result = await reportService.GetCasinoHoldemPokerBetReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
 
             return new CasinoHoldemPokerReportResultViewModel
             {
-                RoundResult = roundResult,
-                Records = result.Records.Select(x =>
+                ConvertToUSD = request.Filter.ConvertToUSD,
+                Records = result.Select(x =>
                 {
                     var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return recordViewModel;
                 }),
             };
         }
+
+        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
+        {
+            var parterItems = await partnerService.GetPartnersForSelection(partner => true);
+            var currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled);
+
+            return new ReportSeletionsViewModel
+            {
+                Partners = parterItems,
+                Currencies = currencies
+            };
+        }
+
+        private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
+        => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
 
     }
 }

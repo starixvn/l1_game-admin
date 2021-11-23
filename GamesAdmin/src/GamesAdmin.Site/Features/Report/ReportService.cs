@@ -92,7 +92,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId);
 
-        Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS);
+        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -224,7 +224,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
         => reportApi.GetKenoPowerBetHistory(game.ToString(), roundId, userId);
 
-        public Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS)
-      => reportApi.GetCasinoHoldemPokerBetReport(roundId, nickname, excludeUUS);
+        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter)
+        => reportApi.GetCasinoHoldemPokerBetReport(filter);
     }
 }

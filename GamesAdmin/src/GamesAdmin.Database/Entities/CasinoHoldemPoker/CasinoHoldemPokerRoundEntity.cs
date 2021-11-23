@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
+﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Database.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,13 @@ namespace GamesAdmin.Database.Entities
 
         public string Name { get; set; }
     }
+
     public class CasinoHoldemPokerResultEntity
     {
         public IEnumerable<PokerCard> Dealer { get; set; }
         public IEnumerable<PokerCard> CommunityCards { get; set; }
     }
+
     public class CombinationCard
     {
         public IEnumerable<PokerCard> Cards { get; set; }
@@ -33,10 +36,4 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("id")]
         public int HandRankId { get; set; }
     }
-    public class PokerCard
-    {
-        public byte Rank { get; set; }
-
-        public byte Suit { get; set; }
-    }
-}
+} 

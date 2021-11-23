@@ -1,21 +1,72 @@
-﻿using System;
-
-namespace GamesAdmin.Database.Report.Entities
+﻿namespace GamesAdmin.Database.Report.Entities
 {
+    using GamesAdmin.Database.Entities;
+    using System;
+
     public class CasinoHoldemPokerBetReportEntity
     {
-        public DateTime Time { get; set; }
+        private readonly string[] RankHandName = {
+                        "DoesNotQualify",
+                        "HighCard",
+                        "Pair",
+                        "TwoPairs",
+                        "ThreeOfAKind",
+                        "Straight",
+                        "Flush",
+                        "FullHouse",
+                        "FourOfAKind",
+                        "StraightFlush",
+                        "RoyalFlush",
+                    };
 
-        public string Username { get; set; }
+        public CasinoHoldemPokerBetReportEntity(
+            DateTime time,
+            string partnerId,
+            string username,
+            string nickname,
+            string currency,
+            CasinoHoldemPokerBetWithUnWindAccountsEntity bet,
+            CasinoHoldemPokerRoundEntity round)
+        {
+            Time = time;
+            PartnerId = partnerId;
+            Username = username;
+            Nickname = nickname;
+            Currency = currency;
 
-        public string Nickname { get; set; }
+            Ended = round.Ended;
+            RoundId = bet.Round;
 
-        public decimal BetWin { get; set; }
+            PlayerResult = RankHandName[bet.Result.HandRankId];
+            DealerResult = RankHandName[Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0];
 
-        public decimal Ante { get; set; }
+            Stake = bet.Ante + bet.AA + bet.Call;
+            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
+            BetWin = TotalWin - Stake;
+        }
 
-        public decimal AA { get; set; }
+        public DateTime Time { get; }
 
-        public decimal Call { get; set; }
+        public string PartnerId { get; }
+
+        public string Username { get; }
+
+        public string Nickname { get; }
+
+        public string Currency { get; set; }
+
+        public long RoundId { get; }
+
+        public string PlayerResult { get; }
+
+        public string DealerResult { get; }
+
+        public bool Ended { get; }
+
+        public decimal Stake { get; }
+
+        public decimal TotalWin { get; }
+
+        public decimal BetWin { get; }
     }
 }

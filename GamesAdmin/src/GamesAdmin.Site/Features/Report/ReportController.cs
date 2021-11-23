@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
@@ -473,15 +474,17 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname)));
 
         [HttpGet]
-        public IActionResult CasinoHoldemPoker()
+        public async Task<IActionResult> CasinoHoldemPoker()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new CasinoHoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCasinoHoldemPokerReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetCasinoHoldemPokerReport(CasinoHoldemPokerBetReportFilter filter)
         {
-            return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(filter)));
         }
     }
-}
+} 

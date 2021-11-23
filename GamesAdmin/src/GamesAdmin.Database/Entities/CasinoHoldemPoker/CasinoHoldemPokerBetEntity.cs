@@ -1,4 +1,6 @@
-﻿using GamesAdmin.Database.Attributes;
+﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Database.Attributes;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -13,6 +15,19 @@ namespace GamesAdmin.Database.Entities
 
         public bool IsFold { get; set; }
 
-        public decimal Refund { get; set; }
+        public string Currency { get; set; }
+
+        public IEnumerable<PokerCard> Cards { get; set; }
+
+        public CombinationCard Result { get; set; }
+
+        public CasinoHoldemPokerBetSettlementResult SettlementResult { get; set; }
+    }
+
+    public class CasinoHoldemPokerBetSettlementResult
+    {
+        public decimal AA { get; set; }
+        public decimal Ante { get; set; }
+        public decimal Call { get; set; }
     }
 }

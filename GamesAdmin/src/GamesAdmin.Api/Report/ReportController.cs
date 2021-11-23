@@ -210,8 +210,8 @@ namespace GamesAdmin.Api.Report
         => (await mediator.Send(new KenoPowerBetHistoryRequest(game, roundId, userId)));
 
         [HttpGet]
-        [Route("casinoholdempoker/round/{roundId}/users/{nickname?}")]
-        public async Task<CasinoHoldemPokerBetReport> CasinoHoldemPoker(long roundId, string nickname, bool excludeUUS)
-       => (await mediator.Send(new CasinoHoldemPokerReportRequest(roundId, nickname, excludeUUS)));
+        [Route("casinoholdempoker")]
+        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> CasinoHoldemPoker([FromQuery] CasinoHoldemPokerBetReportFilter filter)
+       => (await mediator.Send(new CasinoHoldemPokerReportRequest(filter)));
     }
 }

@@ -1,21 +1,17 @@
 ﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class CasinoHoldemPokerReportRequest : IRequest<CasinoHoldemPokerBetReport>
+    public class CasinoHoldemPokerReportRequest : IRequest<IEnumerable<CasinoHoldemPokerBetRecord>>
     {
-        public CasinoHoldemPokerReportRequest(long roundId, string nickname, bool excludeUUS)
+        public CasinoHoldemPokerReportRequest(CasinoHoldemPokerBetReportFilter filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
-            ExcludeUUS = excludeUUS;
+            Filter = filter;
         }
 
-        public long RoundId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
+        public CasinoHoldemPokerBetReportFilter Filter { get; }
     }
 }

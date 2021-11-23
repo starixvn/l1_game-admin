@@ -10,5 +10,6 @@ namespace GamesAdmin.Database.Report.Entities
         public AccountInfoEntity AccountInfos { get; set; }
 
         public AccountEntity Accounts { get; set; }
+
     }
 }
