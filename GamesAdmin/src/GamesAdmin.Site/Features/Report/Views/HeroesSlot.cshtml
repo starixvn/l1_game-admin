@@ -6,13 +6,16 @@
 }
 
 @section Styles {
-    <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/slot-game-report.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="normal" role="tabpanel" aria-labelledby="home-tab">
-        <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetSlotGameReport" data-ajax-mode="replace" data-ajax-update="#report-result"
+        <form class="form filter" data-ajax="true" data-ajax-method="GET"
+              asp-action="GetSlotGameReport" data-ajax-mode="replace"
+              data-ajax-update="#report-result"
               data-ajax-loading="#spinner"
+              data-ajax-success="slotGameReportController.initResult()"
               method="get">
             <div class="form-row align-items-center">
                 <div class="col-auto">
@@ -40,9 +43,10 @@
             </div>
         </form>
 
-        <div id="report-result" class="col-sm-12 report-container">
+        <div id="card-container" class="card display-none">
+            <div id="report-result" class="col-sm-12 report-container card-body">
+            </div>
         </div>
-
     </div>
     <div class="tab-pane fade" id="jackpot" role="tabpanel" aria-labelledby="jackpot-tab">
         <partial name="Jackpot" model="new JackpotReportViewModel() { GameId = (byte) GameId.HeroesSlot }" />
@@ -69,4 +73,6 @@
 
 @section Scripts {
     <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+    <script type="text/javascript" src="~/js/slot-game-report.js" asp-append-version="true"></script>
 }

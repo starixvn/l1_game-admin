@@ -240,5 +240,21 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/blackjack-report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/slot-game-report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/big-small-reports.min.css",
+      "wwwroot/scss/pages/slot-game-report.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/slot-game-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/slot-game-report.js"
+    ]
   }
 ]

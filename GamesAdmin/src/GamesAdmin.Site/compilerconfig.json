@@ -86,5 +86,13 @@
   {
     "outputFile": "wwwroot/js/blackjack-report.es5.js",
     "inputFile": "wwwroot/js/blackjack-report.js"
+  },
+  {
+    "outputFile": "wwwroot/js/slot-game-report.es5.js",
+    "inputFile": "wwwroot/js/slot-game-report.js"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/slot-game-report.css",
+    "inputFile": "wwwroot/scss/pages/slot-game-report.scss"
   }
 ]
