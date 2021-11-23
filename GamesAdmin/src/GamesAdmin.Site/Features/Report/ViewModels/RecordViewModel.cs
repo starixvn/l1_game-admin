@@ -214,6 +214,21 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string Game { get; set; }
         public string IconsFolder => Game?.ToLowerInvariant();
+
+        public void ConvertToUSD(bool isConvert)
+        {
+            if (isConvert)
+            {
+                TotalAmount *= (decimal)Rate;
+                BetWin *= (decimal)Rate;
+                Bet *= (decimal)Rate;
+
+                if (SettlementResult.Jackpot != null)
+                {
+                    SettlementResult.Jackpot.WinningAmount *= (decimal)Rate;
+                }
+            }
+        }
     }
 
     public class SlotGameBonusChestViewModel

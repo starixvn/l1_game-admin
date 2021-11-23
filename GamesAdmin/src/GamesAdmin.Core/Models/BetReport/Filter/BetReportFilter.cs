@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GamesAdmin.Core.Models.BetReport
+﻿namespace GamesAdmin.Core.Models.BetReport
 {
     public class BetReportFilter
     {

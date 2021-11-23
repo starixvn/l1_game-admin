@@ -122,7 +122,7 @@ namespace GamesAdmin.Api.Report
         => reportService.GetBlackjackReportAsync(request.Filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetSlotGameReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
+        => reportService.GetSlotGameReportAsync(request.Filter);
 
         public Task<VipFishPrawnCrabBetReport> Handle(VipFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);

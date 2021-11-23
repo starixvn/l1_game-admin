@@ -37,6 +37,12 @@ namespace GamesAdmin.Database.Entities
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime EndTime { get; set; }
+
+        public string Currency { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public decimal Rate { get; set; }
     }
 
     public class SlotGameBonusChestEntity

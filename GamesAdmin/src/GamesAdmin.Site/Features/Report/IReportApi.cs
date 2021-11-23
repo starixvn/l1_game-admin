@@ -4,6 +4,7 @@ using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
+using GamesAdmin.Site.Features.Report.Requests;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -91,8 +92,17 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
 
-        [Get("/report/slot_game/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, string game);
+        [Get("/report/slot_game/round/{roundId}/nick/{nickname}?excludeUUS={excludeUUS}&game={game}&partnerId={partnerId}&fromDate={fromDate}&toDate={toDate}&username={username}&convertToUSD={convertToUSD}")]
+        Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(
+            long roundId,
+            string nickname,
+            bool excludeUUS,
+            string game,
+            string partnerId,
+            DateTime fromDate,
+            DateTime toDate,
+            string username,
+            bool convertToUSD);
 
         [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);

@@ -70,7 +70,7 @@ namespace GamesAdmin.Api.Report
 
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
 
-        Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(long handId, string nickname, bool excludeUUS, Game game);
+        Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
@@ -498,10 +498,10 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
 
-        public async Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(long handId, string nickname, bool excludeUUS, Game game)
+        public async Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter)
         {
-            var service = slotGameReportFactory.GetReportService(game);
-            var result = service == default ? default : await service.GetReportAsync(handId, nickname, excludeUUS);
+            var service = slotGameReportFactory.GetReportService(filter.Game);
+            var result = service == default ? default : await service.GetReportAsync(filter);
 
             return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }

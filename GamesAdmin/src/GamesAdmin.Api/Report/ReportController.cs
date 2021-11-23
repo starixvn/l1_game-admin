@@ -130,9 +130,32 @@ namespace GamesAdmin.Api.Report
        => (await mediator.Send(new BlackjackReportRequest(filter)));
 
         [HttpGet]
-        [Route("slot_game/round/{roundId}/users/{nickname?}")]
-        public async Task<IEnumerable<SlotGameBetRecord>> SlotGame(long roundId, string nickname, bool excludeUUS, string game)
-        => (await mediator.Send(new SlotGameReportRequest(roundId, nickname, excludeUUS, game)));
+        [Route("slot_game/round/{roundId}/nick/{nickname?}")]
+        public async Task<IEnumerable<SlotGameBetRecord>> SlotGame(long roundId,
+            string nickname,
+            bool excludeUUS,
+            string game,
+            string partnerId,
+            DateTime fromDate,
+            DateTime toDate,
+            string username,
+            bool convertToUSD)
+        {
+            var filter = new SlotGameBetReportFilter
+            {
+                RoundId = roundId,
+                Nickname = nickname,
+                ExcludeUUS = excludeUUS,
+                Game = Enumeration.FromValue<Game>(game),
+                PartnerId = partnerId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                Username = username,
+                ConvertToUSD = convertToUSD,
+            };
+
+            return await mediator.Send(new SlotGameReportRequest(filter));
+        }
 
         [HttpGet]
         [Route("vip_fish_prawn_crab/round/{roundId}/users/{nickname?}")]

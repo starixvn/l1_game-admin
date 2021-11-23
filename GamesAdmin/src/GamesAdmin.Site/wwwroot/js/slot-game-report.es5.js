@@ -3,6 +3,22 @@
 var slotGameReportController = (function ($) {
     return {
         init: function init() {
+            $.validator.addMethod("eitherrequired", function (value, element, params) {
+                return params.some(function (x) {
+                    return x.value !== "";
+                });
+            });
+
+            $.validator.unobtrusive.adapters.add("eitherrequired", function (options) {
+                var $roundId = $(options.form).find("#RoundId")[0];
+                var $nickname = $(options.form).find("#Nickname")[0];
+                var $username = $(options.form).find("#Username")[0];
+
+                options.rules["eitherrequired"] = [$roundId, $nickname, $username];
+                options.messages["eitherrequired"] = options.message;
+            });
+        },
+        initResult: function initResult() {
             $('#tbl-slot-game').DataTable({
                 "lengthMenu": [[100, 200, 500], [100, 200, 500]],
                 "pageLength": 100
@@ -11,4 +27,8 @@ var slotGameReportController = (function ($) {
         }
     };
 })(jQuery);
+
+(function () {
+    slotGameReportController.init();
+})();
 

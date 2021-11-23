@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -277,22 +278,55 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult FourGuardians()
+        public async Task<IActionResult> FourGuardians()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, string game)
+        public async Task<IActionResult> GetSlotGameReport(
+            string partnerId,
+            DateTime fromDate,
+            DateTime toDate,
+            long roundId,
+            string nickname,
+            string username,
+            bool convertToUSD,
+            bool excludeUUS,
+            string game)
         {
-            return PartialView("_SlotGameRecords", await mediator.Send(new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game)));
+            var request = new GetSlotGameReportRequest(
+                roundId,
+                nickname,
+                excludeUUS,
+                game,
+                partnerId,
+                fromDate,
+                toDate,
+                username,
+                convertToUSD);
+
+            return PartialView("_SlotGameRecords", await mediator.Send(request));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSlotGameBetHistory(long roundId, string nickname, bool excludeUUS, string game)
+        public async Task<IActionResult> GetSlotGameBetHistory(
+            long roundId,
+            string nickname,
+            bool excludeUUS,
+            string game,
+            bool convertToUSD)
         {
-            return PartialView("_SlotGameBetHistory",
-                (await mediator.Send(new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game))).Records.FirstOrDefault());
+            var request = new GetSlotGameReportRequest(roundId, nickname, excludeUUS, game, convertToUSD);
+
+            return PartialView("_SlotGameBetHistory", (await mediator.Send(request)).Records.FirstOrDefault());
         }
 
         [HttpGet]
@@ -398,9 +432,16 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult HeroesSlot()
+        public async Task<IActionResult> HeroesSlot()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]

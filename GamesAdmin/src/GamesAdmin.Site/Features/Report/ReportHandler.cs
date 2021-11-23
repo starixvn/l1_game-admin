@@ -551,15 +551,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SlotGameReportResultViewModel> Handle(GetSlotGameReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSlotGameReport(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
+            var result = await reportService.GetSlotGameReport(request);
 
             return new SlotGameReportResultViewModel
             {
+                ConvertToUSD = request.ConvertToUSD,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
+                    betViewModel.ConvertToUSD(request.ConvertToUSD);
 
                     return betViewModel;
                 })
