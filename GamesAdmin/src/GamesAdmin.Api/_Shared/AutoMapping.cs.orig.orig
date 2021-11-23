@@ -130,7 +130,6 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.Bet))
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back));
 <<<<<<< HEAD
-<<<<<<< HEAD
 =======
 
 >>>>>>> 613f6f83 (fix: add StakeBalancedReportRepository)
@@ -139,11 +138,6 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.BaseAmount))
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.BaseRefund))
                  .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.BaseBetWin));
-=======
-
-
-            CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
 
             CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
             CreateMap<CardEntity, Core.Models.Card>();
@@ -225,12 +219,8 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<SlotGameBetReportEntity, SlotGameBetRecord>()
                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number))
-<<<<<<< HEAD
                .ForMember(x => x.Partner, opt => opt.MapFrom((source) => source.PartnerId))
                .ForMember(x => x.ExchangRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));
-=======
-               .ForMember(x => x.Partner, opt => opt.MapFrom((source) => source.PartnerId));
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
             CreateMap<SlotGameSettlementResultEntity, SlotGameSettlementResult>();
             CreateMap<SlotGameFreeSpinEntity, SlotGameFreeSpin>();
             CreateMap<SlotGameBonusEntity, SlotGameBonus>();
@@ -313,10 +303,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoPowerBetReportEntity, KenoPowerBetRecord>();
             CreateMap<KenoPowerBetEntity, KenoPowerBetHistoryRecord>();
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
             CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>()
                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
@@ -329,10 +315,9 @@ namespace GamesAdmin.Api._Shared
             CreateMap<HiLoRoundEntity, HiLoRoundResult>();
 =======
 =======
-            CreateMap<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerRoundResult>();
-            CreateMap<CasinoHoldemPokerResultEntity, CasinoHoldemPokerSettlementResult>();
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
+            CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>();
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
         }
     }
 }

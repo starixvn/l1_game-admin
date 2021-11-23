@@ -312,7 +312,6 @@ namespace GamesAdmin.Core.Models
 
     public class CasinoHoldemPokerBetRecord : BetRecord
     {
-<<<<<<< HEAD
         public long RoundId { get; set; }
 
         public string PlayerResult { get; set; }
@@ -322,13 +321,12 @@ namespace GamesAdmin.Core.Models
         public decimal Stake { get; set; }
 
         public bool Ended { get; set; }
+<<<<<<< HEAD
 
         public bool IsFold { get; set; }
 
         public bool IsQualified { get; set; }
 =======
-        public decimal Dealer { get; set; }
-        public decimal Player { get; set; }
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
     }
 }

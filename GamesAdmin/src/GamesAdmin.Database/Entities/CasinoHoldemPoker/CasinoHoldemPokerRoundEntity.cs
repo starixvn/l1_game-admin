@@ -35,9 +35,4 @@ namespace GamesAdmin.Database.Entities
         public bool? IsQualified { get; set; }
         [BsonElement("id")]
         public int HandRankId { get; set; }
-    {
-        public byte Rank { get; set; }
-
-        public byte Suit { get; set; }
-    }
 } 

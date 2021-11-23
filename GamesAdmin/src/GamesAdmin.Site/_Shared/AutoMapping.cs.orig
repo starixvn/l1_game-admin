@@ -121,9 +121,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<HiLoRoundResult, HiLoRoundResultViewModel>();
 =======
             
+            CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
             CreateMap<CasinoHoldemPokerRoundResult, CasinoHoldemPokerRoundResultViewModel>();
             CreateMap<CasinoHoldemPokerSettlementResult, CasinoHoldemPokerSettlementResultViewModel>();
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
         }
     }
 }

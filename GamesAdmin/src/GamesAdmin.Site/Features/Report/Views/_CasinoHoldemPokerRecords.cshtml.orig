@@ -1,14 +1,13 @@
-﻿@using GamesAdmin.Core
-@using GamesAdmin.Site.Features.Report.ViewModels;
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
 
 @model CasinoHoldemPokerReportResultViewModel
 
-<<<<<<< HEAD
 <div class="row">
     <div class="col-sm-12">
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
+<<<<<<< HEAD
                     <th class="col-nickname">Date (GMT+7)</th>
                     <th>Partner</th>
                     <th>Username</th>
@@ -19,6 +18,18 @@
                     <th class="col-nickname">Dealer</th>
                     <th class="col-number">Total Stake</th>
                     <th class="col-number">Win</th>
+=======
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th >Partner</th>
+                    <th >Username</th>
+                    <th  class="col-nickname">Nickname</th>
+                    <th  class="col-nickname">Currency</th>
+                    <th  class="col-number">Round Id</th>
+                    <th  class="col-nickname">Player</th>
+                    <th  class="col-nickname">Dealer</th>
+                    <th  class="col-number">Stake</th>
+                    <th  class="col-number">Win</th>
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +37,7 @@
                 {
                     var winAmount = record.BetWin + record.Stake;
                     <tr>
+<<<<<<< HEAD
                         <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@record.Partner</td>
                         <td class="text-center">@record.Username</td>
@@ -41,74 +53,21 @@
                             </a>
                         </td>
                         <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(winAmount) : winAmount) : "Unfinished Game")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
 =======
-@{
-    var cardLabels = new[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-}
-
-<div class="row">
-    <div class="col-sm-12">
-        @if (Model.RoundResult.Number != 0)
-        {
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Round ID</th>
-                        <th>Result</th>
-                        <th>Winning Options</th>
+                        <td class="col-date">@record.Time</td> 
+                        <td>@record.Partner</td>
+                        <td>@record.Username</td>
+                        <td class="col-nickname">@record.Nickname</td>
+                        <td class="col-nickname">@record.Currency</td>
+                        <td class="col-number">@record.RoundId</td>
+                        <td class="col-nickname">@record.PlayerResult</td>
+                        <td class="col-nickname">@record.DealerResult</td>
+                        <td class="col-number">@record.Stake</td>
+                        <td class="col-number">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
                     </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        }
-        <table class="table table-bordered table-hover sticky-table">
-            <thead>
-                <tr>
-                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
-                    <th rowspan="2">Username</th>
-                    <th rowspan="2" class="col-nickname">Nickname</th>
-                    <th colspan="7" class="col-number">Stake</th>
-                    <th rowspan="2" class="col-number">Win</th>
-                </tr>
-
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-              
+                }
             </tbody>
-            <tfoot>
-                @if (!Model.Records.Any())
-                {
-                    <tr>
-                        <td class="text-center" colspan="13">No data</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr class="total">
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                }
-            </tfoot>
         </table>
     </div>
 </div>
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)

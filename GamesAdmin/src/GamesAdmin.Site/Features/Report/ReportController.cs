@@ -512,4 +512,4 @@ namespace GamesAdmin.Site.Features.Report
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
     }
-}
+} 

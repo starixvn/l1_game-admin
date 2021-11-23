@@ -1,0 +1,180 @@
+﻿using System;
+using System.Collections.Generic;
+<<<<<<< HEAD
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+>>>>>>> 830eed95 (feat: implement game history for stake balanced games)
+=======
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+=======
+>>>>>>> 83e0ac70 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+using GamesAdmin.Core.Enumeration;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
+{
+    public class ReportSeletionsViewModel
+    {
+        public IEnumerable<SelectListItem> Partners { get; set; }
+
+        public IEnumerable<SelectListItem> Currencies { get; set; }
+    }
+
+<<<<<<< HEAD
+    public class StakeBalancedViewModel : ReportViewModel
+    {
+<<<<<<< HEAD
+        [DisplayName("Convert to Currency")]
+        public string Currency { get; set; }
+=======
+        [Required(ErrorMessage = "Please input RoundId.")]
+        public override long? RoundId { get; set; }
+>>>>>>> af7f6818 (feat: implement game history for stake balanced games)
+    }
+
+    public class ReportViewModel
+    {
+<<<<<<< HEAD
+
+        [Required(ErrorMessage = "Please input RoundId.")]
+=======
+>>>>>>> af7f6818 (feat: implement game history for stake balanced games)
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    public class StakeBalancedViewModel : ReportViewModel
+    {
+        [Required(ErrorMessage = "Please input RoundId.")]
+        public override long? RoundId { get; set; }
+    }
+
+>>>>>>> 830eed95 (feat: implement game history for stake balanced games)
+    public class ReportViewModel
+    {
+=======
+    public class StakeBalancedViewModel : ReportViewModel
+    {
+        [DisplayName("Convert to Currency")]
+        public string Currency { get; set; }
+    }
+
+=======
+>>>>>>> 83e0ac70 (feat: Casino Holdem Poker - round history multiple Currencies)
+    public class ReportViewModel
+    {
+
+        [Required(ErrorMessage = "Please input RoundId.")]
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+        public virtual long? RoundId { get; set; }
+
+        public string Nickname { get; set; }
+
+<<<<<<< HEAD
+        [DisplayName("Exclude Bots")]
+        public bool ExcludeBot { get; set; }
+
+        [DisplayName("Exclude UUS")]
+        public bool ExcludeUUS { get; set; }
+
+<<<<<<< HEAD
+        public GameId Game { get; set; }
+=======
+=======
+        public bool ExcludeBot { get; set; }
+
+        public bool ExcludeUUS { get; set; }
+
+<<<<<<< HEAD
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+        public string Game { get; set; }
+
+        public ReportSeletionsViewModel Selections { get; set; }
+
+        public string Partner { get; set; }
+
+        [DisplayName("Convert to Currency")]
+        public string Currency { get; set; }
+
+        public string Username { get; set; }
+    }
+<<<<<<< HEAD
+>>>>>>> af7f6818 (feat: implement game history for stake balanced games)
+
+        public ReportSeletionsViewModel Selections { get; set; }
+
+        [DisplayName("Partner")]
+=======
+
+    public class BlackjackReportViewModel
+    {
+        public long? HandId { get; set; }
+
+        public string Nickname { get; set; }
+
+        public bool ExcludeUUS { get; set; }
+=======
+        public GameId Game { get; set; }
+
+        public ReportSeletionsViewModel Selections { get; set; }
+
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+        public string PartnerId { get; set; }
+
+        public string Username { get; set; }
+
+        [DisplayName("Convert to USD")]
+        public bool ConvertToUSD { get; set; }
+
+        public IEnumerable<SelectListItem> Games { get; set; }
+<<<<<<< HEAD
+=======
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+    }
+
+    public class JackpotReportViewModel
+    {
+        public byte GameId { get; set; }
+
+        public DateTime FromDate { get; set; } = DateTime.Now;
+
+        public DateTime ToDate { get; set; } = DateTime.Now;
+
+        public bool ExcludeBot { get; set; } = true;
+
+        public bool ExcludeUUS { get; set; } = true;
+    }
+
+    public class KenoMatchReportViewModel : ReportViewModel
+    {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        public GameId Game { get; set; }
+=======
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+    }
+
+    public class KenoPowerReportViewModel : ReportViewModel
+    {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        public GameId Game { get; set; }
+=======
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+    }
+}

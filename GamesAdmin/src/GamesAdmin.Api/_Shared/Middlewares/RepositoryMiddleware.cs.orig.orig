@@ -1,4 +1,8 @@
 ﻿using GamesAdmin.Database;
+<<<<<<< HEAD
+=======
+using GamesAdmin.Database.Report;
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api._Shared.Middlewares
@@ -10,10 +14,14 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<ISiteRepository, SiteRepository>();
+<<<<<<< HEAD
             services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
             services.AddScoped<IBigSmallTurboReportRepository, BigSmallTurboReportRepository>();
             services.AddScoped<IOddEvenReportRepository, OddEvenReportRepository>();
             services.AddScoped<IOddEvenTurboReportRepository, OddEvenTurboReportRepository>();
+=======
+            services.AddScoped<IStakeBalancedReportRepository, StakeBalancedReportRepository>();
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
             services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
             services.AddScoped<ISeDieReportRepository, SeDieReportRepository>();
             services.AddScoped<IMiniSeDieReportRepository, MiniSeDieReportRepository>();
@@ -23,7 +31,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IDailySummaryRepository, DailySummaryRepository>();
             services.AddScoped<IRouletteReportRepository, RouletteReportRepository>();
             services.AddScoped<IVipSeDieReportRepository, VipSeDieReportRepository>();
+<<<<<<< HEAD
             services.AddScoped<ISpecialSeDieReportRepository, SpecialSeDieReportRepository>();
+=======
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
             services.AddScoped<IBlackjackReportRepository, BlackjackReportRepository>();
             services.AddScoped<IVipFishPrawnCrabReportRepository, VipFishPrawnCrabReportRepository>();
             services.AddScoped<ISicBoReportRepository, SicBoReportRepository>();
@@ -36,6 +47,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IJackpotRepository, JackpotRepository>();
             services.AddScoped<IThreeCardsReportRepository, ThreeCardsReportRepository>();
             services.AddScoped<IHeroesSlotReportRepository, HeroesSlotReportRepository>();
+<<<<<<< HEAD
             services.AddScoped<IBitcoinMasterReportRepository, BitcoinMasterReportRepository>();
             services.AddScoped<IKenoMatchReportRepository, KenoMatchReportRepository>();
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
@@ -43,11 +55,16 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ICasinoHoldemPokerReportRepository, CasinoHoldemPokerReportRepository>();
 =======
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
-<<<<<<< HEAD
->>>>>>> 23cc3f65... feat: game report
-=======
 >>>>>>> 23cc3f65 (feat: game report)
->>>>>>> 0932394a (feat: bet history)
+=======
+            services.AddScoped<IKenoMatchReportRepository, KenoMatchReportRepository>();
+            services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
+<<<<<<< HEAD
+            services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
+=======
+            services.AddScoped<ICasinoHoldemPokerReportRepository, CasinoHoldemPokerReportRepository>();
+>>>>>>> 5521bad1 (feat: Casino Holdem Poker - round history)
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
         }
     }
 }

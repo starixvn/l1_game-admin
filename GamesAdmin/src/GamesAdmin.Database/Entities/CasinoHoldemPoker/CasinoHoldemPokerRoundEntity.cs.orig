@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 ﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Attributes;
-=======
-﻿using GamesAdmin.Database.Attributes;
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -25,19 +21,13 @@ namespace GamesAdmin.Database.Entities
 
         public string Name { get; set; }
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
     public class CasinoHoldemPokerResultEntity
     {
         public IEnumerable<PokerCard> Dealer { get; set; }
         public IEnumerable<PokerCard> CommunityCards { get; set; }
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
     public class CombinationCard
     {
         public IEnumerable<PokerCard> Cards { get; set; }
@@ -46,13 +36,11 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("id")]
         public int HandRankId { get; set; }
 <<<<<<< HEAD
-=======
-    }
-    public class PokerCard
     {
         public byte Rank { get; set; }
 
         public byte Suit { get; set; }
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
+=======
+>>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
     }
 } 
