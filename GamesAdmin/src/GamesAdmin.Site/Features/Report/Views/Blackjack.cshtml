@@ -5,11 +5,12 @@
 }
 
 @section Styles {
-    <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/report.min.css" rel="stylesheet" asp-append-version="true" />
 }
 <form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetBlackjackReport" data-ajax-mode="replace" data-ajax-update="#report-result"
       data-ajax-loading="#spinner"
-      method="get">
+      method="get"
+      data-ajax-success="report.onSuccess">
     <div class="form-row align-items-center">
         <div class="col-auto">
             <label class="required" asp-for="PartnerId"></label>
@@ -69,6 +70,7 @@
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/data-tables/datatables.js"></script>
         <script src="~/js/blackjack-report.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">

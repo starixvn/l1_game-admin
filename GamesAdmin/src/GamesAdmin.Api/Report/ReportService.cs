@@ -152,7 +152,7 @@ namespace GamesAdmin.Api.Report
                     BetWin = x.BetWin,
                     Back = x.Back,
                     Currency = x.Currency,
-                    Partner = x.Partner,
+                    PartnerId = x.Partner,
                     Rate = x.Rate
                 })
             };
@@ -183,7 +183,7 @@ namespace GamesAdmin.Api.Report
                     BetWin = x.BetWin,
                     Back = x.Back,
                     Currency = x.Currency,
-                    Partner = x.Partner,
+                    PartnerId = x.Partner,
                     Rate = x.Rate
                 })
             };
@@ -214,7 +214,7 @@ namespace GamesAdmin.Api.Report
                     BetWin = x.BetWin,
                     Back = x.Back,
                     Currency = x.Currency,
-                    Partner = x.Partner,
+                    PartnerId = x.Partner,
                     Rate = x.Rate
                 })
             };
@@ -245,7 +245,7 @@ namespace GamesAdmin.Api.Report
                     BetWin = x.BetWin,
                     Back = x.Back,
                     Currency = x.Currency,
-                    Partner = x.Partner,
+                    PartnerId = x.Partner,
                     Rate = x.Rate
                 })
             };

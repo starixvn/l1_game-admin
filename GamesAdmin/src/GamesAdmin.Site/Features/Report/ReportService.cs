@@ -59,7 +59,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
 
-        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
 
@@ -173,8 +173,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId)
         => reportApi.GetSpecialSeDieBetHistory(roundId, userId);
 
-        public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS)
-        => reportApi.GetBlackjackReport(handId, nickname, excludeUUS);
+        public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter)
+        => reportApi.GetBlackjackReport(filter);
 
         public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);

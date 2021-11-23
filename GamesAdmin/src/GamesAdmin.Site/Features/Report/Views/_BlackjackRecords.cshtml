@@ -12,14 +12,22 @@
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
-                    <th class="col-date">Date (GMT+7)</th>
-                    <th>Username</th>
-                    <th class="col-nickname">Nickname</th>
-                    <th>HandId</th>
+                    <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Partner</th>
+                    <th rowspan="2">Username</th>
+                    <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th rowspan="2">Currency</th>
+                    <th rowspan="2">HandId</th>
                     <th colspan="2" class="col-nickname">Dealer</th>
                     <th colspan="2" class="col-nickname">Player</th>
-                    <th class="col-number">Stake</th>
-                    <th class="col-number">Win</th>
+                    <th  rowspan="2"class="col-number">Stake</th>
+                    <th  rowspan="2" class="col-number">Win</th>
+                </tr>
+                <tr class="d-none">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -29,8 +37,10 @@
 
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Partner</td>
                         <td>@bet.Username</td>
                         <td>@bet.Nickname</td>
+                        <td class="text-center">@bet.Currency</td>
                         <td class="text-center">@bet.HandId @(isSplittedHand ? "(Split)" : string.Empty)</td>
                         <td class="blackjack-result">
                             <div class="cards">
@@ -103,19 +113,11 @@
 
                             }
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Bet)</td>
-                        <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(bet.BetWin): "Running")</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Bet) : bet.Bet)</td>
+                        <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) : bet.BetWin) : "Running")</td>
                     </tr>
                 }
             </tbody>
-            <tfoot>
-                @if (!Model.Records.Any())
-                {
-                    <tr>
-                        <td class="text-center" colspan="10">No data</td>
-                    </tr>
-                }
-            </tfoot>
         </table>
     </div>
 </div>

@@ -73,8 +73,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/bet_history/game/specialsedie/round/{roundId}/user/{userId}")]
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
 
-        [Get("/report/blackjack/hand/{handId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
+        [Get("/report/blackjack")]
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
 
         [Get("/report/vip_fish_prawn_crab/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS);

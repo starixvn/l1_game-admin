@@ -79,7 +79,7 @@ namespace GamesAdmin.Database
             }
             else
             {
-                expression = x => x.Time <= filter.ToDate && x.Time >= filter.FromDate;
+                expression = x => x.Time <= filter.ToDate.ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
             }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))

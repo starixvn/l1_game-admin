@@ -250,9 +250,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBlackjackReport(long handId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
         {
-            return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(handId, nickname, excludeUUS)));
+            return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
         }
 
         [HttpGet]

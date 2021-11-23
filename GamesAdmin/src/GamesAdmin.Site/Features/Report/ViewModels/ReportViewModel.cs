@@ -18,6 +18,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         [Required(ErrorMessage = "Please input RoundId.")]
         public override long? RoundId { get; set; }
+
+        [DisplayName("Convert to Currency")]
+        public string Currency { get; set; }
     }
 
     public class ReportViewModel
@@ -35,9 +38,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public ReportSeletionsViewModel Selections { get; set; }
 
         public string Partner { get; set; }
-
-        [DisplayName("Convert to Currency")]
-        public string Currency { get; set; }
 
         public string Username { get; set; }
     }

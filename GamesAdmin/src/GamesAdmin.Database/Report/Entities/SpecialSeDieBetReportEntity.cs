@@ -24,6 +24,6 @@ namespace GamesAdmin.Database.Report.Entities
 
         public string Partner { get; set; }
 
-        public double Rate { get; set; }
+        public decimal Rate { get; set; }
     }
 }

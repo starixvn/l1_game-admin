@@ -11,5 +11,6 @@ namespace GamesAdmin.Core.Models.BetReport
         public long HandId { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
+        public bool ConvertToUSD { get; set; }
     }
 }

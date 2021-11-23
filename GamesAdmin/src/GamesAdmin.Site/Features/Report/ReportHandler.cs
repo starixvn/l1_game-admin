@@ -114,7 +114,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -151,7 +151,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -188,7 +188,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -225,7 +225,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -532,14 +532,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBlackjackReport(request.HandId, request.Nickname, request.ExcludeUUS);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var result = await reportService.GetBlackjackReport(request.Filter);
 
             return new BlackjackReportResultViewModel
             {
+                ConvertToUSD = request.Filter.ConvertToUSD,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return betViewModel;
                 })

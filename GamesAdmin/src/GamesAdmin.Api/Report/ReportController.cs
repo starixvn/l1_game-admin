@@ -125,8 +125,8 @@ namespace GamesAdmin.Api.Report
          => (await mediator.Send(new SpecialSeDieBetHistoryRequest(roundId, userId)));
 
         [HttpGet]
-        [Route("blackjack/hand/{handId}/users/{nickname?}")]
-        public async Task<IEnumerable<BlackjackBetRecord>> Blackjack(BlackjackBetReportFilter filter)
+        [Route("blackjack")]
+        public async Task<IEnumerable<BlackjackBetRecord>> Blackjack([FromQuery] BlackjackBetReportFilter filter)
        => (await mediator.Send(new BlackjackReportRequest(filter)));
 
         [HttpGet]
