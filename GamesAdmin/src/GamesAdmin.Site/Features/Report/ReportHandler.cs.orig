@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-=======
-﻿using AutoMapper;
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
@@ -41,8 +37,10 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
-        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
-        IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>
+        IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>,
+        IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
+        IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
+        IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -50,10 +48,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly IPartnerService partnerService;
         private readonly ICurrencyService currencyService;
         private readonly IExchangeRateService exchangeRateService;
-<<<<<<< HEAD
         private readonly IReportServiceFactory reportServiceFactory;
-=======
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 
         public ReportHandler(
             IReportService reportService,
@@ -61,12 +56,8 @@ namespace GamesAdmin.Site.Features.Report
             IMapper mapper,
             IPartnerService partnerService,
             ICurrencyService currencyService,
-<<<<<<< HEAD
             IExchangeRateService exchangeRateService,
             IReportServiceFactory reportServiceFactory)
-=======
-            IExchangeRateService exchangeRateService)
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -74,10 +65,7 @@ namespace GamesAdmin.Site.Features.Report
             this.partnerService = partnerService;
             this.currencyService = currencyService;
             this.exchangeRateService = exchangeRateService;
-<<<<<<< HEAD
             this.reportServiceFactory = reportServiceFactory;
-=======
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -89,12 +77,8 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-<<<<<<< HEAD
             var currency = await currencyService.GetById(request.Currency);
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
-=======
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 
             return new BigSmallReportResultViewModel
             {
@@ -106,10 +90,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
-<<<<<<< HEAD
                     ExchangeRateId = result.RoundResult.ExchangeRateId
-=======
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
@@ -121,11 +102,7 @@ namespace GamesAdmin.Site.Features.Report
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-<<<<<<< HEAD
                     Partner = GetPartnerName(partners, x.PartnerId),
-=======
-                    Partner = GetPartnerName(partners, x.Partner),
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                     Rate = x.Rate,
                 })
             };
@@ -140,12 +117,8 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-<<<<<<< HEAD
             var currency = await currencyService.GetById(request.Currency);
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
-=======
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 
             return new BigSmallTurboReportResultViewModel
             {
@@ -157,10 +130,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
-<<<<<<< HEAD
                     ExchangeRateId = result.RoundResult.ExchangeRateId
-=======
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
@@ -172,11 +142,7 @@ namespace GamesAdmin.Site.Features.Report
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-<<<<<<< HEAD
                     Partner = GetPartnerName(partners, x.PartnerId),
-=======
-                    Partner = GetPartnerName(partners, x.Partner),
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                     Rate = x.Rate,
                 })
             };
@@ -191,12 +157,8 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-<<<<<<< HEAD
             var currency = await currencyService.GetById(request.Currency);
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
-=======
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 
             return new OddEvenReportResultViewModel
             {
@@ -208,10 +170,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
-<<<<<<< HEAD
                     ExchangeRateId = result.RoundResult.ExchangeRateId
-=======
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
@@ -223,11 +182,7 @@ namespace GamesAdmin.Site.Features.Report
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-<<<<<<< HEAD
                     Partner = GetPartnerName(partners, x.PartnerId),
-=======
-                    Partner = GetPartnerName(partners, x.Partner),
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                     Rate = x.Rate,
                 })
             };
@@ -242,12 +197,8 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-<<<<<<< HEAD
             var currency = await currencyService.GetById(request.Currency);
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
-=======
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 
             return new OddEvenTurboReportResultViewModel
             {
@@ -259,10 +210,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
-<<<<<<< HEAD
                     ExchangeRateId = result.RoundResult.ExchangeRateId
-=======
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
@@ -274,11 +222,7 @@ namespace GamesAdmin.Site.Features.Report
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-<<<<<<< HEAD
                     Partner = GetPartnerName(partners, x.PartnerId),
-=======
-                    Partner = GetPartnerName(partners, x.Partner),
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                     Rate = x.Rate,
                 })
             };
@@ -389,31 +333,12 @@ namespace GamesAdmin.Site.Features.Report
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
             var roundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult);
 
-<<<<<<< HEAD
             roundResult.ExchangeRate = exchangeRate;
             roundResult.ExchangeRateId = result.RoundResult.ExchangeRateId;
 
             return new SpecialSeDieReportResultViewModel
             {
                 ConvertCurrency = currency.DisplayText,
-=======
-        public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetSpecialSeDieReport(
-                request.RoundId,
-                request.Nickname,
-                request.ExcludeBot,
-                request.PartnerId,
-                request.Username);
-            var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
-            var roundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult);
-
-            roundResult.ExchangeRate = exchangeRate;
-
-            return new SpecialSeDieReportResultViewModel
-            {
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
                 RoundResult = roundResult,
                 Records = result.Records.Select(x =>
                 {
@@ -449,8 +374,11 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(model => true);
+<<<<<<< HEAD
 
             request.Filter.ToDate.AddDays(1);
+=======
+>>>>>>> 8cf2ee5f (feat: blackjack report)
             var result = await reportService.GetBlackjackReport(request.Filter);
 
             return new BlackjackReportResultViewModel
@@ -609,31 +537,6 @@ namespace GamesAdmin.Site.Features.Report
             return viewModel;
         }
 
-        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
-        {
-            var partners = await partnerService.GetPartnersForSelection(partner => true);
-            Func<CurrencyModel, SelectListItem> transformCurrency = model => new SelectListItem($"{model.Name} ({model.Code})", model.Code);
-            var currencies = await currencyService.GetCurrenciesForSelection(model => true, transformCurrency);
-
-            return new ReportSeletionsViewModel
-            {
-                Partners = partners,
-                Currencies = currencies
-            };
-        }
-
-        private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
-        => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
-
-        private async Task<decimal> GetExchangeRate(int exchangeRateId, string currency)
-        {
-            var exchangeRate = await exchangeRateService.GetByExchangeId(exchangeRateId);
-
-            return exchangeRate != null
-                   && !string.IsNullOrEmpty(currency)
-                   && exchangeRate.Code.ContainsKey(currency) ? exchangeRate.Code[currency] : 1;
-        }
-
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetCasinoHoldemPokerBetReport(request.Filter);
@@ -649,11 +552,7 @@ namespace GamesAdmin.Site.Features.Report
             });
 
             return new CasinoHoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, records);
-        }
-
-        public async Task<CasinoHoldemPokerBetHistoryViewModel> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
-            => new CasinoHoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetCasinoHoldemPokerBetHistory(request.Filter));
-
+      }
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
@@ -689,6 +588,37 @@ namespace GamesAdmin.Site.Features.Report
                 })
             };
         }
+        
+        public async Task<HoldemPokerReportViewModel> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            var selections = new ReportSeletionsViewModel
+            {
+                Partners = await partnerService.GetPartnersForSelection(partner => true),
+                Currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled)
+            };
+
+            return new HoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
+        }
+
+        public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetHoldemPokerBetReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            var records = result.Select(x =>
+            {
+                var recordViewModel = mapper.Map<HoldemPokerRecordViewModel>(x);
+                recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                return recordViewModel;
+            });
+
+            return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, request.Filter.GameId, records);
+        }
+        
+        public async Task<HoldemPokerBetHistoryViewModel> Handle(GetHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+            => new HoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetHoldemPokerBetHistory(request.Filter));
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;

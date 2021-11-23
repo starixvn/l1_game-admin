@@ -29,9 +29,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal BaseBetWin => ConvertToBase(BetWin);
 
 <<<<<<< HEAD
-        public decimal ConvertToBase(decimal value) => value * Rate;
-=======
+        public decimal BaseRefund => ConvertToBase(Refund);
+
+        public decimal BaseBetWin => ConvertToBase(BetWin);
+
         public decimal ConvertToBase(decimal value) => value * (decimal)Rate;
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
+=======
+        public decimal ConvertToBase(decimal value) => value * Rate;
+>>>>>>> 8cf2ee5f (feat: blackjack report)
     }
 }

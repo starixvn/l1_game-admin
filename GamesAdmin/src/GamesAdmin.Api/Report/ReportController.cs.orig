@@ -79,13 +79,11 @@ namespace GamesAdmin.Api.Report
          => (await mediator.Send(new SpecialSeDieBetHistoryRequest(roundId, userId)));
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("blackjack")]
         public async Task<IEnumerable<BlackjackBetRecord>> Blackjack([FromQuery] BlackjackBetReportFilter filter)
+<<<<<<< HEAD
         => (await mediator.Send(new BlackjackReportRequest(filter)));
 =======
-        [Route("blackjack/hand/{handId}/users/{nickname?}")]
-        public async Task<IEnumerable<BlackjackBetRecord>> Blackjack(BlackjackBetReportFilter filter)
        => (await mediator.Send(new BlackjackReportRequest(filter)));
 
         [HttpGet]
@@ -107,7 +105,7 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
         public async Task<VipSeDieWarBetHistory> VipSeDieWarBetHistory(string userId, long roundId)
          => (await mediator.Send(new VipSeDieWarBetHistoryRequest(roundId, userId)));
->>>>>>> 6e69c080 (feat: blackjack report)
+>>>>>>> 8cf2ee5f (feat: blackjack report)
 
         [HttpGet]
         [Route("slot_game/round/{roundId}/nick/{nickname?}")]

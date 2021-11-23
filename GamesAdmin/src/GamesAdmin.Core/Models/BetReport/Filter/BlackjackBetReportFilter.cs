@@ -12,5 +12,6 @@ namespace GamesAdmin.Core.Models.BetReport
         public string PartnerId { get; set; }
         public string Username { get; set; }
         public bool ConvertToUSD { get; set; }
+        public bool ConvertToUSD { get; set; }
     }
 }

@@ -16,6 +16,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class StakeBalancedViewModel : ReportViewModel
     {
+<<<<<<< HEAD
+=======
+        [Required(ErrorMessage = "Please input RoundId.")]
+        public override long? RoundId { get; set; }
+
+>>>>>>> 8cf2ee5f (feat: blackjack report)
         [DisplayName("Convert to Currency")]
         public string Currency { get; set; }
     }
@@ -40,12 +46,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string Partner { get; set; }
 
-        [DisplayName("Convert to Currency")]
-        public string Currency { get; set; }
-
         public string Username { get; set; }
 
-<<<<<<< HEAD
         public ReportSeletionsViewModel Selections { get; set; }
 
         [DisplayName("Partner")]
@@ -59,8 +61,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<SelectListItem> Games { get; set; }
     }
 
-=======
->>>>>>> 6e69c080 (feat: blackjack report)
     public class JackpotReportViewModel
     {
         public byte GameId { get; set; }

@@ -59,10 +59,7 @@ namespace GamesAdmin.Database
                 record.DealerCards = round.Result;
                 record.Ended = round.Ended;
                 record.DealerPoint = round.SettlementResult;
-<<<<<<< HEAD
                 record.ExchangeRateId = round.ExchangeRateId;
-=======
->>>>>>> 6e69c080 (feat: blackjack report)
             }
 
             return records;
@@ -88,8 +85,8 @@ namespace GamesAdmin.Database
                 var to = filter.ToDate.ToEndDate().ToGMT7();
                 expression = x => from <= x.Time && x.Time <= to;
 =======
-                expression = x => x.Time <= filter.ToDate && x.Time >= filter.FromDate;
->>>>>>> 6e69c080 (feat: blackjack report)
+                expression = x => x.Time <= filter.ToDate.ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
+>>>>>>> 8cf2ee5f (feat: blackjack report)
             }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))

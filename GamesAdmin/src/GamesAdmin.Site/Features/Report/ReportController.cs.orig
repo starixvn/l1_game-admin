@@ -226,14 +226,17 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> Blackjack()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
+
 <<<<<<< HEAD
+            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
 =======
-
-            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
-        }
->>>>>>> 6e69c080 (feat: blackjack report)
-
-            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
+        [HttpGet]
+        public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
+        {
+            return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
+>>>>>>> 8cf2ee5f (feat: blackjack report)
         }
 
         [HttpGet]

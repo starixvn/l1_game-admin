@@ -23,15 +23,6 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/odd_even_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
         Task<OddEvenBetReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
-<<<<<<< HEAD
-=======
-
-        [Get("/report/sedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS);
-
-        [Get("/report/mini_sedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS);
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
 
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
@@ -39,12 +30,6 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/lucky_wheel/users/{nickname}")]
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
 
-<<<<<<< HEAD
-=======
-        [Get("/report/vipsedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<VipSeDieBetReport> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS);
-
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
         [Get("/report/specialsedie/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
@@ -54,6 +39,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/blackjack")]
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
 
+<<<<<<< HEAD
         [Get("/report/slot_game/round/{roundId}/nick/{nickname}?excludeUUS={excludeUUS}&game={game}&partnerId={partnerId}&fromDate={fromDate}&toDate={toDate}&username={username}&convertToUSD={convertToUSD}")]
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(
             long roundId,
@@ -65,6 +51,25 @@ namespace GamesAdmin.Site.Features.Report
             DateTime toDate,
             string username,
             bool convertToUSD);
+=======
+        [Get("/report/vip_fish_prawn_crab/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/sic_bo/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/vipsediewar/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<VipSeDieWarBetReport> GetVipSeDieWarReport(long roundId, string nickname, bool excludeUUS);
+
+        [Get("/report/bet_history/game/sicbo/round/{roundId}/user/{userId}")]
+        Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
+
+        [Get("/report/bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
+        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
+
+        [Get("/report/slot_game/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
+        Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, string game);
+>>>>>>> 8cf2ee5f (feat: blackjack report)
 
         [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);

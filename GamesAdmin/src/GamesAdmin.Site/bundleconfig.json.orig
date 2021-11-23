@@ -31,6 +31,15 @@
     ]
   },
   {
+<<<<<<< HEAD
+=======
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
+>>>>>>> 8cf2ee5f (feat: blackjack report)
     "outputFileName": "wwwroot/css/adjust-bot.min.css",
     "inputFiles": [
       "wwwroot/scss/pages/adjust-bot.min.css"
@@ -235,7 +244,6 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/blackjack-report.js"
     ]
-<<<<<<< HEAD
   },
   {
     "outputFileName": "wwwroot/css/slot-game-report.min.css",
@@ -260,7 +268,19 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/hilo-report.js"
     ]
-=======
->>>>>>> 6e69c080 (feat: blackjack report)
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/blackjack-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/blackjack-report.js"
+    ]
   }
 ]
