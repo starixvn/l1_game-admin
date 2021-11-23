@@ -219,6 +219,9 @@
 .bitcoin-master-result .result-detail {
   margin-left: 5px; }
 
+.bitcoin-master-result .tie .result-detail {
+  margin-left: 0; }
+
 .bitcoin-master-report .display-none {
   display: none !important; }
 

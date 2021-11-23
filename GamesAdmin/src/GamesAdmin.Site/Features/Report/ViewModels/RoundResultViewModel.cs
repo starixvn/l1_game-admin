@@ -233,6 +233,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public Dictionary<string, bool> SettlementResult { get; set; }
 
         public bool IsUp => ResultPrice > BettingPrice;
+        public bool IsDown => ResultPrice < BettingPrice;
 
         public decimal PriceDiff => Math.Abs(ResultPrice - BettingPrice);
 

@@ -16,7 +16,19 @@
             <td class="text-center">@Model.RoundResult.Number</td>
             <td class="text-center">@HtmlHelpers.formatNumber2(Model.RoundResult.BettingPrice)</td>
             <td class="text-center bitcoin-master-result">
-                <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span> <span class="@(Model.RoundResult.IsUp ? "up" :"down")">(<img src="~/images/@(Model.RoundResult.IsUp ? "up":"down").png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span>&nbsp;
+                @if (Model.RoundResult.IsUp)
+                {
+                    <span class="up">(<img src="~/images/up.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                }
+                else if (Model.RoundResult.IsDown)
+                {
+                    <span class="down">(<img src="~/images/down.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                }
+                else
+                {
+                    <span class="tie">(<span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                }
             </td>
         </tr>
     </tbody>
@@ -42,7 +54,19 @@
                     @if (string.Equals(BitcoinMasterBetChoice.UpValue, bet.Choice, StringComparison.OrdinalIgnoreCase) ||
 string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.OrdinalIgnoreCase))
                     {
-                        <span>@HtmlHelpers.formatNumber(Model.RoundResult.ResultPrice)</span> <span class="@(Model.RoundResult.IsUp ? "up" :"down")">(<img src="~/images/@(Model.RoundResult.IsUp ? "up":"down").png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                        <span>@HtmlHelpers.formatNumber(Model.RoundResult.ResultPrice)</span>&nbsp;
+                        @if (Model.RoundResult.IsUp)
+                        {
+                            <span class="up">(<img src="~/images/up.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                        }
+                        else if (Model.RoundResult.IsDown)
+                        {
+                            <span class="down">(<img src="~/images/down.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                        }
+                        else
+                        {
+                            <span class="tie">(<span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                        }
                     }
                     else
                     {
