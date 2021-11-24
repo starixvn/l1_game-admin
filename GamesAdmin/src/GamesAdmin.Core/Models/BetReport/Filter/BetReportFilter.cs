@@ -8,5 +8,6 @@
         public bool ExcludeBot { get; set; }
         public string PartnerId { get; set; }
         public string UserName { get; set; }
+        public bool ConvertToUSD { get; set; }
     }
 }

@@ -26,8 +26,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/odd_even_turbo/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
         Task<OddEvenBetReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        [Get("/report/sedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS);
+        [Get("/report/sedie")]
+        Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter);
 
         [Get("/report/mini_sedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS);

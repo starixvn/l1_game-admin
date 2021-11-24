@@ -321,7 +321,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SeDieReportResultViewModel> Handle(GetSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetSeDieReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
 
             return new SeDieReportResultViewModel
             {
@@ -330,9 +331,11 @@ namespace GamesAdmin.Site.Features.ClientSites
                 {
                     var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return recordViewModel;
-                })
+                }),
+                ConvertToUSD = request.Filter.ConvertToUSD
             };
         }
 

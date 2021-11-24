@@ -1,21 +1,16 @@
 ﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
     public class SeDieReportRequest : IRequest<SeDieBetReport>
     {
-        public SeDieReportRequest(long roundId, string nickname, bool excludeUUS)
+        public SeDieReportRequest(BetReportFilter filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
-            ExcludeUUS = excludeUUS;
+            Filter = filter;
         }
 
-        public long RoundId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
+        public BetReportFilter Filter { get; }
     }
 }

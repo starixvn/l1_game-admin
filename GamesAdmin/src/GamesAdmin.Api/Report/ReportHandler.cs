@@ -77,7 +77,7 @@ namespace GamesAdmin.Api.Report
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public async Task<SeDieBetReport> Handle(SeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+            => await reportService.GetSeDieReportAsync(request.Filter);
 
         public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetMiniSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);

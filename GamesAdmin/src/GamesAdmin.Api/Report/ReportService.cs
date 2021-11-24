@@ -28,7 +28,7 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<SeDieBetReport> GetSeDieReportAsync(BetReportFilter filter);
 
         Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
 
@@ -251,10 +251,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SeDieBetReport> GetSeDieReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<SeDieBetReport> GetSeDieReportAsync(BetReportFilter filter)
         {
             var repository = serviceProvider.GetService<ISeDieReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+            var result = await repository.GetAsync(filter);
 
             return new SeDieBetReport
             {

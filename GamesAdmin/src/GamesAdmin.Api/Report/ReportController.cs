@@ -50,9 +50,9 @@ namespace GamesAdmin.Api.Report
             => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
-        [Route("sedie/round/{roundId}/users/{nickname?}")]
-        public async Task<SeDieBetReport> SeDie(long roundId, string nickname, bool excludeUUS)
-           => (await mediator.Send(new SeDieReportRequest(roundId, nickname, excludeUUS)));
+        [Route("sedie")]
+        public async Task<SeDieBetReport> SeDie([FromQuery] BetReportFilter filter)
+           => (await mediator.Send(new SeDieReportRequest(filter)));
 
         [HttpGet]
         [Route("mini_sedie/round/{roundId}/users/{nickname?}")]

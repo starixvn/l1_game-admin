@@ -32,6 +32,7 @@ namespace GamesAdmin.Database
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"(?i){nickname}");
+            var userNameRegex = new Regex($"^(?i){username}$");
 
             Expression<Func<TBetEntity, bool>> expression;
 
@@ -46,7 +47,7 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrEmpty(partnerId))
             {
-                Expression<Func<TBetEntity, bool>> partnerExpression = x => string.Equals(x.PartnerId, partnerId);
+                Expression<Func<TBetEntity, bool>> partnerExpression = x => x.PartnerId == partnerId;
 
                 expression = expression.And(partnerExpression);
             }
@@ -67,7 +68,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.Id,
                        @as: r => r.Accounts
                  )
-                 .Match(x => x.Accounts.Any(account => username == null || string.Equals(account.Local.MemberName, username)))
+                .Match(x => username == null || x.Accounts.Any(account => userNameRegex.IsMatch(account.Local.MemberName)))
                 .Unwind<BetEntityWithAccountInfoUnwind, TResultEntity>(x => x.Accounts);
 
             return aggregateBuilder;

@@ -151,8 +151,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }
-
-        public decimal Refund { get; set; }
     }
 
     public class VipFishPrawnCrabRecordViewModel : BetRecordViewModel
@@ -312,7 +310,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     }
     public class KenoMatchRecordViewModel : BetRecordViewModel
     {
-        public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
     }
 

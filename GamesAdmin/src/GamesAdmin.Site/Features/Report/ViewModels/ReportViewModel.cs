@@ -16,15 +16,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class StakeBalancedViewModel : ReportViewModel
     {
-        [Required(ErrorMessage = "Please input RoundId.")]
-        public override long? RoundId { get; set; }
-
         [DisplayName("Convert to Currency")]
         public string Currency { get; set; }
     }
 
     public class ReportViewModel
     {
+        [Required(ErrorMessage = "Please input RoundId.")]
         public virtual long? RoundId { get; set; }
 
         public string Nickname { get; set; }
@@ -37,9 +35,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public ReportSeletionsViewModel Selections { get; set; }
 
-        public string Partner { get; set; }
+        public string PartnerId { get; set; }
 
         public string Username { get; set; }
+
+        [DisplayName("Convert to USD")]
+        public bool ConvertToUSD { get; set; }
     }
 
     public class JackpotReportViewModel

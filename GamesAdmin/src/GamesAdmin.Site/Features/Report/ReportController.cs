@@ -84,9 +84,10 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult SeDie()
+        public async Task<IActionResult> SeDie()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            return View(new ReportViewModel { ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
@@ -231,9 +232,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetSeDieReport(BetReportFilter filter)
         {
-            return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(filter)));
         }
 
         [HttpGet]

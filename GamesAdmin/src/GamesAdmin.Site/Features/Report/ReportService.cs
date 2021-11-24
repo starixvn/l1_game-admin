@@ -22,7 +22,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS);
+        Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter);
 
         Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS);
 
@@ -120,8 +120,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot, partnerId, username);
 
-        public async Task<SeDieBetReport> GetSeDieReport(long roundId, string nickname, bool excludeUUS)
-            => await reportApi.GetSeDieReport(roundId, nickname, excludeUUS);
+        public async Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter)
+            => await reportApi.GetSeDieReport(filter);
 
         public async Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS)
             => await reportApi.GetMiniSeDieReport(roundId, nickname, excludeUUS);
