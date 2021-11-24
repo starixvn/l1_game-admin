@@ -4,13 +4,10 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetSeDieReportRequest : IRequest<SeDieReportResultViewModel>
+    public class GetSeDieReportRequest : ReportRequest, IRequest<SeDieReportResultViewModel>
     {
-        public GetSeDieReportRequest(BetReportFilter filter)
+        public GetSeDieReportRequest(BetReportFilter filter) : base(filter)
         {
-            Filter = filter;
         }
-
-        public BetReportFilter Filter { get; }
     }
 }

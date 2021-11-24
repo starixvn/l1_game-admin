@@ -86,14 +86,13 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> SeDie()
         {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            return View(new ReportViewModel { ExcludeUUS = true, Selections = selections });
+            return View(await GetReportViewModel());
         }
 
         [HttpGet]
-        public IActionResult MiniSeDie()
+        public async Task<IActionResult> MiniSeDie()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return View(await GetReportViewModel());
         }
 
         [HttpGet]
@@ -391,9 +390,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS)
+        public async Task<IActionResult> GetMiniSeDieReport(BetReportFilter filter)
         {
-            return PartialView("_MiniSeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(roundId, nickname, excludeUUS)));
+            return PartialView("_MiniSeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(filter)));
         }
 
         [HttpGet]
@@ -560,6 +559,12 @@ namespace GamesAdmin.Site.Features.Report
             var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(filter));
 
             return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
+        }
+        
+        private async Task<ReportViewModel> GetReportViewModel()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            return new ReportViewModel { ExcludeUUS = true, Selections = selections };
         }
     }
 }

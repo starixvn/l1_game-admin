@@ -55,9 +55,9 @@ namespace GamesAdmin.Api.Report
            => (await mediator.Send(new SeDieReportRequest(filter)));
 
         [HttpGet]
-        [Route("mini_sedie/round/{roundId}/users/{nickname?}")]
-        public async Task<SeDieBetReport> MiniSeDie(long roundId, string nickname, bool excludeUUS)
-            => (await mediator.Send(new MiniSeDieReportRequest(roundId, nickname, excludeUUS)));
+        [Route("mini_sedie")]
+        public async Task<SeDieBetReport> MiniSeDie([FromQuery] BetReportFilter filter)
+            => (await mediator.Send(new MiniSeDieReportRequest(filter)));
 
         [HttpGet]
         [Route("{game}/round/{roundId}/users/{nickname?}")]

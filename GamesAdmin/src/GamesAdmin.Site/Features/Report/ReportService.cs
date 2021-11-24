@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter);
 
-        Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS);
+        Task<SeDieBetReport> GetMiniSeDieReport(BetReportFilter filter);
 
         Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
 
@@ -123,8 +123,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         public async Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter)
             => await reportApi.GetSeDieReport(filter);
 
-        public async Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS)
-            => await reportApi.GetMiniSeDieReport(roundId, nickname, excludeUUS);
+        public async Task<SeDieBetReport> GetMiniSeDieReport(BetReportFilter filter)
+            => await reportApi.GetMiniSeDieReport(filter);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);

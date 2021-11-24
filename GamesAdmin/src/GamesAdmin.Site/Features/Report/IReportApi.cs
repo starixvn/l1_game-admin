@@ -29,8 +29,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/sedie")]
         Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter);
 
-        [Get("/report/mini_sedie/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<SeDieBetReport> GetMiniSeDieReport(long roundId, string nickname, bool excludeUUS);
+        [Get("/report/mini_sedie")]
+        Task<SeDieBetReport> GetMiniSeDieReport(BetReportFilter filter);
 
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;

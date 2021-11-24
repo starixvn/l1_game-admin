@@ -30,7 +30,7 @@ namespace GamesAdmin.Api.Report
 
         Task<SeDieBetReport> GetSeDieReportAsync(BetReportFilter filter);
 
-        Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<SeDieBetReport> GetMiniSeDieReportAsync(BetReportFilter filter);
 
         Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false);
 
@@ -263,10 +263,10 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(BetReportFilter filter)
         {
             var repository = serviceProvider.GetService<IMiniSeDieReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+            var result = await repository.GetAsync(filter);
 
             return new SeDieBetReport
             {

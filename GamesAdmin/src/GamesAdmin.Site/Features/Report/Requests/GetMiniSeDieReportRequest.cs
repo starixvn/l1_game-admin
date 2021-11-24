@@ -1,21 +1,13 @@
-﻿using GamesAdmin.Site.Features.Report.ViewModels;
+﻿using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetMiniSeDieReportRequest : IRequest<SeDieReportResultViewModel>
+    public class GetMiniSeDieReportRequest : ReportRequest, IRequest<SeDieReportResultViewModel>
     {
-        public GetMiniSeDieReportRequest(long roundId, string nickname, bool excludeUUS)
+        public GetMiniSeDieReportRequest(BetReportFilter filter) : base(filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
-            ExcludeUUS = excludeUUS;
         }
-
-        public long RoundId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
     }
 }
