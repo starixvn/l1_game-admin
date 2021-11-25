@@ -253,7 +253,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         .ToList(),
                     siteExlusions,
                     partners.ToList(),
-                    currencyGroups.ToList(),
+                    currencyGroups.Where(group => group.Enabled).ToList(),
                     currencyGroupGames.ToList())
                 : new StatusViewModel(new List<StatusItemViewModel>());
         }

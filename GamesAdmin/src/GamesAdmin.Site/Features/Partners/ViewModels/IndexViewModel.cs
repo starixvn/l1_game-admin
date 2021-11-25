@@ -42,6 +42,6 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         public bool EditPermission { get; set; }
 
         private string buildUmInfo(DateTimeOffset start, DateTimeOffset end) 
-            => $"Stat Time (GMT+7): {start.ToOffset(new TimeSpan(7, 0, 0))} \nEnd Time (GMT+7): {end.ToOffset(new TimeSpan(7, 0, 0))}";
+            => $"Start Time (GMT+7): {start.ToOffset(new TimeSpan(7, 0, 0))} \nEnd Time (GMT+7): {end.ToOffset(new TimeSpan(7, 0, 0))}";
     }
 }
