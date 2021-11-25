@@ -89,6 +89,8 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                var gameEnum = Enumeration.FromValue<Game>(game.Info.Name);
+
                 var entity = new GameConfigEntity
                 {
                     Name = game.Info.Name,
@@ -105,6 +107,7 @@ namespace GamesAdmin.Api.Games
                     SlotsConfig = game.SlotsConfig,
                     SiteExclusions = new string[] { },
                     Time = DateTime.Now,
+                    GameId = (int)gameEnum.GameId,
                     IsBeta = true
                 };
 

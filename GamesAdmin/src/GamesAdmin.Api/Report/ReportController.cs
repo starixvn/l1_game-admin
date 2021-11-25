@@ -180,6 +180,16 @@ namespace GamesAdmin.Api.Report
             => (await mediator.Send(new ThreeCardsReportRequest(roundId, nickname, excludeUUS)));
 
         [HttpGet]
+        [Route("bitcoin_master/round/{roundId}/users/{nickname?}")]
+        public async Task<BitcoinMasterBetReport> BitcoinMaster(long roundId, string nickname, bool excludeBot)
+           => (await mediator.Send(new BitcoinMasterReportRequest(roundId, nickname, excludeBot)));
+
+        [HttpGet]
+        [Route("bitcoin_master/round/{roundId}/user/{nickname}")]
+        public async Task<BitcoinMasterBetHistory> BitcoinMasterBetHistory(long roundId, string nickname)
+            => await mediator.Send(new BitcoinMasterBetHistoryRequest(roundId, nickname));
+
+        [HttpGet]
         [Route("kenomatch/{game}/round/{roundId}/users/{nickname?}")]
         public Task<KenoMatchBetReport> KenoMatch(GameId game, long roundId, string nickname, bool excludeUUS)
             => mediator.Send(new KenoMatchReportRequest(game, roundId, nickname, excludeUUS));

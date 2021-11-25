@@ -40,6 +40,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.KenoMatch2, new GameTicketCollection( "kenomatch2_ones", "kenomatch2_cuocs") },
             { GameId.KenoPower1, new GameTicketCollection( "kenopower1_ones", "kenopower1_cuocs") },
             { GameId.KenoPower2, new GameTicketCollection( "kenopower2_ones", "kenopower2_cuocs") },
+            { GameId.BitcoinMaster, new GameTicketCollection( "bitcoinmaster_bets", "bitcoinmaster_betlogs") },
         };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)

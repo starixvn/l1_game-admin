@@ -32,9 +32,10 @@
         FourGuardians = 29,
         Lottery = 31,
         ThreeCards = 35,
+        HeroesSlot = 38,
+        BitcoinMaster = 43,
         KenoMatch1,
         KenoMatch2,
-        HeroesSlot = 38,
         KenoPower1 = 40,
         KenoPower2
     }

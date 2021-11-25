@@ -26,6 +26,8 @@ namespace GamesAdmin.Database
 
         Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId);
 
+        Task<(BitcoinMasterRoundEntity, IEnumerable<BitcoinMasterBetEntity>)> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
+
         Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity;
@@ -307,6 +309,18 @@ namespace GamesAdmin.Database
             var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
+        }
+
+        public async Task<(BitcoinMasterRoundEntity, IEnumerable<BitcoinMasterBetEntity>)> GetBitcoinMasterBetHistoryAsync(
+            long roundId, string nickname)
+        {
+            var roundCollection = database.GetCollection<BitcoinMasterRoundEntity>(Document.GetCollectionName(typeof(BitcoinMasterRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<BitcoinMasterBetEntity>(Document.GetCollectionName(typeof(BitcoinMasterBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Name == nickname).SortByDescending(x => x.Id).ToListAsync();
+
+            return (roundResult, bets);
         }
     }
 }

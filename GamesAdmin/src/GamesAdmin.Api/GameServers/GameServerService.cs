@@ -184,7 +184,7 @@ namespace GamesAdmin.Api.GameServers
                     result.Result = request.Results.ToList();
 
                     return result;
-                }                
+                }
             }
             catch (Exception ex)
             {

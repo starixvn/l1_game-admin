@@ -68,6 +68,10 @@ namespace GamesAdmin.Core.Models
     {
     }
 
+    public class BitcoinMasterBetReport : BetReport<BitcoinMasterRoundResult, BitcoinMasterBetRecord>
+    {
+    }
+
     public class KenoMatchBetReport : BetReport<KenoMatchRoundResult, KenoMatchBetRecord>
     {
     }

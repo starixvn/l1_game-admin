@@ -93,6 +93,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
             CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
 
+            CreateMap<ThreeCardsRoundResult, ThreeCardsRoundResultViewModel>();
+            CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
+            CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
+            
             CreateMap<KenoMatchRoundResult, KenoMatchRoundResultViewModel>();
             CreateMap<KenoMatchPeriod, KenoMatchPeriodViewModel>();
             CreateMap<KenoMatchPeriodResult, KenoMatchPeriodResultViewModel>();

@@ -79,6 +79,11 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot);
+
+        Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
+        
         Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
 
         Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
@@ -199,7 +204,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
 
-        public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot)
+            => await reportApi.GetBitcoinMasterReport(roundId, nickname, excludeBot);
+
+        public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
+            => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
+  	
+  	public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
         => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
 
         public Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId)

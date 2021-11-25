@@ -12,7 +12,6 @@ namespace GamesAdmin.Api.GameServers.Requests
             this.result = result.ToList();
         }
 
-
         public string name { get; }
 
         public IEnumerable<byte> result { get; }

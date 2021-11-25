@@ -271,7 +271,67 @@
     }
 }
 
+// bitcoin-master
+.bitcoin-master-result {
+    .up {
+        color: #63E473;
+    }
 
+    .down {
+        color: #DF4A43;
+    }
+
+    .result-detail {
+        margin-left: 5px;
+    }
+
+    .tie {
+        .result-detail {
+            margin-left: 0;
+        }
+    }
+}
+
+
+.bitcoin-master-report {
+    .display-none {
+        display: none !important;
+    }
+
+    .div-bet-choices {
+        display: flex;
+
+        .spn-bet-choice {
+            color: #000;
+            width: 120px;
+            height: 40px;
+            text-transform: uppercase;
+            display: inline-block;
+            border: solid 2px #000;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            background-color: white;
+
+            &.spn-bet-choice-updown {
+                border-right: none;
+            }
+
+            &.selected {
+                background-color: #95BCF2;
+                cursor: default;
+            }
+        }
+    }
+
+    .table-updown, .table-oddeven {
+        th.title {
+            background-color: #CCCCCC;
+        }
+    }
+}
+
+// keno-match
 .table-keno-match-result, .table-keno-power-result {
     .list-numbers {
         display: grid;

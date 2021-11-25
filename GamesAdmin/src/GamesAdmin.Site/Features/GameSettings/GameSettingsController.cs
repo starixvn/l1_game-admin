@@ -224,6 +224,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("kenopower2-server-endpoint", appSettings.GameServers.KenoPower2.Socket);
             HttpContext.Response.Cookies.Append("kenopower2-server-endpoint-route", appSettings.GameServers.KenoPower2.SocketRoute);
 
+            HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint", appSettings.GameServers.BitcoinMaster.Socket);
+            HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint-route", appSettings.GameServers.BitcoinMaster.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);

@@ -86,11 +86,9 @@ namespace GamesAdmin.Api.GlobalConfigs
                     return globalConfig;
                 }
 
-                var newConfig = new GlobalConfigEntity
-                {
-                    Type = configType,
-                    Configs = (createConfigsFunc ?? CreateDefaultConfigs)()
-                };
+                var newConfig = createConfigsFunc == null ?
+                    new GlobalConfigEntity(configType) :
+                    new GlobalConfigEntity(configType, createConfigsFunc());
 
                 await globalConfigRepository.InsertOneAsync(newConfig);
 
@@ -116,9 +114,6 @@ namespace GamesAdmin.Api.GlobalConfigs
 
             return siteExclusions;
         }
-
-        private Dictionary<string, IList<string>> CreateDefaultConfigs()
-            => new Dictionary<string, IList<string>>();
 
         private async Task<bool> UpdateConfigs(
             GlobalConfigType type,

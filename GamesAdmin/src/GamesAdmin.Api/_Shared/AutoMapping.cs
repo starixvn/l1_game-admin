@@ -138,9 +138,9 @@ namespace GamesAdmin.Api._Shared
                     if (source.Result != null && source.Result.Player != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<DragonTigerCardResult> 
-                        { 
-                            mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard) 
+                        var result = new List<DragonTigerCardResult>
+                        {
+                            mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard)
                         };
 
                         if (source.Result.Player.ThirdCard != null)
@@ -158,9 +158,9 @@ namespace GamesAdmin.Api._Shared
                     if (source.Result != null && source.Result.Banker != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<DragonTigerCardResult> 
-                        { 
-                            mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard) 
+                        var result = new List<DragonTigerCardResult>
+                        {
+                            mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard)
                         };
 
                         if (source.Result.Banker.ThirdCard != null)
@@ -267,6 +267,9 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ThreeCardsRoundEntity, ThreeCardsRoundResult>();
             CreateMap<ThreeCardsSettlementResultEntity, ThreeCardsSettlementResult>();
             CreateMap<ThreeCardsBetReportEntity, ThreeCardsBetRecord>();
+
+            CreateMap<BitcoinMasterRoundResultEntity, BitcoinMasterRoundResult>();
+            CreateMap<BitcoinMasterBetEntity, BitcoinMasterBetHistoryRecord>();
 
             CreateMap<KenoMatchRoundEntity, KenoMatchRoundResult>();
             CreateMap<KenoMatchPeriodEntity, KenoMatchPeriod>();

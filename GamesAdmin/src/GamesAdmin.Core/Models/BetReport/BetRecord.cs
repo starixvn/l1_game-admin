@@ -279,6 +279,17 @@ namespace GamesAdmin.Core.Models
         public decimal Clubs { get; set; }
     }
 
+    public class BitcoinMasterBetRecord : BetRecord
+    {
+        public decimal Bet { get; set; }
+
+        public decimal Back { get; set; }
+
+        public bool Win { get; set; }
+
+        public string Choice { get; set; }
+    }
+
     public class KenoMatchBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
