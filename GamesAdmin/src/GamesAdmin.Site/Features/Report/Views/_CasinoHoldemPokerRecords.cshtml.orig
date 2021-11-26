@@ -1,4 +1,5 @@
-﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
 
 @model CasinoHoldemPokerReportResultViewModel
 
@@ -7,29 +8,23 @@
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
-<<<<<<< HEAD
                     <th class="col-nickname">Date (GMT+7)</th>
                     <th>Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th class="col-number">Currency</th>
+<<<<<<< HEAD
                     <th class="col-number">Round ID</th>
                     <th class="col-nickname">Player</th>
                     <th class="col-nickname">Dealer</th>
                     <th class="col-number">Total Stake</th>
-                    <th class="col-number">Win</th>
 =======
-                    <th class="col-date">Date (GMT+7)</th>
-                    <th >Partner</th>
-                    <th >Username</th>
-                    <th  class="col-nickname">Nickname</th>
-                    <th  class="col-nickname">Currency</th>
-                    <th  class="col-number">Round Id</th>
-                    <th  class="col-nickname">Player</th>
-                    <th  class="col-nickname">Dealer</th>
-                    <th  class="col-number">Stake</th>
-                    <th  class="col-number">Win</th>
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+                    <th class="col-number">Round Id</th>
+                    <th class="col-nickname">Player</th>
+                    <th class="col-nickname">Dealer</th>
+                    <th class="col-number">Stake</th>
+>>>>>>> c7810c7b (feat: Casino Holdem Poker - round history add paging)
+                    <th class="col-number">Win</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,7 +32,6 @@
                 {
                     var winAmount = record.BetWin + record.Stake;
                     <tr>
-<<<<<<< HEAD
                         <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@record.Partner</td>
                         <td class="text-center">@record.Username</td>
@@ -46,6 +40,7 @@
                         <td class="text-center">@record.RoundId</td>
                         <td class="text-center">@record.PlayerResult</td>
                         <td class="text-center">@record.DealerResult</td>
+<<<<<<< HEAD
                         <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
@@ -54,17 +49,9 @@
                         </td>
                         <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(winAmount) : winAmount) : "Unfinished Game")</td>
 =======
-                        <td class="col-date">@record.Time</td> 
-                        <td>@record.Partner</td>
-                        <td>@record.Username</td>
-                        <td class="col-nickname">@record.Nickname</td>
-                        <td class="col-nickname">@record.Currency</td>
-                        <td class="col-number">@record.RoundId</td>
-                        <td class="col-nickname">@record.PlayerResult</td>
-                        <td class="col-nickname">@record.DealerResult</td>
-                        <td class="col-number">@record.Stake</td>
-                        <td class="col-number">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+                        <td class="text-center">@record.Stake</td>
+                        <td class="text-center">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
+>>>>>>> c7810c7b (feat: Casino Holdem Poker - round history add paging)
                     </tr>
                 }
             </tbody>
