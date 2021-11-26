@@ -190,7 +190,7 @@ export default class VipFishPrawnCrab extends React.Component<VipFishPrawnCrabPr
     openModal(id) {
         this.setState({
             isOpenModal: true,
-            currentDiceNumber: parseInt(id.split('-')[1]),
+            currentDiceNumber: id.split('-')[1],
         });
     }
 
