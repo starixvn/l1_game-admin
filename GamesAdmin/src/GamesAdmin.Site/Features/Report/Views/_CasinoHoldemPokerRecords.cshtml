@@ -1,4 +1,5 @@
-﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
 
 @model CasinoHoldemPokerReportResultViewModel
 
@@ -7,32 +8,32 @@
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
-                    <th class="col-date">Date (GMT+7)</th>
-                    <th >Partner</th>
-                    <th >Username</th>
-                    <th  class="col-nickname">Nickname</th>
-                    <th  class="col-nickname">Currency</th>
-                    <th  class="col-number">Round Id</th>
-                    <th  class="col-nickname">Player</th>
-                    <th  class="col-nickname">Dealer</th>
-                    <th  class="col-number">Stake</th>
-                    <th  class="col-number">Win</th>
+                    <th class="col-nickname">Date (GMT+7)</th>
+                    <th>Partner</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Currency</th>
+                    <th class="col-number">Round Id</th>
+                    <th class="col-nickname">Player</th>
+                    <th class="col-nickname">Dealer</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Win</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var record in Model.Records)
                 {
                     <tr>
-                        <td class="col-date">@record.Time</td> 
-                        <td>@record.Partner</td>
-                        <td>@record.Username</td>
-                        <td class="col-nickname">@record.Nickname</td>
-                        <td class="col-nickname">@record.Currency</td>
-                        <td class="col-number">@record.RoundId</td>
-                        <td class="col-nickname">@record.PlayerResult</td>
-                        <td class="col-nickname">@record.DealerResult</td>
-                        <td class="col-number">@record.Stake</td>
-                        <td class="col-number">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
+                        <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@record.Partner</td>
+                        <td class="text-center">@record.Username</td>
+                        <td class="text-center">@record.Nickname</td>
+                        <td class="text-center">@record.Currency</td>
+                        <td class="text-center">@record.RoundId</td>
+                        <td class="text-center">@record.PlayerResult</td>
+                        <td class="text-center">@record.DealerResult</td>
+                        <td class="text-center">@record.Stake</td>
+                        <td class="text-center">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
                     </tr>
                 }
             </tbody>

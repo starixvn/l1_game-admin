@@ -23,6 +23,13 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
     "inputFiles": [
       "wwwroot/scss/pages/reports.min.css"
