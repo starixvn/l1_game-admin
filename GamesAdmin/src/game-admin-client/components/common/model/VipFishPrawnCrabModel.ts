@@ -40,14 +40,14 @@ class VipFishPrawnCrabSettlementResult {
 }
 
 class GameResult {
-    'dice-0': number;
-    'dice-1': number;
-    'dice-2': number;
+    'dice1': number;
+    'dice2': number;
+    'dice3': number;
 
     constructor(dice0 = -1, dice1 = -1, dice2 = -1) {
-        this['dice-0'] = dice0;
-        this['dice-1'] = dice1;
-        this['dice-2'] = dice2;
+        this['dice1'] = dice0;
+        this['dice2'] = dice1;
+        this['dice3'] = dice2;
     }
 }
 
