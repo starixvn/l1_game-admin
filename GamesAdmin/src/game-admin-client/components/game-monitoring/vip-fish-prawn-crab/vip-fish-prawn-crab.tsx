@@ -165,6 +165,7 @@ export default class VipFishPrawnCrab extends React.Component<VipFishPrawnCrabPr
         const newResult = this.state.result;
 
         gameResult[`dice${+currentDiceNumber + 1}`] = value;
+        console.log(currentDiceNumber);
 
         newResult[currentDiceNumber] = new DiceModel(value, DiceType.BauCua);
         this.setState({
