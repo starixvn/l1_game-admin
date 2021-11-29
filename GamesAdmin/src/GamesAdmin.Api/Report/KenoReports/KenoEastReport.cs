@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.Report
             return betLogs;
         }
 
-        public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId, string nickname, bool excludeUUS = false)
+        public async Task<IEnumerable<KenoBetRecord>> GetReportAsync(long roundId, string nickname, bool excludeUUS)
         {
             var bets = await kenoEastOnesRepository.FilterByAsync(x => x.Round == roundId);
 

@@ -32,6 +32,6 @@ namespace GamesAdmin.Api.GlobalConfigs
 
         [HttpPost("update_super_players")]
         public Task<bool> UpdateSuperPlayers(string[] superPlayers)
-           => mediator.Send(new UpdateSuperPlayersRequest(superPlayers));
+            => mediator.Send(new UpdateSuperPlayersRequest(superPlayers));
     }
 }

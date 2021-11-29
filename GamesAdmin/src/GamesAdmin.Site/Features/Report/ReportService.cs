@@ -62,10 +62,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(long handId, string nickname, bool excludeUUS);
 
         Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
+
         Task<SicBoBetReport> GetSicBoBetReport(long roundId, string nickname, bool excludeUUS);
+
         Task<VipSeDieWarBetReport> GetVipSeDieWarBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
+
         Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(long roundId, string nickname, bool excludeUUS, Game game);
 
@@ -76,6 +79,13 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+        Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
+
+        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
+
+        Task<KenoPowerBetReport> GetKenoPowerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
+
+        Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId);
     }
 
     public class ReportService : IReportService
@@ -159,7 +169,6 @@ namespace GamesAdmin.Site.Features.ClientSites
         public Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
         => reportApi.GetVipFishPrawnCrabReport(roundId, nickname, excludeUUS);
 
-
         public Task<VipSeDieWarBetReport> GetVipSeDieWarBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetVipSeDieWarReport(roundId, nickname, excludeUUS);
 
@@ -189,5 +198,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
+
+        public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
+
+        public Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
+        => reportApi.GetKenoMatchBetHistory(game.ToString(), roundId, userId);
+
+        public Task<KenoPowerBetReport> GetKenoPowerBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        => reportApi.GetKenoPowerBetReport(game.ToString(), roundId, nickname, excludeUUS);
+
+        public Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
+        => reportApi.GetKenoPowerBetHistory(game.ToString(), roundId, userId);
     }
 }

@@ -86,7 +86,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public async Task<GameConfig> GetByName(string name)
-        => await gameApi.GetByName(name);
+            => await gameApi.GetByName(name);
 
         public async Task<bool> IsExistName(string name)
         {
@@ -152,10 +152,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public Task<GlobalConfig> GetSiteExclusion()
-        => globalConfigApi.GetSiteExclusions();
+            => globalConfigApi.GetSiteExclusions();
 
         public Task<Dictionary<string, string>> GetDisabledMessage(string name)
-        => gameApi.GetDisableMessage(name);
+            => gameApi.GetDisableMessage(name);
+
         public Task<GlobalConfig> GetSuperPlayers() => globalConfigApi.GetSuperPlayers();
 
         public Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request)
