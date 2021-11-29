@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameUser;
@@ -8,7 +7,6 @@ using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Keno;
 using MongoDB.Driver;
 

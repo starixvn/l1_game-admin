@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class SpecialSeDieBetReportEntity
+    public class SpecialSeDieBetReportEntity : BetReportEntity
     {
         public DateTime Time { get; set; }
 

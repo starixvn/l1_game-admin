@@ -2,14 +2,8 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class BigSmallBetReportEntity
+    public class BigSmallBetReportEntity : BetReportEntity
     {
-        public DateTime Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
         public bool Select { get; set; }
 
         public decimal Bet { get; set; }
@@ -17,11 +11,5 @@ namespace GamesAdmin.Database.Report.Entities
         public decimal BetWin { get; set; }
 
         public decimal Back { get; set; }
-
-        public string Currency { get; set; }
-
-        public string Partner { get; set; }
-
-        public decimal Rate { get; set; }
     }
 }

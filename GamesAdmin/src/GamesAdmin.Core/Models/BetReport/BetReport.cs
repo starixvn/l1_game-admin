@@ -2,7 +2,11 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public class BetReport<TRoundResult, TBetRecord> where TRoundResult : RoundResult where TBetRecord : BetRecord
+    public class BetReportBase
+    {
+
+    }
+    public class BetReport<TRoundResult, TBetRecord> : BetReportBase where TRoundResult : RoundResult where TBetRecord : BetRecord
     {
         public TRoundResult RoundResult { get; set; }
         public IEnumerable<TBetRecord> Records { get; set; }

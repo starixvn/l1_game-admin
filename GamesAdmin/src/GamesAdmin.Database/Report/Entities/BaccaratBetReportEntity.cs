@@ -2,14 +2,8 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class BaccaratBetReportEntity
+    public class BaccaratBetReportEntity : BetReportEntity
     {
-        public DateTime Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
         public decimal BetWin { get; set; }
 
         public decimal Banker { get; set; }

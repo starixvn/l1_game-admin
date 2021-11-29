@@ -10,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface ISeDieReportRepository
     {
-        Task<(SeDieRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync(BetReportFilter filter);
+        Task<(BaseRoundEntity, IEnumerable<BetReportEntity>)> GetAsync(BetReportFilter filter);
     }
 
     public class SeDieReportRepository : BaseBetReportRepository, ISeDieReportRepository
@@ -19,7 +19,7 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(SeDieRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync(BetReportFilter filter)
+        public async Task<(BaseRoundEntity, IEnumerable<BetReportEntity>)> GetAsync(BetReportFilter filter)
         {
             var roundResult = await database.GetCollection<SeDieRoundEntity>(Document.GetCollectionName(typeof(SeDieRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
