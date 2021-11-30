@@ -3,22 +3,20 @@
 <table id="online-users-table" class="table table-bordered table-hover stripe has-background sticky-table">
     <thead>
         <tr>
-            <th>CustID</th>
+            <th>Partner</th>
             <th>Username</th>
             <th>Nickname</th>
             <th>Currency</th>
-            <th>Partner</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
+                <td>@user.GetPartnerName()</td>
                 <td>@user.Name</td>
                 <td>@user.Character</td>
                 <td>@user.Currency</td>
-                <td>@user.GetPartnerName()</td>
             </tr>
         }
     </tbody>

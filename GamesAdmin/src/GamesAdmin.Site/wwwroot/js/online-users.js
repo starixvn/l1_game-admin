@@ -12,7 +12,8 @@
     return {
         init: function () {
             $('#online-users-table').DataTable({
-                "order": [[1, "asc"]]
+                "order": [[0, "asc"]],
+                "lengthMenu": [100, 200, 500]
             });
         },
         getFanexSelectData: () => partners.map(convertPartnerSelectToFanexItem),
