@@ -34,6 +34,7 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
+          IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
@@ -595,6 +596,12 @@ namespace GamesAdmin.Site.Features.Report
             };
 
             return new HoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
+        }
+
+        public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
+        {
+            var service = reportServiceFactory.GetService(request.Game);
+            return service.Get(request.Filter);
         }
 
         public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
