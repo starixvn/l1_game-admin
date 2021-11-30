@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -486,5 +486,13 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(filter)));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CasinoHoldemPokerBetHistory(long roundId, string nickname)
+        {
+            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(roundId, nickname));
+
+            return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
+        }
     }
-} 
+}

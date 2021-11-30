@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
@@ -93,6 +93,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId);
 
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
+
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -225,6 +227,9 @@ namespace GamesAdmin.Site.Features.ClientSites
         => reportApi.GetKenoPowerBetHistory(game.ToString(), roundId, userId);
 
         public Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter)
-        => reportApi.GetCasinoHoldemPokerBetReport(filter);
+            => reportApi.GetCasinoHoldemPokerBetReport(filter);
+
+        public Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(long roundId, string nickname)
+            => reportApi.GetCasinoHoldemPokerBetHistory(roundId, nickname);
     }
 }

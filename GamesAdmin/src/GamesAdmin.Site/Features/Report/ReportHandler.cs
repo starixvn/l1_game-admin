@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using GamesAdmin.Core.Models.Currencies;
+﻿using AutoMapper;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
-using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
@@ -57,7 +56,8 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
         IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
-        IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>
+        IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
+        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -807,6 +807,12 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
+        public async Task<CasinoHoldemPokerBetHistory> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetCasinoHoldemPokerBetHistory(request.RoundId, request.Nickname);
+            return result;
+        }
+
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
@@ -821,6 +827,5 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
-
     }
 }

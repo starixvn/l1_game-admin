@@ -28,7 +28,7 @@ namespace GamesAdmin.Api.EndGameInfo
             }
 
             var bet = bets.FirstOrDefault();
-            var amount = bet.AA + bet.Ante + bet.Call;
+            var amount = bet.Aa + bet.Ante + bet.Call;
 
             return new EndGameInfoResult
             {

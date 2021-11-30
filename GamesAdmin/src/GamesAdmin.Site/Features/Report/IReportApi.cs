@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -126,5 +126,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/casinoholdempoker")]
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
+
+        [Get("/report/bet_history/casinoholdempoker/{roundId}/{nickname}")]
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(long roundId, string nickname);
     }
 }

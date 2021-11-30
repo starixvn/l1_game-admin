@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -13,6 +9,10 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -101,6 +101,8 @@ namespace GamesAdmin.Api.Report
         Task<KenoPowerBetHistory> GetKenoPower2BetHistoryAsync(long roundId, string userId);
 
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter);
+
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -739,6 +741,14 @@ namespace GamesAdmin.Api.Report
             var result = await repository.GetAsync(filter);
 
             return result.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x));
+        }
+
+        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(long roundId, string nickname)
+        {
+            var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
+            var result = await repository.GetBetHistoryAsync(roundId, nickname);
+
+            return mapper.Map<CasinoHoldemPokerBetHistory>(result);
         }
     }
 }

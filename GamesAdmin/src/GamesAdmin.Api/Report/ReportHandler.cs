@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using GamesAdmin.Api.Report.Requests;
+﻿using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -10,6 +6,10 @@ using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -51,7 +51,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
         IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
         IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>,
-        IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>
+        IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
+       IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -201,5 +202,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<CasinoHoldemPokerBetRecord>> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
             => reportService.GetCasinoHoldemPokerReportAsync(request.Filter);
+
+        public Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+              => reportService.GetCasinoHoldemPokerBetHistoryAsync(request.RoundId, request.Nickname);
     }
 }

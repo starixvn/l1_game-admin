@@ -26,29 +26,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public DateTime ToDate { get; set; } = DateTime.Today;
 
         public ReportSeletionsViewModel Selections { get; set; }
-
-        //public CasinoHoldemPokerReportViewModel()
-        //{
-        //    Partner = new PartnerViewModel { PartnerId = "ONEworks1", PartnerName = "2W" };
-        //    Partners = new List<PartnerViewModel>
-        //    {
-        //       Partner,
-        //         new PartnerViewModel{PartnerId= "sbogamesimulator", PartnerName="BBO"},
-        //    };
-
-        //}
-
-        //public PartnerViewModel Partner { get; set; }
-
-        //public IEnumerable<PartnerViewModel> Partners { get; set; }
-
-        //public DateTime FromDate { get; set; } = DateTime.Now;
-
-        //public DateTime ToDate { get; set; } = DateTime.Now;
-
-        //public string Username { get; set; }
-
-        //public bool ConvertToUsd { get; set; }
     }
 
     public class PartnerViewModel

@@ -7,5 +7,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ConvertToUSD { get; set; }
 
         public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; set; }
+
     }
 }

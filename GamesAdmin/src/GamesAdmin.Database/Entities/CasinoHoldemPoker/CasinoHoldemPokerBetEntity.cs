@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Attributes;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("casinoholdempoker_cuocs")]
     public class CasinoHoldemPokerBetEntity : BaseBetEntity
     {
-        public decimal AA { get; set; }
+        public decimal Aa { get; set; }
 
         public decimal Ante { get; set; }
 
@@ -22,12 +23,5 @@ namespace GamesAdmin.Database.Entities
         public CombinationCard Result { get; set; }
 
         public CasinoHoldemPokerBetSettlementResult SettlementResult { get; set; }
-    }
-
-    public class CasinoHoldemPokerBetSettlementResult
-    {
-        public decimal AA { get; set; }
-        public decimal Ante { get; set; }
-        public decimal Call { get; set; }
     }
 }

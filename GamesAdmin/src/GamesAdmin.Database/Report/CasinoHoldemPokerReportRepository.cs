@@ -1,20 +1,22 @@
-﻿using System;
+﻿using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Extensions;
-using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Report.Entities;
-using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
     public interface ICasinoHoldemPokerReportRepository
     {
         Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(CasinoHoldemPokerBetReportFilter filter);
+
+        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname);
     }
 
     public class CasinoHoldemPokerReportRepository : BaseBetReportRepository, ICasinoHoldemPokerReportRepository
@@ -41,6 +43,18 @@ namespace GamesAdmin.Database
 
             return records;
         }
+
+        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname)
+        {
+            var bet = await database
+                .GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity))).Find(x => x.Round == roundId && x.Name == nickname).FirstOrDefaultAsync();
+
+            var round = await database
+                .GetCollection<CasinoHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            return new CasinoHoldemPokerBetHistoryModel(bet, round);
+        }
+
 
         private IAggregateFluent<CasinoHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(CasinoHoldemPokerBetReportFilter filter)
         {

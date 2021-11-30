@@ -13,4 +13,10 @@ namespace GamesAdmin.Core.Models.BetReport
         public bool ExcludeUUS { get; set; }
         public bool ConvertToUSD { get; set; }
     }
+
+    public class CasinoHoldemPokerBetHistoryFilter
+    {
+        public int RoundId { get; set; }
+        public string Nickname { get; set; }
+    }
 }
