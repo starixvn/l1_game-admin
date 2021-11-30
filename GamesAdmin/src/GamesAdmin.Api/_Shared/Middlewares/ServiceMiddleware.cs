@@ -166,6 +166,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<KenoProMaxReportService>();
             services.AddScoped<HiLoReportService>();
 
+            services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
+            services.AddScoped<SeDieReportService>();
+            services.AddScoped<MiniSeDieReportService>();
+            services.AddScoped<FishPrawnCrabReportService>();
+            services.AddScoped<DragonTigerReportService>();
+
+
             services.InitApiLog();
         }
 

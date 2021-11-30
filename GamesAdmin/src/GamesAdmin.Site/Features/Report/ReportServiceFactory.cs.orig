@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
-=======
-using System.Linq;
-using System.Threading.Tasks;
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)
 using GamesAdmin.Core.Enumeration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,10 +8,7 @@ namespace GamesAdmin.Site.Features.Report
     public interface IReportServiceFactory
     {
         IGameReportService GetService(GameId game);
-<<<<<<< HEAD
         IBetHistoryReportService GetBetHistoryService(GameId game);
-=======
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)
     }
 
     public class ReportServiceFactory : IReportServiceFactory
@@ -27,10 +19,10 @@ namespace GamesAdmin.Site.Features.Report
             //{ GameId.BigSmallTurbo, typeof(BigSmallTurboEndGameInfoService) },
             //{ GameId.OddEven, typeof(OddEvenEndGameInfoService) },
             //{ GameId.OddEvenTurbo, typeof(OddEvenTurboEndGameInfoService) },
-<<<<<<< HEAD
             { GameId.FishPrawnCrab, typeof(FishPrawnCrabReportService) },
             { GameId.SeDie, typeof(SedieReportService) },
             { GameId.MiniSeDie, typeof(MiniSedieReportService) },
+<<<<<<< HEAD
             { GameId.Baccarat, typeof(BaccaratReportService) },
             { GameId.DragonTiger, typeof(DragonTigerReportService) },
             { GameId.KenoProMax, typeof(MiniKenoReportService) },
@@ -44,6 +36,22 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoNorth, typeof(MiniKenoReportService) },
             { GameId.Roulette, typeof(RouletteReportService) },
             { GameId.VipSeDie, typeof(VipSeDieReportService) },
+=======
+            //{ GameId.Baccarat, typeof(BaccaratEndGameInfoService) },
+            { GameId.DragonTiger, typeof(DragonTigerReportService) },
+            //{ GameId.KenoProMax, typeof(KenoProMaxEndGameInfoService) },
+            //{ GameId.KenoProViet, typeof(KenoProVietEndGameInfoService) },
+            //{ GameId.KenoMax, typeof(KenoMaxEndGameInfoService) },
+            //{ GameId.KenoMax2, typeof(KenoMax2EndGameInfoService) },
+            //{ GameId.KenoMini, typeof(KenoMiniEndGameInfoService) },
+            //{ GameId.KenoMini2, typeof(KenoMini2EndGameInfoService) },
+            //{ GameId.KenoEast, typeof(KenoEastEndGameInfoService) },
+            //{ GameId.KenoWest, typeof(KenoWestEndGameInfoService) },
+            //{ GameId.KenoSouth, typeof(KenoSouthEndGameInfoService) },
+            //{ GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
+            //{ GameId.Roulette, typeof(RouletteEndGameInfoService) },
+            //{ GameId.VipSeDie, typeof(VipSeDieEndGameInfoService) },
+>>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
             //{ GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
             //{ GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
@@ -60,40 +68,6 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoPower1, typeof(KenoPowerReportService) },
             { GameId.KenoPower2, typeof(KenoPowerReportService) },
             { GameId.HiLo, typeof(HiLoReportService) },
-=======
-            //{ GameId.FishPrawnCrab, typeof(FishPrawnCrabEndGameInfoService) },
-            { GameId.SeDie, typeof(SedieReportService) },
-            { GameId.MiniSeDie, typeof(MiniSedieReportService) },
-            //{ GameId.Baccarat, typeof(BaccaratEndGameInfoService) },
-            //{ GameId.DragonTiger, typeof(DragonTigerEndGameInfoService) },
-            //{ GameId.KenoProMax, typeof(KenoProMaxEndGameInfoService) },
-            //{ GameId.KenoProViet, typeof(KenoProVietEndGameInfoService) },
-            //{ GameId.KenoMax, typeof(KenoMaxEndGameInfoService) },
-            //{ GameId.KenoMax2, typeof(KenoMax2EndGameInfoService) },
-            //{ GameId.KenoMini, typeof(KenoMiniEndGameInfoService) },
-            //{ GameId.KenoMini2, typeof(KenoMini2EndGameInfoService) },
-            //{ GameId.KenoEast, typeof(KenoEastEndGameInfoService) },
-            //{ GameId.KenoWest, typeof(KenoWestEndGameInfoService) },
-            //{ GameId.KenoSouth, typeof(KenoSouthEndGameInfoService) },
-            //{ GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
-            //{ GameId.Roulette, typeof(RouletteEndGameInfoService) },
-            //{ GameId.VipSeDie, typeof(VipSeDieEndGameInfoService) },
-            //{ GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
-            //{ GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
-            //{ GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabEndGameInfoService) },
-            //{ GameId.SicBo, typeof(SicBoEndGameInfoService) },
-            //{ GameId.VipBaccarat, typeof(VipBaccaratEndGameInfoService) },
-            //{ GameId.VipSeDieWar, typeof(VipSeDieWarEndGameInfoService) },
-            //{ GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) },
-            //{ GameId.Lottery, typeof(LotteryEndGameInfoService) },
-            //{ GameId.ThreeCards, typeof(ThreeCardsEndGameInfoService) },
-            //{ GameId.HeroesSlot, typeof(HeroesSlotEndGameInfoService) },
-            //{ GameId.BitcoinMaster, typeof(BitcoinMasterEndGameInfoService) },
-            //{ GameId.KenoMatch1, typeof(KenoMatchEndGameInfoService<KenoMatch1RoundEntity, KenoMatch1OneEntity>) },
-            //{ GameId.KenoMatch2, typeof(KenoMatchEndGameInfoService<KenoMatch2RoundEntity, KenoMatch2OneEntity>) },
-            //{ GameId.KenoPower1, typeof(KenoPowerEndGameInfoService<KenoPower1RoundEntity, KenoPower1OneEntity>) },
-            //{ GameId.KenoPower2, typeof(KenoPowerEndGameInfoService<KenoPower2RoundEntity, KenoPower2OneEntity>) },
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)
         };
 
         private readonly IServiceProvider serviceProvider;
@@ -103,7 +77,6 @@ namespace GamesAdmin.Site.Features.Report
             this.serviceProvider = serviceProvider;
         }
 
-<<<<<<< HEAD
         public IBetHistoryReportService GetBetHistoryService(GameId game)
         => (IBetHistoryReportService)serviceProvider.GetRequiredService(services[game]);
 
@@ -111,9 +84,3 @@ namespace GamesAdmin.Site.Features.Report
         => (IGameReportService)serviceProvider.GetRequiredService(services[game]);
     }
 }
-=======
-        public IGameReportService GetService(GameId game)
-        => (IGameReportService)serviceProvider.GetRequiredService(services[game]);
-    }
-}
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)

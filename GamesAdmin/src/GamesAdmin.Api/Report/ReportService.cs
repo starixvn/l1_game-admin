@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -44,9 +44,7 @@ namespace GamesAdmin.Api.Report
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
 
-        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter);
 
-        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
     }
 
     public class ReportService : IReportService
@@ -372,22 +370,6 @@ namespace GamesAdmin.Api.Report
             model.RoundResult.Number = result.Item1.Number;
             model.RoundResult.ExchangeRateId = result.Item1.ExchangeRateId;
             return model;
-        }
-
-        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter)
-        {
-            var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
-            var result = await repository.GetAsync(filter);
-
-            return result.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x));
-        }
-
-        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter)
-        {
-            var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
-            var result = await repository.GetBetHistoryAsync(filter);
-
-            return mapper.Map<CasinoHoldemPokerBetHistory>(result);
         }
     }
 }

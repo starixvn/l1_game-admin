@@ -126,16 +126,15 @@ namespace GamesAdmin.Api.Report
         public async Task<BitcoinMasterBetHistory> BitcoinMasterBetHistory(long roundId, string nickname)
             => await mediator.Send(new BitcoinMasterBetHistoryRequest(roundId, nickname));
 
-        [HttpGet]
-        [Route("casinoholdempoker")]
-        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> CasinoHoldemPoker([FromQuery] CasinoHoldemPokerBetReportFilter filter)
-       => (await mediator.Send(new CasinoHoldemPokerReportRequest(filter)));
+         [HttpGet]
+        [Route("holdempoker")]
+        public async Task<IEnumerable<HoldemPokerBetRecord>> HoldemPoker([FromQuery] HoldemPokerBetReportFilter filter)
+            => (await mediator.Send(new HoldemPokerReportRequest(filter)));
 
         [HttpGet]
-        [Route("bet_history/casinoholdempoker")]
-        public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory([FromQuery] CasinoHoldemPokerBetHistoryFilter filter)
-         => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(filter)));
-
+        [Route("bet_history/holdempoker")]
+        public async Task<HoldemPokerBetHistory> HoldemPokerBetHistory([FromQuery] HoldemPokerBetHistoryFilter filter)
+            => (await mediator.Send(new HoldemPokerBetHistoryRequest(filter)));
         [HttpGet]
         [Route("hilo")]
         public async Task<IEnumerable<HiLoBetRecord>> HiLo([FromQuery] HiLoBetReportFilter filter)

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
@@ -229,14 +230,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
 
-<<<<<<< HEAD
             return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
-=======
-        [HttpGet]
-        public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
-        {
-            return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
->>>>>>> 8cf2ee5f (feat: blackjack report)
         }
 
         [HttpGet]
@@ -494,7 +488,7 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
         }
         
-            [HttpGet]
+       [HttpGet]
         [Route("Report/CasinoHoldem")]
         public async Task<IActionResult> CasinoHoldemPoker()
             => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));

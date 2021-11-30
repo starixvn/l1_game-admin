@@ -488,7 +488,7 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
         }
         
-            [HttpGet]
+       [HttpGet]
         [Route("Report/CasinoHoldem")]
         public async Task<IActionResult> CasinoHoldemPoker()
             => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
