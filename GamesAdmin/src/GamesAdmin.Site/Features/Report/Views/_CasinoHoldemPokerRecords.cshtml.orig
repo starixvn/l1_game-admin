@@ -3,7 +3,7 @@
 
 @model CasinoHoldemPokerReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         <table class="table table-bordered table-hover sticky-table">
             <thead>
@@ -13,17 +13,11 @@
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th class="col-number">Currency</th>
-<<<<<<< HEAD
                     <th class="col-number">Round ID</th>
+                    <th class="col-number">Exchange ID</th>
                     <th class="col-nickname">Player</th>
                     <th class="col-nickname">Dealer</th>
                     <th class="col-number">Total Stake</th>
-=======
-                    <th class="col-number">Round Id</th>
-                    <th class="col-nickname">Player</th>
-                    <th class="col-nickname">Dealer</th>
-                    <th class="col-number">Stake</th>
->>>>>>> c7810c7b (feat: Casino Holdem Poker - round history add paging)
                     <th class="col-number">Win</th>
                 </tr>
             </thead>
@@ -37,10 +31,19 @@
                         <td class="text-center">@record.Username</td>
                         <td class="text-center">@record.Nickname</td>
                         <td class="text-center">@record.Currency</td>
+<<<<<<< HEAD
                         <td class="text-center">@record.RoundId</td>
+                        <td class="text-center">@record.ExchangeRateId</td>
+=======
+                        <td class="text-center">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname">
+                                @record.RoundId
+                            </a>
+                        </td>
+>>>>>>> e5834358 (feat: Casino Holdem Poker - bet history)
                         <td class="text-center">@record.PlayerResult</td>
                         <td class="text-center">@record.DealerResult</td>
-<<<<<<< HEAD
                         <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
@@ -48,10 +51,6 @@
                             </a>
                         </td>
                         <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(winAmount) : winAmount) : "Unfinished Game")</td>
-=======
-                        <td class="text-center">@record.Stake</td>
-                        <td class="text-center">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
->>>>>>> c7810c7b (feat: Casino Holdem Poker - round history add paging)
                     </tr>
                 }
             </tbody>

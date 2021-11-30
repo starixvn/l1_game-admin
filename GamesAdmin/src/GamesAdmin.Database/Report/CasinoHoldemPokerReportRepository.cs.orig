@@ -16,7 +16,11 @@ namespace GamesAdmin.Database
     {
         Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(CasinoHoldemPokerBetReportFilter filter);
 
+<<<<<<< HEAD
         Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
+=======
+        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname);
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
     }
 
     public class CasinoHoldemPokerReportRepository : BaseBetReportRepository, ICasinoHoldemPokerReportRepository
@@ -44,6 +48,7 @@ namespace GamesAdmin.Database
             return records;
         }
 
+<<<<<<< HEAD
         public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter)
         {
             var bet = await database
@@ -53,6 +58,17 @@ namespace GamesAdmin.Database
                 .GetCollection<CasinoHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             return new CasinoHoldemPokerBetHistoryModel(bet, round, filter.ConvertToUSD);
+=======
+        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname)
+        {
+            var bet = await database
+                .GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity))).Find(x => x.Round == roundId && x.Name == nickname).FirstOrDefaultAsync();
+
+            var round = await database
+                .GetCollection<CasinoHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            return new CasinoHoldemPokerBetHistoryModel(bet, round);
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
         }
 
 

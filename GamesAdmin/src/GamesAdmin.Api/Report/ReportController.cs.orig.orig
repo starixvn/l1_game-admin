@@ -138,8 +138,8 @@ namespace GamesAdmin.Api.Report
         [Route("bitcoin_master/round/{roundId}/user/{nickname}")]
         public async Task<BitcoinMasterBetHistory> BitcoinMasterBetHistory(long roundId, string nickname)
             => await mediator.Send(new BitcoinMasterBetHistoryRequest(roundId, nickname));
-<<<<<<< HEAD
 
+<<<<<<< HEAD
          [HttpGet]
         [Route("holdempoker")]
         public async Task<IEnumerable<HoldemPokerBetRecord>> HoldemPoker([FromQuery] HoldemPokerBetReportFilter filter)
@@ -154,22 +154,21 @@ namespace GamesAdmin.Api.Report
         public async Task<IEnumerable<HiLoBetRecord>> HiLo([FromQuery] HiLoBetReportFilter filter)
             => (await mediator.Send(new HiLoReportRequest(filter)));
 =======
-
         [HttpGet]
-<<<<<<< HEAD
         [Route("casinoholdempoker")]
         public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> CasinoHoldemPoker([FromQuery] CasinoHoldemPokerBetReportFilter filter)
        => (await mediator.Send(new CasinoHoldemPokerReportRequest(filter)));
 
         [HttpGet]
+<<<<<<< HEAD
         [Route("bet_history/casinoholdempoker")]
         public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory([FromQuery] CasinoHoldemPokerBetHistoryFilter filter)
          => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(filter)));
 =======
-        [Route("casinoholdempoker/round/{roundId}/users/{nickname?}")]
-        public async Task<CasinoHoldemPokerBetReport> CasinoHoldemPoker(long roundId, string nickname, bool excludeUUS)
-       => (await mediator.Send(new CasinoHoldemPokerReportRequest(roundId, nickname, excludeUUS)));
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
+        [Route("bet_history/casinoholdempoker/{roundId}/{nickname}")]
+        public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory(long roundId, string nickname)
+        => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(roundId, nickname)));
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+>>>>>>> e5834358 (feat: Casino Holdem Poker - bet history)
     }
 }

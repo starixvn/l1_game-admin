@@ -1,11 +1,7 @@
 ﻿using GamesAdmin.Core.Models;
-<<<<<<< HEAD
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Attributes;
 using System;
-=======
-using GamesAdmin.Database.Attributes;
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
 using System.Collections.Generic;
 
 namespace GamesAdmin.Database.Entities
@@ -14,8 +10,11 @@ namespace GamesAdmin.Database.Entities
     public class CasinoHoldemPokerBetEntity : BaseBetEntity
     {
         public decimal Aa { get; set; }
+<<<<<<< HEAD
 
         public decimal AaOdds { get; set; }
+=======
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
 
         public decimal Ante { get; set; }
 
@@ -27,26 +26,12 @@ namespace GamesAdmin.Database.Entities
 
         public bool IsFold { get; set; }
 
-<<<<<<< HEAD
         public DateTime CallTime { get; set; }
-=======
-        public string Currency { get; set; }
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
 
         public IEnumerable<PokerCard> Cards { get; set; }
 
         public CombinationCard Result { get; set; }
 
         public CasinoHoldemPokerBetSettlementResult SettlementResult { get; set; }
-<<<<<<< HEAD
-=======
-    }
-
-    public class CasinoHoldemPokerBetSettlementResult
-    {
-        public decimal AA { get; set; }
-        public decimal Ante { get; set; }
-        public decimal Call { get; set; }
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
     }
 }

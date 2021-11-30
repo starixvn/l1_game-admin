@@ -10,7 +10,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             Records = records;
         }
 
+<<<<<<< HEAD
         public bool ConvertToUSD { get; }
         public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; }
+=======
+        public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; set; }
+
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
     }
 }

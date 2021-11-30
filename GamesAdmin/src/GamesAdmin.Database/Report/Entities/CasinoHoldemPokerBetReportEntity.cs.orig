@@ -1,6 +1,5 @@
 ﻿namespace GamesAdmin.Database.Report.Entities
 {
-<<<<<<< HEAD
     using GamesAdmin.Core.Models;
     using GamesAdmin.Core.Models.BetReport;
     using GamesAdmin.Database.Entities;
@@ -9,27 +8,6 @@
 
     public class CasinoHoldemPokerBetReportEntity
     {
-=======
-    using GamesAdmin.Database.Entities;
-    using System;
-
-    public class CasinoHoldemPokerBetReportEntity
-    {
-        private readonly string[] RankHandName = {
-                        "DoesNotQualify",
-                        "HighCard",
-                        "Pair",
-                        "TwoPairs",
-                        "ThreeOfAKind",
-                        "Straight",
-                        "Flush",
-                        "FullHouse",
-                        "FourOfAKind",
-                        "StraightFlush",
-                        "RoyalFlush",
-                    };
-
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
         public CasinoHoldemPokerBetReportEntity(
             DateTime time,
             string partnerId,
@@ -44,7 +22,6 @@
             Username = username;
             Nickname = nickname;
             Currency = currency;
-<<<<<<< HEAD
 
             Ended = round.Ended;
             RoundId = bet.Round;
@@ -54,7 +31,11 @@
             Dealer = new CasinoHoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
 
             Stake = bet.Ante + bet.Aa + bet.Call;
+<<<<<<< HEAD
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.Aa + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
+=======
+            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
             BetWin = TotalWin - Stake;
 
             IsFold = bet.IsFold;
@@ -75,6 +56,7 @@
         public long RoundId { get; }
 
         public CasinoHoldemPokerHandModel Player { get; }
+<<<<<<< HEAD
 
         public CasinoHoldemPokerHandModel Dealer { get; }
 
@@ -156,6 +138,10 @@
         public IEnumerable<PokerCard> CommunityCards { get; }
 
         public CasinoHoldemPokerBetSettlementResult SettlementResult { get; }
+=======
+
+        public CasinoHoldemPokerHandModel Dealer { get; }
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
 
         public bool Ended { get; }
 
@@ -197,42 +183,81 @@
         public decimal Aa { get; set; }
         public decimal Ante { get; set; }
         public decimal Call { get; set; }
-=======
+    }
 
+    public class CasinoHoldemPokerBetHistoryModel
+    {
+        public CasinoHoldemPokerBetHistoryModel(
+            CasinoHoldemPokerBetEntity bet,
+            CasinoHoldemPokerRoundEntity round)
+        {
             Ended = round.Ended;
+            IsFold = bet.IsFold;
             RoundId = bet.Round;
+            IsQualified = round.SettlementResult?.IsQualified ?? false;
 
-            PlayerResult = RankHandName[bet.Result.HandRankId];
-            DealerResult = RankHandName[Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0];
 
-            Stake = bet.Ante + bet.AA + bet.Call;
+            Player = new CasinoHoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
+
+            Dealer = new CasinoHoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
+
+            CommunityCards = round.Result.CommunityCards;
+            SettlementResult = bet.SettlementResult;
+
+            AA = bet.Aa;
+            Ante = bet.Ante;
+            Call = bet.Call;
+            Stake = bet.Ante + bet.Aa + bet.Call;
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
             BetWin = TotalWin - Stake;
         }
 
-        public DateTime Time { get; }
+        public decimal AA { get; }
 
-        public string PartnerId { get; }
+        public decimal Ante { get; }
 
-        public string Username { get; }
-
-        public string Nickname { get; }
-
-        public string Currency { get; set; }
+        public decimal Call { get; }
 
         public long RoundId { get; }
 
-        public string PlayerResult { get; }
+        public CasinoHoldemPokerHandModel Player { get; }
 
-        public string DealerResult { get; }
+        public CasinoHoldemPokerHandModel Dealer { get; }
+
+        public IEnumerable<PokerCard> CommunityCards { get; }
+
+        public CasinoHoldemPokerBetSettlementResult SettlementResult { get; }
 
         public bool Ended { get; }
+
+        public bool IsFold { get; }
+
+        public bool IsQualified { get; }
 
         public decimal Stake { get; }
 
         public decimal TotalWin { get; }
 
         public decimal BetWin { get; }
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+    }
+
+
+    public class CasinoHoldemPokerBetModel
+    {
+        public decimal Aa { get; set; }
+        public decimal Ante { get; set; }
+        public decimal Call { get; set; }
+        public IEnumerable<PokerCard> PlayerCards { get; set; }
+        public IEnumerable<PokerCard> CombinationCards { get; set; }
+        public byte HandRankId { get; set; }
+        public CasinoHoldemPokerDetailBetModel SettlementResult { get; set; }
+        public decimal BetWin { get; set; }
+    }
+
+    public class CasinoHoldemPokerDetailBetModel
+    {
+        public decimal Aa { get; set; }
+        public decimal Ante { get; set; }
+        public decimal Call { get; set; }
     }
 }

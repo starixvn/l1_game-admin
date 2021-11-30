@@ -304,8 +304,13 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoPowerBetEntity, KenoPowerBetHistoryRecord>();
 
             CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>()
+<<<<<<< HEAD
                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
+=======
+                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => source.Player.Rank))
+                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => source.Dealer.Rank));
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
 
             CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
 <<<<<<< HEAD
@@ -314,10 +319,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
             CreateMap<HiLoRoundEntity, HiLoRoundResult>();
 =======
-=======
-            CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>();
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
->>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> e5834358 (feat: Casino Holdem Poker - bet history)
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -511,5 +512,13 @@ namespace GamesAdmin.Site.Features.Report
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CasinoHoldemPokerBetHistory(long roundId, string nickname)
+        {
+            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(roundId, nickname));
+
+            return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
+        }
     }
-} 
+}

@@ -12,7 +12,6 @@ namespace GamesAdmin.Core.Models.BetReport
         public string Username { get; set; }
         public bool ExcludeUUS { get; set; }
         public bool ConvertToUSD { get; set; }
-<<<<<<< HEAD
 
     }
 
@@ -22,8 +21,13 @@ namespace GamesAdmin.Core.Models.BetReport
         public string Nickname { get; set; }
         public bool ConvertToUSD { get; set; }
     }
-}
+<<<<<<< HEAD
 =======
+
+    public class CasinoHoldemPokerBetHistoryFilter
+    {
+        public int RoundId { get; set; }
+        public string Nickname { get; set; }
     }
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
 }
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)

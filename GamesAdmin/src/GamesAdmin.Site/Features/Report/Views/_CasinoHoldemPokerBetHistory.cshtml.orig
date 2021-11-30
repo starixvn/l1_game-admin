@@ -1,0 +1,349 @@
+<<<<<<< HEAD
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core;
+@using GamesAdmin.Core.Models.BetReport;
+
+@model CasinoHoldemPokerBetHistoryViewModel
+
+@{
+    string noData = "No Data Available";
+    string unfinishedGame = "Unfinished Game";
+    var record = Model.Record;
+}
+<div>
+    <div>
+        <strong>Round Id: @record.RoundId</strong>
+=======
+﻿@using GamesAdmin.Core.Models.BetReport;
+@model CasinoHoldemPokerBetHistory
+@{
+    string[] CardLabels = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    string noData = "No Data Available";
+    string unfinishedGame = "Unfinished Game";
+}
+<div>
+    <div>
+        <strong>Cards</strong>
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cards</th>
+                    <th>Combination</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+<<<<<<< HEAD
+                @if (record.Ante > 0)
+=======
+                @if (Model.Ante > 0)
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                {
+                    <tr>
+                        <td>Player</td>
+                        <td>
+                            <div class="cards">
+<<<<<<< HEAD
+                                @foreach (var card in record.Player.Cards)
+                                {
+                                    <div class="card card-type-@card.suit">
+                                        <span>@Card.CardLabels[card.rank]</span>
+                                        <img class="img" src="~/images/card_@(card.suit).png" />
+=======
+                                @foreach (var card in Model.Player.Cards)
+                                {
+                                    <div class="card card-type-@card.Suit">
+                                        <span>@CardLabels[card.Rank]</span>
+                                        <img class="img" src="~/images/card_@(card.Suit).png" />
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td>
+<<<<<<< HEAD
+                            @if (record.IsFold)
+                            {
+                                <div class="text-center">-</div>
+                            }
+                            else
+                            {
+                                <div class="cards">
+                                    @foreach (var card in record.Player.CombinationCards)
+                                    {
+                                        <div class="card card-type-@card.suit">
+                                            <span>@Card.CardLabels[card.rank]</span>
+                                            <img class="img" src="~/images/card_@(card.suit).png" />
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </td>
+                        <td>@(record.IsFold ? "Fold" : record.Player.Rank)</td>
+=======
+                            <div class="cards">
+                                @foreach (var card in Model.Player.CombinationCards)
+                                {
+                                    <div class="card card-type-@card.Suit">
+                                        <span>@CardLabels[card.Rank]</span>
+                                        <img class="img" src="~/images/card_@(card.Suit).png" />
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td>@Model.Player.Rank</td>
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                    </tr>
+                    <tr>
+                        <td>Dealer</td>
+                        <td>
+                            <div class="cards">
+<<<<<<< HEAD
+                                @if (record.Ended && !record.IsFold)
+                                {
+                                    @foreach (var card in record.Dealer.Cards)
+                                    {
+                                        <div class="card card-type-@card.suit">
+                                            <span>@Card.CardLabels[card.rank]</span>
+                                            <img class="img" src="~/images/card_@(card.suit).png" />
+=======
+                                @if (Model.Ended && !Model.IsFold)
+                                {
+                                    @foreach (var card in Model.Dealer.Cards)
+                                    {
+                                        <div class="card card-type-@card.Suit">
+                                            <span>@CardLabels[card.Rank]</span>
+                                            <img class="img" src="~/images/card_@(card.Suit).png" />
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <img class="card" src="~/images/card_back.png" />
+                                    <img class="card" src="~/images/card_back.png" />
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cards">
+<<<<<<< HEAD
+                                @if (record.Ended && !record.IsFold)
+                                {
+                                    @foreach (var card in record.Dealer.CombinationCards)
+                                    {
+                                        <div class="card card-type-@card.suit">
+                                            <span>@Card.CardLabels[card.rank]</span>
+                                            <img class="img" src="~/images/card_@(card.suit).png" />
+=======
+                                @if (Model.Ended && !Model.IsFold)
+                                {
+                                    @foreach (var card in Model.Dealer.CombinationCards)
+                                    {
+                                        <div class="card card-type-@card.Suit">
+                                            <span>@CardLabels[card.Rank]</span>
+                                            <img class="img" src="~/images/card_@(card.Suit).png" />
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+<<<<<<< HEAD
+                                    <div class="text-center">-</div>
+                                }
+                            </div>
+                        </td>
+                        @if (record.Ended && !record.IsFold)
+                        {
+                            <td>@(record.IsQualified ? record.Dealer.Rank : "Does Not Qualify")</td>
+=======
+                                    <div>-</div>
+                                }
+                            </div>
+                        </td>
+                        @if (Model.Ended && !Model.IsFold)
+                        {
+                            @if (Model.IsQualified)
+                            {
+                                <td>@Model.Dealer.Rank</td>
+                            }
+                            else
+                            {
+                                <td>DoesNotQualify</td>
+                            }
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                        }
+                        else
+                        {
+
+                            <td>-</td>
+                        }
+                    </tr>
+                    <tr>
+<<<<<<< HEAD
+                        <td>Community Cards</td>
+                        <td>
+                            <div class="cards">
+                                @foreach (var card in record.CommunityCards)
+                                {
+                                    <div class="card card-type-@card.suit">
+                                        <span>@Card.CardLabels[card.rank]</span>
+                                        <img class="img" src="~/images/card_@(card.suit).png" />
+=======
+                        <td>CommunityCards</td>
+                        <td>
+                            <div class="cards">
+                                @foreach (var card in Model.CommunityCards)
+                                {
+                                    <div class="card card-type-@card.Suit">
+                                        <span>@CardLabels[card.Rank]</span>
+                                        <img class="img" src="~/images/card_@(card.Suit).png" />
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            @noData
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-5">
+<<<<<<< HEAD
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Time (GMT + 7)</th>
+                    <th>Bet Choice</th>
+                    <th>Odds</th>
+                    <th>Stake</th>
+                    <th>Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (record.Ante > 0)
+                {
+                    var winAnte = (record.SettlementResult?.Ante ?? 0);
+                    var winAA = (record.SettlementResult?.Aa ?? 0);
+                    var winCall = (record.SettlementResult?.Call ?? 0);
+                    <tr class="@(winAnte > 0 ? "text-blue bold" : string.Empty)">
+                        <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
+                        <td class="text-center">ANTE</td>
+                        <td class="text-center">@record.AnteOdds</td>
+                        <td class="text-center">@FormatCurrency(record, record.Ante)</td>
+                        <td class="text-center">@(record.Ended ? FormatCurrency(record, winAnte) : unfinishedGame)</td>
+                    </tr>
+                    @if (record.AA > 0)
+                    {
+                        <tr class="@(winAA > 0 ? "text-blue bold" : string.Empty)">
+                            <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
+                            <td class="text-center">AA</td>
+                            <td class="text-center">@record.AaOdds</td>
+                            <td class="text-center">@FormatCurrency(record, record.AA)</td>
+                            <td class="text-center">@(record.Ended ? FormatCurrency(record, winAA) : unfinishedGame)</td>
+                        </tr>
+                    }
+                    @if (record.Ended && !record.IsFold)
+                    {
+                        <tr class="@(winCall > 0 ? "text-blue bold" : string.Empty)">
+                            <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.CallTime, Model.TimeZone)</td>
+                            <td class="text-center">CALL</td>
+                            <td class="text-center">@record.CallOdds</td>
+                            <td class="text-center">@FormatCurrency(record, record.Call)</td>
+                            <td class="text-center">@FormatCurrency(record, winCall)</td>
+=======
+        <strong>Bets</strong>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Betting Options</th>
+                    <th>Stake</th>
+                    <th>Winning Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Ante > 0)
+                {
+                    var winAnte = (Model.SettlementResult?.Ante ?? 0);
+                    var winAA = (Model.SettlementResult?.AA ?? 0);
+                    var winCall = (Model.SettlementResult?.Call ?? 0);
+                    <tr class="@(winAnte > 0 ? "text-blue bold" : "")">
+                        <td class="text-center">Ante</td>
+                        <td class="text-center">@HtmlHelpers.formatNumber(Model.Ante)</td>
+                        @if (Model.Ended)
+                        {
+                            <td class="text-center">
+                                @HtmlHelpers.formatNumber(winAnte)
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center">@unfinishedGame</td>
+                        }
+                    </tr>
+                    <tr class="@(winAA > 0 ? "text-blue bold" : "")">
+                        <td class="text-center">AA</td>
+                        <td class="text-center">@HtmlHelpers.formatNumber(Model.AA)</td>
+                        @if (Model.Ended)
+                        {
+                            <td class="text-center">
+                                @HtmlHelpers.formatNumber(winAA)
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center">@unfinishedGame</td>
+                        }
+                    </tr>
+                    @if (Model.Ended)
+                    {
+                        <tr class="@(winCall > 0 ? "text-blue bold" : "")">
+                            <td class="text-center">Call</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(Model.Call)</td>
+                            <td class="text-center">
+                                @HtmlHelpers.formatNumber(winCall)
+                            </td>
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+<<<<<<< HEAD
+                        <td colspan="5" class="text-center">
+=======
+                        <td colspan="3" class="text-center">
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
+                            @noData
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<<<<<<< HEAD
+
+@functions
+{
+    public string FormatCurrency(CasinoHoldemPokerBetHistory record, decimal value)
+    {
+        return @HtmlHelpers.formatNumber(record.ConvertToUSD ? record.ConvertToBase(value) : value);
+    }
+}
+=======
+>>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)

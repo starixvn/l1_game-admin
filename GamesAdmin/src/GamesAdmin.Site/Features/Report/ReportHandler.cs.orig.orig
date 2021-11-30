@@ -37,16 +37,11 @@ namespace GamesAdmin.Site.Features.Report
           IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
-<<<<<<< HEAD
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
         IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>,
         IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
         IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
         IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>
-=======
-        IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>
-        IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
