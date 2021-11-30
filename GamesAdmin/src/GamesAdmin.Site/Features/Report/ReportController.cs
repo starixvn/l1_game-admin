@@ -6,6 +6,7 @@ using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,29 @@ namespace GamesAdmin.Site.Features.Report
         public ReportController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = await GetReportViewModel();
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReport(ReportViewModel viewModel, [FromServices] ReportView reportView)
+        {
+            var filter = new BetReportFilter
+            {
+                RoundId = viewModel.RoundId ?? 0,
+                PartnerId = viewModel.PartnerId,
+                Nickname = viewModel.Nickname,
+                Username = viewModel.Username,
+                ConvertToUSD = viewModel.ConvertToUSD,
+                ExcludeBot = viewModel.ExcludeBot,
+                ExcludeUUS = viewModel.ExcludeUUS
+            };
+            return PartialView(reportView.GetView(viewModel.Game), await mediator.Send(new ReportRequest(viewModel.Game, filter)));
         }
 
         [HttpGet]
@@ -84,9 +108,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> SeDie()
+        public IActionResult SeDie()
         {
-            return View(await GetReportViewModel());
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -564,7 +588,8 @@ namespace GamesAdmin.Site.Features.Report
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
-            return new ReportViewModel { ExcludeUUS = true, Selections = selections };
+            var games = Enumeration.GetAll<Game>().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
+            return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
     }
 }

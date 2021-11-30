@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace GamesAdmin.Database.Report.Entities
+﻿namespace GamesAdmin.Database.Report.Entities
 {
-
     public class OddEvenBetReportEntity : BetReportEntity
     {
         public bool Select { get; set; }
@@ -12,11 +9,5 @@ namespace GamesAdmin.Database.Report.Entities
         public decimal BetWin { get; set; }
 
         public decimal Back { get; set; }
-
-        public string Currency { get; set; }
-
-        public string Partner { get; set; }
-
-        public decimal Rate { get; set; }
     }
 }

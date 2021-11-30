@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GamesAdmin.Site.Features.ClientSites
+namespace GamesAdmin.Site.Features.Report
 {
     public interface IReportService
     {

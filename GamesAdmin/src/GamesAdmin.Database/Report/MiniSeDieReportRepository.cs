@@ -26,7 +26,7 @@ namespace GamesAdmin.Database
             if (roundResult != null)
             {
                 var project = GetBaseAggregateBuilder<MiniSeDieBetEntity, MiniSeDieBetWithUnwindAccountsEntity>(
-                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.UserName)
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new SeDieBetReportEntity
                     {
                         Time = x.Time,

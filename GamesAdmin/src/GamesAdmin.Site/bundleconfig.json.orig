@@ -1,0 +1,248 @@
+[
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/game-status.min.js",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/game-status.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "wwwroot/scss/base/material-icon.min.css",
+      "wwwroot/scss/base/roboto.min.css",
+      "wwwroot/scss/themes/themel1.min.css",
+      "wwwroot/scss/pages/site.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/report.min.css",
+<<<<<<< HEAD
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/big-small-reports.min.css",
+=======
+>>>>>>> 5be5b269... feat: blackjack report
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/adjust-bot.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/adjust-bot.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/notification.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/notification.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/vietlottkeno.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/vietlottkeno.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/game-management.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/adjust-bot.css",
+      "wwwroot/scss/pages/game-status.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/partner.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/adjust-bot.css",
+      "wwwroot/scss/pages/partner.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/online-users.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
+      "wwwroot/js/online-users.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Notification.min.js",
+    "inputFiles": [
+      "wwwroot/js/Notification.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/vietlott-keno.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/vietlott-keno.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/report.min.js",
+    "inputFiles": [
+      "wwwroot/js/report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/voidgame.min.js",
+    "inputFiles": [
+      "wwwroot/js/voidgame.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/partner.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/partner.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
+      "wwwroot/js/currency.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency-group-game.min.js",
+    "inputFiles": [
+      "wwwroot/js/currency-group-game.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/partner.min.js",
+    "inputFiles": [
+      "wwwroot/js/partner.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/currency.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/currency.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency-group.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
+      "wwwroot/js/currency-group.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/currency-group.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/currency-group.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/chip.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/spectrum/spectrum.min.js",
+      "wwwroot/js/chip.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/chip.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/lib/spectrum/spectrum.css",
+      "wwwroot/scss/pages/chip.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/exchange-rate.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/exchange-rate.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/exchange-rate.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/exchange-rate.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/api-log.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/api-log.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/api-log.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/api-log.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/casino-holdem-poker-result.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css",
+      "wwwroot/scss/pages/casino-holdem-poker-result.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/casino-holdem-poker-result.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/js/casino-holdem-poker-result.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/casino-holdem-poker-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/casino-holdem-poker-report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/blackjack-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/blackjack-report.js"
+    ]
+  }
+]

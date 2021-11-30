@@ -22,6 +22,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class ReportViewModel
     {
+
         [Required(ErrorMessage = "Please input RoundId.")]
         public virtual long? RoundId { get; set; }
 
@@ -31,7 +32,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool ExcludeUUS { get; set; }
 
-        public string Game { get; set; }
+        public GameId Game { get; set; }
 
         public ReportSeletionsViewModel Selections { get; set; }
 
@@ -41,6 +42,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         [DisplayName("Convert to USD")]
         public bool ConvertToUSD { get; set; }
+
+        public IEnumerable<SelectListItem> Games { get; set; }
     }
 
     public class JackpotReportViewModel
@@ -58,11 +61,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class KenoMatchReportViewModel : ReportViewModel
     {
-        public GameId Game { get; set; }
     }
 
     public class KenoPowerReportViewModel : ReportViewModel
     {
-        public GameId Game { get; set; }
     }
 }

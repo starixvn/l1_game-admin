@@ -1,34 +1,20 @@
-<<<<<<< HEAD
 ﻿using AutoMapper;
-using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features.Currencies;
-=======
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.ExchangeRates;
->>>>>>> 830eed95... feat: implement game history for stake balanced games
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
-<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-=======
->>>>>>> 830eed95... feat: implement game history for stake balanced games
 
-namespace GamesAdmin.Site.Features.ClientSites
+namespace GamesAdmin.Site.Features.Report
 {
     public class ReportHandler :
         IRequestHandler<GetBigSmallReportRequest, BigSmallReportResultViewModel>,
@@ -75,40 +61,34 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>
 =======
-        IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>
->>>>>>> 830eed95... feat: implement game history for stake balanced games
+        IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
+        IRequestHandler<ReportRequest, ReportResultViewModel>
+>>>>>>> e2e8fb6c... feat: SeDie & mini sedie report
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
         private readonly IMapper mapper;
         private readonly IPartnerService partnerService;
         private readonly ICurrencyService currencyService;
-<<<<<<< HEAD
-=======
         private readonly IExchangeRateService exchangeRateService;
->>>>>>> 830eed95... feat: implement game history for stake balanced games
+        private readonly IReportServiceFactory reportServiceFactory;
 
         public ReportHandler(
             IReportService reportService,
             IAppSettings appSettings,
             IMapper mapper,
             IPartnerService partnerService,
-<<<<<<< HEAD
-            ICurrencyService currencyService)
-=======
             ICurrencyService currencyService,
-            IExchangeRateService exchangeRateService)
->>>>>>> 830eed95... feat: implement game history for stake balanced games
+            IExchangeRateService exchangeRateService,
+            IReportServiceFactory reportServiceFactory)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
             this.mapper = mapper;
             this.partnerService = partnerService;
             this.currencyService = currencyService;
-<<<<<<< HEAD
-=======
             this.exchangeRateService = exchangeRateService;
->>>>>>> 830eed95... feat: implement game history for stake balanced games
+            this.reportServiceFactory =  reportServiceFactory;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -142,7 +122,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -179,7 +159,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -216,7 +196,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -253,7 +233,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                     BetWin = x.BetWin,
                     Select = x.Select,
                     Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.Partner),
+                    Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
                 })
             };
@@ -349,7 +329,8 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SeDieReportResultViewModel> Handle(GetSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetSeDieReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
 
             return new SeDieReportResultViewModel
             {
@@ -358,15 +339,18 @@ namespace GamesAdmin.Site.Features.ClientSites
                 {
                     var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return recordViewModel;
-                })
+                }),
+                ConvertToUSD = request.Filter.ConvertToUSD
             };
         }
 
         public async Task<SeDieReportResultViewModel> Handle(GetMiniSeDieReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetMiniSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
+            var result = await reportService.GetMiniSeDieReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
 
             return new SeDieReportResultViewModel
             {
@@ -375,9 +359,11 @@ namespace GamesAdmin.Site.Features.ClientSites
                 {
                     var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return recordViewModel;
-                })
+                }),
+                ConvertToUSD = request.Filter.ConvertToUSD
             };
         }
 
@@ -560,14 +546,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBlackjackReport(request.HandId, request.Nickname, request.ExcludeUUS);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var result = await reportService.GetBlackjackReport(request.Filter);
 
             return new BlackjackReportResultViewModel
             {
+                ConvertToUSD = request.Filter.ConvertToUSD,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return betViewModel;
                 })
@@ -576,15 +565,17 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<SlotGameReportResultViewModel> Handle(GetSlotGameReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetSlotGameReport(request.RoundId, request.Nickname, request.ExcludeUUS, request.Game);
+            var result = await reportService.GetSlotGameReport(request);
 
             return new SlotGameReportResultViewModel
             {
+                ConvertToUSD = request.ConvertToUSD,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
+                    betViewModel.ConvertToUSD(request.ConvertToUSD);
 
                     return betViewModel;
                 })
@@ -874,6 +865,31 @@ namespace GamesAdmin.Site.Features.ClientSites
             };
         }
 
+        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetPartnersForSelection(partner => true);
+            Func<CurrencyModel, SelectListItem> transformCurrency = model => new SelectListItem($"{model.Name} ({model.Code})", model.Code);
+            var currencies = await currencyService.GetCurrenciesForSelection(model => true, transformCurrency);
+
+            return new ReportSeletionsViewModel
+            {
+                Partners = partners,
+                Currencies = currencies
+            };
+        }
+
+        private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
+        => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
+
+        private async Task<decimal> GetExchangeRate(int exchangeRateId, string currency)
+        {
+            var exchangeRate = await exchangeRateService.GetByExchangeId(exchangeRateId);
+
+            return exchangeRate != null
+                   && !string.IsNullOrEmpty(currency)
+                   && exchangeRate.Code.ContainsKey(currency) ? exchangeRate.Code[currency] : 1;
+        }
+
 <<<<<<< HEAD
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
         {
@@ -903,34 +919,18 @@ namespace GamesAdmin.Site.Features.ClientSites
             return new ReportSeletionsViewModel
             {
                 Partners = parterItems,
-=======
-        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
-        {
-            var partners = await partnerService.GetPartnersForSelection(partner => true);
-            Func<CurrencyModel, SelectListItem> transformCurrency = model => new SelectListItem($"{model.Name} ({model.Code})", model.Code);
-            var currencies = await currencyService.GetCurrenciesForSelection(model => true, transformCurrency);
-
-            return new ReportSeletionsViewModel
-            {
-                Partners = partners,
->>>>>>> 830eed95... feat: implement game history for stake balanced games
                 Currencies = currencies
             };
         }
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
-<<<<<<< HEAD
 =======
-
-        private async Task<decimal> GetExchangeRate(int exchangeRateId, string currency)
+        public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
         {
-            var exchangeRate = await exchangeRateService.GetByExchangeId(exchangeRateId);
-
-            return exchangeRate != null
-                   && !string.IsNullOrEmpty(currency)
-                   && exchangeRate.Code.ContainsKey(currency) ? exchangeRate.Code[currency] : 1;
+            var service = reportServiceFactory.GetService(request.Game);
+            return service.Get(request.Filter);
         }
->>>>>>> 830eed95... feat: implement game history for stake balanced games
+>>>>>>> e2e8fb6c... feat: SeDie & mini sedie report
     }
 }

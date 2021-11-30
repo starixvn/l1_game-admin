@@ -95,6 +95,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton<IExchangeRateService, ExchangeRateService>();
 
             services.AddSingleton(RestService.For<ILogApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddReportServices();
         }
     }
 }

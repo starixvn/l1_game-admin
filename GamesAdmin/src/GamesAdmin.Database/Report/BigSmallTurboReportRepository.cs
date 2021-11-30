@@ -40,7 +40,7 @@ namespace GamesAdmin.Database
                         BetWin = x.Betwin,
                         Back = x.Back ?? x.Refund,
                         Currency = x.Currency,
-                        Partner = x.PartnerId,
+                        PartnerId = x.PartnerId,
                         Rate = x.Rate
                     }).ToListAsync();
 

@@ -26,7 +26,7 @@ namespace GamesAdmin.Database
             if (roundResult != null)
             {
                 var project = GetBaseAggregateBuilder<SeDieBetEntity, SeDieBetWithUnwindAccountsEntity>(
-                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.UserName);
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username);
 
                 var records = (await project.ToListAsync())
                     .Select(x => new SeDieBetReportEntity

@@ -41,7 +41,7 @@ namespace GamesAdmin.Database
                         Refund = x.Refund,
                         UserId = x.Uid,
                         Currency = x.Currency,
-                        Partner = x.PartnerId,
+                        PartnerId = x.PartnerId,
                         Rate = x.Rate
                     });
                 var records = await project.ToListAsync();

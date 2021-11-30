@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GamesAdmin.Site.Features.ClientSites
+namespace GamesAdmin.Site.Features.Report
 {
     public class ReportHandler :
         IRequestHandler<GetBigSmallReportRequest, BigSmallReportResultViewModel>,
@@ -58,6 +58,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
+        IRequestHandler<ReportRequest, ReportResultViewModel>
         IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
@@ -66,6 +67,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         private readonly IPartnerService partnerService;
         private readonly ICurrencyService currencyService;
         private readonly IExchangeRateService exchangeRateService;
+        private readonly IReportServiceFactory reportServiceFactory;
 
         public ReportHandler(
             IReportService reportService,
@@ -73,7 +75,8 @@ namespace GamesAdmin.Site.Features.ClientSites
             IMapper mapper,
             IPartnerService partnerService,
             ICurrencyService currencyService,
-            IExchangeRateService exchangeRateService)
+            IExchangeRateService exchangeRateService,
+            IReportServiceFactory reportServiceFactory)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -81,6 +84,7 @@ namespace GamesAdmin.Site.Features.ClientSites
             this.partnerService = partnerService;
             this.currencyService = currencyService;
             this.exchangeRateService = exchangeRateService;
+            this.reportServiceFactory =  reportServiceFactory;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -880,6 +884,12 @@ namespace GamesAdmin.Site.Features.ClientSites
             return exchangeRate != null
                    && !string.IsNullOrEmpty(currency)
                    && exchangeRate.Code.ContainsKey(currency) ? exchangeRate.Code[currency] : 1;
+        }
+
+        public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
+        {
+            var service = reportServiceFactory.GetService(request.Game);
+            return service.Get(request.Filter);
         }
 
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
