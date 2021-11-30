@@ -9,6 +9,8 @@ namespace GamesAdmin.Site.Features.Report
         {
             { GameId.SeDie, "_SeDieRecords" },
             { GameId.MiniSeDie, "_MiniSeDieRecords" },
+            { GameId.FishPrawnCrab, "_FishPrawnCrabRecords" },
+            { GameId.DragonTiger, "_DragonTigerRecords" },
         };
 
         public string GetView(GameId game) => views[game];

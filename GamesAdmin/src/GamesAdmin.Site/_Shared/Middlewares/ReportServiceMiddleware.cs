@@ -11,6 +11,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SedieReportService>();
             services.AddScoped<MiniSedieReportService>();
+            services.AddScoped<FishPrawnCrabReportService>();
+            services.AddScoped<DragonTigerReportService>();
         }
     }
 }

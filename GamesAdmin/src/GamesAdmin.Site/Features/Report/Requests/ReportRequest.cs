@@ -7,13 +7,11 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class ReportRequest : IRequest<ReportResultViewModel>
     {
-        public ReportRequest(GameId game, BetReportFilter filter)
+        public ReportRequest(BetReportFilter filter)
         {
-            Game = game;
             Filter = filter;
         }
 
         public BetReportFilter Filter { get; }
-        public GameId Game { get; }
     }
 }

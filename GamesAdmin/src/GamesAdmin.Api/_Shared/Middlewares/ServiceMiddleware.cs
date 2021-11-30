@@ -166,6 +166,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddSlotServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
 
+            services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
+            services.AddScoped<SeDieReportService>();
+            services.AddScoped<MiniSeDieReportService>();
+            services.AddScoped<FishPrawnCrabReportService>();
+            services.AddScoped<DragonTigerReportService>();
+
+
             services.InitApiLog();
         }
 

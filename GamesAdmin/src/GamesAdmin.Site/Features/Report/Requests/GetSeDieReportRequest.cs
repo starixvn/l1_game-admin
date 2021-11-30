@@ -6,7 +6,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetSeDieReportRequest : ReportRequest, IRequest<SeDieReportResultViewModel>
     {
-        public GetSeDieReportRequest(BetReportFilter filter) : base( Core.Enumeration.GameId.SeDie ,filter)
+        public GetSeDieReportRequest(BetReportFilter filter) : base(filter)
         {
         }
     }

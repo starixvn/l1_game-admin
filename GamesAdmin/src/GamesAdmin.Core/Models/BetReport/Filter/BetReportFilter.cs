@@ -1,7 +1,10 @@
-﻿namespace GamesAdmin.Core.Models.BetReport
+﻿using GamesAdmin.Core.Enumeration;
+
+namespace GamesAdmin.Core.Models.BetReport
 {
     public class BetReportFilter
     {
+        public GameId Game { get; set; }
         public long RoundId { get; set; }
         public string Nickname { get; set; }
         public bool ExcludeUUS { get; set; }

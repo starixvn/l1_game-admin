@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class DragonTigerReportResultViewModel
+    public class DragonTigerReportResultViewModel : ReportResultViewModel
     {
         public DragonTigerRoundResultViewModel RoundResult { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Partners;
@@ -17,7 +18,7 @@ namespace GamesAdmin.Site.Features.Report
 
         public override async Task<ReportResultViewModel> Get(BetReportFilter filter)
         {
-            var result = await reportApi.GetSeDieReport(filter);
+            var result = await reportApi.Get<SeDieBetReport>(filter);
             var partners = await partnerService.GetAll();
 
             return new SeDieReportResultViewModel

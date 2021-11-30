@@ -26,8 +26,6 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<SeDieBetReport> GetMiniSeDieReport(BetReportFilter filter);
 
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS);
-
         Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(Game game, long roundId, string nickname, bool excludeUUS);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
@@ -41,8 +39,6 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname);
 
         Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId);
-
-        Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeUUS);
 
         Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
 
@@ -146,12 +142,6 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId)
         => reportApi.GetKenoRoundResult(game.Value, roundId);
-
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabBetReport(long roundId, string nickname, bool excludeUUS)
-        => await reportApi.GetFishPrawnCrabReport(roundId, nickname, excludeUUS);
-
-        public async Task<DragonTigerBetReport> GetDragonTigerBetReport(long roundId, string nickname, bool excludeUUS)
-        => await reportApi.GetDragonTigerReport(roundId, nickname, excludeUUS);
 
         public async Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
         => await reportApi.GetBaccaratReport(roundId, nickname, excludeUUS);

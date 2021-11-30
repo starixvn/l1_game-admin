@@ -34,6 +34,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var filter = new BetReportFilter
             {
+                Game = viewModel.Game,
                 RoundId = viewModel.RoundId ?? 0,
                 PartnerId = viewModel.PartnerId,
                 Nickname = viewModel.Nickname,
@@ -42,7 +43,7 @@ namespace GamesAdmin.Site.Features.Report
                 ExcludeBot = viewModel.ExcludeBot,
                 ExcludeUUS = viewModel.ExcludeUUS
             };
-            return PartialView(reportView.GetView(viewModel.Game), await mediator.Send(new ReportRequest(viewModel.Game, filter)));
+            return PartialView(reportView.GetView(viewModel.Game), await mediator.Send(new ReportRequest(filter)));
         }
 
         [HttpGet]
@@ -122,76 +123,72 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult FishPrawnCrab()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult DragonTiger()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Baccarat()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult VipBaccarat()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [ActionName("rnglottery")]
         public IActionResult Lottery()
         {
-            return View("Lottery", new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult SeDieWar()
         {
-            return View("VipSeDieWar", new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult ThreeCards()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [ActionName("kenomatch")]
         public IActionResult KenoMatch1()
         {
-            ViewData["Title"] = "Keno Match";
-            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch1, ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [ActionName("kenomatchmd5")]
         public IActionResult KenoMatch2()
         {
-            ViewData["Title"] = "Keno Match MD5";
-            return View("KenoMatch", new KenoMatchReportViewModel { Game = GameId.KenoMatch2, ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [ActionName("kenopower")]
         public IActionResult KenoPower1()
         {
-            ViewData["Title"] = "Keno Power";
-            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower1, ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [ActionName("kenopowermd5")]
         public IActionResult KenoPower2()
         {
-            ViewData["Title"] = "Keno Power MD5";
-            return View("KenoPower", new KenoPowerReportViewModel { Game = GameId.KenoPower2, ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -239,7 +236,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult Roulette()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -263,7 +260,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult VipSeDie()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -292,13 +289,13 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult VipFishPrawnCrab()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult SicBo()
         {
-            return View(new ReportViewModel { ExcludeUUS = true });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

@@ -39,6 +39,9 @@ namespace GamesAdmin.Database
                         Hearts = x.Hearts,
                         Spades = x.Spades,
                         Clubs = x.Clubs,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
 
                 return (roundResult, records);

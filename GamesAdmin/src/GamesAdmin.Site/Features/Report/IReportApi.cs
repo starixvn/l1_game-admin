@@ -4,7 +4,6 @@ using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
-using GamesAdmin.Site.Features.Report.Requests;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -44,11 +43,11 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/{game}/round/{roundId}/result")]
         Task<KenoRoundResult> GetKenoRoundResult(string game, long roundId);
 
-        [Get("/report/fish_prawn_crab/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS);
+        [Get("/report/fish_prawn_crab")]
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReport(BetReportFilter filter);
 
-        [Get("/report/dragon_tiger/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<DragonTigerBetReport> GetDragonTigerReport(long roundId, string nickname, bool excludeUUS);
+        [Get("/report/dragon_tiger")]
+        Task<DragonTigerBetReport> GetDragonTigerReport(BetReportFilter filter);
 
         [Get("/report/baccarat/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<BaccaratBetReport> GetBaccaratReport(long roundId, string nickname, bool excludeUUS);
@@ -134,6 +133,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
         Task<KenoPowerBetHistory> GetKenoPowerBetHistory(string game, long roundId, string userId);
 
+        [Get("/report")]
+        Task<T> Get<T>(BetReportFilter filter) where T : BetReportBase;
         [Get("/report/casinoholdempoker")]
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
 

@@ -25,6 +25,11 @@ namespace GamesAdmin.Api.Report
         }
 
         [HttpGet]
+        [Route("")]
+        public async Task<BetReportBase> Index([FromQuery] BetReportFilter filter)
+           => (await mediator.Send(new BetReportRequest(filter)));
+
+        [HttpGet]
         [Route("big_small/round/{roundId}/users/{nickname?}")]
         public async Task<BigSmallBetReport> BigSmall(long roundId, string nickname, bool excludeBot, string partnerId, string username)
            => (await mediator.Send(new BigSmallReportRequest(roundId, nickname, excludeBot, partnerId, username)));
@@ -49,15 +54,15 @@ namespace GamesAdmin.Api.Report
         public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot, string partnerId, string username)
             => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
-        [HttpGet]
-        [Route("sedie")]
-        public async Task<SeDieBetReport> SeDie([FromQuery] BetReportFilter filter)
-           => (await mediator.Send(new SeDieReportRequest(filter)));
+        //[HttpGet]
+        //[Route("sedie")]
+        //public async Task<SeDieBetReport> SeDie([FromQuery] BetReportFilter filter)
+        //   => (await mediator.Send(new SeDieReportRequest(filter)));
 
-        [HttpGet]
-        [Route("mini_sedie")]
-        public async Task<SeDieBetReport> MiniSeDie([FromQuery] BetReportFilter filter)
-            => (await mediator.Send(new MiniSeDieReportRequest(filter)));
+        //[HttpGet]
+        //[Route("mini_sedie")]
+        //public async Task<SeDieBetReport> MiniSeDie([FromQuery] BetReportFilter filter)
+        //    => (await mediator.Send(new MiniSeDieReportRequest(filter)));
 
         [HttpGet]
         [Route("{game}/round/{roundId}/users/{nickname?}")]
@@ -74,13 +79,13 @@ namespace GamesAdmin.Api.Report
         public Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
             => mediator.Send(new KenoRoundResultRequest(game, roundId));
 
-        [HttpGet]
-        [Route("fish_prawn_crab/round/{roundId}/users/{nickname?}")]
-        public async Task<FishPrawnCrabBetReport> FishPrawnCrab(long roundId, string nickname, bool excludeUUS)
-        => (await mediator.Send(new FishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
+        //[HttpGet]
+        //[Route("fish_prawn_crab")]
+        //public async Task<FishPrawnCrabBetReport> FishPrawnCrab([FromQuery]BetReportFilter filter)
+        //=> (await mediator.Send(new FishPrawnCrabReportRequest(filter)));
 
         [HttpGet]
-        [Route("dragon_tiger/round/{roundId}/users/{nickname?}")]
+        [Route("dragon_tiger")]
         public async Task<DragonTigerBetReport> DragonTiger(long roundId, string nickname, bool excludeUUS)
         => (await mediator.Send(new DragonTigerReportRequest(roundId, nickname, excludeUUS)));
 

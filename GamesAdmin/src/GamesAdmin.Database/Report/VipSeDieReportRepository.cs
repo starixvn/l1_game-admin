@@ -38,7 +38,10 @@ namespace GamesAdmin.Database
                         FourRed = x.FourRed,
                         ThreeWhite = x.ThreeWhite,
                         FourWhite = x.FourWhite,
-                        UserId = x.Uid
+                        UserId = x.Uid,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

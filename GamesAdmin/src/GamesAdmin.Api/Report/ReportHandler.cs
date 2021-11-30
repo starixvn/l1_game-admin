@@ -25,7 +25,6 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
         IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
         IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
-        IRequestHandler<DragonTigerReportRequest, DragonTigerBetReport>,
         IRequestHandler<BaccaratReportRequest, BaccaratBetReport>,
         IRequestHandler<VipBaccaratReportRequest, VipBaccaratBetReport>,
         IRequestHandler<RouletteReportRequest, RouletteBetReport>,
@@ -52,13 +51,16 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
         IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>,
         IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
+        IRequestHandler<BetReportRequest, BetReportBase>,
        IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
     {
         private readonly IReportService reportService;
+        private readonly IReportServiceFactory reportServiceFactory;
 
-        public ReportHandler(IReportService reportService)
+        public ReportHandler(IReportServiceFactory reportServiceFactory)
         {
             this.reportService = reportService;
+            this.reportServiceFactory = reportServiceFactory;
         }
 
         public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
@@ -92,10 +94,9 @@ namespace GamesAdmin.Api.Report
         => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
 
         public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+        => reportService.GetFishPrawnCrabReportAsync(request.Filter);
 
-        public Task<DragonTigerBetReport> Handle(DragonTigerReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetDragonTigerReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
 
         public Task<BaccaratBetReport> Handle(BaccaratReportRequest request, CancellationToken cancellationToken)
         => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
@@ -198,6 +199,12 @@ namespace GamesAdmin.Api.Report
                 GameId.KenoPower2 => reportService.GetKenoPower2BetHistoryAsync(request.RoundId, request.UserId),
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
+        }
+
+        public Task<BetReportBase> Handle(BetReportRequest request, CancellationToken cancellationToken)
+        {
+            var service = reportServiceFactory.GetService(request.Filter.Game);
+            return service.Get(request.Filter);
         }
 
         public Task<IEnumerable<CasinoHoldemPokerBetRecord>> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)

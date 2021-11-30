@@ -2,5 +2,6 @@
 {
     public class ReportResultViewModel
     {
+        public bool ConvertToUSD { get; set; }
     }
 }

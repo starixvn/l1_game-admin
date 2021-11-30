@@ -38,9 +38,7 @@ namespace GamesAdmin.Api.Report
 
         Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId);
 
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeUUS);
+        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(BetReportFilter filter);
 
         Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeUUS);
 
@@ -375,10 +373,10 @@ namespace GamesAdmin.Api.Report
             return service == default ? default : service.GetRoundResultAsync(roundId);
         }
 
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(BetReportFilter filter)
         {
             var repository = serviceProvider.GetService<IFishPrawnCrabReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+            var result = await repository.GetAsync(filter);
 
             return new FishPrawnCrabBetReport
             {
@@ -387,17 +385,17 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeUUS)
-        {
-            var repository = serviceProvider.GetService<IDragonTigerReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
+        //public async Task<DragonTigerBetReport> GetDragonTigerReportAsync(long roundId, string nickname, bool excludeUUS)
+        //{
+        //    var repository = serviceProvider.GetService<IDragonTigerReportRepository>();
+        //    var result = await repository.GetAsync(roundId, nickname, excludeUUS);
 
-            return new DragonTigerBetReport
-            {
-                RoundResult = mapper.Map<DragonTigerRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<DragonTigerBetRecord>(x))
-            };
-        }
+        //    return new DragonTigerBetReport
+        //    {
+        //        RoundResult = mapper.Map<DragonTigerRoundResult>(result.Item1),
+        //        Records = result.Item2.Select(x => mapper.Map<DragonTigerBetRecord>(x))
+        //    };
+        //}
 
         public async Task<BaccaratBetReport> GetBaccaratReportAsync(long roundId, string nickname, bool excludeUUS)
         {

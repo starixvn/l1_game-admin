@@ -32,7 +32,10 @@ namespace GamesAdmin.Database
                         Nickname = x.AccountInfos.Name,
                         UserId = x.Uid,
                         BetWin = x.Betwin,
-                        TotalBet = x.TotalAmount
+                        TotalBet = x.TotalAmount,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

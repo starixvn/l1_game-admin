@@ -1,21 +1,16 @@
 ﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class FishPrawnCrabReportRequest : IRequest<FishPrawnCrabBetReport>
+    public class FishPrawnCrabReportRequest: BetReportRequest, IRequest<FishPrawnCrabBetReport>
     {
-        public FishPrawnCrabReportRequest(long roundId, string nickname, bool excludeUUS)
+        public FishPrawnCrabReportRequest(BetReportFilter filter) : base (filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
-            ExcludeUUS = excludeUUS;
+       
         }
 
-        public long RoundId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
+    
     }
 }

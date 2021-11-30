@@ -39,7 +39,10 @@ namespace GamesAdmin.Database
                         BetWin = x.Betwin,
                         TotalBet = x.TotalAmount,
                         Refund = x.Refund,
-                        UserId = x.Uid
+                        UserId = x.Uid,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

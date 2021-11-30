@@ -39,7 +39,10 @@ namespace GamesAdmin.Database
                         Rooster = x.Rooster,
                         AnyTriple = x.AnyTriple,
                         Mountain = x.Mountain,
-                        Ocean = x.Ocean
+                        Ocean = x.Ocean,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

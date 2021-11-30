@@ -38,7 +38,10 @@ namespace GamesAdmin.Database
                         Small = x.Small,
                         PlayerPair = x.PlayerPair,
                         Player = x.Player,
-                        Tie = x.Tie
+                        Tie = x.Tie,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

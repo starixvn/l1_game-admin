@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetMiniSeDieReportRequest : ReportRequest, IRequest<SeDieReportResultViewModel>
     {
-        public GetMiniSeDieReportRequest(BetReportFilter filter) : base(GameId.MiniSeDie, filter)
+        public GetMiniSeDieReportRequest(BetReportFilter filter) : base(filter)
         {
         }
     }
