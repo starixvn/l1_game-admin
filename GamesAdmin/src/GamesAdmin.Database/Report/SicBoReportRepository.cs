@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
@@ -9,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface ISicBoReportRepository
     {
-        Task<(SicBoRoundEntity, IEnumerable<SicBoBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(SicBoRoundEntity, IEnumerable<SicBoBetReportEntity>)> GetAsync(BetReportFilter filter);
     }
 
     public class SicBoReportRepository : BaseBetReportRepository, ISicBoReportRepository
@@ -18,14 +19,15 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(SicBoRoundEntity, IEnumerable<SicBoBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(SicBoRoundEntity, IEnumerable<SicBoBetReportEntity>)> GetAsync(BetReportFilter filter)
         {
             var roundResult = await database.GetCollection<SicBoRoundEntity>(Document.GetCollectionName(typeof(SicBoRoundEntity)))
-                .Find(x => x.Number == roundId).FirstOrDefaultAsync();
+                .Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<SicBoOnesEntity, SicBoBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
+                var project = GetBaseAggregateBuilder<SicBoOnesEntity, SicBoBetWithUnwindAccountsEntity>(
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new SicBoBetReportEntity
                     {
                         Time = x.Time,

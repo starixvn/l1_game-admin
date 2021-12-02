@@ -13,6 +13,10 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<MiniSedieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
+            services.AddScoped<BaccaratReportService>();
+            services.AddScoped<RouletteReportService>();
+            services.AddScoped<VipSeDieReportService>();
+            services.AddScoped<SicBoReportService>();
         }
     }
 }

@@ -29,12 +29,10 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
         IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
-        IRequestHandler<GetBaccaratReportRequest, BaccaratReportResultViewModel>,
         IRequestHandler<GetVipBaccaratReportRequest, VipBaccaratReportResultViewModel>,
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
-        IRequestHandler<GetVipSeDieReportRequest, VipSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
@@ -82,7 +80,7 @@ namespace GamesAdmin.Site.Features.Report
             this.partnerService = partnerService;
             this.currencyService = currencyService;
             this.exchangeRateService = exchangeRateService;
-            this.reportServiceFactory =  reportServiceFactory;
+            this.reportServiceFactory = reportServiceFactory;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)

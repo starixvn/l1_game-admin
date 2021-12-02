@@ -52,12 +52,12 @@
                 {
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td>@bet.Partner</td>
+                        <td class="text-center">@bet.Partner</td>
                         <td>@bet.Username</td>
                         <td>
                             @bet.Nickname
                         </td>
-                        <td>@bet.Currency</td>
+                        <td class="text-center">@bet.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Stag) : bet.Stag)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Gourd) : bet.Gourd)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Rooster) : bet.Rooster)</td>

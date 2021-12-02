@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class SicBoReportResultViewModel
+    public class SicBoReportResultViewModel : ReportResultViewModel
     {
         public SicBoRoundResultViewModel RoundResult { get; set; }
         public IEnumerable<SicBoRecordViewModel> Records { get; set; }

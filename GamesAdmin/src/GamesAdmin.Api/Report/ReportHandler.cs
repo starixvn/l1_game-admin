@@ -6,6 +6,7 @@ using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -25,12 +26,9 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
         IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
         IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
-        IRequestHandler<BaccaratReportRequest, BaccaratBetReport>,
         IRequestHandler<VipBaccaratReportRequest, VipBaccaratBetReport>,
-        IRequestHandler<RouletteReportRequest, RouletteBetReport>,
         IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>,
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
-        IRequestHandler<VipSeDieReportRequest, VipSeDieBetReport>,
         IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
         IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
         IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
@@ -56,11 +54,13 @@ namespace GamesAdmin.Api.Report
     {
         private readonly IReportService reportService;
         private readonly IReportServiceFactory reportServiceFactory;
+        private readonly IServiceProvider serviceProvider;
 
-        public ReportHandler(IReportServiceFactory reportServiceFactory)
+        public ReportHandler(IReportService reportService, IReportServiceFactory reportServiceFactory, IServiceProvider serviceProvider)
         {
             this.reportService = reportService;
             this.reportServiceFactory = reportServiceFactory;
+            this.serviceProvider = serviceProvider;
         }
 
         public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
@@ -96,22 +96,11 @@ namespace GamesAdmin.Api.Report
         public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
         => reportService.GetFishPrawnCrabReportAsync(request.Filter);
 
-
-
-        public Task<BaccaratBetReport> Handle(BaccaratReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-        public Task<RouletteBetReport> Handle(RouletteReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetRouletteReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
         public Task<RouletteBetHistory> Handle(RouletteBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.UserId);
 
         public Task<IEnumerable<SpinResult>> Handle(LuckyWheelReportRequest request, CancellationToken cancellationToken)
         => reportService.GetLuckyWheelReportAsync(request.Nickname);
-
-        public Task<VipSeDieBetReport> Handle(VipSeDieReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetVipSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SpecialSeDieBetReport> Handle(SpecialSeDieReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSpecialSeDieReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
@@ -120,7 +109,7 @@ namespace GamesAdmin.Api.Report
         => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);
 
         public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetBlackjackReportAsync(request.Filter);
+        => serviceProvider.GetRequiredService<BlackjackReportService>().Get(request.Filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSlotGameReportAsync(request.Filter);

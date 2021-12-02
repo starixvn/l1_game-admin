@@ -4,8 +4,8 @@ namespace GamesAdmin.Core.Models
 {
     public class BetReportBase
     {
-
     }
+
     public class BetReport<TRoundResult, TBetRecord> : BetReportBase where TRoundResult : RoundResult where TBetRecord : BetRecord
     {
         public TRoundResult RoundResult { get; set; }
@@ -82,6 +82,11 @@ namespace GamesAdmin.Core.Models
 
     public class KenoPowerBetReport : BetReport<KenoPowerRoundResult, KenoPowerBetRecord>
     {
+    }
+
+    public class BlackjackBetReport : BetReportBase
+    {
+        public IEnumerable<BlackjackBetRecord> Records { get; set; }
     }
 
     public class CasinoHoldemPokerBetReport : BetReport<CasinoHoldemPokerRoundResult, CasinoHoldemPokerBetRecord>
