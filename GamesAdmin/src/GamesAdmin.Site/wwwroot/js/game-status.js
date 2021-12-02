@@ -452,6 +452,7 @@ $(document).ready(function () {
             "ordering": false,
             "paging": false,
             "info": false,
+            "stateSave": true,
             "columns": [
                 { "width": "3%" },
                 { "width": "10%" },
