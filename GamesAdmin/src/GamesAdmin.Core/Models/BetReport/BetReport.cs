@@ -94,6 +94,11 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<BlackjackBetRecord> Records { get; set; }
     }
 
+    public class BlackjackBetReport : BetReportBase
+    {
+        public IEnumerable<BlackjackBetRecord> Records { get; set; }
+    }
+
     public class CasinoHoldemPokerBetReport : BetReport<CasinoHoldemPokerRoundResult, CasinoHoldemPokerBetRecord>
     {
     }

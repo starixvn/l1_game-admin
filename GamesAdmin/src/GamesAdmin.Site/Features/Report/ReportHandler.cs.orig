@@ -25,6 +25,14 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
+<<<<<<< HEAD
+=======
+        IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
+        IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
+        IRequestHandler<GetVipBaccaratReportRequest, VipBaccaratReportResultViewModel>,
+        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
+        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
+>>>>>>> 2902c421 (feat: game report)
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,

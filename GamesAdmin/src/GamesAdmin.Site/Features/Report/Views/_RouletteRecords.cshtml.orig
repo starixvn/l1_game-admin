@@ -1,0 +1,114 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Enumeration;
+
+@model RouletteReportResultViewModel
+
+@{
+    var redNumnbers = new byte[] { 1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36 };
+    var resultCSSClass = string.Empty;
+
+    if (Model.RoundResult.Result == 0)
+    {
+        resultCSSClass = "text-success";
+    }
+    else
+    {
+        if (redNumnbers.Any(x => x == Model.RoundResult.Result))
+        {
+            resultCSSClass = "text-danger";
+        }
+    }
+}
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Exchange ID</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
+                        <td class="text-center font-weight-bold @resultCSSClass">
+                            @Model.RoundResult.Result
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Partner</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th>Currency</th>
+                    <th class="col-number">Total Bets</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+<<<<<<< HEAD
+                               asp-action="GetRouletteBetHistory"
+                               asp-route-game="@GameId.Roulette"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+=======
+                               asp-action="GetRouletteBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+>>>>>>> 2902c421 (feat: game report)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
+                    </tr>
+                }
+
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="7">No data</td>
+                    </tr>
+                }
+<<<<<<< HEAD
+                else if (Model.ConvertToUSD)
+=======
+                else
+>>>>>>> 2902c421 (feat: game report)
+                {
+                    <tr class="total">
+                        <td>Total in USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalBet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

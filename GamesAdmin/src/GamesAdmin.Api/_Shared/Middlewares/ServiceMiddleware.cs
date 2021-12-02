@@ -171,7 +171,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
-
+            services.AddScoped<BaccaratReportService>();
+            services.AddScoped<RouletteReportService>();
+            services.AddScoped<VipSeDieReportService>();
+            services.AddScoped<BlackjackReportService>();
+            services.AddScoped<SicBoReportService>();
 
             services.InitApiLog();
         }

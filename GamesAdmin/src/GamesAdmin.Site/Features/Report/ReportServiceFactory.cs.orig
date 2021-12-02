@@ -22,9 +22,9 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.FishPrawnCrab, typeof(FishPrawnCrabReportService) },
             { GameId.SeDie, typeof(SedieReportService) },
             { GameId.MiniSeDie, typeof(MiniSedieReportService) },
-<<<<<<< HEAD
             { GameId.Baccarat, typeof(BaccaratReportService) },
             { GameId.DragonTiger, typeof(DragonTigerReportService) },
+<<<<<<< HEAD
             { GameId.KenoProMax, typeof(MiniKenoReportService) },
             { GameId.KenoMax, typeof(MiniKenoReportService) },
             { GameId.KenoMax2, typeof(MiniKenoReportService) },
@@ -34,11 +34,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoWest, typeof(MiniKenoReportService) },
             { GameId.KenoSouth, typeof(MiniKenoReportService) },
             { GameId.KenoNorth, typeof(MiniKenoReportService) },
-            { GameId.Roulette, typeof(RouletteReportService) },
-            { GameId.VipSeDie, typeof(VipSeDieReportService) },
 =======
-            //{ GameId.Baccarat, typeof(BaccaratEndGameInfoService) },
-            { GameId.DragonTiger, typeof(DragonTigerReportService) },
             //{ GameId.KenoProMax, typeof(KenoProMaxEndGameInfoService) },
             //{ GameId.KenoProViet, typeof(KenoProVietEndGameInfoService) },
             //{ GameId.KenoMax, typeof(KenoMaxEndGameInfoService) },
@@ -49,9 +45,9 @@ namespace GamesAdmin.Site.Features.Report
             //{ GameId.KenoWest, typeof(KenoWestEndGameInfoService) },
             //{ GameId.KenoSouth, typeof(KenoSouthEndGameInfoService) },
             //{ GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
-            //{ GameId.Roulette, typeof(RouletteEndGameInfoService) },
-            //{ GameId.VipSeDie, typeof(VipSeDieEndGameInfoService) },
->>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
+>>>>>>> 2902c421 (feat: game report)
+            { GameId.Roulette, typeof(RouletteReportService) },
+            { GameId.VipSeDie, typeof(VipSeDieReportService) },
             //{ GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
             //{ GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },

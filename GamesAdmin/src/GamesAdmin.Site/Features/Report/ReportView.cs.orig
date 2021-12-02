@@ -11,11 +11,11 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.MiniSeDie, "_MiniSeDieRecords" },
             { GameId.FishPrawnCrab, "_FishPrawnCrabRecords" },
             { GameId.DragonTiger, "_DragonTigerRecords" },
-<<<<<<< HEAD
             { GameId.Baccarat, "_BaccaratRecords" },
             { GameId.Roulette, "_RouletteRecords" },
             { GameId.VipSeDie, "_VipSeDieRecords" },
             { GameId.SicBo, "_SicBoRecords" },
+<<<<<<< HEAD
             { GameId.VipFishPrawnCrab, "_VipFishPrawnCrabRecords" },
             { GameId.VipBaccarat, "_VipBaccaratRecords" },
             { GameId.Lottery, "_LotteryRecords" },
@@ -35,7 +35,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoNorth, "_KenoBetRecords" },
             { GameId.VipSeDieWar, "_VipSeDieWarRecords" },
 =======
->>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
+>>>>>>> 2902c421 (feat: game report)
         };
 
         public string GetView(GameId game) => views[game];

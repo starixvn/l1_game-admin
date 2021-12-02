@@ -13,11 +13,11 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<MiniSedieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
-<<<<<<< HEAD
             services.AddScoped<BaccaratReportService>();
             services.AddScoped<RouletteReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<SicBoReportService>();
+<<<<<<< HEAD
             services.AddScoped<VipFishPrawnCrabReportService>();
             services.AddScoped<VipBaccaratReportService>();
             services.AddScoped<LotteryReportService>();
@@ -28,7 +28,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<VipSeDieWarReportService>();
             services.AddScoped<HiLoReportService>();
 =======
->>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
+>>>>>>> 2902c421 (feat: game report)
         }
     }
 }

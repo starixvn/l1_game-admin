@@ -1,0 +1,59 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Database;
+namespace GamesAdmin.Api.Report
+{
+<<<<<<< HEAD
+    public class RouletteReportService : IGameReportService, IBetHistoryReportService
+=======
+    public class RouletteReportService : IGameReportService
+>>>>>>> 2902c421 (feat: game report)
+
+    {
+        private readonly IRouletteReportRepository repository;
+        private readonly IMapper mapper;
+<<<<<<< HEAD
+        private readonly IBetHistoryReportRepository betHistoryRepository;
+        public RouletteReportService(IRouletteReportRepository repository, IBetHistoryReportRepository betHistoryRepository, IMapper mapper)
+        {
+            this.repository = repository;
+            this.mapper = mapper;
+            this.betHistoryRepository = betHistoryRepository;
+=======
+
+        public RouletteReportService(IRouletteReportRepository repository, IMapper mapper)
+        {
+            this.repository = repository;
+            this.mapper = mapper;
+>>>>>>> 2902c421 (feat: game report)
+        }
+
+        public async Task<BetReportBase> Get(BetReportFilter filter)
+        {
+            var result = await repository.GetAsync(filter);
+
+            return new RouletteBetReport
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<RouletteBetRecord>(x))
+            };
+        }
+<<<<<<< HEAD
+
+        public async Task<BetHistory> Get(BetHistoryFilter filter)
+        {
+            var result = await betHistoryRepository.GetRouletteAsync(filter.RoundId, filter.UserId, filter.PartnerId);
+
+            return new RouletteBetHistory
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
+            };
+        }
+=======
+>>>>>>> 2902c421 (feat: game report)
+    }
+}
