@@ -7,13 +7,13 @@ using GamesAdmin.Core.Models.RoundResults;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class KenoReportViewModel
+    public class KenoReportViewModel : ReportResultViewModel
     {
         public KenoReportViewModel(
-            Game game, 
+            GameId game, 
             long roundId, 
             KenoRoundResult roundResult, 
-            IEnumerable<KenoBetRecord> betTickets,
+            IEnumerable<KenoRecordViewModel> betTickets,
             TimeZoneInfo timeZoneInfo)
         {
             Game = game;
@@ -26,13 +26,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             TimeZoneInfo = timeZoneInfo;
         }
 
-        public Game Game { get; }
+        public GameId Game { get; }
 
         public long RoundId { get; }
 
         public KenoResultViewModel RoundResult { get; }
 
-        public IEnumerable<KenoBetRecord> BetTickets { get; }
+        public IEnumerable<KenoRecordViewModel> BetTickets { get; }
 
         public TimeZoneInfo TimeZoneInfo { get; }
 

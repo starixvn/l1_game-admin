@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 
 namespace GamesAdmin.Core.Models
 {
@@ -81,6 +83,9 @@ namespace GamesAdmin.Core.Models
     }
 
     public class KenoPowerBetReport : BetReport<KenoPowerRoundResult, KenoPowerBetRecord>
+    {
+    }
+    public class MiniKenoBetReport : BetReport<KenoRoundResult, KenoBetRecord>
     {
     }
 

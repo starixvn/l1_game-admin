@@ -36,14 +36,10 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>,
         IRequestHandler<SlotGameReportRequest, IEnumerable<SlotGameBetRecord>>,
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
-        IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
-        IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
         IRequestHandler<BitcoinMasterReportRequest, BitcoinMasterBetReport>,
         IRequestHandler<BitcoinMasterBetHistoryRequest, BitcoinMasterBetHistory>,
-        IRequestHandler<KenoMatchReportRequest, KenoMatchBetReport>,
         IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
-        IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
         IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>,
         IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
         IRequestHandler<BetReportRequest, BetReportBase>,
@@ -123,14 +119,8 @@ namespace GamesAdmin.Api.Report
         public Task<IEnumerable<JackpotRecord>> Handle(JackpotReportRequest request, CancellationToken cancellationToken)
         => reportService.GetJackpotReportAsync(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
 
-        public Task<LotteryBetReport> Handle(LotteryReportRequest request, CancellationToken cancellationToken)
-            => reportService.GetLotteryReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
         public Task<LotteryBetHistory> Handle(LotteryBetHistoryRequest request, CancellationToken cancellationToken)
             => reportService.GetLotteryBetHistoryAsync(request.RoundId, request.UserId);
-
-        public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken)
-            => reportService.GetThreeCardsReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public async Task<BitcoinMasterBetReport> Handle(BitcoinMasterReportRequest request, CancellationToken cancellationToken)
                => await reportService.GetBitcoinMasterReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
@@ -138,32 +128,13 @@ namespace GamesAdmin.Api.Report
         public Task<BitcoinMasterBetHistory> Handle(BitcoinMasterBetHistoryRequest request, CancellationToken cancellationToken)
                 => reportService.GetBitcoinMasterBetHistoryAsync(request.RoundId, request.Nickname);
 
-        public Task<KenoMatchBetReport> Handle(KenoMatchReportRequest request, CancellationToken cancellationToken)
-        {
-            return request.Game switch
-            {
-                GameId.KenoMatch1 => reportService.GetKenoMatch1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
-                GameId.KenoMatch2 => reportService.GetKenoMatch2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
-                _ => throw new ArgumentException(nameof(request.Game)),
-            };
-        }
-
+      
         public Task<KenoMatchBetHistory> Handle(KenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
         {
             return request.Game switch
             {
                 GameId.KenoMatch1 => reportService.GetKenoMatch1BetHistoryAsync(request.RoundId, request.UserId),
                 GameId.KenoMatch2 => reportService.GetKenoMatch2BetHistoryAsync(request.RoundId, request.UserId),
-                _ => throw new ArgumentException(nameof(request.Game)),
-            };
-        }
-
-        public Task<KenoPowerBetReport> Handle(KenoPowerReportRequest request, CancellationToken cancellationToken)
-        {
-            return request.Game switch
-            {
-                GameId.KenoPower1 => reportService.GetKenoPower1ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
-                GameId.KenoPower2 => reportService.GetKenoPower2ReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS),
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
         }

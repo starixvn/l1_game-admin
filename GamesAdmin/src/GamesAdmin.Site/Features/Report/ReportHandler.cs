@@ -27,7 +27,6 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
-        IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
         IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
         IRequestHandler<GetVipBaccaratReportRequest, VipBaccaratReportResultViewModel>,
         IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
@@ -357,19 +356,6 @@ namespace GamesAdmin.Site.Features.Report
                 }),
                 ConvertToUSD = request.Filter.ConvertToUSD
             };
-        }
-
-        public async Task<KenoReportViewModel> Handle(GetKenoReportRequest request, CancellationToken cancellationToken)
-        {
-            var roundResult = await reportService.GetKenoRoundResult(request.Game, request.RoundId);
-            var betRecords = await reportService.GetKenoBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new KenoReportViewModel(
-                request.Game,
-                request.RoundId,
-                roundResult,
-                betRecords,
-                appSettings.DefaultTimeZone);
         }
 
         public async Task<KenoBetHistoryViewModel> Handle(GetKenoBetHistoryRequest request, CancellationToken cancellationToken)

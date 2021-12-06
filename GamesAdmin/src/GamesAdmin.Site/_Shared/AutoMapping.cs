@@ -112,7 +112,9 @@ namespace GamesAdmin.Site._Shared
             CreateMap<KenoPowerBetRecord, KenoPowerRecordViewModel>();
             CreateMap<KenoPowerBetHistoryRecord, KenoPowerBetHistoryRecordViewModel>();
 
+            CreateMap<KenoBetRecord, KenoRecordViewModel>();
             CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
+
         }
     }
 }

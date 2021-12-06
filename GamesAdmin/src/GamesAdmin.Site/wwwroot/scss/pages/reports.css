@@ -223,6 +223,9 @@
 .bitcoin-master-result .result-detail {
   margin-left: 5px; }
 
+.bitcoin-master-result .tie .result-detail {
+  margin-left: 0; }
+
 .bitcoin-master-report .display-none {
   display: none !important; }
 
@@ -266,3 +269,19 @@
       border-color: #dc3545; }
     .table-keno-match-result .list-numbers .number.blue, .table-keno-power-result .list-numbers .number.blue {
       border-color: #16aaff; }
+
+.tble-vietlot .list-numbers {
+  display: grid;
+  grid-template-columns: repeat(10, 3rem);
+  flex-wrap: wrap;
+  grid-gap: .4rem;
+  justify-content: center; }
+
+.tble-vietlot .number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  border: 1px solid #16aaff; }

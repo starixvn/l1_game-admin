@@ -466,36 +466,35 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult KenoProViet() => ToKenoReport();
+        public IActionResult KenoProViet() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoMax() => ToKenoReport();
+        public IActionResult KenoMax() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoMax2() => ToKenoReport();
+        public IActionResult KenoMax2() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoMini() => ToKenoReport();
+        public IActionResult KenoMini() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoMini2() => ToKenoReport();
+        public IActionResult KenoMini2() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoEast() => ToKenoReport();
+        public IActionResult KenoEast() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoWest() => ToKenoReport();
+        public IActionResult KenoWest() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoSouth() => ToKenoReport();
+        public IActionResult KenoSouth() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoNorth() => ToKenoReport();
+        public IActionResult KenoNorth() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoProMax() => ToKenoReport();
+        public IActionResult KenoProMax() => RedirectToAction("Index");
 
-        private IActionResult ToKenoReport() => View("KenoReport", new KenoViewModel());
 
         [HttpGet]
         public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
@@ -510,7 +509,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)
         {
-            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<Game>(game), roundId, nickname)));
+            return View(await mediator.Send(new GetKenoBetHistoryRequest(Enumeration.FromValue<Game>(game.ToLower()), roundId, nickname)));
         }
 
         [HttpGet]

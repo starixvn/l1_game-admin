@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
@@ -9,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IKenoMatchReportRepository
     {
-        Task<(TRoundEntity, IEnumerable<KenoMatchBetReportEntity>)> GetAsync<TRoundEntity, TOneEntity>(long roundId, string nickname, bool excludeUUS)
+        Task<(TRoundEntity, IEnumerable<KenoMatchBetReportEntity>)> GetAsync<TRoundEntity, TOneEntity>(BetReportFilter filter)
                 where TRoundEntity : KenoMatchRoundEntity, new()
                 where TOneEntity : KenoMatchOneEntity;
     }
@@ -21,16 +22,17 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(TRoundEntity, IEnumerable<KenoMatchBetReportEntity>)> GetAsync<TRoundEntity, TOneEntity>(long roundId, string nickname, bool excludeUUS)
+        public async Task<(TRoundEntity, IEnumerable<KenoMatchBetReportEntity>)> GetAsync<TRoundEntity, TOneEntity>(BetReportFilter filter)
             where TRoundEntity : KenoMatchRoundEntity, new()
             where TOneEntity : KenoMatchOneEntity
         {
             var roundResult = await database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)))
-                .Find(x => x.Number == roundId && x.Settled).FirstOrDefaultAsync();
+                .Find(x => x.Number == filter.RoundId && x.Settled).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<TOneEntity, KenoMatchBetWithUnwindAccountsEntity>(roundId, nickname, true, excludeUUS)
+                var project = GetBaseAggregateBuilder<TOneEntity, KenoMatchBetWithUnwindAccountsEntity>(
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new KenoMatchBetReportEntity
                     {
                         Time = x.Time,

@@ -70,7 +70,7 @@ namespace GamesAdmin.Api.Report
             => mediator.Send(new KenoReportRequest(game, roundId, nickname, excludeUUS));
 
         [HttpGet]
-        [Route("{game}/round/{roundId}/user/{nickname}")]
+        [Route("{game}/round/{roundId}/user/{userId}")]
         public Task<IEnumerable<KenoBetHistory>> KenoBetHistory(string game, long roundId, string nickname)
             => mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname));
 

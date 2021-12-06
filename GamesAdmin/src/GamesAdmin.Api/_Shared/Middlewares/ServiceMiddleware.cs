@@ -178,6 +178,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<SicBoReportService>();
             services.AddScoped<VipFishPrawnCrabReportService>();
             services.AddScoped<VipBaccaratReportService>();
+            services.AddScoped<LotteryReportService>();
+            services.AddScoped<ThreeCardsReportService>();
+            services.AddScoped(typeof(KenoMatchReportService<,>));
+            services.AddScoped(typeof(KenoPowerReportService<,>));
+            services.AddScoped(typeof(MiniKenoReportService<,>));
 
             services.InitApiLog();
         }

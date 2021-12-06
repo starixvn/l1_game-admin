@@ -39,6 +39,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IBitcoinMasterReportRepository, BitcoinMasterReportRepository>();
             services.AddScoped<IKenoMatchReportRepository, KenoMatchReportRepository>();
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
+            services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
             services.AddScoped<ICasinoHoldemPokerReportRepository, CasinoHoldemPokerReportRepository>();
         }
     }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Keno;
+using GamesAdmin.Database.Entities.KenoProMax;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
@@ -23,16 +26,15 @@ namespace GamesAdmin.Api.Report
             { GameId.MiniSeDie, typeof(MiniSeDieReportService) },
             { GameId.Baccarat, typeof(BaccaratReportService) },
             { GameId.DragonTiger, typeof(DragonTigerReportService) },
-            //{ GameId.KenoProMax, typeof(KenoProMaxEndGameInfoService) },
-            //{ GameId.KenoProViet, typeof(KenoProVietEndGameInfoService) },
-            //{ GameId.KenoMax, typeof(KenoMaxEndGameInfoService) },
-            //{ GameId.KenoMax2, typeof(KenoMax2EndGameInfoService) },
-            //{ GameId.KenoMini, typeof(KenoMiniEndGameInfoService) },
-            //{ GameId.KenoMini2, typeof(KenoMini2EndGameInfoService) },
-            //{ GameId.KenoEast, typeof(KenoEastEndGameInfoService) },
-            //{ GameId.KenoWest, typeof(KenoWestEndGameInfoService) },
-            //{ GameId.KenoSouth, typeof(KenoSouthEndGameInfoService) },
-            //{ GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
+            { GameId.KenoProMax, typeof(MiniKenoReportService<KenoProMaxRoundEntity, KenoProMaxBetEntity>) },
+            { GameId.KenoMax, typeof(MiniKenoReportService<KenoMaxRoundEntity, KenoMaxOnesEntity>) },
+            { GameId.KenoMax2, typeof(MiniKenoReportService<KenoMax2RoundEntity, KenoMax2OnesEntity>) },
+            { GameId.KenoMini, typeof(MiniKenoReportService<KenoMiniRoundEntity, KenoMiniOnesEntity>) },
+            { GameId.KenoMini2, typeof(MiniKenoReportService<KenoMini2RoundEntity, KenoMini2OnesEntity>) },
+            { GameId.KenoEast, typeof(MiniKenoReportService<KenoEastRoundEntity, KenoEastOnesEntity>) },
+            { GameId.KenoWest, typeof(MiniKenoReportService<KenoWestRoundEntity, KenoWestOnesEntity>) },
+            { GameId.KenoSouth, typeof(MiniKenoReportService<KenoSouthRoundEntity, KenoSouthOnesEntity>) },
+            { GameId.KenoNorth, typeof(MiniKenoReportService<KenoNorthRoundEntity, KenoNorthOnesEntity>) },
             { GameId.Roulette, typeof(RouletteReportService) },
             { GameId.VipSeDie, typeof(VipSeDieReportService) },
             //{ GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
@@ -42,14 +44,14 @@ namespace GamesAdmin.Api.Report
             { GameId.VipBaccarat, typeof(VipBaccaratReportService) },
             //{ GameId.VipSeDieWar, typeof(VipSeDieWarEndGameInfoService) },
             //{ GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) },
-            //{ GameId.Lottery, typeof(LotteryEndGameInfoService) },
-            //{ GameId.ThreeCards, typeof(ThreeCardsEndGameInfoService) },
+            { GameId.Lottery, typeof(LotteryReportService) },
+            { GameId.ThreeCards, typeof(ThreeCardsReportService) },
             //{ GameId.HeroesSlot, typeof(HeroesSlotEndGameInfoService) },
             //{ GameId.BitcoinMaster, typeof(BitcoinMasterEndGameInfoService) },
-            //{ GameId.KenoMatch1, typeof(KenoMatchEndGameInfoService<KenoMatch1RoundEntity, KenoMatch1OneEntity>) },
-            //{ GameId.KenoMatch2, typeof(KenoMatchEndGameInfoService<KenoMatch2RoundEntity, KenoMatch2OneEntity>) },
-            //{ GameId.KenoPower1, typeof(KenoPowerEndGameInfoService<KenoPower1RoundEntity, KenoPower1OneEntity>) },
-            //{ GameId.KenoPower2, typeof(KenoPowerEndGameInfoService<KenoPower2RoundEntity, KenoPower2OneEntity>) },
+            { GameId.KenoMatch1, typeof(KenoMatchReportService<KenoMatch1RoundEntity, KenoMatch1OneEntity>) },
+            { GameId.KenoMatch2, typeof(KenoMatchReportService<KenoMatch2RoundEntity, KenoMatch2OneEntity>) },
+            { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity>) },
+            { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity>) },
         };
 
         private readonly IServiceProvider serviceProvider;
