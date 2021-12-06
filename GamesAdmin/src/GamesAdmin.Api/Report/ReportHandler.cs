@@ -26,14 +26,11 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
         IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
         IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
-        IRequestHandler<VipBaccaratReportRequest, VipBaccaratBetReport>,
         IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>,
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
         IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
         IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
         IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
-        IRequestHandler<VipFishPrawnCrabReportRequest, VipFishPrawnCrabBetReport>,
-        IRequestHandler<SicBoReportRequest, SicBoBetReport>,
         IRequestHandler<SicBoBetHistoryRequest, SicBoBetHistory>,
         IRequestHandler<VipSeDieWarReportRequest, VipSeDieWarBetReport>,
         IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>,
@@ -114,17 +111,8 @@ namespace GamesAdmin.Api.Report
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSlotGameReportAsync(request.Filter);
 
-        public Task<VipFishPrawnCrabBetReport> Handle(VipFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetVipFishPrawnCrabReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-        public Task<SicBoBetReport> Handle(SicBoReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetSicBoReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
         public Task<VipSeDieWarBetReport> Handle(VipSeDieWarReportRequest request, CancellationToken cancellationToken)
         => reportService.GetVipSeDieWarReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-        public Task<VipBaccaratBetReport> Handle(VipBaccaratReportRequest request, CancellationToken cancellationToken)
-         => reportService.GetVipBaccaratReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SicBoBetHistory> Handle(SicBoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoBetHistoryAsync(request.RoundId, request.UserId);

@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.Report
 
         public override async Task<ReportResultViewModel> Get(BetReportFilter filter)
         {
-            var result = await reportApi.Get<BaccaratBetReport>(filter);
+            var result = await reportApi.Get<SicBoBetReport>(filter);
             var partners = await partnerService.GetAll();
 
             return new SicBoReportResultViewModel

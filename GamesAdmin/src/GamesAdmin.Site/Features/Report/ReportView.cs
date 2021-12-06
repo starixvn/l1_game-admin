@@ -15,6 +15,8 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.Roulette, "_RouletteRecords" },
             { GameId.VipSeDie, "_VipSeDieRecords" },
             { GameId.SicBo, "_SicBoRecords" },
+            { GameId.VipFishPrawnCrab, "_VipFishPrawnCrabRecords" },
+            { GameId.VipBaccarat, "_VipBaccaratRecords" },
         };
 
         public string GetView(GameId game) => views[game];

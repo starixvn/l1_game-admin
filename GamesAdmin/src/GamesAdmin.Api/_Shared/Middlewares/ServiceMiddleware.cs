@@ -176,6 +176,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
+            services.AddScoped<VipFishPrawnCrabReportService>();
+            services.AddScoped<VipBaccaratReportService>();
 
             services.InitApiLog();
         }
