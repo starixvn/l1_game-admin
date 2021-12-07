@@ -16,6 +16,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public DateTimeOffset Time { get; set; }
 
+        public string PartnerId { get; set; }
+
         public string Partner { get; set; }
 
         public string Currency { get; set; }

@@ -1,6 +1,7 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Core.Enumeration.BetChoices
 @using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 
 @model VipSeDieWarReportResultViewModel
 
@@ -149,7 +150,12 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetVipSeDieWarBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                               asp-action="GetVipSeDieWarBetHistory"
+                               asp-route-game="@GameId.VipSeDieWar"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
                             </a>
                         </td>

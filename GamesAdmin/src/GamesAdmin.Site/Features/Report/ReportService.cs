@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
 
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(Game game, long roundId, string nickname);
 
         Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId);
 
@@ -99,7 +99,7 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
-        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname)
+        public Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(Game game, long roundId, string nickname)
         => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
 
         public Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId)

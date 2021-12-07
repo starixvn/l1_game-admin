@@ -8,6 +8,7 @@ namespace GamesAdmin.Site.Features.Report
     public interface IReportServiceFactory
     {
         IGameReportService GetService(GameId game);
+        IBetHistoryReportService GetBetHistoryService(GameId game);
     }
 
     public class ReportServiceFactory : IReportServiceFactory
@@ -57,6 +58,9 @@ namespace GamesAdmin.Site.Features.Report
         {
             this.serviceProvider = serviceProvider;
         }
+
+        public IBetHistoryReportService GetBetHistoryService(GameId game)
+        => (IBetHistoryReportService)serviceProvider.GetRequiredService(services[game]);
 
         public IGameReportService GetService(GameId game)
         => (IGameReportService)serviceProvider.GetRequiredService(services[game]);

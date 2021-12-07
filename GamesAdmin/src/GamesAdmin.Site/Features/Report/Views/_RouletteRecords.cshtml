@@ -1,5 +1,6 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 
 @model RouletteReportResultViewModel
 
@@ -66,7 +67,12 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetRouletteBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                               asp-action="GetRouletteBetHistory"
+                               asp-route-game="@GameId.Lottery"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
                             </a>
                         </td>

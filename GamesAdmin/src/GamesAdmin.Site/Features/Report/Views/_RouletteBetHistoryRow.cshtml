@@ -102,7 +102,6 @@
     var renderDate = true;
 }
 
-
 @foreach (var betChoice in bet.StraightUp)
 {
     var winningCssClass = settlementResult.StraightUp.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
@@ -119,11 +118,10 @@
             @betChoice.Key
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.Split)
 {
@@ -141,11 +139,10 @@
             @betChoice.Key.Replace("-", ", ")
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.Street)
 {
@@ -164,7 +161,7 @@
             @betChoice.Key.Replace("-", ", ")
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
@@ -191,7 +188,6 @@
     </tr>
 }
 
-
 @foreach (var betChoice in bet.Corner)
 {
     var winningCssClass = settlementResult.Corner.Any(x => x == betChoice.Key) ? "text-primary" : string.Empty;
@@ -209,11 +205,10 @@
             @betChoice.Key.Replace("-", ", ")
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.FourNumbers)
 {
@@ -232,7 +227,7 @@
             @betChoice.Key.Replace("-", ", ")
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
@@ -258,7 +253,7 @@
             <div>@splits[3], @splits[4], @splits[5]</div>
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 
@@ -281,11 +276,10 @@
             @columns[betChoice.Key]
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.Dozen)
 {
@@ -304,11 +298,10 @@
             @dozens[betChoice.Key]
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.RedBlack)
 {
@@ -326,11 +319,10 @@
             @betChoice.Key
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.OddEven)
 {
@@ -348,11 +340,10 @@
             @oddEvenResource[betChoice.Key]
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
-
 
 @foreach (var betChoice in bet.BigSmall)
 {
@@ -370,7 +361,7 @@
             @bigSmall[betChoice.Key]
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }

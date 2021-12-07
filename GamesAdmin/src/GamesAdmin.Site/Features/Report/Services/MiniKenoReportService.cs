@@ -10,7 +10,7 @@ using GamesAdmin.Site.Features.Report.ViewModels;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    public class MiniKenoReportService : GameReportService
+    public class MiniKenoReportService : GameReportService, IBetHistoryReportService
     {
         public MiniKenoReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
         {
@@ -36,6 +36,22 @@ namespace GamesAdmin.Site.Features.Report
                 appSettings.DefaultTimeZone)
             {
                 ConvertToUSD = filter.ConvertToUSD
+            };
+        }
+
+        public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)
+        {
+            var result = await reportApi.GetBetHistory<KenoBetHistory>(filter);
+
+            return new KenoBetHistoryViewModel
+            {
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<KenoBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
             };
         }
     }

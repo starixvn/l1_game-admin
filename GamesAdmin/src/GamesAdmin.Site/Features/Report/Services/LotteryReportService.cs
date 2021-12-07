@@ -10,7 +10,7 @@ using GamesAdmin.Site.Features.Report.ViewModels;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    public class LotteryReportService : GameReportService
+    public class LotteryReportService : GameReportService, IBetHistoryReportService
     {
         public LotteryReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
         {
@@ -33,6 +33,24 @@ namespace GamesAdmin.Site.Features.Report
                     return recordViewModel;
                 }),
                 ConvertToUSD = filter.ConvertToUSD
+            };
+        }
+
+        public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)
+        {
+            var result = await reportApi.GetBetHistory<LotteryBetHistory>(filter);
+
+            return new LotteryBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<LotteryRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<LotteryBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
+                Odds = mapper.Map<LotteryOddsViewModel>(result.Odds),
             };
         }
     }

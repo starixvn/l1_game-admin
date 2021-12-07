@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class RouletteBetHistory
+    public class RouletteBetHistory : BetHistory
     {
         public RouletteRoundResult RoundResult { get; set; }
 
         public IEnumerable<RouletteBetHistoryRecord> Bets { get; set; }
     }
 
-    public class RouletteBetHistoryRecord
+    public class RouletteBetHistoryRecord : BetHistoryRecord
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public Dictionary<string, decimal> StraightUp { get; set; }
 
         public Dictionary<string, decimal> Split { get; set; }

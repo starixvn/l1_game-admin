@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -8,15 +10,18 @@ using GamesAdmin.Database.Entities.Keno;
 
 namespace GamesAdmin.Api.Report
 {
-    public class MiniKenoReportService<TMiniKenoRound, TMiniKenoBet> : IGameReportService
+    public class MiniKenoReportService<TMiniKenoRound, TMiniKenoBet, TMiniKenoBetLog> : IGameReportService, IBetHistoryReportService
         where TMiniKenoRound : BaseKenoRoundEntity, new()
         where TMiniKenoBet : BaseKenoOnesEntity
+        where TMiniKenoBetLog :  BaseKenoBetEntity
     {
         private readonly IMiniKenoReportRepository repository;
+        private readonly IGenericRepository<TMiniKenoBetLog> betLogRepository;
 
-        public MiniKenoReportService(IMiniKenoReportRepository repository)
+        public MiniKenoReportService(IMiniKenoReportRepository repository, IGenericRepository<TMiniKenoBetLog> betLogRepository)
         {
             this.repository = repository;
+            this.betLogRepository = betLogRepository;
         }
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
@@ -43,6 +48,30 @@ namespace GamesAdmin.Api.Report
                     PartnerId = bet.PartnerId,
                     Rate = bet.Rate
                 })
+            };
+        }
+
+        public async Task<BetHistory> Get(BetHistoryFilter filter)
+        {
+            var bets = await betLogRepository.FilterByAsync(
+                bet => bet.Round == filter.RoundId && bet.Uid == filter.UserId && bet.PartnerId == filter.PartnerId);
+
+            var betLogs = bets
+                .Select(bet => new KenoBetHistoryRecord
+                {
+                    Round = bet.Round,
+                    Name = bet.Name,
+                    Choice = Enumeration.FromValue<KenoBetChoice>(bet.Choice),
+                    Amount = bet.Amount,
+                    Time = bet.Time,
+                    Currency = bet.Currency,
+                    PartnerId = bet.PartnerId,
+                    Rate = bet.Rate
+                });
+
+            return new KenoBetHistory
+            {
+                Bets = betLogs
             };
         }
     }

@@ -10,7 +10,7 @@ using GamesAdmin.Site.Features.Report.ViewModels;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    public class VipSeDieWarReportService : GameReportService
+    public class VipSeDieWarReportService : GameReportService, IBetHistoryReportService
     {
         public VipSeDieWarReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
         {
@@ -33,6 +33,23 @@ namespace GamesAdmin.Site.Features.Report
                     return recordViewModel;
                 }),
                 ConvertToUSD = filter.ConvertToUSD
+            };
+        }
+
+        public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)
+        {
+            var result = await reportApi.GetBetHistory<VipSeDieWarBetHistory>(filter);
+
+            return new VipSeDieWarBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<VipSeDieWarBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
             };
         }
     }

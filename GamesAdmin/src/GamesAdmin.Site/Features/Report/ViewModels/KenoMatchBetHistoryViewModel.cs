@@ -5,19 +5,15 @@ using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class KenoMatchBetHistoryViewModel
+    public class KenoMatchBetHistoryViewModel : BetHistoryViewModel
     {
         public KenoMatchRoundResultViewModel RoundResult { get; set; }
 
         public IEnumerable<KenoMatchBetHistoryRecordViewModel> Bets { get; set; }
     }
 
-    public class KenoMatchBetHistoryRecordViewModel
+    public class KenoMatchBetHistoryRecordViewModel : BetHistoryRecordViewModel
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }

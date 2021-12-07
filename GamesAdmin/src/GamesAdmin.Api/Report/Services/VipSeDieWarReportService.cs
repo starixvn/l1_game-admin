@@ -7,13 +7,14 @@ using GamesAdmin.Database;
 
 namespace GamesAdmin.Api.Report
 {
-    public class VipSeDieWarReportService : IGameReportService
+    public class VipSeDieWarReportService : IGameReportService, IBetHistoryReportService
 
     {
         private readonly IVipSeDieWarReportRepository repository;
         private readonly IMapper mapper;
+        private readonly IBetHistoryReportRepository betHistoryRepository;
 
-        public VipSeDieWarReportService(IVipSeDieWarReportRepository repository, IMapper mapper)
+        public VipSeDieWarReportService(IVipSeDieWarReportRepository repository, IBetHistoryReportRepository betHistoryRepository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
@@ -27,6 +28,17 @@ namespace GamesAdmin.Api.Report
             {
                 RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
                 Records = result.Item2.Select(x => mapper.Map<VipSeDieWarBetRecord>(x))
+            };
+        }
+
+        public async Task<BetHistory> Get(BetHistoryFilter filter)
+        {
+            var result = await betHistoryRepository.GetVipSeDieWarAsync(filter.RoundId, filter.UserId, filter.PartnerId);
+
+            return new VipSeDieWarBetHistory
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<VipSeDieWarBetHistoryRecord>(x))
             };
         }
     }

@@ -5,5 +5,7 @@
         public RouletteSettlementResultViewModel SettlementResult { get; set; }
 
         public RouletteBetHistoryRecordViewModel Bet { get; set; }
+
+        public bool ConvertToUSD { get; set; }
     }
 }

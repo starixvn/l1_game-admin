@@ -10,7 +10,7 @@ using GamesAdmin.Site.Features.Report.ViewModels;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    public class RouletteReportService : GameReportService
+    public class RouletteReportService : GameReportService, IBetHistoryReportService
     {
         public RouletteReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
         {
@@ -33,6 +33,23 @@ namespace GamesAdmin.Site.Features.Report
                     return recordViewModel;
                 }),
                 ConvertToUSD = filter.ConvertToUSD
+            };
+        }
+
+        public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)
+        {
+            var result = await reportApi.GetBetHistory<RouletteBetHistory>(filter);
+
+            return new RouletteBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<RouletteRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<RouletteBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
             };
         }
     }

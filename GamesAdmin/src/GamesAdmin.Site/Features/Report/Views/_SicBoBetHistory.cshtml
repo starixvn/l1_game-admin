@@ -40,7 +40,7 @@
                     @(betChoice.IsAnyTripleChoice || betChoice.IsBigSmallChoice ? betChoice.DisplayName : splitted[1])
                 </td>
                 <td class="text-right  @(Model.RoundResult.SettlementResult[bet.Choice]? "text-primary": string.Empty)">
-                    @HtmlHelpers.formatNumber(bet.Amount)
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
                 </td>
             </tr>
         }

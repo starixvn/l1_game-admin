@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class LotteryBetHistoryViewModel
+    public class LotteryBetHistoryViewModel : BetHistoryViewModel
     {
         public LotteryRoundResultViewModel RoundResult { get; set; }
 
@@ -12,15 +11,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public LotteryOddsViewModel Odds { get; set; }
     }
 
-    public class LotteryBetHistoryRecordViewModel
+    public class LotteryBetHistoryRecordViewModel : BetHistoryRecordViewModel
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public LotteryChoicesViewModel Choices { get; set; }
-
-        public string Name { get; set; }
     }
 
     public class LotteryChoicesViewModel

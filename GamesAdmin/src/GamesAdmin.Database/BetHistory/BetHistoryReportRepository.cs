@@ -16,23 +16,23 @@ namespace GamesAdmin.Database
 
         Task<IEnumerable<OddEvenBetHistoryReportEntity>> GetOddEvenTurboAsync(long roundId, string name);
 
-        Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId);
+        Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId, string partnerId);
 
         Task<(SpecialSeDieRoundEntity, IEnumerable<SpecialSeDieBetEntity>)> GetSpecialSeDieAsync(long roundId, string userId);
 
-        Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId);
+        Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId, string partnerId);
 
-        Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId);
+        Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId, string partnerId);
 
-        Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId);
+        Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId, string partnerId);
 
         Task<(BitcoinMasterRoundEntity, IEnumerable<BitcoinMasterBetEntity>)> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
 
-        Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
+        Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId, string partnerId)
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity;
 
-        Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, decimal>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
+        Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, decimal>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId, string partnerId)
           where TRoundEntity : KenoPowerRoundEntity
           where TBetEntity : KenoPowerBetEntity
           where TOneEntity : KenoPowerOneEntity;
@@ -222,13 +222,13 @@ namespace GamesAdmin.Database
             return results;
         }
 
-        public async Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId)
+        public async Task<(RouletteRoundEntity, IEnumerable<RouletteBetEntity>)> GetRouletteAsync(long roundId, string userId, string partnerId)
         {
             var roundCollection = database.GetCollection<RouletteRoundEntity>(Document.GetCollectionName(typeof(RouletteRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<RouletteBetEntity>(Document.GetCollectionName(typeof(RouletteBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -244,44 +244,43 @@ namespace GamesAdmin.Database
             return (roundResult, bets);
         }
 
-        public async Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId)
+        public async Task<(SicBoRoundEntity, IEnumerable<SicBoBetEntity>)> GetSicBoAsync(long roundId, string userId, string partnerId)
         {
             var roundCollection = database.GetCollection<SicBoRoundEntity>(Document.GetCollectionName(typeof(SicBoRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<SicBoBetEntity>(Document.GetCollectionName(typeof(SicBoBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
 
-        public async Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId)
+        public async Task<(VipSeDieWarRoundEntity, IEnumerable<VipSeDieWarBetEntity>)> GetVipSeDieWarAsync(long roundId, string userId, string partnerId)
         {
             var roundCollection = database.GetCollection<VipSeDieWarRoundEntity>(Document.GetCollectionName(typeof(VipSeDieWarRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<VipSeDieWarBetEntity>(Document.GetCollectionName(typeof(VipSeDieWarBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
 
-
-        public async Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId)
+        public async Task<(LotteryRoundEntity, IEnumerable<LotteryBetEntity>, LotteryOddsEntity)> GetLotteryAsync(long roundId, string userId, string partnerId)
         {
             var roundCollection = database.GetCollection<LotteryRoundEntity>(Document.GetCollectionName(typeof(LotteryRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<LotteryBetEntity>(Document.GetCollectionName(typeof(LotteryBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             var oneCollection = database.GetCollection<LotteryOnesEntity>(Document.GetCollectionName(typeof(LotteryOnesEntity)));
-            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
+            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
         }
 
-        public async Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId)
+        public async Task<(TRoundEntity, IEnumerable<TBetEntity>)> GetKenoMatchAsync<TRoundEntity, TBetEntity>(long roundId, string userId, string partnerId)
             where TRoundEntity : KenoMatchRoundEntity
             where TBetEntity : KenoMatchBetEntity
         {
@@ -289,12 +288,12 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
 
-        public async Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, decimal>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId)
+        public async Task<(TRoundEntity, IEnumerable<TBetEntity>, Dictionary<string, decimal>)> GetKenoPowerAsync<TRoundEntity, TBetEntity, TOneEntity>(long roundId, string userId, string partnerId)
           where TRoundEntity : KenoPowerRoundEntity
           where TBetEntity : KenoPowerBetEntity
           where TOneEntity : KenoPowerOneEntity
@@ -303,10 +302,10 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             var oneCollection = database.GetCollection<TOneEntity>(Document.GetCollectionName(typeof(TOneEntity)));
-            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId).FirstOrDefaultAsync();
+            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
         }

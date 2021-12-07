@@ -30,6 +30,11 @@ namespace GamesAdmin.Api.Report
            => (await mediator.Send(new BetReportRequest(filter)));
 
         [HttpGet]
+        [Route("bethistory")]
+        public async Task<BetHistory> BetHistory([FromQuery] BetHistoryFilter filter)
+        => (await mediator.Send(new BetHistoryRequest(filter)));
+
+        [HttpGet]
         [Route("big_small/round/{roundId}/users/{nickname?}")]
         public async Task<BigSmallBetReport> BigSmall(long roundId, string nickname, bool excludeBot, string partnerId, string username)
            => (await mediator.Send(new BigSmallReportRequest(roundId, nickname, excludeBot, partnerId, username)));
@@ -54,21 +59,15 @@ namespace GamesAdmin.Api.Report
         public async Task<OddEvenBetReport> OddEvenTurbo(long roundId, string nickname, bool excludeBot, string partnerId, string username)
             => (await mediator.Send(new OddEvenTurboReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
-
         [HttpGet]
         [Route("{game}/round/{roundId}/user/{userId}")]
-        public Task<IEnumerable<KenoBetHistory>> KenoBetHistory(string game, long roundId, string nickname)
+        public Task<IEnumerable<KenoBetHistoryRecord>> KenoBetHistory(string game, long roundId, string nickname)
             => mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname));
 
         [HttpGet]
         [Route("{game}/round/{roundId}/result")]
         public Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
             => mediator.Send(new KenoRoundResultRequest(game, roundId));
-
-        //[HttpGet]
-        //[Route("fish_prawn_crab")]
-        //public async Task<FishPrawnCrabBetReport> FishPrawnCrab([FromQuery]BetReportFilter filter)
-        //=> (await mediator.Send(new FishPrawnCrabReportRequest(filter)));
 
         [HttpGet]
         [Route("bet_history/game/roulette/round/{roundId}/user/{userId}")]

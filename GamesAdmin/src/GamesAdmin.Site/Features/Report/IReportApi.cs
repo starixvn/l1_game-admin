@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
 
         [Get("/report/{game}/round/{roundId}/user/{nickname}")]
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(string game, long roundId, string nickname);
+        Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(string game, long roundId, string nickname);
 
         [Get("/report/{game}/round/{roundId}/result")]
         Task<KenoRoundResult> GetKenoRoundResult(string game, long roundId);
@@ -87,6 +87,9 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report")]
         Task<T> Get<T>(BetReportFilter filter) where T : BetReportBase;
+
+        [Get("/report/bethistory")]
+        Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
         [Get("/report/casinoholdempoker")]
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
 

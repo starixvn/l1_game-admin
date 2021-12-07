@@ -155,7 +155,11 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetKenoPowerBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
+                               asp-action="GetKenoPowerBetHistory" asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId" 
+                               asp-route-partnerId="@bet.PartnerId" 
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
                             </a>
                         </td>
