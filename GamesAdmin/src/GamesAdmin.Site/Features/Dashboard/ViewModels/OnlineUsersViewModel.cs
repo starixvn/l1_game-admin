@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Dashboard.ViewModels
@@ -9,20 +11,24 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 
         public string Game { get; set; }
 
-        public bool IncludeUUS { get; set; }
+        public bool IncludeTestAccount { get; set; }
 
-        public int TotalReal { get; set; }
+        public int TotalRealPlayer { get; set; }
 
         public IEnumerable<OnlineUserViewModel> RealUsers { get; set; }
 
-        public int TotalUUS { get; set; }
+        public int TotalTestPlayer { get; set; }
 
-        public IEnumerable<OnlineUserViewModel> UusUsers { get; set; }
+        public IEnumerable<OnlineUserViewModel> TestUsers { get; set; }
 
-       
         public int TotalBots { get; set; }
 
         public IEnumerable<BotUserViewModel> Bots { get; set; }
+
+        [DisplayName("Partner")]
+        public IEnumerable<string> PartnerIds { get; set; }
+
+        public IEnumerable<SelectListItem> PartnerItems { get; set; }
     }
 
     public class OnlineUserViewModel
@@ -34,6 +40,13 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public string Currency { get; set; }
 
         public string Character { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public IEnumerable<SelectListItem> PartnerItems { get; set; }
+
+        public string GetPartnerName()
+            => PartnerItems?.FirstOrDefault(item => string.Equals(item.Value, PartnerId))?.Text;
     }
 
     public class BotUserViewModel

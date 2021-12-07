@@ -25,7 +25,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             var voidLog = new VoidLogEntity(
                 requestTime,
-                new VoidCall(request.ObCustId, request.SiteId, request.GameRoundId, request.GameTypeId, request.Reason, request.FreeBet),
+                new VoidCall(request.ObCustId, request.PartnerId, request.SiteId, request.GameRoundId, request.GameTypeId, request.Reason, request.FreeBet),
                 responseTime,
                 result);
 

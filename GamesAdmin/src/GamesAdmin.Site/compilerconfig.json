@@ -54,5 +54,29 @@
   {
     "outputFile": "wwwroot/scss/themes/themel2.css",
     "inputFile": "wwwroot/scss/themes/themel2.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/partner.css",
+    "inputFile": "wwwroot/scss/pages/partner.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/currency.css",
+    "inputFile": "wwwroot/scss/pages/currency.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/currency-group.css",
+    "inputFile": "wwwroot/scss/pages/currency-group.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/chip.css",
+    "inputFile": "wwwroot/scss/pages/chip.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/exchange-rate.css",
+    "inputFile": "wwwroot/scss/pages/exchange-rate.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/api-log.css",
+    "inputFile": "wwwroot/scss/pages/api-log.scss"
   }
 ]

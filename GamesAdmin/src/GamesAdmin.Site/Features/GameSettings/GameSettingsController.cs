@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -77,13 +78,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         [Route("gamedetails/{name}")]
-        public async Task<IActionResult> GameDetails(string name)
+        public async Task<IActionResult> GameDetails(string name, string view)
         {
             var viewModel = await mediator.Send(new EditRequest(name));
             viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
             viewModel.Success = TempData["isSuccess"] != null && (bool)TempData["isSuccess"];
 
-            return View(viewModel);
+            return View(view, viewModel);
         }
 
         [HttpGet]
@@ -95,7 +96,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(gameSetting);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status/enable")]
         public async Task<IActionResult> EnableGames(string[] games, bool reload = false)
         {
@@ -104,7 +105,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status/disable")]
         public async Task<IActionResult> DisableGames(string[] games, bool reload = false)
         {
@@ -231,18 +232,17 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
-        [HttpPost]
-        [Route("/payouts/update")]
+        [HttpPost, Audit]
+        [Route("/betlimit/update")]
         public async Task<IActionResult> UpdatePayouts([Bind] EditViewModel viewModel)
         {
             try
             {
-                await mediator.Send(new UpdateBetLimitAndOddsRequest(
+                await mediator.Send(new UpdateBetLimitRequest(
                     viewModel.Name,
                     viewModel.Type,
-                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
-                    viewModel.PayoutViewModel.Odds,
-                    viewModel.PayoutViewModel.Icons));
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices)
+            ));
 
                 return Json(true);
             }
@@ -254,7 +254,30 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Route("/odds/update")]
+        public async Task<IActionResult> UpdateOdds([Bind] EditViewModel viewModel)
+        {
+            try
+            {
+                await mediator.Send(new UpdateOddsRequest(
+                    viewModel.Name,
+                    viewModel.Type,
+                    viewModel.PayoutViewModel.Odds,
+                    viewModel.PayoutViewModel.Icons
+            ));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost, Audit]
         [Route("/jackpot/update")]
         public async Task<IActionResult> UpdateJackpot([Bind] EditViewModel viewModel)
         {
@@ -280,7 +303,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel viewModel)
         {
@@ -305,34 +328,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("exclusions/update")]
         public async Task<IActionResult> UpdateSiteExclusions([Bind] UpdateSiteExclusionRequest request)
-        {
-            try
-            {
-                await mediator.Send(request);
-
-                return Json(true);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-            }
-
-            return Json(false);
-        }
-
-        [Route("status/super_players")]
-        public async Task<IActionResult> SuperPlayers()
-        {
-            var superPlayers = await mediator.Send(new GetSuperPlayersRequest());
-            return View(superPlayers);
-        }
-
-        [HttpPost]
-        [Route("status/super_players")]
-        public async Task<IActionResult> SuperPlayers([Bind] UpdateSuperPlayersRequest request)
         {
             try
             {

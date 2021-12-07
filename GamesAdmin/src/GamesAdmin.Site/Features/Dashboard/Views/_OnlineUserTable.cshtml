@@ -3,6 +3,7 @@
 <table id="online-users-table" class="table table-bordered table-hover stripe has-background sticky-table">
     <thead>
         <tr>
+            <th>Partner</th>
             <th>CustID</th>
             <th>Username</th>
             <th>Nickname</th>
@@ -13,6 +14,7 @@
         @foreach (var user in Model)
         {
             <tr>
+                <td>@user.GetPartnerName()</td>
                 <td>@user.Id</td>
                 <td>@user.Name</td>
                 <td>@user.Character</td>

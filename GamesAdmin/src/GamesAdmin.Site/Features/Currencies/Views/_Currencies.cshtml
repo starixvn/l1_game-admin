@@ -1,0 +1,64 @@
+﻿@model GamesAdmin.Site.Features.Currencies.ViewModels.CurrencyManagementViewModel
+@using GamesAdmin.Site.Features._Shared;
+
+<table id="currency-table" class="table table-bordered table-hover stripe sticky-table">
+    <thead>
+        <tr>
+            <th>Partner</th>
+            <th>Currency</th>
+            <th>Code</th>
+            <th>Multiplier</th>
+            <th>Enabled</th>
+            <th>Testing</th>
+            @if (Context.HasAdminPermission())
+            {
+                <th>Edit</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Models)
+        {
+            <tr>
+                <td class="text-center">@Model.GetPartnerName(item)</td>
+                <td class="text-center">@item.Name</td>
+                <td class="text-center">@item.Code</td>
+                <td class="text-center">@item.Multiplier</td>
+                <td class="text-center">
+                    @if (item.Enabled)
+                    {
+                        <i class="icon-check"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-cancel"></i>
+                    }
+                </td>
+                <td class="text-center">
+                    @if (item.IsTest)
+                    {
+                        <i class="icon-check"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-cancel"></i>
+                    }
+                </td>
+                @if (Context.HasAdminPermission())
+                {
+                    <td class="text-center">
+                        <a class="btn-edit"
+                           data-ajax="true"
+                           data-ajax-mode="replace"
+                           data-ajax-update="#modal .modal-content"
+                           data-ajax-success="currency.openUpdateCurrencyForm"
+                           asp-route-id=@item.Id
+                           asp-action="Update">
+                            <i class="icon-edit"></i>
+                        </a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

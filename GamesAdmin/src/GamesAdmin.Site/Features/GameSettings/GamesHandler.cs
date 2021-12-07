@@ -9,9 +9,12 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
+using GamesAdmin.Site.Features.CurrencyGroupGames;
+using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,12 +35,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetJWTRequest, GameServerToken>
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
-        , IRequestHandler<UpdateBetLimitAndOddsRequest, bool>
+        , IRequestHandler<UpdateBetLimitRequest, bool>
+        , IRequestHandler<UpdateOddsRequest, bool>
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
-        , IRequestHandler<GetSuperPlayersRequest, SuperPlayersViewModel>
-        , IRequestHandler<UpdateSuperPlayersRequest, bool>
         , IRequestHandler<UpdateBetaVersionRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
@@ -48,12 +50,18 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameUserService accountService;
         private readonly IProVietKenoService proVietKenoService;
         private readonly IAppSettings appSettings;
+        private readonly IPartnerService partnerService;
+        private readonly ICurrencyGroupService currencyGroupService;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
 
         public GamesHandler(
             IMapper mapper,
             IGameSettingService gameService,
             IGameUserService accountService,
             IProVietKenoService proVietKenoService,
+            IPartnerService partnerService,
+            ICurrencyGroupService currencyGroupService,
+            ICurrencyGroupGameService currencyGroupGameService,
             IAppSettings appSettings)
         {
             this.mapper = mapper;
@@ -61,6 +69,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.accountService = accountService;
             this.proVietKenoService = proVietKenoService;
             this.appSettings = appSettings;
+            this.partnerService = partnerService;
+            this.currencyGroupService = currencyGroupService;
+            this.currencyGroupGameService = currencyGroupGameService;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -231,13 +242,19 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var gameConfigs = await gameService.GetAll();
             var siteExlusions = await GetSiteExlusionsByGame(gameConfigs);
+            var partners = await partnerService.GetAll();
+            var currencyGroups = await currencyGroupService.GetAll();
+            var currencyGroupGames = await currencyGroupGameService.GetAll();
 
             return gameConfigs?.Any() == true
                 ? new StatusViewModel(
                     gameConfigs.Select(game => new StatusItemViewModel(game))
                         .OrderBy(game => game.DisplayName)
                         .ToList(),
-                    siteExlusions)
+                    siteExlusions,
+                    partners.ToList(),
+                    currencyGroups.Where(group => group.Enabled).ToList(),
+                    currencyGroupGames.ToList())
                 : new StatusViewModel(new List<StatusItemViewModel>());
         }
 
@@ -334,10 +351,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
         => gameService.UnderMaintenance(request);
 
-        public Task<bool> Handle(UpdateBetLimitAndOddsRequest request, CancellationToken cancellationToken)
+        public Task<bool> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
         => request.Type == GameType.AutoRNG
-                ? gameService.UpdateBetLimitAndOdds(request)
+                ? gameService.UpdateOdds(request)
                 : gameService.UpdateSlotIconOdds(request.Name, request.Icons);
+
+        public Task<bool> Handle(UpdateBetLimitRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateBetLimit(request);
 
         public Task<bool> Handle(UpdateJackpotRequest request, CancellationToken cancellationToken)
         => gameService.UpdateJackpot(request);
@@ -347,18 +367,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
-
-        public async Task<SuperPlayersViewModel> Handle(GetSuperPlayersRequest request, CancellationToken cancellationToken)
-        {
-            var configs = await gameService.GetSuperPlayers();
-            var names = configs == null || !configs.Configs.ContainsKey("names")
-                ? Enumerable.Empty<string>() : configs.Configs["names"];
-
-            return new SuperPlayersViewModel(names);
-        }
-
-        public Task<bool> Handle(UpdateSuperPlayersRequest request, CancellationToken cancellationToken)
-            => gameService.UpdateSuperPlayers(request);
 
         public async Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
             => await gameService.UpdateBetaVersion(request.Names, request.IsBeta);

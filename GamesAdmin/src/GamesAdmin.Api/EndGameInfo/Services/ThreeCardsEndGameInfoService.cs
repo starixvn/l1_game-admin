@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GamesAdmin.Api.EndGameInfo.Request;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.EndGameInfo;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -17,7 +20,7 @@ namespace GamesAdmin.Api.EndGameInfo
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
             var round = await GetRoundAsync(request.GameRoundId);
-            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId, x => !x.FreeBet.HasValue || x.FreeBet.Value == request.FreeBet);
+            var bets = await GetBetsAsync(request);
 
             if (round == null || !bets.Any())
             {
@@ -35,5 +38,8 @@ namespace GamesAdmin.Api.EndGameInfo
                 TotalWin = totalBetWin
             };
         }
+
+        protected override Expression<Func<ThreeCardsBetEntity, bool>> GetBetFilterExpression(RetrieveEndGameInfoRequest request)
+           => base.GetBetFilterExpression(request).And(FreeBetExpression(request));
     }
 }

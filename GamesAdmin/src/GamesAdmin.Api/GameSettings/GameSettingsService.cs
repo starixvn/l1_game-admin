@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.CurrencyGroupGames;
+using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Core.Enumeration;
@@ -27,7 +29,9 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateDisbledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false);
 
-        Task<bool> UpdateBetLimitAndOdds(string name, BetLimit betLimit, Dictionary<string, double> odds);
+        Task<bool> UpdateBetLimit(string name, BetLimit betLimit);
+
+        Task<bool> UpdateOdds(string name, Dictionary<string, double> odds);
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
@@ -54,36 +58,41 @@ namespace GamesAdmin.Api.Games
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<GameConfigEntity> repository;
         private readonly INotificationService notificationService;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly ICurrencyGroupService currencyGroupService;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<GameConfigEntity> repository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            ICurrencyGroupGameService currencyGroupGameService,
+            ICurrencyGroupService currencyGroupService
+            )
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.notificationService = notificationService;
+            this.currencyGroupGameService = currencyGroupGameService;
+            this.currencyGroupService = currencyGroupService;
         }
 
-        public Task<IEnumerable<GameConfig>> Get()
-        => Task.Run(() =>
+        public async Task<IEnumerable<GameConfig>> Get()
+        {
+            try
             {
-                try
-                {
-                    var gameEntities = repository.AsQueryable().ToList();
+                var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
 
-                    return gameEntities
-                        .Select(entity => mapper.Map<GameConfig>(entity));
-                }
-                catch (Exception ex)
-                {
-                    sentryClient.CaptureException(ex);
+                return gameEntities.Select(entity => mapper.Map<GameConfig>(entity));
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
 
-                    return Enumerable.Empty<GameConfig>();
-                }
-            });
+                return Enumerable.Empty<GameConfig>();
+            }
+        }
 
         public async Task<bool> Create(GameConfig game)
         {
@@ -191,7 +200,29 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateBetLimitAndOdds(string name, BetLimit betLimit, Dictionary<string, double> odds)
+        public async Task<bool> UpdateBetLimit(string name, BetLimit betLimit)
+        {
+            try
+            {
+
+                var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.Minbet, betLimit.MinBet)
+                    .Set(field => field.Maxbet, betLimit.MaxBet)
+                    .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
+
+                await repository.UpdateAsync(config => config.Name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateOdds(string name,  Dictionary<string, double> odds)
         {
             try
             {
@@ -201,10 +232,7 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.Odds, odds)
-                    .Set(field => field.Minbet, betLimit.MinBet)
-                    .Set(field => field.Maxbet, betLimit.MaxBet)
-                    .Set(field => field.MaxBetChoices, betLimit.MaxBetChoices);
+                    .Set(field => field.Odds, odds);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

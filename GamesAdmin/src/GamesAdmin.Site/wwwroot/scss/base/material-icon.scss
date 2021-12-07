@@ -21,6 +21,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-info:before {
+    content: "\e913";
+}
+
 .icon-card-game:before {
     content: "\e90e";
 }

@@ -39,8 +39,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/{name}/update_bot_ratios")]
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
-        [Post("/game_settings/update_bet_limit_odds")]
-        Task<bool> UpdateBetLimitAndOdds([Body] UpdateBetLimitAndOddsRequest request);
+        [Post("/game_settings/update_bet_limit")]
+        Task<bool> UpdateBetLimit([Body] UpdateBetLimitRequest request);
+
+        [Post("/game_settings/update_odds")]
+        Task<bool> UpdateOdds([Body] UpdateOddsRequest request);
 
         [Post("/game_settings/update_general_config")]
         Task<bool> UpdateGeneralConfig([Body] UpdateGeneralConfigRequest request);

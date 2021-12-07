@@ -94,5 +94,7 @@
         }
 
         public GameId GameId { get; }
+
+        public static Game FromGameId(GameId id) => Parse<Game, GameId>(id, "game id", item => item.GameId == id);
     }
 }

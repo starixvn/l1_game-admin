@@ -34,6 +34,12 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.End, opt => opt.MapFrom(src => src.End.UtcDateTime))
                 .ReverseMap();
 
+            CreateMap<UmInfo, UMInfoEntity>()
+                .ForMember(dest => dest.Start, opt => opt.MapFrom(src => src.Start.UtcDateTime))
+                .ForMember(dest => dest.End, opt => opt.MapFrom(src => src.End.UtcDateTime))
+                .ReverseMap();
+
+
             CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>()
                 .ForMember(dest => dest.FirstDice, opt => opt.MapFrom(src => src.FirstDice ?? src.Result.FirstDice))
                 .ForMember(dest => dest.SecondDice, opt => opt.MapFrom(src => src.SecondDice ?? src.Result.SecondDice))

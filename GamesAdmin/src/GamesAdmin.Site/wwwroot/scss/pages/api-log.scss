@@ -1,0 +1,10 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.table {
+    &.sticky-table {
+        th {
+            top: 0rem;
+        }
+    }
+}
