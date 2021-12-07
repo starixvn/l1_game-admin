@@ -27,7 +27,6 @@ namespace GamesAdmin.Api.Report
             { GameId.MiniSeDie, typeof(MiniSeDieReportService) },
             { GameId.Baccarat, typeof(BaccaratReportService) },
             { GameId.DragonTiger, typeof(DragonTigerReportService) },
-<<<<<<< HEAD
             { GameId.KenoProMax, typeof(KenoProMaxReportService) },
             { GameId.KenoMax, typeof(MiniKenoReportService<KenoMaxRoundEntity, KenoMaxOnesEntity, KenoMaxBetEntity>) },
             { GameId.KenoMax2, typeof(MiniKenoReportService<KenoMax2RoundEntity, KenoMax2OnesEntity, KenoMax2BetEntity>) },
@@ -37,18 +36,6 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoWest, typeof(MiniKenoReportService<KenoWestRoundEntity, KenoWestOnesEntity, KenoWestBetEntity>) },
             { GameId.KenoSouth, typeof(MiniKenoReportService<KenoSouthRoundEntity, KenoSouthOnesEntity, KenoSouthBetEntity>) },
             { GameId.KenoNorth, typeof(MiniKenoReportService<KenoNorthRoundEntity, KenoNorthOnesEntity, KenoNorthBetEntity>) },
-=======
-            //{ GameId.KenoProMax, typeof(KenoProMaxEndGameInfoService) },
-            //{ GameId.KenoProViet, typeof(KenoProVietEndGameInfoService) },
-            //{ GameId.KenoMax, typeof(KenoMaxEndGameInfoService) },
-            //{ GameId.KenoMax2, typeof(KenoMax2EndGameInfoService) },
-            //{ GameId.KenoMini, typeof(KenoMiniEndGameInfoService) },
-            //{ GameId.KenoMini2, typeof(KenoMini2EndGameInfoService) },
-            //{ GameId.KenoEast, typeof(KenoEastEndGameInfoService) },
-            //{ GameId.KenoWest, typeof(KenoWestEndGameInfoService) },
-            //{ GameId.KenoSouth, typeof(KenoSouthEndGameInfoService) },
-            //{ GameId.KenoNorth, typeof(KenoNorthEndGameInfoService) },
->>>>>>> 2902c421 (feat: game report)
             { GameId.Roulette, typeof(RouletteReportService) },
             { GameId.VipSeDie, typeof(VipSeDieReportService) },
             //{ GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
@@ -66,7 +53,10 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoMatch2, typeof(KenoMatchReportService<KenoMatch2RoundEntity, KenoMatch2OneEntity, KenoMatch2BetEntity>) },
             { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity, KenoPower1BetEntity>) },
             { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity, KenoPower2BetEntity>) },
+<<<<<<< HEAD
             { GameId.HiLo, typeof(HiLoReportService) },
+=======
+>>>>>>> 0932394a (feat: bet history)
         };
 
         private readonly IServiceProvider serviceProvider;

@@ -69,16 +69,16 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-<<<<<<< HEAD
                                asp-action="GetRouletteBetHistory"
+<<<<<<< HEAD
                                asp-route-game="@GameId.Roulette"
+=======
+                               asp-route-game="@GameId.Lottery"
+>>>>>>> 0932394a (feat: bet history)
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-userId="@bet.UserId"
                                asp-route-partnerId="@bet.PartnerId"
                                asp-route-convertToUSD="@Model.ConvertToUSD">
-=======
-                               asp-action="GetRouletteBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
->>>>>>> 2902c421 (feat: game report)
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
                             </a>
                         </td>
@@ -92,11 +92,7 @@
                         <td class="text-center" colspan="7">No data</td>
                     </tr>
                 }
-<<<<<<< HEAD
                 else if (Model.ConvertToUSD)
-=======
-                else
->>>>>>> 2902c421 (feat: game report)
                 {
                     <tr class="total">
                         <td>Total in USD</td>

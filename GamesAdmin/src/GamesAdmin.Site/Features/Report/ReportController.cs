@@ -362,7 +362,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetLotteryBetHistory(BetHistoryFilter filter, bool convertToUSD)
-        {
+            {
             return PartialView("_LotteryBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 

@@ -29,6 +29,10 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
+<<<<<<< HEAD
+=======
+        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
+>>>>>>> 0932394a (feat: bet history)
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
@@ -36,16 +40,16 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
           IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
-<<<<<<< HEAD
         IRequestHandler<ReportRequest, ReportResultViewModel>,
+<<<<<<< HEAD
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
         IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>,
         IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
         IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
         IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>
 =======
-        IRequestHandler<ReportRequest, ReportResultViewModel>
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)
+        IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>
+>>>>>>> 0932394a (feat: bet history)
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -70,11 +74,7 @@ namespace GamesAdmin.Site.Features.Report
             this.partnerService = partnerService;
             this.currencyService = currencyService;
             this.exchangeRateService = exchangeRateService;
-<<<<<<< HEAD
             this.reportServiceFactory = reportServiceFactory;
-=======
-            this.reportServiceFactory =  reportServiceFactory;
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -329,6 +329,10 @@ namespace GamesAdmin.Site.Features.Report
             });
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0932394a (feat: bet history)
         public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetSpecialSeDieReport(
@@ -430,6 +434,26 @@ namespace GamesAdmin.Site.Features.Report
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
         }
 
+<<<<<<< HEAD
+=======
+        public async Task<VipSeDieWarBetHistoryViewModel> Handle(GetVipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetVipSeDieWarBetHistory(request.RoundId, request.UserId);
+
+            return new VipSeDieWarBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<VipSeDieWarBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+>>>>>>> 0932394a (feat: bet history)
         public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
@@ -517,6 +541,7 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
+<<<<<<< HEAD
         private async Task<decimal> GetExchangeRate(int exchangeRateId, CurrencyModel currency)
         {
             var code = currency.Code;
@@ -559,6 +584,8 @@ namespace GamesAdmin.Site.Features.Report
 
             return new CasinoHoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, records);
       }
+=======
+>>>>>>> 0932394a (feat: bet history)
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
@@ -606,17 +633,26 @@ namespace GamesAdmin.Site.Features.Report
             return new HoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
         }
 
-<<<<<<< HEAD
-        public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
-=======
         public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
         {
             var service = reportServiceFactory.GetService(request.Game);
             return service.Get(request.Filter);
         }
 
+<<<<<<< HEAD
+        public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
+=======
+        public async Task<BetHistoryViewModel> Handle(BetHistoryReportRequest request, CancellationToken cancellationToken)
+        {
+            var service = reportServiceFactory.GetBetHistoryService(request.Filter.Game);
+            var viewModel = await service.Get(request.Filter);
+            viewModel.ConvertToUSD = request.ConvertToUSD;
+
+            return viewModel;
+        }
+
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
->>>>>>> c6b0baf7 (feat: SeDie & mini sedie report)
+>>>>>>> 0932394a (feat: bet history)
         {
             var result = await reportService.GetHoldemPokerBetReport(request.Filter);
             var partners = await partnerService.GetPartnersForSelection(model => true);

@@ -1,0 +1,170 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Enumeration;
+
+@model LotteryReportResultViewModel
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Exchange ID</th>
+                        <th>Prizes</th>
+                        <th colspan="12">RNG Lottery #@Model.RoundResult.Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" rowspan="10">@Model.RoundResult.ExchangeRateId</td>
+                        <td class="text-center">Special</td>
+                        <td colSpan="12" class="text-center text-danger">
+                            @Model.RoundResult.Special.FirstOrDefault()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">First</td>
+                        <td colSpan="12" class="text-center">
+                            @Model.RoundResult.First.FirstOrDefault()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">Second</td>
+                        @foreach (var number in Model.RoundResult.Second)
+                        {
+                            <td colSpan="6" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="text-center" rowSpan="2">Third</td>
+                        @foreach (var number in Model.RoundResult.Third.ToList().GetRange(0, 3))
+                        {
+                            <td colSpan="4" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        @foreach (var number in Model.RoundResult.Third.ToList().GetRange(3, 3))
+                        {
+                            <td colSpan="4" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="text-center">Fourth</td>
+                        @foreach (var number in Model.RoundResult.Fourth)
+                        {
+                            <td colSpan="3" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="text-center" rowSpan="2">Fifth</td>
+                        @foreach (var number in Model.RoundResult.Fifth.ToList().GetRange(0, 3))
+                        {
+                            <td colSpan="4" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        @foreach (var number in Model.RoundResult.Fifth.ToList().GetRange(3, 3))
+                        {
+                            <td colSpan="4" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="text-center">Sixth</td>
+                        @foreach (var number in Model.RoundResult.Sixth)
+                        {
+                            <td colSpan="4" class="text-center">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="text-center">Seventh</td>
+                        @foreach (var number in Model.RoundResult.Seventh)
+                        {
+                            <td colSpan="3" class="text-center text-danger">
+                                @number
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Partner</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th>Currency</th>
+                    <th class="col-number">Total Bets</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetLotteryBetHistory"
+                               asp-route-game="@GameId.Lottery"
+                               asp-route-roundId="@Model.RoundResult.Number"
+<<<<<<< HEAD
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+=======
+                               asp-route-userId="@bet.UserId" 
+                               asp-route-partnerId="@bet.PartnerId" 
+>>>>>>> 0932394a (feat: bet history)
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
+                    </tr>
+                }
+
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="7">No data</td>
+                    </tr>
+                }
+                else if (Model.ConvertToUSD)
+                {
+                    <tr class="total">
+                        <td>Total in USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalBet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

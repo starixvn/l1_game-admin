@@ -16,7 +16,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public DateTimeOffset Time { get; set; }
 
+<<<<<<< HEAD
+s        public string PartnerId { get; set; }
+=======
         public string PartnerId { get; set; }
+>>>>>>> 0932394a (feat: bet history)
 
         public string Partner { get; set; }
 
@@ -28,14 +32,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal BaseBetWin => ConvertToBase(BetWin);
 
-<<<<<<< HEAD
         public decimal BaseRefund => ConvertToBase(Refund);
 
         public decimal BaseBetWin => ConvertToBase(BetWin);
 
-        public decimal ConvertToBase(decimal value) => value * (decimal)Rate;
-=======
         public decimal ConvertToBase(decimal value) => value * Rate;
->>>>>>> 8cf2ee5f (feat: blackjack report)
     }
 }

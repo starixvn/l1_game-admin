@@ -1,0 +1,227 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model KenoMatchReportResultViewModel
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            var htResult = Model.RoundResult.HalfTime;
+            var ftResult = Model.RoundResult.FullTime;
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Date (GMT+7)</th>
+                        <th rowspan="2">Round ID</th>
+                        <th rowspan="2">Exchange ID</th>
+                        <th rowspan="2">Results</th>
+                        <th colspan="2">Winning Options</th>
+                    </tr>
+                    <tr>
+                        <th>First Half</th>
+                        <th>Full Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
+                        <td>
+                            <table class="table table-bordered table-keno-match-result">
+                                <tbody>
+                                    <tr class="text-center font-weight-bold">
+                                        <td>Team Blue</td>
+                                        <td>Team Red</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center font-weight-bold">First Half</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in htResult.Result.Blue)
+                                                {
+                                                    <span class="number blue">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in htResult.Result.Red)
+                                                {
+                                                    <span class="number red">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="2">
+                                            Team Blue @htResult.Result.Blue.Sum() - Total @htResult.Total - Team Red @htResult.Result.Red.Sum()
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center font-weight-bold">Full Time</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in ftResult.Result.Blue)
+                                                {
+                                                    <span class="number blue">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="list-numbers">
+                                                @foreach (var number in ftResult.Result.Red)
+                                                {
+                                                    <span class="number red">
+                                                        @number
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="10">
+                                            Team Blue @(htResult.Result.Blue.Sum() + ftResult.Result.Blue.Sum()) - Total @ftResult.Total - Team Red @(htResult.Result.Red.Sum() + ftResult.Result.Red.Sum())
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="text-center">
+                            @if (htResult.SettlementResult.Blue)
+                            {
+                                <div>Team Blue</div>
+                            }
+                            @if (htResult.SettlementResult.Red)
+                            {
+                                <div>Team Red</div>
+                            }
+                            @if (htResult.SettlementResult.Over)
+                            {
+                                <div>Over</div>
+                            }
+                            else
+                            {
+                                <div>Under</div>
+                            }
+                            @if (htResult.SettlementResult.Odd)
+                            {
+                                <div>Odd</div>
+                            }
+                            else
+                            {
+                                <div>Even</div>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (Model.RoundResult.FullTime.SettlementResult.Blue)
+                            {
+                                <div>Team Blue</div>
+                            }
+                            @if (Model.RoundResult.FullTime.SettlementResult.Red)
+                            {
+                                <div>Team Red</div>
+                            }
+                            @if (Model.RoundResult.FullTime.SettlementResult.Over)
+                            {
+                                <div>Over</div>
+                            }
+                            else
+                            {
+                                <div>Under</div>
+                            }
+                            @if (Model.RoundResult.FullTime.SettlementResult.Odd)
+                            {
+                                <div>Odd</div>
+                            }
+                            else
+                            {
+                                <div>Even</div>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Partner</th>
+                    <th class="col-nickname">Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th>Currency</th>
+                    <th class="col-number">Total Bets</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+<<<<<<< HEAD
+                               asp-action="GetKenoMatchBetHistory"
+                               asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+=======
+                               asp-action="GetKenoMatchBetHistory" 
+                               asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId" 
+                               asp-route-partnerId="@bet.PartnerId" 
+>>>>>>> 0932394a (feat: bet history)
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Refund) : bet.Refund)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
+                    </tr>
+                }
+
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="8">No data</td>
+                    </tr>
+                }
+                else if (Model.ConvertToUSD)
+                {
+                    <tr class="total">
+                        <td>Total in USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalBet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Refund)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

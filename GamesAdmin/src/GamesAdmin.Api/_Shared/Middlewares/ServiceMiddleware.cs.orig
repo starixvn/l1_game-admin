@@ -159,12 +159,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<VipBaccaratReportService>();
             services.AddScoped<LotteryReportService>();
             services.AddScoped<ThreeCardsReportService>();
-<<<<<<< HEAD
             services.AddScoped(typeof(KenoMatchReportService<,,>));
             services.AddScoped(typeof(KenoPowerReportService<,,>));
             services.AddScoped(typeof(MiniKenoReportService<,,>));
             services.AddScoped<VipSeDieWarReportService>();
             services.AddScoped<KenoProMaxReportService>();
+<<<<<<< HEAD
             services.AddScoped<HiLoReportService>();
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
@@ -178,11 +178,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
 =======
-            services.AddScoped(typeof(KenoMatchReportService<,>));
-            services.AddScoped(typeof(KenoPowerReportService<,>));
-            services.AddScoped(typeof(MiniKenoReportService<,>));
-            services.AddScoped<VipSeDieWarReportService>();
->>>>>>> 16cbb7ee (feat: game report, remove old codes)
+>>>>>>> 0932394a (feat: bet history)
 
             services.InitApiLog();
         }

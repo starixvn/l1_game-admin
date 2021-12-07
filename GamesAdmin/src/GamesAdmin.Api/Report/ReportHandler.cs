@@ -35,12 +35,14 @@ namespace GamesAdmin.Api.Report
         private readonly IReportService reportService;
         private readonly IReportServiceFactory reportServiceFactory;
         private readonly IServiceProvider serviceProvider;
+        private readonly IHoldemPokerReportService holdemPokerReportService;
 
-        public ReportHandler(IReportService reportService, IReportServiceFactory reportServiceFactory, IServiceProvider serviceProvider)
+        public ReportHandler(IReportService reportService, IReportServiceFactory reportServiceFactory, IServiceProvider serviceProvider,IHoldemPokerReportService holdemPokerReportService))
         {
             this.reportService = reportService;
             this.reportServiceFactory = reportServiceFactory;
             this.serviceProvider = serviceProvider;
+            this.holdemPokerReportService = holdemPokerReportService;
         }
 
         public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)

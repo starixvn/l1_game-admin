@@ -74,5 +74,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/hilo")]
         Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
+
+        [Get("/report/bethistory")]
+        Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
     }
 }

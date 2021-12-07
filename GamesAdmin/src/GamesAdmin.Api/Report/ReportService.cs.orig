@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
