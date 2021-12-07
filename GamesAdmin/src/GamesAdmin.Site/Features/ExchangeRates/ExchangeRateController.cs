@@ -11,6 +11,8 @@ namespace GamesAdmin.Site.Features.ExchangeRates
     [Authorize]
     public class ExchangeRateController : Controller
     {
+        private const long offsetValue = 7;
+
         private readonly IMediator mediator;
 
         public ExchangeRateController(IMediator mediator)
@@ -25,10 +27,12 @@ namespace GamesAdmin.Site.Features.ExchangeRates
         [HttpGet]
         public async Task<IActionResult> Query(DateTime from, DateTime to)
         {
-            var request = new QueryExchangeRateRequest(from, to.AddTicks(TimeSpan.TicksPerDay));
+            var request = new QueryExchangeRateRequest(ToOffset(from), ToOffset(to.AddTicks(TimeSpan.TicksPerDay)));
             var viewModels = await mediator.Send(request);
 
             return PartialView("_Rates", viewModels);
         }
+
+        private static DateTime ToOffset(DateTime date) => date.AddTicks(-TimeSpan.TicksPerHour * offsetValue);
     }
 }

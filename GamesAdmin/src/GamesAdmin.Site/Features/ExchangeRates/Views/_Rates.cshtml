@@ -14,7 +14,7 @@
             @foreach (var code in item.Code)
             {
                 <tr>
-                    <td class="text-center" data-order="@item.Time.Ticks" data-search="@item.Time">@item.Time.ToShortDateString()</td>
+                    <td class="text-center" data-order="@item.Time.Ticks" data-search="@item.Time">@Model.ToGMT7(@item.Time).ToShortDateString()</td>
                     <td class="text-center">@code.Key</td>
                     <td class="text-center">@code.Value</td>
                 </tr>
