@@ -24,6 +24,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<KenoMatchReportService>();
             services.AddScoped<KenoPowerReportService>();
             services.AddScoped<MiniKenoReportService>();
+            services.AddScoped<VipSeDieWarReportService>();
         }
     }
 }

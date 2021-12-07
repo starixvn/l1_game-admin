@@ -216,45 +216,15 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetThreeCardsReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_ThreeCardsRecords", await mediator.Send(new GetThreeCardsReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetBaccaratReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_BaccaratRecords", await mediator.Send(new GetBaccaratReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetVipBaccaratReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_VipBaccaratRecords", await mediator.Send(new GetVipBaccaratReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
         public IActionResult Roulette()
         {
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRouletteReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_RouletteRecords", await mediator.Send(new GetRouletteReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetRouletteBetHistory(long roundId, string userId)
         {
             return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, userId)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetSeDieReport(BetReportFilter filter)
-        {
-            return PartialView("_SeDieRecords", await mediator.Send(new GetSeDieReportRequest(filter)));
         }
 
         [HttpGet]
@@ -275,12 +245,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
         {
             return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetVipSeDieReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_VipSeDieRecords", await mediator.Send(new GetVipSeDieReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
@@ -351,33 +315,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSicBoReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_SicBoRecords", await mediator.Send(new GetSicBoReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetLotteryReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_LotteryRecords", await mediator.Send(new GetLotteryReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetVipSeDieWarReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_VipSeDieWarRecords", await mediator.Send(new GetVipSeDieWarReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetVipSeDieWarBetHistory(long roundId, string userId)
         {
             return PartialView("_VipSeDieWarBetHistory", await mediator.Send(new GetVipSeDieWarBetHistoryRequest(roundId, userId)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetVipFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_VipFishPrawnCrabRecords", await mediator.Send(new GetVipFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
         }
 
         [HttpGet]
@@ -396,24 +336,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetSpecialSeDieBetHistory(long roundId, string userId)
         {
             return PartialView("_SpecialSeDieBetHistory", await mediator.Send(new GetSpecialSeDieBetHistoryRequest(roundId, userId)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetDragonTigerReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_DragonTigerRecords", await mediator.Send(new GetDragonTigerReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetFishPrawnCrabReport(long roundId, string nickname, bool excludeUUS)
-        {
-            return PartialView("_FishPrawnCrabRecords", await mediator.Send(new GetFishPrawnCrabReportRequest(roundId, nickname, excludeUUS)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetMiniSeDieReport(BetReportFilter filter)
-        {
-            return PartialView("_MiniSeDieRecords", await mediator.Send(new GetMiniSeDieReportRequest(filter)));
         }
 
         [HttpGet]
@@ -494,16 +416,6 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult KenoProMax() => RedirectToAction("Index");
-
-        [HttpGet]
-        public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
-        {
-            return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(
-                Enumeration.FromValue<Game>(game),
-                roundId,
-                nickname,
-                excludeUUS)));
-        }
 
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)

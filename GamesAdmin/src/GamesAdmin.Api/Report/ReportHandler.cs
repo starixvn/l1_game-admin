@@ -20,19 +20,13 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BigSmallTurboReportRequest, BigSmallBetReport>,
         IRequestHandler<OddEvenTurboReportRequest, OddEvenBetReport>,
         IRequestHandler<OddEvenReportRequest, OddEvenBetReport>,
-        IRequestHandler<SeDieReportRequest, SeDieBetReport>,
-        IRequestHandler<KenoReportRequest, IEnumerable<KenoBetRecord>>,
-        IRequestHandler<MiniSeDieReportRequest, SeDieBetReport>,
         IRequestHandler<KenoBetHistoryRequest, IEnumerable<KenoBetHistory>>,
-        IRequestHandler<KenoRoundResultRequest, KenoRoundResult>,
-        IRequestHandler<FishPrawnCrabReportRequest, FishPrawnCrabBetReport>,
         IRequestHandler<RouletteBetHistoryRequest, RouletteBetHistory>,
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
         IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
         IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
         IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
         IRequestHandler<SicBoBetHistoryRequest, SicBoBetHistory>,
-        IRequestHandler<VipSeDieWarReportRequest, VipSeDieWarBetReport>,
         IRequestHandler<VipSeDieWarBetHistoryRequest, VipSeDieWarBetHistory>,
         IRequestHandler<SlotGameReportRequest, IEnumerable<SlotGameBetRecord>>,
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
@@ -71,23 +65,9 @@ namespace GamesAdmin.Api.Report
         public async Task<OddEvenBetReport> Handle(OddEvenReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
-        public async Task<SeDieBetReport> Handle(SeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetSeDieReportAsync(request.Filter);
-
-        public async Task<SeDieBetReport> Handle(MiniSeDieReportRequest request, CancellationToken cancellationToken)
-            => await reportService.GetMiniSeDieReportAsync(request.Filter);
-
-        public Task<IEnumerable<KenoBetRecord>> Handle(KenoReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetKenoReportAsync(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
-
         public Task<IEnumerable<KenoBetHistory>> Handle(KenoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetKenoBetHistoryAsync(request.Game, request.RoundId, request.Nickname);
 
-        public Task<KenoRoundResult> Handle(KenoRoundResultRequest request, CancellationToken cancellationToken)
-        => reportService.GetKenoRoundResultAsync(request.Game, request.RoundId);
-
-        public Task<FishPrawnCrabBetReport> Handle(FishPrawnCrabReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetFishPrawnCrabReportAsync(request.Filter);
 
         public Task<RouletteBetHistory> Handle(RouletteBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetRouletteBetHistoryAsync(request.RoundId, request.UserId);
@@ -106,9 +86,6 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
         => reportService.GetSlotGameReportAsync(request.Filter);
-
-        public Task<VipSeDieWarBetReport> Handle(VipSeDieWarReportRequest request, CancellationToken cancellationToken)
-        => reportService.GetVipSeDieWarReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
 
         public Task<SicBoBetHistory> Handle(SicBoBetHistoryRequest request, CancellationToken cancellationToken)
         => reportService.GetSicBoBetHistoryAsync(request.RoundId, request.UserId);

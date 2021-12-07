@@ -183,6 +183,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(KenoMatchReportService<,>));
             services.AddScoped(typeof(KenoPowerReportService<,>));
             services.AddScoped(typeof(MiniKenoReportService<,>));
+            services.AddScoped<VipSeDieWarReportService>();
 
             services.InitApiLog();
         }

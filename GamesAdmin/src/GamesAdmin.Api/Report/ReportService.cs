@@ -29,17 +29,7 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        Task<SeDieBetReport> GetSeDieReportAsync(BetReportFilter filter);
-
-        Task<SeDieBetReport> GetMiniSeDieReportAsync(BetReportFilter filter);
-
-        Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false);
-
         Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname);
-
-        Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId);
-
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(BetReportFilter filter);
 
         Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId);
 
@@ -50,8 +40,6 @@ namespace GamesAdmin.Api.Report
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistoryAsync(long roundId, string userId);
 
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter);
-
-        Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS);
 
         Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
 
@@ -226,30 +214,6 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<SeDieBetReport> GetSeDieReportAsync(BetReportFilter filter)
-        {
-            var repository = serviceProvider.GetService<ISeDieReportRepository>();
-            var result = await repository.GetAsync(filter);
-
-            return new SeDieBetReport
-            {
-                RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<SeDieBetRecord>(x))
-            };
-        }
-
-        public async Task<SeDieBetReport> GetMiniSeDieReportAsync(BetReportFilter filter)
-        {
-            var repository = serviceProvider.GetService<IMiniSeDieReportRepository>();
-            var result = await repository.GetAsync(filter);
-
-            return new SeDieBetReport
-            {
-                RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<SeDieBetRecord>(x))
-            };
-        }
-
         public async Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, byte gameType)
         {
             switch (gameType)
@@ -329,13 +293,6 @@ namespace GamesAdmin.Api.Report
             });
         }
 
-        public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false)
-        {
-            var service = kenoReportFactory.GetReportService(game);
-
-            return service == default ? default : service.GetReportAsync(roundId, nickname, excludeUUS);
-        }
-
         public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname)
         {
             var service = kenoReportFactory.GetReportService(game);
@@ -348,18 +305,6 @@ namespace GamesAdmin.Api.Report
             var service = kenoReportFactory.GetReportService(game);
 
             return service == default ? default : service.GetRoundResultAsync(roundId);
-        }
-
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(BetReportFilter filter)
-        {
-            var repository = serviceProvider.GetService<IFishPrawnCrabReportRepository>();
-            var result = await repository.GetAsync(filter);
-
-            return new FishPrawnCrabBetReport
-            {
-                RoundResult = mapper.Map<FishPrawnCrabRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<FishPrawnCrabBetRecord>(x))
-            };
         }
 
         public async Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId)
@@ -441,17 +386,7 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<JackpotRecord>(x));
         }
 
-        public async Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS)
-        {
-            var repository = serviceProvider.GetService<IVipSeDieWarReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeUUS);
-
-            return new VipSeDieWarBetReport
-            {
-                RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<VipSeDieWarBetRecord>(x))
-            };
-        }
+   
 
         public async Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId)
         {

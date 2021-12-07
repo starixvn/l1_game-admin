@@ -42,7 +42,7 @@ namespace GamesAdmin.Api.Report
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
             { GameId.SicBo, typeof(SicBoReportService) },
             { GameId.VipBaccarat, typeof(VipBaccaratReportService) },
-            //{ GameId.VipSeDieWar, typeof(VipSeDieWarEndGameInfoService) },
+            { GameId.VipSeDieWar, typeof(VipSeDieWarReportService) },
             //{ GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) },
             { GameId.Lottery, typeof(LotteryReportService) },
             { GameId.ThreeCards, typeof(ThreeCardsReportService) },

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,7 +39,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
             { GameId.SicBo, typeof(SicBoReportService) },
             { GameId.VipBaccarat, typeof(VipBaccaratReportService) },
-            //{ GameId.VipSeDieWar, typeof(VipSeDieWarEndGameInfoService) },
+            { GameId.VipSeDieWar, typeof(VipSeDieWarReportService) },
             //{ GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) },
             { GameId.Lottery, typeof(LotteryReportService) },
             { GameId.ThreeCards, typeof(ThreeCardsReportService) },

@@ -7,7 +7,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public SeDieRoundResultViewModel RoundResult { get; set; }
 
         public IEnumerable<SeDieRecordViewModel> Records { get; set; }
-
-        public bool ConvertToUSD { get; set; }
     }
 }

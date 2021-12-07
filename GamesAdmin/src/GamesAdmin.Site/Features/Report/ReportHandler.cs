@@ -21,35 +21,24 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetBigSmallTurboReportRequest, BigSmallTurboReportResultViewModel>,
         IRequestHandler<GetOddEvenReportRequest, OddEvenReportResultViewModel>,
         IRequestHandler<GetOddEvenTurboReportRequest, OddEvenTurboReportResultViewModel>,
-        IRequestHandler<GetSeDieReportRequest, SeDieReportResultViewModel>,
-        IRequestHandler<GetMiniSeDieReportRequest, SeDieReportResultViewModel>,
         IRequestHandler<GetBigSmallBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
-        IRequestHandler<GetVipBaccaratReportRequest, VipBaccaratReportResultViewModel>,
-        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
         IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
-        IRequestHandler<GetVipFishPrawnCrabReportRequest, VipFishPrawnCrabReportResultViewModel>,
-        IRequestHandler<GetSicBoReportRequest, SicBoReportResultViewModel>,
         IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
-        IRequestHandler<GetVipSeDieWarReportRequest, VipSeDieWarReportResultViewModel>,
         IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
-        IRequestHandler<GetLotteryReportRequest, LotteryReportResultViewModel>,
         IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
-        IRequestHandler<GetThreeCardsReportRequest, ThreeCardsReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
-        IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
         IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
-        IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
         IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
@@ -318,102 +307,11 @@ namespace GamesAdmin.Site.Features.Report
             });
         }
 
-        public async Task<SeDieReportResultViewModel> Handle(GetSeDieReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetSeDieReport(request.Filter);
-            var partners = await partnerService.GetPartnersForSelection(model => true);
-
-            return new SeDieReportResultViewModel
-            {
-                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
-
-                    return recordViewModel;
-                }),
-                ConvertToUSD = request.Filter.ConvertToUSD
-            };
-        }
-
-        public async Task<SeDieReportResultViewModel> Handle(GetMiniSeDieReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetMiniSeDieReport(request.Filter);
-            var partners = await partnerService.GetPartnersForSelection(model => true);
-
-            return new SeDieReportResultViewModel
-            {
-                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<SeDieRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
-
-                    return recordViewModel;
-                }),
-                ConvertToUSD = request.Filter.ConvertToUSD
-            };
-        }
-
         public async Task<KenoBetHistoryViewModel> Handle(GetKenoBetHistoryRequest request, CancellationToken cancellationToken)
         {
             var betHistories = await reportService.GetKenoBetHistory(request.Game, request.RoundId, request.Nickname);
 
             return new KenoBetHistoryViewModel(betHistories, appSettings.DefaultTimeZone);
-        }
-
-        //public async Task<DragonTigerReportResultViewModel> Handle(GetDragonTigerReportRequest request, CancellationToken cancellationToken)
-        //{
-        //    var result = await reportService.GetDragonTigerBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-        //    return new DragonTigerReportResultViewModel
-        //    {
-        //        RoundResult = mapper.Map<DragonTigerRoundResultViewModel>(result.RoundResult),
-        //        Records = result.Records.Select(x =>
-        //        {
-        //            var recordViewModel = mapper.Map<DragonTigerRecordViewModel>(x);
-        //            recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-        //            return recordViewModel;
-        //        })
-        //    };
-        //}
-
-        public async Task<BaccaratReportResultViewModel> Handle(GetBaccaratReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new BaccaratReportResultViewModel
-            {
-                RoundResult = mapper.Map<BaccaratRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<BaccaratRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
-            };
-        }
-
-        public async Task<RouletteReportResultViewModel> Handle(GetRouletteReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetRouletteBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new RouletteReportResultViewModel
-            {
-                RoundResult = mapper.Map<RouletteRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<RouletteRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
-            };
         }
 
         public async Task<RouletteBetHistoryViewModel> Handle(GetRouletteBetHistoryRequest request, CancellationToken cancellationToken)
@@ -430,17 +328,6 @@ namespace GamesAdmin.Site.Features.Report
 
                     return betViewModel;
                 })
-            };
-        }
-
-        public async Task<VipSeDieReportResultViewModel> Handle(GetVipSeDieReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetVipSeDieReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new VipSeDieReportResultViewModel
-            {
-                RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x => mapper.Map<VipSeDieRecordViewModel>(x))
             };
         }
 
@@ -484,23 +371,6 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;
-                })
-            };
-        }
-
-        public async Task<VipFishPrawnCrabReportResultViewModel> Handle(GetVipFishPrawnCrabReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetVipFishPrawnCrabBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new VipFishPrawnCrabReportResultViewModel
-            {
-                RoundResult = mapper.Map<VipFishPrawnCrabRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<VipFishPrawnCrabRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
                 })
             };
         }
@@ -550,23 +420,6 @@ namespace GamesAdmin.Site.Features.Report
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
         }
 
-        public async Task<SicBoReportResultViewModel> Handle(GetSicBoReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetSicBoBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new SicBoReportResultViewModel
-            {
-                RoundResult = mapper.Map<SicBoRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<SicBoRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
-            };
-        }
-
         public async Task<SicBoBetHistoryViewModel> Handle(GetSicBoBetHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetSicBoBetHistory(request.RoundId, request.UserId);
@@ -580,23 +433,6 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;
-                })
-            };
-        }
-
-        public async Task<VipSeDieWarReportResultViewModel> Handle(GetVipSeDieWarReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetVipSeDieWarBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new VipSeDieWarReportResultViewModel
-            {
-                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<VipSeDieWarRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
                 })
             };
         }
@@ -618,23 +454,6 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        public async Task<VipBaccaratReportResultViewModel> Handle(GetVipBaccaratReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetVipBaccaratBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new VipBaccaratReportResultViewModel
-            {
-                RoundResult = mapper.Map<BaccaratRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<BaccaratRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
-            };
-        }
-
         public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
@@ -646,23 +465,6 @@ namespace GamesAdmin.Site.Features.Report
 
                 return betViewModel;
             });
-        }
-
-        public async Task<LotteryReportResultViewModel> Handle(GetLotteryReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetLotteryBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new LotteryReportResultViewModel
-            {
-                RoundResult = mapper.Map<LotteryRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<LotteryRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
-            };
         }
 
         public async Task<LotteryBetHistoryViewModel> Handle(GetLotteryBetHistoryRequest request, CancellationToken cancellationToken)
@@ -680,23 +482,6 @@ namespace GamesAdmin.Site.Features.Report
                     return betViewModel;
                 }),
                 Odds = mapper.Map<LotteryOddsViewModel>(result.Odds),
-            };
-        }
-
-        public async Task<ThreeCardsReportResultViewModel> Handle(GetThreeCardsReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetThreeCardsBetReport(request.RoundId, request.Nickname, request.ExcludeUUS);
-
-            return new ThreeCardsReportResultViewModel
-            {
-                RoundResult = mapper.Map<ThreeCardsRoundResultViewModel>(result.RoundResult),
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<ThreeCardsRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
             };
         }
 
@@ -771,26 +556,6 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        public async Task<KenoMatchReportResultViewModel> Handle(GetKenoMatchReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetKenoMatchBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
-            var roundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult);
-            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
-
-            return new KenoMatchReportResultViewModel
-            {
-                Game = request.Game,
-                RoundResult = roundResult,
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<KenoMatchRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                })
-            };
-        }
-
         public async Task<KenoMatchBetHistoryViewModel> Handle(GetKenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetKenoMatchBetHistory(request.Game, request.RoundId, request.UserId);
@@ -808,25 +573,6 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        public async Task<KenoPowerReportResultViewModel> Handle(GetKenoPowerReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetKenoPowerBetReport(request.Game, request.RoundId, request.Nickname, request.ExcludeUUS);
-            var roundResult = mapper.Map<KenoPowerRoundResultViewModel>(result.RoundResult);
-            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
-
-            return new KenoPowerReportResultViewModel
-            {
-                Game = request.Game,
-                RoundResult = roundResult,
-                Records = result.Records.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<KenoPowerRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return recordViewModel;
-                }),
-            };
-        }
 
         public async Task<KenoPowerBetHistoryViewModel> Handle(GetKenoPowerBetHistoryRequest request, CancellationToken cancellationToken)
         {
