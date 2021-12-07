@@ -414,7 +414,21 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult KenoNorth() => RedirectToAction("Index", new { game = GameId.KenoNorth });
 
         [HttpGet]
+<<<<<<< HEAD
         public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
+=======
+        public IActionResult KenoProMax() => RedirectToAction("Index");
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
+        {
+            return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(
+                Enumeration.FromValue<Game>(game),
+                roundId,
+                nickname,
+                excludeUUS)));
+        }
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
 
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(BetHistoryFilter filter, bool convertToUSD)
@@ -470,8 +484,13 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+<<<<<<< HEAD
         public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, decimal? rate)
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, rate)));
+=======
+        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, string currency)
+            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, currency)));
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
 
         [HttpGet]
         [Route("Report/Hi-Lo")]

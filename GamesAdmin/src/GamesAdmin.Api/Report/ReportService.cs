@@ -43,8 +43,6 @@ namespace GamesAdmin.Api.Report
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
-
-
     }
 
     public class ReportService : IReportService

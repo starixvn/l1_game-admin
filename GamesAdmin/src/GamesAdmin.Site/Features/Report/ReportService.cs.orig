@@ -20,15 +20,6 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<OddEvenBetReport> GetOddEventTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-<<<<<<< HEAD
-=======
-        Task<SeDieBetReport> GetSeDieReport(BetReportFilter filter);
-
-        Task<SeDieBetReport> GetMiniSeDieReport(BetReportFilter filter);
-
-        Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(Game game, long roundId, string nickname, bool excludeUUS);
-
->>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
         Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname);
 
         Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistory(long roundId, string nickname);
@@ -37,21 +28,6 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
 
-<<<<<<< HEAD
-=======
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname);
-
-        Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId);
-
-        Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
-
-        Task<VipBaccaratBetReport> GetVipBaccaratBetReport(long roundId, string nickname, bool excludeUUS);
-
-        Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS);
-
-        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
-
->>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
@@ -64,6 +40,15 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
+<<<<<<< HEAD
+=======
+        Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS);
+
+        Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
+
+        Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
+
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
@@ -109,27 +94,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
-<<<<<<< HEAD
-=======
-        public Task<IEnumerable<KenoBetRecord>> GetKenoBetReport(Game game, long roundId, string nickname, bool excludeUUS)
-        => reportApi.GetKenoReport(game.Value, roundId, nickname, excludeUUS);
-
-        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistory(Game game, long roundId, string nickname)
-        => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
-
-        public Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId)
-        => reportApi.GetKenoRoundResult(game.Value, roundId);
-
-        public async Task<BaccaratBetReport> GetBaccaratBetReport(long roundId, string nickname, bool excludeUUS)
-        => await reportApi.GetBaccaratReport(roundId, nickname, excludeUUS);
-
-        public async Task<RouletteBetReport> GetRouletteBetReport(long roundId, string nickname, bool excludeUUS)
-        => await reportApi.GetRouletteReport(roundId, nickname, excludeUUS);
-
-        public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
-        => await reportApi.GetRouletteBetHistory(roundId, userId);
-
->>>>>>> e0702a65 (feat: sedie + mini sedie + fish prawn crab + dragon tiger report)
         public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
         => reportApi.GetLuckyWheelBetHistory(nickname);
 
@@ -157,6 +121,18 @@ namespace GamesAdmin.Site.Features.Report
         public Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
             => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
 
+<<<<<<< HEAD
+=======
+        public Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetLotteryBetReport(roundId, nickname, excludeUUS);
+
+        public Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId)
+            => reportApi.GetLotteryBetHistory(roundId, userId);
+
+        public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
+            => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
+
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username)
             => await reportApi.GetBitcoinMasterReport(roundId, nickname, excludeBot, partnerId, username);
 

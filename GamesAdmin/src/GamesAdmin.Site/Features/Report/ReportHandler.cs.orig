@@ -25,14 +25,6 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
-<<<<<<< HEAD
-=======
-        IRequestHandler<GetKenoReportRequest, KenoReportViewModel>,
-        IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
-        IRequestHandler<GetVipBaccaratReportRequest, VipBaccaratReportResultViewModel>,
-        IRequestHandler<GetRouletteReportRequest, RouletteReportResultViewModel>,
-        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
->>>>>>> 2902c421 (feat: game report)
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
@@ -453,20 +445,32 @@ namespace GamesAdmin.Site.Features.Report
                 request.Username);
 
             var partners = await partnerService.GetPartnersForSelection(model => true);
+<<<<<<< HEAD
             var currency = await currencyService.GetById(request.Currency);
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new BitcoinMasterReportResultViewModel
             {
                 Currency = currency.DisplayText,
+=======
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+
+            return new BitcoinMasterReportResultViewModel
+            {
+                Currency = request.Currency,
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
                     SettlementResult = result.RoundResult.SettlementResult,
+<<<<<<< HEAD
                     ExchangeRate = exchangeRate,
                     ExchangeRateId = result.RoundResult.ExchangeRateId
+=======
+                    ExchangeRate = exchangeRate
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
                 },
                 Records = result.Records.Select(x => new BitcoinMasterRecordViewModel
                 {
@@ -490,6 +494,10 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetBitcoinMasterBetHistory(request.RoundId, request.Nickname);
 
             var partners = await partnerService.GetPartnersForSelection(model => true);
+<<<<<<< HEAD
+=======
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
 
             return new BitcoinMasterBetHistoryViewModel
             {
@@ -499,8 +507,12 @@ namespace GamesAdmin.Site.Features.Report
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
+<<<<<<< HEAD
                     ExchangeRate = request.Rate ?? 0,
                     ExchangeRateId = result.RoundResult.ExchangeRateId
+=======
+                    ExchangeRate = exchangeRate
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
                 },
                 Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
                 {

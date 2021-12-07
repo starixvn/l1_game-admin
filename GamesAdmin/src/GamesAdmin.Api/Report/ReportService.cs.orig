@@ -28,25 +28,6 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-<<<<<<< HEAD
-=======
-        Task<SeDieBetReport> GetSeDieReportAsync(BetReportFilter filter);
-
-        Task<SeDieBetReport> GetMiniSeDieReportAsync(BetReportFilter filter);
-
-        Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false);
-
-        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname);
-
-        Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId);
-
-        Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(BetReportFilter filter);
-
-        Task<VipBaccaratBetReport> GetVipBaccaratReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId);
-
->>>>>>> 2902c421 (feat: game report)
         Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS, string partnerId, string username);
@@ -55,21 +36,15 @@ namespace GamesAdmin.Api.Report
 
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter);
 
-<<<<<<< HEAD
-=======
-        Task<VipFishPrawnCrabBetReport> GetVipFishPrawnCrabReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<VipSeDieWarBetReport> GetVipSeDieWarReportAsync(long roundId, string nickname, bool excludeUUS);
-
-        Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
-
-        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
-
->>>>>>> 2902c421 (feat: game report)
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
+<<<<<<< HEAD
+=======
+        Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId);
+
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
@@ -299,54 +274,6 @@ namespace GamesAdmin.Api.Report
             });
         }
 
-<<<<<<< HEAD
-=======
-        public Task<IEnumerable<KenoBetRecord>> GetKenoReportAsync(Game game, long roundId, string nickname, bool excludeUUS = false)
-        {
-            var service = kenoReportFactory.GetReportService(game);
-
-            return service == default ? default : service.GetReportAsync(roundId, nickname, excludeUUS);
-        }
-
-        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname)
-        {
-            var service = kenoReportFactory.GetReportService(game);
-
-            return service == default ? default : service.GetBetHistoryAsync(roundId, nickname);
-        }
-
-        public Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId)
-        {
-            var service = kenoReportFactory.GetReportService(game);
-
-            return service == default ? default : service.GetRoundResultAsync(roundId);
-        }
-
-        public async Task<FishPrawnCrabBetReport> GetFishPrawnCrabReportAsync(BetReportFilter filter)
-        {
-            var repository = serviceProvider.GetService<IFishPrawnCrabReportRepository>();
-            var result = await repository.GetAsync(filter);
-
-            return new FishPrawnCrabBetReport
-            {
-                RoundResult = mapper.Map<FishPrawnCrabRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<FishPrawnCrabBetRecord>(x))
-            };
-        }
-
-        public async Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId)
-        {
-            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
-            var result = await repository.GetRouletteAsync(roundId, userId);
-
-            return new RouletteBetHistory
-            {
-                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
-            };
-        }
-
->>>>>>> 2902c421 (feat: game report)
         public async Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname)
         {
             var results = await spinResultRepository.FilterByAsync(spin => spin.Name == nickname);
@@ -394,21 +321,6 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }
 
-<<<<<<< HEAD
-=======
-        public async Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId)
-        {
-            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
-            var result = await repository.GetSicBoAsync(roundId, userId);
-
-            return new SicBoBetHistory
-            {
-                RoundResult = mapper.Map<SicBoRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<SicBoBetHistoryRecord>(x))
-            };
-        }
-
->>>>>>> 2902c421 (feat: game report)
         public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
             var repository = serviceProvider.GetService<IJackpotRepository>();
@@ -420,8 +332,27 @@ namespace GamesAdmin.Api.Report
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
             long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
+<<<<<<< HEAD
             var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
             var result = await repository.GetAsync<BitcoinMasterRoundEntity, BitcoinMasterBetEntity>(roundId, nickname, excludeBot, partnerId, username, "");
+=======
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetLotteryAsync(roundId, userId);
+
+            return new LotteryBetHistory
+            {
+                RoundResult = mapper.Map<LotteryRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<LotteryBetHistoryRecord>(x)),
+                Odds = mapper.Map<LotteryOdds>(result.Item3)
+            };
+        }
+
+        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
+            long roundId, string nickname, bool excludeBot, string partnerId, string username)
+        {
+            var repository = serviceProvider.GetService<IBitcoinMasterReportRepository>();
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+>>>>>>> 0c245691 (fix: round history - bitcoin master)
 
             return new BitcoinMasterBetReport
             {

@@ -6,7 +6,6 @@ using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,7 +28,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BitcoinMasterBetHistoryRequest, BitcoinMasterBetHistory>,
         IRequestHandler<BetReportRequest, BetReportBase>,
         IRequestHandler<BetHistoryRequest, BetHistory>,
-         IRequestHandler<HoldemPokerReportRequest, IEnumerable<HoldemPokerBetRecord>>,
+        IRequestHandler<HoldemPokerReportRequest, IEnumerable<HoldemPokerBetRecord>>,
         IRequestHandler<HoldemPokerBetHistoryRequest, HoldemPokerBetHistory>
         IRequestHandler<HiLoReportRequest, IEnumerable<HiLoBetRecord>>
     {
@@ -96,12 +95,11 @@ namespace GamesAdmin.Api.Report
             return service.Get(request.Filter);
         }
 
-        public async Task<IEnumerable<HoldemPokerBetRecord>> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
+         public async Task<IEnumerable<HoldemPokerBetRecord>> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
             => await holdemPokerReportService.GetHoldemPokerReportAsync(request.Filter);
 
         public async Task<HoldemPokerBetHistory> Handle(HoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
             => await holdemPokerReportService.GetHoldemPokerBetHistoryAsync(request.Filter);
-
         public Task<IEnumerable<HiLoBetRecord>> Handle(HiLoReportRequest request, CancellationToken cancellationToken)
         => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
     }
