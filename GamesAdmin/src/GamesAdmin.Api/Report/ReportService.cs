@@ -8,6 +8,7 @@ using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
+using GamesAdmin.Database.Report;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -103,8 +104,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<IBigSmallReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<BigSmallRoundEntity, BigSmallBetEntity>(roundId, nickname, excludeBot, partnerId, username, "big");
 
             return new BigSmallBetReport
             {
@@ -134,8 +135,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<BigSmallBetReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<IBigSmallTurboReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<BigSmallTurboRoundEntity, BigSmallTurboBetEntity>(roundId, nickname, excludeBot, partnerId, username, "big");
 
             return new BigSmallBetReport
             {
@@ -165,8 +166,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<OddEvenBetReport> GetOddEvenReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<IOddEvenReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<OddEvenRoundEntity, OddEvenBetEntity>(roundId, nickname, excludeBot, partnerId, username, "even");
 
             return new OddEvenBetReport
             {
@@ -196,8 +197,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<IOddEvenTurboReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<OddEvenTurboRoundEntity, OddEvenTurboBetEntity>(roundId, nickname, excludeBot, partnerId, username, "even");
 
             return new OddEvenBetReport
             {
@@ -382,8 +383,8 @@ namespace GamesAdmin.Api.Report
 
         public async Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<ISpecialSeDieReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<SpecialSeDieRoundEntity, SpecialSeDieBetEntity>(roundId, nickname, excludeBot, partnerId, username, "");
 
             return new SpecialSeDieBetReport
             {
@@ -480,8 +481,8 @@ namespace GamesAdmin.Api.Report
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
             long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<IBitcoinMasterReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<BitcoinMasterRoundEntity, BitcoinMasterBetEntity>(roundId, nickname, excludeBot, partnerId, username, "");
 
             return new BitcoinMasterBetReport
             {

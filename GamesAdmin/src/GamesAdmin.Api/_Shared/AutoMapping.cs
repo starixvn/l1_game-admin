@@ -124,7 +124,12 @@ namespace GamesAdmin.Api._Shared
               }))
               .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
               .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even));
-            CreateMap<SpecialSeDieBetReportEntity, SpecialSeDieBetRecord>();
+            CreateMap<StakeBalancedBetReportEntity, SpecialSeDieBetRecord>()
+                 .ForMember(x => x.Choice, opt => opt.MapFrom((source) => source.Choice))
+                 .ForMember(x => x.UserId, opt => opt.MapFrom((source) => source.UserId))
+                 .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.Bet))
+                 .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back));
+
 
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
 
