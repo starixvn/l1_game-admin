@@ -28,6 +28,13 @@ namespace GamesAdmin.Api.Report
 
         Task<OddEvenBetReport> GetOddEvenTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
+<<<<<<< HEAD
+=======
+        Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname);
+
+        Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId);
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReportAsync(long roundId, string nickname, bool excludeUUS, string partnerId, string username);
@@ -36,20 +43,20 @@ namespace GamesAdmin.Api.Report
 
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter);
 
+<<<<<<< HEAD
+=======
+        Task<SicBoBetHistory> GetSicBoBetHistoryAsync(long roundId, string userId);
+
+        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId);
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
-<<<<<<< HEAD
-=======
-        Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId);
-
->>>>>>> 0c245691 (fix: round history - bitcoin master)
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
-
-
     }
 
     public class ReportService : IReportService
@@ -274,6 +281,35 @@ namespace GamesAdmin.Api.Report
             });
         }
 
+<<<<<<< HEAD
+=======
+        public Task<IEnumerable<KenoBetHistory>> GetKenoBetHistoryAsync(Game game, long roundId, string nickname)
+        {
+            var service = kenoReportFactory.GetReportService(game);
+
+            return service == default ? default : service.GetBetHistoryAsync(roundId, nickname);
+        }
+
+        public Task<KenoRoundResult> GetKenoRoundResultAsync(Game game, long roundId)
+        {
+            var service = kenoReportFactory.GetReportService(game);
+
+            return service == default ? default : service.GetRoundResultAsync(roundId);
+        }
+
+        public async Task<RouletteBetHistory> GetRouletteBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetRouletteAsync(roundId, userId);
+
+            return new RouletteBetHistory
+            {
+                RoundResult = mapper.Map<RouletteRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<RouletteBetHistoryRecord>(x))
+            };
+        }
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<IEnumerable<SpinResult>> GetLuckyWheelReportAsync(string nickname)
         {
             var results = await spinResultRepository.FilterByAsync(spin => spin.Name == nickname);
@@ -329,13 +365,24 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<JackpotRecord>(x));
         }
 
-        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
-            long roundId, string nickname, bool excludeBot, string partnerId, string username)
-        {
 <<<<<<< HEAD
-            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
-            var result = await repository.GetAsync<BitcoinMasterRoundEntity, BitcoinMasterBetEntity>(roundId, nickname, excludeBot, partnerId, username, "");
 =======
+   
+
+        public async Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistoryAsync(long roundId, string userId)
+        {
+            var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
+            var result = await repository.GetVipSeDieWarAsync(roundId, userId);
+
+            return new VipSeDieWarBetHistory
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<VipSeDieWarBetHistoryRecord>(x))
+            };
+        }
+
+        public async Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId)
+        {
             var repository = serviceProvider.GetService<IBetHistoryReportRepository>();
             var result = await repository.GetLotteryAsync(roundId, userId);
 
@@ -347,12 +394,12 @@ namespace GamesAdmin.Api.Report
             };
         }
 
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
             long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
-            var repository = serviceProvider.GetService<IBitcoinMasterReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
->>>>>>> 0c245691 (fix: round history - bitcoin master)
+            var repository = serviceProvider.GetService<IStakeBalancedReportRepository>();
+            var result = await repository.GetAsync<BitcoinMasterRoundEntity, BitcoinMasterBetEntity>(roundId, nickname, excludeBot, partnerId, username, "");
 
             return new BitcoinMasterBetReport
             {

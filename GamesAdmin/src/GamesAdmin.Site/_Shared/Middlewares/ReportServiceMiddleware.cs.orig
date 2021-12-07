@@ -17,7 +17,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<RouletteReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<SicBoReportService>();
-<<<<<<< HEAD
             services.AddScoped<VipFishPrawnCrabReportService>();
             services.AddScoped<VipBaccaratReportService>();
             services.AddScoped<LotteryReportService>();
@@ -26,9 +25,10 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<KenoPowerReportService>();
             services.AddScoped<MiniKenoReportService>();
             services.AddScoped<VipSeDieWarReportService>();
+<<<<<<< HEAD
             services.AddScoped<HiLoReportService>();
 =======
->>>>>>> 2902c421 (feat: game report)
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         }
     }
 }

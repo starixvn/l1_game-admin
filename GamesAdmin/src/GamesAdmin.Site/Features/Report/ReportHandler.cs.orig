@@ -25,14 +25,31 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetBigSmallTurboBetHistoryRequest, IEnumerable<BigSmallBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
         IRequestHandler<GetOddEvenTurboBetHistoryRequest, IEnumerable<OddEvenBetHistoryViewModel>>,
+<<<<<<< HEAD
+=======
+        IRequestHandler<GetKenoBetHistoryRequest, KenoBetHistoryViewModel>,
+        IRequestHandler<GetRouletteBetHistoryRequest, RouletteBetHistoryViewModel>,
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
+<<<<<<< HEAD
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
+=======
+        IRequestHandler<GetSicBoBetHistoryRequest, SicBoBetHistoryViewModel>,
+        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
+        IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
+        IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
+        IRequestHandler<GetLotteryBetHistoryRequest, LotteryBetHistoryViewModel>,
+        IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
+        IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
+        IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
+        IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
           IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
@@ -321,6 +338,33 @@ namespace GamesAdmin.Site.Features.Report
             });
         }
 
+<<<<<<< HEAD
+=======
+        public async Task<KenoBetHistoryViewModel> Handle(GetKenoBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var betHistories = await reportService.GetKenoBetHistory(request.Game, request.RoundId, request.Nickname);
+
+            return new KenoBetHistoryViewModel(betHistories, appSettings.DefaultTimeZone);
+        }
+
+        public async Task<RouletteBetHistoryViewModel> Handle(GetRouletteBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetRouletteBetHistory(request.RoundId, request.UserId);
+
+            return new RouletteBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<RouletteRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<RouletteBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetSpecialSeDieReport(
@@ -422,6 +466,43 @@ namespace GamesAdmin.Site.Features.Report
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
         }
 
+<<<<<<< HEAD
+=======
+        public async Task<SicBoBetHistoryViewModel> Handle(GetSicBoBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetSicBoBetHistory(request.RoundId, request.UserId);
+
+            return new SicBoBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<SicBoRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<SicBoBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<VipSeDieWarBetHistoryViewModel> Handle(GetVipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetVipSeDieWarBetHistory(request.RoundId, request.UserId);
+
+            return new VipSeDieWarBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<VipSeDieWarBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
@@ -435,6 +516,27 @@ namespace GamesAdmin.Site.Features.Report
             });
         }
 
+<<<<<<< HEAD
+=======
+        public async Task<LotteryBetHistoryViewModel> Handle(GetLotteryBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetLotteryBetHistory(request.RoundId, request.UserId);
+
+            return new LotteryBetHistoryViewModel
+            {
+                RoundResult = mapper.Map<LotteryRoundResultViewModel>(result.RoundResult),
+                Bets = result.Bets.Select(x =>
+                {
+                    var betViewModel = mapper.Map<LotteryBetHistoryRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+
+                    return betViewModel;
+                }),
+                Odds = mapper.Map<LotteryOddsViewModel>(result.Odds),
+            };
+        }
+
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetBitcoinMasterReport(
@@ -445,32 +547,20 @@ namespace GamesAdmin.Site.Features.Report
                 request.Username);
 
             var partners = await partnerService.GetPartnersForSelection(model => true);
-<<<<<<< HEAD
             var currency = await currencyService.GetById(request.Currency);
             var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new BitcoinMasterReportResultViewModel
             {
                 Currency = currency.DisplayText,
-=======
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
-
-            return new BitcoinMasterReportResultViewModel
-            {
-                Currency = request.Currency,
->>>>>>> 0c245691 (fix: round history - bitcoin master)
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
                     SettlementResult = result.RoundResult.SettlementResult,
-<<<<<<< HEAD
                     ExchangeRate = exchangeRate,
                     ExchangeRateId = result.RoundResult.ExchangeRateId
-=======
-                    ExchangeRate = exchangeRate
->>>>>>> 0c245691 (fix: round history - bitcoin master)
                 },
                 Records = result.Records.Select(x => new BitcoinMasterRecordViewModel
                 {
@@ -494,10 +584,6 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetBitcoinMasterBetHistory(request.RoundId, request.Nickname);
 
             var partners = await partnerService.GetPartnersForSelection(model => true);
-<<<<<<< HEAD
-=======
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
->>>>>>> 0c245691 (fix: round history - bitcoin master)
 
             return new BitcoinMasterBetHistoryViewModel
             {
@@ -507,12 +593,8 @@ namespace GamesAdmin.Site.Features.Report
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
-<<<<<<< HEAD
                     ExchangeRate = request.Rate ?? 0,
                     ExchangeRateId = result.RoundResult.ExchangeRateId
-=======
-                    ExchangeRate = exchangeRate
->>>>>>> 0c245691 (fix: round history - bitcoin master)
                 },
                 Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
                 {
@@ -529,6 +611,7 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
+<<<<<<< HEAD
         private async Task<decimal> GetExchangeRate(int exchangeRateId, CurrencyModel currency)
         {
             var code = currency.Code;
@@ -541,6 +624,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
+=======
+        public async Task<KenoMatchBetHistoryViewModel> Handle(GetKenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         {
             var service = reportServiceFactory.GetService(request.Filter.Game);
             return service.Get(request.Filter);
@@ -555,6 +641,7 @@ namespace GamesAdmin.Site.Features.Report
             return viewModel;
         }
 
+<<<<<<< HEAD
         public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetCasinoHoldemPokerBetReport(request.Filter);
@@ -585,6 +672,8 @@ namespace GamesAdmin.Site.Features.Report
                 Currencies = currencies
             };
         }
+=======
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
 
         public async Task<HiLoReportResultViewModel> Handle(GetHiLoReportRequest request, CancellationToken cancellationToken)
         {

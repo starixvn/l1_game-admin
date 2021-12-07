@@ -54,18 +54,6 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
-<<<<<<< HEAD
-=======
-        [Get("/report/lottery/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<LotteryBetReport> GetLotteryBetReport(long roundId, string nickname, bool excludeUUS);
-
-        [Get("/report/bet_history/game/lottery/round/{roundId}/user/{userId}")]
-        Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
-
-        [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
-        Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
-
->>>>>>> 0c245691 (fix: round history - bitcoin master)
         [Get("/report/bitcoin_master/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 

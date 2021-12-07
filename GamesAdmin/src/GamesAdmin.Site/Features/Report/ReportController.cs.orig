@@ -203,12 +203,29 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetKenoMatchBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
+<<<<<<< HEAD
             return PartialView("_KenoMatchBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+=======
+            return PartialView("_KenoPowerBetHistory", await mediator.Send(new GetKenoPowerBetHistoryRequest(game, roundId, userId)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
+        {
+            return PartialView("_KenoMatchBetHistory", await mediator.Send(new GetKenoMatchBetHistoryRequest(game, roundId, userId)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetKenoMatchReport(GameId game, long roundId, string nickname, bool excludeUUS)
+        {
+            return PartialView("_KenoMatchRecords", await mediator.Send(new GetKenoMatchReportRequest(game, roundId, nickname, excludeUUS)));
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         }
 
         [HttpGet]
         public IActionResult Roulette()
         {
+<<<<<<< HEAD
             return RedirectToAction("Index", new { game = GameId.Roulette });
         }
 
@@ -218,6 +235,18 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_RouletteBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
+=======
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRouletteBetHistory(long roundId, string userId)
+        {
+            return PartialView("_RouletteBetHistory", await mediator.Send(new GetRouletteBetHistoryRequest(roundId, userId)));
+        }
+
+        [HttpGet]
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         public IActionResult VipSeDie()
         {
             return RedirectToAction("Index", new { game = GameId.VipSeDie });
@@ -307,9 +336,15 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+<<<<<<< HEAD
         public async Task<IActionResult> GetVipSeDieWarBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_VipSeDieWarBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+=======
+        public async Task<IActionResult> GetVipSeDieWarBetHistory(long roundId, string userId)
+        {
+            return PartialView("_VipSeDieWarBetHistory", await mediator.Send(new GetVipSeDieWarBetHistoryRequest(roundId, userId)));
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         }
 
         [HttpGet]
@@ -331,6 +366,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+<<<<<<< HEAD
         public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname, decimal? rate)
         {
             return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname, rate)));
@@ -350,6 +386,9 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetOddEvenTurboBetHistory(long roundId, string nickname, decimal? rate)
+=======
+        public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname)
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         {
             return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname, rate)));
         }
@@ -416,22 +455,12 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
 <<<<<<< HEAD
         public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
-=======
-        public IActionResult KenoProMax() => RedirectToAction("Index");
-
-        [HttpGet]
-        public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
-        {
-            return PartialView("_KenoBetRecords", await mediator.Send(new GetKenoReportRequest(
-                Enumeration.FromValue<Game>(game),
-                roundId,
-                nickname,
-                excludeUUS)));
-        }
->>>>>>> 0c245691 (fix: round history - bitcoin master)
 
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(BetHistoryFilter filter, bool convertToUSD)
+=======
+        public async Task<IActionResult> KenoBetHistory(string game, long roundId, string nickname)
+>>>>>>> 16cbb7ee (feat: game report, remove old codes)
         {
             return View(await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
@@ -484,13 +513,8 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-<<<<<<< HEAD
         public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, decimal? rate)
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, rate)));
-=======
-        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, string currency)
-            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, currency)));
->>>>>>> 0c245691 (fix: round history - bitcoin master)
 
         [HttpGet]
         [Route("Report/Hi-Lo")]
