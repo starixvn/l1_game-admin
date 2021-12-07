@@ -130,6 +130,7 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.Bet))
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back));
 
+
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>()
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.BaseAmount))
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.BaseRefund))
