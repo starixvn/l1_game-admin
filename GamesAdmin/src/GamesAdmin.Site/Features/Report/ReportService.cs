@@ -4,7 +4,6 @@ using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
-using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.Report.Requests;
 using System;
 using System.Collections.Generic;
@@ -78,7 +77,7 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
-        Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot);
+        Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
 
@@ -209,8 +208,8 @@ namespace GamesAdmin.Site.Features.Report
         public Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS)
             => reportApi.GetThreeCardsBetReport(roundId, nickname, excludeUUS);
 
-        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot)
-            => await reportApi.GetBitcoinMasterReport(roundId, nickname, excludeBot);
+        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+            => await reportApi.GetBitcoinMasterReport(roundId, nickname, excludeBot, partnerId, username);
 
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);

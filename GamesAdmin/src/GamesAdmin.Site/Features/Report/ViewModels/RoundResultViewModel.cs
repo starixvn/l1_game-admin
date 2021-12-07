@@ -235,7 +235,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Clubs { get; set; }
     }
 
-    public class BitcoinMasterRoundResultViewModel
+    public class BitcoinMasterRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 

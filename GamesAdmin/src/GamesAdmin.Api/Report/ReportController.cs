@@ -209,8 +209,8 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("bitcoin_master/round/{roundId}/users/{nickname?}")]
-        public async Task<BitcoinMasterBetReport> BitcoinMaster(long roundId, string nickname, bool excludeBot)
-           => (await mediator.Send(new BitcoinMasterReportRequest(roundId, nickname, excludeBot)));
+        public async Task<BitcoinMasterBetReport> BitcoinMaster(long roundId, string nickname, bool excludeBot, string partnerId, string username)
+           => (await mediator.Send(new BitcoinMasterReportRequest(roundId, nickname, excludeBot, partnerId, username)));
 
         [HttpGet]
         [Route("bitcoin_master/round/{roundId}/user/{nickname}")]

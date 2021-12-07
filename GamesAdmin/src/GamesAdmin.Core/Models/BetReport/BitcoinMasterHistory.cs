@@ -23,5 +23,11 @@ namespace GamesAdmin.Core.Models.BetReport
         public decimal BetWin { get; set; }
 
         public bool Win { get; set; }
+
+        public string Currency { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public decimal Rate { get; set; }
     }
 }

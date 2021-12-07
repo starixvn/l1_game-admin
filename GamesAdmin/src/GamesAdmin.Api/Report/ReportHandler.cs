@@ -123,12 +123,11 @@ namespace GamesAdmin.Api.Report
             => reportService.GetLotteryBetHistoryAsync(request.RoundId, request.UserId);
 
         public async Task<BitcoinMasterBetReport> Handle(BitcoinMasterReportRequest request, CancellationToken cancellationToken)
-               => await reportService.GetBitcoinMasterReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+               => await reportService.GetBitcoinMasterReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
         public Task<BitcoinMasterBetHistory> Handle(BitcoinMasterBetHistoryRequest request, CancellationToken cancellationToken)
                 => reportService.GetBitcoinMasterBetHistoryAsync(request.RoundId, request.Nickname);
 
-      
         public Task<KenoMatchBetHistory> Handle(KenoMatchBetHistoryRequest request, CancellationToken cancellationToken)
         {
             return request.Game switch

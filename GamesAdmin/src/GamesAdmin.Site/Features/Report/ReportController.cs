@@ -495,7 +495,6 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult KenoProMax() => RedirectToAction("Index");
 
-
         [HttpGet]
         public async Task<IActionResult> GetKenoReport(string game, long roundId, string nickname = null, bool excludeUUS = true)
         {
@@ -543,20 +542,25 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult BitcoinMaster()
+        public Task<IActionResult> BitcoinMaster() => GetStakeBalancedView();
+
+        [HttpGet]
+        public async Task<IActionResult> GetBitcoinMasterReport(
+            long roundId,
+            string nickname,
+            bool excludeBot,
+            string partnerId,
+            string username,
+            string currency)
         {
-            return View(new BitcoinMasterViewModel());
+            var request = new GetBitcoinMasterReportRequest(roundId, nickname, excludeBot, partnerId, username, currency);
+
+            return PartialView("_BitcoinMasterRecords", await mediator.Send(request));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot)
-        {
-            return PartialView("_BitcoinMasterRecords", await mediator.Send(new GetBitcoinMasterReportRequest(roundId, nickname, excludeBot)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname)
-            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname)));
+        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, string currency)
+            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, currency)));
 
         [HttpGet]
         [Route("Report/CasinoHoldem")]

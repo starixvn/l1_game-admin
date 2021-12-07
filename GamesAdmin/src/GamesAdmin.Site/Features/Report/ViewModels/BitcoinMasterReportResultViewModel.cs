@@ -6,6 +6,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class BitcoinMasterReportResultViewModel
     {
+        public string Currency { get; set; }
+
         public BitcoinMasterRoundResultViewModel RoundResult { get; set; }
 
         public IEnumerable<BitcoinMasterRecordViewModel> Records { get; set; }

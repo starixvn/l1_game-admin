@@ -115,8 +115,8 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/threecards/round/{roundId}/users/{nickname}?excludeUUS={excludeUUS}")]
         Task<ThreeCardsBetReport> GetThreeCardsBetReport(long roundId, string nickname, bool excludeUUS);
 
-        [Get("/report/bitcoin_master/round/{roundId}/users/{nickname}?excludeBot={excludeBot}")]
-        Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot);
+        [Get("/report/bitcoin_master/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
+        Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         [Get("/report/bitcoin_master/round/{roundId}/user/{nickname}")]
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetReport(long roundId, string nickname);

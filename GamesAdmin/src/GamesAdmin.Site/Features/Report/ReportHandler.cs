@@ -702,16 +702,26 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetBitcoinMasterReport(request.RoundId, request.Nickname, request.ExcludeBot);
+            var result = await reportService.GetBitcoinMasterReport(
+                request.RoundId,
+                request.Nickname,
+                request.ExcludeBot,
+                request.PartnerId,
+                request.Username);
+
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
 
             return new BitcoinMasterReportResultViewModel
             {
+                Currency = request.Currency,
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
-                    SettlementResult = result.RoundResult.SettlementResult
+                    SettlementResult = result.RoundResult.SettlementResult,
+                    ExchangeRate = exchangeRate
                 },
                 Records = result.Records.Select(x => new BitcoinMasterRecordViewModel
                 {
@@ -722,7 +732,10 @@ namespace GamesAdmin.Site.Features.Report
                     Bet = x.Bet,
                     BetWin = x.BetWin,
                     Win = x.Win,
-                    Choice = x.Choice
+                    Choice = x.Choice,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.PartnerId),
+                    Rate = x.Rate,
                 })
             };
         }
@@ -731,13 +744,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportService.GetBitcoinMasterBetHistory(request.RoundId, request.Nickname);
 
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+
             return new BitcoinMasterBetHistoryViewModel
             {
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
-                    ResultPrice = result.RoundResult.ResultPrice
+                    ResultPrice = result.RoundResult.ResultPrice,
+                    ExchangeRate = exchangeRate
                 },
                 Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
                 {
@@ -746,7 +763,10 @@ namespace GamesAdmin.Site.Features.Report
                     Refund = x.Refund,
                     Amount = x.Amount,
                     Choice = x.Choice,
-                    Win = x.Win
+                    Win = x.Win,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.PartnerId),
+                    Rate = x.Rate,
                 })
             };
         }

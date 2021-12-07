@@ -62,7 +62,7 @@ namespace GamesAdmin.Api.Report
 
         Task<LotteryBetHistory> GetLotteryBetHistoryAsync(long roundId, string userId);
 
-        Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot);
+        Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
 
@@ -477,10 +477,11 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot)
+        public async Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(
+            long roundId, string nickname, bool excludeBot, string partnerId, string username)
         {
             var repository = serviceProvider.GetService<IBitcoinMasterReportRepository>();
-            var result = await repository.GetAsync(roundId, nickname, excludeBot);
+            var result = await repository.GetAsync(roundId, nickname, excludeBot, partnerId, username);
 
             return new BitcoinMasterBetReport
             {
@@ -489,7 +490,8 @@ namespace GamesAdmin.Api.Report
                     Number = result.Item1.Number,
                     ResultPrice = result.Item1.Result?.ResultPrice ?? 0,
                     BettingPrice = result.Item1.Result?.BettingPrice ?? 0,
-                    SettlementResult = result.Item1.SettlementResult
+                    SettlementResult = result.Item1.SettlementResult,
+                    ExchangeRateId = result.Item1.ExchangeRateId,
                 },
                 Records = result.Item2.Select(x => new BitcoinMasterBetRecord
                 {
@@ -500,7 +502,10 @@ namespace GamesAdmin.Api.Report
                     BetWin = x.BetWin,
                     Back = x.Back,
                     Win = x.Win,
-                    Choice = x.Choice
+                    Choice = x.Choice,
+                    Currency = x.Currency,
+                    PartnerId = x.PartnerId,
+                    Rate = x.Rate
                 })
             };
         }
@@ -516,6 +521,7 @@ namespace GamesAdmin.Api.Report
             };
 
             model.RoundResult.Number = result.Item1.Number;
+            model.RoundResult.ExchangeRateId = result.Item1.ExchangeRateId;
             return model;
         }
 
