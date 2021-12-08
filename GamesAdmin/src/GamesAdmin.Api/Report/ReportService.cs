@@ -2,10 +2,10 @@
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report;
 using Microsoft.Extensions.DependencyInjection;

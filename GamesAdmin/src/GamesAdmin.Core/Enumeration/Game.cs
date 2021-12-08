@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Core.Enumeration
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Enumeration
 {
     public class Game : Enumeration
     {
@@ -98,5 +100,36 @@
         public GameId GameId { get; }
 
         public static Game FromGameId(GameId id) => Parse<Game, GameId>(id, "game id", item => item.GameId == id);
+
+        public static IEnumerable<Game> GetNormalGames() => new List<Game>
+        {
+            SeDie,
+            FishPrawnCrab,
+            DragonTiger,
+            KenoProMax,
+            MiniSeDie,
+            Baccarat,
+            KenoMax,
+            KenoMax2,
+            KenoMini,
+            KenoMini2,
+            KenoEast,
+            KenoWest,
+            KenoSouth,
+            KenoNorth,
+            Roulette,
+            VipSeDie,
+            SicBo,
+            VipFishPrawnCrab,
+            VipBaccarat,
+            VipSeDieWar,
+            Lottery,
+            ThreeCards,
+            KenoMatch1,
+            KenoMatch2,
+            KenoPower1,
+            KenoPower2,
+        };
+
     }
 }

@@ -29,7 +29,6 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
-        IRequestHandler<GetVipSeDieWarBetHistoryRequest, VipSeDieWarBetHistoryViewModel>,
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
@@ -390,23 +389,6 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);
 
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
-        }
-
-        public async Task<VipSeDieWarBetHistoryViewModel> Handle(GetVipSeDieWarBetHistoryRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetVipSeDieWarBetHistory(request.RoundId, request.UserId);
-
-            return new VipSeDieWarBetHistoryViewModel
-            {
-                RoundResult = mapper.Map<VipSeDieWarRoundResultViewModel>(result.RoundResult),
-                Bets = result.Bets.Select(x =>
-                {
-                    var betViewModel = mapper.Map<VipSeDieWarBetHistoryRecordViewModel>(x);
-                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return betViewModel;
-                })
-            };
         }
 
         public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)

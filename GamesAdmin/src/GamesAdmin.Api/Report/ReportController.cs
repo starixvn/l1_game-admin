@@ -3,7 +3,6 @@ using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
@@ -65,16 +64,6 @@ namespace GamesAdmin.Api.Report
             => mediator.Send(new KenoBetHistoryRequest(game, roundId, nickname));
 
         [HttpGet]
-        [Route("{game}/round/{roundId}/result")]
-        public Task<KenoRoundResult> KenoKenoRoundResult(string game, long roundId)
-            => mediator.Send(new KenoRoundResultRequest(game, roundId));
-
-        [HttpGet]
-        [Route("bet_history/game/roulette/round/{roundId}/user/{userId}")]
-        public async Task<RouletteBetHistory> BetHistory(string userId, long roundId)
-         => (await mediator.Send(new RouletteBetHistoryRequest(roundId, userId)));
-
-        [HttpGet]
         [Route("lucky_wheel/users/{nickname}")]
         public async Task<IEnumerable<SpinResult>> LuckyWheel(string nickname)
         => (await mediator.Send(new LuckyWheelReportRequest(nickname)));
@@ -123,24 +112,9 @@ namespace GamesAdmin.Api.Report
         }
 
         [HttpGet]
-        [Route("bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
-        public async Task<VipSeDieWarBetHistory> VipSeDieWarBetHistory(string userId, long roundId)
-         => (await mediator.Send(new VipSeDieWarBetHistoryRequest(roundId, userId)));
-
-        [HttpGet]
-        [Route("bet_history/game/sicbo/round/{roundId}/user/{userId}")]
-        public async Task<SicBoBetHistory> SicBoBetHistory(long roundId, string userId)
-        => (await mediator.Send(new SicBoBetHistoryRequest(roundId, userId)));
-
-        [HttpGet]
         [Route("jackpot/game/{gameId}")]
         public async Task<IEnumerable<JackpotRecord>> JackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
        => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot)));
-
-        [HttpGet]
-        [Route("bet_history/game/lottery/round/{roundId}/user/{userId}")]
-        public async Task<LotteryBetHistory> LotteryBetHistory(long roundId, string userId)
-        => (await mediator.Send(new LotteryBetHistoryRequest(roundId, userId)));
 
         [HttpGet]
         [Route("bitcoin_master/round/{roundId}/users/{nickname?}")]
@@ -151,16 +125,6 @@ namespace GamesAdmin.Api.Report
         [Route("bitcoin_master/round/{roundId}/user/{nickname}")]
         public async Task<BitcoinMasterBetHistory> BitcoinMasterBetHistory(long roundId, string nickname)
             => await mediator.Send(new BitcoinMasterBetHistoryRequest(roundId, nickname));
-
-        [HttpGet]
-        [Route("bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
-        public async Task<KenoMatchBetHistory> KenoMatchBetHistory(GameId game, string userId, long roundId)
-        => (await mediator.Send(new KenoMatchBetHistoryRequest(game, roundId, userId)));
-
-        [HttpGet]
-        [Route("bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
-        public async Task<KenoPowerBetHistory> KenoPowerBetHistory(GameId game, string userId, long roundId)
-        => (await mediator.Send(new KenoPowerBetHistoryRequest(game, roundId, userId)));
 
         [HttpGet]
         [Route("casinoholdempoker")]

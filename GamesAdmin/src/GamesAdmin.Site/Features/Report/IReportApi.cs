@@ -1,6 +1,5 @@
 ﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features._Shared;
@@ -28,15 +27,6 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
         Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
 
-        [Get("/report/{game}/round/{roundId}/user/{nickname}")]
-        Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(string game, long roundId, string nickname);
-
-        [Get("/report/{game}/round/{roundId}/result")]
-        Task<KenoRoundResult> GetKenoRoundResult(string game, long roundId);
-
-        [Get("/report/bet_history/game/roulette/round/{roundId}/user/{userId}")]
-        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
-
         [Get("/report/lucky_wheel/users/{nickname}")]
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
 
@@ -48,12 +38,6 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/blackjack")]
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
-
-        [Get("/report/bet_history/game/sicbo/round/{roundId}/user/{userId}")]
-        Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
-
-        [Get("/report/bet_history/game/vipsediewar/round/{roundId}/user/{userId}")]
-        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
 
         [Get("/report/slot_game/round/{roundId}/nick/{nickname}?excludeUUS={excludeUUS}&game={game}&partnerId={partnerId}&fromDate={fromDate}&toDate={toDate}&username={username}&convertToUSD={convertToUSD}")]
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(
@@ -70,20 +54,11 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/jackpot/game/{gameId}?excludeUUS={excludeUUS}&excludeBot={excludeBot}")]
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
-        [Get("/report/bet_history/game/lottery/round/{roundId}/user/{userId}")]
-        Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
-
         [Get("/report/bitcoin_master/round/{roundId}/users/{nickname}?excludeBot={excludeBot}&partnerId={partnerId}&username={username}")]
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         [Get("/report/bitcoin_master/round/{roundId}/user/{nickname}")]
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetReport(long roundId, string nickname);
-
-        [Get("/report/bet_history/kenomatch/{game}/round/{roundId}/user/{userId}")]
-        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(string game, long roundId, string userId);
-
-        [Get("/report/bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
-        Task<KenoPowerBetHistory> GetKenoPowerBetHistory(string game, long roundId, string userId);
 
         [Get("/report")]
         Task<T> Get<T>(BetReportFilter filter) where T : BetReportBase;

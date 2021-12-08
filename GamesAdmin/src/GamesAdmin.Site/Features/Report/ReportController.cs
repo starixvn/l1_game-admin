@@ -487,7 +487,7 @@ namespace GamesAdmin.Site.Features.Report
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
-            var games = Enumeration.GetAll<Game>().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
+            var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
     }

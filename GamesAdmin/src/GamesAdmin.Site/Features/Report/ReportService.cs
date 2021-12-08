@@ -1,7 +1,6 @@
 ﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -29,12 +28,6 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
 
-        Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(Game game, long roundId, string nickname);
-
-        Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId);
-
-        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
-
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
@@ -43,23 +36,13 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
 
-        Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId);
-
-        Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId);
-
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
-        Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId);
-
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
-
-        Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
-
-        Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId);
 
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
 
@@ -99,15 +82,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
-        public Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(Game game, long roundId, string nickname)
-        => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
-
-        public Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId)
-        => reportApi.GetKenoRoundResult(game.Value, roundId);
-
-        public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
-        => await reportApi.GetRouletteBetHistory(roundId, userId);
-
         public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
         => reportApi.GetLuckyWheelBetHistory(nickname);
 
@@ -119,12 +93,6 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter)
         => reportApi.GetBlackjackReport(filter);
-
-        public async Task<VipSeDieWarBetHistory> GetVipSeDieWarBetHistory(long roundId, string userId)
-            => await reportApi.GetVipSeDieWarBetHistory(roundId, userId);
-
-        public Task<SicBoBetHistory> GetSicBoBetHistory(long roundId, string userId)
-        => reportApi.GetSicBoBetHistory(roundId, userId);
 
         public Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request)
             => reportApi.GetSlotGameReport(
@@ -141,20 +109,11 @@ namespace GamesAdmin.Site.Features.Report
         public Task<IEnumerable<JackpotRecord>> GetJackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
             => reportApi.GetJackpotReport(gameId, fromDate, toDate, excludeUUS, excludeBot);
 
-        public Task<LotteryBetHistory> GetLotteryBetHistory(long roundId, string userId)
-            => reportApi.GetLotteryBetHistory(roundId, userId);
-
         public async Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username)
             => await reportApi.GetBitcoinMasterReport(roundId, nickname, excludeBot, partnerId, username);
 
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
-
-        public Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
-        => reportApi.GetKenoMatchBetHistory(game.ToString(), roundId, userId);
-
-        public Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
-        => reportApi.GetKenoPowerBetHistory(game.ToString(), roundId, userId);
 
         public Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter)
             => reportApi.GetCasinoHoldemPokerBetReport(filter);
