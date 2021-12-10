@@ -39,12 +39,13 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var isExistTicket = await ticketHandler.Exist(request.ObCustId,
-                        request.SiteId,
-                        request.GameRoundId,
-                        request.GameTypeId,
-                        request.FreeBet);
+                    request.PartnerId,
+                    request.SiteId,
+                    request.GameRoundId,
+                    request.GameTypeId,
+                    request.FreeBet);
 
-                if (!isExistTicket) 
+                if (!isExistTicket)
                 {
                     return new VoidGameResult { ErrorCode = 1001, ErrorMessage = "No such ticket." };
                 }
@@ -59,6 +60,7 @@ namespace GamesAdmin.Api.VoidGame
 
                     var moved = await ticketHandler.Void(
                         request.ObCustId,
+                        request.PartnerId,
                         request.SiteId,
                         request.GameRoundId,
                         request.GameTypeId,

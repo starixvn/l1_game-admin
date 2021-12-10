@@ -1,0 +1,31 @@
+﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
+@model SuperPlayersViewModel;
+
+@{
+    ViewData["Title"] = "Update Backdoor UM Account";
+}
+
+<div>
+    <form class="card-body form" asp-action="UpdateSuperPlayer" asp-controller="Partner" method="post" id="super-players-form">
+        <div id="super-players-msg-container" class="form-group row" style="display: none">
+            <div class="message-success hidden-cls" id="update-super-players-success"><i class="icon-check"></i><span>Updated successfully</span></div>
+            <div class="message-error hidden-cls" id="update-super-players-failed"><i class="icon-cancel"></i><span>Error</span></div>
+        </div>
+        <div class="form-group">
+            <span class="control-label">Partners</span>
+            <div class="col-4">
+                <select class="form-control"
+                        asp-items="Model.PartnerSelectList"
+                        asp-for="PartnerId"
+                        onchange="partner.onChangePartner()">
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label">Account List (separated by ;)</label>
+            <textarea rows="3" cols="50" id="super-players-names" placeholder="Names are separated by ';'"
+                      style="height: 223px;"
+                      asp-for="SuperPlayers" class="form-control" value="@Model.SuperPlayers"></textarea>
+        </div>
+    </form>
+</div>

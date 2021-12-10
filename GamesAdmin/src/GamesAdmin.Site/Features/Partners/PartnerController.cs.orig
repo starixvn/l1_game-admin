@@ -1,0 +1,173 @@
+<<<<<<< HEAD
+﻿using Audit.Mvc;
+using GamesAdmin.Site.Features.Partners.Requests;
+using GamesAdmin.Site.Features.Partners.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Sentry;
+using System;
+using System.Threading.Tasks;
+
+namespace GamesAdmin.Site.Features.Partners
+{
+    [Authorize(Roles = "admin")]
+    public class PartnerController : Controller
+    {
+        private readonly IMediator mediator;
+        private readonly ISentryClient sentryClient;
+
+        public PartnerController(IMediator mediator, ISentryClient sentryClient)
+        {
+            this.mediator = mediator;
+            this.sentryClient = sentryClient;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index() => View(await mediator.Send(new IndexRequest()));
+
+        [HttpGet]
+        public IActionResult Add() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
+        {
+            var addedResult = await mediator.Send(new AddPartnerRequest(
+                new Core.Models.Partners.Partner(
+                    addViewModel.PartnerId,
+                    addViewModel.Name,
+                    addViewModel.SecretKey,
+                    addViewModel.CasinoVersionUrl,
+                    addViewModel.MobiVersionUrl,
+                    addViewModel.MiniVersionUrl,
+                    addViewModel.ApiUrl)));
+
+            addViewModel.Success = addedResult.Success;
+
+            if (addViewModel.Success)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                addViewModel.ErrorMessage = addedResult.Error;
+            }
+
+            return View(addViewModel);
+        }
+
+        [HttpGet]
+        [Route("partner/{partnerId}")]
+        public async Task<IActionResult> EditView(string partnerId)
+            => View("Edit", await mediator.Send(new GetByIdRequest(partnerId)));
+
+        [HttpPost, Audit]
+        public async Task<IActionResult> Edit([Bind] PartnerEditViewModel viewModel)
+        {
+            try
+            {
+                var result = await mediator.Send(new UpdateRequest(
+                   viewModel.PartnerId,
+                   viewModel.Name,
+                   viewModel.SecretKey,
+                   viewModel.CasinoVersionUrl,
+                   viewModel.MobiVersionUrl,
+                   viewModel.MiniVersionUrl,
+                   viewModel.ApiUrl));
+
+                viewModel.Success = result.Success;
+                viewModel.ErrorMessage = result.Error;
+                return Json(result.Success);
+            }
+            catch(Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return Json(false);
+            }
+           
+        }
+    }
+}
+=======
+﻿using GamesAdmin.Core.Models.Partners;
+using GamesAdmin.Site.Features.Partners.Requests;
+using GamesAdmin.Site.Features.Partners.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Sentry;
+using System;
+using System.Threading.Tasks;
+
+namespace GamesAdmin.Site.Features.Partners
+{
+    [Authorize(Roles = "admin")]
+    public class PartnerController : Controller
+    {
+        private readonly IMediator mediator;
+        private readonly ISentryClient sentryClient;
+
+        public PartnerController(IMediator mediator, ISentryClient sentryClient)
+        {
+            this.mediator = mediator;
+            this.sentryClient = sentryClient;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index() => View(await mediator.Send(new IndexRequest()));
+
+        [HttpGet]
+        public IActionResult Add() => PartialView();
+
+        [HttpPost]
+        public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
+        {
+            var addedResult = await mediator.Send(new AddPartnerRequest(
+                new Partner(
+                    addViewModel.PartnerId,
+                    addViewModel.Name,
+                    addViewModel.SecretKey,
+                    addViewModel.CasinoVersionUrl,
+                    addViewModel.MobiVersionUrl,
+                    addViewModel.MiniVersionUrl,
+                    addViewModel.ApiUrl,
+                    addViewModel.TestCurrencyUrl)));
+
+
+            return Json(addedResult);
+        }
+
+        [HttpGet]
+        [Route("partner/{partnerId}")]
+        public async Task<IActionResult> EditView(string partnerId)
+            => PartialView("Edit", await mediator.Send(new GetByIdRequest(partnerId)));
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([Bind] PartnerEditViewModel viewModel)
+        {
+            try
+            {
+                var result = await mediator.Send(new UpdateRequest(
+                   viewModel.PartnerId,
+                   viewModel.Name,
+                   viewModel.SecretKey,
+                   viewModel.CasinoVersionUrl,
+                   viewModel.MobiVersionUrl,
+                   viewModel.MiniVersionUrl,
+                   viewModel.ApiUrl,
+                   viewModel.TestCurrencyUrl));
+
+                viewModel.Success = result.Success;
+                viewModel.ErrorMessage = result.Error;
+                return Json(result.Success);
+            }
+            catch(Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return Json(false);
+            }
+           
+        }
+    }
+}
+>>>>>>> term commit

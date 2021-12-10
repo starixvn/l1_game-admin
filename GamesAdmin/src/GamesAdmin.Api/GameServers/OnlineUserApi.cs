@@ -191,6 +191,12 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
+    public interface IBitcoinMasterOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+    
     public interface IKenoMatchOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/{name}/onlineusers")]

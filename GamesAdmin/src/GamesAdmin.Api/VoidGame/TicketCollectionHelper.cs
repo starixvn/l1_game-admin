@@ -36,10 +36,13 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.VipFishPrawnCrab, new GameTicketCollection( string.Empty, "vipfishprawncrab_cuocs") },
             { GameId.VipBaccarat, new GameTicketCollection( string.Empty, "vipbaccarat_cuocs") },
             { GameId.VipSeDieWar, new GameTicketCollection( "vipsediewar_ones", "vipsediewar_cuocs") },
+            { GameId.ThreeCards, new GameTicketCollection( string.Empty, "threecards_cuocs") },
+            { GameId.Lottery, new GameTicketCollection( "lottery_ones", "lottery_cuocs") },
             { GameId.KenoMatch1, new GameTicketCollection( "kenomatch1_ones", "kenomatch1_cuocs") },
             { GameId.KenoMatch2, new GameTicketCollection( "kenomatch2_ones", "kenomatch2_cuocs") },
             { GameId.KenoPower1, new GameTicketCollection( "kenopower1_ones", "kenopower1_cuocs") },
             { GameId.KenoPower2, new GameTicketCollection( "kenopower2_ones", "kenopower2_cuocs") },
+            { GameId.BitcoinMaster, new GameTicketCollection( "bitcoinmaster_bets", "bitcoinmaster_betlogs") },
         };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)

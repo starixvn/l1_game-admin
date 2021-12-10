@@ -1,0 +1,271 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model BitcoinMasterReportResultViewModel
+@{
+    var upCount = Model.UpRecords.Count;
+    var downCount = Model.DownRecords.Count;
+    var oddCount = Model.OddRecords.Count;
+    var evenCount = Model.EvenRecords.Count;
+
+    var upDownCount = Math.Max(upCount, downCount);
+    var oddEvenCount = Math.Max(oddCount, evenCount);
+}
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Betting Price</th>
+                        <th>Result</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@HtmlHelpers.formatNumber2(Model.RoundResult.BettingPrice)</td>
+                        <td class="text-center bitcoin-master-result">
+                            <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span>&nbsp;
+                            @if (Model.RoundResult.IsUp)
+                            {
+                                <span class="up">(<img src="~/images/up.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                            }
+                            else if (Model.RoundResult.IsDown)
+                            {
+                                <span class="down">(<img src="~/images/down.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                            }
+                            else
+                            {
+                                <span class="tie">(<span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                            }
+                        </td>
+                        <td class="text-center">@Model.WinningOptions</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+        <div class="div-bet-choices">
+            <div id="spn-bet-choice-updown" class="spn-bet-choice spn-bet-choice-updown selected" onclick="bitcoinMasterReport.showUpDownTable()">Up/Down</div>
+            <div id="spn-bet-choice-oddeven" class="spn-bet-choice spn-bet-choice-oddeven" onclick="bitcoinMasterReport.showOddEvenTable()">Odd/Even</div>
+        </div>
+        <table class="table table-bordered table-hover table-updown">
+            <thead>
+                <tr>
+                    <th colspan="6" class="title">UP</th>
+                    <th colspan="6" class="title">DOWN</th>
+                </tr>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            @if (upDownCount == 0)
+            {
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="12">No data</td>
+                    </tr>
+                </tfoot>
+            }
+            else
+            {
+                <tbody>
+                    @for (var i = 0; i < upDownCount; i++)
+                    {
+                        var upRecord = i < upCount ? Model.UpRecords[i] : null;
+                        var downRecord = i < downCount ? Model.DownRecords[i] : null;
+
+                        <tr>
+                            @if (upRecord == null)
+                            {
+                                <td class="text-center"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                            }
+                            else
+                            {
+                                <td class="text-center">@upRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@upRecord.Username</td>
+                                <td class="text-left">
+                                    <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                                       asp-action="GetBitcoinMasterBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@upRecord.Nickname">
+                                        @upRecord.Nickname
+                                    </a>
+
+                                </td>
+
+                                <td class="text-right">@HtmlHelpers.formatNumber2(upRecord.Bet)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(upRecord.Back)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(upRecord.GrossWin)</td>
+                            }
+
+                            @if (downRecord == null)
+                            {
+                                <td class="text-center"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                            }
+                            else
+                            {
+                                <td class="text-center">@downRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@downRecord.Username</td>
+                                <td class="text-left">
+                                    <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                                       asp-action="GetBitcoinMasterBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@downRecord.Nickname">
+                                        @downRecord.Nickname
+                                    </a>
+
+                                </td>
+
+                                <td class="text-right">@HtmlHelpers.formatNumber2(downRecord.Bet)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(downRecord.Back)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(downRecord.GrossWin)</td>
+                            }
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr class="total">
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.UpTotal.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.UpTotal.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.UpTotal.BetWin)</td>
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.DownTotal.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.DownTotal.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.DownTotal.BetWin)</td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+        <table class="table table-bordered table-hover table-oddeven display-none">
+            <thead>
+                <tr>
+                    <th colspan="6" class="title">ODD</th>
+                    <th colspan="6" class="title">EVEN</th>
+                </tr>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Refund</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            @if (oddEvenCount == 0)
+            {
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="12">No data</td>
+                    </tr>
+                </tfoot>
+            }
+            else
+            {
+                <tbody>
+                    @for (var i = 0; i < oddEvenCount; i++)
+                    {
+                        var oddRecord = i < oddCount ? Model.OddRecords[i] : null;
+                        var evenRecord = i < evenCount ? Model.EvenRecords[i] : null;
+
+                        <tr>
+                            @if (oddRecord == null)
+                            {
+                                <td class="text-center"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                            }
+                            else
+                            {
+                                <td class="text-center">@oddRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@oddRecord.Username</td>
+                                <td class="text-left">
+                                    <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                                       asp-action="GetBitcoinMasterBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@oddRecord.Nickname">
+                                        @oddRecord.Nickname
+                                    </a>
+
+                                </td>
+
+                                <td class="text-right">@HtmlHelpers.formatNumber2(oddRecord.Bet)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(oddRecord.Back)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(oddRecord.GrossWin)</td>
+                            }
+
+                            @if (evenRecord == null)
+                            {
+                                <td class="text-center"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                            }
+                            else
+                            {
+                                <td class="text-center">@evenRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@evenRecord.Username</td>
+                                <td class="text-left">
+                                    <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                                       asp-action="GetBitcoinMasterBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@evenRecord.Nickname">
+                                        @evenRecord.Nickname
+                                    </a>
+
+                                </td>
+
+                                <td class="text-right">@HtmlHelpers.formatNumber2(evenRecord.Bet)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(evenRecord.Back)</td>
+                                <td class="text-right">@HtmlHelpers.formatNumber2(evenRecord.GrossWin)</td>
+                            }
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr class="total">
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.OddTotal.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.OddTotal.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.OddTotal.BetWin)</td>
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.EvenTotal.Bet)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.EvenTotal.Back)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber2(Model.EvenTotal.BetWin)</td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+</div>

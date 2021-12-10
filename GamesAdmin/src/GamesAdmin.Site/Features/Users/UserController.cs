@@ -69,7 +69,7 @@ namespace GamesAdmin.Site.Features.Users
 
                 return View(viewModel);
             }
-
+            
             var username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
             var result = await mediator.Send(new ChangePasswordRequest(username, viewModel.Password, viewModel.NewPassword));
 

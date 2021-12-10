@@ -20,7 +20,7 @@ namespace GamesAdmin.Core.Models.SlotGame
         public int JackpotPayline { get; set; }
     }
 
-    public class PaylineItem 
+    public class PaylineItem
     {
         [JsonProperty("payline")]
         public byte Payline { get; set; }

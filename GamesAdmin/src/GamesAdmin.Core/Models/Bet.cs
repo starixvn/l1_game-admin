@@ -2,9 +2,9 @@
 
 namespace GamesAdmin.Core.Models
 {
-    public class BaseBetHistory 
+    public class BaseBetHistory
     {
-        public BaseBetHistory(long round, DateTime time,  decimal betWin)
+        public BaseBetHistory(long round, DateTime time, decimal betWin)
         {
             Round = round;
             Time = time;
@@ -18,7 +18,7 @@ namespace GamesAdmin.Core.Models
         public decimal BetWin { get; set; }
     }
 
-    public class BetHistory<TChoice, TResult> : BaseBetHistory where TChoice: BetChoice where TResult: BetResult
+    public class BetHistory<TChoice, TResult> : BaseBetHistory where TChoice : BetChoice where TResult : BetResult
     {
         public TResult BetResult { get; set; }
 
@@ -29,7 +29,7 @@ namespace GamesAdmin.Core.Models
             DateTime time,
             decimal betWin,
             TResult betResult,
-            TChoice choice) : base(round, time,betWin)
+            TChoice choice) : base(round, time, betWin)
         {
             BetResult = betResult;
             Choice = choice;

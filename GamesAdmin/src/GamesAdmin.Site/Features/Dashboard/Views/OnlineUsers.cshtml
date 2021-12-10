@@ -2,6 +2,7 @@
 
 @section Styles {
     <link rel="stylesheet" type="text/css" href="~/lib/data-tables/datatables.min.css">
+    <link href="~/lib/fanex.multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/scss/pages/online-users.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
@@ -17,19 +18,25 @@
       method="get">
     <div class="form-row align-items-center">
         <div class="col-auto">
-            <select class="form-control" asp-items="@Model.GameTypeItems" asp-for="Game"></select>
+            <label asp-for="PartnerIds" class="control-label"></label>
+            <select class="form-control" hidden asp-for="PartnerIds" asp-items="@Model.PartnerItems" multiple></select>
+            <select class="form-control" id="partners"></select>
         </div>
         <div class="col-auto">
+            <label asp-for="Game" class="control-label"></label>
+            <select class="form-control" asp-items="@Model.GameTypeItems" asp-for="Game"></select>
+        </div>
+        <div class="col-auto user-online-inline">
             <button type="submit" class="btn-submit">Submit</button>
             <div id="spinner" class="spinner-border" style="display: none">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <div class="col-auto">
+        <div class="col-auto user-online-inline">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" asp-for="IncludeUUS">
-                <label class="form-check-label" asp-for="IncludeUUS">
-                    Include UUS Users
+                <input class="form-check-input" type="checkbox" asp-for="IncludeTestAccount">
+                <label class="form-check-label" asp-for="IncludeTestAccount">
+                    Include Testing Users
                 </label>
             </div>
         </div>
@@ -39,15 +46,19 @@
 <div class="card">
     <div class="card-body" id="online-users-container">
         <partial name="_OnlineUserTable" for="RealUsers" />
-    </div>    
+    </div>
 </div>
 
+<script>
+    var partners = @Json.Serialize(Model.PartnerItems);
+</script>
 
 @section Scripts
 {
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
         <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/lib/fanex.multiselect/fanex.multiSelect.js"></script>
         <script type="text/javascript" src="~/js/online-users.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">

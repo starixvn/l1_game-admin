@@ -24,6 +24,14 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
+            <label asp-for="PartnerId" class="control-label"></label>
+            <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control">
+                <option value="" disabled selected></option>
+            </select>
+            <span asp-validation-for="PartnerId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <label asp-for="MemberId" class="control-label"></label>
             <input type="number" asp-for="MemberId" class="form-control" />
             <span asp-validation-for="MemberId" class="text-danger"></span>
@@ -43,7 +51,9 @@
 
         <div class="form-group">
             <label asp-for="GameId" class="control-label"></label>
-            <select asp-items="@Model.GameIds" asp-for="GameId" class="form-control"></select>
+            <select asp-items="@Model.GameIds" asp-for="GameId" class="form-control">
+                <option value="" disabled selected></option>
+            </select>
             <span asp-validation-for="GameId" class="text-danger"></span>
         </div>
 

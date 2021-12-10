@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GamesAdmin.Api.EndGameInfo.Request;
 using GamesAdmin.Core.Models.EndGameInfo;
@@ -7,21 +8,15 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
-    public class HeroesSlotEndGameInfoService : IEndGameInfoService
+    public class HeroesSlotEndGameInfoService : RoundOnlyEndGameInfoService<HeroesSlotRoundEntity>, IEndGameInfoService
     {
-        private readonly IGenericRepository<HeroesSlotRoundEntity> roundRepository;
-
-        public HeroesSlotEndGameInfoService(IGenericRepository<HeroesSlotRoundEntity> roundRepository)
+        public HeroesSlotEndGameInfoService(IGenericRepository<HeroesSlotRoundEntity> roundRepository) : base(roundRepository)
         {
-            this.roundRepository = roundRepository;
         }
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var round = (await roundRepository
-                .FilterByAsync(x => x.Number == request.GameRoundId
-                    && x.MemberId == request.ObCustId
-                    && x.SiteId == request.SiteId)).FirstOrDefault();
+            var round = await GetRoundAsync(request);
 
             if (round == null)
             {
@@ -41,5 +36,8 @@ namespace GamesAdmin.Api.EndGameInfo
                 TotalWin = round.BetWin
             };
         }
+
+        protected override Expression<Func<HeroesSlotRoundEntity, bool>> GetRoundFilterExpression(RetrieveEndGameInfoRequest request)
+            => (round) => round.Number == request.GameRoundId && round.MemberId == request.ObCustId && round.SiteId == request.SiteId;
     }
 }

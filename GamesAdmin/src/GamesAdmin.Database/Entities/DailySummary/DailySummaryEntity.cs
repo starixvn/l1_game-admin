@@ -12,6 +12,8 @@ namespace GamesAdmin.Database.Entities.DailySummary
 
         public int GameId { get; set; }
 
+        public string PartnerId { get; set; }
+
         public string Currency { get; set; }
 
         [BsonRepresentation(BsonType.Double, AllowTruncation = true)]

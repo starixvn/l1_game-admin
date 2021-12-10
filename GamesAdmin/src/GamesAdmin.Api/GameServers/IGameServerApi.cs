@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Models;
 using Refit;
 
@@ -9,7 +10,7 @@ namespace GamesAdmin.Api.GameServers
     public interface IGameServerApi
     {
         [Post("/api/um")]
-        Task UnderMaintenance(UnderMaintenanceRequest request);
+        Task UnderMaintenance(ServerApiUMRequest request);
 
         [Post("/api/reload")]
         Task Reload();

@@ -46,6 +46,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.KenoWestValue, typeof(IKenoWestOnlineUserApi) },
             { Game.KenoSouthValue, typeof(IKenoSouthOnlineUserApi) },
             { Game.KenoNorthValue, typeof(IKenoNorthOnlineUserApi) },
+            { Game.BitcoinMasterValue, typeof(IBitcoinMasterOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

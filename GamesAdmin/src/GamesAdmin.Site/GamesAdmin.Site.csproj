@@ -18,15 +18,20 @@
     <Content Remove="appsettings.UAT.json" />
     <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\js\partner - Copy.min.js" />
+    <Content Remove="wwwroot\js\partner.min.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\partner.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\scss\pages\adjust-bot.css" />
     <_ContentIncludedByDefault Remove="wwwroot\scss\pages\online-users.css" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="Audit.Mvc.Core" Version="18.1.6" />
+    <PackageReference Include="Audit.NET.MongoDB" Version="18.1.6" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="1.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
@@ -92,6 +97,7 @@
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\game-admin\**" />
     <AdditionalFiles Include="..\..\.sonarlint\l1-game-admin\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <None Include="wwwroot\js\partner.min.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\af.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\ar.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\az.js" />

@@ -3,7 +3,11 @@ import React from "react";
 type Props = {
   value: string;
   name: string;
+  labelStyle: string;
+  inputStyle: string;
+  disabled: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 type State = {
@@ -14,15 +18,16 @@ type State = {
 export default class EditableText extends React.Component<Props, State> {
   constructor(props) {
     super(props);
+    console.log(props.className);
     this.state = {
       type: props.type || "text",
       edit: false,
     };
     this.handleDisableEditMode = this.handleDisableEditMode.bind(this);
     this.handleEnableEditMode = this.handleEnableEditMode.bind(this);
-
   }
-  handleDisableEditMode() {
+  handleDisableEditMode(e) {
+    this.props.onBlur(e);
     this.setState({ edit: false });
   }
 
@@ -40,10 +45,18 @@ export default class EditableText extends React.Component<Props, State> {
           autoFocus
           onChange={this.props.onChange}
           onBlur={this.handleDisableEditMode}
+          className={this.props.inputStyle}
         />
       );
     }
 
-    return <span onClick={this.handleEnableEditMode}>{this.props.value}</span>;
+    return (
+      <span
+        className={this.props.labelStyle}
+        onClick={this.props.disabled ? null : this.handleEnableEditMode}
+      >
+        {this.props.value}
+      </span>
+    );
   }
 }

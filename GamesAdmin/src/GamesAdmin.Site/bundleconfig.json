@@ -62,10 +62,19 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/partner.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/adjust-bot.css",
+      "wwwroot/scss/pages/partner.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/online-users.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
       "wwwroot/js/online-users.js"
     ]
   },
@@ -93,6 +102,105 @@
     "outputFileName": "wwwroot/js/voidgame.min.js",
     "inputFiles": [
       "wwwroot/js/voidgame.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/partner.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/partner.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
+      "wwwroot/js/currency.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency-group-game.min.js",
+    "inputFiles": [
+      "wwwroot/js/currency-group-game.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/partner.min.js",
+    "inputFiles": [
+      "wwwroot/js/partner.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/currency.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/currency.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/currency-group.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/fanex.multiSelect/fanex.multiSelect.js",
+      "wwwroot/js/currency-group.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/currency-group.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/currency-group.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/chip.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/lib/spectrum/spectrum.min.js",
+      "wwwroot/js/chip.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/chip.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/lib/spectrum/spectrum.css",
+      "wwwroot/scss/pages/chip.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/exchange-rate.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/exchange-rate.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/exchange-rate.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/exchange-rate.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/api-log.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/api-log.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/api-log.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/api-log.css"
     ]
   }
 ]

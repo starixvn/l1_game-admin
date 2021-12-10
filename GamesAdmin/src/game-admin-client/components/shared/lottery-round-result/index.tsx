@@ -16,7 +16,15 @@ export default class LotteryRoundResult extends React.Component<LotteryProps> {
     }
 
     return value ? (
-      <EditableText name={name} onChange={this.props.onChange} value={value} />
+      <EditableText
+        disabled={false}
+        labelStyle=""
+        inputStyle=""
+        name={name}
+        onChange={this.props.onChange}
+        value={value}
+        onBlur={() => {}}
+      />
     ) : (
       "?"
     );

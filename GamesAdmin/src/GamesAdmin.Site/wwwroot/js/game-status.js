@@ -11,13 +11,15 @@
             });
         },
 
-        uncheckAll: function (element) {
-            if (!$(element).is(":checked")) {
-                $("#status-all").prop({
-                    checked: false
-                });
-            }
+        updateCheckAllStatus: function (element) {
+            var container = $("#status-tbl-body");
+            var uncheckItems = container.find("input:checkbox:not(:checked)");
+
+            $("#status-all").prop({
+                checked: !uncheckItems.length
+            });
         },
+
         enable: function () {
             var checkedGames = this.getCheckedGames();
 
@@ -79,38 +81,6 @@
             }
         },
 
-        underMaintenance: function () {
-            const status = $("#IsUM").prop("checked") ? "ON" : "OFF";
-            let message = "You are going to set Under Maintenance to " + status + ". Are you sure?";
-
-            if (confirm(message)) {
-                $.ajax({
-                    method: "POST",
-                    url: "/status/um",
-                    dataType: 'json',
-                    data: $('#umForm').serialize(),
-                }).done(function (updated) {
-                    if (updated) {
-                        alert("Under Maintenance is " + status + " now!");
-                        $('#umModal').modal('hide');
-                        window.location.href = "/GameSettings";
-                    }
-                });
-            }
-        },
-
-        showUnderMaintenanceForm: function () {
-            $.ajax({
-                method: "GET",
-                url: "/status/um"
-            }).done(function (content) {
-                if (content) {
-                    $('#um').html(content);
-                    $('#umModal').modal('show');
-                }
-            });
-        },
-
         getCheckedGames: function () {
             var container = $("#status-tbl");
             var checkboxes = container.find('.game-status-chk');
@@ -134,15 +104,37 @@
             };
         },
 
-        showGameForm: function (gameName, gameDisplayName) {
+        showGameForm: function (gameName, gameDisplayName, view) {
+            var settingTitle = view == 'OddSettings' ? 'Odds: ' : 'General Setting: ';
+            
             $.ajax({
                 method: "GET",
-                url: "/gamedetails/" + gameName
+                url: "/gamedetails/" + gameName + "?view=" + view
             }).done(function (content) {
                 if (content) {
                     $('#gamedetails').html(content);
-                    $('#gameTitleName').html(gameDisplayName);
+                    $('#settingTitle').html(settingTitle + gameDisplayName);
                     $('#gameModal').modal('show');
+                }
+            });
+        },
+
+        showPartnerSetting: function (partnerId, partnerName, gameName, displayName, gameType) {
+            $.ajax({
+                method: "GET",
+                url: "/CurrencyGroupGame/Index",
+                data: {
+                    partnerId,
+                    partnerName,
+                    gameName,
+                    gameType
+                }
+            }).done(function (content) {
+                if (content) {
+                    $('#partnerSettingContent').html(content);
+                    $('#gameName').html(displayName);
+                    $('#partnerSettingModal').modal('show');
+                    currencyGroupGame.loadDefaultSetting();
                 }
             });
         },
@@ -255,11 +247,15 @@
             $('#updateBtn').prop('disabled', true);
             let requestUrl = "/update";
 
-            if ($('#payouts').css('display') !== 'none') {
-                requestUrl = "/payouts/update";
+            if ($('#botsetting').css('display') && $('#botsetting').css('display') !== 'none') {
+                requestUrl = "/betlimit/update";
             }
 
-            if ($('#jackpots').css('display') !== 'none') {
+            if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
+                requestUrl = "/odds/update";
+            }
+
+            if ($('#jackpots').css('display') && $('#jackpots').css('display') !== 'none') {
                 requestUrl = "/jackpot/update";
             }
 
@@ -278,8 +274,11 @@
 
                 setTimeout(function () {
                     $('#updateBtn').prop('disabled', false);
+                    $('#successMsg').hide();
+                    $('#failedMsg').hide();
                     $('#gameModal').modal('hide');
                     location.reload();
+                    
                 }, 1000);
             });
         },
@@ -432,11 +431,11 @@
         toggleSettingTabs: function (name, element) {
             $('#general').hide();
             $('#jackpots').hide();
-            $('#payouts').hide();
+            $('#botsetting').hide();
 
             $('#general-tab-header').removeClass("active");
             $('#jackpots-tab-header').removeClass("active");
-            $('#payouts-tab-header').removeClass("active");
+            $('#botsetting-tab-header').removeClass("active");
 
             const id = '#' + name;
             const headerId = '#' + name + '-tab-header';
@@ -444,134 +443,34 @@
             $(id).show();
             $(headerId).addClass("active");
         },
-
-        showSiteExclusions: function (textMsg, name, displayName) {
-            $('#siteExclusions').val(textMsg);
-            $('#siteExclusionGameName').val(name);
-            $('#siteExclusionGameNameLabel').html(displayName);
-
-            $('#siteExclusionModal').modal('show');
-        },
-
-        updateSiteExclusions: function () {
-            const exclutions = $('#siteExclusions').val();
-            const name = $('#siteExclusionGameName').val();
-            const url = "/exclusions/update";
-            const data = { configName: name, siteExclusions: exclutions };
-            $('#updateExclusionsBtn').prop('disabled', true);
-
-            $.ajax({
-                method: "POST",
-                url: url,
-                dataType: 'json',
-                data: data,
-            }).done(function (result) {
-                if (result) {
-                    $('#updateExclusionsSuccess').show();
-                }
-                else {
-                    $('#updateExclusionsFailed').show();
-                }
-
-                setTimeout(function () {
-                    $('#updateExclusionsBtn').prop('disabled', false);
-                    $('#updateExclusionsSuccess').hide();
-                    $('#updateExclusionsFailed').hide();
-                    $('#siteExclusionModal').modal('hide');
-                    location.reload();
-                }, 1000);
-            });
-        },
-
-        showUpdateSuperPlayersForm: function () {
-            $.ajax({
-                method: "GET",
-                url: "/status/super_players"
-            }).done(function (content) {
-                if (content) {
-                    $('#super-players').html(content);
-                    $('#super-players-modal').modal('show');
-                }
-            });
-        },
-        updateSuperPlayers: function () {
-            const players = $('#super-players-names').val();
-            const url = "/status/super_players";
-            const data = { superPlayers: players };
-            $('#update-super-players-btn').prop('disabled', true);
-
-            $.ajax({
-                method: "POST",
-                url: url,
-                dataType: 'json',
-                data: data,
-            }).done(function (result) {
-                var msg = result ? '#update-super-players-success' : '#update-super-players-failed';
-                $(msg).show();
-                $("#super-players-msg-container").show();
-
-                setTimeout(function () {
-                    $('#update-super-players-btn').prop('disabled', false);
-                    $("#super-players-msg-container").hide();
-                    $(msg).hide();
-                    $('#super-players-modal').modal('hide');
-                }, 1000);
-            });
-        },
-
-        showBetaVersion: function () {
-            const modal = $('#betaVersionModal');
-
-            const checkedGames = this.getCheckedGames();
-            if (checkedGames.message.length === 0) {
-                this.showAlert("You should choose at least one game.");
-                return;
-            }
-
-            const message = `Are you sure you want to UNMARK BETA Version of the following games<br /><ul>` + checkedGames.message + "</ul>";
-            modal.find('#betaVersionContent').html(message);
-            modal.modal('show');
-        },
-        changeBetaVersionFlag: function () {
-            const modal = $('#betaVersionModal');
-            const checkedGames = this.getCheckedGames();
-            const isBeta = modal.find('#betaVersionCheckbox').is(":checked");
-            const message = `Are you sure you want to ${isBeta ? "MARK" : "UNMARK"} BETA Version of the following games<br /><ul>` + checkedGames.message + "</ul>";
-            modal.find('#betaVersionContent').html(message);
-            modal.find('#betaVersionFlag').val(isBeta);
-        },
-        submitBetaVersion: function () {
-            const modal = $('#betaVersionModal');
-            modal.find('#confirmBtn').prop('disabled', true);
-
-            const isBeta = modal.find('#betaVersionFlag').val();
-            const checkedGames = this.getCheckedGames();
-            const params = { games: checkedGames.games, isBeta };
-
-            $.ajax({ method: "POST", url: `/status/update_beta_version`, data: params })
-                .done(function (updated) {
-                    const msg = updated ? '#updateMsgSuccess' : '#updateMsgFailed';
-                    modal.find(msg).show();
-
-                    setTimeout(function () {
-                        modal.find('#confirmBtn').prop('disabled', false);
-                        modal.find('#updateMsgSuccess').hide();
-                        modal.find('#updateMsgFailed').hide();
-                        modal.modal('hide');
-                        location.reload();
-                    }, 1000);
-                });
-        },
     }
 }(jQuery));
 
 $(document).ready(function () {
     if ($("#status-tbl")) {
         $("#status-tbl").DataTable({
+            "ordering": false,
             "paging": false,
-            "ordering": false
+            "info": false,
+            "stateSave": true,
+            "columns": [
+                { "width": "3%" },
+                { "width": "10%" },
+                { "width": "5%" },
+                { "width": "10%" },
+                { "width": "20%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+            ],
+            "columnDefs": [
+                { "targets": [ 3, 4, 5, 6,7,8,9,10], "searchable": false }
+            ]
         });
-    }
+}
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);

@@ -9,5 +9,8 @@ namespace GamesAdmin.Database.Entities
     {
         [BsonElement("recheckInTime")]
         public DateTime RecheckInTime { get; set; }
+
+        [BsonElement("partnerId")]
+        public string ParnerId { get; set; }
     }
 }

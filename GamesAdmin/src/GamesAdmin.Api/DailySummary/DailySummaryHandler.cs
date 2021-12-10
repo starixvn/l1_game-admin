@@ -17,6 +17,6 @@ namespace GamesAdmin.Api.DailySummarize
         }
 
         public Task<IEnumerable<DailySummaryResult>> Handle(DailySummaryRequest request, CancellationToken cancellationToken)
-            => service.Get(request.SummarizedDate);
+            => service.Get(request.SummarizedDate, request.PartnerId);
     }
 }

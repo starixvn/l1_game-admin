@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using GamesAdmin.Site.Features.Notifications.Requests;
+using GamesAdmin.Site.Features.Partners.ViewModels;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using GamesAdmin.Site.Features.UmSchedule.ViewModels;
 
@@ -16,8 +18,8 @@ namespace GamesAdmin.Site._Shared
         {
             CreateMap<OnlineUser, OnlineUserViewModel>();
             CreateMap<BotUser, BotUserViewModel>();
-
             CreateMap<UmSchedule, UmScheduleItemViewModel>();
+            CreateMap<Partner, PartnerEditViewModel>();
 
             CreateMap<AddRequest, Notification>();
             CreateMap<UpdateRequest, Notification>();
@@ -93,6 +95,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
             CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
 
+            CreateMap<ThreeCardsRoundResult, ThreeCardsRoundResultViewModel>();
+            CreateMap<ThreeCardsSettlementResult, ThreeCardsSettlementResultViewModel>();
+            CreateMap<ThreeCardsBetRecord, ThreeCardsRecordViewModel>();
+            
             CreateMap<KenoMatchRoundResult, KenoMatchRoundResultViewModel>();
             CreateMap<KenoMatchPeriod, KenoMatchPeriodViewModel>();
             CreateMap<KenoMatchPeriodResult, KenoMatchPeriodResultViewModel>();
