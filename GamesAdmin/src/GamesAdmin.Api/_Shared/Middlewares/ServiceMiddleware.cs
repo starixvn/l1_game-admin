@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
@@ -23,9 +21,10 @@ using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
-using GamesAdmin.Database.ApiLogs;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using System;
+using System.Net.Http;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {

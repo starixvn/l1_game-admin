@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Api._Shared;
+﻿using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -37,6 +38,10 @@ namespace GamesAdmin.Api.GameServers
 
         [HttpPost("slot/set_board")]
         public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
+           => mediator.Send(request);
+
+        [HttpPost("casinoholdempoker/set_result")]
+        public Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult([FromBody] SetCasinoHoldemPokerResultRequest request)
            => mediator.Send(request);
     }
 }

@@ -20,6 +20,7 @@ body {
     width: 0.8rem;
     height: 0.8rem;
 }
+
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
@@ -62,4 +63,18 @@ ul {
 input[type=checkbox] {
     position: relative;
     top: 2px;
+}
+
+
+
+.text-blue {
+    color: blue;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.gray {
+    background-color: darkgray !important;
 }

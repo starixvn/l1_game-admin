@@ -315,8 +315,8 @@ namespace GamesAdmin.Core.Models
 
     public class PokerCard
     {
-        public byte Rank { get; set; }
+        public byte rank { get; set; }
 
-        public byte Suit { get; set; }
+        public byte suit { get; set; }
     }
 }

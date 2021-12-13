@@ -1,0 +1,63 @@
+﻿@using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
+
+@{
+    ViewData["Title"] = $"Casino Holdem Poker Result Controller";
+    string[] CardLabels = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+}
+
+@section Styles {
+    <link href="~/css/report.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="form filter">
+    <div class="form-row  col-auto">
+        <label class="control-label">Nickname:</label>
+        <input type="text" class="form-control" placeholder="Nickname" id="nickname">
+    </div>
+    <div class="form-row col-auto">
+        <label class="control-label">Set Results</label>
+    </div>
+
+
+    @for (var suit = 0; suit <= 3; suit++)
+    {
+        <div class="form-row  col-auto">
+            @for (var rankId = 0; rankId < CardLabels.Length; rankId++)
+            {
+                <div class="card card-type-@suit" onclick="casinoHoldemPokerResult.selectCard(event, { 'rank': @rankId, 'suit': @suit})">
+                    <span>@CardLabels[rankId]</span>
+                    <img class="img" src="~/images/card_@(suit).png" />
+                </div>
+            }
+        </div>
+    }
+
+    <div class="form-row  col-auto mt-5">
+        <button type="submit" class="btn-submit" onclick="casinoHoldemPokerResult.submit(event)">Submit</button>
+        <div id="spinner" class="spinner-border" style="display: none">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Results</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/casino-holdem-poker-result.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,89 @@
+﻿@using GamesAdmin.Core.Models.RoundResults;
+@model CasinoHoldemPokerResultControl
+@{
+    string[] CardLabels = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+}
+<div>
+    <strong>Cards</strong>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Cards</th>
+                <th>Combination</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Player</td>
+                <td>
+                    <div class="cards">
+                        @foreach (var card in Model.playerResult.Cards)
+                        {
+                            <div class="card card-type-@card.suit">
+                                <span>@CardLabels[card.rank]</span>
+                                <img class="img" src="~/images/card_@(card.suit).png" />
+                            </div>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="cards">
+                        @foreach (var card in Model.playerResult.CombinationCards)
+                        {
+                            <div class="card card-type-@card.suit">
+                                <span>@CardLabels[card.rank]</span>
+                                <img class="img" src="~/images/card_@(card.suit).png" />
+                            </div>
+                        }
+                    </div>
+                </td>
+                <td>@Model.playerResult.Rank</td>
+            </tr>
+            <tr>
+                <td>Dealer</td>
+                <td>
+                    <div class="cards">
+                        @foreach (var card in Model.dealerResult.Cards)
+                        {
+                            <div class="card card-type-@card.suit">
+                                <span>@CardLabels[card.rank]</span>
+                                <img class="img" src="~/images/card_@(card.suit).png" />
+                            </div>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="cards">
+                        @foreach (var card in Model.dealerResult.CombinationCards)
+                        {
+                            <div class="card card-type-@card.suit">
+                                <span>@CardLabels[card.rank]</span>
+                                <img class="img" src="~/images/card_@(card.suit).png" />
+                            </div>
+                        }
+                    </div>
+                </td>
+                <td>@Model.dealerResult.Rank</td>
+            </tr>
+            <tr>
+                <td>CommunityCards</td>
+                <td>
+                    <div class="cards">
+                        @foreach (var card in Model.communityCards)
+                        {
+                            <div class="card card-type-@card.suit">
+                                <span>@CardLabels[card.rank]</span>
+                                <img class="img" src="~/images/card_@(card.suit).png" />
+                            </div>
+                        }
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

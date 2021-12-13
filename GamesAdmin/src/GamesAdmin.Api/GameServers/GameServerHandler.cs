@@ -1,10 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using GamesAdmin.Api.GameServers.Requests;
+﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -14,6 +15,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
         , IRequestHandler<NotifyRoundsRequest, bool>
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
+        , IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>
     {
         private readonly IGameServerService gameServerService;
 
@@ -42,5 +44,8 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
         => gameServerService.SetSlotBoard(request);
+
+        public Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
+      => gameServerService.SetCasinoHoldemPokerResult(request);
     }
 }

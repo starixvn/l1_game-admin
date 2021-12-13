@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Core.Enumeration;
+using System.Collections.Generic;
 using System.Linq;
-using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -23,8 +23,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         private static readonly string[] disableMonitoring = new[] {
             Game.LuckyWheelValue,
             Game.KenoProVietValue,
-            Game.BlackJackValue,
-            Game.CasinoHoldemPokerValue
+            Game.BlackJackValue
         };
 
         public string Name { get; set; }
