@@ -60,12 +60,7 @@
         <div class="col-auto mt-5">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" asp-for="ExcludeUUS">
-<<<<<<< HEAD
                 <label class="form-check-label" asp-for="ExcludeUUS"></label>
-=======
-                <label class="form-check-label" asp-for="ExcludeUUS">
-                </label>
->>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
             </div>
         </div>
         <div class="col-auto mt-5">
@@ -99,11 +94,28 @@
         </div>
     </div>
 </div>
+
 <<<<<<< HEAD
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bet History</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 =======
-
->>>>>>> fb2436ae (feat: Casino Holdem Poker - bet history)
-
+>>>>>>> 1b4bb81f (feat: Casino Holdem Poker - review code)
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>

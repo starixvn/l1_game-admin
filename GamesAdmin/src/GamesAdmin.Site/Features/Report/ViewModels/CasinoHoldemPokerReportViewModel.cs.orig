@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-<<<<<<< HEAD
     public class CasinoHoldemPokerReportViewModel
     {
+<<<<<<< HEAD
         [CasinoHldemPokerValidation]
         public long? RoundId { get; set; }
 
@@ -23,15 +23,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         [CasinoHldemPokerValidation]
         public string Username { get; set; }
+
 =======
-    public class CasinoHoldemPokerReportViewModel : ReportViewModel
-    {
-        [CasinoHldemPokerValidationAttribute]
-        public string Nickname { get; set; }
-
-        public bool ExcludeUUS { get; set; }
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
-
+>>>>>>> 1b4bb81f (feat: Casino Holdem Poker - review code)
         [DisplayName("Convert to USD")]
         public bool ConvertToUSD { get; set; }
 
@@ -40,40 +34,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
 <<<<<<< HEAD
         public bool ExcludeUUS { get; set; }
-
-        public ReportSeletionsViewModel Selections { get; set; }
 =======
         [CasinoHldemPokerValidationAttribute]
         public string Username { get; set; }
 
+        [DisplayName("From Date")]
         public DateTime FromDate { get; set; } = DateTime.Today;
+
+        [DisplayName("To Date")]
         public DateTime ToDate { get; set; } = DateTime.Today;
+>>>>>>> 1b4bb81f (feat: Casino Holdem Poker - review code)
 
         public ReportSeletionsViewModel Selections { get; set; }
-
-        //public CasinoHoldemPokerReportViewModel()
-        //{
-        //    Partner = new PartnerViewModel { PartnerId = "ONEworks1", PartnerName = "2W" };
-        //    Partners = new List<PartnerViewModel>
-        //    {
-        //       Partner,
-        //         new PartnerViewModel{PartnerId= "sbogamesimulator", PartnerName="BBO"},
-        //    };
-
-        //}
-
-        //public PartnerViewModel Partner { get; set; }
-
-        //public IEnumerable<PartnerViewModel> Partners { get; set; }
-
-        //public DateTime FromDate { get; set; } = DateTime.Now;
-
-        //public DateTime ToDate { get; set; } = DateTime.Now;
-
-        //public string Username { get; set; }
-
-        //public bool ConvertToUsd { get; set; }
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
     }
 
     public class PartnerViewModel
@@ -93,21 +65,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
 
         public string GetErrorMessage() =>
-<<<<<<< HEAD
              "Please input either RoundId, Nickname or Username.";
-=======
-            "Please input either Nickname or Username.";
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var model = (CasinoHoldemPokerReportViewModel)validationContext.ObjectInstance;
 
-<<<<<<< HEAD
             if (!model.RoundId.HasValue && !string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
-=======
-            if (!string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
             {
                 return new ValidationResult(GetErrorMessage());
             }
@@ -126,8 +90,4 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             return true;
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)

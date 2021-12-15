@@ -94,5 +94,9 @@
   {
     "outputFile": "wwwroot/scss/pages/slot-game-report.css",
     "inputFile": "wwwroot/scss/pages/slot-game-report.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/casino-holdem-poker-result.css",
+    "inputFile": "wwwroot/scss/pages/casino-holdem-poker-result.scss"
   }
 ]
