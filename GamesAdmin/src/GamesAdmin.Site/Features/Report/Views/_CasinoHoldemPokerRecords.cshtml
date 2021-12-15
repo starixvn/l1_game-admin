@@ -29,7 +29,7 @@
                         <td class="text-center">@record.Username</td>
                         <td class="text-center">@record.Nickname</td>
                         <td class="text-center">@record.Currency</td>
-                        <td class="text-center">
+                        <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname">
                                 @record.RoundId

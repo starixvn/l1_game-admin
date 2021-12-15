@@ -43,17 +43,17 @@ namespace GamesAdmin.Core.Models.BetReport
     public class CasinoHoldemPokerHandModel
     {
         private readonly string[] RankHandName = {
-                        "DoesNotQualify",
-                        "HighCard",
+                        "Does Not Qualify",
+                        "High Card",
                         "Pair",
-                        "TwoPairs",
-                        "ThreeOfAKind",
+                        "Two Pairs",
+                        "Three Of A Kind",
                         "Straight",
                         "Flush",
-                        "FullHouse",
-                        "FourOfAKind",
-                        "StraightFlush",
-                        "RoyalFlush",
+                        "Full House",
+                        "Four Of A Kind",
+                        "Straight Flush",
+                        "Royal Flush",
                     };
         public int Id { get; set; }
         public IEnumerable<PokerCard> Cards { get; set; }

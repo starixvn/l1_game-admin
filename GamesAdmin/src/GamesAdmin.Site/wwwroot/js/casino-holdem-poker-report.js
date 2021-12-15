@@ -4,11 +4,11 @@
     });
 
     $.validator.unobtrusive.adapters.add("eitherrequired", function (options) {
-        //var $nickname = $(options.form).find("#Nickname")[0];
-        //var $username = $(options.form).find("#Username")[0];
+        var $nickname = $(options.form).find("#Nickname")[0];
+        var $username = $(options.form).find("#Username")[0];
 
-        //options.rules["eitherrequired"] = [$nickname, $username];
-        //options.messages["eitherrequired"] = options.message;
+        options.rules["eitherrequired"] = [$nickname, $username];
+        options.messages["eitherrequired"] = options.message;
     });
 
     var $currentTable;
@@ -22,7 +22,7 @@
             $currentTable = $('#report-result table');
             $currentTable.DataTable({
                 "ordering": false,
-                "lengthMenu": [10, 20, 50],
+                "lengthMenu": [100, 200, 500],
                 "language": {
                     "emptyTable": "No data"
                 },
