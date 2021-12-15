@@ -20,6 +20,9 @@
     color: #fff;
     background-color: #d75339;
     color: #fff; }
+  .btn-submit.disabled {
+    opacity: 0.65;
+    cursor: not-allowed; }
 
 .btn-add {
   background-color: #3ac47d;
@@ -368,6 +371,3 @@ input[type=checkbox] {
 
 .bold {
   font-weight: bold; }
-
-.gray {
-  background-color: darkgray !important; }

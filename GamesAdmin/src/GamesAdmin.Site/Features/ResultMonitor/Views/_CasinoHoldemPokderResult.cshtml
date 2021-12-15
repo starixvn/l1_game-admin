@@ -1,10 +1,8 @@
 ﻿@using GamesAdmin.Core.Models.RoundResults;
+@using GamesAdmin.Core;
 @model CasinoHoldemPokerResultControl
-@{
-    string[] CardLabels = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-}
+
 <div>
-    <strong>Cards</strong>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -22,7 +20,7 @@
                         @foreach (var card in Model.playerResult.Cards)
                         {
                             <div class="card card-type-@card.suit">
-                                <span>@CardLabels[card.rank]</span>
+                                <span>@Card.CardLabels[card.rank]</span>
                                 <img class="img" src="~/images/card_@(card.suit).png" />
                             </div>
                         }
@@ -33,7 +31,7 @@
                         @foreach (var card in Model.playerResult.CombinationCards)
                         {
                             <div class="card card-type-@card.suit">
-                                <span>@CardLabels[card.rank]</span>
+                                <span>@Card.CardLabels[card.rank]</span>
                                 <img class="img" src="~/images/card_@(card.suit).png" />
                             </div>
                         }
@@ -48,7 +46,7 @@
                         @foreach (var card in Model.dealerResult.Cards)
                         {
                             <div class="card card-type-@card.suit">
-                                <span>@CardLabels[card.rank]</span>
+                                <span>@Card.CardLabels[card.rank]</span>
                                 <img class="img" src="~/images/card_@(card.suit).png" />
                             </div>
                         }
@@ -59,7 +57,7 @@
                         @foreach (var card in Model.dealerResult.CombinationCards)
                         {
                             <div class="card card-type-@card.suit">
-                                <span>@CardLabels[card.rank]</span>
+                                <span>@Card.CardLabels[card.rank]</span>
                                 <img class="img" src="~/images/card_@(card.suit).png" />
                             </div>
                         }
@@ -68,13 +66,13 @@
                 <td>@Model.dealerResult.Rank</td>
             </tr>
             <tr>
-                <td>CommunityCards</td>
+                <td>Community Cards</td>
                 <td>
                     <div class="cards">
                         @foreach (var card in Model.communityCards)
                         {
                             <div class="card card-type-@card.suit">
-                                <span>@CardLabels[card.rank]</span>
+                                <span>@Card.CardLabels[card.rank]</span>
                                 <img class="img" src="~/images/card_@(card.suit).png" />
                             </div>
                         }
@@ -83,7 +81,6 @@
                 <td></td>
                 <td></td>
             </tr>
-            }
         </tbody>
     </table>
 </div>

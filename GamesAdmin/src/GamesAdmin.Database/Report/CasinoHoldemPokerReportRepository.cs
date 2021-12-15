@@ -65,7 +65,14 @@ namespace GamesAdmin.Database
 
             Expression<Func<CasinoHoldemPokerBetEntity, bool>> expression;
 
-            expression = x => x.Time <= filter.ToDate && x.Time >= filter.FromDate;
+            if (filter.RoundId > 0)
+            {
+                expression = x => x.Round == filter.RoundId;
+            }
+            else
+            {
+                expression = x => x.Time <= filter.ToDate.ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
+            }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))
             {

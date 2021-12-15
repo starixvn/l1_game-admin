@@ -4,10 +4,11 @@
     });
 
     $.validator.unobtrusive.adapters.add("eitherrequired", function (options) {
+        var $roundId = $(options.form).find("#RoundId")[0];
         var $nickname = $(options.form).find("#Nickname")[0];
         var $username = $(options.form).find("#Username")[0];
 
-        options.rules["eitherrequired"] = [$nickname, $username];
+        options.rules["eitherrequired"] = [$roundId, $nickname, $username];
         options.messages["eitherrequired"] = options.message;
     });
 

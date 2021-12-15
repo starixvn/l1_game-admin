@@ -10,7 +10,7 @@
     font-size: 1.3rem;
     outline: none;
     text-align: center;
-    
+
     &:focus {
         outline: none;
     }
@@ -26,6 +26,11 @@
         color: #fff;
         background-color: $btn-submit-bg-color-hover;
         color: #fff;
+    }
+
+    &.disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
     }
 }
 

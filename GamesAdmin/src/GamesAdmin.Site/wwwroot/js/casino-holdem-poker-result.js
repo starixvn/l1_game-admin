@@ -4,29 +4,46 @@
     var communityCards = [];
     var index = 0;
     return {
+        onInputNickname: function (event) {
+            event.preventDefault();
+            if (event.currentTarget.value !== "") {
+                $('.error').addClass('hidden');
+            }
+        },
         selectCard: function (event, card) {
             if (index > 8) {
                 return;
             }
 
             $(event.currentTarget).addClass('gray');
+            if (index === 8) {
+                $('.btn-submit').removeClass('disabled').removeAttr("disabled");
+            }
 
-            if (index < 2) {
-                player.push(card);
-            }
-            else if (index < 4) {
-                dealer.push(card);
-            }
-            else {
-                communityCards.push(card);
+            switch (true) {
+                case (index < 2):
+                    player.push(card);
+                    break;
+                case (index < 4):
+                    dealer.push(card);
+                    break;
+                default:
+                    communityCards.push(card);
+                    break;
             }
 
             index++;
         },
         submit: function (e) {
             e.preventDefault();
+            var nickame = $("#nickname").val();
+            if (nickame === "") {
+                $('.error').removeClass('hidden');
+                return;
+            }
+
             var data = {
-                roundName: $("#nickname").val(),
+                roundName: nickame,
                 player: player,
                 dealer: dealer,
                 communityCards: communityCards
@@ -36,9 +53,9 @@
                 url: "SetCasinoHoldemPokerResult",
                 data: data,
                 dataType: 'html',
-                success: function (html) {
+                success: function (response) {
                     $('#modal').modal('show');
-                    $('.modal-body').html(html);
+                    $('.modal-body').html(response);
                 }
             });
         }

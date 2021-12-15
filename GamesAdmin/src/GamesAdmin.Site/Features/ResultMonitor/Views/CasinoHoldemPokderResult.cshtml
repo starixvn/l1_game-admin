@@ -1,38 +1,37 @@
-﻿@using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
+﻿@using GamesAdmin.Core;
 
 @{
-    ViewData["Title"] = $"Casino Holdem Poker Result Controller";
-    string[] CardLabels = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    ViewData["Title"] = $"Casino Holdem Poker Result";
 }
 
 @section Styles {
-    <link href="~/css/report.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/casino-holdem-poker-result.min.css" rel="stylesheet" asp-append-version="true" />
 }
-<div class="form filter">
-    <div class="form-row  col-auto">
-        <label class="control-label">Nickname:</label>
-        <input type="text" class="form-control" placeholder="Nickname" id="nickname">
+<div class="form filter casino-holdem-poker">
+    <div class="form-row  col-auto nickname">
+        <label class="control-label bold">Nickname:</label>
+        <input type="text" class="form-control" id="nickname" onkeyup="casinoHoldemPokerResult.onInputNickname(event)">
+        <div class="error hidden">Please input nickname !</div>
     </div>
-    <div class="form-row col-auto">
-        <label class="control-label">Set Results</label>
+    <div class="form-row col-auto set-result">
+        <label class="control-label bold">Set Results</label>
     </div>
-
-
-    @for (var suit = 0; suit <= 3; suit++)
-    {
-        <div class="form-row  col-auto">
-            @for (var rankId = 0; rankId < CardLabels.Length; rankId++)
-            {
-                <div class="card card-type-@suit" onclick="casinoHoldemPokerResult.selectCard(event, { 'rank': @rankId, 'suit': @suit})">
-                    <span>@CardLabels[rankId]</span>
-                    <img class="img" src="~/images/card_@(suit).png" />
-                </div>
-            }
-        </div>
-    }
-
+    <div>
+        @for (var suit = 0; suit <= 3; suit++)
+        {
+            <div class="form-row col-auto">
+                @for (var rankId = 0; rankId < Card.CardLabels.Length; rankId++)
+                {
+                    <div class="card card-type-@suit" onclick="casinoHoldemPokerResult.selectCard(event, { 'rank': @rankId, 'suit': @suit})">
+                        <span>@Card.CardLabels[rankId]</span>
+                        <img class="img" src="~/images/card_@(suit).png" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
     <div class="form-row  col-auto mt-5">
-        <button type="submit" class="btn-submit" onclick="casinoHoldemPokerResult.submit(event)">Submit</button>
+        <button type="submit" class="btn-submit disabled" disabled onclick="casinoHoldemPokerResult.submit(event)">Submit</button>
         <div id="spinner" class="spinner-border" style="display: none">
             <span class="sr-only">Loading...</span>
         </div>
@@ -58,6 +57,11 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/js/casino-holdem-poker-result.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/js/casino-holdem-poker-result.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/casino-holdem-poker-result.min.js" asp-append-version="true"></script>
+    </environment>
 }

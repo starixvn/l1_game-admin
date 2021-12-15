@@ -8,11 +8,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class CasinoHoldemPokerReportViewModel : ReportViewModel
     {
-        [CasinoHldemPokerValidationAttribute]
-        public string Nickname { get; set; }
-
-        public bool ExcludeUUS { get; set; }
-
         [DisplayName("Convert to USD")]
         public bool ConvertToUSD { get; set; }
 
@@ -22,7 +17,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [CasinoHldemPokerValidationAttribute]
         public string Username { get; set; }
 
+        [DisplayName("From Date")]
         public DateTime FromDate { get; set; } = DateTime.Today;
+
+        [DisplayName("To Date")]
         public DateTime ToDate { get; set; } = DateTime.Today;
 
         public ReportSeletionsViewModel Selections { get; set; }

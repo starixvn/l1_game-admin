@@ -1,7 +1,7 @@
 ﻿@using GamesAdmin.Core.Models.BetReport;
+@using GamesAdmin.Core;
 @model CasinoHoldemPokerBetHistory
 @{
-    string[] CardLabels = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
     string noData = "No Data Available";
     string unfinishedGame = "Unfinished Game";
 }
@@ -27,7 +27,7 @@
                                 @foreach (var card in Model.Player.Cards)
                                 {
                                     <div class="card card-type-@card.suit">
-                                        <span>@CardLabels[card.rank]</span>
+                                        <span>@Card.CardLabels[card.rank]</span>
                                         <img class="img" src="~/images/card_@(card.suit).png" />
                                     </div>
                                 }
@@ -38,7 +38,7 @@
                                 @foreach (var card in Model.Player.CombinationCards)
                                 {
                                     <div class="card card-type-@card.suit">
-                                        <span>@CardLabels[card.rank]</span>
+                                        <span>@Card.CardLabels[card.rank]</span>
                                         <img class="img" src="~/images/card_@(card.suit).png" />
                                     </div>
                                 }
@@ -55,7 +55,7 @@
                                     @foreach (var card in Model.Dealer.Cards)
                                     {
                                         <div class="card card-type-@card.suit">
-                                            <span>@CardLabels[card.rank]</span>
+                                            <span>@Card.CardLabels[card.rank]</span>
                                             <img class="img" src="~/images/card_@(card.suit).png" />
                                         </div>
                                     }
@@ -74,7 +74,7 @@
                                     @foreach (var card in Model.Dealer.CombinationCards)
                                     {
                                         <div class="card card-type-@card.suit">
-                                            <span>@CardLabels[card.rank]</span>
+                                            <span>@Card.CardLabels[card.rank]</span>
                                             <img class="img" src="~/images/card_@(card.suit).png" />
                                         </div>
                                     }
@@ -109,7 +109,7 @@
                                 @foreach (var card in Model.CommunityCards)
                                 {
                                     <div class="card card-type-@card.suit">
-                                        <span>@CardLabels[card.rank]</span>
+                                        <span>@Card.CardLabels[card.rank]</span>
                                         <img class="img" src="~/images/card_@(card.suit).png" />
                                     </div>
                                 }
@@ -197,3 +197,4 @@
         </table>
     </div>
 </div>
+

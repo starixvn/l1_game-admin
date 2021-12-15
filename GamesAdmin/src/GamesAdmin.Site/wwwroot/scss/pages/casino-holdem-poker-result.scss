@@ -1,0 +1,67 @@
+﻿.form {
+    &.casino-holdem-poker {
+        width: 80rem;
+    }
+
+    .nickname {
+        label {
+            padding-top: 0.5rem;
+        }
+
+        input {
+            display: block;
+            width: 14rem;
+            margin-left: 0.5rem;
+            height: 3rem;
+        }
+    }
+
+    .set-result {
+        margin-top: 1rem;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .error {
+        border: 1px solid;
+        margin-left: 1rem;
+        padding: 0.5rem;
+        background-repeat: no-repeat;
+        background-position: 10px center;
+        color: #D8000C;
+        background-color: #FFBABA;
+        border-radius: 0.5rem;
+    }
+}
+
+.card {
+    height: 5rem;
+    width: 4rem;
+    margin-top: 0.4rem;
+
+    span {
+        font-size: 2rem;
+    }
+
+    .img {
+        left: 0.8rem;
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+
+    &:last-child:before {
+        background-color: transparent !important;
+    }
+}
+
+table {
+    thead {
+        background-color: lightgray;
+    }
+}
+
+.gray {
+    background-color: darkgray !important;
+}
