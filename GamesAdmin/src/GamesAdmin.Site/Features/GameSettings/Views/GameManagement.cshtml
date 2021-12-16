@@ -60,7 +60,7 @@
 
                     @{
                         var firstPartner = Model.Partners.FirstOrDefault();
-                        var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner.PartnerId);
+                        var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner?.PartnerId);
 
                         <td>
                             @(firstPartner?.Name)

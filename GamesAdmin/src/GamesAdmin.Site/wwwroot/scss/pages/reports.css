@@ -8,7 +8,7 @@
   padding-right: 4rem;
   padding-left: 4rem;
   padding-bottom: 1rem;
-  color: #495057;
+  color: #27303f;
 }
 .nav-custom .nav-link.active {
   border: initial;
@@ -267,9 +267,9 @@
 .bitcoin-master-result .result-detail {
   margin-left: 5px;
 }
-
 .bitcoin-master-result .tie .result-detail {
-  margin-left: 0; }
+  margin-left: 0;
+}
 
 .bitcoin-master-report .display-none {
   display: none !important;
