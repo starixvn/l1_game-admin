@@ -303,7 +303,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
         {
-            if (request.Messages[Language.VnValue]?.Length > MaxLengthOfMessage)
+            if (request.Messages[Language.DefaultLanguageValue]?.Length > MaxLengthOfMessage)
             {
                 return false;
             }

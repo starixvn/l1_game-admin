@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Notifications.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 
 namespace GamesAdmin.Site.Features.Notifications
@@ -30,7 +26,7 @@ namespace GamesAdmin.Site.Features.Notifications
         public IActionResult Add() => View(new AddViewModel());
 
         [HttpPost]
-        public async Task<IActionResult> Add([Bind]AddRequest addRequest)
+        public async Task<IActionResult> Add([Bind] AddRequest addRequest)
         {
             var result = await mediator.Send(addRequest);
 
@@ -47,7 +43,7 @@ namespace GamesAdmin.Site.Features.Notifications
         => View(await mediator.Send(new GetByIdRequest(id)));
 
         [HttpPost]
-        public async Task<IActionResult> Edit([Bind]UpdateRequest request)
+        public async Task<IActionResult> Edit([Bind] UpdateRequest request)
         {
             var result = await mediator.Send(request);
 
@@ -59,7 +55,7 @@ namespace GamesAdmin.Site.Features.Notifications
                     });
         }
 
-        [HttpPost]       
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await mediator.Send(new DeleteRequest(id));

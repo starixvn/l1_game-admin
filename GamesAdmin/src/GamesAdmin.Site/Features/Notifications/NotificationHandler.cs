@@ -40,17 +40,25 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Handle(AddRequest request, CancellationToken cancellationToken)
         {
-            request.EnMessage = Regex.Replace(request.EnMessage, NewLinePattern, Space);
-            request.VnMessage = Regex.Replace(request.VnMessage, NewLinePattern, Space);
+            request.VNMessage = Regex.Replace(request.VNMessage, NewLinePattern, Space);
+            request.ENMessage = Regex.Replace(request.ENMessage, NewLinePattern, Space);
+            request.CNMessage = Regex.Replace(request.CNMessage, NewLinePattern, Space);
+            request.TWMessage = Regex.Replace(request.TWMessage, NewLinePattern, Space);
+            request.THMessage = Regex.Replace(request.THMessage, NewLinePattern, Space);
+            request.IDMessage = Regex.Replace(request.IDMessage, NewLinePattern, Space);
+
+            var messages = new Dictionary<string, string>();
+            var type = request.GetType();
+            foreach (var l in Language.SupportedLanguages)
+            {
+                messages[l.Key] = (string)type.GetProperty(Language.LanguageMapper[l.Key]).GetValue(request);
+            }
+
             var notification = new Notification
             {
                 DisplayKind = request.DisplayKind,
-                Messages = new Dictionary<string, string> 
-                {
-                    {Language.VnValue, request.VnMessage },
-                    {Language.EnValue, request.EnMessage }
-                },
-                Message = request.VnMessage
+                Messages = messages,
+                Message = request.VNMessage
             };
 
             return notificationService.Add(notification);
@@ -65,19 +73,26 @@ namespace GamesAdmin.Site.Features.Notifications
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
         {
-            request.EnMessage = Regex.Replace(request.EnMessage, NewLinePattern, Space);
-            request.VnMessage = Regex.Replace(request.VnMessage, NewLinePattern, Space);
+            request.VNMessage = Regex.Replace(request.VNMessage, NewLinePattern, Space);
+            request.ENMessage = Regex.Replace(request.ENMessage, NewLinePattern, Space);
+            request.CNMessage = Regex.Replace(request.CNMessage, NewLinePattern, Space);
+            request.TWMessage = Regex.Replace(request.TWMessage, NewLinePattern, Space);
+            request.THMessage = Regex.Replace(request.THMessage, NewLinePattern, Space);
+            request.IDMessage = Regex.Replace(request.IDMessage, NewLinePattern, Space);
+
+            var messages = new Dictionary<string, string>();
+            var type = request.GetType();
+            foreach (var l in Language.SupportedLanguages)
+            {
+                messages[l.Key] = (string)type.GetProperty(Language.LanguageMapper[l.Key]).GetValue(request);
+            }
 
             var notification = new Notification
             {
                 Id = request.Id,
                 DisplayKind = request.DisplayKind,
-                Messages = new Dictionary<string, string>
-                {
-                    {Language.VnValue, request.VnMessage },
-                    {Language.EnValue, request.EnMessage }
-                },
-                Message = request.VnMessage
+                Messages = messages,
+                Message = request.VNMessage
             };
 
             return notificationService.Update(notification);

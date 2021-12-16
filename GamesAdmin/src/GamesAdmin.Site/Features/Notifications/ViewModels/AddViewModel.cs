@@ -23,11 +23,31 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         [Required]
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
-        public string VnMessage { get; set; }
+        public string VNMessage { get; set; }
 
         [Required]
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
-        public string EnMessage { get; set; }
+        public string ENMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string CNMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string TWMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string THMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string IDMessage { get; set; }
     }
 }

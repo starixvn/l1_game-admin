@@ -15,15 +15,39 @@
             <select class="form-control" asp-for="DisplayKindValue" asp-items="Model.DisplayKinds"></select>
         </div>
         <div class="form-group">
-            <label class="control-label">Message</label>
-            <textarea class="form-control" rows="4" asp-for="VnMessage"> </textarea>
-            <span asp-validation-for="VnMessage" class="text-danger"></span>
+            <label class="control-label">Message (VN)</label>
+            <textarea class="form-control" rows="4" asp-for="VNMessage"> </textarea>
+            <span asp-validation-for="VNMessage" class="text-danger"></span>
             <input type="hidden" asp-for="Id" />
         </div>
         <div class="form-group">
-            <label class="control-label">Message</label>
-            <textarea class="form-control" rows="4" asp-for="EnMessage"> </textarea>
-            <span asp-validation-for="EnMessage" class="text-danger"></span>
+            <label class="control-label">Message (EN)</label>
+            <textarea class="form-control" rows="4" asp-for="ENMessage"> </textarea>
+            <span asp-validation-for="ENMessage" class="text-danger"></span>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Message (CN)</label>
+            <textarea class="form-control" rows="4" asp-for="CNMessage"> </textarea>
+            <span asp-validation-for="CNMessage" class="text-danger"></span>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Message (TW)</label>
+            <textarea class="form-control" rows="4" asp-for="TWMessage"> </textarea>
+            <span asp-validation-for="TWMessage" class="text-danger"></span>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Message (TH)</label>
+            <textarea class="form-control" rows="4" asp-for="THMessage"> </textarea>
+            <span asp-validation-for="THMessage" class="text-danger"></span>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Message (ID)</label>
+            <textarea class="form-control" rows="4" asp-for="IDMessage"> </textarea>
+            <span asp-validation-for="IDMessage" class="text-danger"></span>
             <input type="hidden" asp-for="Id" />
         </div>
         <div class="form-group">

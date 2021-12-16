@@ -17,9 +17,9 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         {
             DisplayKinds = displayKinds;
             Id = notification.Id;
-            VnMessage = notification.Messages?[Language.VnValue] != null ? notification.Messages[Language.VnValue] : notification.Message;
             EnMessage = notification.Messages?[Language.EnValue] != null ? notification.Messages[Language.EnValue] : notification.Message;
             DisplayKindValue = byte.Parse(notification.DisplayKind.Value);
+            VNMessage = notification.Messages?[Language.DefaultLanguageValue] != null ? notification.Messages[Language.DefaultLanguageValue] : notification.Message;
         }
 
         public List<SelectListItem> DisplayKinds { get; }
@@ -28,16 +28,36 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         public string Id { get; set; }
 
         [Required]
-        [MinLength(MinLength)]
-        [MaxLength(MaxLength)]
-        public string VnMessage { get; set; }
-
-        [Required]
-        [MinLength(MinLength)]
-        [MaxLength(MaxLength)]
-        public string EnMessage { get; set; }
-
-        [Required]
         public byte DisplayKindValue { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string VNMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string ENMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string CNMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string TWMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string THMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string IDMessage { get; set; }
     }
 }
