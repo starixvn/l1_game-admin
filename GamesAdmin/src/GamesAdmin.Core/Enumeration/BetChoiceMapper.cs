@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration.BetChoices;
+﻿using GamesAdmin.Core.Enumeration.BetChoices;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Enumeration
 {
@@ -30,6 +30,7 @@ namespace GamesAdmin.Core.Enumeration
             {Game.KenoPower1Value, Enumeration.GetAll<KenoPowerBetChoice>() },
             {Game.KenoPower2Value, Enumeration.GetAll<KenoPowerBetChoice>() },
             {Game.BitcoinMasterValue, Enumeration.GetAll<BitcoinMasterBetChoice>() },
+            {Game.TexasHoldemPokerValue, Enumeration.GetAll<TexasHoldemPokerBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

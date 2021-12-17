@@ -63,7 +63,7 @@
         public GameServerConfigs KenoNorth { get; set; }
 
         public GameServerConfigs BitcoinMaster { get; set; }
-        
+
         public GameServerConfigs KenoMatch1 { get; set; }
 
         public GameServerConfigs KenoMatch2 { get; set; }
@@ -72,6 +72,8 @@
 
         public GameServerConfigs KenoPower2 { get; set; }
         public GameServerConfigs HiLo { get; set; }
+
+        public GameServerConfigs TexasHoldemPoker { get; set; }
 
         public GameServerConfigs CasinoHoldemPoker { get; set; }
 

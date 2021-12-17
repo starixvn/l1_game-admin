@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GamesAdmin.Core.Enumeration;
+using System;
 using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -49,6 +49,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.BitcoinMasterValue, typeof(IBitcoinMasterOnlineUserApi) },
             { Game.CasinoHoldemPokerValue, typeof(ICasinoHoldemPokerOnlineUserApi) },
             { Game.HiLoValue, typeof(IHiLoApi) },
+            { Game.TexasHoldemPokerValue, typeof(ITexasHoldemPokerOnlineUserApi) },
 
         };
 

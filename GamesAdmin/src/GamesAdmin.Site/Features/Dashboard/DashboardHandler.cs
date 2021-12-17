@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.Dashboard.Requests;
@@ -11,6 +7,10 @@ using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Partners;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Dashboard
 {
@@ -130,6 +130,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.CasinoHoldemPoker.DisplayName, Game.CasinoHoldemPoker.Value),
                 new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value),
                 new SelectListItem(Game.HiLo.DisplayName, Game.HiLo.Value),
+                new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value)
                 };
     }
 }

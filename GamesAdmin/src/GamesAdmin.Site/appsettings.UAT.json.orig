@@ -1,0 +1,206 @@
+﻿{
+  "Env": "UAT",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "HostingPort": "5000",
+  "AllowedHosts": "*",
+  "ApiHost": "http://l1_admin_api_uat:5000/api",
+  "GameServers": {
+    "Main": {
+      "Api": "http://l1_game_server_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/uat/main"
+    },
+    "SeDie": {
+      "Api": "http://l1_sedie_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/xocxoc",
+      "SocketRoute": "/uat/sedie/socket.io"
+    },
+    "VipSeDie": {
+      "Api": "http://l1_vip_sedie_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/vipsedie",
+      "SocketRoute": "/uat/vsedie/socket.io"
+    },
+    "SpecialSeDie": {
+      "Api": "http://l1_special_sedie_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/specialsedie",
+      "SocketRoute": "/uat/specialsedie/socket.io"
+    },
+    "Blackjack": {
+      "Api": "http://l1_blackjack_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/blackjack",
+      "SocketRoute": "/uat/blackjack/socket.io"
+    },
+    "VipFishPrawnCrab": {
+      "Api": "http://l1_vip_fish_prawn_crab_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/vipfishprawncrab",
+      "SocketRoute": "/uat/vipfishprawncrab/socket.io"
+    },
+    "SicBo": {
+      "Api": "http://l1_sicbo_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/sicbo",
+      "SocketRoute": "/uat/sicbo/socket.io"
+    },
+    "VipBaccarat": {
+      "Api": "http://l1_vip_baccarat_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/vipbaccarat",
+      "SocketRoute": "/uat/vipbaccarat/socket.io"
+    },
+    "VipSeDieWar": {
+      "Api": "http://l1_vip_sedie_war_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/vipsediewar",
+      "SocketRoute": "/uat/vipsediewar/socket.io"
+    },
+    "KenoProMax": {
+      "Api": "http://l1_keno_pro_max_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/kenopromax",
+      "SocketRoute": "/uat/kenopromax/socket.io"
+    },
+    "BigSmall": {
+      "Api": "http://l1_big_small_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/taixiu",
+      "SocketRoute": "/uat/bigsmall/socket.io"
+    },
+    "TurboBigSmall": {
+      "Api": "http://l1_turbo_big_small_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/txturbo",
+      "SocketRoute": "/uat/turbobigsmall/socket.io"
+    },
+    "TurboOddEven": {
+      "Api": "http://l1_turbo_odd_even_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/oeturbo",
+      "SocketRoute": "/uat/turbooddeven/socket.io"
+    },
+    "FishPrawnCrab": {
+      "Api": "http://l1_fish_prawn_crab_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/baucua",
+      "SocketRoute": "/uat/fishprawncrab/socket.io"
+    },
+    "Lottery": {
+      "Api": "http://l1_lottery_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/lottery",
+      "SocketRoute": "/uat/lottery/socket.io"
+    },
+    "DragonTiger": {
+      "Api": "http://l1_dragon_tiger_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/dragontiger",
+      "SocketRoute": "/uat/dragontiger/socket.io"
+    },
+    "Baccarat": {
+      "Api": "http://l1_baccarat_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/baccarat",
+      "SocketRoute": "/uat/baccarat/socket.io"
+    },
+    "MiniSeDie": {
+      "Api": "http://l1_mini_sedie_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/minisedie",
+      "SocketRoute": "/uat/minisedie/socket.io"
+    },
+    "Roulette": {
+      "Api": "http://l1_roulette_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/roulette",
+      "SocketRoute": "/uat/roulette/socket.io"
+    },
+    "FourGuardians": {
+      "Api": "http://l1_four_guandiars_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/fourguardians",
+      "SocketRoute": "/uat/fourguardians/socket.io"
+    },
+    "ThreeCards": {
+      "Api": "http://l1_three_cards_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/threecards",
+      "SocketRoute": "/uat/threecards/socket.io"
+    },
+    "HeroesSlot": {
+      "Api": "http://l1_heroes_slot_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/heroesslot",
+      "SocketRoute": "/uat/heroesslot/socket.io"
+    },
+    "MiniKeno": {
+      "Api": "http://l1_mini_keno_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/",
+      "SocketRoute": "/uat/minikeno/socket.io"
+    },
+    "BitcoinMaster": {
+      "Api": "http://l1_bitcoin_master_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/bitcoinmaster",
+      "SocketRoute": "/uat/bitcoinmaster/socket.io"
+    },
+    "KenoMatch1": {
+      "Api": "http://l1_keno_match_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/kenomatch1",
+      "SocketRoute": "/uat/kenomatch/socket.io"
+    },
+    "KenoMatch2": {
+      "Api": "http://l1_keno_match_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/kenomatch2",
+      "SocketRoute": "/uat/kenomatch/socket.io"
+    },
+    "KenoPower1": {
+      "Api": "http://l1_keno_power_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/kenopower1",
+      "SocketRoute": "/uat/kenopower/socket.io"
+    },
+    "KenoPower2": {
+      "Api": "http://l1_keno_power_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/kenopower2",
+      "SocketRoute": "/uat/kenopower/socket.io"
+    },
+    "CasinoHoldemPoker": {
+      "Api": "http://l1_casino_holdem_poker_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/casinoholdempoker",
+      "SocketRoute": "/uat/casinoholdempoker/socket.io"
+    },
+<<<<<<< HEAD
+    "HiLo": {
+      "Api": "http://l1_hilo_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/hilo",
+      "SocketRoute": "/uat/hilo/socket.io"
+=======
+    "TexasHoldemPoker": {
+      "Api": "http://l1_texas_holdem_poker_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/texasholdempoker",
+      "SocketRoute": "/uat/texasholdempoker/socket.io"
+>>>>>>> 0a5b5d7a (feat: config odds- choices)
+    }
+  },
+  "IdentityServerAuth": {
+    "Url": "http://l1_auth_api_uat:5000",
+    "ClientId": "admin-api",
+    "ClientSecret": "adminapi@20luminet&",
+    "SiteId": "admin-api"
+  },
+  "Sentry": {
+    "Dsn": "http://16e76177332e43dbb9cd291e03ee06df@10.2.190.51:9009/28",
+    "IncludeRequestPayload": true,
+    "SendDefaultPii": false,
+    "MinimumBreadcrumbLevel": "Debug",
+    "MinimumEventLevel": "Warning",
+    "AttachStackTrace": true,
+    "Debug": true,
+    "DiagnosticsLevel": "Error"
+  },
+  "DatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend%4022027@10.99.99.187:27201/?replicaSet=SabaUAT",
+    "DatabaseName": "minigame",
+    "Collection": "data_protection_keys"
+  },
+  "AuditDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend%4022027@10.99.99.187:27201/?replicaSet=SabaUAT",
+    "DatabaseName": "log"
+  },
+  "ApplicationName": "Game-Admin",
+  "DefaultTimeZone": "Asia/Ho_Chi_Minh",
+  "DefaultUmMessage": "Hệ thống sẽ bảo trì từ {0} đến {1}.",
+  "ResultPageConfiguration": {
+    "BaseUrl": "http://l1_game_result_uat:5000/",
+    "Language": "en-US",
+    "ClientId": "Game Admin 2",
+    "ClientKey": "144d673f-1769-49dd-8341-c7aeb47017c0"
+  },
+  "MaxDecreased": 5
+}

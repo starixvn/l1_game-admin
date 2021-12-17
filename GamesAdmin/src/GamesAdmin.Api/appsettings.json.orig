@@ -222,20 +222,21 @@
       "SocketRoute": "/kenopower/socket.io"
     },
     "CasinoHoldemPoker": {
-<<<<<<< HEAD
-      "Api": "http://localhost:8036",
-      "Socket": "http://localhost:8036/admin/casinoholdempoker",
-      "SocketRoute": "/socket.io"
+      "Api": "http://l1-proxy.lumigame.com/casinoholdempoker",
+      "Socket": "l1-proxy.lumigame.com/admin/casinoholdempoker",
+      "SocketRoute": "/casinoholdempoker/socket.io"
     },
+<<<<<<< HEAD
      "HiLo": {
       "Api": "http://l1-proxy.lumigame.com/hilo",
       "Socket": "l1-proxy.lumigame.com/admin/hilo",
       "SocketRoute": "/hilo/socket.io"
 =======
-      "Api": "http://l1-proxy.lumigame.com/casinoholdempoker",
-      "Socket": "l1-proxy.lumigame.com/admin/casinoholdempoker",
-      "SocketRoute": "/casinoholdempoker/socket.io"
->>>>>>> f17fa9c9 (feat: Casino Holdem Poker - add transforms)
+    "TexasHoldemPoker": {
+      "Api": "http://l1-proxy.lumigame.com/texasholdempoker",
+      "Socket": "l1-proxy.lumigame.com/admin/texasholdempoker",
+      "SocketRoute": "/texasholdempoker/socket.io"
+>>>>>>> 0a5b5d7a (feat: config odds- choices)
     }
   },
   "SabaApiSettings": {

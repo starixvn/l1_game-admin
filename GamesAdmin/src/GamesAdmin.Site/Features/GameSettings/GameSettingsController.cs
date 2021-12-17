@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Audit.Mvc;
+﻿using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -16,6 +12,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -223,6 +223,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint", appSettings.GameServers.CasinoHoldemPoker.Socket);
             HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint-route", appSettings.GameServers.CasinoHoldemPoker.SocketRoute);
+            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint", appSettings.GameServers.TexasHoldemPoker.Socket);
+            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint-route", appSettings.GameServers.TexasHoldemPoker.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
