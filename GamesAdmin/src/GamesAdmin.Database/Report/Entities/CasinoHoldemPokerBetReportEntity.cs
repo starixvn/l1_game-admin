@@ -62,6 +62,8 @@
 
     public class CasinoHoldemPokerBetHistoryModel
     {
+        private const string emptyOdds = "-";
+
         public CasinoHoldemPokerBetHistoryModel(
             CasinoHoldemPokerBetEntity bet,
             CasinoHoldemPokerRoundEntity round)
@@ -80,11 +82,20 @@
             SettlementResult = bet.SettlementResult;
 
             AA = bet.Aa;
+            AaOdds = bet.AaOdds.Equals(0) ? emptyOdds : bet.AaOdds.ToString();
+
             Ante = bet.Ante;
+            AnteOdds = bet.AnteOdds.Equals(0) ? emptyOdds : bet.AnteOdds.ToString();
+
             Call = bet.Call;
+            CallOdss = bet.CallOdss.Equals(0) ? emptyOdds : bet.CallOdss.ToString();
+
             Stake = bet.Ante + bet.Aa + bet.Call;
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
             BetWin = TotalWin - Stake;
+
+            Time = bet.Time;
+            CallTime = bet.CallTime;
         }
 
         public decimal AA { get; }
@@ -92,6 +103,12 @@
         public decimal Ante { get; }
 
         public decimal Call { get; }
+
+        public string AaOdds { get; }
+
+        public string AnteOdds { get; }
+
+        public string CallOdss { get; }
 
         public long RoundId { get; }
 
@@ -114,6 +131,10 @@
         public decimal TotalWin { get; }
 
         public decimal BetWin { get; }
+
+        public DateTime Time { get; }
+
+        public DateTime CallTime { get; }
     }
 
 

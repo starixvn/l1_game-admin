@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace GamesAdmin.Database.Entities
@@ -10,13 +11,21 @@ namespace GamesAdmin.Database.Entities
     {
         public decimal Aa { get; set; }
 
+        public decimal AaOdds { get; set; }
+
         public decimal Ante { get; set; }
 
+        public decimal AnteOdds { get; set; }
+
         public decimal Call { get; set; }
+
+        public decimal CallOdss { get; set; }
 
         public bool IsFold { get; set; }
 
         public string Currency { get; set; }
+
+        public DateTime CallTime { get; set; }
 
         public IEnumerable<PokerCard> Cards { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
@@ -13,6 +14,12 @@ namespace GamesAdmin.Core.Models.BetReport
         public IEnumerable<PokerCard> CommunityCards { get; set; }
 
         public CasinoHoldemPokerBetSettlementResult SettlementResult { get; set; }
+
+        public string AaOdds { get; set; }
+
+        public string AnteOdds { get; set; }
+
+        public string CallOdss { get; set; }
 
         public decimal AA { get; set; }
 
@@ -31,6 +38,10 @@ namespace GamesAdmin.Core.Models.BetReport
         public decimal TotalWin { get; set; }
 
         public decimal BetWin { get; set; }
+
+        public DateTime Time { get; set; }
+
+        public DateTime CallTime { get; set; }
     }
 
     public class CasinoHoldemPokerBetSettlementResult

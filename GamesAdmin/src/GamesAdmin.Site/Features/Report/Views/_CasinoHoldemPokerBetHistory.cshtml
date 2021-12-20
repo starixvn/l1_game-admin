@@ -7,7 +7,7 @@
 }
 <div>
     <div>
-        <strong>Cards</strong>
+        <strong>Round Id: @Model.RoundId</strong>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -131,13 +131,14 @@
         </table>
     </div>
     <div class="mt-5">
-        <strong>Bets</strong>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Betting Options</th>
+                    <th>Time (GMT + 7)</th>
+                    <th>Bet Choice</th>
+                    <th>Odds</th>
                     <th>Stake</th>
-                    <th>Winning Amount</th>
+                    <th>Win</th>
                 </tr>
             </thead>
             <tbody>
@@ -147,7 +148,9 @@
                     var winAA = (Model.SettlementResult?.AA ?? 0);
                     var winCall = (Model.SettlementResult?.Call ?? 0);
                     <tr class="@(winAnte > 0 ? "text-blue bold" : "")">
+                        <td class="text-center">@Model.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">Ante</td>
+                        <td class="text-center">@Model.AnteOdds</td>
                         <td class="text-center">@HtmlHelpers.formatNumber(Model.Ante)</td>
                         @if (Model.Ended)
                         {
@@ -161,7 +164,9 @@
                         }
                     </tr>
                     <tr class="@(winAA > 0 ? "text-blue bold" : "")">
+                        <td class="text-center">@Model.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">AA</td>
+                        <td class="text-center">@Model.AaOdds</td>
                         <td class="text-center">@HtmlHelpers.formatNumber(Model.AA)</td>
                         @if (Model.Ended)
                         {
@@ -177,7 +182,9 @@
                     @if (Model.Ended)
                     {
                         <tr class="@(winCall > 0 ? "text-blue bold" : "")">
+                            <td class="text-center">@Model.CallTime.ToString(Constants.DateTimeFormat)</td>
                             <td class="text-center">Call</td>
+                            <td class="text-center">@Model.CallOdss</td>
                             <td class="text-center">@HtmlHelpers.formatNumber(Model.Call)</td>
                             <td class="text-center">
                                 @HtmlHelpers.formatNumber(winCall)
@@ -188,7 +195,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="3" class="text-center">
+                        <td colspan="5" class="text-center">
                             @noData
                         </td>
                     </tr>

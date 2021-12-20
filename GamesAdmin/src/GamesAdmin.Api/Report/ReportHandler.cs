@@ -201,7 +201,17 @@ namespace GamesAdmin.Api.Report
         }
 
         public Task<IEnumerable<CasinoHoldemPokerBetRecord>> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
-            => reportService.GetCasinoHoldemPokerReportAsync(request.Filter);
+        {
+            try
+            {
+                return reportService.GetCasinoHoldemPokerReportAsync(request.Filter);
+            }
+            catch (Exception ex)
+            {
+                var a = ex;
+                return null;
+            }
+        }
 
         public Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
               => reportService.GetCasinoHoldemPokerBetHistoryAsync(request.RoundId, request.Nickname);
