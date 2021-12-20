@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Api.EndGameInfo
 {
@@ -53,6 +53,7 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.KenoPower2, typeof(KenoPowerEndGameInfoService<KenoPower2RoundEntity, KenoPower2OneEntity>) },
             { GameId.CasinoHoldemPoker, typeof(CasinoHoldemPokerEndGameInfoService) },
             { GameId.HiLo, typeof(HiLoEndGameInfoService) },
+            { GameId.TexasHoldemPoker, typeof(TexasHoldemPokerEndGameInfoService) },
         };
 
         private readonly IServiceProvider serviceProvider;
