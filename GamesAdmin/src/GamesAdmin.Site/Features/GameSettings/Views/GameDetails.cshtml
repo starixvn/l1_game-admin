@@ -20,7 +20,7 @@
                 <a class="nav-link" id="botsetting-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('botsetting')">Bot Setting</a>
             </li>
         }
-       
+
         @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots && Model.SlotsConfig.Jackpot.Enabled)
         {
             <li class="nav-item">
@@ -211,6 +211,12 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label class="control-label" asp-for="@Model.JackpotViewModel.AllowedCurrency"></label>
+                        <input type="text" asp-for="@Model.JackpotViewModel.AllowedCurrency" class="form-control" />
+                    </div>
+                </div>
             }
         </div>
 

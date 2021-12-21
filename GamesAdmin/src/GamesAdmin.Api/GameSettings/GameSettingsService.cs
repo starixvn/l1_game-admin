@@ -222,7 +222,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateOdds(string name,  Dictionary<string, double> odds)
+        public async Task<bool> UpdateOdds(string name, Dictionary<string, double> odds)
         {
             try
             {
@@ -306,7 +306,8 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SlotsConfig.Jackpot.ExcludeUUS, jackpot.ExcludeUUS)
                     .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio);
+                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                    .Set(field => field.SlotsConfig.Jackpot.AllowedCurrency, jackpot.AllowedCurrency);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

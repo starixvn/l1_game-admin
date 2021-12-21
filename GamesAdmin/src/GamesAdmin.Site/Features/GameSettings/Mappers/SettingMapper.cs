@@ -31,12 +31,13 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.MaxBet, opt => opt.MapFrom(src => src.BetLimit.MaxBet))
                 .ForMember(dest => dest.Icons, opt => opt.MapFrom(src => src.SlotsConfig.Icons));
 
-            CreateMap<SlotsConfig, JackpotViewModel>()               
+            CreateMap<SlotsConfig, JackpotViewModel>()
                 .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.Jackpot.WinningRatio.ToPercentage()))
                 .ForMember(dest => dest.PlayerContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio.ToPercentage()))
                 .ForMember(dest => dest.BotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
                 .ForMember(dest => dest.ExcludeUUS, opt => opt.MapFrom(src => src.Jackpot.ExcludeUUS))
-                .ForMember(dest => dest.JackpotEnabled, opt => opt.MapFrom(src => src.Jackpot.Enabled));
+                .ForMember(dest => dest.JackpotEnabled, opt => opt.MapFrom(src => src.Jackpot.Enabled))
+                .ForMember(dest => dest.AllowedCurrency, opt => opt.MapFrom(src => src.Jackpot.AllowedCurrency));
 
             CreateMap<SlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
@@ -58,11 +59,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.StakeLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots, src.BotRatios)))
                 .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)))
                 .ForMember(dest => dest.Jackpot, opt => opt.MapFrom(src => new Jackpot(
-                    src.EnableJackpot, 
-                    src.WinningRatio.ConvertPercentValue(), 
-                    src.PlayerJackpotContribution.ConvertPercentValue(), 
+                    src.EnableJackpot,
+                    src.WinningRatio.ConvertPercentValue(),
+                    src.PlayerJackpotContribution.ConvertPercentValue(),
                     src.BotJackpotContribution.ConvertPercentValue(),
-                    false)));
+                    false,
+                    src.AllowedCurrency)));
 
             CreateMap<AddViewModel, GameInfo>();
             CreateMap<AddViewModel, EnableSetting>();

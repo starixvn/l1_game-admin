@@ -50,13 +50,20 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
     public class Jackpot
     {
-        public Jackpot(bool enabled, double winingAmount, double playerContribution, double botContribution, bool excludeUUS = false)
+        public Jackpot(
+            bool enabled,
+            double winingAmount,
+            double playerContribution,
+            double botContribution,
+            bool excludeUUS = false,
+            string allowedCurrency = "INH")
         {
             Enabled = enabled;
             WinningRatio = winingAmount;
             PlayerContributionRatio = playerContribution;
             BotContributionRatio = botContribution;
             ExcludeUUS = excludeUUS;
+            AllowedCurrency = (allowedCurrency ?? string.Empty).Trim();
         }
 
         public bool Enabled { get; set; }
@@ -68,5 +75,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double PlayerContributionRatio { get; set; }
 
         public double BotContributionRatio { get; set; }
+
+        public string AllowedCurrency { get; set; }
     }
 }
