@@ -106,7 +106,7 @@
 
         showGameForm: function (gameName, gameDisplayName, view) {
             var settingTitle = view == 'OddSettings' ? 'Odds: ' : 'General Setting: ';
-            
+
             $.ajax({
                 method: "GET",
                 url: "/gamedetails/" + gameName + "?view=" + view
@@ -278,7 +278,7 @@
                     $('#failedMsg').hide();
                     $('#gameModal').modal('hide');
                     location.reload();
-                    
+
                 }, 1000);
             });
         },
@@ -443,6 +443,14 @@
             $(id).show();
             $(headerId).addClass("active");
         },
+
+        formatNumber: function (id) {
+            var elm = $(`#${id}`);
+            var val = elm.val().replace(/,/g, '');
+            var parts = val.split(".");
+            parts[0] = parseInt(parts[0]).toLocaleString('en');
+            elm.val(parts.join("."));
+        }
     }
 }(jQuery));
 
@@ -467,10 +475,10 @@ $(document).ready(function () {
                 { "width": "5%" },
             ],
             "columnDefs": [
-                { "targets": [ 3, 4, 5, 6,7,8,9,10], "searchable": false }
+                { "targets": [3, 4, 5, 6, 7, 8, 9, 10], "searchable": false }
             ]
         });
-}
+    }
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
