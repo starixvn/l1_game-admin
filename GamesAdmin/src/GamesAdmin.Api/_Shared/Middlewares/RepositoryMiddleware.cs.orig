@@ -40,7 +40,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
 <<<<<<< HEAD
             services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
 =======
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
+            services.AddScoped<ITexasHoldemPokerReportRepository, TexasHoldemPokerReportRepository>();
+
+>>>>>>> 655485f1 (feat: Texas Round History)
         }
     }
 }

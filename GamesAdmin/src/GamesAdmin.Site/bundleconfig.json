@@ -291,11 +291,11 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/casino-holdem-poker-report.min.js",
+    "outputFileName": "wwwroot/js/texas-holdem-poker-report.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/data-tables/datatables.min.js",
-      "wwwroot/js/casino-holdem-poker-report.js"
+      "wwwroot/js/texas-holdem-poker-report.js"
     ]
   }
 ]

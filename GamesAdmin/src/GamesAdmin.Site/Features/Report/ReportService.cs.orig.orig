@@ -28,15 +28,6 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname);
 
-<<<<<<< HEAD
-=======
-        Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(Game game, long roundId, string nickname);
-
-        Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId);
-
-        Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId);
-
->>>>>>> 0932394a (feat: bet history)
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
 
         Task<SpecialSeDieBetReport> GetSpecialSeDieReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
@@ -52,23 +43,20 @@ namespace GamesAdmin.Site.Features.Report
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
-<<<<<<< HEAD
 
         Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
         
          Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
 
+<<<<<<< HEAD
         Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
 =======
-
-<<<<<<< HEAD
-        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
-
         Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
-=======
-        Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS);
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
+
+        Task<IEnumerable<TexasHoldemPokerBetRecord>> GetTexasHoldemPokerBetReport(TexasHoldemPokerBetReportFilter filter);
+
+        Task<TexasHoldemPokerBetHistory> GetTexasHoldemPokerBetHistory(long roundId, string nickname);
+>>>>>>> 655485f1 (feat: Texas Round History)
     }
 
     public class ReportService : IReportService
@@ -104,18 +92,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
         => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
 
-<<<<<<< HEAD
-=======
-        public Task<IEnumerable<KenoBetHistoryRecord>> GetKenoBetHistory(Game game, long roundId, string nickname)
-        => reportApi.GetKenoBetHistory(game.Value, roundId, nickname);
-
-        public Task<KenoRoundResult> GetKenoRoundResult(Game game, long roundId)
-        => reportApi.GetKenoRoundResult(game.Value, roundId);
-
-        public async Task<RouletteBetHistory> GetRouletteBetHistory(long roundId, string userId)
-        => await reportApi.GetRouletteBetHistory(roundId, userId);
-
->>>>>>> 0932394a (feat: bet history)
         public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
         => reportApi.GetLuckyWheelBetHistory(nickname);
 
@@ -148,9 +124,9 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
+
+
 <<<<<<< HEAD
-
-
         public Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter)
         => reportApi.GetHiLoReport(filter);
         
@@ -160,17 +136,14 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
             => await reportApi.GetHoldemPokerBetHistory(filter);
 =======
-
-<<<<<<< HEAD
-        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter)
-            => reportApi.GetCasinoHoldemPokerBetReport(filter);
-
         public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
             => await reportApi.GetCasinoHoldemPokerBetHistory(filter);
-=======
-        public Task<CasinoHoldemPokerBetReport> GetCasinoHoldemPokerBetReport(long roundId, string nickname, bool excludeUUS)
-      => reportApi.GetCasinoHoldemPokerBetReport(roundId, nickname, excludeUUS);
->>>>>>> 03c0a4df (feat: Casino Holdem Poker - round history)
->>>>>>> 343aa803 (feat: Casino Holdem Poker - round history)
+
+        public Task<IEnumerable<TexasHoldemPokerBetRecord>> GetTexasHoldemPokerBetReport(TexasHoldemPokerBetReportFilter filter)
+          => reportApi.GetTexasHoldemPokerBetReport(filter);
+
+        public Task<TexasHoldemPokerBetHistory> GetTexasHoldemPokerBetHistory(long roundId, string nickname)
+           => reportApi.GetTexasHoldemPokerBetHistory(roundId, nickname);
+>>>>>>> 655485f1 (feat: Texas Round History)
     }
 }

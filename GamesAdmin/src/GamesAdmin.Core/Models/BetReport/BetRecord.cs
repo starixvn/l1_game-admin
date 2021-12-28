@@ -343,4 +343,8 @@ namespace GamesAdmin.Core.Models
 
         public int ExchangeRateId { get; set; }
     }
+
+    public class TexasHoldemPokerBetRecord : CasinoHoldemPokerBetRecord
+    {
+    }
 }

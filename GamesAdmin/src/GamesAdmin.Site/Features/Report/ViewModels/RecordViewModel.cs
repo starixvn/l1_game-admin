@@ -348,4 +348,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public int ExchangeRateId { get; set; }
     }
+
+    public class TexasHoldemPokerRecordViewModel : CasinoHoldemPokerRecordViewModel
+    {
+    }
 }

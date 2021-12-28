@@ -309,6 +309,12 @@ namespace GamesAdmin.Api._Shared
             CreateMap<HiLoBetReportEntity, HiLoBetRecord>();
             CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
             CreateMap<HiLoRoundEntity, HiLoRoundResult>();
+            
+            CreateMap<TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetRecord>()
+                .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => source.Player.Rank))
+                .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => source.Dealer.Rank));
+
+            CreateMap<TexasHoldemPokerBetHistoryModel, TexasHoldemPokerBetHistory>();
         }
     }
 }

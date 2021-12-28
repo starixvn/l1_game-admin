@@ -38,6 +38,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
             services.AddScoped<ICasinoHoldemPokerReportRepository, CasinoHoldemPokerReportRepository>();
             services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
+            services.AddScoped<ITexasHoldemPokerReportRepository, TexasHoldemPokerReportRepository>();
+
         }
     }
 }

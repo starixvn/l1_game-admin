@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -120,11 +121,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult MiniSeDie()
         {
-<<<<<<< HEAD
             return RedirectToAction("Index", new { game = GameId.MiniSeDie });
-=======
-            return RedirectToAction("Index");
->>>>>>> 0932394a (feat: bet history)
         }
 
         [HttpGet]
@@ -366,11 +363,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetLotteryBetHistory(BetHistoryFilter filter, bool convertToUSD)
-<<<<<<< HEAD
-        {
-=======
             {
->>>>>>> 0932394a (feat: bet history)
             return PartialView("_LotteryBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
@@ -482,6 +475,7 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, rate)));
 
         [HttpGet]
+<<<<<<< HEAD
         [Route("Report/Hi-Lo")]
         public async Task<IActionResult> HiLo()
         {
@@ -494,6 +488,15 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetHiLoReport(HiLoBetReportFilter model)
         {
             return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
+=======
+        [Route("Report/CasinoHoldem")]
+        public async Task<IActionResult> CasinoHoldemPoker()
+            => View(new CasinoHoldemPokerReportViewModel { ExcludeUUS = true, Selections = await mediator.Send(new GetSelectionsRequest()) });
+
+        [HttpGet]
+        public async Task<IActionResult> GetCasinoHoldemPokerReport(CasinoHoldemPokerBetReportFilter filter)
+            => PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(filter)));
+>>>>>>> 655485f1 (feat: Texas Round History)
         }
         
        [HttpGet]
@@ -518,6 +521,21 @@ namespace GamesAdmin.Site.Features.Report
             var selections = await mediator.Send(new GetSelectionsRequest());
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
-        }
+
+        [HttpGet]
+        public async Task<IActionResult> CasinoHoldemPokerBetHistory(long roundId, string nickname)
+            => PartialView("_CasinoHoldemPokerBetHistory", await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(roundId, nickname)));
+
+        [HttpGet]
+        public async Task<IActionResult> TexasHoldemPoker()
+           => View(new TexasHoldemPokerReportViewModel { ExcludeUUS = true, Selections = await mediator.Send(new GetSelectionsRequest()) });
+
+        [HttpGet]
+        public async Task<IActionResult> GetTexasHoldemPokerReport(TexasHoldemPokerBetReportFilter filter)
+            => PartialView("_TexasHoldemPokerRecords", await mediator.Send(new GetTexasHoldemPokerReportRequest(filter)));
+
+        [HttpGet]
+        public async Task<IActionResult> TexasHoldemPokerBetHistory(long roundId, string nickname)
+           => PartialView("_TexasHoldemPokerBetHistory", await mediator.Send(new GetTexasHoldemPokerBetHistoryRequest(roundId, nickname)));
     }
 }

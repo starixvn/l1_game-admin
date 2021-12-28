@@ -33,8 +33,6 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
-        IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
-          IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
@@ -534,23 +532,6 @@ namespace GamesAdmin.Site.Features.Report
 
             return viewModel;
         }
-
-        public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetCasinoHoldemPokerBetReport(request.Filter);
-            var partners = await partnerService.GetPartnersForSelection(model => true);
-
-            var records = result.Select(x =>
-            {
-                var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
-                recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
-
-                return recordViewModel;
-            });
-
-            return new CasinoHoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, records);
-      }
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);

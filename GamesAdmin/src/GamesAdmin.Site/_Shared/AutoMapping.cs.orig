@@ -114,17 +114,13 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<KenoBetRecord, KenoRecordViewModel>();
             CreateMap<KenoBetHistoryRecord, KenoBetHistoryRecordViewModel>();
-<<<<<<< HEAD
             CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
             CreateMap<HiLoBetRecord, HiLoRecordViewModel>();
             CreateMap<HiLoBetHistoryRecord, HiLoBetHistoryRecordViewModel>();
             CreateMap<HiLoRoundResult, HiLoRoundResultViewModel>();
-=======
-            
-            CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
-            CreateMap<CasinoHoldemPokerRoundResult, CasinoHoldemPokerRoundResultViewModel>();
-            CreateMap<CasinoHoldemPokerSettlementResult, CasinoHoldemPokerSettlementResultViewModel>();
->>>>>>> 68a4210f (feat: Casino Holdem Poker - round history multiple Currencies)
+
+            CreateMap<TexasHoldemPokerBetRecord, TexasHoldemPokerRecordViewModel>();
+
         }
     }
 }

@@ -43,6 +43,10 @@ namespace GamesAdmin.Api.Report
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
+
+        Task<IEnumerable<TexasHoldemPokerBetRecord>> GetTexasHoldemPokerReportAsync(TexasHoldemPokerBetReportFilter filter);
+
+        Task<TexasHoldemPokerBetHistory> GetTexasHoldemPokerBetHistoryAsync(long roundId, string nickname);
     }
 
     public class ReportService : IReportService
@@ -369,5 +373,22 @@ namespace GamesAdmin.Api.Report
             model.RoundResult.ExchangeRateId = result.Item1.ExchangeRateId;
             return model;
         }
+        }
+
+
+        public async Task<IEnumerable<TexasHoldemPokerBetRecord>> GetTexasHoldemPokerReportAsync(TexasHoldemPokerBetReportFilter filter)
+        {
+            var repository = serviceProvider.GetService<ITexasHoldemPokerReportRepository>();
+            var result = await repository.GetAsync(filter);
+
+            return result.Select(x => mapper.Map<TexasHoldemPokerBetRecord>(x));
+        }
+
+        public async Task<TexasHoldemPokerBetHistory> GetTexasHoldemPokerBetHistoryAsync(long roundId, string nickname)
+        {
+            var repository = serviceProvider.GetService<ITexasHoldemPokerReportRepository>();
+            var result = await repository.GetBetHistoryAsync(roundId, nickname);
+
+            return mapper.Map<TexasHoldemPokerBetHistory>(result);
     }
 }

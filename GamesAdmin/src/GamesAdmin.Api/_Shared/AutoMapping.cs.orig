@@ -129,10 +129,7 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.UserId, opt => opt.MapFrom((source) => source.UserId))
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.Bet))
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back));
-<<<<<<< HEAD
-=======
 
->>>>>>> 613f6f83 (fix: add StakeBalancedReportRepository)
 
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>()
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.BaseAmount))
@@ -309,9 +306,17 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
 
+<<<<<<< HEAD
             CreateMap<HiLoBetReportEntity, HiLoBetRecord>();
             CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
             CreateMap<HiLoRoundEntity, HiLoRoundResult>();
+=======
+            CreateMap<TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetRecord>()
+                .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => source.Player.Rank))
+                .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => source.Dealer.Rank));
+
+            CreateMap<TexasHoldemPokerBetHistoryModel, TexasHoldemPokerBetHistory>();
+>>>>>>> 655485f1 (feat: Texas Round History)
         }
     }
 }
