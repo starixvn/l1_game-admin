@@ -25,5 +25,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Player Contribution (%)")]
         public double PlayerContribution { get; set; }
+
+        [DisplayName("Allowed Currency")]
+        public string AllowedCurrency { get; set; } = "INH";
     }
 }

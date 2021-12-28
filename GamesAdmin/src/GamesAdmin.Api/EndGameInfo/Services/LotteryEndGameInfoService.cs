@@ -16,8 +16,9 @@ namespace GamesAdmin.Api.EndGameInfo
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var round = await GetRoundAsync(request.GameRoundId);
-            var one = (await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId)).FirstOrDefault();
+            var round = await GetRoundAsync(request);
+            var one = (await GetBetsAsync(request)).FirstOrDefault();
+
             if (round == null || one == null)
             {
                 return EndGameInfoError.SB1001;

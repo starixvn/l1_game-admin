@@ -2,7 +2,6 @@
 using Coravel.Invocable;
 using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings;
 using Sentry;
 using Sentry.Protocol;
@@ -33,14 +32,14 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
             var onlineUser = await service.GetOnlineUsers();
             var latestOnlineUsers = cache.GetCache(CachedKeys.OnlineUsers.ToString());
 
-            if (onlineUser.TotalReal < latestOnlineUsers - appSettings.MaxDecreased)
+            if (onlineUser.TotalRealPlayer < latestOnlineUsers - appSettings.MaxDecreased)
             {
                 sentryClient.CaptureMessage(
-                    $"Online users DOWN!!! Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalReal}",
+                    $"Online users DOWN!!! Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalRealPlayer}",
                     SentryLevel.Error);
             }
 
-            cache.SetCache(CachedKeys.OnlineUsers.ToString(), onlineUser.TotalReal);
+            cache.SetCache(CachedKeys.OnlineUsers.ToString(), onlineUser.TotalRealPlayer);
         }
     }
 }

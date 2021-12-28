@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ namespace GamesAdmin.Api.EndGameInfo
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var bets = await GetBetsAsync(request.GameRoundId, request.ObCustId, request.SiteId);
+            var bets = await GetBetsAsync(request);
 
             if (!bets.Any())
             {
@@ -36,8 +35,7 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1005;
             }
 
-            var round = await GetRoundAsync(request.GameRoundId);
-
+            var round = await GetRoundAsync(request);
 
             var totalBetAmount = bets.Sum(x => x.ConvertAmountToDictionary().Sum(c => c.Value));
             var totalBetWin = bets.Sum(x => x.Betwin);
@@ -51,10 +49,7 @@ namespace GamesAdmin.Api.EndGameInfo
             };
         }
 
-        protected override async Task<IEnumerable<KenoProVietOnesEntity>> GetBetsAsync(long gameRoundId, int memberId, string siteId,
-            Expression<Func<KenoProVietOnesEntity, bool>> filter = null)
-        {
-            return (await betRepository.FilterByAsync(x => x.Round == gameRoundId && x.MemberId == memberId && x.SiteId == siteId)).ToList();
-        }
+        protected override Expression<Func<KenoProVietOnesEntity, bool>> GetBetFilterExpression(RetrieveEndGameInfoRequest request)
+            => (bet) => bet.Round == request.GameRoundId && bet.MemberId == request.ObCustId && bet.SiteId == request.SiteId;
     }
 }

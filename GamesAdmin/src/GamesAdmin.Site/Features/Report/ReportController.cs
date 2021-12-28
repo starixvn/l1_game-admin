@@ -5,7 +5,7 @@ using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc; 
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -456,5 +456,20 @@ namespace GamesAdmin.Site.Features.Report
                         model.ToDate.Date.AddDays(1).AddTicks(-1).ToUniversalTime(),
                         model.ExcludeUUS, model.ExcludeBot)));
         }
+        [HttpGet]
+        public IActionResult BitcoinMaster()
+        {
+            return View(new BitcoinMasterViewModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot)
+        {
+            return PartialView("_BitcoinMasterRecords", await mediator.Send(new GetBitcoinMasterReportRequest(roundId, nickname, excludeBot)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname)
+            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname)));
     }
 }

@@ -14,9 +14,13 @@
         <li class="nav-item">
             <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('general')">General</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="payouts-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('payouts')">Payouts</a>
-        </li>
+        @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.AutoRNG)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="botsetting-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('botsetting')">Bot Setting</a>
+            </li>
+        }
+
         @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.Slots && Model.SlotsConfig.Jackpot.Enabled)
         {
             <li class="nav-item">
@@ -109,7 +113,7 @@
             </div>
         </div>
 
-        <div id="payouts" style="display:none">
+        <div id="botsetting" style="display:none">
             <input asp-for="Name" type="hidden" class="form-control" />
             <input asp-for="Type" type="hidden" class="form-control" />
             @if (Model.PayoutViewModel.DisplayMinMaxBet)
@@ -117,53 +121,23 @@
                 <div class="form-group row">
                     <div class="col-lg-6">
                         <label asp-for="@Model.PayoutViewModel.MinBet" class="control-label"></label>
-                        <input type="number" asp-for="@Model.PayoutViewModel.MinBet" class="form-control" />
+                        <input type="text" class="form-control"
+                               value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.MinBet)"
+                               name="PayoutViewModel.MinBet"
+                               id="bot-min-bet"
+                               onkeyup="gameStatus.formatNumber('bot-min-bet')" />
                     </div>
                     <div class="col-lg-6">
                         <label asp-for="@Model.PayoutViewModel.MaxBet" class="control-label"></label>
-                        <input type="number" asp-for="@Model.PayoutViewModel.MaxBet" class="form-control" />
+                        <input type="text" class="form-control"
+                               value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.MaxBet)"
+                               name="PayoutViewModel.MaxBet"
+                               id="bot-max-bet"
+                               onkeyup="gameStatus.formatNumber('bot-max-bet')" />
                     </div>
                 </div>
             }
 
-            @if (Model.PayoutViewModel.IconOdds?.Count > 0)
-            {
-                <div class="form-group row">
-
-                    @for (var i = 0; i < Model.PayoutViewModel.IconOdds.Count; i++)
-                    {
-                        <div class="col-lg-6 mb-3">
-                            <fieldset>
-                                <legend>Icon @Model.PayoutViewModel.IconOdds[i].Index</legend>
-                                <div class="form-group row mb-0">
-                                    <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
-                                    <div class="col-lg-4 d-flex align-items-center">
-                                        <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
-                                    </div>
-
-                                    <div class="col-lg-8">
-                                        <div class="row">
-                                            @for (var j = 0; j < Model.PayoutViewModel.IconOdds[i].Odds.Count; j++)
-                                            {
-                                                <div class="col-lg-6">
-                                                    <label class="control-label">Count</label>
-                                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Count" class="form-control small" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label class="control-label">Odds</label>
-                                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Odds" class="form-control small" />
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-
-                    }
-                </div>
-                <br />
-            }
             @if (Model.PayoutViewModel.DisplayMaxBetChoices)
             {
                 <fieldset>
@@ -179,7 +153,12 @@
                                     <div class="col-lg-6">
                                         <label class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
                                         <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                                        <input type="text"
+                                               name="PayoutViewModel.BetChoiceBetSettings[@index].MaxBet"
+                                               value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet)"
+                                               class="form-control"
+                                               id="bot-choice-@index"
+                                               onkeyup="gameStatus.formatNumber('bot-choice-@index')" />
                                     </div>
                                 }
                             }
@@ -189,30 +168,6 @@
             }
 
             <br />
-            @if (Model.PayoutViewModel.BetChoiceOdds != null && Model.PayoutViewModel.BetChoiceOdds.Any())
-            {
-                <fieldset>
-                    <legend>Odds</legend>
-                    @for (var i = 0; i < (Model.PayoutViewModel.BetChoiceOdds.Count / 2 + 1); i++)
-                    {
-                        <div class="form-group row">
-                            @for (var j = 0; j < 2; j++)
-                            {
-                                var index = i * 2 + j;
-                                if (index < Model.PayoutViewModel.BetChoiceOdds.Count)
-                                {
-                                    <div class="col-lg-6">
-                                        <label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
-                                        <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control" />
-                                        <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>
-                                    </div>}
-                            }
-                        </div>}
-                </fieldset>
-
-                <br />
-            }
         </div>
 
         <div id="jackpots" style="display:none;">
@@ -269,6 +224,12 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label class="control-label" asp-for="@Model.JackpotViewModel.AllowedCurrency"></label>
+                        <input type="text" asp-for="@Model.JackpotViewModel.AllowedCurrency" class="form-control" />
+                    </div>
+                </div>
             }
         </div>
 

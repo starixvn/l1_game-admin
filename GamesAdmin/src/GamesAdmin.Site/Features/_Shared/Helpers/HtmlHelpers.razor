@@ -8,4 +8,14 @@
     {
         return value.HasValue ? formatNumber(value.Value) : string.Empty;
     }
+
+    public static string formatNumber2(decimal value)
+    {
+        return value.ToString("#,##0.00");
+    }
+
+    public static string formatNumber3(double value)
+    {
+        return value.ToString("#,##0.##");
+    }
 }

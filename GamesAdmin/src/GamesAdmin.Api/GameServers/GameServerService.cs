@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.GameServers
 {
     public interface IGameServerService
     {
-        Task UnderMaintenance(UMRequest request);
+        Task UnderMaintenance(ServerApiUMRequest request);
 
         Task Reload();
 
@@ -80,18 +80,11 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task UnderMaintenance(UMRequest request)
+        public async Task UnderMaintenance(ServerApiUMRequest request)
         {
             try
             {
-                var umRequest = new UnderMaintenanceRequest
-                {
-                    StartTime = request.StartTime.ToUniversalTime(),
-                    EndTime = request.EndTime.ToUniversalTime(),
-                    IsUM = request.IsUM
-                };
-
-                await serverApi.UnderMaintenance(umRequest);
+                await serverApi.UnderMaintenance(request);
             }
             catch (Exception ex)
             {
@@ -184,7 +177,7 @@ namespace GamesAdmin.Api.GameServers
                     result.Result = request.Results.ToList();
 
                     return result;
-                }                
+                }
             }
             catch (Exception ex)
             {

@@ -1,0 +1,51 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.btn-add:hover {
+    text-decoration: none;
+}
+
+.table {
+    .btn-edit {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none
+        }
+    }
+}
+
+.fanex-multiselect-widget {
+    text-align: center;
+    border-radius: .5rem;
+    box-shadow: none !important;
+    border-width: 1px;
+    border-style: solid;
+    padding: .75rem 1.3rem .6rem;
+    line-height: 1;
+    display: block;
+
+    input[type="text"] {
+        border-style: none;
+        font-size: 1.3rem;
+        outline: none;
+        text-align: center;
+    }
+
+    .fanex-multiselect-icon {
+        margin-top: -20px;
+    }
+}
+
+.fanex-multiselect-treeview {
+    min-width: 200px;
+    border-radius: .5rem;
+    box-shadow: none !important;
+    border-width: 1px;
+    border-style: solid;
+}

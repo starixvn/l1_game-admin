@@ -1,0 +1,28 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.btn-add {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.6rem;
+    margin-bottom: 1.2rem !important;
+
+    :hover {
+        text-decoration: none;
+    }
+}
+
+.table {
+    .btn-edit {
+        width: 4rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none
+        }
+    }
+}

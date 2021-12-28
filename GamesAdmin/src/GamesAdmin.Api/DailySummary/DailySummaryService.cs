@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.DailySummarize
 {
     public interface IDailySummaryService
     {
-        Task<IEnumerable<DailySummaryResult>> Get(DateTimeOffset summarizeDate);
+        Task<IEnumerable<DailySummaryResult>> Get(DateTimeOffset summarizeDate, string partnerId);
     }
 
     public class DailySummaryService : IDailySummaryService
@@ -23,11 +23,11 @@ namespace GamesAdmin.Api.DailySummarize
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<DailySummaryResult>> Get(DateTimeOffset summarizeDate)
+        public async Task<IEnumerable<DailySummaryResult>> Get(DateTimeOffset summarizeDate, string partnerId)
         {
-            var result = (await repository.FilterByAsync(x => x.Time == summarizeDate.Date)).ToList();
+            var result = (await repository.FilterByAsync(x => x.Time == summarizeDate.Date && x.PartnerId == partnerId)).ToList();
 
-            return result
+             return result
                 .GroupBy(x => x.Currency)
                 .Select(g => new DailySummaryResult(
                     g.Key,

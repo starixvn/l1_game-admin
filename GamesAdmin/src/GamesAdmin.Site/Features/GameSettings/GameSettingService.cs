@@ -32,7 +32,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
-        Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request);
+        Task<bool> UpdateBetLimit(UpdateBetLimitRequest request);
+
+        Task<bool> UpdateOdds(UpdateOddsRequest request);
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
@@ -47,10 +49,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<GlobalConfig> GetSiteExclusion();
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
-
-        Task<GlobalConfig> GetSuperPlayers();
-
-        Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request);
 
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
     }
@@ -75,7 +73,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                return await gameApi.GetAll();
+                var gameConfigs = await gameApi.GetAll();
+
+                return gameConfigs;
             }
             catch (Exception ex)
             {
@@ -127,8 +127,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateBotRatios(string name, double[] ratios)
        => gameApi.UpdateBotRatios(name, ratios);
 
-        public Task<bool> UpdateBetLimitAndOdds(UpdateBetLimitAndOddsRequest request)
-        => gameApi.UpdateBetLimitAndOdds(request);
+        public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
+        => gameApi.UpdateBetLimit(request);
+
+        public Task<bool> UpdateOdds(UpdateOddsRequest request)
+        => gameApi.UpdateOdds(request);
 
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         => gameApi.UpdateSlotOddss(name, iconOdds);
@@ -156,17 +159,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<Dictionary<string, string>> GetDisabledMessage(string name)
             => gameApi.GetDisableMessage(name);
-
-        public Task<GlobalConfig> GetSuperPlayers() => globalConfigApi.GetSuperPlayers();
-
-        public Task<bool> UpdateSuperPlayers(UpdateSuperPlayersRequest request)
-        {
-            var formattedNames = string.IsNullOrWhiteSpace(request.SuperPlayers)
-                ? new string[] { }
-                : request.SuperPlayers.Trim().Split(";").Select(p => p.Trim().ToLowerInvariant()).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
-
-            return globalConfigApi.UpdateSuperPlayers(formattedNames);
-        }
 
         public async Task<bool> UpdateBetaVersion(string[] names, bool enabled)
         {

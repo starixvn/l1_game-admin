@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
@@ -29,7 +30,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         [HttpGet]
         public async Task<int> RealOnlineUsers()
         {
-            return (await mediator.Send(new GetOnlineUsersRequest())).TotalReal;
+            return (await mediator.Send(new GetOnlineUsersRequest())).TotalRealPlayer;
         }
 
         [HttpGet]
@@ -41,14 +42,16 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOnlineUsers(bool includeUUS, string game)
+        public async Task<IActionResult> GetOnlineUsers(bool includeTestAccount, string game, IEnumerable<string> partnerIds)
         {
             var result = await mediator.Send(new GetOnlineUsersByGameRequest(game));
-            var users = result.RealUsers.ToList();
+            var users = FilterOnlineUser(partnerIds.AsEnumerable(), result.RealUsers.AsEnumerable());
 
-            if (includeUUS)
+            if (includeTestAccount)
             {
-                users.AddRange(result.UusUsers);
+                var testAccounts = FilterOnlineUser(partnerIds.AsEnumerable(), result.TestUsers.AsEnumerable());
+
+                users.AddRange(testAccounts.AsEnumerable());
             }
 
             return PartialView("_OnlineUserTable", users);
@@ -68,6 +71,13 @@ namespace GamesAdmin.Site.Features.Dashboard
             var result = await mediator.Send(new GetOnlineUsersByGameRequest(game));
 
             return PartialView("_BotUserTable", result.Bots);
+        }
+
+        private static List<OnlineUserViewModel> FilterOnlineUser(IEnumerable<string> partnerIds, IEnumerable<OnlineUserViewModel> onlineUsers)
+        {
+            bool filter(OnlineUserViewModel user) => partnerIds.Any(id => string.Equals(id, user.PartnerId));
+
+            return onlineUsers.Where(filter).ToList();
         }
     }
 }

@@ -21,6 +21,10 @@ namespace GamesAdmin.Api.UM
         Task<IList<UmSchedule>> GetAll();
 
         Task<IList<UmSchedule>> GetUnfinished();
+
+        Task<IEnumerable<UmInfo>> GetUMInfo();
+
+        Task<bool> UpdatePartnerUM(bool IsUM, DateTimeOffset StartTime, DateTimeOffset EndTime, string[] Partners);
     }
 
     public class UMService : IUMService
@@ -51,6 +55,69 @@ namespace GamesAdmin.Api.UM
             this.usersessionRepository = usersessionRepository;
         }
 
+        public async Task<IEnumerable<UmInfo>> GetUMInfo()
+        {
+            try
+            {
+                return (await umRepository.FilterByAsync(um => !um.Finish))
+                    .Select(um => mapper.Map<UmInfo>(um))
+                    .OrderBy(um => um.End);
+
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return null;
+            }
+        }
+
+        public async Task<bool> UpdatePartnerUM(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime, string[] partners)
+        {
+            try
+            {
+                if (partners != null && partners.Length == 0)
+                {
+                    return false;
+                }
+
+                sentryClient.CaptureMessage($"[{string.Join(',', partners)}] - {DateTime.Now} UM Start: {startTime} End: {endTime}");
+
+                var update = Builders<UMInfoEntity>.Update
+                    .Set(field => field.Finish, !isUM)
+                    .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
+                    .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
+                    .Set(field => field.Time, DateTime.UtcNow)
+                    .Set(field => field.IsPartnerUm, true);
+
+                if (isUM)
+                {
+                    await UpdateUserSessions(partners);
+
+                    foreach (var partner in partners)
+                    {
+                        await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUm == true && um.PartnerId == partner,
+                            update,
+                            new UpdateOptions { IsUpsert = true });
+
+                    }
+                }
+                else
+                {
+                    await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow && um.IsPartnerUm == true && partners.Contains(um.PartnerId), update);
+                }
+
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
         public Task<bool> Process(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime) => isUM ? Start(startTime, endTime) : End();
 
         public async Task<bool> Start(DateTimeOffset startTime, DateTimeOffset endTime)
@@ -66,9 +133,10 @@ namespace GamesAdmin.Api.UM
                     .Set(field => field.Finish, false)
                     .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
                     .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
-                    .Set(field => field.Time, DateTime.UtcNow);
+                    .Set(field => field.Time, DateTime.UtcNow)
+                    .Set(field => field.IsPartnerUm, false);
 
-                await umRepository.UpdateAsync(um => um.Start == startTime, update, new UpdateOptions { IsUpsert = true });
+                await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUm == false, update, new UpdateOptions { IsUpsert = true });
 
                 return true;
             }
@@ -88,7 +156,7 @@ namespace GamesAdmin.Api.UM
                 var update = Builders<UMInfoEntity>.Update.Set(field => field.Finish, true);
 
                 await UpdateEnableConfig(enable: true);
-                await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow, update);
+                await umRepository.UpdateManyAsync(um => um.Start < DateTime.UtcNow && um.IsPartnerUm == false, update);
 
                 return true;
             }
@@ -107,12 +175,22 @@ namespace GamesAdmin.Api.UM
             await configRepository.UpdateManyAsync(config => true, update);
         }
 
-        private async Task UpdateUserSessions()
+        private async Task UpdateUserSessions(string[] partners = null)
         {
             const int sessionExpiredTimeInMinutes = 20;
             var minTime = DateTime.Now.AddMinutes(-sessionExpiredTimeInMinutes);
             var update = Builders<UserSessionEntity>.Update.Set(field => field.RecheckInTime, minTime);
-            await usersessionRepository.UpdateManyAsync(ss => minTime < ss.RecheckInTime, update);
+
+            if (partners == null)
+            {
+                await usersessionRepository.UpdateManyAsync(ss => minTime < ss.RecheckInTime, update);
+
+            }
+            else
+            {
+                await usersessionRepository.UpdateManyAsync(ss => minTime < ss.RecheckInTime && partners.Contains(ss.ParnerId), update);
+            }
+
         }
 
         public async Task<bool> AddSchedule(UmSchedule umSchedule)

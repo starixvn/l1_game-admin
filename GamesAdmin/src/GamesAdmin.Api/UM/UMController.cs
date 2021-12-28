@@ -36,5 +36,20 @@ namespace GamesAdmin.Api.UM
         [Route("unfinished")]
         public Task<IList<UmSchedule>> GetUnfinished()
         => mediator.Send(new GetUnfinishedUmRequest());
+
+        [HttpGet]
+        [Route("allUMInfo")]
+        public Task<IEnumerable<UmInfo>> GetPartnerUmInfo()
+            => mediator.Send(new GetUMInfoRequest());
+
+        [HttpPost]
+        [Route("partners")]
+        public Task<bool> UpdatePartnerUmInfo(ServerApiUMRequest updateRequest)
+            => mediator.Send(updateRequest);
+
+        [HttpPost]
+        [Route("partner")]
+        public Task<bool> UpdatePartnerUmInfoFromAPI([FromBody] UpdatePartnerUMFromAPIRequest request)
+            => mediator.Send(new ServerApiUMRequest(request.IsUM, true, request.StartTime, request.EndTime, new string[] {request.PartnerId}));
     }
 }

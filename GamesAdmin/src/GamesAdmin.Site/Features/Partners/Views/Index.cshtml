@@ -1,0 +1,258 @@
+﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
+@using GamesAdmin.Site.Features._Shared;
+
+@model IndexViewModel;
+
+@{
+    ViewData["Title"] = "Partners";
+}
+
+@section Styles {
+    <link href="~/css/partner.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="col-md-12 col-lg-12 p-0">
+    @if (Model.EditPermission)
+    {
+        <div class="row align-items-center list-actions">
+            <div class="col-auto  ">
+                <input type="button" onclick="partner.showPartnerUMForm()" value="Partner UM" class="btn-gray btn-enable" />
+                <input type="button" onclick="partner.showSCUMForm()" value="SC UM" class="btn-gray btn-enable" />
+                <input type="button" onclick="partner.showUpdateSuperPlayersForm()" value="Backdoor UM Account" class="btn-add btn-enable" />
+                <button class="btn-add" onclick="partner.showAddForm()">
+                    Add Partner
+                </button>
+            </div>
+        </div>
+    }
+
+    <table id="partner-table" class="table table-bordered has-background sticky-table @(Model.EditPermission ? "action-bar-visible" : "action-bar-invisible")">
+        <thead>
+            <tr>
+                <th class="col-check"><input type="checkbox" id="partner-all" value="all" onclick="partner.checkAll();" /></th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>UM Status</th>
+                <th>SC UM</th>
+                <th>Secret Key</th>
+                <th>Saba.club URL</th>
+                <th>Instant URL</th>
+                <th>Saba.mobi URL</th>
+                <th>Test Currency URL</th>
+                @if (Model.EditPermission)
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+
+        @if (Model.Partners != null && Model.Partners.Count > 0)
+        {
+            var rowSpan = Model.Partners.Count();
+            var firstRowData = Model.Partners[0];
+            var firstPartnerUmInfo = Model.GetPartnerUmInfo(firstRowData.PartnerId);
+            <tbody id="partner-body-content">
+                @if (firstRowData != null)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
+                        </td>
+                        <td>@firstRowData.PartnerId</td>
+                        <td>@firstRowData.Name</td>
+                        <td>
+                            @{
+                                if (firstPartnerUmInfo != null)
+                                {
+                                    <p class="text-danger">ON</p>
+                                    <button class="btn-info" title="@(firstPartnerUmInfo)" data-toggle="tooltip">
+                                        <i class="icon-info"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    @("OFF")
+                                }
+                            }
+                        </td>
+                        <td class="sc-um-info" rowspan="@(rowSpan)">
+                            @{
+                                if (Model.SCUmInfo != null)
+                                {
+                                    <p class="text-danger">ON</p>
+                                    <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
+                                        <i class="icon-info"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    @("OFF")
+                                }
+                            }
+                        </td>
+                        <td>@firstRowData.SecretKey</td>
+                        <td>@firstRowData.ClubVersionUrl</td>
+                        <td>@firstRowData.MiniVersionUrl</td>
+                        <td>@firstRowData.MobiVersionUrl</td>
+                        <td>@firstRowData.TestCurrencyUrl</td>
+                        @if (Model.EditPermission)
+                        {
+                            <td class="text-center">
+                                <button class="btn-edit" onclick="partner.showEditForm('@firstRowData.PartnerId')"><i class="icon-edit"></i></button>
+                            </td>
+                        }
+                    </tr>
+                }
+
+                @foreach (var item in Model.Partners.TakeLast(rowSpan - 1))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
+                        </td>
+                        <td>@item.PartnerId</td>
+                        <td>@item.Name</td>
+                        <td>
+                            @{
+                                var partnerUmInfo = Model.GetPartnerUmInfo(item.PartnerId);
+                                if (partnerUmInfo != null)
+                                {
+                                    <p class="text-danger">ON</p>
+                                    <button class="btn-info" title="@(partnerUmInfo)" data-toggle="tooltip">
+                                        <i class="icon-info"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    @("OFF")
+                                }
+                            }
+                        </td>
+                        <td class="sc-um-info" style="display:none">
+                            @{
+                                if (Model.SCUmInfo != null)
+                                {
+                                    <p class="text-danger">ON</p>
+                                    <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
+                                        <i class="icon-info"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    @("OFF")
+                                }
+                            }
+                        </td>
+                        <td>@item.SecretKey</td>
+                        <td>@item.ClubVersionUrl</td>
+                        <td>@item.MiniVersionUrl</td>
+                        <td>@item.MobiVersionUrl</td>
+                        <td>@item.TestCurrencyUrl</td>
+                        @if (Model.EditPermission)
+                        {
+                            <td class="text-center">
+                                <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+
+        }
+    </table>
+
+    <div class="modal fade game-modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Edit Partner
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="editModalContent">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade game-modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Add Partner
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="addModalContent">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade game-modal" id="umModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="umTitle">Under Maintenance </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="partner-info" style="display:none">
+                    Partners
+                    <br />
+                    <b id="list-partners"></b>
+                </div>
+                <div class="modal-body game-details-content" id="um">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    @if (Model.EditPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="partner.underMaintenance()">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade game-modal" id="super-players-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Backdoor UM Account</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body game-details-content" id="super-players">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                    @if (Model.EditPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="update-super-players-btn" onclick="partner.updateSuperPlayers()">Save</button>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <environment include="Development">
+        <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/partner.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/partner.min.js" asp-append-version="true"></script>
+    </environment>
+
+}

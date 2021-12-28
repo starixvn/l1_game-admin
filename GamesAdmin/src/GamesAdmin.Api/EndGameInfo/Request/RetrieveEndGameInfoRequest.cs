@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.EndGameInfo.Request
 {
-    public class RetrieveEndGameInfoRequest :  IRequest<EndGameInfoResult>
+    public class RetrieveEndGameInfoRequest : IRequest<EndGameInfoResult>
     {
         public int GameRoundId { get; set; }
 
@@ -14,5 +14,7 @@ namespace GamesAdmin.Api.EndGameInfo.Request
         public string SiteId { get; set; }
 
         public bool FreeBet { get; set; }
+
+        public string PartnerId { get; set; }
     }
 }

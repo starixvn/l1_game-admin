@@ -34,6 +34,7 @@
         public const string LotteryValue = "lottery";
         public const string ThreeCardsValue = "threecards";
         public const string HeroesSlotValue = "heroesslot";
+        public const string BitcoinMasterValue = "bitcoinmaster";
         public const string KenoMatch1Value = "kenomatch1";
         public const string KenoMatch2Value = "kenomatch2";
         public const string KenoPower1Value = "kenopower1";
@@ -71,6 +72,7 @@
         public static readonly Game Lottery = new Game(LotteryValue, "RNG Lottery", GameId.Lottery);
         public static readonly Game ThreeCards = new Game(ThreeCardsValue, "Three Cards", GameId.ThreeCards);
         public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "Heroes Slot", GameId.HeroesSlot);
+        public static readonly Game BitcoinMaster = new Game(BitcoinMasterValue, "Bitcoin Master", GameId.BitcoinMaster);
         public static readonly Game KenoMatch1 = new Game(KenoMatch1Value, "Keno Match", GameId.KenoMatch1);
         public static readonly Game KenoMatch2 = new Game(KenoMatch2Value, "Keno Match MD5", GameId.KenoMatch2);
         public static readonly Game KenoPower1 = new Game(KenoPower1Value, "Keno Power", GameId.KenoPower1);
@@ -92,5 +94,7 @@
         }
 
         public GameId GameId { get; }
+
+        public static Game FromGameId(GameId id) => Parse<Game, GameId>(id, "game id", item => item.GameId == id);
     }
 }

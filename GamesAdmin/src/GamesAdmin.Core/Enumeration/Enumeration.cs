@@ -39,12 +39,12 @@ namespace GamesAdmin.Core.Enumeration
             try
             {
                 var matchingItem = Parse<T, string>(value, "value", item => item.Value == value);
-                return matchingItem != null ;
+                return matchingItem != null;
             }
             catch (Exception)
             {
                 return false;
-            }            
+            }
         }
 
         public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
@@ -125,7 +125,7 @@ namespace GamesAdmin.Core.Enumeration
             return Value.CompareTo(((Enumeration)obj).Value);
         }
 
-        private static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
+        protected static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
         {
             var matchingItem = GetAll<T>().FirstOrDefault(predicate);
 

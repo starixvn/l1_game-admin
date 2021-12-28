@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Net.Http;
 using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
+using GamesAdmin.Api.Chips;
 using GamesAdmin.Api.ClientSites;
+using GamesAdmin.Api.Currencies;
+using GamesAdmin.Api.CurrencyGroupGames;
+using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.DailySummarize;
 using GamesAdmin.Api.EndGameInfo;
 using GamesAdmin.Api.Games;
@@ -10,6 +15,7 @@ using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.Report.KenoReports;
@@ -17,6 +23,7 @@ using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Database.ApiLogs;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
@@ -34,6 +41,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
+            services.AddScoped<ICurrencyGroupGameService, CurrencyGroupGameService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
@@ -44,6 +52,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<IGlobalConfigService, GlobalConfigService>();
+            services.AddScoped<IPartnerService, PartnerService>();
+            services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<ICurrencyGroupService, CurrencyGroupService>();
+            services.AddScoped<IChipService, ChipService>();
 
             services.AddScoped<IKenoReportFactory, KenoReportFactory>();
             services.AddScoped<KenoProVietReport>()
@@ -103,6 +115,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<LotteryEndGameInfoService>();
             services.AddScoped<ThreeCardsEndGameInfoService>();
             services.AddScoped<HeroesSlotEndGameInfoService>();
+            services.AddScoped<BitcoinMasterEndGameInfoService>();
             services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
             services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
 
@@ -141,6 +154,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IKenoWestOnlineUserApi>(appSettings.GameServers.KenoWest.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoSouthOnlineUserApi>(appSettings.GameServers.KenoSouth.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -150,6 +164,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
             AddSlotServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
+
+            services.InitApiLog();
         }
 
         private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

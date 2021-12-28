@@ -1,0 +1,68 @@
+﻿@model GamesAdmin.Site.Features.Currencies.ViewModels.CreateCurrencyViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Add currency</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form data-ajax="true" class="form" asp-action="Create" method="post" id="add-new-currency-form"
+      data-ajax-success="currency.onCreateCurrencySuccess">
+    <div class="modal-body">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="PartnerId">Partner</label>
+                <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
+                <span class="text-danger" asp-validation-for="PartnerId"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Name">Currency</label>
+                <input class="form-control" type="text" asp-for="Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Code"></label>
+                <select asp-items="@Model.ExchangeCodes" asp-for="Code" class="form-control"></select>
+                <span class="text-danger" asp-validation-for="Code"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="required-field-label" asp-for="Multiplier"></label>
+                <input class="form-control" type="number" asp-for="Multiplier">
+                <span class="text-danger" asp-validation-for="Multiplier"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="Enabled" />
+                <label asp-for="Enabled" class="control-label"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="IsTest" />
+                <label asp-for="IsTest" class="control-label">Testing Currency</label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label class="control-label" id="result-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Save</button>
+    </div>
+</form>

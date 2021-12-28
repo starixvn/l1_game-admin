@@ -1,0 +1,27 @@
+﻿@model GamesAdmin.Site.Features.ApiLogs.ViewModels.ApiLogListViewModel
+@using Newtonsoft.Json;
+
+<table id="api-log-table" class="table table-bordered table-hover stripe sticky-table">
+    <thead>
+        <tr>
+            @foreach (var header in Model.Headers())
+            {
+                <th>@header</th>
+            }
+            <th>Document</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model.Logs)
+        {
+            <tr>
+                @foreach (var column in Model.Columns(log))
+                {
+                    <td class="text-center">@column</td>
+                }
+
+                <td class="text-left"><code style="white-space: pre-wrap">@JsonConvert.SerializeObject(log, Formatting.Indented)</code></td>
+            </tr>
+        }
+    </tbody>
+</table>

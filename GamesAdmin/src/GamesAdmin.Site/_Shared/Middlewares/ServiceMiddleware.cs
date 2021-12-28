@@ -1,12 +1,19 @@
 ﻿using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.Bot;
+using GamesAdmin.Site.Features.Chips;
 using GamesAdmin.Site.Features.ClientSites;
+using GamesAdmin.Site.Features.Currencies;
+using GamesAdmin.Site.Features.CurrencyGroupGames;
+using GamesAdmin.Site.Features.CurrencyGroups;
+using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.ResultMonitor;
@@ -38,6 +45,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IUserApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IUserService, UserService>();
 
+            services.AddSingleton(RestService.For<IPartnerApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IPartnerService, PartnerService>();
+
             services.AddSingleton(RestService.For<IClientSiteApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IClientSiteService, ClientSiteService>();
 
@@ -68,6 +78,22 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddSingleton(RestService.For<ICurrencyApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<ICurrencyService, CurrencyService>();
+
+            services.AddSingleton(RestService.For<ICurrencyGroupApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<ICurrencyGroupService, CurrencyGroupService>();
+
+            services.AddSingleton(RestService.For<IGroupCurrencyGameApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<ICurrencyGroupGameService, CurrencyGroupGameService>();
+
+            services.AddSingleton(RestService.For<IChipApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IChipService, ChipService>();
+
+            services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddSingleton(RestService.For<ILogApi>(appSettings.ApiHost, refitSettings));
         }
     }
 }

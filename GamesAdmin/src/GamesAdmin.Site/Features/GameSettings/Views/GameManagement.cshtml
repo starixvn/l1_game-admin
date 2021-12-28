@@ -1,70 +1,170 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site.Features._Shared;
+
 @model StatusViewModel;
 
 @{
     ViewData["Title"] = "Game Management";
+    var editPermission = Context.HasAdminPermission();
 }
 
 @section Styles {
-    <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
+<link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
 }
-
-<div class="col-md-12 col-lg-12 game-status">
-    <div class="list-actions">
+<div class="list-actions">
+    @if (editPermission)
+    {
         <input type="button" onclick="gameStatus.showEnableDisable(true)" value="ENABLE" class="btn-add btn-enable" />
         <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
         <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
-        <input type="button" onclick="gameStatus.showUnderMaintenanceForm()" value="UM" class="btn-gray btn-enable" />
-        <input type="button" onclick="gameStatus.showUpdateSuperPlayersForm()" value="Super Players" class="btn-add btn-enable" />
-        <input type="button" onclick="gameStatus.showBetaVersion()" value="Game Beta" class="btn-add btn-enable" />
-    </div>
+    }
 
+</div>
+<div class="col-md-12 col-lg-12 game-status">
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
     {
         <div class="message-error"><i class="icon-cancel"></i> @TempData["errorMessage"].ToString()</div>
-        <br />}
+        <br />
+    }
 
-    <table id="status-tbl" class="table table-bordered sticky-table">
+    <table id="status-tbl" class="table table-bordered sticky-table @(editPermission ? "action-bar-visible" : "action-bar-invisible")">
         <thead>
             <tr>
                 <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
                 <th class="col-game-name">Name</th>
+                <th>Enabled</th>
+                <th class="col-game-name">Partner</th>
                 <th class="col-bet-limit">Bet Limit (Min - Max)</th>
-                <th class="col-status">Enabled</th>
                 <th>Setting</th>
-                <th>Disabled Message</th>
-                <th class="col-status">Bot Enabled</th>
+                <th>Odds</th>
+                <th>General Setting</th>
                 <th>Bot Ratio</th>
-                <th>Site Exclusions</th>
-                <th>Is Beta</th>
+                <th class="col-status">Bot Enabled</th>
+                <th>Disable Message</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="status-tbl-body">
+            @{
+                var rowSpan = Model?.Partners?.Count() > 0 ? Model.Partners.Count() : 1;
+            }
             @for (var index = 0; index < Model.GameList.Count; index++)
             {
                 <tr>
-                    <td class="text-center">
-                        <input class="game-status-chk" type="checkbox" onclick="gameStatus.uncheckAll();" value="@Model.GameList[index].Name" />
+                    <td rowspan="@rowSpan" class="text-center">
+                        <input class="game-status-chk" type="checkbox" onclick="gameStatus.updateCheckAllStatus();" value="@Model.GameList[index].Name" />
                         <input type="hidden" class="game-display-name" asp-for="@Model.GameList[index].DisplayName" />
                     </td>
-                    <td>@Model.GameList[index].DisplayName</td>
-                    <td class="text-center">@Model.GameList[index].MinMaxBet</td>
-                    <td class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                    <td rowspan="@rowSpan">@Model.GameList[index].DisplayName</td>
+                    <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].Enabled ? "icon-check" : "icon-cancel")'></i></td>
+
+                    @{
+                        var firstPartner = Model.Partners.FirstOrDefault();
+                        var partnerGroups = Model.CurrencyGroups.Where(group => group.PartnerId == firstPartner?.PartnerId);
+
+                        <td>
+                            @(firstPartner?.Name)
+                        </td>
+
+                        <td>
+                            @{
+                                foreach (var partnerGroup in partnerGroups)
+                                {
+                                    var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+                                    if (setting != null && setting.Enabled)
+                                    {
+                                        <b>@(partnerGroup.Name)</b>
+
+                                        if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                        {
+                                            @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+
+                                        }
+                                        else
+                                        {
+                                            @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                        }
+                                        <br />
+
+                                    }
+                                }
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <button class="btn-edit" hidden=@(firstPartner == null) onclick="gameStatus.showPartnerSetting('@firstPartner?.PartnerId', '@firstPartner?.Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
+                        </td>
+                    }
+
+                    <td rowspan="@rowSpan" class="text-center">
+                        @{
+                            if (Model.GameList[index].Name != "luckywheel")
+                            {
+                                <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', 'OddSettings')"><i class="icon-edit"></i></button>
+
+                            }
+                        }
                     </td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                    <td rowspan="@rowSpan" class="text-center">
+                        <button class="btn-edit" onclick="gameStatus.showGameForm('@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', 'GameDetails')"><i class="icon-edit"></i></button>
                     </td>
-                    <td class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
-                    <td class="text-center">
+                    <td rowspan="@rowSpan" class="text-center">
                         <button class="btn-edit" onclick="gameStatus.showBotRatioModal('@Model.GameList[index].Name')"><i class="icon-edit"></i></button>
                     </td>
-                    <td class="text-center">
-                        <button class="btn-edit" onclick="gameStatus.showSiteExclusions('@Model.GetSiteExclutionsByGame(Model.GameList[index].Name)', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
+                    <td rowspan="@rowSpan" class="text-center"><i class='@(Model.GameList[index].BotEnabled ? "icon-check" : "icon-cancel")'></i></td>
+                    <td rowspan="@rowSpan" class="text-center">
+                        <button class="btn-edit" onclick="gameStatus.showUpdateMessage('@Model.GameList[index].DisabledMessage', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-edit"></i></button>
                     </td>
-                    <td class="text-center"><i class='@(Model.GameList[index].GameConfig.IsBeta ? "icon-check" : "")'></i></td>
                 </tr>
+                {
+                    for (int j = 1; j < rowSpan; j++)
+                    {
+                        <tr>
+                            <td style="display: none">@Model.GameList[index].DisplayName</td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td>@Model.Partners[j].Name</td>
+                            <td>
+                                @{
+                                    var groups = Model.CurrencyGroups.Where(group => group.PartnerId == Model.Partners[j].PartnerId);
+
+                                    foreach (var partnerGroup in groups)
+                                    {
+                                        var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
+
+                                        if (setting != null && setting.Enabled)
+                                        {
+                                            <b>@(partnerGroup.Name)</b>
+
+                                            if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                            {
+                                                @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+
+                                            }
+                                            else
+                                            {
+                                                @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                            }
+                                            <br />
+                                        }
+
+                                    }
+                                }
+
+                            </td>
+                            <td class="text-center">
+                                <button class="btn-edit" onclick="gameStatus.showPartnerSetting('@Model.Partners[j].PartnerId', '@Model.Partners[j].Name', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName', '@((int)Model.GameList[index].GameConfig.Info.Type)')"><i class="icon-edit"></i></button>
+                            </td>
+
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                            <td style="display: none"></td>
+                        </tr>
+                    }
+                }
             }
         </tbody>
     </table>
@@ -102,7 +202,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateMsgBtn" onclick="gameStatus.updateMessage()">Save</button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateMsgBtn" onclick="gameStatus.updateMessage()">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -111,7 +214,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Setting: <span id="gameTitleName"></span></h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="settingTitle"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -120,8 +223,13 @@
                     ...
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit()">Save</button>
+                    <button type="button" class="btn-gray" data-dismiss="modal">
+                        Close
+                    </button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.submit(true)">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -202,7 +310,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                        <button type="button" id="updateBotRatioBtn" class="btn btn-submit" onclick="gameStatus.updateBotRationItems()">Save</button>
+                        @if (editPermission)
+                        {
+                            <button type="button" id="updateBotRatioBtn" class="btn btn-submit" onclick="gameStatus.updateBotRationItems()">Save</button>
+                        }
                     </div>
                 </div>
             </form>
@@ -273,95 +384,26 @@
             </div>
         </div>
     </div>
-    <div class="modal fade game-modal" id="umModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal fade game-modal" id="partnerSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Under Maintenance Schedule</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Setting: <span id="gameName"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body game-details-content" id="um">
+                <div class="modal-body game-details-content" id="partnerSettingContent">
                     ...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateBtn" onclick="gameStatus.underMaintenance()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade site-exclusions-modal" id="siteExclusionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Site Exclusions: <span id="siteExclusionGameNameLabel"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="message-success hidden-cls" id="updateExclusionsSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
-                    <div class="message-error hidden-cls" id="updateExclusionsFailed"><i class="icon-cancel"></i><span>Error</span></div>
-
-                    <div class="text-message">
-                        <label class="font-weight-bold">Input Site Name To Exclude</label>
-                        <br />
-                        <textarea rows="3" cols="50" id="siteExclusions" placeholder="Names are separated by ';'"></textarea>
-                    </div>
-                    <input type="hidden" id="siteExclusionGameName" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="gameStatus.updateSiteExclusions()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade game-modal" id="super-players-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update Super Players</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body game-details-content" id="super-players">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-submit" id="update-super-players-btn" onclick="gameStatus.updateSuperPlayers()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade beta-version-modal" id="betaVersionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmation<span id="betaVersionTitle"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body reload-content-body">
-                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
-                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
-                    <div class="beta-version-checkbox">
-                        <input type="checkbox" id="betaVersionCheckbox" name="betaVersionCheckbox" onclick="gameStatus.changeBetaVersionFlag()" />
-                        <label id="betaVersionLabel" for="betaVersionCheckbox">Is Beta</label>
-                    </div>
-                    <div id="betaVersionContent" class="content-body"></div>
-                    <input type="hidden" id="betaVersionFlag" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-submit" id="confirmBtn" onclick="gameStatus.submitBetaVersion()">OK</button>
+                    @if (editPermission)
+                    {
+                        <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit(true)">Save & Continue</button>
+                        <button type="button" class="btn btn-submit" id="updateExclusionsBtn" onclick="currencyGroupGame.onSubmit()">Save</button>
+                    }
                 </div>
             </div>
         </div>
@@ -417,6 +459,13 @@
 </div>
 
 @section Scripts{
-    @*<script src="~/js/game-status.min.js" asp-append-version="true"></script>*@
+<environment include="Development">
+    <script src="~/lib/data-tables/datatables.js"></script>
     <script src="~/js/game-status.js" asp-append-version="true"></script>
+    <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    <script src="~/js/currency-group-game.min.js" asp-append-version="true"></script>
+</environment>
 }

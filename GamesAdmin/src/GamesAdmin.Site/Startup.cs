@@ -6,6 +6,7 @@ using GamesAdmin.Site._Shared.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,6 +34,8 @@ namespace GamesAdmin.Site
             services.AddServices(appSettings);
             services.AddAuthentication(Configuration);
             services.AddHealthChecks();
+
+            AuditConfiguration.Init(Configuration);
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                   .AddRazorOptions(options =>
@@ -75,6 +78,11 @@ namespace GamesAdmin.Site
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.Use(async (context, next) => {
+                context.Request.EnableBuffering();
+                await next();
+            });
 
             app.UseEndpoints(endpoints =>
             {

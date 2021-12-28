@@ -1,0 +1,72 @@
+﻿@model GamesAdmin.Site.Features.Currencies.ViewModels.IndexViewModel
+@using GamesAdmin.Site.Features._Shared;
+
+@section Styles {
+    <link href="~/lib/fanex.multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/currency.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Currency";
+}
+
+<form class="form filter" data-ajax="true" data-ajax-method="POST" asp-action="GetCurrencies"
+      data-ajax-mode="replace"
+      data-ajax-update="#currency-management .card-body"
+      data-ajax-loading="#spinner"
+      data-ajax-success="currency.init"
+      method="post"
+      id="currency-form">
+    <div class="form-row align-items-center">
+        <div class="col-auto partner-id">
+            <label asp-for="PartnerIds" class="control-label">Partner</label>
+            <select hidden asp-items="@Model.Partners" asp-for="PartnerIds" class="form-control" multiple></select>
+            <select class="form-control" id="partners"></select>
+        </div>
+        <div class="col-auto list-buttons">
+            <button type="submit" class="btn-submit">Submit</button>
+            @if (Context.HasAdminPermission())
+            {
+                <a class="btn-add"
+                   data-ajax="true"
+                   data-ajax-mode="replace"
+                   data-ajax-update="#modal .modal-content"
+                   data-ajax-success="currency.openAddNewCurrencyForm"
+                   asp-action="Create">
+                    Add Currency
+                </a>
+            }
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="currency-management" class="card">
+    <div class="card-body"></div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog currency-model">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<script>
+    var partners = @Json.Serialize(Model.Partners);
+</script>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script type="text/javascript" src="~/lib/data-tables/datatables.js"></script>
+        <script type="text/javascript" src="~/lib/fanex.multiselect/fanex.multiSelect.js"></script>
+        <script src="~/js/currency.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/currency.min.js" asp-append-version="true"></script>
+    </environment>
+}

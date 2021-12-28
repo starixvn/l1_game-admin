@@ -1,0 +1,104 @@
+@{
+    Layout = null;
+}
+
+@using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
+@model EditViewModel;
+
+@{
+    ViewData["Title"] = Model.GameName;
+}
+
+
+<form class="card-body form" id="currencyGroupGameForm">
+    <div>
+        <input asp-for="GameId" type="hidden" class="form-control" />
+
+        <div class="form-group">
+            <input type="checkbox" asp-for="Enabled" />
+            <label asp-for="Enabled" class="control-label"></label>
+        </div>
+        @if (Model.DisplayMinMaxBet)
+        {
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label asp-for="@Model.MinBet" class="control-label"></label>
+                    <input type="number" asp-for="@Model.MinBet" class="form-control" />
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="@Model.MaxBet" class="control-label"></label>
+                    <input type="number" asp-for="@Model.MaxBet" class="form-control" />
+                </div>
+            </div>
+        }
+
+        @if (Model.DisplayMaxBetPerChoice)
+        {
+            <fieldset>
+                <legend>Bet Choices</legend>
+                @for (var i = 0; i < (Model.MaxBetChoiceSetting.Count / 2 + 1); i++)
+                {
+                    <div class="form-group row">
+                        @for (var j = 0; j < 2; j++)
+                        {
+                            var index = i * 2 + j;
+                            if (index < Model.MaxBetChoiceSetting.Count)
+                            {
+                                <div class="col-lg-6">
+                                    <label class="control-label">@Model.MaxBetChoiceSetting[index].DisplayName</label>
+                                    <input type="text" hidden asp-for="@Model.MaxBetChoiceSetting[index].Name" class="form-control" />
+                                    <input type="number" asp-for="@Model.MaxBetChoiceSetting[index].MaxBet" class="form-control" />
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </fieldset>
+        }
+        <br />
+
+        @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Slots)
+        {
+            <fieldset>
+                <legend>Stake Levels</legend>
+                <div class="form-group row">
+                    @for (var i = 0; i < Model.StakeLevels.Length; i++)
+                    {
+                        <div class="col-lg-4">
+                            <label class="control-label">@($"Level {i + 1}")</label>
+                            <input type="number" asp-for="@Model.StakeLevels[i].Stake" class="form-control" disabled="@(Model.StakeLevels[i].Stake != 0)" />
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        }
+        else
+        {
+            <fieldset>
+                <legend>Stake</legend>
+                @for (var j = 0; j < (Model.AllChips.Count / 6 + 1); j++)
+                {
+                    <div class="form-group row">
+                        @for (var k = 0; k < 6; k++)
+                        {
+                            var index = j * 6 + k;
+                            if (index < Model.AllChips.Count)
+                            {
+                                var displayName = Model.AllChips[index].Text;
+                                <div class="col-lg-2" id="chip-collector">
+                                    <input type="checkbox" name="chip-@(index)" id="chip-@(index)" value="@Model.AllChips[index].Value" checked="@Model.Chips?.Contains(Model.AllChips[index].Value)" />
+                                    <label class="control-label" for="chip-@(index)">@displayName</label>
+
+                                    <input type="text" hidden asp-for="@Model.AllChips[index].Id" />
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </fieldset>
+        }
+
+        <br />
+    </div>
+</form>
+

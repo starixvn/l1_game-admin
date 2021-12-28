@@ -45,6 +45,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<LotteryReportRequest, LotteryBetReport>,
         IRequestHandler<LotteryBetHistoryRequest, LotteryBetHistory>,
         IRequestHandler<ThreeCardsReportRequest, ThreeCardsBetReport>,
+        IRequestHandler<BitcoinMasterReportRequest, BitcoinMasterBetReport>,
+        IRequestHandler<BitcoinMasterBetHistoryRequest, BitcoinMasterBetHistory>,
         IRequestHandler<KenoMatchReportRequest, KenoMatchBetReport>,
         IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
         IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
@@ -149,6 +151,12 @@ namespace GamesAdmin.Api.Report
 
         public Task<ThreeCardsBetReport> Handle(ThreeCardsReportRequest request, CancellationToken cancellationToken)
             => reportService.GetThreeCardsReportAsync(request.RoundId, request.Nickname, request.ExcludeUUS);
+
+        public async Task<BitcoinMasterBetReport> Handle(BitcoinMasterReportRequest request, CancellationToken cancellationToken)
+               => await reportService.GetBitcoinMasterReportAsync(request.RoundId, request.Nickname, request.ExcludeBot);
+
+        public Task<BitcoinMasterBetHistory> Handle(BitcoinMasterBetHistoryRequest request, CancellationToken cancellationToken)
+                => reportService.GetBitcoinMasterBetHistoryAsync(request.RoundId, request.Nickname);
 
         public Task<KenoMatchBetReport> Handle(KenoMatchReportRequest request, CancellationToken cancellationToken)
         {
