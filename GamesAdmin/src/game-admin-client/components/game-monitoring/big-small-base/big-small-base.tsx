@@ -314,6 +314,7 @@ export default class BigSmallBase extends BaseMonitoring<BigSmallBaseModel> {
       renderMonitor: this.renderMonitor,
       onChangePartnerFilter: this.onChangePartnerFilter,
       onChangeSystemFilter: this.onChangeSystemFilter,
+      enableFilter: true,
       disabled: this.state.currentState == GameState.disabled,
     };
 
