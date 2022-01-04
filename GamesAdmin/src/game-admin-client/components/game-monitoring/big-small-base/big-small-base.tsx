@@ -9,22 +9,15 @@ import { Container, Row, Col, Modal } from "reactstrap";
 import TotalUser from "../../shared/total-user/total-user";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceModel from "../../common/model/DiceModel";
-import BigSmallBaseModel from "../../common/model/BigSmallBaseModel";
+import BigSmallBaseModel, {
+  BigSmallBaseBetList,
+} from "../../common/model/BigSmallBaseModel";
 import DiceType from "../../common/model/DiceType";
-import BetItem, { SystemId } from "../../common/model/BetItem";
+import BetItem from "../../common/model/BetItem";
 import { types, gameMapping } from "../game-monitoring-config";
 import { GameState } from "../../shared/common/GameState";
-import { getTotalBetOnSystem } from "../../util/util";
 import Dice from "../../shared/dice/dice";
-
-type BigSmallProps = {
-  turbo: boolean;
-  type: string;
-  onMessage: Function;
-  enableFilter?: boolean;
-  sendMessage: Function;
-  isProduction: boolean;
-};
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
 const optionChoice = ["big", "even"];
 const DiceValue = [1, 2, 3, 4, 5, 6];
@@ -36,114 +29,39 @@ const betListMapping = (flag: boolean) => {
   return betListLabels[choice];
 };
 
-export default class BigSmallBase extends React.Component<
-  BigSmallProps,
-  BigSmallBaseModel
-> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
-
+export default class BigSmallBase extends BaseMonitoring<BigSmallBaseModel> {
   constructor(props) {
     super(props);
 
-    this.state = new BigSmallBaseModel();
-    this.isFirstLoad = true;
+    this.state = {
+      ...new BigSmallBaseModel(),
+      result: this.defaultResult,
+      betList: this.defaultBetList,
+    };
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get isExcludeUUS(): boolean {
+    return true;
   }
 
-  handleData(data) {
-    const { turbo } = this.props;
-    const totalRemainingTime = turbo ? 30 : 50;
-    const totalWaitingTime = turbo ? 5 : 10;
+  get type() {
+    return "";
+  }
 
-    if (!!data.inGame) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
-      });
-    }
+  get turbo() {
+    return false;
+  }
 
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      setTimeout(() => {
-        this.setState({
-          result: new BigSmallBaseModel().result,
-          isHavingResult: false,
-          currentState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: totalRemainingTime,
-          },
-        });
-      }, (totalWaitingTime + 1) * 1000);
+  get defaultResult(): any {
+    return [
+      new DiceModel(-1, DiceType.TaiXiu),
+      new DiceModel(-1, DiceType.TaiXiu),
+      new DiceModel(-1, DiceType.TaiXiu),
+    ];
+  }
 
-      this.setState({
-        result: this.getResult(data.finish.result),
-        isHavingResult: true,
-        currentState: GameState.waiting,
-        time: {
-          remainingTime: totalWaitingTime,
-        },
-      });
-    }
-
-    if (!!data.um) {
-      if (
-        this.isFirstLoad ||
-        this.state.time.remainingTime == totalRemainingTime
-      ) {
-        clearTimeout(this.timeout);
-        this.setState({
-          time: { remainingTime: 0 },
-          result: new BigSmallBaseModel().result,
-          isHavingResult: false,
-          currentState: GameState.disabled,
-        });
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!data.remainingTime) {
-      const { remainingTime, roundId, result } = data;
-      if (
-        (this.props.turbo && remainingTime > totalRemainingTime + 6) ||
-        remainingTime > totalRemainingTime
-      ) {
-        this.setState({
-          time: {
-            remainingTime: remainingTime - totalRemainingTime - 1,
-          },
-          result: result ? this.getResult(result) : this.state.result,
-          isHavingResult: result ? true : this.state.isHavingResult,
-          roundNumber: roundId - 1,
-          currentState: GameState.waiting,
-        });
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            time: {
-              remainingTime: totalRemainingTime,
-            },
-            roundNumber: roundId,
-            currentState: GameState.running,
-            isHavingResult: false,
-            result: new BigSmallBaseModel().result,
-          });
-        }, (remainingTime - totalRemainingTime - 1) * 1000);
-      } else {
-        this.setState({
-          currentState: GameState.running,
-          time: {
-            remainingTime: remainingTime - 1,
-          },
-          roundNumber: roundId,
-          isHavingResult: false,
-          result: new BigSmallBaseModel().result,
-        });
-      }
-    }
+  get defaultBetList(): {} {
+    return new BigSmallBaseBetList();
   }
 
   getUserBetList(data, currentData) {
@@ -154,6 +72,7 @@ export default class BigSmallBase extends React.Component<
 
     for (const user in data) {
       const currency = data[user].currency;
+      const userRate = this.currencyExchangeRate[data[user].currency];
 
       let betTracks = data[user].betTracks;
 
@@ -165,17 +84,19 @@ export default class BigSmallBase extends React.Component<
           }
 
           if (!currency || currency.toUpperCase() !== "UUS") {
-            currentData[betListMapping(select)].total += betTracks[key];
+            currentData[betListMapping(select)].total +=
+              betTracks[key] * userRate;
           }
 
           currentData[betListMapping(select)].dataList.unshift(
             new BetItem(
               data[user].name,
-              betTracks[key],
+              betTracks[key] * userRate,
               null,
               null,
               data[user].system,
-              currency
+              data[user].currency,
+              data[user].partnerId
             )
           );
         }
@@ -196,12 +117,11 @@ export default class BigSmallBase extends React.Component<
   }
 
   getWiner() {
-    const { type } = this.props;
     const { result } = this.state;
 
     const sumDicesValue = result.reduce((sum, dice) => sum + dice.value, 0);
     const winner =
-      type == types.taixiu
+      this.type == types.taixiu
         ? sumDicesValue >= 11
           ? "tai"
           : "xiu"
@@ -286,8 +206,7 @@ export default class BigSmallBase extends React.Component<
     );
   }
 
-  renderMonitor(systemFilter) {
-    const { turbo, type } = this.props;
+  renderMonitor() {
     const {
       betList,
       time,
@@ -296,34 +215,20 @@ export default class BigSmallBase extends React.Component<
       firstBetTypeUsers,
       secondBetTypeUsers,
       isHavingResult,
-      currentState,
+      gameState,
     } = this.state;
 
-    const gameName = `${turbo ? "Turbo " : ""}${
-      type == types.taixiu ? "Big Small" : "Odd Even"
+    const gameName = `${this.turbo ? "Turbo " : ""}${
+      this.type == types.taixiu ? "Big Small" : "Odd Even"
     }`;
     const type1 =
-      type == types.taixiu ? gameMapping.taixiu[0] : gameMapping.chanle[0];
+      this.type == types.taixiu ? gameMapping.taixiu[0] : gameMapping.chanle[0];
     const type2 =
-      type == types.taixiu ? gameMapping.taixiu[1] : gameMapping.chanle[1];
+      this.type == types.taixiu ? gameMapping.taixiu[1] : gameMapping.chanle[1];
     let winner = "";
 
     if (isHavingResult) {
       winner = this.getWiner();
-    }
-
-    if (systemFilter) {
-      betList.firstBetType.total = getTotalBetOnSystem(
-        betList.firstBetType.dataList,
-        systemFilter,
-        true
-      );
-
-      betList.secondBetType.total = getTotalBetOnSystem(
-        betList.secondBetType.dataList,
-        systemFilter,
-        true
-      );
     }
 
     return (
@@ -336,7 +241,7 @@ export default class BigSmallBase extends React.Component<
             <TotalBet
               type={type1}
               total={betList.firstBetType.total}
-              isWin={gameMapping[type][0] == winner}
+              isWin={gameMapping[this.type][0] == winner}
             />
             <TotalUser totalUser={firstBetTypeUsers} />
           </Col>
@@ -344,8 +249,8 @@ export default class BigSmallBase extends React.Component<
             <div>
               <TimeCounter
                 remainingTime={time.remainingTime}
-                gameState={currentState}
-                key={currentState}
+                gameState={gameState}
+                key={gameState}
               />
               <RoundNum roundNumber={roundNumber} />
             </div>
@@ -358,7 +263,7 @@ export default class BigSmallBase extends React.Component<
             <TotalBet
               type={type2}
               total={betList.secondBetType.total}
-              isWin={gameMapping[type][1] == winner}
+              isWin={gameMapping[this.type][1] == winner}
             />
             <TotalUser totalUser={secondBetTypeUsers} />
           </Col>
@@ -367,8 +272,7 @@ export default class BigSmallBase extends React.Component<
     );
   }
 
-  renderBetList(systemFilter) {
-    const { type } = this.props;
+  renderBetList() {
     const { betList, isHavingResult } = this.state;
     let winner = "";
 
@@ -384,8 +288,7 @@ export default class BigSmallBase extends React.Component<
               dataList={betList.firstBetType.dataList}
               type="simple"
               titles={this.getTitles()}
-              isWin={gameMapping[type][0] == winner}
-              systemFilter={systemFilter}
+              isWin={gameMapping[this.type][0] == winner}
             ></BetList>
           </Col>
           <Col className="col-12 col-sm-6">
@@ -393,8 +296,7 @@ export default class BigSmallBase extends React.Component<
               dataList={betList.secondBetType.dataList}
               type="simple"
               titles={this.getTitles()}
-              isWin={gameMapping[type][1] == winner}
-              systemFilter={systemFilter}
+              isWin={gameMapping[this.type][1] == winner}
             ></BetList>
           </Col>
         </Row>
@@ -408,10 +310,11 @@ export default class BigSmallBase extends React.Component<
 
   render() {
     const gameTemplateProps = {
-      renderBetList: this.renderBetList.bind(this),
-      renderMonitor: this.renderMonitor.bind(this),
+      renderBetList: this.renderBetList,
+      renderMonitor: this.renderMonitor,
+      onChangePartnerFilter: this.onChangePartnerFilter,
+      onChangeSystemFilter: this.onChangeSystemFilter,
       disabled: this.state.currentState == GameState.disabled,
-      enableFilter: this.props.enableFilter,
     };
 
     return (

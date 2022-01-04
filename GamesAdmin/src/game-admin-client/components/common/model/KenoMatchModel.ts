@@ -1,3 +1,4 @@
+import BaseMonitoringState from "./BaseMonitoringModel";
 import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 
@@ -55,9 +56,9 @@ class KenoMatchPeriodResult {
   blue: Array<number>;
   red: Array<number>;
 
-  constructor(){
-      this.blue = [];
-      this.red = [];
+  constructor() {
+    this.blue = [];
+    this.red = [];
   }
 }
 
@@ -82,7 +83,7 @@ class KenoMatchResult {
   }
 }
 
-export class KenoMatchModel {
+export class KenoMatchModel extends BaseMonitoringState {
   roundNumber: number;
   betList: KenoMatchBetListModel;
   time: TimeModel;
@@ -91,6 +92,7 @@ export class KenoMatchModel {
   isOpenModal: boolean;
   currentSelectedIndex: number;
   constructor() {
+    super();
     this.result = new KenoMatchResult();
     this.betList = new KenoMatchBetListModel();
     this.time = new TimeModel();

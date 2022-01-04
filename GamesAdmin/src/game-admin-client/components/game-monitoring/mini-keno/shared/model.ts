@@ -1,25 +1,26 @@
+import { SystemId } from "../../../common/model/BetItem";
+
 export interface BetOfUser {
-  name: string
-  bet: number
+  name: string;
+  bet: number;
+  system: SystemId;
+  partnerId: string;
 }
 
 export interface IBetChoice {
-  name: string
-  bets: Array<BetOfUser>
+  name: string;
+  bets: Array<BetOfUser>;
 
-  total(): number
+  total(): number;
 }
 
-export class BetChoice implements IBetChoice{
+export class BetChoice implements IBetChoice {
   public bets: Array<BetOfUser>;
   public name: string;
   public isWin: boolean;
   public type: string;
 
-  constructor(
-    bets: Array<BetOfUser>,
-    name: string,
-    isWin: boolean) {
+  constructor(bets: Array<BetOfUser>, name: string, isWin: boolean) {
     this.bets = bets;
     this.name = name;
     this.isWin = isWin;
@@ -27,8 +28,6 @@ export class BetChoice implements IBetChoice{
   }
 
   total(): number {
-    return this.bets.reduce(
-      (result, {bet}) => result + bet,
-      0);
+    return this.bets.reduce((result, { bet }) => result + bet, 0);
   }
 }

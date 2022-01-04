@@ -17,11 +17,16 @@
   padding: 15px;
 
   .filter {
-    position: absolute;
     top: 35px;
     right: 35px;
+    width: 4rem;
+
+    label {
+      color: #fff;
+    }
 
     select {
+      margin-bottom: 5px;
       border-radius: 5px;
       font-weight: 600;
       width: 60px;

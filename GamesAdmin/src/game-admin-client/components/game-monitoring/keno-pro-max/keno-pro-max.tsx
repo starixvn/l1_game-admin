@@ -7,11 +7,14 @@ import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import KennoResult from "../../shared/keno-result/keno-result";
 import RoundNum from "../../shared/round-num/round-num";
-import KenoProMaxModel from "../../common/model/KenoProMaxModel";
+import KenoProMaxModel, {
+  KenoProMaxBetList,
+} from "../../common/model/KenoProMaxModel";
 import BetItem from "../../common/model/BetItem";
 import { GameState } from "../../shared/common/GameState";
 import { updateTotalBetOfBetList, upperFirstLetter } from "../../util/util";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
 type Props = {
   onMessage: Function;
@@ -39,128 +42,36 @@ const TYPES = [
 const TOTAL_TIME = 30;
 const WAITING_TIME = 9;
 
-export default class KenoProMax extends React.Component<Props, State> {
-  private isFirstLoad: boolean;
-  private stopTimeout: NodeJS.Timeout;
-
+export default class KenoProMax extends BaseMonitoring<KenoProMaxModel> {
   constructor(props: any) {
     super(props);
 
     this.isFirstLoad = true;
-    this.state = {
-      data: new KenoProMaxModel(),
-      gameState: GameState.none,
-      isShowResultUpdater: false,
-    };
+    this.state = new KenoProMaxModel();
 
     this.showUpdater = this.showUpdater.bind(this);
     this.updaterToggle = this.updaterToggle.bind(this);
     this.updaterSubmit = this.updaterSubmit.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleMessage(message));
+  get totalTimeInRound(): number {
+    return TOTAL_TIME;
   }
 
-  handleMessage(message) {
-    if (message.um !== undefined) {
-      if (
-        this.isFirstLoad ||
-        this.state.data.time.remainingTime == TOTAL_TIME
-      ) {
-        clearTimeout(this.stopTimeout);
-        let data = this.state.data;
-        data.time.remainingTime = 0;
-        (data.roundNumber = this.isFirstLoad
-          ? this.state.data.roundNumber
-          : this.state.data.roundNumber - 1),
-          (data.result = []);
-        data.settlementResult = "";
-        this.setState({
-          data: data,
-          gameState: GameState.disabled,
-        });
-        this.isFirstLoad = false;
-      }
-    } else if (message.remainingTime !== undefined) {
-      this.handleStart(message);
-    } else if (message.finish !== undefined) {
-      this.handleStop(message);
-    } else {
-      this.handleBet(message);
-    }
+  get waitingTime(): number {
+    return WAITING_TIME;
   }
 
-  handleStart(message) {
-    const newData = new KenoProMaxModel();
-    let isFinished = message.remainingTime > TOTAL_TIME;
-    newData.time.remainingTime = isFinished
-      ? message.remainingTime - TOTAL_TIME - 1
-      : message.remainingTime;
-    newData.roundNumber = isFinished ? message.roundId - 1 : message.roundId;
-    if (isFinished && message.result) {
-      newData.result = message.result;
-      newData.settlementResult = this.getSettlementResult(
-        message.settlementResult
-      );
-    }
-
-    this.setState({
-      data: newData,
-      gameState: isFinished ? GameState.waiting : GameState.running,
-    });
-
-    if (isFinished) {
-      this.countDownToStart.call(this, newData, newData.time.remainingTime + 1);
-    }
+  get defaultBetList(): {} {
+    return new KenoProMaxBetList();
   }
 
-  handleBet(message) {
-    const _this = this;
-    const newData = new KenoProMaxModel();
-    newData.roundNumber = this.state.data.roundNumber;
-
-    Object.keys(message.inGame).forEach(function (key) {
-      const userObj = message.inGame[key];
-      TYPES.forEach((type) => {
-        if (userObj.betTracks[type] > 0) {
-          newData.betList[type].dataList.unshift(_this.getBet(type, userObj));
-        }
-      });
-    });
-
-    TYPES.forEach((type) => {
-      newData.betList[type].total = newData.betList[type].dataList.reduce(
-        (sum, x) => sum + x.bet,
-        0
-      );
-    });
-
-    this.setState({
-      data: newData,
-    });
+  get defaultResult(): any {
+    return [];
   }
 
-  handleStop(message) {
-    this.isFirstLoad = false;
-    const newData = this.state.data;
-    const result = message.finish.result;
-    newData.roundNumber = message.finish.roundId;
-    newData.result = result;
-    newData.settlementResult = this.getSettlementResult(
-      message.finish.settlementResult
-    );
-    newData.resultSumText = result.reduce((sum, x) => sum + x, 0);
-    newData.time.remainingTime = WAITING_TIME;
-
-    this.setState({
-      data: newData,
-      gameState: GameState.waiting,
-    });
-
-    this.countDownToStart.call(this, newData, WAITING_TIME + 1);
+  get defaultSettlementResult(): any {
+    return "";
   }
 
   getSettlementResult(result) {
@@ -172,26 +83,6 @@ export default class KenoProMax extends React.Component<Props, State> {
     });
 
     return resultArr.join(" - ");
-  }
-
-  countDownToStart(newData, time) {
-    this.stopTimeout = setTimeout(() => {
-      newData.time.remainingTime = TOTAL_TIME;
-      newData.roundNumber += 1;
-      this.setState({
-        data: newData,
-        gameState: GameState.running,
-      });
-    }, time * 1000);
-  }
-
-  getBet(type, userObj) {
-    const betItem = new BetItem();
-    betItem.name = userObj.name;
-    betItem.bet = userObj.betTracks[type];
-    betItem.system = userObj.system;
-
-    return betItem;
   }
 
   showUpdater() {
@@ -212,8 +103,8 @@ export default class KenoProMax extends React.Component<Props, State> {
         result: list,
         roundId:
           this.state.gameState == GameState.running
-            ? this.state.data.roundNumber
-            : this.state.data.roundNumber + 1,
+            ? this.state.roundNumber
+            : this.state.roundNumber + 1,
       },
     };
 
@@ -224,13 +115,11 @@ export default class KenoProMax extends React.Component<Props, State> {
   }
 
   checkWinner(betType) {
-    const result = this.state.data.settlementResult;
+    const result = this.state.settlementResult;
     return result ? result.split(" - ").includes(betType.toUpperCase()) : false;
   }
 
-  renderMonitor(systemFilter) {
-    updateTotalBetOfBetList(this.state.data.betList, systemFilter);
-
+  renderMonitor() {
     return (
       <Container>
         <Row>
@@ -241,19 +130,19 @@ export default class KenoProMax extends React.Component<Props, State> {
             <Row className="justify-content-center">
               <div className={styles.timecounter}>
                 <TimeCounter
-                  remainingTime={this.state.data.time.remainingTime}
+                  remainingTime={this.state.time.remainingTime}
                   gameState={this.state.gameState}
                   key={this.state.gameState}
                 ></TimeCounter>
-                <RoundNum roundNumber={this.state.data.roundNumber} />
+                <RoundNum roundNumber={this.state.roundNumber} />
                 <div className={styles["result-sum"]}>
-                  {this.state.data.resultSumText}
+                  {this.state.resultSumText}
                 </div>
               </div>
               <div onClick={this.showUpdater}>
-                <KennoResult listResult={this.state.data.result}></KennoResult>
+                <KennoResult listResult={this.state.result}></KennoResult>
                 <div className={styles["setttlement-result"]}>
-                  {this.state.data.settlementResult}
+                  {this.state.settlementResult}
                 </div>
               </div>
             </Row>
@@ -262,49 +151,49 @@ export default class KenoProMax extends React.Component<Props, State> {
             <Row className={styles["row-style"]}>
               <TotalBet
                 type="kenogold"
-                total={this.state.data.betList.gold.total}
+                total={this.state.betList.gold.total}
                 isWin={this.checkWinner("gold")}
               />
               <TotalBet
                 type="kenowood"
-                total={this.state.data.betList.wood.total}
+                total={this.state.betList.wood.total}
                 isWin={this.checkWinner("wood")}
               />
               <TotalBet
                 type="kenowater"
-                total={this.state.data.betList.water.total}
+                total={this.state.betList.water.total}
                 isWin={this.checkWinner("water")}
               />
               <TotalBet
                 type="kenofire"
-                total={this.state.data.betList.fire.total}
+                total={this.state.betList.fire.total}
                 isWin={this.checkWinner("fire")}
               />
               <TotalBet
                 type="kenoearth"
-                total={this.state.data.betList.earth.total}
+                total={this.state.betList.earth.total}
                 isWin={this.checkWinner("earth")}
               />
             </Row>
             <Row className={styles["row-style"]}>
               <TotalBet
                 type="kenobig"
-                total={this.state.data.betList.big.total}
+                total={this.state.betList.big.total}
                 isWin={this.checkWinner("big")}
               />
               <TotalBet
                 type="kenosmall"
-                total={this.state.data.betList.small.total}
+                total={this.state.betList.small.total}
                 isWin={this.checkWinner("small")}
               />
               <TotalBet
                 type="kenoeven"
-                total={this.state.data.betList.even.total}
+                total={this.state.betList.even.total}
                 isWin={this.checkWinner("even")}
               />
               <TotalBet
                 type="kenoodd"
-                total={this.state.data.betList.odd.total}
+                total={this.state.betList.odd.total}
                 isWin={this.checkWinner("odd")}
               />
             </Row>
@@ -314,7 +203,7 @@ export default class KenoProMax extends React.Component<Props, State> {
     );
   }
 
-  renderBetList(systemFilter) {
+  renderBetList() {
     const result = [];
     const _this = this;
 
@@ -325,8 +214,7 @@ export default class KenoProMax extends React.Component<Props, State> {
             type="onecolumn"
             isWin={_this.checkWinner(type)}
             titles={[<div>{_this.renderTitle(upperFirstLetter(type))}</div>]}
-            dataList={_this.state.data.betList[type].dataList}
-            systemFilter={systemFilter}
+            dataList={_this.state.betList[type].dataList}
           />
         </Col>
       );
@@ -345,6 +233,8 @@ export default class KenoProMax extends React.Component<Props, State> {
         <GameTemplate
           renderMonitor={this.renderMonitor}
           renderBetList={this.renderBetList}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState == GameState.disabled}
           enableFilter={true}
         />

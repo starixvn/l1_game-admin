@@ -1,9 +1,10 @@
+import BaseMonitoringState from "./BaseMonitoringModel";
 import BetList from "./BetList";
 import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
 import TimeModel from "./TimeModel";
 
-class SpecialSeDieBetList {
+export class SpecialSeDieBetList {
   even: BetList;
   odd: BetList;
 
@@ -13,7 +14,7 @@ class SpecialSeDieBetList {
   }
 }
 
-export default class SpecialSeDieModel {
+export default class SpecialSeDieModel extends BaseMonitoringState {
   roundNumber: number;
   time: TimeModel;
   betList: SpecialSeDieBetList;
@@ -25,6 +26,8 @@ export default class SpecialSeDieModel {
   nextRoundResult: { [key: string]: boolean };
 
   constructor() {
+    super();
+
     this.result = [
       new DiceModel(-1, DiceType.XocXoc),
       new DiceModel(-1, DiceType.XocXoc),

@@ -1,8 +1,7 @@
 import BetList from "./BetList";
-import TimeModel from "./TimeModel";
-import CardResult from "./CardResult";
+import BaseMonitoringState from "./BaseMonitoringModel";
 
-class DragonTigerBetList {
+export class DragonTigerBetList {
   dragon: BetList;
   tie: BetList;
   tiger: BetList;
@@ -14,15 +13,13 @@ class DragonTigerBetList {
   }
 }
 
-export default class DragonTigerModel {
-  roundNumber: number;
-  betList: DragonTigerBetList;
-  time: TimeModel;
-  result: Array<CardResult>;
+export default class DragonTigerModel extends BaseMonitoringState {
+  isShowDeskOfCards: boolean;
+  selectedCard: string;
 
   constructor() {
-    this.result = [new CardResult(), new CardResult()];
-    this.betList = new DragonTigerBetList();
-    this.time = new TimeModel();
+    super();
+    this.isShowDeskOfCards = false;
+    this.selectedCard = "";
   }
 }

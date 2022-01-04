@@ -2,6 +2,7 @@ import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
+import BaseMonitoringState from "./BaseMonitoringModel";
 
 class SicBoBetList {
   specificNumber: BetList;
@@ -57,7 +58,7 @@ class GameResult {
   }
 }
 
-export default class SicBoModel {
+export default class SicBoModel extends BaseMonitoringState {
   roundNumber: number;
   time: TimeModel;
   betList: SicBoBetList;
@@ -70,6 +71,7 @@ export default class SicBoModel {
   settlementResult: SicBoSettlementResult;
 
   constructor() {
+    super();
     this.result = [
       new DiceModel(-1, DiceType.TaiXiu),
       new DiceModel(-1, DiceType.TaiXiu),
@@ -85,4 +87,4 @@ export default class SicBoModel {
   }
 }
 
-export { SicBoModel, SicBoBetList, GameResult };
+export { SicBoModel, SicBoBetList, GameResult, SicBoSettlementResult };
