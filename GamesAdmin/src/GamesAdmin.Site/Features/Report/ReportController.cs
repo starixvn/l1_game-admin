@@ -474,6 +474,7 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname)));
 
         [HttpGet]
+        [Route("Report/CasinoHoldem")]
         public async Task<IActionResult> CasinoHoldemPoker()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
