@@ -17,6 +17,7 @@
                 <thead>
                     <tr>
                         <th>Round ID</th>
+                        <th>Exchange ID</th>
                         <th>Results</th>
                         <th>Winning Options</th>
                     </tr>
@@ -24,6 +25,7 @@
                 <tbody>
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center">
                             @foreach (var chip in Model.RoundResult.Chips)
                             {

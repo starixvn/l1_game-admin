@@ -18,15 +18,16 @@
                 <thead>
                     <tr>
                         <th>Round ID</th>
+                        <th>Exchange ID</th>
                         <th>Results</th>
                         <th>Total</th>
                         <th>Winning Options</th>
-                        <th>Exchange Rate</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center">
                             <div class="dice-list">
                                 <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice1).png" />
@@ -36,7 +37,6 @@
                         </td>
                         <td class="text-center">@Model.RoundResult.Total</td>
                         <td class="text-center">@(Model.RoundResult.IsBig ? "Big": "Small")</td>
-                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                     </tr>
                 </tbody>
             </table>

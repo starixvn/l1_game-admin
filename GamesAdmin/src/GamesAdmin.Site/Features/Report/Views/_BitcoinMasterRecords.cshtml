@@ -20,6 +20,7 @@
                 <thead>
                     <tr>
                         <th>Round ID</th>
+                        <th>Exchange ID</th>
                         <th>Betting Price</th>
                         <th>Result</th>
                         <th>Winning Options</th>
@@ -28,6 +29,7 @@
                 <tbody>
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center">@HtmlHelpers.formatNumber2(Model.RoundResult.BettingPrice)</td>
                         <td class="text-center bitcoin-master-result">
                             <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span>&nbsp;

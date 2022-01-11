@@ -29,12 +29,14 @@
                 <thead>
                     <tr>
                         <th>Round ID</th>
+                        <th>Exchange ID</th>
                         <th>Result</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center font-weight-bold @resultCSSClass">
                             @Model.RoundResult.Result
                         </td>

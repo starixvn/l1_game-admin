@@ -13,6 +13,7 @@
                 <thead>
                     <tr>
                         <th>Round ID / Date (GMT+7)</th>
+                        <th>Exchange ID</th>
                         <th>Result</th>
                         <th>Total Points</th>
                         <th>Big / Small</th>
@@ -26,6 +27,7 @@
                             @Model.RoundId.ToString("D7")
                             <div>@Model.RoundResult.Time?.ToReportDateTimeFormat(Model.TimeZoneInfo)</div>
                         </td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td>
                             <div class="list-numbers">
                                 @foreach (var number in Model.RoundResult.Results)
