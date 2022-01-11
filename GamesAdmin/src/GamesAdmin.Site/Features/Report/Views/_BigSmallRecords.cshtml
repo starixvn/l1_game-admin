@@ -21,6 +21,7 @@
                         <th>Results</th>
                         <th>Total</th>
                         <th>Winning Options</th>
+                        <th>Exchange Rate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,7 @@
                         </td>
                         <td class="text-center">@Model.RoundResult.Total</td>
                         <td class="text-center">@(Model.RoundResult.IsBig ? "Big": "Small")</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                     </tr>
                 </tbody>
             </table>

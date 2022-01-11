@@ -7,6 +7,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public abstract class BaseRoundResultViewModel
     {
+        public int ExchangeRateId { get; set; }
+
         public decimal ExchangeRate { get; set; }
 
         public decimal? ConvertByExchangeRate(decimal? value)

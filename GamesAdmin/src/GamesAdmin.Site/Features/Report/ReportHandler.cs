@@ -85,6 +85,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
@@ -122,6 +123,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Records = result.Records.Select(x => new BigSmallRecordViewModel
                 {
@@ -159,6 +161,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
@@ -196,6 +199,7 @@ namespace GamesAdmin.Site.Features.Report
                     Dice2 = result.RoundResult.Dice2,
                     Dice3 = result.RoundResult.Dice3,
                     ExchangeRate = exchangeRate,
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Records = result.Records.Select(x => new OddEvenRecordViewModel
                 {
@@ -301,7 +305,6 @@ namespace GamesAdmin.Site.Features.Report
             });
         }
 
-
         public async Task<SpecialSeDieReportResultViewModel> Handle(GetSpecialSeDieReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetSpecialSeDieReport(
@@ -315,6 +318,7 @@ namespace GamesAdmin.Site.Features.Report
             var roundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult);
 
             roundResult.ExchangeRate = exchangeRate;
+            roundResult.ExchangeRateId = result.RoundResult.ExchangeRateId;
 
             return new SpecialSeDieReportResultViewModel
             {
@@ -425,7 +429,8 @@ namespace GamesAdmin.Site.Features.Report
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
                     SettlementResult = result.RoundResult.SettlementResult,
-                    ExchangeRate = exchangeRate
+                    ExchangeRate = exchangeRate,
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Records = result.Records.Select(x => new BitcoinMasterRecordViewModel
                 {
@@ -458,7 +463,8 @@ namespace GamesAdmin.Site.Features.Report
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
-                    ExchangeRate = exchangeRate
+                    ExchangeRate = exchangeRate,
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
                 {
