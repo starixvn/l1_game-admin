@@ -42,11 +42,8 @@ namespace GamesAdmin.Core.Enumeration
         public const string KenoMatch2Value = "kenomatch2";
         public const string KenoPower1Value = "kenopower1";
         public const string KenoPower2Value = "kenopower2";
-<<<<<<< HEAD
         public const string HiLoValue = "hilo";
-=======
         public const string TexasHoldemPokerValue = "texasholdempoker";
->>>>>>> 0a5b5d7a (feat: config odds- choices)
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -88,9 +85,10 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game KenoPower2 = new Game(KenoPower2Value, "Keno Power MD5", GameId.KenoPower2);
 <<<<<<< HEAD
         public static readonly Game HiLo = new Game(HiLoValue, "Hi-Lo", GameId.HiLo);
-=======
         public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Holdem Poker", GameId.TexasHoldemPoker);
->>>>>>> 0a5b5d7a (feat: config odds- choices)
+=======
+        public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Hold'em", GameId.TexasHoldemPoker);
+>>>>>>> 7fc61148 (feat: texas holdem - rebase scs2)
 
         public Game()
         {
