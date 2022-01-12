@@ -60,7 +60,6 @@ namespace GamesAdmin.Api.Report
         public async Task<OddEvenBetReport> Handle(OddEvenReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
-     
         public Task<IEnumerable<SpinResult>> Handle(LuckyWheelReportRequest request, CancellationToken cancellationToken)
         => reportService.GetLuckyWheelReportAsync(request.Nickname);
 

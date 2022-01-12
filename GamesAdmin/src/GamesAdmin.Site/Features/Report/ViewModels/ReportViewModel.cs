@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GamesAdmin.Core.Enumeration;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using GamesAdmin.Core.Enumeration;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -25,7 +25,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class ReportViewModel
     {
-
         [Required(ErrorMessage = "Please input RoundId.")]
         public virtual long? RoundId { get; set; }
 

@@ -8,7 +8,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class CasinoHoldemPokerReportViewModel
     {
-<<<<<<< HEAD
         [CasinoHldemPokerValidation]
         public long? RoundId { get; set; }
 
@@ -24,26 +23,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [CasinoHldemPokerValidation]
         public string Username { get; set; }
 
-=======
->>>>>>> 1b4bb81f (feat: Casino Holdem Poker - review code)
         [DisplayName("Convert to USD")]
         public bool ConvertToUSD { get; set; }
 
         [DisplayName("Partner")]
         public string PartnerId { get; set; }
 
-<<<<<<< HEAD
         public bool ExcludeUUS { get; set; }
-=======
-        [CasinoHldemPokerValidationAttribute]
-        public string Username { get; set; }
-
-        [DisplayName("From Date")]
-        public DateTime FromDate { get; set; } = DateTime.Today;
-
-        [DisplayName("To Date")]
-        public DateTime ToDate { get; set; } = DateTime.Today;
->>>>>>> 1b4bb81f (feat: Casino Holdem Poker - review code)
 
         public ReportSeletionsViewModel Selections { get; set; }
     }

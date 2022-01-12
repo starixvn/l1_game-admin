@@ -114,13 +114,16 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<KenoBetRecord, KenoRecordViewModel>();
             CreateMap<KenoBetHistoryRecord, KenoBetHistoryRecordViewModel>();
+<<<<<<< HEAD
             CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
             CreateMap<HiLoBetRecord, HiLoRecordViewModel>();
             CreateMap<HiLoBetHistoryRecord, HiLoBetHistoryRecordViewModel>();
             CreateMap<HiLoRoundResult, HiLoRoundResultViewModel>();
+=======
+>>>>>>> 4f610b31 (feat: texas holdem - rebase scs2)
 
+            CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
             CreateMap<TexasHoldemPokerBetRecord, TexasHoldemPokerRecordViewModel>();
-
         }
     }
 }

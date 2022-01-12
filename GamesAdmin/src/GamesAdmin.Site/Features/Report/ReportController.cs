@@ -1,5 +1,4 @@
-﻿using System;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -7,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
@@ -363,7 +363,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetLotteryBetHistory(BetHistoryFilter filter, bool convertToUSD)
-            {
+        {
             return PartialView("_LotteryBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
@@ -487,8 +487,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetHiLoReport(HiLoBetReportFilter model)
         {
             return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
-        }
-        
        [HttpGet]
         [Route("Report/CasinoHoldem")]
         public async Task<IActionResult> CasinoHoldemPoker()
@@ -506,11 +504,6 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> HoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
             => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
-        private async Task<ReportViewModel> GetReportViewModel()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
-            return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
 
         [HttpGet]
@@ -519,6 +512,13 @@ namespace GamesAdmin.Site.Features.Report
             var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(roundId, nickname));
 
             return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
+        }
+
+        private async Task<ReportViewModel> GetReportViewModel()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
+            return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
     }
 }
