@@ -9,13 +9,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class CasinoHoldemPokerReportViewModel
     {
         [CasinoHldemPokerValidation]
+<<<<<<< HEAD
         public long? RoundId { get; set; }
+=======
+        new public long? RoundId { get; set; }
+>>>>>>> 92420767 (feat: casino holdem -gross win)
 
         [DisplayName("From Date")]
         public DateTime FromDate { get; set; } = DateTime.Today;
 
         [DisplayName("To Date")]
         public DateTime ToDate { get; set; } = DateTime.Today;
+<<<<<<< HEAD
 
         [CasinoHldemPokerValidation]
         public string Nickname { get; set; }
@@ -33,12 +38,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public ReportSeletionsViewModel Selections { get; set; }
     }
+=======
+>>>>>>> 92420767 (feat: casino holdem -gross win)
 
-    public class PartnerViewModel
-    {
-        public string PartnerId { get; set; }
+        [CasinoHldemPokerValidation]
+        new public string Nickname { get; set; }
 
-        public string PartnerName { get; set; }
+        [CasinoHldemPokerValidation]
+        new public string Username { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -51,7 +58,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
 
         public string GetErrorMessage() =>
+<<<<<<< HEAD
              "Please input either RoundId, Nickname or Username.";
+=======
+            "Please input either RoundId, Nickname or Username.";
+>>>>>>> 92420767 (feat: casino holdem -gross win)
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
