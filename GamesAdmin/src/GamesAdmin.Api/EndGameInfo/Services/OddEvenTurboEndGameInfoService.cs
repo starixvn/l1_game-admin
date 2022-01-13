@@ -30,9 +30,9 @@ namespace GamesAdmin.Api.EndGameInfo
             return new EndGameInfoResult
             {
                 EndTime = round.Time,
-                ValidBetAmount = betAmount,
+                ValidBetAmount = betAmount - bet.Refund,
                 TotalAmount = betAmount,
-                TotalWin = bet.Win ? bet.Betwin + betAmount : (bet.Back ?? bet.Refund)
+                TotalWin = bet.Win ? bet.Betwin + betAmount : bet.Refund
             };
         }
     }
