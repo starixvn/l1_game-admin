@@ -6,22 +6,30 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class CasinoHoldemPokerReportViewModel : ReportViewModel
+    public class CasinoHoldemPokerReportViewModel
     {
-        [DisplayName("Convert to USD")]
-        public bool ConvertToUSD { get; set; }
-
-        [DisplayName("Partner")]
-        public string PartnerId { get; set; }
-
-        [CasinoHldemPokerValidationAttribute]
-        public string Username { get; set; }
+        [CasinoHldemPokerValidation]
+        public long? RoundId { get; set; }
 
         [DisplayName("From Date")]
         public DateTime FromDate { get; set; } = DateTime.Today;
 
         [DisplayName("To Date")]
         public DateTime ToDate { get; set; } = DateTime.Today;
+
+        [CasinoHldemPokerValidation]
+        public string Nickname { get; set; }
+
+        [CasinoHldemPokerValidation]
+        public string Username { get; set; }
+
+        [DisplayName("Convert to USD")]
+        public bool ConvertToUSD { get; set; }
+
+        [DisplayName("Partner")]
+        public string PartnerId { get; set; }
+
+        public bool ExcludeUUS { get; set; }
 
         public ReportSeletionsViewModel Selections { get; set; }
     }
@@ -43,13 +51,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
 
         public string GetErrorMessage() =>
-            "Please input either Nickname or Username.";
+             "Please input either RoundId, Nickname or Username.";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var model = (CasinoHoldemPokerReportViewModel)validationContext.ObjectInstance;
 
-            if (!string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
+            if (!model.RoundId.HasValue && !string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
             {
                 return new ValidationResult(GetErrorMessage());
             }

@@ -73,7 +73,6 @@
             RoundId = bet.Round;
             IsQualified = round.SettlementResult?.IsQualified ?? false;
 
-
             Player = new CasinoHoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
 
             Dealer = new CasinoHoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };

@@ -38,7 +38,7 @@
                         <td class="text-center">@record.PlayerResult</td>
                         <td class="text-center">@record.DealerResult</td>
                         <td class="text-center">@record.Stake</td>
-                        <td class="text-center">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
+                        <td class="text-center">@(record.Ended ? (record.BetWin + record.Stake).ToString() : "Unfinished Game")</td>
                     </tr>
                 }
             </tbody>
