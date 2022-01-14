@@ -67,7 +67,6 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.VipSeDieWarValue:
                     return Enumeration.GetAll<VipSeDieWarBetChoice>();
 
-
                 case Game.LotteryValue:
                     return Enumeration.GetAll<LotteryBetChoice>();
 
@@ -84,6 +83,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.KenoPower1Value:
                 case Game.KenoPower2Value:
                     return Enumeration.GetAll<KenoPowerBetChoice>();
+
+                case Game.HiLoValue:
+                    return Enumeration.GetAll<HiLoBetOdds>();
 
                 case Game.CasinoHoldemPokerValue:
                     return Enumeration.GetAll<CasinoHoldemPokerBetOdds>();
