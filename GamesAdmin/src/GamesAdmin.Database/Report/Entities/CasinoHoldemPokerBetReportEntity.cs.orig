@@ -35,8 +35,11 @@
             BetWin = TotalWin - Stake;
 
             IsFold = bet.IsFold;
+<<<<<<< HEAD
             Rate = bet.Rate;
             IsQualified = round.SettlementResult?.IsQualified ?? false;
+=======
+>>>>>>> f22fbb0c (feat: casino holdem -round history)
         }
 
         public DateTime Time { get; }
@@ -64,10 +67,13 @@
         public decimal BetWin { get; }
 
         public bool IsFold { get; }
+<<<<<<< HEAD
 
         public decimal Rate { get; }
 
         public bool IsQualified { get; }
+=======
+>>>>>>> f22fbb0c (feat: casino holdem -round history)
     }
 
     public class CasinoHoldemPokerBetHistoryModel

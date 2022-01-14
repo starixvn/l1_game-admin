@@ -43,7 +43,7 @@
                         </td>
 >>>>>>> e5834358 (feat: Casino Holdem Poker - bet history)
                         <td class="text-center">@record.PlayerResult</td>
-                        <td class="text-center">@record.DealerResult</td>
+                        <td class="text-center">@(record.Ended ? record.DealerResult : "-")</td>
                         <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">

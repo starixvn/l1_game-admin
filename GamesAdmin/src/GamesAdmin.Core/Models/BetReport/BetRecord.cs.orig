@@ -321,12 +321,16 @@ namespace GamesAdmin.Core.Models
         public decimal Stake { get; set; }
 
         public bool Ended { get; set; }
-<<<<<<< HEAD
 
         public bool IsFold { get; set; }
+<<<<<<< HEAD
 
         public bool IsQualified { get; set; }
 =======
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+>>>>>>> f22fbb0c (feat: casino holdem -round history)
+    }
+
+    public class TexasHoldemPokerBetRecord : CasinoHoldemPokerBetRecord
+    {
     }
 }

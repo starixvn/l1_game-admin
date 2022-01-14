@@ -118,6 +118,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long HandId { get; set; }
 
+        public int ExchangeRateId { get; set; }
+
         public decimal Bet { get; set; }
 
         public long? SplitForm { get; set; }
@@ -211,6 +213,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
 
         public string Game { get; set; }
+        public int ExchangeRateId { get; set; }
         public string IconsFolder => Game?.ToLowerInvariant();
 
         public void ConvertToUSD(bool isConvert)
@@ -329,10 +332,26 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Stake { get; set; }
 
         public bool Ended { get; set; }
-<<<<<<< HEAD
 
         public string BetHistoryUrl { get; set; }
-=======
->>>>>>> 36db8e75 (feat: Casino Holdem Poker - round history multiple Currencies)
+
+        public int ExchangeRateId { get; set; }
+        
+        public bool IsFold { get; set; }
+    }
+
+    public class HiLoRecordViewModel : BetRecordViewModel
+    {
+        public decimal Amount { get; set; }
+
+        public long RoundId { get; set; }
+
+        public bool Paid { get; set; }
+
+        public int ExchangeRateId { get; set; }
+    }
+
+    public class TexasHoldemPokerRecordViewModel : CasinoHoldemPokerRecordViewModel
+    {
     }
 }
