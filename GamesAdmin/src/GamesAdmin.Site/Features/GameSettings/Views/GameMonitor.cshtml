@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = "Game Monitoring";
+    var role = Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 }
 
 @section Styles {
@@ -31,7 +32,7 @@
                         {
                             if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots)
                             {
-                                if (Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value == Role.Admin.Value)
+                                if (role == Role.Admin.Value)
                                 {
                                     <a class="icon-action" href="~/ResultMonitor/SlotResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
                                 }
@@ -43,7 +44,14 @@
                             }
                             else
                             {
-                                <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                                if (role == Role.Admin.Value && Model.GameList[index].Name == Game.HiLoValue)
+                                {
+                                    <a class="icon-action" asp-controller="ResultMonitor" asp-action="HiLo"><i class="icon-chart"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                                }
                             }
 
                         }

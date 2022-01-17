@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models;
 using MediatR;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {
-    public class SetResultRequest : IRequest<bool>
+    public class SetHiLoResultRequest : IRequest<IEnumerable<Card>>
     {
-        public SetResultRequest(string name, IEnumerable<string> result)
+        public SetHiLoResultRequest(string name, IEnumerable<string> result)
         {
             Name = name;
             Result = result;

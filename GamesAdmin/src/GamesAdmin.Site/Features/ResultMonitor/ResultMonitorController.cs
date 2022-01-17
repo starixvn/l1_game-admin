@@ -43,5 +43,15 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         {
             return PartialView("_CasinoHoldemPokderResult", await mediator.Send(request));
         }
+
+        [HttpGet]
+        public IActionResult HiLo()
+        => View(new HiLoResultViewModel());
+
+        [HttpPost]
+        public async Task<IActionResult> SetHiLoResult(HiLoResultViewModel viewModel)
+        {
+            return PartialView("_HiLoResult", await mediator.Send(new SetHiLoResultRequest(viewModel.Nickname, viewModel.Result.Split(";"))));
+        }
     }
 }

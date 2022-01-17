@@ -43,5 +43,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("casinoholdempoker/set_result")]
         public Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult([FromBody] SetCasinoHoldemPokerResultRequest request)
            => mediator.Send(request);
+
+        [HttpPost("hilo/set_result")]
+        public Task<IEnumerable<Card>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
+        => mediator.Send(request);
     }
 }
