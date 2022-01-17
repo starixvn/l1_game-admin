@@ -87,7 +87,7 @@
             AnteOdds = bet.AnteOdds.Equals(0) ? emptyOdds : bet.AnteOdds.ToString();
 
             Call = bet.Call;
-            CallOdss = bet.CallOdss.Equals(0) ? emptyOdds : bet.CallOdss.ToString();
+            CallOdds = bet.CallOdds.Equals(0) ? emptyOdds : bet.CallOdds.ToString();
 
             Stake = bet.Ante + bet.Aa + bet.Call;
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
@@ -107,7 +107,7 @@
 
         public string AnteOdds { get; }
 
-        public string CallOdss { get; }
+        public string CallOdds { get; }
 
         public long RoundId { get; }
 

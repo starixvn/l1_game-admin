@@ -19,7 +19,7 @@ namespace GamesAdmin.Database.Entities
 
         public decimal Call { get; set; }
 
-        public decimal CallOdss { get; set; }
+        public decimal CallOdds { get; set; }
 
         public bool IsFold { get; set; }
 

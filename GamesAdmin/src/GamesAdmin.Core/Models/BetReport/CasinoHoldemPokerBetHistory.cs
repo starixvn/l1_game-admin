@@ -19,7 +19,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public string AnteOdds { get; set; }
 
-        public string CallOdss { get; set; }
+        public string CallOdds { get; set; }
 
         public decimal AA { get; set; }
 
