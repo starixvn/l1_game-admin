@@ -19,5 +19,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Partner { get; set; }
 
         public string Currency { get; set; }
+
+        public decimal Rate { get; set; }
+
+        public decimal ConvertToBase(decimal value) => value * Rate;
     }
 }

@@ -5,14 +5,11 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetCasinoHoldemPokerBetHistoryRequest : IRequest<CasinoHoldemPokerBetHistory>
     {
-        public GetCasinoHoldemPokerBetHistoryRequest(long roundId, string nickname)
+        public GetCasinoHoldemPokerBetHistoryRequest(CasinoHoldemPokerBetHistoryFilter filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
+            Filter = filter;
         }
 
-        public long RoundId { get; }
-
-        public string Nickname { get; }
+        public CasinoHoldemPokerBetHistoryFilter Filter { get; }
     }
 }

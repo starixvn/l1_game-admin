@@ -213,7 +213,7 @@ namespace GamesAdmin.Api.Report
             }
         }
 
-        public Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
-              => reportService.GetCasinoHoldemPokerBetHistoryAsync(request.RoundId, request.Nickname);
+        public async Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+              => await reportService.GetCasinoHoldemPokerBetHistoryAsync(request.Filter);
     }
 }

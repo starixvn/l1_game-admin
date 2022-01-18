@@ -102,7 +102,7 @@ namespace GamesAdmin.Api.Report
 
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter);
 
-        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(long roundId, string nickname);
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
     }
 
     public class ReportService : IReportService
@@ -743,10 +743,10 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x));
         }
 
-        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(long roundId, string nickname)
+        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter)
         {
             var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
-            var result = await repository.GetBetHistoryAsync(roundId, nickname);
+            var result = await repository.GetBetHistoryAsync(filter);
 
             return mapper.Map<CasinoHoldemPokerBetHistory>(result);
         }

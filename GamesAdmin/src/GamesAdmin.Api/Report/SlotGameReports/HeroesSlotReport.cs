@@ -2,8 +2,8 @@
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {

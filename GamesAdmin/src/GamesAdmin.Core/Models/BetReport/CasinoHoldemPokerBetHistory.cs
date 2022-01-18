@@ -5,6 +5,8 @@ namespace GamesAdmin.Core.Models.BetReport
 {
     public class CasinoHoldemPokerBetHistory
     {
+        public bool ConvertToUSD { get; set; }
+
         public long RoundId { get; set; }
 
         public CasinoHoldemPokerHandModel Player { get; set; }
@@ -42,6 +44,12 @@ namespace GamesAdmin.Core.Models.BetReport
         public DateTime Time { get; set; }
 
         public DateTime CallTime { get; set; }
+
+        public string Currency { get; set; }
+
+        public decimal Rate { get; set; }
+
+        public decimal ConvertToBase(decimal value) => value * Rate;
     }
 
     public class CasinoHoldemPokerBetSettlementResult
@@ -57,7 +65,7 @@ namespace GamesAdmin.Core.Models.BetReport
                         "Does Not Qualify",
                         "High Card",
                         "Pair",
-                        "Two Pairs",
+                        "Two Pair",
                         "Three Of A Kind",
                         "Straight",
                         "Flush",

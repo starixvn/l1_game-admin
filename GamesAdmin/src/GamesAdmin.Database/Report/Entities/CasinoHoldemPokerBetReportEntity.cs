@@ -33,6 +33,10 @@
             Stake = bet.Ante + bet.Aa + bet.Call;
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
             BetWin = TotalWin - Stake;
+
+            IsFold = bet.IsFold;
+            Rate = bet.Rate;
+            IsQualified = round.SettlementResult?.IsQualified ?? false;
         }
 
         public DateTime Time { get; }
@@ -58,6 +62,12 @@
         public decimal TotalWin { get; }
 
         public decimal BetWin { get; }
+
+        public bool IsFold { get; }
+
+        public decimal Rate { get; }
+
+        public bool IsQualified { get; }
     }
 
     public class CasinoHoldemPokerBetHistoryModel
@@ -66,7 +76,8 @@
 
         public CasinoHoldemPokerBetHistoryModel(
             CasinoHoldemPokerBetEntity bet,
-            CasinoHoldemPokerRoundEntity round)
+            CasinoHoldemPokerRoundEntity round,
+            bool convertToUSD)
         {
             Ended = round.Ended;
             IsFold = bet.IsFold;
@@ -81,13 +92,13 @@
             SettlementResult = bet.SettlementResult;
 
             AA = bet.Aa;
-            AaOdds = bet.AaOdds.Equals(0) ? emptyOdds : bet.AaOdds.ToString();
+            AaOdds = Ended && (bet.SettlementResult?.AA > bet.Aa) ? bet.AaOdds.ToString() : emptyOdds;
 
             Ante = bet.Ante;
-            AnteOdds = bet.AnteOdds.Equals(0) ? emptyOdds : bet.AnteOdds.ToString();
+            AnteOdds = Ended && (bet.SettlementResult?.Ante > bet.Ante) ? bet.AnteOdds.ToString() : emptyOdds;
 
             Call = bet.Call;
-            CallOdds = bet.CallOdds.Equals(0) ? emptyOdds : bet.CallOdds.ToString();
+            CallOdds = Ended && (bet.SettlementResult?.Call > bet.Call) ? bet.CallOdds.ToString() : emptyOdds;
 
             Stake = bet.Ante + bet.Aa + bet.Call;
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
@@ -95,6 +106,10 @@
 
             Time = bet.Time;
             CallTime = bet.CallTime;
+
+            Currency = bet.Currency;
+            Rate = bet.Rate;
+            ConvertToUSD = convertToUSD;
         }
 
         public decimal AA { get; }
@@ -134,8 +149,13 @@
         public DateTime Time { get; }
 
         public DateTime CallTime { get; }
-    }
 
+        public string Currency { get; }
+
+        public decimal Rate { get; }
+
+        public bool ConvertToUSD { get; }
+    }
 
     public class CasinoHoldemPokerBetModel
     {

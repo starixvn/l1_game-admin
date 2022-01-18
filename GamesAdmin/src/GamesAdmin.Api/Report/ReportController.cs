@@ -215,8 +215,8 @@ namespace GamesAdmin.Api.Report
        => (await mediator.Send(new CasinoHoldemPokerReportRequest(filter)));
 
         [HttpGet]
-        [Route("bet_history/casinoholdempoker/{roundId}/{nickname}")]
-        public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory(long roundId, string nickname)
-        => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(roundId, nickname)));
+        [Route("bet_history/casinoholdempoker")]
+        public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory([FromQuery] CasinoHoldemPokerBetHistoryFilter filter)
+         => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(filter)));
     }
 }

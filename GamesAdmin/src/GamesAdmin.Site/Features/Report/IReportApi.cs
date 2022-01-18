@@ -127,7 +127,7 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report/casinoholdempoker")]
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
 
-        [Get("/report/bet_history/casinoholdempoker/{roundId}/{nickname}")]
-        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(long roundId, string nickname);
+        [Get("/report/bet_history/casinoholdempoker")]
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
     }
 }

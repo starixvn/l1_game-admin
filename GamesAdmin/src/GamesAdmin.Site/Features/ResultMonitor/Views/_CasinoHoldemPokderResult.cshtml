@@ -63,7 +63,7 @@
                         }
                     </div>
                 </td>
-                <td>@Model.dealerResult.Rank</td>
+                <td>@(Model.isQualified ? Model.dealerResult.Rank : "Does Not Qualify")</td>
             </tr>
             <tr>
                 <td>Community Cards</td>

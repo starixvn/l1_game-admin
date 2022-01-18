@@ -291,8 +291,8 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoPowerBetEntity, KenoPowerBetHistoryRecord>();
 
             CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>()
-                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => source.Player.Rank))
-                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => source.Dealer.Rank));
+                 .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
+                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
 
             CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
         }

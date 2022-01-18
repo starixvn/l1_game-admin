@@ -204,7 +204,8 @@ namespace GamesAdmin.Api.GameServers
                 {
                     playerResult = new CasinoHoldemPokerHandModel { Cards = request.player, CombinationCards = model.playerResult.Cards, Id = model.playerResult.Id },
                     dealerResult = new CasinoHoldemPokerHandModel { Cards = request.dealer, CombinationCards = model.dealerResult.Cards, Id = model.dealerResult.Id },
-                    communityCards = request.communityCards
+                    communityCards = request.communityCards,
+                    isQualified = model.isQualified
                 };
             }
             catch (Exception ex)

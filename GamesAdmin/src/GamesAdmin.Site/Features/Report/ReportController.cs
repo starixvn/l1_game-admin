@@ -489,9 +489,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> CasinoHoldemPokerBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> CasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
         {
-            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(roundId, nickname));
+            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(filter));
 
             return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
         }

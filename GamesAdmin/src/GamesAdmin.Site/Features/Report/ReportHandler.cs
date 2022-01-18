@@ -809,7 +809,7 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<CasinoHoldemPokerBetHistory> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
         {
-            var result = await reportService.GetCasinoHoldemPokerBetHistory(request.RoundId, request.Nickname);
+            var result = await reportService.GetCasinoHoldemPokerBetHistory(request.Filter);
             return result;
         }
 

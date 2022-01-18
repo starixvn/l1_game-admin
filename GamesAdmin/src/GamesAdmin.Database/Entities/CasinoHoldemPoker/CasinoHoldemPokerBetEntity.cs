@@ -23,8 +23,6 @@ namespace GamesAdmin.Database.Entities
 
         public bool IsFold { get; set; }
 
-        public string Currency { get; set; }
-
         public DateTime CallTime { get; set; }
 
         public IEnumerable<PokerCard> Cards { get; set; }

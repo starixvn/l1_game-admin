@@ -213,6 +213,8 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<SlotGameBonusChest> BonusChests { get; set; }
 
         public bool Paid { get; set; }
+
+        public string Partner { get; set; }
     }
 
     public class SlotGameBonusChest
@@ -319,5 +321,9 @@ namespace GamesAdmin.Core.Models
         public decimal Stake { get; set; }
 
         public bool Ended { get; set; }
+
+        public bool IsFold { get; set; }
+
+        public bool IsQualified { get; set; }
     }
 }

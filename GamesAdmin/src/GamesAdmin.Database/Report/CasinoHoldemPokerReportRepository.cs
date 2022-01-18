@@ -16,7 +16,7 @@ namespace GamesAdmin.Database
     {
         Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(CasinoHoldemPokerBetReportFilter filter);
 
-        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname);
+        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
     }
 
     public class CasinoHoldemPokerReportRepository : BaseBetReportRepository, ICasinoHoldemPokerReportRepository
@@ -44,15 +44,15 @@ namespace GamesAdmin.Database
             return records;
         }
 
-        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname)
+        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter)
         {
             var bet = await database
-                .GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity))).Find(x => x.Round == roundId && x.Name == nickname).FirstOrDefaultAsync();
+                .GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity))).Find(x => x.Round == filter.RoundId && x.Name == filter.Nickname).FirstOrDefaultAsync();
 
             var round = await database
-                .GetCollection<CasinoHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+                .GetCollection<CasinoHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
-            return new CasinoHoldemPokerBetHistoryModel(bet, round);
+            return new CasinoHoldemPokerBetHistoryModel(bet, round, filter.ConvertToUSD);
         }
 
 
@@ -71,7 +71,7 @@ namespace GamesAdmin.Database
             }
             else
             {
-                expression = x => x.Time <= filter.ToDate.ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
+                expression = x => x.Time <= filter.ToDate.AddDays(1).AddMilliseconds(-1).ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
             }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))

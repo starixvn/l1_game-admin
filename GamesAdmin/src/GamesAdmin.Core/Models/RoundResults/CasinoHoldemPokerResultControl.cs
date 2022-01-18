@@ -8,6 +8,8 @@ namespace GamesAdmin.Core.Models.RoundResults
         public CasinoHoldemPokerHandModel playerResult { get; set; }
 
         public CasinoHoldemPokerHandModel dealerResult { get; set; }
+
+        public bool isQualified { get; set; }
     }
 
     public class CasinoHoldemPokerResultControl : BaseCasinoHoldemPokerResultControl

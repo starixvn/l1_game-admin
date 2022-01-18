@@ -34,17 +34,24 @@
                             </div>
                         </td>
                         <td>
-                            <div class="cards">
-                                @foreach (var card in Model.Player.CombinationCards)
-                                {
-                                    <div class="card card-type-@card.suit">
-                                        <span>@Card.CardLabels[card.rank]</span>
-                                        <img class="img" src="~/images/card_@(card.suit).png" />
-                                    </div>
-                                }
-                            </div>
+                            @if (Model.IsFold)
+                            {
+                                <div class="text-center">-</div>
+                            }
+                            else
+                            {
+                                <div class="cards">
+                                    @foreach (var card in Model.Player.CombinationCards)
+                                    {
+                                        <div class="card card-type-@card.suit">
+                                            <span>@Card.CardLabels[card.rank]</span>
+                                            <img class="img" src="~/images/card_@(card.suit).png" />
+                                        </div>
+                                    }
+                                </div>
+                            }
                         </td>
-                        <td>@Model.Player.Rank</td>
+                        <td>@(Model.IsFold ? "Fold" : Model.Player.Rank)</td>
                     </tr>
                     <tr>
                         <td>Dealer</td>
@@ -81,20 +88,13 @@
                                 }
                                 else
                                 {
-                                    <div>-</div>
+                                    <div class="text-center">-</div>
                                 }
                             </div>
                         </td>
                         @if (Model.Ended && !Model.IsFold)
                         {
-                            @if (Model.IsQualified)
-                            {
-                                <td>@Model.Dealer.Rank</td>
-                            }
-                            else
-                            {
-                                <td>Does Not Qualify</td>
-                            }
+                            <td>@(Model.IsQualified ? Model.Dealer.Rank : "Does Not Qualify")</td>
                         }
                         else
                         {
@@ -103,7 +103,7 @@
                         }
                     </tr>
                     <tr>
-                        <td>CommunityCards</td>
+                        <td>Community Cards</td>
                         <td>
                             <div class="cards">
                                 @foreach (var card in Model.CommunityCards)
@@ -147,15 +147,15 @@
                     var winAnte = (Model.SettlementResult?.Ante ?? 0);
                     var winAA = (Model.SettlementResult?.AA ?? 0);
                     var winCall = (Model.SettlementResult?.Call ?? 0);
-                    <tr class="@(winAnte > 0 ? "text-blue bold" : "")">
+                    <tr class="@(winAnte > 0 ? "text-blue bold" : string.Empty)">
                         <td class="text-center">@Model.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td class="text-center">Ante</td>
+                        <td class="text-center">ANTE</td>
                         <td class="text-center">@Model.AnteOdds</td>
-                        <td class="text-center">@HtmlHelpers.formatNumber(Model.Ante)</td>
+                        <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(Model.Ante) : Model.Ante)</td>
                         @if (Model.Ended)
                         {
                             <td class="text-center">
-                                @HtmlHelpers.formatNumber(winAnte)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(winAnte) : winAnte)
                             </td>
                         }
                         else
@@ -163,15 +163,15 @@
                             <td class="text-center">@unfinishedGame</td>
                         }
                     </tr>
-                    <tr class="@(winAA > 0 ? "text-blue bold" : "")">
+                    <tr class="@(winAA > 0 ? "text-blue bold" : string.Empty)">
                         <td class="text-center">@Model.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">AA</td>
                         <td class="text-center">@Model.AaOdds</td>
-                        <td class="text-center">@HtmlHelpers.formatNumber(Model.AA)</td>
+                        <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(Model.AA) : Model.AA)</td>
                         @if (Model.Ended)
                         {
                             <td class="text-center">
-                                @HtmlHelpers.formatNumber(winAA)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(winAA) : winAA)
                             </td>
                         }
                         else
@@ -179,15 +179,15 @@
                             <td class="text-center">@unfinishedGame</td>
                         }
                     </tr>
-                    @if (Model.Ended)
+                    @if (Model.Ended && !Model.IsFold)
                     {
-                        <tr class="@(winCall > 0 ? "text-blue bold" : "")">
+                        <tr class="@(winCall > 0 ? "text-blue bold" : string.Empty)">
                             <td class="text-center">@Model.CallTime.ToString(Constants.DateTimeFormat)</td>
-                            <td class="text-center">Call</td>
+                            <td class="text-center">CALL</td>
                             <td class="text-center">@Model.CallOdds</td>
-                            <td class="text-center">@HtmlHelpers.formatNumber(Model.Call)</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(Model.Call) : Model.Call)</td>
                             <td class="text-center">
-                                @HtmlHelpers.formatNumber(winCall)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(winCall) : winCall)
                             </td>
                         </tr>
                     }

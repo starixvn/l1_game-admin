@@ -18,5 +18,6 @@ namespace GamesAdmin.Core.Models.BetReport
     {
         public int RoundId { get; set; }
         public string Nickname { get; set; }
+        public bool ConvertToUSD { get; set; }
     }
 }

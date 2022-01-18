@@ -16,29 +16,30 @@
                     <th class="col-number">Round ID</th>
                     <th class="col-nickname">Player</th>
                     <th class="col-nickname">Dealer</th>
-                    <th class="col-number">Stake</th>
+                    <th class="col-number">Total Stake</th>
                     <th class="col-number">Win</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var record in Model.Records)
                 {
+                    var winAmount = record.BetWin + record.Stake;
                     <tr>
                         <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@record.Partner</td>
                         <td class="text-center">@record.Username</td>
                         <td class="text-center">@record.Nickname</td>
                         <td class="text-center">@record.Currency</td>
-                        <td class="text-center bold">
-                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname">
-                                @record.RoundId
-                            </a>
-                        </td>
+                        <td class="text-center">@record.RoundId</td>
                         <td class="text-center">@record.PlayerResult</td>
                         <td class="text-center">@record.DealerResult</td>
-                        <td class="text-center">@record.Stake</td>
-                        <td class="text-center">@(record.Ended ? (record.BetWin + record.Stake).ToString() : "Unfinished Game")</td>
+                        <td class="text-center bold">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="CasinoHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.Stake) : record.Stake)
+                            </a>
+                        </td>
+                        <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(winAmount) : winAmount) : "Unfinished Game")</td>
                     </tr>
                 }
             </tbody>
