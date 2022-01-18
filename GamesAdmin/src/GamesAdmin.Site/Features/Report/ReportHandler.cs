@@ -799,7 +799,7 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Records = result.Select(x =>
                 {
                     var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, request.Filter.TimeZoneInfo);
                     recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
                     return recordViewModel;

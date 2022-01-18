@@ -52,7 +52,7 @@ namespace GamesAdmin.Database
             var round = await database
                 .GetCollection<CasinoHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
-            return new CasinoHoldemPokerBetHistoryModel(bet, round, filter.ConvertToUSD);
+            return new CasinoHoldemPokerBetHistoryModel(bet, round, filter);
         }
 
 
@@ -71,7 +71,7 @@ namespace GamesAdmin.Database
             }
             else
             {
-                expression = x => x.Time <= filter.ToDate.AddDays(1).AddMilliseconds(-1).ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
+                expression = x => x.Time <= TimeZoneInfo.ConvertTimeFromUtc(filter.ToDate.AddDays(1).AddMilliseconds(-1), filter.TimeZoneInfo) && x.Time >= TimeZoneInfo.ConvertTimeFromUtc(filter.FromDate, filter.TimeZoneInfo);
             }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))

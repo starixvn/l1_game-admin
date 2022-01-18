@@ -77,7 +77,7 @@
         public CasinoHoldemPokerBetHistoryModel(
             CasinoHoldemPokerBetEntity bet,
             CasinoHoldemPokerRoundEntity round,
-            bool convertToUSD)
+            CasinoHoldemPokerBetHistoryFilter filter)
         {
             Ended = round.Ended;
             IsFold = bet.IsFold;
@@ -104,12 +104,12 @@
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
             BetWin = TotalWin - Stake;
 
-            Time = bet.Time;
-            CallTime = bet.CallTime;
+            Time = TimeZoneInfo.ConvertTimeFromUtc(bet.Time, filter.TimeZoneInfo);
+            CallTime = TimeZoneInfo.ConvertTimeFromUtc(bet.CallTime, filter.TimeZoneInfo);
 
             Currency = bet.Currency;
             Rate = bet.Rate;
-            ConvertToUSD = convertToUSD;
+            ConvertToUSD = filter.ConvertToUSD;
         }
 
         public decimal AA { get; }
