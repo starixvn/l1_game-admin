@@ -4,8 +4,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class CasinoHoldemPokerReportResultViewModel
     {
-        public bool ConvertToUSD { get; set; }
+        public CasinoHoldemPokerReportResultViewModel(bool convertToUSD, IEnumerable<CasinoHoldemPokerRecordViewModel> records)
+        {
+            ConvertToUSD = convertToUSD;
+            Records = records;
+        }
 
-        public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; set; }
+        public bool ConvertToUSD { get; }
+        public IEnumerable<CasinoHoldemPokerRecordViewModel> Records { get; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.Partners;
@@ -57,7 +56,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
-        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
+        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -793,25 +792,20 @@ namespace GamesAdmin.Site.Features.ClientSites
             var result = await reportService.GetCasinoHoldemPokerBetReport(request.Filter);
             var partners = await partnerService.GetPartnersForSelection(model => true);
 
-            return new CasinoHoldemPokerReportResultViewModel
+            var records = result.Select(x =>
             {
-                ConvertToUSD = request.Filter.ConvertToUSD,
-                Records = result.Select(x =>
-                {
-                    var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
-                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, request.Filter.TimeZoneInfo);
-                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+                var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
+                recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
-                    return recordViewModel;
-                }),
-            };
+                return recordViewModel;
+            });
+
+            return new CasinoHoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, records);
         }
 
-        public async Task<CasinoHoldemPokerBetHistory> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
-        {
-            var result = await reportService.GetCasinoHoldemPokerBetHistory(request.Filter);
-            return result;
-        }
+        public async Task<CasinoHoldemPokerBetHistoryViewModel> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+            => new CasinoHoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetCasinoHoldemPokerBetHistory(request.Filter));
 
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {

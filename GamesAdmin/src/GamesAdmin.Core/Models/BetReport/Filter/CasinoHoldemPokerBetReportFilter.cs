@@ -1,14 +1,8 @@
 ﻿using System;
-using TimeZoneConverter;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class SEAsiaStandardTimeFilter
-    {
-        public TimeZoneInfo TimeZoneInfo => TZConvert.GetTimeZoneInfo("SE Asia Standard Time");
-    }
-
-    public class CasinoHoldemPokerBetReportFilter : SEAsiaStandardTimeFilter
+    public class CasinoHoldemPokerBetReportFilter
     {
         public string PartnerId { get; set; }
         public DateTime FromDate { get; set; }
@@ -21,7 +15,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
     }
 
-    public class CasinoHoldemPokerBetHistoryFilter : SEAsiaStandardTimeFilter
+    public class CasinoHoldemPokerBetHistoryFilter
     {
         public int RoundId { get; set; }
         public string Nickname { get; set; }

@@ -1,13 +1,17 @@
-﻿@using GamesAdmin.Core.Models.BetReport;
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
 @using GamesAdmin.Core;
-@model CasinoHoldemPokerBetHistory
+@using GamesAdmin.Core.Models.BetReport;
+
+@model CasinoHoldemPokerBetHistoryViewModel
+
 @{
     string noData = "No Data Available";
     string unfinishedGame = "Unfinished Game";
+    var record = Model.Record;
 }
 <div>
     <div>
-        <strong>Round Id: @Model.RoundId</strong>
+        <strong>Round Id: @record.RoundId</strong>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -18,13 +22,13 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model.Ante > 0)
+                @if (record.Ante > 0)
                 {
                     <tr>
                         <td>Player</td>
                         <td>
                             <div class="cards">
-                                @foreach (var card in Model.Player.Cards)
+                                @foreach (var card in record.Player.Cards)
                                 {
                                     <div class="card card-type-@card.suit">
                                         <span>@Card.CardLabels[card.rank]</span>
@@ -34,14 +38,14 @@
                             </div>
                         </td>
                         <td>
-                            @if (Model.IsFold)
+                            @if (record.IsFold)
                             {
                                 <div class="text-center">-</div>
                             }
                             else
                             {
                                 <div class="cards">
-                                    @foreach (var card in Model.Player.CombinationCards)
+                                    @foreach (var card in record.Player.CombinationCards)
                                     {
                                         <div class="card card-type-@card.suit">
                                             <span>@Card.CardLabels[card.rank]</span>
@@ -51,15 +55,15 @@
                                 </div>
                             }
                         </td>
-                        <td>@(Model.IsFold ? "Fold" : Model.Player.Rank)</td>
+                        <td>@(record.IsFold ? "Fold" : record.Player.Rank)</td>
                     </tr>
                     <tr>
                         <td>Dealer</td>
                         <td>
                             <div class="cards">
-                                @if (Model.Ended && !Model.IsFold)
+                                @if (record.Ended && !record.IsFold)
                                 {
-                                    @foreach (var card in Model.Dealer.Cards)
+                                    @foreach (var card in record.Dealer.Cards)
                                     {
                                         <div class="card card-type-@card.suit">
                                             <span>@Card.CardLabels[card.rank]</span>
@@ -76,9 +80,9 @@
                         </td>
                         <td>
                             <div class="cards">
-                                @if (Model.Ended && !Model.IsFold)
+                                @if (record.Ended && !record.IsFold)
                                 {
-                                    @foreach (var card in Model.Dealer.CombinationCards)
+                                    @foreach (var card in record.Dealer.CombinationCards)
                                     {
                                         <div class="card card-type-@card.suit">
                                             <span>@Card.CardLabels[card.rank]</span>
@@ -92,9 +96,9 @@
                                 }
                             </div>
                         </td>
-                        @if (Model.Ended && !Model.IsFold)
+                        @if (record.Ended && !record.IsFold)
                         {
-                            <td>@(Model.IsQualified ? Model.Dealer.Rank : "Does Not Qualify")</td>
+                            <td>@(record.IsQualified ? record.Dealer.Rank : "Does Not Qualify")</td>
                         }
                         else
                         {
@@ -106,7 +110,7 @@
                         <td>Community Cards</td>
                         <td>
                             <div class="cards">
-                                @foreach (var card in Model.CommunityCards)
+                                @foreach (var card in record.CommunityCards)
                                 {
                                     <div class="card card-type-@card.suit">
                                         <span>@Card.CardLabels[card.rank]</span>
@@ -142,53 +146,33 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model.Ante > 0)
+                @if (record.Ante > 0)
                 {
-                    var winAnte = (Model.SettlementResult?.Ante ?? 0);
-                    var winAA = (Model.SettlementResult?.AA ?? 0);
-                    var winCall = (Model.SettlementResult?.Call ?? 0);
+                    var winAnte = (record.SettlementResult?.Ante ?? 0);
+                    var winAA = (record.SettlementResult?.AA ?? 0);
+                    var winCall = (record.SettlementResult?.Call ?? 0);
                     <tr class="@(winAnte > 0 ? "text-blue bold" : string.Empty)">
-                        <td class="text-center">@Model.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
                         <td class="text-center">ANTE</td>
-                        <td class="text-center">@Model.AnteOdds</td>
-                        <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(Model.Ante) : Model.Ante)</td>
-                        @if (Model.Ended)
-                        {
-                            <td class="text-center">
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(winAnte) : winAnte)
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">@unfinishedGame</td>
-                        }
+                        <td class="text-center">@record.AnteOdds</td>
+                        <td class="text-center">@FormatCurrency(record, record.Ante)</td>
+                        <td class="text-center">@(record.Ended ? FormatCurrency(record, winAnte) : unfinishedGame)</td>
                     </tr>
                     <tr class="@(winAA > 0 ? "text-blue bold" : string.Empty)">
-                        <td class="text-center">@Model.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
                         <td class="text-center">AA</td>
-                        <td class="text-center">@Model.AaOdds</td>
-                        <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(Model.AA) : Model.AA)</td>
-                        @if (Model.Ended)
-                        {
-                            <td class="text-center">
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(winAA) : winAA)
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">@unfinishedGame</td>
-                        }
+                        <td class="text-center">@record.AaOdds</td>
+                        <td class="text-center">@FormatCurrency(record, record.AA)</td>
+                        <td class="text-center">@(record.Ended ? FormatCurrency(record, winAA) : unfinishedGame)</td>
                     </tr>
-                    @if (Model.Ended && !Model.IsFold)
+                    @if (record.Ended && !record.IsFold)
                     {
                         <tr class="@(winCall > 0 ? "text-blue bold" : string.Empty)">
-                            <td class="text-center">@Model.CallTime.ToString(Constants.DateTimeFormat)</td>
+                            <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.CallTime, Model.TimeZone)</td>
                             <td class="text-center">CALL</td>
-                            <td class="text-center">@Model.CallOdds</td>
-                            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(Model.Call) : Model.Call)</td>
-                            <td class="text-center">
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.ConvertToBase(winCall) : winCall)
-                            </td>
+                            <td class="text-center">@record.CallOdds</td>
+                            <td class="text-center">@FormatCurrency(record, record.Call)</td>
+                            <td class="text-center">@FormatCurrency(record, winCall)</td>
                         </tr>
                     }
                 }
@@ -205,3 +189,10 @@
     </div>
 </div>
 
+@functions
+{
+    public string FormatCurrency(CasinoHoldemPokerBetHistory record, decimal value)
+    {
+        return @HtmlHelpers.formatNumber(record.ConvertToUSD ? record.ConvertToBase(value) : value);
+    }
+}
