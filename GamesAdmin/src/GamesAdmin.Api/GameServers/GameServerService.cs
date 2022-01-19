@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Api.Games;
+﻿using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -27,6 +29,8 @@ namespace GamesAdmin.Api.GameServers
         Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
+
+        Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult(SetCasinoHoldemPokerResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -37,6 +41,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly ISlotBoardApiFactory slotBoardApiFactory;
         private readonly IGameUserService gameUserService;
         private readonly IGameSettingsService gameSettingService;
+        private readonly ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi;
 
         public GameServerService(
             IGameServerApi serverApi,
@@ -44,7 +49,8 @@ namespace GamesAdmin.Api.GameServers
             IOnlineUserApiFactory onlineUserApiFactory,
             ISlotBoardApiFactory slotBoardApiFactory,
             IGameUserService gameUserService,
-            IGameSettingsService gameSettingService)
+            IGameSettingsService gameSettingService,
+            ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
@@ -52,6 +58,7 @@ namespace GamesAdmin.Api.GameServers
             this.slotBoardApiFactory = slotBoardApiFactory;
             this.gameUserService = gameUserService;
             this.gameSettingService = gameSettingService;
+            this.casinoHoldemPokerApi = casinoHoldemPokerApi;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -185,6 +192,27 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return null;
+        }
+
+        public async Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult(SetCasinoHoldemPokerResultRequest request)
+        {
+            try
+            {
+                var model = await casinoHoldemPokerApi.SetResult(request);
+
+                return new CasinoHoldemPokerResultControl
+                {
+                    playerResult = new CasinoHoldemPokerHandModel { Cards = request.player, CombinationCards = model.playerResult.Cards, Id = model.playerResult.Id },
+                    dealerResult = new CasinoHoldemPokerHandModel { Cards = request.dealer, CombinationCards = model.dealerResult.Cards, Id = model.dealerResult.Id },
+                    communityCards = request.communityCards,
+                    isQualified = model.isQualified
+                };
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                return null;
+            }
         }
     }
 }

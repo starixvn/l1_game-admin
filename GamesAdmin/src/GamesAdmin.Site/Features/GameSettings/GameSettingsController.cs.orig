@@ -1,9 +1,9 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Audit.Mvc;
-<<<<<<< Updated upstream
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -226,6 +226,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("kenopower2-server-endpoint", appSettings.GameServers.KenoPower2.Socket);
             HttpContext.Response.Cookies.Append("kenopower2-server-endpoint-route", appSettings.GameServers.KenoPower2.SocketRoute);
 
+            HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint", appSettings.GameServers.BitcoinMaster.Socket);
+            HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint-route", appSettings.GameServers.BitcoinMaster.SocketRoute);
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
@@ -345,31 +347,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [Route("status/super_players")]
-        public async Task<IActionResult> SuperPlayers()
-        {
-            var superPlayers = await mediator.Send(new GetSuperPlayersRequest());
-            return View(superPlayers);
-        }
-
-        [HttpPost]
-        [Route("status/super_players")]
-        public async Task<IActionResult> SuperPlayers([Bind] UpdateSuperPlayersRequest request)
-        {
-            try
-            {
-                await mediator.Send(request);
-
-                return Json(true);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-            }
-
-            return Json(false);
-        }
-
         [HttpPost]
         [Route("status/update_beta_version")]
         public async Task<IActionResult> BetaVersion(string[] games, bool isBeta)
@@ -392,6 +369,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
     }
 =======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -467,13 +448,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         [Route("gamedetails/{name}")]
-        public async Task<IActionResult> GameDetails(string name, string view)
+        public async Task<IActionResult> GameDetails(string name)
         {
             var viewModel = await mediator.Send(new EditRequest(name));
             viewModel.ErrorMessage = TempData["errorMessage"]?.ToString();
             viewModel.Success = TempData["isSuccess"] != null && (bool)TempData["isSuccess"];
 
-            return View(view, viewModel);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -485,7 +466,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(gameSetting);
         }
 
-        [HttpPost, Audit]
+        [HttpPost]
         [Route("status/enable")]
         public async Task<IActionResult> EnableGames(string[] games, bool reload = false)
         {
@@ -494,7 +475,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
-        [HttpPost, Audit]
+        [HttpPost]
         [Route("status/disable")]
         public async Task<IActionResult> DisableGames(string[] games, bool reload = false)
         {
@@ -605,46 +586,38 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint", appSettings.GameServers.ThreeCards.Socket);
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint-route", appSettings.GameServers.ThreeCards.SocketRoute);
             AddMiniKenoCookie();
+            HttpContext.Response.Cookies.Append("kenomatch1-server-endpoint", appSettings.GameServers.KenoMatch1.Socket);
+            HttpContext.Response.Cookies.Append("kenomatch1-server-endpoint-route", appSettings.GameServers.KenoMatch1.SocketRoute);
+            HttpContext.Response.Cookies.Append("kenomatch2-server-endpoint", appSettings.GameServers.KenoMatch2.Socket);
+            HttpContext.Response.Cookies.Append("kenomatch2-server-endpoint-route", appSettings.GameServers.KenoMatch2.SocketRoute);
+            HttpContext.Response.Cookies.Append("kenopower1-server-endpoint", appSettings.GameServers.KenoPower1.Socket);
+            HttpContext.Response.Cookies.Append("kenopower1-server-endpoint-route", appSettings.GameServers.KenoPower1.SocketRoute);
+            HttpContext.Response.Cookies.Append("kenopower2-server-endpoint", appSettings.GameServers.KenoPower2.Socket);
+            HttpContext.Response.Cookies.Append("kenopower2-server-endpoint-route", appSettings.GameServers.KenoPower2.SocketRoute);
+
+            HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint", appSettings.GameServers.BitcoinMaster.Socket);
+            HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint-route", appSettings.GameServers.BitcoinMaster.SocketRoute);
+
+            HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint", appSettings.GameServers.CasinoHoldemPoker.Socket);
+            HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint-route", appSettings.GameServers.CasinoHoldemPoker.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
         }
 
-        [HttpPost, Audit]
-        [Route("/betlimit/update")]
+        [HttpPost]
+        [Route("/payouts/update")]
         public async Task<IActionResult> UpdatePayouts([Bind] EditViewModel viewModel)
         {
             try
             {
-                await mediator.Send(new UpdateBetLimitRequest(
+                await mediator.Send(new UpdateBetLimitAndOddsRequest(
                     viewModel.Name,
                     viewModel.Type,
-                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices)
-            ));
-
-                return Json(true);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-            }
-
-            return Json(false);
-        }
-
-        [HttpPost, Audit]
-        [Route("/odds/update")]
-        public async Task<IActionResult> UpdateOdds([Bind] EditViewModel viewModel)
-        {
-            try
-            {
-                await mediator.Send(new UpdateOddsRequest(
-                    viewModel.Name,
-                    viewModel.Type,
+                    new BetLimit(viewModel.PayoutViewModel.MinBet, viewModel.PayoutViewModel.MaxBet, viewModel.PayoutViewModel.MaxBetChoices),
                     viewModel.PayoutViewModel.Odds,
-                    viewModel.PayoutViewModel.Icons
-            ));
+                    viewModel.PayoutViewModel.Icons));
 
                 return Json(true);
             }
@@ -656,7 +629,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost, Audit]
+        [HttpPost]
         [Route("/jackpot/update")]
         public async Task<IActionResult> UpdateJackpot([Bind] EditViewModel viewModel)
         {
@@ -682,7 +655,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost, Audit]
+        [HttpPost]
         [Route("/update")]
         public async Task<IActionResult> Update([Bind] EditViewModel viewModel)
         {
@@ -707,7 +680,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost, Audit]
+        [HttpPost]
         [Route("exclusions/update")]
         public async Task<IActionResult> UpdateSiteExclusions([Bind] UpdateSiteExclusionRequest request)
         {
@@ -771,5 +744,5 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
     }
->>>>>>> Stashed changes
+>>>>>>> b14e7d2e (feat: Casino Holdem Poker - add transforms)
 }

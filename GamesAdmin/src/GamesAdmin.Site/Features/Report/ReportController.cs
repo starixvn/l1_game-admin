@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -471,5 +472,28 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname)));
+
+        [HttpGet]
+        [Route("Report/CasinoHoldem")]
+        public async Task<IActionResult> CasinoHoldemPoker()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new CasinoHoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCasinoHoldemPokerReport(CasinoHoldemPokerBetReportFilter filter)
+        {
+            return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(filter)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
+        {
+            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(filter));
+
+            return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
+        }
     }
 }

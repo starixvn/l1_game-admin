@@ -16,6 +16,12 @@ namespace GamesAdmin.Core.Models
         public DateTime Time { get; set; }
 
         public GameAccount Account { get; set; }
+
+        public string Currency { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public decimal Rate { get; set; }
     }
 
     public class BigSmallBetRecord : BetRecord
@@ -207,6 +213,8 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<SlotGameBonusChest> BonusChests { get; set; }
 
         public bool Paid { get; set; }
+
+        public string Partner { get; set; }
     }
 
     public class SlotGameBonusChest
@@ -300,5 +308,22 @@ namespace GamesAdmin.Core.Models
     {
         public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
+    }
+
+    public class CasinoHoldemPokerBetRecord : BetRecord
+    {
+        public long RoundId { get; set; }
+
+        public string PlayerResult { get; set; }
+
+        public string DealerResult { get; set; }
+
+        public decimal Stake { get; set; }
+
+        public bool Ended { get; set; }
+
+        public bool IsFold { get; set; }
+
+        public bool IsQualified { get; set; }
     }
 }

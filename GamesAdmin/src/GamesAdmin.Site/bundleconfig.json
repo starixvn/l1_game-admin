@@ -23,6 +23,13 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
     "inputFiles": [
       "wwwroot/scss/pages/reports.min.css"
@@ -195,6 +202,29 @@
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/api-log.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/casino-holdem-poker-result.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css",
+      "wwwroot/scss/pages/casino-holdem-poker-result.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/casino-holdem-poker-result.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/js/casino-holdem-poker-result.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/casino-holdem-poker-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/casino-holdem-poker-report.js"
     ]
   }
 ]

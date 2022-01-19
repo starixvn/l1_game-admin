@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using GamesAdmin.Api.Report.Requests;
+﻿using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -10,6 +6,10 @@ using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -50,7 +50,9 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<KenoMatchReportRequest, KenoMatchBetReport>,
         IRequestHandler<KenoMatchBetHistoryRequest, KenoMatchBetHistory>,
         IRequestHandler<KenoPowerReportRequest, KenoPowerBetReport>,
-        IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>
+        IRequestHandler<KenoPowerBetHistoryRequest, KenoPowerBetHistory>,
+        IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
+       IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
     {
         private readonly IReportService reportService;
 
@@ -197,5 +199,21 @@ namespace GamesAdmin.Api.Report
                 _ => throw new ArgumentException(nameof(request.Game)),
             };
         }
+
+        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return reportService.GetCasinoHoldemPokerReportAsync(request.Filter);
+            }
+            catch (Exception ex)
+            {
+                var a = ex;
+                return null;
+            }
+        }
+
+        public async Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+              => await reportService.GetCasinoHoldemPokerBetHistoryAsync(request.Filter);
     }
 }

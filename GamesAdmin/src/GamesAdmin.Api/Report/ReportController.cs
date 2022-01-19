@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Api._Shared;
+﻿using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -11,6 +8,9 @@ using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -208,5 +208,15 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/kenopower/{game}/round/{roundId}/user/{userId}")]
         public async Task<KenoPowerBetHistory> KenoPowerBetHistory(GameId game, string userId, long roundId)
         => (await mediator.Send(new KenoPowerBetHistoryRequest(game, roundId, userId)));
+
+        [HttpGet]
+        [Route("casinoholdempoker")]
+        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> CasinoHoldemPoker([FromQuery] CasinoHoldemPokerBetReportFilter filter)
+       => (await mediator.Send(new CasinoHoldemPokerReportRequest(filter)));
+
+        [HttpGet]
+        [Route("bet_history/casinoholdempoker")]
+        public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory([FromQuery] CasinoHoldemPokerBetHistoryFilter filter)
+         => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(filter)));
     }
 }

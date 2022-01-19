@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using GamesAdmin.Api.GameServers.Requests;
+﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Models;
 using Refit;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {

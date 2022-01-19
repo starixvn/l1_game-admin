@@ -1,13 +1,16 @@
-﻿using System;
+﻿using AutoMapper;
+using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features.Currencies;
+using GamesAdmin.Site.Features.Partners;
+using GamesAdmin.Site.Features.Report.Requests;
+using GamesAdmin.Site.Features.Report.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site.Features.Report.Requests;
-using GamesAdmin.Site.Features.Report.ViewModels;
-using MediatR;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
@@ -50,17 +53,29 @@ namespace GamesAdmin.Site.Features.ClientSites
         IRequestHandler<GetKenoMatchReportRequest, KenoMatchReportResultViewModel>,
         IRequestHandler<GetKenoMatchBetHistoryRequest, KenoMatchBetHistoryViewModel>,
         IRequestHandler<GetKenoPowerReportRequest, KenoPowerReportResultViewModel>,
-        IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>
+        IRequestHandler<GetKenoPowerBetHistoryRequest, KenoPowerBetHistoryViewModel>,
+        IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
+        IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
+        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
         private readonly IMapper mapper;
+        private readonly IPartnerService partnerService;
+        private readonly ICurrencyService currencyService;
 
-        public ReportHandler(IReportService reportService, IAppSettings appSettings, IMapper mapper)
+        public ReportHandler(
+            IReportService reportService,
+            IAppSettings appSettings,
+            IMapper mapper,
+            IPartnerService partnerService,
+            ICurrencyService currencyService)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
             this.mapper = mapper;
+            this.partnerService = partnerService;
+            this.currencyService = currencyService;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -771,5 +786,40 @@ namespace GamesAdmin.Site.Features.ClientSites
                 Odds = result.Odds
             };
         }
+
+        public async Task<CasinoHoldemPokerReportResultViewModel> Handle(GetCasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
+        {
+            var result = await reportService.GetCasinoHoldemPokerBetReport(request.Filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            var records = result.Select(x =>
+            {
+                var recordViewModel = mapper.Map<CasinoHoldemPokerRecordViewModel>(x);
+                recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                return recordViewModel;
+            });
+
+            return new CasinoHoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, records);
+        }
+
+        public async Task<CasinoHoldemPokerBetHistoryViewModel> Handle(GetCasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+            => new CasinoHoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetCasinoHoldemPokerBetHistory(request.Filter));
+
+        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
+        {
+            var parterItems = await partnerService.GetPartnersForSelection(partner => true);
+            var currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled);
+
+            return new ReportSeletionsViewModel
+            {
+                Partners = parterItems,
+                Currencies = currencies
+            };
+        }
+
+        private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
+        => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
     }
 }

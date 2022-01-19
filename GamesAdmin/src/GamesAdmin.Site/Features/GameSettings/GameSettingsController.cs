@@ -227,6 +227,10 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint", appSettings.GameServers.BitcoinMaster.Socket);
             HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint-route", appSettings.GameServers.BitcoinMaster.SocketRoute);
+
+            HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint", appSettings.GameServers.CasinoHoldemPoker.Socket);
+            HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint-route", appSettings.GameServers.CasinoHoldemPoker.SocketRoute);
+
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
