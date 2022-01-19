@@ -149,7 +149,7 @@
                 @if (record.Ante > 0)
                 {
                     var winAnte = (record.SettlementResult?.Ante ?? 0);
-                    var winAA = (record.SettlementResult?.AA ?? 0);
+                    var winAA = (record.SettlementResult?.Aa ?? 0);
                     var winCall = (record.SettlementResult?.Call ?? 0);
                     <tr class="@(winAnte > 0 ? "text-blue bold" : string.Empty)">
                         <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
@@ -158,13 +158,16 @@
                         <td class="text-center">@FormatCurrency(record, record.Ante)</td>
                         <td class="text-center">@(record.Ended ? FormatCurrency(record, winAnte) : unfinishedGame)</td>
                     </tr>
-                    <tr class="@(winAA > 0 ? "text-blue bold" : string.Empty)">
-                        <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
-                        <td class="text-center">AA</td>
-                        <td class="text-center">@record.AaOdds</td>
-                        <td class="text-center">@FormatCurrency(record, record.AA)</td>
-                        <td class="text-center">@(record.Ended ? FormatCurrency(record, winAA) : unfinishedGame)</td>
-                    </tr>
+                    @if (record.AA > 0)
+                    {
+                        <tr class="@(winAA > 0 ? "text-blue bold" : string.Empty)">
+                            <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(record.Time, Model.TimeZone)</td>
+                            <td class="text-center">AA</td>
+                            <td class="text-center">@record.AaOdds</td>
+                            <td class="text-center">@FormatCurrency(record, record.AA)</td>
+                            <td class="text-center">@(record.Ended ? FormatCurrency(record, winAA) : unfinishedGame)</td>
+                        </tr>
+                    }
                     @if (record.Ended && !record.IsFold)
                     {
                         <tr class="@(winCall > 0 ? "text-blue bold" : string.Empty)">

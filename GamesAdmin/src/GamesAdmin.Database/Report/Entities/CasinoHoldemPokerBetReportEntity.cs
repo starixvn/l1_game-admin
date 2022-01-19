@@ -31,7 +31,7 @@
             Dealer = new CasinoHoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
 
             Stake = bet.Ante + bet.Aa + bet.Call;
-            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
+            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.Aa + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
             BetWin = TotalWin - Stake;
 
             IsFold = bet.IsFold;
@@ -92,7 +92,7 @@
             SettlementResult = bet.SettlementResult;
 
             AA = bet.Aa;
-            AaOdds = Ended && (bet.SettlementResult?.AA > bet.Aa) ? bet.AaOdds.ToString() : emptyOdds;
+            AaOdds = Ended && (bet.SettlementResult?.Aa > bet.Aa) ? bet.AaOdds.ToString() : emptyOdds;
 
             Ante = bet.Ante;
             AnteOdds = Ended && (bet.SettlementResult?.Ante > bet.Ante) ? bet.AnteOdds.ToString() : emptyOdds;
@@ -101,7 +101,7 @@
             CallOdds = Ended && (bet.SettlementResult?.Call > bet.Call) ? bet.CallOdds.ToString() : emptyOdds;
 
             Stake = bet.Ante + bet.Aa + bet.Call;
-            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.AA + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
+            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.Aa + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
             BetWin = TotalWin - Stake;
 
             Time = bet.Time;

@@ -54,7 +54,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
     public class CasinoHoldemPokerBetSettlementResult
     {
-        public decimal AA { get; set; }
+        public decimal Aa { get; set; }
         public decimal Ante { get; set; }
         public decimal Call { get; set; }
     }
