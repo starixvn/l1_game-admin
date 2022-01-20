@@ -506,14 +506,6 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> CasinoHoldemPokerBetHistory(long roundId, string nickname)
-        {
-            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(roundId, nickname));
-
-            return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
-        }
-
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

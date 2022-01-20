@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
 using Sentry;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Users
 {
