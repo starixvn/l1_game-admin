@@ -27,9 +27,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BitcoinMasterReportRequest, BitcoinMasterBetReport>,
         IRequestHandler<BitcoinMasterBetHistoryRequest, BitcoinMasterBetHistory>,
         IRequestHandler<BetReportRequest, BetReportBase>,
-        IRequestHandler<BetHistoryRequest, BetHistory>
+        IRequestHandler<BetHistoryRequest, BetHistory>,
         IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
-        IRequestHandler<BetReportRequest, BetReportBase>,
        IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
     {
         private readonly IReportService reportService;

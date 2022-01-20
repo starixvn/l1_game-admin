@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetCasinoHoldemPokerReportRequest, CasinoHoldemPokerReportResultViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
-        IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>
+        IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
         IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>
     {
         private readonly IReportService reportService;
@@ -474,22 +474,6 @@ namespace GamesAdmin.Site.Features.Report
                 })
             };
         }
-
-        public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
-        {
-            var partners = await partnerService.GetPartnersForSelection(partner => true);
-            Func<CurrencyModel, SelectListItem> transformCurrency = model => new SelectListItem($"{model.Name} ({model.Code})", model.Code);
-            var currencies = await currencyService.GetCurrenciesForSelection(model => true, transformCurrency);
-
-            return new ReportSeletionsViewModel
-            {
-                Partners = partners,
-                Currencies = currencies
-            };
-        }
-
-        private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
-        => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
 
         private async Task<decimal> GetExchangeRate(int exchangeRateId, string currency)
         {
