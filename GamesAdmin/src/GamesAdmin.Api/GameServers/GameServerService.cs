@@ -52,7 +52,7 @@ namespace GamesAdmin.Api.GameServers
             ISlotBoardApiFactory slotBoardApiFactory,
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
-            ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi)
+            ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi,
             IHiLoApi hiloApi)
         {
             this.serverApi = serverApi;

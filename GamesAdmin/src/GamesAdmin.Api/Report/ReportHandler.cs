@@ -29,7 +29,7 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BetReportRequest, BetReportBase>,
         IRequestHandler<BetHistoryRequest, BetHistory>,
         IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
-       IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
+        IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>
     {
         private readonly IReportService reportService;
         private readonly IReportServiceFactory reportServiceFactory;

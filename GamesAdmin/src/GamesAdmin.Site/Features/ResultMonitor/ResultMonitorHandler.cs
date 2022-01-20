@@ -13,7 +13,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor
 {
     public class ResultMonitorHandler : 
         IRequestHandler<SetSlotResultRequest, SettlementBoardViewModel>,
-        IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>
+        IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>,
         IRequestHandler<SetHiLoResultRequest, IEnumerable<CardViewModel>>
     {
         private readonly IResultMonitorService service;
@@ -35,8 +35,6 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         public async Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
         {
             return await service.SetCasinoHoldemPokerResult(request);
-
-            return result.Select(x => mapper.Map<CardViewModel>(result));
         }
         
         public async Task<IEnumerable<CardViewModel>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
