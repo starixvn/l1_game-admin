@@ -329,4 +329,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public int ExchangeRateId { get; set; }
     }
+
+    public class HiLoRecordViewModel : BetRecordViewModel
+    {
+        public decimal Amount { get; set; }
+
+        public long RoundId { get; set; }
+
+        public bool Paid { get; set; }
+    }
 }

@@ -31,6 +31,8 @@ namespace GamesAdmin.Database.Entities
 
         public bool Paid { get; set; }
 
+        public string Uid { get; set; }
+
         public IEnumerable<Card> Result { get; set; }
 
         public IEnumerable<string> SettlementResult { get; set; }

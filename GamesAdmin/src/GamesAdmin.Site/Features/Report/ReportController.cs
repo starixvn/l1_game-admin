@@ -486,6 +486,20 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> HiLo()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new HiLoReportViewModel { ExcludeUUS = true, Selections = selections });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHiLoReport(HiLoBetReportFilter model)
+        {
+            return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
+        }
+
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

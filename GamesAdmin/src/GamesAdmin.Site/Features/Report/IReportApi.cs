@@ -70,5 +70,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/bet_history/casinoholdempoker")]
         Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
+
+        [Get("/report/hilo")]
+        Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
     }
 }

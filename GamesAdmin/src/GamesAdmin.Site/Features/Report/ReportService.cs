@@ -47,6 +47,8 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
 
         Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
+
+        Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -120,5 +122,8 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
             => await reportApi.GetCasinoHoldemPokerBetHistory(filter);
+
+        public Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter)
+        => reportApi.GetHiLoReport(filter);
     }
 }

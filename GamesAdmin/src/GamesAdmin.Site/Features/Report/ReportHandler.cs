@@ -564,6 +564,25 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
+        public async Task<HiLoReportResultViewModel> Handle(GetHiLoReportRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+            var result = await reportService.GetHiLoReport(request.Filter);
+
+            return new HiLoReportResultViewModel
+            {
+                ConvertToUSD = request.Filter.ConvertToUSD,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<HiLoRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                    return betViewModel;
+                })
+            };
+        }
+
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
     }
