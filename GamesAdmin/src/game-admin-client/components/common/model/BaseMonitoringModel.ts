@@ -1,5 +1,4 @@
 import { SystemId } from "./BetItem";
-import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 
 export default class BaseMonitoringState {

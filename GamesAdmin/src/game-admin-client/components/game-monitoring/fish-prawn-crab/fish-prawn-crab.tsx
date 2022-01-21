@@ -7,25 +7,16 @@ import { Col, Container, Row, Modal } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceType from "../../common/model/DiceType";
 import DiceModel from "../../common/model/DiceModel";
 import { GameState } from "../../shared/common/GameState";
 import {
   FishPrawnCrabModel,
-  GameResult,
   FishPrawnCrabBetList,
 } from "../../common/model/FishPrawnCrabModel";
 import { Notice } from "../../shared/notice/notice";
-import { updateTotalBetOfBetList } from "../../util/util";
 import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
-
-type FishPrawnCrabProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
 
 const CHOICES = ["stag", "gourd", "rooster", "fish", "crab", "prawn"];
 

@@ -16,10 +16,12 @@ export default class BaseMonitoring<
   protected isFirstLoad: boolean;
   protected timeout: NodeJS.Timeout;
   protected currencyExchangeRate: Object;
+  protected betList: any;
 
   constructor(props) {
     super(props);
 
+    this.betList = this.defaultBetList;
     this.isFirstLoad = true;
     this.renderMonitor = this.renderMonitor.bind(this);
     this.renderBetList = this.renderBetList.bind(this);
@@ -86,8 +88,11 @@ export default class BaseMonitoring<
   }
 
   inGameHandler({ inGame }) {
+    const { partnerFilter, systemFilter } = this.state;
+    this.betList = this.getUserBetList(inGame, this.state.betList);
+
     this.setState({
-      betList: this.getUserBetList(inGame, this.state.betList),
+      betList: this.getBetListByFilter(systemFilter, partnerFilter),
     });
   }
 
@@ -194,7 +199,6 @@ export default class BaseMonitoring<
   }
 
   getUserBetList(data, currentData) {
-    const { systemFilter, partnerFilter } = this.state;
     Object.keys(currentData).forEach((key) => {
       currentData[key].total = 0;
       currentData[key].dataList = new Array<BetItem>();
@@ -204,11 +208,7 @@ export default class BaseMonitoring<
       const userRate = this.currencyExchangeRate[data[user].currency];
       let betTracks = data[user].betTracks;
 
-      if (
-        userRate &&
-        (!systemFilter || data[user].system === systemFilter) &&
-        (!partnerFilter || data[user].partnerId === partnerFilter)
-      ) {
+      if (userRate) {
         Object.keys(betTracks).forEach((key) => {
           const betAmount = betTracks[key];
           if (betAmount) {
@@ -257,11 +257,9 @@ export default class BaseMonitoring<
   }
 
   getBetListByFilter(system, partnerId) {
-    const { betList } = this.state;
-
-    return Object.keys(betList).reduce((result, betChoice) => {
+    return Object.keys(this.betList).reduce((result, betChoice) => {
       result[betChoice] = {
-        dataList: betList[betChoice].dataList.filter(
+        dataList: this.betList[betChoice].dataList.filter(
           (bet) =>
             (!system || bet.system === system) &&
             (!partnerId || bet.partnerId === partnerId)

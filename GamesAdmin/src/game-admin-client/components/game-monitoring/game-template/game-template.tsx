@@ -42,7 +42,7 @@ export default function GameTemplate(props: Props) {
               </select>
             </div>
             <div>
-              <label>System</label>
+              <label>App Type</label>
               <select onChange={onChangeSystemFilter}>
                 <option key={0} value={SystemId.None}>
                   All
