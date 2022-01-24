@@ -23,8 +23,6 @@ export default class BaseMonitoringState {
     this.isOpenControlResultModal = false;
     this.isHandleNextRoundResult = false;
     this.currencyExchangeRate = {};
-    this.systemFilter = SystemId.None;
-    this.partnerFilter = "";
   }
 }
 
