@@ -306,6 +306,8 @@ namespace GamesAdmin.Api._Shared
             CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
 
             CreateMap<HiLoBetReportEntity, HiLoBetRecord>();
+            CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
+            CreateMap<HiLoRoundEntity, HiLoRoundResult>();
         }
     }
 }

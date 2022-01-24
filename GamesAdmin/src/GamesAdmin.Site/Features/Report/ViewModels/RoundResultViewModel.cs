@@ -7,6 +7,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public abstract class BaseRoundResultViewModel
     {
+        public DateTime Time { get; set; }
+
+        public long Number { get; set; }
+
         public int ExchangeRateId { get; set; }
 
         public decimal ExchangeRate { get; set; }
@@ -21,6 +25,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class RoundResultViewModel : BaseRoundResultViewModel
     {
+
         public long Number { get; set; }
 
         public int Dice1 { get; set; }
@@ -257,8 +262,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class KenoMatchRoundResultViewModel : BaseRoundResultViewModel
     {
-        public DateTime Time { get; set; }
-
         public long Number { get; set; }
 
         public KenoMatchPeriodViewModel HalfTime { get; set; }
@@ -297,8 +300,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class KenoPowerRoundResultViewModel : BaseRoundResultViewModel
     {
-        public DateTime Time { get; set; }
-
         public long Number { get; set; }
 
         public KenoPowerResultViewModel Result { get; set; }
@@ -344,5 +345,21 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool AA { get; set; }
         public bool Ante { get; set; }
         public bool Call { get; set; }
+    }
+
+    public class HiLoRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public DateTime? EndTime { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Betwin { get; set; }
+        public bool Paid { get; set; }
+        public string Currency { get; set; }
+        public string PartnerId { get; set; }
+        public decimal Rate { get; set; }
+
+
+        public decimal BaseAmount => Amount * Rate;
+
+        public decimal BaseBetwin => Betwin * Rate;
     }
 }

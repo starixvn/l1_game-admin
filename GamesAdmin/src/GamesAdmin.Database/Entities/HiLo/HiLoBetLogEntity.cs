@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -12,9 +10,6 @@ namespace GamesAdmin.Database.Entities
 
         public string Choice { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-        public DateTime EndTime { get; set; }
-
-        public IEnumerable<Card> Cards { get; set; }
+        public IEnumerable<CardEntity> Cards { get; set; }
     }
 }

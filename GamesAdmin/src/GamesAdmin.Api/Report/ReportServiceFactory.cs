@@ -53,6 +53,7 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoMatch2, typeof(KenoMatchReportService<KenoMatch2RoundEntity, KenoMatch2OneEntity, KenoMatch2BetEntity>) },
             { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity, KenoPower1BetEntity>) },
             { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity, KenoPower2BetEntity>) },
+            { GameId.HiLo, typeof(HiLoReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

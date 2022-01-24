@@ -50,6 +50,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoMatch2, typeof(KenoMatchReportService) },
             { GameId.KenoPower1, typeof(KenoPowerReportService) },
             { GameId.KenoPower2, typeof(KenoPowerReportService) },
+            { GameId.HiLo, typeof(HiLoReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

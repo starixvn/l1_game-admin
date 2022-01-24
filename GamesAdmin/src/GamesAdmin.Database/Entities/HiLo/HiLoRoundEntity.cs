@@ -13,7 +13,7 @@ namespace GamesAdmin.Database.Entities
         public decimal Betwin { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public int TotalTurns { get; set; }
 
@@ -33,7 +33,7 @@ namespace GamesAdmin.Database.Entities
 
         public string Uid { get; set; }
 
-        public IEnumerable<Card> Result { get; set; }
+        public IEnumerable<CardEntity> Result { get; set; }
 
         public IEnumerable<string> SettlementResult { get; set; }
     }

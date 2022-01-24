@@ -36,6 +36,8 @@ namespace GamesAdmin.Database
           where TRoundEntity : KenoPowerRoundEntity
           where TBetEntity : KenoPowerBetEntity
           where TOneEntity : KenoPowerOneEntity;
+
+        Task<(HiLoRoundEntity, IEnumerable<HiLoBetLogEntity>)> GetHiLoBetAsync(long roundId, string userId, string partnerId);
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -320,6 +322,17 @@ namespace GamesAdmin.Database
             var bets = await betCollection.Find(x => x.Round == roundId && x.Name == nickname).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
+        }
+
+        public async Task<(HiLoRoundEntity, IEnumerable<HiLoBetLogEntity>)> GetHiLoBetAsync(long roundId, string userId, string partnerId)
+        {
+            var roundCollection = database.GetCollection<HiLoRoundEntity>(Document.GetCollectionName(typeof(BitcoinMasterRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betLogCollection = database.GetCollection<HiLoBetLogEntity>(Document.GetCollectionName(typeof(BitcoinMasterBetEntity)));
+            var betLogs = await betLogCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+
+            return (roundResult, betLogs);
         }
     }
 }

@@ -37,7 +37,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
         IRequestHandler<ReportRequest, ReportResultViewModel>,
         IRequestHandler<BetHistoryReportRequest, BetHistoryViewModel>,
-        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>
+        IRequestHandler<GetCasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistoryViewModel>,
+        IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class BlackjackReportViewModel
+    public class HiLoReportViewModel
     {
-        [BlalckjackValidation]
+        [HiLoValidation]
         public string Nickname { get; set; }
         public bool ExcludeUUS { get; set; }
 
@@ -18,11 +18,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [DisplayName("Partner")]
         public string PartnerId { get; set; }
 
-        [BlalckjackValidation]
+        [HiLoValidation]
         public string Username { get; set; }
 
-        [BlalckjackValidation]
-        public long? HandId { get; set; }
+        [HiLoValidation]
+        public long? RoundId { get; set; }
 
         public DateTime FromDate { get; set; } = DateTime.Today;
         public DateTime ToDate { get; set; } = DateTime.Today;
@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class BlalckjackValidationAttribute : ValidationAttribute, IClientModelValidator
+    public class HiLoValidationAttribute : ValidationAttribute, IClientModelValidator
     {
         public void AddValidation(ClientModelValidationContext context)
         {
@@ -46,9 +46,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var model = (BlackjackReportViewModel)validationContext.ObjectInstance;
+            var model = (HiLoReportViewModel)validationContext.ObjectInstance;
 
-            if (!model.HandId.HasValue || !string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
+            if (!model.RoundId.HasValue || !string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
             {
                 return new ValidationResult(GetErrorMessage());
             }

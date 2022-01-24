@@ -364,6 +364,13 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetHiLoBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_HiLoBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> HeroesSlot()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

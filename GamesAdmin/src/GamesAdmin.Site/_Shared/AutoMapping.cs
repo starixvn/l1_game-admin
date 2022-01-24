@@ -117,6 +117,8 @@ namespace GamesAdmin.Site._Shared
             CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
 
             CreateMap<HiLoBetRecord, HiLoRecordViewModel>();
+            CreateMap<HiLoBetHistoryRecord, HiLoBetHistoryRecordViewModel>();
+            CreateMap<HiLoRoundResult, HiLoRoundResultViewModel>();
         }
     }
 }

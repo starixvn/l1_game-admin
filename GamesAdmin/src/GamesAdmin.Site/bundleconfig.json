@@ -258,5 +258,13 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/slot-game-report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/hilo-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/hilo-report.js"
+    ]
   }
 ]

@@ -1,0 +1,66 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model HiLoBetHistoryViewModel
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Round</th>
+            <th>Turn</th>
+            <th>Bet Choice</th>
+            <th>Base Card</th>
+            <th>Result Card</th>
+            <th>Stake</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.RoundResult.Time.ToString(Constants.DateTimeFormat)
+            </td>
+            <td rowspan="@(Model.Bets.Count() + 2)">
+                @Model.RoundResult.Number
+            </td>
+            <td colspan="4">Start Round</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.RoundResult.BaseAmount : Model.RoundResult.Amount)</td>
+            <td></td>
+        </tr>
+        @foreach (var bet in Model.Bets)
+        {
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="text-center">
+                    @bet.Order
+                </td>
+                <td class="text-center">
+                    @bet.Choice
+                </td>
+                <td class="text-right bold">
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
+                </td>
+                <td class="text-right bold">
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Betwin) : bet.Betwin)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                @Model.RoundResult.EndTime?.ToString(Constants.DateTimeFormat)
+            </td>
+            <td colspan="4">End Round</td>
+            <td></td>
+            <td class="bold text-right">
+                @if (Model.RoundResult.Paid)
+                {
+                    @(HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.RoundResult.BaseBetwin : Model.RoundResult.Betwin))
+                }
+                else
+                {
+                    @("Running")
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
