@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
@@ -326,11 +327,11 @@ namespace GamesAdmin.Database
 
         public async Task<(HiLoRoundEntity, IEnumerable<HiLoBetLogEntity>)> GetHiLoBetAsync(long roundId, string userId, string partnerId)
         {
-            var roundCollection = database.GetCollection<HiLoRoundEntity>(Document.GetCollectionName(typeof(BitcoinMasterRoundEntity)));
+            var roundCollection = database.GetCollection<HiLoRoundEntity>(Document.GetCollectionName(typeof(HiLoRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
-            var betLogCollection = database.GetCollection<HiLoBetLogEntity>(Document.GetCollectionName(typeof(BitcoinMasterBetEntity)));
-            var betLogs = await betLogCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var betLogCollection = database.GetCollection<HiLoBetLogEntity>(Document.GetCollectionName(typeof(HiLoBetLogEntity)));
+            var betLogs = await betLogCollection.Find(x => x.RoundId == roundId && x.Uid == userId && x.PartnerId == partnerId).ToListAsync();
 
             return (roundResult, betLogs);
         }

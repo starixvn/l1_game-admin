@@ -29,7 +29,7 @@
                             @bet.Nickname
                         </td>
                         <td class="text-center">@bet.Currency</td>
-                        <td class="text-right">
+                        <td class="text-center">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="GetHiLoBetHistory"
                                asp-route-game="@GameId.HiLo"

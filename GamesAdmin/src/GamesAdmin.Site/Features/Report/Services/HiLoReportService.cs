@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly IMapper mapper;
         private readonly IAppSettings appSettings;
 
-        public HiLoReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings)
+        public HiLoReportService(IReportApi reportApi, IMapper mapper, IAppSettings appSettings)
         {
             this.reportApi = reportApi;
             this.mapper = mapper;

@@ -1,4 +1,5 @@
 ﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration.BetChoices
 @using GamesAdmin.Site.Features.Report.ViewModels
 @model HiLoBetHistoryViewModel
 
@@ -20,10 +21,10 @@
             <td>
                 @Model.RoundResult.Time.ToString(Constants.DateTimeFormat)
             </td>
-            <td rowspan="@(Model.Bets.Count() + 2)">
+            <td rowspan="@(Model.Bets.Count() + 2)" class="text-center">
                 @Model.RoundResult.Number
             </td>
-            <td colspan="4">Start Round</td>
+            <td colspan="4" class="text-center">Start Round</td>
             <td class="bold text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.RoundResult.BaseAmount : Model.RoundResult.Amount)</td>
             <td></td>
         </tr>
@@ -35,8 +36,19 @@
                     @bet.Order
                 </td>
                 <td class="text-center">
-                    @bet.Choice
+                    @(HiLoBetChoice.FromValue<HiLoBetChoice>(bet.Choice).DisplayName)
                 </td>
+                @foreach (var card in bet.Cards)
+                {
+                    <td class="hilo-result">
+                        <div class="cards">
+                            <div class="card card-type-@card.Suit">
+                                <span>@card.Rank</span>
+                                <img class="img" src="~/images/card_@(card.Suit).png" />
+                            </div>
+                        </div>
+                    </td>
+                }
                 <td class="text-right bold">
                     @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
                 </td>
@@ -49,7 +61,7 @@
             <td>
                 @Model.RoundResult.EndTime?.ToString(Constants.DateTimeFormat)
             </td>
-            <td colspan="4">End Round</td>
+            <td colspan="4" class="text-center">End Round</td>
             <td></td>
             <td class="bold text-right">
                 @if (Model.RoundResult.Paid)

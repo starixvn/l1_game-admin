@@ -9,6 +9,7 @@
     "outputFileName": "wwwroot/js/game-status.min.js",
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/game-constants.js",
       "wwwroot/js/game-status.js"
     ]
   },
@@ -24,22 +25,22 @@
   },
   {
     "outputFileName": "wwwroot/css/report.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
 <<<<<<< HEAD
-    "inputFiles": [
-      "wwwroot/lib/data-tables/datatables.min.css",
-      "wwwroot/scss/pages/reports.min.css"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/css/big-small-reports.min.css",
-=======
->>>>>>> 5be5b269... feat: blackjack report
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/reports.min.css"
     ]
   },
   {
+=======
+>>>>>>> ff6cc3f3... fix: hilo report
     "outputFileName": "wwwroot/css/adjust-bot.min.css",
     "inputFiles": [
       "wwwroot/scss/pages/adjust-bot.min.css"
@@ -243,6 +244,30 @@
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/blackjack-report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/slot-game-report.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/reports.min.css",
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/slot-game-report.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/slot-game-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/slot-game-report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/hilo-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/hilo-report.js"
     ]
   }
 ]
