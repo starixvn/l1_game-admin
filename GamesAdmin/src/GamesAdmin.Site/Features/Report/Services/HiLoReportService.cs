@@ -27,10 +27,16 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportApi.GetBetHistory<HiLoBetHistory>(filter);
 
+            var roundResult = mapper.Map<HiLoRoundResultViewModel>(result.RoundResult);
+            roundResult.Time = TimeZoneInfo.ConvertTimeFromUtc(roundResult.Time, appSettings.DefaultTimeZone);
+            if (roundResult.EndTime.HasValue)
+            {
+                roundResult.EndTime = TimeZoneInfo.ConvertTimeFromUtc(roundResult.EndTime.Value, appSettings.DefaultTimeZone);
+            }
 
             return new HiLoBetHistoryViewModel
             {
-                RoundResult = mapper.Map<HiLoRoundResultViewModel>(result.RoundResult),
+                RoundResult = roundResult,
                 Bets = result.Bets.Select(x =>
                 {
                     var betViewModel = mapper.Map<HiLoBetHistoryRecordViewModel>(x);

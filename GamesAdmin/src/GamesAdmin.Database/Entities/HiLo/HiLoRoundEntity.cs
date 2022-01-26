@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GamesAdmin.Database.Attributes;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
@@ -10,6 +11,7 @@ namespace GamesAdmin.Database.Entities
     {
         public decimal Amount { get; set; }
 
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Betwin { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
