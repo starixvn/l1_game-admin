@@ -5,9 +5,9 @@ namespace GamesAdmin.Core.Models.RoundResults
 {
     public class BaseCasinoHoldemPokerResultControl
     {
-        public CasinoHoldemPokerHandModel playerResult { get; set; }
+        public HoldemPokerHandModel playerResult { get; set; }
 
-        public CasinoHoldemPokerHandModel dealerResult { get; set; }
+        public HoldemPokerHandModel dealerResult { get; set; }
 
         public bool isQualified { get; set; }
     }

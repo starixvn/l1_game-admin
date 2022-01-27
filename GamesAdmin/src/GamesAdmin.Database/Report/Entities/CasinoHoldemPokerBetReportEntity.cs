@@ -26,9 +26,9 @@
             Ended = round.Ended;
             RoundId = bet.Round;
 
-            Player = new CasinoHoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
+            Player = new HoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
 
-            Dealer = new CasinoHoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
+            Dealer = new HoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
 
             Stake = bet.Ante + bet.Aa + bet.Call;
             TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.Aa + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
@@ -52,9 +52,9 @@
 
         public long RoundId { get; }
 
-        public CasinoHoldemPokerHandModel Player { get; }
+        public HoldemPokerHandModel Player { get; }
 
-        public CasinoHoldemPokerHandModel Dealer { get; }
+        public HoldemPokerHandModel Dealer { get; }
 
         public bool Ended { get; }
 
@@ -87,9 +87,9 @@
             RoundId = bet.Round;
             IsQualified = round.SettlementResult?.IsQualified ?? false;
 
-            Player = new CasinoHoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
+            Player = new HoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
 
-            Dealer = new CasinoHoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
+            Dealer = new HoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
 
             CommunityCards = round.Result.CommunityCards;
             SettlementResult = bet.SettlementResult;
@@ -129,9 +129,9 @@
 
         public long RoundId { get; }
 
-        public CasinoHoldemPokerHandModel Player { get; }
+        public HoldemPokerHandModel Player { get; }
 
-        public CasinoHoldemPokerHandModel Dealer { get; }
+        public HoldemPokerHandModel Dealer { get; }
 
         public IEnumerable<PokerCard> CommunityCards { get; }
 

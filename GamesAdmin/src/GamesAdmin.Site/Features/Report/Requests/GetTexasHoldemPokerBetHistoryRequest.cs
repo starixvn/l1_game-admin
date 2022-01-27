@@ -1,18 +1,16 @@
 ﻿using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetTexasHoldemPokerBetHistoryRequest : IRequest<TexasHoldemPokerBetHistory>
+    public class GetTexasHoldemPokerBetHistoryRequest : IRequest<TexasHoldemPokerBetHistoryViewModel>
     {
-        public GetTexasHoldemPokerBetHistoryRequest(long roundId, string nickname)
+        public GetTexasHoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
+            Filter = filter;
         }
 
-        public long RoundId { get; }
-
-        public string Nickname { get; }
+        public HoldemPokerBetHistoryFilter Filter { get; }
     }
 }

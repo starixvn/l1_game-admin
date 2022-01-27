@@ -14,9 +14,9 @@ namespace GamesAdmin.Database
 {
     public interface ITexasHoldemPokerReportRepository
     {
-        Task<IEnumerable<TexasHoldemPokerBetReportEntity>> GetAsync(TexasHoldemPokerBetReportFilter filter);
+        Task<IEnumerable<TexasHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter);
 
-        Task<TexasHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname);
+        Task<TexasHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter);
     }
 
     public class TexasHoldemPokerReportRepository : BaseBetReportRepository, ITexasHoldemPokerReportRepository
@@ -25,7 +25,7 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<IEnumerable<TexasHoldemPokerBetReportEntity>> GetAsync(TexasHoldemPokerBetReportFilter filter)
+        public async Task<IEnumerable<TexasHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter)
         {
             var projects = GetAggregateBuilder(filter).ToList();
             var roundIds = projects.Select(x => x.Round).ToList();
@@ -44,19 +44,19 @@ namespace GamesAdmin.Database
             return records;
         }
 
-        public async Task<TexasHoldemPokerBetHistoryModel> GetBetHistoryAsync(long roundId, string nickname)
+        public async Task<TexasHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter)
         {
             var bet = await database
-                .GetCollection<TexasHoldemPokerBetEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerBetEntity))).Find(x => x.Round == roundId && x.Name == nickname).FirstOrDefaultAsync();
+                .GetCollection<TexasHoldemPokerBetEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerBetEntity))).Find(x => x.Round == filter.RoundId && x.Name == filter.Nickname).FirstOrDefaultAsync();
 
             var round = await database
-                .GetCollection<TexasHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+                .GetCollection<TexasHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             return new TexasHoldemPokerBetHistoryModel(bet, round);
         }
 
 
-        private IAggregateFluent<TexasHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(TexasHoldemPokerBetReportFilter filter)
+        private IAggregateFluent<TexasHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(HoldemPokerBetReportFilter filter)
         {
             var betCollection = database.GetCollection<TexasHoldemPokerBetEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));

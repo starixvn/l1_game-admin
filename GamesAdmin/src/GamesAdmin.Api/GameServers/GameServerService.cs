@@ -207,8 +207,8 @@ namespace GamesAdmin.Api.GameServers
 
                 return new HoldemPokerResultControl
                 {
-                    playerResult = new CasinoHoldemPokerHandModel { Cards = request.player, CombinationCards = model.playerResult.Cards, Id = model.playerResult.Id },
-                    dealerResult = new CasinoHoldemPokerHandModel { Cards = request.dealer, CombinationCards = model.dealerResult.Cards, Id = model.dealerResult.Id },
+                    playerResult = new HoldemPokerHandModel { Cards = request.player, CombinationCards = model.playerResult.Cards, Id = model.playerResult.Id },
+                    dealerResult = new HoldemPokerHandModel { Cards = request.dealer, CombinationCards = model.dealerResult.Cards, Id = model.dealerResult.Id },
                     communityCards = request.communityCards,
                     isQualified = model.isQualified
                 };

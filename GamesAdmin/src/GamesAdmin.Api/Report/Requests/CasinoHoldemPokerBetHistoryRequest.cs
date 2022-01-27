@@ -5,12 +5,12 @@ namespace GamesAdmin.Api.Report.Requests
 {
     public class CasinoHoldemPokerBetHistoryRequest : IRequest<CasinoHoldemPokerBetHistory>
     {
-        public CasinoHoldemPokerBetHistoryRequest(CasinoHoldemPokerBetHistoryFilter filter)
+        public CasinoHoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
         {
             Filter = filter;
         }
 
 
-        public CasinoHoldemPokerBetHistoryFilter Filter { get; }
+        public HoldemPokerBetHistoryFilter Filter { get; }
     }
 }

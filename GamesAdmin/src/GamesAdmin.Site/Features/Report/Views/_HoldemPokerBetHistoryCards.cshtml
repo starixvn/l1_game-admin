@@ -1,0 +1,129 @@
+﻿@using GamesAdmin.Core.Models.BetReport;
+@using GamesAdmin.Core;
+
+@model HoldemPokerBetHistory
+
+<div>
+    <strong>Round Id: @Model.RoundId</strong>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Cards</th>
+                <th>Combination</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Ante > 0)
+            {
+                <tr>
+                    <td>Player</td>
+                    <td>
+                        <div class="cards">
+                            @foreach (var card in Model.Player.Cards)
+                            {
+                                <div class="card card-type-@card.suit">
+                                    <span>@Card.CardLabels[card.rank]</span>
+                                    <img class="img" src="~/images/card_@(card.suit).png" />
+                                </div>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        @if (Model.IsFold)
+                        {
+                            <div class="text-center">-</div>
+                        }
+                        else
+                        {
+                            <div class="cards">
+                                @foreach (var card in Model.Player.CombinationCards)
+                                {
+                                    <div class="card card-type-@card.suit">
+                                        <span>@Card.CardLabels[card.rank]</span>
+                                        <img class="img" src="~/images/card_@(card.suit).png" />
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>@(Model.IsFold ? "Fold" : Model.Player.Rank)</td>
+                </tr>
+                <tr>
+                    <td>Dealer</td>
+                    <td>
+                        <div class="cards">
+                            @if (Model.Ended && !Model.IsFold)
+                            {
+                                @foreach (var card in Model.Dealer.Cards)
+                                {
+                                    <div class="card card-type-@card.suit">
+                                        <span>@Card.CardLabels[card.rank]</span>
+                                        <img class="img" src="~/images/card_@(card.suit).png" />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <img class="card" src="~/images/card_back.png" />
+                                <img class="card" src="~/images/card_back.png" />
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cards">
+                            @if (Model.Ended && !Model.IsFold)
+                            {
+                                @foreach (var card in Model.Dealer.CombinationCards)
+                                {
+                                    <div class="card card-type-@card.suit">
+                                        <span>@Card.CardLabels[card.rank]</span>
+                                        <img class="img" src="~/images/card_@(card.suit).png" />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="text-center">-</div>
+                            }
+                        </div>
+                    </td>
+                    @if (Model.Ended && !Model.IsFold)
+                    {
+                        <td>@(Model.IsQualified ? Model.Dealer.Rank : "Does Not Qualify")</td>
+                    }
+                    else
+                    {
+
+                        <td>-</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Community Cards</td>
+                    <td>
+                        <div class="cards">
+                            @foreach (var card in Model.CommunityCards)
+                            {
+                                <div class="card card-type-@card.suit">
+                                    <span>@Card.CardLabels[card.rank]</span>
+                                    <img class="img" src="~/images/card_@(card.suit).png" />
+                                </div>
+                            }
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">
+                        No Data Available
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

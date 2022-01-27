@@ -6,11 +6,11 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetTexasHoldemPokerReportRequest : IRequest<TexasHoldemPokerReportResultViewModel>
     {
-        public GetTexasHoldemPokerReportRequest(TexasHoldemPokerBetReportFilter filter)
+        public GetTexasHoldemPokerReportRequest(HoldemPokerBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public TexasHoldemPokerBetReportFilter Filter { get; }
+        public HoldemPokerBetReportFilter Filter { get; }
     }
 }

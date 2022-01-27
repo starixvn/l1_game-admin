@@ -14,9 +14,9 @@ namespace GamesAdmin.Database
 {
     public interface ICasinoHoldemPokerReportRepository
     {
-        Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(CasinoHoldemPokerBetReportFilter filter);
+        Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter);
 
-        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
+        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter);
     }
 
     public class CasinoHoldemPokerReportRepository : BaseBetReportRepository, ICasinoHoldemPokerReportRepository
@@ -25,7 +25,7 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(CasinoHoldemPokerBetReportFilter filter)
+        public async Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter)
         {
             var projects = GetAggregateBuilder(filter).ToList();
             var roundIds = projects.Select(x => x.Round).ToList();
@@ -44,7 +44,7 @@ namespace GamesAdmin.Database
             return records;
         }
 
-        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter)
+        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter)
         {
             var bet = await database
                 .GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity))).Find(x => x.Round == filter.RoundId && x.Name == filter.Nickname).FirstOrDefaultAsync();
@@ -56,7 +56,7 @@ namespace GamesAdmin.Database
         }
 
 
-        private IAggregateFluent<CasinoHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(CasinoHoldemPokerBetReportFilter filter)
+        private IAggregateFluent<CasinoHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(HoldemPokerBetReportFilter filter)
         {
             var betCollection = database.GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));

@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class CasinoHoldemPokerBetReportFilter
+    public class HoldemPokerBetReportFilter
     {
         public string PartnerId { get; set; }
         public DateTime FromDate { get; set; }
@@ -15,7 +15,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
     }
 
-    public class CasinoHoldemPokerBetHistoryFilter
+    public class HoldemPokerBetHistoryFilter
     {
         public int RoundId { get; set; }
         public string Nickname { get; set; }

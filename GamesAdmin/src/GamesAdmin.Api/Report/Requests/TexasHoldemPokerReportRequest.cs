@@ -7,11 +7,11 @@ namespace GamesAdmin.Api.Report.Requests
 {
     public class TexasHoldemPokerReportRequest : IRequest<IEnumerable<TexasHoldemPokerBetRecord>>
     {
-        public TexasHoldemPokerReportRequest(TexasHoldemPokerBetReportFilter filter)
+        public TexasHoldemPokerReportRequest(HoldemPokerBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public TexasHoldemPokerBetReportFilter Filter { get; }
+        public HoldemPokerBetReportFilter Filter { get; }
     }
 }

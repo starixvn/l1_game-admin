@@ -6,11 +6,11 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetCasinoHoldemPokerBetHistoryRequest : IRequest<CasinoHoldemPokerBetHistoryViewModel>
     {
-        public GetCasinoHoldemPokerBetHistoryRequest(CasinoHoldemPokerBetHistoryFilter filter)
+        public GetCasinoHoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
         {
             Filter = filter;
         }
 
-        public CasinoHoldemPokerBetHistoryFilter Filter { get; }
+        public HoldemPokerBetHistoryFilter Filter { get; }
     }
 }

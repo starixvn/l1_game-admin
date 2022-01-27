@@ -70,7 +70,7 @@ namespace GamesAdmin.Site.Features.Report
         Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
 
         [Get("/report/bet_history/casinoholdempoker")]
-        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
 
         [Get("/report/hilo")]
         Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
@@ -79,9 +79,9 @@ namespace GamesAdmin.Site.Features.Report
         Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
 
         [Get("/report/texasholdempoker")]
-        Task<IEnumerable<TexasHoldemPokerBetRecord>> GetTexasHoldemPokerBetReport(TexasHoldemPokerBetReportFilter filter);
+        Task<IEnumerable<TexasHoldemPokerBetRecord>> GetTexasHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
 
-        [Get("/report/bet_history/texasholdempoker/{roundId}/{nickname}")]
-        Task<TexasHoldemPokerBetHistory> GetTexasHoldemPokerBetHistory(long roundId, string nickname);
+        [Get("/report/bet_history/texasholdempoker")]
+        Task<TexasHoldemPokerBetHistory> GetTexasHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
     }
 }
