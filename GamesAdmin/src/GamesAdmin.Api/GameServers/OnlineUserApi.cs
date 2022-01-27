@@ -221,7 +221,7 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/set-result")]
         Task<BaseCasinoHoldemPokerResultControl> SetResult([Body] SetCasinoHoldemPokerResultRequest request);
     }
-      public interface IHiLoApi : IOnlineUserApi
+    public interface IHiLoApi : IOnlineUserApi
     {
         [Get("/api/{name}/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
