@@ -7,19 +7,19 @@
     <tbody>
         <tr>
             <td>Total Cards</td>
-            <td>
+            <td class="text-center">
                 @Model.Count()
             </td>
         </tr>
         <tr>
             <td>No. of Turn</td>
-            <td>
+            <td class="text-center">
                 @(Model.Count() - 1)
             </td>
         </tr>
         <tr>
             <td>Card Details</td>
-            <td>
+            <td class="hilo-result">
                 <div class="cards">
                     @foreach (var card in Model)
                     {
