@@ -38,9 +38,9 @@
                                 }
 
                             }
-                            else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value)
+                            else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value || @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {
-                                <a class="icon-action" href="~/ResultMonitor/CasinoHoldemPokderResult"><i class="icon-chart"></i></a>
+                                <a class="icon-action" href="~/ResultMonitor/HoldemPokderResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
                             }
                             else
                             {

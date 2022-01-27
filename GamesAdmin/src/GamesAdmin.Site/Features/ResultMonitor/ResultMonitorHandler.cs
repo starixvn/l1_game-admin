@@ -13,7 +13,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor
 {
     public class ResultMonitorHandler : 
         IRequestHandler<SetSlotResultRequest, SettlementBoardViewModel>,
-        IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>,
+        IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
         IRequestHandler<SetHiLoResultRequest, IEnumerable<CardViewModel>>
     {
         private readonly IResultMonitorService service;
@@ -26,15 +26,10 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         }
 
         public async Task<SettlementBoardViewModel> Handle(SetSlotResultRequest request, CancellationToken cancellationToken)
-        {
-            var settlementBoard = await service.SetSlotResult(request);
+            => new SettlementBoardViewModel(request.GameConfigName, await service.SetSlotResult(request));
 
-            return new SettlementBoardViewModel(request.GameConfigName, settlementBoard);
-        }
-
-        public async Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
-        {
-            return await service.SetCasinoHoldemPokerResult(request);
+        public async Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
+            => await service.SetHoldemPokerResult(request);
         }
         
         public async Task<IEnumerable<CardViewModel>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
@@ -42,6 +37,5 @@ namespace GamesAdmin.Site.Features.ResultMonitor
             var result = await service.SetHiLoResult(request);
 
             return result.Select(x => mapper.Map<CardViewModel>(x));
-        }
     }
 }

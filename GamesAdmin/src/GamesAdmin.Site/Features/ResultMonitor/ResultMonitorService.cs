@@ -15,8 +15,8 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         [Post("/game_server/slot/set_board")]
         Task<SettlementBoard> SetSlotResult([FromBody] SetSlotResultRequest request);
 
-        [Post("/game_server/casinoholdempoker/set_result")]
-        Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult([FromBody] SetCasinoHoldemPokerResultRequest request);
+        [Post("/game_server/holdempoker/set_result")]
+        Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request);
         [Post("/game_server/hilo/set_result")]
         Task<IEnumerable<Card>> SetHiLoResult([FromBody] SetHiLoResultRequest request);
     }
@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor
     {
         Task<SettlementBoard> SetSlotResult(SetSlotResultRequest request);
 
-        Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult(SetCasinoHoldemPokerResultRequest request);
+        Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
         Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request);
     }
 
@@ -39,10 +39,10 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         }
 
         public Task<SettlementBoard> SetSlotResult(SetSlotResultRequest request)
-        => api.SetSlotResult(request);
+            => api.SetSlotResult(request);
 
-        public Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult(SetCasinoHoldemPokerResultRequest request)
-      => api.SetCasinoHoldemPokerResult(request);
+        public Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request)
+            => api.SetHoldemPokerResult(request);
         public Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
             => api.SetHiLoResult(request);
     }

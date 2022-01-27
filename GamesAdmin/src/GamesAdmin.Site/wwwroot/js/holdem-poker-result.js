@@ -49,6 +49,7 @@
             }
 
             var data = {
+                gameConfigName: $("#GameName").val(),
                 roundName: nickame,
                 player: cards.slice(0, 2),
                 dealer: cards.slice(2, 4),
@@ -57,7 +58,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "SetCasinoHoldemPokerResult",
+                url: "SetHoldemPokerResult",
                 data: data,
                 dataType: 'html',
                 success: function (response) {

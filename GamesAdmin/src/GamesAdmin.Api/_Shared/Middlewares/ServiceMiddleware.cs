@@ -144,7 +144,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
             services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
+
             AddSlotServices(services, appSettings, refitSettings);
+            AddHoldemPokerServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
@@ -187,6 +189,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
+        }
+
+        private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddScoped<IHoldemPokerApiFactory, HoldemPokerApiFactory>();
+            services.AddSingleton(RestService.For<ICasinoHoldemPokerApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITexasHoldemPokerApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)

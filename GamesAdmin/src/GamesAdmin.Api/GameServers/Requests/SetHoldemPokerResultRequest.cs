@@ -4,8 +4,10 @@ using MediatR;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {
-    public class SetCasinoHoldemPokerResultRequest : IRequest<CasinoHoldemPokerResultControl>
+    public class SetHoldemPokerResultRequest : IRequest<HoldemPokerResultControl>
     {
+        public string gameConfigName { get; set; }
+
         public string roundName { get; set; }
 
         public PokerCard[] player { get; set; }

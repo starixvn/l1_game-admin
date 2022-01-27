@@ -80,10 +80,6 @@
     "inputFile": "wwwroot/scss/pages/api-log.scss"
   },
   {
-    "outputFile": "wwwroot/scss/pages/casino-holdem-poker-result.css",
-    "inputFile": "wwwroot/scss/pages/casino-holdem-poker-result.scss"
-  },
-  {
     "outputFile": "wwwroot/js/blackjack-report.es5.js",
     "inputFile": "wwwroot/js/blackjack-report.js"
   },
@@ -96,7 +92,7 @@
     "inputFile": "wwwroot/scss/pages/slot-game-report.scss"
   },
   {
-    "outputFile": "wwwroot/scss/pages/casino-holdem-poker-result.css",
-    "inputFile": "wwwroot/scss/pages/casino-holdem-poker-result.scss"
+    "outputFile": "wwwroot/scss/pages/holdem-poker-result.css",
+    "inputFile": "wwwroot/scss/pages/holdem-poker-result.scss"
   }
 ]

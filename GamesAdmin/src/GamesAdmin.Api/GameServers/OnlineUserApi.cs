@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.RoundResults;
 using Refit;
 using System.Threading.Tasks;
 
@@ -222,9 +220,6 @@ namespace GamesAdmin.Api.GameServers
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
-
-        [Post("/api/set-result")]
-        Task<BaseCasinoHoldemPokerResultControl> SetResult([Body] SetCasinoHoldemPokerResultRequest request);
     }
     public interface IHiLoApi : IOnlineUserApi
     {

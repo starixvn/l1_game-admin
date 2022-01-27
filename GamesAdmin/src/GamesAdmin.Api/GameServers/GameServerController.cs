@@ -40,8 +40,8 @@ namespace GamesAdmin.Api.GameServers
         public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
            => mediator.Send(request);
 
-        [HttpPost("casinoholdempoker/set_result")]
-        public Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult([FromBody] SetCasinoHoldemPokerResultRequest request)
+        [HttpPost("holdempoker/set_result")]
+        public Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request)
            => mediator.Send(request);
 
         [HttpPost("hilo/set_result")]

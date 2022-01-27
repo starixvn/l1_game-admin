@@ -1,17 +1,21 @@
 ﻿@using GamesAdmin.Core;
+@using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
+
+@model HoldemPokerResultViewModel;
 
 @{
-    ViewData["Title"] = $"Casino Hold'em Result";
+    ViewData["Title"] = Model.DisplayGameName;
 }
 
 @section Styles {
-    <link href="~/css/casino-holdem-poker-result.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/holdem-poker-result.min.css" rel="stylesheet" asp-append-version="true" />
 }
 <div class="form filter casino-holdem-poker">
-    <div class="form-row  col-auto nickname">
+    <div class="form-row col-auto nickname">
         <label class="control-label bold">Nickname:</label>
         <input type="text" class="form-control" id="nickname" onkeyup="casinoHoldemPokerResult.onInputNickname(event)">
         <div class="error hidden">Please input nickname !</div>
+        <input type="hidden" class="form-control" placeholder="Nickname" asp-for="GameName" />
     </div>
     <div class="form-row col-auto set-result">
         <label class="control-label bold">Set Results</label>
@@ -59,9 +63,9 @@
 @section Scripts {
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
-        <script src="~/js/casino-holdem-poker-result.js" asp-append-version="true"></script>
+        <script src="~/js/holdem-poker-result.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/casino-holdem-poker-result.min.js" asp-append-version="true"></script>
+        <script src="~/js/holdem-poker-result.min.js" asp-append-version="true"></script>
     </environment>
 }
