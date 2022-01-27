@@ -23,6 +23,7 @@
             <tbody>
                 @foreach (var record in Model.Records)
                 {
+                    var winAmount = record.BetWin + record.Stake;
                     <tr>
                         <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@record.Partner</td>
@@ -34,11 +35,11 @@
                         <td class="text-center">@record.DealerResult</td>
                         <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="TexasHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname">
-                                @record.Stake
+                               asp-action="TexasHoldemPokerBetHistory" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.Stake) : record.Stake)
                             </a>
                         </td>
-                        <td class="text-center">@(record.Ended ? record.BetWin.ToString() : "Unfinished Game")</td>
+                        <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(winAmount) : winAmount) : "Unfinished Game")</td>
                     </tr>
                 }
             </tbody>

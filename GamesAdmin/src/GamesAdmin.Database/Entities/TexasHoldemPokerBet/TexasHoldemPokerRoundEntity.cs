@@ -2,9 +2,8 @@
 
 namespace GamesAdmin.Database.Entities
 {
-
     [BsonCollection("texasholdempoker_phiens")]
-    public class TexasHoldemPokerRoundEntity : CasinoHoldemPokerRoundEntity
+    public class TexasHoldemPokerRoundEntity : HoldemPokerRoundEntity
     {
     }
 }

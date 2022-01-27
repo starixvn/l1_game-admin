@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 namespace GamesAdmin.Api.EndGameInfo
 {
     public class CasinoHoldemPokerEndGameInfoService :
-        BaseEndGameInfoService<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity>, IEndGameInfoService
+        BaseEndGameInfoService<HoldemPokerRoundEntity, CasinoHoldemPokerBetEntity>, IEndGameInfoService
     {
         public CasinoHoldemPokerEndGameInfoService(
-            IGenericRepository<CasinoHoldemPokerRoundEntity> roundRepository,
+            IGenericRepository<HoldemPokerRoundEntity> roundRepository,
             IGenericRepository<CasinoHoldemPokerBetEntity> betRepository)
             : base(roundRepository, betRepository)
         {

@@ -52,7 +52,7 @@ namespace GamesAdmin.Database
             var round = await database
                 .GetCollection<TexasHoldemPokerRoundEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
-            return new TexasHoldemPokerBetHistoryModel(bet, round);
+            return new TexasHoldemPokerBetHistoryModel(bet, round, filter.ConvertToUSD);
         }
 
 
