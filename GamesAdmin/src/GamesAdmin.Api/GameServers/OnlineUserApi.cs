@@ -223,7 +223,7 @@ namespace GamesAdmin.Api.GameServers
     }
     public interface IHiLoApi : IOnlineUserApi
     {
-        [Get("/api/{name}/onlineusers")]
+        [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
 
         [Post("/api/set-result")]
