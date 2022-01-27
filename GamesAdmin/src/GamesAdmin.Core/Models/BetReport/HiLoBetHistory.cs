@@ -17,6 +17,8 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public decimal Amount { get; set; }
 
+        public decimal Betwin { get; set; }
+
         public IEnumerable<Card> Cards { get; set; }
     }
 }
