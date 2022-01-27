@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.ResultMonitor
         {
             var result = await service.SetHiLoResult(request);
 
-            return result.Select(x => mapper.Map<CardViewModel>(result));
+            return result.Select(x => mapper.Map<CardViewModel>(x));
         }
     }
 }
