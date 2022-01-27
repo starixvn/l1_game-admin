@@ -56,7 +56,7 @@ namespace GamesAdmin.Database
         }
 
 
-        private IAggregateFluent<TexasHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(CasinoHoldemPokerBetReportFilter filter)
+        private IAggregateFluent<TexasHoldemPokerBetWithUnWindAccountsEntity> GetAggregateBuilder(TexasHoldemPokerBetReportFilter filter)
         {
             var betCollection = database.GetCollection<TexasHoldemPokerBetEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
@@ -71,7 +71,10 @@ namespace GamesAdmin.Database
             }
             else
             {
-                expression = x => x.Time <= filter.ToDate.ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
+                var gapHourTimeZone = -7;
+                var fromDate = filter.FromDate.AddHours(gapHourTimeZone).ToUniversalTime();
+                var toDate = filter.ToDate.AddDays(1).AddHours(gapHourTimeZone).AddMilliseconds(-1).ToUniversalTime();
+                expression = x => x.Time >= fromDate && x.Time <= toDate;
             }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))
