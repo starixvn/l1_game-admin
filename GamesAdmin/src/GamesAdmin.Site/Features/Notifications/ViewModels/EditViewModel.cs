@@ -18,6 +18,7 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
             DisplayKinds = displayKinds;
             Id = notification.Id;
             VnMessage = notification.Messages?[Language.VnValue] != null ? notification.Messages[Language.VnValue] : notification.Message;
+            EnMessage = notification.Messages?[Language.EnValue] != null ? notification.Messages[Language.EnValue] : notification.Message;
             DisplayKindValue = byte.Parse(notification.DisplayKind.Value);
         }
 
