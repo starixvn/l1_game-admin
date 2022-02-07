@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features.Currencies.Mappers
             CreateMap<CurrencyModel, UpdateCurrencyViewModel>();
 
             CreateMap<CurrencyModel, SelectListItem>()
-                .ConstructUsing(model => new SelectListItem($"{model.Name} ({model.Code})", model.Id));
+                .ConstructUsing(model => new SelectListItem($"{model.Name} ({model.Code})", model.Code));
         }
     }
 }

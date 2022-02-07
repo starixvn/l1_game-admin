@@ -17,6 +17,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public BigSmallBetResultViewModel BetResult { get; set; }
 
         public BigSmallBetChoiceViewModel Choice { get; set; }
+
+        public decimal ExchangeRate { get; set; }
+
+        public decimal? ConvertByExchangeRate(decimal? value)
+        {
+            var exchangeRate = ExchangeRate == 0 ? 1 : ExchangeRate;
+
+            return value != null ? value / exchangeRate : null;
+        }
     }
 
     public class BigSmallBetChoiceViewModel
@@ -26,7 +35,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Amount { get; set; }
     }
 
-    public class BigSmallBetResultViewModel 
+    public class BigSmallBetResultViewModel
     {
         public IEnumerable<byte> Dices { get; set; }
 

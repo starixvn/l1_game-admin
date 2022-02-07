@@ -223,6 +223,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return result.Select(x => new BigSmallBetHistoryViewModel
             {
+                ExchangeRate = request.Rate ?? 1,
                 Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                 BetWin = x.BetWin,
                 Refund = x.Refund,

@@ -328,9 +328,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> GetBigSmallBetHistory(long roundId, string nickname, decimal? rate)
         {
-            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname)));
+            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallBetHistoryRequest(roundId, nickname, rate)));
         }
 
         [HttpGet]
@@ -359,7 +359,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetLotteryBetHistory(BetHistoryFilter filter, bool convertToUSD)
-            {
+        {
             return PartialView("_LotteryBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
@@ -485,7 +485,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
         }
-        
+
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

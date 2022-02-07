@@ -79,7 +79,10 @@
                         <td>@bigRecord?.Username</td>
                         <td>
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@bigRecord?.Nickname">
+                               asp-action="GetBigSmallBetHistory"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-nickname="@bigRecord?.Nickname"
+                               asp-route-currency="@bigRecord?.Currency">
                                 @bigRecord?.Nickname
                             </a>
                         </td>
@@ -94,7 +97,10 @@
                         <td>@smallRecord?.Currency</td>
                         <td class="col-nickname">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetBigSmallBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@smallRecord?.Nickname">
+                               asp-action="GetBigSmallBetHistory"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-nickname="@smallRecord?.Nickname"
+                               asp-route-rate="@round?.ExchangeRate">
                                 @smallRecord?.Nickname
                             </a>
                         </td>
