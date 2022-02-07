@@ -114,11 +114,10 @@ namespace GamesAdmin.Site._Shared
 
             CreateMap<KenoBetRecord, KenoRecordViewModel>();
             CreateMap<KenoBetHistoryRecord, KenoBetHistoryRecordViewModel>();
-            CreateMap<CasinoHoldemPokerBetRecord, CasinoHoldemPokerRecordViewModel>();
+            CreateMap<HoldemPokerBetRecord, HoldemPokerRecordViewModel>();
             CreateMap<HiLoBetRecord, HiLoRecordViewModel>();
             CreateMap<HiLoBetHistoryRecord, HiLoBetHistoryRecordViewModel>();
             CreateMap<HiLoRoundResult, HiLoRoundResultViewModel>();
-            CreateMap<TexasHoldemPokerBetRecord, TexasHoldemPokerRecordViewModel>();
         }
     }
 }

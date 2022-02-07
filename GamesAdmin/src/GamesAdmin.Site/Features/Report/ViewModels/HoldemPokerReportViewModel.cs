@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using GamesAdmin.Core.Enumeration;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class CasinoHoldemPokerReportViewModel
+    public class HoldemPokerReportViewModel
     {
         [CasinoHldemPokerValidation]
         public long? RoundId { get; set; }
@@ -32,6 +33,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ExcludeUUS { get; set; }
 
         public ReportSeletionsViewModel Selections { get; set; }
+
+        public Game Game { get; set; }
     }
 
     public class PartnerViewModel
@@ -55,7 +58,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var model = (CasinoHoldemPokerReportViewModel)validationContext.ObjectInstance;
+            var model = (HoldemPokerReportViewModel)validationContext.ObjectInstance;
 
             if (!model.RoundId.HasValue && !string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
             {

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class CasinoHoldemPokerReportRequest : IRequest<IEnumerable<CasinoHoldemPokerBetRecord>>
+    public class HoldemPokerReportRequest : IRequest<IEnumerable<HoldemPokerBetRecord>>
     {
-        public CasinoHoldemPokerReportRequest(HoldemPokerBetReportFilter filter)
+        public HoldemPokerReportRequest(HoldemPokerBetReportFilter filter)
         {
             Filter = filter;
         }

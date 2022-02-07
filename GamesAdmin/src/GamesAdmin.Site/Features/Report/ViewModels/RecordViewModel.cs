@@ -321,7 +321,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBet { get; set; }
     }
 
-    public class CasinoHoldemPokerRecordViewModel : BetRecordViewModel
+    public class HoldemPokerRecordViewModel : BetRecordViewModel
     {
         public long RoundId { get; set; }
 
@@ -351,7 +351,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public int ExchangeRateId { get; set; }
     }
 
-    public class TexasHoldemPokerRecordViewModel : CasinoHoldemPokerRecordViewModel
+    public class TexasHoldemPokerRecordViewModel : HoldemPokerRecordViewModel
     {
     }
 }

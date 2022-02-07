@@ -12,7 +12,9 @@
     public class CasinoHoldemPokerBetSettlementResult
     {
         public decimal Aa { get; set; }
+
         public decimal Ante { get; set; }
+
         public decimal Call { get; set; }
     }
 }

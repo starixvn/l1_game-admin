@@ -23,14 +23,18 @@ namespace GamesAdmin.Database.Entities
     public class HoldemPokerResultEntity
     {
         public IEnumerable<PokerCard> Dealer { get; set; }
+
         public IEnumerable<PokerCard> CommunityCards { get; set; }
     }
 
     public class CombinationCard
     {
         public IEnumerable<PokerCard> Cards { get; set; }
+
         public IEnumerable<PokerCard> CombinationCards { get; set; }
+
         public bool? IsQualified { get; set; }
+
         [BsonElement("id")]
         public int HandRankId { get; set; }
     }

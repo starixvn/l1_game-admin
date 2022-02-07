@@ -1,15 +1,15 @@
 ﻿@using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model TexasHoldemPokerReportViewModel
+@model HoldemPokerReportViewModel
 
 @{
-    ViewData["Title"] = "Texas Holdem Poker";
+    ViewData["Title"] = Model.Game.DisplayName;
 }
 
 @section Styles {
     <link href="~/css/report.min.css" rel="stylesheet" asp-append-version="true" />
 }
-<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetTexasHoldemPokerReport" data-ajax-mode="replace" data-ajax-update="#report-result"
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetHoldemPokerReport" data-ajax-mode="replace" data-ajax-update="#report-result"
       data-ajax-loading="#spinner"
       method="get"
       data-ajax-success="report.onSuccess">
@@ -21,11 +21,11 @@
             </select>
         </div>
         <div class="col-auto">
-            <label asp-for="FromDate" class="control-label"></label>
+            <label asp-for="FromDate" class="control-label">From Date</label>
             <input type="date" class="form-control" asp-for="FromDate">
         </div>
         <div class="col-auto">
-            <label asp-for="ToDate" class="control-label"></label>
+            <label asp-for="ToDate" class="control-label">To Date</label>
             <input type="date" class="form-control" asp-for="ToDate">
         </div>
         <div class="col-auto">
@@ -58,7 +58,10 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
+        <input type="hidden" id="GameId" name="GameId" value="@Model.Game.GameId">
     </div>
+
+    <span asp-validation-for="RoundId" class="text-danger"></span>
 </form>
 
 <div id="report-result" class="col-sm-12 report-container">
@@ -86,9 +89,9 @@
     <environment include="Development">
         <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/data-tables/datatables.js"></script>
-        <script src="~/js/texas-holdem-poker-report.js" asp-append-version="true"></script>
+        <script src="~/js/holdem-poker-report.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/texas-holdem-poker-report.min.js" asp-append-version="true"></script>
+        <script src="~/js/holdem-poker-report.min.js" asp-append-version="true"></script>
     </environment>
 }
