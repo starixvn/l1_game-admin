@@ -28,14 +28,17 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string Nickname { get; set; }
 
+        [DisplayName("Exclude Bots")]
         public bool ExcludeBot { get; set; }
 
+        [DisplayName("Exclude UUS")]
         public bool ExcludeUUS { get; set; }
 
         public GameId Game { get; set; }
 
         public ReportSeletionsViewModel Selections { get; set; }
 
+        [DisplayName("Partner")]
         public string PartnerId { get; set; }
 
         public string Username { get; set; }

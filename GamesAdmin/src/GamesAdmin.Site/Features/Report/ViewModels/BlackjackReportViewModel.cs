@@ -10,6 +10,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         [BlalckjackValidation]
         public string Nickname { get; set; }
+
+        [DisplayName("Exclude UUS")]
         public bool ExcludeUUS { get; set; }
 
         [DisplayName("Convert to USD")]

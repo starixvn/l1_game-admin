@@ -23,9 +23,11 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(GameId game)
         {
             var viewModel = await GetReportViewModel();
+            viewModel.Game = game;
+
             return View("Index", viewModel);
         }
 
@@ -111,84 +113,84 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult SeDie()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.SeDie });
         }
 
         [HttpGet]
         public IActionResult MiniSeDie()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.MiniSeDie });
         }
 
         [HttpGet]
         public IActionResult FishPrawnCrab()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.FishPrawnCrab });
         }
 
         [HttpGet]
         public IActionResult DragonTiger()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.DragonTiger });
         }
 
         [HttpGet]
         public IActionResult Baccarat()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.Baccarat });
         }
 
         [HttpGet]
         public IActionResult VipBaccarat()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.VipBaccarat });
         }
 
         [HttpGet]
         [ActionName("rnglottery")]
         public IActionResult Lottery()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.Lottery });
         }
 
         [HttpGet]
         public IActionResult SeDieWar()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.VipSeDieWar });
         }
 
         [HttpGet]
         public IActionResult ThreeCards()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.ThreeCards });
         }
 
         [HttpGet]
         [ActionName("kenomatch")]
         public IActionResult KenoMatch1()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.KenoMatch1 });
         }
 
         [HttpGet]
         [ActionName("kenomatchmd5")]
         public IActionResult KenoMatch2()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.KenoMatch2 });
         }
 
         [HttpGet]
         [ActionName("kenopower")]
         public IActionResult KenoPower1()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.KenoPower1 });
         }
 
         [HttpGet]
         [ActionName("kenopowermd5")]
         public IActionResult KenoPower2()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.KenoPower2 });
         }
 
         [HttpGet]
@@ -206,7 +208,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult Roulette()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.Roulette });
         }
 
         [HttpGet]
@@ -217,7 +219,7 @@ namespace GamesAdmin.Site.Features.Report
 
         public IActionResult VipSeDie()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.VipSeDie });
         }
 
         [HttpGet]
@@ -240,13 +242,13 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult VipFishPrawnCrab()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.VipFishPrawnCrab });
         }
 
         [HttpGet]
         public IActionResult SicBo()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { game = GameId.SicBo });
         }
 
         [HttpGet]
@@ -378,31 +380,31 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult KenoProViet() => RedirectToAction("Index");
 
         [HttpGet]
-        public IActionResult KenoMax() => RedirectToAction("Index");
+        public IActionResult KenoMax() => RedirectToAction("Index", new { game = GameId.KenoMax });
 
         [HttpGet]
-        public IActionResult KenoMax2() => RedirectToAction("Index");
+        public IActionResult KenoMax2() => RedirectToAction("Index", new { game = GameId.KenoMax2 });
 
         [HttpGet]
-        public IActionResult KenoMini() => RedirectToAction("Index");
+        public IActionResult KenoMini() => RedirectToAction("Index", new { game = GameId.KenoMini });
 
         [HttpGet]
-        public IActionResult KenoMini2() => RedirectToAction("Index");
+        public IActionResult KenoMini2() => RedirectToAction("Index", new { game = GameId.KenoMini2 });
 
         [HttpGet]
-        public IActionResult KenoEast() => RedirectToAction("Index");
+        public IActionResult KenoEast() => RedirectToAction("Index", new { game = GameId.KenoEast });
 
         [HttpGet]
-        public IActionResult KenoWest() => RedirectToAction("Index");
+        public IActionResult KenoWest() => RedirectToAction("Index", new { game = GameId.KenoWest });
 
         [HttpGet]
-        public IActionResult KenoSouth() => RedirectToAction("Index");
+        public IActionResult KenoSouth() => RedirectToAction("Index", new { game = GameId.KenoSouth });
 
         [HttpGet]
-        public IActionResult KenoNorth() => RedirectToAction("Index");
+        public IActionResult KenoNorth() => RedirectToAction("Index", new { game = GameId.KenoNorth });
 
         [HttpGet]
-        public IActionResult KenoProMax() => RedirectToAction("Index");
+        public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
 
         [HttpGet]
         public async Task<IActionResult> KenoBetHistory(BetHistoryFilter filter, bool convertToUSD)
