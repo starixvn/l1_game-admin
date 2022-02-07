@@ -3,7 +3,7 @@
 @using GamesAdmin.Core.Enumeration;
 @model SicBoReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
@@ -58,7 +58,7 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetSicBoBetHistory" 
+                               asp-action="GetSicBoBetHistory"
                                asp-route-game="@GameId.SicBo"
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-userId="@bet.UserId"

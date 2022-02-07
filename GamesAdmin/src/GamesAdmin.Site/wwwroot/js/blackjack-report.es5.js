@@ -1,8 +1,8 @@
 ﻿"use strict";
 
-(function () {
+var report = (function () {
     $.validator.addMethod("eitherrequired", function (value, element, params) {
-        return params.every(function (x) {
+        return params.some(function (x) {
             return x.value !== "";
         });
     });
@@ -15,5 +15,25 @@
         options.rules["eitherrequired"] = [$handId, $nickname, $username];
         options.messages["eitherrequired"] = options.message;
     });
+
+    var $currentTable;
+
+    return {
+        onSuccess: function onSuccess() {
+            if ($currentTable) {
+                $currentTable.DataTable().clear().destroy();
+            }
+
+            $currentTable = $('#report-result table');
+            $currentTable.DataTable({
+                "ordering": false,
+                "lengthMenu": [100, 200, 500],
+                "language": {
+                    "emptyTable": "No data"
+                },
+                "autoWidth": false
+            });
+        }
+    };
 })();
 

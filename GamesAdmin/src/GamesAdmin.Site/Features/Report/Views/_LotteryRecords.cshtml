@@ -4,7 +4,7 @@
 
 @model LotteryReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
@@ -129,8 +129,8 @@
                                asp-action="GetLotteryBetHistory"
                                asp-route-game="@GameId.Lottery"
                                asp-route-roundId="@Model.RoundResult.Number"
-                               asp-route-userId="@bet.UserId" 
-                               asp-route-partnerId="@bet.PartnerId" 
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
                                asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
                             </a>

@@ -134,6 +134,9 @@
   display: flex;
   justify-content: center; }
 
+.row-table {
+  margin-right: 0; }
+
 .baccarat-result {
   display: grid;
   grid-template-columns: 1fr 1fr; }

@@ -3,7 +3,7 @@
 
 @model VipSeDieReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
@@ -67,26 +67,26 @@
             <tbody>
                 @foreach (var bet in Model.Records)
                 {
-                <tr>
-                    <td class="text-center">
-                        @Model.RoundResult.Number
-                    </td>
-                    <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                    <td class="text-center">@bet.Partner</td>
-                    <td>@bet.Username</td>
-                    <td>
-                        @bet.Nickname
-                    </td>
-                    <td class="text-center">@bet.Currency</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Even) : bet.Even)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Odd) : bet.Odd)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.FourRed) : bet.FourRed)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.ThreeRed) : bet.ThreeRed)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TwoRed) : bet.TwoRed)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.ThreeWhite) : bet.ThreeWhite)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.FourWhite) : bet.FourWhite)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
-                </tr>
+                    <tr>
+                        <td class="text-center">
+                            @Model.RoundResult.Number
+                        </td>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Even) : bet.Even)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Odd) : bet.Odd)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.FourRed) : bet.FourRed)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.ThreeRed) : bet.ThreeRed)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TwoRed) : bet.TwoRed)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.ThreeWhite) : bet.ThreeWhite)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.FourWhite) : bet.FourWhite)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
+                    </tr>
                 }
             </tbody>
             <tfoot>
