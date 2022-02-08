@@ -56,11 +56,11 @@ namespace GamesAdmin.Site.Features.Report
             long roundId,
             string nickname,
             bool excludeBot,
-            string partner,
+            string partnerId,
             string username,
             string currency)
         {
-            var request = new GetBigSmallReportRequest(roundId, nickname, excludeBot, partner, username, currency);
+            var request = new GetBigSmallReportRequest(roundId, nickname, excludeBot, partnerId, username, currency);
 
             return PartialView("_BigSmallRecords", await mediator.Send(request));
         }
@@ -73,11 +73,11 @@ namespace GamesAdmin.Site.Features.Report
             long roundId,
             string nickname,
             bool excludeBot,
-            string partner,
+            string partnerId,
             string username,
             string currency)
         {
-            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetBigSmallTurboReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
+            return PartialView("_BigSmallTurboRecords", await mediator.Send(new GetBigSmallTurboReportRequest(roundId, nickname, excludeBot, partnerId, username, currency)));
         }
 
         [HttpGet]
@@ -88,11 +88,11 @@ namespace GamesAdmin.Site.Features.Report
             long roundId,
             string nickname,
             bool excludeBot,
-            string partner,
+            string partnerId,
             string username,
             string currency)
         {
-            return PartialView("_OddEvenRecords", await mediator.Send(new GetOddEvenReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
+            return PartialView("_OddEvenRecords", await mediator.Send(new GetOddEvenReportRequest(roundId, nickname, excludeBot, partnerId, username, currency)));
         }
 
         [HttpGet]
@@ -103,11 +103,11 @@ namespace GamesAdmin.Site.Features.Report
             long roundId,
             string nickname,
             bool excludeBot,
-            string partner,
+            string partnerId,
             string username,
             string currency)
         {
-            return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
+            return PartialView("_OddEvenTurboRecords", await mediator.Send(new GetOddEvenTurboReportRequest(roundId, nickname, excludeBot, partnerId, username, currency)));
         }
 
         [HttpGet]
