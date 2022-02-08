@@ -121,7 +121,7 @@
                 else
                 {
                     <tr class="total">
-                        <td>Total</td>
+                        <td>Total in @Model.ConvertCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -130,7 +130,7 @@
                         <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecords.Sum(x => x.BaseBack)))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(bigRecords.Sum(x => x.BaseBetWin)))</td>
                         <td class="line-cell"></td>
-                        <td>Total</td>
+                        <td>Total in @Model.ConvertCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>

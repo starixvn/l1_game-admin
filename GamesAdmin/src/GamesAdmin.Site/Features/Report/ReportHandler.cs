@@ -78,6 +78,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new BigSmallReportResultViewModel
             {
+                ConvertCurrency = request.Currency,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -154,6 +155,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new OddEvenReportResultViewModel
             {
+                ConvertCurrency = request.Currency,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
