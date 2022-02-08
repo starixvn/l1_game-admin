@@ -28,6 +28,7 @@ namespace GamesAdmin.Database.Entities
 
         public string Currency { get; set; }
 
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Rate { get; set; }
     }
 }
