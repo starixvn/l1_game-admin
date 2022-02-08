@@ -59,19 +59,23 @@
         <table class="table table-bordered table-hover table-updown">
             <thead>
                 <tr>
-                    <th colspan="6" class="title">UP</th>
-                    <th colspan="6" class="title">DOWN</th>
+                    <th colspan="8" class="title">UP</th>
+                    <th colspan="8" class="title">DOWN</th>
                 </tr>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
@@ -81,7 +85,7 @@
             {
                 <tfoot>
                     <tr>
-                        <td class="text-center" colspan="12">No data</td>
+                        <td class="text-center" colspan="16">No data</td>
                     </tr>
                 </tfoot>
             }
@@ -99,6 +103,8 @@
                                 <td class="text-center"></td>
                                 <td class="text-left"></td>
                                 <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
@@ -106,6 +112,7 @@
                             else
                             {
                                 <td class="text-center">@upRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@upRecord.Partner</td>
                                 <td class="text-left">@upRecord.Username</td>
                                 <td class="text-left">
                                     <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -115,9 +122,8 @@
                                        asp-route-currency="@Model.Currency">
                                         @upRecord.Nickname
                                     </a>
-
                                 </td>
-
+                                <td class="text-left">@upRecord.Currency</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(upRecord.Bet))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(upRecord.Back))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(upRecord.GrossWin))</td>
@@ -128,6 +134,8 @@
                                 <td class="text-center"></td>
                                 <td class="text-left"></td>
                                 <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
@@ -135,6 +143,7 @@
                             else
                             {
                                 <td class="text-center">@downRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@downRecord.Partner</td>
                                 <td class="text-left">@downRecord.Username</td>
                                 <td class="text-left">
                                     <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -144,9 +153,8 @@
                                        asp-route-currency="@Model.Currency">
                                         @downRecord.Nickname
                                     </a>
-
                                 </td>
-
+                                <td class="text-left">@downRecord.Currency</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(downRecord.Bet))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(downRecord.Back))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(downRecord.GrossWin))</td>
@@ -157,11 +165,11 @@
                 </tbody>
                 <tfoot>
                     <tr class="total">
-                        <td colspan="3" class="text-right">Total</td>
+                        <td colspan="5" class="text-right">Total</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.UpTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.UpTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.UpTotal.BetWin))</td>
-                        <td colspan="3" class="text-right">Total</td>
+                        <td colspan="5" class="text-right">Total</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.DownTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.DownTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.DownTotal.BetWin))</td>
@@ -172,19 +180,23 @@
         <table class="table table-bordered table-hover table-oddeven display-none">
             <thead>
                 <tr>
-                    <th colspan="6" class="title">ODD</th>
-                    <th colspan="6" class="title">EVEN</th>
+                    <th colspan="8" class="title">ODD</th>
+                    <th colspan="8" class="title">EVEN</th>
                 </tr>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
@@ -194,7 +206,7 @@
             {
                 <tfoot>
                     <tr>
-                        <td class="text-center" colspan="12">No data</td>
+                        <td class="text-center" colspan="16">No data</td>
                     </tr>
                 </tfoot>
             }
@@ -212,6 +224,8 @@
                                 <td class="text-center"></td>
                                 <td class="text-left"></td>
                                 <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
@@ -219,6 +233,7 @@
                             else
                             {
                                 <td class="text-center">@oddRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@oddRecord.Partner</td>
                                 <td class="text-left">@oddRecord.Username</td>
                                 <td class="text-left">
                                     <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -228,9 +243,8 @@
                                        asp-route-currency="@Model.Currency">
                                         @oddRecord.Nickname
                                     </a>
-
                                 </td>
-
+                                <td class="text-left">@oddRecord.Currency</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(oddRecord.Bet))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(oddRecord.Back))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(oddRecord.GrossWin))</td>
@@ -241,6 +255,8 @@
                                 <td class="text-center"></td>
                                 <td class="text-left"></td>
                                 <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>
@@ -248,6 +264,7 @@
                             else
                             {
                                 <td class="text-center">@evenRecord.Time.ToString(Constants.DateTimeFormat)</td>
+                                <td class="text-left">@evenRecord.Partner</td>
                                 <td class="text-left">@evenRecord.Username</td>
                                 <td class="text-left">
                                     <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -257,9 +274,8 @@
                                        asp-route-currency="@Model.Currency">
                                         @evenRecord.Nickname
                                     </a>
-
                                 </td>
-
+                                <td class="text-left">@evenRecord.Currency</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(evenRecord.Bet))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(evenRecord.Back))</td>
                                 <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(evenRecord.GrossWin))</td>
@@ -270,11 +286,11 @@
                 </tbody>
                 <tfoot>
                     <tr class="total">
-                        <td colspan="3" class="text-right">Total in @Model.Currency</td>
+                        <td colspan="5" class="text-right">Total in @Model.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.OddTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.OddTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.OddTotal.BetWin))</td>
-                        <td colspan="3" class="text-right">Total in @Model.Currency</td>
+                        <td colspan="5" class="text-right">Total in @Model.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.EvenTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.EvenTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.EvenTotal.BetWin))</td>

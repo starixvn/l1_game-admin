@@ -49,21 +49,25 @@
         <table class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
-                    <th colspan="6" class="big-small-title">Even</th>
+                    <th colspan="8" class="big-small-title">Even</th>
                     <th class="line-cell"></th>
-                    <th colspan="6" class="big-small-title">Odd</th>
+                    <th colspan="8" class="big-small-title">Odd</th>
                 </tr>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
                     <th class="line-cell"></th>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
                     <th>Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Stake</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
@@ -76,6 +80,7 @@
                     var oddRecord = oddRecords.ElementAtOrDefault(i);
                     <tr>
                         <td>@evenRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@evenRecord?.Partner</td>
                         <td>@evenRecord?.Username</td>
                         <td>
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -86,11 +91,13 @@
                                 @evenRecord?.Nickname
                             </a>
                         </td>
+                        <td>@evenRecord?.Currency</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecord?.Amount, Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecord?.Refund, Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecord?.BetWin, Model.RoundResult.ExchangeRate)</td>
                         <td class="line-cell"></td>
                         <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@oddRecord?.Partner</td>
                         <td>@oddRecord?.Username</td>
                         <td class="col-nickname">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
@@ -101,6 +108,7 @@
                                 @oddRecord?.Nickname
                             </a>
                         </td>
+                        <td>@oddRecord?.Currency</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(oddRecord?.Amount, Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(oddRecord?.Refund, Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(oddRecord?.BetWin, Model.RoundResult.ExchangeRate)</td>
@@ -112,7 +120,7 @@
                 @if (totalRow == 0)
                 {
                     <tr>
-                        <td class="text-center" colspan="13">No data</td>
+                        <td class="text-center" colspan="17">No data</td>
                     </tr>
                 }
                 else
@@ -121,11 +129,15 @@
                         <td>Total</td>
                         <td></td>
                         <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecords.Sum(x => x.Amount), Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecords.Sum(x => x.Refund), Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecords.Sum(x => x.BetWin), Model.RoundResult.ExchangeRate)</td>
                         <td class="line-cell"></td>
                         <td>Total</td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(oddRecords.Sum(x => x.Amount), Model.RoundResult.ExchangeRate)</td>

@@ -335,6 +335,9 @@ namespace GamesAdmin.Site.Features.Report
                     var recordViewModel = mapper.Map<SpecialSeDieRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
+                    recordViewModel.Currency = x.Currency;
+                    recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
                     return recordViewModel;
                 })
             };
@@ -537,9 +540,10 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
-            var currencies = await currencyService.GetCurrenciesForSelection(
+            var currencies = (await currencyService.GetCurrenciesForSelection(
                 model => model.Enabled,
-                model => new SelectListItem($"{model.Name} ({model.Code})", model.Code));
+                model => new SelectListItem($"{model.Name} ({model.Code})", model.Code)))
+                .GroupBy(model => model.Text).Select(x => x.First());
 
             return new ReportSeletionsViewModel
             {
