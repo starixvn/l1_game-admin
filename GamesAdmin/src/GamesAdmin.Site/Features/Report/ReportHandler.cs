@@ -1,5 +1,9 @@
-﻿using AutoMapper;
-using GamesAdmin.Core.Models.Currencies;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.ExchangeRates;
@@ -8,11 +12,6 @@ using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -531,7 +530,10 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
-            var currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled);
+            var currencies = (await currencyService.GetCurrenciesForSelection(
+                model => model.Enabled,
+                model => new SelectListItem($"{model.Name} ({model.Code})", model.Code)))
+                .GroupBy(model => model.Value).Select(x => x.First());
 
             return new ReportSeletionsViewModel
             {
