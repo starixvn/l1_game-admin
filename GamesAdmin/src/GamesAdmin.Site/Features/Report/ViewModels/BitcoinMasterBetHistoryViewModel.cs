@@ -4,6 +4,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class BitcoinMasterBetHistoryViewModel
     {
+        public decimal? ExchangeRate { get; set; }
+
         public BitcoinMasterRoundResultViewModel RoundResult { get; set; }
 
         public IEnumerable<BitcoinMasterBetHistoryRecordViewModel> Bets { get; set; }

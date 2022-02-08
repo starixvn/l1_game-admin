@@ -82,7 +82,7 @@
                                asp-action="GetBigSmallBetHistory"
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-nickname="@bigRecord?.Nickname"
-                               asp-route-currency="@bigRecord?.Currency">
+                               asp-route-rate="@round?.ExchangeRate">
                                 @bigRecord?.Nickname
                             </a>
                         </td>

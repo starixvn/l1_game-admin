@@ -116,6 +116,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new BigSmallTurboReportResultViewModel
             {
+                ConvertCurrency = request.Currency,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -193,6 +194,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new OddEvenTurboReportResultViewModel
             {
+                ConvertCurrency = request.Currency,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -224,11 +226,11 @@ namespace GamesAdmin.Site.Features.Report
 
             return result.Select(x => new BigSmallBetHistoryViewModel
             {
-                ExchangeRate = request.Rate ?? 1,
                 Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
                 BetWin = x.BetWin,
                 Refund = x.Refund,
                 Round = x.Round,
+                ExchangeRate = request.Rate,
                 BetResult = new BigSmallBetResultViewModel
                 {
                     Dices = x.BetResult.Dices
@@ -251,6 +253,7 @@ namespace GamesAdmin.Site.Features.Report
                 BetWin = x.BetWin,
                 Refund = x.Refund,
                 Round = x.Round,
+                ExchangeRate = request.Rate,
                 BetResult = new BigSmallBetResultViewModel
                 {
                     Dices = x.BetResult.Dices
@@ -273,6 +276,7 @@ namespace GamesAdmin.Site.Features.Report
                 BetWin = x.BetWin,
                 Refund = x.Refund,
                 Round = x.Round,
+                ExchangeRate = request.Rate,
                 BetResult = new OddEvenBetResultViewModel
                 {
                     Dices = x.BetResult.Dices
@@ -295,6 +299,7 @@ namespace GamesAdmin.Site.Features.Report
                 BetWin = x.BetWin,
                 Refund = x.Refund,
                 Round = x.Round,
+                ExchangeRate = request.Rate,
                 BetResult = new OddEvenBetResultViewModel
                 {
                     Dices = x.BetResult.Dices
@@ -342,6 +347,7 @@ namespace GamesAdmin.Site.Features.Report
             return new SpecialSeDieBetHistoryViewModel
             {
                 RoundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult),
+                ExchangeRate = request.Rate,
                 Bets = result.Bets.Select(x =>
                 {
                     var betViewModel = mapper.Map<SpecialSeDieBetHistoryRecordViewModel>(x);
@@ -460,6 +466,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new BitcoinMasterBetHistoryViewModel
             {
+                ExchangeRate = exchangeRate,
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -530,10 +537,9 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
-            var currencies = (await currencyService.GetCurrenciesForSelection(
+            var currencies = await currencyService.GetCurrenciesForSelection(
                 model => model.Enabled,
-                model => new SelectListItem($"{model.Name} ({model.Code})", model.Code)))
-                .GroupBy(model => model.Value).Select(x => x.First());
+                model => new SelectListItem($"{model.Name} ({model.Code})", model.Code));
 
             return new ReportSeletionsViewModel
             {

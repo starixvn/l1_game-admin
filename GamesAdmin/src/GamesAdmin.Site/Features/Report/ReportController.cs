@@ -322,9 +322,9 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSpecialSeDieBetHistory(long roundId, string userId)
+        public async Task<IActionResult> GetSpecialSeDieBetHistory(long roundId, string userId, decimal? rate)
         {
-            return PartialView("_SpecialSeDieBetHistory", await mediator.Send(new GetSpecialSeDieBetHistoryRequest(roundId, userId)));
+            return PartialView("_SpecialSeDieBetHistory", await mediator.Send(new GetSpecialSeDieBetHistoryRequest(roundId, userId, rate)));
         }
 
         [HttpGet]
@@ -334,21 +334,21 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBigSmallTurboBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> GetBigSmallTurboBetHistory(long roundId, string nickname, decimal? rate)
         {
-            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallTurboBetHistoryRequest(roundId, nickname)));
+            return PartialView("_BigSmallBetHistory", await mediator.Send(new GetBigSmallTurboBetHistoryRequest(roundId, nickname, rate)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOddEvenBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> GetOddEvenBetHistory(long roundId, string nickname, decimal? rate)
         {
-            return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenBetHistoryRequest(roundId, nickname)));
+            return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenBetHistoryRequest(roundId, nickname, rate)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOddEvenTurboBetHistory(long roundId, string nickname)
+        public async Task<IActionResult> GetOddEvenTurboBetHistory(long roundId, string nickname, decimal? rate)
         {
-            return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname)));
+            return PartialView("_OddEvenBetHistory", await mediator.Send(new GetOddEvenTurboBetHistoryRequest(roundId, nickname, rate)));
         }
 
         [HttpGet]

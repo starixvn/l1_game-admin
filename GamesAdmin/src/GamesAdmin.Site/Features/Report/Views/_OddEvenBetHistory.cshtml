@@ -21,9 +21,9 @@
                 <td>@bet.Round</td>
                 <td>@(bet.Choice.Even ? "Even" : "Odd")</td>
                 <td>@string.Join('-', bet.BetResult.Dices) @bet.BetResult.Total</td>
-                <td>@HtmlHelpers.formatNumber(bet.Choice.Amount)</td>
-                <td>@HtmlHelpers.formatNumber(bet.Refund)</td>
-                <td>@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                <td>@HtmlHelpers.convertByExchangeRate(bet.Choice.Amount, bet.ExchangeRate)</td>
+                <td>@HtmlHelpers.convertByExchangeRate(bet.Refund, bet.ExchangeRate)</td>
+                <td>@HtmlHelpers.convertByExchangeRate(bet.BetWin, bet.ExchangeRate)</td>
             </tr>
         }
     </tbody>

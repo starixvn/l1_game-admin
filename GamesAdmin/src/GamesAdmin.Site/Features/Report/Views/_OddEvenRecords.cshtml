@@ -79,7 +79,10 @@
                         <td>@evenRecord?.Username</td>
                         <td>
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetOddEvenBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@evenRecord?.Nickname">
+                               asp-action="GetOddEvenBetHistory"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-nickname="@evenRecord?.Nickname"
+                               asp-route-rate="@round?.ExchangeRate">
                                 @evenRecord?.Nickname
                             </a>
                         </td>
@@ -93,7 +96,10 @@
                         <td>@oddRecord?.Username</td>
                         <td class="col-nickname">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetOddEvenBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@oddRecord?.Nickname">
+                               asp-action="GetOddEvenBetHistory"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-nickname="@oddRecord?.Nickname"
+                               asp-route-rate="@round?.ExchangeRate">
                                 @oddRecord?.Nickname
                             </a>
                         </td>
