@@ -66,7 +66,6 @@
         public bool IsQualified { get; }
     }
 
-
     public abstract class HoldemPokerBetHistoryModel
     {
         protected const string emptyOdds = "-";

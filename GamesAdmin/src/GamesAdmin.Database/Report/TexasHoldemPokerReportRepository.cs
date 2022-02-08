@@ -12,20 +12,13 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Database
 {
-    public interface ITexasHoldemPokerReportRepository
-    {
-        Task<IEnumerable<TexasHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter);
-
-        Task<TexasHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter);
-    }
-
-    public class TexasHoldemPokerReportRepository : BaseBetReportRepository, ITexasHoldemPokerReportRepository
+    public class TexasHoldemPokerReportRepository : BaseBetReportRepository, IHoldemPokerReportRepository
     {
         public TexasHoldemPokerReportRepository(IMongoDatabase database) : base(database)
         {
         }
 
-        public async Task<IEnumerable<TexasHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter)
+        public async Task<IEnumerable<HoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter)
         {
             var projects = GetAggregateBuilder(filter).ToList();
             var roundIds = projects.Select(x => x.Round).ToList();
@@ -44,7 +37,7 @@ namespace GamesAdmin.Database
             return records;
         }
 
-        public async Task<TexasHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter)
+        public async Task<HoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter)
         {
             var bet = await database
                 .GetCollection<TexasHoldemPokerBetEntity>(Document.GetCollectionName(typeof(TexasHoldemPokerBetEntity))).Find(x => x.Round == filter.RoundId && x.Name == filter.Nickname).FirstOrDefaultAsync();

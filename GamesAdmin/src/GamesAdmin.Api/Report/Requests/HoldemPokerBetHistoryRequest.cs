@@ -3,9 +3,9 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class TexasHoldemPokerBetHistoryRequest : IRequest<TexasHoldemPokerBetHistory>
+    public class HoldemPokerBetHistoryRequest : IRequest<HoldemPokerBetHistory>
     {
-        public TexasHoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
+        public HoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
         {
             Filter = filter;
         }

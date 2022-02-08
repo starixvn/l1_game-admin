@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Database.Attributes;
+﻿using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -11,5 +10,14 @@ namespace GamesAdmin.Database.Entities
         public decimal AaOdds { get; set; }
 
         public CasinoHoldemPokerBetSettlementResult SettlementResult { get; set; }
+    }
+
+    public class CasinoHoldemPokerBetSettlementResult
+    {
+        public decimal Aa { get; set; }
+
+        public decimal Ante { get; set; }
+
+        public decimal Call { get; set; }
     }
 }

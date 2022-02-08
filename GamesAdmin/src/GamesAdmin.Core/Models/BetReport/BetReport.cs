@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Models.BetReport;
+﻿using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {
@@ -93,15 +93,12 @@ namespace GamesAdmin.Core.Models
     {
         public IEnumerable<BlackjackBetRecord> Records { get; set; }
     }
-
     public class BlackjackBetReport : BetReportBase
     {
         public IEnumerable<BlackjackBetRecord> Records { get; set; }
     }
 
     public class CasinoHoldemPokerBetReport : BetReport<CasinoHoldemPokerRoundResult, CasinoHoldemPokerBetRecord>
-    {
-    }
 
     public class HiLoBetReport : BetReportBase
     {

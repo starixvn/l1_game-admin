@@ -35,7 +35,7 @@
                         <td class="text-center">@record.DealerResult</td>
                         <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="@Model.BetHistoryUrl" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
+                               asp-action="HoldemPokerBetHistory" asp-route-gameId="@Model.GameId" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.Stake) : record.Stake)
                             </a>
                         </td>

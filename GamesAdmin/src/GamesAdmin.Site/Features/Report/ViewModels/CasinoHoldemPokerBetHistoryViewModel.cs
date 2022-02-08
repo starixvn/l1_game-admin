@@ -3,14 +3,14 @@ using System;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class CasinoHoldemPokerBetHistoryViewModel
+    public class HoldemPokerBetHistoryViewModel
     {
-        public CasinoHoldemPokerBetHistoryViewModel(TimeZoneInfo timeZone, CasinoHoldemPokerBetHistory record)
+        public HoldemPokerBetHistoryViewModel(TimeZoneInfo timeZone, HoldemPokerBetHistory record)
         {
             TimeZone = timeZone;
             Record = record;
         }
         public TimeZoneInfo TimeZone { get; }
-        public CasinoHoldemPokerBetHistory Record { get; }
+        public HoldemPokerBetHistory Record { get; }
     }
 }

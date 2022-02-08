@@ -26,6 +26,8 @@ namespace GamesAdmin.Core.Models.BetReport
 
     public class HoldemPokerBetHistoryFilter
     {
+        public GameId GameId { get; set; }
+
         public int RoundId { get; set; }
 
         public string Nickname { get; set; }

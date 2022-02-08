@@ -1,6 +1,5 @@
 ﻿namespace GamesAdmin.Database.Report.Entities
 {
-    using GamesAdmin.Core.Models.BetReport;
     using GamesAdmin.Database.Entities;
     using System;
 

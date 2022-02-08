@@ -4,9 +4,9 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetTexasHoldemPokerBetHistoryRequest : IRequest<TexasHoldemPokerBetHistoryViewModel>
+    public class GetHoldemPokerBetHistoryRequest : IRequest<HoldemPokerBetHistoryViewModel>
     {
-        public GetTexasHoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
+        public GetHoldemPokerBetHistoryRequest(HoldemPokerBetHistoryFilter filter)
         {
             Filter = filter;
         }

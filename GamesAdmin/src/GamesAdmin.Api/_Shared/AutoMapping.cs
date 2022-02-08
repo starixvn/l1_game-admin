@@ -304,7 +304,32 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
 
-            CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
+            CreateMap<CasinoHoldemPokerBetHistoryModel, HoldemPokerBetHistory>()
+            .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>
+            {
+                if (source.Ante > 0)
+                {
+                    var choiceHistories = new List<ChoiceHistory>
+                    {
+                        new ChoiceHistory("ANTE", source.AnteOdds, source.Time, source.Ante, source.SettlementResult?.Ante ?? 0)
+                    };
+
+                    if (source.AA > 0)
+                    {
+                        choiceHistories.Add(new ChoiceHistory("AA", source.AaOdds, source.Time, source.AA, source.SettlementResult?.Aa ?? 0));
+                    }
+
+                    if (source.Ended && !source.IsFold)
+                    {
+                        choiceHistories.Add(new ChoiceHistory("CALL", source.CallOdds, source.CallTime, source.Call, source.SettlementResult?.Call ?? 0));
+                    }
+
+                    return choiceHistories;
+                }
+
+
+                return Enumerable.Empty<ChoiceHistory>();
+            }));
 
             CreateMap<HiLoBetReportEntity, HiLoBetRecord>();
             CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
@@ -315,7 +340,29 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
             
 
-            CreateMap<TexasHoldemPokerBetHistoryModel, TexasHoldemPokerBetHistory>();
+            CreateMap<TexasHoldemPokerBetHistoryModel, HoldemPokerBetHistory>()
+            .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>
+            {
+                if (source.Ante > 0)
+                {
+                    var choiceHistories = new List<ChoiceHistory>
+                    {
+                        new ChoiceHistory("ANTE", source.AnteOdds, source.Time, source.Ante, source.SettlementResult?.Ante ?? 0)
+                    };
+
+                    if (source.Ended && !source.IsFold)
+                    {
+                        choiceHistories.Add(new ChoiceHistory("CALL", source.CallOdds, source.CallTime, source.Call, source.SettlementResult?.Call ?? 0));
+                        choiceHistories.Add(new ChoiceHistory("TURN", source.TurnOdds, source.TurnTime, source.Turn, source.SettlementResult?.Turn ?? 0));
+                        choiceHistories.Add(new ChoiceHistory("RIVER", source.RiverOdds, source.RiverTime, source.River, source.SettlementResult?.River ?? 0));
+                    }
+
+                    return choiceHistories;
+                }
+
+
+                return Enumerable.Empty<ChoiceHistory>();
+            }));
         }
     }
 }

@@ -37,7 +37,11 @@ namespace GamesAdmin.Api.Report
         private readonly IServiceProvider serviceProvider;
         private readonly IHoldemPokerReportService holdemPokerReportService;
 
-        public ReportHandler(IReportService reportService, IReportServiceFactory reportServiceFactory, IServiceProvider serviceProvider,IHoldemPokerReportService holdemPokerReportService))
+        public ReportHandler(
+            IReportService reportService,
+            IReportServiceFactory reportServiceFactory,
+            IServiceProvider serviceProvider,
+            IHoldemPokerReportService holdemPokerReportService)
         {
             this.reportService = reportService;
             this.reportServiceFactory = reportServiceFactory;
@@ -96,11 +100,12 @@ namespace GamesAdmin.Api.Report
             return service.Get(request.Filter);
         }
 
-         public async Task<IEnumerable<HoldemPokerBetRecord>> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<HoldemPokerBetRecord>> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
             => await holdemPokerReportService.GetHoldemPokerReportAsync(request.Filter);
 
         public async Task<HoldemPokerBetHistory> Handle(HoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
             => await holdemPokerReportService.GetHoldemPokerBetHistoryAsync(request.Filter);
+            
         public Task<IEnumerable<HiLoBetRecord>> Handle(HiLoReportRequest request, CancellationToken cancellationToken)
         => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
     }

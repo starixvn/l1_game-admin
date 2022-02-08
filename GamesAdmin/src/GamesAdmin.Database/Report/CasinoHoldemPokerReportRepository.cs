@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Database
 {
-    public interface ICasinoHoldemPokerReportRepository
+    public interface IHoldemPokerReportRepository
     {
-        Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter);
+        Task<IEnumerable<HoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter);
 
-        Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter);
+        Task<HoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter);
     }
 
-    public class CasinoHoldemPokerReportRepository : BaseBetReportRepository, ICasinoHoldemPokerReportRepository
+    public class CasinoHoldemPokerReportRepository : BaseBetReportRepository, IHoldemPokerReportRepository
     {
         public CasinoHoldemPokerReportRepository(IMongoDatabase database) : base(database)
         {
         }
 
-        public async Task<IEnumerable<CasinoHoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter)
+        public async Task<IEnumerable<HoldemPokerBetReportEntity>> GetAsync(HoldemPokerBetReportFilter filter)
         {
             var projects = GetAggregateBuilder(filter).ToList();
             var roundIds = projects.Select(x => x.Round).ToList();
@@ -44,7 +44,7 @@ namespace GamesAdmin.Database
             return records;
         }
 
-        public async Task<CasinoHoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter)
+        public async Task<HoldemPokerBetHistoryModel> GetBetHistoryAsync(HoldemPokerBetHistoryFilter filter)
         {
             var bet = await database
                 .GetCollection<CasinoHoldemPokerBetEntity>(Document.GetCollectionName(typeof(CasinoHoldemPokerBetEntity))).Find(x => x.Round == filter.RoundId && x.Name == filter.Nickname).FirstOrDefaultAsync();

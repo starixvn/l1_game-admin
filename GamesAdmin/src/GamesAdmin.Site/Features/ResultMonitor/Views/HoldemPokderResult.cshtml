@@ -24,10 +24,10 @@
         @for (var suit = 0; suit <= 3; suit++)
         {
             <div class="form-row col-auto">
-                @for (var rankId = 0; rankId < Card.CardLabels.Length; rankId++)
+                @for (var rankId = 0; rankId < CardLabels.DisplayedName.Length; rankId++)
                 {
                     <div class="card card-type-@suit" onclick="casinoHoldemPokerResult.selectCard(event, { 'rank': @rankId, 'suit': @suit})">
-                        <span>@Card.CardLabels[rankId]</span>
+                        <span>@CardLabels.DisplayedName[rankId]</span>
                         <img class="img" src="~/images/card_@(suit).png" />
                     </div>
                 }

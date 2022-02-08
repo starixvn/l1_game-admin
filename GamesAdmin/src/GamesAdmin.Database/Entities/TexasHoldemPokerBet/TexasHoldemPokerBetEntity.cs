@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Database.Attributes;
+﻿using GamesAdmin.Database.Attributes;
 using System;
 
 namespace GamesAdmin.Database.Entities
@@ -20,5 +19,16 @@ namespace GamesAdmin.Database.Entities
         public DateTime RiverTime { get; set; }
 
         public TexasHoldemPokerBetSettlementResult SettlementResult { get; set; }
+    }
+
+    public class TexasHoldemPokerBetSettlementResult
+    {
+        public decimal Ante { get; set; }
+
+        public decimal Call { get; set; }
+
+        public decimal Turn { get; set; }
+
+        public decimal River { get; set; }
     }
 }
