@@ -314,11 +314,11 @@ namespace GamesAdmin.Site.Features.Report
             long roundId,
             string nickname,
             bool excludeBot,
-            string partner,
+            string partnerId,
             string username,
             string currency)
         {
-            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot, partner, username, currency)));
+            return PartialView("_SpecialSeDieRecords", await mediator.Send(new GetSpecialSeDieReportRequest(roundId, nickname, excludeBot, partnerId, username, currency)));
         }
 
         [HttpGet]

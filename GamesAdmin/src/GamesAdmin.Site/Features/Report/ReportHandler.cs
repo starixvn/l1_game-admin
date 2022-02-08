@@ -478,9 +478,9 @@ namespace GamesAdmin.Site.Features.Report
                 Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
-                    BetWin = x.BetWin,
-                    Refund = x.Refund,
-                    Amount = x.Amount,
+                    BetWin = x.BaseBetWin,
+                    Refund = x.BaseRefund,
+                    Amount = x.BaseAmount,
                     Choice = x.Choice,
                     Win = x.Win,
                     Currency = x.Currency,

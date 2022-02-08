@@ -41,9 +41,9 @@ namespace GamesAdmin.Database.Report
                    Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                    Nickname = x.AccountInfos.Name,
                    Select = x.Select ?? x.Choice == defaultChoice,
-                   Bet = x.Bet ?? x.Amount,
-                   BetWin = x.Betwin,
-                   Back = x.Back ?? x.Refund,
+                   Bet = x.BaseAmount,
+                   BetWin = x.BaseBetWin,
+                   Back = x.BaseRefund,
                    Choice = x.Choice,
                    UserId = x.Uid,
                    Win = x.Win,
@@ -51,8 +51,8 @@ namespace GamesAdmin.Database.Report
                    PartnerId = x.PartnerId,
                    Rate = x.Rate
                });
-            var records = await project.ToListAsync();
 
+            var records = await project.ToListAsync();
             return (roundResult, records);
         }
     }
