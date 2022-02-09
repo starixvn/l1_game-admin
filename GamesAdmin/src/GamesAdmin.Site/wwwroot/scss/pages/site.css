@@ -373,7 +373,7 @@ input[type=checkbox] {
   font-weight: bold; }
 
 .row-table .table.sticky-table th {
-  top: 1px; }
+  top: -1px; }
 
 .row-table .table.sticky-table thead tr:nth-child(2) th {
-  top: 52px; }
+  top: 50px; }

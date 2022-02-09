@@ -76,12 +76,12 @@ input[type=checkbox] {
 .row-table .table {
     &.sticky-table {
         th {
-            top: 1px;
+            top: -1px;
         }
 
         thead {
             tr:nth-child(2) th {
-                top: 52px;
+                top: 50px;
             }
         }
     }

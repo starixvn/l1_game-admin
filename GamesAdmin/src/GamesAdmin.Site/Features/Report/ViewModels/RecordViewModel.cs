@@ -13,10 +13,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Bet { get; set; }
         public decimal Back { get; set; }
         public bool Select { get; set; }
-
-        public decimal BaseBetAmount => ConvertToBase(Bet);
-
-        public decimal BaseBack => ConvertToBase(Back);
     }
 
     public class OddEvenRecordViewModel : BetRecordViewModel
@@ -26,10 +22,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Back { get; set; }
 
         public bool Select { get; set; }
-
-        public decimal BaseBetAmount => ConvertToBase(Bet);
-
-        public decimal BaseBack => ConvertToBase(Back);
     }
 
     public class SeDieRecordViewModel : BetRecordViewModel

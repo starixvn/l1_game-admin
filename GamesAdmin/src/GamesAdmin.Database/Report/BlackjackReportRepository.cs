@@ -79,7 +79,9 @@ namespace GamesAdmin.Database
             }
             else
             {
-                expression = x => x.Time <= filter.ToDate.ToUniversalTime() && x.Time >= filter.FromDate.ToUniversalTime();
+                var from = filter.FromDate.ToStartDate().ToGMT7();
+                var to = filter.ToDate.ToEndDate().ToGMT7();
+                expression = x => from <= x.Time && x.Time <= to;
             }
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))

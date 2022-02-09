@@ -87,9 +87,9 @@
                             </a>
                         </td>
                         <td>@evenRecord?.Currency</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BaseBetAmount))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BaseBack))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BaseBetWin))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BetWin))</td>
                         <td class="line-cell"></td>
                         <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@oddRecord?.Partner</td>
@@ -104,9 +104,9 @@
                             </a>
                         </td>
                         <td>@oddRecord?.Currency</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BaseBetAmount))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BaseBack))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BaseBetWin))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BetWin))</td>
                     </tr>
 
                 }
@@ -126,18 +126,18 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BaseBetAmount)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BaseBack)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BaseBetWin)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.Bet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.Back)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BetWin)))</td>
                         <td class="line-cell"></td>
                         <td>Total in @Model.ConvertCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BaseBetAmount)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BaseBack)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BaseBetWin)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.Bet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.Back)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BetWin)))</td>
                     </tr>
                 }
             </tfoot>

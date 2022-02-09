@@ -79,28 +79,34 @@
                         <td>@evenRecord?.Username</td>
                         <td>
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetOddEvenTurboBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@evenRecord?.Nickname">
+                               asp-action="GetOddEvenTurboBetHistory"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-nickname="@evenRecord?.Nickname"
+                               asp-route-rate="@round?.ExchangeRate">
                                 @evenRecord?.Nickname
                             </a>
                         </td>
                         <td>@evenRecord?.Currency</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BaseBetAmount))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BaseBack))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BaseBetWin))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecord?.BetWin))</td>
                         <td class="line-cell"></td>
                         <td>@oddRecord?.Time.ToString(Constants.DateTimeFormat)</td>
                         <td>@oddRecord?.Partner</td>
                         <td>@oddRecord?.Username</td>
                         <td class="col-nickname">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetOddEvenTurboBetHistory" asp-route-roundId="@Model.RoundResult.Number" asp-route-nickname="@oddRecord?.Nickname">
+                               asp-action="GetOddEvenTurboBetHistory"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-nickname="@oddRecord?.Nickname"
+                               asp-route-rate="@round?.ExchangeRate">
                                 @oddRecord?.Nickname
                             </a>
                         </td>
                         <td>@oddRecord?.Currency</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BaseBetAmount))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BaseBack))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BaseBetWin))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.Bet))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.Back))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecord?.BetWin))</td>
                     </tr>
 
                 }
@@ -120,18 +126,18 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BaseBetAmount)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BaseBack)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BaseBetWin)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.Bet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.Back)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(evenRecords.Sum(x => x.BetWin)))</td>
                         <td class="line-cell"></td>
                         <td>Total</td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BaseBetAmount)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BaseBack)))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BaseBetWin)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.Bet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.Back)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(round.ConvertByExchangeRate(oddRecords.Sum(x => x.BetWin)))</td>
                     </tr>
                 }
             </tfoot>

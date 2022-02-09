@@ -126,7 +126,7 @@ namespace GamesAdmin.Database
                     FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
                     SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
                     ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
-                    Refund = x.One.BaseBetWin,
+                    Refund = x.One.BaseRefund,
                     Select = x.One.Select ?? x.One.Choice == "big"
                 }
             );
