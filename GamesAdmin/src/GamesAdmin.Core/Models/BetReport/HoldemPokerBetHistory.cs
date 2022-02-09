@@ -73,9 +73,20 @@ namespace GamesAdmin.Core.Models.BetReport
                         "Straight Flush",
                         "Royal Flush",
                     };
+
         public int Id { get; set; }
+
         public IEnumerable<PokerCard> Cards { get; set; }
+
         public IEnumerable<PokerCard> CombinationCards { get; set; }
+
         public string Rank => RankHandName[Id];
+    }
+
+    public class PokerCard
+    {
+        public byte rank { get; set; }
+
+        public byte suit { get; set; }
     }
 }

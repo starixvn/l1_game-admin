@@ -3,6 +3,8 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,8 +26,8 @@ namespace GamesAdmin.Api.Report
         private readonly IMapper mapper;
         private readonly Dictionary<GameId, Type> repositories = new Dictionary<GameId, Type>
         {
-            { GameId.CasinoHoldemPoker,  typeof(CasinoHoldemPokerReportRepository) },
-            { GameId.TexasHoldemPoker,  typeof(TexasHoldemPokerReportRepository)},
+            { GameId.CasinoHoldemPoker,  typeof(HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>) },
+            { GameId.TexasHoldemPoker,  typeof(HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>) }
         };
 
         public HoldemPokerReportService(IServiceProvider serviceProvider, IMapper mapper)

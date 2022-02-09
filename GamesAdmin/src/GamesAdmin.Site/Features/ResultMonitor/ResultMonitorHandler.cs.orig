@@ -1,0 +1,52 @@
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.RoundResults;
+using System.Linq;
+using AutoMapper;
+using GamesAdmin.Site.Features.Report.ViewModels;
+using GamesAdmin.Site.Features.ResultMonitor.Requests;
+using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
+using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace GamesAdmin.Site.Features.ResultMonitor
+{
+    public class ResultMonitorHandler : 
+        IRequestHandler<SetSlotResultRequest, SettlementBoardViewModel>,
+<<<<<<< HEAD
+        IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>,
+        IRequestHandler<SetHiLoResultRequest, IEnumerable<CardViewModel>>
+=======
+        IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
+>>>>>>> f7e7a4cd (feat:  holdem poker)
+    {
+        private readonly IResultMonitorService service;
+        private readonly IMapper mapper;
+
+        public ResultMonitorHandler(IResultMonitorService service, IMapper mapper)
+        {
+            this.service = service;
+            this.mapper = mapper;
+        }
+
+        public async Task<SettlementBoardViewModel> Handle(SetSlotResultRequest request, CancellationToken cancellationToken)
+            => new SettlementBoardViewModel(request.GameConfigName, await service.SetSlotResult(request));
+
+<<<<<<< HEAD
+        public async Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
+        {
+            return await service.SetCasinoHoldemPokerResult(request);
+        }
+        
+        public async Task<IEnumerable<CardViewModel>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+        {
+            var result = await service.SetHiLoResult(request);
+
+            return result.Select(x => mapper.Map<CardViewModel>(x));
+        }
+=======
+        public async Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
+            => await service.SetHoldemPokerResult(request);
+>>>>>>> f7e7a4cd (feat:  holdem poker)
+    }
+}

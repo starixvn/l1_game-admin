@@ -1,13 +1,10 @@
-﻿using GamesAdmin.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public abstract class BaseRoundResultViewModel
-<<<<<<< HEAD
-=======
     {
         public decimal ExchangeRate { get; set; }
 
@@ -20,7 +17,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     }
 
     public class RoundResultViewModel : BaseRoundResultViewModel
->>>>>>> af7f6818 (feat: implement game history for stake balanced games)
     {
         public DateTime Time { get; set; }
 
@@ -340,6 +336,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool RedBig { get; set; }
         public bool RedSmall { get; set; }
     }
+<<<<<<< HEAD
 
     public class CasinoHoldemPokerRoundResultViewModel
     {
@@ -375,4 +372,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal BaseBetwin => Betwin * Rate;
     }
+=======
+>>>>>>> bbac70e5 (feat:  holdem poker repository generic)
 }

@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -337,24 +336,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool RedBig { get; set; }
         public bool RedSmall { get; set; }
     }
-
-    public class CasinoHoldemPokerRoundResultViewModel
-    {
-        public long Number { get; set; }
-
-        public IEnumerable<PokerCard> DealerCards { get; set; }
-
-        public IEnumerable<PokerCard> PlayerCards { get; set; }
-
-        public CasinoHoldemPokerSettlementResultViewModel Result { get; set; }
-    }
-
-    public class CasinoHoldemPokerSettlementResultViewModel
-    {
-        public long Number { get; set; }
-        public bool AA { get; set; }
-        public bool Ante { get; set; }
-        public bool Call { get; set; }
     }
 
     public class HiLoRoundResultViewModel : BaseRoundResultViewModel
@@ -371,5 +352,4 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal BaseAmount => Amount * Rate;
 
         public decimal BaseBetwin => Betwin * Rate;
-    }
 }

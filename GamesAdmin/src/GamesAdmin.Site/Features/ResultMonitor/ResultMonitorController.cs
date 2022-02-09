@@ -36,11 +36,11 @@ namespace GamesAdmin.Site.Features.ResultMonitor
 
         [HttpGet]
         public IActionResult HoldemPokderResult(string gameConfigName)
-           => View(new HoldemPokerResultViewModel(gameConfigName));
+           => View("HoldemPoker/Index", new HoldemPokerResultViewModel(gameConfigName));
 
         [HttpPost]
         public async Task<IActionResult> SetHoldemPokerResult(SetHoldemPokerResultRequest request)
-            => PartialView("_HoldemPokderResult", await mediator.Send(request));
+            => PartialView("HoldemPoker/_ResultMonitor", await mediator.Send(request));
 
         [HttpGet]
         public IActionResult HiLo()

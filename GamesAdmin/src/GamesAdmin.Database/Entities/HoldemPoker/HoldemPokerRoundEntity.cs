@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models.BetReport;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;

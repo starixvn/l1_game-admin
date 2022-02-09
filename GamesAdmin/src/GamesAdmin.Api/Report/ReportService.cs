@@ -51,11 +51,6 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
         private readonly ISlotGameReportFactory slotGameReportFactory;
-        private readonly Dictionary<GameId, Type> repositories = new Dictionary<GameId, Type>
-        {
-            { GameId.CasinoHoldemPoker,  typeof(CasinoHoldemPokerReportRepository) },
-            { GameId.TexasHoldemPoker,  typeof(TexasHoldemPokerReportRepository)},
-        };
 
         public ReportService(
             IServiceProvider serviceProvider,

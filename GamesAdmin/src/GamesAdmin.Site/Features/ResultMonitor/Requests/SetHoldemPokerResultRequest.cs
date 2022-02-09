@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using MediatR;
 

@@ -3,38 +3,21 @@
     using GamesAdmin.Database.Entities;
     using System;
 
-    public class TexasHoldemPokerBetReportEntity : HoldemPokerBetReportEntity
+    public class TexasHoldemPokerBetHistoryEntity : HoldemPokerBetHistoryEntity
     {
-        public TexasHoldemPokerBetReportEntity(
-            DateTime time,
-            string partnerId,
-            string username,
-            string nickname,
-            string currency,
-            TexasHoldemPokerBetWithUnWindAccountsEntity bet,
-            TexasHoldemPokerRoundEntity round) : base(time, partnerId, username, nickname, currency, bet, round)
-        {
-            Stake = bet.Ante + bet.Call + bet.Turn + bet.River;
-            TotalWin = (Ended || bet.IsFold) && bet.SettlementResult != null ? bet.SettlementResult.Turn + bet.SettlementResult.River + bet.SettlementResult.Ante + bet.SettlementResult.Call : 0;
-        }
-
-        public override decimal Stake { get; }
-
-        public override decimal TotalWin { get; }
-    }
-
-    public class TexasHoldemPokerBetHistoryModel : HoldemPokerBetHistoryModel
-    {
-        public TexasHoldemPokerBetHistoryModel(
+        public TexasHoldemPokerBetHistoryEntity(
             TexasHoldemPokerBetEntity bet,
             TexasHoldemPokerRoundEntity round,
             bool convertToUSD) : base(bet, round, convertToUSD)
         {
             SettlementResult = bet.SettlementResult;
+
             AnteOdds = FormatOdds(bet.AnteOdds);
             CallOdds = FormatOdds(bet.CallOdds);
+
             Turn = bet.Turn;
             TurnOdds = FormatOdds(bet.TurnOdds);
+
             River = bet.River;
             RiverOdds = FormatOdds(bet.RiverOdds);
 
@@ -59,13 +42,13 @@
 
         public DateTime RiverTime { get; }
 
-        public override string AnteOdds { get; }
+        public new string AnteOdds { get; }
 
-        public override string CallOdds { get; }
+        public new string CallOdds { get; }
 
-        public override decimal Stake { get; }
+        public new decimal Stake { get; }
 
-        public override decimal TotalWin { get; }
+        public new decimal TotalWin { get; }
 
         private string FormatOdds(decimal odds) => odds.Equals(0) ? emptyOdds : odds.ToString();
     }

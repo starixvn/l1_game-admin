@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models.BetReport;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 
@@ -21,5 +22,11 @@ namespace GamesAdmin.Database.Entities
         public IEnumerable<PokerCard> Cards { get; set; }
 
         public CombinationCard Result { get; set; }
+
+        public ObjectId UserId { get; set; }
+
+        public AccountInfoEntity AccountInfos { get; set; }
+
+        public AccountEntity Accounts { get; set; }
     }
 }

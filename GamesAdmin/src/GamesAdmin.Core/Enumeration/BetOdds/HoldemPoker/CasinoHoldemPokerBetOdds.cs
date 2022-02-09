@@ -30,7 +30,6 @@
         public static readonly CasinoHoldemPokerBetOdds AnteBetRoyalFlush = new CasinoHoldemPokerBetOdds(AnteBetRoyalFlushValue, "Ante - Royal Flush");
 
         // AA Bets
-
         public const string AABetPairAcesValue = "AABet_pairAces";
         public const string AABetTwoPairsValue = "AABet_twoPairs";
         public const string AABetThreeKindsValue = "AABet_threeKind";

@@ -304,7 +304,7 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
 
-            CreateMap<CasinoHoldemPokerBetHistoryModel, HoldemPokerBetHistory>()
+            CreateMap<CasinoHoldemPokerBetHistoryEntity, HoldemPokerBetHistory>()
             .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>
             {
                 if (source.Ante > 0)
@@ -340,7 +340,7 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
             
 
-            CreateMap<TexasHoldemPokerBetHistoryModel, HoldemPokerBetHistory>()
+            CreateMap<TexasHoldemPokerBetHistoryEntity, HoldemPokerBetHistory>()
             .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>
             {
                 if (source.Ante > 0)

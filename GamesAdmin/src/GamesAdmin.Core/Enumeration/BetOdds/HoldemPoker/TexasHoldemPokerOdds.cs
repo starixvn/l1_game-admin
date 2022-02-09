@@ -35,7 +35,6 @@
 
         public TexasHoldemPokerOdds()
         {
-
         }
 
         public TexasHoldemPokerOdds(string value, string displayName)
