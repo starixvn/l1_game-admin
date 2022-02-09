@@ -383,6 +383,7 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<SlotGameReportResultViewModel> Handle(GetSlotGameReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetSlotGameReport(request);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
 
             return new SlotGameReportResultViewModel
             {
@@ -392,6 +393,7 @@ namespace GamesAdmin.Site.Features.Report
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ConvertToUSD(request.ConvertToUSD);
 
                     return betViewModel;
