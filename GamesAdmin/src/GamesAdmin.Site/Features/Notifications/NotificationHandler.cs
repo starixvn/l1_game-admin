@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,8 +68,11 @@ namespace GamesAdmin.Site.Features.Notifications
         public async Task<EditViewModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
         {
             var notification = await notificationService.GetById(request.Id);
+            var displayKinds = EnumerationHelper.ToSelectList<NotificationDisplayKind>()
+                .Where(d => d.Value != NotificationDisplayKind.DisabledValue)
+                .ToList();
 
-            return new EditViewModel(EnumerationHelper.ToSelectList<NotificationDisplayKind>(), notification);
+            return new EditViewModel(displayKinds, notification);
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)

@@ -11,14 +11,18 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         private const int MinLength = 20;
         private const int MaxLength = 1000;
 
-        public EditViewModel(
-            List<SelectListItem> displayKinds,
-            Notification notification)
+        public EditViewModel(List<SelectListItem> displayKinds, Notification notification)
         {
             DisplayKinds = displayKinds;
             Id = notification.Id;
             DisplayKindValue = byte.Parse(notification.DisplayKind.Value);
-            VNMessage = notification.Messages?[Language.DefaultLanguageValue] != null ? notification.Messages[Language.DefaultLanguageValue] : notification.Message;
+
+            VNMessage = GetMessage(notification, Language.VN);
+            ENMessage = GetMessage(notification, Language.EN);
+            CNMessage = GetMessage(notification, Language.CN);
+            TWMessage = GetMessage(notification, Language.TW);
+            THMessage = GetMessage(notification, Language.TH);
+            IDMessage = GetMessage(notification, Language.ID);
         }
 
         public List<SelectListItem> DisplayKinds { get; }
@@ -58,5 +62,11 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
         public string IDMessage { get; set; }
+
+        private string GetMessage(Notification notification, string language)
+        {
+            return notification.Messages == null || !notification.Messages.ContainsKey(language)
+                ? notification.Message : notification.Messages[language];
+        }
     }
 }
