@@ -42,7 +42,8 @@
                 @foreach (var l in Language.LanguageMapper)
                 {
                     var isDefault = l.Key == Language.DefaultLanguageValue && notification.Messages?[Language.DefaultLanguageValue] == null;
-                    var message = notification.Messages?[l.Key] ?? string.Empty;
+                    var message = notification.Messages == null || !notification.Messages.ContainsKey(l.Key)
+                        ? string.Empty : notification.Messages[l.Key];
                     <td>@(isDefault && string.IsNullOrWhiteSpace(message) ? notification.Message : message) </td>
                 }
                 <td class="text-center">@notification.DisplayKind.DisplayName</td>
