@@ -11,12 +11,14 @@
                 <thead>
                     <tr>
                         <th>Round ID</th>
+                        <th>Exchange ID</th>
                         <th>Results</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center">
                             <img class="animal" src="~/images/animal_@(Model.RoundResult.FirstDice).png" />
                             <img class="animal" src="~/images/animal_@(Model.RoundResult.SecondDice).png" />

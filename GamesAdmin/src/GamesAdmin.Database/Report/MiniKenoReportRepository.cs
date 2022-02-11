@@ -59,7 +59,7 @@ namespace GamesAdmin.Database
                 return (roundResult, records);
             }
 
-            return (new TRoundEntity(), Enumerable.Empty<MiniKenoBetReportEntity>());
+            return (new TRoundEntity { SettlementResult = new Dictionary<string, bool>() }, Enumerable.Empty<MiniKenoBetReportEntity>());
         }
     }
 }

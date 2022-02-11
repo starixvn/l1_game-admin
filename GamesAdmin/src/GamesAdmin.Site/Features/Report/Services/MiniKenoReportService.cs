@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new KenoReportViewModel(
                 filter.Game,
-                result.RoundResult.Number,
+                result.RoundResult?.Number ?? 0,
                 result.RoundResult,
                  result.Records.Select(x =>
                  {

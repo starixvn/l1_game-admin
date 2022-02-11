@@ -7,7 +7,7 @@
 
 <div class="row row-table">
     <div class="col-sm-12">
-        @if (Model.RoundResult.Results?.Length > 0)
+        @if (Model.RoundResult.Results != null)
         {
             <table class="table table-bordered table-hover stripe tble-vietlot">
                 <thead>
@@ -120,7 +120,7 @@
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Water.Value])))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Fire.Value])))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Earth.Value])))</td>
-                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BetWin)))</td>
+                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BaseBetWin)))</td>
                     </tr>
                 }
             </tfoot>

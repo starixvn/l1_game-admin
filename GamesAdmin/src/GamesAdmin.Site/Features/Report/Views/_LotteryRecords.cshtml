@@ -11,12 +11,14 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>Exchange ID</th>
                         <th>Prizes</th>
                         <th colspan="12">RNG Lottery #@Model.RoundResult.Number</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="text-center" rowspan="10">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center">Special</td>
                         <td colSpan="12" class="text-center text-danger">
                             @Model.RoundResult.Special.FirstOrDefault()

@@ -43,7 +43,10 @@ namespace GamesAdmin.Site.Features.Report
 
             return new KenoPowerBetHistoryViewModel
             {
-                RoundResult = mapper.Map<KenoPowerRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<KenoPowerRoundResult, KenoPowerRoundResultViewModel>(result.RoundResult, opts =>
+                {
+                    opts.AfterMap((source, dest) => dest.Time = TimeZoneInfo.ConvertTimeFromUtc(source.Time, appSettings.DefaultTimeZone));
+                }),
                 Bets = result.Bets.Select(x =>
                 {
                     var betViewModel = mapper.Map<KenoPowerBetHistoryRecordViewModel>(x);

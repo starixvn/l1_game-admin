@@ -30,8 +30,8 @@ namespace GamesAdmin.Api.Report
 
             return new MiniKenoBetReport
             {
-                RoundResult = new KenoRoundResult(
-                    result.Item1.Result.ToArray(),
+                RoundResult = result.Item1.Number == 0 ? default : new KenoRoundResult(
+                    result.Item1.Result?.ToArray(),
                     new KenoSettlementResult(result.Item1.SettlementResult),
                      result.Item1.Time)
                 {
