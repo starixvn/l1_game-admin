@@ -394,6 +394,7 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+                    betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD);
 
                     return betViewModel;

@@ -39,5 +39,7 @@ namespace GamesAdmin.Database.Entities
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal BaseBetWin { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

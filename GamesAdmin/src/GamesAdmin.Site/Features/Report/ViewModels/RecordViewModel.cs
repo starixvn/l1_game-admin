@@ -205,6 +205,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
 
         public string Game { get; set; }
+        public int ExchangeRateId { get; set; }
         public string IconsFolder => Game?.ToLowerInvariant();
 
         public void ConvertToUSD(bool isConvert)

@@ -215,7 +215,8 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<SlotGameBetReportEntity, SlotGameBetRecord>()
                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number))
-               .ForMember(x => x.Partner, opt => opt.MapFrom((source) => source.PartnerId));
+               .ForMember(x => x.Partner, opt => opt.MapFrom((source) => source.PartnerId))
+               .ForMember(x => x.ExchangRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));
             CreateMap<SlotGameSettlementResultEntity, SlotGameSettlementResult>();
             CreateMap<SlotGameFreeSpinEntity, SlotGameFreeSpin>();
             CreateMap<SlotGameBonusEntity, SlotGameBonus>();

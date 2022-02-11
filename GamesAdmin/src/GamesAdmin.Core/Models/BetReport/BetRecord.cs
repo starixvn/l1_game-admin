@@ -217,6 +217,8 @@ namespace GamesAdmin.Core.Models
         public bool Paid { get; set; }
 
         public string Partner { get; set; }
+
+        public int ExchangRateId { get; set; }
     }
 
     public class SlotGameBonusChest

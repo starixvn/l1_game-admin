@@ -5,7 +5,6 @@ using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {

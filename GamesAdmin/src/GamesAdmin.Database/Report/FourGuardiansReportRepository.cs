@@ -47,7 +47,8 @@ namespace GamesAdmin.Database
                     Paid = x.Paid,
                     Currency = x.Currency,
                     PartnerId = x.PartnerId,
-                    Rate = x.Rate
+                    Rate = x.Rate,
+                    ExchangeRateId = x.ExchangeRateId
                 });
 
             return await project.ToListAsync();
