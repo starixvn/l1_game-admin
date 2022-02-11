@@ -126,7 +126,7 @@
                 else
                 {
                     <tr class="total">
-                        <td>Total</td>
+                        <td>Total in @Model.ConvertCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -135,7 +135,7 @@
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecords.Sum(x => x.Refund), Model.RoundResult.ExchangeRate)</td>
                         <td class="text-right">@HtmlHelpers.convertByExchangeRate(evenRecords.Sum(x => x.BetWin), Model.RoundResult.ExchangeRate)</td>
                         <td class="line-cell"></td>
-                        <td>Total</td>
+                        <td>Total in @Model.ConvertCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>

@@ -329,6 +329,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new SpecialSeDieReportResultViewModel
             {
+                ConvertCurrency = request.Currency,
                 RoundResult = roundResult,
                 Records = result.Records.Select(x =>
                 {
