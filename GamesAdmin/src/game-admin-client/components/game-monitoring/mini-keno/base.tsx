@@ -64,6 +64,7 @@ export default class extends React.Component<Props, State> {
   private timeout: NodeJS.Timeout;
   private isFirstLoad: boolean;
   private currencyExchangeRate: Object;
+  private betList: Array<BetChoice>;
 
   constructor(props: Props) {
     super(props);
@@ -174,8 +175,9 @@ export default class extends React.Component<Props, State> {
         selector: () => message.inGame,
         handle: () => {
           const { inGame } = message;
+          const { systemFilter, partnerFilter } = this.state;
 
-          const choices = this.state.choices.map((choice) => {
+          this.betList = this.state.choices.map((choice) => {
             const bets = Object.values(inGame)
               .reverse()
               .map((bet) => {
@@ -193,7 +195,9 @@ export default class extends React.Component<Props, State> {
             return choice;
           });
 
-          this.setState({ choices });
+          this.setState({
+            choices: this.getBetListByFilter(systemFilter, partnerFilter),
+          });
         },
       },
       {
@@ -231,6 +235,20 @@ export default class extends React.Component<Props, State> {
     ];
 
     actions.forEach((action) => action.selector() && action.handle());
+  }
+
+  getBetListByFilter(system, partnerId) {
+    const filterBetList = [...this.betList];
+
+    filterBetList.forEach((choice) => {
+      choice.bets = choice.bets.filter(
+        (bet) =>
+          (!system || bet.system === system) &&
+          (!partnerId || bet.partnerId === partnerId)
+      );
+    });
+
+    return filterBetList;
   }
 
   updateWinningChoice(choices, settlementResult) {
@@ -319,27 +337,25 @@ export default class extends React.Component<Props, State> {
     };
 
     const onChangePartnerFilter = (partnerId) => {
-      const { systemFilter, choices } = this.state;
+      const { systemFilter } = this.state;
 
-      choices.forEach((choice) => {
-        choice.bets = choice.bets.filter(
-          (bet) => bet.partnerId == partnerId && bet.system == systemFilter
-        );
+      const newBetList = this.getBetListByFilter(systemFilter, partnerId);
+
+      this.setState({
+        partnerFilter: partnerId,
+        choices: newBetList,
       });
-
-      this.setState({ choices: [...choices], partnerFilter: partnerId });
     };
 
     const onChangeSystemFilter = (systemFilter) => {
-      const { partnerFilter, choices } = this.state;
+      const { partnerFilter } = this.state;
 
-      choices.forEach((choice) => {
-        choice.bets = choice.bets.filter(
-          (bet) => bet.partnerId == partnerFilter && bet.system == systemFilter
-        );
+      const newBetList = this.getBetListByFilter(systemFilter, partnerFilter);
+
+      this.setState({
+        systemFilter: systemFilter,
+        choices: newBetList,
       });
-
-      this.setState({ choices: [...choices], systemFilter: systemFilter });
     };
 
     return (
