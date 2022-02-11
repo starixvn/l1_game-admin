@@ -24,7 +24,10 @@ namespace GamesAdmin.Site.Features.Report
             return new KenoMatchReportResultViewModel
             {
                 Game = filter.Game,
-                RoundResult = mapper.Map<KenoMatchRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<KenoMatchRoundResult, KenoMatchRoundResultViewModel>(result.RoundResult, opts =>
+                {
+                    opts.AfterMap((source, dest) => dest.Time = TimeZoneInfo.ConvertTimeFromUtc(source.Time, appSettings.DefaultTimeZone));
+                }),
                 Records = result.Records.Select(x =>
                 {
                     var recordViewModel = mapper.Map<KenoMatchRecordViewModel>(x);
