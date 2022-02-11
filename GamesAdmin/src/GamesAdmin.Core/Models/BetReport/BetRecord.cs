@@ -128,6 +128,8 @@ namespace GamesAdmin.Core.Models
     {
         public long HandId { get; set; }
 
+        public int ExchangeRateId { get; set; }
+
         public decimal Bet { get; set; }
 
         public byte Point { get; set; }

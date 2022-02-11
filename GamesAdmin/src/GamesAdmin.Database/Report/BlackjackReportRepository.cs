@@ -59,6 +59,7 @@ namespace GamesAdmin.Database
                 record.DealerCards = round.Result;
                 record.Ended = round.Ended;
                 record.DealerPoint = round.SettlementResult;
+                record.ExchangeRateId = round.ExchangeRateId;
             }
 
             return records;

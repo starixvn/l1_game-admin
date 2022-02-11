@@ -13,7 +13,7 @@ namespace GamesAdmin.Api.Report
     public class MiniKenoReportService<TMiniKenoRound, TMiniKenoBet, TMiniKenoBetLog> : IGameReportService, IBetHistoryReportService
         where TMiniKenoRound : BaseKenoRoundEntity, new()
         where TMiniKenoBet : BaseKenoOnesEntity
-        where TMiniKenoBetLog :  BaseKenoBetEntity
+        where TMiniKenoBetLog : BaseKenoBetEntity
     {
         private readonly IMiniKenoReportRepository repository;
         private readonly IGenericRepository<TMiniKenoBetLog> betLogRepository;
@@ -35,7 +35,8 @@ namespace GamesAdmin.Api.Report
                     new KenoSettlementResult(result.Item1.SettlementResult),
                      result.Item1.Time)
                 {
-                    Number = result.Item1.Number
+                    Number = result.Item1.Number,
+                    ExchangeRateId = result.Item1.ExchangeRateId
                 },
                 Records = result.Item2.Select(bet => new KenoBetRecord(bet.ConvertAmountToDictionary(), bet.Odds)
                 {

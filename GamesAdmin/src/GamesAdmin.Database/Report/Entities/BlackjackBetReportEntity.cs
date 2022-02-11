@@ -8,6 +8,8 @@ namespace GamesAdmin.Database.Report.Entities
     {
         public long HandId { get; set; }
 
+        public int ExchangeRateId { get; set; }
+
         public decimal BetWin { get; set; }
 
         public decimal Bet { get; set; }

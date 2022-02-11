@@ -110,6 +110,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long HandId { get; set; }
 
+        public int ExchangeRateId { get; set; }
+
         public decimal Bet { get; set; }
 
         public long? SplitForm { get; set; }

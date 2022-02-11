@@ -7,11 +7,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class KenoResultViewModel : BaseRoundResultViewModel
     {
-        public KenoResultViewModel(byte[] results, KenoSettlementResult settlementResult, DateTime? time)
+        public KenoResultViewModel(byte[] results, KenoSettlementResult settlementResult, DateTime? time, int exchanegRateId)
         {
             Results = results;
             SettlementResult = settlementResult;
             Time = time;
+            ExchangeRateId = exchanegRateId;
         }
 
         public byte[] Results { get; }

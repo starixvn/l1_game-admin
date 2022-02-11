@@ -21,7 +21,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             RoundResult = new KenoResultViewModel(
                 roundResult?.Results,
                 roundResult?.SettlementResult,
-                roundResult?.Time);
+                roundResult?.Time,
+                roundResult?.ExchangeRateId ?? 0);
             BetTickets = betTickets;
             TimeZoneInfo = timeZoneInfo;
         }

@@ -29,12 +29,13 @@ namespace GamesAdmin.Api.Report
 
             return new MiniKenoBetReport
             {
-                RoundResult = new KenoRoundResult(
+                RoundResult = result.Item1.Number == 0 ? default : new KenoRoundResult(
                     result.Item1.Result.ToArray(),
                     new KenoSettlementResult(result.Item1.SettlementResult),
                      result.Item1.Time)
                 {
-                    Number = result.Item1.Number
+                    Number = result.Item1.Number,
+                    ExchangeRateId = result.Item1.ExchangeRateId
                 },
                 Records = result.Item2.Select(bet => new KenoBetRecord(bet.ConvertAmountToDictionary(), bet.Odds)
                 {
