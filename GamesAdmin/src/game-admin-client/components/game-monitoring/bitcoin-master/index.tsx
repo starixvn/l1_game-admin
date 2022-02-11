@@ -64,16 +64,6 @@ export default class BitcoinMaster extends BaseMonitoring<BitcoinMasterModel> {
     }
   }
 
-  inGameHandler(data) {
-    if (!data.inGame || Object.keys(data.inGame).length == 0) {
-      return;
-    }
-
-    this.setState({
-      betList: this.getUserBetList(data.inGame, this.state.betList),
-    });
-  }
-
   finishHandler(data) {
     if (!data.finish) {
       return;

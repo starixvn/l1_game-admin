@@ -12,7 +12,6 @@ import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import Title from "../../shared/title";
 import TotalBet from "../../shared/total-bet/total-bet";
-import GameTemplate from "../game-template/game-template";
 import RouletteResultUpdater from "./result-updater";
 import styles from "./styles.module.scss";
 
@@ -138,6 +137,60 @@ export default class Roulette extends BaseMonitoring<RouletteModel> {
       default:
         return choice;
     }
+  }
+
+  getUserBetList(data, currentData) {
+    Object.keys(currentData).forEach((key) => {
+      currentData[key].total = 0;
+      currentData[key].dataList = new Array<BetItem>();
+    });
+
+    for (const user in data) {
+      const { betTracks } = data[user];
+      Object.keys(betTracks).forEach((key) => {
+        if (betTracks[key]) {
+          if (key.includes("specific")) {
+            const choice = key.split("specific")[1];
+            currentData.specificNumber.dataList.unshift(
+              new BetItem(
+                data[user].name,
+                betTracks[key],
+                "",
+                choice,
+                data[user].system,
+                data[user].currency,
+                data[user].partnerId
+              )
+            );
+            currentData.specificNumber.total += betTracks[key];
+            return;
+          }
+          if (key.includes("total")) {
+            const choice = key.split("total")[1];
+            currentData.totalPoints.dataList.unshift(
+              new BetItem(
+                data[user].name,
+                betTracks[key],
+                "",
+                choice,
+                data[user].system,
+                data[user].currency,
+                data[user].partnerId
+              )
+            );
+            currentData.totalPoints.total += betTracks[key];
+            return;
+          }
+
+          currentData[key].total += betTracks[key];
+          currentData[key].dataList.unshift(
+            new BetItem(data[user].name, betTracks[key])
+          );
+        }
+      });
+    }
+
+    return currentData;
   }
 
   renderMonitor() {

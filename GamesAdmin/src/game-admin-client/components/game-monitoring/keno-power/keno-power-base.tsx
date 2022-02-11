@@ -27,6 +27,13 @@ import { Notice } from "../../shared/notice/notice";
 import KenoPowerResult from "./keno-power-result";
 import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
+const choiceLabelMapper = {
+  blueBig: "big",
+  blueSmall: "small",
+  redBig: "big",
+  redSmall: "small",
+};
+
 export default class KenoPower extends BaseMonitoring<KenoPowerModel> {
   gameName: string;
 
@@ -52,6 +59,10 @@ export default class KenoPower extends BaseMonitoring<KenoPowerModel> {
 
   get defaultBetList(): {} {
     return new KenoPowerBetListModel();
+  }
+
+  getChoiceDisplay(key: any) {
+    return choiceLabelMapper[key];
   }
 
   renderResultSummary() {

@@ -64,6 +64,9 @@ export default class BaseMonitoring<
     return false;
   }
 
+  getChoiceDisplay(key) {
+    return null;
+  }
   componentDidMount() {
     this.props.onMessage((message) => this.handleData(message));
   }
@@ -212,15 +215,15 @@ export default class BaseMonitoring<
         Object.keys(betTracks).forEach((key) => {
           const betAmount = betTracks[key];
           if (betAmount) {
-            !this.isExcludeUUS &&
-              (currentData[key].total += betAmount * userRate);
+            const baseBetAmount = parseFloat((betAmount * userRate).toFixed(2));
+            !this.isExcludeUUS && (currentData[key].total += baseBetAmount);
 
             currentData[key].dataList.unshift(
               new BetItem(
                 data[user].name,
-                betAmount * userRate,
+                baseBetAmount,
                 null,
-                null,
+                this.getChoiceDisplay(key),
                 data[user].system,
                 data[user].currency,
                 data[user].partnerId

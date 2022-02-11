@@ -17,22 +17,12 @@ import {
 } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
-import {
-  KenoMatchBetListModel,
-  KenoMatchModel,
-} from "../../common/model/KenoMatchModel";
+import { KenoMatchModel } from "../../common/model/KenoMatchModel";
 import { Notice } from "../../shared/notice/notice";
 import KenoMatchResult from "./keno-match-result";
 import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
-
-type KenoMatchProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
 
 const choiceLabelMapper = {
   fhBlue: "Blue",
@@ -68,6 +58,10 @@ export default class KenoMatch extends BaseMonitoring<KenoMatchModel> {
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  getChoiceDisplay(key: any) {
+    return choiceLabelMapper[key];
   }
 
   renderResultSummary() {
