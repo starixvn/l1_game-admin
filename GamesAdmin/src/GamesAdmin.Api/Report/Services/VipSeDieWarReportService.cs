@@ -18,6 +18,7 @@ namespace GamesAdmin.Api.Report
         {
             this.repository = repository;
             this.mapper = mapper;
+            this.betHistoryRepository = betHistoryRepository;
         }
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
