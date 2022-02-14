@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-center">@Model.RoundResult.Time</td>
+                        <td class="text-center">@Model.RoundResult.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@Model.RoundResult.Number</td>
                         <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td>
