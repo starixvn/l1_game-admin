@@ -281,6 +281,8 @@ export default class ThreeCards extends BaseMonitoring<ThreeCardsModel> {
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState === GameState.disabled}
           enableFilter={true}
         />
