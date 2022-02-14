@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import { BetChoice } from "./shared/model";
 import GameTemplate from "../game-template/game-template";
 import MonitorBoard from "./shared/monitor-board";
@@ -241,7 +242,7 @@ export default class extends React.Component<Props, State> {
   }
 
   getBetListByFilter(system, partnerId) {
-    const filterBetList = [...this.betList];
+    const filterBetList = _.cloneDeep(this.betList);
 
     filterBetList.forEach((choice) => {
       choice.bets = choice.bets.filter(
