@@ -145,52 +145,37 @@ export default class Roulette extends BaseMonitoring<RouletteModel> {
       currentData[key].dataList = new Array<BetItem>();
     });
 
+    const betList = new RouletteBetList();
     for (const user in data) {
-      const { betTracks } = data[user];
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          if (key.includes("specific")) {
-            const choice = key.split("specific")[1];
-            currentData.specificNumber.dataList.unshift(
-              new BetItem(
-                data[user].name,
-                betTracks[key],
-                "",
-                choice,
-                data[user].system,
-                data[user].currency,
-                data[user].partnerId
-              )
-            );
-            currentData.specificNumber.total += betTracks[key];
-            return;
-          }
-          if (key.includes("total")) {
-            const choice = key.split("total")[1];
-            currentData.totalPoints.dataList.unshift(
-              new BetItem(
-                data[user].name,
-                betTracks[key],
-                "",
-                choice,
-                data[user].system,
-                data[user].currency,
-                data[user].partnerId
-              )
-            );
-            currentData.totalPoints.total += betTracks[key];
-            return;
-          }
+      const { name, betTracks, system, currency, partnerId } = data[user];
+      const userRate = this.currencyExchangeRate[data[user].currency];
 
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
+      Object.keys(betTracks).forEach((type) => {
+        const betTrack = betTracks[type];
+
+        Object.keys(betTrack).forEach((choice) => {
+          const betAmount = betTrack[choice];
+          debugger;
+
+          const baseBetAmount = parseFloat((betAmount * userRate).toFixed(2));
+
+          betList[type].total += baseBetAmount;
+          betList[type].dataList.unshift(
+            new BetItem(
+              name,
+              baseBetAmount,
+              "",
+              this.getChoice(type, choice),
+              system,
+              currency,
+              partnerId
+            )
           );
-        }
+        });
       });
     }
 
-    return currentData;
+    return betList;
   }
 
   renderMonitor() {
