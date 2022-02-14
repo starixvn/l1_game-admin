@@ -182,9 +182,12 @@ export default class extends React.Component<Props, State> {
               .reverse()
               .map((bet) => {
                 const rate = this.currencyExchangeRate[bet.currency] || 0;
+                const baseBetAmount = parseFloat(
+                  (bet.betTracks[choice.name] * rate).toFixed(2)
+                );
                 return {
                   name: bet.name.toString(),
-                  bet: bet.betTracks[choice.name] * rate,
+                  bet: baseBetAmount,
                   partnerId: bet.partnerId,
                   system: bet.system,
                 };
