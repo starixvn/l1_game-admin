@@ -329,5 +329,7 @@ namespace GamesAdmin.Core.Models
         public bool IsFold { get; set; }
 
         public bool IsQualified { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

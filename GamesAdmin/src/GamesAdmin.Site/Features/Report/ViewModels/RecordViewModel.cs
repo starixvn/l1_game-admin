@@ -326,5 +326,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Ended { get; set; }
 
         public string BetHistoryUrl { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }
