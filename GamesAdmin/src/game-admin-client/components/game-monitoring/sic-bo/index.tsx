@@ -18,6 +18,7 @@ import {
 } from "../../common/model/SicBoModel";
 import { Notice } from "../../shared/notice/notice";
 import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
+import BetItem from "../../common/model/BetItem";
 
 export default class SicBo extends BaseMonitoring<SicBoModel> {
   constructor(props) {
@@ -51,6 +52,73 @@ export default class SicBo extends BaseMonitoring<SicBoModel> {
 
   get defaultSettlementResult(): any {
     return new SicBoSettlementResult();
+  }
+
+  getUserBetList(data, currentData: SicBoBetList) {
+    Object.keys(currentData).forEach((key) => {
+      currentData[key].total = 0;
+      currentData[key].dataList = new Array<BetItem>();
+    });
+
+    for (const user in data) {
+      const { betTracks, system, currency, partnerId } = data[user];
+      const userRate = this.currencyExchangeRate[currency];
+      Object.keys(betTracks).forEach((key) => {
+        if (betTracks[key]) {
+          const baseBetAmount = parseFloat(
+            (betTracks[key] * userRate).toFixed(2)
+          );
+
+          if (key.includes("specific")) {
+            const choice = key.split("specific")[1];
+            currentData.specificNumber.dataList.unshift(
+              new BetItem(
+                data[user].name,
+                baseBetAmount,
+                "",
+                choice,
+                system,
+                currency,
+                partnerId
+              )
+            );
+            currentData.specificNumber.total += betTracks[key];
+            return;
+          }
+          if (key.includes("total")) {
+            const choice = key.split("total")[1];
+            currentData.totalPoints.dataList.unshift(
+              new BetItem(
+                data[user].name,
+                baseBetAmount,
+                "",
+                choice,
+                system,
+                currency,
+                partnerId
+              )
+            );
+            currentData.totalPoints.total += betTracks[key];
+            return;
+          }
+
+          currentData[key].total += betTracks[key];
+          currentData[key].dataList.unshift(
+            new BetItem(
+              data[user].name,
+              baseBetAmount,
+              "",
+              "",
+              system,
+              currency,
+              partnerId
+            )
+          );
+        }
+      });
+    }
+
+    return { ...currentData };
   }
 
   getResult(diceResult) {
