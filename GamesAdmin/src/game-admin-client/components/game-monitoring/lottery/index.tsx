@@ -58,21 +58,26 @@ export default class Lottery extends BaseMonitoring<LotteryModel> {
     });
 
     for (const user in data) {
-      const { betTracks } = data[user];
+      const { betTracks, system, currency, partnerId, name } = data[user];
+      const userRate = this.currencyExchangeRate[currency];
+
       Object.keys(betTracks)
         .filter((x) => x !== "totalAmount")
         .forEach((betTypeKey) => {
           Object.entries(betTracks[betTypeKey]).forEach(
             ([betChoice, amountOnChoice]) => {
+              const baseBetAmount = parseFloat(
+                (+amountOnChoice * userRate).toFixed(2)
+              );
               currentData[betTypeKey].dataList.unshift(
                 new BetItem(
-                  data[user].name,
-                  amountOnChoice as number,
+                  name,
+                  baseBetAmount,
                   "",
                   betChoice.replaceAll("-", ","),
-                  data[user].system,
-                  data[user].currency,
-                  data[user].partnerId
+                  system,
+                  currency,
+                  partnerId
                 )
               );
               currentData[betTypeKey].total += amountOnChoice;
