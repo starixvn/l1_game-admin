@@ -12,7 +12,6 @@ import DiceType from "../../common/model/DiceType";
 import DiceModel from "../../common/model/DiceModel";
 import { GameState } from "../../shared/common/GameState";
 import {
-  GameResult,
   SicBoBetList,
   SicBoModel,
   SicBoSettlementResult,

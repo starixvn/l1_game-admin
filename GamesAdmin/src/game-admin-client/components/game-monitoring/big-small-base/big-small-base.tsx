@@ -78,20 +78,22 @@ export default class BigSmallBase extends BaseMonitoring<BigSmallBaseModel> {
 
       Object.keys(betTracks).forEach((key) => {
         if (betTracks[key]) {
+          const baseBetAmount = parseFloat(
+            (betTracks[key] * userRate).toFixed(2)
+          );
           let select = false;
           if (optionChoice.indexOf(key) !== -1) {
             select = true;
           }
 
           if (!currency || currency.toUpperCase() !== "UUS") {
-            currentData[betListMapping(select)].total +=
-              betTracks[key] * userRate;
+            currentData[betListMapping(select)].total += baseBetAmount;
           }
 
           currentData[betListMapping(select)].dataList.unshift(
             new BetItem(
               data[user].name,
-              betTracks[key] * userRate,
+              baseBetAmount,
               null,
               null,
               data[user].system,

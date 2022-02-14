@@ -62,7 +62,7 @@ export default class KenoPower extends BaseMonitoring<KenoPowerModel> {
   }
 
   getChoiceDisplay(key: any) {
-    return choiceLabelMapper[key];
+    return choiceLabelMapper[key] || key;
   }
 
   renderResultSummary() {

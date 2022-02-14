@@ -1,5 +1,5 @@
+import BaseMonitoringState from "./BaseMonitoringModel";
 import BetList from "./BetList";
-import TimeModel from "./TimeModel";
 
 export class ThreeCardsBetListModel {
   red: BetList;
@@ -24,7 +24,7 @@ export class CardModel {
   suit: number;
 }
 
-class SettlementResultModel {
+export class ThreeCardsSettlementResultModel {
   red: boolean;
   black: boolean;
   diamonds: boolean;
@@ -33,21 +33,20 @@ class SettlementResultModel {
   clubs: boolean;
 }
 
-export class ThreeCardsModel {
+export class ThreeCardsModel extends BaseMonitoringState {
   roundNumber: number;
   betList: ThreeCardsBetListModel;
-  time: TimeModel;
   result: Array<CardModel>;
-  gameState: number;
-  settlementResult: SettlementResultModel;
+  settlementResult: ThreeCardsSettlementResultModel;
   isOpenModal: boolean;
   currentSelectedIndex: number;
+
   constructor() {
+    super();
+
     this.result = [new CardModel(), new CardModel(), new CardModel()];
     this.betList = new ThreeCardsBetListModel();
-    this.time = new TimeModel();
-    this.gameState = 0;
-    this.settlementResult = new SettlementResultModel();
+    this.settlementResult = new ThreeCardsSettlementResultModel();
     this.isOpenModal = false;
   }
 }
