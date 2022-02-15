@@ -460,8 +460,8 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, string currency)
-            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, currency)));
+        public async Task<IActionResult> GetBitcoinMasterBetHistory(long roundId, string nickname, decimal? rate)
+            => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, rate)));
 
         [HttpGet]
         [Route("Report/CasinoHoldem")]

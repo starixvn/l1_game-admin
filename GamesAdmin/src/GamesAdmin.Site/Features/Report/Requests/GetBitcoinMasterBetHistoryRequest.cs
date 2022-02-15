@@ -5,17 +5,17 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetBitcoinMasterBetHistoryRequest : IRequest<BitcoinMasterBetHistoryViewModel>
     {
-        public GetBitcoinMasterBetHistoryRequest(long roundId, string nickname, string currency)
+        public GetBitcoinMasterBetHistoryRequest(long roundId, string nickname, decimal? rate)
         {
             RoundId = roundId;
             Nickname = nickname;
-            Currency = currency;
+            Rate = rate;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
 
-        public string Currency { get; }
+        public decimal? Rate { get; }
     }
 }

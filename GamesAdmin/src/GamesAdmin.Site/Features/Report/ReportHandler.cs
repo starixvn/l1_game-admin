@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.ExchangeRates;
@@ -73,11 +74,12 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var currency = await currencyService.GetById(request.Currency);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new BigSmallReportResultViewModel
             {
-                ConvertCurrency = request.Currency,
+                ConvertCurrency = currency.DisplayText,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -112,11 +114,12 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var currency = await currencyService.GetById(request.Currency);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new BigSmallTurboReportResultViewModel
             {
-                ConvertCurrency = request.Currency,
+                ConvertCurrency = currency.DisplayText,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -151,11 +154,12 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var currency = await currencyService.GetById(request.Currency);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new OddEvenReportResultViewModel
             {
-                ConvertCurrency = request.Currency,
+                ConvertCurrency = currency.DisplayText,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -190,11 +194,12 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var currency = await currencyService.GetById(request.Currency);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new OddEvenTurboReportResultViewModel
             {
-                ConvertCurrency = request.Currency,
+                ConvertCurrency = currency.DisplayText,
                 RoundResult = new RoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -321,7 +326,8 @@ namespace GamesAdmin.Site.Features.Report
                 request.PartnerId,
                 request.Username);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var currency = await currencyService.GetById(request.Currency);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
             var roundResult = mapper.Map<SeDieRoundResultViewModel>(result.RoundResult);
 
             roundResult.ExchangeRate = exchangeRate;
@@ -329,7 +335,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new SpecialSeDieReportResultViewModel
             {
-                ConvertCurrency = request.Currency,
+                ConvertCurrency = currency.DisplayText,
                 RoundResult = roundResult,
                 Records = result.Records.Select(x =>
                 {
@@ -433,11 +439,12 @@ namespace GamesAdmin.Site.Features.Report
                 request.Username);
 
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
+            var currency = await currencyService.GetById(request.Currency);
+            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, currency);
 
             return new BitcoinMasterReportResultViewModel
             {
-                Currency = request.Currency,
+                Currency = currency.DisplayText,
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
@@ -469,17 +476,16 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetBitcoinMasterBetHistory(request.RoundId, request.Nickname);
 
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var exchangeRate = await GetExchangeRate(result.RoundResult.ExchangeRateId, request.Currency);
 
             return new BitcoinMasterBetHistoryViewModel
             {
-                ExchangeRate = exchangeRate,
+                ExchangeRate = request.Rate,
                 RoundResult = new BitcoinMasterRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
                     BettingPrice = result.RoundResult.BettingPrice,
                     ResultPrice = result.RoundResult.ResultPrice,
-                    ExchangeRate = exchangeRate,
+                    ExchangeRate = request.Rate ?? 0,
                     ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
                 Bets = result.Bets.Select(x => new BitcoinMasterBetHistoryRecordViewModel
@@ -497,13 +503,15 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        private async Task<decimal> GetExchangeRate(int exchangeRateId, string currency)
+        private async Task<decimal> GetExchangeRate(int exchangeRateId, CurrencyModel currency)
         {
+            var code = currency.Code;
             var exchangeRate = await exchangeRateService.GetByExchangeId(exchangeRateId);
 
-            return exchangeRate != null
-                   && !string.IsNullOrEmpty(currency)
-                   && exchangeRate.Code.ContainsKey(currency) ? exchangeRate.Code[currency] : 1;
+            var rate = string.IsNullOrEmpty(code) || exchangeRate == null || !exchangeRate.Code.ContainsKey(code)
+                ? 1 : exchangeRate.Code[code];
+
+            return rate * ((decimal)currency.Multiplier);
         }
 
         public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
@@ -546,7 +554,7 @@ namespace GamesAdmin.Site.Features.Report
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
             var currencies = (await currencyService.GetCurrenciesForSelection(
                 model => model.Enabled,
-                model => new SelectListItem($"{model.Name} ({model.Code})", model.Code)))
+                model => new SelectListItem($"{model.Name} ({model.Code})", model.Id)))
                 .GroupBy(model => model.Text).Select(x => x.First());
 
             return new ReportSeletionsViewModel

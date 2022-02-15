@@ -29,5 +29,7 @@
         public string PartnerId { get; }
 
         public string GroupId { get; }
+
+        public string DisplayText => $"{Name} ({Code})";
     }
 }

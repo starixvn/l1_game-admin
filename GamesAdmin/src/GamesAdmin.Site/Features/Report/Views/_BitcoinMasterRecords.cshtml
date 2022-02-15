@@ -119,7 +119,7 @@
                                        asp-action="GetBitcoinMasterBetHistory"
                                        asp-route-roundId="@Model.RoundResult.Number"
                                        asp-route-nickname="@upRecord.Nickname"
-                                       asp-route-currency="@Model.Currency">
+                                       asp-route-rate="@Model.RoundResult.ExchangeRate">
                                         @upRecord.Nickname
                                     </a>
                                 </td>
@@ -150,7 +150,7 @@
                                        asp-action="GetBitcoinMasterBetHistory"
                                        asp-route-roundId="@Model.RoundResult.Number"
                                        asp-route-nickname="@downRecord.Nickname"
-                                       asp-route-currency="@Model.Currency">
+                                       asp-route-rate="@Model.RoundResult.ExchangeRate">
                                         @downRecord.Nickname
                                     </a>
                                 </td>
@@ -165,11 +165,11 @@
                 </tbody>
                 <tfoot>
                     <tr class="total">
-                        <td colspan="5" class="text-right">Total</td>
+                        <td colspan="5" class="text-left">Total in @Model.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.UpTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.UpTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.UpTotal.BetWin))</td>
-                        <td colspan="5" class="text-right">Total</td>
+                        <td colspan="5" class="text-left">Total in @Model.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.DownTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.DownTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.DownTotal.BetWin))</td>
@@ -240,7 +240,7 @@
                                        asp-action="GetBitcoinMasterBetHistory"
                                        asp-route-roundId="@Model.RoundResult.Number"
                                        asp-route-nickname="@oddRecord.Nickname"
-                                       asp-route-currency="@Model.Currency">
+                                       asp-route-rate="@Model.RoundResult.ExchangeRate">
                                         @oddRecord.Nickname
                                     </a>
                                 </td>
@@ -271,7 +271,7 @@
                                        asp-action="GetBitcoinMasterBetHistory"
                                        asp-route-roundId="@Model.RoundResult.Number"
                                        asp-route-nickname="@evenRecord.Nickname"
-                                       asp-route-currency="@Model.Currency">
+                                       asp-route-rate="@Model.RoundResult.ExchangeRate">
                                         @evenRecord.Nickname
                                     </a>
                                 </td>
@@ -286,11 +286,11 @@
                 </tbody>
                 <tfoot>
                     <tr class="total">
-                        <td colspan="5" class="text-right">Total in @Model.Currency</td>
+                        <td colspan="5" class="text-left">Total in @Model.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.OddTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.OddTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.OddTotal.BetWin))</td>
-                        <td colspan="5" class="text-right">Total in @Model.Currency</td>
+                        <td colspan="5" class="text-left">Total in @Model.Currency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.EvenTotal.Bet))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.EvenTotal.Back))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.EvenTotal.BetWin))</td>
