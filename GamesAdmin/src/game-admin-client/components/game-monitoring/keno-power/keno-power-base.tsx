@@ -28,10 +28,16 @@ import KenoPowerResult from "./keno-power-result";
 import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
 const choiceLabelMapper = {
-  blueBig: "big",
-  blueSmall: "small",
-  redBig: "big",
-  redSmall: "small",
+  blue: "Blue",
+  red: "Red",
+  big: "Big",
+  small: "Small",
+  odd: "Odd",
+  even: "Even",
+  blueBig: "Big",
+  blueSmall: "Small",
+  redBig: "Big",
+  redSmall: "Small",
 };
 
 export default class KenoPower extends BaseMonitoring<KenoPowerModel> {
@@ -62,7 +68,7 @@ export default class KenoPower extends BaseMonitoring<KenoPowerModel> {
   }
 
   getChoiceDisplay(key: any) {
-    return choiceLabelMapper[key] || key;
+    return choiceLabelMapper[key];
   }
 
   renderResultSummary() {
