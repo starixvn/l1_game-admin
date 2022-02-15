@@ -85,6 +85,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.KenoPower2Value:
                     return Enumeration.GetAll<KenoPowerBetChoice>();
 
+                case Game.CasinoHoldemPokerValue:
+                    return Enumeration.GetAll<CasinoHoldemPokerBetOdds>();
+
                 default: return default;
             }
         }

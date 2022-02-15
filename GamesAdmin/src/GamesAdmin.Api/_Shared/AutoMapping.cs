@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
@@ -11,6 +9,8 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -289,6 +289,12 @@ namespace GamesAdmin.Api._Shared
             CreateMap<KenoPowerSettlementResultEntity, KenoPowerSettlementResult>();
             CreateMap<KenoPowerBetReportEntity, KenoPowerBetRecord>();
             CreateMap<KenoPowerBetEntity, KenoPowerBetHistoryRecord>();
+
+            CreateMap<CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetRecord>()
+                 .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
+                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
+
+            CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GamesAdmin.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -291,13 +292,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public KenoPowerSettlementResultViewModel SettlementResult { get; set; }
     }
 
-
     public class KenoPowerResultViewModel
     {
         public IEnumerable<byte> Blue { get; set; }
         public IEnumerable<byte> Red { get; set; }
     }
-
 
     public class KenoPowerSettlementResultViewModel
     {
@@ -312,5 +311,24 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool BlueSmall { get; set; }
         public bool RedBig { get; set; }
         public bool RedSmall { get; set; }
+    }
+
+    public class CasinoHoldemPokerRoundResultViewModel
+    {
+        public long Number { get; set; }
+
+        public IEnumerable<PokerCard> DealerCards { get; set; }
+
+        public IEnumerable<PokerCard> PlayerCards { get; set; }
+
+        public CasinoHoldemPokerSettlementResultViewModel Result { get; set; }
+    }
+
+    public class CasinoHoldemPokerSettlementResultViewModel
+    {
+        public long Number { get; set; }
+        public bool AA { get; set; }
+        public bool Ante { get; set; }
+        public bool Call { get; set; }
     }
 }

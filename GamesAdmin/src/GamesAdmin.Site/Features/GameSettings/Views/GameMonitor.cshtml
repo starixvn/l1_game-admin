@@ -37,6 +37,10 @@
                                 }
 
                             }
+                            else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value)
+                            {
+                                <a class="icon-action" href="~/ResultMonitor/CasinoHoldemPokderResult"><i class="icon-chart"></i></a>
+                            }
                             else
                             {
                                 <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>

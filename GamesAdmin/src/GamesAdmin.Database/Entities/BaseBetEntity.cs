@@ -25,5 +25,9 @@ namespace GamesAdmin.Database.Entities
         public bool? FreeBet { get; set; }
 
         public string PartnerId { get; set; }
+
+        public string Currency { get; set; }
+
+        public decimal Rate { get; set; }
     }
 }

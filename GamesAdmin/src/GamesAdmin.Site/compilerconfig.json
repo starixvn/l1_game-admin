@@ -78,5 +78,9 @@
   {
     "outputFile": "wwwroot/scss/pages/api-log.css",
     "inputFile": "wwwroot/scss/pages/api-log.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/casino-holdem-poker-result.css",
+    "inputFile": "wwwroot/scss/pages/casino-holdem-poker-result.scss"
   }
 ]

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
@@ -23,9 +21,10 @@ using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
-using GamesAdmin.Database.ApiLogs;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using System;
+using System.Net.Http;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -118,6 +117,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BitcoinMasterEndGameInfoService>();
             services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
             services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
+            services.AddScoped<CasinoHoldemPokerEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -155,6 +155,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IKenoSouthOnlineUserApi>(appSettings.GameServers.KenoSouth.Api, refitSettings));
             services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
             services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
+            services.AddSingleton(RestService.For<ICasinoHoldemPokerOnlineUserApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 

@@ -72,6 +72,8 @@
 
         public GameServerConfigs KenoPower2 { get; set; }
 
+        public GameServerConfigs CasinoHoldemPoker { get; set; }
+
     }
 
     public class GameServerConfigs

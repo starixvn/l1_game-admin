@@ -24,6 +24,7 @@ namespace GamesAdmin.Core.Enumeration
             {Game.VipSeDieWarValue, Enumeration.GetAll<VipSeDieWarBetChoice>() },
             {Game.LotteryValue, Enumeration.GetAll<LotteryBetChoice>() },
             {Game.ThreeCardsValue, Enumeration.GetAll<ThreeCardsBetChoice>() },
+            {Game.CasinoHoldemPokerValue, Enumeration.GetAll<CasinoHoldemPokerBetChoice>() },
             {Game.KenoMatch1Value, Enumeration.GetAll<KenoMatchBetChoice>() },
             {Game.KenoMatch2Value, Enumeration.GetAll<KenoMatchBetChoice>() },
             {Game.KenoPower1Value, Enumeration.GetAll<KenoPowerBetChoice>() },
