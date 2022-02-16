@@ -183,7 +183,7 @@
             @betChoice.Key.Replace("-", ", ")
         </td>
         <td class="text-right @winningCssClass">
-            @HtmlHelpers.formatNumber(betChoice.Value)
+            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
         </td>
     </tr>
 }
