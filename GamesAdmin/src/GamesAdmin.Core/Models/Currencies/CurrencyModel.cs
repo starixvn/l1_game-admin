@@ -2,7 +2,7 @@
 {
     public class CurrencyModel
     {
-        public CurrencyModel(string id, string name, string code, double multiplier, bool enabled, bool isTest, string partnerId, string groupId)
+        public CurrencyModel(string id, string name, string code, double multiplier, bool enabled, bool isTest, string partnerId, string groupId, bool? isUncountOnTotal)
         {
             Id = id;
             Name = name;
@@ -12,6 +12,7 @@
             IsTest = isTest;
             PartnerId = partnerId;
             GroupId = groupId;
+            IsUncountOnTotal = isUncountOnTotal;
         }
 
         public string Id { get; }
@@ -29,5 +30,9 @@
         public string PartnerId { get; }
 
         public string GroupId { get; }
+
+        public string DisplayText => $"{Name} ({Code})";
+
+        public bool? IsUncountOnTotal { get;}
     }
 }

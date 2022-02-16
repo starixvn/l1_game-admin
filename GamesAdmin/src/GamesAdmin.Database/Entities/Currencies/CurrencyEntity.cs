@@ -19,5 +19,7 @@ namespace GamesAdmin.Database.Entities.Currencies
         public string PartnerId { get; set; }
 
         public ObjectId GroupId { get; set; }
+
+        public bool? IsUncountOnTotal { get; set; }
     }
 }

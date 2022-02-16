@@ -34,6 +34,10 @@
         })
     }
 
+    function onClickIsTestCurrency(event) {
+        event.target.checked ? $('#isUncountOnTotalSetting').show() : $('#isUncountOnTotalSetting').hide();
+    }
+
     return {
         init: function () {
             var table = $('#currency-table');
@@ -47,6 +51,7 @@
         openUpdateCurrencyForm: openModal("#update-currency-form"),
         onCreateCurrencySuccess: onUpsertCurrency,
         onUpdateCurrencySuccess: onUpsertCurrency,
+        onClickIsTestCurrency: onClickIsTestCurrency,
         getFanexSelectData: () => partners.map(convertPartnerSelectToFanexItem)
     }
 }(jQuery));

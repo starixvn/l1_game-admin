@@ -10,6 +10,7 @@
             <th>Multiplier</th>
             <th>Enabled</th>
             <th>Testing</th>
+            <th>Is Uncount</th>
             @if (Context.HasAdminPermission())
             {
                 <th>Edit</th>
@@ -36,6 +37,16 @@
                 </td>
                 <td class="text-center">
                     @if (item.IsTest)
+                    {
+                        <i class="icon-check"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-cancel"></i>
+                    }
+                </td>
+                <td class="text-center">
+                    @if (item.IsUncountOnTotal ?? false)
                     {
                         <i class="icon-check"></i>
                     }

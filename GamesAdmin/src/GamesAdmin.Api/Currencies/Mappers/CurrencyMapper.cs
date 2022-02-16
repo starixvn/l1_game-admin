@@ -22,7 +22,9 @@ namespace GamesAdmin.Api.Currencies.Mappers
                     entity.Enabled,
                     entity.IsTest,
                     entity.PartnerId,
-                    entity.GroupId.Equals(ObjectId.Empty) ? string.Empty : entity.GroupId.ToString()));
+                    entity.GroupId.Equals(ObjectId.Empty) ? string.Empty : entity.GroupId.ToString(),
+                    entity.IsUncountOnTotal)
+                    );
         }
     }
 }
