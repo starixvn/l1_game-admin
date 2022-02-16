@@ -371,3 +371,9 @@ input[type=checkbox] {
 
 .bold {
   font-weight: bold; }
+
+.row-table .table.sticky-table th {
+  top: -1px; }
+
+.row-table .table.sticky-table thead tr:nth-child(2) th {
+  top: 50px; }

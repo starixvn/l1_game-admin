@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class SeDieReportResultViewModel
+    public class SeDieReportResultViewModel : ReportResultViewModel
     {
         public SeDieRoundResultViewModel RoundResult { get; set; }
 

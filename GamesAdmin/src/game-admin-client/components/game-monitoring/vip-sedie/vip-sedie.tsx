@@ -1,154 +1,51 @@
 import React from "react";
 import { Col, Container, Modal, Row } from "reactstrap";
 
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
-import ShakeThePlateModel from "../../common/model/ShakeThePlateModel";
+import ShakeThePlateModel, {
+  SeDieSettlementResult,
+  ShakeThePlateBetList,
+} from "../../common/model/ShakeThePlateModel";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 import BetList from "../../shared/bet-list/bet-list";
 import { GameState } from "../../shared/common/GameState";
 import Dice from "../../shared/dice/dice";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
-import { getTotalBetOnSystem, updateTotalBetOfBetList } from "../../util/util";
-import GameTemplate from "../game-template/game-template";
 import styles from "./vip-sedie.module.scss";
 
-type VipSeDieProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-const CHOICES = ["even", "odd", "red4", "red3", "red2", "white3", "white4"];
-
-export default class VipSeDie extends React.Component<
-  VipSeDieProps,
-  ShakeThePlateModel
-> {
-  private timeout: NodeJS.Timeout;
+export default class VipSeDie extends BaseMonitoring<ShakeThePlateModel> {
   constructor(props) {
     super(props);
 
     this.state = new ShakeThePlateModel();
-    this.renderBetList = this.renderBetList.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultResult() {
+    return [
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+    ];
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      clearTimeout(this.timeout);
-      this.setState({
-        disabled: data.um,
-        time: { remainingTime: 0 },
-        gameState: GameState.none,
-      });
-    }
-
-    if (!!data.inGame) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
-      });
-    }
-
-    if (!!data.remainingTime) {
-      this.setState({ disabled: false });
-      if (data.remainingTime > 30) {
-        this.setState({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          time: {
-            remainingTime: data.remainingTime - 31,
-          },
-          result: data.result ? this.getResult(data.result) : this.state.result,
-        });
-
-        setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: this.state.roundNumber + 1,
-            time: {
-              remainingTime: 30,
-            },
-            result: [
-              new DiceModel(-1, DiceType.XocXoc),
-              new DiceModel(-1, DiceType.XocXoc),
-              new DiceModel(-1, DiceType.XocXoc),
-              new DiceModel(-1, DiceType.XocXoc),
-            ],
-          });
-        }, (data.remainingTime - 30) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: data.roundId,
-          time: {
-            remainingTime: data.remainingTime,
-          },
-        });
-      }
-    }
-
-    if (!!data.finish) {
-      const waitingTime = 10;
-      this.setState({
-        result: this.getResult(data.finish.result),
-        settlementResult: data.finish.settlementResult,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
-
-      this.timeout = setTimeout(() => {
-        this.setState({
-          ...new ShakeThePlateModel(),
-          result: [
-            new DiceModel(-1, DiceType.XocXoc),
-            new DiceModel(-1, DiceType.XocXoc),
-            new DiceModel(-1, DiceType.XocXoc),
-            new DiceModel(-1, DiceType.XocXoc),
-          ],
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 30,
-          },
-        });
-      }, waitingTime * 1000);
-    }
+  get defaultSettlementResult() {
+    return new SeDieSettlementResult();
   }
 
-  getUserBetList(data, currentData) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
+  get totalTimeInRound(): number {
+    return 30;
+  }
 
-    for (const user in data) {
-      let betTracks = data[user].betTracks;
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(
-              data[user].name,
-              betTracks[key],
-              null,
-              null,
-              data[user].system
-            )
-          );
-        }
-      });
-    }
+  get waitingTime(): number {
+    return 10;
+  }
 
-    return currentData;
+  get defaultBetList(): {} {
+    return new ShakeThePlateBetList();
   }
 
   getResult(data) {
@@ -241,11 +138,9 @@ export default class VipSeDie extends React.Component<
     );
   }
 
-  renderMonitor(systemFilter) {
+  renderMonitor() {
     const { betList, roundNumber, time, result, gameState, settlementResult } =
       this.state;
-
-    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container className={styles["shakeThePlate-container"]}>
@@ -339,7 +234,7 @@ export default class VipSeDie extends React.Component<
     );
   }
 
-  renderBetList(systemFilter) {
+  renderBetList() {
     const { betList, settlementResult } = this.state;
 
     return (
@@ -350,7 +245,6 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red4.dataList}
             isWin={settlementResult.red4}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -359,7 +253,6 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red3.dataList}
             isWin={settlementResult.red3}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -368,7 +261,6 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.red2.dataList}
             isWin={settlementResult.red2}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -377,7 +269,6 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.even.dataList}
             isWin={settlementResult.even}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -386,7 +277,6 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.odd.dataList}
             isWin={settlementResult.odd}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -395,7 +285,6 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.white3.dataList}
             isWin={settlementResult.white3}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col">
@@ -404,24 +293,9 @@ export default class VipSeDie extends React.Component<
             type="simple"
             dataList={betList.white4.dataList}
             isWin={settlementResult.white4}
-            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        {!this.props.isProduction && this.renderGameControl()}
-        <GameTemplate
-          renderBetList={this.renderBetList}
-          renderMonitor={this.renderMonitor}
-          disabled={this.state.disabled}
-          enableFilter={true}
-        ></GameTemplate>
-      </div>
     );
   }
 }

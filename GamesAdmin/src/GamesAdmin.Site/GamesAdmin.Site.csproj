@@ -170,6 +170,9 @@
     <Content Update="appsettings.json">
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
+    <Content Update="wwwroot\js\blackjack-report - Copy.min.js">
+      <DependentUpon>blackjack-report.min.js</DependentUpon>
+    </Content>
     <Content Update="wwwroot\scss\themes\themel2.min.css">
       <DependentUpon>themel2.css</DependentUpon>
     </Content>

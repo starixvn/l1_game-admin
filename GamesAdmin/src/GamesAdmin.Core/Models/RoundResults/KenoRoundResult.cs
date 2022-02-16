@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace GamesAdmin.Core.Models.RoundResults
 {
-    public class KenoRoundResult
+    public class KenoRoundResult : RoundResult
     {
         public KenoRoundResult(
             byte[] results,
@@ -20,8 +20,6 @@ namespace GamesAdmin.Core.Models.RoundResults
         public byte[] Results { get; }
 
         public KenoSettlementResult SettlementResult { get; }
-
-        public DateTime Time { get; }
     }
 
     public class KenoSettlementResult

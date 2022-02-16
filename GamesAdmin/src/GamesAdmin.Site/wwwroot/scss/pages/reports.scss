@@ -4,6 +4,7 @@
 .form {
     .form-check {
         padding-left: 2rem;
+        width: 120px;
     }
 
     .form-check-input {
@@ -152,6 +153,10 @@
 .cards {
     display: flex;
     justify-content: center;
+}
+
+.row-table {
+    margin-right: 0;
 }
 
 // Baccarat
@@ -361,5 +366,25 @@
                 border-color: #16aaff;
             }
         }
+    }
+}
+
+.tble-vietlot {
+    .list-numbers {
+        display: grid;
+        grid-template-columns: repeat(10, 3rem);
+        flex-wrap: wrap;
+        grid-gap: .4rem;
+        justify-content: center;
+    }
+
+    .number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50%;
+        border: 1px solid #16aaff;
     }
 }

@@ -2,6 +2,7 @@ import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
+import BaseMonitoringState from "./BaseMonitoringModel";
 
 class FishPrawnCrabBetList {
   gourd: BetList;
@@ -33,30 +34,30 @@ class GameResult {
   }
 }
 
-export default class FishPrawnCrabModel {
+export default class FishPrawnCrabModel extends BaseMonitoringState {
   roundNumber: number;
   time: TimeModel;
-  betList: FishPrawnCrabBetList;
   result: Array<DiceModel>;
   isOpenModal: boolean;
   currentDiceNumber: number;
   isHandleNextRoundResult: boolean;
   nextRoundResult: GameResult;
-  winners: Array<boolean>;
+  settlementResult: Array<boolean>;
   gameState: number;
 
   constructor() {
+    super();
+
     this.result = [
       new DiceModel(-1, DiceType.BauCua),
       new DiceModel(-1, DiceType.BauCua),
       new DiceModel(-1, DiceType.BauCua),
     ];
-    this.betList = new FishPrawnCrabBetList();
     this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
     this.nextRoundResult = new GameResult();
-    this.winners = [false, false, false, false, false, false];
+    this.settlementResult = [false, false, false, false, false, false];
     this.gameState = 0;
   }
 }

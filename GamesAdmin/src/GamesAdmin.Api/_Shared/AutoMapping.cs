@@ -124,9 +124,16 @@ namespace GamesAdmin.Api._Shared
               }))
               .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
               .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even));
-            CreateMap<SpecialSeDieBetReportEntity, SpecialSeDieBetRecord>();
+            CreateMap<StakeBalancedBetReportEntity, SpecialSeDieBetRecord>()
+                 .ForMember(x => x.Choice, opt => opt.MapFrom((source) => source.Choice))
+                 .ForMember(x => x.UserId, opt => opt.MapFrom((source) => source.UserId))
+                 .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.Bet))
+                 .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back));
 
-            CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>();
+            CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>()
+                 .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.BaseAmount))
+                 .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.BaseRefund))
+                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.BaseBetWin));
 
             CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
             CreateMap<CardEntity, Core.Models.Card>();
@@ -207,7 +214,9 @@ namespace GamesAdmin.Api._Shared
             CreateMap<VipSeDieWarBetEntity, VipSeDieWarBetHistoryRecord>();
 
             CreateMap<SlotGameBetReportEntity, SlotGameBetRecord>()
-               .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number));
+               .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number))
+               .ForMember(x => x.Partner, opt => opt.MapFrom((source) => source.PartnerId))
+               .ForMember(x => x.ExchangRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));
             CreateMap<SlotGameSettlementResultEntity, SlotGameSettlementResult>();
             CreateMap<SlotGameFreeSpinEntity, SlotGameFreeSpin>();
             CreateMap<SlotGameBonusEntity, SlotGameBonus>();

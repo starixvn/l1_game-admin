@@ -27,8 +27,8 @@ namespace GamesAdmin.Api.CurrencyGroups
             => mediator.Send(new GetByIdRequest(id));
 
         [HttpPost("filter")]
-        public Task<IEnumerable<CurrencyGroupModel>> GetByGroupIds(GetByIdsModel model)
-            => mediator.Send(new GetByIdsRequest(model));
+        public Task<IEnumerable<CurrencyGroupModel>> GetByGroupIds(string ids)
+            => mediator.Send(new GetByIdsRequest(ids));
 
         [HttpGet("partner/{partnerId}")]
         public Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId)

@@ -1,3 +1,4 @@
+import BaseMonitoringState from "./BaseMonitoringModel";
 import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 
@@ -34,7 +35,7 @@ class KenoPowerSettlementResultModel {
   small: boolean;
   odd: boolean;
   even: boolean;
-  blueBig: boolean; 
+  blueBig: boolean;
   blueSmall: boolean;
   redBig: boolean;
   redSmall: boolean;
@@ -50,7 +51,7 @@ class KenoPowerResult {
   }
 }
 
-export class KenoPowerModel {
+export class KenoPowerModel extends BaseMonitoringState {
   roundNumber: number;
   betList: KenoPowerBetListModel;
   time: TimeModel;
@@ -60,6 +61,7 @@ export class KenoPowerModel {
   isOpenModal: boolean;
   currentSelectedIndex: number;
   constructor() {
+    super();
     this.result = new KenoPowerResult();
     this.settlementResult = new KenoPowerSettlementResultModel();
     this.betList = new KenoPowerBetListModel();

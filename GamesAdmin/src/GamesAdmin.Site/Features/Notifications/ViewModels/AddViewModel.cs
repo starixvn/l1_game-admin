@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Helpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,7 +14,9 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
 
         public AddViewModel()
         {
-            DisplayKinds = EnumerationHelper.ToSelectList<NotificationDisplayKind>();
+            DisplayKinds = EnumerationHelper.ToSelectList<NotificationDisplayKind>()
+                .Where(d => d.Value != NotificationDisplayKind.DisabledValue)
+                .ToList();
         }
 
         public List<SelectListItem> DisplayKinds { get; }
@@ -23,11 +26,31 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         [Required]
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
-        public string VnMessage { get; set; }
+        public string VNMessage { get; set; }
 
         [Required]
         [MinLength(MinLength)]
         [MaxLength(MaxLength)]
-        public string EnMessage { get; set; }
+        public string ENMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string CNMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string TWMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string THMessage { get; set; }
+
+        [Required]
+        [MinLength(MinLength)]
+        [MaxLength(MaxLength)]
+        public string IDMessage { get; set; }
     }
 }

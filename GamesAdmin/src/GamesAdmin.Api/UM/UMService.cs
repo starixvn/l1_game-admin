@@ -24,7 +24,7 @@ namespace GamesAdmin.Api.UM
 
         Task<IEnumerable<UmInfo>> GetUMInfo();
 
-        Task<bool> UpdatePartnerUM(bool IsUM, DateTimeOffset StartTime, DateTimeOffset EndTime, string[] Partners);
+        Task<bool> UpdatePartnerUM(bool isUM, DateTimeOffset startTime, DateTimeOffset endTime, string[] partners);
     }
 
     public class UMService : IUMService
@@ -85,8 +85,8 @@ namespace GamesAdmin.Api.UM
 
                 var update = Builders<UMInfoEntity>.Update
                     .Set(field => field.Finish, !isUM)
-                    .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
-                    .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
+                    .Set(field => field.Start, GetDateTime(startTime))
+                    .Set(field => field.End, GetDateTime(endTime))
                     .Set(field => field.Time, DateTime.UtcNow)
                     .Set(field => field.IsPartnerUm, true);
 
@@ -131,8 +131,8 @@ namespace GamesAdmin.Api.UM
 
                 var update = Builders<UMInfoEntity>.Update
                     .Set(field => field.Finish, false)
-                    .Set(field => field.Start, startTime == default ? default : startTime.ToUniversalTime().UtcDateTime)
-                    .Set(field => field.End, endTime == default ? default : endTime.ToUniversalTime().UtcDateTime)
+                    .Set(field => field.Start, GetDateTime(startTime))
+                    .Set(field => field.End, GetDateTime(endTime))
                     .Set(field => field.Time, DateTime.UtcNow)
                     .Set(field => field.IsPartnerUm, false);
 
@@ -221,5 +221,7 @@ namespace GamesAdmin.Api.UM
             .FilterByAsync(um => !um.Finish))
             .Select(um => new UmSchedule(um.Start, um.End))
             .ToList();
+
+        private DateTime GetDateTime(DateTimeOffset dateTimeOffset) => dateTimeOffset == default ? default : dateTimeOffset.ToUniversalTime().UtcDateTime;
     }
 }

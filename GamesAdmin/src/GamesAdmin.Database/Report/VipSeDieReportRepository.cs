@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
@@ -9,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IVipSeDieReportRepository
     {
-        Task<(VipSeDieRoundEntity, IEnumerable<VipSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(VipSeDieRoundEntity, IEnumerable<VipSeDieBetReportEntity>)> GetAsync(BetReportFilter filter);
     }
 
     public class VipSeDieReportRepository : BaseBetReportRepository, IVipSeDieReportRepository
@@ -18,13 +19,14 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(VipSeDieRoundEntity, IEnumerable<VipSeDieBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(VipSeDieRoundEntity, IEnumerable<VipSeDieBetReportEntity>)> GetAsync(BetReportFilter filter)
         {
-            var roundResult = await database.GetCollection<VipSeDieRoundEntity>(Document.GetCollectionName(typeof(VipSeDieRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<VipSeDieRoundEntity>(Document.GetCollectionName(typeof(VipSeDieRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<VipSeDieBetEntity, VipSeDieBetWithUnWindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS)
+                var project = GetBaseAggregateBuilder<VipSeDieBetEntity, VipSeDieBetWithUnWindAccountsEntity>(
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new VipSeDieBetReportEntity
                     {
                         Time = x.Time,
@@ -38,7 +40,10 @@ namespace GamesAdmin.Database
                         FourRed = x.FourRed,
                         ThreeWhite = x.ThreeWhite,
                         FourWhite = x.FourWhite,
-                        UserId = x.Uid
+                        UserId = x.Uid,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

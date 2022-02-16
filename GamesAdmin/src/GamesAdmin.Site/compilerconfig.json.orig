@@ -1,0 +1,91 @@
+﻿[
+  {
+    "outputFile": "wwwroot/scss/pages/login.css",
+    "inputFile": "wwwroot/scss/pages/login.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/site.css",
+    "inputFile": "wwwroot/scss/pages/site.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/forecast.css",
+    "inputFile": "wwwroot/scss/pages/forecast.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/base/roboto.css",
+    "inputFile": "wwwroot/scss/base/roboto.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/base/material-icon.css",
+    "inputFile": "wwwroot/scss/base/material-icon.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/adjust-bot.css",
+    "inputFile": "wwwroot/scss/pages/adjust-bot.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/dashboard.css",
+    "inputFile": "wwwroot/scss/pages/dashboard.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/reports.css",
+    "inputFile": "wwwroot/scss/pages/reports.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/game-status.css",
+    "inputFile": "wwwroot/scss/pages/game-status.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/online-users.css",
+    "inputFile": "wwwroot/scss/pages/online-users.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/vietlottkeno.css",
+    "inputFile": "wwwroot/scss/pages/vietlottkeno.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/notification.css",
+    "inputFile": "wwwroot/scss/pages/notification.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/themes/themel1.css",
+    "inputFile": "wwwroot/scss/themes/themel1.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/themes/themel2.css",
+    "inputFile": "wwwroot/scss/themes/themel2.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/partner.css",
+    "inputFile": "wwwroot/scss/pages/partner.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/currency.css",
+    "inputFile": "wwwroot/scss/pages/currency.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/currency-group.css",
+    "inputFile": "wwwroot/scss/pages/currency-group.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/chip.css",
+    "inputFile": "wwwroot/scss/pages/chip.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/exchange-rate.css",
+    "inputFile": "wwwroot/scss/pages/exchange-rate.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/api-log.css",
+    "inputFile": "wwwroot/scss/pages/api-log.scss"
+  },
+  {
+<<<<<<< HEAD
+    "outputFile": "wwwroot/scss/pages/casino-holdem-poker-result.css",
+    "inputFile": "wwwroot/scss/pages/casino-holdem-poker-result.scss"
+=======
+    "outputFile": "wwwroot/js/blackjack-report.es5.js",
+    "inputFile": "wwwroot/js/blackjack-report.js"
+>>>>>>> 036f1fc7... feat: blackjack report
+  }
+]

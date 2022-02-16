@@ -39,7 +39,7 @@ export default function Card(props: CardModel) {
   };
 
   const renderCard = (value, suit) => {
-    if (value == -1 || !value) {
+    if (value == -1 || value == undefined) {
       return (
         <div
           className={styles.card}
@@ -54,7 +54,9 @@ export default function Card(props: CardModel) {
           className={`${styles.card} ${styles[getColor(suit)]}`}
           onClick={() => onClickHandle && onClickHandle(cardName)}
         >
-          <span className={styles["card-title"]}>{typeof value === "string" ? value : getCard(value)}</span>
+          <span className={styles["card-title"]}>
+            {typeof value === "string" ? value : getCard(value)}
+          </span>
           <div className={styles["card-suit"]}>{suitEmojis[suit]}</div>
         </div>
       );

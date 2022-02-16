@@ -6,14 +6,17 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetBigSmallTurboBetHistoryRequest : IRequest<IEnumerable<BigSmallBetHistoryViewModel>>
     {
-        public GetBigSmallTurboBetHistoryRequest(long roundId, string nickname)
+        public GetBigSmallTurboBetHistoryRequest(long roundId, string nickname, decimal? rate)
         {
             RoundId = roundId;
             Nickname = nickname;
+            Rate = rate;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
+
+        public decimal? Rate { get; }
     }
 }

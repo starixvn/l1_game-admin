@@ -2,14 +2,8 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class FishPrawnCrabBetReportEntity
+    public class FishPrawnCrabBetReportEntity : BetReportEntity
     {
-        public DateTime Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
         public decimal BetWin { get; set; }
 
         public decimal Stag { get; set; }

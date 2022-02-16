@@ -1,49 +1,47 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import TimeCounter from "../../shared/time-counter/time-counter";
-import TotalBet from "../../shared/total-bet/total-bet";
-import { Col, Container, Row, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import BetItem from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import {
   BitcoinMasterResultModel,
   BitcoinMasterBetListModel,
   BitcoinMasterModel,
+  SettlementResultModel,
 } from "../../common/model/BitcoinMasterModel";
 import { Notice } from "../../shared/notice/notice";
-import { updateTotalBetOfBetList } from "../../util/util";
 import gameDurations from "./game-durations";
 import EditableText from "../../shared/editable-text";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
-type BitcoinMasterProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-export default class BitcoinMaster extends React.Component<
-  BitcoinMasterProps,
-  BitcoinMasterModel
-> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+export default class BitcoinMaster extends BaseMonitoring<BitcoinMasterModel> {
   constructor(props) {
     super(props);
 
-    this.isFirstLoad = true;
-    this.state = new BitcoinMasterModel();
-    this.renderBetList = this.renderBetList.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
+    this.state = {
+      ...new BitcoinMasterModel(),
+      betList: this.defaultBetList,
+      result: this.defaultResult,
+      settlementResult: this.defaultSettlementResult,
+    };
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultBetList(): {} {
+    return new BitcoinMasterBetListModel();
   }
 
-  handleUM(data) {
+  get defaultResult(): any {
+    return new BitcoinMasterResultModel();
+  }
+
+  get defaultSettlementResult(): any {
+    return new SettlementResultModel();
+  }
+
+  umHandler(data) {
     if (!data.um) {
       return;
     }
@@ -66,17 +64,7 @@ export default class BitcoinMaster extends React.Component<
     }
   }
 
-  handleInGame(data) {
-    if (!data.inGame || Object.keys(data.inGame).length == 0) {
-      return;
-    }
-
-    this.setState({
-      betList: this.getUserBetList(data.inGame, this.state.betList),
-    });
-  }
-
-  handleFinish(data) {
+  finishHandler(data) {
     if (!data.finish) {
       return;
     }
@@ -99,6 +87,9 @@ export default class BitcoinMaster extends React.Component<
         ...newState,
         gameState: GameState.running,
         roundNumber: this.state.roundNumber + 1,
+        betList: this.defaultBetList,
+        result: this.defaultResult,
+        settlementResult: this.defaultSettlementResult,
         time: {
           remainingTime: gameDurations.wholeRound,
         },
@@ -106,7 +97,7 @@ export default class BitcoinMaster extends React.Component<
     }, (waitingTime + 4) * 1000);
   }
 
-  handleRemainingTime(data) {
+  remainingTimeHandler(data) {
     if (!data.remainingTime) {
       return;
     }
@@ -141,40 +132,6 @@ export default class BitcoinMaster extends React.Component<
     }
   }
 
-  handleData(data) {
-    this.handleUM(data);
-    this.handleInGame(data);
-    this.handleFinish(data);
-    this.handleRemainingTime(data);
-  }
-
-  getUserBetList(data, currentData: BitcoinMasterBetListModel) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
-
-    for (const user in data) {
-      let betTracks = data[user].betTracks;
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(
-              data[user].name,
-              betTracks[key],
-              null,
-              null,
-              data[user].system
-            )
-          );
-        }
-      });
-    }
-
-    return currentData;
-  }
-
   setBettingPrice(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       result: {
@@ -201,11 +158,8 @@ export default class BitcoinMaster extends React.Component<
     });
   }
 
-  renderMonitor(systemFilter) {
-    const { betList, roundNumber, time, result, settlementResult, gameState } =
-      this.state;
-
-    updateTotalBetOfBetList(betList, systemFilter);
+  renderMonitor() {
+    const { roundNumber, time, result, gameState } = this.state;
 
     const priceDiffStyle = this.getPriceDiffStyle(result);
 
@@ -299,7 +253,7 @@ export default class BitcoinMaster extends React.Component<
     };
   }
 
-  renderBetList(systemFilter) {
+  renderBetList() {
     const { betList, settlementResult } = this.state;
 
     return (
@@ -310,7 +264,6 @@ export default class BitcoinMaster extends React.Component<
             dataList={betList.up.dataList}
             titles={[<div className={styles["text-green"]}>Up</div>]}
             isWin={settlementResult.up}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -319,7 +272,6 @@ export default class BitcoinMaster extends React.Component<
             dataList={betList.down.dataList}
             titles={[<div className={styles["text-red"]}>Down</div>]}
             isWin={settlementResult.down}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -328,7 +280,6 @@ export default class BitcoinMaster extends React.Component<
             dataList={betList.odd.dataList}
             titles={[<div className={styles["text-white"]}>Odd</div>]}
             isWin={settlementResult.odd}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -337,7 +288,6 @@ export default class BitcoinMaster extends React.Component<
             dataList={betList.even.dataList}
             titles={[<div className={styles["text-black"]}>Even</div>]}
             isWin={settlementResult.even}
-            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -350,6 +300,8 @@ export default class BitcoinMaster extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState === GameState.disabled}
           enableFilter={true}
         />

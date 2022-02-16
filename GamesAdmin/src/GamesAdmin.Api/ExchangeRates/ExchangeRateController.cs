@@ -24,5 +24,9 @@ namespace GamesAdmin.Api.ExchangeRates
         [HttpPost("query")]
         public Task<IEnumerable<ExchangeRate>> Query(QueryExchangeRateModel model)
             => mediator.Send(mapper.Map<QueryExchangeRateRequest>(model));
+
+        [HttpGet("{exchangeId}")]
+        public Task<ExchangeRate> GetByCode(int exchangeId)
+            => mediator.Send(new GetByExchangeIdRequest(exchangeId));
     }
 }

@@ -37,6 +37,7 @@
             IsFold = bet.IsFold;
             Rate = bet.Rate;
             IsQualified = round.SettlementResult?.IsQualified ?? false;
+            ExchangeRateId = round.ExchangeRateId;
         }
 
         public DateTime Time { get; }
@@ -68,6 +69,8 @@
         public decimal Rate { get; }
 
         public bool IsQualified { get; }
+
+        public int ExchangeRateId { get; }
     }
 
     public class CasinoHoldemPokerBetHistoryModel

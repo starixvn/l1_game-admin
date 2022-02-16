@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import { BetChoice } from "./shared/model";
 import GameTemplate from "../game-template/game-template";
 import MonitorBoard from "./shared/monitor-board";
@@ -7,6 +8,7 @@ import KenoResult from "../../shared/keno-result/keno-result";
 import style from "./base.module.scss";
 import KenoResultUpdater from "../../shared/keno-result-updater/keno-result-updater";
 import gameSettings from "./game-settings";
+import { SystemId } from "../../common/model/BetItem";
 
 type Props = {
   onMessage: Function;
@@ -31,6 +33,8 @@ type State = {
   boxes: Array<string>;
   isShowSetResultPanel: boolean;
   disabled: boolean;
+  systemFilter: SystemId;
+  partnerFilter: string;
 };
 
 type KenoMessage = {
@@ -43,13 +47,15 @@ type KenoMessage = {
     placingBets: number;
     lockingBet: number;
   };
-  inGame: { [username: string]: { [box: string]: number } };
+  inGame: { [username: string]: { [box: string]: any } };
   finish: {
     result: Array<number>;
     roundId: number;
     settlementResult: { [box: string]: boolean };
     time: Date;
   };
+  exchangeRates: any;
+  currencies: any;
   result: Array<number>;
   settlementResult: { [box: string]: boolean };
   choices: Array<string>;
@@ -58,11 +64,14 @@ type KenoMessage = {
 export default class extends React.Component<Props, State> {
   private timeout: NodeJS.Timeout;
   private isFirstLoad: boolean;
+  private currencyExchangeRate: Object;
+  private betList: Array<BetChoice>;
+
   constructor(props: Props) {
     super(props);
 
     this.isFirstLoad = true;
-
+    this.currencyExchangeRate = {};
     const choices = gameSettings.choices.map(
       (choice) => new BetChoice([], choice, false)
     );
@@ -77,6 +86,8 @@ export default class extends React.Component<Props, State> {
       boxes: gameSettings.choices,
       isShowSetResultPanel: false,
       disabled: false,
+      systemFilter: SystemId.None,
+      partnerFilter: "",
     };
 
     this.showSetResultPanel = this.showSetResultPanel.bind(this);
@@ -165,20 +176,32 @@ export default class extends React.Component<Props, State> {
         selector: () => message.inGame,
         handle: () => {
           const { inGame } = message;
-          const choices = this.state.choices.map((choice) => {
+          const { systemFilter, partnerFilter } = this.state;
+
+          this.betList = this.state.choices.map((choice) => {
             const bets = Object.values(inGame)
               .reverse()
-              .map((bet) => ({
-                name: bet.name.toString(),
-                bet: bet.betTracks[choice.name],
-              }))
+              .map((bet) => {
+                const rate = this.currencyExchangeRate[bet.currency] || 0;
+                const baseBetAmount = parseFloat(
+                  (bet.betTracks[choice.name] * rate).toFixed(2)
+                );
+                return {
+                  name: bet.name.toString(),
+                  bet: baseBetAmount,
+                  partnerId: bet.partnerId,
+                  system: bet.system,
+                };
+              })
               .filter((betOfUser) => betOfUser.bet > 0);
 
             choice.bets = bets;
             return choice;
           });
 
-          this.setState({ choices });
+          this.setState({
+            choices: this.getBetListByFilter(systemFilter, partnerFilter),
+          });
         },
       },
       {
@@ -195,9 +218,41 @@ export default class extends React.Component<Props, State> {
           this.setState({ choices, result, resultText });
         },
       },
+      {
+        selector: () => message.exchangeRates,
+        handle: () => {
+          const { exchangeRates, currencies } = message;
+          const exchangeRateMapper = currencies.reduce((result, currency) => {
+            const multiplier = currency.multiplier;
+            const exchangeRate = exchangeRates.code[currency.code]
+              ? exchangeRates.code[currency.code].$numberDecimal
+              : 1;
+
+            result[currency.name] = multiplier * exchangeRate;
+
+            return result;
+          }, {});
+
+          this.currencyExchangeRate = exchangeRateMapper;
+        },
+      },
     ];
 
     actions.forEach((action) => action.selector() && action.handle());
+  }
+
+  getBetListByFilter(system, partnerId) {
+    const filterBetList = _.cloneDeep(this.betList);
+
+    filterBetList.forEach((choice) => {
+      choice.bets = choice.bets.filter(
+        (bet) =>
+          (!system || bet.system === system) &&
+          (!partnerId || bet.partnerId === partnerId)
+      );
+    });
+
+    return filterBetList;
   }
 
   updateWinningChoice(choices, settlementResult) {
@@ -285,11 +340,36 @@ export default class extends React.Component<Props, State> {
       return React.createElement(BetTable, betTableProps);
     };
 
+    const onChangePartnerFilter = (partnerId) => {
+      const { systemFilter } = this.state;
+
+      const newBetList = this.getBetListByFilter(systemFilter, partnerId);
+
+      this.setState({
+        partnerFilter: partnerId,
+        choices: newBetList,
+      });
+    };
+
+    const onChangeSystemFilter = (systemFilter) => {
+      const { partnerFilter } = this.state;
+
+      const newBetList = this.getBetListByFilter(systemFilter, partnerFilter);
+
+      this.setState({
+        systemFilter: systemFilter,
+        choices: newBetList,
+      });
+    };
+
     return (
       <div>
         <GameTemplate
           renderMonitor={renderMonitor}
           renderBetList={renderBetList}
+          onChangeSystemFilter={onChangeSystemFilter}
+          onChangePartnerFilter={onChangePartnerFilter}
+          enableFilter={true}
           disabled={this.state.disabled}
         />
         {!this.props.isProduction && (

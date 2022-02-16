@@ -5,5 +5,7 @@ namespace GamesAdmin.Database.Entities.Keno
     public abstract class BaseKenoRoundEntity : BaseRoundEntity
     {
         public IEnumerable<byte> Result { get; set; }
+        public Dictionary<string, bool> SettlementResult { get; set; }
+
     }
 }

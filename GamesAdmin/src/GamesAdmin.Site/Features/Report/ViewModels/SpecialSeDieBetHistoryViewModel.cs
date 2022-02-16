@@ -7,6 +7,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public SeDieRoundResultViewModel RoundResult { get; set; }
 
+        public decimal? ExchangeRate { get; set; }
+
         public IEnumerable<SpecialSeDieBetHistoryRecordViewModel> Bets { get; set; }
     }
 

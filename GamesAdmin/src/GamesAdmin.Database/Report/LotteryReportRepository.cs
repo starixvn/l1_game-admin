@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
@@ -9,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface ILotteryReportRepository
     {
-        Task<(LotteryRoundEntity, IEnumerable<LotteryBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(LotteryRoundEntity, IEnumerable<LotteryBetReportEntity>)> GetAsync(BetReportFilter filter);
     }
 
     public class LotteryReportRepository : BaseBetReportRepository, ILotteryReportRepository
@@ -18,14 +19,15 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(LotteryRoundEntity, IEnumerable<LotteryBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(LotteryRoundEntity, IEnumerable<LotteryBetReportEntity>)> GetAsync(BetReportFilter filter)
         {
             var roundResult = await database.GetCollection<LotteryRoundEntity>(Document.GetCollectionName(typeof(LotteryRoundEntity)))
-                .Find(x => x.Number == roundId).FirstOrDefaultAsync();
+                .Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<LotteryOnesEntity, LotteryBetWithUnwindAccountsEntity>(roundId, nickname, true,  excludeUUS)
+                var project = GetBaseAggregateBuilder<LotteryOnesEntity, LotteryBetWithUnwindAccountsEntity>(
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new LotteryBetReportEntity
                     {
                         Time = x.Time,
@@ -33,7 +35,10 @@ namespace GamesAdmin.Database
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
                         TotalBet = x.TotalAmount,
-                        UserId = x.Uid
+                        UserId = x.Uid,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.PartnerId
                     });
                 var records = await project.ToListAsync();
 

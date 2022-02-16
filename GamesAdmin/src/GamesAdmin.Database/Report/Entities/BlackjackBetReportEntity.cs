@@ -4,15 +4,11 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class BlackjackBetReportEntity
+    public class BlackjackBetReportEntity: BetReportEntity
     {
-        public DateTime Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
         public long HandId { get; set; }
+
+        public int ExchangeRateId { get; set; }
 
         public decimal BetWin { get; set; }
 

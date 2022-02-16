@@ -1,5 +1,6 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
 
 @model StatusViewModel;
 
@@ -183,18 +184,14 @@
                     <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
                     <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
 
-                    <div class="text-message">
-                        <label class="font-weight-bold">Message (VN)</label>
-                        <br />
-                        <textarea rows="3" cols="50" id="vnMessage"></textarea>
-                    </div>
-
-                    <div class="text-message">
-                        <label class="font-weight-bold">Message (EN)</label>
-                        <br />
-                        <textarea rows="3" cols="50" id="enMessage"></textarea>
-                    </div>
-
+                    @foreach (var l in Language.SupportedLanguages)
+                    {
+                        <div class="text-message">
+                            <label class="font-weight-bold">@l.Value</label>
+                            <br />
+                            <textarea rows="3" cols="50" id="message-@l.Key.ToLowerInvariant()"></textarea>
+                        </div>
+                    }
                     <div class="apply-all-checkbox">
                         <input type="checkbox" id="applyAllCheckbox" name="applyAllCheckbox" /> <label for="applyAllCheckbox">Apply to All Games</label>
                     </div>
@@ -414,6 +411,7 @@
 @section Scripts{
     <environment include="Development">
         <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/js/game-constants.js" asp-append-version="true"></script>
         <script src="~/js/game-status.js" asp-append-version="true"></script>
         <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
     </environment>

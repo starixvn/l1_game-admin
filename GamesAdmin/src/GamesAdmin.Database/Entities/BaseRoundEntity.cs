@@ -6,5 +6,7 @@ namespace GamesAdmin.Database.Entities
     {
         [BsonElement("id")]
         public long Number { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

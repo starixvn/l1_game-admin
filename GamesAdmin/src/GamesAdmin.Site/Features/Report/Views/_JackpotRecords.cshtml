@@ -3,7 +3,7 @@
 
 @model IEnumerable<JackpotRecordViewModel>
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         <table class="table table-bordered table-hover sticky-table">
             <thead>
@@ -25,7 +25,7 @@
                         <td>@item.Username</td>
                         <td>@item.Nickname</td>
                         <td class="text-center">
-                                @item.RoundId
+                            @item.RoundId
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(item.Pool)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(item.WinningAmount)</td>

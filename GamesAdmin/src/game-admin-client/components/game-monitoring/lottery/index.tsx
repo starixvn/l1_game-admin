@@ -8,23 +8,17 @@ import BetList from "../../shared/bet-list/bet-list";
 import BetItem from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
-import { LotteryBetList, LotteryModel } from "../../common/model/LotteryModel";
+import {
+  LotteryBetList,
+  LotteryGameResult,
+  LotteryModel,
+} from "../../common/model/LotteryModel";
 import { Notice } from "../../shared/notice/notice";
 import LotteryRoundResult from "../../shared/lottery-round-result";
 import generateBoard from "./lottery-number-generator";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
-type LotteryProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-export default class Lottery extends React.Component<
-  LotteryProps,
-  LotteryModel
-> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+export default class Lottery extends BaseMonitoring<LotteryModel> {
   constructor(props) {
     super(props);
 
@@ -37,88 +31,24 @@ export default class Lottery extends React.Component<
     this.renderBetList = this.renderBetList.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultResult() {
+    return new LotteryGameResult();
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 40) {
-        clearTimeout(this.timeout);
-        const model = new LotteryModel();
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: model.result,
-        });
-        this.isFirstLoad = false;
-      }
-    }
+  get defaultSettlementResult() {
+    return null;
+  }
 
-    if (!!data.inGame && Object.keys(data.inGame).length > 0) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
-      });
-    }
+  get totalTimeInRound() {
+    return 46;
+  }
 
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      const waitingTime = 7;
-      this.setState({
-        result: data.finish.result,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
+  get waitingTime() {
+    return 7;
+  }
 
-      setTimeout(() => {
-        const newState = new LotteryModel();
-
-        this.setState({
-          ...newState,
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 45,
-          },
-        });
-      }, (waitingTime + 1) * 1000);
-    }
-
-    if (!!data.remainingTime) {
-      if (data.remainingTime > 46) {
-        this.setState((prevState) => ({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          result: data.result ? data.result : prevState.result,
-          time: {
-            remainingTime: data.remainingTime - 46,
-          },
-        }));
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: data.roundId,
-            time: {
-              remainingTime: 46,
-            },
-          });
-        }, (data.remainingTime - 46) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: data.roundId,
-          time: {
-            remainingTime: data.remainingTime,
-          },
-        });
-      }
-    }
+  get defaultBetList() {
+    return new LotteryBetList();
   }
 
   getUserBetList(data, currentData: LotteryBetList) {
@@ -128,18 +58,26 @@ export default class Lottery extends React.Component<
     });
 
     for (const user in data) {
-      const { betTracks } = data[user];
+      const { betTracks, system, currency, partnerId, name } = data[user];
+      const userRate = this.currencyExchangeRate[currency];
+
       Object.keys(betTracks)
         .filter((x) => x !== "totalAmount")
         .forEach((betTypeKey) => {
           Object.entries(betTracks[betTypeKey]).forEach(
             ([betChoice, amountOnChoice]) => {
+              const baseBetAmount = parseFloat(
+                (+amountOnChoice * userRate).toFixed(2)
+              );
               currentData[betTypeKey].dataList.unshift(
                 new BetItem(
-                  data[user].name,
-                  amountOnChoice as number,
+                  name,
+                  baseBetAmount,
                   "",
-                  betChoice.replaceAll("-", ",")
+                  betChoice.replaceAll("-", ","),
+                  system,
+                  currency,
+                  partnerId
                 )
               );
               currentData[betTypeKey].total += amountOnChoice;
@@ -193,9 +131,9 @@ export default class Lottery extends React.Component<
   calculateTotalBet() {
     const { betList } = this.state;
     return (
-      betList["Sets4"].total +
+      betList["4Sets"].total +
       betList.special.total +
-      betList["Sets27"].total +
+      betList["27Sets"].total +
       betList.head.total +
       betList.tail.total +
       betList.others.total
@@ -241,13 +179,13 @@ export default class Lottery extends React.Component<
           </Col>
           <Col align="center" className="col-4">
             <Row className="justify-content-center">
-              <TotalBet total={betList["Sets4"].total} type="Sets4" />
+              <TotalBet total={betList["4Sets"].total} type="4Sets" />
               <TotalBet total={betList.special.total} type="special" />
               <TotalBet total={betList.head.total} type="head" />
               <TotalBet total={betList.tail.total} type="tail" />
             </Row>
             <Row className="justify-content-center">
-              <TotalBet total={betList["Sets27"].total} type="Sets27" />
+              <TotalBet total={betList["27Sets"].total} type="27Sets" />
               <TotalBet total={betList.others.total} type="others" />
             </Row>
             <Row className="justify-content-center">
@@ -267,7 +205,7 @@ export default class Lottery extends React.Component<
         <Col className="col-4 col-lg">
           <BetList
             type="withchoice"
-            dataList={betList["Sets4"].dataList}
+            dataList={betList["4Sets"].dataList}
             titles={[<div className="text-center">4 Sets</div>]}
           />
         </Col>
@@ -295,7 +233,7 @@ export default class Lottery extends React.Component<
         <Col className="col-4 col-lg">
           <BetList
             type="withchoice"
-            dataList={betList["Sets27"].dataList}
+            dataList={betList["27Sets"].dataList}
             titles={[<div className="text-center">27 Sets</div>]}
           />
         </Col>
@@ -316,6 +254,9 @@ export default class Lottery extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
+          enableFilter={true}
           disabled={this.state.gameState === GameState.disabled}
         />
         {this.state.gameState === GameState.disabled && (

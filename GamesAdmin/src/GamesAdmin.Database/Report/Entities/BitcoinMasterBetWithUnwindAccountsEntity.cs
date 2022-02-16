@@ -1,14 +1,11 @@
-﻿using GamesAdmin.Database.Entities;
-using MongoDB.Bson;
-
-namespace GamesAdmin.Database.Report.Entities
+﻿namespace GamesAdmin.Database.Report.Entities
 {
-    public class BitcoinMasterBetWithUnwindAccountsEntity : BitcoinMasterBetEntity
+    public class BitcoinMasterBetWithUnwindAccountsEntity : StakeBalancedBetWithUnwindAccountsEntity
     {
-        public ObjectId UserId { get; set; }
+        public decimal BaseAmount { get; set; }
 
-        public AccountInfoEntity AccountInfos { get; set; }
+        public decimal BaseRefund { get; set; }
 
-        public AccountEntity Accounts { get; set; }
+        public decimal BaseBetWin { get; set; }
     }
 }

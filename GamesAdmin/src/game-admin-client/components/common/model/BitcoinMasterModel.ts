@@ -1,5 +1,5 @@
+import BaseMonitoringState from "./BaseMonitoringModel";
 import BetList from "./BetList";
-import TimeModel from "./TimeModel";
 
 export class BitcoinMasterBetListModel {
   up: BetList;
@@ -20,30 +20,13 @@ export class BitcoinMasterResultModel {
   close: number;
 }
 
-class SettlementResultModel {
+export class SettlementResultModel {
   up: boolean;
   down: boolean;
   odd: boolean;
   even: boolean;
 }
 
-export class BitcoinMasterModel {
-  roundNumber: number;
-  betList: BitcoinMasterBetListModel;
-  time: TimeModel;
+export class BitcoinMasterModel extends BaseMonitoringState {
   result: BitcoinMasterResultModel;
-  gameState: number;
-  settlementResult: SettlementResultModel;
-
-  constructor() {
-    this.result = {
-      open: 0,
-      close: 0,
-    };
-
-    this.betList = new BitcoinMasterBetListModel();
-    this.time = new TimeModel();
-    this.gameState = 0;
-    this.settlementResult = new SettlementResultModel();
-  }
 }

@@ -2,6 +2,7 @@ import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
+import BaseMonitoringState from "./BaseMonitoringModel";
 
 class MiniSedieBetList {
   even: BetList;
@@ -21,18 +22,17 @@ class MiniSedieBetList {
   }
 }
 
-export default class MiniSedieModel {
-  roundNumber: number;
-  time: TimeModel;
+export default class MiniSedieModel extends BaseMonitoringState {
   betList: MiniSedieBetList;
   result: Array<DiceModel>;
-  gameState: number;
   isOpenControlResultModal: boolean;
   currentDiceNumber: number;
   isHandleNextRoundResult: boolean;
   nextRoundResult: { [key: string]: boolean };
 
   constructor() {
+    super();
+
     this.result = [
       new DiceModel(-1, DiceType.XocXoc),
       new DiceModel(-1, DiceType.XocXoc),

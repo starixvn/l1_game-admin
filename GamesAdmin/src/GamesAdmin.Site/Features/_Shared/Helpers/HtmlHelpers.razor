@@ -9,8 +9,15 @@
         return value.HasValue ? formatNumber(value.Value) : string.Empty;
     }
 
-    public static string formatNumber2(decimal value)
+    public static string formatNumber2(decimal? value)
     {
-        return value.ToString("#,##0.00");
+        return value.HasValue ? formatNumber(value.Value) : string.Empty;
+    }
+
+    public static string convertByExchangeRate(decimal? value, decimal? rate)
+    {
+        var exchangeRate = !rate.HasValue || rate == 0 ? 1 : rate;
+
+        return value == null ? string.Empty : formatNumber(value / exchangeRate);
     }
 }

@@ -17,6 +17,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public OddEvenBetResultViewModel BetResult { get; set; }
 
         public OddEvenBetChoiceViewModel Choice { get; set; }
+
+        public decimal? ExchangeRate { get; set; }
     }
 
     public class OddEvenBetChoiceViewModel
@@ -26,7 +28,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Amount { get; set; }
     }
 
-    public class OddEvenBetResultViewModel 
+    public class OddEvenBetResultViewModel
     {
         public IEnumerable<byte> Dices { get; set; }
 

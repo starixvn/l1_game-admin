@@ -1,34 +1,20 @@
-import React from "react";
 import BigSmallBase from "../big-small-base/big-small-base";
+import { types } from "../game-monitoring-config";
 
-type BigSmallProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-export default class BigSmall extends React.Component<
-  BigSmallProps,
-  { data: object }
-> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data: null,
-    };
+export default class BigSmall extends BigSmallBase {
+  get turbo(): boolean {
+    return false;
   }
 
-  render() {
-    return (
-      <BigSmallBase
-        sendMessage={this.props.sendMessage}
-        type="taixiu"
-        turbo={false}
-        onMessage={this.props.onMessage}
-        enableFilter={true}
-        isProduction={this.props.isProduction}
-      />
-    );
+  get type() {
+    return types.taixiu;
+  }
+
+  get totalTimeInRound(): number {
+    return 50;
+  }
+
+  get waitingTime(): number {
+    return 10;
   }
 }

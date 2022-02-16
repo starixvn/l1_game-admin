@@ -5,13 +5,13 @@ import BetItem from "../../common/model/BetItem";
 import RouletteModel, {
   RouletteBetList,
 } from "../../common/model/RouletteModel";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 import BetList from "../../shared/bet-list/bet-list";
 import { GameState } from "../../shared/common/GameState";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import Title from "../../shared/title";
 import TotalBet from "../../shared/total-bet/total-bet";
-import GameTemplate from "../game-template/game-template";
 import RouletteResultUpdater from "./result-updater";
 import styles from "./styles.module.scss";
 
@@ -63,25 +63,31 @@ const COLUMN_CHOICE_MAPPER = {
   3: "3rd column",
 };
 
-export default class Roulette extends React.Component<Props, RouletteModel> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
-
+export default class Roulette extends BaseMonitoring<RouletteModel> {
   constructor(props: Props) {
     super(props);
 
-    this.isFirstLoad = true;
     this.state = new RouletteModel();
 
     this.updaterToggle = this.updaterToggle.bind(this);
     this.updaterSubmit = this.updaterSubmit.bind(this);
     this.showUpdater = this.showUpdater.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultResult(): any {
+    return -1;
+  }
+
+  get totalTimeInRound(): number {
+    return PlacingBetDuration;
+  }
+
+  get waitingTime(): number {
+    return WaitingTime;
+  }
+
+  get defaultBetList(): {} {
+    return new RouletteBetList();
   }
 
   showUpdater() {
@@ -115,103 +121,6 @@ export default class Roulette extends React.Component<Props, RouletteModel> {
     this.props.sendMessage(obj);
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (
-        this.isFirstLoad ||
-        this.state.time.remainingTime == PlacingBetDuration
-      ) {
-        clearTimeout(this.timeout);
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: -1,
-        });
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!data.remainingTime) {
-      const { roundId, remainingTime, result } = data;
-      if (remainingTime > PlacingBetDuration) {
-        this.setState({
-          gameState: GameState.waiting,
-          roundNumber: roundId - 1,
-          result: result ? result : this.state.result,
-          time: { remainingTime: remainingTime - PlacingBetDuration },
-        });
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: roundId,
-            result: -1,
-            time: {
-              remainingTime: remainingTime,
-            },
-          });
-        }, (remainingTime - PlacingBetDuration + 1) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: roundId,
-          result: -1,
-          time: { remainingTime: remainingTime },
-        });
-      }
-    }
-
-    if (!!data.finish) {
-      const { result } = data.finish;
-      this.isFirstLoad = false;
-      this.setState({
-        result: result,
-        gameState: GameState.waiting,
-        time: { remainingTime: WaitingTime },
-      });
-
-      setTimeout(() => {
-        this.setState({
-          result: -1,
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: { remainingTime: PlacingBetDuration },
-        });
-      }, (WaitingTime + 1) * 1000);
-    }
-
-    if (!!data.inGame) {
-      this.updateBetList(data.inGame);
-    }
-  }
-
-  updateBetList(data) {
-    const betList = new RouletteBetList();
-    for (const user in data) {
-      const { name, betTracks } = data[user];
-
-      Object.keys(betTracks).forEach((type) => {
-        const betTrack = betTracks[type];
-
-        Object.keys(betTrack).forEach((choice) => {
-          betList[type].total += betTrack[choice];
-          betList[type].dataList.unshift(
-            new BetItem(
-              name,
-              betTrack[choice],
-              "",
-              this.getChoice(type, choice)
-            )
-          );
-        });
-      });
-    }
-    this.setState({ betList: betList });
-  }
-
   getChoice(type, choice) {
     switch (type) {
       case "dozen":
@@ -228,6 +137,45 @@ export default class Roulette extends React.Component<Props, RouletteModel> {
       default:
         return choice;
     }
+  }
+
+  getUserBetList(data, currentData) {
+    Object.keys(currentData).forEach((key) => {
+      currentData[key].total = 0;
+      currentData[key].dataList = new Array<BetItem>();
+    });
+
+    const betList = new RouletteBetList();
+    for (const user in data) {
+      const { name, betTracks, system, currency, partnerId } = data[user];
+      const userRate = this.currencyExchangeRate[data[user].currency];
+
+      Object.keys(betTracks).forEach((type) => {
+        const betTrack = betTracks[type];
+
+        Object.keys(betTrack).forEach((choice) => {
+          const betAmount = betTrack[choice];
+          debugger;
+
+          const baseBetAmount = parseFloat((betAmount * userRate).toFixed(2));
+
+          betList[type].total += baseBetAmount;
+          betList[type].dataList.unshift(
+            new BetItem(
+              name,
+              baseBetAmount,
+              "",
+              this.getChoice(type, choice),
+              system,
+              currency,
+              partnerId
+            )
+          );
+        });
+      });
+    }
+
+    return betList;
   }
 
   renderMonitor() {
@@ -313,22 +261,13 @@ export default class Roulette extends React.Component<Props, RouletteModel> {
     );
   }
 
-  render() {
+  renderGameControl() {
     return (
-      <div>
-        <GameTemplate
-          renderMonitor={this.renderMonitor}
-          renderBetList={this.renderBetList}
-          disabled={this.state.gameState == GameState.disabled}
-        />
-        {!this.props.isProduction && (
-          <RouletteResultUpdater
-            modal={this.state.isShowResultUpdater}
-            toggle={this.updaterToggle}
-            submit={this.updaterSubmit}
-          />
-        )}
-      </div>
+      <RouletteResultUpdater
+        modal={this.state.isShowResultUpdater}
+        toggle={this.updaterToggle}
+        submit={this.updaterSubmit}
+      />
     );
   }
 }

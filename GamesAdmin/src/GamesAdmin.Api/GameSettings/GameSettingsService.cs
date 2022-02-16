@@ -27,7 +27,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateStatus(string[] names, bool enabled);
 
-        Task<bool> UpdateDisbledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false);
+        Task<bool> UpdateDisabledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false);
 
         Task<bool> UpdateBetLimit(string name, BetLimit betLimit);
 
@@ -122,7 +122,7 @@ namespace GamesAdmin.Api.Games
 
                 await repository.InsertOneAsync(entity);
 
-                var messages = new Dictionary<string, string> { [Language.VnValue] = game.EnableSetting.DisabledMessage };
+                var messages = new Dictionary<string, string> { [Language.DefaultLanguageValue] = game.EnableSetting.DisabledMessage };
                 await notificationService.AddDisableMessage(game.Info.Name, messages);
             }
             catch (Exception ex)
@@ -161,11 +161,11 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateDisbledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false)
+        public async Task<bool> UpdateDisabledMessage(string name, Dictionary<string, string> messages, bool isApplyAll = false)
         {
             try
             {
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.DisabledMessage, messages[Language.VnValue]);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.DisabledMessage, messages[Language.DefaultLanguageValue]);
                 var notificationUpdate = new UpdateRequest
                 {
                     DisplayKind = NotificationDisplayKind.DisabledGame,
@@ -222,7 +222,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateOdds(string name,  Dictionary<string, double> odds)
+        public async Task<bool> UpdateOdds(string name, Dictionary<string, double> odds)
         {
             try
             {
@@ -406,7 +406,7 @@ namespace GamesAdmin.Api.Games
 
             var gameConfig = await GetByName(name);
 
-            return new Dictionary<string, string> { { Language.VnValue, gameConfig.EnableSetting.DisabledMessage } };
+            return new Dictionary<string, string> { { Language.DefaultLanguageValue, gameConfig.EnableSetting.DisabledMessage } };
         }
 
         public async Task<bool> UpdateBetaVersion(string[] names, bool isBeta)

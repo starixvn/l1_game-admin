@@ -12,12 +12,25 @@
       method="get">
     <div class="form-row align-items-center">
         <div class="col-auto">
+            <label class="required" asp-for="PartnerId"></label>
+            <select asp-items="@Model.Selections.Partners" asp-for="PartnerId" class="form-control">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="col-auto">
             <label asp-for="RoundId" class="control-label"></label>
             <input type="number" class="form-control" asp-for="RoundId">
         </div>
         <div class="col-auto">
             <label asp-for="Nickname" class="control-label"></label>
             <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+        </div>
+        <div class="col-auto mt-5">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="ConvertToUSD">
+                <label class="form-check-label" asp-for="ConvertToUSD">
+                </label>
+            </div>
         </div>
         <div class="col-auto mt-5">
             <div class="form-check">
@@ -33,6 +46,7 @@
             </div>
         </div>
     </div>
+    <span asp-validation-for="RoundId" class="text-danger"></span>
 </form>
 
 <div id="report-result" class="col-sm-12 report-container">

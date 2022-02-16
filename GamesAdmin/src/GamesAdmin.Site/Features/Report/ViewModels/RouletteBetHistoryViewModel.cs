@@ -3,19 +3,15 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class RouletteBetHistoryViewModel
+    public class RouletteBetHistoryViewModel : BetHistoryViewModel
     {
         public RouletteRoundResultViewModel RoundResult { get; set; }
 
         public  IEnumerable<RouletteBetHistoryRecordViewModel> Bets { get; set; }
     }
 
-    public class RouletteBetHistoryRecordViewModel
+    public class RouletteBetHistoryRecordViewModel : BetHistoryRecordViewModel
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public Dictionary<string, decimal> StraightUp { get; set; }
 
         public Dictionary<string, decimal> Split { get; set; }

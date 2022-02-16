@@ -1,22 +1,17 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
     public class BlackjackReportRequest : IRequest<IEnumerable<BlackjackBetRecord>>
     {
-        public BlackjackReportRequest(long handId, string nickname, bool excludeUUS)
+        public BlackjackReportRequest(BlackjackBetReportFilter filter)
         {
-            HandId = handId;
-            Nickname = nickname;
-            ExcludeUUS = excludeUUS;
+            Filter = filter;
         }
 
-        public long HandId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
+        public BlackjackBetReportFilter Filter { get; }
     }
 }

@@ -1,40 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class KenoBetHistory
+    public class KenoBetHistory : BetHistory
     {
-        public KenoBetHistory(
-            long round,
-            string name,
-            KenoBetChoice choice,
-            decimal amount,
-            int? memberId,
-            string siteId,
-            DateTime time)
-        {
-            Round = round;
-            Name = name;
-            Choice = choice;
-            Amount = amount;
-            MemberId = memberId;
-            SiteId = siteId;
-            Time = time;
-        }
+        public IEnumerable<KenoBetHistoryRecord> Bets { get; set; }
+    }
+    public class KenoBetHistoryRecord : BetHistoryRecord
+    {
+        public KenoBetChoice Choice { get; set; }
 
-        public long Round { get; }
-
-        public string Name { get; }
-
-        public KenoBetChoice Choice { get; }
-
-        public decimal Amount { get; }
-
-        public int? MemberId { get; }
-
-        public string SiteId { get; }
-
-        public DateTime Time { get; }
+        public decimal Amount { get; set; }
     }
 }

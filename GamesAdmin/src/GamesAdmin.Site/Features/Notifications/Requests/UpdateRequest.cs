@@ -7,11 +7,19 @@ namespace GamesAdmin.Site.Features.Notifications.Requests
     {
         public string Id { get; set; }
 
-        public string VnMessage { get; set; }
-
-        public string EnMessage { get; set; }
-
         public byte DisplayKindValue { get; set; }
+
+        public string VNMessage { get; set; }
+
+        public string ENMessage { get; set; }
+
+        public string CNMessage { get; set; }
+
+        public string TWMessage { get; set; }
+
+        public string THMessage { get; set; }
+
+        public string IDMessage { get; set; }
 
         public NotificationDisplayKind DisplayKind
             => Enumeration.FromValue<NotificationDisplayKind>(DisplayKindValue.ToString());

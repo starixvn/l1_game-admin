@@ -1,0 +1,37 @@
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace GamesAdmin.Database.Entities
+{
+    public class BaseBetEntity : MiniGameBaseEntity
+    {
+        [BsonElement("thanhtoan")]
+        public bool Paid { get; set; }
+
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
+        public decimal Betwin { get; set; }
+
+        public string Uid { get; set; }
+
+        public string Name { get; set; }
+
+        [BsonElement("phien")]
+        public long Round { get; set; }
+
+        public int? MemberId { get; set; }
+
+        public string SiteId { get; set; }
+
+        public bool? FreeBet { get; set; }
+
+        public string PartnerId { get; set; }
+
+        public string Currency { get; set; }
+
+<<<<<<< HEAD
+        public decimal Rate { get; set; }
+=======
+        public double Rate { get; set; }
+>>>>>>> 830eed95... feat: implement game history for stake balanced games
+    }
+}

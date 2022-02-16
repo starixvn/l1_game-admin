@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class ThreeCardsReportResultViewModel
+    public class ThreeCardsReportResultViewModel : ReportResultViewModel
     {
         public ThreeCardsRoundResultViewModel RoundResult { get; set; }
 

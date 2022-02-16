@@ -10,9 +10,11 @@ namespace GamesAdmin.Site.Features.Currencies
 {
     public interface ICurrencyService
     {
-        Task<IEnumerable<SelectListItem>> GetCurrenciesForSelection(Func<CurrencyModel, bool> criteria);
+        Task<IEnumerable<SelectListItem>> GetCurrenciesForSelection(Func<CurrencyModel, bool> criteria, Func<CurrencyModel, SelectListItem> transform = null);
 
         Task<IEnumerable<CurrencyModel>> GetAll();
+
+        Task<CurrencyModel> GetById(string id);
     }
 
     public class CurrencyService : ICurrencyService
@@ -29,7 +31,10 @@ namespace GamesAdmin.Site.Features.Currencies
         public Task<IEnumerable<CurrencyModel>> GetAll()
             => api.GetAll();
 
-        public Task<IEnumerable<SelectListItem>> GetCurrenciesForSelection(Func<CurrencyModel, bool> criteria)
-            => mediator.Send(new GetCurrenciesForSelectionRequest(criteria));
+        public Task<IEnumerable<SelectListItem>> GetCurrenciesForSelection(Func<CurrencyModel, bool> criteria, Func<CurrencyModel, SelectListItem> transform = null)
+            => mediator.Send(new GetCurrenciesForSelectionRequest(criteria, transform));
+
+        public Task<CurrencyModel> GetById(string id)
+            => api.GetById(id);
     }
 }

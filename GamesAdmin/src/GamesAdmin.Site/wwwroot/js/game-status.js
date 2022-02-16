@@ -106,7 +106,7 @@
 
         showGameForm: function (gameName, gameDisplayName, view) {
             var settingTitle = view == 'OddSettings' ? 'Odds: ' : 'General Setting: ';
-            
+
             $.ajax({
                 method: "GET",
                 url: "/gamedetails/" + gameName + "?view=" + view
@@ -278,16 +278,18 @@
                     $('#failedMsg').hide();
                     $('#gameModal').modal('hide');
                     location.reload();
-                    
+
                 }, 1000);
             });
         },
 
         updateMessage: function () {
-            var vnMessage = $('#vnMessage').val();
-            var enMessage = $('#enMessage').val();
             var name = $('#applyAllCheckbox').is(":checked") ? "" : $('#msgGameName').val();
-            var data = { name, vnMessage, enMessage };
+            var data = { name, messages: {} };
+            Object.keys(supportedLanguages).forEach(l => {
+                data.messages[l] = $(`#message-${l.toLowerCase()}`).val();
+            });
+
             $('#updateMsgBtn').prop('disabled', true);
 
             $.ajax({
@@ -320,8 +322,10 @@
             }).done(function (result) {
                 $('#msgGameName').val(name);
                 $('#updateMsgGameName').html(displayName);
-                $('#vnMessage').val(result["vi-VN"]);
-                $('#enMessage').val(result["en-US"]);
+
+                Object.keys(supportedLanguages).forEach(c => {
+                    $(`#message-${c.toLowerCase()}`).val(result[c]);
+                })
 
                 $('#messageModal').modal('show');
             });
@@ -467,10 +471,10 @@ $(document).ready(function () {
                 { "width": "5%" },
             ],
             "columnDefs": [
-                { "targets": [ 3, 4, 5, 6,7,8,9,10], "searchable": false }
+                { "targets": [3, 4, 5, 6, 7, 8, 9, 10], "searchable": false }
             ]
         });
-}
+    }
 
     $(".bet-monitor").on("click", function (event) {
         var $this = $(this);
