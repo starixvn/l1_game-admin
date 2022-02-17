@@ -36,6 +36,15 @@ const NewSocketGameIds = [
   15, 16, 17, 18, 19, 36, 37, 40, 41, 43,
 ];
 
+const environmentPartners = {
+  LOCAL: ["ONEworks1", "SBO"],
+  "LOCAL-1": ["ONEworks1", "SBO"],
+  LOCAL_2: ["ONEworks1", "SBO"],
+  SIT: ["ONEworks1", "SBO"],
+  UAT: ["ONEworks1"],
+  PRO: ["ONEworks1"],
+};
+
 export class Home extends React.Component<Props, State> {
   public state: State;
   private messageTransmitter: MessageTransmitterType;
@@ -46,7 +55,9 @@ export class Home extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.partners = process.env.NEXT_PUBLIC_PARTNERS.split(",");
+    this.partners = Cookies.get("env")
+      ? environmentPartners[Cookies.get("env").toLocaleUpperCase()]
+      : [];
     const token =
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
