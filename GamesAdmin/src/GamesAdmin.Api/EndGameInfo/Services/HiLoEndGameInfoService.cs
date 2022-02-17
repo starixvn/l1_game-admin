@@ -24,6 +24,11 @@ namespace GamesAdmin.Api.EndGameInfo
                 return EndGameInfoError.SB1001;
             }
 
+            if(!round.Paid)
+            {
+                return EndGameInfoError.SB1005;
+            }
+
             return new EndGameInfoResult
             {
                 EndTime = round.EndTime,
@@ -34,6 +39,6 @@ namespace GamesAdmin.Api.EndGameInfo
         }
 
         protected override Expression<Func<HiLoRoundEntity, bool>> GetRoundFilterExpression(RetrieveEndGameInfoRequest request)
-            => (round) => round.Number == request.GameRoundId && round.PartnerId == request.PartnerId && round.Paid;
+            => (round) => round.Number == request.GameRoundId && round.PartnerId == request.PartnerId;
     }
 }
