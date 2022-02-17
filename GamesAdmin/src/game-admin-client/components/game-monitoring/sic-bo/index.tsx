@@ -354,6 +354,7 @@ export default class SicBo extends BaseMonitoring<SicBoModel> {
           onChangeSystemFilter={this.onChangeSystemFilter}
           enableFilter={true}
           disabled={this.state.gameState === GameState.disabled}
+          partners={this.props.partners}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

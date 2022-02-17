@@ -40,11 +40,13 @@ export class Home extends React.Component<Props, State> {
   public state: State;
   private messageTransmitter: MessageTransmitterType;
   private isProduction: boolean;
+  private partners: Array<string>;
   protected readonly protocol: string;
 
   constructor(props: Props) {
     super(props);
 
+    this.partners = process.env.NEXT_PUBLIC_PARTNERS.split(",");
     const token =
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
@@ -477,6 +479,7 @@ export class Home extends React.Component<Props, State> {
           onMessage={this.messageTransmitter.addListener}
           onStopReceiveMessage={onStopReceiveMessage}
           isProduction={this.isProduction}
+          partners={this.partners}
         />
         <Modal isOpen={this.state.showDisconnectedNotice} className="notice">
           <Row>Network is disconnected or session timeout.</Row>

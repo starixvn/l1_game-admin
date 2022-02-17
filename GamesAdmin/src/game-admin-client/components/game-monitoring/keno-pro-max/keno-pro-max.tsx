@@ -237,6 +237,7 @@ export default class KenoProMax extends BaseMonitoring<KenoProMaxModel> {
           onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState == GameState.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         />
         $
         {!this.props.isProduction && (

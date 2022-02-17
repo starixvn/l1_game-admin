@@ -291,6 +291,7 @@ export default class Baccarat extends BaseMonitoring<BaccaratModel> {
           onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         ></GameTemplate>
         $
         {!this.props.isProduction && (

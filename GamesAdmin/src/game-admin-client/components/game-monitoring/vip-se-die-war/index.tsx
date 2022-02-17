@@ -504,6 +504,7 @@ export default class VipSeDieWar extends BaseMonitoring<VipSeDieWarModel> {
           onChangePartnerFilter={this.onChangePartnerFilter}
           onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState === GameState.disabled}
+          partners={this.props.partners}
         ></GameTemplate>
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />
