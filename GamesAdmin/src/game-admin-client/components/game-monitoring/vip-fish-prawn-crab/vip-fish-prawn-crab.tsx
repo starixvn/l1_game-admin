@@ -352,6 +352,7 @@ export default class VipFishPrawnCrab extends BaseMonitoring<VipFishPrawnCrabMod
           onChangeSystemFilter={this.onChangeSystemFilter}
           onChangePartnerFilter={this.onChangePartnerFilter}
           disabled={this.state.gameState == GameState.disabled}
+          partners={this.props.partners}
         />
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

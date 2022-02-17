@@ -318,6 +318,7 @@ export default class BigSmallBase extends BaseMonitoring<BigSmallBaseModel> {
       onChangeSystemFilter: this.onChangeSystemFilter,
       enableFilter: true,
       disabled: this.state.currentState == GameState.disabled,
+      partners: this.props.partners,
     };
 
     return (

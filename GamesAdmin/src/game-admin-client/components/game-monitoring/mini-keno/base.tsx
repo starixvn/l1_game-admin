@@ -17,6 +17,7 @@ type Props = {
   sizeOfNumbers: number;
   isProduction: boolean;
   isMini?: boolean;
+  partners: Array<string>;
 };
 
 type State = {
@@ -371,6 +372,7 @@ export default class extends React.Component<Props, State> {
           onChangePartnerFilter={onChangePartnerFilter}
           enableFilter={true}
           disabled={this.state.disabled}
+          partners={this.props.partners}
         />
         {!this.props.isProduction && (
           <KenoResultUpdater

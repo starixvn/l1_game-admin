@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./game-template.module.scss";
 import { Notice } from "../../shared/notice/notice";
 import { Partners, SystemId } from "../../common/model/BetItem";
@@ -10,10 +10,12 @@ type Props = {
   onChangeSystemFilter?: Function;
   onChangePartnerFilter?: Function;
   disabled: boolean;
+  partners: Array<string>;
 };
 
 export default function GameTemplate(props: Props) {
-  const { renderMonitor, renderBetList, disabled, enableFilter } = props;
+  const { renderMonitor, renderBetList, disabled, enableFilter, partners } =
+    props;
 
   const onChangeSystemFilter = (event) => {
     const filterValue = +event.target.value;
@@ -35,8 +37,8 @@ export default function GameTemplate(props: Props) {
             <div>
               <label>Partner</label>
               <select onChange={onChangePartnerFilter}>
-                <option value={""}>All</option>
-                {Object.keys(Partners).map((key) => (
+                {partners.length > 1 && <option value={""}>All</option>}
+                {partners.map((key) => (
                   <option value={key}>{Partners[key]}</option>
                 ))}
               </select>

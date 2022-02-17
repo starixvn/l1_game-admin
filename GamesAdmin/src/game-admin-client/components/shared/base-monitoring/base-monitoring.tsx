@@ -8,6 +8,7 @@ type BaseMonitoringProps = {
   onMessage: Function;
   sendMessage: Function;
   isProduction: boolean;
+  partners: Array<string>;
 };
 
 export default class BaseMonitoring<
@@ -307,6 +308,7 @@ export default class BaseMonitoring<
           onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         ></GameTemplate>
       </div>
     );

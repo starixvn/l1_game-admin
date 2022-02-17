@@ -36,15 +36,28 @@ const NewSocketGameIds = [
   15, 16, 17, 18, 19, 36, 37, 40, 41, 43,
 ];
 
+const environmentPartners = {
+  LOCAL: ["ONEworks1", "SBO"],
+  "LOCAL-1": ["ONEworks1", "SBO"],
+  LOCAL_2: ["ONEworks1", "SBO"],
+  SIT: ["ONEworks1", "SBO"],
+  UAT: ["ONEworks1"],
+  PRO: ["ONEworks1"],
+};
+
 export class Home extends React.Component<Props, State> {
   public state: State;
   private messageTransmitter: MessageTransmitterType;
   private isProduction: boolean;
+  private partners: Array<string>;
   protected readonly protocol: string;
 
   constructor(props: Props) {
     super(props);
 
+    this.partners = Cookies.get("env")
+      ? environmentPartners[Cookies.get("env").toLocaleUpperCase()]
+      : environmentPartners["LOCAL"];
     const token =
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
@@ -477,6 +490,7 @@ export class Home extends React.Component<Props, State> {
           onMessage={this.messageTransmitter.addListener}
           onStopReceiveMessage={onStopReceiveMessage}
           isProduction={this.isProduction}
+          partners={this.partners}
         />
         <Modal isOpen={this.state.showDisconnectedNotice} className="notice">
           <Row>Network is disconnected or session timeout.</Row>

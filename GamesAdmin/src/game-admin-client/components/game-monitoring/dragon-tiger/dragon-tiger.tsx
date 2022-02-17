@@ -226,6 +226,7 @@ export default class DragonTigerState extends BaseMonitoring<DragonTigerModel> {
           onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState == GameState.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         />
         {!this.props.isProduction && (
           <DeskOfCards

@@ -285,6 +285,7 @@ export default class ThreeCards extends BaseMonitoring<ThreeCardsModel> {
           onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState === GameState.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

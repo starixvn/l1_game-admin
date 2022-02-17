@@ -155,8 +155,6 @@ export default class Roulette extends BaseMonitoring<RouletteModel> {
 
         Object.keys(betTrack).forEach((choice) => {
           const betAmount = betTrack[choice];
-          debugger;
-
           const baseBetAmount = parseFloat((betAmount * userRate).toFixed(2));
 
           betList[type].total += baseBetAmount;
