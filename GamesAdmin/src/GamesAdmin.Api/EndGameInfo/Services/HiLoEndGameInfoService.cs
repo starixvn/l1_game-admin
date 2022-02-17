@@ -34,6 +34,6 @@ namespace GamesAdmin.Api.EndGameInfo
         }
 
         protected override Expression<Func<HiLoRoundEntity, bool>> GetRoundFilterExpression(RetrieveEndGameInfoRequest request)
-            => (round) => round.Number == request.GameRoundId && round.PartnerId == request.PartnerId;
+            => (round) => round.Number == request.GameRoundId && round.PartnerId == request.PartnerId && round.Paid;
     }
 }
