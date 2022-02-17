@@ -57,7 +57,7 @@ export class Home extends React.Component<Props, State> {
 
     this.partners = Cookies.get("env")
       ? environmentPartners[Cookies.get("env").toLocaleUpperCase()]
-      : [];
+      : environmentPartners["LOCAL"];
     const token =
       process.env.NEXT_PUBLIC_ENV === "local"
         ? process.env.NEXT_PUBLIC_TOKEN
