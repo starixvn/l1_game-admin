@@ -42,7 +42,7 @@ namespace GamesAdmin.Api.EndGameInfo
                 EndTime = round.Time,
                 ValidBetAmount = amount,
                 TotalAmount = amount,
-                TotalWin = bet.Betwin + amount
+                TotalWin = bet.Betwin
             };
         }
 
