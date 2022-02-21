@@ -25,12 +25,13 @@ namespace GamesAdmin.Api.EndGameInfo
             }
 
             var amount = bets.Sum(x => x.Amount);
+            var refund = bets.Sum(x => x.Refund);
             var totalWin = bets.Sum(x => x.Win ? x.Betwin + x.Amount : x.Refund);
 
             return new EndGameInfoResult
             {
                 EndTime = round.Time,
-                ValidBetAmount = amount,
+                ValidBetAmount = amount - refund,
                 TotalAmount = amount,
                 TotalWin = totalWin
             };
