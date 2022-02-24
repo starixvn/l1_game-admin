@@ -82,7 +82,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game KenoMatch2 = new Game(KenoMatch2Value, "Keno Match MD5", GameId.KenoMatch2);
         public static readonly Game KenoPower1 = new Game(KenoPower1Value, "Keno Power", GameId.KenoPower1);
         public static readonly Game KenoPower2 = new Game(KenoPower2Value, "Keno Power MD5", GameId.KenoPower2);
-        public static readonly Game HiLo = new Game(HiLoValue, "HiLo", GameId.HiLo);
+        public static readonly Game HiLo = new Game(HiLoValue, "Hi-Lo", GameId.HiLo);
 
         public Game()
         {

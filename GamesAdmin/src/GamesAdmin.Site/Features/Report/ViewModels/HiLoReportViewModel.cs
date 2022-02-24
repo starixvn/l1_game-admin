@@ -42,7 +42,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
 
         public string GetErrorMessage() =>
-            "Please input either HandId, Nickname or Username.";
+            "Please input either Round Id, Nickname or Username.";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
