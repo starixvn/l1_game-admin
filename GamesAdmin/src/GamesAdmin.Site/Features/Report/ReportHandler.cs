@@ -372,6 +372,8 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            request.Filter.ToDate.AddDays(1);
             var result = await reportService.GetBlackjackReport(request.Filter);
 
             return new BlackjackReportResultViewModel
@@ -568,6 +570,8 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<HiLoReportResultViewModel> Handle(GetHiLoReportRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            request.Filter.ToDate = request.Filter.ToDate.AddDays(1);
             var result = await reportService.GetHiLoReport(request.Filter);
 
             return new HiLoReportResultViewModel

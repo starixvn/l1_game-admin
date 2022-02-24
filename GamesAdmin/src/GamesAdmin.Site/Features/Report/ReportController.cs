@@ -494,6 +494,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        [Route("Report/Hi-Lo")]
         public async Task<IActionResult> HiLo()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
