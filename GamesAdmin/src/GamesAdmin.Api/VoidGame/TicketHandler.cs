@@ -369,7 +369,7 @@ namespace GamesAdmin.Api.VoidGame
                 .FindAsync(record => record.MemberId == obCustId
                                     && record.PartnerId == partnerId
                                     && record.SiteId == siteId
-                                    && record.Round == gameRoundId
+                                    && (record.Round == gameRoundId || record.RoundId == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)))
                 .ToList();
 
@@ -389,7 +389,7 @@ namespace GamesAdmin.Api.VoidGame
                 .DeleteManyAsync(record => record.MemberId == obCustId
                                     && record.SiteId == siteId
                                     && record.PartnerId == partnerId
-                                    && record.Round == gameRoundId
+                                    && (record.Round == gameRoundId || record.RoundId == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)));
 
             return result.DeletedCount > 0;

@@ -15,8 +15,10 @@ namespace GamesAdmin.Database.Entities
 
         public string Name { get; set; }
 
-        //[BsonElement("phien")]
+        [BsonElement("phien")]
         public long Round { get; set; }
+
+        public long RoundId { get; set; }
 
         public int? MemberId { get; set; }
 
