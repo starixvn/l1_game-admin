@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site.Features.Authentication.ViewModel;
 using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,14 +8,13 @@ using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<bool> SignInAsync(Core.Models.Account user, HttpContext context);
+        Task<UserViewModel> SignInAsync(Core.Models.Account user, HttpContext context);
 
         Task SignOutAsync(HttpContext context);
     }
@@ -31,8 +31,9 @@ namespace GamesAdmin.Site.Features.Authentication
             this.sentryClient = sentryClient;
         }
 
-        public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
+        public async Task<UserViewModel> SignInAsync(Core.Models.Account user, HttpContext context)
         {
+            var failedUser = new UserViewModel(false);
             try
             {
                 var userSignin = await userService.SignIn(user.UserName.ToLowerInvariant(), user.Password);
@@ -40,7 +41,7 @@ namespace GamesAdmin.Site.Features.Authentication
                 if (userSignin == null)
                 {
                     sentryClient.CaptureMessage($"{DateTime.Now} Not found user {user.UserName}.");
-                    return false;
+                    return failedUser;
                 }
 
                 var userRole = userSignin.IsAdmin ? Role.Admin.Value : Role.Operation.Value;
@@ -65,14 +66,14 @@ namespace GamesAdmin.Site.Features.Authentication
 
                 sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
 
-                return true;
+                return new UserViewModel(true, userSignin.JwtToken);
             }
             catch (Exception e)
             {
                 sentryClient.CaptureException(e);
             }
 
-            return false;
+            return failedUser;
         }
 
         public Task SignOutAsync(HttpContext context)

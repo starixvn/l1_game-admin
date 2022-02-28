@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         {
             var result = await gameSettingService.GetOnlineUsers();
 
-            return await ConvertToOnlineUserViewModel(result);
+            return await ConvertToOnlineUserViewModel(result, request.JwtToken);
         }
 
         public async Task<OnlineUsersViewModel> Handle(GetOnlineUsersByGameRequest request, CancellationToken cancellationToken)
@@ -46,7 +46,7 @@ namespace GamesAdmin.Site.Features.Dashboard
             return await ConvertToOnlineUserViewModel(onlineUsers);
         }
 
-        private async Task<OnlineUsersViewModel> ConvertToOnlineUserViewModel(OnlineUsers onlineUsers)
+        private async Task<OnlineUsersViewModel> ConvertToOnlineUserViewModel(OnlineUsers onlineUsers, string jwtToken = "")
         {
             var partners = await GetPartnerSelections();
             var realUsers = mapper.Map<IEnumerable<OnlineUserViewModel>>(onlineUsers.RealUsers)
@@ -66,7 +66,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 Bots = onlineUsers.Bots.Select(x => mapper.Map<BotUserViewModel>(x)),
                 GameTypeItems = GenerateGameItems(),
                 PartnerItems = partners,
-                PartnerIds = partners.Select(partner => partner.Value)
+                PartnerIds = partners.Select(partner => partner.Value),
+                JwtToken = jwtToken
             };
 
             return viewModel;

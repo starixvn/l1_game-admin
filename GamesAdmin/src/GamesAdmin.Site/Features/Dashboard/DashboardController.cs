@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Site.Features.Dashboard.Requests;
+﻿using GamesAdmin.Site.Features.Dashboard.Requests;
 using GamesAdmin.Site.Features.Dashboard.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Dashboard
 {
@@ -20,9 +20,9 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string token = "")
         {
-            var viewModel = await mediator.Send(new GetOnlineUsersRequest());
+            var viewModel = await mediator.Send(new GetOnlineUsersRequest(token));
 
             return View("~/Features/Dashboard/Views/OnlineUsers.cshtml", viewModel);
         }

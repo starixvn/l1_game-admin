@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Api._Shared;
+﻿using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Users.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
 {
@@ -41,5 +41,13 @@ namespace GamesAdmin.Api.Users
         [HttpPost("change_password/")]
         public Task<bool> ChangePassword(string username, string password, string newPassword)
           => mediator.Send(new ChangePasswordRequest(username, password, newPassword));
+
+        //[HttpPost("createJwtToken")]
+        //public Task<string> CreateJwtToken(string username, string password)
+        //    => mediator.Send(new CreateJwtTokenRequest(username, password));
+
+        [HttpPost("validateJwtToken")]
+        public Task<bool> ValidateJwtToken(string token)
+           => mediator.Send(new ValidateJwtTokenRequest(token));
     }
 }

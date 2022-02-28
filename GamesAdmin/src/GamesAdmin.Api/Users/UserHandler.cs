@@ -14,6 +14,8 @@ namespace GamesAdmin.Api.Users
         , IRequestHandler<GetByNameRequest, User>
         , IRequestHandler<SignInRequest, User>
         , IRequestHandler<ChangePasswordRequest, bool>
+        //, IRequestHandler<CreateJwtTokenRequest, string>
+        , IRequestHandler<ValidateJwtTokenRequest, bool>
     {
         private readonly IUserService userService;
 
@@ -39,5 +41,11 @@ namespace GamesAdmin.Api.Users
 
         public Task<bool> Handle(ChangePasswordRequest request, CancellationToken cancellationToken)
         => userService.ChangePassword(request.Username, request.Password, request.NewPassword);
+
+        //public Task<string> Handle(CreateJwtTokenRequest request, CancellationToken cancellationToken)
+        //    => userService.CreateJwtToken(request.Username);
+
+        public Task<bool> Handle(ValidateJwtTokenRequest request, CancellationToken cancellationToken)
+            => userService.ValidateJwtToken(request.Token);
     }
 }

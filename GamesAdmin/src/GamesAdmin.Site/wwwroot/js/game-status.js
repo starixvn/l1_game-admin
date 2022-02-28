@@ -447,6 +447,41 @@
             $(id).show();
             $(headerId).addClass("active");
         },
+
+        setControlHoldemPoker: function (event, gameName) {
+            event.preventDefault();
+
+            this.setResultControl("http://localhost:7775/ResultMonitor/HoldemPokderResult", gameName);
+        },
+
+        setControlSlotGame: function (event, gameName) {
+            event.preventDefault();
+
+            this.setResultControl("http://localhost:7775/ResultMonitor/SlotResult", gameName);
+        },
+
+        setResultControl: function (url, gameName) {
+            var headers = {
+                "Authorization": 'Bearer ' + localStorage.getItem("jwtToken")
+            };
+
+            var data = {
+                gameConfigName: gameName
+            };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                headers: headers,
+                dataType: 'html',
+                success: function (response) {
+                    $('#result-control-modal').modal('show');
+                    $('#result-control-modal .modal-title').html('Set Result Control - ' + gameName);
+                    $('#result-control-modal .modal-body').html(response);
+                }
+            });
+        }
     }
 }(jQuery));
 
@@ -481,4 +516,49 @@ $(document).ready(function () {
         const gameName = $this.data("game-name");
         gameStatus.startMonitor(gameName);
     });
+
+    //    var headers = {
+    //        "Authorization": 'Bearer ' + localStorage.getItem("jwtToken")
+    //    };
+
+    //    $(".bet-monitor-holdem").on("click", function (event) {
+    //        var $this = $(this);
+    //        event.preventDefault();
+    //        var data = {
+    //            gameConfigName: $this.data("game-name")
+    //        };
+
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "http://localhost:7775/ResultMonitor/HoldemPokderResult",
+    //            data: data,
+    //            headers: headers,
+    //            dataType: 'html',
+    //            success: function (response) {
+    //                $('#result-control-modal').modal('show');
+    //                $('#result-control-modal .modal-body').html(response);
+    //            }
+    //        });
+    //    });
+
+    //    $(".bet-monitor-slot").on("click", function (event) {
+    //        var $this = $(this);
+    //        event.preventDefault();
+    //        var data = {
+    //            gameConfigName: $this.data("game-name")
+    //        };
+
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "http://localhost:7775/ResultMonitor/SlotResult",
+    //            data: data,
+    //            headers: headers,
+    //            dataType: 'html',
+    //            success: function (response) {
+    //                $('#result-control-modal').modal('show');
+    //                $('#result-control-modal .modal-body').html(response);
+    //            }
+    //        });
+    //    });
+
 })

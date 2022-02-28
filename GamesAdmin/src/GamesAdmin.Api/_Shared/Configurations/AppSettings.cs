@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using GamesAdmin.Core.IdentityServer;
+﻿using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.ComponentModel;
 
 namespace GamesAdmin.Api._Shared.Configurations
 {
@@ -22,6 +22,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         ChatBotApiSettings ChatBotApiSettings { get; }
 
         ApiLogDatabaseSettings ApiLogDatabaseSettings { get; }
+
+        JwtSettings JwtSettings { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -40,6 +42,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             RemovedDatabaseSettings = configuration.GetSection(nameof(RemovedDatabaseSettings)).Get<RemovedDatabaseSettings>();
             ChatBotApiSettings = configuration.GetSection(nameof(ChatBotApiSettings)).Get<ChatBotApiSettings>();
             ApiLogDatabaseSettings = configuration.GetSection(nameof(ApiLogDatabaseSettings)).Get<ApiLogDatabaseSettings>();
+            JwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
         }
 
         public IdentityServerAuth IdentityServerAuth { get; }
@@ -57,6 +60,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         public ChatBotApiSettings ChatBotApiSettings { get; }
 
         public ApiLogDatabaseSettings ApiLogDatabaseSettings { get; }
+
+        public JwtSettings JwtSettings { get; }
 
         public T GetValue<T>(string key)
         {
