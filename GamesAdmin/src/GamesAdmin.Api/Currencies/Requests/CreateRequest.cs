@@ -15,6 +15,8 @@
         public string PartnerId { get; set; }
 
         public string GroupId { get; set; }
+
+        public bool IsUncountOnTotal { get; set; }
     }
 
     public class CreateRequest : Request<CreateCurrencyModel, bool>

@@ -20,6 +20,6 @@ namespace GamesAdmin.Database.Entities.Currencies
 
         public ObjectId GroupId { get; set; }
 
-        public bool? IsUncountOnTotal { get; set; }
+        public bool IsUncountOnTotal { get; set; }
     }
 }
