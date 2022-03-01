@@ -29,10 +29,6 @@ namespace GamesAdmin.Api.Users
         Task<User> SignIn(string username, string password);
 
         Task<bool> ChangePassword(string username, string password, string newPassword);
-
-        //Task<string> CreateJwtToken(string username);
-
-        Task<bool> ValidateJwtToken(string token);
     }
 
     public class UserService : IUserService
@@ -162,42 +158,6 @@ namespace GamesAdmin.Api.Users
 
             return true;
         }
-
-        //public Task<string> CreateJwtToken(string username)
-        //    => Task.Run(() =>
-        //     {
-        //         var tokenHandler = new JwtSecurityTokenHandler();
-        //         var key = Encoding.ASCII.GetBytes(appSettings.JwtSettings.SecretKey);
-        //         var tokenDescriptor = new SecurityTokenDescriptor
-        //         {
-        //             Subject = new ClaimsIdentity(new[] { new Claim("id", username.ToString()) }),
-        //             Expires = DateTime.UtcNow.AddDays(7),
-        //             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        //         };
-        //         var token = tokenHandler.CreateToken(tokenDescriptor);
-        //         return tokenHandler.WriteToken(token);
-        //     });
-
-        public Task<bool> ValidateJwtToken(string token)
-            => Task.Run(() =>
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(appSettings.JwtSettings.SecretKey);
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var username = jwtToken.Claims.First(x => x.Type == "id").Value.ToString();
-
-                return !string.IsNullOrEmpty(username);
-            });
-
 
         private string CreateJwtToken(string username)
         {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
@@ -18,6 +14,11 @@ using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -53,6 +54,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IPartnerService partnerService;
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly ICacheManager cache;
 
         public GamesHandler(
             IMapper mapper,
@@ -62,7 +64,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            ICacheManager cache)
         {
             this.mapper = mapper;
             this.gameService = gameService;
@@ -72,6 +75,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.partnerService = partnerService;
             this.currencyGroupService = currencyGroupService;
             this.currencyGroupGameService = currencyGroupGameService;
+            this.cache = cache;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -318,6 +322,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var result = await gameService.GetJWT(request.Username, request.UserAgent);
             var redirectUrl = @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
+
             return new GameServerToken
             (
                 result.Token,
@@ -345,7 +350,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                     .ToList();
             }
 
-            return new MonitorViewModel(gameList);
+            var jwtAdminUserToken = cache.GetCache<string>($"{CachedKeys.JwtAdminUserToken}-{request.Username}");
+
+            return new MonitorViewModel(gameList, jwtAdminUserToken);
         }
 
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)

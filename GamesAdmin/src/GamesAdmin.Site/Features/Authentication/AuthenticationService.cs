@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Site._Shared;
 using GamesAdmin.Site.Features.Authentication.ViewModel;
 using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
@@ -24,11 +25,13 @@ namespace GamesAdmin.Site.Features.Authentication
         private const byte ExpiredHours = 3;
         private readonly IUserService userService;
         private readonly ISentryClient sentryClient;
+        private readonly ICacheManager cache;
 
-        public AuthenticationService(IUserService userService, ISentryClient sentryClient)
+        public AuthenticationService(IUserService userService, ISentryClient sentryClient, ICacheManager cache)
         {
             this.userService = userService;
             this.sentryClient = sentryClient;
+            this.cache = cache;
         }
 
         public async Task<UserViewModel> SignInAsync(Core.Models.Account user, HttpContext context)
@@ -65,6 +68,9 @@ namespace GamesAdmin.Site.Features.Authentication
                     });
 
                 sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
+
+
+                cache.SetCache($"{CachedKeys.JwtAdminUserToken}-{userSignin.Username}", userSignin.JwtToken);
 
                 return new UserViewModel(true, userSignin.JwtToken);
             }

@@ -41,13 +41,5 @@ namespace GamesAdmin.Api.Users
         [HttpPost("change_password/")]
         public Task<bool> ChangePassword(string username, string password, string newPassword)
           => mediator.Send(new ChangePasswordRequest(username, password, newPassword));
-
-        //[HttpPost("createJwtToken")]
-        //public Task<string> CreateJwtToken(string username, string password)
-        //    => mediator.Send(new CreateJwtTokenRequest(username, password));
-
-        [HttpPost("validateJwtToken")]
-        public Task<bool> ValidateJwtToken(string token)
-           => mediator.Send(new ValidateJwtTokenRequest(token));
     }
 }
