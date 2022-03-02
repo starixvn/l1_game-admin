@@ -74,7 +74,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpGet]
         public async Task<IActionResult> GameMonitor()
-            => View(await mediator.Send(new GetMonitorRequest() { Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value }));
+            => View(await mediator.Send(new GetMonitorRequest(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "JwtToken")?.Value)));
 
         [HttpGet]
         [Route("gamedetails/{name}")]

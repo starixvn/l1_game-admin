@@ -5,6 +5,11 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class GetMonitorRequest : IRequest<MonitorViewModel>
     {
-        public string Username { get; set; }
+        public GetMonitorRequest(string jwtToken)
+        {
+            JwtToken = jwtToken;
+        }
+
+        public string JwtToken { get; set; }
     }
 }

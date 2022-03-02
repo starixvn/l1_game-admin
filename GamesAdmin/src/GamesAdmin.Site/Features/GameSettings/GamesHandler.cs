@@ -2,7 +2,6 @@
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
-using GamesAdmin.Site._Shared;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
@@ -54,7 +53,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IPartnerService partnerService;
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
-        private readonly ICacheManager cache;
 
         public GamesHandler(
             IMapper mapper,
@@ -64,8 +62,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService,
-            IAppSettings appSettings,
-            ICacheManager cache)
+            IAppSettings appSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
@@ -75,7 +72,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.partnerService = partnerService;
             this.currencyGroupService = currencyGroupService;
             this.currencyGroupGameService = currencyGroupGameService;
-            this.cache = cache;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -350,9 +346,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     .ToList();
             }
 
-            var jwtAdminUserToken = cache.GetCache<string>($"{CachedKeys.JwtAdminUserToken}-{request.Username}");
-
-            return new MonitorViewModel(gameList, jwtAdminUserToken);
+            return new MonitorViewModel(gameList, request.JwtToken);
         }
 
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
