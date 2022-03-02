@@ -5,12 +5,21 @@ using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class EditViewModel : ViewModelBase
     {
         private const int MaxPercentage = 100;
+
+        public List<SelectListItem> RandomModeItems => new List<SelectListItem>
+        {
+            new SelectListItem("1", "1"),
+            new SelectListItem("2", "2"),
+            new SelectListItem("3", "3")
+        };
+
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -20,13 +29,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Game Status:")]
         public bool Enabled { get; set; }
 
-        public string StatusDisplay => Enabled ? "Enabled" : "Disabled";     
+        public string StatusDisplay => Enabled ? "Enabled" : "Disabled";
 
         [DisplayName("Bot Enabled")]
         public bool BotEnabled { get; set; }
 
         [DisplayName("Bot Max Bet Limit")]
-        public double BotMaxBet { get; set; }   
+        public double BotMaxBet { get; set; }
 
         [DisplayName("Delay Start Time")]
         public int DelayStartTime { get; set; }
@@ -60,6 +69,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [DisplayName("Smart Bot Group Ratio (%)")]
         [Range(0, MaxPercentage, ErrorMessage = "Number range [0..100]")]
         public double SmartBotGroupRatio { get; set; }
+
+        public byte RandomMode { get; set; }
     }
 
     public class BotRatioItemViewModel
