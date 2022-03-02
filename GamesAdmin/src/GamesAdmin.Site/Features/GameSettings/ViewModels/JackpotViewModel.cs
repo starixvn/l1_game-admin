@@ -11,8 +11,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool JackpotEnabled { get; set; }
 
-        [DisplayName("Exclude UUS Contribution")]
-        public bool ExcludeUUS { get; set; }
+        [DisplayName("Exclude Test Currency Contribution")]
+        public bool ExcludeTestCurrency { get; set; }
 
         [DisplayName("Jackpot Winning (%)")]
         public double WinningRatio { get; set; }

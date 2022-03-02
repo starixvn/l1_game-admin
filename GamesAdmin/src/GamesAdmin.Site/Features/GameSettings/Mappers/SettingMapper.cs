@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.Jackpot.WinningRatio.ToPercentage()))
                 .ForMember(dest => dest.PlayerContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio.ToPercentage()))
                 .ForMember(dest => dest.BotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
-                .ForMember(dest => dest.ExcludeUUS, opt => opt.MapFrom(src => src.Jackpot.ExcludeUUS))
+                .ForMember(dest => dest.ExcludeTestCurrency, opt => opt.MapFrom(src => src.Jackpot.ExcludeTestCurrency))
                 .ForMember(dest => dest.JackpotEnabled, opt => opt.MapFrom(src => src.Jackpot.Enabled))
                 .ForMember(dest => dest.AllowedCurrency, opt => opt.MapFrom(src => src.Jackpot.AllowedCurrency));
 
