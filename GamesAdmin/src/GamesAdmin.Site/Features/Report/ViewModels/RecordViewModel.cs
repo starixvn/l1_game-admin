@@ -337,5 +337,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public long RoundId { get; set; }
 
         public bool Paid { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

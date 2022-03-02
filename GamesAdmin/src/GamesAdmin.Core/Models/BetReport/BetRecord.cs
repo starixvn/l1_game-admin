@@ -340,5 +340,7 @@ namespace GamesAdmin.Core.Models
         public long RoundId { get; set; }
 
         public bool Paid { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

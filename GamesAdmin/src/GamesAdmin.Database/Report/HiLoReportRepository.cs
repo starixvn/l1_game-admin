@@ -63,7 +63,8 @@ namespace GamesAdmin.Database
                         PartnerId = x.PartnerId,
                         Rate = x.Rate,
                         RoundId = x.Number,
-                        UserId = x.Uid
+                        UserId = x.Uid,
+                        ExchangeRateId = x.ExchangeRateId
                     };
                 });
             }

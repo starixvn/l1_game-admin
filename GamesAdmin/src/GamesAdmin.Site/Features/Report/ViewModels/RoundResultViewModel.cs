@@ -225,8 +225,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class ThreeCardsRoundResultViewModel : BaseRoundResultViewModel
     {
-        public long Number { get; set; }
-
         public IEnumerable<CardViewModel> Result { get; set; }
 
         public ThreeCardsSettlementResultViewModel SettlementResult { get; set; }
