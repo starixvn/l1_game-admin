@@ -20,10 +20,10 @@ namespace GamesAdmin.Site.Features.Authentication
         [HttpPost]
         public async Task<IActionResult> Login([Bind] Core.Models.Account user)
         {
-            var userModel = await authenticationService.SignInAsync(user, HttpContext);
-            if (userModel.IsLoginSuccessfully)
+            var isLoginSuccessfully = await authenticationService.SignInAsync(user, HttpContext);
+            if (isLoginSuccessfully)
             {
-                return RedirectToAction("Index", "Dashboard", new { token = userModel.JwtToken });
+                return RedirectToAction("Index", "Dashboard");
             }
 
             return RedirectToAction(nameof(LoginError));

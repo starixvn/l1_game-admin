@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using GamesAdmin.Core.IdentityServer;
+﻿using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.ComponentModel;
 
 namespace GamesAdmin.Site._Shared.Configurations
 {
@@ -9,7 +9,7 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         string ApiHost { get; }
 
-        IdentityServerAuth IdentityServerAuth { get; }     
+        IdentityServerAuth IdentityServerAuth { get; }
 
         TimeZoneInfo DefaultTimeZone { get; }
 
@@ -18,10 +18,12 @@ namespace GamesAdmin.Site._Shared.Configurations
         string Env { get; }
 
         int MaxDecreased { get; }
-	
-	    ResultPageConfiguration ResultPageConfiguration { get; }
-	
+
+        ResultPageConfiguration ResultPageConfiguration { get; }
+
         GameServerSettings GameServers { get; }
+
+        AdminMonitoringSettings AdminMonitoringSettings { get; }
     }
 
     public class ResultPageConfiguration
@@ -48,6 +50,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             Env = GetValue<string>(nameof(Env));
             ResultPageConfiguration = configuration.GetSection(nameof(ResultPageConfiguration)).Get<ResultPageConfiguration>();
             MaxDecreased = GetValue<int>(nameof(MaxDecreased));
+            AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
         }
 
         public string ApiHost { get; }
@@ -65,6 +68,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public int MaxDecreased { get; }
 
         public GameServerSettings GameServers { get; }
+
+        public AdminMonitoringSettings AdminMonitoringSettings { get; }
 
         public T GetValue<T>(string key)
         {

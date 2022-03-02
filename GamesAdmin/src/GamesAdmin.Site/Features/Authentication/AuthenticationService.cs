@@ -1,5 +1,4 @@
 ﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Features.Authentication.ViewModel;
 using GamesAdmin.Site.Features.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +13,7 @@ namespace GamesAdmin.Site.Features.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<UserViewModel> SignInAsync(Core.Models.Account user, HttpContext context);
+        Task<bool> SignInAsync(Core.Models.Account user, HttpContext context);
 
         Task SignOutAsync(HttpContext context);
     }
@@ -31,9 +30,8 @@ namespace GamesAdmin.Site.Features.Authentication
             this.sentryClient = sentryClient;
         }
 
-        public async Task<UserViewModel> SignInAsync(Core.Models.Account user, HttpContext context)
+        public async Task<bool> SignInAsync(Core.Models.Account user, HttpContext context)
         {
-            var failedUser = new UserViewModel(false);
             try
             {
                 var userSignin = await userService.SignIn(user.UserName.ToLowerInvariant(), user.Password);
@@ -41,14 +39,13 @@ namespace GamesAdmin.Site.Features.Authentication
                 if (userSignin == null)
                 {
                     sentryClient.CaptureMessage($"{DateTime.Now} Not found user {user.UserName}.");
-                    return failedUser;
+                    return false;
                 }
 
                 var userRole = userSignin.IsAdmin ? Role.Admin.Value : Role.Operation.Value;
                 var userClaims = new List<Claim>
                 {
                     new Claim("Username", userSignin.Username),
-                    new Claim("JwtToken", userSignin.JwtToken),
                     new Claim(ClaimTypes.Email, $"{userSignin.Username}@saba.club"),
                     new Claim(ClaimTypes.Role, userRole),
                     new Claim(ClaimTypes.Name, userSignin.Username)
@@ -67,14 +64,14 @@ namespace GamesAdmin.Site.Features.Authentication
 
                 sentryClient.CaptureMessage($"{DateTime.Now} User {user.UserName} logged.");
 
-                return new UserViewModel(true, userSignin.JwtToken);
+                return true;
             }
             catch (Exception e)
             {
                 sentryClient.CaptureException(e);
             }
 
-            return failedUser;
+            return false;
         }
 
         public Task SignOutAsync(HttpContext context)

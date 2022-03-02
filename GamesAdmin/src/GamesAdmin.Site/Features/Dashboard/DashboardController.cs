@@ -20,9 +20,9 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string token = "")
+        public async Task<IActionResult> Index()
         {
-            var viewModel = await mediator.Send(new GetOnlineUsersRequest(token));
+            var viewModel = await mediator.Send(new GetOnlineUsersRequest());
 
             return View("~/Features/Dashboard/Views/OnlineUsers.cshtml", viewModel);
         }

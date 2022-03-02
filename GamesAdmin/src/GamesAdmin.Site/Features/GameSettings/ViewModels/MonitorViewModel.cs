@@ -6,13 +6,19 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class MonitorViewModel
     {
-        public MonitorViewModel(IList<MonitorItemViewModel> gameList, string jwtAdminUserToken)
+        public MonitorViewModel(
+            IList<MonitorItemViewModel> gameList,
+            string adminMonitoringUrl,
+            string jwtAdminUserToken)
         {
             GameList = gameList;
             JwtAdminUserToken = jwtAdminUserToken;
+            AdminMonitoringUrl = adminMonitoringUrl;
         }
 
         public IList<MonitorItemViewModel> GameList { get; }
+
+        public string AdminMonitoringUrl { get; }
 
         public string JwtAdminUserToken { get; }
     }

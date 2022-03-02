@@ -13,9 +13,13 @@ using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -317,7 +321,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
             var result = await gameService.GetJWT(request.Username, request.UserAgent);
-            var redirectUrl = @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
+            var redirectUrl = @$"{appSettings.AdminMonitoringSettings.Url}/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
 
             return new GameServerToken
             (
@@ -346,7 +350,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     .ToList();
             }
 
-            return new MonitorViewModel(gameList, request.JwtToken);
+            return new MonitorViewModel(gameList, $"{appSettings.AdminMonitoringSettings.Url}/ResultMonitor", CreateJwtToken(appSettings.AdminMonitoringSettings.JwtSecretKey));
         }
 
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
@@ -371,5 +375,19 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
             => await gameService.UpdateBetaVersion(request.Names, request.IsBeta);
+
+        private string CreateJwtToken(string username)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitoringSettings.JwtSecretKey);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", username.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
     }
 }
