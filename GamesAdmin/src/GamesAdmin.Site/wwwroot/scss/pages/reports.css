@@ -210,7 +210,7 @@
 .white-chip {
   background: url(../../images/chip_trang.png) no-repeat; }
 
-.blackjack-result .cards .card:last-child:before, .threecards-result .cards .card:last-child:before {
+.blackjack-result .cards .card:last-child:before, .threecards-result .cards .card:last-child:before, .hilo-result .cards .card:last-child:before {
   display: none; }
 
 .table-three-cards .card-suit {

@@ -332,4 +332,15 @@ namespace GamesAdmin.Core.Models
 
         public int ExchangeRateId { get; set; }
     }
+
+    public class HiLoBetRecord : BetRecord
+    {
+        public decimal Amount { get; set; }
+
+        public long RoundId { get; set; }
+
+        public bool Paid { get; set; }
+
+        public int ExchangeRateId { get; set; }
+    }
 }

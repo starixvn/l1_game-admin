@@ -32,8 +32,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public ReportSeletionsViewModel Selections { get; set; }
     }
 
-
-
     [AttributeUsage(AttributeTargets.Property)]
     public class BlalckjackValidationAttribute : ValidationAttribute, IClientModelValidator
     {

@@ -135,5 +135,10 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/casinoholdempoker")]
         public async Task<CasinoHoldemPokerBetHistory> CasinoHoldemPokerBetHistory([FromQuery] CasinoHoldemPokerBetHistoryFilter filter)
          => (await mediator.Send(new CasinoHoldemPokerBetHistoryRequest(filter)));
+
+        [HttpGet]
+        [Route("hilo")]
+        public async Task<IEnumerable<HiLoBetRecord>> HiLo([FromQuery] HiLoBetReportFilter filter)
+            => (await mediator.Send(new HiLoReportRequest(filter)));
     }
 }

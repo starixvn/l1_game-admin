@@ -1,0 +1,58 @@
+@{ Layout = null; }
+
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model EditViewModel;
+
+<fieldset>
+    <legend>Odds</legend>
+    <fieldset>
+        <legend>High</legend>
+        @for (var i = 0; i < (11 / 2 + 1); i++)
+        {
+            <div class="form-group row">
+                @for (var j = 0; j < 2; j++)
+                {
+                    var index = i * 2 + j;
+                    if (index < Model.PayoutViewModel.BetChoiceOdds.Count && Model.PayoutViewModel.BetChoiceOdds[index].Name.Contains("high"))
+                    {
+                        var cardValue = int.Parse(Model.PayoutViewModel.BetChoiceOdds[index].Name.Split("high")[1]);
+                        <div class="col-lg-6">
+                            <label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
+                            <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
+                            <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control hilo-high-odds" data-low-odds="#low@(16-cardValue)" />
+                            <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </fieldset>
+    <fieldset>
+        <legend>Low</legend>
+        @for (var i = 0; i < (11 / 2 + 1); i++)
+        {
+            <div class="form-group row">
+                @for (var j = 11; j < 13; j++)
+                {
+                    var index = i * 2 + j;
+                    if (index < Model.PayoutViewModel.BetChoiceOdds.Count && Model.PayoutViewModel.BetChoiceOdds[index].Name.Contains("low"))
+                    {
+                        <div class="col-lg-6">
+                            <label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
+                            <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
+                            <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control"
+                                   id="@Model.PayoutViewModel.BetChoiceOdds[index].Name" readonly />
+                            <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </fieldset>
+</fieldset>
+<script>
+    $(".hilo-high-odds").on("change", function (event) {
+        var lowOddsId = $(event.target).data("low-odds");
+        $(lowOddsId).val(event.target.value);
+    });
+</script>

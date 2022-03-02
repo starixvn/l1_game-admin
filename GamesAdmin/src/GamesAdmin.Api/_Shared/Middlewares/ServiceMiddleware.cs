@@ -95,6 +95,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
             services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
             services.AddScoped<CasinoHoldemPokerEndGameInfoService>();
+            services.AddScoped<HiLoEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -133,6 +134,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
             services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
             services.AddSingleton(RestService.For<ICasinoHoldemPokerOnlineUserApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<IHiLoApi>(appSettings.GameServers.HiLo.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -162,6 +164,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(MiniKenoReportService<,,>));
             services.AddScoped<VipSeDieWarReportService>();
             services.AddScoped<KenoProMaxReportService>();
+            services.AddScoped<HiLoReportService>();
 
             services.InitApiLog();
         }

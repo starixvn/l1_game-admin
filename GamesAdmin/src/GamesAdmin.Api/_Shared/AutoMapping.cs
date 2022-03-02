@@ -304,6 +304,10 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
 
             CreateMap<CasinoHoldemPokerBetHistoryModel, CasinoHoldemPokerBetHistory>();
+
+            CreateMap<HiLoBetReportEntity, HiLoBetRecord>();
+            CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
+            CreateMap<HiLoRoundEntity, HiLoRoundResult>();
         }
     }
 }

@@ -44,6 +44,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.KenoPower2, new GameTicketCollection( "kenopower2_ones", "kenopower2_cuocs") },
             { GameId.BitcoinMaster, new GameTicketCollection( "bitcoinmaster_bets", "bitcoinmaster_betlogs") },
             { GameId.CasinoHoldemPoker, new GameTicketCollection( string.Empty, "casinoholdempoker_cuocs") },
+            { GameId.HiLo, new GameTicketCollection( string.Empty, "hilo_betlogs") },
         };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)

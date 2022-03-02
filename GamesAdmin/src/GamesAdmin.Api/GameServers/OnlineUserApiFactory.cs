@@ -48,6 +48,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.KenoNorthValue, typeof(IKenoNorthOnlineUserApi) },
             { Game.BitcoinMasterValue, typeof(IBitcoinMasterOnlineUserApi) },
             { Game.CasinoHoldemPokerValue, typeof(ICasinoHoldemPokerOnlineUserApi) },
+            { Game.HiLoValue, typeof(IHiLoApi) },
 
         };
 
