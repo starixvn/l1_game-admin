@@ -19,6 +19,10 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
     public class Auth
     {
+        public string OperatorId { get; set; }
+
+        public string OperatorSecret { get; set; }
+
         public string PartnerId { get; set; }
 
         public string PartnerSecret { get; set; }
