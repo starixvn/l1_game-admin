@@ -1,10 +1,10 @@
-﻿using System;
+﻿using GamesAdmin.Core.Models;
+using GamesAdmin.Site.Features.GameSettings.Requests;
+using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
-using GamesAdmin.Site.Features.GameSettings.Requests;
-using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -51,6 +51,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
+
+        Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
     }
 
     public class GameSettingService : IGameSettingService
@@ -169,5 +171,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return await gameApi.UpdateBetaVersion(names, enabled);
         }
+
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+            => gameApi.GetAdminMonitoringSettings(username);
     }
 }

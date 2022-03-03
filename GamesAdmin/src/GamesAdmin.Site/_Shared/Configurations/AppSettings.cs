@@ -22,8 +22,6 @@ namespace GamesAdmin.Site._Shared.Configurations
         ResultPageConfiguration ResultPageConfiguration { get; }
 
         GameServerSettings GameServers { get; }
-
-        AdminMonitoringSettings AdminMonitoringSettings { get; }
     }
 
     public class ResultPageConfiguration
@@ -50,7 +48,6 @@ namespace GamesAdmin.Site._Shared.Configurations
             Env = GetValue<string>(nameof(Env));
             ResultPageConfiguration = configuration.GetSection(nameof(ResultPageConfiguration)).Get<ResultPageConfiguration>();
             MaxDecreased = GetValue<int>(nameof(MaxDecreased));
-            AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
         }
 
         public string ApiHost { get; }
@@ -68,8 +65,6 @@ namespace GamesAdmin.Site._Shared.Configurations
         public int MaxDecreased { get; }
 
         public GameServerSettings GameServers { get; }
-
-        public AdminMonitoringSettings AdminMonitoringSettings { get; }
 
         public T GetValue<T>(string key)
         {

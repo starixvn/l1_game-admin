@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Site._Shared.Configurations
+﻿namespace GamesAdmin.Api._Shared.Configurations
 {
     public class AdminMonitoringSettings
     {

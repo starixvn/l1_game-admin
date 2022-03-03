@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,14 +7,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class MonitorViewModel
     {
-        public MonitorViewModel(
-            IList<MonitorItemViewModel> gameList,
-            string adminMonitoringUrl,
-            string jwtAdminUserToken)
+        public MonitorViewModel(IList<MonitorItemViewModel> gameList, AdminMonitoringModel adminMonitoringModel)
         {
             GameList = gameList;
-            JwtAdminUserToken = jwtAdminUserToken;
-            AdminMonitoringUrl = adminMonitoringUrl;
+            JwtAdminUserToken = adminMonitoringModel.Token;
+            AdminMonitoringUrl = adminMonitoringModel.Url;
         }
 
         public IList<MonitorItemViewModel> GameList { get; }

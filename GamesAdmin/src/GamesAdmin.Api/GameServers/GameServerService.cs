@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,7 +39,9 @@ namespace GamesAdmin.Api.GameServers
 
         Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request);
         Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request);
-        Task<bool> VerifyToken(string token);
+        Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+
+        Task<bool> VerifyAdminMonitoringToken(string token);
     }
 
     public class GameServerService : IGameServerService
@@ -245,12 +248,26 @@ namespace GamesAdmin.Api.GameServers
             }
  return Enumerable.Empty<Card>();}
 
-        public async Task<bool> VerifyToken(string token)
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitoringSettings.JwtSecretKey);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("username", username.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return Task.FromResult(new AdminMonitoringModel(tokenHandler.WriteToken(token), appSettings.AdminMonitoringSettings.Url));
+        }
+
+        public async Task<bool> VerifyAdminMonitoringToken(string token)
         {
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitorinJwtgSecretKey);
+                var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitoringSettings.JwtSecretKey);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -269,11 +286,10 @@ namespace GamesAdmin.Api.GameServers
         }
             catch (Exception ex)
             {
-                sentryClient.CaptureException(ex);
+                HandleException(ex);
             }
 
             return false;
         }
-
     }
 }

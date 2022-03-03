@@ -34,13 +34,13 @@
                             {
                                 if (role == Role.Admin.Value)
                                 {
-                                    <a class="icon-action bet-monitor-slot" onclick="gameStatus.setControlSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
                                 }
 
                             }
                             else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value || @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {
-                                <a class="icon-action bet-monitor-holdem" onclick="gameStatus.setControlHoldemPoker(event, '@Model.GameList[index].Name')" data-game-name=""><i class="icon-chart"></i></a>
+                                <a href="#" class="icon-action" onclick="gameStatus.setControlHoldemPoker(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
                             }
                             else
                             {

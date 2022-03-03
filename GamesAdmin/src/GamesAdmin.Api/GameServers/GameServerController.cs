@@ -44,6 +44,10 @@ namespace GamesAdmin.Api.GameServers
         public Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request)
            => mediator.Send(request);
 
+        [HttpPost("get_admin_monitoring_settings")]
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+         => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
+
         [HttpPost("hilo/set_result")]
         public Task<IEnumerable<Card>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
         => mediator.Send(request);

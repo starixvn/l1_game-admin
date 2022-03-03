@@ -239,7 +239,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data) {
-                        window.open(data.redirectUrl, "_blank", "width=1020,height=765");
+                        window.open(adminMonitoringUrl + data.redirectUrl, "_blank", "width=1020,height=765");
                     }
                 });
         },
@@ -255,26 +255,7 @@
         },
 
         setResultControl: function (action, gameName) {
-            var headers = {
-                "Authorization": 'Bearer ' + jwtAdminUserToken
-            };
-
-            var data = {
-                gameConfigName: gameName
-            };
-
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:7775/ResultMonitor/" + action,
-                data: data,
-                headers: headers,
-                dataType: 'html',
-                success: function (response) {
-                    $('#result-control-modal').modal('show');
-                    $('#result-control-modal .modal-title').html('Set Result Control - ' + gameName);
-                    $('#result-control-modal .modal-body').html(response);
-                }
-            });
+            window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
         },
 
         submit: function () {
