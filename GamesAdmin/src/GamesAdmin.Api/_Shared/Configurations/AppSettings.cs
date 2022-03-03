@@ -22,6 +22,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         ChatBotApiSettings ChatBotApiSettings { get; }
 
         ApiLogDatabaseSettings ApiLogDatabaseSettings { get; }
+
+        public string AdminMonitorinJwtgSecretKey { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -40,6 +42,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             RemovedDatabaseSettings = configuration.GetSection(nameof(RemovedDatabaseSettings)).Get<RemovedDatabaseSettings>();
             ChatBotApiSettings = configuration.GetSection(nameof(ChatBotApiSettings)).Get<ChatBotApiSettings>();
             ApiLogDatabaseSettings = configuration.GetSection(nameof(ApiLogDatabaseSettings)).Get<ApiLogDatabaseSettings>();
+            AdminMonitorinJwtgSecretKey = GetValue<string>(nameof(AdminMonitorinJwtgSecretKey));
         }
 
         public IdentityServerAuth IdentityServerAuth { get; }
@@ -57,6 +60,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         public ChatBotApiSettings ChatBotApiSettings { get; }
 
         public ApiLogDatabaseSettings ApiLogDatabaseSettings { get; }
+
+        public string AdminMonitorinJwtgSecretKey { get; }
 
         public T GetValue<T>(string key)
         {

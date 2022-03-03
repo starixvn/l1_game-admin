@@ -350,7 +350,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     .ToList();
             }
 
-            return new MonitorViewModel(gameList, $"{appSettings.AdminMonitoringSettings.Url}/ResultMonitor", CreateJwtToken(appSettings.AdminMonitoringSettings.JwtSecretKey));
+            return new MonitorViewModel(gameList, $"{appSettings.AdminMonitoringSettings.Url}/ResultMonitor", CreateJwtToken(request.Username));
         }
 
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
@@ -382,7 +382,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitoringSettings.JwtSecretKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", username.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("username", username.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

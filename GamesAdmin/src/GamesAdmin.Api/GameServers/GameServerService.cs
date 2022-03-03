@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.Games;
+﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
@@ -7,11 +8,16 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using Microsoft.IdentityModel.Tokens;
 using Refit;
 using Sentry;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
@@ -32,6 +38,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request);
         Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request);
+        Task<bool> VerifyToken(string token);
     }
 
     public class GameServerService : IGameServerService
@@ -44,6 +51,8 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGameSettingsService gameSettingService;
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
         private readonly IHiLoApi hiloApi;
+        private readonly IGenericRepository<AdminUserEntity> userRepository;
+        private readonly IAppSettings appSettings;
 
         public GameServerService(
             IGameServerApi serverApi,
@@ -53,7 +62,9 @@ namespace GamesAdmin.Api.GameServers
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
             IHoldemPokerApiFactory holdemPokerApiFactory,
-            IHiLoApi hiloApi)
+            IHiLoApi hiloApi,
+            IAppSettings appSettings,
+            IGenericRepository<AdminUserEntity> userRepository)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
@@ -63,6 +74,8 @@ namespace GamesAdmin.Api.GameServers
             this.gameSettingService = gameSettingService;
             this.holdemPokerApiFactory = holdemPokerApiFactory;
             this.hiloApi = hiloApi;
+            this.appSettings = appSettings;
+            this.userRepository = userRepository;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -230,8 +243,37 @@ namespace GamesAdmin.Api.GameServers
             {
                 HandleException(ex);
             }
+ return Enumerable.Empty<Card>();}
 
-            return Enumerable.Empty<Card>();
+        public async Task<bool> VerifyToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitorinJwtgSecretKey);
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var username = jwtToken.Claims.First(x => x.Type == "username").Value.ToString();
+
+                var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
+
+                return userEntity != null;
         }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
+
     }
 }

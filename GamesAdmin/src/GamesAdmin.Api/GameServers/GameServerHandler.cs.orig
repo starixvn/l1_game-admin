@@ -1,0 +1,67 @@
+﻿using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.RoundResults;
+using GamesAdmin.Core.Models.SlotGame;
+using MediatR;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace GamesAdmin.Api.GameServers
+{
+    public class GameServerHandler
+        : IRequestHandler<ReloadRequest, bool>
+        , IRequestHandler<JWTRequest, JsonWebToken>
+        , IRequestHandler<OnlineUserRequest, OnlineUsers>
+        , IRequestHandler<NotifyRoundsRequest, bool>
+        , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
+        , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
+        , IRequestHandler<SetHiLoResultRequest, IEnumerable<Card>>
+        , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
+    {
+        private readonly IGameServerService gameServerService;
+
+        public GameServerHandler(IGameServerService gameServerService)
+        {
+            this.gameServerService = gameServerService;
+        }
+
+        public async Task<bool> Handle(ReloadRequest request, CancellationToken cancellationToken)
+        {
+            await gameServerService.Reload();
+
+            return true;
+        }
+
+        public Task<JsonWebToken> Handle(JWTRequest request, CancellationToken cancellationToken)
+        => gameServerService.GetJWT(request);
+
+        public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
+        => string.IsNullOrWhiteSpace(request.Game)
+                ? gameServerService.GetOnlineUsers()
+                : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
+
+        public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
+        => gameServerService.NotifyRoundResult(request.Rounds);
+
+        public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
+        => gameServerService.SetSlotBoard(request);
+
+<<<<<<< HEAD
+        public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetCasinoHoldemPokerResult(request);
+
+        public Task<IEnumerable<Card>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+=======
+        public Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
+      => gameServerService.SetCasinoHoldemPokerResult(request);
+
+       public Task<IEnumerable<Card>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+>>>>>>> e9c296d6 (SSO to monitoring site - api Verify Admin Monitoring Token)
+        => gameServerService.SetHiLoResult(request);
+
+        public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
+      => gameServerService.VerifyToken(request.Token);
+    }
+}

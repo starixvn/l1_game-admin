@@ -47,5 +47,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("hilo/set_result")]
         public Task<IEnumerable<Card>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
         => mediator.Send(request);
+
+        [HttpPost("verify_admin_monitoring_token")]
+        public Task<bool> VerifyAdminMonitoringToken(string token)
+          => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
     }
 }

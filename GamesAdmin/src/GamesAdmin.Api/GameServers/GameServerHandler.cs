@@ -18,6 +18,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
         , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
         , IRequestHandler<SetHiLoResultRequest, IEnumerable<Card>>
+        , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
     {
         private readonly IGameServerService gameServerService;
 
@@ -50,7 +51,10 @@ namespace GamesAdmin.Api.GameServers
         public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetCasinoHoldemPokerResult(request);
 
-        public Task<IEnumerable<Card>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+       public Task<IEnumerable<Card>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
         => gameServerService.SetHiLoResult(request);
+
+        public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
+      => gameServerService.VerifyToken(request.Token);
     }
 }
