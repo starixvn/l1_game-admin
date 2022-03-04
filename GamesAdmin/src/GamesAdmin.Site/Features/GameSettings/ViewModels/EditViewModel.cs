@@ -70,6 +70,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Range(0, MaxPercentage, ErrorMessage = "Number range [0..100]")]
         public double SmartBotGroupRatio { get; set; }
 
+        [DisplayName("Random Mode")]
         public byte RandomMode { get; set; }
     }
 
