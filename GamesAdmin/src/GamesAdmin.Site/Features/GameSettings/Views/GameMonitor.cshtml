@@ -34,19 +34,19 @@
                             {
                                 if (role == Role.Admin.Value)
                                 {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setControlSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
                                 }
 
                             }
                             else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value || @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {
-                                <a href="#" class="icon-action" onclick="gameStatus.setControlHoldemPoker(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                <a href="#" class="icon-action" onclick="gameStatus.setControlResultHoldemPoker(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
                             }
                             else
                             {
                                 if (role == Role.Admin.Value && Model.GameList[index].Name == Game.HiLoValue)
                                 {
-                                    <a class="icon-action" asp-controller="ResultMonitor" asp-action="HiLo"><i class="icon-chart"></i></a>
+                                    <a class="icon-action" onclick="gameStatus.setControlResultHiLo()"><i class="icon-chart"></i></a>
                                 }
                                 else
                                 {

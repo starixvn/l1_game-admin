@@ -244,12 +244,17 @@
                 });
         },
 
-        setControlHoldemPoker: function (event, gameName) {
+        setControlResultHilo: function (event) {
+            event.preventDefault();
+            this.setResultControl("HiLoResult");
+        },
+
+        setControlResultHoldemPoker: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("HoldemPokderResult", gameName);
         },
 
-        setControlSlotGame: function (event, gameName) {
+        setControlResultSlotGame: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("SlotResult", gameName);
         },
