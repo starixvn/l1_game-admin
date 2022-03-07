@@ -44,6 +44,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string KenoPower2Value = "kenopower2";
         public const string HiLoValue = "hilo";
         public const string TexasHoldemPokerValue = "texasholdempoker";
+        public const string NightClubValue = "nightclub";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -85,6 +86,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game KenoPower2 = new Game(KenoPower2Value, "Keno Power MD5", GameId.KenoPower2);
         public static readonly Game HiLo = new Game(HiLoValue, "Hi-Lo", GameId.HiLo);
         public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Hold'em", GameId.TexasHoldemPoker);
+        public static readonly Game NightClub = new Game(NightClubValue, "Night Club", GameId.NightClub);
 
         public Game()
         {
