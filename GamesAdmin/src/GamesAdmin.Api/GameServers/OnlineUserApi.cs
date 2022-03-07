@@ -228,6 +228,6 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
 
         [Post("/api/set-result")]
-        Task<IEnumerable<Card>> SetResult([Body] SetHiLoResultRequest request);
+        Task<IEnumerable<PokerCard>> SetResult([Body] SetHiLoResultRequest request);
     }
 }

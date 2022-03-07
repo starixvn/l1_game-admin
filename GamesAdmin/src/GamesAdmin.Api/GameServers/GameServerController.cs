@@ -49,7 +49,7 @@ namespace GamesAdmin.Api.GameServers
          => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
 
         [HttpPost("hilo/set_result")]
-        public Task<IEnumerable<Card>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
+        public Task<IEnumerable<PokerCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
         => mediator.Send(request);
 
         [HttpPost("verify_admin_monitoring_token")]

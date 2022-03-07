@@ -38,7 +38,9 @@ namespace GamesAdmin.Api.GameServers
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
         Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request);
-        Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request);
+
+        Task<IEnumerable<PokerCard>> SetHiLoResult(SetHiLoResultRequest request);
+
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 
         Task<bool> VerifyAdminMonitoringToken(string token);
@@ -236,7 +238,7 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
+        public async Task<IEnumerable<PokerCard>> SetHiLoResult(SetHiLoResultRequest request)
         {
             try
             {
@@ -246,7 +248,8 @@ namespace GamesAdmin.Api.GameServers
             {
                 HandleException(ex);
             }
- return Enumerable.Empty<Card>();}
+            return Enumerable.Empty<PokerCard>();
+        }
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
         {
