@@ -6,18 +6,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public abstract class BaseRoundResultViewModel
     {
-        public decimal ExchangeRate { get; set; }
-
-        public decimal? ConvertByExchangeRate(decimal? value)
-        {
-            var exchangeRate = ExchangeRate == 0 ? 1 : ExchangeRate;
-
-            return value != null ? value / exchangeRate : null;
-        }
-    }
-
-    public class RoundResultViewModel : BaseRoundResultViewModel
-    {
         public DateTime Time { get; set; }
 
         public long Number { get; set; }
@@ -336,7 +324,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool RedBig { get; set; }
         public bool RedSmall { get; set; }
     }
-    }
 
     public class HiLoRoundResultViewModel : BaseRoundResultViewModel
     {
@@ -352,4 +339,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal BaseAmount => Amount * Rate;
 
         public decimal BaseBetwin => Betwin * Rate;
+    }
 }

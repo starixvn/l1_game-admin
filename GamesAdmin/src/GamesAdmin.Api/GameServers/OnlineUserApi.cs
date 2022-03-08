@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
 using Refit;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers

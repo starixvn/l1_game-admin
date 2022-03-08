@@ -16,17 +16,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public DateTimeOffset Time { get; set; }
 
-s        public string PartnerId { get; set; }
+        public string PartnerId { get; set; }
 
         public string Partner { get; set; }
 
         public string Currency { get; set; }
 
         public decimal Rate { get; set; }
-
-        public decimal BaseRefund => ConvertToBase(Refund);
-
-        public decimal BaseBetWin => ConvertToBase(BetWin);
 
         public decimal BaseRefund => ConvertToBase(Refund);
 

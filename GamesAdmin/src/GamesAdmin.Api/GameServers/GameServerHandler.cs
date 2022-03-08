@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Api.GameServers.Requests;
+﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,6 +49,7 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetCasinoHoldemPokerResult(request);
+
         public Task<IEnumerable<Card>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
         => gameServerService.SetHiLoResult(request);
     }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
@@ -13,6 +9,11 @@ using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -567,7 +568,7 @@ namespace GamesAdmin.Site.Features.Report
                 })
             };
         }
-        
+
         public async Task<HoldemPokerReportViewModel> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
         {
             var selections = new ReportSeletionsViewModel
@@ -577,12 +578,6 @@ namespace GamesAdmin.Site.Features.Report
             };
 
             return new HoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
-        }
-
-        public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
-        {
-            var service = reportServiceFactory.GetService(request.Game);
-            return service.Get(request.Filter);
         }
 
         public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)
@@ -601,7 +596,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, request.Filter.GameId, records);
         }
-        
+
         public async Task<HoldemPokerBetHistoryViewModel> Handle(GetHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
             => new HoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetHoldemPokerBetHistory(request.Filter));
 

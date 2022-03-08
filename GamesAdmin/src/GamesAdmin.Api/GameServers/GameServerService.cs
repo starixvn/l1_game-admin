@@ -52,7 +52,7 @@ namespace GamesAdmin.Api.GameServers
             ISlotBoardApiFactory slotBoardApiFactory,
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
-            IHoldemPokerApiFactory holdemPokerApiFactory)
+            IHoldemPokerApiFactory holdemPokerApiFactory,
             IHiLoApi hiloApi)
         {
             this.serverApi = serverApi;
@@ -219,7 +219,8 @@ namespace GamesAdmin.Api.GameServers
                 return null;
             }
         }
-         public async Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
+
+        public async Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
         {
             try
             {
@@ -231,6 +232,6 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return Enumerable.Empty<Card>();
-}
+        }
     }
 }

@@ -18,10 +18,6 @@ namespace GamesAdmin.Database.Report.Entities
 
         public decimal Rate { get; set; }
 
-        public string Currency { get; set; }
-
         public string Partner { get; set; }
-
-        public decimal Rate { get; set; }
     }
 }

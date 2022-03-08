@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -228,8 +226,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> Blackjack()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
-
-            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
 
             return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
         }
@@ -487,10 +483,12 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetHiLoReport(HiLoBetReportFilter model)
         {
             return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
-       [HttpGet]
+        }
+
+        [HttpGet]
         [Route("Report/CasinoHoldem")]
         public async Task<IActionResult> CasinoHoldemPoker()
-            => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
+           => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
 
         [HttpGet]
         [Route("Report/TexasHoldem")]
@@ -504,7 +502,6 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public async Task<IActionResult> HoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
             => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
-        }
 
         private async Task<ReportViewModel> GetReportViewModel()
         {
@@ -512,5 +509,6 @@ namespace GamesAdmin.Site.Features.Report
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
+
     }
 }
