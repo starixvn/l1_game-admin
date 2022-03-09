@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
@@ -17,6 +18,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Handlers
 
         public async Task<ApiLogListViewModel> Handle(QueryApiLogRequest request, CancellationToken cancellationToken)
         {
+            request.ToDate += new TimeSpan(23, 59, 59);
             var model = Mapper.Map<QueryLogModel>(request);
             var logs = await Api.Query(model);
             var configs = ApiLogConstant.ViewConfigsMappings[(ApiLogType)request.LogType];
