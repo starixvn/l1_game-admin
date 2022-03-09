@@ -5,5 +5,7 @@
         public string Url { get; set; }
 
         public string JwtSecretKey { get; set; }
+
+        public int ExpiredTokenByDay { get; set; }
     }
 }

@@ -35,7 +35,8 @@ namespace GamesAdmin.Api.GameServers
             return true;
         }
 
-        public Task<JsonWebToken> Handle(JWTRequest request, CancellationToken cancellationToken) => gameServerService.GetJWT(request);
+        public Task<JsonWebToken> Handle(JWTRequest request, CancellationToken cancellationToken)
+            => gameServerService.GetJWT(request);
 
         public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
             => string.IsNullOrWhiteSpace(request.Game)

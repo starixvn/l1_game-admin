@@ -170,6 +170,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             var result = await mediator.Send(request);
 
+<<<<<<< HEAD
             HttpContext.Response.Cookies.Append("token", result.Token);
             HttpContext.Response.Cookies.Append("game-server-endpoint", appSettings.GameServers.Main.Socket);
             HttpContext.Response.Cookies.Append("sedie-server-endpoint", appSettings.GameServers.Sedie.Socket);
@@ -204,29 +205,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             HttpContext.Response.Cookies.Append("roulette-server-endpoint-route", appSettings.GameServers.Roulette.SocketRoute);
             HttpContext.Response.Cookies.Append("baccarat-server-endpoint", appSettings.GameServers.Baccarat.Socket);
             HttpContext.Response.Cookies.Append("baccarat-server-endpoint-route", appSettings.GameServers.Baccarat.SocketRoute);
-<<<<<<< HEAD
-            //HttpContext.Response.Cookies.Append("lottery-server-endpoint", appSettings.GameServers.Lottery.Socket);
-            //HttpContext.Response.Cookies.Append("lottery-server-endpoint-route", appSettings.GameServers.Lottery.SocketRoute);
-            //HttpContext.Response.Cookies.Append("three-cards-server-endpoint", appSettings.GameServers.ThreeCards.Socket);
-            //HttpContext.Response.Cookies.Append("three-cards-server-endpoint-route", appSettings.GameServers.ThreeCards.SocketRoute);
-            //AddMiniKenoCookie();
-            //HttpContext.Response.Cookies.Append("kenomatch1-server-endpoint", appSettings.GameServers.KenoMatch1.Socket);
-            //HttpContext.Response.Cookies.Append("kenomatch1-server-endpoint-route", appSettings.GameServers.KenoMatch1.SocketRoute);
-            //HttpContext.Response.Cookies.Append("kenomatch2-server-endpoint", appSettings.GameServers.KenoMatch2.Socket);
-            //HttpContext.Response.Cookies.Append("kenomatch2-server-endpoint-route", appSettings.GameServers.KenoMatch2.SocketRoute);
-            //HttpContext.Response.Cookies.Append("kenopower1-server-endpoint", appSettings.GameServers.KenoPower1.Socket);
-            //HttpContext.Response.Cookies.Append("kenopower1-server-endpoint-route", appSettings.GameServers.KenoPower1.SocketRoute);
-            //HttpContext.Response.Cookies.Append("kenopower2-server-endpoint", appSettings.GameServers.KenoPower2.Socket);
-            //HttpContext.Response.Cookies.Append("kenopower2-server-endpoint-route", appSettings.GameServers.KenoPower2.SocketRoute);
-
-            //HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint", appSettings.GameServers.BitcoinMaster.Socket);
-            //HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint-route", appSettings.GameServers.BitcoinMaster.SocketRoute);
-
-            //HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint", appSettings.GameServers.CasinoHoldemPoker.Socket);
-            //HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint-route", appSettings.GameServers.CasinoHoldemPoker.SocketRoute);
-            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint", appSettings.GameServers.TexasHoldemPoker.Socket);
-            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint-route", appSettings.GameServers.TexasHoldemPoker.SocketRoute);
-=======
             HttpContext.Response.Cookies.Append("lottery-server-endpoint", appSettings.GameServers.Lottery.Socket);
             HttpContext.Response.Cookies.Append("lottery-server-endpoint-route", appSettings.GameServers.Lottery.SocketRoute);
             HttpContext.Response.Cookies.Append("three-cards-server-endpoint", appSettings.GameServers.ThreeCards.Socket);
@@ -246,10 +224,13 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint", appSettings.GameServers.CasinoHoldemPoker.Socket);
             HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint-route", appSettings.GameServers.CasinoHoldemPoker.SocketRoute);
->>>>>>> 131ac5de (Migrate SetResult Hilo to new site)
+            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint", appSettings.GameServers.TexasHoldemPoker.Socket);
+            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint-route", appSettings.GameServers.TexasHoldemPoker.SocketRoute);
 
             HttpContext.Response.Cookies.Append("env", result.Env);
 
+=======
+>>>>>>> 5de9d306 (remove setCookies and env)
             return Json(result);
         }
 

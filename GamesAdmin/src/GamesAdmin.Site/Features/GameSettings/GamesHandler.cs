@@ -2,7 +2,6 @@
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
-using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
@@ -49,7 +48,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGameSettingService gameService;
         private readonly IGameUserService accountService;
         private readonly IProVietKenoService proVietKenoService;
-        private readonly IAppSettings appSettings;
         private readonly IPartnerService partnerService;
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
@@ -61,14 +59,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             IProVietKenoService proVietKenoService,
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
-            ICurrencyGroupGameService currencyGroupGameService,
-            IAppSettings appSettings)
+            ICurrencyGroupGameService currencyGroupGameService)
         {
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
             this.proVietKenoService = proVietKenoService;
-            this.appSettings = appSettings;
             this.partnerService = partnerService;
             this.currencyGroupService = currencyGroupService;
             this.currencyGroupGameService = currencyGroupGameService;
@@ -322,7 +318,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             return new GameServerToken
             (
                 result.Token,
-                appSettings.Env,
                 redirectUrl
             );
         }
