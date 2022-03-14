@@ -95,6 +95,10 @@
                     <label asp-for="BotMaxBet" class="control-label"></label>
                     <input type="number" asp-for="BotMaxBet" class="form-control" />
                 </div>
+                <div class="form-group">
+                    <label asp-for="@Model.RandomMode" class="control-label"></label>
+                    <select asp-items="@Model.RandomModeItems" asp-for="@Model.RandomMode" class="form-control"></select>
+                </div>
             }
 
             <div class="form-group">
@@ -175,15 +179,15 @@
             {
 
                 <div class="form-group" style="margin-bottom: 0;">
-                    <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeUUS" />
-                    <label asp-for="@Model.JackpotViewModel.ExcludeUUS" class="control-label"></label>
+                    <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" />
+                    <label asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" class="control-label"></label>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-8">
                         Note:<br />
                         <b>"ON"</b> mode(default setting):<br />
-                        + Jackpot prizes are not available for UUS accounts.<br />
-                        + Stakes from UUS tickets will not be contributed to Jackpot pool<br />
+                        + Jackpot prizes are not available for test currency accounts.<br />
+                        + Stakes from test currency tickets will not be contributed to Jackpot pool<br />
                     </div>
                 </div>
 

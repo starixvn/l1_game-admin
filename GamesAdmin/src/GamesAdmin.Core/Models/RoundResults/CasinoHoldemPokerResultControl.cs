@@ -1,0 +1,19 @@
+﻿using GamesAdmin.Core.Models.BetReport;
+using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Models.RoundResults
+{
+    public class BaseCasinoHoldemPokerResultControl
+    {
+        public CasinoHoldemPokerHandModel playerResult { get; set; }
+
+        public CasinoHoldemPokerHandModel dealerResult { get; set; }
+
+        public bool isQualified { get; set; }
+    }
+
+    public class CasinoHoldemPokerResultControl : BaseCasinoHoldemPokerResultControl
+    {
+        public IEnumerable<PokerCard> communityCards { get; set; }
+    }
+}

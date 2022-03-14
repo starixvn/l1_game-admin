@@ -106,13 +106,13 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.VipBaccarat.DisplayName, Game.VipBaccarat.Value),
                 new SelectListItem(Game.VipSeDieWar.DisplayName, Game.VipSeDieWar.Value),
                 new SelectListItem(Game.FourGuardians.DisplayName, Game.FourGuardians.Value),
+                new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value),
                 new SelectListItem(Game.FishPrawnCrab.DisplayName, Game.FishPrawnCrab.Value),
                 new SelectListItem(Game.DragonTiger.DisplayName, Game.DragonTiger.Value),
                 new SelectListItem(Game.BigSmall.DisplayName, Game.BigSmall.Value),
                 new SelectListItem(Game.BigSmallTurbo.DisplayName, Game.BigSmallTurbo.Value),
                 new SelectListItem(Game.OddEvenTurbo.DisplayName, Game.OddEvenTurbo.Value),
                 new SelectListItem(Game.MiniSeDie.DisplayName, Game.MiniSeDie.Value),
-                new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value),
                 new SelectListItem(Game.ThreeCards.DisplayName, Game.ThreeCards.Value),
                 new SelectListItem(Game.KenoMatch1.DisplayName, Game.KenoMatch1.Value),
                 new SelectListItem(Game.KenoMatch2.DisplayName, Game.KenoMatch2.Value),
@@ -127,7 +127,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.KenoWest.DisplayName, Game.KenoWest.Value),
                 new SelectListItem(Game.KenoSouth.DisplayName, Game.KenoSouth.Value),
                 new SelectListItem(Game.KenoNorth.DisplayName, Game.KenoNorth.Value),
-                new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value),
+                new SelectListItem(Game.CasinoHoldemPoker.DisplayName, Game.CasinoHoldemPoker.Value),
+                new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value)
                 };
     }
 }

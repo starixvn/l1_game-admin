@@ -227,6 +227,10 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint", appSettings.GameServers.BitcoinMaster.Socket);
             HttpContext.Response.Cookies.Append("bitcoin-master-server-endpoint-route", appSettings.GameServers.BitcoinMaster.SocketRoute);
+
+            HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint", appSettings.GameServers.CasinoHoldemPoker.Socket);
+            HttpContext.Response.Cookies.Append("casinoholdempoker-server-endpoint-route", appSettings.GameServers.CasinoHoldemPoker.SocketRoute);
+
             HttpContext.Response.Cookies.Append("env", result.Env);
 
             return Json(result);
@@ -290,8 +294,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.JackpotViewModel.WinningRatio.ConvertPercentValue(),
                         viewModel.JackpotViewModel.PlayerContribution.ConvertPercentValue(),
                         viewModel.JackpotViewModel.BotContribution.ConvertPercentValue(),
-                        viewModel.JackpotViewModel.ExcludeUUS,
-                        viewModel.JackpotViewModel.AllowedCurrency),
+                        viewModel.JackpotViewModel.ExcludeTestCurrency),
                     viewModel.JackpotViewModel.StakeLevels));
 
                 return Json(true);
@@ -311,7 +314,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 await mediator.Send(new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(

@@ -55,20 +55,20 @@ namespace GamesAdmin.Core.Models.GameConfigs
             double winingAmount,
             double playerContribution,
             double botContribution,
-            bool excludeUUS = false,
+            bool excludeTestCurrency = false,
             string allowedCurrency = "INH")
         {
             Enabled = enabled;
             WinningRatio = winingAmount;
             PlayerContributionRatio = playerContribution;
             BotContributionRatio = botContribution;
-            ExcludeUUS = excludeUUS;
+            ExcludeTestCurrency = excludeTestCurrency;
             AllowedCurrency = (allowedCurrency ?? string.Empty).Trim();
         }
 
         public bool Enabled { get; set; }
 
-        public bool ExcludeUUS { get; set; }
+        public bool ExcludeTestCurrency { get; set; }
 
         public double WinningRatio { get; set; }
 

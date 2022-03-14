@@ -1,0 +1,67 @@
+﻿@using GamesAdmin.Core;
+
+@{
+    ViewData["Title"] = $"Casino Hold'em Result";
+}
+
+@section Styles {
+    <link href="~/css/casino-holdem-poker-result.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="form filter casino-holdem-poker">
+    <div class="form-row  col-auto nickname">
+        <label class="control-label bold">Nickname:</label>
+        <input type="text" class="form-control" id="nickname" onkeyup="casinoHoldemPokerResult.onInputNickname(event)">
+        <div class="error hidden">Please input nickname !</div>
+    </div>
+    <div class="form-row col-auto set-result">
+        <label class="control-label bold">Set Results</label>
+    </div>
+    <div>
+        @for (var suit = 0; suit <= 3; suit++)
+        {
+            <div class="form-row col-auto">
+                @for (var rankId = 0; rankId < Card.CardLabels.Length; rankId++)
+                {
+                    <div class="card card-type-@suit" onclick="casinoHoldemPokerResult.selectCard(event, { 'rank': @rankId, 'suit': @suit})">
+                        <span>@Card.CardLabels[rankId]</span>
+                        <img class="img" src="~/images/card_@(suit).png" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="form-row  col-auto mt-5">
+        <button type="submit" class="btn-submit disabled" disabled onclick="casinoHoldemPokerResult.submit(event)">Submit</button>
+        <div id="spinner" class="spinner-border" style="display: none">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Results</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="casinoHoldemPokerResult.reloadPage(event)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="casinoHoldemPokerResult.reloadPage(event)">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/js/casino-holdem-poker-result.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/casino-holdem-poker-result.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -16,6 +16,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.EnableFreeBet, opt => opt.MapFrom(src => src.Info.EnableFreeBet))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
+                .ForMember(dest => dest.RandomMode, opt => opt.MapFrom(src => src.Info.RandomMode))
                 .ForMember(dest => dest.Enabled, opt => opt.MapFrom(src => src.EnableSetting.Enabled))
                 .ForMember(dest => dest.DisabledMessage, opt => opt.MapFrom(src => src.EnableSetting.DisabledMessage))
                 .ForMember(dest => dest.DelayStartTime, opt => opt.MapFrom(src => src.EnableSetting.DelayStartTime))
@@ -35,7 +36,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.WinningRatio, opt => opt.MapFrom(src => src.Jackpot.WinningRatio.ToPercentage()))
                 .ForMember(dest => dest.PlayerContribution, opt => opt.MapFrom(src => src.Jackpot.PlayerContributionRatio.ToPercentage()))
                 .ForMember(dest => dest.BotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
-                .ForMember(dest => dest.ExcludeUUS, opt => opt.MapFrom(src => src.Jackpot.ExcludeUUS))
+                .ForMember(dest => dest.ExcludeTestCurrency, opt => opt.MapFrom(src => src.Jackpot.ExcludeTestCurrency))
                 .ForMember(dest => dest.JackpotEnabled, opt => opt.MapFrom(src => src.Jackpot.Enabled))
                 .ForMember(dest => dest.AllowedCurrency, opt => opt.MapFrom(src => src.Jackpot.AllowedCurrency));
 

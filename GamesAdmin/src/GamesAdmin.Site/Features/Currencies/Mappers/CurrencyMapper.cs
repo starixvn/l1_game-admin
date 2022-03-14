@@ -18,7 +18,8 @@ namespace GamesAdmin.Site.Features.Currencies.Mappers
                      viewModel.Enabled,
                      viewModel.IsTest,
                      viewModel.PartnerId,
-                     viewModel.GroupId));
+                     viewModel.GroupId,
+                     viewModel.IsUncountOnTotal));
 
             CreateMap<UpdateCurrencyViewModel, CurrencyModel>()
                  .ConstructUsing(viewModel => new CurrencyModel(
@@ -29,7 +30,8 @@ namespace GamesAdmin.Site.Features.Currencies.Mappers
                      viewModel.Enabled,
                      viewModel.IsTest,
                      viewModel.PartnerId,
-                     viewModel.GroupId));
+                     viewModel.GroupId,
+                     viewModel.IsUncountOnTotal));
 
             CreateMap<CurrencyModel, UpdateCurrencyViewModel>();
 

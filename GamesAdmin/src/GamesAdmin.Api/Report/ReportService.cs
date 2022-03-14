@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -13,6 +9,10 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -99,6 +99,10 @@ namespace GamesAdmin.Api.Report
         Task<KenoPowerBetHistory> GetKenoPower1BetHistoryAsync(long roundId, string userId);
 
         Task<KenoPowerBetHistory> GetKenoPower2BetHistoryAsync(long roundId, string userId);
+
+        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter);
+
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter);
     }
 
     public class ReportService : IReportService
@@ -729,6 +733,22 @@ namespace GamesAdmin.Api.Report
                 Bets = result.Item2.Select(x => mapper.Map<KenoPowerBetHistoryRecord>(x)),
                 Odds = result.Item3
             };
+        }
+
+        public async Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerReportAsync(CasinoHoldemPokerBetReportFilter filter)
+        {
+            var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
+            var result = await repository.GetAsync(filter);
+
+            return result.Select(x => mapper.Map<CasinoHoldemPokerBetRecord>(x));
+        }
+
+        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistoryAsync(CasinoHoldemPokerBetHistoryFilter filter)
+        {
+            var repository = serviceProvider.GetService<ICasinoHoldemPokerReportRepository>();
+            var result = await repository.GetBetHistoryAsync(filter);
+
+            return mapper.Map<CasinoHoldemPokerBetHistory>(result);
         }
     }
 }

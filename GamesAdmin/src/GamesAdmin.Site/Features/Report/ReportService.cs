@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.ClientSites
 {
@@ -83,7 +83,7 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<BitcoinMasterBetReport> GetBitcoinMasterReport(long roundId, string nickname, bool excludeBot);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
-        
+
         Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
 
         Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId);
@@ -91,6 +91,10 @@ namespace GamesAdmin.Site.Features.ClientSites
         Task<KenoPowerBetReport> GetKenoPowerBetReport(GameId game, long roundId, string nickname, bool excludeUUS);
 
         Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId);
+
+        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
+
+        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
     }
 
     public class ReportService : IReportService
@@ -209,9 +213,9 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
-  	
-  	public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
-        => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
+
+        public Task<KenoMatchBetReport> GetKenoMatchBetReport(GameId game, long roundId, string nickname, bool excludeUUS)
+          => reportApi.GetKenoMatchBetReport(game.ToString(), roundId, nickname, excludeUUS);
 
         public Task<KenoMatchBetHistory> GetKenoMatchBetHistory(GameId game, long roundId, string userId)
         => reportApi.GetKenoMatchBetHistory(game.ToString(), roundId, userId);
@@ -221,5 +225,11 @@ namespace GamesAdmin.Site.Features.ClientSites
 
         public Task<KenoPowerBetHistory> GetKenoPowerBetHistory(GameId game, long roundId, string userId)
         => reportApi.GetKenoPowerBetHistory(game.ToString(), roundId, userId);
+
+        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter)
+            => reportApi.GetCasinoHoldemPokerBetReport(filter);
+
+        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
+            => await reportApi.GetCasinoHoldemPokerBetHistory(filter);
     }
 }

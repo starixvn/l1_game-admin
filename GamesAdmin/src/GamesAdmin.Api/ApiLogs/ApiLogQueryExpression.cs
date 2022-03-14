@@ -34,7 +34,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.ObCustId == 0 || entity.Request.ObCustId == 0 || request.ObCustId == entity.Request.ObCustId;
 
         private static Expression<Func<SBLogEntity, bool>> SBPartnerIdExpression(QueryLogRequest request)
-            => entity => string.Equals(request.PartnerId, entity.Request.Auth.PartnerId);
+            => entity => string.Equals(request.PartnerId, entity.Request.Auth.PartnerId) || string.Equals(request.PartnerId, entity.Request.Auth.OperatorId);
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailGameTypeExpression(QueryLogRequest request)
             => entity => request.GameTypeId == 0 || entity.Call.GameTypeId == 0 || request.GameTypeId == entity.Call.GameTypeId;
@@ -46,7 +46,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.ObCustId == 0 || entity.Call.ObCustId == 0 || request.ObCustId == entity.Call.ObCustId;
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailPartnerIdExpression(QueryLogRequest request)
-            => entity => string.Equals(request.PartnerId, entity.Call.Auth.PartnerId);
+            => entity => string.Equals(request.PartnerId, entity.Call.Auth.PartnerId) || string.Equals(request.PartnerId, entity.Call.Auth.OperatorId);
 
         public static Expression<Func<PartnerLogEntity, bool>> GetPartnerExpression(QueryLogRequest request)
         {

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Core.Enumeration;
+using System.Collections.Generic;
 using System.Linq;
-using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -40,6 +40,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
             ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()
-            : DisplayName.Replace(" ", string.Empty).Trim().ToLowerInvariant();
+            : DisplayName.Replace(" ", string.Empty).Trim().Replace("'", string.Empty).ToLowerInvariant();
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Site.Extensions;
+using System.Collections.Generic;
 using System.Linq;
-using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -295,5 +295,20 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class KenoPowerRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
+    }
+
+    public class CasinoHoldemPokerRecordViewModel : BetRecordViewModel
+    {
+        public long RoundId { get; set; }
+
+        public string PlayerResult { get; set; }
+
+        public string DealerResult { get; set; }
+
+        public decimal Stake { get; set; }
+
+        public bool Ended { get; set; }
+
+        public string BetHistoryUrl { get; set; }
     }
 }

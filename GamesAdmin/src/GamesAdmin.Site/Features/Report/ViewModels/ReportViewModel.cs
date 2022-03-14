@@ -1,8 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
+    public class ReportSeletionsViewModel
+    {
+        public IEnumerable<SelectListItem> Partners { get; set; }
+
+        public IEnumerable<SelectListItem> Currencies { get; set; }
+    }
+
     public class ReportViewModel
     {
         public long? RoundId { get; set; }

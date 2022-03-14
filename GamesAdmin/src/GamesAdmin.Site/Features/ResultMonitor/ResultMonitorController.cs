@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.ResultMonitor.Requests;
 using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.ResultMonitor
 {
@@ -32,6 +32,16 @@ namespace GamesAdmin.Site.Features.ResultMonitor
                 viewModel.GameName,
                 viewModel.Nickname,
                 viewModel.Results.Trim().Split(',').Select(x => byte.Parse(x)).ToArray())));
+        }
+
+        [HttpGet]
+        public IActionResult CasinoHoldemPokderResult()
+           => View();
+
+        [HttpPost]
+        public async Task<IActionResult> SetCasinoHoldemPokerResult(SetCasinoHoldemPokerResultRequest request)
+        {
+            return PartialView("_CasinoHoldemPokderResult", await mediator.Send(request));
         }
     }
 }

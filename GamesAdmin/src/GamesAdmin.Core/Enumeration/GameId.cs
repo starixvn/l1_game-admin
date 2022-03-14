@@ -35,9 +35,9 @@
         KenoMatch1 = 36,
         KenoMatch2 = 37,
         HeroesSlot = 38,
+        CasinoHoldemPoker = 39,
         KenoPower1 = 40,
         KenoPower2 = 41,
         BitcoinMaster = 43,
-
     }
 }
