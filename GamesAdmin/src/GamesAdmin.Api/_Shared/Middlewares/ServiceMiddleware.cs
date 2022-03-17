@@ -190,6 +190,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
+            services.AddSingleton(RestService.For<INightClubBoardApi>(appSettings.GameServers.NightClub.Api, refitSettings));
         }
 
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
