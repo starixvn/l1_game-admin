@@ -73,14 +73,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class GameServerToken
     {
-        public GameServerToken(string token, string redirectUrl)
+        public GameServerToken(string token, string gameName)
         {
             Token = token;
-            RedirectUrl = redirectUrl;
+            GameName = gameName;
         }
 
         public string Token { get; }
 
-        public string RedirectUrl { get; }
+        public string GameName { get; }
     }
 }

@@ -239,7 +239,8 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data) {
-                        window.open(adminMonitoringUrl + data.redirectUrl + "&token=" + data.token, "_blank", "width=1020,height=765");
+                        window.open(adminMonitoringUrl + "/ResultMonitor/Index" + "?gameName=" + data.gameName + "&token=" + data.token, "_blank", "width=1020,height=765");
+                        //window.open(adminMonitoringUrl + data.redirectUrl + "&token=" + data.token, "_blank", "width=1020,height=765");
                     }
                 });
         },

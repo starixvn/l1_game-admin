@@ -46,14 +46,13 @@
                             {
                                 if (role == Role.Admin.Value && Model.GameList[index].Name == Game.HiLoValue)
                                 {
-                                    <a class="icon-action" onclick="gameStatus.setControlResultHiLo()"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultHiLo()"><i class="icon-chart"></i></a>
                                 }
                                 else
                                 {
                                     <a href="#" class="icon-action bet-monitor" data-game-name="@Model.GameList[index].Name"><i class="icon-chart"></i></a>
                                 }
                             }
-
                         }
                     </td>
                     <td class="text-center">

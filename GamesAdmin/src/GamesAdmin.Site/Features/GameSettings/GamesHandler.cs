@@ -313,12 +313,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<GameServerToken> Handle(GetJWTRequest request, CancellationToken cancellationToken)
         {
             var result = await gameService.GetJWT(request.Username, request.UserAgent);
-            var redirectUrl = @$"/game-admin/monitor.html?game={request.Game}&v={DateTime.Now.Ticks}";
 
             return new GameServerToken
             (
                 result.Token,
-                redirectUrl
+                request.Game
             );
         }
 
