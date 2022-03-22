@@ -19,12 +19,17 @@ namespace GamesAdmin.Api.EndGameInfo
 
         public async Task<EndGameInfoResult> GetAsync(RetrieveEndGameInfoRequest request)
         {
-            var round = await GetRoundAsync(request.GameRoundId);
             var bets = await GetBetsAsync(request);
 
-            if (round == null || !bets.Any())
+            if (!bets.Any())
             {
                 return EndGameInfoError.SB1001;
+            }
+
+            var round = await GetRoundAsync(request.GameRoundId);
+            if (!round.Ended)
+            {
+                return EndGameInfoError.SB1005;
             }
 
             var bet = bets.FirstOrDefault();
@@ -35,7 +40,7 @@ namespace GamesAdmin.Api.EndGameInfo
                 EndTime = round.Time,
                 ValidBetAmount = amount,
                 TotalAmount = amount,
-                TotalWin = bet.Betwin + amount
+                TotalWin = bet.Betwin
             };
         }
     }
