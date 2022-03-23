@@ -2,8 +2,6 @@
 {
     public class GameServerSettings
     {
-        public GameServerConfigs Main { get; set; }
-
         public GameServerConfigs UserService { get; set; }
 
         public GameServerConfigs NotificationService { get; set; }
@@ -78,7 +76,6 @@
         public GameServerConfigs HiLo { get; set; }
 
         public GameServerConfigs CasinoHoldemPoker { get; set; }
-
         public GameServerConfigs TexasHoldemPoker { get; set; }
         public GameServerConfigs NightClub { get; set; }
 

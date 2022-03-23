@@ -49,7 +49,6 @@ namespace GamesAdmin.Api.GameServers
 
     public class GameServerService : IGameServerService
     {
-        private readonly IGameServerApi serverApi;
         private readonly IUserServiceApi userServiceApi;
         private readonly INotificationServiceApi notificationServiceApi;
         private readonly ISentryClient sentryClient;
@@ -63,7 +62,6 @@ namespace GamesAdmin.Api.GameServers
         private readonly IAppSettings appSettings;
 
         public GameServerService(
-            IGameServerApi serverApi,
             ISentryClient sentryClient,
             IOnlineUserApiFactory onlineUserApiFactory,
             ISlotBoardApiFactory slotBoardApiFactory,
@@ -76,7 +74,6 @@ namespace GamesAdmin.Api.GameServers
             IUserServiceApi userServiceApi,
             INotificationServiceApi notificationServiceApi)
         {
-            this.serverApi = serverApi;
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
             this.slotBoardApiFactory = slotBoardApiFactory;

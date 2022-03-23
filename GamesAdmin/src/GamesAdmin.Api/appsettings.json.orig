@@ -49,17 +49,20 @@
     "DefaultMaxBet": 1000
   },
   "GameServers": {
+<<<<<<< HEAD
     "Main": {
       "Api": "http://localhost:8080/",
       "Socket": "/socket.io"
     },
+=======
+>>>>>>> fix: clean up game-server
     "UserService": {
-      "Api": "http://l1-proxy.lumigame.com/main",
-      "Socket": "l1-proxy.lumigame.com/main"
+      "Api": "http://l1-proxy.lumigame.com/user",
+      "Socket": "l1-proxy.lumigame.com/user"
     },
     "NotificationService": {
-      "Api": "http://l1-proxy.lumigame.com/main",
-      "Socket": "l1-proxy.lumigame.com/main"
+      "Api": "http://l1-proxy.lumigame.com/notification",
+      "Socket": "l1-proxy.lumigame.com/notification"
     },
     "SeDie": {
       "Api": "http://l1-proxy.lumigame.com/sedie",
@@ -239,17 +242,10 @@
       "Socket": "http://localhost:5009",
       "SocketRoute": "/socket.io"
     },
-<<<<<<< HEAD
     "TexasHoldemPoker": {
       "Api": "http://localhost:8037/",
       "Socket": "http://localhost:8037/",
       "SocketRoute": "/socket.io"
-=======
-    "HiLo": {
-      "Api": "http://l1-proxy.lumigame.com/hilo",
-      "Socket": "l1-proxy.lumigame.com/admin/hilo",
-      "SocketRoute": "/hilo/socket.io"
->>>>>>> fix: clean up game-server
     }
   },
   "SabaApiSettings": {
