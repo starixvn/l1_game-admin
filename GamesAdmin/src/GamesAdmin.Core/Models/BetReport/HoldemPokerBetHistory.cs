@@ -43,7 +43,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public bool IsFold { get; set; }
 
-        public bool IsQualified { get; set; }
+        public bool? IsQualified { get; set; }
 
         public decimal Stake { get; set; }
 

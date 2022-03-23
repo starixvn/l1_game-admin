@@ -1,6 +1,5 @@
 ﻿@using GamesAdmin.Core.Models.RoundResults;
 @using GamesAdmin.Core;
-@using GamesAdmin.Core.Models;
 @using GamesAdmin.Core.Models.BetReport;
 @model HoldemPokerResultControl
 
@@ -25,7 +24,7 @@
                 <td>Dealer</td>
                 <td> @{await RenderCards(Model.dealerResult.Cards);}</td>
                 <td> @{await RenderCards(Model.dealerResult.CombinationCards);}</td>
-                <td>@(Model.isQualified ? Model.dealerResult.Rank : "Does Not Qualify")</td>
+                <td>@(Model.isQualified.HasValue && !Model.isQualified.Value ? "Does Not Qualify" : Model.dealerResult.Rank)</td>
             </tr>
             <tr>
                 <td>Community Cards</td>

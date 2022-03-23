@@ -17,7 +17,7 @@
             Ended = round.Ended;
             IsFold = bet.IsFold;
             RoundId = bet.Round;
-            IsQualified = round.SettlementResult?.IsQualified ?? false;
+            IsQualified = round.SettlementResult.IsQualified;
 
             Player = new HoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
 
@@ -58,7 +58,7 @@
 
         public bool IsFold { get; }
 
-        public bool IsQualified { get; }
+        public bool? IsQualified { get; }
 
         public decimal Stake { get; }
 

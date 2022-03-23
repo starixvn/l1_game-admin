@@ -31,7 +31,7 @@
 
             IsFold = bet.IsFold;
             Rate = bet.Rate;
-            IsQualified = round.SettlementResult?.IsQualified ?? false;
+            IsQualified = round.SettlementResult.IsQualified;
         }
 
         public DateTime Time { get; }
@@ -62,6 +62,6 @@
 
         public decimal Rate { get; }
 
-        public bool IsQualified { get; }
+        public bool? IsQualified { get; }
     }
 }

@@ -302,7 +302,7 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<CasinoHoldemPokerBetReportEntity, HoldemPokerBetRecord>()
                  .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
-                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
+                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => source.Ended && !source.IsFold ? (source.IsQualified.HasValue && !source.IsQualified.Value ? "Does Not Qualify" : source.Dealer.Rank) : "-"));
 
             CreateMap<CasinoHoldemPokerBetHistoryEntity, HoldemPokerBetHistory>()
             .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>
@@ -334,11 +334,11 @@ namespace GamesAdmin.Api._Shared
             CreateMap<HiLoBetReportEntity, HiLoBetRecord>();
             CreateMap<HiLoBetLogEntity, HiLoBetHistoryRecord>();
             CreateMap<HiLoRoundEntity, HiLoRoundResult>();
-            
+
             CreateMap<TexasHoldemPokerBetReportEntity, HoldemPokerBetRecord>()
                 .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
-                .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? (source.IsQualified ? source.Dealer.Rank : "Does Not Qualify") : "-")));
-            
+                .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? source.Dealer.Rank : "-")));
+
 
             CreateMap<TexasHoldemPokerBetHistoryEntity, HoldemPokerBetHistory>()
             .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>

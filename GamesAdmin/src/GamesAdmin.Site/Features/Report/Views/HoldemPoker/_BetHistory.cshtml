@@ -69,7 +69,7 @@
 
                         @if (isFinished)
                         {
-                            <td>@(record.IsQualified ? record.Dealer.Rank : "Does Not Qualify")</td>
+                            <td>@(record.IsQualified.HasValue && !record.IsQualified.Value ? "Does Not Qualify" : record.Dealer.Rank)</td>
                         }
                         else
                         {
