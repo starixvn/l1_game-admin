@@ -50,6 +50,8 @@ namespace GamesAdmin.Api.GameServers
     public class GameServerService : IGameServerService
     {
         private readonly IGameServerApi serverApi;
+        private readonly IUserServiceApi userServiceApi;
+        private readonly INotificationServiceApi notificationServiceApi;
         private readonly ISentryClient sentryClient;
         private readonly IOnlineUserApiFactory onlineUserApiFactory;
         private readonly ISlotBoardApiFactory slotBoardApiFactory;
@@ -70,7 +72,9 @@ namespace GamesAdmin.Api.GameServers
             IHoldemPokerApiFactory holdemPokerApiFactory,
             IHiLoApi hiloApi,
             IAppSettings appSettings,
-            IGenericRepository<AdminUserEntity> userRepository)
+            IGenericRepository<AdminUserEntity> userRepository,
+            IUserServiceApi userServiceApi,
+            INotificationServiceApi notificationServiceApi)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
@@ -82,13 +86,15 @@ namespace GamesAdmin.Api.GameServers
             this.hiloApi = hiloApi;
             this.appSettings = appSettings;
             this.userRepository = userRepository;
+            this.userServiceApi = userServiceApi;
+            this.notificationServiceApi = notificationServiceApi;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
         {
             try
             {
-                return serverApi.GetToken(request);
+                return userServiceApi.GetToken(request);
             }
             catch (Exception ex)
             {
@@ -102,7 +108,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                await serverApi.Reload();
+                await notificationServiceApi.Reload();
             }
             catch (Exception ex)
             {
@@ -114,7 +120,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                await serverApi.UnderMaintenance(request);
+                await notificationServiceApi.UnderMaintenance(request);
             }
             catch (Exception ex)
             {
@@ -128,7 +134,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 if (gameType == null)
                 {
-                    return await serverApi.GetAllOnlineUsers();
+                    return await userServiceApi.GetAllOnlineUsers();
                 }
 
                 var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameType);
@@ -181,7 +187,7 @@ namespace GamesAdmin.Api.GameServers
                 {
                     sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
 
-                    await serverApi.NotifyRoundResult(round);
+                    await notificationServiceApi.NotifyRoundResult(round);
                 }
                 catch (Exception ex)
                 {
