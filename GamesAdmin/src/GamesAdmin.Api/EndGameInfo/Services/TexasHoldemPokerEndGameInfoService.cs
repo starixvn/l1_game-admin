@@ -2,7 +2,9 @@
 using GamesAdmin.Core.Models.EndGameInfo;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.EndGameInfo
@@ -42,6 +44,11 @@ namespace GamesAdmin.Api.EndGameInfo
                 TotalAmount = amount,
                 TotalWin = bet.Betwin
             };
+        }
+
+        protected override Expression<Func<TexasHoldemPokerBetEntity, bool>> GetBetFilterExpression(RetrieveEndGameInfoRequest request)
+        {
+            return (bet) => bet.Round == request.GameRoundId && bet.MemberId == request.ObCustId && bet.SiteId == request.SiteId;
         }
     }
 }
