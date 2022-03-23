@@ -7,6 +7,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
     {
         public string PartnerId { get; set; }
 
+        public string OperatorId { get; set; }
+
         public PartnerCallEntity Call { get; set; }
 
         public PartnerResultEntity Result { get; set; }
@@ -68,6 +70,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string ErrorDescription { get; set; }
 
         public int? ObCustId { get; set; }
+
+        public int? PlayerId { get; set; }
 
         public decimal MinBet { get; set; }
 

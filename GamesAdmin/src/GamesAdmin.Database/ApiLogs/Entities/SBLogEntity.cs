@@ -30,6 +30,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string MemberName { get; set; }
 
+        public string PlayerName { get; set; }
+
         public byte AppType { get; set; }
 
         public string SiteName { get; set; }

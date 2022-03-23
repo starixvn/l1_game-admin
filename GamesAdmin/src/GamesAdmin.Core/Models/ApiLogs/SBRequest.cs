@@ -14,6 +14,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public int? ObCustId { get; set; }
 
+        public int? PlayerId { get; set; }
+
         public virtual string RequestType { get; set; }
     }
 
@@ -22,10 +24,6 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string OperatorId { get; set; }
 
         public string OperatorSecret { get; set; }
-
-        public string PartnerId { get; set; }
-
-        public string PartnerSecret { get; set; }
     }
 
     public class SignInRequest : SBRequest
@@ -41,6 +39,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string IP { get; set; }
 
         public string MemberName { get; set; }
+
+        public string PlayerName { get; set; }
 
         public byte AppType { get; set; }
 
