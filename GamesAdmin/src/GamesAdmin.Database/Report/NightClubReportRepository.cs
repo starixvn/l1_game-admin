@@ -1,14 +1,14 @@
-﻿using System;
+﻿using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Extensions;
-using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Report.Entities;
-using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
@@ -17,7 +17,7 @@ namespace GamesAdmin.Database
         Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(SlotGameBetReportFilter filter);
     }
 
-    public class NightClubReportRepository : IHeroesSlotReportRepository
+    public class NightClubReportRepository : INightClubReportRepository
     {
         private readonly IMongoDatabase database;
 
