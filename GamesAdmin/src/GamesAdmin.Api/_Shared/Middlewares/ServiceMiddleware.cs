@@ -100,9 +100,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<TexasHoldemPokerEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
-            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
 
-            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));
+            services.AddSingleton(RestService.For<INotificationServiceApi>(appSettings.GameServers.NotificationService.Api, refitSettings));
+
+            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.UserService.Api, refitSettings));
             services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
             services.AddSingleton(RestService.For<ISpecialSedieOnlineUserApi>(appSettings.GameServers.SpecialSedie.Api, refitSettings));

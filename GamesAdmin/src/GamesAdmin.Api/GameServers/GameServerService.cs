@@ -49,7 +49,8 @@ namespace GamesAdmin.Api.GameServers
 
     public class GameServerService : IGameServerService
     {
-        private readonly IGameServerApi serverApi;
+        private readonly IUserServiceApi userServiceApi;
+        private readonly INotificationServiceApi notificationServiceApi;
         private readonly ISentryClient sentryClient;
         private readonly IOnlineUserApiFactory onlineUserApiFactory;
         private readonly ISlotBoardApiFactory slotBoardApiFactory;
@@ -61,7 +62,6 @@ namespace GamesAdmin.Api.GameServers
         private readonly IAppSettings appSettings;
 
         public GameServerService(
-            IGameServerApi serverApi,
             ISentryClient sentryClient,
             IOnlineUserApiFactory onlineUserApiFactory,
             ISlotBoardApiFactory slotBoardApiFactory,
@@ -70,9 +70,10 @@ namespace GamesAdmin.Api.GameServers
             IHoldemPokerApiFactory holdemPokerApiFactory,
             IHiLoApi hiloApi,
             IAppSettings appSettings,
+            IUserServiceApi userServiceApi,
+            INotificationServiceApi notificationServiceApi)
             IGenericRepository<AdminUserEntity> userRepository)
         {
-            this.serverApi = serverApi;
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
             this.slotBoardApiFactory = slotBoardApiFactory;
@@ -81,6 +82,8 @@ namespace GamesAdmin.Api.GameServers
             this.holdemPokerApiFactory = holdemPokerApiFactory;
             this.hiloApi = hiloApi;
             this.appSettings = appSettings;
+            this.userServiceApi = userServiceApi;
+            this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
         }
 
@@ -88,7 +91,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                return serverApi.GetToken(request);
+                return userServiceApi.GetToken(request);
             }
             catch (Exception ex)
             {
@@ -102,7 +105,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                await serverApi.Reload();
+                await notificationServiceApi.Reload();
             }
             catch (Exception ex)
             {
@@ -114,7 +117,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                await serverApi.UnderMaintenance(request);
+                await notificationServiceApi.UnderMaintenance(request);
             }
             catch (Exception ex)
             {
@@ -128,7 +131,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 if (gameType == null)
                 {
-                    return await serverApi.GetAllOnlineUsers();
+                    return await userServiceApi.GetAllOnlineUsers();
                 }
 
                 var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameType);
@@ -181,7 +184,7 @@ namespace GamesAdmin.Api.GameServers
                 {
                     sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
 
-                    await serverApi.NotifyRoundResult(round);
+                    await notificationServiceApi.NotifyRoundResult(round);
                 }
                 catch (Exception ex)
                 {

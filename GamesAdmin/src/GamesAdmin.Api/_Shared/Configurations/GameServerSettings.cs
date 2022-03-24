@@ -2,7 +2,9 @@
 {
     public class GameServerSettings
     {
-        public GameServerConfigs Main { get; set; }
+        public GameServerConfigs UserService { get; set; }
+
+        public GameServerConfigs NotificationService { get; set; }
 
         public GameServerConfigs Sedie { get; set; }
 
