@@ -54,6 +54,7 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.CasinoHoldemPoker, typeof(CasinoHoldemPokerEndGameInfoService) },
             { GameId.HiLo, typeof(HiLoEndGameInfoService) },
             { GameId.TexasHoldemPoker, typeof(TexasHoldemPokerEndGameInfoService) },
+            { GameId.NightClub, typeof(NightClubEndGameInfoService) },
         };
 
         private readonly IServiceProvider serviceProvider;
