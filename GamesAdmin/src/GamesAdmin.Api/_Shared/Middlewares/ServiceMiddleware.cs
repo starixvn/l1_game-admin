@@ -98,6 +98,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<CasinoHoldemPokerEndGameInfoService>();
             services.AddScoped<HiLoEndGameInfoService>();
             services.AddScoped<TexasHoldemPokerEndGameInfoService>();
+            services.AddScoped<NightClubEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -138,6 +139,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ICasinoHoldemPokerOnlineUserApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
             services.AddSingleton(RestService.For<IHiLoApi>(appSettings.GameServers.HiLo.Api, refitSettings));
             services.AddSingleton(RestService.For<ITexasHoldemPokerOnlineUserApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<INightClubOnlineUserApi>(appSettings.GameServers.NightClub.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
