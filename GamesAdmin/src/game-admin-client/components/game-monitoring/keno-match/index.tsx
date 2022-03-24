@@ -6,8 +6,8 @@ const KENOMATCH1_DURATION = {
   wholeRound: 77,
   startFirstHalf: 71,
   showFirstHalfResult: 35,
-  settleFirstHalf: 8,
-  settleFullTime: 6,
+  settleFirstHalf: 9,
+  settleFullTime: 8,
 
   firstHalfPlacingBets: 35,
   placingBets: 25,
@@ -15,10 +15,10 @@ const KENOMATCH1_DURATION = {
 
 const KENOMATCH2_DURATION = {
   wholeRound: 85,
-  startFirstHalf: 75,
+  startFirstHalf: 74,
   showFirstHalfResult: 39,
-  settleFirstHalf: 12,
-  settleFullTime: 11,
+  settleFirstHalf: 13,
+  settleFullTime: 12,
 
   firstHalfPlacingBets: 35,
   placingBets: 25,
@@ -268,7 +268,7 @@ export class KenoMatch2 extends KenoMatch {
               remainingTime: KENOMATCH2_DURATION.firstHalfPlacingBets,
             },
           });
-        }, (data.remainingTime - KENOMATCH2_DURATION.startFirstHalf - 1) * 1000);
+        }, (data.remainingTime - (KENOMATCH2_DURATION.startFirstHalf - 1)) * 1000);
       } else {
         if (data.remainingTime > KENOMATCH2_DURATION.showFirstHalfResult) {
           this.setState({
