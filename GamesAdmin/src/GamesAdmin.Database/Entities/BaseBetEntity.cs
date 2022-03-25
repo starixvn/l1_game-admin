@@ -5,7 +5,6 @@ namespace GamesAdmin.Database.Entities
 {
     public class BaseBetEntity : MiniGameBaseEntity
     {
-        [BsonElement("thanhtoan")]
         public bool Paid { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
@@ -15,18 +14,17 @@ namespace GamesAdmin.Database.Entities
 
         public string Name { get; set; }
 
-        [BsonElement("phien")]
+        [BsonElement("roundId")]
         public long Round { get; set; }
 
-        public long RoundId { get; set; }
+        public int? PlayerId { get; set; }
 
-        public int? MemberId { get; set; }
 
         public string SiteId { get; set; }
 
         public bool? FreeBet { get; set; }
 
-        public string PartnerId { get; set; }
+        public string OperatorId { get; set; }
 
         public string Currency { get; set; }
 

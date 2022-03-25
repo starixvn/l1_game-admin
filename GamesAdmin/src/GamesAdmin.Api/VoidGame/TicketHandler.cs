@@ -369,8 +369,8 @@ namespace GamesAdmin.Api.VoidGame
             where T : BaseBetEntity
         {
             var record = (await collection
-                .FindAsync(record => record.MemberId == obCustId
-                                    && record.PartnerId == partnerId
+                .FindAsync(record => record.PlayerId == obCustId
+                                    && record.OperatorId == partnerId
                                     && record.SiteId == siteId
                                     && (record.Round == gameRoundId || record.RoundId == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)))
@@ -389,9 +389,9 @@ namespace GamesAdmin.Api.VoidGame
             where T : BaseBetEntity
         {
             var result = (await collection
-                .DeleteManyAsync(record => record.MemberId == obCustId
+                .DeleteManyAsync(record => record.PlayerId == obCustId
                                     && record.SiteId == siteId
-                                    && record.PartnerId == partnerId
+                                    && record.OperatorId == partnerId
                                     && (record.Round == gameRoundId || record.RoundId == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)));
 
