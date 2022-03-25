@@ -4,6 +4,7 @@
     using GamesAdmin.Database.Entities;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class HoldemPokerBetHistoryEntity
     {
@@ -17,11 +18,24 @@
             Ended = round.Ended;
             IsFold = bet.IsFold;
             RoundId = bet.Round;
-            IsQualified = round.SettlementResult.IsQualified;
+            IsSwappedOrHold = round.IsSwappedOrHold;
+            IsQualified = round.SettlementResult?.IsQualified;
 
-            Player = new HoldemPokerHandModel { Cards = bet.Cards, CombinationCards = bet.Result.Cards, Id = bet.Result.HandRankId };
+            var defaultPokerCards = Enumerable.Empty<PokerCard>();
 
-            Dealer = new HoldemPokerHandModel { Cards = round.Result.Dealer, CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : new List<PokerCard>(), Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0 };
+            Player = new HoldemPokerHandModel
+            {
+                Cards = bet?.Cards ?? defaultPokerCards,
+                CombinationCards = bet?.Result?.Cards ?? defaultPokerCards,
+                Id = bet?.Result?.HandRankId ?? 0
+            };
+
+            Dealer = new HoldemPokerHandModel
+            {
+                Cards = round?.Result?.Dealer ?? defaultPokerCards,
+                CombinationCards = round.Ended && round.SettlementResult != null ? round.SettlementResult.Cards : defaultPokerCards,
+                Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0
+            };
 
             CommunityCards = round.Result.CommunityCards;
             Ante = bet.Ante;
@@ -59,6 +73,8 @@
         public bool IsFold { get; }
 
         public bool? IsQualified { get; }
+
+        public bool? IsSwappedOrHold { get; set; }
 
         public decimal Stake { get; }
 

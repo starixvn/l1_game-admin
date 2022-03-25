@@ -7,7 +7,10 @@
 @{
     string noData = "No Data Available";
     var record = Model.Record;
-    var isFinished = record.Ended && !record.IsFold;
+    var isFinishRoundAndNotFold = record.Ended && !record.IsFold;
+    var isFinishRoundAndFold = record.Ended && record.IsFold;
+    var isRunningRoundAndNotPassSwapStep = record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value && !record.Ended;
+    var isRunningRoundOrFold = record.IsFold || (record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value);
 }
 <div>
     <div>
@@ -26,56 +29,74 @@
                 {
                     <tr>
                         <td>Player</td>
-                        <td> @{await RenderCards(record.Player.Cards);}</td>
                         <td>
-                            @if (record.IsFold)
+                            @if (isRunningRoundAndNotPassSwapStep || isFinishRoundAndFold)
                             {
-                                <div class="text-center">-</div>
+                                await RenderEmptyCards();
+                            }
+                            else
+                            {
+                                await RenderCards(record.Player.Cards);
+                            }
+                        </td>
+                        <td>
+                            @if (isRunningRoundOrFold)
+                            {
+                                RenderEmptyCell();
                             }
                             else
                             {
                                 await RenderCards(record.Player.CombinationCards);
                             }
                         </td>
-                        <td>@(record.IsFold ? "Fold" : record.Player.Rank)</td>
+                        <td>
+                            @if (isRunningRoundAndNotPassSwapStep)
+                            {
+                                RenderEmptyCell();
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    @(record.IsFold ? "Fold" : record.Player.Rank)
+                                </div>
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Dealer</td>
                         <td>
-
-                            @if (isFinished)
+                            @if (isFinishRoundAndNotFold)
                             {
                                 await RenderCards(record.Dealer.Cards);
                             }
                             else
                             {
-                                <div class="cards">
-                                    <img class="card" src="~/images/card_back.png" />
-                                    <img class="card" src="~/images/card_back.png" />
-                                </div>
+                                await RenderEmptyCards();
                             }
 
                         </td>
                         <td>
-                            @if (isFinished)
+                            @if (isFinishRoundAndNotFold)
                             {
                                 await RenderCards(record.Dealer.CombinationCards);
                             }
                             else
                             {
-                                <div class="cards text-center">-</div>
+                                RenderEmptyCell();
                             }
                         </td>
-
-                        @if (isFinished)
-                        {
-                            <td>@(record.IsQualified.HasValue && !record.IsQualified.Value ? "Does Not Qualify" : record.Dealer.Rank)</td>
-                        }
-                        else
-                        {
-
-                            <td>-</td>
-                        }
+                        <td>
+                            @if (isFinishRoundAndNotFold)
+                            {
+                                <div class="text-center">
+                                    @(record.IsQualified.HasValue && !record.IsQualified.Value ? "Does Not Qualify" : record.Dealer.Rank)
+                                </div>
+                            }
+                            else
+                            {
+                                RenderEmptyCell();
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Community Cards</td>
@@ -150,6 +171,19 @@
                     <img class="img" src="~/images/card_@(card.suit).png" />
                 </div>
             }
+        </div>
+    }
+
+    private void RenderEmptyCell()
+    {
+        <div class="cards text-center">-</div>
+    }
+
+    private async Task RenderEmptyCards()
+    {
+        <div class="cards">
+            <img class="card" src="~/images/card_back.png" />
+            <img class="card" src="~/images/card_back.png" />
         </div>
     }
 }

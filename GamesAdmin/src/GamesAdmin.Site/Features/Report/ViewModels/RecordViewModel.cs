@@ -336,8 +336,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string BetHistoryUrl { get; set; }
 
         public int ExchangeRateId { get; set; }
-        
+
         public bool IsFold { get; set; }
+
+        public bool? IsSwappedOrHold { get; set; }
     }
 
     public class HiLoRecordViewModel : BetRecordViewModel

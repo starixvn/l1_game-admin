@@ -45,6 +45,8 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public bool? IsQualified { get; set; }
 
+        public bool? IsSwappedOrHold { get; set; }
+
         public decimal Stake { get; set; }
 
         public decimal TotalWin { get; set; }

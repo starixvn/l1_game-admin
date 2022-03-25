@@ -330,6 +330,8 @@ namespace GamesAdmin.Core.Models
 
         public bool? IsQualified { get; set; }
 
+        public bool? IsSwappedOrHold { get; set; }
+
         public int ExchangeRateId { get; set; }
     }
 
