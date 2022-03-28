@@ -94,7 +94,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                return serverApi.GetToken(request);
+                return userServiceApi.GetToken(request);
             }
             catch (Exception ex)
             {
