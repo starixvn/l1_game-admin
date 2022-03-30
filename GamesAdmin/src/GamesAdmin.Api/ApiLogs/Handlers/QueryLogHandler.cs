@@ -33,10 +33,9 @@ namespace GamesAdmin.Api.ApiLogs.Handlers
             var repository = GetRepository<SBLogEntity>(request.LogType);
             var expression = ApiLogQueryExpression.GetSBExpression(request);
 
-            var entities = (await repository.FilterByAsync(expression)).ToList();
+            var entities = await repository.FilterByAsync(expression);
 
-            var result = Mapper.Map<IEnumerable<SBLog>>(entities);
-            return result;
+            return Mapper.Map<IEnumerable<SBLog>>(entities.AsEnumerable());
         }
 
         private async Task<IEnumerable<IApiLog>> QueryPartnerLog(QueryLogRequest request)

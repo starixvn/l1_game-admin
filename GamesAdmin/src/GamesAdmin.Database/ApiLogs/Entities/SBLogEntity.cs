@@ -43,6 +43,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public bool FreeBet { get; set; }
 
         public bool DisableJackpotGames { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class SBResultEntity : ApiLogResultEntity
