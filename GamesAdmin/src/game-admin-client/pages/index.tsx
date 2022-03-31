@@ -40,6 +40,7 @@ const environmentPartners = {
   LOCAL: ["ONEworks1", "SBO"],
   "LOCAL-1": ["ONEworks1", "SBO"],
   LOCAL_2: ["ONEworks1", "SBO"],
+  LOCAL_3: ["ONEworks1", "SBO"],
   SIT: ["ONEworks1", "SBO"],
   UAT: ["ONEworks1"],
   PRO: ["ONEworks1"],

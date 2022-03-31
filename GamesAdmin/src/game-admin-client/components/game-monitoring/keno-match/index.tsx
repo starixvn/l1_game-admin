@@ -2,6 +2,28 @@ import { KenoMatchModel } from "../../common/model/KenoMatchModel";
 import { GameState } from "../../shared/common/GameState";
 import KenoMatch from "./keno-match-base";
 
+const KENOMATCH1_DURATION = {
+  wholeRound: 77,
+  startFirstHalf: 71,
+  showFirstHalfResult: 35,
+  settleFirstHalf: 9,
+  settleFullTime: 8,
+
+  firstHalfPlacingBets: 35,
+  placingBets: 25,
+};
+
+const KENOMATCH2_DURATION = {
+  wholeRound: 85,
+  startFirstHalf: 74,
+  showFirstHalfResult: 39,
+  settleFirstHalf: 13,
+  settleFullTime: 12,
+
+  firstHalfPlacingBets: 35,
+  placingBets: 25,
+};
+
 export class KenoMatch1 extends KenoMatch {
   constructor(props) {
     super(props);
@@ -9,7 +31,10 @@ export class KenoMatch1 extends KenoMatch {
   }
 
   umHandler(data: any): void {
-    if (this.isFirstLoad || this.state.time.remainingTime == 27) {
+    if (
+      this.isFirstLoad ||
+      this.state.time.remainingTime == KENOMATCH1_DURATION.firstHalfPlacingBets
+    ) {
       clearTimeout(this.timeout);
       const model = new KenoMatchModel();
       this.setState({
@@ -26,14 +51,13 @@ export class KenoMatch1 extends KenoMatch {
 
   finishHandler({ finish }: { finish: any }): void {
     this.isFirstLoad = false;
-    const waitingTime = 6;
     const { result } = this.state;
     result.fullTime = finish;
     this.setState({
       result,
       gameState: GameState.waiting,
       time: {
-        remainingTime: waitingTime,
+        remainingTime: KENOMATCH1_DURATION.settleFullTime,
       },
     });
 
@@ -45,16 +69,16 @@ export class KenoMatch1 extends KenoMatch {
         gameState: GameState.running,
         roundNumber: this.state.roundNumber + 1,
         time: {
-          remainingTime: 27,
+          remainingTime: KENOMATCH1_DURATION.firstHalfPlacingBets,
         },
       });
-    }, (waitingTime + 1) * 1000);
+    }, (KENOMATCH1_DURATION.settleFullTime + 1) * 1000);
   }
 
   remainingTimeHandler(data): void {
     const { result } = this.state;
 
-    if (data.remainingTime > 56) {
+    if (data.remainingTime > KENOMATCH1_DURATION.startFirstHalf) {
       if (data.firstHalf) {
         result.firstHalf = data.firstHalf;
       }
@@ -66,7 +90,8 @@ export class KenoMatch1 extends KenoMatch {
         roundNumber: data.roundId - 1,
         result,
         time: {
-          remainingTime: data.remainingTime - 56,
+          remainingTime:
+            data.remainingTime - KENOMATCH1_DURATION.startFirstHalf,
         },
       });
 
@@ -78,28 +103,33 @@ export class KenoMatch1 extends KenoMatch {
           gameState: GameState.running,
           roundNumber: data.roundId,
           time: {
-            remainingTime: 27,
+            remainingTime: KENOMATCH1_DURATION.firstHalfPlacingBets,
           },
         });
-      }, (data.remainingTime - 55) * 1000);
+      }, (data.remainingTime - (KENOMATCH1_DURATION.startFirstHalf - 1)) * 1000);
     } else {
-      if (data.remainingTime > 28) {
+      if (data.remainingTime > KENOMATCH1_DURATION.showFirstHalfResult) {
         this.setState({
           gameState: GameState.running,
           roundNumber: data.roundId,
           time: {
-            remainingTime: data.remainingTime - 28,
+            remainingTime:
+              data.remainingTime - KENOMATCH1_DURATION.showFirstHalfResult,
           },
         });
       } else {
-        if (data.remainingTime > 18 && data.remainingTime <= 28) {
+        if (
+          data.remainingTime > KENOMATCH1_DURATION.placingBets &&
+          data.remainingTime <= KENOMATCH1_DURATION.showFirstHalfResult
+        ) {
           result.firstHalf = data.firstHalf;
           this.setState({
             gameState: GameState.waiting,
             roundNumber: data.roundId,
             result,
             time: {
-              remainingTime: data.remainingTime - 19,
+              remainingTime:
+                data.remainingTime - (KENOMATCH1_DURATION.placingBets + 1),
             },
           });
 
@@ -108,10 +138,10 @@ export class KenoMatch1 extends KenoMatch {
               gameState: GameState.running,
               roundNumber: data.roundId,
               time: {
-                remainingTime: 18,
+                remainingTime: KENOMATCH1_DURATION.placingBets,
               },
             });
-          }, (data.remainingTime - 18) * 1000);
+          }, (data.remainingTime - KENOMATCH1_DURATION.placingBets) * 1000);
         } else {
           result.firstHalf = data.firstHalf;
           this.setState({
@@ -131,7 +161,6 @@ export class KenoMatch1 extends KenoMatch {
 
     if (!!data.firstHalfResult) {
       this.isFirstLoad = false;
-      const waitingTime = 8;
       const { result } = this.state;
       result.firstHalf.result.blue = data.firstHalfResult.result.blue;
       result.firstHalf.result.red = data.firstHalfResult.result.red;
@@ -140,7 +169,7 @@ export class KenoMatch1 extends KenoMatch {
         result,
         gameState: GameState.waiting,
         time: {
-          remainingTime: waitingTime,
+          remainingTime: KENOMATCH1_DURATION.settleFirstHalf,
         },
       });
 
@@ -148,10 +177,10 @@ export class KenoMatch1 extends KenoMatch {
         this.setState({
           gameState: GameState.running,
           time: {
-            remainingTime: 18,
+            remainingTime: KENOMATCH1_DURATION.placingBets,
           },
         });
-      }, (waitingTime + 1) * 1000);
+      }, (KENOMATCH1_DURATION.settleFirstHalf + 1) * 1000);
     }
   }
 }
@@ -163,7 +192,10 @@ export class KenoMatch2 extends KenoMatch {
   }
 
   umHandler(data: any): void {
-    if (this.isFirstLoad || this.state.time.remainingTime == 27) {
+    if (
+      this.isFirstLoad ||
+      this.state.time.remainingTime == KENOMATCH2_DURATION.firstHalfPlacingBets
+    ) {
       clearTimeout(this.timeout);
       const model = new KenoMatchModel();
       this.setState({
@@ -180,14 +212,13 @@ export class KenoMatch2 extends KenoMatch {
 
   finishHandler({ finish }): void {
     this.isFirstLoad = false;
-    const waitingTime = 11;
     const { result } = this.state;
     result.fullTime = finish;
     this.setState({
       result,
       gameState: GameState.waiting,
       time: {
-        remainingTime: waitingTime,
+        remainingTime: KENOMATCH2_DURATION.settleFullTime,
       },
     });
 
@@ -199,17 +230,17 @@ export class KenoMatch2 extends KenoMatch {
         gameState: GameState.running,
         roundNumber: this.state.roundNumber + 1,
         time: {
-          remainingTime: 27,
+          remainingTime: KENOMATCH2_DURATION.firstHalfPlacingBets,
         },
       });
-    }, (waitingTime + 1) * 1000);
+    }, (KENOMATCH2_DURATION.settleFullTime + 1) * 1000);
   }
 
   remainingTimeHandler(data): void {
     {
       const { result } = this.state;
 
-      if (data.remainingTime > 60) {
+      if (data.remainingTime > KENOMATCH2_DURATION.startFirstHalf) {
         if (data.firstHalf) {
           result.firstHalf = data.firstHalf;
         }
@@ -221,7 +252,8 @@ export class KenoMatch2 extends KenoMatch {
           roundNumber: data.roundId - 1,
           result,
           time: {
-            remainingTime: data.remainingTime - 60,
+            remainingTime:
+              data.remainingTime - KENOMATCH2_DURATION.startFirstHalf,
           },
         });
 
@@ -233,28 +265,33 @@ export class KenoMatch2 extends KenoMatch {
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: 27,
+              remainingTime: KENOMATCH2_DURATION.firstHalfPlacingBets,
             },
           });
-        }, (data.remainingTime - 59) * 1000);
+        }, (data.remainingTime - (KENOMATCH2_DURATION.startFirstHalf - 1)) * 1000);
       } else {
-        if (data.remainingTime > 32) {
+        if (data.remainingTime > KENOMATCH2_DURATION.showFirstHalfResult) {
           this.setState({
             gameState: GameState.running,
             roundNumber: data.roundId,
             time: {
-              remainingTime: data.remainingTime - 32,
+              remainingTime:
+                data.remainingTime - KENOMATCH2_DURATION.showFirstHalfResult,
             },
           });
         } else {
-          if (data.remainingTime > 18 && data.remainingTime <= 32) {
+          if (
+            data.remainingTime > KENOMATCH2_DURATION.placingBets &&
+            data.remainingTime <= KENOMATCH2_DURATION.showFirstHalfResult
+          ) {
             result.firstHalf = data.firstHalf;
             this.setState({
               gameState: GameState.waiting,
               roundNumber: data.roundId,
               result,
               time: {
-                remainingTime: data.remainingTime - 19,
+                remainingTime:
+                  data.remainingTime - KENOMATCH2_DURATION.placingBets - 1,
               },
             });
 
@@ -263,10 +300,10 @@ export class KenoMatch2 extends KenoMatch {
                 gameState: GameState.running,
                 roundNumber: data.roundId,
                 time: {
-                  remainingTime: 18,
+                  remainingTime: KENOMATCH2_DURATION.placingBets,
                 },
               });
-            }, (data.remainingTime - 18) * 1000);
+            }, (data.remainingTime - KENOMATCH2_DURATION.placingBets) * 1000);
           } else {
             result.firstHalf = data.firstHalf;
             this.setState({
@@ -287,7 +324,6 @@ export class KenoMatch2 extends KenoMatch {
 
     if (!!data.firstHalfResult) {
       this.isFirstLoad = false;
-      const waitingTime = 12;
       const { result } = this.state;
       result.firstHalf.result.blue = data.firstHalfResult.result.blue;
       result.firstHalf.result.red = data.firstHalfResult.result.red;
@@ -296,7 +332,7 @@ export class KenoMatch2 extends KenoMatch {
         result,
         gameState: GameState.waiting,
         time: {
-          remainingTime: waitingTime,
+          remainingTime: KENOMATCH2_DURATION.settleFirstHalf,
         },
       });
 
@@ -304,10 +340,10 @@ export class KenoMatch2 extends KenoMatch {
         this.setState({
           gameState: GameState.running,
           time: {
-            remainingTime: 18,
+            remainingTime: KENOMATCH2_DURATION.placingBets,
           },
         });
-      }, (waitingTime + 1) * 1000);
+      }, (KENOMATCH2_DURATION.settleFirstHalf + 1) * 1000);
     }
   }
 }
