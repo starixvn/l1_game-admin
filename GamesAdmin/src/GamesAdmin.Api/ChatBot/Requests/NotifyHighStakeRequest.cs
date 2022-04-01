@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.ChatBot.Results;
+﻿using System.Collections.Generic;
+using GamesAdmin.Api.ChatBot.Results;
 using MediatR;
 
 namespace GamesAdmin.Api.ChatBot.Requests
@@ -26,5 +27,7 @@ namespace GamesAdmin.Api.ChatBot.Requests
         public int ChoiceId { get; set; }
 
         public byte System { get; set; }
+
+        public Dictionary<string, string> Metadata { get; set; } = new Dictionary<string, string>();
     }
 }
