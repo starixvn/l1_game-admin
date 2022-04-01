@@ -340,6 +340,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool IsFold { get; set; }
 
         public bool? IsSwappedOrHold { get; set; }
+
+        public decimal TotalWin { get; set; }
     }
 
     public class HiLoRecordViewModel : BetRecordViewModel
@@ -351,9 +353,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Paid { get; set; }
 
         public int ExchangeRateId { get; set; }
-    }
-
-    public class TexasHoldemPokerRecordViewModel : HoldemPokerRecordViewModel
-    {
     }
 }

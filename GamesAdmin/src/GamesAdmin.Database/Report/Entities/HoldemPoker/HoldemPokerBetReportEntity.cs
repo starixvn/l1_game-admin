@@ -41,12 +41,11 @@
                 Id = round.Ended && round.SettlementResult != null ? round.SettlementResult.HandRankId : 0
             };
 
-            BetWin = TotalWin - Stake;
-
             IsFold = bet.IsFold;
             Rate = bet.Rate;
             IsQualified = round.SettlementResult?.IsQualified;
             IsSwappedOrHold = round.IsSwappedOrHold;
+            BetWin = bet.Betwin;
         }
 
         public DateTime Time { get; }

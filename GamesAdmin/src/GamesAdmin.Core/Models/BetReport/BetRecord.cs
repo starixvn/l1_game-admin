@@ -333,6 +333,8 @@ namespace GamesAdmin.Core.Models
         public bool? IsSwappedOrHold { get; set; }
 
         public int ExchangeRateId { get; set; }
+
+        public decimal TotalWin { get; set; }
     }
 
     public class HiLoBetRecord : BetRecord

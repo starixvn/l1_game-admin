@@ -23,7 +23,6 @@
             <tbody>
                 @foreach (var record in Model.Records)
                 {
-                    var winAmount = record.BetWin + record.Stake;
                     <tr>
                         <td class="text-center">@record.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@record.Partner</td>
@@ -39,7 +38,7 @@
                                 @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.Stake) : record.Stake)
                             </a>
                         </td>
-                        <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(winAmount) : winAmount) : "Unfinished Game")</td>
+                        <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.TotalWin) : record.TotalWin) : "Unfinished Game")</td>
                     </tr>
                 }
             </tbody>
