@@ -71,7 +71,7 @@ namespace GamesAdmin.Api.ChatBot
             return systemName switch
             {
                 Systems.Mobi => $"{Separator}SM",
-                Systems.Instant => $"{Separator}SI-{GetModeName(metadata)}",
+                Systems.Instant => $"{Separator}SI{GetModeName(metadata)}",
                 Systems.Cocos => string.Empty,
                 _ => string.Empty,
             };
@@ -81,7 +81,7 @@ namespace GamesAdmin.Api.ChatBot
         {
             if(metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.Value)
             {
-                return ClientDisplayMode.Portrait.DisplayName;
+                return $"-{ClientDisplayMode.Portrait.DisplayName}";
             }
 
             return string.Empty;
