@@ -68,15 +68,23 @@ namespace GamesAdmin.Api.ChatBot
         {
             var systemName = Enum.Parse<Systems>(system.ToString());
 
-            var metadataString = string.Join("|", metadata.Select(x => $"{x.Key}: {x.Value}"));
-
             return systemName switch
             {
                 Systems.Mobi => $"{Separator}SM",
-                Systems.Instant => $"{Separator}SI|{metadataString}",
+                Systems.Instant => $"{Separator}SI-{GetModeName(metadata)}",
                 Systems.Cocos => string.Empty,
                 _ => string.Empty,
             };
+        }
+
+        private static string GetModeName(Dictionary<string, string> metadata)
+        {
+            if(metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.DisplayName)
+            {
+                return ClientDisplayMode.Portrait.DisplayName;
+            }
+
+            return string.Empty;
         }
     }
 }
