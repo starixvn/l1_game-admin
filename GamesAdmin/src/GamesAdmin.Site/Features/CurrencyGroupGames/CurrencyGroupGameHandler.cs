@@ -41,19 +41,25 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             var result = mapper.Map<EditViewModel>(currencyGroupGame) ?? new EditViewModel();
             var chipConfigs = await chipService.GetAll();
 
-            if (currencyGroupGame?.StakeLevels == null)
-            {
-                result.StakeLevels = new StakeLevel[] {
-                    new StakeLevel(0,0,0),
-                    new StakeLevel(0,0,0),
-                    new StakeLevel(0,0,0)
-                };
-            }
-
             result.GameId = gameId;
             result.GroupId = request.GroupId;
             result.AllChips = chipConfigs.OrderBy(chip => chip.Value).ToList();
             result.MaxBetChoiceSetting = GenerateMaxBetPerChoices(request.GameName, currencyGroupGame?.MaxBetPerChoices);
+
+            if (currencyGroupGame?.StakeLevels == null)
+            {
+                result.StakeLevels = new StakeLevel[] {
+                    new StakeLevel(0, 0, 0),
+                    new StakeLevel(0, 0, 0),
+                    new StakeLevel(0, 0, 0)
+                };
+            }
+
+            if (currencyGroupGame?.CoinValues == null)
+            {
+                result.BetLevels = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                result.CoinValues = new double[] { 0, 0, 0, 0, 0, 0 };
+            }
 
             return result;
         }

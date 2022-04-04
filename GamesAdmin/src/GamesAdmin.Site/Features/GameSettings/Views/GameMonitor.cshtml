@@ -36,9 +36,16 @@
                                 {
                                     <a href="#" class="icon-action" onclick="gameStatus.setControlResultSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
                                 }
-
                             }
-                            else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value || @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
+                            else if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
+                            {
+                                if (role == Role.Admin.Value)
+                                {
+                                    <a class="icon-action" href="~/ResultMonitor/CascadingSlotResult?gameConfigName=@Model.GameList[index].Name"><i class="icon-chart"></i></a>
+                                }
+                            }
+                            else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value ||
+                                @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {
                                 if (role == Role.Admin.Value)
                                 {

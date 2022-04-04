@@ -113,21 +113,21 @@ namespace GamesAdmin.Site.Features.GameSettings
                                         ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
                                         : game.Info.Name;
 
-                if (game.Info.Type == GameType.Slots)
+                switch (game.Info.Type)
                 {
-                    viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
-                    viewModel.SlotViewModel.ModeItems = difficultyItems;
-                    viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
-
-                    viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
-                }
-                else
-                {
-                    viewModel.Type = GameType.AutoRNG;
-                    var choices = GetBetChoices(game.Info.Name);
-
-                    viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
-                    viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                    case GameType.Slots:
+                    case GameType.CascadingSlots:
+                        viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
+                        viewModel.SlotViewModel.ModeItems = difficultyItems;
+                        viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
+                        viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
+                        break;
+                    default:
+                        viewModel.Type = GameType.AutoRNG;
+                        var choices = GetBetChoices(game.Info.Name);
+                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
+                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                        break;
                 }
             }
 
@@ -214,9 +214,16 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-        => request.GameInfo.Type == GameType.AutoRNG
-                ? gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting))
-                : gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig));
+        {
+            switch (request.GameInfo.Type)
+            {
+                case GameType.Slots:
+                case GameType.CascadingSlots:
+                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig));
+                default:
+                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting));
+            }
+        }
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
             => gameService.Add(new GameConfig(
@@ -347,9 +354,17 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.UnderMaintenance(request);
 
         public Task<bool> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
-        => request.Type == GameType.AutoRNG
-                ? gameService.UpdateOdds(request)
-                : gameService.UpdateSlotIconOdds(request.Name, request.Icons);
+        {
+            switch (request.Type)
+            {
+                case GameType.CascadingSlots:
+                    return gameService.UpdateOddsByCounts(request.Name, request.OddsByCounts);
+                case GameType.Slots:
+                    return gameService.UpdateSlotIconOdds(request.Name, request.Icons);
+                default:
+                    return gameService.UpdateOdds(request);
+            }
+        }
 
         public Task<bool> Handle(UpdateBetLimitRequest request, CancellationToken cancellationToken)
         => gameService.UpdateBetLimit(request);

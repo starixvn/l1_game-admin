@@ -2,6 +2,8 @@
 {
     public class GameServerSettings
     {
+        public GameServerConfigs Main { get; set; }
+
         public GameServerConfigs UserService { get; set; }
 
         public GameServerConfigs NotificationService { get; set; }
@@ -73,14 +75,19 @@
         public GameServerConfigs KenoPower1 { get; set; }
 
         public GameServerConfigs KenoPower2 { get; set; }
+
         public GameServerConfigs HiLo { get; set; }
 
         public GameServerConfigs CasinoHoldemPoker { get; set; }
 <<<<<<< HEAD
-
-        public GameServerConfigs TexasHoldemPoker { get; set; }
 =======
->>>>>>> fix: clean up game-server
+
+        public GameServerConfigs TreasureIsland { get; set; }
+
+>>>>>>> fix: run local
+        public GameServerConfigs TexasHoldemPoker { get; set; }
+        public GameServerConfigs NightClub { get; set; }
+
     }
 
     public class GameServerConfigs

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.GameConfigs;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
@@ -14,12 +15,14 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             string name,
             GameType type,
             Dictionary<string, double> odds,
-            Dictionary<string, Dictionary<string, double>> icons)
+            Dictionary<string, Dictionary<string, double>> icons,
+            Dictionary<string, List<OddsByCount>> oddsByCounts)
         {
             Name = name;
             Type = type;
             Odds = odds;
             Icons = icons;
+            OddsByCounts = oddsByCounts;
         }
 
         public string Name { get; set; }
@@ -29,5 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public Dictionary<string, double> Odds { get; set; }
 
         public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
+
+        public Dictionary<string, List<OddsByCount>> OddsByCounts { get; set; }
     }
 }

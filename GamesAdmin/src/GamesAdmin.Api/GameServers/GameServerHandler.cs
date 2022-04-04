@@ -19,6 +19,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
         , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
         , IRequestHandler<GetAdminMonitoringSettingsRequest, AdminMonitoringModel>
+        , IRequestHandler<SetCascadingSlotResultRequest, CascadingSettlementResult>
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
         , IRequestHandler<ConnectedUserRequest, int>
     {
@@ -55,6 +56,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
             => gameServerService.GetAdminMonitoringSettings(request.Username);
+            
+        public Task<CascadingSettlementResult> Handle(SetCascadingSlotResultRequest request, CancellationToken cancellationToken)
+        => gameServerService.SetCascadingSlotResult(request);
 
         public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
             => gameServerService.VerifyAdminMonitoringToken(request.Token);

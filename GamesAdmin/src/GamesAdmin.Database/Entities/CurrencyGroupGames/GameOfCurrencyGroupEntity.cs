@@ -25,5 +25,10 @@ namespace GamesAdmin.Database.Entities
         public string[] Chips { get; set; }
 
         public StakeLevel[] StakeLevels { get; set; }
+
+        public double[] BetLevels { get; set; }
+        public double[] CoinValues { get; set; }
+        public int Multiplier { get; set; }
+        public double MaxWinPerRound { get; set; }
     }
 }

@@ -226,6 +226,9 @@
 .bitcoin-master-result .result-detail {
   margin-left: 5px; }
 
+.bitcoin-master-result .tie .result-detail {
+  margin-left: 0; }
+
 .bitcoin-master-report .display-none {
   display: none !important; }
 
@@ -285,3 +288,14 @@
   width: 3rem;
   border-radius: 50%;
   border: 1px solid #16aaff; }
+
+.cascading-form .col-nickname, .cascading-form .col-submit {
+  margin-top: -20rem; }
+
+.cascading-form .field-row {
+  margin-bottom: 1rem; }
+  .cascading-form .field-row label {
+    width: 8rem; }
+  .cascading-form .field-row input {
+    display: inline-block;
+    width: 20rem; }

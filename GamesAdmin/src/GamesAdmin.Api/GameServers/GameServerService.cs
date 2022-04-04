@@ -41,6 +41,8 @@ namespace GamesAdmin.Api.GameServers
         Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+        
+        Task<CascadingSettlementResult> SetCascadingSlotResult(SetCascadingSlotResultRequest request);
 
         Task<bool> VerifyAdminMonitoringToken(string token);
 
@@ -59,6 +61,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
         private readonly IHiLoApi hiloApi;
         private readonly IGenericRepository<AdminUserEntity> userRepository;
+        private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
 
         public GameServerService(
@@ -71,6 +74,7 @@ namespace GamesAdmin.Api.GameServers
             IHiLoApi hiloApi,
             IAppSettings appSettings,
             IUserServiceApi userServiceApi,
+            ICascadingResultApiFactory cascadingResultApiFactory,
             INotificationServiceApi notificationServiceApi,
             IGenericRepository<AdminUserEntity> userRepository)
         {
@@ -83,6 +87,7 @@ namespace GamesAdmin.Api.GameServers
             this.hiloApi = hiloApi;
             this.appSettings = appSettings;
             this.userServiceApi = userServiceApi;
+            this.cascadingResultApiFactory = cascadingResultApiFactory;
             this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
         }
@@ -281,7 +286,7 @@ namespace GamesAdmin.Api.GameServers
 
             return false;
         }
-
+        
         public async Task<int> GetConnectedUsers()
         {
             try
@@ -294,6 +299,57 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return 0;
+        }
+
+        public async Task<CascadingSettlementResult> SetCascadingSlotResult(SetCascadingSlotResultRequest request)
+        {
+            try
+            {
+                var config = await gameSettingService.GetByName(request.GameConfigName);
+                var isExcludeUUS = false;
+
+                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
+                {
+                    var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
+
+                    var result = new CascadingSettlementResult
+                    {
+                        Boards = new List<CascadingBoard>
+                        {
+                            new CascadingBoard
+                            {
+                                Name = "Base spin",
+                                Result = new List<byte>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                                WinningSymbols = new Dictionary<byte, int>
+                                {
+                                    [2] = 8,
+                                    [5] = 8,
+                                },
+                                Multiplier = 1,
+                                Scatter = 2
+                            },
+                            new CascadingBoard
+                            {
+                                Name = "Tumbling 1",
+                                Result = new List<byte>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                                WinningSymbols = null,
+                                Multiplier = 2,
+                                Scatter = 3
+                            }
+                        }
+                    };
+
+                    // var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(new SetCascadingSlotResultServerRequest(request.Nickname, request.BaseSpin, request.Tumblings));
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return null;
         }
     }
 }

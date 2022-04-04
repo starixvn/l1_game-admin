@@ -40,6 +40,8 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
+        Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds);
+
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
         Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig);
@@ -116,7 +118,7 @@ namespace GamesAdmin.Api.Games
                     Botenabled = game.BotSetting.BotEnabled,
                     BotMaxBet = game.BotSetting.BotMaxBet,
                     HoursMaxBot = game.BotSetting.HoursMaxBot,
-                    SlotsConfig = game.SlotsConfig,
+                    SlotsConfig = game.SlotsConfig.StandardizeSlotsConfig(game.Info.Type),
                     SiteExclusions = new string[] { },
                     Time = DateTime.Now,
                     GameId = (int)gameEnum.GameId,
@@ -295,6 +297,29 @@ namespace GamesAdmin.Api.Games
                 sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
+
+                await repository.UpdateAsync(config => config.Name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds)
+        {
+            try
+            {
+                if (odds?.Count == 0)
+                {
+                    throw new InvalidOperationException($"Odds of game {name} are empty.");
+                }
+
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.OddsByCounts, odds);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

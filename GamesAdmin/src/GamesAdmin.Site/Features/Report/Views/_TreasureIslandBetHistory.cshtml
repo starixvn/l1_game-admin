@@ -1,0 +1,40 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model SlotGameRecordViewModel
+
+<table class="table table-bordered table-four-guardians">
+    <thead>
+        <tr>
+            <th class="col-date">Time</th>
+            <th class="col-round-id">RoundId</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Time.ToString(Constants.DateTimeFormat)
+            </td>
+            <td class="text-center">@Model.RoundId @(Model.FreeSpin ? "(Free spin)" : string.Empty)</td>
+            <td>
+                <table class="table-paylines">
+                    <tbody>
+                        @{
+                            var array = Model.GetFormatResults();
+                            for (var row = 0; row < array.Length; row++)
+                            {
+                                <tr>
+                                    @for (var column = 0; column < array[row].Length; column++)
+                                    {
+                                        <td><img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/@(array[row][column]).png" /></td>
+                                    }
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

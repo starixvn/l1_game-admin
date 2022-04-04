@@ -47,7 +47,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 mapper.Map<EnableSetting>(addViewModel),
                 mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
-                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon)));
+                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.Type, addViewModel.NumberOfIcons, addViewModel.OddsPerIcon)));
 
             return RedirectToAction(nameof(Index));
         }
@@ -202,9 +202,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 await mediator.Send(new UpdateOddsRequest(
                     viewModel.Name,
                     viewModel.Type,
-                    viewModel.PayoutViewModel.Odds,
-                    viewModel.PayoutViewModel.Icons
-            ));
+                    viewModel.PayoutViewModel?.Odds,
+                    viewModel.PayoutViewModel?.Icons,
+                    viewModel.SlotsConfig.OddsByCounts));
 
                 return Json(true);
             }

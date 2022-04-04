@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Dashboard
 {
-    [Authorize]
+    //[Authorize]
     public class DashboardController : Controller
     {
         private readonly IMediator mediator;

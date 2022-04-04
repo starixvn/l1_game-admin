@@ -56,5 +56,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpGet("connected_users")]
         public Task<int> ConnectedUsers()
            => mediator.Send(new ConnectedUserRequest());
+           
+        [HttpPost("slot/set_cascading_result")]
+        public Task<CascadingSettlementResult> SetCascadingSlotResult([FromBody] SetCascadingSlotResultRequest request)
+           => mediator.Send(request);
     }
 }

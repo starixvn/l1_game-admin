@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using Refit;
@@ -56,6 +57,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/game_settings/{name}/update_slot_odds")]
         Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        [Post("/game_settings/{name}/update_odds_by_counts")]
+        Task<bool> UpdateOddsByCounts(string name, [Body] Dictionary<string, List<OddsByCount>> odds);
 
         [Get("/game_settings/{name}/disabled_message")]
         Task<Dictionary<string, string>> GetDisableMessage(string name);

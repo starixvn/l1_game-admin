@@ -21,6 +21,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSlotConfigRequest, bool>
         , IRequestHandler<UpdateSlotIconOddsRequest, bool>
+        , IRequestHandler<UpdateOddsByCountsRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<UpdateBetaVersionRequest, bool>
     {
@@ -73,6 +74,9 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
+
+        public Task<bool> Handle(UpdateOddsByCountsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateOddsByCounts(request.Name, request.Odds);
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);

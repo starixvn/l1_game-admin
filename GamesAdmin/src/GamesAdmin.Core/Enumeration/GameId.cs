@@ -41,6 +41,7 @@
         TexasHoldemPoker = 42,
         BitcoinMaster = 43,
         HiLo = 45,
-        NightClub = 46
+        NightClub = 46,
+        TreasureIsland = 47,
     }
 }

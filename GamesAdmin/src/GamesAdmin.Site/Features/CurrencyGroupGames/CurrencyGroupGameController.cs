@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.CurrencyGroupGames
 {
-    [Authorize]
+    //[Authorize]
     public class CurrencyGroupGameController : Controller
     {
         private readonly IMediator mediator;

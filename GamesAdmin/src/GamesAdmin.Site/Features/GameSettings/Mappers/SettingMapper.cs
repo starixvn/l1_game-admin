@@ -65,7 +65,11 @@ namespace GamesAdmin.Site.Features.GameSettings
                     src.PlayerJackpotContribution.ConvertPercentValue(),
                     src.BotJackpotContribution.ConvertPercentValue(),
                     false,
-                    src.AllowedCurrency)));
+                    src.AllowedCurrency)))
+                .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => src.BetLevels))
+                .ForMember(dest => dest.CoinValues, opt => opt.MapFrom(src => src.CoinValues))
+                .ForMember(dest => dest.Multiplier, opt => opt.MapFrom(src => src.Multiplier))
+                .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.MaxWinPerRound));
 
             CreateMap<AddViewModel, GameInfo>();
             CreateMap<AddViewModel, EnableSetting>();

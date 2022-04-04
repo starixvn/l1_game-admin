@@ -1,0 +1,48 @@
+﻿@using GamesAdmin.Site.Features.ResultMonitor.ViewModels;
+@model CascadingSlotResultViewModel
+
+@{
+    ViewData["Title"] = $"{Model.DisplayGameName} Result Controller";
+}
+
+@section Styles {
+    <link href="~/css/big-small-reports.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<form class="form filter cascading-form" data-ajax="true" data-ajax-method="POST" asp-action="SetCascadingSlotResult" data-ajax-mode="replace" data-ajax-update="#set-result"
+      data-ajax-loading="#spinner"
+      method="POST">
+    <div class="form-row align-items-center">
+        <input type="hidden" asp-for="GameName" />
+        <div class="col-auto col-nickname">
+            <label asp-for="Nickname" class="control-label"></label>
+            <input type="text" class="form-control" placeholder="Nickname" asp-for="Nickname">
+        </div>
+        <fieldset>
+            <legend>Set Result</legend>
+            <div class="field-row">
+                <label asp-for="BaseSpin" class="control-label"></label>
+                <input type="text" class="form-control" asp-for="BaseSpin">
+            </div>
+            @for (var i = 0; i < Model.Tumblings.Count; i++)
+            {
+                <div class="field-row">
+                    <label class="control-label">Tumbling @(i+1)</label>
+                    <input type="text" class="form-control" asp-for="@Model.Tumblings[i]">
+                </div>
+            }
+        </fieldset>
+        <div class="col-auto col-submit">
+            <button type="submit" class="btn-submit">Submit</button>
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="set-result" class="col-sm-12 report-container">
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+}

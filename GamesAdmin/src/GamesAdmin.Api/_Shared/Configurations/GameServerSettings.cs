@@ -79,6 +79,8 @@
         public GameServerConfigs HiLo { get; set; }
 
         public GameServerConfigs CasinoHoldemPoker { get; set; }
+        public GameServerConfigs TreasureIsland { get; set; }
+
         public GameServerConfigs TexasHoldemPoker { get; set; }
         public GameServerConfigs NightClub { get; set; }
 

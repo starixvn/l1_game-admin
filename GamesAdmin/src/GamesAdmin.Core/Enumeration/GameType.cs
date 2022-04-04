@@ -1,9 +1,9 @@
 ﻿namespace GamesAdmin.Core.Enumeration
 {
-    public enum GameType 
+    public enum GameType
     {
         AutoRNG = 1,
         Slots,
-        
+        CascadingSlots,
     }
 }

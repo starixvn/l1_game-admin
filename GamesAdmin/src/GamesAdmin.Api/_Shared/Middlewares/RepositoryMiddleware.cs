@@ -39,6 +39,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
             services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
             services.AddScoped<INightClubReportRepository, NightClubReportRepository>();
+            services.AddScoped<ITreasureIslandReportRepository, TreasureIslandReportRepository>();
             services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
             services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
         }

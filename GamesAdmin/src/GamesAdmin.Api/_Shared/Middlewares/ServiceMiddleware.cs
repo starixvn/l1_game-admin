@@ -57,6 +57,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
             services.AddScoped<NightClubReport>().AddScoped<ISlotGameReport, NightClubReport>(s => s.GetService<NightClubReport>());
+            services.AddScoped<TreasureIslandReport>().AddScoped<ISlotGameReport, TreasureIslandReport>(s => s.GetService<TreasureIslandReport>());
 
 
             services.AddScoped<IGameServerService, GameServerService>();
@@ -155,6 +156,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<INightClubBoardApi>(appSettings.GameServers.NightClub.Api, refitSettings));
+
+            services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();
+            services.AddSingleton(RestService.For<ITreasureIslandResultApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
         }
 
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

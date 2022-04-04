@@ -34,8 +34,6 @@ namespace GamesAdmin.Api.GameServers
 
         Task<OnlineUsers> GetOnlineUsers(Game gameType = null);
 
-        Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
         Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
@@ -43,13 +41,16 @@ namespace GamesAdmin.Api.GameServers
         Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+        
+        Task<CascadingSettlementResult> SetCascadingSlotResult(SetCascadingSlotResultRequest request);
 
         Task<bool> VerifyAdminMonitoringToken(string token);
+
+        Task<int> GetConnectedUsers();
     }
 
     public class GameServerService : IGameServerService
     {
-        private readonly IGameServerApi serverApi;
         private readonly IUserServiceApi userServiceApi;
         private readonly INotificationServiceApi notificationServiceApi;
         private readonly ISentryClient sentryClient;
@@ -60,28 +61,23 @@ namespace GamesAdmin.Api.GameServers
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
         private readonly IHiLoApi hiloApi;
         private readonly IGenericRepository<AdminUserEntity> userRepository;
+        private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
 
         public GameServerService(
-            IGameServerApi serverApi,
             ISentryClient sentryClient,
             IOnlineUserApiFactory onlineUserApiFactory,
             ISlotBoardApiFactory slotBoardApiFactory,
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
-<<<<<<< HEAD
             IHoldemPokerApiFactory holdemPokerApiFactory,
             IHiLoApi hiloApi,
             IAppSettings appSettings,
-            IGenericRepository<AdminUserEntity> userRepository)
-=======
-            ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi,
-            IHiLoApi hiloApi,
             IUserServiceApi userServiceApi,
-            INotificationServiceApi notificationServiceApi)
->>>>>>> fix: clean up game-server
+            ICascadingResultApiFactory cascadingResultApiFactory,
+            INotificationServiceApi notificationServiceApi,
+            IGenericRepository<AdminUserEntity> userRepository)
         {
-            this.serverApi = serverApi;
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
             this.slotBoardApiFactory = slotBoardApiFactory;
@@ -89,13 +85,11 @@ namespace GamesAdmin.Api.GameServers
             this.gameSettingService = gameSettingService;
             this.holdemPokerApiFactory = holdemPokerApiFactory;
             this.hiloApi = hiloApi;
-<<<<<<< HEAD
             this.appSettings = appSettings;
-            this.userRepository = userRepository;
-=======
             this.userServiceApi = userServiceApi;
+            this.cascadingResultApiFactory = cascadingResultApiFactory;
             this.notificationServiceApi = notificationServiceApi;
->>>>>>> fix: clean up game-server
+            this.userRepository = userRepository;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -187,33 +181,14 @@ namespace GamesAdmin.Api.GameServers
             sentryClient.CaptureException(ex);
         }
 
-        public async Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
-        {
-            foreach (var round in kenoRounds)
-            {
-                try
-                {
-                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
-
-                    await notificationServiceApi.NotifyRoundResult(round);
-                }
-                catch (Exception ex)
-                {
-                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
-                }
-            }
-
-            return true;
-        }
-
         public async Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request)
         {
             try
             {
                 var config = await gameSettingService.GetByName(request.GameConfigName);
-                var isExcludeUUS = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeUUS;
+                var isExcludeTestCurrency = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeTestCurrency;
 
-                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
+                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
                 {
                     var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
 
@@ -252,12 +227,8 @@ namespace GamesAdmin.Api.GameServers
                 return null;
             }
         }
-<<<<<<< HEAD
 
         public async Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request)
-=======
-        public async Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
->>>>>>> fix: clean up game-server
         {
             try
             {
@@ -313,11 +284,58 @@ namespace GamesAdmin.Api.GameServers
                 HandleException(ex);
             }
 
-<<<<<<< HEAD
             return false;
-=======
-            return Enumerable.Empty<Card>();
->>>>>>> fix: clean up game-server
+        }
+
+        public async Task<CascadingSettlementResult> SetCascadingSlotResult(SetCascadingSlotResultRequest request)
+        {
+            try
+            {
+                var config = await gameSettingService.GetByName(request.GameConfigName);
+                var isExcludeUUS = false;
+
+                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
+                {
+                    var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
+
+                    var result = new CascadingSettlementResult
+                    {
+                        Boards = new List<CascadingBoard>
+                        {
+                            new CascadingBoard
+                            {
+                                Name = "Base spin",
+                                Result = new List<byte>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                                WinningSymbols = new Dictionary<byte, int>
+                                {
+                                    [2] = 8,
+                                    [5] = 8,
+                                },
+                                Multiplier = 1,
+                                Scatter = 2
+                            },
+                            new CascadingBoard
+                            {
+                                Name = "Tumbling 1",
+                                Result = new List<byte>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                                WinningSymbols = null,
+                                Multiplier = 2,
+                                Scatter = 3
+                            }
+                        }
+                    };
+
+                    // var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(new SetCascadingSlotResultServerRequest(request.Nickname, request.BaseSpin, request.Tumblings));
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return null;
         }
     }
 }

@@ -57,7 +57,51 @@
         }
         <br />
 
-        @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Slots)
+
+        @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
+        {
+            <fieldset>
+                <legend>Bet Levels</legend>
+                <div class="form-group row">
+                    @for (var i = 0; i < Model.BetLevels.Length; i++)
+                    {
+                        <div class="col-lg-2">
+                            <label class="control-label">@($"Level {i + 1}")</label>
+                            <input type="number" asp-for="@Model.BetLevels[i]" class="form-control" />
+                        </div>
+                    }
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Coin Values</legend>
+                <div class="form-group row">
+                    @for (var i = 0; i < Model.CoinValues.Length; i++)
+                    {
+                        <div class="col-lg-2">
+                            <label class="control-label">@($"Coin {i + 1}")</label>
+                            <input type="number" asp-for="@Model.CoinValues[i]" class="form-control" />
+                        </div>
+                    }
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Multiplier (bet amount)</legend>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <input type="number" asp-for="@Model.Multiplier" class="form-control" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Max Win per Round</legend>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <input type="number" asp-for="@Model.MaxWinPerRound" class="form-control" />
+                    </div>
+                </div>
+            </fieldset>
+        }
+        else if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.Slots)
         {
             <fieldset>
                 <legend>Stake Levels</legend>
@@ -97,7 +141,6 @@
                 }
             </fieldset>
         }
-
         <br />
     </div>
 </form>

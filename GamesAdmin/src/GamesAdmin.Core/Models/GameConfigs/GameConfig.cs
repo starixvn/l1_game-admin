@@ -15,7 +15,7 @@ namespace GamesAdmin.Core.Models
             BotSetting botSettings = null,
             BetLimit betLimit = null,
             SlotsConfig slotsConfig = null
-            )
+         )
         {
             Id = id;
             Odds = odds;

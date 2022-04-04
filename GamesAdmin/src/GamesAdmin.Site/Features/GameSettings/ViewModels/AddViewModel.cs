@@ -26,6 +26,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Mode = GameMode.Medium;
             Stakes = new double[] { 0, 0, 0 };
             Jackpots = new double[] { 0, 0, 0 };
+
+            BetLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            CoinValues = new double[] { 0, 0, 0, 0, 0, 0 };
         }
 
         [Required]
@@ -93,5 +96,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Allowed Currency")]
         public string AllowedCurrency { get; set; } = "INH";
+        
+        public int[] BetLevels { get; set; }
+        public double[] CoinValues { get; set; }
+        public double Multiplier { get; set; }
+        public double MaxWinPerRound { get; set; }
     }
 }

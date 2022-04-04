@@ -444,12 +444,28 @@
         },
 
         toogleSlotsConfig: function () {
-            if ($('#Type').val() === "2") {
-                $('#slots-config').show();
-                $('#rng-game').hide();
-            } else {
-                $('#slots-config').hide();
-                $('#rng-game').show();
+            const type = $('#Type').val();
+            switch (type) {
+                case '3':
+                    $('#slots-config .common-field').attr('disabled', true);
+                    $('#cascading-slots-config .common-field').attr('disabled', null);
+
+                    $('#slots-config').hide();
+                    $('#rng-game').hide();
+                    $('#cascading-slots-config').show();
+                    break;
+                case '2':
+                    $('#cascading-slots-config .common-field').attr('disabled', true);
+                    $('#slots-config .common-field').attr('disabled', null);
+
+                    $('#rng-game').hide();
+                    $('#cascading-slots-config').hide();
+                    $('#slots-config').show();
+                    break;
+                default:
+                    $('#slots-config').hide();
+                    $('#cascading-slots-config').hide();
+                    $('#rng-game').show();
             }
         },
 

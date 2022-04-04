@@ -512,6 +512,56 @@ namespace GamesAdmin.Site.Features.Report
 
             return View(viewModel);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> TreasureIsland()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTreasureIslandReport(
+            string partnerId,
+            DateTime fromDate,
+            DateTime toDate,
+            long roundId,
+            string nickname,
+            string username,
+            bool convertToUSD,
+            bool excludeUUS)
+        {
+            var request = new GetSlotGameReportRequest(
+                roundId,
+                nickname,
+                excludeUUS,
+                Game.TreasureIslandValue,
+                partnerId,
+                fromDate,
+                toDate,
+                username,
+                convertToUSD);
+
+            return PartialView("_TreasureIslandRecords", await mediator.Send(request));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTreasureIslandBetHistory(
+            long roundId,
+            string nickname,
+            bool excludeUUS,
+            bool convertToUSD)
+        {
+            var request = new GetSlotGameReportRequest(roundId, nickname, excludeUUS, Game.TreasureIslandValue, convertToUSD);
+
+            return PartialView("_TreasureIslandBetHistory", (await mediator.Send(request)).Records.FirstOrDefault());
+        }
 
         private async Task<ReportViewModel> GetReportViewModel()
         {

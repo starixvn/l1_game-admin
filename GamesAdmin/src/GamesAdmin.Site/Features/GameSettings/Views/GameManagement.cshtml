@@ -76,14 +76,17 @@
                                     {
                                         <b>@(partnerGroup.Name)</b>
 
-                                        if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                        switch (Model.GameList[index].GameConfig.Info.Type)
                                         {
-                                            @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
-
-                                        }
-                                        else
-                                        {
-                                            @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                            case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
+                                                @(": " + string.Join(" - ",new double[] { setting.Multiplier*setting.CoinValues[0]*setting.BetLevels[0], setting.Multiplier * setting.CoinValues[setting.CoinValues.Length-1] * setting.BetLevels[setting.BetLevels.Length - 1] }))
+                                                break;
+                                            case GamesAdmin.Core.Enumeration.GameType.Slots:
+                                                @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+                                                break;
+                                            default:
+                                                @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                                break;
                                         }
                                         <br />
 
@@ -137,18 +140,20 @@
                                         {
                                             <b>@(partnerGroup.Name)</b>
 
-                                            if (Model.GameList[index].GameConfig.Info.Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                                            switch (Model.GameList[index].GameConfig.Info.Type)
                                             {
-                                                @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
-
-                                            }
-                                            else
-                                            {
-                                                @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                                case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
+                                                    @(": " + string.Join(" - ",new double[] { setting.Multiplier*setting.CoinValues[0]*setting.BetLevels[0], setting.Multiplier * setting.CoinValues[setting.CoinValues.Length-1] * setting.BetLevels[setting.BetLevels.Length - 1] }))
+                                                    break;
+                                                case GamesAdmin.Core.Enumeration.GameType.Slots:
+                                                    @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
+                                                    break;
+                                                default:
+                                                    @(": " + string.Join(" - ",new double[] { setting.MinBet, setting.MaxBet}))
+                                                    break;
                                             }
                                             <br />
                                         }
-
                                     }
                                 }
 

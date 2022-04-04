@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using Sentry;
 
@@ -37,6 +37,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateOdds(UpdateOddsRequest request);
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds);
 
         Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
@@ -139,6 +141,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         => gameApi.UpdateSlotOddss(name, iconOdds);
+
+        public Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds)
+            => gameApi.UpdateOddsByCounts(name, odds);
 
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
         => gameApi.UpdateJackpot(request);

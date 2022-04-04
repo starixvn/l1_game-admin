@@ -116,7 +116,11 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         .Set(field => field.MinBet, currencyGroupGame.MinBet)
                         .Set(field => field.MaxBet, currencyGroupGame.MaxBet)
                         .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
-                        .Set(field => field.Chips, currencyGroupGame.Chips);
+                        .Set(field => field.Chips, currencyGroupGame.Chips)
+                        .Set(field => field.BetLevels, currencyGroupGame.BetLevels)
+                        .Set(field => field.CoinValues, currencyGroupGame.CoinValues)
+                        .Set(field => field.Multiplier, currencyGroupGame.Multiplier)
+                        .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound);
 
                     if (gameConfig.StakeLevels == null)
                     {
