@@ -88,9 +88,9 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoMatch2 => await Move<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower2 => await Move<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.CasinoHoldemPoker => await Move<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.CasinoHoldemPoker => await MoveCasinoHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.HiLo => await MoveHiLo(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.TexasHoldemPoker => await Move<TexasHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.TexasHoldemPoker => await MoveTexasHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -404,6 +404,18 @@ namespace GamesAdmin.Api.VoidGame
         {
             await Move<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
             return await MoveRound<HiLoRoundEntity>(gameRoundId);
+        }
+
+        private async Task<bool> MoveCasinoHoldem(int obCustId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+        {
+            await Move<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+            return await MoveRound<CasinoHoldemPokerRoundEntity>(gameRoundId);
+        }
+
+        private async Task<bool> MoveTexasHoldem(int obCustId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+        {
+            await Move<TexasHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+            return await MoveRound<TexasHoldemPokerRoundEntity>(gameRoundId);
         }
 
         private async Task<bool> MoveRound<RoundEntity>(long gameRoundId)
