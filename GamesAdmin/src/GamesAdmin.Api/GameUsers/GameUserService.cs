@@ -93,14 +93,14 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<string> GetCharacterNameAsync(int memberId)
         {
-            var account = await accountRepository.FindOneAsync(user => user.Local.MemberId == memberId);
+            var account = await accountRepository.Collection()
+                .Find(user => user.Local.MemberId == memberId)
+                .SortByDescending(x => x.Id)
+                .FirstOrDefaultAsync();
 
             if (account != null)
             {
-                var accountInfo = await accountInfoRepository.Collection()
-                    .Find(x => x.UserId == account.Id.ToString())
-                    .SortByDescending(x => x.Id)
-                    .FirstOrDefaultAsync();
+                var accountInfo = await accountInfoRepository.FindOneAsync(x => x.UserId == account.Id.ToString());
 
                 return accountInfo.Name;
             }
