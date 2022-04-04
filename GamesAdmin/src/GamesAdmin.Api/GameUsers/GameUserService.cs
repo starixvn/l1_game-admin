@@ -97,7 +97,10 @@ namespace GamesAdmin.Api.GameUser
 
             if (account != null)
             {
-                var accountInfo = await accountInfoRepository.FindOneAsync(x => x.UserId == account.Id.ToString());
+                var accountInfo = await accountInfoRepository.Collection()
+                    .Find(x => x.UserId == account.Id.ToString())
+                    .SortByDescending(x => x.Id)
+                    .FirstOrDefaultAsync();
 
                 return accountInfo.Name;
             }
