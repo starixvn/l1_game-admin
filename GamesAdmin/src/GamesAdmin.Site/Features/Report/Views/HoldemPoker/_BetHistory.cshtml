@@ -8,7 +8,6 @@
     string noData = "No Data Available";
     var record = Model.Record;
     var isFinishRoundAndNotFold = record.Ended && !record.IsFold;
-    var isFinishRoundAndFold = record.Ended && record.IsFold;
     var isRunningRoundAndNotPassSwapStep = record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value && !record.Ended;
     var isRunningRoundOrFold = record.IsFold || (record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value);
 }
@@ -30,7 +29,7 @@
                     <tr>
                         <td>Player</td>
                         <td>
-                            @if (isRunningRoundAndNotPassSwapStep || isFinishRoundAndFold)
+                            @if (isRunningRoundAndNotPassSwapStep)
                             {
                                 await RenderEmptyCards();
                             }
