@@ -47,6 +47,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string SiteName { get; set; }
 
         public Auth Auth { get; set; }
+
+        public bool DisableJackpotGames { get; set; }
     }
 
     public class EndGameInfoRequest : SBRequest

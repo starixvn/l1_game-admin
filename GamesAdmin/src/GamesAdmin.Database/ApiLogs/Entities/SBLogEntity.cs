@@ -39,6 +39,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public DateTimeOffset TimeStamp { get; set; }
 
         public bool FreeBet { get; set; }
+
+        public bool DisableJackpotGames { get; set; }
     }
 
     public class SBResultEntity : ApiLogResultEntity
