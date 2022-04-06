@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
 using Refit;
 using Sentry;
@@ -24,13 +25,20 @@ namespace GamesAdmin.Api.VoidGame
         private readonly ISentryClient sentryClient;
         private readonly IVoidGameApi voidGameApi;
         private readonly ITicketHandler ticketHandler;
+        private readonly IRoundHandler roundHandler;
         private readonly IVoidTicketLogger voidTicketLogger;
 
-        public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler, IVoidTicketLogger voidTicketLogger)
+        public VoidGameService(
+            ISentryClient sentryClient,
+            IVoidGameApi voidGameApi,
+            ITicketHandler ticketHandler,
+            IRoundHandler roundHandler,
+            IVoidTicketLogger voidTicketLogger)
         {
             this.sentryClient = sentryClient;
             this.voidGameApi = voidGameApi;
             this.ticketHandler = ticketHandler;
+            this.roundHandler = roundHandler;
             this.voidTicketLogger = voidTicketLogger;
         }
 
@@ -38,12 +46,17 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var isExistTicket = await ticketHandler.Exist(request.ObCustId,
-                    request.PartnerId,
-                    request.SiteId,
-                    request.GameRoundId,
-                    request.GameTypeId,
-                    request.FreeBet);
+                var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
+                var isRound = RoundHandler.RoundCollections.ContainsKey(gameId);
+
+                var isExistTicket = isRound
+                    ? await roundHandler.Exist(request.GameRoundId, request.GameTypeId)
+                    : await ticketHandler.Exist(request.ObCustId,
+                        request.PartnerId,
+                        request.SiteId,
+                        request.GameRoundId,
+                        request.GameTypeId,
+                        request.FreeBet);
 
                 if (!isExistTicket)
                 {
@@ -58,13 +71,15 @@ namespace GamesAdmin.Api.VoidGame
                 {
                     sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
 
-                    var moved = await ticketHandler.Void(
-                        request.ObCustId,
-                        request.PartnerId,
-                        request.SiteId,
-                        request.GameRoundId,
-                        request.GameTypeId,
-                        request.FreeBet);
+                    var moved = isRound
+                        ? await roundHandler.Void(request.GameRoundId, request.GameTypeId)
+                        : await ticketHandler.Void(
+                            request.ObCustId,
+                            request.PartnerId,
+                            request.SiteId,
+                            request.GameRoundId,
+                            request.GameTypeId,
+                            request.FreeBet);
 
                     if (!moved)
                     {
