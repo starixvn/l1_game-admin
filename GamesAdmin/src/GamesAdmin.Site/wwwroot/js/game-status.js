@@ -245,11 +245,6 @@
                 });
         },
 
-        setControlResultHilo: function (event) {
-            event.preventDefault();
-            this.setResultControl("HiLoResult");
-        },
-
         setControlResultHoldemPoker: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("HoldemPokderResult", gameName);
@@ -258,6 +253,11 @@
         setControlResultSlotGame: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("SlotResult", gameName);
+        },
+
+        setControlResultHiLo: function (event) {
+            event.preventDefault();
+            this.setResultControl("HiLoResult");
         },
 
         setResultControl: function (action, gameName) {

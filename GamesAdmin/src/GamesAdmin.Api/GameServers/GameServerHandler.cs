@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;

@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
