@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.GameServers
             => gameServerService.SetSlotBoard(request);
 
         public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
-            => gameServerService.SetCasinoHoldemPokerResult(request);
+            => gameServerService.SetHoldemPokerResult(request);
 
         public Task<IEnumerable<PokerCard>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
          => gameServerService.SetHiLoResult(request);

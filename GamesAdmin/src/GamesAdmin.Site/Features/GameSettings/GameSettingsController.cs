@@ -167,11 +167,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IActionResult> JWT([FromBody] GetJWTRequest request)
         {
             request.Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
-
             var result = await mediator.Send(request);
-
-            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint", appSettings.GameServers.TexasHoldemPoker.Socket);
-            HttpContext.Response.Cookies.Append("texasholdempoker-server-endpoint-route", appSettings.GameServers.TexasHoldemPoker.SocketRoute);
             return Json(result);
         }
 
@@ -296,18 +292,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             var result = await mediator.Send(new UpdateBetaVersionRequest(games, isBeta));
 
             return Json(result);
-        }
-
-        private void AddMiniKenoCookie()
-        {
-            var cookies = new[] { "keno-max", "keno-max2", "keno-mini", "keno-mini2", "keno-east", "keno-west", "keno-south", "keno-north" };
-
-            foreach (var c in cookies)
-            {
-                var socketKey = c.Replace("-", string.Empty);
-                HttpContext.Response.Cookies.Append($"{c}-server-endpoint", $"{appSettings.GameServers.MiniKeno.Socket}{socketKey}");
-                HttpContext.Response.Cookies.Append($"{c}-server-endpoint-route", appSettings.GameServers.MiniKeno.SocketRoute);
-            }
         }
     }
 }

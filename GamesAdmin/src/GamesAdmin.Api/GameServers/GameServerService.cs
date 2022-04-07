@@ -37,7 +37,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
-        Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request);
+        Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
 
         Task<IEnumerable<PokerCard>> SetHiLoResult(SetHiLoResultRequest request);
 
@@ -216,7 +216,7 @@ namespace GamesAdmin.Api.GameServers
             return null;
         }
 
-        public async Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request)
+        public async Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request)
         {
             try
             {
@@ -288,7 +288,7 @@ namespace GamesAdmin.Api.GameServers
                 var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
 
                 return userEntity != null;
-        }
+            }
             catch (Exception ex)
             {
                 HandleException(ex);
