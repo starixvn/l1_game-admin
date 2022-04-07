@@ -130,7 +130,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.CasinoHoldemPoker.DisplayName, Game.CasinoHoldemPoker.Value),
                 new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value),
                 new SelectListItem(Game.HiLo.DisplayName, Game.HiLo.Value),
-                new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value)
+                new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value),
                 new SelectListItem(Game.NightClub.DisplayName, Game.NightClub.Value),
                 };
     }
