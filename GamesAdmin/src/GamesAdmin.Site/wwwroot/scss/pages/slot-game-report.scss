@@ -1,0 +1,23 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.display-none {
+    display: none !important;
+}
+
+.card {
+    &.card-container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    &:last-child::before {
+        background: none;
+    }
+
+    span {
+        font-size: 1.4rem;
+        top: 0;
+    }
+}

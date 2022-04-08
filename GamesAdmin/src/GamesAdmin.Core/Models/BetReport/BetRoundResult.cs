@@ -6,7 +6,10 @@ namespace GamesAdmin.Core.Models
     public class RoundResult
     {
         public DateTime Time { get; set; }
+
         public long Number { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 
     public class BigSmallRoundResult : RoundResult
@@ -318,5 +321,20 @@ namespace GamesAdmin.Core.Models
         public byte rank { get; set; }
 
         public byte suit { get; set; }
+    }
+
+    public class HiLoRoundResult : RoundResult
+    {
+        public DateTime? EndTime { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public decimal Betwin { get; set; }
+
+        public bool Paid { get; set; }
+
+        public string Currency { get; set; }
+        public string PartnerId { get; set; }
+        public decimal Rate { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class VipSeDieWarReportResultViewModel
+    public class VipSeDieWarReportResultViewModel: ReportResultViewModel
     {
         public VipSeDieWarRoundResultViewModel RoundResult { get; set; }
 

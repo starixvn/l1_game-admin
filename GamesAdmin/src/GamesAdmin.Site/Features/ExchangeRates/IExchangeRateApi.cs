@@ -11,5 +11,8 @@ namespace GamesAdmin.Site.Features.ExchangeRates
     {
         [Post("/exchange_rate/query")]
         Task<IEnumerable<ExchangeRate>> Query(QueryExchangeRateModel query);
+
+        [Get("/exchange_rate/{exchangeId}")]
+        Task<ExchangeRate> GetByExchangeId(int exchangeId);
     }
 }

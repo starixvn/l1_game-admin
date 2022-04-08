@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class KenoPowerBetHistory
+    public class KenoPowerBetHistory : BetHistory
     {
         public KenoPowerRoundResult RoundResult { get; set; }
 
@@ -12,12 +11,8 @@ namespace GamesAdmin.Core.Models.BetReport
         public Dictionary<string, decimal> Odds { get; set; }
     }
 
-    public class KenoPowerBetHistoryRecord
+    public class KenoPowerBetHistoryRecord : BetHistoryRecord
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }

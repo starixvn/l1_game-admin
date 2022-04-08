@@ -5,7 +5,7 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class KenoBetHistoryRequest : IRequest<IEnumerable<KenoBetHistory>>
+    public class KenoBetHistoryRequest : IRequest<IEnumerable<KenoBetHistoryRecord>>
     {
         public KenoBetHistoryRequest(string game, long roundId, string nickname)
         {

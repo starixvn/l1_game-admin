@@ -284,10 +284,12 @@
         },
 
         updateMessage: function () {
-            var vnMessage = $('#vnMessage').val();
-            var enMessage = $('#enMessage').val();
             var name = $('#applyAllCheckbox').is(":checked") ? "" : $('#msgGameName').val();
-            var data = { name, vnMessage, enMessage };
+            var data = { name, messages: {} };
+            Object.keys(supportedLanguages).forEach(l => {
+                data.messages[l] = $(`#message-${l.toLowerCase()}`).val();
+            });
+
             $('#updateMsgBtn').prop('disabled', true);
 
             $.ajax({
@@ -320,8 +322,10 @@
             }).done(function (result) {
                 $('#msgGameName').val(name);
                 $('#updateMsgGameName').html(displayName);
-                $('#vnMessage').val(result["vi-VN"]);
-                $('#enMessage').val(result["en-US"]);
+
+                Object.keys(supportedLanguages).forEach(c => {
+                    $(`#message-${c.toLowerCase()}`).val(result[c]);
+                })
 
                 $('#messageModal').modal('show');
             });

@@ -8,140 +8,44 @@ import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
 import DiceModel from "../../common/model/DiceModel";
 import DiceType from "../../common/model/DiceType";
-import BetItem from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import VipSeDieWarModel, {
+  VipSeDieWarBetList,
   VipSeDieWarResult,
 } from "../../common/model/VipSeDieWarModel";
 import { Notice } from "../../shared/notice/notice";
-import { calendarFormat } from "moment";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
+import { VipFishPrawnCrabSettlementResult } from "../../common/model/VipFishPrawnCrabModel";
 
-type Props = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-export default class VipSeDieWar extends React.Component<
-  Props,
-  VipSeDieWarModel
-> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+export default class VipSeDieWar extends BaseMonitoring<VipSeDieWarModel> {
   constructor(props) {
     super(props);
-    this.isFirstLoad = true;
+
     this.state = new VipSeDieWarModel();
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get totalTimeInRound(): number {
+    return 45;
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 45) {
-        clearTimeout(this.timeout);
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: new VipSeDieWarModel().result,
-        });
-
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!data.inGame) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
-      });
-    }
-
-    if (!!data.remainingTime) {
-      if (data.remainingTime > 46) {
-        this.setState({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          result: data.result ? this.getResult(data.result) : this.state.result,
-          time: {
-            remainingTime: data.remainingTime - 46,
-          },
-        });
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: data.roundId,
-            time: {
-              remainingTime: 46,
-            },
-          });
-        }, (data.remainingTime - 46) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: data.roundId,
-          time: {
-            remainingTime: data.remainingTime,
-          },
-        });
-      }
-    }
-
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      const waitingTime = 7;
-      this.setState({
-        result: this.getResult(data.finish.result),
-        settlementResult: data.finish.settlementResult,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
-
-      setTimeout(() => {
-        this.setState({
-          ...new VipSeDieWarModel(),
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 45,
-          },
-        });
-      }, (waitingTime + 3) * 1000);
-    }
+  get waitingTime(): number {
+    return 10;
   }
 
-  getUserBetList(data, currentData) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
+  get defaultResult(): any {
+    return new VipSeDieWarResult();
+  }
 
-    for (const user in data) {
-      let betTracks = data[user].betTracks;
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
-          );
-        }
-      });
-    }
+  get defaultSettlementResult(): any {
+    return new VipFishPrawnCrabSettlementResult();
+  }
 
-    return currentData;
+  get defaultBetList(): {} {
+    return new VipSeDieWarBetList();
   }
 
   getResult(data) {
@@ -596,7 +500,11 @@ export default class VipSeDieWar extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          enableFilter={true}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState === GameState.disabled}
+          partners={this.props.partners}
         ></GameTemplate>
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

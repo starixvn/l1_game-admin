@@ -1,17 +1,18 @@
+import BaseMonitoringState from "./BaseMonitoringModel";
 import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 
 class LotteryBetList {
-  "Sets4": BetList;
-  "Sets27": BetList;
+  "4Sets": BetList;
+  "27Sets": BetList;
   special: BetList;
   head: BetList;
   tail: BetList;
   others: BetList;
 
   constructor() {
-    this["Sets4"] = new BetList();
-    this["Sets27"] = new BetList();
+    this["4Sets"] = new BetList();
+    this["27Sets"] = new BetList();
     this.special = new BetList();
     this.head = new BetList();
     this.tail = new BetList();
@@ -41,7 +42,7 @@ class LotteryGameResult {
   }
 }
 
-export default class LotteryModel {
+export default class LotteryModel extends BaseMonitoringState {
   roundNumber: number;
   time: TimeModel;
   betList: LotteryBetList;
@@ -52,12 +53,12 @@ export default class LotteryModel {
   gameState: number;
 
   constructor() {
+    super();
+
     this.result = new LotteryGameResult();
     this.betList = new LotteryBetList();
-    this.time = new TimeModel();
     this.isOpenModal = false;
     this.isHandleNextRoundResult = false;
-    this.gameState = 0;
     this.nextRoudResult = [];
   }
 }

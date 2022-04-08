@@ -153,7 +153,7 @@
                     partnerId: $('#PartnerId').val()
                 }
             }).done(function (content) {
-                $('#super-players-names').val(content ?? "");
+                $('#super-players-names').val(content ? content : "");
             });
         },
 

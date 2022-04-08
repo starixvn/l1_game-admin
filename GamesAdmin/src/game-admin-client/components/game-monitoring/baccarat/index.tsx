@@ -1,29 +1,30 @@
 import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
-import BaccaratModel from "../../common/model/BaccaratModel";
-import BetItem, { SystemId } from "../../common/model/BetItem";
+import {
+  BaccaratModel,
+  BaccaratBetList,
+} from "../../common/model/BaccaratModel";
 import CardResult from "../../common/model/CardResult";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 import BetList from "../../shared/bet-list/bet-list";
 import { GameState } from "../../shared/common/GameState";
 import RoundNum from "../../shared/round-num/round-num";
 import TimeCounter from "../../shared/time-counter/time-counter";
 import TotalBet from "../../shared/total-bet/total-bet";
-import { updateTotalBetOfBetList } from "../../util/util";
 import GameTemplate from "../game-template/game-template";
 import BaccaratCardResult from "./baccarat-card-result";
 import BaccaratResultUpdater from "./baccarat-result-updater";
 import DeskOfCards from "./desk-of-cards";
 import styles from "./styles.module.scss";
 
-type Props = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
 const TOTAL_TIME = 30;
 const WAITING_TIME = 15;
+const DefaultBetList = new BaccaratBetList();
+const DefaultResult = {
+  bankerCards: [new CardResult(), new CardResult(), new CardResult()],
+  playerCards: [new CardResult(), new CardResult(), new CardResult()],
+};
 
 const CHOICES = [
   { name: "player", displayName: "Player" },
@@ -35,22 +36,17 @@ const CHOICES = [
   { name: "small", displayName: "Small" },
 ];
 
-export default class Baccarat extends React.Component<Props, BaccaratModel> {
-  protected isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
-  constructor(props: Props) {
+export default class Baccarat extends BaseMonitoring<BaccaratModel> {
+  constructor(props) {
     super(props);
 
-    this.isFirstLoad = true;
-    this.state = new BaccaratModel();
+    this.state = { ...new BaccaratModel(), betList: this.defaultBetList };
     this.showUpdater = this.showUpdater.bind(this);
     this.updaterToggle = this.updaterToggle.bind(this);
     this.updaterSubmit = this.updaterSubmit.bind(this);
     this.showDeskOfCards = this.showDeskOfCards.bind(this);
     this.updaterDeskOfCardsToggle = this.updaterDeskOfCardsToggle.bind(this);
     this.onPickCard = this.onPickCard.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
   }
 
   get gameName() {
@@ -61,153 +57,29 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     return "set_result";
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleMessage(message));
+  get defaultBetList(): {} {
+    return DefaultBetList;
   }
 
-  handleMessage(message) {
-    if (!!message.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == TOTAL_TIME) {
-        clearTimeout(this.timeout);
-        this.setState({
-          time: { remainingTime: 0 },
-          result: new BaccaratModel().result,
-          settlementResult: {},
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          gameState: GameState.disabled,
-        });
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!message.remainingTime) {
-      this.handleStart(message);
-    }
-
-    if (!!message.finish) {
-      this.handleStop(message.finish);
-    }
-
-    if (!!message.inGame) {
-      this.handleBet(message.inGame);
-    }
+  get defaultResult(): any {
+    return { ...DefaultResult };
   }
 
-  handleStart(message) {
-    const { remainingTime, roundId, result, settlementResult } = message;
-    let isFinished = remainingTime > TOTAL_TIME;
-
-    if (isFinished) {
-      this.setState({
-        gameState: GameState.waiting,
-        roundNumber: roundId - 1,
-        result: result ? this.mapResult(result) : new BaccaratModel().result,
-        settlementResult: settlementResult ? settlementResult : {},
-        time: {
-          remainingTime: remainingTime - TOTAL_TIME,
-        },
-      });
-
-      this.timeout = setTimeout(() => {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          result: new BaccaratModel().result,
-          settlementResult: {},
-          time: {
-            remainingTime: TOTAL_TIME,
-          },
-        });
-      }, (remainingTime - TOTAL_TIME + 1) * 1000);
-    } else {
-      this.setState({
-        gameState: GameState.running,
-        roundNumber: roundId,
-        time: {
-          remainingTime: remainingTime,
-        },
-      });
-    }
+  get totalTimeInRound(): number {
+    return TOTAL_TIME;
   }
 
-  handleBet(data) {
-    let betList = new BaccaratModel().betList;
-    Object.keys(data).forEach((key) => {
-      const userObj = data[key];
-      const betTracks = userObj.betTracks;
-      CHOICES.forEach((choice) => {
-        if (betTracks && betTracks[choice.name] > 0) {
-          betList[choice.name].total += betTracks[choice.name];
-          betList[choice.name].dataList.unshift(
-            new BetItem(
-              userObj.name,
-              betTracks[choice.name],
-              null,
-              null,
-              userObj.system
-            )
-          );
-        }
-      });
-    });
-
-    this.setState({ betList: betList });
+  get waitingTime(): number {
+    return WAITING_TIME;
   }
 
-  handleStop(data) {
-    this.isFirstLoad = false;
-    const { result, settlementResult } = data;
-
-    this.setState({
-      result: this.mapResult(result),
-      settlementResult: settlementResult,
-      gameState: GameState.waiting,
-      time: {
-        remainingTime: WAITING_TIME,
-      },
-    });
-
-    setTimeout(() => {
-      this.setState({
-        time: {
-          remainingTime: TOTAL_TIME,
-        },
-        result: new BaccaratModel().result,
-        settlementResult: {},
-        roundNumber: this.state.roundNumber + 1,
-        gameState: GameState.running,
-      });
-    }, (WAITING_TIME + 1) * 1000);
-  }
-
-  mapResult(result) {
+  getResult(result) {
     const bankerResult: CardResult[] = Object.values(result.banker);
     const playerResult: CardResult[] = Object.values(result.player);
     return {
       bankerCards: bankerResult,
       playerCards: playerResult,
     };
-  }
-
-  getSettlementResult(result) {
-    const resultArr = [];
-    CHOICES.forEach(function (choice) {
-      if (result[choice.name]) {
-        resultArr.push(choice.name.toUpperCase());
-      }
-    });
-
-    return resultArr.join(" - ");
-  }
-
-  getBet(type, userObj) {
-    const betItem = new BetItem();
-    betItem.name = userObj.name;
-    betItem.bet = userObj[type];
-
-    return betItem;
   }
 
   showUpdater() {
@@ -230,9 +102,8 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     });
   }
 
-  renderMonitor(systemFilter: SystemId = SystemId.None) {
+  renderMonitor() {
     const { time, roundNumber, betList, result } = this.state;
-    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container fluid>
@@ -324,7 +195,7 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     );
   }
 
-  renderBetList(systemFilter) {
+  renderBetList() {
     const result = [];
     const _this = this;
     CHOICES.forEach(function (choice, i) {
@@ -335,7 +206,6 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
             isWin={_this.checkWinner(choice.name)}
             titles={[<div>{choice.displayName}</div>]}
             dataList={_this.state.betList[choice.name].dataList}
-            systemFilter={systemFilter}
           />
         </Col>
       );
@@ -415,11 +285,14 @@ export default class Baccarat extends React.Component<Props, BaccaratModel> {
     return (
       <div>
         <GameTemplate
-          renderMonitor={this.renderMonitor}
           renderBetList={this.renderBetList}
-          disabled={this.state.gameState == GameState.disabled}
+          renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
+          disabled={this.state.disabled}
           enableFilter={true}
-        />
+          partners={this.props.partners}
+        ></GameTemplate>
         $
         {!this.props.isProduction && (
           <BaccaratResultUpdater

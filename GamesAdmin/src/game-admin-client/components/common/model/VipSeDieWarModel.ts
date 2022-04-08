@@ -2,6 +2,7 @@ import BetList from "./BetList";
 import TimeModel from "./TimeModel";
 import DiceModel from "./DiceModel";
 import DiceType from "./DiceType";
+import BaseMonitoringState from "./BaseMonitoringModel";
 
 class VipSeDieWarSettlementResult {
   even: boolean;
@@ -67,12 +68,28 @@ class VipSeDieWarBetList {
   }
 }
 
-export class VipSeDieWarResult {
+class VipSeDieWarResult {
   banker: Array<DiceModel>;
   player: Array<DiceModel>;
+
+  constructor() {
+    this.banker = [
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+    ];
+
+    this.player = [
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+      new DiceModel(-1, DiceType.XocXoc),
+    ];
+  }
 }
 
-export default class VipSeDieWarModel {
+export default class VipSeDieWarModel extends BaseMonitoringState {
   roundNumber: number;
   time: TimeModel;
   betList: VipSeDieWarBetList;
@@ -80,23 +97,10 @@ export default class VipSeDieWarModel {
   gameState: number;
   settlementResult: VipSeDieWarSettlementResult;
   isOpenModal: boolean;
-  selectedDice: string
+  selectedDice: string;
   constructor() {
-    this.result = {
-      banker: [
-        new DiceModel(-1, DiceType.XocXoc),
-        new DiceModel(-1, DiceType.XocXoc),
-        new DiceModel(-1, DiceType.XocXoc),
-        new DiceModel(-1, DiceType.XocXoc),
-      ],
-      player: [
-        new DiceModel(-1, DiceType.XocXoc),
-        new DiceModel(-1, DiceType.XocXoc),
-        new DiceModel(-1, DiceType.XocXoc),
-        new DiceModel(-1, DiceType.XocXoc),
-      ],
-    };
-
+    super();
+    this.result = new VipSeDieWarResult();
     this.betList = new VipSeDieWarBetList();
     this.time = new TimeModel();
     this.gameState = 0;
@@ -104,4 +108,4 @@ export default class VipSeDieWarModel {
   }
 }
 
-export { VipSeDieWarBetList };
+export { VipSeDieWarBetList, VipSeDieWarResult, VipSeDieWarSettlementResult };

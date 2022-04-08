@@ -2,7 +2,7 @@ import React from "react";
 import Moment from "react-moment";
 import style from "./bet-list.module.scss";
 import { Row, Col } from "reactstrap";
-import { SystemId } from "../../common/model/BetItem";
+import { Partners, SystemId } from "../../common/model/BetItem";
 
 const displayTypes = {
   onecolumn: "onecolumn",
@@ -38,16 +38,16 @@ const renderTitle = (titles, type) => {
   return result;
 };
 
-const getSystemDisplay = (systemId) => {
-  if (systemId) {
-    return systemId == SystemId.VG ? "" : `[${SystemId[systemId]}] `;
-  }
+const getDisplayName = (systemId, partnerId, name) => {
+  const partnerPrefix = partnerId ? Partners[partnerId] : "";
+  const systemSuffix =
+    systemId == SystemId.SC ? "" : `[${SystemId[systemId]}] `;
 
-  return "";
+  return `${partnerPrefix}-${name} ${systemSuffix}`;
 };
 
 export default function BetList(props) {
-  const { type, titles, dataList, isWin, systemFilter } = props;
+  const { type, titles, dataList, isWin } = props;
 
   return (
     <div className={`${style.betlist} ${isWin ? style.win : ""}`}>
@@ -57,58 +57,56 @@ export default function BetList(props) {
       <div className={style.content}>
         {dataList &&
           dataList.map((data, index) => {
-            if (!systemFilter || systemFilter == data.system) {
-              const betAmount = data.bet.toLocaleString("en-US");
+            const betAmount = data.bet.toLocaleString("en-US");
 
-              switch (type) {
-                case displayTypes.withtime: {
-                  return (
-                    <Row key={index} className={style.row}>
-                      <Col className={style.coltime}>
-                        <Moment format="HH:mm:ss">{data.time}</Moment>
-                      </Col>
-                      <Col className={style.colname}>
-                        {`${data.name} ${getSystemDisplay(data.system)}`}
-                      </Col>
-                      <Col className={style.colamount}>{betAmount}</Col>
-                    </Row>
-                  );
-                }
-                case displayTypes.simple: {
-                  return (
-                    <Row key={index} className={style.rowSimple}>
-                      <div className={style.colname}>
-                        {`${data.name} ${getSystemDisplay(data.system)}`}
+            switch (type) {
+              case displayTypes.withtime: {
+                return (
+                  <Row key={index} className={style.row}>
+                    <Col className={style.coltime}>
+                      <Moment format="HH:mm:ss">{data.time}</Moment>
+                    </Col>
+                    <Col className={style.colname}>
+                      {getDisplayName(data.system, data.partnerId, data.name)}
+                    </Col>
+                    <Col className={style.colamount}>{betAmount}</Col>
+                  </Row>
+                );
+              }
+              case displayTypes.simple: {
+                return (
+                  <Row key={index} className={style.rowSimple}>
+                    <div className={style.colname}>
+                      {getDisplayName(data.system, data.partnerId, data.name)}
+                    </div>
+                    <div className={style.money}>{betAmount}</div>
+                  </Row>
+                );
+              }
+              case displayTypes.withchoice: {
+                return (
+                  <Row key={index} className={style.rowSimple}>
+                    <div className={style.colname}>
+                      {getDisplayName(data.system, data.partnerId, data.name)}
+                    </div>
+                    <div>
+                      <span className={style.money}>{betAmount}</span>
+                      <span className={style.colname}>@{data.choice}</span>
+                    </div>
+                  </Row>
+                );
+              }
+              default: {
+                return (
+                  <Row key={index} className={style.row}>
+                    <Col className={style.onecol}>
+                      <div>
+                        {getDisplayName(data.system, data.partnerId, data.name)}
                       </div>
                       <div className={style.money}>{betAmount}</div>
-                    </Row>
-                  );
-                }
-                case displayTypes.withchoice: {
-                  return (
-                    <Row key={index} className={style.rowSimple}>
-                      <div className={style.colname}>
-                        {`${data.name} ${getSystemDisplay(data.system)}`}
-                      </div>
-                      <div>
-                        <span className={style.money}>{betAmount}</span>
-                        <span className={style.colname}>@{data.choice}</span>
-                      </div>
-                    </Row>
-                  );
-                }
-                default: {
-                  return (
-                    <Row key={index} className={style.row}>
-                      <Col className={style.onecol}>
-                        <div>
-                          {`${data.name} ${getSystemDisplay(data.system)}`}
-                        </div>
-                        <div className={style.money}>{betAmount}</div>
-                      </Col>
-                    </Row>
-                  );
-                }
+                    </Col>
+                  </Row>
+                );
               }
             }
           })}

@@ -17,7 +17,6 @@ import {
 } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import {
@@ -26,78 +25,50 @@ import {
 } from "../../common/model/KenoPowerModel";
 import { Notice } from "../../shared/notice/notice";
 import KenoPowerResult from "./keno-power-result";
-
-type KenoPowerProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
 const choiceLabelMapper = {
-  blueBig: "big",
-  blueSmall: "small",
-  redBig: "big",
-  redSmall: "small",
+  blue: "Blue",
+  red: "Red",
+  big: "Big",
+  small: "Small",
+  odd: "Odd",
+  even: "Even",
+  blueBig: "Big",
+  blueSmall: "Small",
+  redBig: "Big",
+  redSmall: "Small",
 };
 
-export default class KenoPower extends React.Component<
-  KenoPowerProps,
-  KenoPowerModel
-> {
-  isFirstLoad: boolean;
-  timeout: NodeJS.Timeout;
+export default class KenoPower extends BaseMonitoring<KenoPowerModel> {
   gameName: string;
 
-  private systemId: SystemId;
   constructor(props) {
     super(props);
 
-    this.isFirstLoad = true;
     this.state = new KenoPowerModel();
-    this.systemId = SystemId.None;
-    this.handleUpdateFilter = this.handleUpdateFilter.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultResult(): any {
+    return {
+      red: [],
+      blue: [],
+    };
   }
 
-  handleUpdateFilter(value: SystemId) {
-    this.systemId = value;
+  get defaultSettlementResult(): any {
+    return {};
   }
 
-  handleData(data) {}
+  get defaultBetList(): {} {
+    return new KenoPowerBetListModel();
+  }
 
-  getUserBetList(data, currentData: KenoPowerBetListModel) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
-
-    for (const user in data) {
-      let betTracks = data[user].betTracks;
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(
-              data[user].name,
-              betTracks[key],
-              null,
-              choiceLabelMapper[key] || key,
-              data[user].system
-            )
-          );
-        }
-      });
-    }
-
-    return currentData;
+  getChoiceDisplay(key: any) {
+    return choiceLabelMapper[key];
   }
 
   renderResultSummary() {
@@ -351,7 +322,11 @@ export default class KenoPower extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangeSystemFilter={this.onChangeSystemFilter}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          enableFilter={true}
           disabled={this.state.gameState === GameState.disabled}
+          partners={this.props.partners}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

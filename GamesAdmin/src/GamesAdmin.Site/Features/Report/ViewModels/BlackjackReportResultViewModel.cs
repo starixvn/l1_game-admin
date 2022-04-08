@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class BlackjackReportResultViewModel
+    public class BlackjackReportResultViewModel : ReportResultViewModel
     {
         public IEnumerable<BlackjackRecordViewModel> Records { get; set; }
     }

@@ -1,15 +1,7 @@
-﻿using System;
-
-namespace GamesAdmin.Database.Report.Entities
+﻿namespace GamesAdmin.Database.Report.Entities
 {
-    public class VipSeDieBetReportEntity
+    public class VipSeDieBetReportEntity : BetReportEntity
     {
-        public DateTime Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
         public decimal Odd { get; set; }
 
         public decimal Even { get; set; }

@@ -1,7 +1,5 @@
 import BetList from "./BetList";
-import TimeModel from "./TimeModel";
-import DiceModel from "./DiceModel";
-import DiceType from "./DiceType";
+import BaseMonitoringState from "./BaseMonitoringModel";
 import { SystemId } from "./BetItem";
 
 class BigSmallBaseBetList {
@@ -14,13 +12,7 @@ class BigSmallBaseBetList {
   }
 }
 
-export default class BigSmallBaseModel {
-  roundNumber: number;
-  time: TimeModel;
-  betList: BigSmallBaseBetList;
-  result: Array<DiceModel>;
-  type: string;
-  turbo: string;
+export default class BigSmallBaseModel extends BaseMonitoringState {
   firstBetTypeUsers: number;
   secondBetTypeUsers: number;
   isHavingResult: boolean;
@@ -31,15 +23,9 @@ export default class BigSmallBaseModel {
   nextRoundResult: { [key: string]: number };
 
   constructor() {
-    this.result = [
-      new DiceModel(-1, DiceType.TaiXiu),
-      new DiceModel(-1, DiceType.TaiXiu),
-      new DiceModel(-1, DiceType.TaiXiu),
-    ];
-    this.betList = new BigSmallBaseBetList();
-    this.time = new TimeModel();
+    super();
+
     this.isHavingResult = false;
-    this.currentState = 0;
     this.isOpenControlResultModal = false;
     this.currentDiceNumber = -1;
     this.isHandleNextRoundResult = false;

@@ -1,26 +1,17 @@
 ﻿using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
     public class SlotGameReportRequest : IRequest<IEnumerable<SlotGameBetRecord>>
     {
-        public SlotGameReportRequest(long roundId, string nickname, bool excludeUUS, string game)
+        public SlotGameReportRequest(SlotGameBetReportFilter filter)
         {
-            RoundId = roundId;
-            Nickname = nickname;
-            ExcludeUUS = excludeUUS;
-            Game = Enumeration.FromValue<Game>(game);
+            Filter = filter;
         }
 
-        public long RoundId { get; }
-
-        public string Nickname { get; }
-
-        public bool ExcludeUUS { get; }
-
-        public Game Game { get; }
+        public SlotGameBetReportFilter Filter { get; }
     }
 }

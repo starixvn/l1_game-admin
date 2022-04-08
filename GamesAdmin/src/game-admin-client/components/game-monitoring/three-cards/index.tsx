@@ -5,24 +5,17 @@ import TotalBet from "../../shared/total-bet/total-bet";
 import { Col, Container, Row, Modal, ModalHeader, ModalBody } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
 import {
-  CardModel,
   ThreeCardsBetListModel,
   ThreeCardsModel,
+  ThreeCardsSettlementResultModel,
 } from "../../common/model/ThreeCardsModel";
 import { Notice } from "../../shared/notice/notice";
 import Card from "../../shared/card/card";
-import Chance from "chance";
-import { updateTotalBetOfBetList } from "../../util/util";
-
-type ThreeCardsProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
+import CardModel from "../../common/model/CardModel";
 
 const cardSuit = [0, 1, 2, 3];
 const cardRank = [
@@ -40,12 +33,7 @@ const cardRank = [
   "Q",
   "K",
 ];
-export default class ThreeCards extends React.Component<
-  ThreeCardsProps,
-  ThreeCardsModel
-> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+export default class ThreeCards extends BaseMonitoring<ThreeCardsModel> {
   constructor(props) {
     super(props);
 
@@ -54,127 +42,31 @@ export default class ThreeCards extends React.Component<
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultResult() {
+    return [new CardModel(), new CardModel(), new CardModel()];
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
-        clearTimeout(this.timeout);
-        const model = new ThreeCardsModel();
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: model.result,
-        });
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!data.inGame && Object.keys(data.inGame).length > 0) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
-      });
-    }
-
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      const waitingTime = 6;
-      this.setState({
-        result: data.finish.result,
-        settlementResult: data.finish.settlementResult,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
-
-      setTimeout(() => {
-        const newState = new ThreeCardsModel();
-
-        this.setState({
-          ...newState,
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 30,
-          },
-        });
-      }, (waitingTime + 4) * 1000);
-    }
-
-    if (!!data.remainingTime) {
-      if (data.remainingTime > 31) {
-        this.setState((prevState) => ({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          result: data.result ? data.result : prevState.result,
-          time: {
-            remainingTime: data.remainingTime - 31,
-          },
-        }));
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: data.roundId,
-            time: {
-              remainingTime: 31,
-            },
-          });
-        }, (data.remainingTime - 31) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: data.roundId,
-          time: {
-            remainingTime: data.remainingTime,
-          },
-        });
-      }
-    }
+  get defaultBetList() {
+    return new ThreeCardsBetListModel();
   }
 
-  getUserBetList(data, currentData: ThreeCardsBetListModel) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
-
-    for (const user in data) {
-      let betTracks = data[user].betTracks;
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(
-              data[user].name,
-              betTracks[key],
-              null,
-              null,
-              data[user].system
-            )
-          );
-        }
-      });
-    }
-
-    return currentData;
+  get defaultSettlementResult(): any {
+    return new ThreeCardsSettlementResultModel();
   }
 
-  renderMonitor(systemFilter) {
+  get totalTimeInRound(): number {
+    return 30;
+  }
+
+  get waitingTime(): number {
+    return 6;
+  }
+
+  renderMonitor() {
     const { betList, roundNumber, time, result, settlementResult, gameState } =
       this.state;
-
-    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container className={styles["threecards-container"]}>
@@ -238,7 +130,7 @@ export default class ThreeCards extends React.Component<
     );
   }
 
-  renderBetList(systemFilter) {
+  renderBetList() {
     const { betList, settlementResult } = this.state;
 
     return (
@@ -249,7 +141,6 @@ export default class ThreeCards extends React.Component<
             dataList={betList.red.dataList}
             titles={[<div className={styles["text-red"]}>Red</div>]}
             isWin={settlementResult.red}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -258,7 +149,6 @@ export default class ThreeCards extends React.Component<
             dataList={betList.black.dataList}
             titles={[<div className={styles["text-black"]}>Black</div>]}
             isWin={settlementResult.black}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -271,7 +161,6 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.diamonds}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -284,7 +173,6 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.hearts}
-            systemFilter={systemFilter}
           />
         </Col>
         <Col className="col-4 col-lg">
@@ -297,7 +185,6 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.spades}
-            systemFilter={systemFilter}
           />
         </Col>{" "}
         <Col className="col-4 col-lg">
@@ -310,7 +197,6 @@ export default class ThreeCards extends React.Component<
               </div>,
             ]}
             isWin={settlementResult.clubs}
-            systemFilter={systemFilter}
           />
         </Col>
       </React.Fragment>
@@ -395,8 +281,11 @@ export default class ThreeCards extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
           disabled={this.state.gameState === GameState.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

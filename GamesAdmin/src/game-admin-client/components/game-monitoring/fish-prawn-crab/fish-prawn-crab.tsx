@@ -7,24 +7,16 @@ import { Col, Container, Row, Modal } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceType from "../../common/model/DiceType";
 import DiceModel from "../../common/model/DiceModel";
 import { GameState } from "../../shared/common/GameState";
 import {
   FishPrawnCrabModel,
-  GameResult,
   FishPrawnCrabBetList,
 } from "../../common/model/FishPrawnCrabModel";
 import { Notice } from "../../shared/notice/notice";
-import { updateTotalBetOfBetList } from "../../util/util";
-
-type FishPrawnCrabProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
 const CHOICES = ["stag", "gourd", "rooster", "fish", "crab", "prawn"];
 
@@ -37,138 +29,39 @@ enum FishPrawnCrabDice {
   prawn,
 }
 
-export default class FishPrawnCrab extends React.Component<
-  FishPrawnCrabProps,
-  FishPrawnCrabModel
-> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
-
+export default class FishPrawnCrab extends BaseMonitoring<FishPrawnCrabModel> {
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
-    this.state = new FishPrawnCrabModel();
+    this.state = { ...new FishPrawnCrabModel(), betList: this.defaultBetList };
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get defaultBetList(): {} {
+    return new FishPrawnCrabBetList();
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 30) {
-        clearTimeout(this.timeout);
-        const model = new FishPrawnCrabModel();
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: model.result,
-          winners: model.winners,
-        });
-        this.isFirstLoad = false;
-      }
-    }
-
-    if (!!data.inGame) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame),
-      });
-    }
-
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      const { result, settlementResult } = data.finish;
-      this.setState({
-        result: this.getResult(result),
-        winners: this.getWinners(settlementResult),
-        time: {
-          remainingTime: 10,
-        },
-        gameState: GameState.waiting,
-      });
-
-      setTimeout(() => {
-        const model = new FishPrawnCrabModel();
-        this.setState({
-          result: model.result,
-          winners: model.winners,
-          nextRoundResult: new GameResult(),
-          isHandleNextRoundResult: false,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 30,
-          },
-          gameState: GameState.running,
-        });
-      }, 10500);
-    }
-
-    if (!!data.remainingTime) {
-      if (data.remainingTime > 31) {
-        this.setState({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          winners: data.result ? data.settlementResult : this.state.winners,
-          result: data.result ? this.getResult(data.result) : this.state.result,
-          time: {
-            remainingTime: data.remainingTime - 31,
-          },
-        });
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            time: {
-              remainingTime: 30,
-            },
-            roundNumber: data.phien,
-            winners: [false, false, false, false, false, false],
-            result: [
-              new DiceModel(-1, DiceType.BauCua),
-              new DiceModel(-1, DiceType.BauCua),
-              new DiceModel(-1, DiceType.BauCua),
-            ],
-          });
-        }, (data.time_remain - 30) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: data.roundId,
-          time: {
-            remainingTime: data.remainingTime,
-          },
-        });
-      }
-    }
+  get defaultResult(): any {
+    return [
+      new DiceModel(-1, DiceType.BauCua),
+      new DiceModel(-1, DiceType.BauCua),
+      new DiceModel(-1, DiceType.BauCua),
+    ];
   }
 
-  getUserBetList(data) {
-    const betInfo = new FishPrawnCrabBetList();
+  get defaultSettlementResult(): any {
+    return [false, false, false, false, false, false];
+  }
 
-    Object.keys(data).forEach(function (userName) {
-      const { name, betTracks, system } = data[userName];
+  get totalTimeInRound(): number {
+    return 30;
+  }
 
-      CHOICES.forEach((choice) => {
-        if (betTracks[choice] > 0) {
-          betInfo[choice].dataList.unshift(
-            new BetItem(name, betTracks[choice], null, null, system)
-          );
-
-          betInfo[choice].total += betTracks[choice];
-        }
-      });
-    });
-
-    return betInfo;
+  get waitingTime(): number {
+    return 10;
   }
 
   getResult(result) {
@@ -181,7 +74,7 @@ export default class FishPrawnCrab extends React.Component<
     return dices;
   }
 
-  getWinners(settlementResult) {
+  getSettlementResult(settlementResult) {
     const winners = [];
 
     CHOICES.forEach((choice) => {
@@ -235,11 +128,9 @@ export default class FishPrawnCrab extends React.Component<
     });
   }
 
-  renderMonitor(systemFilter) {
-    const { betList, roundNumber, time, result, winners, gameState } =
+  renderMonitor() {
+    const { betList, roundNumber, time, result, settlementResult, gameState } =
       this.state;
-
-    updateTotalBetOfBetList(betList, systemFilter);
 
     return (
       <Container>
@@ -264,34 +155,34 @@ export default class FishPrawnCrab extends React.Component<
               <TotalBet
                 total={betList.stag.total}
                 type="nai"
-                isWin={winners[FishPrawnCrabDice.stag]}
+                isWin={settlementResult[FishPrawnCrabDice.stag]}
               ></TotalBet>
               <TotalBet
                 total={betList.gourd.total}
                 type="bau"
-                isWin={winners[FishPrawnCrabDice.gourd]}
+                isWin={settlementResult[FishPrawnCrabDice.gourd]}
               ></TotalBet>
               <TotalBet
                 total={betList.rooster.total}
                 type="ga"
-                isWin={winners[FishPrawnCrabDice.rooster]}
+                isWin={settlementResult[FishPrawnCrabDice.rooster]}
               ></TotalBet>
             </Row>
             <Row className="justify-content-center">
               <TotalBet
                 total={betList.fish.total}
                 type="ca"
-                isWin={winners[FishPrawnCrabDice.fish]}
+                isWin={settlementResult[FishPrawnCrabDice.fish]}
               ></TotalBet>
               <TotalBet
                 total={betList.crab.total}
                 type="cua"
-                isWin={winners[FishPrawnCrabDice.crab]}
+                isWin={settlementResult[FishPrawnCrabDice.crab]}
               ></TotalBet>
               <TotalBet
                 total={betList.prawn.total}
                 type="tom"
-                isWin={winners[FishPrawnCrabDice.prawn]}
+                isWin={settlementResult[FishPrawnCrabDice.prawn]}
               ></TotalBet>
             </Row>
           </Col>
@@ -300,8 +191,8 @@ export default class FishPrawnCrab extends React.Component<
     );
   }
 
-  renderBetList(systemFilter) {
-    const { betList, winners } = this.state;
+  renderBetList() {
+    const { betList, settlementResult } = this.state;
 
     const renderBetList = CHOICES.map((choice) => (
       <Col className="col-4 col-lg-2">
@@ -309,8 +200,7 @@ export default class FishPrawnCrab extends React.Component<
           type="simple"
           dataList={betList[choice].dataList}
           titles={[this.renderBetListBau(FishPrawnCrabDice[choice])]}
-          isWin={winners[FishPrawnCrabDice[choice]]}
-          systemFilter={systemFilter}
+          isWin={settlementResult[FishPrawnCrabDice[choice]]}
         />
       </Col>
     ));
@@ -376,8 +266,11 @@ export default class FishPrawnCrab extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangeSystemFilter={this.onChangeSystemFilter}
+          onChangePartnerFilter={this.onChangePartnerFilter}
           disabled={this.state.gameState == GameState.disabled}
           enableFilter={true}
+          partners={this.props.partners}
         />
         {this.state.gameState == GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

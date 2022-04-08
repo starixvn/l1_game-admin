@@ -18,7 +18,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class OddEvenRecordViewModel : BetRecordViewModel
     {
         public decimal Bet { get; set; }
+
         public decimal Back { get; set; }
+
         public bool Select { get; set; }
     }
 
@@ -108,6 +110,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long HandId { get; set; }
 
+        public int ExchangeRateId { get; set; }
+
         public decimal Bet { get; set; }
 
         public long? SplitForm { get; set; }
@@ -141,8 +145,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }
-
-        public decimal Refund { get; set; }
     }
 
     public class VipFishPrawnCrabRecordViewModel : BetRecordViewModel
@@ -203,7 +205,23 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
 
         public string Game { get; set; }
+        public int ExchangeRateId { get; set; }
         public string IconsFolder => Game?.ToLowerInvariant();
+
+        public void ConvertToUSD(bool isConvert)
+        {
+            if (isConvert)
+            {
+                TotalAmount *= (decimal)Rate;
+                BetWin *= (decimal)Rate;
+                Bet *= (decimal)Rate;
+
+                if (SettlementResult.Jackpot != null)
+                {
+                    SettlementResult.Jackpot.WinningAmount *= (decimal)Rate;
+                }
+            }
+        }
     }
 
     public class SlotGameBonusChestViewModel
@@ -285,10 +303,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Choice { get; set; }
         public decimal GrossWin => Win ? BetWin + Bet - Back : 0;
     }
-
     public class KenoMatchRecordViewModel : BetRecordViewModel
     {
-        public decimal Refund { get; set; }
         public decimal TotalBet { get; set; }
     }
 
@@ -310,5 +326,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Ended { get; set; }
 
         public string BetHistoryUrl { get; set; }
+
+        public int ExchangeRateId { get; set; }
+    }
+
+    public class HiLoRecordViewModel : BetRecordViewModel
+    {
+        public decimal Amount { get; set; }
+
+        public long RoundId { get; set; }
+
+        public bool Paid { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

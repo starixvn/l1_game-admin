@@ -1,15 +1,18 @@
-import io from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import logger from "../logger";
 import Websocket from "./websocket";
 
-
 export default class SocketIO extends Websocket {
-  private socketIO: SocketIOClient.Socket;
+  private socketIO: Socket;
 
   connect() {
     return new Promise((resolve) => {
       if (!this.isConnected) {
-        this.socketIO = io(this.endpoint, { transports: ["websocket"], upgrade: false, path: this.endpointRoute });
+        this.socketIO = io(this.endpoint, {
+          transports: ["websocket"],
+          upgrade: false,
+          path: this.endpointRoute,
+        });
         this.socketIO.on("connect", () => {
           this.isConnected = true;
           this.socketIO.on("message", this.onReceiveMessage.bind(this));
@@ -35,10 +38,6 @@ export default class SocketIO extends Websocket {
 
   protected onReceiveMessage(event: MessageEvent) {
     try {
-      //   console.log(event);
-      //   const data = event.data;
-      //   const message = JSON.parse(data);
-
       this.executeObservers(event);
     } catch (e) {
       logger.error(e);

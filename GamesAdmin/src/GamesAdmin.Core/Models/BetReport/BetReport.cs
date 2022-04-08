@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.RoundResults;
 
 namespace GamesAdmin.Core.Models
 {
-    public class BetReport<TRoundResult, TBetRecord> where TRoundResult : RoundResult where TBetRecord : BetRecord
+    public class BetReportBase
+    {
+    }
+
+    public class BetReport<TRoundResult, TBetRecord> : BetReportBase where TRoundResult : RoundResult where TBetRecord : BetRecord
     {
         public TRoundResult RoundResult { get; set; }
         public IEnumerable<TBetRecord> Records { get; set; }
@@ -79,8 +85,22 @@ namespace GamesAdmin.Core.Models
     public class KenoPowerBetReport : BetReport<KenoPowerRoundResult, KenoPowerBetRecord>
     {
     }
+    public class MiniKenoBetReport : BetReport<KenoRoundResult, KenoBetRecord>
+    {
+    }
+
+    public class BlackjackBetReport : BetReportBase
+    {
+        public IEnumerable<BlackjackBetRecord> Records { get; set; }
+    }
 
     public class CasinoHoldemPokerBetReport : BetReport<CasinoHoldemPokerRoundResult, CasinoHoldemPokerBetRecord>
     {
     }
+
+    public class HiLoBetReport : BetReportBase
+    {
+        public IEnumerable<HiLoBetRecord> Records { get; set; }
+    }
+
 }

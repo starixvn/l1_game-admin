@@ -7,6 +7,5 @@ namespace GamesAdmin.Database.Entities.KenoProMax
     [BsonCollection("kenopromax_phiens")]
     public class KenoProMaxRoundEntity : BaseKenoRoundEntity
     {
-        public Dictionary<string, bool> SettlementResult { get; set; }
     }
 }

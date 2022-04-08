@@ -3,7 +3,7 @@ using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class KenoPowerReportResultViewModel
+    public class KenoPowerReportResultViewModel : ReportResultViewModel
     {
         public GameId Game { get; set; }
 

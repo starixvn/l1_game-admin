@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups
         Task<CurrencyGroupModel> GetById(string id);
 
         [Post("/currency_group/filter")]
-        Task<IEnumerable<CurrencyGroupModel>> Query(QueryCurrencyGroupsModel model);
+        Task<IEnumerable<CurrencyGroupModel>> Query(string ids);
 
         [Post("/currency_group")]
         Task<bool> Create(CreateCurrencyGroupModel model);

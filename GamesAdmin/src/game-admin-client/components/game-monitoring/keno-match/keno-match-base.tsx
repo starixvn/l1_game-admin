@@ -17,21 +17,12 @@ import {
 } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
-import BetItem, { SystemId } from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import { GameState } from "../../shared/common/GameState";
-import {
-  KenoMatchBetListModel,
-  KenoMatchModel,
-} from "../../common/model/KenoMatchModel";
+import { KenoMatchModel } from "../../common/model/KenoMatchModel";
 import { Notice } from "../../shared/notice/notice";
 import KenoMatchResult from "./keno-match-result";
-
-type KenoMatchProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
 
 const choiceLabelMapper = {
   fhBlue: "Blue",
@@ -54,64 +45,23 @@ const choiceLabelMapper = {
   liveFTEven: "Even",
 };
 
-export default class KenoMatch extends React.Component<
-  KenoMatchProps,
-  KenoMatchModel
-> {
+export default class KenoMatch extends BaseMonitoring<KenoMatchModel> {
   isFirstLoad: boolean;
   timeout: NodeJS.Timeout;
   gameName: string;
 
-  private systemId: SystemId;
   constructor(props) {
     super(props);
 
     this.isFirstLoad = true;
     this.state = new KenoMatchModel();
-    this.systemId = SystemId.None;
-    this.handleUpdateFilter = this.handleUpdateFilter.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
-  }
-
-  handleUpdateFilter(value: SystemId) {
-    this.systemId = value;
-  }
-
-  handleData(data) {}
-
-  getUserBetList(data, currentData: KenoMatchBetListModel) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
-
-    for (const user in data) {
-      let betTracks = data[user].betTracks;
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(
-              data[user].name,
-              betTracks[key],
-              null,
-              choiceLabelMapper[key],
-              data[user].system
-            )
-          );
-        }
-      });
-    }
-
-    return currentData;
+  getChoiceDisplay(key: any) {
+    return choiceLabelMapper[key];
   }
 
   renderResultSummary() {
@@ -524,7 +474,11 @@ export default class KenoMatch extends React.Component<
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
+          enableFilter={true}
           disabled={this.state.gameState === GameState.disabled}
+          partners={this.props.partners}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

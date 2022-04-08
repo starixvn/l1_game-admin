@@ -1,42 +1,68 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./game-template.module.scss";
 import { Notice } from "../../shared/notice/notice";
-import { SystemId } from "../../common/model/BetItem";
+import { Partners, SystemId } from "../../common/model/BetItem";
 
 type Props = {
   renderMonitor: Function;
   renderBetList: Function;
   enableFilter?: boolean;
+  onChangeSystemFilter?: Function;
+  onChangePartnerFilter?: Function;
   disabled: boolean;
+  partners: Array<string>;
 };
 
 export default function GameTemplate(props: Props) {
-  const { renderMonitor, renderBetList, disabled, enableFilter } = props;
-  const [systemFilter, setSystemFilter] = useState(SystemId.None);
+  const { renderMonitor, renderBetList, disabled, enableFilter, partners } =
+    props;
 
-  const onChangeFilter = (event) => {
+  const onChangeSystemFilter = (event) => {
     const filterValue = +event.target.value;
-    setSystemFilter(filterValue);
+    props.onChangeSystemFilter(filterValue);
+  };
+
+  const onChangePartnerFilter = (event) => {
+    const filterValue = event.target.value;
+    props.onChangePartnerFilter(filterValue);
   };
 
   return (
     <div className={styles["game-template"]}>
       <div className={styles["monitor"]}>
         <div className={styles["background-img"]}></div>
-        {renderMonitor(systemFilter)}
+        {renderMonitor()}
         {enableFilter && (
           <div className={styles.filter}>
-            <select value={systemFilter} onChange={onChangeFilter}>
-              <option value={SystemId.None}>All</option>
+            <div>
+              <label>Partner</label>
               <option value={SystemId.VG}>VG</option>
               <option value={SystemId.VGM}>VGM</option>
-            </select>
+                  <option value={key}>{Partners[key]}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>App Type</label>
+              <select onChange={onChangeSystemFilter}>
+                <option key={0} value={SystemId.None}>
+                  All
+                </option>
+                <option key={1} value={SystemId.SC}>
+                  SC
+                </option>
+                <option key={2} value={SystemId.SM}>
+                  SM
+                </option>
+                <option key={3} value={SystemId.Mini}>
+                  Mini SC
+                </option>
+              </select>
+            </div>
           </div>
         )}
       </div>
-      <div className={`${styles["bet-list"]}`}>
-        {renderBetList(systemFilter)}
-      </div>
+      <div className={`${styles["bet-list"]}`}>{renderBetList()}</div>
       {disabled && <Notice isOpen={true} message="Game is disabled." />}
     </div>
   );

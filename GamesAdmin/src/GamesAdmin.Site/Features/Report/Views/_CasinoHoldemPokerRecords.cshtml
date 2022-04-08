@@ -3,7 +3,7 @@
 
 @model CasinoHoldemPokerReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         <table class="table table-bordered table-hover sticky-table">
             <thead>
@@ -14,6 +14,7 @@
                     <th class="col-nickname">Nickname</th>
                     <th class="col-number">Currency</th>
                     <th class="col-number">Round ID</th>
+                    <th class="col-number">Exchange ID</th>
                     <th class="col-nickname">Player</th>
                     <th class="col-nickname">Dealer</th>
                     <th class="col-number">Total Stake</th>
@@ -31,6 +32,7 @@
                         <td class="text-center">@record.Nickname</td>
                         <td class="text-center">@record.Currency</td>
                         <td class="text-center">@record.RoundId</td>
+                        <td class="text-center">@record.ExchangeRateId</td>
                         <td class="text-center">@record.PlayerResult</td>
                         <td class="text-center">@record.DealerResult</td>
                         <td class="text-center bold">

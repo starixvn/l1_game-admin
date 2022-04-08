@@ -5,6 +5,11 @@ export enum SystemId {
   Mini,
 }
 
+export const Partners = {
+  ONEworks1: "1W",
+  SBO: "SPart",
+};
+
 export default class BetItem {
   name: string;
   bet: number;
@@ -12,6 +17,7 @@ export default class BetItem {
   choice: string;
   system: SystemId;
   currency: string;
+  partnerId: string;
 
   constructor(
     name: string = "",
@@ -19,7 +25,8 @@ export default class BetItem {
     time: string = "",
     choice = "",
     system = SystemId.None,
-    currency = ""
+    currency = "",
+    partnerId = ""
   ) {
     this.name = name;
     this.bet = bet;
@@ -27,5 +34,6 @@ export default class BetItem {
     this.choice = choice;
     this.system = system;
     this.currency = currency;
+    this.partnerId = partnerId;
   }
 }

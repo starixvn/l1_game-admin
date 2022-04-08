@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using GamesAdmin.Core.Models.BetReport;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class KenoBetHistoryViewModel
+    public class KenoBetHistoryViewModel : BetHistoryViewModel
     {
-        public KenoBetHistoryViewModel(IEnumerable<KenoBetHistory> betHistories, TimeZoneInfo timeZoneInfo)
-        {
-            BetHistories = betHistories;
-            TimeZoneInfo = timeZoneInfo;
-        }
+        public IEnumerable<KenoBetHistoryRecordViewModel> Bets { get; set; }
 
-        public IEnumerable<KenoBetHistory> BetHistories { get; }
+    }
 
-        public TimeZoneInfo TimeZoneInfo { get; }
+    public class KenoBetHistoryRecordViewModel : BetHistoryRecordViewModel
+    {
+        public KenoBetChoice Choice { get; set; }
+
+        public decimal Amount { get; set; }
     }
 }

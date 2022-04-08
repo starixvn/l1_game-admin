@@ -1,29 +1,20 @@
-import React from "react";
 import BigSmallBase from "../big-small-base/big-small-base";
+import { types } from "../game-monitoring-config";
 
-type Props = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-export default class BigSmallTurbo extends React.Component<
-  Props,
-  { data: object }
-> {
-  constructor(props) {
-    super(props);
+export default class OddEvenTurbo extends BigSmallBase {
+  get turbo(): boolean {
+    return true;
   }
 
-  render() {
-    return (
-      <BigSmallBase
-        type="chanle"
-        turbo={true}
-        onMessage={this.props.onMessage}
-        sendMessage={this.props.sendMessage}
-        isProduction={this.props.isProduction}
-      />
-    );
+  get type() {
+    return types.clturbo;
+  }
+
+  get totalTimeInRound(): number {
+    return 30;
+  }
+
+  get waitingTime(): number {
+    return 5;
   }
 }

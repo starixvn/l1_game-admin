@@ -116,26 +116,19 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("status")]
-        public async Task<IActionResult> UpdateDisabledMessage(string name, string vnMessage, string enMessage)
+        public async Task<IActionResult> UpdateDisabledMessage(string name, Dictionary<string, string> messages)
         {
-            if (string.IsNullOrWhiteSpace(vnMessage))
+            var defaultMessage = messages[Language.DefaultLanguageValue];
+            if (string.IsNullOrWhiteSpace(defaultMessage))
             {
                 TempData["errorMessage"] = "Message cannot be empty.";
 
                 return Json(false);
             }
-            else
-            {
-                var messages = new Dictionary<string, string>
-                {
-                    {Language.VnValue, vnMessage },
-                    {Language.EnValue, enMessage }
-                };
 
-                await mediator.Send(new UpdateDisabledMessageRequest(name, messages));
+            await mediator.Send(new UpdateDisabledMessageRequest(name, messages));
 
-                return Json(true);
-            }
+            return Json(true);
         }
 
         [HttpGet]

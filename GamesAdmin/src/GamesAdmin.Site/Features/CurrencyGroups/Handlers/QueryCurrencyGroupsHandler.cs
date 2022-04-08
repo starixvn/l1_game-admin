@@ -37,7 +37,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
             }
 
             var games = await gameService.GetAll();
-            var groups = await Api.Query(request.Model);
+            var groups = await Api.Query(string.Join(',', request.Model.CurrencyGroups));
             var groupsWithGames = groups.Select(group =>
             {
                 var viewModel = Mapper.Map<CurrencyGroupViewModel>(group);

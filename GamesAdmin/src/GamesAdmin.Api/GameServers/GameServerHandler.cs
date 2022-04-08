@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.GameServers.Requests;
+﻿using System.Collections.Generic;
+using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
@@ -16,6 +17,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<NotifyRoundsRequest, bool>
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
         , IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>
+        , IRequestHandler<SetHiLoResultRequest, IEnumerable<Card>>
     {
         private readonly IGameServerService gameServerService;
 
@@ -47,5 +49,7 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
       => gameServerService.SetCasinoHoldemPokerResult(request);
+        public Task<IEnumerable<Card>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+        => gameServerService.SetHiLoResult(request);
     }
 }

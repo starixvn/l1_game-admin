@@ -2,6 +2,9 @@
 @using  GamesAdmin.Core.Enumeration.BetChoices
 @using GamesAdmin.Core.Enumeration
 @model GamesAdmin.Site.Features.Report.ViewModels.BitcoinMasterBetHistoryViewModel
+@{
+    var round = Model.RoundResult;
+}
 
 <table class="table table-bordered table-hover">
     <thead>
@@ -54,18 +57,18 @@
                     @if (string.Equals(BitcoinMasterBetChoice.UpValue, bet.Choice, StringComparison.OrdinalIgnoreCase) ||
 string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.OrdinalIgnoreCase))
                     {
-                        <span>@HtmlHelpers.formatNumber(Model.RoundResult.ResultPrice)</span>
+                        <span>@HtmlHelpers.formatNumber2(Model.RoundResult.ResultPrice)</span>
                         @if (Model.RoundResult.IsUp)
                         {
-                            <span class="up"> (<img src="~/images/up.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                            <span class="up"> (<img src="~/images/up.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.RoundResult.PriceDiff))</span>)</span>
                         }
                         else if (Model.RoundResult.IsDown)
                         {
-                            <span class="down"> (<img src="~/images/down.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                            <span class="down"> (<img src="~/images/down.png" /><span class="result-detail">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.RoundResult.PriceDiff))</span>)</span>
                         }
                         else
                         {
-                            <span class="tie"> (<span class="result-detail">@HtmlHelpers.formatNumber2(Model.RoundResult.PriceDiff)</span>)</span>
+                            <span class="tie"> (<span class="result-detail">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(Model.RoundResult.PriceDiff))</span>)</span>
                         }
                     }
                     else
@@ -73,9 +76,9 @@ string.Equals(BitcoinMasterBetChoice.DownValue, bet.Choice, StringComparison.Ord
                         <span>@(Model.RoundResult.IsEven ? "Even" : "Odd")</span> <span>(@(Math.Floor(Model.RoundResult.ResultPrice) % 10))</span>
                     }
                 </td>
-                <td class="text-right">@HtmlHelpers.formatNumber2(bet.Amount)</td>
-                <td class="text-right">@HtmlHelpers.formatNumber2(bet.Refund)</td>
-                <td class="text-right">@HtmlHelpers.formatNumber2(bet.GrossWin)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(bet.Amount))</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(bet.Refund))</td>
+                <td class="text-right">@HtmlHelpers.formatNumber2(round.ConvertByExchangeRate(bet.GrossWin))</td>
             </tr>
         }
     </tbody>

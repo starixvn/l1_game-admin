@@ -1,4 +1,8 @@
-﻿using GamesAdmin.Api.Games;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
@@ -9,10 +13,6 @@ using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using Refit;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -31,6 +31,8 @@ namespace GamesAdmin.Api.GameServers
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
         Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult(SetCasinoHoldemPokerResultRequest request);
+
+        Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -42,6 +44,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGameUserService gameUserService;
         private readonly IGameSettingsService gameSettingService;
         private readonly ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi;
+        private readonly IHiLoApi hiloApi;
 
         public GameServerService(
             IGameServerApi serverApi,
@@ -50,7 +53,8 @@ namespace GamesAdmin.Api.GameServers
             ISlotBoardApiFactory slotBoardApiFactory,
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
-            ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi)
+            ICasinoHoldemPokerOnlineUserApi casinoHoldemPokerApi,
+            IHiLoApi hiloApi)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
@@ -59,6 +63,7 @@ namespace GamesAdmin.Api.GameServers
             this.gameUserService = gameUserService;
             this.gameSettingService = gameSettingService;
             this.casinoHoldemPokerApi = casinoHoldemPokerApi;
+            this.hiloApi = hiloApi;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -213,6 +218,20 @@ namespace GamesAdmin.Api.GameServers
                 HandleException(ex);
                 return null;
             }
+        }
+
+        public async Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
+        {
+            try
+            {
+                return await hiloApi.SetResult(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return Enumerable.Empty<Card>();
         }
     }
 }

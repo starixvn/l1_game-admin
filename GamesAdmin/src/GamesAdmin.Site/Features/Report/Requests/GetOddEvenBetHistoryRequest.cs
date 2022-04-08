@@ -6,14 +6,17 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetOddEvenBetHistoryRequest : IRequest<IEnumerable<OddEvenBetHistoryViewModel>>
     {
-        public GetOddEvenBetHistoryRequest(long roundId, string nickname)
+        public GetOddEvenBetHistoryRequest(long roundId, string nickname, decimal? rate)
         {
             RoundId = roundId;
             Nickname = nickname;
+            Rate = rate;
         }
 
         public long RoundId { get; }
 
         public string Nickname { get; }
+
+        public decimal? Rate { get; }
     }
 }

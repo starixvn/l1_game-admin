@@ -7,118 +7,118 @@ import { Col, Container, Row, Modal } from "reactstrap";
 import GameTemplate from "../game-template/game-template";
 import BetList from "../../shared/bet-list/bet-list";
 import Dice from "../../shared/dice/dice";
-import BetItem from "../../common/model/BetItem";
 import RoundNum from "../../shared/round-num/round-num";
 import DiceType from "../../common/model/DiceType";
 import DiceModel from "../../common/model/DiceModel";
 import { GameState } from "../../shared/common/GameState";
-import { SicBoBetList, SicBoModel } from "../../common/model/SicBoModel";
+import {
+  SicBoBetList,
+  SicBoModel,
+  SicBoSettlementResult,
+} from "../../common/model/SicBoModel";
 import { Notice } from "../../shared/notice/notice";
+import BaseMonitoring from "../../shared/base-monitoring/base-monitoring";
+import BetItem from "../../common/model/BetItem";
 
-type SicBoProps = {
-  onMessage: Function;
-  sendMessage: Function;
-  isProduction: boolean;
-};
-
-export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
-  private isFirstLoad: boolean;
-  private timeout: NodeJS.Timeout;
+export default class SicBo extends BaseMonitoring<SicBoModel> {
   constructor(props) {
     super(props);
 
-    this.isFirstLoad = true;
     this.state = new SicBoModel();
     this.openModal = this.openModal.bind(this);
     this.handleChangeResult = this.handleChangeResult.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.renderBetList = this.renderBetList.bind(this);
-    this.renderMonitor = this.renderMonitor.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onMessage((message) => this.handleData(message));
+  get totalTimeInRound(): number {
+    return 45;
   }
 
-  handleData(data) {
-    if (!!data.um) {
-      if (this.isFirstLoad || this.state.time.remainingTime == 45) {
-        clearTimeout(this.timeout);
-        const model = new SicBoModel();
-        this.setState({
-          time: { remainingTime: 0 },
-          gameState: GameState.disabled,
-          roundNumber: this.isFirstLoad
-            ? this.state.roundNumber
-            : this.state.roundNumber - 1,
-          result: model.result,
-        });
-        this.isFirstLoad = false;
-      }
-    }
+  get waitingTime(): number {
+    return 9;
+  }
 
-    if (!!data.inGame && Object.keys(data.inGame).length > 0) {
-      this.setState({
-        betList: this.getUserBetList(data.inGame, this.state.betList),
+  get defaultResult(): any {
+    return [
+      new DiceModel(-1, DiceType.TaiXiu),
+      new DiceModel(-1, DiceType.TaiXiu),
+      new DiceModel(-1, DiceType.TaiXiu),
+    ];
+  }
+
+  get defaultBetList(): {} {
+    return new SicBoBetList();
+  }
+
+  get defaultSettlementResult(): any {
+    return new SicBoSettlementResult();
+  }
+
+  getUserBetList(data, currentData: SicBoBetList) {
+    Object.keys(currentData).forEach((key) => {
+      currentData[key].total = 0;
+      currentData[key].dataList = new Array<BetItem>();
+    });
+
+    for (const user in data) {
+      const { betTracks, system, currency, partnerId } = data[user];
+      const userRate = this.currencyExchangeRate[currency];
+      Object.keys(betTracks).forEach((key) => {
+        if (betTracks[key]) {
+          const baseBetAmount = parseFloat(
+            (betTracks[key] * userRate).toFixed(2)
+          );
+
+          if (key.includes("specific")) {
+            const choice = key.split("specific")[1];
+            currentData.specificNumber.dataList.unshift(
+              new BetItem(
+                data[user].name,
+                baseBetAmount,
+                "",
+                choice,
+                system,
+                currency,
+                partnerId
+              )
+            );
+            currentData.specificNumber.total += betTracks[key];
+            return;
+          }
+          if (key.includes("total")) {
+            const choice = key.split("total")[1];
+            currentData.totalPoints.dataList.unshift(
+              new BetItem(
+                data[user].name,
+                baseBetAmount,
+                "",
+                choice,
+                system,
+                currency,
+                partnerId
+              )
+            );
+            currentData.totalPoints.total += betTracks[key];
+            return;
+          }
+
+          currentData[key].total += betTracks[key];
+          currentData[key].dataList.unshift(
+            new BetItem(
+              data[user].name,
+              baseBetAmount,
+              "",
+              "",
+              system,
+              currency,
+              partnerId
+            )
+          );
+        }
       });
     }
 
-    if (!!data.finish) {
-      this.isFirstLoad = false;
-      const waitingTime = 9;
-      this.setState({
-        result: this.getResult(data.finish.result),
-        settlementResult: data.finish.settlementResult,
-        gameState: GameState.waiting,
-        time: {
-          remainingTime: waitingTime,
-        },
-      });
-
-      setTimeout(() => {
-        const newState = new SicBoModel();
-
-        this.setState({
-          ...newState,
-          gameState: GameState.running,
-          roundNumber: this.state.roundNumber + 1,
-          time: {
-            remainingTime: 45,
-          },
-        });
-      }, (waitingTime + 4) * 1000);
-    }
-
-    if (!!data.remainingTime) {
-      if (data.remainingTime > 46) {
-        this.setState((prevState) => ({
-          gameState: GameState.waiting,
-          roundNumber: data.roundId - 1,
-          result: data.result ? this.getResult(data.result) : prevState.result,
-          time: {
-            remainingTime: data.remainingTime - 46,
-          },
-        }));
-
-        this.timeout = setTimeout(() => {
-          this.setState({
-            gameState: GameState.running,
-            roundNumber: data.roundId,
-            time: {
-              remainingTime: 46,
-            },
-          });
-        }, (data.remainingTime - 46) * 1000);
-      } else {
-        this.setState({
-          gameState: GameState.running,
-          roundNumber: data.roundId,
-          time: {
-            remainingTime: data.remainingTime,
-          },
-        });
-      }
-    }
+    return { ...currentData };
   }
 
   getResult(diceResult) {
@@ -129,44 +129,6 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
     result.push(new DiceModel(diceResult.dice3, DiceType.TaiXiu));
 
     return result;
-  }
-
-  getUserBetList(data, currentData: SicBoBetList) {
-    Object.keys(currentData).forEach((key) => {
-      currentData[key].total = 0;
-      currentData[key].dataList = new Array<BetItem>();
-    });
-
-    for (const user in data) {
-      const { betTracks } = data[user];
-      Object.keys(betTracks).forEach((key) => {
-        if (betTracks[key]) {
-          if (key.includes("specific")) {
-            const choice = key.split("specific")[1];
-            currentData.specificNumber.dataList.unshift(
-              new BetItem(data[user].name, betTracks[key], "", choice)
-            );
-            currentData.specificNumber.total += betTracks[key];
-            return;
-          }
-          if (key.includes("total")) {
-            const choice = key.split("total")[1];
-            currentData.totalPoints.dataList.unshift(
-              new BetItem(data[user].name, betTracks[key], "", choice)
-            );
-            currentData.totalPoints.total += betTracks[key];
-            return;
-          }
-
-          currentData[key].total += betTracks[key];
-          currentData[key].dataList.unshift(
-            new BetItem(data[user].name, betTracks[key])
-          );
-        }
-      });
-    }
-
-    return currentData;
   }
 
   handleChangeResult(id, value) {
@@ -388,7 +350,11 @@ export default class SicBo extends React.Component<SicBoProps, SicBoModel> {
         <GameTemplate
           renderBetList={this.renderBetList}
           renderMonitor={this.renderMonitor}
+          onChangePartnerFilter={this.onChangePartnerFilter}
+          onChangeSystemFilter={this.onChangeSystemFilter}
+          enableFilter={true}
           disabled={this.state.gameState === GameState.disabled}
+          partners={this.props.partners}
         />
         {this.state.gameState === GameState.disabled && (
           <Notice isOpen={true} message="Game is disabled." />

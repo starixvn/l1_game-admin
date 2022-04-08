@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Entities.Keno;
@@ -88,6 +89,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower2 => await Move<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.CasinoHoldemPoker => await Move<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.HiLo => await MoveHiLo(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -142,6 +144,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoPower1 => await Find<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower2 => await Find<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.CasinoHoldemPoker => await Find<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.HiLo => await Find<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 
@@ -367,7 +370,7 @@ namespace GamesAdmin.Api.VoidGame
                 .FindAsync(record => record.MemberId == obCustId
                                     && record.PartnerId == partnerId
                                     && record.SiteId == siteId
-                                    && record.Round == gameRoundId
+                                    && (record.Round == gameRoundId || record.RoundId == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)))
                 .ToList();
 
@@ -387,12 +390,52 @@ namespace GamesAdmin.Api.VoidGame
                 .DeleteManyAsync(record => record.MemberId == obCustId
                                     && record.SiteId == siteId
                                     && record.PartnerId == partnerId
-                                    && record.Round == gameRoundId
+                                    && (record.Round == gameRoundId || record.RoundId == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)));
 
             return result.DeletedCount > 0;
         }
 
 #pragma warning restore S1067 // Expressions should not be too complex
+
+        private async Task<bool> MoveHiLo(int obCustId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, bool freeBet)
+        {
+            await Move<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet);
+            return await MoveRound<HiLoRoundEntity>(gameRoundId);
+        }
+
+        private async Task<bool> MoveRound<RoundEntity>(long gameRoundId)
+          where RoundEntity : BaseRoundEntity
+        {
+            try
+            {
+                var collectionName = Document.GetCollectionName(typeof(RoundEntity));
+                var collection = activeDatabase.GetCollection<RoundEntity>(collectionName);
+
+                var round = await collection.Find(x => x.Number == gameRoundId).FirstOrDefaultAsync();
+
+                if (round != null)
+                {
+                    await collection.DeleteOneAsync(x => x.Number == gameRoundId);
+                }
+                else
+                {
+                    var archiveCollection = archiveDatabase.GetCollection<RoundEntity>($"{collectionName}${ArchivePostfix}");
+                    round = await archiveCollection.Find(x => x.Number == gameRoundId).FirstOrDefaultAsync();
+                    await archiveCollection.DeleteOneAsync(x => x.Number == gameRoundId);
+                }
+
+                var removeCollection = removedDatabase.GetCollection<RoundEntity>($"{collectionName}{RemovePostfix}");
+                await removeCollection.InsertOneAsync(round);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
+        }
     }
 }

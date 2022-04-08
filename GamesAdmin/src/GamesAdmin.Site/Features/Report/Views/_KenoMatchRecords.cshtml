@@ -3,7 +3,7 @@
 
 @model KenoMatchReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
@@ -14,6 +14,7 @@
                     <tr>
                         <th rowspan="2">Date (GMT+7)</th>
                         <th rowspan="2">Round ID</th>
+                        <th rowspan="2">Exchange ID</th>
                         <th rowspan="2">Results</th>
                         <th colspan="2">Winning Options</th>
                     </tr>
@@ -24,8 +25,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-center">@Model.RoundResult.Time</td>
+                        <td class="text-center">@Model.RoundResult.Time.ToString(Constants.DateTimeFormat)</td>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td>
                             <table class="table table-bordered table-keno-match-result">
                                 <tbody>
@@ -156,8 +158,10 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th>Partner</th>
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th>Currency</th>
                     <th class="col-number">Total Bets</th>
                     <th class="col-number">Refund</th>
                     <th class="col-number">Win</th>
@@ -168,25 +172,45 @@
                 {
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
                         <td>@bet.Username</td>
                         <td>
                             @bet.Nickname
                         </td>
+                        <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetKenoMatchBetHistory" asp-route-game="@Model.Game" asp-route-roundId="@Model.RoundResult.Number" asp-route-userId="@bet.UserId">
-                                @HtmlHelpers.formatNumber(bet.TotalBet)
+                               asp-action="GetKenoMatchBetHistory"
+                               asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) : bet.TotalBet)
                             </a>
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Refund)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Refund) : bet.Refund)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
                     </tr>
                 }
 
                 @if (!Model.Records.Any())
                 {
                     <tr>
-                        <td class="text-center" colspan="6">No data</td>
+                        <td class="text-center" colspan="8">No data</td>
+                    </tr>
+                }
+                else if (Model.ConvertToUSD)
+                {
+                    <tr class="total">
+                        <td>Total in USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalBet)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Refund)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
                     </tr>
                 }
             </tbody>
