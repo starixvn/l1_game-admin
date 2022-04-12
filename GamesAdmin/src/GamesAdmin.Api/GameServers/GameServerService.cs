@@ -260,7 +260,7 @@ namespace GamesAdmin.Api.GameServers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("username", username.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(appSettings.AdminMonitoringSettings.ExpiredTokenByDay),
+                Expires = DateTime.UtcNow.AddMinutes(appSettings.AdminMonitoringSettings.ExpiredTokenByMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

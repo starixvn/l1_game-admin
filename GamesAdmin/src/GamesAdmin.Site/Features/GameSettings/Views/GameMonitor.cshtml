@@ -40,7 +40,10 @@
                             }
                             else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value || @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {
-                                <a href="#" class="icon-action" onclick="gameStatus.setControlResultHoldemPoker(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                if (role == Role.Admin.Value)
+                                {
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultHoldemPoker(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                }
                             }
                             else
                             {

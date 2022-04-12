@@ -6,6 +6,6 @@
 
         public string JwtSecretKey { get; set; }
 
-        public int ExpiredTokenByDay { get; set; }
+        public int ExpiredTokenByMinutes { get; set; }
     }
 }
