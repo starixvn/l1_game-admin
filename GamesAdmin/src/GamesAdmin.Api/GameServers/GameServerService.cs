@@ -20,6 +20,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -39,7 +40,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
 
-        Task<IEnumerable<PokerCard>> SetHiLoResult(SetHiLoResultRequest request);
+        Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 
@@ -238,7 +239,7 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task<IEnumerable<PokerCard>> SetHiLoResult(SetHiLoResultRequest request)
+        public async Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request)
         {
             try
             {
@@ -248,7 +249,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 HandleException(ex);
             }
-            return Enumerable.Empty<PokerCard>();
+            return Enumerable.Empty<HiloCard>();
         }
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)

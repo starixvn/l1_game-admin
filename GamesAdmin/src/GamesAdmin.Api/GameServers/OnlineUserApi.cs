@@ -1,9 +1,9 @@
 ﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.BetReport;
 using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -229,6 +229,6 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
 
         [Post("/api/set-result")]
-        Task<IEnumerable<PokerCard>> SetResult([Body] SetHiLoResultRequest request);
+        Task<IEnumerable<HiloCard>> SetResult([Body] SetHiLoResultRequest request);
     }
 }

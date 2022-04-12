@@ -1,13 +1,13 @@
 ﻿using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -50,7 +50,7 @@ namespace GamesAdmin.Api.GameServers
          => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
 
         [HttpPost("hilo/set_result")]
-        public Task<IEnumerable<PokerCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
+        public Task<IEnumerable<HiloCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
         => mediator.Send(request);
 
         [HttpPost("verify_admin_monitoring_token")]

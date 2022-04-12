@@ -1,13 +1,13 @@
 ﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -18,7 +18,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<NotifyRoundsRequest, bool>
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
         , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
-        , IRequestHandler<SetHiLoResultRequest, IEnumerable<PokerCard>>
+        , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
         , IRequestHandler<GetAdminMonitoringSettingsRequest, AdminMonitoringModel>
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
     {
@@ -53,7 +53,7 @@ namespace GamesAdmin.Api.GameServers
         public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetHoldemPokerResult(request);
 
-        public Task<IEnumerable<PokerCard>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<HiloCard>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
          => gameServerService.SetHiLoResult(request);
 
         public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
