@@ -9,11 +9,12 @@ namespace GamesAdmin.Core.Models.GameConfigs
         {
         }
 
-        public SlotsConfig(byte mode, double bigWinRatio, Bonus bonus)
+        public SlotsConfig(byte mode, double bigWinRatio, Bonus bonus, double multiplier = 0)
         {
             Mode = mode;
             BigWinRatio = bigWinRatio;
             Bonus = bonus;
+            Multiplier = multiplier;
         }
 
         public SlotsConfig(SlotsConfig config)

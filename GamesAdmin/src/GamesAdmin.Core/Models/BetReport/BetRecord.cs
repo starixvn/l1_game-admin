@@ -347,4 +347,35 @@ namespace GamesAdmin.Core.Models
 
         public int ExchangeRateId { get; set; }
     }
+
+    public class CascadingSlotBetRecord : BetRecord
+    {
+        public long RoundId { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public string Partner { get; set; }
+
+        public int ExchangRateId { get; set; }
+
+        public bool Paid { get; set; }
+
+        public double BetLevel { get; set; }
+
+        public double CoinValue { get; set; }
+
+        public byte[] BaseSpin { get; set; }
+
+        public List<byte[]> Tumblings { get; set; }
+
+        public List<Dictionary<byte, int>> WinningSymbols { get; set; }
+
+        public List<Dictionary<byte, double>> WinningAmounts { get; set; }
+
+        public List<double> TumblingWins { get; set; }
+
+        public List<int> Multipliers { get; set; }
+    }
 }

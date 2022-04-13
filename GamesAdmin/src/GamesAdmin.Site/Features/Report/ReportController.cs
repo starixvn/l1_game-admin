@@ -519,15 +519,16 @@ namespace GamesAdmin.Site.Features.Report
             var selections = await mediator.Send(new GetSelectionsRequest());
             var viewModel = new SlotGameReportViewModel
             {
+                Game = GameId.TreasureIsland,
                 ExcludeUUS = true,
                 Selections = selections
             };
 
-            return View(viewModel);
+            return View("CascadingSlot", viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTreasureIslandReport(
+        public async Task<IActionResult> GetCascadingSlotReport(
             string partnerId,
             DateTime fromDate,
             DateTime toDate,
@@ -535,32 +536,34 @@ namespace GamesAdmin.Site.Features.Report
             string nickname,
             string username,
             bool convertToUSD,
-            bool excludeUUS)
+            bool excludeUUS,
+            string game)
         {
-            var request = new GetSlotGameReportRequest(
+            var request = new GetCascadingSlotReportRequest(
                 roundId,
                 nickname,
                 excludeUUS,
-                Game.TreasureIslandValue,
+                game,
                 partnerId,
                 fromDate,
                 toDate,
                 username,
                 convertToUSD);
 
-            return PartialView("_TreasureIslandRecords", await mediator.Send(request));
+            return PartialView("_CascadingSlotRecords", await mediator.Send(request));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTreasureIslandBetHistory(
+        public async Task<IActionResult> GetCascadingSlotBetHistory(
             long roundId,
             string nickname,
             bool excludeUUS,
-            bool convertToUSD)
+            bool convertToUSD,
+            string game)
         {
-            var request = new GetSlotGameReportRequest(roundId, nickname, excludeUUS, Game.TreasureIslandValue, convertToUSD);
+            var request = new GetCascadingSlotReportRequest(roundId, nickname, excludeUUS, game, convertToUSD);
 
-            return PartialView("_TreasureIslandBetHistory", (await mediator.Send(request)).Records.FirstOrDefault());
+            return PartialView("_CascadingSlotBetHistory", (await mediator.Send(request)).Records.FirstOrDefault());
         }
 
         private async Task<ReportViewModel> GetReportViewModel()

@@ -219,7 +219,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 case GameType.Slots:
                 case GameType.CascadingSlots:
-                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig));
+                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type));
                 default:
                     return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting));
             }

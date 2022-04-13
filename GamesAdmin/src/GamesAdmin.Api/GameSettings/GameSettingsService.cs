@@ -44,7 +44,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
-        Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig);
+        Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig, GameType type);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
 
@@ -377,7 +377,12 @@ namespace GamesAdmin.Api.Games
             return diffs.Any();
         }
 
-        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig)
+        public async Task<bool> UpdateSlotConfig(
+            string name,
+            bool botEnabled,
+            string displayName,
+            SlotsConfig slotsConfig,
+            GameType type)
         {
             try
             {
@@ -390,6 +395,11 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
                     .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
                     .Set(field => field.Botenabled, botEnabled);
+
+                if (type == GameType.CascadingSlots)
+                {
+                    update = update.Set(field => field.SlotsConfig.Multiplier, slotsConfig.Multiplier);
+                }
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

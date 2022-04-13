@@ -30,7 +30,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BetHistoryRequest, BetHistory>,
         IRequestHandler<HoldemPokerReportRequest, IEnumerable<HoldemPokerBetRecord>>,
         IRequestHandler<HoldemPokerBetHistoryRequest, HoldemPokerBetHistory>,
-        IRequestHandler<HiLoReportRequest, IEnumerable<HiLoBetRecord>>
+        IRequestHandler<HiLoReportRequest, IEnumerable<HiLoBetRecord>>,
+        IRequestHandler<CascadingSlotReportRequest, IEnumerable<CascadingSlotBetRecord>>
     {
         private readonly IReportService reportService;
         private readonly IReportServiceFactory reportServiceFactory;
@@ -108,5 +109,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<IEnumerable<HiLoBetRecord>> Handle(HiLoReportRequest request, CancellationToken cancellationToken)
             => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
+
+        public Task<IEnumerable<CascadingSlotBetRecord>> Handle(CascadingSlotReportRequest request, CancellationToken cancellationToken)
+            => reportService.GetCascadingSlotReportAsync(request.Filter);
     }
 }

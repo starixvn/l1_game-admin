@@ -41,7 +41,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public double[] BetLevels { get; set; }
         public double[] CoinValues { get; set; }
-        public int Multiplier { get; set; }
         public double MaxWinPerRound { get; set; }
     }
 }

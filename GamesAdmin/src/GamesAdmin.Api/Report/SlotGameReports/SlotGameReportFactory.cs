@@ -16,7 +16,6 @@ namespace GamesAdmin.Api.Report
             { Game.FourGuardiansValue, typeof(FourGuardiansReport) },
             { Game.HeroesSlotValue, typeof(HeroesSlotReport) },
             { Game.NightClubValue, typeof(NightClubReport) },
-            { Game.TreasureIslandValue, typeof(TreasureIslandReport) },
         };
 
         private readonly IServiceProvider serviceProvider;

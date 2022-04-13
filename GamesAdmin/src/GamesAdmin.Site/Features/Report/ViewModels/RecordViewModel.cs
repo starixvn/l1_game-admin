@@ -1,6 +1,6 @@
-﻿using GamesAdmin.Site.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -353,5 +353,62 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Paid { get; set; }
 
         public int ExchangeRateId { get; set; }
+    }
+
+    public class CascadingSlotRecordViewModel : BetRecordViewModel
+    {
+        public long RoundId { get; set; }
+
+        public int ExchangeRateId { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public bool Paid { get; set; }
+
+        public string Game { get; set; }
+
+        public double BetLevel { get; set; }
+
+        public double CoinValue { get; set; }
+
+        public byte[] BaseSpin { get; set; }
+
+        public List<byte[]> Tumblings { get; set; }
+
+        public List<Dictionary<byte, int>> WinningSymbols { get; set; }
+
+        public List<Dictionary<byte, double>> WinningAmounts { get; set; }
+
+        public List<double> TumblingWins { get; set; }
+
+        public List<int> Multipliers { get; set; }
+
+        public double TotalWin => TumblingWins.Sum();
+
+        public void ConvertToUSD(bool isConvert)
+        {
+            if (!isConvert)
+            {
+                return;
+            }
+
+            TotalAmount *= Rate;
+            BetWin *= Rate;
+            TumblingWins = TumblingWins.Select(t => t * (double)Rate).ToList();
+            WinningAmounts = WinningAmounts.Select(w => ConvertWinningAmounts(w, Rate)).ToList();
+        }
+
+        private Dictionary<byte, double> ConvertWinningAmounts(
+            Dictionary<byte, double> winningAmounts,
+            decimal rate)
+        {
+            var result = new Dictionary<byte, double>();
+            foreach (var w in winningAmounts)
+            {
+                result[w.Key] = w.Value * (double)rate;
+            }
+
+            return result;
+        }
     }
 }

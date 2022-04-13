@@ -79,7 +79,7 @@
                                         switch (Model.GameList[index].GameConfig.Info.Type)
                                         {
                                             case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
-                                                @(": " + string.Join(" - ",new double[] { setting.Multiplier*setting.CoinValues[0]*setting.BetLevels[0], setting.Multiplier * setting.CoinValues[setting.CoinValues.Length-1] * setting.BetLevels[setting.BetLevels.Length - 1] }))
+                                                @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.SlotsConfig.Multiplier*setting.CoinValues[0]*setting.BetLevels[0], Model.GameList[index].GameConfig.SlotsConfig.Multiplier * setting.CoinValues[setting.CoinValues.Length-1] * setting.BetLevels[setting.BetLevels.Length - 1] }))
                                                 break;
                                             case GamesAdmin.Core.Enumeration.GameType.Slots:
                                                 @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
@@ -143,7 +143,7 @@
                                             switch (Model.GameList[index].GameConfig.Info.Type)
                                             {
                                                 case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
-                                                    @(": " + string.Join(" - ",new double[] { setting.Multiplier*setting.CoinValues[0]*setting.BetLevels[0], setting.Multiplier * setting.CoinValues[setting.CoinValues.Length-1] * setting.BetLevels[setting.BetLevels.Length - 1] }))
+                                                    @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.SlotsConfig.Multiplier*setting.CoinValues[0]*setting.BetLevels[0], Model.GameList[index].GameConfig.SlotsConfig.Multiplier * setting.CoinValues[setting.CoinValues.Length-1] * setting.BetLevels[setting.BetLevels.Length - 1] }))
                                                     break;
                                                 case GamesAdmin.Core.Enumeration.GameType.Slots:
                                                     @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))

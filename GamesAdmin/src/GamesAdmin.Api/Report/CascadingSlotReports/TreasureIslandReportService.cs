@@ -8,22 +8,22 @@ using GamesAdmin.Database;
 
 namespace GamesAdmin.Api.Report
 {
-    public class TreasureIslandReport : ISlotGameReport
+    public class TreasureIslandReportService : ICascadingSlotReportService
     {
         private readonly ITreasureIslandReportRepository repository;
         private readonly IMapper mapper;
 
-        public TreasureIslandReport(ITreasureIslandReportRepository repository, IMapper mapper)
+        public TreasureIslandReportService(ITreasureIslandReportRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<SlotGameBetRecord>> GetReportAsync(SlotGameBetReportFilter filter)
+        public async Task<IEnumerable<CascadingSlotBetRecord>> GetReportAsync(CascadingSlotReportFilter filter)
         {
             var result = await repository.GetAsync(filter);
 
-            return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
+            return result.Select(x => mapper.Map<CascadingSlotBetRecord>(x));
         }
     }
 }

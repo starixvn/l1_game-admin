@@ -14,7 +14,7 @@ namespace GamesAdmin.Database
 {
     public interface ITreasureIslandReportRepository
     {
-        Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(SlotGameBetReportFilter filter);
+        Task<IEnumerable<CascadingSlotBetReportEntity>> GetAsync(CascadingSlotReportFilter filter);
     }
 
     public class TreasureIslandReportRepository : ITreasureIslandReportRepository
@@ -26,10 +26,11 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(SlotGameBetReportFilter filter)
+        public async Task<IEnumerable<CascadingSlotBetReportEntity>> GetAsync(CascadingSlotReportFilter filter)
         {
+
             var project = GetAggregateBuilder(filter)
-                .Project(x => new SlotGameBetReportEntity
+                .Project(x => new CascadingSlotBetReportEntity
                 {
                     Time = x.Time,
                     Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -37,12 +38,7 @@ namespace GamesAdmin.Database
                     Bet = x.Bet,
                     BetWin = x.BetWin,
                     TotalAmount = x.TotalAmount,
-                    BonusChests = x.BonusChests,
-                    FreeSpin = x.FreeSpin,
                     Number = x.Number,
-                    Paylines = x.Paylines,
-                    SettlementResult = x.SettlementResult,
-                    Result = x.Result,
                     UserId = x.Uid,
                     Paid = x.Paid,
                     Currency = x.Currency,
@@ -54,7 +50,7 @@ namespace GamesAdmin.Database
             return await project.ToListAsync();
         }
 
-        private IAggregateFluent<SlotGameBetWithUnWindAccountsEntity> GetAggregateBuilder(SlotGameBetReportFilter filter)
+        private IAggregateFluent<SlotGameBetWithUnWindAccountsEntity> GetAggregateBuilder(CascadingSlotReportFilter filter)
         {
             var betCollection = database.GetCollection<TreasureIslandRoundEntity>(Document.GetCollectionName(typeof(TreasureIslandRoundEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
@@ -86,7 +82,7 @@ namespace GamesAdmin.Database
             return aggregateBuilder;
         }
 
-        private Expression<Func<TreasureIslandRoundEntity, bool>> GetFilterExpression(SlotGameBetReportFilter filter)
+        private Expression<Func<TreasureIslandRoundEntity, bool>> GetFilterExpression(CascadingSlotReportFilter filter)
         {
             Expression<Func<TreasureIslandRoundEntity, bool>> expression;
             if (filter.RoundId > 0)

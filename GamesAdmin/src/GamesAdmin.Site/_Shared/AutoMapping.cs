@@ -118,6 +118,8 @@ namespace GamesAdmin.Site._Shared
             CreateMap<HiLoBetRecord, HiLoRecordViewModel>();
             CreateMap<HiLoBetHistoryRecord, HiLoBetHistoryRecordViewModel>();
             CreateMap<HiLoRoundResult, HiLoRoundResultViewModel>();
+
+            CreateMap<CascadingSlotBetRecord, CascadingSlotRecordViewModel>();
         }
     }
 }

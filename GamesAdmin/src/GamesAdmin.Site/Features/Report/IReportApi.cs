@@ -75,5 +75,8 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/bethistory")]
         Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
+
+        [Get("/report/cascading_slot")]
+        Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReport(CascadingSlotReportFilter filter);
     }
 }

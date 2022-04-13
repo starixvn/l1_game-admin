@@ -255,7 +255,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(
                         (byte)viewModel.SlotViewModel.Mode,
                         viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue(),
-                        new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus))));
+                        new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus),
+                        viewModel.SlotViewModel.Multiplier)));
 
                 return Json(true);
             }

@@ -15,11 +15,8 @@ namespace GamesAdmin.Api.Report
         {
             { Game.FourGuardiansValue, typeof(FourGuardiansReport) },
             { Game.HeroesSlotValue, typeof(HeroesSlotReport) },
-<<<<<<< HEAD
             { Game.NightClubValue, typeof(NightClubReport) },
-=======
-            { Game.TreasureIslandValue, typeof(TreasureIslandReport) },
->>>>>>> fix: run local
+            { Game.TreasureIslandValue, typeof(TreasureIslandReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

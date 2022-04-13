@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
@@ -40,7 +41,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>,
         IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
         IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
-        IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>
+        IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>,
+        IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -602,5 +604,62 @@ namespace GamesAdmin.Site.Features.Report
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
+
+        public async Task<CascadingSlotReportResultViewModel> Handle(GetCascadingSlotReportRequest request, CancellationToken cancellationToken)
+        {
+            var filter = new CascadingSlotReportFilter
+            {
+                RoundId = request.RoundId,
+                FromDate = request.FromDate,
+                ToDate = request.ToDate,
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                PartnerId = request.PartnerId,
+                Username = request.Username,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+            };
+
+            var result = await reportService.GetCascadingSlotReport(filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            return new CascadingSlotReportResultViewModel
+            {
+                ConvertToUSD = request.ConvertToUSD,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<CascadingSlotRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Game = request.Game.Value;
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+                    betViewModel.ExchangeRateId = x.ExchangRateId;
+                    betViewModel.ConvertToUSD(request.ConvertToUSD);
+
+                    betViewModel.BetLevel = 10;
+                    betViewModel.CoinValue = 100;
+                    betViewModel.CoinValue = 100;
+                    betViewModel.BaseSpin = new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+                    betViewModel.Tumblings = new List<byte[]>
+                    {
+                        new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+                    };
+                    betViewModel.WinningSymbols = new List<Dictionary<byte, int>>
+                    {
+                        new Dictionary<byte, int> { [2] = 8, [5] = 8 },
+                        null
+                    };
+                    betViewModel.WinningAmounts = new List<Dictionary<byte, double>>
+                    {
+                        new Dictionary<byte, double> { [2] = 0.2, [5] = 0.8 },
+                        null
+                    };
+
+                    betViewModel.Multipliers = new List<int> { 1, 3 };
+                    betViewModel.TumblingWins = new List<double> { 0.8, 1.6 };
+
+                    return betViewModel;
+                })
+            };
+        }
     }
 }

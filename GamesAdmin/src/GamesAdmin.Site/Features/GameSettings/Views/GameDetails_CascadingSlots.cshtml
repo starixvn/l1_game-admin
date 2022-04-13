@@ -49,6 +49,16 @@
             </fieldset>
             <br />
 
+            <fieldset>
+                <legend>Multiplier for bet amount</legend>
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <input type="number" asp-for="@Model.SlotViewModel.Multiplier" class="form-control" />
+                        <span asp-validation-for="@Model.SlotViewModel.Multiplier" class="text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+            <br />
             <div class="form-group">
                 <label asp-for="@Model.SlotViewModel.BigWinRatio" class="control-label"></label>
                 <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
