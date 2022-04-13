@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Models;
+﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using Refit;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -62,5 +62,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Put("/game_settings/update_beta_version")]
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
+
+        [Post("/game_server/get_admin_monitoring_settings")]
+        Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
     }
 }

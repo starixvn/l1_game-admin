@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.Games;
+﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
@@ -7,12 +8,19 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using Microsoft.IdentityModel.Tokens;
 using Refit;
 using Sentry;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -30,8 +38,13 @@ namespace GamesAdmin.Api.GameServers
 
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
-        Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request);
-        Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request);
+        Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
+
+        Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request);
+
+        Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+
+        Task<bool> VerifyAdminMonitoringToken(string token);
     }
 
     public class GameServerService : IGameServerService
@@ -44,6 +57,8 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGameSettingsService gameSettingService;
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
         private readonly IHiLoApi hiloApi;
+        private readonly IGenericRepository<AdminUserEntity> userRepository;
+        private readonly IAppSettings appSettings;
 
         public GameServerService(
             IGameServerApi serverApi,
@@ -53,7 +68,9 @@ namespace GamesAdmin.Api.GameServers
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
             IHoldemPokerApiFactory holdemPokerApiFactory,
-            IHiLoApi hiloApi)
+            IHiLoApi hiloApi,
+            IAppSettings appSettings,
+            IGenericRepository<AdminUserEntity> userRepository)
         {
             this.serverApi = serverApi;
             this.sentryClient = sentryClient;
@@ -63,6 +80,8 @@ namespace GamesAdmin.Api.GameServers
             this.gameSettingService = gameSettingService;
             this.holdemPokerApiFactory = holdemPokerApiFactory;
             this.hiloApi = hiloApi;
+            this.appSettings = appSettings;
+            this.userRepository = userRepository;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -198,7 +217,7 @@ namespace GamesAdmin.Api.GameServers
             return null;
         }
 
-        public async Task<HoldemPokerResultControl> SetCasinoHoldemPokerResult(SetHoldemPokerResultRequest request)
+        public async Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request)
         {
             try
             {
@@ -220,7 +239,7 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task<IEnumerable<Card>> SetHiLoResult(SetHiLoResultRequest request)
+        public async Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request)
         {
             try
             {
@@ -230,8 +249,53 @@ namespace GamesAdmin.Api.GameServers
             {
                 HandleException(ex);
             }
+            return Enumerable.Empty<HiloCard>();
+        }
 
-            return Enumerable.Empty<Card>();
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitoringSettings.JwtSecretKey);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("username", username.ToString()) }),
+                Expires = DateTime.UtcNow.AddMinutes(appSettings.AdminMonitoringSettings.ExpiredTokenByMinutes),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return Task.FromResult(new AdminMonitoringModel(tokenHandler.WriteToken(token), appSettings.AdminMonitoringSettings.Url));
+        }
+
+        public async Task<bool> VerifyAdminMonitoringToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(appSettings.AdminMonitoringSettings.JwtSecretKey);
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var username = jwtToken.Claims.First(x => x.Type == "username").Value.ToString();
+
+                var userEntity = await userRepository.FindOneAsync(entity => entity.Username.Equals(username));
+
+                return userEntity != null;
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return false;
         }
     }
 }

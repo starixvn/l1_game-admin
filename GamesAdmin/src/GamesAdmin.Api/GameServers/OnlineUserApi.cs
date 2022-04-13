@@ -3,6 +3,7 @@ using GamesAdmin.Core.Models;
 using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -228,6 +229,6 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
 
         [Post("/api/set-result")]
-        Task<IEnumerable<Card>> SetResult([Body] SetHiLoResultRequest request);
+        Task<IEnumerable<HiloCard>> SetResult([Body] SetHiLoResultRequest request);
     }
 }

@@ -1,11 +1,12 @@
-﻿using System;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 
 namespace GamesAdmin.Site._Shared
 {
     public enum CachedKeys
     {
         OnlineUsers,
+        JwtAdminUserToken
     }
 
     public interface ICacheManager

@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -44,8 +45,16 @@ namespace GamesAdmin.Api.GameServers
         public Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request)
            => mediator.Send(request);
 
+        [HttpPost("get_admin_monitoring_settings")]
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+         => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
+
         [HttpPost("hilo/set_result")]
-        public Task<IEnumerable<Card>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
+        public Task<IEnumerable<HiloCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
         => mediator.Send(request);
+
+        [HttpPost("verify_admin_monitoring_token")]
+        public Task<bool> VerifyAdminMonitoringToken(string token)
+          => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Core.Models.Partners;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
@@ -73,17 +73,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
     public class GameServerToken
     {
-        public GameServerToken(string token, string env, string redirectUrl)
+        public GameServerToken(string token, string gameName)
         {
             Token = token;
-            Env = env;
-            RedirectUrl = redirectUrl;
+            GameName = gameName;
         }
 
         public string Token { get; }
 
-        public string Env { get; }
-
-        public string RedirectUrl { get; }
+        public string GameName { get; }
     }
 }

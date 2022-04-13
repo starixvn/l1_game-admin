@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Models;
-using MediatR;
+﻿using MediatR;
+using System.Collections.Generic;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {
-    public class SetHiLoResultRequest : IRequest<IEnumerable<Card>>
+    public class SetHiLoResultRequest : IRequest<IEnumerable<HiloCard>>
     {
         public SetHiLoResultRequest(string name, IEnumerable<string> result)
         {

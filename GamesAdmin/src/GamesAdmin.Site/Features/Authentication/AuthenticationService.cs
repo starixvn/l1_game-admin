@@ -7,7 +7,6 @@ using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Authentication

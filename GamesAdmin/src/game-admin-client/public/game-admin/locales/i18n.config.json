@@ -1,7 +1,0 @@
-{
-  "ns": ["common"],
-  "fallbackNS": "common",
-  "defaultNS": "common",
-  "fallbackLng": "en",
-  "load": "languageOnly"
-}
