@@ -288,14 +288,3 @@
   width: 3rem;
   border-radius: 50%;
   border: 1px solid #16aaff; }
-
-.cascading-form .col-nickname, .cascading-form .col-submit {
-  margin-top: -20rem; }
-
-.cascading-form .field-row {
-  margin-bottom: 1rem; }
-  .cascading-form .field-row label {
-    width: 8rem; }
-  .cascading-form .field-row input {
-    display: inline-block;
-    width: 20rem; }
