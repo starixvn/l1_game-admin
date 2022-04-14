@@ -13,6 +13,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Bet { get; set; }
         public decimal Back { get; set; }
         public bool Select { get; set; }
+
+        public decimal BaseBetAmount => ConvertToBase(Bet);
+
+        public decimal BaseBack => ConvertToBase(Back);
     }
 
     public class OddEvenRecordViewModel : BetRecordViewModel
@@ -22,6 +26,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Back { get; set; }
 
         public bool Select { get; set; }
+
+        public decimal BaseBetAmount => ConvertToBase(Bet);
+
+        public decimal BaseBack => ConvertToBase(Back);
     }
 
     public class SeDieRecordViewModel : BetRecordViewModel
@@ -313,7 +321,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBet { get; set; }
     }
 
-    public class CasinoHoldemPokerRecordViewModel : BetRecordViewModel
+    public class HoldemPokerRecordViewModel : BetRecordViewModel
     {
         public long RoundId { get; set; }
 
@@ -328,6 +336,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string BetHistoryUrl { get; set; }
 
         public int ExchangeRateId { get; set; }
+
+        public bool IsFold { get; set; }
+
+        public bool? IsSwappedOrHold { get; set; }
+
+        public decimal TotalWin { get; set; }
     }
 
     public class HiLoRecordViewModel : BetRecordViewModel

@@ -472,25 +472,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         [Route("Report/CasinoHoldem")]
         public async Task<IActionResult> CasinoHoldemPoker()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-
-            return View(new CasinoHoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCasinoHoldemPokerReport(CasinoHoldemPokerBetReportFilter filter)
-        {
-            return PartialView("_CasinoHoldemPokerRecords", await mediator.Send(new GetCasinoHoldemPokerReportRequest(filter)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> CasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
-        {
-            var viewmodel = await mediator.Send(new GetCasinoHoldemPokerBetHistoryRequest(filter));
-
-            return PartialView("_CasinoHoldemPokerBetHistory", viewmodel);
-        }
+           => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
 
         [HttpGet]
         [Route("Report/Hi-Lo")]
@@ -503,9 +485,20 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetHiLoReport(HiLoBetReportFilter model)
-        {
-            return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
-        }
+            => PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
+
+        [HttpGet]
+        [Route("Report/TexasHoldem")]
+        public async Task<IActionResult> TexasHoldemPoker()
+            => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.TexasHoldemPoker)));
+
+        [HttpGet]
+        public async Task<IActionResult> GetHoldemPokerReport(HoldemPokerBetReportFilter filter)
+            => PartialView("HoldemPoker/_Report", await mediator.Send(new GetHoldemPokerReportRequest(filter)));
+
+        [HttpGet]
+        public async Task<IActionResult> HoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
+            => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
 
         private async Task<ReportViewModel> GetReportViewModel()
         {

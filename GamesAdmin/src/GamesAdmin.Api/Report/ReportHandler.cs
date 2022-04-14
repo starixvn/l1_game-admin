@@ -1,14 +1,14 @@
-﻿using GamesAdmin.Api.Report.Requests;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -28,19 +28,25 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<BitcoinMasterBetHistoryRequest, BitcoinMasterBetHistory>,
         IRequestHandler<BetReportRequest, BetReportBase>,
         IRequestHandler<BetHistoryRequest, BetHistory>,
-        IRequestHandler<CasinoHoldemPokerReportRequest, IEnumerable<CasinoHoldemPokerBetRecord>>,
-        IRequestHandler<CasinoHoldemPokerBetHistoryRequest, CasinoHoldemPokerBetHistory>,
+        IRequestHandler<HoldemPokerReportRequest, IEnumerable<HoldemPokerBetRecord>>,
+        IRequestHandler<HoldemPokerBetHistoryRequest, HoldemPokerBetHistory>,
         IRequestHandler<HiLoReportRequest, IEnumerable<HiLoBetRecord>>
     {
         private readonly IReportService reportService;
         private readonly IReportServiceFactory reportServiceFactory;
         private readonly IServiceProvider serviceProvider;
+        private readonly IHoldemPokerReportService holdemPokerReportService;
 
-        public ReportHandler(IReportService reportService, IReportServiceFactory reportServiceFactory, IServiceProvider serviceProvider)
+        public ReportHandler(
+            IReportService reportService,
+            IReportServiceFactory reportServiceFactory,
+            IServiceProvider serviceProvider,
+            IHoldemPokerReportService holdemPokerReportService)
         {
             this.reportService = reportService;
             this.reportServiceFactory = reportServiceFactory;
             this.serviceProvider = serviceProvider;
+            this.holdemPokerReportService = holdemPokerReportService;
         }
 
         public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
@@ -58,7 +64,6 @@ namespace GamesAdmin.Api.Report
         public async Task<OddEvenBetReport> Handle(OddEvenReportRequest request, CancellationToken cancellationToken)
             => await reportService.GetOddEvenReportAsync(request.RoundId, request.Nickname, request.ExcludeBot, request.PartnerId, request.Username);
 
-     
         public Task<IEnumerable<SpinResult>> Handle(LuckyWheelReportRequest request, CancellationToken cancellationToken)
         => reportService.GetLuckyWheelReportAsync(request.Nickname);
 
@@ -95,25 +100,13 @@ namespace GamesAdmin.Api.Report
             return service.Get(request.Filter);
         }
 
-        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> Handle(CasinoHoldemPokerReportRequest request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                return reportService.GetCasinoHoldemPokerReportAsync(request.Filter);
-            }
-            catch (Exception ex)
-            {
-                var a = ex;
-                return null;
-            }
+        public async Task<IEnumerable<HoldemPokerBetRecord>> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)
+            => await holdemPokerReportService.GetHoldemPokerReportAsync(request.Filter);
 
-        }
-
-        public async Task<CasinoHoldemPokerBetHistory> Handle(CasinoHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
-              => await reportService.GetCasinoHoldemPokerBetHistoryAsync(request.Filter);
-
+        public async Task<HoldemPokerBetHistory> Handle(HoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
+            => await holdemPokerReportService.GetHoldemPokerBetHistoryAsync(request.Filter);
 
         public Task<IEnumerable<HiLoBetRecord>> Handle(HiLoReportRequest request, CancellationToken cancellationToken)
-        => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
+            => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
     }
 }

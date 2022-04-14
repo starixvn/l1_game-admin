@@ -49,6 +49,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.BitcoinMasterValue, typeof(IBitcoinMasterOnlineUserApi) },
             { Game.CasinoHoldemPokerValue, typeof(ICasinoHoldemPokerOnlineUserApi) },
             { Game.HiLoValue, typeof(IHiLoApi) },
+            { Game.TexasHoldemPokerValue, typeof(ITexasHoldemPokerOnlineUserApi) },
 
         };
 

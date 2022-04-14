@@ -9,7 +9,7 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         string ApiHost { get; }
 
-        IdentityServerAuth IdentityServerAuth { get; }     
+        IdentityServerAuth IdentityServerAuth { get; }
 
         TimeZoneInfo DefaultTimeZone { get; }
 
@@ -18,9 +18,9 @@ namespace GamesAdmin.Site._Shared.Configurations
         string Env { get; }
 
         int MaxDecreased { get; }
-	
-	    ResultPageConfiguration ResultPageConfiguration { get; }
-	
+
+        ResultPageConfiguration ResultPageConfiguration { get; }
+
         GameServerSettings GameServers { get; }
     }
 

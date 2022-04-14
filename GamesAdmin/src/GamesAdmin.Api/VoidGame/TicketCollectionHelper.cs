@@ -45,6 +45,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.BitcoinMaster, new GameTicketCollection( "bitcoinmaster_bets", "bitcoinmaster_betlogs") },
             { GameId.CasinoHoldemPoker, new GameTicketCollection( string.Empty, "casinoholdempoker_cuocs") },
             { GameId.HiLo, new GameTicketCollection( string.Empty, "hilo_betlogs") },
+            { GameId.TexasHoldemPoker, new GameTicketCollection( string.Empty, "texasholdempoker_cuocs") },
         };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)

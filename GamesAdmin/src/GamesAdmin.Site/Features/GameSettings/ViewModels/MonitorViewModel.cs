@@ -1,17 +1,24 @@
-﻿using GamesAdmin.Core.Enumeration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class MonitorViewModel
     {
-        public MonitorViewModel(IList<MonitorItemViewModel> gameList)
+        public MonitorViewModel(IList<MonitorItemViewModel> gameList, AdminMonitoringModel adminMonitoringModel)
         {
             GameList = gameList;
+            JwtAdminUserToken = adminMonitoringModel.Token;
+            AdminMonitoringUrl = adminMonitoringModel.Url;
         }
 
         public IList<MonitorItemViewModel> GameList { get; }
+
+        public string AdminMonitoringUrl { get; }
+
+        public string JwtAdminUserToken { get; }
     }
 
     public class MonitorItemViewModel
@@ -27,6 +34,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         };
 
         public string Name { get; set; }
+
+        public string Id { get; set; }
 
         public string DisplayName => Enumeration.Contains<Game>(Name)
                                         ? Enumeration.FromValue<Game>(Name).DisplayName

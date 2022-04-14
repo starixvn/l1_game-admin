@@ -28,6 +28,7 @@
         public GameServerConfigs KenoPower1 { get; set; }
         public GameServerConfigs KenoPower2 { get; set; }
         public GameServerConfigs CasinoHoldemPoker { get; set; }
+        public GameServerConfigs TexasHoldemPoker { get; set; }
     }
 
     public class GameServerConfigs

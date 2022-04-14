@@ -1,5 +1,7 @@
 ﻿using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report;
+using GamesAdmin.Database.Report.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api._Shared.Middlewares
@@ -36,8 +38,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IKenoMatchReportRepository, KenoMatchReportRepository>();
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
-            services.AddScoped<ICasinoHoldemPokerReportRepository, CasinoHoldemPokerReportRepository>();
             services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
+
+            services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
+            services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
         }
     }
 }

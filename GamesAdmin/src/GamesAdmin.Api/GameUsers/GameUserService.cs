@@ -99,7 +99,10 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<string> GetCharacterNameAsync(int memberId)
         {
-            var account = (await accountRepository.FilterByAsync(user => user.Local.MemberId == memberId)).LastOrDefault();
+            var account = await accountRepository.Collection()
+                .Find(user => user.Local.MemberId == memberId)
+                .SortByDescending(x => x.Id)
+                .FirstOrDefaultAsync();
 
             if (account != null)
             {

@@ -63,16 +63,17 @@ namespace GamesAdmin.Site.Features.Report
         [Get("/report")]
         Task<T> Get<T>(BetReportFilter filter) where T : BetReportBase;
 
-        [Get("/report/bethistory")]
-        Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
+        [Get("/report/holdempoker")]
+        Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
 
-        [Get("/report/casinoholdempoker")]
-        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
 
-        [Get("/report/bet_history/casinoholdempoker")]
-        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
+        [Get("/report/bet_history/holdempoker")]
+        Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
 
         [Get("/report/hilo")]
         Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
+
+        [Get("/report/bethistory")]
+        Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
     }
 }

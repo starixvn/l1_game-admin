@@ -17,5 +17,7 @@ namespace GamesAdmin.Database.Report.Entities
         public string PartnerId { get; set; }
 
         public decimal Rate { get; set; }
+
+        public string Partner { get; set; }
     }
 }

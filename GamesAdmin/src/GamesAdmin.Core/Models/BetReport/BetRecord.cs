@@ -314,7 +314,7 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
 
-    public class CasinoHoldemPokerBetRecord : BetRecord
+    public class HoldemPokerBetRecord : BetRecord
     {
         public long RoundId { get; set; }
 
@@ -328,9 +328,13 @@ namespace GamesAdmin.Core.Models
 
         public bool IsFold { get; set; }
 
-        public bool IsQualified { get; set; }
+        public bool? IsQualified { get; set; }
+
+        public bool? IsSwappedOrHold { get; set; }
 
         public int ExchangeRateId { get; set; }
+
+        public decimal TotalWin { get; set; }
     }
 
     public class HiLoBetRecord : BetRecord

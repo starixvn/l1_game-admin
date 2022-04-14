@@ -22,7 +22,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class ReportViewModel
     {
-
         [Required(ErrorMessage = "Please input RoundId.")]
         public virtual long? RoundId { get; set; }
 
@@ -40,6 +39,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         [DisplayName("Partner")]
         public string PartnerId { get; set; }
+
+        public string Partner { get; set; }
 
         public string Username { get; set; }
 

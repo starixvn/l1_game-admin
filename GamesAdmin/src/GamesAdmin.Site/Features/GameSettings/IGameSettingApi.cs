@@ -62,5 +62,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Put("/game_settings/update_beta_version")]
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
+
+        [Post("/game_server/get_admin_monitoring_settings")]
+        Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
     }
 }

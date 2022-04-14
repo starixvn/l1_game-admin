@@ -26,6 +26,9 @@ namespace GamesAdmin.Site.Features.Users
 
         [Post("/users/change_password")]
         Task<bool> ChangePassword(string username, string password, string newPassword);
+
+        [Post("/users/createJwtToken")]
+        Task<string> CreateJwtToken(string username, string password);
     }
 
     public interface IUserService

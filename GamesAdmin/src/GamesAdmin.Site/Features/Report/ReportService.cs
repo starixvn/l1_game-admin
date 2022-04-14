@@ -1,12 +1,12 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report.Requests;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -44,11 +44,11 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
 
-        Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter);
-
-        Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter);
-
         Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
+
+        Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
+
+        Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
     }
 
     public class ReportService : IReportService
@@ -117,13 +117,14 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
 
-        public Task<IEnumerable<CasinoHoldemPokerBetRecord>> GetCasinoHoldemPokerBetReport(CasinoHoldemPokerBetReportFilter filter)
-            => reportApi.GetCasinoHoldemPokerBetReport(filter);
-
-        public async Task<CasinoHoldemPokerBetHistory> GetCasinoHoldemPokerBetHistory(CasinoHoldemPokerBetHistoryFilter filter)
-            => await reportApi.GetCasinoHoldemPokerBetHistory(filter);
 
         public Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter)
         => reportApi.GetHiLoReport(filter);
+
+        public Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter)
+            => reportApi.GetHoldemPokerBetReport(filter);
+
+        public async Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
+            => await reportApi.GetHoldemPokerBetHistory(filter);
     }
 }

@@ -94,10 +94,6 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<BlackjackBetRecord> Records { get; set; }
     }
 
-    public class CasinoHoldemPokerBetReport : BetReport<CasinoHoldemPokerRoundResult, CasinoHoldemPokerBetRecord>
-    {
-    }
-
     public class HiLoBetReport : BetReportBase
     {
         public IEnumerable<HiLoBetRecord> Records { get; set; }

@@ -87,6 +87,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.HiLoValue:
                     return Enumeration.GetAll<HiLoBetOdds>();
 
+                case Game.TexasHoldemPokerValue:
+                    return Enumeration.GetAll<TexasHoldemPokerOdds>();
+
                 case Game.CasinoHoldemPokerValue:
                     return Enumeration.GetAll<CasinoHoldemPokerBetOdds>();
 

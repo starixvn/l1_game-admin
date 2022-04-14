@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.ApiLogs
 {
@@ -46,5 +47,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string AccessKey { get; }
 
         public IApiLogArchive Archive { get; }
+
+        public Dictionary<string, string> Metadata { get; set; }
     }
 }

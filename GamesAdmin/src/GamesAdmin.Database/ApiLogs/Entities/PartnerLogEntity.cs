@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Database.ApiLogs.Entities
 {
@@ -13,6 +14,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public byte System { get; set; }
 
         public string AccessKey { get; set; }
+
+        public Dictionary<string, string> Metadata { get; set; }
     }
 
     public class PartnerCallEntity : ApiLogRequestEntity

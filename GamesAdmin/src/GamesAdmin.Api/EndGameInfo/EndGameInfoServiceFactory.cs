@@ -53,6 +53,7 @@ namespace GamesAdmin.Api.EndGameInfo
             { GameId.KenoPower2, typeof(KenoPowerEndGameInfoService<KenoPower2RoundEntity, KenoPower2OneEntity>) },
             { GameId.CasinoHoldemPoker, typeof(CasinoHoldemPokerEndGameInfoService) },
             { GameId.HiLo, typeof(HiLoEndGameInfoService) },
+            { GameId.TexasHoldemPoker, typeof(TexasHoldemPokerEndGameInfoService) },
         };
 
         private readonly IServiceProvider serviceProvider;
