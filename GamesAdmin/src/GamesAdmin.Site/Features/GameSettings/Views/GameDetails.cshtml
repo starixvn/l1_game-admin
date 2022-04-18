@@ -198,6 +198,7 @@
                         <div class="form-group">
                             <label class="control-label">Stake level @Model.JackpotViewModel.StakeLevels[i].Stake</label>
                             <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
+                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].BotRatio" class="form-control" />
                             <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
                         </div>
                     }
