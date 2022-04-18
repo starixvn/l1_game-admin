@@ -57,8 +57,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
 
-            services.AddScoped<HiLoEndGameInfoService>();
-            services.AddScoped<TexasHoldemPokerEndGameInfoService>();
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));

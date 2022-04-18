@@ -44,7 +44,7 @@ namespace GamesAdmin.Database
                     Actions = x.Actions,
                     SoftPoints = x.SoftPoints,
                     Currency = x.Currency,
-                    PartnerId = x.PartnerId,
+                    PartnerId = x.OperatorId,
                     Rate = x.Rate
                 });
 
@@ -87,7 +87,7 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))
             {
-                expression = expression.And(x => x.PartnerId == filter.PartnerId);
+                expression = expression.And(x => x.OperatorId == filter.PartnerId);
             }
 
             if (!string.IsNullOrWhiteSpace(filter.Nickname))

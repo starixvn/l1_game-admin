@@ -47,7 +47,7 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrEmpty(partnerId))
             {
-                Expression<Func<TBetEntity, bool>> partnerExpression = x => x.PartnerId == partnerId;
+                Expression<Func<TBetEntity, bool>> partnerExpression = x => x.OperatorId == partnerId;
 
                 expression = expression.And(partnerExpression);
             }

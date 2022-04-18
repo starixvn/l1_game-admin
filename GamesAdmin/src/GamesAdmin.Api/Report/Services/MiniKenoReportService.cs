@@ -55,7 +55,7 @@ namespace GamesAdmin.Api.Report
         public async Task<BetHistory> Get(BetHistoryFilter filter)
         {
             var bets = await betLogRepository.FilterByAsync(
-                bet => bet.Round == filter.RoundId && bet.Uid == filter.UserId && bet.PartnerId == filter.PartnerId);
+                bet => bet.Round == filter.RoundId && bet.Uid == filter.UserId && bet.OperatorId == filter.PartnerId);
 
             var betLogs = bets
                 .Select(bet => new KenoBetHistoryRecord
@@ -66,7 +66,7 @@ namespace GamesAdmin.Api.Report
                     Amount = bet.Amount,
                     Time = bet.Time,
                     Currency = bet.Currency,
-                    PartnerId = bet.PartnerId,
+                    PartnerId = bet.OperatorId,
                     Rate = bet.Rate
                 });
 
