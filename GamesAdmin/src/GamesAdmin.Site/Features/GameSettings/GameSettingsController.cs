@@ -249,7 +249,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             try
             {
                 await mediator.Send(new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(

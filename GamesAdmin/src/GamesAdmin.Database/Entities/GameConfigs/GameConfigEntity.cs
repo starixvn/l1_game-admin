@@ -54,5 +54,7 @@ namespace GamesAdmin.Database.Entities
         public bool IsBeta { get; set; }
 
         public int GameId { get; set; }
+
+        public byte RandomMode { get; set; }
     }
 }

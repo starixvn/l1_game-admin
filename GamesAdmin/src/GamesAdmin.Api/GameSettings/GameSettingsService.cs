@@ -363,7 +363,8 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.Botenabled, botSetting.BotEnabled)
                     .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
                     .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
-                    .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio);
+                    .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
+                    .Set(field => field.RandomMode, gameInfo.RandomMode);
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
