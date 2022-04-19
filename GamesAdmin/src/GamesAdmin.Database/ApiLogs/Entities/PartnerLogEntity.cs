@@ -57,6 +57,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public bool FirstLogin { get; set; }
 
         public string Reason { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class PartnerResultEntity : ApiLogResultEntity
