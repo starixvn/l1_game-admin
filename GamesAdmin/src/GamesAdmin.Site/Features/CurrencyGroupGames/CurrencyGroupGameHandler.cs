@@ -57,7 +57,6 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
             if (currencyGroupGame?.CoinValues == null)
             {
-                result.BetLevels = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 result.CoinValues = new double[] { 0, 0, 0, 0, 0, 0 };
             }
 

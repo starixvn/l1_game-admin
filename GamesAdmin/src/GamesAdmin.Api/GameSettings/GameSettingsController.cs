@@ -81,9 +81,9 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
            => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));
 
-        [HttpPost("{name}/update_odds_by_counts")]
-        public Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds)
-            => mediator.Send(new UpdateOddsByCountsRequest(name, odds));
+        [HttpPost("{name}/update_cascading_slot_odds")]
+        public Task<bool> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig)
+            => mediator.Send(new UpdateOddsByCountsRequest(name, slotsConfig));
 
         [HttpGet("{name}/disabled_message")]
         public Task<Dictionary<string, string>> GetDisableMessage(string name)

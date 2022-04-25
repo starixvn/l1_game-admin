@@ -40,7 +40,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
-        Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds);
+        Task<bool> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig);
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
@@ -310,16 +310,18 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds)
+        public async Task<bool> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig)
         {
             try
             {
-                if (odds?.Count == 0)
+                if (slotsConfig.OddsByCounts?.Count == 0)
                 {
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
-                var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.OddsByCounts, odds);
+                var update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.SlotsConfig.OddsByCounts, slotsConfig.OddsByCounts)
+                    .Set(field => field.SlotsConfig.Freespins, slotsConfig.Freespins);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -398,7 +400,9 @@ namespace GamesAdmin.Api.Games
 
                 if (type == GameType.CascadingSlots)
                 {
-                    update = update.Set(field => field.SlotsConfig.Multiplier, slotsConfig.Multiplier);
+                    update = update
+                        .Set(field => field.SlotsConfig.Multiplier, slotsConfig.Multiplier)
+                        .Set(field => field.SlotsConfig.BetLevels, slotsConfig.BetLevels);
                 }
 
                 await repository.UpdateAsync(config => config.Name == name, update);

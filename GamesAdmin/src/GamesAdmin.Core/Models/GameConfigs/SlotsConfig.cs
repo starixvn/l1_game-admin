@@ -37,6 +37,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double Multiplier { get; set; }
         public double MaxWinPerRound { get; set; }
         public Dictionary<string, List<OddsByCount>> OddsByCounts { get; set; }
+        public Freespins Freespins { get; set; }
 
         public SlotsConfig StandardizeSlotsConfig(GameType type)
         {
@@ -49,6 +50,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
                 result.Multiplier = Multiplier;
                 result.MaxWinPerRound = MaxWinPerRound;
                 result.OddsByCounts = OddsByCounts;
+                result.Freespins = Freespins;
             }
             else
             {
@@ -67,18 +69,12 @@ namespace GamesAdmin.Core.Models.GameConfigs
         {
         }
 
-        public OddsByCount(bool isRange, int count, int from, int to, double odds)
+        public OddsByCount(int from, int to, double odds)
         {
-            IsRange = isRange;
-            Count = count;
             From = from;
             To = to;
             Odds = odds;
         }
-
-        public bool IsRange { get; set; }
-
-        public int Count { get; set; }
 
         public int From { get; set; }
 
@@ -86,6 +82,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 
         public double Odds { get; set; }
     }
+
 
     public class Bonus
     {

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features.GameSettings.Requests;
+using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -34,11 +36,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateBetLimit(UpdateBetLimitRequest request);
 
-        Task<bool> UpdateOdds(UpdateOddsRequest request);
+        Task<UpdateOddsResultViewModel> UpdateOdds(UpdateOddsRequest request);
 
-        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+        Task<UpdateOddsResultViewModel> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
-        Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds);
+        Task<UpdateOddsResultViewModel> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig);
 
         Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
@@ -136,14 +138,22 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
         => gameApi.UpdateBetLimit(request);
 
-        public Task<bool> UpdateOdds(UpdateOddsRequest request)
-        => gameApi.UpdateOdds(request);
+        public async Task<UpdateOddsResultViewModel> UpdateOdds(UpdateOddsRequest request)
+        => await gameApi.UpdateOdds(request) ? null : new UpdateOddsResultViewModel();
 
-        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
-        => gameApi.UpdateSlotOddss(name, iconOdds);
+        public async Task<UpdateOddsResultViewModel> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+        => await gameApi.UpdateSlotOdds(name, iconOdds) ? null : new UpdateOddsResultViewModel();
 
-        public Task<bool> UpdateOddsByCounts(string name, Dictionary<string, List<OddsByCount>> odds)
-            => gameApi.UpdateOddsByCounts(name, odds);
+        public async Task<UpdateOddsResultViewModel> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig)
+        {
+            var validateResult = ValidateCascadingSlotOdds(slotsConfig);
+            if (validateResult.FailedRanges.Count > 0)
+            {
+                return validateResult;
+            }
+
+            return await gameApi.UpdateCascadingSlotOdds(name, slotsConfig) ? null : new UpdateOddsResultViewModel();
+        }
 
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
         => gameApi.UpdateJackpot(request);
@@ -181,8 +191,48 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
             => gameApi.GetAdminMonitoringSettings(username);
-
+            
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
+            
+        private UpdateOddsResultViewModel ValidateCascadingSlotOdds(SlotsConfig slotsConfig)
+        {
+            var result = new UpdateOddsResultViewModel();
+
+            for (var i = 0; i < slotsConfig.OddsByCounts.Count; i++)
+            {
+                var icon = slotsConfig.OddsByCounts[i.ToString()];
+                for (var j = 0; j < icon.Count; j++)
+                {
+                    var odds = icon[j];
+
+                    if (odds.From < 0 || odds.To < 0 || odds.Odds < 0)
+                    {
+                        result.FailedRanges.Add(new FailedRangeViewModel(i, j, "The input value should be a possible number"));
+                        continue;
+                    }
+
+                    if (odds.From >= odds.To)
+                    {
+                        result.FailedRanges.Add(new FailedRangeViewModel(i, j, "The \"To\" value has to be greater than the \"From\" value"));
+                        continue;
+                    }
+
+                    if (j == 0)
+                    {
+                        continue;
+                    }
+
+                    var previousOdds = icon[j - 1];
+                    if (odds.From > previousOdds.To + 1)
+                    {
+                        result.FailedRanges.Add(new FailedRangeViewModel(i, j, "The input value has to be greater than the \"To\" value of the previous range one unit"));
+                        continue;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Extensions
 {
     public static class SlotConfigExtensions
     {
-        public static SlotsConfig GenerateDefaultSlotIcons(this SlotsConfig config, GameType type, int total, int maxNumber = 4)
+        public static SlotsConfig GenerateDefaultSlotInfo(this SlotsConfig config, GameType type, int total, int maxNumber = 4)
         {
             if (type == GameType.CascadingSlots)
             {
@@ -14,30 +14,40 @@ namespace GamesAdmin.Core.Extensions
             }
             else
             {
-                config.Icons = new Dictionary<string, Dictionary<string, double>>();
-                for (var i = 0; i < total; i++)
-                {
-                    config.Icons.Add(i.ToString(), GenerateDefaultOdds(maxNumber));
-                }
+                GenerateDefaultSlotIcons(config, total, maxNumber);
             }
 
             return config;
         }
 
-        private static Dictionary<string, double> GenerateDefaultOdds(int maxNumber)
+        private static void GenerateDefaultSlotIcons(this SlotsConfig config, int total, int maxNumber)
         {
-            var iconOdds = new Dictionary<string, double>();
+            config.Icons = new Dictionary<string, Dictionary<string, double>>();
 
-            for (var i = 1; i <= maxNumber; i++)
+            for (var i = 0; i < total; i++)
             {
-                iconOdds.Add((i + 1).ToString(), 0);
-            }
+                var iconOdds = new Dictionary<string, double>();
 
-            return iconOdds;
+                for (var j = 1; j <= maxNumber; j++)
+                {
+                    iconOdds.Add((j + 1).ToString(), 0);
+                }
+
+                config.Icons.Add(i.ToString(), iconOdds);
+            }
         }
 
         public static void GenerateDefaultCascadingSlotIcons(this SlotsConfig config, int total)
         {
+            var initialFreespinsOdds = new List<FreeSpinsOdds>
+            {
+                new FreeSpinsOdds(4, 0),
+                new FreeSpinsOdds(5, 0),
+                new FreeSpinsOdds(6, 0)
+            };
+            var additionalFreespinsOdds = new List<FreeSpinsOdds> { new FreeSpinsOdds(5, 0) };
+            config.Freespins = new Freespins(initialFreespinsOdds, additionalFreespinsOdds);
+
             config.OddsByCounts = new Dictionary<string, List<OddsByCount>>();
             if (total == 0)
             {
@@ -50,17 +60,11 @@ namespace GamesAdmin.Core.Extensions
             {
                 config.OddsByCounts.Add(i.ToString(), new List<OddsByCount>
                 {
-                    new OddsByCount(true, 0, 8, 9, 0),
-                    new OddsByCount(true, 0, 10, 11, 0),
-                    new OddsByCount(true, 0, 12, 30, 0)
+                    new OddsByCount(8, 9, 0),
+                    new OddsByCount(10, 11, 0),
+                    new OddsByCount(12, 30, 0)
                 });
             }
-
-            config.OddsByCounts.Add(scratterIcon.ToString(), new List<OddsByCount> {
-                new OddsByCount(false, 4, 0, 0, 0),
-                new OddsByCount(false, 5, 0, 0, 0),
-                new OddsByCount(false, 6, 0, 0, 0)
-            });
         }
     }
 }

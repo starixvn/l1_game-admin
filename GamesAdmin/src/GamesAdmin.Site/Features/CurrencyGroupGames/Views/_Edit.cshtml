@@ -1,11 +1,8 @@
-@{
-    Layout = null;
-}
-
 @using GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels;
 @model EditViewModel;
 
 @{
+    Layout = null;
     ViewData["Title"] = Model.GameName;
 }
 
@@ -61,27 +58,20 @@
         @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
         {
             <fieldset>
-                <legend>Bet Levels</legend>
-                <div class="form-group row">
-                    @for (var i = 0; i < Model.BetLevels.Length; i++)
-                    {
-                        <div class="col-lg-2">
-                            <label class="control-label">@($"Level {i + 1}")</label>
-                            <input type="number" asp-for="@Model.BetLevels[i]" class="form-control" />
-                        </div>
-                    }
-                </div>
-            </fieldset>
-            <fieldset>
                 <legend>Coin Values</legend>
                 <div class="form-group row">
+                    <input type="hidden" id="coins-length" value="@Model.CoinValues.Length" class="form-control" />
                     @for (var i = 0; i < Model.CoinValues.Length; i++)
                     {
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 col-coin">
                             <label class="control-label">@($"Coin {i + 1}")</label>
-                            <input type="number" asp-for="@Model.CoinValues[i]" class="form-control" />
+                            <input type="number" asp-for="@Model.CoinValues[i]" class="form-control txt-coin-value @(Model.CoinValues[i] == 0 ? "" : "disabled")" disabled="@(Model.CoinValues[i] != 0)" />
                         </div>
                     }
+                    <div class="col-lg-2 icon-add-container">
+                        <label class="control-label"></label>
+                        <div class="icon-add" onclick="currencyGroupGame.addCoin()"></div>
+                    </div>
                 </div>
             </fieldset>
             <fieldset>

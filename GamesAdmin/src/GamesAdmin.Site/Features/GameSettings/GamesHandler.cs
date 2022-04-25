@@ -35,7 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
         , IRequestHandler<UpdateBetLimitRequest, bool>
-        , IRequestHandler<UpdateOddsRequest, bool>
+        , IRequestHandler<UpdateOddsRequest, UpdateOddsResultViewModel>
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
@@ -353,14 +353,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
         => gameService.UnderMaintenance(request);
 
-        public Task<bool> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
+        public Task<UpdateOddsResultViewModel> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
         {
             switch (request.Type)
             {
                 case GameType.CascadingSlots:
-                    return gameService.UpdateOddsByCounts(request.Name, request.OddsByCounts);
+                    return gameService.UpdateCascadingSlotOdds(request.Name, request.SlotsConfig);
                 case GameType.Slots:
-                    return gameService.UpdateSlotIconOdds(request.Name, request.Icons);
+                    return gameService.UpdateSlotIconOdds(request.Name, request.SlotsConfig.Icons);
                 default:
                     return gameService.UpdateOdds(request);
             }

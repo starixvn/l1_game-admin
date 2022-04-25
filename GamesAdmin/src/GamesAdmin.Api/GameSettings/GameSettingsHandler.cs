@@ -76,7 +76,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);
 
         public Task<bool> Handle(UpdateOddsByCountsRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateOddsByCounts(request.Name, request.Odds);
+        => gameService.UpdateCascadingSlotOdds(request.Name, request.SlotsConfig);
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);

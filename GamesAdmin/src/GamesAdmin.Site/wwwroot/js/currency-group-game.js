@@ -17,11 +17,11 @@
             });
         },
 
-        onChangeGroup: function(gameName, gameType) {
+        onChangeGroup: function (gameName, gameType) {
             this.loadConfig(gameName, $('#GroupId')[0].value, gameType);
         },
 
-        toggleTab: function(tabName) {
+        toggleTab: function (tabName) {
             $('#setting').hide();
             $('#site-exclusion').hide();
 
@@ -57,11 +57,11 @@
             });
         },
 
-        loadDefaultSetting: function() {
+        loadDefaultSetting: function () {
             this.loadConfig($('#GameName')[0].value, $('#firstGroup')[0].value, $('#GameType')[0].value);
         },
 
-        getListSelectedChips: function() {
+        getListSelectedChips: function () {
             var chips = [];
 
             $("#chip-collector input[type=checkbox]:checked").map(function () {
@@ -97,7 +97,10 @@
         },
 
         updateSetting: function (isContinue, modalHandlerOnUpdate) {
+            $(".txt-coin-value.disabled").attr('disabled', null);
             var data = $('#currency-group-game-edit-form').serializeArray();
+            $(".txt-coin-value.disabled").attr('disabled', 'disabled');
+
             var chips = this.getListSelectedChips();
 
             for (var i = 0; i < chips.length; i++) {
@@ -114,6 +117,14 @@
             }).done(function (result) {
                 if (result.success) {
                     $('#currency-group-game-successMsg').show();
+
+                    $(".txt-coin-value").each((i, txt) => {
+                        var $txt = $(txt);
+                        if ($txt.val() != '0') {
+                            $txt.addClass('disabled');
+                            $txt.attr('disabled', 'disabled');
+                        }
+                    });
                 }
                 else {
                     $('#currency-group-game-failedMsg').show();
@@ -144,12 +155,24 @@
             }
 
             if ($('#setting').css('display') && $('#setting').css('display') !== 'none') {
-                this.updateSetting(isContinue, this.modalHandlerOnUpdate );
+                this.updateSetting(isContinue, this.modalHandlerOnUpdate);
             }
 
             if ($('#site-exclusion').css('display') && $('#site-exclusion').css('display') !== 'none') {
                 this.updateSiteExclusion(isContinue, this.modalHandlerOnUpdate);
             }
+        },
+
+        addCoin: function () {
+            const txtCoinLength = $("#coins-length");
+            const len = parseInt(txtCoinLength.val(), 0);
+
+            $(`<div class="col-lg-2 col-coin">
+                <label class="control-label">Coin ${len + 1}</label>
+                <input type="number" name="CoinValues[${len}]" class="form-control txt-coin-value" value="0" />
+            </div>`).insertBefore($('.icon-add-container'));
+
+            txtCoinLength.val(len + 1);
         }
     }
 }(jQuery));

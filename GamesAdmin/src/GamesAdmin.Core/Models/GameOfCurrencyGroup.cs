@@ -15,7 +15,6 @@ namespace GamesAdmin.Core.Models
             Dictionary<string, double> maxBetPerChoices = null,
             string[] chips = null,
             StakeLevel[] stakeLevels = null,
-            double[] betLevels = null,
             double[] coinValues = null,
             int multiplier = 0,
             double maxWinPerRound = 0)
@@ -29,8 +28,6 @@ namespace GamesAdmin.Core.Models
             MaxBetPerChoices = maxBetPerChoices;
             Chips = chips;
             StakeLevels = stakeLevels;
-
-            BetLevels = betLevels;
             CoinValues = coinValues;
             Multiplier = multiplier;
             MaxWinPerRound = maxWinPerRound;
@@ -54,7 +51,6 @@ namespace GamesAdmin.Core.Models
 
         public StakeLevel[] StakeLevels { get; }
 
-        public double[] BetLevels { get; }
         public double[] CoinValues { get; }
         public int Multiplier { get; }
         public double MaxWinPerRound { get; }

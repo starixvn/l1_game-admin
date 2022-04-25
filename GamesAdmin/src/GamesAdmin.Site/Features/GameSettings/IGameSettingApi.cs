@@ -56,10 +56,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateSlotConfig([Body] UpdateSlotConfigRequest request);
 
         [Post("/game_settings/{name}/update_slot_odds")]
-        Task<bool> UpdateSlotOddss(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
+        Task<bool> UpdateSlotOdds(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
 
-        [Post("/game_settings/{name}/update_odds_by_counts")]
-        Task<bool> UpdateOddsByCounts(string name, [Body] Dictionary<string, List<OddsByCount>> odds);
+        [Post("/game_settings/{name}/update_cascading_slot_odds")]
+        Task<bool> UpdateCascadingSlotOdds(string name, [Body] SlotsConfig slotsConfig);
 
         [Get("/game_settings/{name}/disabled_message")]
         Task<Dictionary<string, string>> GetDisableMessage(string name);

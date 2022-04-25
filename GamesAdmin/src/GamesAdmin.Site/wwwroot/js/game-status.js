@@ -266,14 +266,16 @@
 
         submit: function () {
             $('#updateBtn').prop('disabled', true);
+            if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
+                this.updateOdds();
+                return;
+            }
+
             let requestUrl = "/update";
+            $('.txt-bet-level').attr('disabled', null);
 
             if ($('#botsetting').css('display') && $('#botsetting').css('display') !== 'none') {
                 requestUrl = "/betlimit/update";
-            }
-
-            if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
-                requestUrl = "/odds/update";
             }
 
             if ($('#jackpots').css('display') && $('#jackpots').css('display') !== 'none') {
@@ -301,6 +303,39 @@
                     location.reload();
 
                 }, 1000);
+            });
+        },
+
+        updateOdds: function () {
+            $.ajax({
+                method: "POST",
+                url: "/odds/update",
+                dataType: 'json',
+                data: $('#gameForm').serialize(),
+            }).done(function (result) {
+                if (result?.failedRanges?.length) {
+                    $('.odds-validation').addClass('hide');
+                    for (var i = 0; i < result.failedRanges.length; i++) {
+                        var range = result.failedRanges[i];
+                        var row = $('.icon-' + range.icon + '.odds-' + range.oddsIndex);
+                        row.html(range.message);
+                        row.removeClass('hide');
+                    }
+
+                    $('#failedMsg').show();
+                } else {
+                    $('#successMsgs').show();
+
+                    setTimeout(function () {
+                        $('.odds-validation').addClass('hide');
+
+                        $('#updateBtn').prop('disabled', false);
+                        $('#successMsg').hide();
+                        $('#failedMsg').hide();
+                        $('#gameModal').modal('hide');
+                        location.reload();
+                    }, 1000);
+                }
             });
         },
 

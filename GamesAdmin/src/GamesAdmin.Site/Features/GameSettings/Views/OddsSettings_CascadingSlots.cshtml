@@ -19,45 +19,33 @@
                                 @for (var j = 0; j < Model.SlotsConfig.OddsByCounts[i.ToString()].Count; j++)
                                 {
                                     var c = @Model.SlotsConfig.OddsByCounts[i.ToString()][j];
-                                    <input type="hidden" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].IsRange" class="form-control small" />
-                                    if (c.IsRange)
-                                    {
-                                        <div class="col-lg-7">
-                                            <fieldset>
-                                                <legend>Count</legend>
-                                                <div class="col-lg-5 d-inline-block">
-                                                    <label class="control-label">From</label>
-                                                    <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].From" class="form-control small" />
-                                                </div>
-                                                <div class="col-lg-5 d-inline-block">
-                                                    <label class="control-label">To</label>
-                                                    <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].To" class="form-control small" />
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <fieldset>
-                                                <legend>Odds</legend>
-                                                <div class="col-lg-12">
-                                                    <label class="control-label">&nbsp;</label>
-                                                    <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].Odds" class="form-control small" />
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-lg-3">
-                                            <label class="control-label">Count</label>
-                                            <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].Count" class="form-control small" />
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label class="control-label">Odds</label>
-                                            <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].Odds" class="form-control small" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                        </div>
-                                    }
+
+                                    <div class="col-lg-7">
+                                        <fieldset>
+                                            <legend>Count</legend>
+                                            <div class="col-lg-5 d-inline-block">
+                                                <label class="control-label">From</label>
+                                                <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].From" class="form-control small" />
+                                            </div>
+                                            <div class="col-lg-5 d-inline-block">
+                                                <label class="control-label">To</label>
+                                                <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].To" class="form-control small" />
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <fieldset>
+                                            <legend>Odds</legend>
+                                            <div class="col-lg-12">
+                                                <label class="control-label">&nbsp;</label>
+                                                <input type="number" asp-for="@Model.SlotsConfig.OddsByCounts[i.ToString()][j].Odds" class="form-control small" />
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <span class="odds-validation text-danger hide icon-@i odds-@j"></span>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -65,6 +53,67 @@
                 </fieldset>
             </div>
         }
+
+        <div class="col-lg-12 mb-3">
+            <fieldset>
+                <legend>Scatter</legend>
+                <div class="form-group row mb-0">
+                    <div class="col-lg-2 d-flex align-items-center">
+                        <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/")9.png" alt="icons" />
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    <legend>Initial Free Spins Bonus</legend>
+                                    @for (var j = 0; j < Model.SlotsConfig.Freespins.InitialOdds.Count; j++)
+                                    {
+                                        var c = @Model.SlotsConfig.Freespins.InitialOdds[j];
+
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Count</label>
+                                            <input type="number" asp-for="@Model.SlotsConfig.Freespins.InitialOdds[j].Count" class="form-control small" />
+                                        </div>
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Number of Free Spins</label>
+                                            <input type="number" asp-for="@Model.SlotsConfig.Freespins.InitialOdds[j].Odds" class="form-control small" />
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <span class="odds-validation hide text-danger icon-9 odds-@j"></span>
+                                        </div>
+                                    }
+                                </fieldset>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    <legend>Additional Free Spins Bonus</legend>
+                                    @for (var j = 0; j < Model.SlotsConfig.Freespins.AdditionalOdds.Count; j++)
+                                    {
+                                        var c = @Model.SlotsConfig.Freespins.AdditionalOdds[j];
+
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Count</label>
+                                            <input type="number" asp-for="@Model.SlotsConfig.Freespins.AdditionalOdds[j].Count" class="form-control small" />
+                                        </div>
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Number of Free Spins</label>
+                                            <input type="number" asp-for="@Model.SlotsConfig.Freespins.AdditionalOdds[j].Odds" class="form-control small" />
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <span class="odds-validation hide text-danger icon-9 odds-@(Model.SlotsConfig.Freespins.InitialOdds.Count + j)"></span>
+                                        </div>
+                                    }
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
     </div>
     <br />
 }
