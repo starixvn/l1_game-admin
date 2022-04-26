@@ -12,7 +12,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Nickname { get; set; }
         public bool ExcludeUUS { get; set; }
 
-        [DisplayName("Convert to USD")]
+        [DisplayName("Convert to INH")]
         public bool ConvertToUSD { get; set; }
 
         [DisplayName("Partner")]

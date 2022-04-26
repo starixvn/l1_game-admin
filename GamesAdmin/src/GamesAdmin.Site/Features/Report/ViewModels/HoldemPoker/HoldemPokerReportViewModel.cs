@@ -24,7 +24,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [CasinoHldemPokerValidation]
         public string Username { get; set; }
 
-        [DisplayName("Convert to USD")]
+        [DisplayName("Convert to INH")]
         public bool ConvertToUSD { get; set; }
 
         [DisplayName("Partner")]
