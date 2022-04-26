@@ -2,6 +2,7 @@
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
+using GamesAdmin.Site.Features.BetDetails;
 using GamesAdmin.Site.Features.Bot;
 using GamesAdmin.Site.Features.Chips;
 using GamesAdmin.Site.Features.ClientSites;
@@ -16,6 +17,7 @@ using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
+using GamesAdmin.Site.Features.RetrieveEndRound;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using GamesAdmin.Site.Features.VoidGame;
@@ -69,6 +71,12 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IGameRoundResultApi>(appSettings.ResultPageConfiguration.BaseUrl));
             services.AddScoped<IGameRoundResultService, GameRoundResultService>();
+
+            services.AddSingleton(RestService.For<IBetDetailsApi>(appSettings.ResultPageConfiguration.BaseUrl));
+            services.AddScoped<IBetDetailsService, BetDetailsService>();
+
+            services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.GameApiUrl));
+            services.AddScoped<IRetrieveEndRoundService, RetrieveEndRoundService>();
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
