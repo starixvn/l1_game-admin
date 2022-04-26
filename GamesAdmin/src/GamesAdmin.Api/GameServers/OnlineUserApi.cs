@@ -231,4 +231,11 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/set-result")]
         Task<IEnumerable<HiloCard>> SetResult([Body] SetHiLoResultRequest request);
     }
+
+    public interface INightClubOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
 }

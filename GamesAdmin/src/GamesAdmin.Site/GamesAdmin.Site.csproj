@@ -21,6 +21,7 @@
     <Content Remove="wwwroot\js\hilo-report.min.js" />
     <Content Remove="wwwroot\js\partner - Copy.min.js" />
     <Content Remove="wwwroot\js\partner.min.js" />
+    <Content Remove="wwwroot\images\slot-icons\nightclub\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +68,7 @@
     <Folder Include="wwwroot\game-admin\_next\rmtxTm8B14eU70SRrA5fB\" />
     <Folder Include="wwwroot\game-admin\_next\static\development\pages\next\dist\pages\" />
     <Folder Include="wwwroot\lib\data-tables\DataTables-1.10.20\" />
+    <Folder Include="wwwroot\images\slot-icons\nightclub\" />
   </ItemGroup>
 
 

@@ -76,6 +76,8 @@
         public GameServerConfigs CasinoHoldemPoker { get; set; }
 
         public GameServerConfigs TexasHoldemPoker { get; set; }
+        public GameServerConfigs NightClub { get; set; }
+
     }
 
     public class GameServerConfigs

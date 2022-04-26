@@ -503,6 +503,19 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> HoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
             => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
 
+        [HttpGet]
+        public async Task<IActionResult> NightClub()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View(viewModel);
+        }
+
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
