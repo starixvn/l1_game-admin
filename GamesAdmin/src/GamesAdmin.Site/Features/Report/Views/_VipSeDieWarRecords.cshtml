@@ -174,7 +174,7 @@
                 else if (Model.ConvertToUSD)
                 {
                     <tr class="total">
-                        <td colspan="5">Total in USD</td>
+                        <td colspan="5">Total in INH</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalBet)))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
                     </tr>

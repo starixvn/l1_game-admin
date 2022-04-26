@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string Username { get; set; }
 
-        [DisplayName("Convert to USD")]
+        [DisplayName("Convert to INH")]
         public bool ConvertToUSD { get; set; }
 
         public IEnumerable<SelectListItem> Games { get; set; }
