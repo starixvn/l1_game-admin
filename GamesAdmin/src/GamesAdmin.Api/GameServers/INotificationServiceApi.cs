@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using GamesAdmin.Api.GameServers.Requests;
-using GamesAdmin.Api.UM.Requests;
+﻿using GamesAdmin.Api.UM.Requests;
 using Refit;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {
-    [Headers("Authorization: Bearer")]
     public interface INotificationServiceApi
     {
         [Post("/api/um")]
@@ -14,7 +12,7 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/reload")]
         Task Reload();
 
-        [Post("/api/connectedClients")]
+        [Get("/api/connectedClients")]
         Task<int> ConnectedClients();
     }
 }
