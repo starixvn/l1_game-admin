@@ -61,7 +61,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
             services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());
 
-
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));

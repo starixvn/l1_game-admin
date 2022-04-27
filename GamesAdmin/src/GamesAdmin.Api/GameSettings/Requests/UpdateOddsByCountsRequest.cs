@@ -5,14 +5,14 @@ namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class UpdateOddsByCountsRequest : IRequest<bool>
     {
-        public UpdateOddsByCountsRequest(string name, SlotsConfig slotsConfig)
+        public UpdateOddsByCountsRequest(string name, CascadingSlotsConfig cascadingSlotsConfig)
         {
             Name = name;
-            SlotsConfig = slotsConfig;
+            CascadingSlotsConfig = cascadingSlotsConfig;
         }
 
         public string Name { get; }
 
-        public SlotsConfig SlotsConfig { get; }
+        public CascadingSlotsConfig CascadingSlotsConfig { get; }
     }
 }

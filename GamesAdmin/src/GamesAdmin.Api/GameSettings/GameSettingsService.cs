@@ -40,11 +40,13 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
-        Task<bool> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig);
+        Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
-        Task<bool> UpdateSlotConfig(string name, bool botEnabled, string displayName, SlotsConfig slotsConfig, GameType type);
+        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
+
+        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
 
@@ -118,7 +120,8 @@ namespace GamesAdmin.Api.Games
                     Botenabled = game.BotSetting.BotEnabled,
                     BotMaxBet = game.BotSetting.BotMaxBet,
                     HoursMaxBot = game.BotSetting.HoursMaxBot,
-                    SlotsConfig = game.SlotsConfig.StandardizeSlotsConfig(game.Info.Type),
+                    SlotsConfig = game.SlotsConfig,
+                    CascadingSlotsConfig = game.CascadingSlotsConfig,
                     SiteExclusions = new string[] { },
                     Time = DateTime.Now,
                     GameId = (int)gameEnum.GameId,
@@ -310,18 +313,18 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateCascadingSlotOdds(string name, SlotsConfig slotsConfig)
+        public async Task<bool> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig)
         {
             try
             {
-                if (slotsConfig.OddsByCounts?.Count == 0)
+                if (cascadingSlotsConfig.OddsByCounts?.Count == 0)
                 {
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.OddsByCounts, slotsConfig.OddsByCounts)
-                    .Set(field => field.SlotsConfig.Freespins, slotsConfig.Freespins);
+                    .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
+                    .Set(field => field.CascadingSlotsConfig.Freespins, cascadingSlotsConfig.Freespins);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -379,12 +382,7 @@ namespace GamesAdmin.Api.Games
             return diffs.Any();
         }
 
-        public async Task<bool> UpdateSlotConfig(
-            string name,
-            bool botEnabled,
-            string displayName,
-            SlotsConfig slotsConfig,
-            GameType type)
+        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
         {
             try
             {
@@ -393,17 +391,33 @@ namespace GamesAdmin.Api.Games
                 sentryClient.CaptureChangedSettings(name, "Slot Config", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
-                    .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
-                    .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
-                    .Set(field => field.Botenabled, botEnabled);
+                            .Set(field => field.Botenabled, botEnabled)
+                            .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
+                            .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
+                            .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode);
+                await repository.UpdateAsync(config => config.Name == name, update);
 
-                if (type == GameType.CascadingSlots)
-                {
-                    update = update
-                        .Set(field => field.SlotsConfig.Multiplier, slotsConfig.Multiplier)
-                        .Set(field => field.SlotsConfig.BetLevels, slotsConfig.BetLevels);
-                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig)
+        {
+            try
+            {
+                var update = Builders<GameConfigEntity>.Update
+                       .Set(field => field.Botenabled, botEnabled)
+                       .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)
+                       .Set(field => field.CascadingSlotsConfig.BigWinRatio, cascadingSlotsConfig.BigWinRatio)
+                       .Set(field => field.CascadingSlotsConfig.Mode, cascadingSlotsConfig.Mode)
+                       .Set(field => field.CascadingSlotsConfig.Multiplier, cascadingSlotsConfig.Multiplier)
+                       .Set(field => field.CascadingSlotsConfig.BetLevels, cascadingSlotsConfig.BetLevels);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

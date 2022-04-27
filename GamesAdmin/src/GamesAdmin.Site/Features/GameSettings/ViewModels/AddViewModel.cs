@@ -11,9 +11,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     {
         private readonly double[] DefaultBotRatios = new double[] { 40, 40, 20 };
 
-        public AddViewModel()
-        {
-        }
+        public AddViewModel() { }
 
         public AddViewModel(
             List<SelectListItem> gameNames,
@@ -101,5 +99,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double[] CoinValues { get; set; }
         public double Multiplier { get; set; }
         public double MaxWinPerRound { get; set; }
+        public double MinMultiplierBonus { get; set; }
+        public double MaxMultiplierBonus { get; set; }
     }
 }

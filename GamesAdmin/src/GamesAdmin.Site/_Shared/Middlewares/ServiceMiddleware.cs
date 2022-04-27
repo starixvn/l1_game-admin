@@ -39,6 +39,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             };
 
             services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<ICascadingSlotsConfigValidator, CascadingSlotsConfigValidator>();
             services.AddScoped<IGameSettingService, GameSettingService>();
 
             services.AddSingleton(RestService.For<IGameUserApi>(appSettings.ApiHost, refitSettings));

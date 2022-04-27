@@ -52,11 +52,11 @@
             <fieldset>
                 <legend>Bet Levels</legend>
                 <div class="form-group row">
-                    @for (var i = 0; i < Model.SlotsConfig.BetLevels.Length; i++)
+                    @for (var i = 0; i < Model.CascadingSlotsConfig.BetLevels.Length; i++)
                     {
                         <div class="col-lg-2">
                             <label class="control-label">@($"Level {i + 1}")</label>
-                            <input type="number" asp-for="@Model.SlotsConfig.BetLevels[i]" class="form-control txt-bet-level @(Model.SlotsConfig.BetLevels[i] == 0 ? "" :"disabled")" disabled="@(Model.SlotsConfig.BetLevels[i] != 0)" />
+                            <input type="number" asp-for="@Model.CascadingSlotsConfig.BetLevels[i]" class="form-control txt-bet-level @(Model.CascadingSlotsConfig.BetLevels[i] == 0 ? "" :"disabled")" disabled="@(Model.CascadingSlotsConfig.BetLevels[i] != 0)" />
                         </div>
                     }
                 </div>
@@ -65,8 +65,8 @@
                 <legend>Multiplier for bet amount</legend>
                 <div class="form-group row">
                     <div class="col-lg-6">
-                        <input type="number" asp-for="@Model.SlotViewModel.Multiplier" class="form-control" />
-                        <span asp-validation-for="@Model.SlotViewModel.Multiplier" class="text-danger"></span>
+                        <input type="number" asp-for="@Model.CascadingSlotsConfig.Multiplier" class="form-control" />
+                        <span asp-validation-for="@Model.CascadingSlotsConfig.Multiplier" class="text-danger"></span>
                     </div>
                 </div>
             </fieldset>
@@ -109,7 +109,6 @@
                     }
                 </fieldset>
             }
-
             <br />
         </div>
     </form>

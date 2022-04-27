@@ -307,31 +307,24 @@
         },
 
         updateOdds: function () {
+            $('#update-odds-msg').hide();
+
             $.ajax({
                 method: "POST",
                 url: "/odds/update",
                 dataType: 'json',
                 data: $('#gameForm').serialize(),
             }).done(function (result) {
-                if (result?.failedRanges?.length) {
-                    $('.odds-validation').addClass('hide');
-                    for (var i = 0; i < result.failedRanges.length; i++) {
-                        var range = result.failedRanges[i];
-                        var row = $('.icon-' + range.icon + '.odds-' + range.oddsIndex);
-                        row.html(range.message);
-                        row.removeClass('hide');
-                    }
-
-                    $('#failedMsg').show();
+                if (result) {
+                    $('#update-odds-msg').html(result);
+                    $('#update-odds-msg').show();
+                    $('#updateBtn').prop('disabled', false);
                 } else {
-                    $('#successMsgs').show();
-
+                    $('#successMsg').show();
                     setTimeout(function () {
-                        $('.odds-validation').addClass('hide');
-
                         $('#updateBtn').prop('disabled', false);
                         $('#successMsg').hide();
-                        $('#failedMsg').hide();
+                        $('#update-odds-msg').hide();
                         $('#gameModal').modal('hide');
                         location.reload();
                     }, 1000);

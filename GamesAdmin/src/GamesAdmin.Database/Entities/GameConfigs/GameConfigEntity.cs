@@ -56,5 +56,7 @@ namespace GamesAdmin.Database.Entities
         public int GameId { get; set; }
 
         public byte RandomMode { get; set; }
+
+        public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetMonitorRequest, MonitorViewModel>
         , IRequestHandler<UnderMaintenanceRequest, bool>
         , IRequestHandler<UpdateBetLimitRequest, bool>
-        , IRequestHandler<UpdateOddsRequest, UpdateOddsResultViewModel>
+        , IRequestHandler<UpdateOddsRequest, string>
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
@@ -112,15 +112,19 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.DisplayName = Enumeration.Contains<Game>(game.Info.Name)
                                         ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
                                         : game.Info.Name;
+                viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
 
                 switch (game.Info.Type)
                 {
                     case GameType.Slots:
-                    case GameType.CascadingSlots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
                         viewModel.SlotViewModel.ModeItems = difficultyItems;
                         viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
                         viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
+                        break;
+                    case GameType.CascadingSlots:
+                        viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.CascadingSlotsConfig);
+                        viewModel.SlotViewModel.ModeItems = difficultyItems;
                         break;
                     default:
                         viewModel.Type = GameType.AutoRNG;
@@ -218,22 +222,28 @@ namespace GamesAdmin.Site.Features.GameSettings
             switch (request.GameInfo.Type)
             {
                 case GameType.Slots:
-                case GameType.CascadingSlots:
                     return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type));
+                case GameType.CascadingSlots:
+                    return gameService.UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type));
                 default:
                     return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting));
             }
         }
 
         public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-            => gameService.Add(new GameConfig(
+        {
+            var gameConfig = new GameConfig(
                 string.Empty,
                 new Dictionary<string, double>(),
                 request.GameInfo,
                 request.EnableSetting,
                 request.BotSettings,
                 request.BetLimit,
-                request.GameInfo.Type == GameType.AutoRNG ? null : request.SlotConfigs));
+                request.GameInfo.Type == GameType.Slots ? request.SlotConfigs : null,
+                request.GameInfo.Type == GameType.CascadingSlots ? request.CascadingSlotsConfig : null);
+
+            return gameService.Add(gameConfig);
+        }
 
         public Task<bool> Handle(IsExistRequest request, CancellationToken cancellationToken)
         => gameService.IsExistName(request.Name);
@@ -353,12 +363,12 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> Handle(UnderMaintenanceRequest request, CancellationToken cancellationToken)
         => gameService.UnderMaintenance(request);
 
-        public Task<UpdateOddsResultViewModel> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
+        public Task<string> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
         {
             switch (request.Type)
             {
                 case GameType.CascadingSlots:
-                    return gameService.UpdateCascadingSlotOdds(request.Name, request.SlotsConfig);
+                    return gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig);
                 case GameType.Slots:
                     return gameService.UpdateSlotIconOdds(request.Name, request.SlotsConfig.Icons);
                 default:

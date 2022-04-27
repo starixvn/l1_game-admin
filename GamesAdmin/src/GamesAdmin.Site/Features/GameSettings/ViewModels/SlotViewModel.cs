@@ -36,7 +36,5 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }
-
-        public double Multiplier { get; set; }
     }
 }

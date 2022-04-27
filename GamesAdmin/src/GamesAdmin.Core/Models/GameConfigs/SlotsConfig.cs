@@ -1,20 +1,16 @@
 ﻿using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class SlotsConfig
     {
-        public SlotsConfig()
-        {
-        }
+        public SlotsConfig() { }
 
-        public SlotsConfig(byte mode, double bigWinRatio, Bonus bonus, double multiplier = 0)
+        public SlotsConfig(byte mode, double bigWinRatio, Bonus bonus)
         {
             Mode = mode;
             BigWinRatio = bigWinRatio;
             Bonus = bonus;
-            Multiplier = multiplier;
         }
 
         public SlotsConfig(SlotsConfig config)
@@ -27,69 +23,17 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public byte Mode { get; set; }
         public double BigWinRatio { get; set; }
         public Bonus Bonus { get; set; }
-
         public List<StakeLevel> StakeLevels { get; set; }
         public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
         public Jackpot Jackpot { get; set; }
-
-        public int[] BetLevels { get; set; }
-        public double[] CoinValues { get; set; }
-        public double Multiplier { get; set; }
-        public double MaxWinPerRound { get; set; }
-        public Dictionary<string, List<OddsByCount>> OddsByCounts { get; set; }
-        public Freespins Freespins { get; set; }
-
-        public SlotsConfig StandardizeSlotsConfig(GameType type)
-        {
-            var result = new SlotsConfig(this);
-
-            if (type == GameType.CascadingSlots)
-            {
-                result.BetLevels = BetLevels;
-                result.CoinValues = CoinValues;
-                result.Multiplier = Multiplier;
-                result.MaxWinPerRound = MaxWinPerRound;
-                result.OddsByCounts = OddsByCounts;
-                result.Freespins = Freespins;
-            }
-            else
-            {
-                result.StakeLevels = StakeLevels;
-                result.Icons = Icons;
-                result.Jackpot = Jackpot;
-            }
-
-            return result;
-        }
     }
-
-    public class OddsByCount
-    {
-        public OddsByCount()
-        {
-        }
-
-        public OddsByCount(int from, int to, double odds)
-        {
-            From = from;
-            To = to;
-            Odds = odds;
-        }
-
-        public int From { get; set; }
-
-        public int To { get; set; }
-
-        public double Odds { get; set; }
-    }
-
 
     public class Bonus
     {
-        public Bonus(double minBonus, double maxBonus)
+        public Bonus(double min, double max)
         {
-            Min = minBonus;
-            Max = maxBonus;
+            Min = min;
+            Max = max;
         }
 
         public double Min { get; set; }

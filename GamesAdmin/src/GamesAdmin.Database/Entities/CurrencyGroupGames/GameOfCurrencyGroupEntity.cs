@@ -26,7 +26,6 @@ namespace GamesAdmin.Database.Entities
 
         public StakeLevel[] StakeLevels { get; set; }
 
-        public int[] BetLevels { get; set; }
         public double[] CoinValues { get; set; }
         public double MaxWinPerRound { get; set; }
     }
