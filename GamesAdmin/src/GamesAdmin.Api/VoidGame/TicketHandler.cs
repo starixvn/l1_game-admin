@@ -90,6 +90,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.CasinoHoldemPoker => await MoveCasinoHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.HiLo => await MoveHiLo(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.TexasHoldemPoker => await MoveTexasHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.BlockchainBaccarat => await Move<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -145,6 +146,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.CasinoHoldemPoker => await Find<CasinoHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.HiLo => await Find<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.TexasHoldemPoker => await Find<TexasHoldemPokerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.BlockchainBaccarat => await Find<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 

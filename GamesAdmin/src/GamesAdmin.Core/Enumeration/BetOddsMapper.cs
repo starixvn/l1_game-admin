@@ -92,6 +92,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.CasinoHoldemPokerValue:
                     return Enumeration.GetAll<CasinoHoldemPokerBetOdds>();
 
+                case Game.BlockchainBaccaratValue:
+                    return Enumeration.GetAll<BlockchainBaccaratBetChoice>();
+
                 default: return default;
             }
         }

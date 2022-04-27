@@ -52,7 +52,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.TexasHoldemPokerValue, typeof(ITexasHoldemPokerOnlineUserApi) },
             { Game.NightClubValue, typeof(INightClubOnlineUserApi) },
             { Game.TreasureIslandValue, typeof(ITreasureIslandOnlineUserApi) },
-
+            { Game.BlockchainBaccaratValue, typeof(IBlockchainBaccaratOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

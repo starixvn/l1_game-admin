@@ -82,6 +82,7 @@
         public GameServerConfigs TreasureIsland { get; set; }
 
         public GameServerConfigs TexasHoldemPoker { get; set; }
+
         public GameServerConfigs NightClub { get; set; }
 
     }
