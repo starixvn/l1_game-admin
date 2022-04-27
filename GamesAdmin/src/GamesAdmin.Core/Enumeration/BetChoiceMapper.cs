@@ -31,6 +31,7 @@ namespace GamesAdmin.Core.Enumeration
             {Game.KenoPower2Value, Enumeration.GetAll<KenoPowerBetChoice>() },
             {Game.BitcoinMasterValue, Enumeration.GetAll<BitcoinMasterBetChoice>() },
             {Game.TexasHoldemPokerValue, Enumeration.GetAll<TexasHoldemPokerBetChoice>() },
+            {Game.BlockchainBaccaratValue, Enumeration.GetAll<BlockchainBaccaratBetChoice>() },
         };
 
         private static List<string> KenoTypes = new List<string>

@@ -42,5 +42,6 @@
         HiLo = 45,
         NightClub = 46,
         TreasureIsland = 47,
+        BlockchainBaccarat = 48
     }
 }
