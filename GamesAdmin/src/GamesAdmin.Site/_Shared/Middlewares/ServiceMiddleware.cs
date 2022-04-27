@@ -9,6 +9,7 @@ using GamesAdmin.Site.Features.ClientSites;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
+using GamesAdmin.Site.Features.DailySummary;
 using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
@@ -77,6 +78,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.GameApiUrl));
             services.AddScoped<IRetrieveEndRoundService, RetrieveEndRoundService>();
+
+            services.AddSingleton(RestService.For<IDailySummaryApi>(appSettings.GameApiUrl));
+            services.AddScoped<IDailySummaryService, DailySummaryService>();
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();

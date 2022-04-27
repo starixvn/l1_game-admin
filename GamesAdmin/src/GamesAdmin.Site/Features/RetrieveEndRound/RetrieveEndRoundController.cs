@@ -4,8 +4,10 @@
     using GamesAdmin.Site.Features.BetDetails.ViewModels;
     using GamesAdmin.Site.Features.RetrieveEndRound.Request;
     using MediatR;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     public class RetrieveEndRoundController : Controller
     {
         private readonly IMediator mediator;
