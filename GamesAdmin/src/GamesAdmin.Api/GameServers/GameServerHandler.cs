@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using GamesAdmin.Api.GameServers.Requests;
+﻿using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -15,7 +15,6 @@ namespace GamesAdmin.Api.GameServers
         : IRequestHandler<ReloadRequest, bool>
         , IRequestHandler<JWTRequest, JsonWebToken>
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
-        , IRequestHandler<NotifyRoundsRequest, bool>
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
         , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
         , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
@@ -43,9 +42,6 @@ namespace GamesAdmin.Api.GameServers
             => string.IsNullOrWhiteSpace(request.Game)
                 ? gameServerService.GetOnlineUsers()
                 : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
-
-        public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
-            => gameServerService.NotifyRoundResult(request.Rounds);
 
         public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
             => gameServerService.SetSlotBoard(request);

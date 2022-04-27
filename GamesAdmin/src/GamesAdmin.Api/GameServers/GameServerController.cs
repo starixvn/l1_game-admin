@@ -33,10 +33,6 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> OnlineUsers(string game)
            => mediator.Send(new OnlineUserRequest(game));
 
-        [HttpPost("notify_proviet_results")]
-        public Task<bool> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)
-           => mediator.Send(new NotifyRoundsRequest(kenoRounds));
-
         [HttpPost("slot/set_board")]
         public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
            => mediator.Send(request);

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
@@ -20,6 +13,13 @@ using GamesAdmin.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -33,8 +33,6 @@ namespace GamesAdmin.Api.GameServers
         Task<JsonWebToken> GetJWT(JWTRequest request);
 
         Task<OnlineUsers> GetOnlineUsers(Game gameType = null);
-
-        Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
 
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
@@ -174,25 +172,6 @@ namespace GamesAdmin.Api.GameServers
             }
 
             sentryClient.CaptureException(ex);
-        }
-
-        public async Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
-        {
-            foreach (var round in kenoRounds)
-            {
-                try
-                {
-                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
-
-                    await notificationServiceApi.NotifyRoundResult(round);
-                }
-                catch (Exception ex)
-                {
-                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
-                }
-            }
-
-            return true;
         }
 
         public async Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request)
