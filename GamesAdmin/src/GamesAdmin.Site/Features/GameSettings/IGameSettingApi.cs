@@ -65,5 +65,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/game_server/get_admin_monitoring_settings")]
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+
+        [Get("/game_server/connected_users")]
+        Task<int> GetConnectedUsers();
     }
 }

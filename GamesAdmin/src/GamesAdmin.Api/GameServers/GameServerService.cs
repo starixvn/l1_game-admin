@@ -43,6 +43,8 @@ namespace GamesAdmin.Api.GameServers
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 
         Task<bool> VerifyAdminMonitoringToken(string token);
+
+        Task<int> GetConnectedUsers();
     }
 
     public class GameServerService : IGameServerService
@@ -278,6 +280,20 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return false;
+        }
+
+        public async Task<int> GetConnectedUsers()
+        {
+            try
+            {
+                return await notificationServiceApi.ConnectedClients();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return 0;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.UM.Requests;
 using Refit;
 
@@ -12,5 +13,8 @@ namespace GamesAdmin.Api.GameServers
 
         [Post("/api/reload")]
         Task Reload();
+
+        [Post("/api/connectedClients")]
+        Task<int> ConnectedClients();
     }
 }

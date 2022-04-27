@@ -52,5 +52,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("verify_admin_monitoring_token")]
         public Task<bool> VerifyAdminMonitoringToken(string token)
             => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
+
+        [HttpGet("connected_users")]
+        public Task<int> ConnectedUsers()
+           => mediator.Send(new ConnectedUserRequest());
     }
 }

@@ -20,6 +20,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
         , IRequestHandler<GetAdminMonitoringSettingsRequest, AdminMonitoringModel>
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
+        , IRequestHandler<ConnectedUserRequest, int>
     {
         private readonly IGameServerService gameServerService;
 
@@ -57,5 +58,8 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
             => gameServerService.VerifyAdminMonitoringToken(request.Token);
+
+        public Task<int> Handle(ConnectedUserRequest request, CancellationToken cancellationToken)
+            => gameServerService.GetConnectedUsers();
     }
 }
