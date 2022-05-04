@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameServers
 {
+    [Headers("Authorization: Bearer")]
     public interface INotificationServiceApi
     {
         [Post("/api/um")]
