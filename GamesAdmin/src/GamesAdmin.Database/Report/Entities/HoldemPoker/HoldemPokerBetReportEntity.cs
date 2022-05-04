@@ -46,6 +46,7 @@
             IsQualified = round.SettlementResult?.IsQualified;
             IsSwappedOrHold = round.IsSwappedOrHold;
             BetWin = bet.Betwin;
+            ExchangeRateId = round.ExchangeRateId;
         }
 
         public DateTime Time { get; }
@@ -79,5 +80,7 @@
         public bool? IsQualified { get; }
 
         public bool? IsSwappedOrHold { get; }
+
+        public int ExchangeRateId { get;  }
     }
 }
