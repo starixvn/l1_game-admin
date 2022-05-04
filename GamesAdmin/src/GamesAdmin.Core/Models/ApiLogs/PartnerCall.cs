@@ -17,6 +17,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public byte? GameTypeId { get; set; }
 
         public string RequestType { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class PartnerEndGameCall : PartnerCall
