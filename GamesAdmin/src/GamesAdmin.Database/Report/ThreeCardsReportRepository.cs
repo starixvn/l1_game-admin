@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
@@ -9,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IThreeCardsReportRepository
     {
-        Task<(ThreeCardsRoundEntity, IEnumerable<ThreeCardsBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS);
+        Task<(ThreeCardsRoundEntity, IEnumerable<ThreeCardsBetReportEntity>)> GetAsync(BetReportFilter filter);
     }
 
     public class ThreeCardsReportRepository : BaseBetReportRepository, IThreeCardsReportRepository
@@ -18,13 +19,15 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(ThreeCardsRoundEntity, IEnumerable<ThreeCardsBetReportEntity>)> GetAsync(long roundId, string nickname, bool excludeUUS)
+        public async Task<(ThreeCardsRoundEntity, IEnumerable<ThreeCardsBetReportEntity>)> GetAsync(BetReportFilter filter)
         {
-            var roundResult = await database.GetCollection<ThreeCardsRoundEntity>(Document.GetCollectionName(typeof(ThreeCardsRoundEntity))).Find(x => x.Number == roundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<ThreeCardsRoundEntity>(Document.GetCollectionName(typeof(ThreeCardsRoundEntity)))
+                .Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<ThreeCardsBetEntity, ThreeCardsBetWithUnwindAccountsEntity>(roundId, nickname, excludeUUS: excludeUUS);
+                var project = GetBaseAggregateBuilder<ThreeCardsBetEntity, ThreeCardsBetWithUnwindAccountsEntity>(
+                    filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username);
 
                 var records = (await project.ToListAsync())
                     .Select(x => new ThreeCardsBetReportEntity
@@ -39,6 +42,9 @@ namespace GamesAdmin.Database
                         Hearts = x.Hearts,
                         Spades = x.Spades,
                         Clubs = x.Clubs,
+                        Currency = x.Currency,
+                        Rate = x.Rate,
+                        PartnerId = x.OperatorId
                     });
 
                 return (roundResult, records);

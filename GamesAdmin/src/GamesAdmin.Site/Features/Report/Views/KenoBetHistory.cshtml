@@ -14,24 +14,25 @@
                     <th class="col-date">Date (GMT+7)</th>
                     <th>Choice</th>
                     <th class="col-number">Amount</th>
-
                 </tr>
             </thead>
             <tbody>
-                @foreach (var bet in Model.BetHistories)
+                @foreach (var bet in Model.Bets)
                 {
 
                     <tr>
-                        <td>@bet.Time.ToReportDateTimeFormat(Model.TimeZoneInfo)</td>                        
+                        <td>@bet.Time.ToString(GamesAdmin.Core.Constants.DateTimeFormat)</td>
                         <td>
                             @bet.Choice
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amount)</td>
+                        <td class="text-right">
+                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
+                        </td>
                     </tr>
                 }
             </tbody>
             <tfoot>
-                @if (!Model.BetHistories.Any())
+                @if (!Model.Bets.Any())
                 {
                     <tr>
                         <td class="text-center" colspan="13">No data</td>

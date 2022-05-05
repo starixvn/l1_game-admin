@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
@@ -52,24 +54,34 @@ namespace GamesAdmin.Api.ChatBot
 
             msgBuilder.Append(string.Format(HighStakeMessageTemplate, charName, request.Amount));
             msgBuilder.Append($"{Separator}{game}");
-            msgBuilder.Append(GetSystemName(request.System));
+            msgBuilder.Append(GetSystemName(request.System, request.Metadata));
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
             return await Task.FromResult(new ChatBotResult());
         }
 
-        private static string GetSystemName(byte system)
+        private static string GetSystemName(byte system, Dictionary<string, string> metadata)
         {
             var systemName = Enum.Parse<Systems>(system.ToString());
 
             return systemName switch
             {
                 Systems.Mobi => $"{Separator}SM",
-                Systems.Instant => $"{Separator}SI",
+                Systems.Instant => $"{Separator}SI{GetModeName(metadata)}",
                 Systems.Cocos => string.Empty,
                 _ => string.Empty,
             };
+        }
+
+        private static string GetModeName(Dictionary<string, string> metadata)
+        {
+            if(metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.Value)
+            {
+                return $"-{ClientDisplayMode.Portrait.DisplayName}";
+            }
+
+            return string.Empty;
         }
     }
 }

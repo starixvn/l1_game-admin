@@ -128,6 +128,8 @@ namespace GamesAdmin.Core.Models
     {
         public long HandId { get; set; }
 
+        public int ExchangeRateId { get; set; }
+
         public decimal Bet { get; set; }
 
         public byte Point { get; set; }
@@ -215,6 +217,8 @@ namespace GamesAdmin.Core.Models
         public bool Paid { get; set; }
 
         public string Partner { get; set; }
+
+        public int ExchangRateId { get; set; }
     }
 
     public class SlotGameBonusChest
@@ -310,7 +314,7 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
 
-    public class CasinoHoldemPokerBetRecord : BetRecord
+    public class HoldemPokerBetRecord : BetRecord
     {
         public long RoundId { get; set; }
 
@@ -324,6 +328,23 @@ namespace GamesAdmin.Core.Models
 
         public bool IsFold { get; set; }
 
-        public bool IsQualified { get; set; }
+        public bool? IsQualified { get; set; }
+
+        public bool? IsSwappedOrHold { get; set; }
+
+        public int ExchangeRateId { get; set; }
+
+        public decimal TotalWin { get; set; }
+    }
+
+    public class HiLoBetRecord : BetRecord
+    {
+        public decimal Amount { get; set; }
+
+        public long RoundId { get; set; }
+
+        public bool Paid { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 }

@@ -1,12 +1,38 @@
-﻿namespace GamesAdmin.Core.Enumeration
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Enumeration
 {
     public class Language : Enumeration
     {
-        public const string VnValue = "vi-VN";
-        public const string EnValue = "en-US";
+        public const string VN = "vi-VN";
+        public const string EN = "en-US";
+        public const string CN = "zh-CN";
+        public const string TW = "zh-TW";
+        public const string TH = "th-TH";
+        public const string ID = "id-ID";
 
-        public static readonly Language Vn = new Language(VnValue, "VN");
-        public static readonly Language En = new Language(EnValue, "EN");
+        public const string DefaultLanguageValue = VN;
+        public static readonly Language DefaultLanguage = new Language(DefaultLanguageValue, "VN");
+
+        public static Dictionary<string, string> SupportedLanguages = new Dictionary<string, string>
+        {
+            [VN] = "Message (VN)",
+            [EN] = "Message (EN)",
+            [CN] = "Message (CN)",
+            [TW] = "Message (TW)",
+            [TH] = "Message (TH)",
+            [ID] = "Message (ID)",
+        };
+
+        public static Dictionary<string, string> LanguageMapper = new Dictionary<string, string>
+        {
+            [VN] = "VNMessage",
+            [EN] = "ENMessage",
+            [CN] = "CNMessage",
+            [TW] = "TWMessage",
+            [TH] = "THMessage",
+            [ID] = "IDMessage",
+        };
 
         public Language()
         {

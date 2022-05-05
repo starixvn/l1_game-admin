@@ -1,0 +1,189 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Models.BetReport;
+@using GamesAdmin.Core;
+
+@model HoldemPokerBetHistoryViewModel
+
+@{
+    string noData = "No Data Available";
+    var record = Model.Record;
+    var isFinishRoundAndNotFold = record.Ended && !record.IsFold;
+    var isRunningRoundAndNotPassSwapStep = record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value && !record.Ended;
+    var isRunningRoundOrFold = record.IsFold || (record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value);
+}
+<div>
+    <div>
+        <strong>Round Id: @record.RoundId</strong>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cards</th>
+                    <th>Combination</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (record.ChoiceHistories.Count() > 0)
+                {
+                    <tr>
+                        <td>Player</td>
+                        <td>
+                            @if (isRunningRoundAndNotPassSwapStep)
+                            {
+                                await RenderEmptyCards();
+                            }
+                            else
+                            {
+                                await RenderCards(record.Player.Cards);
+                            }
+                        </td>
+                        <td>
+                            @if (isRunningRoundOrFold)
+                            {
+                                RenderEmptyCell();
+                            }
+                            else
+                            {
+                                await RenderCards(record.Player.CombinationCards);
+                            }
+                        </td>
+                        <td>
+                            @if (isRunningRoundAndNotPassSwapStep)
+                            {
+                                RenderEmptyCell();
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    @(record.IsFold ? "Fold" : record.Player.Rank)
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dealer</td>
+                        <td>
+                            @if (isFinishRoundAndNotFold)
+                            {
+                                await RenderCards(record.Dealer.Cards);
+                            }
+                            else
+                            {
+                                await RenderEmptyCards();
+                            }
+
+                        </td>
+                        <td>
+                            @if (isFinishRoundAndNotFold)
+                            {
+                                await RenderCards(record.Dealer.CombinationCards);
+                            }
+                            else
+                            {
+                                RenderEmptyCell();
+                            }
+                        </td>
+                        <td>
+                            @if (isFinishRoundAndNotFold)
+                            {
+                                <div class="text-center">
+                                    @(record.IsQualified.HasValue && !record.IsQualified.Value ? "Does Not Qualify" : record.Dealer.Rank)
+                                </div>
+                            }
+                            else
+                            {
+                                RenderEmptyCell();
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Community Cards</td>
+                        <td>@{await RenderCards(record.CommunityCards);}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            @noData
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-5">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Time (GMT + 7)</th>
+                    <th>Bet Choice</th>
+                    <th>Odds</th>
+                    <th>Stake</th>
+                    <th>Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (record.ChoiceHistories.Count() > 0)
+                {
+                    foreach (var choice in record.ChoiceHistories)
+                    {
+                        <tr class="@(choice.Win > 0 ? "text-blue bold" : string.Empty)">
+                            <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(choice.Time, Model.TimeZone)</td>
+                            <td class="text-center">@choice.Choice</td>
+                            <td class="text-center">@choice.Odd</td>
+                            <td class="text-center">@FormatCurrency(record, choice.Stake)</td>
+                            <td class="text-center">@(record.Ended ? FormatCurrency(record, choice.Win) : "Unfinished Game")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            @noData
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions
+{
+    private string FormatCurrency(HoldemPokerBetHistory record, decimal value)
+    {
+        return @HtmlHelpers.formatNumber(record.ConvertToUSD ? record.ConvertToBase(value) : value);
+    }
+
+    private async Task RenderCards(IEnumerable<PokerCard> cards)
+    {
+        <div class="cards">
+            @foreach (var card in cards)
+            {
+                <div class="card card-type-@card.suit">
+                    <span>@CardLabels.DisplayedName[card.rank]</span>
+                    <img class="img" src="~/images/card_@(card.suit).png" />
+                </div>
+            }
+        </div>
+    }
+
+    private void RenderEmptyCell()
+    {
+        <div class="cards text-center">-</div>
+    }
+
+    private async Task RenderEmptyCards()
+    {
+        <div class="cards">
+            <img class="card" src="~/images/card_back.png" />
+            <img class="card" src="~/images/card_back.png" />
+        </div>
+    }
+}
+

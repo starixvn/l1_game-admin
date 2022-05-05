@@ -3,16 +3,18 @@
 
 @model SlotGameReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
-        <table class="table table-bordered table-hover sticky-table">
+        <table id="tbl-slot-game" class="table table-bordered table-hover sticky-table">
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-nickname">Partner</th>
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
                     <th class="col-number">Round</th>
-                    <th class="col-number">Stake</th>
+                    <th class="col-exchange-id">Exchange Id</th>
                     <th class="col-number">Payline</th>
                     <th class="col-number">Total Stake</th>
                     <th class="col-number">Win</th>
@@ -24,14 +26,17 @@
 
                     <tr>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bet.Partner</td>
                         <td>@bet.Username</td>
                         <td>@bet.Nickname</td>
+                        <td>@bet.Currency</td>
                         <td class="text-center">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="GetSlotGameBetHistory"
                                asp-route-roundId="@bet.RoundId"
                                asp-route-nickname="@bet.Nickname"
-                               asp-route-game="@bet.Game">
+                               asp-route-game="@bet.Game"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @bet.RoundId
                                 @if (bet.SettlementResult.Jackpot != null)
                                 {
@@ -39,7 +44,7 @@
                                 }
                             </a>
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Bet)</td>
+                        <td class="text-center">@bet.ExchangeRateId</td>
                         <td class="text-center">@bet.Paylines.Count()</td>
                         <td class="text-right">@(bet.FreeSpin ? "0" : HtmlHelpers.formatNumber(bet.TotalAmount))</td>
                         <td class="text-right">
@@ -55,14 +60,6 @@
                     </tr>
                 }
             </tbody>
-            <tfoot>
-                @if (!Model.Records.Any())
-                {
-                    <tr>
-                        <td class="text-center" colspan="10">No data</td>
-                    </tr>
-                }
-            </tfoot>
         </table>
     </div>
 </div>

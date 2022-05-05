@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
 {

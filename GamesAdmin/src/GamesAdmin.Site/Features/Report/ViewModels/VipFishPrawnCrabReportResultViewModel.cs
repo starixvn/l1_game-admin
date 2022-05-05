@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class VipFishPrawnCrabReportResultViewModel
+    public class VipFishPrawnCrabReportResultViewModel : ReportResultViewModel
     {
         public VipFishPrawnCrabRoundResultViewModel RoundResult { get; set; }
         public IEnumerable<VipFishPrawnCrabRecordViewModel> Records { get; set; }

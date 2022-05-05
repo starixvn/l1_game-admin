@@ -239,10 +239,31 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data) {
-                        window.open(data.redirectUrl, "_blank", "width=1020,height=765");
+                        window.open(adminMonitoringUrl + "/ResultMonitor/Index" + "?gameName=" + data.gameName + "&token=" + data.token, "_blank", "width=1020,height=765");
+                        //window.open(adminMonitoringUrl + data.redirectUrl + "&token=" + data.token, "_blank", "width=1020,height=765");
                     }
                 });
         },
+
+        setControlResultHoldemPoker: function (event, gameName) {
+            event.preventDefault();
+            this.setResultControl("HoldemPokderResult", gameName);
+        },
+
+        setControlResultSlotGame: function (event, gameName) {
+            event.preventDefault();
+            this.setResultControl("SlotResult", gameName);
+        },
+
+        setControlResultHiLo: function (event) {
+            event.preventDefault();
+            this.setResultControl("HiLoResult");
+        },
+
+        setResultControl: function (action, gameName) {
+            window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
+        },
+
         submit: function () {
             $('#updateBtn').prop('disabled', true);
             let requestUrl = "/update";
@@ -284,10 +305,12 @@
         },
 
         updateMessage: function () {
-            var vnMessage = $('#vnMessage').val();
-            var enMessage = $('#enMessage').val();
             var name = $('#applyAllCheckbox').is(":checked") ? "" : $('#msgGameName').val();
-            var data = { name, vnMessage, enMessage };
+            var data = { name, messages: {} };
+            Object.keys(supportedLanguages).forEach(l => {
+                data.messages[l] = $(`#message-${l.toLowerCase()}`).val();
+            });
+
             $('#updateMsgBtn').prop('disabled', true);
 
             $.ajax({
@@ -320,8 +343,10 @@
             }).done(function (result) {
                 $('#msgGameName').val(name);
                 $('#updateMsgGameName').html(displayName);
-                $('#vnMessage').val(result["vi-VN"]);
-                $('#enMessage').val(result["en-US"]);
+
+                Object.keys(supportedLanguages).forEach(c => {
+                    $(`#message-${c.toLowerCase()}`).val(result[c]);
+                })
 
                 $('#messageModal').modal('show');
             });

@@ -6,7 +6,10 @@ namespace GamesAdmin.Core.Models
     public class RoundResult
     {
         public DateTime Time { get; set; }
+
         public long Number { get; set; }
+
+        public int ExchangeRateId { get; set; }
     }
 
     public class BigSmallRoundResult : RoundResult
@@ -285,38 +288,18 @@ namespace GamesAdmin.Core.Models
         public bool RedSmall { get; set; }
     }
 
-    public class CasinoHoldemPokerRoundResult : RoundResult
+    public class HiLoRoundResult : RoundResult
     {
-        public CasinoHoldemPokerResult Result { get; set; }
+        public DateTime? EndTime { get; set; }
 
-        public CasinoHoldemPokerSettlementResult SettlementResult { get; set; }
-    }
+        public decimal Amount { get; set; }
 
-    public class CasinoHoldemPokerResult
-    {
-        public DateTime Time { get; set; }
-        public long Round { get; set; }
-        public bool IsQualified { get; set; }
-        public bool Ended { get; set; }
-        public bool IsFold { get; set; }
-        public IEnumerable<PokerCard> Dealer { get; set; }
-        public IEnumerable<PokerCard> CommunityCards { get; set; }
-        public IEnumerable<PokerCard> DealerCombinationCards { get; set; }
-        public byte HandRankId { get; set; }
-    }
+        public decimal Betwin { get; set; }
 
-    public class CasinoHoldemPokerSettlementResult
-    {
-        public long Number { get; set; }
-        public bool AA { get; set; }
-        public bool Ante { get; set; }
-        public bool Call { get; set; }
-    }
+        public bool Paid { get; set; }
 
-    public class PokerCard
-    {
-        public byte rank { get; set; }
-
-        public byte suit { get; set; }
+        public string Currency { get; set; }
+        public string PartnerId { get; set; }
+        public decimal Rate { get; set; }
     }
 }

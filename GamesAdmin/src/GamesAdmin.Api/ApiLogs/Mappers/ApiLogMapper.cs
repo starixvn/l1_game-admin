@@ -33,6 +33,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<PartnerLogEntity, PartnerLog>()
                 .ConstructUsing((entity, context) => new PartnerLog(
                     entity.PartnerId,
+                    entity.OperatorId,
                     entity.LogTimeStamp,
                     entity.RequestTimeStamp,
                     MapRequest<IApiLogRequest>(context, entity.Call, typeof(PartnerCallEntity), typeof(PartnerCall)),

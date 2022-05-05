@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.ApiLogs
 {
@@ -8,6 +9,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public PartnerLog(
             string partnerId,
+            string operatorId,
             DateTimeOffset logTimeStamp,
             DateTimeOffset requestTimeStamp,
             IApiLogRequest call,
@@ -19,6 +21,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             PartnerId = partnerId;
+            OperatorId = operatorId;
             LogTimeStamp = logTimeStamp;
             RequestTimeStamp = requestTimeStamp;
             Call = call;
@@ -30,6 +33,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
         }
 
         public string PartnerId { get; }
+        public string OperatorId { get; }
 
         public DateTimeOffset LogTimeStamp { get; }
 
@@ -46,5 +50,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string AccessKey { get; }
 
         public IApiLogArchive Archive { get; }
+
+        public Dictionary<string, string> Metadata { get; set; }
     }
 }

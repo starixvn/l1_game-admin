@@ -1,17 +1,19 @@
 ﻿@using GamesAdmin.Site.Features.Report.ViewModels;
 @using GamesAdmin.Core.Enumeration.BetChoices;
 @using GamesAdmin.Site.Extensions
+@using GamesAdmin.Core
 
 @model KenoReportViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
-        @if (Model.RoundResult.Results?.Length > 0)
+        @if (Model.RoundResult.Results != null)
         {
             <table class="table table-bordered table-hover stripe tble-vietlot">
                 <thead>
                     <tr>
                         <th>Round ID / Date (GMT+7)</th>
+                        <th>Exchange ID</th>
                         <th>Result</th>
                         <th>Total Points</th>
                         <th>Big / Small</th>
@@ -25,6 +27,7 @@
                             @Model.RoundId.ToString("D7")
                             <div>@Model.RoundResult.Time?.ToReportDateTimeFormat(Model.TimeZoneInfo)</div>
                         </td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td>
                             <div class="list-numbers">
                                 @foreach (var number in Model.RoundResult.Results)
@@ -47,8 +50,10 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
+                    <th>Partner</th>
                     <th>Username</th>
                     <th>Nickname</th>
+                    <th>Currency</th>
                     <th>@KenoBetChoice.Big.DisplayName</th>
                     <th>@KenoBetChoice.Small.DisplayName</th>
                     <th>@KenoBetChoice.Even.DisplayName</th>
@@ -59,7 +64,6 @@
                     <th>@KenoBetChoice.Fire.DisplayName</th>
                     <th>@KenoBetChoice.Earth.DisplayName</th>
                     <th class="col-number">Win</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -67,23 +71,31 @@
                 {
 
                     <tr>
-                        <td>@bet.Time.ToReportDateTimeFormat(Model.TimeZoneInfo)</td>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
                         <td>@bet.Username</td>
                         <td>
-                            <a href="#" onclick="report.showBetHistory( '@Model.Game.Value', '@Model.RoundId', '@bet.Nickname');">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="KenoBetHistory"
+                               asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundId"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @bet.Nickname
                             </a>
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Big.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Small.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Even.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Odd.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Gold.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Wood.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Water.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Fire.Value])</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amounts[@KenoBetChoice.Earth.Value])</td>
-                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(bet.BetWin)) </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Big.Value]) : bet.Amounts[@KenoBetChoice.Big.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Small.Value]) : bet.Amounts[@KenoBetChoice.Small.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Even.Value]) : bet.Amounts[@KenoBetChoice.Even.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Odd.Value]) : bet.Amounts[@KenoBetChoice.Odd.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Gold.Value]) : bet.Amounts[@KenoBetChoice.Gold.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Wood.Value]) : bet.Amounts[@KenoBetChoice.Wood.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Water.Value]) : bet.Amounts[@KenoBetChoice.Water.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Fire.Value]) : bet.Amounts[@KenoBetChoice.Fire.Value])</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amounts[@KenoBetChoice.Earth.Value]) : bet.Amounts[@KenoBetChoice.Earth.Value])</td>
+                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)) </td>
                     </tr>
 
                 }
@@ -92,23 +104,23 @@
                 @if (Model.Total == 0)
                 {
                     <tr>
-                        <td class="text-center" colspan="13">No data</td>
+                        <td class="text-center" colspan="15">No data</td>
                     </tr>
                 }
-                else
+                else if (Model.ConvertToUSD)
                 {
                     <tr class="total">
-                        <td colspan="3">Total</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Big.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Small.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Even.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Odd.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Gold.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Wood.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Water.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Fire.Value]))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.Amounts[@KenoBetChoice.Earth.Value]))</td>
-                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BetWin)))</td>
+                        <td colspan="5">Total in INH</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Big.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Small.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Even.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Odd.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Gold.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Wood.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Water.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Fire.Value])))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Earth.Value])))</td>
+                        <td class="text-right">@(Model.RoundResult.Results == null ? "Running" : HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.BaseBetWin)))</td>
                     </tr>
                 }
             </tfoot>

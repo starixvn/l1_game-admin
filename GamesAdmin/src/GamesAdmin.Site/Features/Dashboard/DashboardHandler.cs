@@ -128,7 +128,9 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.KenoSouth.DisplayName, Game.KenoSouth.Value),
                 new SelectListItem(Game.KenoNorth.DisplayName, Game.KenoNorth.Value),
                 new SelectListItem(Game.CasinoHoldemPoker.DisplayName, Game.CasinoHoldemPoker.Value),
-                new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value)
+                new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value),
+                new SelectListItem(Game.HiLo.DisplayName, Game.HiLo.Value),
+                new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value)
                 };
     }
 }

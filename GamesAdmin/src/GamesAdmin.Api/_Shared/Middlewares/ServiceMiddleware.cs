@@ -1,4 +1,6 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Net.Http;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
@@ -6,8 +8,6 @@ using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
-using GamesAdmin.Api.DailySummarize;
-using GamesAdmin.Api.EndGameInfo;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
@@ -16,15 +16,12 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
-using GamesAdmin.Api.Report.KenoReports;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using System;
-using System.Net.Http;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -47,7 +44,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
-            services.AddScoped<IDailySummaryService, DailySummaryService>();
             services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<IGlobalConfigService, GlobalConfigService>();
@@ -55,74 +51,19 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<ICurrencyGroupService, CurrencyGroupService>();
             services.AddScoped<IChipService, ChipService>();
-
-            services.AddScoped<IKenoReportFactory, KenoReportFactory>();
-            services.AddScoped<KenoProVietReport>()
-                        .AddScoped<IKenoReport, KenoProVietReport>(s => s.GetService<KenoProVietReport>());
-            services.AddScoped<KenoMaxReport>()
-                        .AddScoped<IKenoReport, KenoMaxReport>(s => s.GetService<KenoMaxReport>());
-            services.AddScoped<KenoMax2Report>()
-                        .AddScoped<IKenoReport, KenoMax2Report>(s => s.GetService<KenoMax2Report>());
-            services.AddScoped<KenoMiniReport>()
-                        .AddScoped<IKenoReport, KenoMiniReport>(s => s.GetService<KenoMiniReport>());
-            services.AddScoped<KenoMini2Report>()
-                        .AddScoped<IKenoReport, KenoMini2Report>(s => s.GetService<KenoMini2Report>());
-            services.AddScoped<KenoEastReport>()
-                        .AddScoped<IKenoReport, KenoEastReport>(s => s.GetService<KenoEastReport>());
-            services.AddScoped<KenoWestReport>()
-                        .AddScoped<IKenoReport, KenoWestReport>(s => s.GetService<KenoWestReport>());
-            services.AddScoped<KenoSouthReport>()
-                        .AddScoped<IKenoReport, KenoSouthReport>(s => s.GetService<KenoSouthReport>());
-            services.AddScoped<KenoNorthReport>()
-                        .AddScoped<IKenoReport, KenoNorthReport>(s => s.GetService<KenoNorthReport>());
-            services.AddScoped<KenoProMaxReport>()
-                        .AddScoped<IKenoReport, KenoProMaxReport>(s => s.GetService<KenoProMaxReport>());
+            services.AddScoped<IHoldemPokerReportService, HoldemPokerReportService>();
 
             services.AddScoped<ISlotGameReportFactory, SlotGameReportFactory>();
             services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
 
-            services.AddScoped<IEndGameInfoServiceFactory, EndGameInfoServiceFactory>();
-            services.AddScoped<BigSmallEndGameInfoService>();
-            services.AddScoped<BigSmallTurboEndGameInfoService>();
-            services.AddScoped<OddEvenEndGameInfoService>();
-            services.AddScoped<OddEvenTurboEndGameInfoService>();
-            services.AddScoped<FishPrawnCrabEndGameInfoService>();
-            services.AddScoped<SeDieEndGameInfoService>();
-            services.AddScoped<MiniSeDieEndGameInfoService>();
-            services.AddScoped<DragonTigerEndGameInfoService>();
-            services.AddScoped<BaccaratEndGameInfoService>();
-            services.AddScoped<VipBaccaratEndGameInfoService>();
-            services.AddScoped<KenoProMaxEndGameInfoService>();
-            services.AddScoped<KenoProVietEndGameInfoService>();
-            services.AddScoped<KenoMaxEndGameInfoService>();
-            services.AddScoped<KenoMax2EndGameInfoService>();
-            services.AddScoped<KenoMiniEndGameInfoService>();
-            services.AddScoped<KenoMini2EndGameInfoService>();
-            services.AddScoped<KenoEastEndGameInfoService>();
-            services.AddScoped<KenoWestEndGameInfoService>();
-            services.AddScoped<KenoSouthEndGameInfoService>();
-            services.AddScoped<KenoNorthEndGameInfoService>();
-            services.AddScoped<RouletteEndGameInfoService>();
-            services.AddScoped<VipSeDieEndGameInfoService>();
-            services.AddScoped<BlackjackEndGameInfoService>();
-            services.AddScoped<SpecialSeDieEndGameInfoService>();
-            services.AddScoped<VipFishPrawnCrabEndGameInfoService>();
-            services.AddScoped<SicBoEndGameInfoService>();
-            services.AddScoped<VipSeDieWarEndGameInfoService>();
-            services.AddScoped<FourGuardiansEndGameInfoService>();
-            services.AddScoped<LotteryEndGameInfoService>();
-            services.AddScoped<ThreeCardsEndGameInfoService>();
-            services.AddScoped<HeroesSlotEndGameInfoService>();
-            services.AddScoped<BitcoinMasterEndGameInfoService>();
-            services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
-            services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
-            services.AddScoped<CasinoHoldemPokerEndGameInfoService>();
-
             services.AddScoped<IGameServerService, GameServerService>();
-            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
 
-            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
+            services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));
+            services.AddSingleton(RestService.For<INotificationServiceApi>(appSettings.GameServers.NotificationService.Api, refitSettings));
+
+            services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.UserService.Api, refitSettings));
             services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
             services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
             services.AddSingleton(RestService.For<ISpecialSedieOnlineUserApi>(appSettings.GameServers.SpecialSedie.Api, refitSettings));
@@ -156,6 +97,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
             services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
             services.AddSingleton(RestService.For<ICasinoHoldemPokerOnlineUserApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<IHiLoApi>(appSettings.GameServers.HiLo.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITexasHoldemPokerOnlineUserApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -163,8 +106,42 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
             services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
+
             AddSlotServices(services, appSettings, refitSettings);
+            AddHoldemPokerServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
+
+            services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
+            services.AddScoped<SeDieReportService>();
+            services.AddScoped<MiniSeDieReportService>();
+            services.AddScoped<FishPrawnCrabReportService>();
+            services.AddScoped<DragonTigerReportService>();
+            services.AddScoped<BaccaratReportService>();
+            services.AddScoped<RouletteReportService>();
+            services.AddScoped<VipSeDieReportService>();
+            services.AddScoped<BlackjackReportService>();
+            services.AddScoped<SicBoReportService>();
+            services.AddScoped<VipFishPrawnCrabReportService>();
+            services.AddScoped<VipBaccaratReportService>();
+            services.AddScoped<LotteryReportService>();
+            services.AddScoped<ThreeCardsReportService>();
+            services.AddScoped(typeof(KenoMatchReportService<,,>));
+            services.AddScoped(typeof(KenoPowerReportService<,,>));
+            services.AddScoped(typeof(MiniKenoReportService<,,>));
+            services.AddScoped<VipSeDieWarReportService>();
+            services.AddScoped<KenoProMaxReportService>();
+            services.AddScoped<HiLoReportService>();
+
+            services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
+            services.AddScoped<SeDieReportService>();
+            services.AddScoped<MiniSeDieReportService>();
+            services.AddScoped<FishPrawnCrabReportService>();
+            services.AddScoped<DragonTigerReportService>();
+            services.AddScoped<BaccaratReportService>();
+            services.AddScoped<RouletteReportService>();
+            services.AddScoped<VipSeDieReportService>();
+            services.AddScoped<BlackjackReportService>();
+            services.AddScoped<SicBoReportService>();
 
             services.InitApiLog();
         }
@@ -174,6 +151,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
+        }
+
+        private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddScoped<IHoldemPokerApiFactory, HoldemPokerApiFactory>();
+            services.AddSingleton(RestService.For<ICasinoHoldemPokerApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITexasHoldemPokerApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)

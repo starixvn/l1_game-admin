@@ -3,7 +3,7 @@
 
 @model ThreeCardsReportResultViewModel
 
-<div class="row">
+<div class="row row-table">
     <div class="col-sm-12">
         @if (Model.RoundResult.Number != 0)
         {
@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th>Round ID</th>
+                        <th>Exchange ID</th>
                         <th>Results</th>
                         <th>Winning Options</th>
                     </tr>
@@ -18,6 +19,7 @@
                 <tbody>
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center threecards-result">
                             <div class="cards">
                                 @foreach (var card in Model.RoundResult.Result)
@@ -28,7 +30,6 @@
                                     </div>
                                 }
                             </div>
-
                         </td>
                         <td class="text-center">
                             @(Model.RoundResult.SettlementResult.Red ? "Red" : "Black")
@@ -58,8 +59,10 @@
                 <tr>
                     <th rowspan="2">Round ID</th>
                     <th rowspan="2" class="col-date">Date (GMT+7)</th>
+                    <th rowspan="2">Partner</th>
                     <th rowspan="2">Username</th>
                     <th rowspan="2" class="col-nickname">Nickname</th>
+                    <th rowspan="2">Currency</th>
                     <th colspan="6" class="col-number">Stake</th>
                     <th rowspan="2" class="col-number">Win</th>
                 </tr>
@@ -81,17 +84,19 @@
                             @Model.RoundResult.Number
                         </td>
                         <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
                         <td>@bet.Username</td>
                         <td>
                             @bet.Nickname
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Red)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Black)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Diamonds)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Hearts)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Spades)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Clubs)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Red) : bet.Red)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Black) : bet.Black)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Diamonds) : bet.Diamonds)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Hearts) : bet.Hearts)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Spades) : bet.Spades)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Clubs) : bet.Clubs)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)</td>
                     </tr>
                 }
             </tbody>
@@ -99,23 +104,25 @@
                 @if (!Model.Records.Any())
                 {
                     <tr>
-                        <td class="text-center" colspan="11">No data</td>
+                        <td class="text-center" colspan="13">No data</td>
                     </tr>
                 }
-                else
+                else if (Model.ConvertToUSD)
                 {
                     <tr class="total">
-                        <td>Total</td>
+                        <td>Total in INH</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Red))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Black))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Diamonds))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Hearts))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Spades))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.Clubs))</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BetWin))</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Red)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Black)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Diamonds)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Hearts)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Spades)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Clubs)))</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
                     </tr>
                 }
             </tfoot>

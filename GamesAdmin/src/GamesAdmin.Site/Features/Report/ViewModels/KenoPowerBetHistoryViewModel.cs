@@ -4,7 +4,7 @@ using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class KenoPowerBetHistoryViewModel
+    public class KenoPowerBetHistoryViewModel : BetHistoryViewModel
     {
         public KenoPowerRoundResultViewModel RoundResult { get; set; }
 
@@ -13,12 +13,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public Dictionary<string, decimal> Odds { get; set; }
     }
 
-    public class KenoPowerBetHistoryRecordViewModel
+    public class KenoPowerBetHistoryRecordViewModel : BetHistoryRecordViewModel
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }

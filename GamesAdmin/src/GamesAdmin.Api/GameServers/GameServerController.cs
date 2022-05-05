@@ -1,12 +1,13 @@
-﻿using GamesAdmin.Api._Shared;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -32,16 +33,28 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> OnlineUsers(string game)
            => mediator.Send(new OnlineUserRequest(game));
 
-        [HttpPost("notify_proviet_results")]
-        public Task<bool> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)
-           => mediator.Send(new NotifyRoundsRequest(kenoRounds));
-
         [HttpPost("slot/set_board")]
         public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
            => mediator.Send(request);
 
-        [HttpPost("casinoholdempoker/set_result")]
-        public Task<CasinoHoldemPokerResultControl> SetCasinoHoldemPokerResult([FromBody] SetCasinoHoldemPokerResultRequest request)
+        [HttpPost("holdempoker/set_result")]
+        public Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request)
            => mediator.Send(request);
+
+        [HttpPost("hilo/set_result")]
+        public Task<IEnumerable<HiloCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
+            => mediator.Send(request);
+
+        [HttpPost("get_admin_monitoring_settings")]
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+            => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
+
+        [HttpPost("verify_admin_monitoring_token")]
+        public Task<bool> VerifyAdminMonitoringToken(string token)
+            => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
+
+        [HttpGet("connected_users")]
+        public Task<int> ConnectedUsers()
+           => mediator.Send(new ConnectedUserRequest());
     }
 }

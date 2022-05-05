@@ -12,7 +12,7 @@
     return {
         init: function () {
             $('#online-users-table').DataTable({
-                "order": [[0, "asc"]],
+                "order": [[1, "asc"]],
                 "lengthMenu": [100, 200, 500]
             });
         },

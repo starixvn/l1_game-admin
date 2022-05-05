@@ -2,14 +2,8 @@
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class ThreeCardsBetReportEntity
+    public class ThreeCardsBetReportEntity : BetReportEntity
     {
-        public DateTime Time { get; set; }
-
-        public string Username { get; set; }
-
-        public string Nickname { get; set; }
-
         public decimal Red { get; set; }
 
         public decimal Black { get; set; }

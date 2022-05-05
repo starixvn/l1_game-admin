@@ -5,6 +5,5 @@ namespace GamesAdmin.Site.Features.Dashboard.Requests
 {
     public class GetOnlineUsersRequest : IRequest<OnlineUsersViewModel>
     {
-
     }
 }

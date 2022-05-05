@@ -20,8 +20,10 @@
 <table id="status-tbl" class="table table-bordered has-background tbl-notification col-sm-12">
     <thead>
         <tr>
-            <th>Message (Vn)</th>
-            <th>Message (En)</th>
+            @foreach (var l in Language.SupportedLanguages)
+            {
+                <th>@l.Value</th>
+            }
             <th class="col-display">Display As</th>
             <th class="col-options">Actions</th>
         </tr>
@@ -37,8 +39,13 @@
         @foreach (var notification in Model.Notifications)
         {
             <tr>
-                <td>@(notification.Messages?[Language.VnValue] != null ? notification.Messages[Language.VnValue] : notification.Message) </td>
-                <td>@(notification.Messages?[Language.EnValue] != null ? notification.Messages[Language.EnValue] : string.Empty)</td>
+                @foreach (var l in Language.LanguageMapper)
+                {
+                    var isDefault = l.Key == Language.DefaultLanguageValue && notification.Messages?[Language.DefaultLanguageValue] == null;
+                    var message = notification.Messages == null || !notification.Messages.ContainsKey(l.Key)
+                        ? string.Empty : notification.Messages[l.Key];
+                    <td>@(isDefault && string.IsNullOrWhiteSpace(message) ? notification.Message : message) </td>
+                }
                 <td class="text-center">@notification.DisplayKind.DisplayName</td>
                 <td class="text-center">
                     <a asp-controller="Notification" asp-action="Edit" asp-route-id="@notification.Id" class="action-link"><i class="icon-edit"></i></a>

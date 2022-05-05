@@ -6,6 +6,7 @@ namespace GamesAdmin.Site._Shared
     public enum CachedKeys
     {
         OnlineUsers,
+        JwtAdminUserToken
     }
 
     public interface ICacheManager

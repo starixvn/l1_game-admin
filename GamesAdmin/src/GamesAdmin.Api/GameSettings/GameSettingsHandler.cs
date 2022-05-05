@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateStatus(request.Names, request.Enabled);
 
         public Task<bool> Handle(UpdateDisabledMessageRequest request, CancellationToken cancellationToken)
-        => gameService.UpdateDisbledMessage(request.Name, request.Messages, request.IsApplyAll);
+        => gameService.UpdateDisabledMessage(request.Name, request.Messages, request.IsApplyAll);
 
         public Task<bool> Handle(UpdateBetLimitRequest request, CancellationToken cancellationToken)
         => gameService.UpdateBetLimit(request.Name, request.BetLimit);

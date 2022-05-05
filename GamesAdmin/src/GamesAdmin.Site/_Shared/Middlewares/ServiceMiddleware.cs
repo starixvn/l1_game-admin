@@ -16,7 +16,6 @@ using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
-using GamesAdmin.Site.Features.ResultMonitor;
 using GamesAdmin.Site.Features.UmSchedule;
 using GamesAdmin.Site.Features.Users;
 using GamesAdmin.Site.Features.VoidGame;
@@ -73,8 +72,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
-            services.AddSingleton(RestService.For<IResultMonitorApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IResultMonitorService, ResultMonitorService>();
 
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddSingleton(RestService.For<IGlobalConfigApi>(appSettings.ApiHost, refitSettings));
@@ -92,8 +89,11 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IChipService, ChipService>();
 
             services.AddSingleton(RestService.For<IExchangeRateApi>(appSettings.ApiHost, refitSettings));
+            services.AddSingleton<IExchangeRateService, ExchangeRateService>();
 
             services.AddSingleton(RestService.For<ILogApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddReportServices();
         }
     }
 }

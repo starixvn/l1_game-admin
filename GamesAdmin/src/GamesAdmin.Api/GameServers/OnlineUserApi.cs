@@ -1,8 +1,9 @@
-﻿using GamesAdmin.Api.GameServers.Requests;
-using GamesAdmin.Core.Models;
-using GamesAdmin.Core.Models.RoundResults;
-using Refit;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Api.GameServers.Requests;
+using GamesAdmin.Core.Models;
+using Refit;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -211,12 +212,24 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
+    public interface ITexasHoldemPokerOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
     public interface ICasinoHoldemPokerOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IHiLoApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
 
         [Post("/api/set-result")]
-        Task<BaseCasinoHoldemPokerResultControl> SetResult([Body] SetCasinoHoldemPokerResultRequest request);
+        Task<IEnumerable<HiloCard>> SetResult([Body] SetHiLoResultRequest request);
     }
 }

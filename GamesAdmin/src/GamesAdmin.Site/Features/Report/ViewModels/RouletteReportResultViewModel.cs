@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class RouletteReportResultViewModel
+    public class RouletteReportResultViewModel : ReportResultViewModel
     {
         public RouletteRoundResultViewModel RoundResult { get; set; }
 

@@ -1,57 +1,52 @@
 ﻿.adjust-bot-link {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
-}
-.adjust-bot-link .bot {
-  position: relative;
-  top: 4px;
-  left: -3px;
-  font-size: 1.8rem;
-}
+  margin-bottom: 1.5rem; }
+  .adjust-bot-link .bot {
+    position: relative;
+    top: 4px;
+    left: -3px;
+    font-size: 1.8rem; }
 
 .adjust-bot-hours .modal-dialog {
-  max-width: 87rem;
-}
+  max-width: 87rem; }
+
 .adjust-bot-hours .modal-body {
   max-height: 52rem;
-  overflow: auto;
-}
+  overflow: auto; }
+
 .adjust-bot-hours .ratio {
   width: 5rem;
   height: 2.2rem;
   line-height: 2.2rem;
-  border-radius: 0.2rem;
+  border-radius: .2rem;
   border: 1px solid #ced4da;
-  text-align: center;
-}
+  text-align: center; }
+
 .adjust-bot-hours .table td {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  text-align: center;
-}
-.adjust-bot-hours .table td.ratio-cell {
-  text-align: left;
-}
+  text-align: center; }
+  .adjust-bot-hours .table td.ratio-cell {
+    text-align: left; }
+
 .adjust-bot-hours .table .options {
   margin-left: -12px;
-  margin-right: -12px;
-}
+  margin-right: -12px; }
+
 .adjust-bot-hours .table .bot-number {
   margin-top: 2px;
   font-size: 1.1rem;
-  color: #6c757d;
-}
+  color: #6c757d; }
+
 .adjust-bot-hours .table .col-gmt {
-  width: 120px;
-}
+  width: 120px; }
+
 .adjust-bot-hours .table .input-validation-error {
-  border: 1px solid #dc3545;
-}
+  border: 1px solid #dc3545; }
+
 .adjust-bot-hours .table .text-danger {
-  font-size: 1.1rem;
-}
+  font-size: 1.1rem; }
 
 .hidden-cls {
-  display: none;
-}
+  display: none; }

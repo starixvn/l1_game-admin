@@ -1,4 +1,7 @@
 ﻿using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report;
+using GamesAdmin.Database.Report.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api._Shared.Middlewares
@@ -10,20 +13,15 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<ISiteRepository, SiteRepository>();
-            services.AddScoped<IBigSmallReportRepository, BigSmallReportRepository>();
-            services.AddScoped<IBigSmallTurboReportRepository, BigSmallTurboReportRepository>();
-            services.AddScoped<IOddEvenReportRepository, OddEvenReportRepository>();
-            services.AddScoped<IOddEvenTurboReportRepository, OddEvenTurboReportRepository>();
+            services.AddScoped<IStakeBalancedReportRepository, StakeBalancedReportRepository>();
             services.AddScoped<IBetHistoryReportRepository, BetHistoryReportRepository>();
             services.AddScoped<ISeDieReportRepository, SeDieReportRepository>();
             services.AddScoped<IMiniSeDieReportRepository, MiniSeDieReportRepository>();
             services.AddScoped<IFishPrawnCrabReportRepository, FishPrawnCrabReportRepository>();
             services.AddScoped<IDragonTigerReportRepository, DragonTigerReportRepository>();
             services.AddScoped<IBaccaratReportRepository, BaccaratReportRepository>();
-            services.AddScoped<IDailySummaryRepository, DailySummaryRepository>();
             services.AddScoped<IRouletteReportRepository, RouletteReportRepository>();
             services.AddScoped<IVipSeDieReportRepository, VipSeDieReportRepository>();
-            services.AddScoped<ISpecialSeDieReportRepository, SpecialSeDieReportRepository>();
             services.AddScoped<IBlackjackReportRepository, BlackjackReportRepository>();
             services.AddScoped<IVipFishPrawnCrabReportRepository, VipFishPrawnCrabReportRepository>();
             services.AddScoped<ISicBoReportRepository, SicBoReportRepository>();
@@ -36,10 +34,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IJackpotRepository, JackpotRepository>();
             services.AddScoped<IThreeCardsReportRepository, ThreeCardsReportRepository>();
             services.AddScoped<IHeroesSlotReportRepository, HeroesSlotReportRepository>();
-            services.AddScoped<IBitcoinMasterReportRepository, BitcoinMasterReportRepository>();
             services.AddScoped<IKenoMatchReportRepository, KenoMatchReportRepository>();
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
-            services.AddScoped<ICasinoHoldemPokerReportRepository, CasinoHoldemPokerReportRepository>();
+            services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
+            services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
+
+            services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
+            services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
         }
     }
 }

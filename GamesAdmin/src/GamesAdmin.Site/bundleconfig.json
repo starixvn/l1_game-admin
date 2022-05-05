@@ -8,7 +8,9 @@
   {
     "outputFileName": "wwwroot/js/game-status.min.js",
     "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/game-constants.js",
       "wwwroot/js/game-status.js"
     ]
   },
@@ -135,12 +137,6 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/partner.min.js",
-    "inputFiles": [
-      "wwwroot/js/partner.js"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/css/currency.min.css",
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",
@@ -211,6 +207,14 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/holdem-poker-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/holdem-poker-report.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/casino-holdem-poker-result.min.css",
     "inputFiles": [
       "wwwroot/lib/data-tables/datatables.min.css",
@@ -226,11 +230,41 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/casino-holdem-poker-report.min.js",
+    "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/blackjack-report.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/lib/data-tables/datatables.min.js",
-      "wwwroot/js/casino-holdem-poker-report.js"
+      "wwwroot/js/blackjack-report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/slot-game-report.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/reports.min.css",
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/slot-game-report.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/slot-game-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/slot-game-report.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/hilo-report.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/hilo-report.js"
     ]
   }
 ]

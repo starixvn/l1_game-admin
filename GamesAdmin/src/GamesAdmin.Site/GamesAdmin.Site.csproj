@@ -18,13 +18,12 @@
     <Content Remove="appsettings.UAT.json" />
     <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\js\hilo-report.min.js" />
     <Content Remove="wwwroot\js\partner - Copy.min.js" />
-    <Content Remove="wwwroot\js\partner.min.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\js\partner.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\scss\pages\adjust-bot.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\hilo-report.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\scss\pages\online-users.css" />
   </ItemGroup>
 
@@ -97,7 +96,7 @@
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\game-admin\**" />
     <AdditionalFiles Include="..\..\.sonarlint\l1-game-admin\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <None Include="wwwroot\js\partner.min.js" />
+    <None Include="wwwroot\js\hilo-report.min.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\af.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\ar.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\az.js" />
@@ -169,6 +168,9 @@
   <ItemGroup>
     <Content Update="appsettings.json">
       <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <Content Update="wwwroot\js\blackjack-report - Copy.min.js">
+      <DependentUpon>blackjack-report.min.js</DependentUpon>
     </Content>
     <Content Update="wwwroot\scss\themes\themel2.min.css">
       <DependentUpon>themel2.css</DependentUpon>

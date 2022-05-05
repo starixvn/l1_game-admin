@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Models.Currencies;
 using MediatR;
 
@@ -13,9 +14,12 @@ namespace GamesAdmin.Api.CurrencyGroups.Requests
     {
         public GetByIdsModel Model { get; }
 
-        public GetByIdsRequest(GetByIdsModel model)
+        public GetByIdsRequest(string ids)
         {
-            Model = model;
+            Model = new GetByIdsModel
+            {
+                CurrencyGroups = ids.Split(",").ToList()
+            };
         }
     }
 }

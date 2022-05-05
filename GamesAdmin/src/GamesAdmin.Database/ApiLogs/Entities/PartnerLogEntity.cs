@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Database.ApiLogs.Entities
 {
     public class PartnerLogEntity : ApiLogEntity
     {
         public string PartnerId { get; set; }
+
+        public string OperatorId { get; set; }
 
         public PartnerCallEntity Call { get; set; }
 
@@ -13,6 +16,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public byte System { get; set; }
 
         public string AccessKey { get; set; }
+
+        public Dictionary<string, string> Metadata { get; set; }
     }
 
     public class PartnerCallEntity : ApiLogRequestEntity
@@ -52,6 +57,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public bool FirstLogin { get; set; }
 
         public string Reason { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class PartnerResultEntity : ApiLogResultEntity
@@ -65,6 +72,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string ErrorDescription { get; set; }
 
         public int? ObCustId { get; set; }
+
+        public int? PlayerId { get; set; }
 
         public decimal MinBet { get; set; }
 

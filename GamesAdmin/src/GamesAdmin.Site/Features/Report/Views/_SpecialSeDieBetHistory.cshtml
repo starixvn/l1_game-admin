@@ -34,9 +34,9 @@
                         }
                     }
                 </td>
-                <td>@HtmlHelpers.formatNumber(bet.Amount)</td>
-                <td>@HtmlHelpers.formatNumber(bet.Refund)</td>
-                <td>@HtmlHelpers.formatNumber(bet.BetWin)</td>
+                <td>@HtmlHelpers.convertByExchangeRate(bet.Amount, Model.ExchangeRate)</td>
+                <td>@HtmlHelpers.convertByExchangeRate(bet.Refund, Model.ExchangeRate)</td>
+                <td>@HtmlHelpers.convertByExchangeRate(bet.BetWin, Model.ExchangeRate)</td>
             </tr>
         }
     </tbody>

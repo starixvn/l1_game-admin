@@ -1,12 +1,30 @@
-﻿using GamesAdmin.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class RoundResultViewModel
+    public abstract class BaseRoundResultViewModel
     {
+        public DateTime Time { get; set; }
+
+        public long Number { get; set; }
+
+        public int ExchangeRateId { get; set; }
+
+        public decimal ExchangeRate { get; set; }
+
+        public decimal? ConvertByExchangeRate(decimal? value)
+        {
+            var exchangeRate = ExchangeRate == 0 ? 1 : ExchangeRate;
+
+            return value != null ? value / exchangeRate : null;
+        }
+    }
+
+    public class RoundResultViewModel : BaseRoundResultViewModel
+    {
+
         public long Number { get; set; }
 
         public int Dice1 { get; set; }
@@ -22,7 +40,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool IsEven => Total % 2 == 0;
     }
 
-    public class SeDieRoundResultViewModel
+    public class SeDieRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -45,7 +63,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool FourWhite { get; set; }
     }
 
-    public class FishPrawnCrabRoundResultViewModel
+    public class FishPrawnCrabRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -56,7 +74,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public byte ThirdDice { get; set; }
     }
 
-    public class DragonTigerRoundResultViewModel
+    public class DragonTigerRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -72,7 +90,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public byte Type { get; set; }
     }
 
-    public class BaccaratRoundResultViewModel
+    public class BaccaratRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -95,7 +113,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Natural { get; set; }
     }
 
-    public class RouletteRoundResultViewModel
+    public class RouletteRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -131,14 +149,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<string> BigSmall { get; set; }
     }
 
-    public class VipFishPrawnCrabRoundResultViewModel
+    public class VipFishPrawnCrabRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
         public IEnumerable<byte> Result { get; set; }
     }
 
-    public class SicBoRoundResultViewModel
+    public class SicBoRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -147,7 +165,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
 
-    public class VipSeDieWarRoundResultViewModel
+    public class VipSeDieWarRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -157,7 +175,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
 
-    public class LotteryRoundResultViewModel
+    public class LotteryRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -204,10 +222,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public Dictionary<string, byte> Seventh { get; set; }
     }
 
-    public class ThreeCardsRoundResultViewModel
+    public class ThreeCardsRoundResultViewModel : BaseRoundResultViewModel
     {
-        public long Number { get; set; }
-
         public IEnumerable<CardViewModel> Result { get; set; }
 
         public ThreeCardsSettlementResultViewModel SettlementResult { get; set; }
@@ -223,7 +239,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Clubs { get; set; }
     }
 
-    public class BitcoinMasterRoundResultViewModel
+    public class BitcoinMasterRoundResultViewModel : BaseRoundResultViewModel
     {
         public long Number { get; set; }
 
@@ -241,10 +257,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool IsEven => Math.Floor(ResultPrice) % 10 == 0;
     }
 
-    public class KenoMatchRoundResultViewModel
+    public class KenoMatchRoundResultViewModel : BaseRoundResultViewModel
     {
-        public DateTime Time { get; set; }
-
         public long Number { get; set; }
 
         public KenoMatchPeriodViewModel HalfTime { get; set; }
@@ -281,10 +295,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Even { get; set; }
     }
 
-    public class KenoPowerRoundResultViewModel
+    public class KenoPowerRoundResultViewModel : BaseRoundResultViewModel
     {
-        public DateTime Time { get; set; }
-
         public long Number { get; set; }
 
         public KenoPowerResultViewModel Result { get; set; }
@@ -313,22 +325,19 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool RedSmall { get; set; }
     }
 
-    public class CasinoHoldemPokerRoundResultViewModel
+    public class HiLoRoundResultViewModel : BaseRoundResultViewModel
     {
-        public long Number { get; set; }
+        public DateTime? EndTime { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Betwin { get; set; }
+        public bool Paid { get; set; }
+        public string Currency { get; set; }
+        public string PartnerId { get; set; }
+        public decimal Rate { get; set; }
 
-        public IEnumerable<PokerCard> DealerCards { get; set; }
 
-        public IEnumerable<PokerCard> PlayerCards { get; set; }
+        public decimal BaseAmount => Amount * Rate;
 
-        public CasinoHoldemPokerSettlementResultViewModel Result { get; set; }
-    }
-
-    public class CasinoHoldemPokerSettlementResultViewModel
-    {
-        public long Number { get; set; }
-        public bool AA { get; set; }
-        public bool Ante { get; set; }
-        public bool Call { get; set; }
+        public decimal BaseBetwin => Betwin * Rate;
     }
 }

@@ -4,8 +4,10 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -13,9 +15,12 @@ namespace GamesAdmin.Api.GameServers
         : IRequestHandler<ReloadRequest, bool>
         , IRequestHandler<JWTRequest, JsonWebToken>
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
-        , IRequestHandler<NotifyRoundsRequest, bool>
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
-        , IRequestHandler<SetCasinoHoldemPokerResultRequest, CasinoHoldemPokerResultControl>
+        , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
+        , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
+        , IRequestHandler<GetAdminMonitoringSettingsRequest, AdminMonitoringModel>
+        , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
+        , IRequestHandler<ConnectedUserRequest, int>
     {
         private readonly IGameServerService gameServerService;
 
@@ -32,20 +37,29 @@ namespace GamesAdmin.Api.GameServers
         }
 
         public Task<JsonWebToken> Handle(JWTRequest request, CancellationToken cancellationToken)
-        => gameServerService.GetJWT(request);
+            => gameServerService.GetJWT(request);
 
         public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
-        => string.IsNullOrWhiteSpace(request.Game)
+            => string.IsNullOrWhiteSpace(request.Game)
                 ? gameServerService.GetOnlineUsers()
                 : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
 
-        public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
-        => gameServerService.NotifyRoundResult(request.Rounds);
-
         public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
-        => gameServerService.SetSlotBoard(request);
+            => gameServerService.SetSlotBoard(request);
 
-        public Task<CasinoHoldemPokerResultControl> Handle(SetCasinoHoldemPokerResultRequest request, CancellationToken cancellationToken)
-      => gameServerService.SetCasinoHoldemPokerResult(request);
+        public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetHoldemPokerResult(request);
+
+        public Task<IEnumerable<HiloCard>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetHiLoResult(request);
+
+        public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
+            => gameServerService.GetAdminMonitoringSettings(request.Username);
+
+        public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
+            => gameServerService.VerifyAdminMonitoringToken(request.Token);
+
+        public Task<int> Handle(ConnectedUserRequest request, CancellationToken cancellationToken)
+            => gameServerService.GetConnectedUsers();
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-     public class LotteryBetHistory
+    public class LotteryBetHistory : BetHistory
     {
         public LotteryRoundResult RoundResult { get; set; }
 
@@ -12,15 +11,9 @@ namespace GamesAdmin.Core.Models.BetReport
         public LotteryOdds Odds { get; set; }
     }
 
-    public class LotteryBetHistoryRecord
+    public class LotteryBetHistoryRecord : BetHistoryRecord
     {
-        public long Round { get; set; }
-
-        public DateTime Time { get; set; }
-
         public LotteryChoices Choices { get; set; }
-
-        public string Name { get; set; }
     }
 
     public class LotteryChoices

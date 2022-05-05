@@ -51,6 +51,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
+
+        Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+
+        Task<int> GetConnectedUsers();
     }
 
     public class GameSettingService : IGameSettingService
@@ -169,5 +173,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return await gameApi.UpdateBetaVersion(names, enabled);
         }
+
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+            => gameApi.GetAdminMonitoringSettings(username);
+
+        public Task<int> GetConnectedUsers()
+            => gameApi.GetConnectedUsers();
     }
 }
