@@ -255,6 +255,11 @@
             this.setResultControl("SlotResult", gameName);
         },
 
+        setControlResultCascadingSlotGame: function (event, gameName) {
+            event.preventDefault();
+            this.setResultControl("CascadingSlotResult", gameName);
+        },
+
         setControlResultHiLo: function (event) {
             event.preventDefault();
             this.setResultControl("HiLoResult");
