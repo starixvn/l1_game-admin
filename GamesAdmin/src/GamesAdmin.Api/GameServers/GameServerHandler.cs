@@ -15,12 +15,12 @@ namespace GamesAdmin.Api.GameServers
         : IRequestHandler<ReloadRequest, bool>
         , IRequestHandler<JWTRequest, JsonWebToken>
         , IRequestHandler<OnlineUserRequest, OnlineUsers>
-        , IRequestHandler<NotifyRoundsRequest, bool>
         , IRequestHandler<SetSlotBoardRequest, SettlementBoard>
         , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
         , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
         , IRequestHandler<GetAdminMonitoringSettingsRequest, AdminMonitoringModel>
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
+        , IRequestHandler<ConnectedUserRequest, int>
     {
         private readonly IGameServerService gameServerService;
 
@@ -44,9 +44,6 @@ namespace GamesAdmin.Api.GameServers
                 ? gameServerService.GetOnlineUsers()
                 : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
 
-        public Task<bool> Handle(NotifyRoundsRequest request, CancellationToken cancellationToken)
-            => gameServerService.NotifyRoundResult(request.Rounds);
-
         public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
             => gameServerService.SetSlotBoard(request);
 
@@ -61,5 +58,8 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
             => gameServerService.VerifyAdminMonitoringToken(request.Token);
+
+        public Task<int> Handle(ConnectedUserRequest request, CancellationToken cancellationToken)
+            => gameServerService.GetConnectedUsers();
     }
 }

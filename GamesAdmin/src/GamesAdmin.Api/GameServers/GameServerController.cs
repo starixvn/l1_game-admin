@@ -33,10 +33,6 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> OnlineUsers(string game)
            => mediator.Send(new OnlineUserRequest(game));
 
-        [HttpPost("notify_proviet_results")]
-        public Task<bool> NotifyRoundResult([FromBody] IEnumerable<ProVietKenoRound> kenoRounds)
-           => mediator.Send(new NotifyRoundsRequest(kenoRounds));
-
         [HttpPost("slot/set_board")]
         public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
            => mediator.Send(request);
@@ -45,16 +41,20 @@ namespace GamesAdmin.Api.GameServers
         public Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request)
            => mediator.Send(request);
 
-        [HttpPost("get_admin_monitoring_settings")]
-        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
-         => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
-
         [HttpPost("hilo/set_result")]
         public Task<IEnumerable<HiloCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
         => mediator.Send(request);
 
+        [HttpPost("get_admin_monitoring_settings")]
+        public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
+            => mediator.Send(new GetAdminMonitoringSettingsRequest(username));
+
         [HttpPost("verify_admin_monitoring_token")]
         public Task<bool> VerifyAdminMonitoringToken(string token)
           => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
+
+        [HttpGet("connected_users")]
+        public Task<int> ConnectedUsers()
+           => mediator.Send(new ConnectedUserRequest());
     }
 }

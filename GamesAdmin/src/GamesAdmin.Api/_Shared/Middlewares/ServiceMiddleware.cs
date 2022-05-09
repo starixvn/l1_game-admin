@@ -103,6 +103,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<NightClubEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
+
+            services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));
             services.AddSingleton(RestService.For<INotificationServiceApi>(appSettings.GameServers.NotificationService.Api, refitSettings));
 

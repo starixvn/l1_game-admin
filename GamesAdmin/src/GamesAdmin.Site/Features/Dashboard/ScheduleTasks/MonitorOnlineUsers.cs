@@ -29,17 +29,17 @@ namespace GamesAdmin.Site.Features.Dashboard.ScheduleTasks
 
         public async Task Invoke()
         {
-            var onlineUser = await service.GetOnlineUsers();
+            var onlineUser = await service.GetConnectedUsers();
             var latestOnlineUsers = cache.GetCache(CachedKeys.OnlineUsers.ToString());
 
-            if (onlineUser.TotalRealPlayer < latestOnlineUsers - appSettings.MaxDecreased)
+            if (onlineUser < latestOnlineUsers - appSettings.MaxDecreased)
             {
                 sentryClient.CaptureMessage(
-                    $"Online users DOWN!!! Latest: {latestOnlineUsers} vs Current: {onlineUser.TotalRealPlayer}",
+                    $"Online users DOWN!!! Latest: {latestOnlineUsers} vs Current: {onlineUser}",
                     SentryLevel.Error);
             }
 
-            cache.SetCache(CachedKeys.OnlineUsers.ToString(), onlineUser.TotalRealPlayer);
+            cache.SetCache(CachedKeys.OnlineUsers.ToString(), onlineUser);
         }
     }
 }

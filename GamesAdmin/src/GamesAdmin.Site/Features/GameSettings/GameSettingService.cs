@@ -53,6 +53,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+
+        Task<int> GetConnectedUsers();
     }
 
     public class GameSettingService : IGameSettingService
@@ -174,5 +176,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
             => gameApi.GetAdminMonitoringSettings(username);
+
+        public Task<int> GetConnectedUsers()
+            => gameApi.GetConnectedUsers();
     }
 }

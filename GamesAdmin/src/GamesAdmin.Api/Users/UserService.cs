@@ -31,16 +31,13 @@ namespace GamesAdmin.Api.Users
     {
         private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ISentryClient sentryClient;
-        private readonly IAppSettings appSettings;
 
         public UserService(
             ISentryClient sentryClient,
-            IGenericRepository<AdminUserEntity> userRepository,
-            IAppSettings appSettings)
+            IGenericRepository<AdminUserEntity> userRepository)
         {
             this.sentryClient = sentryClient;
             this.userRepository = userRepository;
-            this.appSettings = appSettings;
         }
 
         public async Task<bool> Create(User user)

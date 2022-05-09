@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using GamesAdmin.Api.UM.Requests;
-using GamesAdmin.Core.Models;
 using Refit;
 
 namespace GamesAdmin.Api.GameServers
@@ -14,7 +13,7 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/reload")]
         Task Reload();
 
-        [Post("/api/proviet-keno/round-result")]
-        Task NotifyRoundResult([Body] ProVietKenoRound kenoRound);
+        [Get("/api/connectedClients")]
+        Task<int> ConnectedClients();
     }
 }

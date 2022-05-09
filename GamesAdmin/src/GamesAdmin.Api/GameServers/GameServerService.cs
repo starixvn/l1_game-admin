@@ -34,8 +34,6 @@ namespace GamesAdmin.Api.GameServers
 
         Task<OnlineUsers> GetOnlineUsers(Game gameType = null);
 
-        Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds);
-
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
         Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
@@ -45,6 +43,8 @@ namespace GamesAdmin.Api.GameServers
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 
         Task<bool> VerifyAdminMonitoringToken(string token);
+
+        Task<int> GetConnectedUsers();
     }
 
     public class GameServerService : IGameServerService
@@ -70,9 +70,9 @@ namespace GamesAdmin.Api.GameServers
             IHoldemPokerApiFactory holdemPokerApiFactory,
             IHiLoApi hiloApi,
             IAppSettings appSettings,
-            IGenericRepository<AdminUserEntity> userRepository,
             IUserServiceApi userServiceApi,
-            INotificationServiceApi notificationServiceApi)
+            INotificationServiceApi notificationServiceApi,
+            IGenericRepository<AdminUserEntity> userRepository)
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -82,9 +82,9 @@ namespace GamesAdmin.Api.GameServers
             this.holdemPokerApiFactory = holdemPokerApiFactory;
             this.hiloApi = hiloApi;
             this.appSettings = appSettings;
-            this.userRepository = userRepository;
             this.userServiceApi = userServiceApi;
             this.notificationServiceApi = notificationServiceApi;
+            this.userRepository = userRepository;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -174,25 +174,6 @@ namespace GamesAdmin.Api.GameServers
             }
 
             sentryClient.CaptureException(ex);
-        }
-
-        public async Task<bool> NotifyRoundResult(IEnumerable<ProVietKenoRound> kenoRounds)
-        {
-            foreach (var round in kenoRounds)
-            {
-                try
-                {
-                    sentryClient.CaptureMessage($"NotifyRoundResult {round.Number} at {DateTime.Now}");
-
-                    await notificationServiceApi.NotifyRoundResult(round);
-                }
-                catch (Exception ex)
-                {
-                    HandleException(ex, $"{DateTime.Now} - NotifyRoundResult failed for round #{round.Number}.");
-                }
-            }
-
-            return true;
         }
 
         public async Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request)
@@ -299,6 +280,20 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return false;
+        }
+
+        public async Task<int> GetConnectedUsers()
+        {
+            try
+            {
+                return await notificationServiceApi.ConnectedClients();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return 0;
         }
     }
 }
