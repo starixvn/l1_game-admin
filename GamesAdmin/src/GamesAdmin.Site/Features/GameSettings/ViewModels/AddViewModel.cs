@@ -97,7 +97,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         
         public int[] BetLevels { get; set; }
         public double[] CoinValues { get; set; }
-        public double Multiplier { get; set; }
+        public double BetMultiplier { get; set; }
         public double MaxWinPerRound { get; set; }
         public double MinMultiplierBonus { get; set; }
         public double MaxMultiplierBonus { get; set; }
