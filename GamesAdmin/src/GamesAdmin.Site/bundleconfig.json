@@ -253,5 +253,17 @@
       "wwwroot/lib/data-tables/datatables.min.js",
       "wwwroot/js/blackjack-report.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bet-details.min.js",
+    "inputFiles": [
+      "wwwroot/js/bet-details.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/daily-summary.min.js",
+    "inputFiles": [
+      "wwwroot/js/daily-summary.js"
+    ]
   }
 ]
