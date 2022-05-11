@@ -82,6 +82,8 @@ namespace GamesAdmin.Database.Entities
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
+
+        public decimal Win { get; set; }
     }
 
     public class CascadingSlotMultiplierEntity

@@ -400,6 +400,21 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             CoinValue *= Rate;
             Bet *= Rate;
             TotalTumbleWin *= Rate;
+
+            if(SettlementResult != null && SettlementResult.Tumbles.Any())
+            {
+                foreach(var tumble in SettlementResult.Tumbles)
+                {
+                    tumble.Win *= Rate;
+                    if(tumble.Icons != null)
+                    {
+                        foreach (var (key, _) in tumble.Icons)
+                        {
+                            tumble.Icons[key].Win *= Rate;
+                        }
+                    }
+                }
+            }
         }
 
         public CascadingSlotSettlementResultViewModel SettlementResult { get; set; }
@@ -443,6 +458,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public byte Count { get; set; }
 
         public decimal Odds { get; set; }
+
+        public decimal Win { get; set; }
     }
 
     public class CascadingSlotMultiplierViewModel
