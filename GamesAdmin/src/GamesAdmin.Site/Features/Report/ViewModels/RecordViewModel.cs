@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Site.Extensions;
 
@@ -367,23 +368,25 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string Game { get; set; }
 
-        public double BetLevel { get; set; }
+        public byte BetLevel { get; set; }
 
-        public double CoinValue { get; set; }
+        public decimal CoinValue { get; set; }
 
-        public byte[] BaseSpin { get; set; }
+        public decimal Bet { get; set; }
 
-        public List<byte[]> Tumblings { get; set; }
+        public byte TotalMultiplier { get; set; }
 
-        public List<Dictionary<byte, int>> WinningSymbols { get; set; }
+        public byte Multiplier { get; set; }
 
-        public List<Dictionary<byte, double>> WinningAmounts { get; set; }
+        public decimal TotalTumbleWin { get; set; }
 
-        public List<double> TumblingWins { get; set; }
+        public bool FreeSpin { get; set; }
 
-        public List<int> Multipliers { get; set; }
+        public string Result { get; set; }
 
-        public double TotalWin => TumblingWins.Sum();
+        public decimal WinLoss => FreeSpin ? BetWin : BetWin - TotalAmount;
+
+        public IEnumerable<byte> Board => Result.Split(',').Select(value => byte.Parse(value));
 
         public void ConvertToUSD(bool isConvert)
         {
@@ -394,21 +397,58 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
             TotalAmount *= Rate;
             BetWin *= Rate;
-            TumblingWins = TumblingWins.Select(t => t * (double)Rate).ToList();
-            WinningAmounts = WinningAmounts.Select(w => ConvertWinningAmounts(w, Rate)).ToList();
+            CoinValue *= Rate;
+            Bet *= Rate;
+            TotalTumbleWin *= Rate;
         }
 
-        private Dictionary<byte, double> ConvertWinningAmounts(
-            Dictionary<byte, double> winningAmounts,
-            decimal rate)
-        {
-            var result = new Dictionary<byte, double>();
-            foreach (var w in winningAmounts)
-            {
-                result[w.Key] = w.Value * (double)rate;
-            }
+        public CascadingSlotSettlementResultViewModel SettlementResult { get; set; }
+    }
 
-            return result;
-        }
+    public class CascadingSlotRoundMultiplierViewModel
+    {
+        public DateTimeOffset Time { get; set; }
+
+        public long RoundId { get; set; }
+
+        public byte Multiplier { get; set; }
+
+        public byte TotalMultiplier { get; set; }
+    }
+
+    public class CascadingSlotSettlementResultViewModel
+    {
+        public IEnumerable<CascadingSlotTumbleViewModel> Tumbles { get; set; }
+
+        public SlotGameFreeSpinViewModel FreeSpins { get; set; }
+
+        public SlotGameFreeSpinViewModel AdditionalFreeSpins { get; set; }
+    }
+
+    public class CascadingSlotTumbleViewModel
+    {
+        public Dictionary<byte, CascadingSlotWinningSymbolViewModel> Icons { get; set; }
+
+        public decimal Win { get; set; }
+
+        public string OriginalBoard { get; set; }
+
+        public IEnumerable<CascadingSlotMultiplierViewModel> Multipliers { get; set; }
+
+        public IEnumerable<byte> Board => OriginalBoard.Split(',').Select(value => byte.Parse(value));
+    }
+
+    public class CascadingSlotWinningSymbolViewModel
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+    }
+
+    public class CascadingSlotMultiplierViewModel
+    {
+        public byte Index { get; set; }
+
+        public byte Value { get; set; }
     }
 }

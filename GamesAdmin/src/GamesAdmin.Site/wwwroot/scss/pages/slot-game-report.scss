@@ -21,3 +21,45 @@
         top: 0;
     }
 }
+
+.table-cascading-slot {
+    .table-recored-screen {
+        margin: auto;
+
+        td {
+            border: none;
+            padding: 0;
+
+            &.recored-screen {
+                position: relative;
+
+                .multiplier {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-weight: bold;
+                    font-size: 17px;
+
+                    &.treasureisland {
+                        text-shadow: 2px 0 0 #2f0500, -2px 0 0 #2f0500, 0 2px 0 #2f0500, 0 -2px 0 #2f0500, 1px 1px #2f0500, -1px -1px 0 #2f0500, 1px -1px 0 #2f0500, -1px 1px 0 #2f0500;
+                        color: #fffc00;
+                    }
+                }
+            }
+        }
+    }
+
+    td {
+        text-align: center;
+    }
+
+    .col-round-id {
+        width: 10rem;
+    }
+
+    .symbol {
+        max-width: 60px;
+        height: 100%;
+    }
+}

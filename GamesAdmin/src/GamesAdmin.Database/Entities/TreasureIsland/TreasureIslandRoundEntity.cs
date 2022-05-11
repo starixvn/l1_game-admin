@@ -2,8 +2,8 @@
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("heroesslot_rounds")]
-    public class TreasureIslandRoundEntity : SlotGameRoundEntity
+    [BsonCollection("treasureisland_rounds")]
+    public class TreasureIslandRoundEntity : CascadingSlotRoundEntity
     {
     }
 }

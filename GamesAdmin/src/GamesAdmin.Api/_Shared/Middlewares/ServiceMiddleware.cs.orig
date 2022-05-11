@@ -102,8 +102,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HiLoEndGameInfoService>();
             services.AddScoped<TexasHoldemPokerEndGameInfoService>();
             services.AddScoped<NightClubEndGameInfoService>();
->>>>>>> fix: refactor code
+            services.AddScoped<TreasureIslandEndGameInfoService>();
 
+>>>>>>> feat: round history, retrieve end round
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));

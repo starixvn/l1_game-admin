@@ -45,6 +45,8 @@ namespace GamesAdmin.Api.Report
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
 
         Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReportAsync(CascadingSlotReportFilter filter);
+
+        Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -381,6 +383,14 @@ namespace GamesAdmin.Api.Report
             var result = service == default ? default : await service.GetReportAsync(filter);
 
             return result.Select(x => mapper.Map<CascadingSlotBetRecord>(x));
+        }
+
+        public async Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter)
+        {
+            var service = cascadingSlotReportFactory.GetReportService(filter.Game);
+            var result = service == default ? default : await service.GetBetHistoryAsync(filter);
+
+            return result;
         }
     }
 }

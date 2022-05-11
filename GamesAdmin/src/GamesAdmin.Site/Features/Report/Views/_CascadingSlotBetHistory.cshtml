@@ -1,174 +1,256 @@
 ﻿@using System.Text;
 @using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels
-@model CascadingSlotRecordViewModel
+@model CascadingSlotBetHistoryViewModel
 @{
     var imageFolder = Model.Game.ToLowerInvariant();
-    var baseWinning = Model.WinningSymbols[0];
-    var i = 0;
+    var roundResult = Model.Round;
 }
 
 @functions {
-    public string RenderBoard(IEnumerable<byte>
-    board, string imageFolder)
+    public string RenderBoard(IEnumerable<byte> board, string folder, IEnumerable<CascadingSlotMultiplierViewModel> multipliers)
     {
-        var sb = new StringBuilder();
+        var sb = new StringBuilder("<table class='table-recored-screen'><tbody>");
         var iconPerRow = 6;
         var col = iconPerRow;
 
-        foreach (var b in board)
+        foreach (var item in board.Select((value, index) => new { index, value }))
         {
-            if (col == 1)
+            if (col == iconPerRow)
             {
-                sb.AppendLine("<br />");
+                sb.Append("<tr>");
+            }
+            if (col == 0)
+            {
+                sb.Append("</tr>");
                 col = iconPerRow;
             }
-
-            sb.AppendLine("<img class='small-symbol' src='/images/slot-icons/" + imageFolder + "/" + b + ".png' />");
+            if (item.value > 10)
+            {
+                sb.Append("<td class='recored-screen'>" + GetImageMultiplier(multipliers, item.index, folder) + "</td>");
+            }
+            else
+            {
+                sb.Append("<td>" + RenderSymbol(item.value, folder) + "</td>");
+            }
             col--;
         }
+        sb.Append("</tbody></table>");
 
         return sb.ToString();
     }
-}
 
+    public string RenderSymbol(byte value, string folder)
+    {
+        return "<img class='symbol' src='/images/slot-icons/" + folder + "/" + value + ".png' />";
+    }
+
+    public string GetImageMultiplier(IEnumerable<CascadingSlotMultiplierViewModel> multipliers, int index, string folder)
+    {
+        var sb = new StringBuilder("<img class='symbol' src='/images/slot-icons/");
+        sb.Append(folder);
+        var imgae = "/11A";
+        var value = multipliers.FirstOrDefault(multiplier => multiplier.Index == index)?.Value ?? 0;
+        if (value <= 10)
+        {
+            imgae = "/11D";
+        }
+        else
+        {
+            if (value <= 20)
+            {
+                imgae = "/11C";
+            }
+            else
+            {
+                if (value <= 30)
+                {
+                    imgae = "/11B";
+                }
+            }
+        }
+        sb.Append(imgae + ".png' />");
+        sb.Append("<div class='multiplier " + folder + "'>x" + value + "</div>");
+        return sb.ToString();
+    }
+}
 <table class="table table-bordered table-cascading-slot">
     <thead>
         <tr>
-            <th class="col-date">Time</th>
             <th class="col-round-id">Round Id</th>
+            <th class="col-date">Time</th>
             <th>Bet Level</th>
             <th>Coin Value</th>
-            <th>Total Stake</th>
+            <th>Stake</th>
             <th>Total Win</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="text-center">
-                @Model.Time.ToString(Constants.DateTimeFormat)
-            </td>
-            <td class="text-center">@Model.RoundId</td>
-            <td class="text-center">@Model.BetLevel</td>
-            <td class="text-center">@Model.CoinValue</td>
-            <td class="text-center">@Model.TotalAmount</td>
-            <td class="text-center">@Model.BetWin</td>
-        </tr>
-    </tbody>
+            <td>
+                @roundResult.RoundId
+            <div>@(roundResult.FreeSpin ? "(Free Spin)": string.Empty)</div>
+        </td>
+        <td>
+            @roundResult.Time.ToString(Constants.DateTimeFormat)
+        </td>
+        <td>@roundResult.BetLevel</td>
+        <td>@HtmlHelpers.formatNumber(roundResult.CoinValue)</td>
+        <td>@HtmlHelpers.formatNumber(roundResult.TotalAmount)</td>
+        <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+    </tr>
+    <tr>
+        <td colspan="4" class="text-right">Total</td>
+        <td>@(roundResult.FreeSpin ? 0 : roundResult.TotalAmount)</td>
+        <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+    </tr>
+    <tr class="total">
+        <td colspan="4" class="text-right">Win Loss</td>
+        <td></td>
+        <td>@HtmlHelpers.formatNumber(roundResult.WinLoss)</td>
+    </tr>
+</tbody>
 </table>
 
 <table class="table table-bordered table-cascading-slot">
     <thead>
         <tr>
             <th>No.</th>
-            <th>Type</th>
-            <th>Board</th>
-            <th>Symbol</th>
-            <th>Number of Symbol</th>
-            <th>Win Amount</th>
+            <th>Recored Screen</th>
+            <th colspan="2">Symbol & Number of Symbols</th>
+            <th>Win amount</th>
             <th>Tumble Win</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var b in Model.WinningSymbols[0])
-        {
-            if (i == 0)
+        @{
+            var tumbles = roundResult.SettlementResult.Tumbles.ToList();
+            decimal tumbleWin = 0;
+            for (byte index = 0; index < tumbles.Count; index++)
             {
-                <tr>
-                    <td rowspan="@baseWinning.Count" class="text-center">1</td>
-                    <td rowspan="@baseWinning.Count" class="text-center">Spin</td>
-                    <td rowspan="@baseWinning.Count" class="text-center">@Html.Raw(RenderBoard(Model.BaseSpin, imageFolder))</td>
-                    <td class="text-center"><img class="symbol" src="~/images/slot-icons/@imageFolder/@(b.Key).png" /></td>
-                    <td class="text-center">@b.Value</td>
-                    <td class="text-center">
-                        @HtmlHelpers.formatNumber((decimal)Model.WinningAmounts[0][b.Key])
-                    </td>
-                    <td rowspan="@baseWinning.Count" class="text-center">
-                        @(Model.Multipliers[0] > 1 ? "Multiplier X" + Model.Multipliers[0] : "")
-                        <br />
-                        @HtmlHelpers.formatNumber((decimal)Model.TumblingWins[0])
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td class="text-center"><img class="symbol" src="~/images/slot-icons/@imageFolder/@(b.Key).png" /></td>
-                    <td class="text-center">@b.Value</td>
-                    <td class="text-center">
-                        @HtmlHelpers.formatNumber((decimal)Model.WinningAmounts[0][b.Key])
-                    </td>
-                </tr>
-            }
-
-            i++;
-        }
-
-        @for (var j = 1; j < Model.WinningSymbols.Count; j++)
-        {
-            var w = Model.WinningSymbols[j];
-            var multiplier = Model.Multipliers[j];
-            var tw = multiplier > 1 ? Model.TumblingWins[j] * multiplier : Model.TumblingWins[j];
-
-            if (w == null)
-            {
-                <tr>
-                    <td class="text-center">@(j+1)</td>
-                    <td class="text-center">Tumbling</td>
-                    <td class="text-center">@Html.Raw(RenderBoard(Model.Tumblings[j - 1], imageFolder))</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">
-                        @(multiplier > 1 ? "Multiplier X" + multiplier : "")
-                        <br />
-                        @HtmlHelpers.formatNumber((decimal)tw)
-                        @(multiplier > 1 ? " = " + HtmlHelpers.formatNumber((decimal)Model.TumblingWins[j]) + " * " + multiplier : "")
-                    </td>
-                </tr>
-                continue;
-            }
-
-            i = 0;
-
-            @foreach (var b in w)
-            {
-                if (i == 0)
+                var rowspan = tumbles[index].Icons.Keys.Count > 0 ? tumbles[index].Icons.Keys.Count : 1;
+                tumbleWin += tumbles[index].Win;
+                if (tumbles[index].Icons.Any())
                 {
-                    <tr>
-                        <td rowspan="@w.Count" class="text-center">@(j+1)</td>
-                        <td rowspan="@w.Count" class="text-center">Tumbling</td>
-                        <td rowspan="@w.Count" class="text-center">@Html.Raw(RenderBoard(Model.Tumblings[j - 1], imageFolder))</td>
-                        <td class="text-center"><img class="symbol" src="~/images/slot-icons/@imageFolder/@(b.Key).png" /></td>
-                        <td class="text-center">@b.Value</td>
-                        <td class="text-center">
-                            @HtmlHelpers.formatNumber(w[b.Key])
-                        </td>
-                        <td rowspan="@baseWinning.Count" class="text-center">
-                            @(multiplier > 1 ? "Multiplier X" + multiplier : "")
-                            <br />
-                            @HtmlHelpers.formatNumber((decimal)tw)
-                            @(multiplier > 1 ? " = " + HtmlHelpers.formatNumber((decimal)Model.TumblingWins[j]) + " * " + multiplier : "")
-                        </td>
-                    </tr>
+                    foreach (var item in tumbles[index].Icons.Keys.Select((key, i) => new { index = i, key }))
+                    {
+                        if (item.index == 0)
+                        {
+                            <tr>
+                                <td rowspan="@rowspan">@(index+1)</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
+                                <td>@Html.Raw(RenderSymbol(item.key, imageFolder))</td>
+                                <td>@tumbles[index].Icons[item.key].Count</td>
+                                <td>@HtmlHelpers.formatNumber(tumbles[index].Icons[item.key].Odds * roundResult.TotalAmount)</td>
+                                <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@Html.Raw(RenderSymbol(item.key, imageFolder))</td>
+                                <td>@tumbles[index].Icons[item.key].Count</td>
+                                <td>@HtmlHelpers.formatNumber(tumbles[index].Icons[item.key].Odds * roundResult.TotalAmount)</td>
+                            </tr>
+                        }
+
+                    }
                 }
                 else
                 {
-                    <tr>
-                        <td class="text-center"><img class="symbol" src="~/images/slot-icons/@imageFolder/@(b.Key).png" /></td>
-                        <td class="text-center">@b.Value</td>
-                        <td class="text-center">
-                            @HtmlHelpers.formatNumber((decimal)w[b.Key])
-                        </td>
-                    </tr>
+                    if (roundResult.FreeSpin)
+                    {
+                        var additionalFreeSpins = roundResult.SettlementResult.AdditionalFreeSpins;
+                        if (additionalFreeSpins.Count > 0)
+                        {
+                            <tr>
+                                <td rowspan="@rowspan">@(index+1)</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
+                                <td>@Html.Raw(RenderSymbol(10, imageFolder))</td>
+                                <td>@additionalFreeSpins.Count</td>
+                                <td>@additionalFreeSpins.Odds Extra Free Spin</td>
+                                <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td rowspan="@rowspan">@(index+1)</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        var freeSpins = roundResult.SettlementResult.FreeSpins;
+                        if (freeSpins.Count > 0)
+                        {
+                            <tr>
+                                <td rowspan="@rowspan">@(index+1)</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
+                                <td>@Html.Raw(RenderSymbol(10, imageFolder))</td>
+                                <td>@freeSpins.Count</td>
+                                <td>@freeSpins.Odds Free Spin</td>
+                                <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td rowspan="@rowspan">@(index+1)</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
+                            </tr>
+                        }
+                    }
                 }
-
-                i++;
             }
+            <tr>
+                <td colspan="5" class="text-right">Total Multiplier</td>
+                <td>@(roundResult.FreeSpin ? roundResult.TotalMultiplier : roundResult.Multiplier)</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-right">Total Win</td>
+                <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+            </tr>
         }
-        <tr>
-            <td colspan="6" class="text-right">Total Win</td>
-            <td class="text-center">@HtmlHelpers.formatNumber((decimal)Model.TotalWin)</td>
-        </tr>
     </tbody>
 </table>
+
+@if (Model.Multipliers != null && Model.Multipliers.Any())
+{
+    <strong>Total Multiplier</strong>
+    <table class="table table-bordered table-cascading-slot">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Time</th>
+                <th>Round id</th>
+                <th>Multiplier</th>
+                <th>Total Multiplier</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var multipliers = Model.Multipliers.ToList();
+                for (byte i = 0; i < multipliers.Count; i++)
+                {
+                    <tr>
+                        <td>@(i+1)</td>
+                        <td>@multipliers[i].Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@multipliers[i].RoundId</td>
+                        <td>@multipliers[i].Multiplier</td>
+                        <td>@multipliers[i].TotalMultiplier</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

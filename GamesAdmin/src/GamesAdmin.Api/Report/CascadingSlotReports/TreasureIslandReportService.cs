@@ -21,9 +21,20 @@ namespace GamesAdmin.Api.Report
 
         public async Task<IEnumerable<CascadingSlotBetRecord>> GetReportAsync(CascadingSlotReportFilter filter)
         {
-            var result = await repository.GetAsync(filter);
+            var result = await repository.GetRecordAsync(filter);
 
             return result.Select(x => mapper.Map<CascadingSlotBetRecord>(x));
+        }
+
+        public async Task<CascadingSlotBetHistory> GetBetHistoryAsync(CascadingSlotReportFilter filter)
+        {
+            var result = await repository.GetBetHistoryAsync(filter);
+
+            return new CascadingSlotBetHistory
+            {
+                Round = mapper.Map<CascadingSlotBetRecord>(result.Round),
+                Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplier>(x))
+            };
         }
     }
 }

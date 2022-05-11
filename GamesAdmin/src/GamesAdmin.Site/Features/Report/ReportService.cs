@@ -51,6 +51,8 @@ namespace GamesAdmin.Site.Features.Report
         Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
 
         Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReport(CascadingSlotReportFilter filter);
+
+        Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -130,5 +132,8 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReport(CascadingSlotReportFilter filter)
             => reportApi.GetCascadingSlotReport(filter);
+
+        public Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter)
+            => reportApi.GetCascadingSlotBetHistory(filter);
     }
 }

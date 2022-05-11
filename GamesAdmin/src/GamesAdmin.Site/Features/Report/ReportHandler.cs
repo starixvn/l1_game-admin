@@ -42,7 +42,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
         IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
         IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>,
-        IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>
+        IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>,
+        IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -632,33 +633,32 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
-                    betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD);
-
-                    betViewModel.BetLevel = 10;
-                    betViewModel.CoinValue = 100;
-                    betViewModel.CoinValue = 100;
-                    betViewModel.BaseSpin = new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-                    betViewModel.Tumblings = new List<byte[]>
-                    {
-                        new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-                    };
-                    betViewModel.WinningSymbols = new List<Dictionary<byte, int>>
-                    {
-                        new Dictionary<byte, int> { [2] = 8, [5] = 8 },
-                        null
-                    };
-                    betViewModel.WinningAmounts = new List<Dictionary<byte, double>>
-                    {
-                        new Dictionary<byte, double> { [2] = 0.2, [5] = 0.8 },
-                        null
-                    };
-
-                    betViewModel.Multipliers = new List<int> { 1, 3 };
-                    betViewModel.TumblingWins = new List<double> { 0.8, 1.6 };
 
                     return betViewModel;
                 })
+            };
+        }
+
+        public async Task<CascadingSlotBetHistoryViewModel> Handle(GetCascadingSlotBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var filter = new CascadingSlotReportFilter
+            {
+                RoundId = request.RoundId,
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+            };
+
+            var result = await reportService.GetCascadingSlotBetHistory(filter);
+
+            return new CascadingSlotBetHistoryViewModel
+            {
+                Game = request.Game.Value,
+                ConvertToUSD = request.ConvertToUSD,
+                Round = mapper.Map<CascadingSlotRecordViewModel>(result.Round),
+                Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplierViewModel>(x))
             };
         }
     }

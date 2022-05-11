@@ -14,7 +14,9 @@ namespace GamesAdmin.Database
 {
     public interface ITreasureIslandReportRepository
     {
-        Task<IEnumerable<CascadingSlotBetReportEntity>> GetAsync(CascadingSlotReportFilter filter);
+        Task<IEnumerable<CascadingSlotBetReportEntity>> GetRecordAsync(CascadingSlotReportFilter filter);
+
+        Task<CascadingSlotBetHistoryEntity> GetBetHistoryAsync(CascadingSlotReportFilter filter);
     }
 
     public class TreasureIslandReportRepository : ITreasureIslandReportRepository
@@ -26,7 +28,27 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IEnumerable<CascadingSlotBetReportEntity>> GetAsync(CascadingSlotReportFilter filter)
+        public async Task<CascadingSlotBetHistoryEntity> GetBetHistoryAsync(CascadingSlotReportFilter filter)
+        {
+            var round = await database
+                .GetCollection<TreasureIslandRoundEntity>(Document.GetCollectionName(typeof(TreasureIslandRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
+
+            var totalMultiplier = await database
+                .GetCollection<TreasureIslandTotalMultiplierEntity>(Document.GetCollectionName(typeof(TreasureIslandTotalMultiplierEntity))).Find(x => x.Name == filter.Nickname).ToListAsync();
+
+            if(totalMultiplier.Count > 0)
+            {
+                var multiplier = totalMultiplier.FirstOrDefault(e => e.Rounds.Any(x => x.RoundId == filter.RoundId));
+                if(multiplier != null)
+                {
+                    return new CascadingSlotBetHistoryEntity(round, multiplier.Rounds);
+                }
+            }
+
+            return new CascadingSlotBetHistoryEntity(round);
+        }
+
+        public async Task<IEnumerable<CascadingSlotBetReportEntity>> GetRecordAsync(CascadingSlotReportFilter filter)
         {
 
             var project = GetAggregateBuilder(filter)
@@ -42,15 +64,15 @@ namespace GamesAdmin.Database
                     UserId = x.Uid,
                     Paid = x.Paid,
                     Currency = x.Currency,
-                    PartnerId = x.PartnerId,
+                    OperatorId = x.OperatorId,
                     Rate = x.Rate,
-                    ExchangeRateId = x.ExchangeRateId
+                    ExchangeRateId = x.ExchangeRateId,
                 });
 
             return await project.ToListAsync();
         }
 
-        private IAggregateFluent<SlotGameBetWithUnWindAccountsEntity> GetAggregateBuilder(CascadingSlotReportFilter filter)
+        private IAggregateFluent<CascadingSlotBetWithUnWindAccountsEntity> GetAggregateBuilder(CascadingSlotReportFilter filter)
         {
             var betCollection = database.GetCollection<TreasureIslandRoundEntity>(Document.GetCollectionName(typeof(TreasureIslandRoundEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
@@ -75,7 +97,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.Id,
                        @as: r => r.Accounts
                  )
-                .Unwind<BetEntityWithAccountInfoUnwind, SlotGameBetWithUnWindAccountsEntity>(x => x.Accounts)
+                .Unwind<BetEntityWithAccountInfoUnwind, CascadingSlotBetWithUnWindAccountsEntity>(x => x.Accounts)
                 .Match(x => (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(x.Accounts.Local.MemberName)));
 
 
@@ -98,7 +120,7 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))
             {
-                expression = expression.And(x => x.PartnerId == filter.PartnerId);
+                expression = expression.And(x => x.OperatorId == filter.PartnerId);
             }
 
             if (!string.IsNullOrWhiteSpace(filter.Nickname))

@@ -8,5 +8,7 @@ namespace GamesAdmin.Api.Report
     public interface ICascadingSlotReportService
     {
         Task<IEnumerable<CascadingSlotBetRecord>> GetReportAsync(CascadingSlotReportFilter filter);
+
+        Task<CascadingSlotBetHistory> GetBetHistoryAsync(CascadingSlotReportFilter filter);
     }
 }

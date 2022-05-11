@@ -78,3 +78,31 @@
 .card span {
   font-size: 1.4rem;
   top: 0; }
+
+.table-cascading-slot .table-recored-screen {
+  margin: auto; }
+  .table-cascading-slot .table-recored-screen td {
+    border: none;
+    padding: 0; }
+    .table-cascading-slot .table-recored-screen td.recored-screen {
+      position: relative; }
+      .table-cascading-slot .table-recored-screen td.recored-screen .multiplier {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+        font-size: 17px; }
+        .table-cascading-slot .table-recored-screen td.recored-screen .multiplier.treasureisland {
+          text-shadow: 2px 0 0 #2f0500, -2px 0 0 #2f0500, 0 2px 0 #2f0500, 0 -2px 0 #2f0500, 1px 1px #2f0500, -1px -1px 0 #2f0500, 1px -1px 0 #2f0500, -1px 1px 0 #2f0500;
+          color: #fffc00; }
+
+.table-cascading-slot td {
+  text-align: center; }
+
+.table-cascading-slot .col-round-id {
+  width: 10rem; }
+
+.table-cascading-slot .symbol {
+  max-width: 60px;
+  height: 100%; }

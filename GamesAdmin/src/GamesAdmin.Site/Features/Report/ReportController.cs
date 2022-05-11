@@ -561,9 +561,9 @@ namespace GamesAdmin.Site.Features.Report
             bool convertToUSD,
             string game)
         {
-            var request = new GetCascadingSlotReportRequest(roundId, nickname, excludeUUS, game, convertToUSD);
+            var request = new GetCascadingSlotBetHistoryRequest(roundId, nickname, excludeUUS, game, convertToUSD);
 
-            return PartialView("_CascadingSlotBetHistory", (await mediator.Send(request)).Records.FirstOrDefault());
+            return PartialView("_CascadingSlotBetHistory", await mediator.Send(request));
         }
 
         private async Task<ReportViewModel> GetReportViewModel()
