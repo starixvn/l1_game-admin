@@ -4,6 +4,9 @@ namespace GamesAdmin.Core.Extensions
 {
     public static class DateTimeExtension
     {
+        private const int GreenwichTime = -4;
+        private const int HourInDay = 24;
+
         public static DateTime ToStartDate(this DateTime dateTime)
         {
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
@@ -19,5 +22,8 @@ namespace GamesAdmin.Core.Extensions
             const int gmt = 7;
             return time.AddTicks(-TimeSpan.TicksPerHour * gmt);
         }
+
+        public static int FromGreenwichHour(this int hour)
+            => (hour + GreenwichTime) % HourInDay;
     }
 }
