@@ -42,9 +42,12 @@ namespace GamesAdmin.Api.Partners
         public Task<PartnerConfig> GetConfig(string partnerId, string type)
             => mediator.Send(new GetConfigRequest(partnerId, type));
 
-        [HttpPost("config")]
-        public Task<bool> UpdateConfig(PartnerConfig config)
-            => mediator.Send(new UpdateConfigRequest(config));
+        [HttpPost("site_exclusion")]
+        public Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
+            => mediator.Send(new UpdateSiteExclusionRequest(partnerId, gameId, exclusionSites));
 
+        [HttpPost("super_players")]
+        public Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers)
+            => mediator.Send(new UpdateSuperPlayersRequest(partnerId, superPlayers));
     }
 }

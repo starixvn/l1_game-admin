@@ -29,9 +29,9 @@ namespace GamesAdmin.Site.Extensions
         }
 
         public static int ToGreenwichHour(this DateTime date)
-        => date.AddHours(GreenwichTime).Hour;
+            => date.AddHours(GreenwichTime).Hour;
 
         public static int ToAsiaHour(this DateTime date)
-        => date.AddHours(AsiaTime).Hour;
+            => date.AddHours(AsiaTime).Hour;
     }
 }

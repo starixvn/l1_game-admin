@@ -33,14 +33,17 @@ namespace GamesAdmin.Site.Features.Partners
         [Get("/partner/config")]
         Task<PartnerConfig> GetPartnerConfig(string partnerId, string type);
 
-        [Post("/partner/config")]
-        Task<bool> UpdatePartnerConfig(PartnerConfig partnerConfig);
-
         [Post("/um/partners")]
         Task<bool> UpdatePartnerUM([Body] UpdatePartnerUMRequest request);
 
         [Get("/um/allUMInfo")]
         Task<IEnumerable<UmInfo>> GetAllUMInfo();
+
+        [Post("/partner/site_exclusion")]
+        Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
+
+        [Post("/partner/super_players")]
+        Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers);
     }
 
     public interface IPartnerService
@@ -144,12 +147,11 @@ namespace GamesAdmin.Site.Features.Partners
         public Task<string[]> GetPartnerSuperPlayer(string partnerId)
            => GetPartnerConfigValue(partnerId, PartnerConfigType.SuperPlayers.Value, PartnerConfigKey.Name.Value);
 
-
         public Task<bool> UpdatePartnerSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
-           => UpdatePartnerConfigValue(partnerId, PartnerConfigType.SiteExclusion.Value, gameId.ToString(), exclusionSites);
+            => partnerApi.UpdateSiteExclusion(partnerId, gameId, exclusionSites);
 
         public Task<bool> UpdatePartnerSuperPlayer(string partnerId, string[] superPlayers)
-           => UpdatePartnerConfigValue(partnerId, PartnerConfigType.SuperPlayers.Value, PartnerConfigKey.Name.Value, superPlayers);
+            => partnerApi.UpdateSuperPlayers(partnerId, superPlayers);
 
         public Task<bool> UpdatePartnerUM(UpdatePartnerUMRequest request)
             => this.partnerApi.UpdatePartnerUM(request);
@@ -165,24 +167,6 @@ namespace GamesAdmin.Site.Features.Partners
                 : new List<string>();
 
             return gameSiteExclusion?.ToArray() ?? new string[] { };
-        }
-
-        private async Task<bool> UpdatePartnerConfigValue(string partnerId, string configType, string configKey, string[] values)
-        {
-            var config = await partnerApi.GetPartnerConfig(partnerId, configType);
-
-            if (config != null)
-            {
-                config.Value[configKey] = values.ToList();
-            }
-            else
-            {
-                config = new PartnerConfig(partnerId, configType,
-                    new Dictionary<string, IList<string>>()
-                    { { configKey, values.ToList() }});
-            }
-
-            return await partnerApi.UpdatePartnerConfig(config);
         }
     }
 }

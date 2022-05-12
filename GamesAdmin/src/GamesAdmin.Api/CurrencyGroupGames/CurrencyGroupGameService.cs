@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api._Shared.Helpers;
+using GamesAdmin.Api.SentryClient;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Currencies;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
@@ -28,12 +32,18 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         private readonly IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository;
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
+        private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
 
-        public CurrencyGroupGameService(IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository, IMapper mapper, ISentryClient sentryClient)
+        public CurrencyGroupGameService(
+            IGenericRepository<CurrencyGroupGameEntity> currencyGroupGameRepository,
+            IMapper mapper,
+            ISentryClient sentryClient,
+            IGenericRepository<CurrencyGroupEntity> currencyGroupRepository)
         {
             this.currencyGroupGameRepository = currencyGroupGameRepository;
             this.mapper = mapper;
             this.sentryClient = sentryClient;
+            this.currencyGroupRepository = currencyGroupRepository;
         }
 
         public async Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId)
@@ -89,10 +99,20 @@ namespace GamesAdmin.Api.CurrencyGroupGames
             {
                 var gameConfig = await currencyGroupGameRepository.FindOneAsync(entity => entity.GameId == currencyGroupGame.GameId && entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId));
 
-                if (gameConfig != null)
+                if (gameConfig == null)
                 {
+                    var entity = mapper.Map<CurrencyGroupGameEntity>(currencyGroupGame);
+                    await currencyGroupGameRepository.InsertOneAsync(entity);
+                }
+                else
+                {
+                    var game = Game.FromGameId((GameId)currencyGroupGame.GameId);
+                    var group = await currencyGroupRepository.FindByIdAsync(currencyGroupGame.GroupId);
+                    var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(gameConfig, currencyGroupGame);
+                    sentryClient.CaptureChangedSettings(game.Value, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
 
-                    var update = Builders<CurrencyGroupGameEntity>.Update.Set(field => field.Enabled, currencyGroupGame.Enabled)
+                    var update = Builders<CurrencyGroupGameEntity>.Update
+                        .Set(field => field.Enabled, currencyGroupGame.Enabled)
                         .Set(field => field.MinBet, currencyGroupGame.MinBet)
                         .Set(field => field.MaxBet, currencyGroupGame.MaxBet)
                         .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
@@ -103,15 +123,8 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                         update.Set(field => field.StakeLevels, currencyGroupGame.StakeLevels);
                     }
 
-
                     await currencyGroupGameRepository.UpdateAsync(entity => entity.GroupId == ObjectId.Parse(currencyGroupGame.GroupId)
                         && entity.GameId == currencyGroupGame.GameId, update);
-                }
-                else
-                {
-                    var entity = mapper.Map<CurrencyGroupGameEntity>(currencyGroupGame);
-
-                    await currencyGroupGameRepository.InsertOneAsync(entity);
                 }
 
                 return true;
