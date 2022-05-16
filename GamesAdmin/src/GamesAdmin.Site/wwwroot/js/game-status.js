@@ -257,7 +257,7 @@
 
         setControlResultCascadingSlotGame: function (event, gameName) {
             event.preventDefault();
-            this.setResultControl("CascadingSlotResultEasyMode", gameName);
+            this.setResultControl("CascadingSlotResult", gameName);
         },
 
         setControlResultHiLo: function (event) {
