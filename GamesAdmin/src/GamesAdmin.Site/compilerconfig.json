@@ -92,6 +92,10 @@
     "inputFile": "wwwroot/scss/pages/slot-game-report.scss"
   },
   {
+    "outputFile": "wwwroot/js/partner.es5.js",
+    "inputFile": "wwwroot/js/partner.js"
+  },
+  {
     "outputFile": "wwwroot/scss/pages/holdem-poker-result.css",
     "inputFile": "wwwroot/scss/pages/holdem-poker-result.scss"
   }

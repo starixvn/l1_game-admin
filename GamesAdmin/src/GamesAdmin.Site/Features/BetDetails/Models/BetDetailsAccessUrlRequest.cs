@@ -9,17 +9,17 @@
         {
             Auth = new Auth
             {
-                PartnerId = model.OperatorId,
-                PartnerSecret = model.OperatorSecret
+                OperatorId = model.OperatorId,
+                OperatorSecret = model.OperatorSecret
             };
             Language = model.Language;
             GameRoundId = model.RoundId;
             GameTypeId = model.GameType;
-            ObCustId = model.PlayerId;
+            PlayerId = model.PlayerId;
         }
         public long GameRoundId { get; set; }
 
-        public int ObCustId { get; set; }
+        public int PlayerId { get; set; }
 
         public byte GameTypeId { get; set; }
 

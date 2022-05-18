@@ -1,5 +1,5 @@
-﻿using GamesAdmin.Core.Enumeration;
-using System;
+﻿using System;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Core.Models.BetReport
 {

@@ -40,7 +40,13 @@
   {
     "outputFileName": "wwwroot/css/adjust-bot.min.css",
     "inputFiles": [
-      "wwwroot/scss/pages/adjust-bot.min.css"
+      "wwwroot/scss/pages/adjust-bot.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/notification.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/notification.css"
     ]
   },
   {
@@ -209,6 +215,21 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/casino-holdem-poker-result.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/reports.min.css",
+      "wwwroot/scss/pages/casino-holdem-poker-result.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/casino-holdem-poker-result.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/js/casino-holdem-poker-result.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
@@ -247,20 +268,6 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/blackjack-report.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
-      "wwwroot/lib/data-tables/datatables.min.js",
-      "wwwroot/js/blackjack-report.js"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/js/bet-details.min.js",
     "inputFiles": [
       "wwwroot/js/bet-details.js"
@@ -270,6 +277,5 @@
     "outputFileName": "wwwroot/js/daily-summary.min.js",
     "inputFiles": [
       "wwwroot/js/daily-summary.js"
-    ]
   }
 ]

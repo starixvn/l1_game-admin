@@ -1,9 +1,9 @@
 ﻿namespace GamesAdmin.Database.Report.Entities
 {
-    using GamesAdmin.Core.Models.BetReport;
-    using GamesAdmin.Database.Entities;
     using System;
     using System.Linq;
+    using GamesAdmin.Core.Models.BetReport;
+    using GamesAdmin.Database.Entities;
 
     public class HoldemPokerBetReportEntity
     {
@@ -46,6 +46,7 @@
             IsQualified = round.SettlementResult?.IsQualified;
             IsSwappedOrHold = round.IsSwappedOrHold;
             BetWin = bet.Betwin;
+            ExchangeRateId = round.ExchangeRateId;
         }
 
         public DateTime Time { get; }
@@ -79,5 +80,7 @@
         public bool? IsQualified { get; }
 
         public bool? IsSwappedOrHold { get; }
+
+        public int ExchangeRateId { get;  }
     }
 }

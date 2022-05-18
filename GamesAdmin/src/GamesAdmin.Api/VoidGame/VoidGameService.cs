@@ -38,8 +38,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var isExistTicket = await ticketHandler.Exist(request.ObCustId,
-                    request.PartnerId,
+                var isExistTicket = await ticketHandler.Exist(request.PlayerId,
+                    request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
                     request.GameTypeId,
@@ -56,11 +56,11 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (apiResult.Result.IsSuccessful())
                 {
-                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.ObCustId}", Sentry.Protocol.SentryLevel.Fatal);
+                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.PlayerId}", Sentry.Protocol.SentryLevel.Fatal);
 
                     var moved = await ticketHandler.Void(
-                        request.ObCustId,
-                        request.PartnerId,
+                        request.PlayerId,
+                        request.OperatorId,
                         request.SiteId,
                         request.GameRoundId,
                         request.GameTypeId,

@@ -1,7 +1,7 @@
-﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {

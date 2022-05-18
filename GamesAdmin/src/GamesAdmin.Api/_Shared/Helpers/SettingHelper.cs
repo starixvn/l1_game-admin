@@ -109,7 +109,7 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             var changedSettings = new List<SettingChangedModel>
             {
-                new SettingChangedModel("ExcludeUUS", oldConfig.SlotsConfig.Jackpot.ExcludeUUS.ToString(), jackpot.ExcludeUUS.ToString()),
+                new SettingChangedModel("ExcludeUUS", oldConfig.SlotsConfig.Jackpot.ExcludeTestCurrency.ToString(), jackpot.ExcludeTestCurrency.ToString()),
                 new SettingChangedModel("BotContributionRatio", oldConfig.SlotsConfig.Jackpot.BotContributionRatio.ToString(), jackpot.BotContributionRatio.ToString()),
                 new SettingChangedModel("PlayerContributionRatio", oldConfig.SlotsConfig.Jackpot.PlayerContributionRatio.ToString(), jackpot.PlayerContributionRatio.ToString()),
                 new SettingChangedModel("WinningRatio", oldConfig.SlotsConfig.Jackpot.WinningRatio.ToString(), jackpot.WinningRatio.ToString()),

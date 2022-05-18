@@ -20,4 +20,9 @@
 
         return value == null ? string.Empty : formatNumber(value / exchangeRate);
     }
+
+    public static string formatNumber3(double value)
+    {
+        return value.ToString("#,##0.##");
+    }
 }

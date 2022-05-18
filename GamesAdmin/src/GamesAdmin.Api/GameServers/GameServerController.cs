@@ -1,12 +1,12 @@
-﻿using GamesAdmin.Api._Shared;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -43,7 +43,7 @@ namespace GamesAdmin.Api.GameServers
 
         [HttpPost("hilo/set_result")]
         public Task<IEnumerable<HiloCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
-        => mediator.Send(request);
+            => mediator.Send(request);
 
         [HttpPost("get_admin_monitoring_settings")]
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.GameServers
 
         [HttpPost("verify_admin_monitoring_token")]
         public Task<bool> VerifyAdminMonitoringToken(string token)
-          => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
+            => mediator.Send(new VerifyAdminMonitoringTokenRequest(token));
 
         [HttpGet("connected_users")]
         public Task<int> ConnectedUsers()

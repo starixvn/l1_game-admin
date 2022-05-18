@@ -1,6 +1,6 @@
-﻿using GamesAdmin.Core.Enumeration.BetChoices;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration.BetChoices;
 using GamesAdmin.Core.Enumeration.BetOdds;
-using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Enumeration
 {
@@ -86,7 +86,7 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.HiLoValue:
                     return Enumeration.GetAll<HiLoBetOdds>();
-                    
+
                 case Game.TexasHoldemPokerValue:
                     return Enumeration.GetAll<TexasHoldemPokerOdds>();
 

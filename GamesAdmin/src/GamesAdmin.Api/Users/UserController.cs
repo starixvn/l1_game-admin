@@ -1,10 +1,10 @@
-﻿using GamesAdmin.Api._Shared;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Users.Requests;
 using GamesAdmin.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Users
 {

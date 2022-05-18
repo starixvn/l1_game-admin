@@ -8,6 +8,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public int? ObCustId { get; set; }
 
+        public int? PlayerId { get; set; }
+
         public string SiteId { get; set; }
 
         public int? GameRoundId { get; set; }
@@ -15,6 +17,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public byte? GameTypeId { get; set; }
 
         public string RequestType { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class PartnerEndGameCall : PartnerCall
@@ -54,6 +58,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public float ContributionRate { get; set; }
 
         public decimal ContributionAmount { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class PartnerVoidGameCall : PartnerCall

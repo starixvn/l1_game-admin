@@ -50,8 +50,15 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <input type="checkbox" asp-for="IsTest" />
-                <label asp-for="IsTest" class="control-label">Testing Currency</label>
+                <input type="checkbox" asp-for="IsTest"  onclick="currency.onClickIsTestCurrency(event)" />
+                <label asp-for="IsTest" class="control-label" >Testing Currency</label>
+            </div>
+        </div>
+
+        <div class="form-group row" style="display: @(Model.IsTest ? "block" : "none") " id="isUncountOnTotalSetting">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="IsUncountOnTotal"/>
+                <label asp-for="IsUncountOnTotal" class="control-label" >Is Uncount</label>
             </div>
         </div>
 

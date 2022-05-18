@@ -9,7 +9,6 @@ using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core.Enumeration;
 using Refit;
-using Sentry;
 
 namespace GamesAdmin.Api.ChatBot
 {
@@ -27,20 +26,18 @@ namespace GamesAdmin.Api.ChatBot
     public class ChatBotService : IChatBotService
     {
         private const string Separator = " - ";
-        private const string HighStakeMessageTemplate = "{0} - {1}";
+        private const string HighStakeMessageTemplate = "**VG2** - {0} - {1}";
         private const int MinBetAmount = 2000;
 
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
         private readonly IGameUserService gameUserService;
-        private readonly ISentryClient sentryClient;
 
-        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService, ISentryClient sentryClient)
+        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
             this.gameUserService = gameUserService;
-            this.sentryClient = sentryClient;
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)

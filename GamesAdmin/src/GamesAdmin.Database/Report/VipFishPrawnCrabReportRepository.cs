@@ -44,7 +44,7 @@ namespace GamesAdmin.Database
                         Ocean = x.Ocean,
                         Currency = x.Currency,
                         Rate = x.Rate,
-                        PartnerId = x.PartnerId
+                        PartnerId = x.OperatorId
                     });
                 var records = await project.ToListAsync();
 

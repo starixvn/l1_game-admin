@@ -323,10 +323,11 @@ namespace GamesAdmin.Api.Games
 
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
-                    .Set(field => field.SlotsConfig.Jackpot.ExcludeUUS, jackpot.ExcludeUUS)
+                    .Set(field => field.SlotsConfig.Jackpot.ExcludeTestCurrency, jackpot.ExcludeTestCurrency)
                     .Set(field => field.SlotsConfig.Jackpot.BotContributionRatio, jackpot.BotContributionRatio)
                     .Set(field => field.SlotsConfig.Jackpot.PlayerContributionRatio, jackpot.PlayerContributionRatio)
-                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio);
+                    .Set(field => field.SlotsConfig.Jackpot.WinningRatio, jackpot.WinningRatio)
+                    .Set(field => field.SlotsConfig.Jackpot.AllowedCurrency, jackpot.AllowedCurrency);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

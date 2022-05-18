@@ -10,12 +10,12 @@
         {
             Auth = new Auth
             {
-                PartnerId = model.OperatorId,
-                PartnerSecret = model.OperatorSecret
+                OperatorId = model.OperatorId,
+                OperatorSecret = model.OperatorSecret
             };
             GameRoundId = model.RoundId;
             GameTypeId = model.GameType;
-            ObCustId = model.PlayerId;
+            PlayerId = model.PlayerId;
             SiteId = model.SiteId;
             TimeStamp = DateTimeOffset.Now;
             Seq = Guid.NewGuid().ToString();
@@ -26,7 +26,7 @@
 
         public long GameRoundId { get; set; }
 
-        public int ObCustId { get; set; }
+        public int PlayerId { get; set; }
 
         public string SiteId { get; set; }
 

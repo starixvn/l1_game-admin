@@ -9,6 +9,8 @@
         public bool IsTest { get; set; }
 
         public string GroupId { get; set; }
+
+        public bool? IsUncountOnTotal { get; set; }
     }
 
     public class UpdateRequest : Request<UpdateCurrencyModel, bool>

@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [DisplayName("Exclude UUS")]
         public bool ExcludeUUS { get; set; }
 
-        [DisplayName("Convert to USD")]
+        [DisplayName("Convert to INH")]
         public bool ConvertToUSD { get; set; }
 
         [DisplayName("Partner")]

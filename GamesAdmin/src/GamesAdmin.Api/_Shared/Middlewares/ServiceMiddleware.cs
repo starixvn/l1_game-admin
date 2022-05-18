@@ -1,4 +1,6 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Net.Http;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
@@ -6,8 +8,6 @@ using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
-using GamesAdmin.Api.DailySummarize;
-using GamesAdmin.Api.EndGameInfo;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
@@ -22,8 +22,6 @@ using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using System;
-using System.Net.Http;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -46,7 +44,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProVietKenoService, ProVietKenoService>();
-            services.AddScoped<IDailySummaryService, DailySummaryService>();
             services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<IGlobalConfigService, GlobalConfigService>();
@@ -61,46 +58,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
             services.AddScoped<NightClubReport>().AddScoped<ISlotGameReport, NightClubReport>(s => s.GetService<NightClubReport>());
 
-
-            services.AddScoped<IEndGameInfoServiceFactory, EndGameInfoServiceFactory>();
-            services.AddScoped<BigSmallEndGameInfoService>();
-            services.AddScoped<BigSmallTurboEndGameInfoService>();
-            services.AddScoped<OddEvenEndGameInfoService>();
-            services.AddScoped<OddEvenTurboEndGameInfoService>();
-            services.AddScoped<FishPrawnCrabEndGameInfoService>();
-            services.AddScoped<SeDieEndGameInfoService>();
-            services.AddScoped<MiniSeDieEndGameInfoService>();
-            services.AddScoped<DragonTigerEndGameInfoService>();
-            services.AddScoped<BaccaratEndGameInfoService>();
-            services.AddScoped<VipBaccaratEndGameInfoService>();
-            services.AddScoped<KenoProMaxEndGameInfoService>();
-            services.AddScoped<KenoProVietEndGameInfoService>();
-            services.AddScoped<KenoMaxEndGameInfoService>();
-            services.AddScoped<KenoMax2EndGameInfoService>();
-            services.AddScoped<KenoMiniEndGameInfoService>();
-            services.AddScoped<KenoMini2EndGameInfoService>();
-            services.AddScoped<KenoEastEndGameInfoService>();
-            services.AddScoped<KenoWestEndGameInfoService>();
-            services.AddScoped<KenoSouthEndGameInfoService>();
-            services.AddScoped<KenoNorthEndGameInfoService>();
-            services.AddScoped<RouletteEndGameInfoService>();
-            services.AddScoped<VipSeDieEndGameInfoService>();
-            services.AddScoped<BlackjackEndGameInfoService>();
-            services.AddScoped<SpecialSeDieEndGameInfoService>();
-            services.AddScoped<VipFishPrawnCrabEndGameInfoService>();
-            services.AddScoped<SicBoEndGameInfoService>();
-            services.AddScoped<VipSeDieWarEndGameInfoService>();
-            services.AddScoped<FourGuardiansEndGameInfoService>();
-            services.AddScoped<LotteryEndGameInfoService>();
-            services.AddScoped<ThreeCardsEndGameInfoService>();
-            services.AddScoped<HeroesSlotEndGameInfoService>();
-            services.AddScoped<BitcoinMasterEndGameInfoService>();
-            services.AddScoped(typeof(KenoMatchEndGameInfoService<,>));
-            services.AddScoped(typeof(KenoPowerEndGameInfoService<,>));
-            services.AddScoped<CasinoHoldemPokerEndGameInfoService>();
-            services.AddScoped<HiLoEndGameInfoService>();
-            services.AddScoped<TexasHoldemPokerEndGameInfoService>();
-            services.AddScoped<NightClubEndGameInfoService>();
 
             services.AddScoped<IGameServerService, GameServerService>();
 

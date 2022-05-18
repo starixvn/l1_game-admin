@@ -44,7 +44,7 @@ namespace GamesAdmin.Database
                         Clubs = x.Clubs,
                         Currency = x.Currency,
                         Rate = x.Rate,
-                        PartnerId = x.PartnerId
+                        PartnerId = x.OperatorId
                     });
 
                 return (roundResult, records);

@@ -181,9 +181,9 @@ namespace GamesAdmin.Api.GameServers
             try
             {
                 var config = await gameSettingService.GetByName(request.GameConfigName);
-                var isExcludeUUS = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeUUS;
+                var isExcludeTestCurrency = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeTestCurrency;
 
-                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
+                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
                 {
                     var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
 

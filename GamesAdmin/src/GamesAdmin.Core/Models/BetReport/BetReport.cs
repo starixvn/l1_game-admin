@@ -1,6 +1,6 @@
-﻿using GamesAdmin.Core.Models.BetReport;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
-using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models
 {

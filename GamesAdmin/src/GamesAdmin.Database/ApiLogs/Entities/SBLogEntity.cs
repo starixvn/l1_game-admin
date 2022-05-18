@@ -30,6 +30,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string MemberName { get; set; }
 
+        public string PlayerName { get; set; }
+
         public byte AppType { get; set; }
 
         public string SiteName { get; set; }
@@ -39,6 +41,10 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public DateTimeOffset TimeStamp { get; set; }
 
         public bool FreeBet { get; set; }
+
+        public bool DisableJackpotGames { get; set; }
+
+        public string OperatorToken { get; set; }
     }
 
     public class SBResultEntity : ApiLogResultEntity
