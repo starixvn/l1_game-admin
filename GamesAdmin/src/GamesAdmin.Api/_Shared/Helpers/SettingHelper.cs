@@ -45,7 +45,9 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             for (var i = 0; i < newConfig.Length; i++)
             {
-                var setting = new SettingChangedModel(i.FromGreenwichHour().ToString(), oldConfig[i].ToString(), newConfig[i].ToString());
+                var configPosition = i.ToGMT4();
+
+                var setting = new SettingChangedModel(i.ToString(), oldConfig[configPosition].ToString(), newConfig[configPosition].ToString());
                 changedSettings.Add(setting);
             }
 

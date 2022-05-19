@@ -23,7 +23,7 @@ namespace GamesAdmin.Core.Extensions
             return time.AddTicks(-TimeSpan.TicksPerHour * gmt);
         }
 
-        public static int FromGreenwichHour(this int hour)
-            => (hour + GreenwichTime) % HourInDay;
+        public static int ToGMT4(this int hour)
+            => (hour - GreenwichTime + HourInDay) % HourInDay;
     }
 }

@@ -54,7 +54,7 @@ namespace GamesAdmin.Api.SentryClient
                 gameName,
                 settingName,
                 additionalDetails,
-                string.Join("; ", changedSettings));
+                string.Join(";\r\n", changedSettings));
 
             sentryClient.CaptureMessage(message, SentryLevel.Error);
         }
