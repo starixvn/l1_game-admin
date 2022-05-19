@@ -68,11 +68,19 @@
             <div class="form-group row">
                 <div class="col-lg-6">
                     <label asp-for="@Model.PayoutViewModel.MinBet" class="control-label"></label>
-                    <input type="number" asp-for="@Model.PayoutViewModel.MinBet" class="form-control" />
+                    <input type="text" class="form-control"
+                           value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.MinBet)"
+                           name="PayoutViewModel.MinBet"
+                           id="bot-min-bet"
+                           onkeyup="gameStatus.formatNumber('bot-min-bet')" />
                 </div>
                 <div class="col-lg-6">
                     <label asp-for="@Model.PayoutViewModel.MaxBet" class="control-label"></label>
-                    <input type="number" asp-for="@Model.PayoutViewModel.MaxBet" class="form-control" />
+                    <input type="text" class="form-control"
+                           value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.MaxBet)"
+                           name="PayoutViewModel.MaxBet"
+                           id="bot-max-bet"
+                           onkeyup="gameStatus.formatNumber('bot-max-bet')" />
                 </div>
             </div>
 
@@ -91,7 +99,12 @@
                                     <div class="col-lg-6">
                                         <label class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
                                         <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                                        <input type="text"
+                                               name="PayoutViewModel.BetChoiceBetSettings[@index].MaxBet"
+                                               value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet)"
+                                               class="form-control"
+                                               id="bot-choice-@index"
+                                               onkeyup="gameStatus.formatNumber('bot-choice-@index')" />
                                     </div>
                                 }
                             }
@@ -108,15 +121,15 @@
             {
 
                 <div class="form-group" style="margin-bottom: 0;">
-                    <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeUUS" />
-                    <label asp-for="@Model.JackpotViewModel.ExcludeUUS" class="control-label"></label>
+                    <input type="checkbox" asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" />
+                    <label asp-for="@Model.JackpotViewModel.ExcludeTestCurrency" class="control-label"></label>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-8">
                         Note:<br />
                         <b>"ON"</b> mode(default setting):<br />
-                        + Jackpot prizes are not available for UUS accounts.<br />
-                        + Stakes from UUS tickets will not be contributed to Jackpot pool<br />
+                        + Jackpot prizes are not available for test currency accounts.<br />
+                        + Stakes from test currency tickets will not be contributed to Jackpot pool<br />
                     </div>
                 </div>
 
@@ -127,6 +140,7 @@
                         <div class="form-group">
                             <label class="control-label">Stake level @Model.JackpotViewModel.StakeLevels[i].Stake</label>
                             <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
+                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].BotRatio" class="form-control" />
                             <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
                         </div>
                     }
@@ -156,7 +170,12 @@
                         <input type="number" asp-for="@Model.JackpotViewModel.PlayerContribution" class="form-control" />
                     </div>
                 </div>
-
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label class="control-label" asp-for="@Model.JackpotViewModel.AllowedCurrency"></label>
+                        <input type="text" asp-for="@Model.JackpotViewModel.AllowedCurrency" class="form-control" />
+                    </div>
+                </div>
             }
         </div>
     </form>

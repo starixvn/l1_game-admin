@@ -71,13 +71,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     src.PlayerJackpotContribution.ConvertPercentValue(),
                     src.BotJackpotContribution.ConvertPercentValue(),
                     false,
-                    src.AllowedCurrency)))
-                .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => src.BetLevels))
-                .ForMember(dest => dest.CoinValues, opt => opt.MapFrom(src => src.CoinValues))
-                .ForMember(dest => dest.Multiplier, opt => opt.MapFrom(src => src.Multiplier))
-                .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.MaxWinPerRound));
+                    src.AllowedCurrency)));
 
-                    
             CreateMap<AddViewModel, CascadingSlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))

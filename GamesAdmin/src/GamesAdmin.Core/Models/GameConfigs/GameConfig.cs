@@ -14,7 +14,7 @@ namespace GamesAdmin.Core.Models
             EnableSetting enableSetting = null,
             BotSetting botSettings = null,
             BetLimit betLimit = null,
-            SlotsConfig slotsConfig = null
+            SlotsConfig slotsConfig = null,
             CascadingSlotsConfig cascadingSlotsConfig = null)
         {
             Id = id;

@@ -478,6 +478,7 @@
 
         toogleSlotsConfig: function () {
             const type = $('#Type').val();
+
             switch (type) {
                 case '3':
                     $('#slots-config .common-field').attr('disabled', true);

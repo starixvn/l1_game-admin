@@ -101,7 +101,12 @@
                                     <div class="col-lg-6">
                                         <label class="control-label">@Model.PayoutViewModel.BetChoiceBetSettings[index].DisplayName</label>
                                         <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].Name" class="form-control" />
-                                        <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet" class="form-control" />
+                                        <input type="text"
+                                               name="PayoutViewModel.BetChoiceBetSettings[@index].MaxBet"
+                                               value="@HtmlHelpers.formatNumber3(Model.PayoutViewModel.BetChoiceBetSettings[index].MaxBet)"
+                                               class="form-control"
+                                               id="bot-choice-@index"
+                                               onkeyup="gameStatus.formatNumber('bot-choice-@index')" />
                                     </div>
                                 }
                             }
