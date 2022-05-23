@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Api.SentryClient;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
@@ -10,6 +11,8 @@ namespace GamesAdmin.Api._Shared.Helpers
 {
     public static class SettingHelper
     {
+        private static string BotRatioFormat = "#,##0.####";
+
         public static List<SettingChangedModel> GetCurrencyGroupGameChangedModel(CurrencyGroupGameEntity oldConfig, CurrencyGroupGame newConfig)
         {
             var changedSettings = new List<SettingChangedModel> {
@@ -47,7 +50,7 @@ namespace GamesAdmin.Api._Shared.Helpers
             {
                 var configPosition = i.ToGMT4();
 
-                var setting = new SettingChangedModel(i.ToString(), oldConfig[configPosition].ToString(), newConfig[configPosition].ToString());
+                var setting = new SettingChangedModel(i.ToString(), oldConfig[configPosition].ToString(BotRatioFormat), newConfig[configPosition].ToString(BotRatioFormat));
                 changedSettings.Add(setting);
             }
 
@@ -75,11 +78,12 @@ namespace GamesAdmin.Api._Shared.Helpers
         public static List<SettingChangedModel> GetSlotConfigChangedModel(
             GameConfigEntity oldConfig, bool botEnabled, SlotsConfig newConfig)
         {
+
             var changedSettings = new List<SettingChangedModel>
             {
                 new SettingChangedModel("Bonus", GetValue(oldConfig.SlotsConfig.Bonus), GetValue(newConfig.Bonus)),
                 new SettingChangedModel("BigWinRatio", oldConfig.SlotsConfig.BigWinRatio.ToString(), newConfig.BigWinRatio.ToString()),
-                new SettingChangedModel("Mode", oldConfig.SlotsConfig.Mode.ToString(), newConfig.Mode.ToString()),
+                new SettingChangedModel("Mode", ((GameMode)oldConfig.SlotsConfig.Mode).ToString(), ((GameMode)newConfig.Mode).ToString()),
                 new SettingChangedModel("Botenabled", oldConfig.Botenabled.ToString(), botEnabled.ToString()),
             };
 
