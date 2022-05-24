@@ -35,7 +35,6 @@ namespace GamesAdmin.Core.Enumeration
 
         private static List<string> KenoTypes = new List<string>
         {
-             Game.KenoProVietValue,
              Game.KenoMaxValue,
              Game.KenoMax2Value,
              Game.KenoMiniValue,

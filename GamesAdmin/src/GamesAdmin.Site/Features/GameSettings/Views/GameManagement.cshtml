@@ -74,6 +74,7 @@
                                     var setting = Model.CurrencyGroupGames?.SingleOrDefault(groupGame => groupGame.GroupId == partnerGroup.Id && groupGame.GameId == Model.GameList[index].GameId);
                                     if (setting != null && setting.Enabled)
                                     {
+
                                         <b>@(partnerGroup.Name)</b>
 
                                         switch (Model.GameList[index].GameConfig.Info.Type)

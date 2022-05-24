@@ -14,7 +14,6 @@ using GamesAdmin.Site.Features.GameSettings.Requests;
 using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Partners;
-using GamesAdmin.Site.Features.ProVietKeno;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -47,7 +46,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         private readonly IGameSettingService gameService;
         private readonly IGameUserService accountService;
-        private readonly IProVietKenoService proVietKenoService;
         private readonly IPartnerService partnerService;
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
@@ -56,7 +54,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             IMapper mapper,
             IGameSettingService gameService,
             IGameUserService accountService,
-            IProVietKenoService proVietKenoService,
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService)
@@ -64,7 +61,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.mapper = mapper;
             this.gameService = gameService;
             this.accountService = accountService;
-            this.proVietKenoService = proVietKenoService;
             this.partnerService = partnerService;
             this.currencyGroupService = currencyGroupService;
             this.currencyGroupGameService = currencyGroupGameService;
@@ -301,11 +297,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             await gameService.UpdateStatus(request.Names, request.Enabled);
 
-            if (request.Names.Any(x => x == Game.KenoProVietValue) && request.Enabled)
-            {
-                await NotifyUnsettleRoundsToGameServer();
-            }
-
             if (request.Reload)
             {
                 await gameService.Reload();
@@ -336,12 +327,6 @@ namespace GamesAdmin.Site.Features.GameSettings
                 result.Token,
                 request.Game
             );
-        }
-
-        private async Task NotifyUnsettleRoundsToGameServer()
-        {
-            var unsettleRounds = await proVietKenoService.GetUnsettledRoundsAsync();
-            await proVietKenoService.NotifyRoundResult(unsettleRounds);
         }
 
         public async Task<MonitorViewModel> Handle(GetMonitorRequest request, CancellationToken cancellationToken)

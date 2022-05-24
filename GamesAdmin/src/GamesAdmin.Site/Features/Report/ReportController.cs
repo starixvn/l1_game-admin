@@ -383,9 +383,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult KenoProViet() => RedirectToAction("Index");
-
-        [HttpGet]
         public IActionResult KenoMax() => RedirectToAction("Index", new { game = GameId.KenoMax });
 
         [HttpGet]
@@ -512,7 +509,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return View(viewModel);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> TreasureIsland()
         {

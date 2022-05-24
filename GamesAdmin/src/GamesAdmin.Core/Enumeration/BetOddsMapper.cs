@@ -29,7 +29,6 @@ namespace GamesAdmin.Core.Enumeration
                     return Enumeration.GetAll<DragonTigerBetChoice>();
 
                 case Game.KenoProMaxValue:
-                case Game.KenoProVietValue:
                 case Game.KenoMaxValue:
                 case Game.KenoMax2Value:
                 case Game.KenoMiniValue:
