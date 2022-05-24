@@ -6,7 +6,8 @@
 
     public interface IDailySummaryApi
     {
-        [Post("/Member/DailySummarize")]
-        Task<dynamic> GetDailySummary([Body(BodySerializationMethod.Serialized)] DailySummaryRequest request);
+        [Headers("Content-Type: application/json")]
+        [Post("/Integrity/DailySummarize")]
+        Task<dynamic> GetDailySummary([Body(BodySerializationMethod.Serialized)] DailySummaryRequest request, [Header("Access-Key")] string accessKey);
     }
 }

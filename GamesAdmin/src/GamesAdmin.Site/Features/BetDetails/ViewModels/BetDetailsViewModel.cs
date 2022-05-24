@@ -30,5 +30,7 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
         public string OperatorSecret { get; set; }
 
         public string SiteId { get; set; } = "4100300";
+
+        public bool FreeBet { get; set; }
     }
 }

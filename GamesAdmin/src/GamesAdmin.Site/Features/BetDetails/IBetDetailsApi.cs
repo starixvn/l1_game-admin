@@ -6,7 +6,7 @@
 
     public interface IBetDetailsApi
     {
-        [Post("/GameTicket/GetAccessUrl")]
+        [Post("/BetHistory/GetAccessUrl")]
         Task<BetDetailsAccessUrlResult> GetAccessUrl([Body] BetDetailsAccessUrlRequest model);
     }
 }

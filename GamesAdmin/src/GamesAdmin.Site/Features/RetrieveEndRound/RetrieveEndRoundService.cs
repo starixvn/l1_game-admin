@@ -1,6 +1,9 @@
 ﻿
 namespace GamesAdmin.Site.Features.RetrieveEndRound
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Threading.Tasks;
     using GamesAdmin.Site.Features.BetDetails.ViewModels;
     using GamesAdmin.Site.Features.RetrieveEndRound.Model;
@@ -23,9 +26,21 @@ namespace GamesAdmin.Site.Features.RetrieveEndRound
         public async Task<string> GetRetrieveEndRoundAsync(BetDetailsViewModel model)
         {
             var request = new RetrieveEndRoundRequest(model);
-            var result = await retrieveEndRoundApi.RetrieveEndRound(request);
+            var requestBody = JsonConvert.SerializeObject(request);
+            var accessKey = CreateAccessKey(request.Auth.OperatorSecret, requestBody);
+            var result = await retrieveEndRoundApi.RetrieveEndRound(request, accessKey);
 
             return JsonConvert.SerializeObject(result);
         }
+
+        private string CreateAccessKey(string secretKey, string data)
+        {
+
+            var hmac = new HMACSHA256(Encoding.ASCII.GetBytes(secretKey));
+            var hashResult = hmac.ComputeHash(Encoding.ASCII.GetBytes(data));
+
+            return Convert.ToBase64String(hashResult);
+        }
+
     }
 }

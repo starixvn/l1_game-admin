@@ -17,6 +17,7 @@
             GameTypeId = model.GameType;
             PlayerId = model.PlayerId;
             SiteId = model.SiteId;
+            FreeBet = model.FreeBet;
             TimeStamp = DateTimeOffset.Now;
             Seq = Guid.NewGuid().ToString();
         }
@@ -33,5 +34,7 @@
         public DateTimeOffset TimeStamp { get; set; }
 
         public string Seq { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 }

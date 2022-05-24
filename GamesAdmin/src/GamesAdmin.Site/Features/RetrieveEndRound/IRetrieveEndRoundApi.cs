@@ -5,7 +5,8 @@
     using Refit;
     public interface IRetrieveEndRoundApi
     {
-        [Post("/Member/RetrieveEndGameInfo")]
-        Task<dynamic> RetrieveEndRound([Body(BodySerializationMethod.Serialized)] RetrieveEndRoundRequest request);
+        [Headers("Content-Type: application/json")]
+        [Post("/Player/RetrieveEndRoundInfo")]
+        Task<dynamic> RetrieveEndRound([Body(BodySerializationMethod.Serialized)] RetrieveEndRoundRequest request, [Header("Access-Key")] string accessKey);
     }
 }
