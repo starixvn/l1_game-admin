@@ -14,7 +14,8 @@ namespace GamesAdmin.Api.Partners
         , IRequestHandler<UpdateRequest, bool>
         , IRequestHandler<GetByIdRequest, Partner>
         , IRequestHandler<GetConfigRequest, PartnerConfig>
-        , IRequestHandler<UpdateConfigRequest, bool>
+        , IRequestHandler<UpdateSiteExclusionRequest, bool>
+        , IRequestHandler<UpdateSuperPlayersRequest, bool>
 
     {
         private readonly IPartnerService partnerService;
@@ -42,7 +43,10 @@ namespace GamesAdmin.Api.Partners
         public Task<PartnerConfig> Handle(GetConfigRequest request, CancellationToken cancellationToken)
         => partnerService.GetConfig(request.PartnerId, request.Type);
 
-        public Task<bool> Handle(UpdateConfigRequest request, CancellationToken cancellationToken)
-        => partnerService.UpsertConfig(request.Config);
+        public Task<bool> Handle(UpdateSiteExclusionRequest request, CancellationToken cancellationToken)
+            => partnerService.UpdateSiteExclusion(request.PartnerId, request.GameId, request.ExclusionSites);
+
+        public Task<bool> Handle(UpdateSuperPlayersRequest request, CancellationToken cancellationToken)
+             => partnerService.UpdateSuperPlayers(request.PartnerId, request.SuperPlayers);
     }
 }

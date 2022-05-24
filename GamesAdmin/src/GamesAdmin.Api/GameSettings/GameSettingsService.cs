@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
+using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -204,6 +207,9 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetBetLimitChangedModel(gameEntity, betLimit);
+                sentryClient.CaptureChangedSettings(name, "Bot Setting", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.Minbet, betLimit.MinBet)
@@ -231,9 +237,11 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
-                var update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.Odds, odds);
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.Odds, odds);
+                sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
 
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
                 await repository.UpdateAsync(config => config.Name == name, update);
 
                 return true;
@@ -254,6 +262,10 @@ namespace GamesAdmin.Api.Games
                 {
                     throw new InvalidOperationException($"{nameof(ratios)} not fullfill {HoursOfDay} hours.");
                 }
+
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot, ratios);
+                sentryClient.CaptureChangedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
 
@@ -278,6 +290,10 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
+                sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
+
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
@@ -300,6 +316,10 @@ namespace GamesAdmin.Api.Games
                 {
                     throw new InvalidOperationException($"Stakes of game {name} are different.");
                 }
+
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetJackpotChangedModel(gameEntity, jackpot, stakeLevels);
+                sentryClient.CaptureChangedSettings(name, "Jackpot", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.SlotsConfig.StakeLevels, stakeLevels)
@@ -335,6 +355,10 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
+                sentryClient.CaptureChangedSettings(name, "Slot Config", string.Empty, changedSettings);
+
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                     .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
@@ -357,6 +381,10 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
+                var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
+                sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
                     .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)

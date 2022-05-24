@@ -1,13 +1,15 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using GamesAdmin.Api.SentryClient;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Partners
 {
@@ -25,7 +27,9 @@ namespace GamesAdmin.Api.Partners
 
         Task<PartnerConfig> GetConfig(string partnerId, string type);
 
-        Task<bool> UpsertConfig(PartnerConfig config);
+        Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites);
+
+        Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers);
     }
 
     public class PartnerService : IPartnerService
@@ -36,7 +40,7 @@ namespace GamesAdmin.Api.Partners
         private readonly ISentryClient sentryClient;
 
         public PartnerService(
-            ISentryClient sentryClient, 
+            ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<PartnerEntity> partnerRepository,
             IGenericRepository<PartnerConfigEntity> partnerConfigRepository)
@@ -53,7 +57,7 @@ namespace GamesAdmin.Api.Partners
             {
                 var existPartner = await partnerRepository.FindOneAsync(entity => entity.PartnerId == partner.PartnerId);
 
-                if(existPartner != null)
+                if (existPartner != null)
                 {
                     return false;
                 }
@@ -133,7 +137,7 @@ namespace GamesAdmin.Api.Partners
             try
             {
                 var partnerEntity = await partnerRepository.FindOneAsync(entity => entity.PartnerId == partnerId);
-                return mapper.Map<Partner>(partnerEntity) ;
+                return mapper.Map<Partner>(partnerEntity);
             }
             catch (Exception ex)
             {
@@ -151,38 +155,78 @@ namespace GamesAdmin.Api.Partners
 
                 return mapper.Map<PartnerConfig>(config);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
                 return null;
             }
         }
 
-        public async Task<bool> UpsertConfig(PartnerConfig config)
+        public async Task<bool> UpdateSiteExclusion(string partnerId, int gameId, string[] exclusionSites)
         {
             try
             {
-                var existedConfig = await partnerConfigRepository.FindOneAsync(entity => entity.PartnerId == config.PartnerId && entity.Type == config.Type);
+                var configType = PartnerConfigType.SiteExclusion.Value;
+                var oldConfig = await GetConfig(partnerId, configType);
+                var game = Game.FromGameId((GameId)gameId);
+                var configKey = gameId.ToString();
 
-                if (existedConfig != null)
+                if (oldConfig == null)
                 {
-                    var update = Builders<PartnerConfigEntity>.Update.Set(entity => entity.Value, config.Value);
-
-                    await partnerConfigRepository.UpdateAsync(entity => entity.PartnerId == config.PartnerId && entity.Type == config.Type, update);
+                    var newValues = new Dictionary<string, IList<string>>() { { configKey, exclusionSites.ToList() } };
+                    oldConfig = new PartnerConfig(partnerId, configType, newValues);
+                    await partnerConfigRepository.InsertOneAsync(mapper.Map<PartnerConfigEntity>(oldConfig));
                 }
                 else
                 {
-                    await partnerConfigRepository.InsertOneAsync(mapper.Map<PartnerConfigEntity>(config));
+                    sentryClient.CaptureChangedSetting(
+                        game.Value,
+                        "Site Exclusion",
+                        string.Empty,
+                        new SettingChangedModel(string.Join(", ", oldConfig.Value.ContainsKey(configKey) ? oldConfig.Value[configKey] : new List<string>()), string.Join(", ", exclusionSites)));
+
+                    oldConfig.Value[configKey] = exclusionSites.ToList();
+                    var update = Builders<PartnerConfigEntity>.Update.Set(entity => entity.Value, oldConfig.Value);
+                    await partnerConfigRepository.UpdateAsync(entity => entity.PartnerId == oldConfig.PartnerId && entity.Type == oldConfig.Type, update);
                 }
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
                 return false;
             }
-           
+        }
+
+        public async Task<bool> UpdateSuperPlayers(string partnerId, string[] superPlayers)
+        {
+            try
+            {
+                var configType = PartnerConfigType.SuperPlayers.Value;
+                var oldConfig = await GetConfig(partnerId, configType);
+                var configKey = PartnerConfigKey.Name.Value;
+
+                if (oldConfig == null)
+                {
+                    var newValues = new Dictionary<string, IList<string>>() { { configKey, superPlayers.ToList() } };
+                    oldConfig = new PartnerConfig(partnerId, configType, newValues);
+                    await partnerConfigRepository.InsertOneAsync(mapper.Map<PartnerConfigEntity>(oldConfig));
+                }
+                else
+                {
+                    oldConfig.Value[configKey] = superPlayers.ToList();
+                    var update = Builders<PartnerConfigEntity>.Update.Set(entity => entity.Value, oldConfig.Value);
+                    await partnerConfigRepository.UpdateAsync(entity => entity.PartnerId == oldConfig.PartnerId && entity.Type == oldConfig.Type, update);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+                return false;
+            }
         }
     }
 }

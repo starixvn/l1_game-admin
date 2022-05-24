@@ -1,9 +1,9 @@
-﻿using GamesAdmin.Core.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using Refit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -65,5 +65,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Post("/game_server/get_admin_monitoring_settings")]
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
+
+        [Get("/game_server/connected_users")]
+        Task<int> GetConnectedUsers();
     }
 }

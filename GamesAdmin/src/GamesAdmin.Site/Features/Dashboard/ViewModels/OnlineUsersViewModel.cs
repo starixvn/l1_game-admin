@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 {
@@ -29,8 +29,6 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
         public IEnumerable<string> PartnerIds { get; set; }
 
         public IEnumerable<SelectListItem> PartnerItems { get; set; }
-
-        public string JwtToken { get; set; }
     }
 
     public class OnlineUserViewModel
