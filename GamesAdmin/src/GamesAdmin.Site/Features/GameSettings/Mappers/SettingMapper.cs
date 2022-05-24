@@ -77,8 +77,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
                 .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => src.BetLevels))
-                .ForMember(dest => dest.CoinValues, opt => opt.MapFrom(src => src.CoinValues))
-                .ForMember(dest => dest.BetMultiplier, opt => opt.MapFrom(src => src.BetMultiplier))
+                 .ForMember(dest => dest.BetMultiplier, opt => opt.MapFrom(src => src.BetMultiplier))
                 .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.MaxWinPerRound))
                 .ForMember(dest => dest.MultiplierBonus, opt => opt.MapFrom(src => new MultiplierBonus(src.MinMultiplierBonus, src.MaxMultiplierBonus)));
 

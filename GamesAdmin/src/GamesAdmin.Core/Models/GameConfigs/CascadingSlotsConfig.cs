@@ -19,7 +19,6 @@ namespace GamesAdmin.Core.Models.GameConfigs
             BigWinRatio = config.BigWinRatio;
             MultiplierBonus = config.MultiplierBonus;
             BetLevels = config.BetLevels;
-            CoinValues = config.CoinValues;
             BetMultiplier = config.BetMultiplier;
             MaxWinPerRound = config.MaxWinPerRound;
             OddsByCounts = config.OddsByCounts;
@@ -29,7 +28,6 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double BigWinRatio { get; set; }
         public MultiplierBonus MultiplierBonus { get; set; }
         public int[] BetLevels { get; set; }
-        public double[] CoinValues { get; set; }
         public double BetMultiplier { get; set; }
         public double MaxWinPerRound { get; set; }
         public Dictionary<string, List<OddsByCount>> OddsByCounts { get; set; }

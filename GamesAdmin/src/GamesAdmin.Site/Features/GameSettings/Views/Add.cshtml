@@ -71,7 +71,7 @@
 
             <div class="form-group">
                 <label class="control-label" asp-for="BigWinRatio"></label>
-                <input type="number" asp-for="BigWinRatio" class="form-control" />
+                <input type="number" asp-for="BigWinRatio" class="form-control common-field" />
             </div>
 
             <fieldset>
@@ -171,6 +171,11 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="control-label" asp-for="BigWinRatio"></label>
+                <input type="number" asp-for="BigWinRatio" class="form-control common-field" />
+            </div>
+
             <fieldset>
                 <legend>Bet Levels</legend>
                 <div class="form-group row">
@@ -179,18 +184,6 @@
                         <div class="col-lg-2">
                             <label class="control-label">@($"Level {i + 1}")</label>
                             <input type="number" asp-for="@Model.BetLevels[i]" class="form-control" />
-                        </div>
-                    }
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Coin values</legend>
-                <div class="form-group row">
-                    @for (var i = 0; i < Model.CoinValues.Length; i++)
-                    {
-                        <div class="col-lg-2">
-                            <label class="control-label">@($"Coin {i + 1}")</label>
-                            <input type="number" asp-for="@Model.CoinValues[i]" class="form-control" />
                         </div>
                     }
                 </div>
