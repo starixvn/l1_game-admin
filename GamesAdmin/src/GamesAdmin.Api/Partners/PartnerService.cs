@@ -183,7 +183,7 @@ namespace GamesAdmin.Api.Partners
                         game.Value,
                         "Site Exclusion",
                         string.Empty,
-                        new SettingChangedModel(string.Join(", ", oldConfig.Value[configKey] ?? new List<string>()), string.Join(", ", exclusionSites)));
+                        new SettingChangedModel(string.Join(", ", oldConfig.Value.ContainsKey(configKey) ? oldConfig.Value[configKey] : new List<string>()), string.Join(", ", exclusionSites)));
 
                     oldConfig.Value[configKey] = exclusionSites.ToList();
                     var update = Builders<PartnerConfigEntity>.Update.Set(entity => entity.Value, oldConfig.Value);

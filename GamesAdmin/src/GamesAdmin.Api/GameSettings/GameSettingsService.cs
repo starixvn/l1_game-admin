@@ -265,7 +265,7 @@ namespace GamesAdmin.Api.Games
 
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
                 var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot, ratios);
-                sentryClient.CaptureChangedSettings(name, "Bot Ratios", string.Empty, changedSettings);
+                sentryClient.CaptureChangedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
 

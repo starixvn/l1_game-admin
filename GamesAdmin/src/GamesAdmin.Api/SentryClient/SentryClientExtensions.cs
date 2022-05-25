@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sentry;
+using Sentry.Protocol;
 
 namespace GamesAdmin.Api.SentryClient
 {
@@ -28,7 +29,7 @@ namespace GamesAdmin.Api.SentryClient
                 additionalDetails,
                 $"{setting.OldValue} -> {setting.NewValue}");
 
-            sentryClient.CaptureMessage(message);
+            sentryClient.CaptureMessage(message, SentryLevel.Error);
         }
 
         public static void CaptureChangedSettings(
@@ -53,9 +54,9 @@ namespace GamesAdmin.Api.SentryClient
                 gameName,
                 settingName,
                 additionalDetails,
-                string.Join("; ", changedSettings));
+                string.Join(";\r\n", changedSettings));
 
-            sentryClient.CaptureMessage(message);
+            sentryClient.CaptureMessage(message, SentryLevel.Error);
         }
     }
 }
