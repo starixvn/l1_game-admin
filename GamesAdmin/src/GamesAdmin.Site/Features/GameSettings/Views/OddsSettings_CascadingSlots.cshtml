@@ -62,17 +62,17 @@
                             <div class="col-lg-12">
                                 <fieldset>
                                     <legend>Initial Free Spins Bonus</legend>
-                                    @for (var j = 0; j < Model.CascadingSlotsConfig.Freespins.InitialOdds.Count; j++)
+                                    @for (var j = 0; j < Model.CascadingSlotsConfig.FreeSpins.InitialOdds.Count; j++)
                                     {
-                                        var c = @Model.CascadingSlotsConfig.Freespins.InitialOdds[j];
+                                        var c = @Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j];
 
                                         <div class="col-lg-5 d-inline-block">
                                             <label class="control-label">Count</label>
-                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.Freespins.InitialOdds[j].Count" class="form-control small" />
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j].Count" class="form-control small" />
                                         </div>
                                         <div class="col-lg-5 d-inline-block">
                                             <label class="control-label">Number of Free Spins</label>
-                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.Freespins.InitialOdds[j].Odds" class="form-control small" />
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j].Odds" class="form-control small" />
                                         </div>
                                     }
                                 </fieldset>
@@ -84,17 +84,17 @@
                             <div class="col-lg-12">
                                 <fieldset>
                                     <legend>Additional Free Spins Bonus</legend>
-                                    @for (var j = 0; j < Model.CascadingSlotsConfig.Freespins.AdditionalOdds.Count; j++)
+                                    @for (var j = 0; j < Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds.Count; j++)
                                     {
-                                        var c = @Model.CascadingSlotsConfig.Freespins.AdditionalOdds[j];
+                                        var c = @Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds[j];
 
                                         <div class="col-lg-5 d-inline-block">
                                             <label class="control-label">Count</label>
-                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.Freespins.AdditionalOdds[j].Count" class="form-control small" />
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds[j].Count" class="form-control small" />
                                         </div>
                                         <div class="col-lg-5 d-inline-block">
                                             <label class="control-label">Number of Free Spins</label>
-                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.Freespins.AdditionalOdds[j].Odds" class="form-control small" />
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds[j].Odds" class="form-control small" />
                                         </div>
                                     }
                                 </fieldset>

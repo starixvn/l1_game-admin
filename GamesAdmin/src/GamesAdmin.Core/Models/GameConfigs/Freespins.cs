@@ -2,13 +2,13 @@
 
 namespace GamesAdmin.Core.Models.GameConfigs
 {
-    public class Freespins
+    public class FreeSpins
     {
-        public Freespins()
+        public FreeSpins()
         {
         }
 
-        public Freespins(List<FreeSpinsOdds> initialOdds, List<FreeSpinsOdds> additionalOdds)
+        public FreeSpins(List<FreeSpinsOdds> initialOdds, List<FreeSpinsOdds> additionalOdds)
         {
             InitialOdds = initialOdds;
             AdditionalOdds = additionalOdds;

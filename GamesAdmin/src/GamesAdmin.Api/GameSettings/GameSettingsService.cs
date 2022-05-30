@@ -324,7 +324,7 @@ namespace GamesAdmin.Api.Games
 
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
-                    .Set(field => field.CascadingSlotsConfig.Freespins, cascadingSlotsConfig.Freespins);
+                    .Set(field => field.CascadingSlotsConfig.FreeSpins, cascadingSlotsConfig.FreeSpins);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 

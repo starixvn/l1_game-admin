@@ -31,6 +31,6 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public double BetMultiplier { get; set; }
         public double MaxWinPerRound { get; set; }
         public Dictionary<string, List<OddsByCount>> OddsByCounts { get; set; }
-        public Freespins Freespins { get; set; }
+        public FreeSpins FreeSpins { get; set; }
     }
 }

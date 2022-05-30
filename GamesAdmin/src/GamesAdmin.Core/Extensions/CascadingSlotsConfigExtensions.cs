@@ -7,15 +7,15 @@ namespace GamesAdmin.Core.Extensions
     {
         public static CascadingSlotsConfig GenerateDefaultCascadingSlotsConfig(this CascadingSlotsConfig config, int total)
         {
-            var initialFreespinsOdds = new List<FreeSpinsOdds>
+            var initialFreeSpinsOdds = new List<FreeSpinsOdds>
             {
                 new FreeSpinsOdds(4, 0),
                 new FreeSpinsOdds(5, 0),
                 new FreeSpinsOdds(6, 0)
             };
 
-            var additionalFreespinsOdds = new List<FreeSpinsOdds> { new FreeSpinsOdds(5, 0) };
-            config.Freespins = new Freespins(initialFreespinsOdds, additionalFreespinsOdds);
+            var additionalFreeSpinsOdds = new List<FreeSpinsOdds> { new FreeSpinsOdds(5, 0) };
+            config.FreeSpins = new FreeSpins(initialFreeSpinsOdds, additionalFreeSpinsOdds);
 
             config.OddsByCounts = new Dictionary<string, List<OddsByCount>>();
             if (total > 0)
