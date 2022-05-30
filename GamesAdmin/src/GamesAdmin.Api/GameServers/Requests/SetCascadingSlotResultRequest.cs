@@ -4,26 +4,41 @@ using MediatR;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {
-    public class SetCascadingSlotResultRequest : IRequest<CascadingSettlementResult>
+    public class SetCascadingSlotResultRequest : IRequest<IEnumerable<SettlementCascadingSlotResult>>
     {
-        public SetCascadingSlotResultRequest(
-            string gameConfigName,
-            string nickname,
-            byte[] baseSpin,
-            IEnumerable<byte[]> tumblings)
+        public string gameConfigName { get; set; }
+
+        public string name { get; set; }
+
+        public CascadingSlotResultRequest result { get; set; }
+
+        public bool IsValid
         {
-            GameConfigName = gameConfigName;
-            Nickname = nickname;
-            BaseSpin = baseSpin;
-            Tumblings = tumblings;
+            get
+            {
+                return result.@base.board.Count == 30;
+            }
         }
+    }
 
-        public string GameConfigName { get; }
+    public class CascadingSlotResultRequest
+    {
+        public BaseSpinRequest @base { get; set; }
 
-        public string Nickname { get; }
+        public List<TumbleRequest> tumbles { get; set; }
+    }
 
-        public byte[] BaseSpin { get; }
+    public class BaseSpinRequest
+    {
+        public List<int> board { get; set; }
 
-        public IEnumerable<byte[]> Tumblings { get; }
+        public List<int> multipliers { get; set; }
+    }
+
+    public class TumbleRequest
+    {
+        public List<int> newSymbols { get; set; }
+
+        public List<int> multipliers { get; set; }
     }
 }

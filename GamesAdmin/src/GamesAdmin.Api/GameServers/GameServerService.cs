@@ -1,4 +1,11 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
@@ -13,13 +20,6 @@ using GamesAdmin.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Refit;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -41,8 +41,8 @@ namespace GamesAdmin.Api.GameServers
         Task<IEnumerable<HiloCard>> SetHiLoResult(SetHiLoResultRequest request);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
-        
-        Task<CascadingSettlementResult> SetCascadingSlotResult(SetCascadingSlotResultRequest request);
+
+        Task<IEnumerable<SettlementCascadingSlotResult>> SetCascadingSlotResult(SetCascadingSlotResultRequest request);
 
         Task<bool> VerifyAdminMonitoringToken(string token);
 
@@ -286,7 +286,7 @@ namespace GamesAdmin.Api.GameServers
 
             return false;
         }
-        
+
         public async Task<int> GetConnectedUsers()
         {
             try
@@ -301,48 +301,14 @@ namespace GamesAdmin.Api.GameServers
             return 0;
         }
 
-        public async Task<CascadingSettlementResult> SetCascadingSlotResult(SetCascadingSlotResultRequest request)
+        public async Task<IEnumerable<SettlementCascadingSlotResult>> SetCascadingSlotResult(SetCascadingSlotResultRequest request)
         {
             try
             {
-                var config = await gameSettingService.GetByName(request.GameConfigName);
-                var isExcludeUUS = false;
+                var gameEnum = Enumeration.FromValue<Game>(request.gameConfigName);
+                var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(request);
 
-                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeUUS))
-                {
-                    var gameEnum = Enumeration.FromValue<Game>(request.GameConfigName);
-
-                    var result = new CascadingSettlementResult
-                    {
-                        Boards = new List<CascadingBoard>
-                        {
-                            new CascadingBoard
-                            {
-                                Name = "Base spin",
-                                Result = new List<byte>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                                WinningSymbols = new Dictionary<byte, int>
-                                {
-                                    [2] = 8,
-                                    [5] = 8,
-                                },
-                                Multiplier = 1,
-                                Scatter = 2
-                            },
-                            new CascadingBoard
-                            {
-                                Name = "Tumbling 1",
-                                Result = new List<byte>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                                WinningSymbols = null,
-                                Multiplier = 2,
-                                Scatter = 3
-                            }
-                        }
-                    };
-
-                    // var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(new SetCascadingSlotResultServerRequest(request.Nickname, request.BaseSpin, request.Tumblings));
-
-                    return result;
-                }
+                return result;
             }
             catch (Exception ex)
             {

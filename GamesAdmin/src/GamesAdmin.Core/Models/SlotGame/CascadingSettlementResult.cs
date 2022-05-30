@@ -2,21 +2,23 @@
 
 namespace GamesAdmin.Core.Models.SlotGame
 {
-    public class CascadingSettlementResult
+    public class SettlementCascadingSlotResult
     {
-        public IEnumerable<CascadingBoard> Boards { get; set; }
+        public IEnumerable<CascadingSlotIcon> icons { get; set; }
+
+        public string[] board { get; set; }
+
+        public IEnumerable<int> multipliers { get; set; }
+
+        public int freeSpinCount { get; set; }
     }
 
-    public class CascadingBoard
+    public class CascadingSlotIcon
     {
-        public string Name { get; set; }
+        public string index { get; set; }
 
-        public IEnumerable<byte> Result { get; set; }
+        public int count { get; set; }
 
-        public Dictionary<byte, int> WinningSymbols { get; set; }
-
-        public double Multiplier { get; set; }
-
-        public int Scatter { get; set; }
+        public int odds { get; set; }
     }
 }
