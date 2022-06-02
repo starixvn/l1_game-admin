@@ -291,7 +291,7 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetOddsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
+                var changedSettings = SettingHelper.GetIconsChangedModel(gameEntity.SlotsConfig.Icons, iconOdds);
                 sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.Icons, iconOdds);
