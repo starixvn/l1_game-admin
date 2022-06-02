@@ -206,7 +206,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                       viewModel.Name,
                       viewModel.Type,
                       viewModel.PayoutViewModel?.Odds,
-                      viewModel.SlotsConfig,
+                      viewModel.PayoutViewModel?.Icons,
                       viewModel.CascadingSlotsConfig));
 
                 return Json(updateResult);

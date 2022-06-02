@@ -355,7 +355,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.CascadingSlots:
                     return gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig);
                 case GameType.Slots:
-                    return gameService.UpdateSlotIconOdds(request.Name, request.SlotsConfig.Icons);
+                    return gameService.UpdateSlotIconOdds(request.Name, request.ClassicIcons);
                 default:
                     return gameService.UpdateOdds(request);
             }

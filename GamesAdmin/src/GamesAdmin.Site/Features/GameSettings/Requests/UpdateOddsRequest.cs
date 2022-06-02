@@ -13,13 +13,13 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             string name,
             GameType type,
             Dictionary<string, double> odds,
-            SlotsConfig slotsConfig,
+            Dictionary<string, Dictionary<string, double>> classicIcons,
             CascadingSlotsConfig cascadingSlotsConfig)
         {
             Name = name;
             Type = type;
             Odds = odds;
-            SlotsConfig = slotsConfig;
+            ClassicIcons = classicIcons;
             CascadingSlotsConfig = cascadingSlotsConfig;
         }
 
@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 
         public Dictionary<string, double> Odds { get; set; }
 
-        public SlotsConfig SlotsConfig { get; set; }
+        public Dictionary<string, Dictionary<string, double>> ClassicIcons { get; set; }
 
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
     }
