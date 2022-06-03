@@ -3,7 +3,7 @@ using GamesAdmin.Database.Entities.Baccarat;
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("blockchainbaccarat_cuocs")]
+    [BsonCollection("blockchainbaccarat_bets")]
     public class BlockchainBaccaratBetEntity : BaccaratBetEntity
     {
     }

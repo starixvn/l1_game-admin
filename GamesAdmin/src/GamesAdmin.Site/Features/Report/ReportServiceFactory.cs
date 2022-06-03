@@ -51,6 +51,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoPower1, typeof(KenoPowerReportService) },
             { GameId.KenoPower2, typeof(KenoPowerReportService) },
             { GameId.HiLo, typeof(HiLoReportService) },
+            { GameId.BlockchainBaccarat, typeof(BlockchainBaccaratReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

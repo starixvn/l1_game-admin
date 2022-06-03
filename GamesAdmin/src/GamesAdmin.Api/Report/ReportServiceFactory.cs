@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Keno;
-using GamesAdmin.Database.Entities.KenoProMax;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
@@ -54,6 +53,7 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity, KenoPower1BetEntity>) },
             { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity, KenoPower2BetEntity>) },
             { GameId.HiLo, typeof(HiLoReportService) },
+            { GameId.BlockchainBaccarat, typeof(BlockchainBaccaratReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

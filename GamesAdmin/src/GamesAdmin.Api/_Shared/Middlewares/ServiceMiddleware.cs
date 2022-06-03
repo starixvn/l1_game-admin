@@ -148,6 +148,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
 
+            services.AddScoped<BlockchainBaccaratReportService>();
+
             services.InitApiLog();
         }
 
