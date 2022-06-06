@@ -9,9 +9,8 @@ namespace GamesAdmin.Database.Report.Entities
         {
             this.Round = new CascadingSlotBetReportEntity 
             {
-                Bet = round.Bet,
                 BetLevel = round.BetLevel,
-                BetWin = round.BetWin,
+                Betwin = round.Betwin,
                 CoinValue = round.CoinValue,
                 FreeSpin = round.FreeSpin,
                 Number = round.Number,
@@ -29,9 +28,8 @@ namespace GamesAdmin.Database.Report.Entities
         {
             this.Round = new CascadingSlotBetReportEntity
             {
-                Bet = round.Bet,
                 BetLevel = round.BetLevel,
-                BetWin = round.BetWin,
+                Betwin = round.Betwin,
                 CoinValue = round.CoinValue,
                 FreeSpin = round.FreeSpin,
                 Number = round.Number,

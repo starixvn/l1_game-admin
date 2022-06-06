@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("treasureisland_total_multipliers")]
+    [BsonCollection("treasureisland_multipliers")]
     public class TreasureIslandTotalMultiplierEntity : CascadingSlotTotalMultiplierEntity
     {
     }

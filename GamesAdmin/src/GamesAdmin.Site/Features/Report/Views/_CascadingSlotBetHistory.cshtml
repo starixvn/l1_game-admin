@@ -8,32 +8,30 @@
 }
 
 @functions {
-    public string RenderBoard(IEnumerable<byte> board, string folder, IEnumerable<CascadingSlotMultiplierViewModel> multipliers)
+    public string RenderBoard(IEnumerable<byte> board, string folder, IEnumerable<byte> multipliers)
     {
         var sb = new StringBuilder("<table class='table-recored-screen'><tbody>");
-        var iconPerRow = 6;
-        var col = iconPerRow;
+        var iconPerCol = 5;
+        var indexMultiplier = 0;
+        var tempMultiplier = multipliers.ToList();
+        var rows = new string[] { "<tr>","<tr>","<tr>","<tr>","<tr>"};
 
         foreach (var item in board.Select((value, index) => new { index, value }))
         {
-            if (col == iconPerRow)
+            if (item.value >= 10)
             {
-                sb.Append("<tr>");
-            }
-            if (col == 0)
-            {
-                sb.Append("</tr>");
-                col = iconPerRow;
-            }
-            if (item.value > 10)
-            {
-                sb.Append("<td class='recored-screen'>" + GetImageMultiplier(multipliers, item.index, folder) + "</td>");
+                rows[item.index % iconPerCol] += "<td class='recored-screen'>" + GetImageMultiplier(tempMultiplier[indexMultiplier], folder) + "</td>";
+                indexMultiplier++;
             }
             else
             {
-                sb.Append("<td>" + RenderSymbol(item.value, folder) + "</td>");
+                rows[item.index % iconPerCol] += "<td>" + RenderSymbol(item.value, folder) + "</td>";
             }
-            col--;
+        }
+        foreach(var row in rows)
+        {
+            sb.Append(row);
+            sb.Append("</tr>");
         }
         sb.Append("</tbody></table>");
 
@@ -45,27 +43,26 @@
         return "<img class='symbol' src='/images/slot-icons/" + folder + "/" + value + ".png' />";
     }
 
-    public string GetImageMultiplier(IEnumerable<CascadingSlotMultiplierViewModel> multipliers, int index, string folder)
+    public string GetImageMultiplier(byte value, string folder)
     {
         var sb = new StringBuilder("<img class='symbol' src='/images/slot-icons/");
         sb.Append(folder);
-        var imgae = "/11A";
-        var value = multipliers.FirstOrDefault(multiplier => multiplier.Index == index)?.Value ?? 0;
+        var imgae = "/10";
         if (value <= 10)
         {
-            imgae = "/11D";
+            imgae = "/13";
         }
         else
         {
             if (value <= 20)
             {
-                imgae = "/11C";
+                imgae = "/11";
             }
             else
             {
                 if (value <= 30)
                 {
-                    imgae = "/11B";
+                    imgae = "/12";
                 }
             }
         }
@@ -160,13 +157,13 @@
                 {
                     if (roundResult.FreeSpin)
                     {
-                        var additionalFreeSpins = roundResult.SettlementResult.AdditionalFreeSpins;
-                        if (additionalFreeSpins.Count > 0)
+                        var additionalFreeSpins = roundResult.SettlementResult.FreeSpins;
+                        if (additionalFreeSpins!= null && additionalFreeSpins.Odds > 0)
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
                                 <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td>@Html.Raw(RenderSymbol(10, imageFolder))</td>
+                                <td>@Html.Raw(RenderSymbol(9, imageFolder))</td>
                                 <td>@additionalFreeSpins.Count</td>
                                 <td>@additionalFreeSpins.Odds Extra Free Spin</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
@@ -187,12 +184,12 @@
                     else
                     {
                         var freeSpins = roundResult.SettlementResult.FreeSpins;
-                        if (freeSpins.Count > 0)
+                        if (freeSpins.Odds > 0)
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
                                 <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td>@Html.Raw(RenderSymbol(10, imageFolder))</td>
+                                <td>@Html.Raw(RenderSymbol(9, imageFolder))</td>
                                 <td>@freeSpins.Count</td>
                                 <td>@freeSpins.Odds Free Spin</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>

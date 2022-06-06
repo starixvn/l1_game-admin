@@ -82,7 +82,6 @@ namespace GamesAdmin.Site._Shared
             CreateMap<CascadingSlotBetRecord, CascadingSlotRecordViewModel>();
             CreateMap<CascadingSlotSettlementResult, CascadingSlotSettlementResultViewModel>();
             CreateMap<CascadingSlotRoundMultiplier, CascadingSlotRoundMultiplierViewModel>();
-            CreateMap<CascadingSlotMultiplier, CascadingSlotMultiplierViewModel>();
             CreateMap<CascadingSlotWinningSymbol, CascadingSlotWinningSymbolViewModel>();
             CreateMap<CascadingSlotTumble, CascadingSlotTumbleViewModel>();
 

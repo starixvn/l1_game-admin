@@ -372,8 +372,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal CoinValue { get; set; }
 
-        public decimal Bet { get; set; }
-
         public byte TotalMultiplier { get; set; }
 
         public byte Multiplier { get; set; }
@@ -398,7 +396,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             TotalAmount *= Rate;
             BetWin *= Rate;
             CoinValue *= Rate;
-            Bet *= Rate;
             TotalTumbleWin *= Rate;
 
             if(SettlementResult != null && SettlementResult.Tumbles.Any())
@@ -436,8 +433,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<CascadingSlotTumbleViewModel> Tumbles { get; set; }
 
         public SlotGameFreeSpinViewModel FreeSpins { get; set; }
-
-        public SlotGameFreeSpinViewModel AdditionalFreeSpins { get; set; }
     }
 
     public class CascadingSlotTumbleViewModel
@@ -448,7 +443,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string OriginalBoard { get; set; }
 
-        public IEnumerable<CascadingSlotMultiplierViewModel> Multipliers { get; set; }
+        public IEnumerable<byte> Multipliers { get; set; }
 
         public IEnumerable<byte> Board => OriginalBoard.Split(',').Select(value => byte.Parse(value));
     }
@@ -460,12 +455,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Odds { get; set; }
 
         public decimal Win { get; set; }
-    }
-
-    public class CascadingSlotMultiplierViewModel
-    {
-        public byte Index { get; set; }
-
-        public byte Value { get; set; }
     }
 }

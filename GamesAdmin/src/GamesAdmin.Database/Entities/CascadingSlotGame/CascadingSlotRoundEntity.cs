@@ -7,8 +7,6 @@ namespace GamesAdmin.Database.Entities
 {
     public class CascadingSlotRoundEntity : BaseRoundEntity
     {
-        public decimal Bet { get; set; }
-
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal TotalAmount { get; set; }
 
@@ -23,7 +21,7 @@ namespace GamesAdmin.Database.Entities
         public string Result { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
-        public decimal BetWin { get; set; }
+        public decimal Betwin { get; set; }
 
         public byte TotalMultiplier { get; set; }
 
@@ -37,8 +35,6 @@ namespace GamesAdmin.Database.Entities
         public string Uid { get; set; }
 
         public string Name { get; set; }
-
-        public int? MemberId { get; set; }
 
         public string SiteId { get; set; }
 
@@ -61,8 +57,6 @@ namespace GamesAdmin.Database.Entities
         public IEnumerable<CascadingSlotTumbleEntity> Tumbles { get; set; }
 
         public SlotGameFreeSpinEntity FreeSpins { get; set; }
-
-        public SlotGameFreeSpinEntity AdditionalFreeSpins { get; set; }
     }
 
     public class CascadingSlotTumbleEntity
@@ -74,7 +68,7 @@ namespace GamesAdmin.Database.Entities
 
         public string OriginalBoard { get; set; }
 
-        public IEnumerable<CascadingSlotMultiplierEntity> Multipliers { get; set; }
+        public IEnumerable<byte> Multipliers { get; set; }
     }
 
     public class CascadingSlotWinningSymbolEntity
@@ -84,12 +78,5 @@ namespace GamesAdmin.Database.Entities
         public decimal Odds { get; set; }
 
         public decimal Win { get; set; }
-    }
-
-    public class CascadingSlotMultiplierEntity
-    {
-        public byte Index { get; set; }
-
-        public byte Value { get; set; }
     }
 }

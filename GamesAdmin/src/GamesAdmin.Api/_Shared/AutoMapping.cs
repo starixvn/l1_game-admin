@@ -230,7 +230,6 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
             CreateMap<CascadingSlotSettlementResultEntity, CascadingSlotSettlementResult>();
             CreateMap<CascadingSlotRoundMultiplierEntity, CascadingSlotRoundMultiplier>();
-            CreateMap<CascadingSlotMultiplierEntity, CascadingSlotMultiplier>();
             CreateMap<CascadingSlotWinningSymbolEntity, CascadingSlotWinningSymbol>();
             CreateMap<CascadingSlotTumbleEntity, CascadingSlotTumble>();
 

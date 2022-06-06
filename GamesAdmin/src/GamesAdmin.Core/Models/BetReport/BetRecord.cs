@@ -406,7 +406,7 @@ namespace GamesAdmin.Core.Models
 
         public string OriginalBoard { get; set; }
 
-        public IEnumerable<CascadingSlotMultiplier> Multipliers { get; set; }
+        public IEnumerable<byte> Multipliers { get; set; }
     }
 
     public class CascadingSlotWinningSymbol
@@ -416,13 +416,6 @@ namespace GamesAdmin.Core.Models
         public decimal Odds { get; set; }
 
         public decimal Win { get; set; }
-    }
-
-    public class CascadingSlotMultiplier
-    {
-        public byte Index { get; set; }
-
-        public byte Value { get; set; }
     }
 
     public class CascadingSlotTotalMultiplier
