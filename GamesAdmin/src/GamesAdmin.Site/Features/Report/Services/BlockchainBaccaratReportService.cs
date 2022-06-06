@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportApi.Get<BlockchainBaccaratBetReport>(filter);
             var partners = await partnerService.GetAll();
 
-            return new BlockchainBaccaratReportResultViewModel
+            return new BaccaratReportResultViewModel
             {
                 RoundResult = mapper.Map<BaccaratRoundResultViewModel>(result.RoundResult),
                 Records = result.Records.Select(x =>

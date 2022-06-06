@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoSouth, "_KenoBetRecords" },
             { GameId.KenoNorth, "_KenoBetRecords" },
             { GameId.VipSeDieWar, "_VipSeDieWarRecords" },
-            { GameId.BlockchainBaccarat, "_BlockchainBaccaratRecords" },
+            { GameId.BlockchainBaccarat, "_BaccaratRecords" },
         };
 
         public string GetView(GameId game) => views[game];

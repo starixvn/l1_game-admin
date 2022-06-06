@@ -2,6 +2,7 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
+    // TO DO: reuse this viewmodels instead of duplicate code
     public class BaccaratReportResultViewModel : ReportResultViewModel
     {
         public BaccaratRoundResultViewModel RoundResult { get; set; }
