@@ -1,25 +1,38 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Baccarat;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace GamesAdmin.Api.Report
 {
-    public class BaccaratReportService: IGameReportService
-
+    public class BaccaratReportService : IGameReportService
     {
-        private readonly IBaccaratReportRepository repository;
+        private readonly IServiceProvider serviceProvider;
         private readonly IMapper mapper;
-
-        public BaccaratReportService(IBaccaratReportRepository repository, IMapper mapper)
+        private readonly Dictionary<GameId, Type> repositories = new Dictionary<GameId, Type>
         {
-            this.repository = repository;
+            { GameId.Baccarat,  typeof(BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>) },
+            { GameId.VipBaccarat,  typeof(BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>) },
+            { GameId.BlockchainBaccarat,  typeof(BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>) }
+        };
+
+        public BaccaratReportService(IServiceProvider serviceProvider, IMapper mapper)
+        {
+            this.serviceProvider = serviceProvider;
             this.mapper = mapper;
         }
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
         {
+            var repository = (IBaccaratBaseReportRepository)serviceProvider.GetRequiredService(repositories[filter.Game]);
             var result = await repository.GetAsync(filter);
 
             return new BaccaratBetReport

@@ -4,13 +4,18 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("blockchainbaccarat_rounds")]
-    public class BlockchainBaccaratRoundEntity : BaseRoundEntity
+    public class BlockchainBaccaratRoundEntity : BaseBaccaratRoundEntity
+    {
+        public BlockchainBaccaratResult Result { get; set; }
+
+        public BaccaratSettlementResultEntity SettlementResult { get; set; }
+    }
+
+    public class BlockchainBaccaratResult
     {
         public BlockchainBaccaratCardResult Player { get; set; }
 
         public BlockchainBaccaratCardResult Banker { get; set; }
-
-        public BaccaratSettlementResultEntity Result { get; set; }
     }
 
     public class BlockchainBaccaratCardResult

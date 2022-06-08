@@ -17,10 +17,6 @@ namespace GamesAdmin.Api.Report
     {
         private readonly Dictionary<GameId, Type> services = new Dictionary<GameId, Type>
         {
-            //{ GameId.BigSmall, typeof(BigSmallEndGameInfoService) },
-            //{ GameId.BigSmallTurbo, typeof(BigSmallTurboEndGameInfoService) },
-            //{ GameId.OddEven, typeof(OddEvenEndGameInfoService) },
-            //{ GameId.OddEvenTurbo, typeof(OddEvenTurboEndGameInfoService) },
             { GameId.FishPrawnCrab, typeof(FishPrawnCrabReportService) },
             { GameId.SeDie, typeof(SeDieReportService) },
             { GameId.MiniSeDie, typeof(MiniSeDieReportService) },
@@ -37,23 +33,18 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoNorth, typeof(MiniKenoReportService<KenoNorthRoundEntity, KenoNorthOnesEntity, KenoNorthBetEntity>) },
             { GameId.Roulette, typeof(RouletteReportService) },
             { GameId.VipSeDie, typeof(VipSeDieReportService) },
-            //{ GameId.SpecialSeDie, typeof(SpecialSeDieEndGameInfoService) },
-            //{ GameId.Blackjack, typeof(BlackjackEndGameInfoService) },
             { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
             { GameId.SicBo, typeof(SicBoReportService) },
-            { GameId.VipBaccarat, typeof(VipBaccaratReportService) },
+            { GameId.VipBaccarat, typeof(BaccaratReportService) },
             { GameId.VipSeDieWar, typeof(VipSeDieWarReportService) },
-            //{ GameId.FourGuardians, typeof(FourGuardiansEndGameInfoService) },
             { GameId.Lottery, typeof(LotteryReportService) },
             { GameId.ThreeCards, typeof(ThreeCardsReportService) },
-            //{ GameId.HeroesSlot, typeof(HeroesSlotEndGameInfoService) },
-            //{ GameId.BitcoinMaster, typeof(BitcoinMasterEndGameInfoService) },
             { GameId.KenoMatch1, typeof(KenoMatchReportService<KenoMatch1RoundEntity, KenoMatch1OneEntity, KenoMatch1BetEntity>) },
             { GameId.KenoMatch2, typeof(KenoMatchReportService<KenoMatch2RoundEntity, KenoMatch2OneEntity, KenoMatch2BetEntity>) },
             { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity, KenoPower1BetEntity>) },
             { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity, KenoPower2BetEntity>) },
             { GameId.HiLo, typeof(HiLoReportService) },
-            { GameId.BlockchainBaccarat, typeof(BlockchainBaccaratReportService) },
+            { GameId.BlockchainBaccarat,  typeof(BaccaratReportService) }
         };
 
         private readonly IServiceProvider serviceProvider;
@@ -64,9 +55,9 @@ namespace GamesAdmin.Api.Report
         }
 
         public IGameReportService GetService(GameId game)
-        => (IGameReportService)serviceProvider.GetRequiredService(services[game]);
+            => (IGameReportService)serviceProvider.GetRequiredService(services[game]);
 
         public IBetHistoryReportService GetBetHistoryService(GameId game)
-      => (IBetHistoryReportService)serviceProvider.GetRequiredService(services[game]);
+            => (IBetHistoryReportService)serviceProvider.GetRequiredService(services[game]);
     }
 }

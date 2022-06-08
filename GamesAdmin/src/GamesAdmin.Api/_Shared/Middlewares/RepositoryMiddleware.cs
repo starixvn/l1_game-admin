@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Report;
 using GamesAdmin.Database.Report.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,13 +20,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IMiniSeDieReportRepository, MiniSeDieReportRepository>();
             services.AddScoped<IFishPrawnCrabReportRepository, FishPrawnCrabReportRepository>();
             services.AddScoped<IDragonTigerReportRepository, DragonTigerReportRepository>();
-            services.AddScoped<IBaccaratReportRepository, BaccaratReportRepository>();
             services.AddScoped<IRouletteReportRepository, RouletteReportRepository>();
             services.AddScoped<IVipSeDieReportRepository, VipSeDieReportRepository>();
             services.AddScoped<IBlackjackReportRepository, BlackjackReportRepository>();
             services.AddScoped<IVipFishPrawnCrabReportRepository, VipFishPrawnCrabReportRepository>();
             services.AddScoped<ISicBoReportRepository, SicBoReportRepository>();
-            services.AddScoped<IVipBaccaratReportRepository, VipBaccaratReportRepository>();
             services.AddScoped<IVipSeDieWarReportRepository, VipSeDieWarReportRepository>();
 
             services.AddScoped<IVoidLogRepository, VoidLogRepository>();
@@ -43,7 +42,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
             services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
 
-            services.AddScoped<IBlockchainBaccaratReportRepository, BlockchainBaccaratReportRepository>();
+            services.AddScoped<BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>>();
+            services.AddScoped<BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>>();
+            services.AddScoped<BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
         }
     }
 }

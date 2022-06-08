@@ -191,20 +191,20 @@ namespace GamesAdmin.Api._Shared
             CreateMap<BlockchainBaccaratCard, DragonTigerCardResult>();
 
             CreateMap<BlockchainBaccaratRoundEntity, BaccaratRoundResult>()
-               .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.Result))
+               .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
                .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
                {
-                   if (source != null && source.Player != null)
+                   if (source != null && source.Result.Player != null)
                    {
                        var mapper = context.Mapper;
                        var result = new List<DragonTigerCardResult>
                        {
-                            mapper.Map<DragonTigerCardResult>(source.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Player.SecondCard)
+                            mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard)
                        };
 
-                       if (source.Player.ThirdCard != null)
+                       if (source.Result.Player.ThirdCard != null)
                        {
-                           result.Add(mapper.Map<DragonTigerCardResult>(source.Player.ThirdCard));
+                           result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Player.ThirdCard));
                        }
 
                        return result;
@@ -214,17 +214,17 @@ namespace GamesAdmin.Api._Shared
                }))
                .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
                {
-                   if (source != null && source.Banker != null)
+                   if (source != null && source.Result.Banker != null)
                    {
                        var mapper = context.Mapper;
                        var result = new List<DragonTigerCardResult>
                        {
-                            mapper.Map<DragonTigerCardResult>(source.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Banker.SecondCard)
+                            mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard)
                        };
 
-                       if (source.Banker.ThirdCard != null)
+                       if (source.Result.Banker.ThirdCard != null)
                        {
-                           result.Add(mapper.Map<DragonTigerCardResult>(source.Banker.ThirdCard));
+                           result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Banker.ThirdCard));
                        }
 
                        return result;

@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("vipbaccarat_phiens")]
-    public class VipBaccaratRoundEntity : BaseRoundEntity
+    public class VipBaccaratRoundEntity : BaseBaccaratRoundEntity
     {
         public VipBaccaratResultEntity Result { get; set; }
 
