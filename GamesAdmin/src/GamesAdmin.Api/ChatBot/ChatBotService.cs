@@ -79,7 +79,7 @@ namespace GamesAdmin.Api.ChatBot
 
         private static string GetModeName(Dictionary<string, string> metadata)
         {
-            if(metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.Value)
+            if(metadata != null && metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.Value)
             {
                 return $" - {ClientDisplayMode.Portrait.DisplayName}";
             }
