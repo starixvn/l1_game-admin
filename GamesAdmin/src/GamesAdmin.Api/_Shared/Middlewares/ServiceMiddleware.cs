@@ -19,6 +19,8 @@ using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Baccarat;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
@@ -59,6 +61,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
             services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());
 
+            services.AddScoped<BaccaratEndGameInfoService<BaccaratRoundEntity, BaccaratBetEntity>>();
+            services.AddScoped<BaccaratEndGameInfoService<VipBaccaratRoundEntity, VipBaccaratBetEntity>>();
+            services.AddScoped<BaccaratEndGameInfoService<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
