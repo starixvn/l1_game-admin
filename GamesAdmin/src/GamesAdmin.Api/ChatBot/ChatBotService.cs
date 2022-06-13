@@ -69,16 +69,16 @@ namespace GamesAdmin.Api.ChatBot
             {
                 Systems.Mobi => $"{Separator}SM",
                 Systems.Instant => $"{Separator}SI{GetModeName(metadata)}",
-                Systems.Cocos => string.Empty,
+                Systems.Cocos => GetModeName(metadata),
                 _ => string.Empty,
             };
         }
 
         private static string GetModeName(Dictionary<string, string> metadata)
         {
-            if(metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.Value)
+            if(metadata != null && metadata.ContainsKey("mode") && metadata["mode"] == ClientDisplayMode.Portrait.Value)
             {
-                return $"-{ClientDisplayMode.Portrait.DisplayName}";
+                return $" - {ClientDisplayMode.Portrait.DisplayName}";
             }
 
             return string.Empty;
