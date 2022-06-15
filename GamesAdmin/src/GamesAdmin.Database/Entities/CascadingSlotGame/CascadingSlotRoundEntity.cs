@@ -61,7 +61,7 @@ namespace GamesAdmin.Database.Entities
 
     public class CascadingSlotTumbleEntity
     {
-        public Dictionary<string, CascadingSlotWinningSymbolEntity> Icons { get; set; }
+        public object Icons { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Win { get; set; }
@@ -69,14 +69,5 @@ namespace GamesAdmin.Database.Entities
         public string OriginalBoard { get; set; }
 
         public IEnumerable<byte> Multipliers { get; set; }
-    }
-
-    public class CascadingSlotWinningSymbolEntity
-    {
-        public byte Count { get; set; }
-
-        public decimal Odds { get; set; }
-
-        public decimal Win { get; set; }
     }
 }

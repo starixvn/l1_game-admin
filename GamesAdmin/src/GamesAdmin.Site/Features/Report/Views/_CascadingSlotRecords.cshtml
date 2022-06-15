@@ -40,7 +40,7 @@
                             </a>
                         </td>
                         <td class="text-center">@bet.ExchangeRateId</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(bet.TotalAmount)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.FreeSpin ? 0 : bet.TotalAmount)</td>
                         <td class="text-right">
                             @if (bet.Paid)
                             {

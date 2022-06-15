@@ -98,7 +98,7 @@
     </tr>
     <tr>
         <td colspan="4" class="text-right">Total</td>
-        <td>@(roundResult.FreeSpin ? 0 : roundResult.TotalAmount)</td>
+        <td>@HtmlHelpers.formatNumber(roundResult.FreeSpin ? 0 : roundResult.TotalAmount)</td>
         <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
     </tr>
     <tr class="total">
