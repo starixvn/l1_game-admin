@@ -305,10 +305,13 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                var gameEnum = Enumeration.FromValue<Game>(request.gameConfigName);
-                var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(request);
+                if (await gameUserService.IsAbleToSetSlotResult(request.name, false))
+                {
+                    var gameEnum = Enumeration.FromValue<Game>(request.gameConfigName);
+                    var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(request);
 
-                return result;
+                    return result;
+                }
             }
             catch (Exception ex)
             {
