@@ -21,6 +21,7 @@ namespace GamesAdmin.Database.Report.Entities
                 TotalAmount = round.TotalAmount,
                 TotalMultiplier = round.TotalMultiplier,
                 TotalTumbleWin = round.TotalTumbleWin,
+                ReachMaxWin = round.ReachMaxWin
             };
         }
 
@@ -40,6 +41,7 @@ namespace GamesAdmin.Database.Report.Entities
                 TotalAmount = round.TotalAmount,
                 TotalMultiplier = round.TotalMultiplier,
                 TotalTumbleWin = round.TotalTumbleWin,
+                ReachMaxWin = round.ReachMaxWin
             };
             this.Multipliers = multipliers;
         }

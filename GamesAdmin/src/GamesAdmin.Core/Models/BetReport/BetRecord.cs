@@ -387,6 +387,8 @@ namespace GamesAdmin.Core.Models
         public int ExchangeRateId { get; set; }
 
         public CascadingSlotSettlementResult SettlementResult { get; set; }
+
+        public bool ReachMaxWin { get; set; }
     }
 
     public class CascadingSlotSettlementResult

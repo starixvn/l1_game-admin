@@ -50,6 +50,8 @@ namespace GamesAdmin.Database.Entities
         public decimal Rate { get; set; }
 
         public CascadingSlotSettlementResultEntity SettlementResult { get; set; }
+
+        public bool ReachMaxWin { get; set; }
     }
 
     public class CascadingSlotSettlementResultEntity
@@ -61,7 +63,7 @@ namespace GamesAdmin.Database.Entities
 
     public class CascadingSlotTumbleEntity
     {
-        public object Icons { get; set; }
+        public Dictionary<string, CascadingSlotWinningSymbolEntity> Icons { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Win { get; set; }
@@ -69,5 +71,15 @@ namespace GamesAdmin.Database.Entities
         public string OriginalBoard { get; set; }
 
         public IEnumerable<byte> Multipliers { get; set; }
+    }
+
+    public class CascadingSlotWinningSymbolEntity
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+
+        [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
+        public decimal Win { get; set; }
     }
 }

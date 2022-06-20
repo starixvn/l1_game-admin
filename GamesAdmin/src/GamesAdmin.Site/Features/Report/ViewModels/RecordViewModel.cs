@@ -386,6 +386,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<byte> Board => Result.Split(',').Select(value => byte.Parse(value));
 
+        public bool ReachMaxWin { get; set; }
+
         public void ConvertToUSD(bool isConvert)
         {
             if (!isConvert)

@@ -10,7 +10,7 @@
 @functions {
     public string RenderBoard(IEnumerable<byte> board, string folder, IEnumerable<byte> multipliers)
     {
-        var sb = new StringBuilder("<table class='table-recored-screen'><tbody>");
+        var sb = new StringBuilder("<table class='table-result-board'><tbody>");
         var iconPerCol = 5;
         var indexMultiplier = 0;
         var tempMultiplier = multipliers.ToList();
@@ -20,7 +20,7 @@
         {
             if (item.value >= 10)
             {
-                rows[item.index % iconPerCol] += "<td class='recored-screen'>" + GetImageMultiplier(tempMultiplier[indexMultiplier], folder) + "</td>";
+                rows[item.index % iconPerCol] += "<td class='result-board'>" + GetImageMultiplier(tempMultiplier[indexMultiplier], folder) + "</td>";
                 indexMultiplier++;
             }
             else
@@ -79,7 +79,7 @@
             <th>Bet Level</th>
             <th>Coin Value</th>
             <th>Stake</th>
-            <th>Total Win</th>
+            <th>Win</th>
         </tr>
     </thead>
     <tbody>
@@ -113,8 +113,8 @@
     <thead>
         <tr>
             <th>No.</th>
-            <th>Recored Screen</th>
-            <th colspan="2">Symbol & Number of Symbols</th>
+            <th>Result Board</th>
+            <th colspan="2">Win Symbols</th>
             <th>Win amount</th>
             <th>Tumble Win</th>
         </tr>
@@ -158,14 +158,14 @@
                     if (roundResult.FreeSpin)
                     {
                         var additionalFreeSpins = roundResult.SettlementResult.FreeSpins;
-                        if (additionalFreeSpins!= null && additionalFreeSpins.Odds > 0)
+                        if (additionalFreeSpins != null && additionalFreeSpins.Odds > 0)
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
                                 <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
                                 <td>@Html.Raw(RenderSymbol(9, imageFolder))</td>
                                 <td>@additionalFreeSpins.Count</td>
-                                <td>@additionalFreeSpins.Odds Extra Free Spin</td>
+                                <td>@additionalFreeSpins.Odds Extra Free Spins</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
                             </tr>
                         }
@@ -191,7 +191,7 @@
                                 <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
                                 <td>@Html.Raw(RenderSymbol(9, imageFolder))</td>
                                 <td>@freeSpins.Count</td>
-                                <td>@freeSpins.Odds Free Spin</td>
+                                <td>@freeSpins.Odds Free Spins</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
                             </tr>
                         }
@@ -209,12 +209,15 @@
                     }
                 }
             }
+            @if (roundResult.BetWin > 0 && (roundResult.TotalMultiplier > 0 || roundResult.Multiplier > 0))
+            {
+                <tr>
+                    <td colspan="5" class="text-right">Total Multiplier</td>
+                    <td>@(roundResult.FreeSpin ? roundResult.TotalMultiplier : roundResult.Multiplier)</td>
+                </tr>
+            }
             <tr>
-                <td colspan="5" class="text-right">Total Multiplier</td>
-                <td>@(roundResult.FreeSpin ? roundResult.TotalMultiplier : roundResult.Multiplier)</td>
-            </tr>
-            <tr>
-                <td colspan="5" class="text-right">Total Win</td>
+                <td colspan="5" class="text-right">@(roundResult.ReachMaxWin ? "(You reached the Max Win) Win" : "Win")</td>
                 <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
             </tr>
         }
