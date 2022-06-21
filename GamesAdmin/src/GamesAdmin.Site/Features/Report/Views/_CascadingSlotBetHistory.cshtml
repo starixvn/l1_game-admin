@@ -209,7 +209,7 @@
                     }
                 }
             }
-            @if (roundResult.BetWin > 0 && (roundResult.TotalMultiplier > 0 || roundResult.Multiplier > 0))
+            @if (roundResult.BetWin > 0 && (roundResult.TotalMultiplier > 0 && roundResult.Multiplier > 0))
             {
                 <tr>
                     <td colspan="5" class="text-right">Total Multiplier</td>

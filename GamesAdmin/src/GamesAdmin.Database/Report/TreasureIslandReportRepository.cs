@@ -66,6 +66,7 @@ namespace GamesAdmin.Database
                     OperatorId = x.OperatorId,
                     Rate = x.Rate,
                     ExchangeRateId = x.ExchangeRateId,
+                    FreeSpin = x.FreeSpin
                 });
 
             return await project.ToListAsync();
