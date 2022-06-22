@@ -1,6 +1,7 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @using GamesAdmin.Site.Features._Shared;
 @using GamesAdmin.Core.Enumeration;
+@using System.Linq;
 
 @model StatusViewModel;
 
@@ -80,7 +81,12 @@
                                         switch (Model.GameList[index].GameConfig.Info.Type)
                                         {
                                             case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
-                                                @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * setting.CoinValues[0]* Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels[0], Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * setting.CoinValues[setting.CoinValues.Length-1] * Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels[Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Length - 1] }))
+                                                var minBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Min();
+                                                var maxBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Max();
+                                                var minCoin = setting.CoinValues.Min();
+                                                var maxCoin = setting.CoinValues.Max();
+
+                                                @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                 break;
                                             case GamesAdmin.Core.Enumeration.GameType.Slots:
                                                 @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
@@ -144,7 +150,12 @@
                                             switch (Model.GameList[index].GameConfig.Info.Type)
                                             {
                                                 case GamesAdmin.Core.Enumeration.GameType.CascadingSlots:
-                                                    @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * setting.CoinValues[0]* Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels[0], Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * setting.CoinValues[setting.CoinValues.Length-1] * Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels[Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Length - 1] }))
+                                                    var minBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Min();
+                                                    var maxBetLevel = Model.GameList[index].GameConfig.CascadingSlotsConfig.BetLevels.Max();
+                                                    var minCoin = setting.CoinValues.Min();
+                                                    var maxCoin = setting.CoinValues.Max();
+
+                                                    @(": " + string.Join(" - ",new double[] { Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * minCoin * minBetLevel, Model.GameList[index].GameConfig.CascadingSlotsConfig.BetMultiplier * maxCoin * maxBetLevel }))
                                                     break;
                                                 case GamesAdmin.Core.Enumeration.GameType.Slots:
                                                     @(": " + string.Join(" - ",new double[] { setting.StakeLevels[0].Stake, setting.StakeLevels[1].Stake, setting.StakeLevels[2].Stake }))
