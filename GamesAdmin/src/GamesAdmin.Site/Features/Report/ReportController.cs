@@ -599,9 +599,21 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult Macau() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall3 });
 
-
         [HttpGet]
         public IActionResult MonteCarlo() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall4 });
+
+        [HttpGet]
+        public async Task<IActionResult> WayToGoal()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View(viewModel);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetUnbalancedBigSmallBetHistory(BetHistoryFilter filter, bool convertToUSD)

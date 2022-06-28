@@ -133,6 +133,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value),
                 new SelectListItem(Game.NightClub.DisplayName, Game.NightClub.Value),
                 new SelectListItem(Game.TreasureIsland.DisplayName, Game.TreasureIsland.Value),
+                new SelectListItem(Game.WayToGoal.DisplayName, Game.WayToGoal.Value),
                 new SelectListItem(Game.BlockchainBaccarat.DisplayName, Game.BlockchainBaccarat.Value),
                 new SelectListItem(Game.MegaKeno.DisplayName, Game.MegaKeno.Value),
                 new SelectListItem(Game.MegaKeno2.DisplayName, Game.MegaKeno2.Value),

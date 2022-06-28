@@ -53,6 +53,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.NightClubValue, typeof(INightClubOnlineUserApi) },
             { Game.TreasureIslandValue, typeof(ITreasureIslandOnlineUserApi) },
             { Game.BlockchainBaccaratValue, typeof(IBlockchainBaccaratOnlineUserApi) },
+            { Game.WayToGoalValue, typeof(IWayToGoalOnlineUserApi) },
             { Game.MegaKenoValue, typeof(IMegaKenoOnlineUserApi) },
             { Game.MegaKeno2Value, typeof(IMegaKeno2OnlineUserApi) },
             { Game.MiniSeDie2Value, typeof(IMiniSeDieOnlineUserApi) },

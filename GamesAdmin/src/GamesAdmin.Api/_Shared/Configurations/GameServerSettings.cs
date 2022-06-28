@@ -85,6 +85,7 @@
         public GameServerConfigs TexasHoldemPoker { get; set; }
 
         public GameServerConfigs NightClub { get; set; }
+        public GameServerConfigs WayToGoal { get; set; }
 
         public GameServerConfigs MegaKeno { get; set; }
 

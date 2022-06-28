@@ -46,6 +46,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string NightClubValue = "nightclub";
         public const string TreasureIslandValue = "treasureisland";
         public const string BlockchainBaccaratValue = "blockchainbaccarat";
+        public const string WayToGoalValue = "waytogoal";
         public const string MegaKenoValue = "megakeno";
         public const string MegaKeno2Value = "megakeno2";
         public const string MiniSeDie2Value = "minisedie2";
@@ -97,6 +98,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Hold'em", GameId.TexasHoldemPoker);
         public static readonly Game NightClub = new Game(NightClubValue, "Night Club", GameId.NightClub);
         public static readonly Game TreasureIsland = new Game(TreasureIslandValue, "Treasure Island", GameId.TreasureIsland);
+        public static readonly Game WayToGoal = new Game(WayToGoalValue, "Way To Goal", GameId.WayToGoal);
         public static readonly Game BlockchainBaccarat = new Game(BlockchainBaccaratValue, "Blockchain Baccarat", GameId.BlockchainBaccarat);
         public static readonly Game MegaKeno = new Game(MegaKenoValue, "Mega Keno", GameId.MegaKeno);
         public static readonly Game UnbalancedBigSmall1 = new Game(UnbalancedBigSmall1Value, "Las Vegas", GameId.UnbalancedBigSmall1);

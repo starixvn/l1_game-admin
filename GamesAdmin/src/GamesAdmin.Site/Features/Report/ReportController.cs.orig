@@ -590,7 +590,6 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult MiniSeDie4() => RedirectToAction("Index", new { game = GameId.MiniSeDie4 });
 
-<<<<<<< HEAD
         [HttpGet]
         public IActionResult LasVegas() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall1 });
 
@@ -600,9 +599,22 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult Macau() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall3 });
 
-
         [HttpGet]
         public IActionResult MonteCarlo() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall4 });
+
+        [HttpGet]
+        public async Task<IActionResult> WayToGoal()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View(viewModel);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetUnbalancedBigSmallBetHistory(BetHistoryFilter filter, bool convertToUSD)
@@ -610,8 +622,6 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_UnbalancedBigSmallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
-=======
->>>>>>> fix: round history
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
