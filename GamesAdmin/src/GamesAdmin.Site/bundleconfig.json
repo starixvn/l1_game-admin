@@ -277,5 +277,6 @@
     "outputFileName": "wwwroot/js/daily-summary.min.js",
     "inputFiles": [
       "wwwroot/js/daily-summary.js"
+    ]
   }
 ]
