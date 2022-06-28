@@ -9,6 +9,7 @@
     var record = Model.Record;
     var isFinishRoundAndNotFold = record.Ended && !record.IsFold;
     var isRunningRoundAndNotPassSwapStep = record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value && !record.Ended;
+    var isFoldAndNotPassSwapStep = record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value && record.IsFold;
     var isRunningRoundOrFold = record.IsFold || (record.IsSwappedOrHold.HasValue && !record.IsSwappedOrHold.Value);
 }
 <div>
@@ -29,7 +30,7 @@
                     <tr>
                         <td>Player</td>
                         <td>
-                            @if (isRunningRoundAndNotPassSwapStep)
+                            @if (isRunningRoundAndNotPassSwapStep || isFoldAndNotPassSwapStep)
                             {
                                 await RenderEmptyCards();
                             }
@@ -72,7 +73,6 @@
                             {
                                 await RenderEmptyCards();
                             }
-
                         </td>
                         <td>
                             @if (isFinishRoundAndNotFold)
@@ -186,4 +186,3 @@
         </div>
     }
 }
-
