@@ -1,12 +1,12 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Site.Features.Report.Requests;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -45,8 +45,8 @@ namespace GamesAdmin.Site.Features.Report
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname);
 
         Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter);
-        
-         Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
+
+        Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
 
         Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
     }
@@ -120,7 +120,7 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter)
         => reportApi.GetHiLoReport(filter);
-        
+
         public Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter)
             => reportApi.GetHoldemPokerBetReport(filter);
 

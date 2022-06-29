@@ -1,8 +1,8 @@
-﻿using GamesAdmin.Api.GameServers.Requests;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
 using Refit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -223,6 +223,7 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
+
     public interface IHiLoApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]

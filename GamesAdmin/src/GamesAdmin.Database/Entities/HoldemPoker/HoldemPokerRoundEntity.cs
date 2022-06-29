@@ -1,7 +1,7 @@
-﻿using GamesAdmin.Core.Models.BetReport;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Core.Models.BetReport;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {

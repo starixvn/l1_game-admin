@@ -11,6 +11,8 @@
         string ErrorDescription { get; }
 
         int? ObCustId { get; }
+
+        int? PlayerId { get; }
     }
 
     public class PartnerResult : IPartnerResult
@@ -24,6 +26,8 @@
         public string ErrorDescription { get; set; }
 
         public int? ObCustId { get; set; }
+
+        public int? PlayerId { get; set; }
 
         public string ResultType { get; set; }
     }

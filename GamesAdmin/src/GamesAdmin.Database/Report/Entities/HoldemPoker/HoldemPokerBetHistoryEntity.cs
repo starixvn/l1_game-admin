@@ -1,10 +1,10 @@
 ﻿namespace GamesAdmin.Database.Report.Entities
 {
-    using GamesAdmin.Core.Models.BetReport;
-    using GamesAdmin.Database.Entities;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using GamesAdmin.Core.Models.BetReport;
+    using GamesAdmin.Database.Entities;
 
     public class HoldemPokerBetHistoryEntity
     {

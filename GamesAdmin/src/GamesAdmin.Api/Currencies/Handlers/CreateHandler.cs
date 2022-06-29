@@ -29,6 +29,8 @@ namespace GamesAdmin.Api.Currencies.Handlers
                 {
                     var entity = Mapper.Map<CurrencyEntity>(request.Model);
 
+                    entity.IsUncountOnTotal = entity.IsTest && entity.IsUncountOnTotal;
+
                     await Repository.InsertOneAsync(entity);
                 }
             }

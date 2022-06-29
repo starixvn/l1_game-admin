@@ -1,14 +1,14 @@
-﻿using GamesAdmin.Core.Extensions;
-using GamesAdmin.Core.Models.BetReport;
-using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Report.Entities;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Report.Entities;
+using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
@@ -38,7 +38,7 @@ namespace GamesAdmin.Database
             var records = projects.Select(
                project => Activator.CreateInstance(typeof(THoldemPokerBetReportEntity),
                   new object[] {  project.Time,
-                 project.PartnerId,
+                project.OperatorId,
                  project.AccountInfos.IsBot ? project.Accounts.Local.Username : project.Accounts.Local.MemberName,
                  project.AccountInfos.Name,
                  project.Currency,
@@ -84,7 +84,7 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))
             {
-                expression = expression.And(x => x.PartnerId == filter.PartnerId);
+                expression = expression.And(x => x.OperatorId == filter.PartnerId);
             }
 
             if (!string.IsNullOrWhiteSpace(filter.Nickname))

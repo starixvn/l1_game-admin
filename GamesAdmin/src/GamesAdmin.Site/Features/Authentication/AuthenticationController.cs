@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamesAdmin.Site.Features.Authentication
 {
@@ -20,8 +20,7 @@ namespace GamesAdmin.Site.Features.Authentication
         [HttpPost]
         public async Task<IActionResult> Login([Bind] Core.Models.Account user)
         {
-            var isLoginSuccessfully = await authenticationService.SignInAsync(user, HttpContext);
-            if (isLoginSuccessfully)
+            if (await authenticationService.SignInAsync(user, HttpContext))
             {
                 return RedirectToAction("Index", "Dashboard");
             }

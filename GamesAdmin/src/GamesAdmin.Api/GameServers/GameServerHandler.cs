@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.GameServers
             => gameServerService.SetHoldemPokerResult(request);
 
         public Task<IEnumerable<HiloCard>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
-         => gameServerService.SetHiLoResult(request);
+            => gameServerService.SetHiLoResult(request);
 
         public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
             => gameServerService.GetAdminMonitoringSettings(request.Username);

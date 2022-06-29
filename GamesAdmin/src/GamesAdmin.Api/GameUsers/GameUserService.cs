@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Currencies;
 using GamesAdmin.Database.Entities.Spins;
 using MongoDB.Driver;
 using Sentry;
@@ -19,7 +20,7 @@ namespace GamesAdmin.Api.GameUser
 
         Task<IList<SpinLogEntity>> GetMemberSpinLogs(int memberId);
 
-        Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS);
+        Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeTestCurrency);
 
         Task<string> GetCharacterNameAsync(int memberId);
     }
@@ -32,19 +33,22 @@ namespace GamesAdmin.Api.GameUser
         private readonly IGenericRepository<AccountEntity> accountRepository;
         private readonly IGenericRepository<SpinEntity> spinRepository;
         private readonly IGenericRepository<SpinLogEntity> spinLogRepository;
+        private readonly IGenericRepository<CurrencyEntity> currencyRepository;
 
         public GameUserService(
             ISentryClient sentryClient,
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             IGenericRepository<AccountEntity> accountRepository,
             IGenericRepository<SpinEntity> spinRepository,
-            IGenericRepository<SpinLogEntity> spinLogRepository)
+            IGenericRepository<SpinLogEntity> spinLogRepository,
+            IGenericRepository<CurrencyEntity> currencyRepository)
         {
             this.sentryClient = sentryClient;
             this.accountInfoRepository = accountInfoRepository;
             this.accountRepository = accountRepository;
             this.spinRepository = spinRepository;
             this.spinLogRepository = spinLogRepository;
+            this.currencyRepository = currencyRepository;
         }
 
         public async Task<GameAccount> GetAccountAsync(string userId, string nickname, bool excludeUUS)
@@ -82,13 +86,15 @@ namespace GamesAdmin.Api.GameUser
             .OrderByDescending(spin => spin.ExpiryDate)
             .ToList();
 
-        public async Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeUUS)
+        public async Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeTestCurrency)
         {
             var accountInfo = await accountInfoRepository.FindOneAsync(x => x.Name == nickname);
+            var playerCurrency = accountInfo?.Currency;
+            var currencyInfo = await currencyRepository.FindOneAsync(currency => currency.Name == playerCurrency);
 
-            sentryClient.CaptureMessage($"Unable to set board for {nickname}, currency {accountInfo?.Currency} with excludeUUS {excludeUUS}");
+            sentryClient.CaptureMessage($"Unable to set board for {nickname}, currency {playerCurrency} with excludeTestCurrency {excludeTestCurrency}");
 
-            return (!excludeUUS && accountInfo?.Currency == "UUS") || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
+            return (!excludeTestCurrency && currencyInfo?.IsTest == true) || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
         }
 
         public async Task<string> GetCharacterNameAsync(int memberId)

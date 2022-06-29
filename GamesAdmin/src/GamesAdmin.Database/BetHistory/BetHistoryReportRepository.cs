@@ -231,7 +231,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<RouletteBetEntity>(Document.GetCollectionName(typeof(RouletteBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -253,7 +253,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<SicBoBetEntity>(Document.GetCollectionName(typeof(SicBoBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -264,7 +264,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<VipSeDieWarBetEntity>(Document.GetCollectionName(typeof(VipSeDieWarBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -275,10 +275,10 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<LotteryBetEntity>(Document.GetCollectionName(typeof(LotteryBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             var oneCollection = database.GetCollection<LotteryOnesEntity>(Document.GetCollectionName(typeof(LotteryOnesEntity)));
-            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).FirstOrDefaultAsync();
+            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
         }
@@ -291,7 +291,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, bets);
         }
@@ -305,10 +305,10 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             var oneCollection = database.GetCollection<TOneEntity>(Document.GetCollectionName(typeof(TOneEntity)));
-            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId && x.PartnerId == partnerId).FirstOrDefaultAsync();
+            var one = await oneCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).FirstOrDefaultAsync();
 
             return (roundResult, bets, one.Odds);
         }
@@ -331,7 +331,7 @@ namespace GamesAdmin.Database
             var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
 
             var betLogCollection = database.GetCollection<HiLoBetLogEntity>(Document.GetCollectionName(typeof(HiLoBetLogEntity)));
-            var betLogs = await betLogCollection.Find(x => x.RoundId == roundId && x.Uid == userId && x.PartnerId == partnerId).ToListAsync();
+            var betLogs = await betLogCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).ToListAsync();
 
             return (roundResult, betLogs);
         }

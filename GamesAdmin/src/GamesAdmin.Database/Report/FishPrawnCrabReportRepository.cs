@@ -42,7 +42,7 @@ namespace GamesAdmin.Database
                         Rooster = x.OldRooster ?? x.Rooster,
                         Currency = x.Currency,
                         Rate = x.Rate,
-                        PartnerId = x.PartnerId
+                        PartnerId = x.OperatorId
                     });
 
                 var records = await project.ToListAsync();

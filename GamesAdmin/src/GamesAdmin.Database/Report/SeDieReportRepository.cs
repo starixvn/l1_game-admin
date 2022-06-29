@@ -44,7 +44,7 @@ namespace GamesAdmin.Database
                         TwoRed = x.TwoRed,
                         FreeBet = x.FreeBet ?? false,
                         Currency = x.Currency,
-                        PartnerId = x.PartnerId,
+                        PartnerId = x.OperatorId,
                         Rate = x.Rate
                     });
 

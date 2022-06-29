@@ -10,8 +10,8 @@
         {
             Auth = new Auth
             {
-                PartnerId = model.OperatorId,
-                PartnerSecret = model.OperatorSecret
+                OperatorId = model.OperatorId,
+                OperatorSecret = model.OperatorSecret
             };
             SummarizedDate = model.Date;
             Seq = Guid.NewGuid().ToString();

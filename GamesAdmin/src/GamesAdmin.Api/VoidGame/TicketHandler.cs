@@ -1,4 +1,8 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database;
@@ -8,10 +12,6 @@ using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.VoidGame
 {
@@ -369,10 +369,10 @@ namespace GamesAdmin.Api.VoidGame
             where T : BaseBetEntity
         {
             var record = (await collection
-                .FindAsync(record => record.MemberId == obCustId
-                                    && record.PartnerId == partnerId
+                .FindAsync(record => record.PlayerId == obCustId
+                                    && record.OperatorId == partnerId
                                     && record.SiteId == siteId
-                                    && (record.Round == gameRoundId || record.RoundId == gameRoundId)
+                                    && (record.Round == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)))
                 .ToList();
 
@@ -389,10 +389,10 @@ namespace GamesAdmin.Api.VoidGame
             where T : BaseBetEntity
         {
             var result = (await collection
-                .DeleteManyAsync(record => record.MemberId == obCustId
+                .DeleteManyAsync(record => record.PlayerId == obCustId
                                     && record.SiteId == siteId
-                                    && record.PartnerId == partnerId
-                                    && (record.Round == gameRoundId || record.RoundId == gameRoundId)
+                                    && record.OperatorId == partnerId
+                                    && (record.Round == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)));
 
             return result.DeletedCount > 0;

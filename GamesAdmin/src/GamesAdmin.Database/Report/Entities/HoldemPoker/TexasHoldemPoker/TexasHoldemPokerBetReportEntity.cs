@@ -1,7 +1,7 @@
 ﻿namespace GamesAdmin.Database.Report.Entities
 {
-    using GamesAdmin.Database.Entities;
     using System;
+    using GamesAdmin.Database.Entities;
 
     public class TexasHoldemPokerBetReportEntity : HoldemPokerBetReportEntity
     {

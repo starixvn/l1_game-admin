@@ -1,4 +1,8 @@
-﻿using Audit.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -12,10 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.GameSettings
 {
@@ -229,7 +229,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.JackpotViewModel.WinningRatio.ConvertPercentValue(),
                         viewModel.JackpotViewModel.PlayerContribution.ConvertPercentValue(),
                         viewModel.JackpotViewModel.BotContribution.ConvertPercentValue(),
-                        viewModel.JackpotViewModel.ExcludeUUS),
+                        viewModel.JackpotViewModel.ExcludeTestCurrency),
                     viewModel.JackpotViewModel.StakeLevels));
 
                 return Json(true);

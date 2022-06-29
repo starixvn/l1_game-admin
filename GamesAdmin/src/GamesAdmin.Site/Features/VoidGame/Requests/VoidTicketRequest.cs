@@ -8,8 +8,8 @@ namespace GamesAdmin.Site.Features.VoidGame.Requests
     {
         public VoidTicketRequest(int memberId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, string reason, bool freeBet)
         {
-            ObCustId = memberId;
-            PartnerId = partnerId;
+            PlayerId = memberId;
+            OperatorId = partnerId;
             SiteId = siteId;
             GameRoundId = gameRoundId;
             GameTypeId = gameTypeId;
@@ -17,9 +17,9 @@ namespace GamesAdmin.Site.Features.VoidGame.Requests
             FreeBet = freeBet;
         }
 
-        public int ObCustId { get; }
+        public int PlayerId { get; }
 
-        public string PartnerId { get; }
+        public string OperatorId { get; }
 
         public string SiteId { get; }
 

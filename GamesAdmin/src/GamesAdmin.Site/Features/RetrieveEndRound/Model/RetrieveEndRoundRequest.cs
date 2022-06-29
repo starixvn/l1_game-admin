@@ -10,13 +10,14 @@
         {
             Auth = new Auth
             {
-                PartnerId = model.OperatorId,
-                PartnerSecret = model.OperatorSecret
+                OperatorId = model.OperatorId,
+                OperatorSecret = model.OperatorSecret
             };
             GameRoundId = model.RoundId;
             GameTypeId = model.GameType;
-            ObCustId = model.PlayerId;
+            PlayerId = model.PlayerId;
             SiteId = model.SiteId;
+            FreeBet = model.FreeBet;
             TimeStamp = DateTimeOffset.Now;
             Seq = Guid.NewGuid().ToString();
         }
@@ -26,12 +27,14 @@
 
         public long GameRoundId { get; set; }
 
-        public int ObCustId { get; set; }
+        public int PlayerId { get; set; }
 
         public string SiteId { get; set; }
 
         public DateTimeOffset TimeStamp { get; set; }
 
         public string Seq { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 }

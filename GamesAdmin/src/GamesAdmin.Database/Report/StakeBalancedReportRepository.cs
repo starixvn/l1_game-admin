@@ -48,7 +48,7 @@ namespace GamesAdmin.Database.Report
                    UserId = x.Uid,
                    Win = x.Win,
                    Currency = x.Currency,
-                   PartnerId = x.PartnerId,
+                   PartnerId = x.OperatorId,
                    Rate = x.Rate
                });
 

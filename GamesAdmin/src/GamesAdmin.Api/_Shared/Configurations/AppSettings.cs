@@ -1,7 +1,7 @@
-﻿using GamesAdmin.Core.IdentityServer;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.ComponentModel;
+using GamesAdmin.Core.IdentityServer;
+using Microsoft.Extensions.Configuration;
 
 namespace GamesAdmin.Api._Shared.Configurations
 {

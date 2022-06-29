@@ -1,4 +1,7 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
@@ -6,9 +9,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -369,7 +369,6 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_HiLoBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
-
         [HttpGet]
         public async Task<IActionResult> HeroesSlot()
         {
@@ -471,6 +470,11 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("_BitcoinMasterBetHistory", await mediator.Send(new GetBitcoinMasterBetHistoryRequest(roundId, nickname, rate)));
 
         [HttpGet]
+        [Route("Report/CasinoHoldem")]
+        public async Task<IActionResult> CasinoHoldemPoker()
+           => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
+
+        [HttpGet]
         [Route("Report/Hi-Lo")]
         public async Task<IActionResult> HiLo()
         {
@@ -481,14 +485,7 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public async Task<IActionResult> GetHiLoReport(HiLoBetReportFilter model)
-        {
-            return PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
-        }
-
-        [HttpGet]
-        [Route("Report/CasinoHoldem")]
-        public async Task<IActionResult> CasinoHoldemPoker()
-           => View("HoldemPoker/Index", await mediator.Send(new HoldemPokerReportRequest(GameId.CasinoHoldemPoker)));
+            => PartialView("_HiLoRecords", await mediator.Send(new GetHiLoReportRequest(model)));
 
         [HttpGet]
         [Route("Report/TexasHoldem")]
@@ -522,6 +519,5 @@ namespace GamesAdmin.Site.Features.Report
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
-
     }
 }

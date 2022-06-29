@@ -468,6 +468,14 @@
             $(id).show();
             $(headerId).addClass("active");
         },
+
+        formatNumber: function (id) {
+            var elm = $(`#${id}`);
+            var val = elm.val().replace(/,/g, '');
+            var parts = val.split(".");
+            parts[0] = parseInt(parts[0]).toLocaleString('en');
+            elm.val(parts.join("."));
+        }
     }
 }(jQuery));
 

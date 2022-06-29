@@ -67,7 +67,8 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             foreach (var c in newConfig.MaxBetChoices)
             {
-                var setting = new SettingChangedModel($"MaxBetPerChoices {c.Key}", oldConfig.MaxBetChoices[c.Key].ToString(), c.Value.ToString());
+                var oldText = oldConfig.MaxBetChoices == null ? string.Empty : oldConfig.MaxBetChoices[c.Key].ToString();
+                var setting = new SettingChangedModel($"MaxBetPerChoices {c.Key}", oldText, c.Value.ToString());
 
                 changedSettings.Add(setting);
             }
@@ -115,7 +116,7 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             var changedSettings = new List<SettingChangedModel>
             {
-                new SettingChangedModel("ExcludeUUS", oldConfig.SlotsConfig.Jackpot.ExcludeUUS.ToString(), jackpot.ExcludeUUS.ToString()),
+                new SettingChangedModel("ExcludeTestCurrency", oldConfig.SlotsConfig.Jackpot.ExcludeTestCurrency.ToString(), jackpot.ExcludeTestCurrency.ToString()),
                 new SettingChangedModel("BotContributionRatio", oldConfig.SlotsConfig.Jackpot.BotContributionRatio.ToString(), jackpot.BotContributionRatio.ToString()),
                 new SettingChangedModel("PlayerContributionRatio", oldConfig.SlotsConfig.Jackpot.PlayerContributionRatio.ToString(), jackpot.PlayerContributionRatio.ToString()),
                 new SettingChangedModel("WinningRatio", oldConfig.SlotsConfig.Jackpot.WinningRatio.ToString(), jackpot.WinningRatio.ToString()),
@@ -136,16 +137,17 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             var changedSettings = new List<SettingChangedModel>();
 
-            foreach (var o in oldConfig)
+            foreach (var n in newConfig)
             {
-                var setting = new SettingChangedModel(o.Key, o.Value.ToString(), newConfig[o.Key].ToString());
+                var oldText = oldConfig == null ? string.Empty : oldConfig[n.Key].ToString();
+                var setting = new SettingChangedModel(n.Key, oldText, n.Value.ToString());
                 changedSettings.Add(setting);
             }
 
             return changedSettings;
         }
 
-        public static List<SettingChangedModel> GetOddsChangedModel(Dictionary<string, Dictionary<string, double>> oldConfig, Dictionary<string, Dictionary<string, double>> newConfig)
+        public static List<SettingChangedModel> GetIconsChangedModel(Dictionary<string, Dictionary<string, double>> oldConfig, Dictionary<string, Dictionary<string, double>> newConfig)
         {
             var changedSettings = new List<SettingChangedModel>();
 

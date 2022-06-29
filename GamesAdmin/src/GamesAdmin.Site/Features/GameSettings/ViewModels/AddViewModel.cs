@@ -15,7 +15,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         {
         }
 
-        public AddViewModel(List<SelectListItem> gameNames, List<SelectListItem> gameTypes, List<SelectListItem> difficultyItems)
+        public AddViewModel(
+            List<SelectListItem> gameNames,
+            List<SelectListItem> gameTypes,
+            List<SelectListItem> difficultyItems)
         {
             GameNames = gameNames;
             GameTypes = gameTypes;
@@ -87,5 +90,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Player Contribution (%)")]
         public double PlayerJackpotContribution { get; set; }
+
+        [DisplayName("Allowed Currency")]
+        public string AllowedCurrency { get; set; } = "INH";
     }
 }

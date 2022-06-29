@@ -52,7 +52,7 @@ namespace GamesAdmin.Database
                         UserId = x.Uid,
                         Currency = x.Currency,
                         Rate = x.Rate,
-                        PartnerId = x.PartnerId
+                        PartnerId = x.OperatorId
                     });
                 var records = await project.ToListAsync();
 

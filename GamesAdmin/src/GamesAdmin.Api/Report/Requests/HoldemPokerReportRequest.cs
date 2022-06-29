@@ -1,7 +1,7 @@
-﻿using GamesAdmin.Core.Models;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using MediatR;
-using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Report.Requests
 {

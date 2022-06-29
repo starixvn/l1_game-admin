@@ -41,7 +41,7 @@ namespace GamesAdmin.Database
                         FourWhite = x.FourWhite,
                         Currency = x.Currency,
                         Rate = x.Rate,
-                        PartnerId = x.PartnerId
+                        PartnerId = x.OperatorId
                     });
                 var records = await project.ToListAsync();
 

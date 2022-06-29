@@ -1,5 +1,5 @@
-﻿using GamesAdmin.Core.Enumeration.BetChoices;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration.BetChoices;
 
 namespace GamesAdmin.Core.Enumeration
 {

@@ -1,4 +1,7 @@
-﻿using GamesAdmin.Api._Shared;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
@@ -7,9 +10,6 @@ using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -126,15 +126,16 @@ namespace GamesAdmin.Api.Report
         public async Task<BitcoinMasterBetHistory> BitcoinMasterBetHistory(long roundId, string nickname)
             => await mediator.Send(new BitcoinMasterBetHistoryRequest(roundId, nickname));
 
-         [HttpGet]
+        [HttpGet]
         [Route("holdempoker")]
         public async Task<IEnumerable<HoldemPokerBetRecord>> HoldemPoker([FromQuery] HoldemPokerBetReportFilter filter)
-            => (await mediator.Send(new HoldemPokerReportRequest(filter)));
+           => (await mediator.Send(new HoldemPokerReportRequest(filter)));
 
         [HttpGet]
         [Route("bet_history/holdempoker")]
         public async Task<HoldemPokerBetHistory> HoldemPokerBetHistory([FromQuery] HoldemPokerBetHistoryFilter filter)
             => (await mediator.Send(new HoldemPokerBetHistoryRequest(filter)));
+
         [HttpGet]
         [Route("hilo")]
         public async Task<IEnumerable<HiLoBetRecord>> HiLo([FromQuery] HiLoBetReportFilter filter)

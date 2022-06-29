@@ -1,9 +1,9 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Core.Models.Partners;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {

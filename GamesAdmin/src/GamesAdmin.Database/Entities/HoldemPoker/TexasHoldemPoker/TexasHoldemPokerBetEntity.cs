@@ -1,5 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
-using System;
+﻿using System;
+using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {

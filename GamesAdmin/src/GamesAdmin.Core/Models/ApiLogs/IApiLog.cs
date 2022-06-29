@@ -19,6 +19,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         int? ObCustId { get; }
 
+        int? PlayerId { get; }
+
         string SiteId { get; }
 
         int? GameRoundId { get; }

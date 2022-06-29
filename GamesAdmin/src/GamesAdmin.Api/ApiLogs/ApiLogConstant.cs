@@ -30,6 +30,9 @@ namespace GamesAdmin.Api.ApiLogs
         private const string RetrieveEndGameRequest = "EndGameInfoRequest";
         private const string RetrieveEndGameResult = "RetrieveEndGameInfoResult";
 
+        private const string EndRoundInfoRequest = "EndRoundInfoRequest";
+        private const string EndRoundInfoResult = "EndRoundInfoResult";
+
         private const string EnterPortalCall = "PartnerEnterPortalCall";
         private const string EnterPortalResult = "PartnerEnterPortalResult";
 
@@ -63,6 +66,8 @@ namespace GamesAdmin.Api.ApiLogs
 
             { RetrieveEndGameRequest, typeof(EndGameInfoRequest) },
             { RetrieveEndGameResult, typeof(RetrieveEndGameInfoResult) },
+            { EndRoundInfoRequest, typeof(EndGameInfoRequest) },
+            { EndRoundInfoResult, typeof(RetrieveEndGameInfoResult) },
 
             { EnterPortalCall, typeof(PartnerEnterPortalCall) },
             { EnterPortalResult, typeof(PartnerEnterPortalResult) },

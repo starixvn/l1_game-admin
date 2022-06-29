@@ -1,14 +1,14 @@
-﻿using GamesAdmin.Api.Report.Requests;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
@@ -107,6 +107,6 @@ namespace GamesAdmin.Api.Report
             => await holdemPokerReportService.GetHoldemPokerBetHistoryAsync(request.Filter);
 
         public Task<IEnumerable<HiLoBetRecord>> Handle(HiLoReportRequest request, CancellationToken cancellationToken)
-        => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
+            => serviceProvider.GetRequiredService<HiLoReportService>().Get(request.Filter);
     }
 }
