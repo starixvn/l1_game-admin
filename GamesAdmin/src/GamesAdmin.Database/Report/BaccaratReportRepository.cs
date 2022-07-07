@@ -52,7 +52,7 @@ namespace GamesAdmin.Database
                 return (roundResult, records);
             }
 
-            return (new BaseBaccaratRoundEntity(), Enumerable.Empty<BetReportEntity>());
+            return (new BaseBaccaratRoundEntity(), Enumerable.Empty<BaccaratBetReportEntity>());
         }
     }
 }

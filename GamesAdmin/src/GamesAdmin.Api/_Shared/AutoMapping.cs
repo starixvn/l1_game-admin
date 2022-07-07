@@ -89,6 +89,16 @@ namespace GamesAdmin.Api._Shared
                   return Enumerable.Empty<DragonTigerCardResult>();
               }));
 
+            CreateMap<BaseBaccaratRoundEntity, BaccaratRoundResult>()
+             .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+                 return Enumerable.Empty<DragonTigerCardResult>();
+             }))
+             .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+                 return Enumerable.Empty<DragonTigerCardResult>();
+             }));
+
             CreateMap<RouletteBetReportEntity, RouletteBetRecord>();
             CreateMap<RouletteRoundEntity, RouletteRoundResult>();
             CreateMap<RouletteSettlementResultEntity, RouletteSettlementResult>();
