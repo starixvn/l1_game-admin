@@ -347,4 +347,96 @@ namespace GamesAdmin.Core.Models
 
         public int ExchangeRateId { get; set; }
     }
+
+    public class CascadingSlotBetRecord : BetRecord
+    {
+        public long RoundId { get; set; }
+
+        public decimal Bet { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public byte BetLevel { get; set; }
+
+        public decimal CoinValue { get; set; }
+
+        public byte BetMultiplier { get; set; }
+
+        public bool FreeSpin { get; set; }
+
+        public string Result { get; set; }
+
+        public byte TotalMultiplier { get; set; }
+
+        public byte Multiplier { get; set; }
+
+        public decimal TotalTumbleWin { get; set; }
+
+        public bool Paid { get; set; }
+
+        public string Uid { get; set; }
+
+        public string Name { get; set; }
+
+        public int? MemberId { get; set; }
+
+        public string SiteId { get; set; }
+
+        public int PlayerId { get; set; }
+
+        public int ExchangeRateId { get; set; }
+
+        public CascadingSlotSettlementResult SettlementResult { get; set; }
+
+        public bool ReachMaxWin { get; set; }
+    }
+
+    public class CascadingSlotSettlementResult
+    {
+        public IEnumerable<CascadingSlotTumble> Tumbles { get; set; }
+
+        public SlotGameFreeSpin FreeSpins { get; set; }
+
+        public SlotGameFreeSpin AdditionalFreeSpins { get; set; }
+    }
+
+    public class CascadingSlotTumble
+    {
+        public Dictionary<string, CascadingSlotWinningSymbol> Icons { get; set; }
+
+        public decimal Win { get; set; }
+
+        public string OriginalBoard { get; set; }
+
+        public IEnumerable<byte> Multipliers { get; set; }
+    }
+
+    public class CascadingSlotWinningSymbol
+    {
+        public byte Count { get; set; }
+
+        public decimal Odds { get; set; }
+
+        public decimal Win { get; set; }
+    }
+
+    public class CascadingSlotTotalMultiplier
+    {
+        public int PlayerId { get; set; }
+
+        public bool Ended { get; set; }
+
+        public IEnumerable<CascadingSlotRoundMultiplier> Rounds { get; set; }
+    }
+
+    public class CascadingSlotRoundMultiplier
+    {
+        public DateTime Time { get; set; }
+
+        public long RoundId { get; set; }
+
+        public byte TotalMultiplier { get; set; }
+
+        public byte Multiplier { get; set; }
+    }
 }

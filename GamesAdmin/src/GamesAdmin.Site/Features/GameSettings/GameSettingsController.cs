@@ -42,12 +42,15 @@ namespace GamesAdmin.Site.Features.GameSettings
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
-            await mediator.Send(new CreateRequest(
+            var request = new CreateRequest(
                 mapper.Map<GameInfo>(addViewModel),
                 mapper.Map<EnableSetting>(addViewModel),
                 mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
-                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotIcons(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon)));
+                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
+                mapper.Map<CascadingSlotsConfig>(addViewModel).GenerateDefaultCascadingSlotsConfig(addViewModel.NumberOfIcons));
+
+            await mediator.Send(request);
 
             return RedirectToAction(nameof(Index));
         }
@@ -199,14 +202,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateOddsRequest(
-                    viewModel.Name,
-                    viewModel.Type,
-                    viewModel.PayoutViewModel.Odds,
-                    viewModel.PayoutViewModel.Icons
-            ));
+                var updateResult = await mediator.Send(new UpdateOddsRequest(
+                      viewModel.Name,
+                      viewModel.Type,
+                      viewModel.PayoutViewModel?.Odds,
+                      viewModel.PayoutViewModel?.Icons,
+                      viewModel.CascadingSlotsConfig));
 
-                return Json(true);
+                return Json(updateResult);
             }
             catch (Exception ex)
             {
@@ -248,14 +251,32 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                await mediator.Send(new UpdateRequest(
+                SlotsConfig slotsConfig = null;
+                CascadingSlotsConfig cascadingSlotsConfig = null;
+                switch (viewModel.Type)
+                {
+                    case GameType.Slots:
+                        slotsConfig = new SlotsConfig(
+                           (byte)viewModel.SlotViewModel.Mode,
+                           viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue(),
+                           new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus));
+                        break;
+                    case GameType.CascadingSlots:
+                        cascadingSlotsConfig = new CascadingSlotsConfig(viewModel.CascadingSlotsConfig);
+                        cascadingSlotsConfig.Mode = (byte)viewModel.SlotViewModel.Mode;
+                        cascadingSlotsConfig.BigWinRatio = viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue();
+                        cascadingSlotsConfig.MultiplierBonus = new MultiplierBonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus);
+                        break;
+                }
+
+                var request = new UpdateRequest(
                     new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
-                    viewModel.SlotViewModel == null ? new SlotsConfig() : new SlotsConfig(
-                        (byte)viewModel.SlotViewModel.Mode,
-                        viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue(),
-                        new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus))));
+                    slotsConfig,
+                    cascadingSlotsConfig);
+
+                await mediator.Send(request);
 
                 return Json(true);
             }

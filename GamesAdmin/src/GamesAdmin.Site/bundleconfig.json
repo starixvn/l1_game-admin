@@ -268,6 +268,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/big-small-reports.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/reports.min.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/bet-details.min.js",
     "inputFiles": [
       "wwwroot/js/bet-details.js"

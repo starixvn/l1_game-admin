@@ -14,7 +14,6 @@ namespace GamesAdmin.Core.Enumeration
         public const string KenoProMaxValue = "kenopromax";
         public const string BaccaratValue = "baccarat";
         public const string MiniSeDieValue = "minisedie";
-        public const string KenoProVietValue = "kenoproviet";
         public const string KenoMaxValue = "kenomax";
         public const string KenoMax2Value = "kenomax2";
         public const string KenoMiniValue = "kenomini";
@@ -45,6 +44,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string HiLoValue = "hilo";
         public const string TexasHoldemPokerValue = "texasholdempoker";
         public const string NightClubValue = "nightclub";
+        public const string TreasureIslandValue = "treasureisland";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -56,7 +56,6 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game KenoProMax = new Game(KenoProMaxValue, "Keno Pro Max", GameId.KenoProMax);
         public static readonly Game Baccarat = new Game(BaccaratValue, "Baccarat", GameId.Baccarat);
         public static readonly Game MiniSeDie = new Game(MiniSeDieValue, "Mini Se Die", GameId.MiniSeDie);
-        public static readonly Game KenoProViet = new Game(KenoProVietValue, "Keno Pro Viet", GameId.KenoProViet);
         public static readonly Game KenoMax = new Game(KenoMaxValue, "Keno Max", GameId.KenoMax);
         public static readonly Game KenoMax2 = new Game(KenoMax2Value, "Keno Max2", GameId.KenoMax2);
         public static readonly Game KenoMini = new Game(KenoMiniValue, "Keno Mini", GameId.KenoMini);
@@ -87,6 +86,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game HiLo = new Game(HiLoValue, "Hi-Lo", GameId.HiLo);
         public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Hold'em", GameId.TexasHoldemPoker);
         public static readonly Game NightClub = new Game(NightClubValue, "Night Club", GameId.NightClub);
+        public static readonly Game TreasureIsland = new Game(TreasureIslandValue, "Treasure Island", GameId.TreasureIsland);
 
         public Game()
         {

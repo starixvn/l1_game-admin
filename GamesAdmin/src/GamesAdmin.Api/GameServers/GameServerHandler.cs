@@ -1,12 +1,12 @@
-﻿using GamesAdmin.Api.GameServers.Requests;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -19,6 +19,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetHoldemPokerResultRequest, HoldemPokerResultControl>
         , IRequestHandler<SetHiLoResultRequest, IEnumerable<HiloCard>>
         , IRequestHandler<GetAdminMonitoringSettingsRequest, AdminMonitoringModel>
+        , IRequestHandler<SetCascadingSlotResultRequest, IEnumerable<SettlementCascadingSlotResult>>
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
         , IRequestHandler<ConnectedUserRequest, int>
     {
@@ -55,6 +56,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
             => gameServerService.GetAdminMonitoringSettings(request.Username);
+
+        public Task<IEnumerable<SettlementCascadingSlotResult>> Handle(SetCascadingSlotResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetCascadingSlotResult(request);
 
         public Task<bool> Handle(VerifyAdminMonitoringTokenRequest request, CancellationToken cancellationToken)
             => gameServerService.VerifyAdminMonitoringToken(request.Token);

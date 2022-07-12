@@ -1,32 +1,28 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 
 namespace GamesAdmin.Core.Extensions
 {
     public static class SlotConfigExtensions
     {
-        public static SlotsConfig GenerateDefaultSlotIcons(this SlotsConfig config, int total, int maxNumber = 4)
+        public static SlotsConfig GenerateDefaultSlotInfo(this SlotsConfig config, int total, int maxNumber = 4)
         {
             config.Icons = new Dictionary<string, Dictionary<string, double>>();
 
             for (var i = 0; i < total; i++)
             {
-                config.Icons.Add(i.ToString(), GenerateDefaultOdds(maxNumber));
+                var iconOdds = new Dictionary<string, double>();
+
+                for (var j = 1; j <= maxNumber; j++)
+                {
+                    iconOdds.Add((j + 1).ToString(), 0);
+                }
+
+                config.Icons.Add(i.ToString(), iconOdds);
             }
 
             return config;
-        }
-
-        private static Dictionary<string, double> GenerateDefaultOdds(int maxNumber)
-        {
-            var iconOdds = new Dictionary<string, double>();
-
-            for (var i = 1; i <= maxNumber; i++)
-            {
-                iconOdds.Add((i + 1).ToString(), 0);
-            }
-
-            return iconOdds;
         }
     }
 }

@@ -14,7 +14,6 @@ using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
-using GamesAdmin.Api.ProVietKeno;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
@@ -43,7 +42,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IClientSiteSiteSerivce, ClientSiteSerivce>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IProVietKenoService, ProVietKenoService>();
             services.AddScoped<IGameUserService, GameUserService>();
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<IGlobalConfigService, GlobalConfigService>();
@@ -58,6 +56,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
             services.AddScoped<NightClubReport>().AddScoped<ISlotGameReport, NightClubReport>(s => s.GetService<NightClubReport>());
 
+            services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
+            services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());
 
             services.AddScoped<IGameServerService, GameServerService>();
 
@@ -102,6 +102,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IHiLoApi>(appSettings.GameServers.HiLo.Api, refitSettings));
             services.AddSingleton(RestService.For<ITexasHoldemPokerOnlineUserApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
             services.AddSingleton(RestService.For<INightClubOnlineUserApi>(appSettings.GameServers.NightClub.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITreasureIslandOnlineUserApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -134,6 +135,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<VipSeDieWarReportService>();
             services.AddScoped<KenoProMaxReportService>();
             services.AddScoped<HiLoReportService>();
+            services.AddScoped<TreasureIslandReportService>();
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();
@@ -155,6 +157,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<INightClubBoardApi>(appSettings.GameServers.NightClub.Api, refitSettings));
+
+            services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();
+            services.AddSingleton(RestService.For<ITreasureIslandResultApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
         }
 
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

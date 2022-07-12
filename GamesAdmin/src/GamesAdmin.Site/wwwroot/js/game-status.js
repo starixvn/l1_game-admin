@@ -255,6 +255,11 @@
             this.setResultControl("SlotResult", gameName);
         },
 
+        setControlResultCascadingSlotGame: function (event, gameName) {
+            event.preventDefault();
+            this.setResultControl("CascadingSlotResult", gameName);
+        },
+
         setControlResultHiLo: function (event) {
             event.preventDefault();
             this.setResultControl("HiLoResult");
@@ -266,14 +271,16 @@
 
         submit: function () {
             $('#updateBtn').prop('disabled', true);
+            if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
+                this.updateOdds();
+                return;
+            }
+
             let requestUrl = "/update";
+            $('.txt-bet-level').attr('disabled', null);
 
             if ($('#botsetting').css('display') && $('#botsetting').css('display') !== 'none') {
                 requestUrl = "/betlimit/update";
-            }
-
-            if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
-                requestUrl = "/odds/update";
             }
 
             if ($('#jackpots').css('display') && $('#jackpots').css('display') !== 'none') {
@@ -301,6 +308,32 @@
                     location.reload();
 
                 }, 1000);
+            });
+        },
+
+        updateOdds: function () {
+            $('#update-odds-msg').hide();
+
+            $.ajax({
+                method: "POST",
+                url: "/odds/update",
+                dataType: 'json',
+                data: $('#gameForm').serialize(),
+            }).done(function (result) {
+                if (result) {
+                    $('#update-odds-msg').html(result);
+                    $('#update-odds-msg').show();
+                    $('#updateBtn').prop('disabled', false);
+                } else {
+                    $('#successMsg').show();
+                    setTimeout(function () {
+                        $('#updateBtn').prop('disabled', false);
+                        $('#successMsg').hide();
+                        $('#update-odds-msg').hide();
+                        $('#gameModal').modal('hide');
+                        location.reload();
+                    }, 1000);
+                }
             });
         },
 
@@ -444,12 +477,29 @@
         },
 
         toogleSlotsConfig: function () {
-            if ($('#Type').val() === "2") {
-                $('#slots-config').show();
-                $('#rng-game').hide();
-            } else {
-                $('#slots-config').hide();
-                $('#rng-game').show();
+            const type = $('#Type').val();
+
+            switch (type) {
+                case '3':
+                    $('#slots-config .common-field').attr('disabled', true);
+                    $('#cascading-slots-config .common-field').attr('disabled', null);
+
+                    $('#slots-config').hide();
+                    $('#rng-game').hide();
+                    $('#cascading-slots-config').show();
+                    break;
+                case '2':
+                    $('#cascading-slots-config .common-field').attr('disabled', true);
+                    $('#slots-config .common-field').attr('disabled', null);
+
+                    $('#rng-game').hide();
+                    $('#cascading-slots-config').hide();
+                    $('#slots-config').show();
+                    break;
+                default:
+                    $('#slots-config').hide();
+                    $('#cascading-slots-config').hide();
+                    $('#rng-game').show();
             }
         },
 

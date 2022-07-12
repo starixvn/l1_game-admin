@@ -12,7 +12,6 @@
         KenoProMax = 8,
         MiniSeDie = 9,
         Baccarat = 10,
-        KenoProViet = 11,
         KenoMax = 12,
         KenoMax2 = 13,
         KenoMini = 14,
@@ -41,6 +40,7 @@
         TexasHoldemPoker = 42,
         BitcoinMaster = 43,
         HiLo = 45,
-        NightClub = 46
+        NightClub = 46,
+        TreasureIsland = 47,
     }
 }

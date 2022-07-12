@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double BotJackpotContribution { get; set; }
 
         [DisplayName("Player Contribution (%)")]
-        public double PlayerJackpotContribution { get; set; }       
+        public double PlayerJackpotContribution { get; set; }
 
         [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }

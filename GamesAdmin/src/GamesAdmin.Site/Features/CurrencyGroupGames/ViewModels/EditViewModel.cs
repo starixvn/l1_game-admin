@@ -33,10 +33,13 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public StakeLevel[] StakeLevels { get; set; }
 
-        public bool DisplayMinMaxBet => GameType != GameType.Slots;
+        public bool DisplayMinMaxBet => GameType == GameType.AutoRNG;
 
         public List<MaxBetChoiceViewModel> MaxBetChoiceSetting { get; set; }
 
         public bool DisplayMaxBetPerChoice => MaxBetChoiceSetting != null && MaxBetChoiceSetting.Count > 2;
+
+        public double[] CoinValues { get; set; }
+        public double MaxWinPerRound { get; set; }
     }
 }

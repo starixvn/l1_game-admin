@@ -11,9 +11,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     {
         private readonly double[] DefaultBotRatios = new double[] { 40, 40, 20 };
 
-        public AddViewModel()
-        {
-        }
+        public AddViewModel() { }
 
         public AddViewModel(
             List<SelectListItem> gameNames,
@@ -26,6 +24,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Mode = GameMode.Medium;
             Stakes = new double[] { 0, 0, 0 };
             Jackpots = new double[] { 0, 0, 0 };
+
+            BetLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         }
 
         [Required]
@@ -93,5 +93,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Allowed Currency")]
         public string AllowedCurrency { get; set; } = "INH";
+
+        public int[] BetLevels { get; set; }
+        public double BetMultiplier { get; set; }
+        public double MaxWinPerRound { get; set; }
+        public double MinMultiplierBonus { get; set; }
+        public double MaxMultiplierBonus { get; set; }
     }
 }

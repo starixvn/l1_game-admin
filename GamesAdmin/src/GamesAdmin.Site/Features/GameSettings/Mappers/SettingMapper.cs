@@ -49,6 +49,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));
 
+            CreateMap<CascadingSlotsConfig, SlotViewModel>()
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
+                .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Min))
+                .ForMember(dest => dest.MaxBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Max))
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));
+
             CreateMap<GameConfig, StatusItemViewModel>();
             CreateMap<GameConfig, MonitorItemViewModel>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
@@ -66,6 +72,14 @@ namespace GamesAdmin.Site.Features.GameSettings
                     src.BotJackpotContribution.ConvertPercentValue(),
                     false,
                     src.AllowedCurrency)));
+
+            CreateMap<AddViewModel, CascadingSlotsConfig>()
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
+                .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
+                .ForMember(dest => dest.BetLevels, opt => opt.MapFrom(src => src.BetLevels))
+                 .ForMember(dest => dest.BetMultiplier, opt => opt.MapFrom(src => src.BetMultiplier))
+                .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.MaxWinPerRound))
+                .ForMember(dest => dest.MultiplierBonus, opt => opt.MapFrom(src => new MultiplierBonus(src.MinMultiplierBonus, src.MaxMultiplierBonus)));
 
             CreateMap<AddViewModel, GameInfo>();
             CreateMap<AddViewModel, EnableSetting>();

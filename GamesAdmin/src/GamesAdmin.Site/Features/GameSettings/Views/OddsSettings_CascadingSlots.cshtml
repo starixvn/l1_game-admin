@@ -1,0 +1,109 @@
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model EditViewModel;
+
+@if (Model.CascadingSlotsConfig.OddsByCounts.Count > 0)
+{
+    <div class="form-group row">
+        @for (var i = 0; i < Model.CascadingSlotsConfig.OddsByCounts.Count; i++)
+        {
+            <div class="col-lg-12 mb-3">
+                <fieldset>
+                    <legend>Icon @i</legend>
+                    <div class="form-group row mb-0">
+                        <div class="col-lg-2 d-flex align-items-center">
+                            <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{i}").png" alt="icons" />
+                        </div>
+
+                        <div class="col-lg-10">
+                            <div class="row">
+                                @for (var j = 0; j < Model.CascadingSlotsConfig.OddsByCounts[i.ToString()].Count; j++)
+                                {
+                                    var c = @Model.CascadingSlotsConfig.OddsByCounts[i.ToString()][j];
+
+                                    <div class="col-lg-7">
+                                        <fieldset>
+                                            <legend>Count</legend>
+                                            <div class="col-lg-5 d-inline-block">
+                                                <label class="control-label">From</label>
+                                                <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts[i.ToString()][j].From" class="form-control small" />
+                                            </div>
+                                            <div class="col-lg-5 d-inline-block">
+                                                <label class="control-label">To</label>
+                                                <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts[i.ToString()][j].To" class="form-control small" />
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <fieldset>
+                                            <legend>Odds</legend>
+                                            <div class="col-lg-12">
+                                                <label class="control-label">&nbsp;</label>
+                                                <input type="number" asp-for="@Model.CascadingSlotsConfig.OddsByCounts[i.ToString()][j].Odds" class="form-control small" />
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        }
+
+        <div class="col-lg-12 mb-3">
+            <fieldset>
+                <legend>Scatter</legend>
+                <div class="form-group row mb-0">
+                    <div class="col-lg-2 d-flex align-items-center">
+                        <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/")9.png" alt="icons" />
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    <legend>Initial Free Spins Bonus</legend>
+                                    @for (var j = 0; j < Model.CascadingSlotsConfig.FreeSpins.InitialOdds.Count; j++)
+                                    {
+                                        var c = @Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j];
+
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Count</label>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j].Count" class="form-control small" />
+                                        </div>
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Number of Free Spins</label>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.InitialOdds[j].Odds" class="form-control small" />
+                                        </div>
+                                    }
+                                </fieldset>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    <legend>Additional Free Spins Bonus</legend>
+                                    @for (var j = 0; j < Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds.Count; j++)
+                                    {
+                                        var c = @Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds[j];
+
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Count</label>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds[j].Count" class="form-control small" />
+                                        </div>
+                                        <div class="col-lg-5 d-inline-block">
+                                            <label class="control-label">Number of Free Spins</label>
+                                            <input type="number" asp-for="@Model.CascadingSlotsConfig.FreeSpins.AdditionalOdds[j].Odds" class="form-control small" />
+                                        </div>
+                                    }
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <br />
+}

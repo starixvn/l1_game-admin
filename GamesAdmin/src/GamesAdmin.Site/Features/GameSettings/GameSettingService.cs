@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using Sentry;
 
@@ -34,13 +35,17 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateBetLimit(UpdateBetLimitRequest request);
 
-        Task<bool> UpdateOdds(UpdateOddsRequest request);
+        Task<string> UpdateOdds(UpdateOddsRequest request);
 
-        Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+        Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
+
+        Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
 
         Task<bool> UpdateJackpot(UpdateJackpotRequest request);
 
         Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request);
+
+        Task<bool> UpdateCascadingSlotsConfig(UpdateCascadingSlotsConfigRequest request);
 
         Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
 
@@ -59,15 +64,22 @@ namespace GamesAdmin.Site.Features.GameSettings
 
     public class GameSettingService : IGameSettingService
     {
+        private const string UpdateFailedMessage = "Update failed.";
         private readonly IGameSettingApi gameApi;
         private readonly IGlobalConfigApi globalConfigApi;
         private readonly ISentryClient sentryClient;
+        private readonly ICascadingSlotsConfigValidator cascadingSlotsConfigValidator;
 
-        public GameSettingService(ISentryClient sentryClient, IGameSettingApi gameApi, IGlobalConfigApi globalConfigApi)
+        public GameSettingService(
+            ISentryClient sentryClient,
+            IGameSettingApi gameApi,
+            IGlobalConfigApi globalConfigApi,
+            ICascadingSlotsConfigValidator cascadingSlotsConfigValidator)
         {
             this.sentryClient = sentryClient;
             this.gameApi = gameApi;
             this.globalConfigApi = globalConfigApi;
+            this.cascadingSlotsConfigValidator = cascadingSlotsConfigValidator;
         }
 
         public async Task<bool> Add(GameConfig game)
@@ -134,17 +146,31 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
         => gameApi.UpdateBetLimit(request);
 
-        public Task<bool> UpdateOdds(UpdateOddsRequest request)
-        => gameApi.UpdateOdds(request);
+        public async Task<string> UpdateOdds(UpdateOddsRequest request)
+        => await gameApi.UpdateOdds(request) ? string.Empty : UpdateFailedMessage;
 
-        public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
-        => gameApi.UpdateSlotOddss(name, iconOdds);
+        public async Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
+        => await gameApi.UpdateSlotOdds(name, iconOdds) ? string.Empty : UpdateFailedMessage;
+
+        public async Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig)
+        {
+            var validateResult = cascadingSlotsConfigValidator.ValidateOdds(cascadingSlotsConfig.OddsByCounts);
+            if (!string.IsNullOrWhiteSpace(validateResult))
+            {
+                return validateResult;
+            }
+
+            return await gameApi.UpdateCascadingSlotOdds(name, cascadingSlotsConfig) ? string.Empty : UpdateFailedMessage;
+        }
 
         public Task<bool> UpdateJackpot(UpdateJackpotRequest request)
         => gameApi.UpdateJackpot(request);
 
         public Task<bool> UpdateSlotConfig(UpdateSlotConfigRequest request)
         => gameApi.UpdateSlotConfig(request);
+
+        public Task<bool> UpdateCascadingSlotsConfig(UpdateCascadingSlotsConfigRequest request)
+        => gameApi.UpdateCascadingSlotsConfig(request);
 
         public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
         => gameApi.UpdateGeneralConfig(request);
@@ -176,8 +202,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
             => gameApi.GetAdminMonitoringSettings(username);
-
+            
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
+            
     }
 }

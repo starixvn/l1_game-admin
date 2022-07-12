@@ -43,6 +43,10 @@ namespace GamesAdmin.Api.Report
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistoryAsync(long roundId, string nickname);
+
+        Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReportAsync(CascadingSlotReportFilter filter);
+
+        Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -51,17 +55,20 @@ namespace GamesAdmin.Api.Report
         private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
         private readonly ISlotGameReportFactory slotGameReportFactory;
+        private readonly ICascadingSlotReportFactory cascadingSlotReportFactory;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IMapper mapper,
             IGenericRepository<SpinResultEntity> spinResultRepository,
-            ISlotGameReportFactory slotGameReportFactory)
+            ISlotGameReportFactory slotGameReportFactory,
+            ICascadingSlotReportFactory cascadingSlotReportFactory)
         {
             this.serviceProvider = serviceProvider;
             this.mapper = mapper;
             this.spinResultRepository = spinResultRepository;
             this.slotGameReportFactory = slotGameReportFactory;
+            this.cascadingSlotReportFactory = cascadingSlotReportFactory;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
@@ -368,6 +375,22 @@ namespace GamesAdmin.Api.Report
             model.RoundResult.Number = result.Item1.Number;
             model.RoundResult.ExchangeRateId = result.Item1.ExchangeRateId;
             return model;
+        }
+
+        public async Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReportAsync(CascadingSlotReportFilter filter)
+        {
+            var service = cascadingSlotReportFactory.GetReportService(filter.Game);
+            var result = service == default ? default : await service.GetReportAsync(filter);
+
+            return result.Select(x => mapper.Map<CascadingSlotBetRecord>(x));
+        }
+
+        public async Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter)
+        {
+            var service = cascadingSlotReportFactory.GetReportService(filter.Game);
+            var result = service == default ? default : await service.GetBetHistoryAsync(filter);
+
+            return result;
         }
     }
 }

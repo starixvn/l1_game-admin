@@ -49,6 +49,10 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
 
         Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);
+
+        Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReport(CascadingSlotReportFilter filter);
+
+        Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -117,7 +121,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<BitcoinMasterBetHistory> GetBitcoinMasterBetHistory(long roundId, string nickname)
             => await reportApi.GetBitcoinMasterBetReport(roundId, nickname);
 
-
         public Task<IEnumerable<HiLoBetRecord>> GetHiLoReport(HiLoBetReportFilter filter)
         => reportApi.GetHiLoReport(filter);
 
@@ -126,5 +129,11 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter)
             => await reportApi.GetHoldemPokerBetHistory(filter);
+
+        public Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReport(CascadingSlotReportFilter filter)
+            => reportApi.GetCascadingSlotReport(filter);
+
+        public Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter)
+            => reportApi.GetCascadingSlotBetHistory(filter);
     }
 }

@@ -383,9 +383,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public IActionResult KenoProViet() => RedirectToAction("Index");
-
-        [HttpGet]
         public IActionResult KenoMax() => RedirectToAction("Index", new { game = GameId.KenoMax });
 
         [HttpGet]
@@ -511,6 +508,59 @@ namespace GamesAdmin.Site.Features.Report
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TreasureIsland()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                Game = GameId.TreasureIsland,
+                ExcludeUUS = true,
+                Selections = selections
+            };
+
+            return View("CascadingSlot", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCascadingSlotReport(
+            string partnerId,
+            DateTime fromDate,
+            DateTime toDate,
+            long roundId,
+            string nickname,
+            string username,
+            bool convertToUSD,
+            bool excludeUUS,
+            string game)
+        {
+            var request = new GetCascadingSlotReportRequest(
+                roundId,
+                nickname,
+                excludeUUS,
+                game,
+                partnerId,
+                fromDate,
+                toDate,
+                username,
+                convertToUSD);
+
+            return PartialView("_CascadingSlotRecords", await mediator.Send(request));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCascadingSlotBetHistory(
+            long roundId,
+            string nickname,
+            bool excludeUUS,
+            bool convertToUSD,
+            string game)
+        {
+            var request = new GetCascadingSlotBetHistoryRequest(roundId, nickname, excludeUUS, game, convertToUSD);
+
+            return PartialView("_CascadingSlotBetHistory", await mediator.Send(request));
         }
 
         private async Task<ReportViewModel> GetReportViewModel()

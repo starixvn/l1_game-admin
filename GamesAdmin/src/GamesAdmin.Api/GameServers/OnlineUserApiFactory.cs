@@ -51,6 +51,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.HiLoValue, typeof(IHiLoApi) },
             { Game.TexasHoldemPokerValue, typeof(ITexasHoldemPokerOnlineUserApi) },
             { Game.NightClubValue, typeof(INightClubOnlineUserApi) },
+            { Game.TreasureIslandValue, typeof(ITreasureIslandOnlineUserApi) },
 
         };
 

@@ -1,4 +1,11 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
@@ -13,13 +20,6 @@ using GamesAdmin.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Refit;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using HiloCard = GamesAdmin.Core.Models.Card;
 
 namespace GamesAdmin.Api.GameServers
@@ -42,6 +42,8 @@ namespace GamesAdmin.Api.GameServers
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 
+        Task<IEnumerable<SettlementCascadingSlotResult>> SetCascadingSlotResult(SetCascadingSlotResultRequest request);
+
         Task<bool> VerifyAdminMonitoringToken(string token);
 
         Task<int> GetConnectedUsers();
@@ -59,6 +61,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
         private readonly IHiLoApi hiloApi;
         private readonly IGenericRepository<AdminUserEntity> userRepository;
+        private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
 
         public GameServerService(
@@ -71,6 +74,7 @@ namespace GamesAdmin.Api.GameServers
             IHiLoApi hiloApi,
             IAppSettings appSettings,
             IUserServiceApi userServiceApi,
+            ICascadingResultApiFactory cascadingResultApiFactory,
             INotificationServiceApi notificationServiceApi,
             IGenericRepository<AdminUserEntity> userRepository)
         {
@@ -83,6 +87,7 @@ namespace GamesAdmin.Api.GameServers
             this.hiloApi = hiloApi;
             this.appSettings = appSettings;
             this.userServiceApi = userServiceApi;
+            this.cascadingResultApiFactory = cascadingResultApiFactory;
             this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
         }
@@ -294,6 +299,26 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return 0;
+        }
+
+        public async Task<IEnumerable<SettlementCascadingSlotResult>> SetCascadingSlotResult(SetCascadingSlotResultRequest request)
+        {
+            try
+            {
+                if (await gameUserService.IsAbleToSetSlotResult(request.name, false))
+                {
+                    var gameEnum = Enumeration.FromValue<Game>(request.gameConfigName);
+                    var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(request);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return null;
         }
     }
 }

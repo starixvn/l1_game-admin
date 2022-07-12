@@ -1,9 +1,10 @@
-@{ Layout = null; }
-
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @model EditViewModel;
 
-@{ ViewData["Title"] = Model.DisplayName; }
+@{
+    Layout = null;
+    ViewData["Title"] = Model.DisplayName;
+}
 
 @section Styles {
     <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
@@ -12,80 +13,87 @@
 <div>
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+    <div class="message-error hidden-cls" id="update-odds-msg"></div>
 
     <form class="card-body form" id="gameForm">
         <input asp-for="Name" type="hidden" class="form-control" />
         <input asp-for="Type" type="hidden" class="form-control" />
         <div id="oddSetting">
-            @if (Model.PayoutViewModel.IconOdds?.Count > 0)
+            @if (Model.Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
             {
+                <partial name="OddsSettings_CascadingSlots" model="Model" />
+            }
+            else
+            {
+                @if (Model.PayoutViewModel.IconOdds?.Count > 0)
+                {
+                    <div class="form-group row">
 
-                <div class="form-group row">
+                        @for (var i = 0; i < Model.PayoutViewModel.IconOdds.Count; i++)
+                        {
+                            <div class="col-lg-6 mb-3">
+                                <fieldset>
+                                    <legend>Icon @Model.PayoutViewModel.IconOdds[i].Index</legend>
+                                    <div class="form-group row mb-0">
+                                        <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
+                                        <div class="col-lg-4 d-flex align-items-center">
+                                            <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
+                                        </div>
 
-                    @for (var i = 0; i < Model.PayoutViewModel.IconOdds.Count; i++)
-                    {
-                        <div class="col-lg-6 mb-3">
-                            <fieldset>
-                                <legend>Icon @Model.PayoutViewModel.IconOdds[i].Index</legend>
-                                <div class="form-group row mb-0">
-                                    <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
-                                    <div class="col-lg-4 d-flex align-items-center">
-                                        <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
-                                    </div>
-
-                                    <div class="col-lg-8">
-                                        <div class="row">
-                                            @for (var j = 0; j < Model.PayoutViewModel.IconOdds[i].Odds.Count; j++)
-                                            {
-                                                <div class="col-lg-6">
-                                                    <label class="control-label">Count</label>
-                                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Count" class="form-control small" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label class="control-label">Odds</label>
-                                                    <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Odds" class="form-control small" />
-                                                </div>
-                                            }
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                @for (var j = 0; j < Model.PayoutViewModel.IconOdds[i].Odds.Count; j++)
+                                                {
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label">Count</label>
+                                                        <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Count" class="form-control small" />
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label">Odds</label>
+                                                        <input type="number" asp-for="@Model.PayoutViewModel.IconOdds[i].Odds[j].Odds" class="form-control small" />
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </fieldset>
-                        </div>
+                                </fieldset>
+                            </div>
 
+                        }
+                    </div>
+                    <br />
+                }
+
+                @if (Model.PayoutViewModel.BetChoiceOdds != null && Model.PayoutViewModel.BetChoiceOdds.Any())
+                {
+                    if (Model.Name == GamesAdmin.Core.Enumeration.Game.HiLoValue)
+                    {
+                        <partial name="_HiLoOdds" model="Model" />
                     }
-                </div>
-                <br />
-            }
-
-            @if (Model.PayoutViewModel.BetChoiceOdds != null && Model.PayoutViewModel.BetChoiceOdds.Any())
-            {
-                if (Model.Name == GamesAdmin.Core.Enumeration.Game.HiLoValue)
-                {
-                    <partial name="_HiLoOdds" model="Model" />
-                }
-                else
-                {
-                    <fieldset>
-                        <legend>Odds</legend>
-                        @for (var i = 0; i < (Model.PayoutViewModel.BetChoiceOdds.Count / 2 + 1); i++)
-                        {
-                            <div class="form-group row">
-                                @for (var j = 0; j < 2; j++)
-                                {
-                                    var index = i * 2 + j;
-                                    if (index < Model.PayoutViewModel.BetChoiceOdds.Count)
+                    else
+                    {
+                        <fieldset>
+                            <legend>Odds</legend>
+                            @for (var i = 0; i < (Model.PayoutViewModel.BetChoiceOdds.Count / 2 + 1); i++)
+                            {
+                                <div class="form-group row">
+                                    @for (var j = 0; j < 2; j++)
                                     {
-                                        <div class="col-lg-6">
-                                            <label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
-                                            <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
-                                            <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control" />
-                                            <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>
-                                        </div>}
-                                }
-                            </div>}
-                    </fieldset>
-                }
+                                        var index = i * 2 + j;
+                                        if (index < Model.PayoutViewModel.BetChoiceOdds.Count)
+                                        {
+                                            <div class="col-lg-6">
+                                                <label class="control-label">@Model.PayoutViewModel.BetChoiceOdds[index].DisplayName</label>
+                                                <input type="text" hidden asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Name" class="form-control" />
+                                                <input type="number" asp-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="form-control" />
+                                                <span asp-validation-for="@Model.PayoutViewModel.BetChoiceOdds[index].Odds" class="text-danger"></span>
+                                            </div>}
+                                    }
+                                </div>}
+                        </fieldset>
+                    }
 
+                }
             }
         </div>
     </form>

@@ -19,7 +19,6 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.KenoProMax, new GameTicketCollection( string.Empty, "kenopromax_cuocs") },
             { GameId.MiniSeDie, new GameTicketCollection( string.Empty, "minisedie_cuocs") },
             { GameId.Baccarat, new GameTicketCollection( string.Empty, "baccarat_cuocs") },
-            { GameId.KenoProViet, new GameTicketCollection( "kenoproviet_ones", "kenoproviet_cuocs") },
             { GameId.KenoMax, new GameTicketCollection( "kenomax_ones", "kenomax_cuocs") },
             { GameId.KenoMax2, new GameTicketCollection( "kenomax2_ones", "kenomax2_cuocs") },
             { GameId.KenoMini, new GameTicketCollection( "kenomini_ones", "kenomini_cuocs") },

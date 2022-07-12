@@ -4,9 +4,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class SlotsConfig
     {
-        public SlotsConfig()
-        {
-        }
+        public SlotsConfig() { }
 
         public SlotsConfig(byte mode, double bigWinRatio, Bonus bonus)
         {
@@ -15,32 +13,27 @@ namespace GamesAdmin.Core.Models.GameConfigs
             Bonus = bonus;
         }
 
+        public SlotsConfig(SlotsConfig config)
+        {
+            Mode = config.Mode;
+            BigWinRatio = config.BigWinRatio;
+            Bonus = config.Bonus;
+        }
+
         public byte Mode { get; set; }
-
         public double BigWinRatio { get; set; }
-
-        public List<StakeLevel> StakeLevels { get; set; }
-
-        public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
-
         public Bonus Bonus { get; set; }
-
+        public List<StakeLevel> StakeLevels { get; set; }
+        public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
         public Jackpot Jackpot { get; set; }
-    }
-
-    public class SlotIconOdds
-    {
-        public byte Count { get; set; }
-
-        public float Odds { get; set; }
     }
 
     public class Bonus
     {
-        public Bonus(double minBonus, double maxBonus)
+        public Bonus(double min, double max)
         {
-            Min = minBonus;
-            Max = maxBonus;
+            Min = min;
+            Max = max;
         }
 
         public double Min { get; set; }

@@ -16,7 +16,6 @@ using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
-using GamesAdmin.Site.Features.ProVietKeno;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.RetrieveEndRound;
 using GamesAdmin.Site.Features.UmSchedule;
@@ -39,6 +38,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             };
 
             services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<ICascadingSlotsConfigValidator, CascadingSlotsConfigValidator>();
             services.AddScoped<IGameSettingService, GameSettingService>();
 
             services.AddSingleton(RestService.For<IGameUserApi>(appSettings.ApiHost, refitSettings));
@@ -63,9 +63,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<INotificationApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<INotificationService, NotificationService>();
-
-            services.AddSingleton(RestService.For<IProVietKenoApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IProVietKenoService, ProVietKenoService>();
 
             services.AddSingleton(RestService.For<IBotApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IBotService, BotService>();

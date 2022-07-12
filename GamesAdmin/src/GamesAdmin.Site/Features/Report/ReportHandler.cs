@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Currencies;
@@ -40,7 +41,9 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetHiLoReportRequest, HiLoReportResultViewModel>,
         IRequestHandler<HoldemPokerReportRequest, HoldemPokerReportViewModel>,
         IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
-        IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>
+        IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>,
+        IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>,
+        IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -602,5 +605,61 @@ namespace GamesAdmin.Site.Features.Report
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
+
+        public async Task<CascadingSlotReportResultViewModel> Handle(GetCascadingSlotReportRequest request, CancellationToken cancellationToken)
+        {
+            var filter = new CascadingSlotReportFilter
+            {
+                RoundId = request.RoundId,
+                FromDate = request.FromDate,
+                ToDate = request.ToDate,
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                PartnerId = request.PartnerId,
+                Username = request.Username,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+            };
+
+            var result = await reportService.GetCascadingSlotReport(filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            return new CascadingSlotReportResultViewModel
+            {
+                ConvertToUSD = request.ConvertToUSD,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<CascadingSlotRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Game = request.Game.Value;
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+                    betViewModel.ConvertToUSD(request.ConvertToUSD);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<CascadingSlotBetHistoryViewModel> Handle(GetCascadingSlotBetHistoryRequest request, CancellationToken cancellationToken)
+        {
+            var filter = new CascadingSlotReportFilter
+            {
+                RoundId = request.RoundId,
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+            };
+
+            var result = await reportService.GetCascadingSlotBetHistory(filter);
+
+            return new CascadingSlotBetHistoryViewModel
+            {
+                Game = request.Game.Value,
+                ConvertToUSD = request.ConvertToUSD,
+                Round = mapper.Map<CascadingSlotRecordViewModel>(result.Round),
+                Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplierViewModel>(x))
+            };
+        }
     }
 }

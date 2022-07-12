@@ -225,6 +225,14 @@ namespace GamesAdmin.Api._Shared
             CreateMap<SlotGameBonusChestEntity, SlotGameBonusChest>();
             CreateMap<SlotGameJackpotEntity, SlotGameJackpot>();
 
+            CreateMap<CascadingSlotBetReportEntity, CascadingSlotBetRecord>()
+                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number))
+                .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
+            CreateMap<CascadingSlotSettlementResultEntity, CascadingSlotSettlementResult>();
+            CreateMap<CascadingSlotRoundMultiplierEntity, CascadingSlotRoundMultiplier>();
+            CreateMap<CascadingSlotWinningSymbolEntity, CascadingSlotWinningSymbol>();
+            CreateMap<CascadingSlotTumbleEntity, CascadingSlotTumble>();
+
             CreateMap<JackpotReportEntity, JackpotRecord>();
 
             CreateMap<SeDieRoundEntity, SeDieRoundResult>()
