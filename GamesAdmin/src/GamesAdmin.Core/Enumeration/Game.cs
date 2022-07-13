@@ -141,7 +141,7 @@ namespace GamesAdmin.Core.Enumeration
             KenoMatch2,
             KenoPower1,
             KenoPower2,
-            BlockchainBaccarat
+            BlockchainBaccarat,
             MegaKeno,
             MegaKeno2,
         };

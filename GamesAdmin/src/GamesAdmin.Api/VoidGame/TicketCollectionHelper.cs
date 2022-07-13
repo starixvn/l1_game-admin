@@ -46,6 +46,8 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.HiLo, new GameTicketCollection( string.Empty, "hilo_betlogs") },
             { GameId.TexasHoldemPoker, new GameTicketCollection( string.Empty, "texasholdempoker_cuocs") },
             { GameId.BlockchainBaccarat, new GameTicketCollection( string.Empty, "blockchainbaccarat_bets") },
+            { GameId.MegaKeno, new GameTicketCollection( "megakeno_ones", "megakeno_bets") },
+            { GameId.MegaKeno2, new GameTicketCollection( "megakeno2_ones", "megakeno2_bets") },
         };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)

@@ -34,6 +34,8 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.Baccarat, "_BaccaratRecords" },
             { GameId.VipBaccarat, "_BaccaratRecords" },
             { GameId.BlockchainBaccarat, "_BaccaratRecords" },
+            { GameId.MegaKeno, "_KenoBetRecords" },
+            { GameId.MegaKeno2, "_KenoBetRecords" },
         };
 
         public string GetView(GameId game) => views[game];

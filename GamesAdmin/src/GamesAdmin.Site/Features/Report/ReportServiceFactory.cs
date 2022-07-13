@@ -43,6 +43,8 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.Baccarat, typeof(BaccaratReportService) },
             { GameId.VipBaccarat, typeof(BaccaratReportService) },
             { GameId.BlockchainBaccarat, typeof(BaccaratReportService) },
+            { GameId.MegaKeno, typeof(MiniKenoReportService) },
+            { GameId.MegaKeno2, typeof(MiniKenoReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

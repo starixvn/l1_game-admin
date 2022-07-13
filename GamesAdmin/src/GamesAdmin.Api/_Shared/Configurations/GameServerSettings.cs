@@ -86,6 +86,10 @@
 
         public GameServerConfigs NightClub { get; set; }
 
+        public GameServerConfigs MegaKeno { get; set; }
+
+        public GameServerConfigs MegaKeno2 { get; set; }
+
         public GameServerConfigs BlockchainBaccarat { get; set; }
     }
 

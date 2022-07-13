@@ -410,6 +410,12 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
 
         [HttpGet]
+        public IActionResult MegaKeno() => RedirectToAction("Index", new { game = GameId.MegaKeno });
+
+        [HttpGet]
+        public IActionResult MegaKeno2() => RedirectToAction("Index", new { game = GameId.MegaKeno2 });
+
+        [HttpGet]
         public IActionResult BlockchainBaccarat() => RedirectToAction("Index", new { game = GameId.BlockchainBaccarat });
 
         [HttpGet]
