@@ -43,5 +43,7 @@
         NightClub = 46,
         TreasureIsland = 47,
         BlockchainBaccarat = 48
+        MegaKeno = 52,
+        MegaKeno2 = 53
     }
 }

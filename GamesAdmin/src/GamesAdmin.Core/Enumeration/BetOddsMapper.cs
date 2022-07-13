@@ -37,6 +37,8 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.KenoWestValue:
                 case Game.KenoSouthValue:
                 case Game.KenoNorthValue:
+                case Game.MegaKenoValue:
+                case Game.MegaKeno2Value:
                     return Enumeration.GetAll<KenoBetChoice>();
 
                 case Game.MiniSeDieValue:
