@@ -43,9 +43,11 @@
         NightClub = 46,
         TreasureIsland = 47,
         BlockchainBaccarat = 48,
-        UnbalancedBigSmall = 50,
-        TurboUnbalancedBigSmall = 51,
+        UnbalancedBigSmall1 = 50,
+        UnbalancedBigSmall2 = 51,
         MegaKeno = 52,
-        MegaKeno2 = 53
+        MegaKeno2 = 53,
+        UnbalancedBigSmall3 = 54,
+        UnbalancedBigSmall4 = 55,
     }
 }
