@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public StakeLevel[] StakeLevels { get; set; }
 
-        public bool DisplayMinMaxBet => GameType == GameType.AutoRNG;
+        public bool DisplayMinMaxBet => GameType == GameType.AutoRNG || GameType == 0;
 
         public List<MaxBetChoiceViewModel> MaxBetChoiceSetting { get; set; }
 
