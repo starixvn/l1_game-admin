@@ -23,7 +23,8 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             foreach (var c in newConfig.MaxBetPerChoices)
             {
-                var setting = new SettingChangedModel($"MaxBetPerChoices {c.Key}", oldConfig.MaxBetPerChoices[c.Key].ToString(), c.Value.ToString());
+                var oldValue = oldConfig.MaxBetPerChoices.ContainsKey(c.Key) ? oldConfig.MaxBetPerChoices[c.Key] : 0;
+                var setting = new SettingChangedModel($"MaxBetPerChoices {c.Key}", oldValue.ToString(), c.Value.ToString());
 
                 changedSettings.Add(setting);
             }
