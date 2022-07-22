@@ -97,10 +97,10 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game BlockchainBaccarat = new Game(BlockchainBaccaratValue, "Blockchain Baccarat", GameId.BlockchainBaccarat);
         public static readonly Game MegaKeno = new Game(MegaKenoValue, "Mega Keno", GameId.MegaKeno);
         public static readonly Game MegaKeno2 = new Game(MegaKeno2Value, "Mega Keno 2", GameId.MegaKeno2);
-        public static readonly Game UnbalancedBigSmall1 = new Game(UnbalancedBigSmall1Value, "Big Small 2", GameId.UnbalancedBigSmall1);
-        public static readonly Game UnbalancedBigSmall2 = new Game(UnbalancedBigSmall2Value, "Turbo Big Small 2", GameId.UnbalancedBigSmall2);
-        public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Big Small 3", GameId.UnbalancedBigSmall3);
-        public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Turbo Big Small 3", GameId.UnbalancedBigSmall4);
+        public static readonly Game UnbalancedBigSmall1 = new Game(UnbalancedBigSmall1Value, "Macau", GameId.UnbalancedBigSmall1);
+        public static readonly Game UnbalancedBigSmall2 = new Game(UnbalancedBigSmall2Value, "Marina Bay", GameId.UnbalancedBigSmall2);
+        public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Las Vegas", GameId.UnbalancedBigSmall3);
+        public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Monte Cario", GameId.UnbalancedBigSmall4);
 
         public Game()
         {
