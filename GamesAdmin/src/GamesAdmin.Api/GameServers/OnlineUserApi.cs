@@ -251,8 +251,15 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
+    public interface IUnbalancedBigSmallOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+    
      public interface IMegaKenoOnlineUserApi : IOnlineUserApi
     {
+        [Get("/api/onlineusers")]
         [Get("/api/megakeno/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }

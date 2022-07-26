@@ -10,7 +10,7 @@ namespace GamesAdmin.Api.VoidGame
     [Headers("Authorization: Bearer")]
     public interface IVoidGameApi
     {
-        [Post("/Member/VoidGame")]
+        [Post("/Player/VoidGame")]
         Task<VoidGameApiResult> VoidGameTicket([Body] VoidTicketRequest request);
     }
 

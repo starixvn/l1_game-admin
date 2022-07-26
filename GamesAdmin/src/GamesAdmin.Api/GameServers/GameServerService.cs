@@ -162,6 +162,10 @@ namespace GamesAdmin.Api.GameServers
                 Game.KenoMatch2Value => Game.KenoMatch2Value,
                 Game.KenoPower1Value => Game.KenoPower1Value,
                 Game.KenoPower2Value => Game.KenoPower2Value,
+                Game.UnbalancedBigSmall1Value => Game.UnbalancedBigSmall1Value,
+                Game.UnbalancedBigSmall2Value => Game.UnbalancedBigSmall2Value,
+                Game.UnbalancedBigSmall3Value => Game.UnbalancedBigSmall3Value,
+                Game.UnbalancedBigSmall4Value => Game.UnbalancedBigSmall4Value,
                 _ => string.Empty,
             };
         }

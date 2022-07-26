@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
@@ -83,9 +82,9 @@ namespace GamesAdmin.Database
                     Round = x.Number,
                     Time = x.One.Time,
                     Bet = x.One.BaseAmount,
-                    FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
-                    SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
-                    ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                    FirstDice = (byte)(x.Result.Dice1),
+                    SecondDice = (byte)(x.Result.Dice2),
+                    ThirdDice = (byte)(x.Result.Dice3),
                     Refund = x.One.BaseRefund,
                     Select = x.One.Select ?? x.One.Choice == "big"
                 }

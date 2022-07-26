@@ -81,9 +81,9 @@ namespace GamesAdmin.Api.Report
                 RoundResult = new BigSmallRoundResult
                 {
                     Number = result.Item1.Number,
-                    Dice1 = result.Item1.Dice1 ?? result.Item1.Result?.Dice1 ?? 0,
-                    Dice2 = result.Item1.Dice2 ?? result.Item1.Result?.Dice2 ?? 0,
-                    Dice3 = result.Item1.Dice3 ?? result.Item1.Result?.Dice3 ?? 0,
+                    Dice1 = result.Item1.Result?.Dice1 ?? 0,
+                    Dice2 = result.Item1.Result?.Dice2 ?? 0,
+                    Dice3 = result.Item1.Result?.Dice3 ?? 0,
                     ExchangeRateId = result.Item1.ExchangeRateId,
                 },
                 Records = result.Item2.Select(x => new BigSmallBetRecord

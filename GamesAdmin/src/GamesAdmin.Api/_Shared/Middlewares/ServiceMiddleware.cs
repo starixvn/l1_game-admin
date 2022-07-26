@@ -104,6 +104,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ITreasureIslandOnlineUserApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
             services.AddSingleton(RestService.For<IBlockchainBaccaratOnlineUserApi>(appSettings.GameServers.BlockchainBaccarat.Api, refitSettings));
             services.AddSingleton(RestService.For<IMegaKenoOnlineUserApi>(appSettings.GameServers.MegaKeno.Api, refitSettings));
+            services.AddSingleton(RestService.For<IUnbalancedBigSmallOnlineUserApi>(appSettings.GameServers.UnbalancedBigSmall1.Api, refitSettings));
             services.AddSingleton(RestService.For<IMegaKeno2OnlineUserApi>(appSettings.GameServers.MegaKeno2.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
