@@ -96,10 +96,10 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game TreasureIsland = new Game(TreasureIslandValue, "Treasure Island", GameId.TreasureIsland);
         public static readonly Game BlockchainBaccarat = new Game(BlockchainBaccaratValue, "Blockchain Baccarat", GameId.BlockchainBaccarat);
         public static readonly Game MegaKeno = new Game(MegaKenoValue, "Mega Keno", GameId.MegaKeno);
+        public static readonly Game UnbalancedBigSmall1 = new Game(UnbalancedBigSmall1Value, "Las Vegas", GameId.UnbalancedBigSmall1);
         public static readonly Game MegaKeno2 = new Game(MegaKeno2Value, "Mega Keno 2", GameId.MegaKeno2);
-        public static readonly Game UnbalancedBigSmall1 = new Game(UnbalancedBigSmall1Value, "Macau", GameId.UnbalancedBigSmall1);
         public static readonly Game UnbalancedBigSmall2 = new Game(UnbalancedBigSmall2Value, "Marina Bay", GameId.UnbalancedBigSmall2);
-        public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Las Vegas", GameId.UnbalancedBigSmall3);
+        public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Macau", GameId.UnbalancedBigSmall3);
         public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Monte Cario", GameId.UnbalancedBigSmall4);
 
         public Game()
@@ -152,6 +152,10 @@ namespace GamesAdmin.Core.Enumeration
             BlockchainBaccarat,
             MegaKeno,
             MegaKeno2,
+            UnbalancedBigSmall1,
+            UnbalancedBigSmall2,
+            UnbalancedBigSmall3,
+            UnbalancedBigSmall4,
         };
 
     }

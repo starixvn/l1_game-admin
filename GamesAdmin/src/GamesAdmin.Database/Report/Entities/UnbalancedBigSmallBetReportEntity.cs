@@ -8,6 +8,6 @@
 
         public decimal BetWin { get; set; }
 
-        public decimal TotalBet { get; internal set; }
+        public decimal TotalBet { get; set; }
     }
 }

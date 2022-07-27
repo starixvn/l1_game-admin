@@ -39,6 +39,8 @@ namespace GamesAdmin.Database
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
+                        Big = x.Big,
+                        Small = x.Small,
                         TotalBet = x.TotalAmount,
                         UserId = x.Uid,
                         Currency = x.Currency,

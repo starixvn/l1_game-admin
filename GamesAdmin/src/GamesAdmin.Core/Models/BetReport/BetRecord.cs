@@ -439,4 +439,10 @@ namespace GamesAdmin.Core.Models
 
         public byte Multiplier { get; set; }
     }
+
+    public class UnbalancedBigSmallBetRecord : BetRecord
+    {
+        public decimal Big { get; set; }
+        public decimal Small { get; set; }
+    }
 }

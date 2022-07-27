@@ -572,11 +572,34 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_CascadingSlotBetHistory", await mediator.Send(request));
         }
 
+
+        [HttpGet]
+        public IActionResult LasVegas() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall1 });
+
+
+        [HttpGet]
+        public IActionResult MarinaBay() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall2 });
+
+
+        [HttpGet]
+        public IActionResult Macau() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall3 });
+
+
+        [HttpGet]
+        public IActionResult MonteCarlo() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall4 });
+
+        [HttpGet]
+        public async Task<IActionResult> GetUnbalancedBigSmallBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_UnbalancedBigSmallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
+
     }
 }
