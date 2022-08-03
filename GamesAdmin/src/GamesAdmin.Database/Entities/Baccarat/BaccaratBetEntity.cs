@@ -3,7 +3,11 @@
 namespace GamesAdmin.Database.Entities.Baccarat
 {
     [BsonCollection("baccarat_cuocs")]
-    public class BaccaratBetEntity : BaseBetEntity
+    public class BaccaratBetEntity : BaseBaccaratBetEntity
+    {
+    }
+
+    public class BaseBaccaratBetEntity : BaseBetEntity
     {
         public decimal Banker { get; set; }
 

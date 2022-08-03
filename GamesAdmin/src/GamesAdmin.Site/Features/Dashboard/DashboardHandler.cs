@@ -132,7 +132,8 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.HiLo.DisplayName, Game.HiLo.Value),
                 new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value),
                 new SelectListItem(Game.NightClub.DisplayName, Game.NightClub.Value),
-                new SelectListItem(Game.TreasureIsland.DisplayName, Game.TreasureIsland.Value)
+                new SelectListItem(Game.TreasureIsland.DisplayName, Game.TreasureIsland.Value),
+                new SelectListItem(Game.BlockchainBaccarat.DisplayName, Game.BlockchainBaccarat.Value),
                };
     }
 }

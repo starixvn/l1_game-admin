@@ -24,14 +24,12 @@ namespace GamesAdmin.Api.VoidGame
         private readonly ISentryClient sentryClient;
         private readonly IVoidGameApi voidGameApi;
         private readonly ITicketHandler ticketHandler;
-        private readonly IVoidTicketLogger voidTicketLogger;
 
-        public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler, IVoidTicketLogger voidTicketLogger)
+        public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler)
         {
             this.sentryClient = sentryClient;
             this.voidGameApi = voidGameApi;
             this.ticketHandler = ticketHandler;
-            this.voidTicketLogger = voidTicketLogger;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
@@ -52,7 +50,6 @@ namespace GamesAdmin.Api.VoidGame
 
                 var requestTime = DateTimeOffset.UtcNow;
                 var apiResult = await voidGameApi.VoidGameTicket(request);
-                await voidTicketLogger.Log(requestTime, request, DateTimeOffset.UtcNow, apiResult.Result);
 
                 if (apiResult.Result.IsSuccessful())
                 {

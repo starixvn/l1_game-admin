@@ -19,8 +19,6 @@
 
         [HttpPost]
         public async Task<IActionResult> Index([Bind] BetDetailsViewModel model)
-        {
-            return Json(await mediator.Send(new GetRetrieveEndRoundRequest(model)));
-        }
+            => Json(await mediator.Send(new GetRetrieveEndRoundRequest(model)));
     }
 }

@@ -410,6 +410,9 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult KenoProMax() => RedirectToAction("Index", new { game = GameId.KenoProMax });
 
         [HttpGet]
+        public IActionResult BlockchainBaccarat() => RedirectToAction("Index", new { game = GameId.BlockchainBaccarat });
+
+        [HttpGet]
         public async Task<IActionResult> KenoBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return View(await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));

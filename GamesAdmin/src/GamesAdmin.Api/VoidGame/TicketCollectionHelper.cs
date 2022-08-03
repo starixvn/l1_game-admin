@@ -1,7 +1,7 @@
-﻿using GamesAdmin.Api.VoidGame.Models;
-using GamesAdmin.Core.Enumeration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Api.VoidGame.Models;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Api.VoidGame
 {
@@ -45,6 +45,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.CasinoHoldemPoker, new GameTicketCollection( string.Empty, "casinoholdempoker_cuocs") },
             { GameId.HiLo, new GameTicketCollection( string.Empty, "hilo_betlogs") },
             { GameId.TexasHoldemPoker, new GameTicketCollection( string.Empty, "texasholdempoker_cuocs") },
+            { GameId.BlockchainBaccarat, new GameTicketCollection( string.Empty, "blockchainbaccarat_bets") },
         };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)

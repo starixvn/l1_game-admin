@@ -18,7 +18,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<SicBoReportService>();
             services.AddScoped<VipFishPrawnCrabReportService>();
-            services.AddScoped<VipBaccaratReportService>();
             services.AddScoped<LotteryReportService>();
             services.AddScoped<ThreeCardsReportService>();
             services.AddScoped<KenoMatchReportService>();

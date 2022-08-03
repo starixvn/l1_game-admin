@@ -89,6 +89,16 @@ namespace GamesAdmin.Api._Shared
                   return Enumerable.Empty<DragonTigerCardResult>();
               }));
 
+            CreateMap<BaseBaccaratRoundEntity, BaccaratRoundResult>()
+             .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+                 return Enumerable.Empty<DragonTigerCardResult>();
+             }))
+             .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+                 return Enumerable.Empty<DragonTigerCardResult>();
+             }));
+
             CreateMap<RouletteBetReportEntity, RouletteBetRecord>();
             CreateMap<RouletteRoundEntity, RouletteRoundResult>();
             CreateMap<RouletteSettlementResultEntity, RouletteSettlementResult>();
@@ -187,6 +197,52 @@ namespace GamesAdmin.Api._Shared
 
                     return Enumerable.Empty<DragonTigerCardResult>();
                 }));
+
+            CreateMap<BlockchainBaccaratCard, DragonTigerCardResult>();
+
+            CreateMap<BlockchainBaccaratRoundEntity, BaccaratRoundResult>()
+               .ForMember(x => x.Result, opt => opt.MapFrom((source) => source.SettlementResult))
+               .ForMember(x => x.PlayerCards, opt => opt.MapFrom((source, destination, i, context) =>
+               {
+                   if (source != null && source.Result.Player != null)
+                   {
+                       var mapper = context.Mapper;
+                       var result = new List<DragonTigerCardResult>
+                       {
+                            mapper.Map<DragonTigerCardResult>(source.Result.Player.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Player.SecondCard)
+                       };
+
+                       if (source.Result.Player.ThirdCard != null)
+                       {
+                           result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Player.ThirdCard));
+                       }
+
+                       return result;
+                   }
+
+                   return Enumerable.Empty<DragonTigerCardResult>();
+               }))
+               .ForMember(x => x.BankerCards, opt => opt.MapFrom((source, destination, i, context) =>
+               {
+                   if (source != null && source.Result.Banker != null)
+                   {
+                       var mapper = context.Mapper;
+                       var result = new List<DragonTigerCardResult>
+                       {
+                            mapper.Map<DragonTigerCardResult>(source.Result.Banker.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Banker.SecondCard)
+                       };
+
+                       if (source.Result.Banker.ThirdCard != null)
+                       {
+                           result.Add(mapper.Map<DragonTigerCardResult>(source.Result.Banker.ThirdCard));
+                       }
+
+                       return result;
+                   }
+
+                   return Enumerable.Empty<DragonTigerCardResult>();
+               }));
+
             CreateMap<SicBoBetReportEntity, SicBoBetRecord>();
             CreateMap<SicBoRoundEntity, SicBoRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))

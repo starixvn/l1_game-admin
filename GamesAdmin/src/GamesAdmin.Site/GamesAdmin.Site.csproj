@@ -19,7 +19,6 @@
     <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="wwwroot\js\hilo-report.min.js" />
-    <Content Remove="wwwroot\js\partner - Copy.min.js" />
     <Content Remove="wwwroot\images\slot-icons\nightclub\" />
   </ItemGroup>
 
@@ -54,11 +53,9 @@
     <PackageReference Include="Sentry.AspNetCore" Version="2.1.0" />
   </ItemGroup>
 
-
   <ItemGroup>
     <ProjectReference Include="..\GamesAdmin.Core\GamesAdmin.Core.csproj" />
   </ItemGroup>
-
 
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
@@ -165,7 +162,6 @@
     <None Include="wwwroot\scss\fonts\admin-icons\demo-files\demo.js" />
     <None Include="wwwroot\scss\fonts\admin-icons\fonts\icomoon.svg" />
   </ItemGroup>
-
 
   <ItemGroup>
     <Content Update="appsettings.json">

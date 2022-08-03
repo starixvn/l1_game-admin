@@ -2,8 +2,8 @@ include:
   - project: "ci/repos-ci/pentagon_l1_admin_site"
     ref: master
     file: "gitlab-ci.yml"
-    
   - project: "ci/repos-ci/pentagon_l1_admin_api"
     ref: master
+    file: "gitlab-ci-mixing.yml"
     file: "gitlab-ci-mixing.yml"
     

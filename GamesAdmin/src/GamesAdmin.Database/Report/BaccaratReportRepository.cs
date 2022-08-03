@@ -3,30 +3,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
-using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
-    public interface IBaccaratReportRepository
+    public interface IBaccaratBaseReportRepository
     {
-        Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(BetReportFilter filter);
+        Task<(BaseBaccaratRoundEntity, IEnumerable<BetReportEntity>)> GetAsync(BetReportFilter filter);
     }
 
-    public class BaccaratReportRepository : BaseBetReportRepository, IBaccaratReportRepository
+    public class BaccaratReportRepository<TBaseRoundEntity, TBaseBetEntity> : BaseBetReportRepository, IBaccaratBaseReportRepository
+        where TBaseRoundEntity : BaseBaccaratRoundEntity
+        where TBaseBetEntity : BaseBetEntity
     {
         public BaccaratReportRepository(IMongoDatabase database) : base(database)
         {
         }
 
-        public async Task<(BaccaratRoundEntity, IEnumerable<BaccaratBetReportEntity>)> GetAsync(BetReportFilter filter)
+        public async Task<(BaseBaccaratRoundEntity, IEnumerable<BetReportEntity>)> GetAsync(BetReportFilter filter)
         {
-            var roundResult = await database.GetCollection<BaccaratRoundEntity>(Document.GetCollectionName(typeof(BaccaratRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
+            var roundResult = await database.GetCollection<TBaseRoundEntity>(Document.GetCollectionName(
+             typeof(TBaseRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<BaccaratBetEntity, BaccaratBetWithUnWindAccountsEntity>(
+                var project = GetBaseAggregateBuilder<TBaseBetEntity, BaccaratBetWithUnWindAccountsEntity>(
                     filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new BaccaratBetReportEntity
                     {
@@ -50,7 +52,7 @@ namespace GamesAdmin.Database
                 return (roundResult, records);
             }
 
-            return (new BaccaratRoundEntity(), Enumerable.Empty<BaccaratBetReportEntity>());
+            return (new BaseBaccaratRoundEntity(), Enumerable.Empty<BaccaratBetReportEntity>());
         }
     }
 }

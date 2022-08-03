@@ -11,12 +11,10 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.MiniSeDie, "_MiniSeDieRecords" },
             { GameId.FishPrawnCrab, "_FishPrawnCrabRecords" },
             { GameId.DragonTiger, "_DragonTigerRecords" },
-            { GameId.Baccarat, "_BaccaratRecords" },
             { GameId.Roulette, "_RouletteRecords" },
             { GameId.VipSeDie, "_VipSeDieRecords" },
             { GameId.SicBo, "_SicBoRecords" },
             { GameId.VipFishPrawnCrab, "_VipFishPrawnCrabRecords" },
-            { GameId.VipBaccarat, "_VipBaccaratRecords" },
             { GameId.Lottery, "_LotteryRecords" },
             { GameId.ThreeCards, "_ThreeCardsRecords" },
             { GameId.KenoMatch1, "_KenoMatchRecords" },
@@ -33,6 +31,9 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.KenoSouth, "_KenoBetRecords" },
             { GameId.KenoNorth, "_KenoBetRecords" },
             { GameId.VipSeDieWar, "_VipSeDieWarRecords" },
+            { GameId.Baccarat, "_BaccaratRecords" },
+            { GameId.VipBaccarat, "_BaccaratRecords" },
+            { GameId.BlockchainBaccarat, "_BaccaratRecords" },
         };
 
         public string GetView(GameId game) => views[game];

@@ -58,7 +58,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
             services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());
-
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -103,13 +102,13 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ITexasHoldemPokerOnlineUserApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
             services.AddSingleton(RestService.For<INightClubOnlineUserApi>(appSettings.GameServers.NightClub.Api, refitSettings));
             services.AddSingleton(RestService.For<ITreasureIslandOnlineUserApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBlockchainBaccaratOnlineUserApi>(appSettings.GameServers.BlockchainBaccarat.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
-            services.AddScoped<IVoidTicketLogger, VoidTicketLogger>();
 
             AddSlotServices(services, appSettings, refitSettings);
             AddHoldemPokerServices(services, appSettings, refitSettings);
@@ -120,13 +119,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
-            services.AddScoped<BaccaratReportService>();
             services.AddScoped<RouletteReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
             services.AddScoped<VipFishPrawnCrabReportService>();
-            services.AddScoped<VipBaccaratReportService>();
             services.AddScoped<LotteryReportService>();
             services.AddScoped<ThreeCardsReportService>();
             services.AddScoped(typeof(KenoMatchReportService<,,>));
@@ -142,11 +139,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
-            services.AddScoped<BaccaratReportService>();
             services.AddScoped<RouletteReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
+
+            services.AddScoped<BaccaratReportService>();
 
             services.InitApiLog();
         }
