@@ -46,6 +46,8 @@ namespace GamesAdmin.Core.Enumeration
         public const string NightClubValue = "nightclub";
         public const string TreasureIslandValue = "treasureisland";
         public const string BlockchainBaccaratValue = "blockchainbaccarat";
+        public const string MegaKenoValue = "megakeno";
+        public const string MegaKeno2Value = "megakeno2";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -89,6 +91,8 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game NightClub = new Game(NightClubValue, "Night Club", GameId.NightClub);
         public static readonly Game TreasureIsland = new Game(TreasureIslandValue, "Treasure Island", GameId.TreasureIsland);
         public static readonly Game BlockchainBaccarat = new Game(BlockchainBaccaratValue, "Blockchain Baccarat", GameId.BlockchainBaccarat);
+        public static readonly Game MegaKeno = new Game(MegaKenoValue, "Mega Keno", GameId.MegaKeno);
+        public static readonly Game MegaKeno2 = new Game(MegaKeno2Value, "Mega Keno 2", GameId.MegaKeno2);
 
         public Game()
         {
@@ -137,7 +141,9 @@ namespace GamesAdmin.Core.Enumeration
             KenoMatch2,
             KenoPower1,
             KenoPower2,
-            BlockchainBaccarat
+            BlockchainBaccarat,
+            MegaKeno,
+            MegaKeno2,
         };
 
     }

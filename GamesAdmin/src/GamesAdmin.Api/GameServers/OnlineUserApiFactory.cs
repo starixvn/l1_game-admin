@@ -53,6 +53,8 @@ namespace GamesAdmin.Api.GameServers
             { Game.NightClubValue, typeof(INightClubOnlineUserApi) },
             { Game.TreasureIslandValue, typeof(ITreasureIslandOnlineUserApi) },
             { Game.BlockchainBaccaratValue, typeof(IBlockchainBaccaratOnlineUserApi) },
+            { Game.MegaKenoValue, typeof(IMegaKenoOnlineUserApi) },
+            { Game.MegaKeno2Value, typeof(IMegaKeno2OnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

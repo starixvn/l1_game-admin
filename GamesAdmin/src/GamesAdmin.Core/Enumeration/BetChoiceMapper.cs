@@ -43,7 +43,9 @@ namespace GamesAdmin.Core.Enumeration
              Game.KenoEastValue,
              Game.KenoWestValue,
              Game.KenoSouthValue,
-             Game.KenoNorthValue
+             Game.KenoNorthValue,
+             Game.MegaKenoValue,
+             Game.MegaKeno2Value
         };
 
         public static IEnumerable<Enumeration> Map(Game gameType)

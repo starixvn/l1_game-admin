@@ -44,7 +44,9 @@ namespace GamesAdmin.Api.Report
             { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity, KenoPower1BetEntity>) },
             { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity, KenoPower2BetEntity>) },
             { GameId.HiLo, typeof(HiLoReportService) },
-            { GameId.BlockchainBaccarat,  typeof(BaccaratReportService) }
+            { GameId.BlockchainBaccarat,  typeof(BaccaratReportService) },
+            { GameId.MegaKeno, typeof(MiniKenoReportService<MegaKenoRoundEntity, MegaKenoOnesEntity, MegaKenoBetEntity>) },
+            { GameId.MegaKeno2, typeof(MiniKenoReportService<MegaKeno2RoundEntity, MegaKeno2OnesEntity, MegaKeno2BetEntity>) },
         };
 
         private readonly IServiceProvider serviceProvider;
