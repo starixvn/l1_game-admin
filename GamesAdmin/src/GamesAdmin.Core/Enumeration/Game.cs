@@ -100,7 +100,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game MegaKeno2 = new Game(MegaKeno2Value, "Mega Keno 2", GameId.MegaKeno2);
         public static readonly Game UnbalancedBigSmall2 = new Game(UnbalancedBigSmall2Value, "Marina Bay", GameId.UnbalancedBigSmall2);
         public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Macau", GameId.UnbalancedBigSmall3);
-        public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Monte Cario", GameId.UnbalancedBigSmall4);
+        public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Monte Carlo", GameId.UnbalancedBigSmall4);
 
         public Game()
         {
