@@ -320,6 +320,21 @@ namespace GamesAdmin.Api._Shared
                .ForMember(x => x.ThreeWhite, opt => opt.MapFrom((source) => source.SettlementResult.ThreeWhite))
                .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite));
 
+            CreateMap<MiniSeDieMultiplayRoundEntity, SeDieRoundResult>()
+               .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]
+               {
+                       source.FirstRedChip ?? source.Result.FirstRedChip,
+                       source.SecondRedChip ?? source.Result.SecondRedChip,
+                       source.ThirdRedChip ?? source.Result.ThirdRedChip,
+                       source.FourthRedChip ?? source.Result.FourthRedChip
+               }))
+               .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
+               .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even))
+               .ForMember(x => x.ThreeRed, opt => opt.MapFrom((source) => source.SettlementResult.ThreeRed))
+               .ForMember(x => x.FourRed, opt => opt.MapFrom((source) => source.SettlementResult.FourRed))
+               .ForMember(x => x.ThreeWhite, opt => opt.MapFrom((source) => source.SettlementResult.ThreeWhite))
+               .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite));
+
             CreateMap<SeDieBetReportEntity, SeDieBetRecord>();
 
             CreateMap<LotteryRoundEntity, LotteryRoundResult>()

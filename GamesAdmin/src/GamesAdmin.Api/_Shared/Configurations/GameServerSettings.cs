@@ -79,7 +79,7 @@
         public GameServerConfigs HiLo { get; set; }
 
         public GameServerConfigs CasinoHoldemPoker { get; set; }
-        
+
         public GameServerConfigs TreasureIsland { get; set; }
 
         public GameServerConfigs TexasHoldemPoker { get; set; }
@@ -91,6 +91,12 @@
         public GameServerConfigs MegaKeno2 { get; set; }
 
         public GameServerConfigs BlockchainBaccarat { get; set; }
+
+        public GameServerConfigs MiniSeDie2 { get; set; }
+
+        public GameServerConfigs MiniSeDie3 { get; set; }
+
+        public GameServerConfigs MiniSeDie4 { get; set; }
         public GameServerConfigs UnbalancedBigSmall1 { get; set; }
 
         public GameServerConfigs UnbalancedBigSmall2 { get; set; }

@@ -572,14 +572,20 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_CascadingSlotBetHistory", await mediator.Send(request));
         }
 
+        [HttpGet]
+        public IActionResult MiniSeDie2() => RedirectToAction("Index", new { game = GameId.MiniSeDie2 });
+
+        [HttpGet]
+        public IActionResult MiniSeDie3() => RedirectToAction("Index", new { game = GameId.MiniSeDie3 });
+
+        [HttpGet]
+        public IActionResult MiniSeDie4() => RedirectToAction("Index", new { game = GameId.MiniSeDie4 });
 
         [HttpGet]
         public IActionResult LasVegas() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall1 });
 
-
         [HttpGet]
         public IActionResult MarinaBay() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall2 });
-
 
         [HttpGet]
         public IActionResult Macau() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall3 });

@@ -45,6 +45,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>>();
             services.AddScoped<BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>>();
             services.AddScoped<BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
+
+            services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
         }
     }
 }

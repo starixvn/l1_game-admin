@@ -149,6 +149,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(UnbalancedBigSmallReportService<,,>));
 
             services.AddScoped<BaccaratReportService>();
+            services.AddScoped(typeof(MiniSeDieMultiplayReportService<>));
 
             services.InitApiLog();
         }
