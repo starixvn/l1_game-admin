@@ -47,7 +47,7 @@ namespace GamesAdmin.Core.IdentityServer
 
                 lastTokenRequest = DateTime.Now;
             }
-
+            Console.WriteLine(tokenResponse.AccessToken);
             return tokenResponse.AccessToken;
         }
 
