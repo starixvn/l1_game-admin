@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
@@ -15,6 +10,11 @@ using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -52,6 +52,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly ICurrencyService currencyService;
         private readonly IExchangeRateService exchangeRateService;
         private readonly IReportServiceFactory reportServiceFactory;
+        private readonly ISystemSettings systemSettings;
 
         public ReportHandler(
             IReportService reportService,
@@ -60,7 +61,8 @@ namespace GamesAdmin.Site.Features.Report
             IPartnerService partnerService,
             ICurrencyService currencyService,
             IExchangeRateService exchangeRateService,
-            IReportServiceFactory reportServiceFactory)
+            IReportServiceFactory reportServiceFactory,
+            ISystemSettings systemSettings)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -69,6 +71,7 @@ namespace GamesAdmin.Site.Features.Report
             this.currencyService = currencyService;
             this.exchangeRateService = exchangeRateService;
             this.reportServiceFactory = reportServiceFactory;
+            this.systemSettings = systemSettings;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -406,6 +409,7 @@ namespace GamesAdmin.Site.Features.Report
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
+                    betViewModel.SystemType = systemSettings.System;
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
@@ -522,10 +526,14 @@ namespace GamesAdmin.Site.Features.Report
             return rate * ((decimal)currency.Multiplier);
         }
 
-        public Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
+        public async Task<ReportResultViewModel> Handle(ReportRequest request, CancellationToken cancellationToken)
         {
             var service = reportServiceFactory.GetService(request.Filter.Game);
-            return service.Get(request.Filter);
+            var result = await service.Get(request.Filter);
+
+            result.BaseCurrency = systemSettings.BaseCurrency;
+
+            return result;
         }
 
         public async Task<BetHistoryViewModel> Handle(BetHistoryReportRequest request, CancellationToken cancellationToken)
@@ -536,6 +544,7 @@ namespace GamesAdmin.Site.Features.Report
 
             return viewModel;
         }
+
         public async Task<ReportSeletionsViewModel> Handle(GetSelectionsRequest request, CancellationToken cancellationToken)
         {
             var parterItems = await partnerService.GetPartnersForSelection(partner => true);
@@ -580,7 +589,7 @@ namespace GamesAdmin.Site.Features.Report
                 Currencies = await currencyService.GetCurrenciesForSelection(model => string.IsNullOrEmpty(model.GroupId) && model.Enabled)
             };
 
-            return new HoldemPokerReportViewModel { ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
+            return new HoldemPokerReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections, Game = Game.FromGameId(request.GameId) };
         }
 
         public async Task<HoldemPokerReportResultViewModel> Handle(GetHoldemPokerReportRequest request, CancellationToken cancellationToken)

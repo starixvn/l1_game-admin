@@ -7,6 +7,8 @@ namespace GamesAdmin.Site._Shared.Configurations
 {
     public interface IAppSettings
     {
+        string SystemType { get; }
+
         string ApiHost { get; }
 
         IdentityServerAuth IdentityServerAuth { get; }
@@ -50,6 +52,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
             Env = GetValue<string>(nameof(Env));
+            SystemType = GetValue<string>(nameof(SystemType));
             ResultPageConfiguration = configuration.GetSection(nameof(ResultPageConfiguration)).Get<ResultPageConfiguration>();
             MaxDecreased = GetValue<int>(nameof(MaxDecreased));
             GameApiUrl = GetValue<string>(nameof(GameApiUrl));
@@ -75,6 +78,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string GameApiUrl { get; }
 
         public string SGApiUrl { get; }
+        
+        public string SystemType { get; }
 
         public T GetValue<T>(string key)
         {

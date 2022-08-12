@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -14,8 +14,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [DisplayName("Exclude UUS")]
         public bool ExcludeUUS { get; set; }
 
-        [DisplayName("Convert to INH")]
         public bool ConvertToUSD { get; set; }
+
+        public string BaseCurrency { get; set; }
 
         [DisplayName("Partner")]
         public string PartnerId { get; set; }

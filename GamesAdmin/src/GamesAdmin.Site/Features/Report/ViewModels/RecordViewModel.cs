@@ -216,6 +216,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Game { get; set; }
         public int ExchangeRateId { get; set; }
         public string IconsFolder => Game?.ToLowerInvariant();
+        public string SystemType { get; set; }
 
         public void ConvertToUSD(bool isConvert)
         {

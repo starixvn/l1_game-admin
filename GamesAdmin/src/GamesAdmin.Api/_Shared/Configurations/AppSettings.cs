@@ -1,12 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using GamesAdmin.Core.IdentityServer;
+﻿using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.ComponentModel;
 
 namespace GamesAdmin.Api._Shared.Configurations
 {
     public interface IAppSettings
     {
+        string SystemType { get; }
+
         IdentityServerAuth IdentityServerAuth { get; }
 
         GameServerSettings GameServers { get; }
@@ -34,6 +36,7 @@ namespace GamesAdmin.Api._Shared.Configurations
         {
             this.configuration = configuration;
 
+            SystemType = GetValue<string>(nameof(SystemType));
             GameServers = configuration.GetSection(nameof(GameServers)).Get<GameServerSettings>();
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             SabaApiSettings = configuration.GetSection(nameof(SabaApiSettings)).Get<SabaApiSettings>();
@@ -44,6 +47,8 @@ namespace GamesAdmin.Api._Shared.Configurations
             ApiLogDatabaseSettings = configuration.GetSection(nameof(ApiLogDatabaseSettings)).Get<ApiLogDatabaseSettings>();
             AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
         }
+
+        public string SystemType { get; }
 
         public IdentityServerAuth IdentityServerAuth { get; }
 

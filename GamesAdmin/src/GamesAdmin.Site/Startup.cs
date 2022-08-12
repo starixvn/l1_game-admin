@@ -29,7 +29,9 @@ namespace GamesAdmin.Site
             services.AddAutoMapper(typeof(Startup));
 
             var appSettings = new AppSettings(Configuration);
+            var systemSettings = new SystemSettings(appSettings.SystemType);
             services.AddSingleton<IAppSettings>(appSettings);
+            services.AddSingleton<ISystemSettings>(systemSettings);
 
             services.AddServices(appSettings);
             services.AddAuthentication(Configuration);

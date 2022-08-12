@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Site._Shared.Configurations;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {

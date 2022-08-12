@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Site.Features.Report.Validators;
+﻿using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site.Features.Report.Validators;
 using System;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels

@@ -4,6 +4,7 @@ using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Converters;
 using GamesAdmin.Api._Shared.Middlewares;
+using GamesAdmin.Site._Shared.Configurations;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +37,9 @@ namespace GamesAdmin.Api
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             var appSettings = new AppSettings(Configuration);
+            var systemSettings = new SystemSettings(appSettings.SystemType);
             services.AddSingleton<IAppSettings>(appSettings);
+            services.AddSingleton<ISystemSettings>(systemSettings);
 
             services.AddMediatR(typeof(Startup));
             services.AddAutoMapper(typeof(Startup));
