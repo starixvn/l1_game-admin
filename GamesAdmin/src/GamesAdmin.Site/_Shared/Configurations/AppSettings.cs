@@ -24,6 +24,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         GameServerSettings GameServers { get; }
 
         string GameApiUrl { get; }
+
+        string SGApiUrl { get; }
     }
 
     public class ResultPageConfiguration
@@ -51,6 +53,7 @@ namespace GamesAdmin.Site._Shared.Configurations
             ResultPageConfiguration = configuration.GetSection(nameof(ResultPageConfiguration)).Get<ResultPageConfiguration>();
             MaxDecreased = GetValue<int>(nameof(MaxDecreased));
             GameApiUrl = GetValue<string>(nameof(GameApiUrl));
+            SGApiUrl = GetValue<string>(nameof(SGApiUrl));
         }
 
         public string ApiHost { get; }
@@ -70,6 +73,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         public GameServerSettings GameServers { get; }
 
         public string GameApiUrl { get; }
+
+        public string SGApiUrl { get; }
 
         public T GetValue<T>(string key)
         {

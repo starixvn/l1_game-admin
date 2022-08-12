@@ -73,7 +73,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IBetDetailsApi>(appSettings.ResultPageConfiguration.BaseUrl));
             services.AddScoped<IBetDetailsService, BetDetailsService>();
 
-            services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.GameApiUrl));
+            services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.SGApiUrl));
             services.AddScoped<IRetrieveEndRoundService, RetrieveEndRoundService>();
 
             services.AddSingleton(RestService.For<IDailySummaryApi>(appSettings.GameApiUrl));
