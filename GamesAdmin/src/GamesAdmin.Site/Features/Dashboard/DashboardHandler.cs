@@ -136,6 +136,10 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.BlockchainBaccarat.DisplayName, Game.BlockchainBaccarat.Value),
                 new SelectListItem(Game.MegaKeno.DisplayName, Game.MegaKeno.Value),
                 new SelectListItem(Game.MegaKeno2.DisplayName, Game.MegaKeno2.Value),
-               };
+                new SelectListItem(Game.UnbalancedBigSmall1.DisplayName, Game.UnbalancedBigSmall1.Value),
+                new SelectListItem(Game.UnbalancedBigSmall2.DisplayName, Game.UnbalancedBigSmall2.Value),  
+                new SelectListItem(Game.UnbalancedBigSmall3.DisplayName, Game.UnbalancedBigSmall3.Value),  
+                new SelectListItem(Game.UnbalancedBigSmall4.DisplayName, Game.UnbalancedBigSmall4.Value),
+            };
     }
 }
