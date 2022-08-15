@@ -10,8 +10,9 @@ namespace GamesAdmin.Database
 {
     public interface IMiniSeDieMultiplayReportRepository
     {
-        Task<(TRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync<TRoundEntity>(BetReportFilter filter)
-            where TRoundEntity : MiniSeDieMultiplayRoundEntity, new();
+        Task<(TRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync<TRoundEntity, TBetEntity>(BetReportFilter filter)
+            where TRoundEntity : MiniSeDieMultiplayRoundEntity, new()
+            where TBetEntity : MiniSeDieMultiplayBetEntity, new();
     }
 
     public class MiniSeDieMultiplayReportRepository : BaseBetReportRepository, IMiniSeDieMultiplayReportRepository
@@ -20,14 +21,15 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(TRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync<TRoundEntity>(BetReportFilter filter)
+        public async Task<(TRoundEntity, IEnumerable<SeDieBetReportEntity>)> GetAsync<TRoundEntity, TBetEntity>(BetReportFilter filter)
             where TRoundEntity : MiniSeDieMultiplayRoundEntity, new()
+            where TBetEntity : MiniSeDieMultiplayBetEntity, new()
         {
             var roundResult = await database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<MiniSeDieMultiplayBetEntity, MiniSeDieMultiplayBetWithUnwindAccountsEntity>(
+                var project = GetBaseAggregateBuilder<TBetEntity, MiniSeDieMultiplayBetWithUnwindAccountsEntity>(
                     filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
                     .Project(x => new SeDieBetReportEntity
                     {

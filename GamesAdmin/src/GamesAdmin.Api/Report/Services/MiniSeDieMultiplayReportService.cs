@@ -8,8 +8,9 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Api.Report
 {
-    public class MiniSeDieMultiplayReportService<TRoundEntity> : IGameReportService
+    public class MiniSeDieMultiplayReportService<TRoundEntity, TBetEntity> : IGameReportService
         where TRoundEntity : MiniSeDieMultiplayRoundEntity, new()
+        where TBetEntity : MiniSeDieMultiplayBetEntity, new()
     {
         private readonly IMiniSeDieMultiplayReportRepository repository;
         private readonly IMapper mapper;
@@ -22,7 +23,7 @@ namespace GamesAdmin.Api.Report
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
         {
-            var result = await repository.GetAsync<TRoundEntity>(filter);
+            var result = await repository.GetAsync<TRoundEntity, TBetEntity>(filter);
 
             return new SeDieBetReport
             {
