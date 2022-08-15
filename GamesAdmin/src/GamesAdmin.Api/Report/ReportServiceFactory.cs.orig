@@ -49,6 +49,9 @@ namespace GamesAdmin.Api.Report
             { GameId.MegaKeno, typeof(MiniKenoReportService<MegaKenoRoundEntity, MegaKenoOnesEntity, MegaKenoBetEntity>) },
             { GameId.MegaKeno2, typeof(MiniKenoReportService<MegaKeno2RoundEntity, MegaKeno2OnesEntity, MegaKeno2BetEntity>) },
 <<<<<<< HEAD
+            { GameId.MiniSeDie2, typeof(MiniSeDieMultiplayReportService<MiniSeDie2RoundEntity>) },
+            { GameId.MiniSeDie3, typeof(MiniSeDieMultiplayReportService<MiniSeDie3RoundEntity>) },
+            { GameId.MiniSeDie4, typeof(MiniSeDieMultiplayReportService<MiniSeDie4RoundEntity>) },
             { GameId.MiniSeDie2, typeof(MiniSeDieMultiplayReportService<MiniSeDie2RoundEntity, MiniSeDie2BetEntity>) },
             { GameId.MiniSeDie3, typeof(MiniSeDieMultiplayReportService<MiniSeDie3RoundEntity, MiniSeDie3BetEntity>) },
             { GameId.MiniSeDie4, typeof(MiniSeDieMultiplayReportService<MiniSeDie4RoundEntity, MiniSeDie4BetEntity>) },
@@ -57,10 +60,10 @@ namespace GamesAdmin.Api.Report
             { GameId.UnbalancedBigSmall3, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall3RoundEntity, UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>) },
             { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall4RoundEntity, UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>) },
 =======
-            { GameId.MiniSeDie2, typeof(MiniSeDieMultiplayReportService<MiniSeDie2RoundEntity>) },
-            { GameId.MiniSeDie3, typeof(MiniSeDieMultiplayReportService<MiniSeDie3RoundEntity>) },
-            { GameId.MiniSeDie4, typeof(MiniSeDieMultiplayReportService<MiniSeDie4RoundEntity>) },
->>>>>>> fix: round history
+            { GameId.MiniSeDie2, typeof(MiniSeDieMultiplayReportService<MiniSeDie2RoundEntity, MiniSeDie2BetEntity>) },
+            { GameId.MiniSeDie3, typeof(MiniSeDieMultiplayReportService<MiniSeDie3RoundEntity, MiniSeDie3BetEntity>) },
+            { GameId.MiniSeDie4, typeof(MiniSeDieMultiplayReportService<MiniSeDie4RoundEntity, MiniSeDie4BetEntity>) },
+>>>>>>> fix: mini sedie multiplay
         };
 
         private readonly IServiceProvider serviceProvider;
