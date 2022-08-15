@@ -185,7 +185,6 @@
       "SocketRoute": "/blockchainbaccarat/socket.io"
     },
     "MiniSeDie2": {
-<<<<<<< HEAD
       "Api": "http://l1_mini_sedie_service_prod:5000",
       "Socket": "proxy.sabagame.com/admin/minisedie2",
       "SocketRoute": "/minisedie/socket.io"
@@ -199,6 +198,7 @@
       "Api": "http://l1_mini_sedie_service_prod:5000",
       "Socket": "proxy.sabagame.com/admin/minisedie4",
       "SocketRoute": "/minisedie/socket.io"
+<<<<<<< HEAD
     },
     "UnbalancedBigSmall1": {
       "Api": "http://l1_unbalanced_bigsmall_service_prod:5000",
@@ -220,20 +220,7 @@
       "Socket": "proxy.sabagame.com/admin/unbalancedbigsmall4",
       "SocketRoute": "/unbalancedbigsmall/socket.io"
 =======
-      "Api": "http://l1_mini_sedie2_service_prod:5000",
-      "Socket": "proxy.sabagame.com/admin/minisedie2",
-      "SocketRoute": "/minisedie2/socket.io"
-    },
-    "MiniSeDie3": {
-      "Api": "http://l1_mini_sedie3_service_prod:5000",
-      "Socket": "proxy.sabagame.com/admin/minisedie3",
-      "SocketRoute": "/minisedie3/socket.io"
-    },
-    "MiniSeDie4": {
-      "Api": "http://l1_mini_sedie4_service_prod:5000",
-      "Socket": "proxy.sabagame.com/admin/minisedie4",
-      "SocketRoute": "/minisedie4/socket.io"
->>>>>>> fix: round history
+>>>>>>> chore: update mini sedie multiplay configuration
     }
   },
   "IdentityServerAuth": {

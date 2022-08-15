@@ -185,7 +185,6 @@
       "SocketRoute": "/blockchainbaccarat/socket.io"
     },
     "MiniSeDie2": {
-<<<<<<< HEAD
       "Api": "https://l1-proxy1.lumigame.com/minisedie",
       "Socket": "l1-proxy1.lumigame.com/admin/minisedie2",
       "SocketRoute": "/minisedie/socket.io"
@@ -199,6 +198,7 @@
       "Api": "https://l1-proxy1.lumigame.com/minisedie",
       "Socket": "l1-proxy1.lumigame.com/admin/minisedie4",
       "SocketRoute": "/minisedie/socket.io"
+<<<<<<< HEAD
     },
     "UnbalancedBigSmall1": {
       "Api": "https://l1-proxy1.lumigame.com/unbalancedbigsmall",
@@ -220,20 +220,7 @@
       "Socket": "l1-proxy1.lumigame.com/admin/unbalancedbigsmall4",
       "SocketRoute": "/unbalancedbigsmall/socket.io"
 =======
-      "Api": "https://l1-proxy1.lumigame.com/minisedie2",
-      "Socket": "l1-proxy1.lumigame.com/admin/minisedie2",
-      "SocketRoute": "/minisedie2/socket.io"
-    },
-    "MiniSeDie3": {
-      "Api": "https://l1-proxy1.lumigame.com/minisedie3",
-      "Socket": "l1-proxy1.lumigame.com/admin/minisedie3",
-      "SocketRoute": "/minisedie3/socket.io"
-    },
-    "MiniSeDie4": {
-      "Api": "https://l1-proxy1.lumigame.com/minisedie4",
-      "Socket": "l1-proxy1.lumigame.com/admin/minisedie4",
-      "SocketRoute": "/minisedie4/socket.io"
->>>>>>> fix: round history
+>>>>>>> chore: update mini sedie multiplay configuration
     }
   },
   "IdentityServerAuth": {
