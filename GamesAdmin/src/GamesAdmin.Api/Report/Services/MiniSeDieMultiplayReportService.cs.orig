@@ -1,0 +1,44 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+
+namespace GamesAdmin.Api.Report
+{
+<<<<<<< HEAD
+    public class MiniSeDieMultiplayReportService<TRoundEntity, TBetEntity> : IGameReportService
+        where TRoundEntity : MiniSeDieMultiplayRoundEntity, new()
+        where TBetEntity : MiniSeDieMultiplayBetEntity, new()
+=======
+    public class MiniSeDieMultiplayReportService<TRoundEntity> : IGameReportService
+        where TRoundEntity : MiniSeDieMultiplayRoundEntity, new()
+>>>>>>> fix: round history
+    {
+        private readonly IMiniSeDieMultiplayReportRepository repository;
+        private readonly IMapper mapper;
+
+        public MiniSeDieMultiplayReportService(IMiniSeDieMultiplayReportRepository repository, IMapper mapper)
+        {
+            this.repository = repository;
+            this.mapper = mapper;
+        }
+
+        public async Task<BetReportBase> Get(BetReportFilter filter)
+        {
+<<<<<<< HEAD
+            var result = await repository.GetAsync<TRoundEntity, TBetEntity>(filter);
+=======
+            var result = await repository.GetAsync<TRoundEntity>(filter);
+>>>>>>> fix: round history
+
+            return new SeDieBetReport
+            {
+                RoundResult = mapper.Map<SeDieRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<SeDieBetRecord>(x))
+            };
+        }
+    }
+}
