@@ -71,7 +71,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.Id,
                        @as: r => r.Accounts
                  )
-                //.Match(x => username == null || x.Accounts.Any(account => userNameRegex.IsMatch(account.Local.MemberName)))
+                .Match(x => username == null || x.Accounts.Any(account => userNameRegex.IsMatch(account.Local.MemberName)))
                 .Unwind<BetEntityWithAccountInfoUnwind, TResultEntity>(x => x.Accounts);
 
             return aggregateBuilder;
