@@ -32,7 +32,7 @@ namespace GamesAdmin.Database
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"(?i){nickname}");
-            var userNameRegex = new Regex($"^(?i){username}");
+            var userNameRegex = new Regex($"(?i){username}");
 
             Expression<Func<TBetEntity, bool>> expression;
 
