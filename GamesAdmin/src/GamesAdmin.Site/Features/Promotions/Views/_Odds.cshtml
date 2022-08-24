@@ -1,0 +1,14 @@
+﻿@using GamesAdmin.Site.Features.Promotions.ViewModels;
+@model PromotionViewModel;
+@if (Model.ListOdds.Any())
+{
+    for (int index = 0; index < Model.ListOdds.Count; index++)
+    {
+        <div class="col-6 row mb-4">
+            <label class="control-label col-3 pt-3" asp-for="@Model.ListOdds[index].Odds">@Model.ListOdds[index].DisplayName</label>
+            <input type="text" class="form-control" hidden asp-for="@Model.ListOdds[index].Name" />
+            <input type="number" class="form-control col-5" asp-for="@Model.ListOdds[index].Odds" step="any" />
+            <div class="col-1 pt-3">@Model.ListOdds[index].Odds</div>
+        </div>
+    }
+}

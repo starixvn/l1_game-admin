@@ -34,6 +34,16 @@ namespace GamesAdmin.Core.Enumeration
             [ID] = "IDMessage",
         };
 
+        public static Dictionary<string, string> EmptyLanguages = new Dictionary<string, string>
+        {
+            [VN] = string.Empty,
+            [EN] = string.Empty,
+            [CN] = string.Empty,
+            [TW] = string.Empty,
+            [TH] = string.Empty,
+            [ID] = string.Empty,
+        };
+
         public Language()
         {
         }

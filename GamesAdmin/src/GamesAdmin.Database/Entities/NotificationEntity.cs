@@ -19,5 +19,17 @@ namespace GamesAdmin.Database.Entities
         public string GameName { get; set; }
 
         public Dictionary<string, string> Messages { get; set; }
+
+        public Dictionary<string, string> Title { get; set; }
+
+        public DateTime? StartTime { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+        public string PromotionId { get; set; }
+
+        public bool? Enabled { get; set; }
+
+        public byte? GameId { get; set; }
     }
 }

@@ -1,0 +1,101 @@
+﻿@using GamesAdmin.Core.Models;
+@using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Extensions;
+@model IEnumerable<PromotionModel>
+
+<table class="table table-bordered table-hover stripe table-striped">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Game Name</th>
+            <th>Status</th>
+            <th>Type of Configuration</th>
+            <th>Boosted ODDs Value</th>
+            <th>Promotion Date (GMT+7)</th>
+            <th>Promotion Time (GMT+7)</th>
+            <th>Announcement Status</th>
+            @if (Context.HasAdminPermission())
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            var index = 0;
+            foreach (var item in Model)
+            {
+                index++;
+                <tr>
+                    <td class="text-center">@index</td>
+                    <td class="text-center">@Game.FromGameId(item.GameId).DisplayName</td>
+                    <td class="text-center">
+                        @if (item.Status.Equals("enabled"))
+                        {
+                            <i class="icon-check"></i>
+                        }
+                        else
+                        {
+                            <i class="icon-cancel"></i>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (item.IsDaily)
+                        {
+                            @PromotionType.Daily
+                        }
+                        else
+                        {
+                            @PromotionType.Consecutive
+                        }
+                    </td>
+                    <td>
+                        @foreach (var odds in item.Odds)
+                        {
+                            <span>@(odds.Key.ToUpper()):</span>
+                            <span>  @(odds.Value)</span>
+                            <br />
+                        }
+                    </td>
+                    <td class="text-center">
+                        From @item.StartDateTime.ToDateFormat()
+                        <br />
+                        to @item.EndDateTime.ToDateFormat()
+                    </td>
+                    <td class="text-center">
+                        From @item.StartDateTime.ToTimeFormat()
+                        <br />to @item.EndDateTime.ToTimeFormat()
+                    </td>
+                    <td class="text-center @(item.HasAnnouncement ? "text-success" : "text-danger")">@(item.HasAnnouncement ? "Linked" : "Unlinked")</td>
+                    @if (Context.HasAdminPermission())
+                    {
+                        <td class="text-center">
+
+                            <a type="button" class="btn btn-success btn-lg"
+                               data-ajax="true"
+                               data-ajax-mode="replace"
+                               data-ajax-update="#promotion-modal .modal-content"
+                               data-ajax-success="promotion.openUpdatePromotionForm"
+                               asp-route-id=@item.PromotionId
+                               asp-action="Update">
+                                Edit
+                            </a>
+                            <button type="button" class="btn btn-danger btn-lg" onclick="promotion.openDeleteModal('@item.PromotionId')">
+                                Delete
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+        else
+        {
+            var col = Context.HasAdminPermission() ? 9 : 8;
+            <tr>
+                <td class="text-center" colspan="@col">There is no data</td>
+            </tr>
+        }
+    </tbody>
+</table>

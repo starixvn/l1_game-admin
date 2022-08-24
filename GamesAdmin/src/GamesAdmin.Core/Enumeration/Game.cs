@@ -128,6 +128,7 @@ namespace GamesAdmin.Core.Enumeration
         public GameId GameId { get; }
 
         public static Game FromGameId(GameId id) => Parse<Game, GameId>(id, "game id", item => item.GameId == id);
+        public static Game FromGameName(string gameName) => Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
 
         public static IEnumerable<Game> GetNormalGames() => new List<Game>
         {

@@ -1,0 +1,114 @@
+﻿@using System.Text;
+@using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Extensions;
+@using GamesAdmin.Site.Features.Promotions.ViewModels;
+@model IEnumerable<AnnouncementViewModel>
+@{
+    var hasAdminPermission = Context.HasAdminPermission();
+}
+
+@functions{
+    public string GetDisplayPromotion(AnnouncementViewModel viewModel)
+    {
+        if (viewModel.Promotion == null)
+        {
+            return string.Empty;
+        }
+        var gameName = Game.FromGameId(viewModel.Promotion.GameId).DisplayName;
+        return viewModel.Promotion.IsDaily ?
+            $"{gameName} - From {viewModel.Promotion.StartDate.ToDateFormat()}<br />" +
+            $"to {viewModel.Promotion.EndDate.ToDateFormat()}, {viewModel.Promotion.StartTime.ToTimeFormat()} - {viewModel.Promotion.EndTime.ToTimeFormat()}"
+            : $"{gameName} - From {viewModel.Promotion.StartDate.ToDateFormat()} {viewModel.Promotion.StartTime.ToTimeFormat()}<br />" +
+            $"to {viewModel.Promotion.EndDate.ToDateFormat()} {viewModel.Promotion.EndTime.ToTimeFormat()}";
+    }
+
+    public string GetDisplayDateTime(AnnouncementViewModel viewModel)
+    {
+        return $"From {viewModel.StartTime?.ToTimeFormat()} {viewModel.StartTime?.ToDateFormat()}<br />to {viewModel.EndTime?.ToTimeFormat()} {viewModel.EndTime?.ToDateFormat()}";
+    }
+
+    public void RenderMessageRow(string language, AnnouncementViewModel viewModel, bool hasAdminPermission)
+    {
+        <tr>
+            <td style="display: none;"></td>
+            <td style="display: none;"></td>
+            <td class="text-center">@language</td>
+            <td>@viewModel.Title[language]</td>
+            <td>@viewModel.Messages[language]</td>
+            <td style="display: none;">@Html.Raw(GetDisplayDateTime(viewModel))</td>
+            <td style="display: none;">@Html.Raw(GetDisplayPromotion(viewModel))</td>
+            @if (hasAdminPermission)
+            {
+                <td style="display: none;"></td>
+            }
+        </tr>
+    }
+}
+<table id="announcement-table" class="table table-bordered stripe table-light">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Status</th>
+            <th>Language</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Valid day (GMT+7)</th>
+            <th>Promotion Mapping</th>
+            @if (hasAdminPermission)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var index = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center" rowspan="6">@(index++)</td>
+                    <td class="text-center" rowspan="6">
+                        @if (item.Enabled == true)
+                        {
+                            <i class="icon-check"></i>
+                        }
+                        else
+                        {
+                            <i class="icon-cancel"></i>
+                        }
+                    </td>
+                    <td class="text-center">@Language.EN</td>
+                    <td>@item.Title[Language.EN]</td>
+                    <td>@item.Messages[Language.EN]</td>
+                    <td class="text-center" rowspan="6">@Html.Raw(GetDisplayDateTime(item))</td>
+                    <td class="text-center" rowspan="6">@Html.Raw(GetDisplayPromotion(item))</td>
+                    @if (hasAdminPermission)
+                    {
+                        <td class="text-center" rowspan="6">
+                            <a type="button" class="btn btn-success btn-lg"
+                               data-ajax="true"
+                               data-ajax-mode="replace"
+                               data-ajax-update="#update-modal .modal-content .modal-body tbody"
+                               data-ajax-success="promotionAnnouncement.openUpdateForm"
+                               asp-route-id=@item.Id
+                               asp-action="UpdateAnnouncement">
+                                Edit
+                            </a>
+                            <button type="button" class="btn btn-danger btn-lg" onclick="promotionAnnouncement.openModalDelete('@item.Id')">
+                                Delete
+                            </button>
+                        </td>
+                    }
+                </tr>
+                {
+                    RenderMessageRow(Language.VN, item, hasAdminPermission);
+                    RenderMessageRow(Language.CN, item, hasAdminPermission);
+                    RenderMessageRow(Language.TW, item, hasAdminPermission);
+                    RenderMessageRow(Language.TH, item, hasAdminPermission);
+                    RenderMessageRow(Language.ID, item, hasAdminPermission);
+                }
+            }
+        }
+    </tbody>
+</table>

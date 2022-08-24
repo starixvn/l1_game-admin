@@ -1,0 +1,42 @@
+﻿@import "../base/variables";
+@import "../components/customize-datatable";
+
+.modal-body {
+    .table {
+        .form-control {
+            font-size: 1.4rem;
+        }
+    }
+}
+
+.selection {
+    .select2-selection--single {
+        height: 5.2rem;
+        min-width: 20rem;
+
+        .select2-selection__rendered {
+            white-space: normal !important;
+            padding-left: 3px !important;
+            height: 5rem;
+        }
+
+        .select2-selection__arrow {
+            top: 25% !important;
+        }
+    }
+
+    .select2-results__option .select2-results__message {
+    }
+}
+
+li.select2-selection__choice {
+    padding-left: 3px;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: normal !important;
+    white-space: normal;
+}
+
+ul.select2-selection__rendered {
+    padding-right: 12px !important;
+}

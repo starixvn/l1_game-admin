@@ -1,0 +1,163 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+
+@model GamesAdmin.Site.Features.Promotions.ViewModels.IndexViewModel
+
+@section Styles {
+    <link href="~/lib/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/promotion-announcement.min.css" rel="stylesheet" asp-append-version="true" />
+}
+@{
+    ViewData["Title"] = "Promotion Announcement";
+}
+<form class="form filter" data-ajax="true" data-ajax-method="GET" asp-action="GetAnnouncementByStatus"
+      data-ajax-mode="replace"
+      data-ajax-update=".card .card-body"
+      data-ajax-loading="#spinner"
+      data-ajax-success="promotionAnnouncement.init"
+      method="get"
+      asp-route-status="@Model.Status"
+      id="announcement-form">
+    <div class="form-row align-items-center">
+        <div class="col-auto partner-id">
+            <label asp-for="Status" class="control-label">Status</label>
+            <select asp-items="@Model.StatusItem" asp-for="Status" class="form-control"></select>
+        </div>
+        <div class="col-auto list-buttons">
+            <button type="submit" class="btn-submit">Submit</button>
+            @if (Context.HasAdminPermission())
+            {
+                <a class="btn-add"
+                   data-ajax="true"
+                   data-ajax-mode="replace"
+                   data-ajax-update="#add-modal .body"
+                   data-ajax-success="promotionAnnouncement.openAddForm"
+                   style="text-decoration: none"
+                   asp-action="CreateAnnouncement">
+                    Add New Announcement
+                </a>
+            }
+            <div id="spinner" class="spinner-border" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card">
+    <div class="card-body"></div>
+</div>
+
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Announcement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered stripe table-light">
+                    <thead>
+                        <tr>
+                            <th style="width: 2%">No.</th>
+                            <th style="width: 10%">Status</th>
+                            <th style="width: 2%">Language</th>
+                            <th style="width: 19%">Title</th>
+                            <th style="width: 24%">Content</th>
+                            <th style="width: 17%">Valid day (GMT+7)</th>
+                            <th style="width: 23%">Promotion Mapping</th>
+                            <th style="width: 3%">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody class="body">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <label class="result-label mr-5"></label>
+                <a class="btn-add add-item mb-1"
+                   data-ajax="true"
+                   data-ajax-mode="after"
+                   data-ajax-update="#add-modal .body"
+                   data-ajax-success="promotionAnnouncement.onAddItemSuccess"
+                   style="text-decoration: none"
+                   asp-action="CreateAnnouncement">
+                    Add New
+                </a>
+                <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                <button type="button" class="btn-submit" onclick="promotionAnnouncement.addAnnouncement()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update-modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Announcement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered stripe table-light">
+                    <thead>
+                        <tr>
+                            <th style="width: 2%">No.</th>
+                            <th style="width: 10%">Status</th>
+                            <th style="width: 5%">Language</th>
+                            <th style="width: 15%">Title</th>
+                            <th style="width: 25%">Content</th>
+                            <th style="width: 18%">Valid day (GMT+7)</th>
+                            <th style="width: 25%">Promotion Mapping</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <label class="result-label mr-5"></label>
+                <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                <button type="button" class="btn-submit" onclick="promotionAnnouncement.updateAnnouncement()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="announcement-modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Announcement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this announcement?
+                <input type="text" hidden id="delete-announcement-id" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+                <button type="button" class="btn-submit" onclick="promotionAnnouncement.deleteAnnouncement()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-datetimepicker/jquery.datetimepicker.full.js"></script>
+        <script src="~/lib/data-tables/datatables.js"></script>
+        <script src="~/lib/select2/dist/js/select2.min.js"></script>
+        <script src="~/js/promotion-announcement.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/promotion-announcement.min.js" asp-append-version="true"></script>
+    </environment>
+}

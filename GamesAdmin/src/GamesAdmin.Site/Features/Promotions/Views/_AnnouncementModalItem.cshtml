@@ -1,0 +1,80 @@
+﻿@using System.Text;
+@using GamesAdmin.Site.Features.Promotions.ViewModels;
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Extensions;
+@model CreateAnnouncementItemViewModel
+
+@{
+    var unique = string.IsNullOrEmpty(Model.Id) ? DateTime.Now.Ticks.ToString() : Model.Id;
+}
+@functions{
+    private void RenderMessageRow(string language, string unique, string title, string message)
+    {
+        <tr class="announcement-item-@unique">
+            <td class="text-center">@language</td>
+            <td class="text-center">
+                <div class="input-group">
+                    <input type="text" class="form-control" required id="title-@language-@unique" value="@title" />
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="input-group">
+                    <textarea class="form-control" rows="2" id="message-@language-@unique">@message</textarea>
+                </div>
+            </td>
+        </tr>
+    }
+}
+<tr class="announcement-item-@unique">
+    <td class="text-center item-index" rowspan="6">1</td>
+    <td class="text-center" rowspan="6">
+        <input type="text" hidden asp-for="Id" id="id-@unique" class="input-announcement-id" value="@unique" />
+        <input type="text" hidden class="input-announcement-unique" value="@unique" />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" id="enabled-@unique" asp-for="Enabled">
+                Enabled
+            </label>
+        </div>
+    </td>
+    <td class="text-center">@Language.EN</td>
+    <td class="text-center">
+        <div class="input-group">
+            <input type="text" asp-for="Title[Language.EN]" class="form-control" id="title-@Language.EN-@unique" required />
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="input-group">
+            <textarea class="form-control" rows="2" asp-for="Messages[Language.EN]" id="message-@Language.EN-@unique"></textarea>
+        </div>
+    </td>
+    <td class="text-center" rowspan="6">
+        <div>
+            <label asp-for="StartTime">From</label>
+            <input type="text" class="form-control time-picker" asp-for="StartTime" value="@Model.StartTime.ToString(DateTimeExtensions.DateTimeFormat)" id="startTime-@unique">
+        </div>
+        <br />
+        <div>
+            <label asp-for="EndTime">To</label>
+            <input type="text" class="form-control time-picker" asp-for="EndTime" value="@Model.EndTime.ToString(DateTimeExtensions.DateTimeFormat)" id="endTime-@unique">
+        </div>
+    </td>
+    <td class="text-center" rowspan="6">
+        <select asp-items="@Model.PromotionListItem" asp-for="PromotionId" class="form-control select-promotion-mapping" id="promotionId-@unique"></select>
+    </td>
+    @if (string.IsNullOrEmpty(Model.Id))
+    {
+        <td class="text-center" rowspan="6">
+            <button type="button" class="btn btn-danger btn-lg" onclick="promotionAnnouncement.deleteItem('@unique')">
+                Delete
+            </button>
+        </td>
+    }
+</tr>
+@{
+    RenderMessageRow(Language.VN, unique, Model.Title[Language.VN], Model.Messages[Language.VN]);
+    RenderMessageRow(Language.CN, unique, Model.Title[Language.CN], Model.Messages[Language.CN]);
+    RenderMessageRow(Language.TW, unique, Model.Title[Language.TW], Model.Messages[Language.TW]);
+    RenderMessageRow(Language.TH, unique, Model.Title[Language.TH], Model.Messages[Language.TH]);
+    RenderMessageRow(Language.ID, unique, Model.Title[Language.ID], Model.Messages[Language.ID]);
+}

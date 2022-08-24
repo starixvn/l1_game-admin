@@ -1,0 +1,67 @@
+﻿@using GamesAdmin.Site.Extensions;
+@using GamesAdmin.Site.Features.Promotions.ViewModels;
+@model CreatePromotionViewModel;
+<div class="modal-header">
+    <h5 class="modal-title">Add New Promotion</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form class="form" data-ajax="true" data-ajax-method="POST" asp-action="Create"
+      data-ajax-loading="#spinner"
+      data-ajax-success="promotion.onCreatePromotionSuccess"
+      data-ajax-failure="promotion.onCreatePromotionUnsuccess"
+      id="add-new-promotion-form">
+    <div class="col-12 mt-3 modal-body">
+        <div class="form-group form-row">
+            <label class="mr-2 pt-2 bold" asp-for="GameId">Game Name:</label>
+            <select asp-items="@Model.GameList" asp-for="GameId" class="form-control" id="promotionGameName" onchange="promotion.getOddsByGame(this.value)" style="width: 25%"></select>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" asp-for="Enabled">
+            <label class="form-check-label" asp-for="Enabled">Enabled</label>
+        </div>
+        <fieldset class="form-group mt-3 pb-3">
+            <legend>Boosted Odds</legend>
+            <div id="promotion-game-odds" class="row">
+            </div>
+        </fieldset>
+        <fieldset class="form-group mt-3 pb-3">
+            <legend>Config Schedule</legend>
+            <div class="form-row align-items-center">
+                <div class="col-2 bold mt-2">Date (GMT+7):</div>
+                <div class="col-5 row">
+                    <label asp-for="StartDate" class="control-label col-3 pt-3">From</label>
+                    <input type="date" class="form-control col-7" asp-for="StartDate">
+                </div>
+                <div class="col-5 row">
+                    <div class="col-1"></div>
+                    <label asp-for="EndDate" class="control-label col-3 pt-3">To</label>
+                    <input type="date" class="form-control col-7" asp-for="EndDate">
+                </div>
+            </div>
+            <div class="form-row align-items-center mt-3">
+                <div class="col-2 bold mt-2">Time (GMT+7):</div>
+                <div class="col-5 row">
+                    <label asp-for="StartTime" class="control-label col-3 pt-3">From</label>
+                    <input type="text" class="form-control col-3 time-picker" asp-for="StartTime" value="@Model.StartTime.ToTimeFormat()">
+                </div>
+                <div class="col-5 row">
+                    <div class="col-1"></div>
+                    <label asp-for="EndTime" class="control-label col-3 pt-3">To</label>
+                    <input type="text" class="form-control col-3 time-picker" asp-for="EndTime" value="@Model.EndTime.ToTimeFormat()">
+                </div>
+            </div>
+            <div class="form-check mt-3">
+                <input type="checkbox" class="form-check-input" asp-for="IsDaily">
+                <label class="form-check-label" asp-for="IsDaily">Daily Promotion</label>
+            </div>
+        </fieldset>
+        <label class="hidden" id="result-label"></label>
+    </div>
+    <div class=" modal-footer">
+        <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit">Save</button>
+    </div>
+</form>

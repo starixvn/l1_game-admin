@@ -1,15 +1,18 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.Json;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using Refit;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.ChatBot
 {
@@ -22,6 +25,10 @@ namespace GamesAdmin.Api.ChatBot
     public interface IChatBotService
     {
         Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request);
+
+        Task<ChatBotResult> NotifyCreatePromotion(PromotionModel promotion);
+
+        Task<ChatBotResult> NotifyUpdatePromotion(PromotionModel promotion);
     }
 
     public class ChatBotService : IChatBotService
@@ -29,6 +36,9 @@ namespace GamesAdmin.Api.ChatBot
         private const string Separator = " - ";
         private const string HighStakeMessageTemplate = "**{0}** - {1} - {2}";
         private const int MinBetAmount = 2000;
+        private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
+        private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
+        private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
 
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
@@ -52,14 +62,13 @@ namespace GamesAdmin.Api.ChatBot
 
             var msgBuilder = new StringBuilder();
             var game = GetGameName(request.GameTypeId);
-            var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
             msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount));
             msgBuilder.Append($"{Separator}{game}");
 
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
 
             return await Task.FromResult(new ChatBotResult());
         }
@@ -139,6 +148,33 @@ namespace GamesAdmin.Api.ChatBot
             }
 
             return string.Empty;
+        }
+
+        public async Task<ChatBotResult> NotifyCreatePromotion(PromotionModel promotion)
+        {
+            var message = GetMessagePromotion(MessageAddPromotion, promotion);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.Promotion, message));
+            return await Task.FromResult(new ChatBotResult());
+        }
+
+        public async Task<ChatBotResult> NotifyUpdatePromotion(PromotionModel promotion)
+        {
+            var message = GetMessagePromotion(MessageUpdatePromotion, promotion);
+            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.Promotion, message));
+            return await Task.FromResult(new ChatBotResult());
+        }
+
+        private string GetMessagePromotion(string template, PromotionModel promotion)
+        {
+            var gameName = Game.FromGameId(promotion.GameId).DisplayName;
+            var promotionMessage = string.Format(
+                MessagePromotion,
+                promotion.Status,
+                JsonSerializer.Serialize(promotion.Odds),
+                promotion.IsDaily ? PromotionType.Daily : PromotionType.Consecutive,
+                promotion.StartDateTime.ToStringAtGMT7(),
+                promotion.EndDateTime.ToStringAtGMT7());
+            return string.Format(template, gameName, promotionMessage);
         }
     }
 }

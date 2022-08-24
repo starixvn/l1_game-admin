@@ -40,6 +40,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<UpdateBetaVersionRequest, bool>
+        , IRequestHandler<GetOddsByGameRequest, IEnumerable<OddsViewModel>>
+        , IRequestHandler<GetGamesIdByTypeRequest, IEnumerable<Game>>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -137,6 +139,26 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             return viewModel;
+        }
+
+        public async Task<IEnumerable<OddsViewModel>> Handle(GetOddsByGameRequest request, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(request.GameName))
+            {
+                return Enumerable.Empty<OddsViewModel>();
+            }
+
+            var game = await gameService.GetByName(request.GameName);
+
+            return GenerateOdds(game.Info.Name, game.Odds);
+        }
+
+        public async Task<IEnumerable<Game>> Handle(GetGamesIdByTypeRequest request, CancellationToken cancellationToken)
+        {
+            return (await gameService.GetAll())
+                .Where(game => (game.Info.Type == request.GameType || game.Info.Type == 0) && !game.Info.Name.Equals(Game.LuckyWheelValue))
+                .Select(game => Game.FromGameName(game.Info.Name))
+                .OrderBy(game => game.GameId);
         }
 
         private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot)

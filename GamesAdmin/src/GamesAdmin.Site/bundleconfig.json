@@ -269,5 +269,31 @@
     "inputFiles": [
       "wwwroot/js/daily-summary.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/promotion.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/jquery-datetimepicker/jquery.datetimepicker.full.min.js",
+      "wwwroot/lib/select2/dist/js/select2.min.js",
+      "wwwroot/js/promotion.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/promotion-announcement.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/lib/jquery-datetimepicker/jquery.datetimepicker.full.min.js",
+      "wwwroot/lib/select2/dist/js/select2.min.js",
+      "wwwroot/lib/data-tables/datatables.min.js",
+      "wwwroot/js/promotion-announcement.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/promotion-announcement.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/datatables.min.css",
+      "wwwroot/scss/pages/promotion-announcement.min.css"
+    ]
   }
 ]

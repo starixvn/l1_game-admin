@@ -112,6 +112,19 @@
         </a>
     </li>
 
+    <li class="nav-heading">Promotions</li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Promotion">
+            <i class="icon-link menu-icon"></i>
+            <span class="menu-name">Promotion Management</span>
+        </a>
+        <a asp-action="Announcement" asp-controller="Promotion">
+            <i class="icon-link menu-icon"></i>
+            <span class="menu-name">Promotion Announcement</span>
+        </a>
+    </li>
+
     @if (Context.HasAdminPermission())
     {
         <li class="nav-heading">Bots</li>

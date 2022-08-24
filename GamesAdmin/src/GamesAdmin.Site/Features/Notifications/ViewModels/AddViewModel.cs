@@ -15,7 +15,7 @@ namespace GamesAdmin.Site.Features.Notifications.ViewModels
         public AddViewModel()
         {
             DisplayKinds = EnumerationHelper.ToSelectList<NotificationDisplayKind>()
-                .Where(d => d.Value != NotificationDisplayKind.DisabledValue)
+                .Where(d => d.Value != NotificationDisplayKind.DisabledValue && d.Value != NotificationDisplayKind.PromotionValue)
                 .ToList();
         }
 

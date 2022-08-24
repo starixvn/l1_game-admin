@@ -16,6 +16,7 @@ using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Notifications;
 using GamesAdmin.Site.Features.Partners;
+using GamesAdmin.Site.Features.Promotions;
 using GamesAdmin.Site.Features.Report;
 using GamesAdmin.Site.Features.RetrieveEndRound;
 using GamesAdmin.Site.Features.UmSchedule;
@@ -101,6 +102,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton<IExchangeRateService, ExchangeRateService>();
 
             services.AddSingleton(RestService.For<ILogApi>(appSettings.ApiHost, refitSettings));
+
+            services.AddSingleton(RestService.For<IPromotionApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IPromotionService, PromotionService>();
 
             services.AddReportServices();
         }

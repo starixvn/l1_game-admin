@@ -69,7 +69,7 @@ namespace GamesAdmin.Site.Features.Notifications
         {
             var notification = await notificationService.GetById(request.Id);
             var displayKinds = EnumerationHelper.ToSelectList<NotificationDisplayKind>()
-                .Where(d => d.Value != NotificationDisplayKind.DisabledValue)
+                .Where(d => d.Value != NotificationDisplayKind.DisabledValue && d.Value != NotificationDisplayKind.PromotionValue)
                 .ToList();
 
             return new EditViewModel(displayKinds, notification);

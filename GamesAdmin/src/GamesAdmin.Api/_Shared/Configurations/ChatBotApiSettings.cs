@@ -6,13 +6,14 @@
 
         public string Url { get; set; }
 
-        public MessageSettings HighStake { get; set; }
+        public ConversationIds ConversationIds { get; set; }
 
         public int TimeoutInSeconds { get; set; }
     }
 
-    public class MessageSettings
+    public class ConversationIds
     {
-        public string ConversationId { get; set; }
+        public string HighStake { get; set; }
+        public string Promotion { get; set; }
     }
 }
