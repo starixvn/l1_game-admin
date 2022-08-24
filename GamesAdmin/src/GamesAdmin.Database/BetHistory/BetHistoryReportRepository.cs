@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Database.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
@@ -39,6 +38,10 @@ namespace GamesAdmin.Database
           where TOneEntity : KenoPowerOneEntity;
 
         Task<(HiLoRoundEntity, IEnumerable<HiLoBetLogEntity>)> GetHiLoBetAsync(long roundId, string userId, string partnerId);
+
+        Task<(TRoundEntity, IEnumerable<TBetLogEntity>)> GetUnbalancedBigSmallAsync<TRoundEntity, TBetLogEntity>(long roundId, string userId, string partnerId)
+            where TRoundEntity : UnbalancedBigSmallRoundEntity
+            where TBetLogEntity : UnbalancedBigSmallBetLogEntity;
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -83,9 +86,9 @@ namespace GamesAdmin.Database
                     Round = x.Number,
                     Time = x.One.Time,
                     Bet = x.One.BaseAmount,
-                    FirstDice = (byte)(x.Dice1 ?? x.Result.Dice1),
-                    SecondDice = (byte)(x.Dice2 ?? x.Result.Dice2),
-                    ThirdDice = (byte)(x.Dice3 ?? x.Result.Dice3),
+                    FirstDice = (byte)(x.Result.Dice1),
+                    SecondDice = (byte)(x.Result.Dice2),
+                    ThirdDice = (byte)(x.Result.Dice3),
                     Refund = x.One.BaseRefund,
                     Select = x.One.Select ?? x.One.Choice == "big"
                 }
@@ -332,6 +335,19 @@ namespace GamesAdmin.Database
 
             var betLogCollection = database.GetCollection<HiLoBetLogEntity>(Document.GetCollectionName(typeof(HiLoBetLogEntity)));
             var betLogs = await betLogCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).ToListAsync();
+
+            return (roundResult, betLogs);
+        }
+
+        public async Task<(TRoundEntity, IEnumerable<TBetLogEntity>)> GetUnbalancedBigSmallAsync<TRoundEntity, TBetLogEntity>(long roundId, string userId, string partnerId)
+            where TRoundEntity : UnbalancedBigSmallRoundEntity
+            where TBetLogEntity : UnbalancedBigSmallBetLogEntity
+        {
+            var roundCollection = database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<TBetLogEntity>(Document.GetCollectionName(typeof(TBetLogEntity)));
+            var betLogs = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, betLogs);
         }

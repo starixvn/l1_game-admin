@@ -7,13 +7,8 @@ namespace GamesAdmin.Database.Entities
     [BsonIgnoreExtraElements]
     public class BigSmallRoundEntity : BaseRoundEntity
     {
-        public int? Dice1 { get; set; }
-
-        public int? Dice2 { get; set; }
-
-        public int? Dice3 { get; set; }
-
         public BigSmallResult Result { get; set; }
+        public BigSmallSettlementResultEntity SettlementResult { get; set; }
     }
 
     public class BigSmallResult
@@ -23,5 +18,12 @@ namespace GamesAdmin.Database.Entities
         public int Dice2 { get; set; }
 
         public int Dice3 { get; set; }
+    }
+
+    public class BigSmallSettlementResultEntity
+    {
+        public bool Big { get; set; }
+
+        public bool Small { get; set; }
     }
 }

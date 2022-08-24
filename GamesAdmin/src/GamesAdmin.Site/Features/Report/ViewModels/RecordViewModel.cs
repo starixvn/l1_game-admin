@@ -458,4 +458,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Win { get; set; }
     }
+
+    public class UnbalancedBigSmallRecordViewModel: BetRecordViewModel
+    {
+        public decimal Big { get; set; }
+
+        public decimal Small { get; set; }
+    }
 }

@@ -12,6 +12,10 @@ namespace GamesAdmin.Core.Enumeration
             {
                 case Game.BigSmallValue:
                 case Game.BigSmallTurboValue:
+                case Game.UnbalancedBigSmall1Value:
+                case Game.UnbalancedBigSmall2Value:
+                case Game.UnbalancedBigSmall3Value:
+                case Game.UnbalancedBigSmall4Value:
                     return Enumeration.GetAll<BigSmallBetChoice>();
 
                 case Game.OddEvenValue:

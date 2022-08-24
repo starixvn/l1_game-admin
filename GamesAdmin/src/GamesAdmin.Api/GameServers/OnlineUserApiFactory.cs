@@ -55,6 +55,10 @@ namespace GamesAdmin.Api.GameServers
             { Game.BlockchainBaccaratValue, typeof(IBlockchainBaccaratOnlineUserApi) },
             { Game.MegaKenoValue, typeof(IMegaKenoOnlineUserApi) },
             { Game.MegaKeno2Value, typeof(IMegaKeno2OnlineUserApi) },
+            { Game.UnbalancedBigSmall1Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
+            { Game.UnbalancedBigSmall2Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
+            { Game.UnbalancedBigSmall3Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
+            { Game.UnbalancedBigSmall4Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

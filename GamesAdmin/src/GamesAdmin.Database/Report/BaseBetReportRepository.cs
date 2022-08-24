@@ -32,7 +32,7 @@ namespace GamesAdmin.Database
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var nickNameRegex = new Regex($"(?i){nickname}");
-            var userNameRegex = new Regex($"^(?i){username}$");
+            var userNameRegex = new Regex($"(?i){username}");
 
             Expression<Func<TBetEntity, bool>> expression;
 
@@ -47,9 +47,12 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrEmpty(partnerId))
             {
-                Expression<Func<TBetEntity, bool>> partnerExpression = x => x.OperatorId == partnerId;
+                expression = expression.And(x => x.OperatorId == partnerId);
+            }
 
-                expression = expression.And(partnerExpression);
+            if (excludeUUS)
+            {
+                expression = expression.And(x => x.Currency != "UUS");
             }
 
             var aggregateBuilder = betCollection.Aggregate().Match(expression)
@@ -60,7 +63,7 @@ namespace GamesAdmin.Database
                        foreignField: x => x.UserId,
                        @as: r => r.AccountInfos)
                  .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => (!excludeBot || !x.AccountInfos.IsBot) && (!excludeUUS || x.AccountInfos.Currency != "UUS"))
+                 .Match(x => (!excludeBot || !x.AccountInfos.IsBot))
                  .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
                  .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
                        foreignCollection: accountCollection,

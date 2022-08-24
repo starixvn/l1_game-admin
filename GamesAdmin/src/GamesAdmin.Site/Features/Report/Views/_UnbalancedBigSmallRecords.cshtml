@@ -1,0 +1,186 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model UnbalancedBigSmallReportResultViewModel
+
+@{
+    var bigRecords = Model.Records.Where(x => x.Big > 0).ToList();
+    var smallRecords = Model.Records.Where(x => x.Small > 0).ToList();
+    var totalRow = bigRecords.Count > smallRecords.Count ? bigRecords.Count : smallRecords.Count;
+    var round = Model.RoundResult;
+}
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Exchange ID</th>
+                        <th>Results</th>
+                        <th>Total</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
+                        <td class="text-center">
+                            <div class="dice-list">
+                                <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice1).png" />
+                                <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice2).png" />
+                                <img class="dice" src="~/images/dice_@(Model.RoundResult.Dice3).png" />
+                            </div>
+                        </td>
+                        <td class="text-center">@Model.RoundResult.Total</td>
+                        <td class="text-center">@(Model.RoundResult.SettlementResult.Big ? "Big": "Small")</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th colspan="7" class="big-small-title">Big</th>
+                    <th class="line-cell"></th>
+                    <th colspan="7" class="big-small-title">Small</th>
+                </tr>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Win</th>
+                    <th class="line-cell"></th>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th class="col-partner">Partner</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th class="col-currency">Currency</th>
+                    <th class="col-number">Stake</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < totalRow; i++)
+                {
+                    var bigRecord = bigRecords.ElementAtOrDefault(i);
+                    var smallRecord = smallRecords.ElementAtOrDefault(i);
+                    <tr>
+                        <td>@bigRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@bigRecord?.Partner</td>
+                        <td>@bigRecord?.Username</td>
+                        <td>
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetUnbalancedBigSmallBetHistory"
+                               asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bigRecord?.UserId"
+                               asp-route-partnerId="@bigRecord?.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @bigRecord?.Nickname
+                            </a>
+                        </td>
+                        <td>@bigRecord?.Currency</td>
+                        <td class="text-right">
+                            @if (bigRecord != null)
+                            {
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bigRecord.ConvertToBase(bigRecord.Big) : bigRecord.Big)
+                            }
+                        </td>
+                        <td class="text-right">
+                            @if (bigRecord != null)
+                            {
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bigRecord.BaseBetWin : bigRecord.BetWin)
+                            }
+                        </td>
+                        <td class="line-cell"></td>
+                        <td>@smallRecord?.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@smallRecord?.Partner</td>
+                        <td>@smallRecord?.Username</td>
+                        <td class="col-nickname">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetUnbalancedBigSmallBetHistory"
+                               asp-route-game="@Model.Game"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@smallRecord?.UserId"
+                               asp-route-partnerId="@smallRecord?.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @smallRecord?.Nickname
+                            </a>
+                        </td>
+                        <td>@smallRecord?.Currency</td>
+                        <td class="text-right">
+                            @if (smallRecord != null)
+                            {
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? smallRecord.ConvertToBase(smallRecord.Small) : smallRecord.Small)
+                            }
+                        </td>
+                        <td class="text-right">
+                            @if (smallRecord != null)
+                            {
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? smallRecord.BaseBetWin : smallRecord.BetWin)
+                            }
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+            <tfoot>
+                @if (totalRow == 0)
+                {
+                    <tr>
+                        <td class="text-center" colspan="15">No data</td>
+                    </tr>
+                }
+                else if (Model.ConvertToUSD)
+                {
+                    <tr class="total">
+                        <td>Total in USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">
+                            @if (bigRecords.Any())
+                            {
+                                @HtmlHelpers.formatNumber(bigRecords.FirstOrDefault().ConvertToBase(bigRecords.Sum(x => x.Big)))
+
+                            }
+                        </td>
+                        <td class="text-right">
+                            @if (bigRecords.Any())
+                            {
+                                @HtmlHelpers.formatNumber(bigRecords.FirstOrDefault().ConvertToBase(bigRecords.Sum(x => x.BetWin)))
+                            }
+                        </td>
+                        <td class="line-cell"></td>
+                        <td>Total in USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">
+                            @if (smallRecords.Any())
+                            {
+                                @HtmlHelpers.formatNumber(smallRecords.FirstOrDefault().ConvertToBase(smallRecords.Sum(x => x.Big)))
+
+                            }
+                        </td>
+                        <td class="text-right">
+                            @if (smallRecords.Any())
+                            {
+                                @HtmlHelpers.formatNumber(smallRecords.FirstOrDefault().ConvertToBase(smallRecords.Sum(x => x.BetWin)))
+                            }
+                        </td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+</div>

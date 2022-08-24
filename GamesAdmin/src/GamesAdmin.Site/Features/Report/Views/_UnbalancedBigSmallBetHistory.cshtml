@@ -1,0 +1,26 @@
+﻿@using GamesAdmin.Core
+@model GamesAdmin.Site.Features.Report.ViewModels.UnbalancedBigSmallBetHistoryViewModel
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Round</th>
+            <th>Bet Choice</th>
+            <th>Result</th>
+            <th>Stake</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td>@bet.Round</td>
+                <td>@(bet.Choice == "big" ? "Big" : "Small")</td>
+                <td>@Model.RoundResult.Dice1-@Model.RoundResult.Dice2-@Model.RoundResult.Dice3 @Model.RoundResult.Total</td>
+                <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
+            </tr>
+        }
+    </tbody>
+</table>

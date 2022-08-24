@@ -91,6 +91,15 @@
         public GameServerConfigs MegaKeno2 { get; set; }
 
         public GameServerConfigs BlockchainBaccarat { get; set; }
+        public GameServerConfigs UnbalancedBigSmall1 { get; set; }
+
+        public GameServerConfigs UnbalancedBigSmall2 { get; set; }
+
+        public GameServerConfigs UnbalancedBigSmall3 { get; set; }
+
+        public GameServerConfigs UnbalancedBigSmall4 { get; set; }
+
+
     }
 
     public class GameServerConfigs

@@ -81,6 +81,7 @@ namespace GamesAdmin.Core.Models
     public class KenoPowerBetReport : BetReport<KenoPowerRoundResult, KenoPowerBetRecord>
     {
     }
+
     public class MiniKenoBetReport : BetReport<KenoRoundResult, KenoBetRecord>
     {
     }
@@ -95,4 +96,7 @@ namespace GamesAdmin.Core.Models
         public IEnumerable<HiLoBetRecord> Records { get; set; }
     }
 
+    public class UnbalancedBigSmallBetReport : BetReport<BigSmallRoundResult, UnbalancedBigSmallBetRecord>
+    {
+    }
 }

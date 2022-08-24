@@ -93,6 +93,10 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.BlockchainBaccarat => await Move<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.MegaKeno => await Move<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.MegaKeno2 => await Move<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall1 => await Move<UnbalancedBigSmall1BetEntity, UnbalancedBigSmall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall2 => await Move<UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall3 => await Move<UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall4 => await Move<UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -151,6 +155,10 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.BlockchainBaccarat => await Find<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.MegaKeno => await Find<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.MegaKeno2 => await Find<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall1 => await Find<UnbalancedBigSmall1BetEntity, UnbalancedBigSmall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall2 => await Find<UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall3 => await Find<UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.UnbalancedBigSmall4 => await Find<UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 

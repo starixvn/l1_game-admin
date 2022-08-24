@@ -39,7 +39,6 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.End, opt => opt.MapFrom(src => src.End.UtcDateTime))
                 .ReverseMap();
 
-
             CreateMap<FishPrawnCrabRoundEntity, FishPrawnCrabRoundResult>()
                 .ForMember(dest => dest.FirstDice, opt => opt.MapFrom(src => src.FirstDice ?? src.Result.FirstDice))
                 .ForMember(dest => dest.SecondDice, opt => opt.MapFrom(src => src.SecondDice ?? src.Result.SecondDice))
@@ -139,7 +138,6 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.UserId, opt => opt.MapFrom((source) => source.UserId))
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.Bet))
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.Back));
-
 
             CreateMap<SpecialSeDieBetEntity, SpecialSeDieBetHistoryRecord>()
                  .ForMember(x => x.Amount, opt => opt.MapFrom((source) => source.BaseAmount))
@@ -391,7 +389,6 @@ namespace GamesAdmin.Api._Shared
                     return choiceHistories;
                 }
 
-
                 return Enumerable.Empty<ChoiceHistory>();
             }));
 
@@ -402,7 +399,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<TexasHoldemPokerBetReportEntity, HoldemPokerBetRecord>()
                 .ForMember(x => x.PlayerResult, opt => opt.MapFrom((source) => (source.IsFold ? "Fold" : source.Player.Rank)))
                 .ForMember(x => x.DealerResult, opt => opt.MapFrom((source) => (source.Ended && !source.IsFold ? source.Dealer.Rank : "-")));
-
 
             CreateMap<TexasHoldemPokerBetHistoryEntity, HoldemPokerBetHistory>()
             .ForMember(x => x.ChoiceHistories, opt => opt.MapFrom((source, destination, i, context) =>
@@ -424,9 +420,17 @@ namespace GamesAdmin.Api._Shared
                     return choiceHistories;
                 }
 
-
                 return Enumerable.Empty<ChoiceHistory>();
             }));
+
+            CreateMap<BigSmallSettlementResultEntity, BigSmallSettlementResult>();
+            CreateMap<BigSmallRoundEntity, BigSmallRoundResult>()
+                .ForMember(x => x.Dice1, opt => opt.MapFrom((source) => source.Result.Dice1))
+                .ForMember(x => x.Dice2, opt => opt.MapFrom((source) => source.Result.Dice2))
+                .ForMember(x => x.Dice3, opt => opt.MapFrom((source) => source.Result.Dice3));
+
+            CreateMap<UnbalancedBigSmallBetReportEntity, UnbalancedBigSmallBetRecord>();
+            CreateMap<UnbalancedBigSmallBetLogEntity, UnbalancedBigSmallBetHistoryRecord>();
         }
     }
 }

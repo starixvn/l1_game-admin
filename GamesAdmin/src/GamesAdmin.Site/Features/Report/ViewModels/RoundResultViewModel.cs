@@ -24,9 +24,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class RoundResultViewModel : BaseRoundResultViewModel
     {
-
-        public long Number { get; set; }
-
         public int Dice1 { get; set; }
 
         public int Dice2 { get; set; }
@@ -297,8 +294,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class KenoPowerRoundResultViewModel : BaseRoundResultViewModel
     {
-        public long Number { get; set; }
-
         public KenoPowerResultViewModel Result { get; set; }
 
         public KenoPowerSettlementResultViewModel SettlementResult { get; set; }
@@ -335,9 +330,27 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string PartnerId { get; set; }
         public decimal Rate { get; set; }
 
-
         public decimal BaseAmount => Amount * Rate;
 
         public decimal BaseBetwin => Betwin * Rate;
+    }
+
+    public class UnbalancedBigSmallRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public int Dice1 { get; set; }
+
+        public int Dice2 { get; set; }
+
+        public int Dice3 { get; set; }
+
+        public int Total => Dice1 + Dice2 + Dice3;
+
+        public UnbalancedBigSmallSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class UnbalancedBigSmallSettlementResultViewModel
+    {
+        public bool Big { get; set; }
+        public bool Small { get; set; }
     }
 }

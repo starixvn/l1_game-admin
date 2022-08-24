@@ -10,6 +10,7 @@ namespace GamesAdmin.Api.Report
     public interface IReportServiceFactory
     {
         IGameReportService GetService(GameId game);
+
         IBetHistoryReportService GetBetHistoryService(GameId game);
     }
 
@@ -47,6 +48,10 @@ namespace GamesAdmin.Api.Report
             { GameId.BlockchainBaccarat,  typeof(BaccaratReportService) },
             { GameId.MegaKeno, typeof(MiniKenoReportService<MegaKenoRoundEntity, MegaKenoOnesEntity, MegaKenoBetEntity>) },
             { GameId.MegaKeno2, typeof(MiniKenoReportService<MegaKeno2RoundEntity, MegaKeno2OnesEntity, MegaKeno2BetEntity>) },
+            { GameId.UnbalancedBigSmall1, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall1RoundEntity, UnbalancedBigSmall1BetEntity, UnbalancedBigSmall1BetLogEntity>) },
+            { GameId.UnbalancedBigSmall2, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall2RoundEntity, UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>) },
+            { GameId.UnbalancedBigSmall3, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall3RoundEntity, UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>) },
+            { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall4RoundEntity, UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>) },
         };
 
         private readonly IServiceProvider serviceProvider;

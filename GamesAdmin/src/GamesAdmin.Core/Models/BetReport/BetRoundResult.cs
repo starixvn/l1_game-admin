@@ -19,6 +19,15 @@ namespace GamesAdmin.Core.Models
         public int Dice2 { get; set; }
 
         public int Dice3 { get; set; }
+
+        public BigSmallSettlementResult SettlementResult { get; set; }
+    }
+
+    public class BigSmallSettlementResult
+    {
+        public bool Big { get; set; }
+
+        public bool Small { get; set; }
     }
 
     public class OddEvenRoundResult : RoundResult

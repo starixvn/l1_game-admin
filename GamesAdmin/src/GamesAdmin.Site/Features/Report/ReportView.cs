@@ -36,6 +36,10 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.BlockchainBaccarat, "_BaccaratRecords" },
             { GameId.MegaKeno, "_KenoBetRecords" },
             { GameId.MegaKeno2, "_KenoBetRecords" },
+            { GameId.UnbalancedBigSmall1, "_UnbalancedBigSmallRecords" },
+            { GameId.UnbalancedBigSmall2, "_UnbalancedBigSmallRecords" },
+            { GameId.UnbalancedBigSmall3, "_UnbalancedBigSmallRecords" },
+            { GameId.UnbalancedBigSmall4, "_UnbalancedBigSmallRecords" },
         };
 
         public string GetView(GameId game) => views[game];
