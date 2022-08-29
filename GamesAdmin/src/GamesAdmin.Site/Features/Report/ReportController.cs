@@ -262,7 +262,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
@@ -380,7 +381,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
@@ -522,7 +524,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
@@ -536,7 +539,8 @@ namespace GamesAdmin.Site.Features.Report
             {
                 Game = GameId.TreasureIsland,
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View("CascadingSlot", viewModel);
@@ -609,7 +613,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
