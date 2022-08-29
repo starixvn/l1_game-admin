@@ -34,10 +34,13 @@
                                         
                                             @if (System.IO.File.Exists( env.WebRootPath + $"\\images\\slot-icons\\{Model.IconsFolder}\\{array[row][column]}.png"))
                                             {
+                                                Console.WriteLine(env.WebRootPath);
+                                                
                                                 <img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/@(array[row][column]).png" />
                                             }
                                             else
                                             {
+                                                Console.WriteLine(env.WebRootPath);
                                                 <img class="symbol" src="~/images/slot-icons/@Model.IconsFolder/@Model.SystemType/@(array[row][column]).png" />
                                             }
                                         </td>
