@@ -274,4 +274,10 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/megakeno2/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
+
+    public interface IFruitSlotOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 }

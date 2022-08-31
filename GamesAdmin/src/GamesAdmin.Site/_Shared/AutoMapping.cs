@@ -131,6 +131,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<BigSmallSettlementResult, UnbalancedBigSmallSettlementResultViewModel>();
             CreateMap<UnbalancedBigSmallBetRecord, UnbalancedBigSmallRecordViewModel>();
             CreateMap<UnbalancedBigSmallBetHistoryRecord, UnbalancedBigSmallBetHistoryRecordViewModel>();
+
+            CreateMap<FruitSlotBetRecord, FruitSlotRecordViewModel>();
+            CreateMap<FruitSlotRoundResult, FruitSlotRoundResultViewModel>();
+            CreateMap<FruitSlotBetHistoryRecord, FruitSlotBetHistoryRecordViewModel>();
         }
     }
 }

@@ -48,7 +48,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
                 mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
-                mapper.Map<CascadingSlotsConfig>(addViewModel).GenerateDefaultCascadingSlotsConfig(addViewModel.NumberOfIcons));
+                mapper.Map<CascadingSlotsConfig>(addViewModel).GenerateDefaultCascadingSlotsConfig(addViewModel.NumberOfIcons),
+                mapper.Map<SlotRNGConfig>(addViewModel));
 
             await mediator.Send(request);
 
@@ -253,6 +254,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 SlotsConfig slotsConfig = null;
                 CascadingSlotsConfig cascadingSlotsConfig = null;
+                SlotRNGConfig slotRNGConfig = null;
                 switch (viewModel.Type)
                 {
                     case GameType.Slots:
@@ -267,6 +269,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                         cascadingSlotsConfig.BigWinRatio = viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue();
                         cascadingSlotsConfig.MultiplierBonus = new MultiplierBonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus);
                         break;
+                    case GameType.SlotRNG:
+                        slotRNGConfig = viewModel.SlotRNGConfig;
+                        break;
+                    default: break;
                 }
 
                 var request = new UpdateRequest(
@@ -274,7 +280,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     slotsConfig,
-                    cascadingSlotsConfig);
+                    cascadingSlotsConfig,
+                    slotRNGConfig);
 
                 await mediator.Send(request);
 

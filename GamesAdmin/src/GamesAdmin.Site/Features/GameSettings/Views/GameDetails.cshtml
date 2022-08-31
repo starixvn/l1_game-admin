@@ -9,5 +9,4 @@
     <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
-<partial name="GameDetails_@Enum.GetName(typeof(GamesAdmin.Core.Enumeration.GameType), Model.Type)"
-         model="@Model" />
+<partial name="@Model.DetailsView" model="@Model" />

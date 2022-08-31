@@ -106,7 +106,7 @@
 
         public GameServerConfigs UnbalancedBigSmall4 { get; set; }
 
-
+        public GameServerConfigs FruitSlot { get; set; }
     }
 
     public class GameServerConfigs

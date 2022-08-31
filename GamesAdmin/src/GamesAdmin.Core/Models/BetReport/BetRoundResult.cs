@@ -311,4 +311,12 @@ namespace GamesAdmin.Core.Models
         public string PartnerId { get; set; }
         public decimal Rate { get; set; }
     }
+
+    public class FruitSlotRoundResult : RoundResult
+    {
+        public IEnumerable<string> Symbols { get; set; }
+        public byte ResultNumber { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
+    }
 }

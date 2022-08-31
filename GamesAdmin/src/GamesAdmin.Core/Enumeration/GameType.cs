@@ -5,5 +5,6 @@
         AutoRNG = 1,
         Slots,
         CascadingSlots,
+        SlotRNG
     }
 }

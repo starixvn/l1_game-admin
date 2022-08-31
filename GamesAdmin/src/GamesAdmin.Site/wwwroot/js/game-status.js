@@ -306,7 +306,6 @@
                     $('#failedMsg').hide();
                     $('#gameModal').modal('hide');
                     location.reload();
-
                 }, 1000);
             });
         },
@@ -383,7 +382,6 @@
 
                 $('#messageModal').modal('show');
             });
-
         },
 
         submitReload: function () {
@@ -480,8 +478,19 @@
             const type = $('#Type').val();
 
             switch (type) {
+                case '4':
+                    $('#cascading-slots-config .common-field').attr('disabled', true);
+                    $('#slots-config .common-field').attr('disabled', true);
+                    $('#slot-rng-config .common-field').attr('disabled', null);
+
+                    $('#slot-rng-config').show();
+                    $('#rng-game').show();
+                    $('#slots-config').hide();
+                    $('#cascading-slots-config').hide();
+                    break;
                 case '3':
                     $('#slots-config .common-field').attr('disabled', true);
+                    $('#slot-rng-config .common-field').attr('disabled', true);
                     $('#cascading-slots-config .common-field').attr('disabled', null);
 
                     $('#slots-config').hide();
@@ -490,6 +499,7 @@
                     break;
                 case '2':
                     $('#cascading-slots-config .common-field').attr('disabled', true);
+                    $('#slot-rng-config .common-field').attr('disabled', true);
                     $('#slots-config .common-field').attr('disabled', null);
 
                     $('#rng-game').hide();
@@ -499,6 +509,7 @@
                 default:
                     $('#slots-config').hide();
                     $('#cascading-slots-config').hide();
+                    $('#slot-rng-config').hide();
                     $('#rng-game').show();
             }
         },

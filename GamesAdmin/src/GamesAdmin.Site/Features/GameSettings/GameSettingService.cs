@@ -49,6 +49,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request);
 
+        Task<bool> UpdateSlotRNGConfig(UpdateSlotRNGConfigRequest request);
+
         Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request);
 
         Task<GlobalConfig> GetSiteExclusion();
@@ -175,6 +177,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UpdateGeneralConfig(UpdateGeneralConfigRequest request)
         => gameApi.UpdateGeneralConfig(request);
 
+        public Task<bool> UpdateSlotRNGConfig(UpdateSlotRNGConfigRequest request)
+        => gameApi.UpdateSlotRNGConfig(request);
+
         public Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request)
         {
             var formattedExlusions = string.IsNullOrWhiteSpace(request.SiteExclusions)
@@ -205,6 +210,5 @@ namespace GamesAdmin.Site.Features.GameSettings
             
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
-            
     }
 }

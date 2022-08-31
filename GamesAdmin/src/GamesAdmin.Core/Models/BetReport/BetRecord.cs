@@ -445,4 +445,9 @@ namespace GamesAdmin.Core.Models
         public decimal Big { get; set; }
         public decimal Small { get; set; }
     }
+    
+    public class FruitSlotBetRecord : BetRecord
+    {
+        public decimal TotalAmount { get; set; }
+    }
 }

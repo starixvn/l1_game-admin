@@ -81,6 +81,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.MaxWinPerRound))
                 .ForMember(dest => dest.MultiplierBonus, opt => opt.MapFrom(src => new MultiplierBonus(src.MinMultiplierBonus, src.MaxMultiplierBonus)));
 
+            CreateMap<AddViewModel, SlotRNGConfig>()
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode));
+
             CreateMap<AddViewModel, GameInfo>();
             CreateMap<AddViewModel, EnableSetting>();
             CreateMap<AddViewModel, BotSetting>();

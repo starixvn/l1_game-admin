@@ -1,0 +1,30 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model FruitSlotBetHistoryViewModel
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Bet Choice</th>
+            <th>Odds</th>
+            <th>Stake</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            var betWin = Model.GetBetWin(bet.SubChoices, bet.Choice, bet.Amount);
+            <tr>
+                <td class="text-center">@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td class="text-center">
+                    <img src="/images/fruitslot/@(bet.Choice).png" alt="#" />
+                </td>
+                <td class="text-center">@Model.GetOdds(bet.SubChoices, bet.Choice)</td>
+                <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
+                <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betWin) : betWin)</td>
+            </tr>
+        }
+    </tbody>
+</table>

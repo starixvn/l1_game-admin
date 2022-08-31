@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,9 +10,12 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 {
     public class SlotViewModel
     {
+        public SlotViewModel() { }
         public GameMode Mode { get; set; }
 
-        public List<SelectListItem> ModeItems { get; set; }
+        public List<SelectListItem> ModeItems { get; set; } = Enum.GetValues(typeof(GameMode))
+                .Cast<GameMode>()
+                .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
         public List<StakeLevel> StakeLevels { get; set; }
 

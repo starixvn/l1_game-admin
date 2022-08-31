@@ -466,4 +466,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Small { get; set; }
     }
+    
+    public class FruitSlotRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalAmount { get; set; }
+    }
 }

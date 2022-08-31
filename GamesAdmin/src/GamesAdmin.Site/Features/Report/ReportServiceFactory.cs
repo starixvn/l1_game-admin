@@ -52,6 +52,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.UnbalancedBigSmall2, typeof(UnbalancedBigSmallReportService) },
             { GameId.UnbalancedBigSmall3, typeof(UnbalancedBigSmallReportService) },
             { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService) },
+            { GameId.FruitSlot, typeof(FruitSlotReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

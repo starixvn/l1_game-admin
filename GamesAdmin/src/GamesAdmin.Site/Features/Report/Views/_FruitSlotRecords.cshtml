@@ -1,0 +1,106 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model FruitSlotReportResultViewModel
+
+@functions{
+    private void RenderResultSymBol(string symbol)
+    {
+        const string bar = "bar";
+        const string bar100 = "bar100";
+        var src = $"/images/fruitslot/{(symbol.Equals(bar) ? bar100 : symbol)}.png";
+        <span><img src="@src" alt="#" /></span>
+    }
+}
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            var resultSymbol = Model.RoundResult.Symbols.ToList();
+            var isLucky = Model.RoundResult.SettlementResult["lucky"];
+            var rowspan = isLucky ? resultSymbol.Count + 1 : 1;
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Exchange ID</th>
+                        <th colspan="2">Results</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" rowspan="@rowspan">@Model.RoundResult.Number</td>
+                        <td class="text-center" rowspan="@rowspan">@Model.RoundResult.ExchangeRateId</td>
+                        <td class="text-center">
+                            Spin Result
+                        </td>
+                        <td class="text-center">
+                            @if (isLucky)
+                            {
+                                RenderResultSymBol("lucky");
+                            }
+                            else
+                            {
+                                RenderResultSymBol(resultSymbol[0]);
+                            }
+                            <span class="h2"> | @Model.RoundResult.ResultNumber</span>
+                        </td>
+                    </tr>
+
+                    @if (isLucky)
+                    {
+                        for (var i = 0; i < resultSymbol.Count; i++)
+                        {
+                            <tr>
+                                <td class="text-center">Extra Spin</td>
+                                <td class="text-center">@{RenderResultSymBol(resultSymbol[i]); }</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Partner</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th>Currency</th>
+                    <th class="col-number">Total Bet</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td class="text-center">@bet.Username</td>
+                        <td class="text-center">
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetFruitSlotBetHistory"
+                               asp-route-game="@GameId.FruitSlot"
+                               asp-route-roundId="@Model.RoundResult.Number"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalAmount) : bet.TotalAmount)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) : bet.BetWin)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

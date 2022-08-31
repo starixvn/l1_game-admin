@@ -10,13 +10,15 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             BotSetting botSetting,
             EnableSetting enableSetting,
             SlotsConfig slotsConfig,
-            CascadingSlotsConfig cascadingSlotsConfig)
+            CascadingSlotsConfig cascadingSlotsConfig,
+            SlotRNGConfig slotRNGConfig)
         {
             GameInfo = gameInfo;
             BotSetting = botSetting;
             EnableSetting = enableSetting;
             SlotsConfig = slotsConfig;
             CascadingSlotsConfig = cascadingSlotsConfig;
+            SlotRNGConfig = slotRNGConfig;
         }
 
         public GameInfo GameInfo { get; }
@@ -28,5 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public SlotsConfig SlotsConfig { get; }
 
         public CascadingSlotsConfig CascadingSlotsConfig { get; }
+
+        public SlotRNGConfig SlotRNGConfig { get; }
     }
 }

@@ -627,12 +627,20 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_UnbalancedBigSmallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
+        [HttpGet]
+        public IActionResult FruitSlot() => RedirectToAction("Index", new { game = GameId.FruitSlot });
+        
+        [HttpGet]
+        public async Task<IActionResult> GetFruitSlotBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_FruitSlotBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+        
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
         }
-
     }
 }

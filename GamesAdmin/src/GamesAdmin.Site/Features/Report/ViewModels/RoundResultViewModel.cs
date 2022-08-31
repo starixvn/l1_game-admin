@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -352,5 +353,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public bool Big { get; set; }
         public bool Small { get; set; }
+    }
+
+    public class FruitSlotRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public IEnumerable<string> Symbols { get; set; }
+        public byte ResultNumber { get; set; }
+        public Dictionary<string, bool> SettlementResult { get; set; }
     }
 }

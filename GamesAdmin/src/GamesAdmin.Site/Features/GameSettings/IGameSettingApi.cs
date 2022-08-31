@@ -58,6 +58,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/update_cascading_slots_config")]
         Task<bool> UpdateCascadingSlotsConfig([Body] UpdateCascadingSlotsConfigRequest request);
 
+        [Post("/game_settings/update_slot_rng_config")]
+        Task<bool> UpdateSlotRNGConfig([Body] UpdateSlotRNGConfigRequest request);
+
         [Post("/game_settings/{name}/update_slot_odds")]
         Task<bool> UpdateSlotOdds(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
 

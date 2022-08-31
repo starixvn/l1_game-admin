@@ -109,6 +109,9 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.MiniSeDie4Value:
                     return Enumeration.GetAll<MiniSeDieBetChoice>();
+                    
+                case Game.FruitSlotValue:
+                    return Enumeration.GetAll<FruitSlotOdds>();
 
                 default: return default;
             }

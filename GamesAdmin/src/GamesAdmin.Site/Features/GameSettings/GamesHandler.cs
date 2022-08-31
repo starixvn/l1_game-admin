@@ -100,9 +100,6 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
 
             var game = await gameService.GetByName(request.Name);
-            var difficultyItems = Enum.GetValues(typeof(GameMode))
-                .Cast<GameMode>()
-                .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
             var viewModel = mapper.Map<EditViewModel>(game);
 
@@ -115,20 +112,28 @@ namespace GamesAdmin.Site.Features.GameSettings
                                         ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
                                         : game.Info.Name;
                 viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
+                viewModel.SlotRNGConfig = game.SlotRNGConfig;
 
                 switch (game.Info.Type)
                 {
                     case GameType.Slots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.SlotsConfig);
-                        viewModel.SlotViewModel.ModeItems = difficultyItems;
                         viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
                         viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
                         viewModel.SystemType = systemSettings.System;
                         break;
+
                     case GameType.CascadingSlots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.CascadingSlotsConfig);
-                        viewModel.SlotViewModel.ModeItems = difficultyItems;
                         break;
+
+                    case GameType.SlotRNG:
+                        viewModel.SlotViewModel = new SlotViewModel();
+                        viewModel.Type = GameType.SlotRNG;
+                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
+                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
+                        break;
+
                     default:
                         viewModel.Type = GameType.AutoRNG;
                         var choices = GetBetChoices(game.Info.Name);
@@ -136,6 +141,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
                         break;
                 }
+                viewModel.DetailsView = GetDetailsView(viewModel.Type);
             }
 
             return viewModel;
@@ -159,6 +165,23 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Where(game => (game.Info.Type == request.GameType || game.Info.Type == 0) && !game.Info.Name.Equals(Game.LuckyWheelValue))
                 .Select(game => Game.FromGameName(game.Info.Name))
                 .OrderBy(game => game.GameId);
+        }
+
+        private string GetDetailsView(GameType type)
+        {
+            var name = "GameDetails_";
+            switch (type)
+            {
+                case GameType.AutoRNG:
+                case GameType.SlotRNG:
+                    name += "RNG";
+                    break;
+
+                default:
+                    name += Enum.GetName(typeof(GameType), type);
+                    break;
+            }
+            return name;
         }
 
         private static List<BotRatioItemViewModel> GenerateBotRatioItems(double[] botRatios, int totalBot)
@@ -246,8 +269,14 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 case GameType.Slots:
                     return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type));
+
                 case GameType.CascadingSlots:
-                    return gameService.UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type));
+                    return gameService
+                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type));
+
+                case GameType.SlotRNG:
+                    return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig));
+
                 default:
                     return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting));
             }
@@ -263,7 +292,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 request.BotSettings,
                 request.BetLimit,
                 request.GameInfo.Type == GameType.Slots ? request.SlotConfigs : null,
-                request.GameInfo.Type == GameType.CascadingSlots ? request.CascadingSlotsConfig : null);
+                request.GameInfo.Type == GameType.CascadingSlots ? request.CascadingSlotsConfig : null,
+                request.GameInfo.Type == GameType.SlotRNG ? request.SlotRNGConfig : null);
 
             return gameService.Add(gameConfig);
         }
@@ -381,8 +411,10 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 case GameType.CascadingSlots:
                     return gameService.UpdateCascadingSlotOdds(request.Name, request.CascadingSlotsConfig);
+
                 case GameType.Slots:
                     return gameService.UpdateSlotIconOdds(request.Name, request.ClassicIcons);
+
                 default:
                     return gameService.UpdateOdds(request);
             }

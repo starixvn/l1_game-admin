@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
-using GamesAdmin.Api.CurrencyGroupGames;
-using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Api.SentryClient;
@@ -54,6 +52,8 @@ namespace GamesAdmin.Api.Games
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
+
+        Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -64,24 +64,18 @@ namespace GamesAdmin.Api.Games
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<GameConfigEntity> repository;
         private readonly INotificationService notificationService;
-        private readonly ICurrencyGroupGameService currencyGroupGameService;
-        private readonly ICurrencyGroupService currencyGroupService;
 
         public GameSettingsService(
             IMapper mapper,
             ISentryClient sentryClient,
             IGenericRepository<GameConfigEntity> repository,
-            INotificationService notificationService,
-            ICurrencyGroupGameService currencyGroupGameService,
-            ICurrencyGroupService currencyGroupService
+            INotificationService notificationService
             )
         {
             this.repository = repository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.notificationService = notificationService;
-            this.currencyGroupGameService = currencyGroupGameService;
-            this.currencyGroupService = currencyGroupService;
         }
 
         public async Task<IEnumerable<GameConfig>> Get()
@@ -121,6 +115,7 @@ namespace GamesAdmin.Api.Games
                     HoursMaxBot = game.BotSetting.HoursMaxBot,
                     SlotsConfig = game.SlotsConfig,
                     CascadingSlotsConfig = game.CascadingSlotsConfig,
+                    SlotRNGConfig = game.SlotRNGConfig,
                     SiteExclusions = new string[] { },
                     Time = DateTime.Now,
                     GameId = (int)gameEnum.GameId,
@@ -522,6 +517,29 @@ namespace GamesAdmin.Api.Games
 
                 return false;
             }
+        }
+
+        public async Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig)
+        {
+            var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
+            var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
+            sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+
+            var update = Builders<GameConfigEntity>.Update
+                .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
+                .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
+                .Set(field => field.SlotRNGConfig.Mode, slotRNGConfig.Mode)
+                .Set(field => field.SlotRNGConfig.LuckySpinFrom, slotRNGConfig.LuckySpinFrom)
+                .Set(field => field.SlotRNGConfig.LuckySpinTo, slotRNGConfig.LuckySpinTo)
+                .Set(field => field.Botenabled, botSetting.BotEnabled)
+                .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
+                .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
+                .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
+                .Set(field => field.RandomMode, gameInfo.RandomMode);
+
+            await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
+
+            return true;
         }
     }
 }

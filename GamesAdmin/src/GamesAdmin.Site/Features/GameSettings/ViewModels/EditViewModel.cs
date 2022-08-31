@@ -76,6 +76,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
 
         public string SystemType { get; set; }
+        
+        public SlotRNGConfig SlotRNGConfig { get; set; }
+
+        public string DetailsView { get; set; }
     }
 
     public class BotRatioItemViewModel

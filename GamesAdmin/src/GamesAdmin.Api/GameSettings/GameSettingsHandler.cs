@@ -25,6 +25,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateOddsByCountsRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<UpdateBetaVersionRequest, bool>
+        , IRequestHandler<UpdateSlotRNGConfigRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly IGlobalConfigService globalConfigService;
@@ -87,5 +88,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
             => gameService.UpdateBetaVersion(request.Names, request.IsBeta);
+
+        public Task<bool> Handle(UpdateSlotRNGConfigRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSlotRNGConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig);
     }
 }

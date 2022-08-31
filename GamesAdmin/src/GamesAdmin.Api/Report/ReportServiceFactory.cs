@@ -55,6 +55,7 @@ namespace GamesAdmin.Api.Report
             { GameId.UnbalancedBigSmall2, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall2RoundEntity, UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>) },
             { GameId.UnbalancedBigSmall3, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall3RoundEntity, UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>) },
             { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall4RoundEntity, UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>) },
+            { GameId.FruitSlot, typeof(FruitSlotReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;
