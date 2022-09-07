@@ -661,14 +661,17 @@ namespace GamesAdmin.Site.Features.Report
             };
 
             var result = await reportService.GetCascadingSlotBetHistory(filter);
-
-            return new CascadingSlotBetHistoryViewModel
+            var viewModel =  new CascadingSlotBetHistoryViewModel
             {
                 Game = request.Game.Value,
                 ConvertToUSD = request.ConvertToUSD,
                 Round = mapper.Map<CascadingSlotRecordViewModel>(result.Round),
                 Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplierViewModel>(x))
             };
+
+            viewModel.Round.ConvertToUSD(request.ConvertToUSD);
+
+            return viewModel;
         }
     }
 }
