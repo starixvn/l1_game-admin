@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
@@ -11,6 +9,8 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -425,10 +425,18 @@ namespace GamesAdmin.Api._Shared
                         new ChoiceHistory("ANTE", source.AnteOdds, source.Time, source.Ante, source.SettlementResult?.Ante ?? 0)
                     };
 
-                    if (source.Ended && !source.IsFold)
+                    if (source.Call > 0)
                     {
                         choiceHistories.Add(new ChoiceHistory("CALL", source.CallOdds, source.CallTime, source.Call, source.SettlementResult?.Call ?? 0));
+                    }
+
+                    if (source.Turn > 0)
+                    {
                         choiceHistories.Add(new ChoiceHistory("TURN", source.TurnOdds, source.TurnTime, source.Turn, source.SettlementResult?.Turn ?? 0));
+                    }
+
+                    if (source.River > 0)
+                    {
                         choiceHistories.Add(new ChoiceHistory("RIVER", source.RiverOdds, source.RiverTime, source.River, source.SettlementResult?.River ?? 0));
                     }
 
