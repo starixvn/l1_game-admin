@@ -82,7 +82,7 @@ namespace GamesAdmin.Api.GameServers
 
     public interface IMiniSeDieOnlineUserApi : IOnlineUserApi
     {
-        [Get("/api/{name}/onlineusers")]
+        [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
@@ -238,19 +238,19 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
+
     public interface ITreasureIslandOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
+
     public interface IBlockchainBaccaratOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
+
     public interface IWayToGoalOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
@@ -262,8 +262,8 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/{name}/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
-     public interface IMegaKenoOnlineUserApi : IOnlineUserApi
+
+    public interface IMegaKenoOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/megakeno/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
