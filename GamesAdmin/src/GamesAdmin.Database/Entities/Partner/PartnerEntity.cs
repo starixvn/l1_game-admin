@@ -18,6 +18,8 @@ namespace GamesAdmin.Database.Entities
 
         public string MiniVersionUrl { get; set; }
 
+        public string MegaKenoUrl { get; set; }
+
         public string TestCurrencyUrl { get; set; }
     }
 }

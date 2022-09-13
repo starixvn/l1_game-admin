@@ -3,9 +3,7 @@
 
 @model IndexViewModel;
 
-@{
-    ViewData["Title"] = "Partners";
-}
+@{ ViewData["Title"] = "Partners"; }
 
 @section Styles {
     <link href="~/css/partner.min.css" rel="stylesheet" asp-append-version="true" />
@@ -14,17 +12,16 @@
 <div class="col-md-12 col-lg-12 p-0">
     @if (Model.EditPermission)
     {
-        <div class="row align-items-center list-actions">
-            <div class="col-auto  ">
-                <input type="button" onclick="partner.showPartnerUMForm()" value="Partner UM" class="btn-gray btn-enable" />
-                <input type="button" onclick="partner.showSCUMForm()" value="SC UM" class="btn-gray btn-enable" />
-                <input type="button" onclick="partner.showUpdateSuperPlayersForm()" value="Backdoor UM Account" class="btn-add btn-enable" />
-                <button class="btn-add" onclick="partner.showAddForm()">
-                    Add Partner
-                </button>
-            </div>
-        </div>
-    }
+<div class="row align-items-center list-actions">
+    <div class="col-auto  ">
+        <input type="button" onclick="partner.showPartnerUMForm()" value="Partner UM" class="btn-gray btn-enable" />
+        <input type="button" onclick="partner.showSCUMForm()" value="SC UM" class="btn-gray btn-enable" />
+        <input type="button" onclick="partner.showUpdateSuperPlayersForm()" value="Backdoor UM Account" class="btn-add btn-enable" />
+        <button class="btn-add" onclick="partner.showAddForm()">
+            Add Partner
+        </button>
+    </div>
+</div>}
 
     <table id="partner-table" class="table table-bordered has-background sticky-table @(Model.EditPermission ? "action-bar-visible" : "action-bar-invisible")">
         <thead>
@@ -38,11 +35,11 @@
                 <th>Saba.club URL</th>
                 <th>Instant URL</th>
                 <th>Saba.mobi URL</th>
+                <th>Mega Keno URL</th>
                 <th>Test Currency URL</th>
                 @if (Model.EditPermission)
                 {
-                    <th></th>
-                }
+    <th></th>}
             </tr>
         </thead>
 
@@ -51,114 +48,90 @@
             var rowSpan = Model.Partners.Count();
             var firstRowData = Model.Partners[0];
             var firstPartnerUmInfo = Model.GetPartnerUmInfo(firstRowData.PartnerId);
-            <tbody id="partner-body-content">
-                @if (firstRowData != null)
-                {
-                    <tr>
-                        <td class="text-center">
-                            <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
-                        </td>
-                        <td>@firstRowData.PartnerId</td>
-                        <td>@firstRowData.Name</td>
-                        <td>
-                            @{
-                                if (firstPartnerUmInfo != null)
+<tbody id="partner-body-content">
+    @if (firstRowData != null)
+    {
+<tr>
+    <td class="text-center">
+        <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@firstRowData.PartnerId" value="@firstRowData.Name" />
+    </td>
+    <td>@firstRowData.PartnerId</td>
+    <td>@firstRowData.Name</td>
+    <td>
+        @{ if (firstPartnerUmInfo != null)
                                 {
-                                    <p class="text-danger">ON</p>
+            <p class="text-danger">ON</p>
                                     <button class="btn-info" title="@(firstPartnerUmInfo)" data-toggle="tooltip">
                                         <i class="icon-info"></i>
-                                    </button>
-                                }
-                                else
+                                    </button> }
+                                                        else
+                                                        { @("OFF") } }
+    </td>
+    <td class="sc-um-info" rowspan="@(rowSpan)">
+        @{ if (Model.SCUmInfo != null)
                                 {
-                                    @("OFF")
-                                }
-                            }
-                        </td>
-                        <td class="sc-um-info" rowspan="@(rowSpan)">
-                            @{
-                                if (Model.SCUmInfo != null)
-                                {
-                                    <p class="text-danger">ON</p>
+            <p class="text-danger">ON</p>
                                     <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
                                         <i class="icon-info"></i>
-                                    </button>
-                                }
-                                else
-                                {
-                                    @("OFF")
-                                }
-                            }
-                        </td>
-                        <td>@firstRowData.SecretKey</td>
-                        <td>@firstRowData.ClubVersionUrl</td>
-                        <td>@firstRowData.MiniVersionUrl</td>
-                        <td>@firstRowData.MobiVersionUrl</td>
-                        <td>@firstRowData.TestCurrencyUrl</td>
-                        @if (Model.EditPermission)
-                        {
-                            <td class="text-center">
-                                <button class="btn-edit" onclick="partner.showEditForm('@firstRowData.PartnerId')"><i class="icon-edit"></i></button>
-                            </td>
-                        }
-                    </tr>
-                }
+                                    </button> }
+                                                        else
+                                                        { @("OFF") } }
+    </td>
+    <td>@firstRowData.SecretKey</td>
+    <td>@firstRowData.ClubVersionUrl</td>
+    <td>@firstRowData.MiniVersionUrl</td>
+    <td>@firstRowData.MobiVersionUrl</td>
+    <td>@firstRowData.MegaKenoUrl</td>
+    <td>@firstRowData.TestCurrencyUrl</td>
+    @if (Model.EditPermission)
+    {
+<td class="text-center">
+    <button class="btn-edit" onclick="partner.showEditForm('@firstRowData.PartnerId')"><i class="icon-edit"></i></button>
+</td>}
+</tr>                }
 
-                @foreach (var item in Model.Partners.TakeLast(rowSpan - 1))
-                {
-                    <tr>
-                        <td class="text-center">
-                            <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
-                        </td>
-                        <td>@item.PartnerId</td>
-                        <td>@item.Name</td>
-                        <td>
-                            @{
-                                var partnerUmInfo = Model.GetPartnerUmInfo(item.PartnerId);
+    @foreach (var item in Model.Partners.TakeLast(rowSpan - 1))
+    {
+<tr>
+    <td class="text-center">
+        <input class="partner-chk" type="checkbox" onclick="partner.updateCheckAllStatus();" id="@item.PartnerId" value="@item.Name" />
+    </td>
+    <td>@item.PartnerId</td>
+    <td>@item.Name</td>
+    <td>
+        @{ var partnerUmInfo = Model.GetPartnerUmInfo(item.PartnerId);
                                 if (partnerUmInfo != null)
                                 {
-                                    <p class="text-danger">ON</p>
+            <p class="text-danger">ON</p>
                                     <button class="btn-info" title="@(partnerUmInfo)" data-toggle="tooltip">
                                         <i class="icon-info"></i>
-                                    </button>
-                                }
-                                else
+                                    </button> }
+                                                        else
+                                                        { @("OFF") } }
+    </td>
+    <td class="sc-um-info" style="display:none">
+        @{ if (Model.SCUmInfo != null)
                                 {
-                                    @("OFF")
-                                }
-                            }
-                        </td>
-                        <td class="sc-um-info" style="display:none">
-                            @{
-                                if (Model.SCUmInfo != null)
-                                {
-                                    <p class="text-danger">ON</p>
+            <p class="text-danger">ON</p>
                                     <button class="btn-info" title="@(Model.SCUmInfo)" data-toggle="tooltip">
                                         <i class="icon-info"></i>
-                                    </button>
-                                }
-                                else
-                                {
-                                    @("OFF")
-                                }
-                            }
-                        </td>
-                        <td>@item.SecretKey</td>
-                        <td>@item.ClubVersionUrl</td>
-                        <td>@item.MiniVersionUrl</td>
-                        <td>@item.MobiVersionUrl</td>
-                        <td>@item.TestCurrencyUrl</td>
-                        @if (Model.EditPermission)
-                        {
-                            <td class="text-center">
-                                <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
-                            </td>
-                        }
-                    </tr>
-                }
-            </tbody>
-
-        }
+                                    </button> }
+                                                        else
+                                                        { @("OFF") } }
+    </td>
+    <td>@item.SecretKey</td>
+    <td>@item.ClubVersionUrl</td>
+    <td>@item.MiniVersionUrl</td>
+    <td>@item.MobiVersionUrl</td>
+    <td>@item.MegaKenoUrl</td>
+    <td>@item.TestCurrencyUrl</td>
+    @if (Model.EditPermission)
+    {
+<td class="text-center">
+    <button class="btn-edit" onclick="partner.showEditForm('@item.PartnerId')"><i class="icon-edit"></i></button>
+</td>}
+</tr>                }
+</tbody>}
     </table>
 
     <div class="modal fade game-modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -166,7 +139,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     Edit Partner
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -181,7 +154,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     Add Partner
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -213,8 +186,7 @@
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
                     @if (Model.EditPermission)
                     {
-                        <button type="button" class="btn btn-submit" id="updateBtn" onclick="partner.underMaintenance()">Save</button>
-                    }
+        <button type="button" class="btn btn-submit" id="updateBtn" onclick="partner.underMaintenance()">Save</button>}
                 </div>
             </div>
         </div>
@@ -236,9 +208,7 @@
                     <button type="button" class="btn-gray" data-dismiss="modal">Close</button>
                     @if (Model.EditPermission)
                     {
-                        <button type="button" class="btn btn-submit" id="update-super-players-btn" onclick="partner.updateSuperPlayers()">Save</button>
-
-                    }
+        <button type="button" class="btn btn-submit" id="update-super-players-btn" onclick="partner.updateSuperPlayers()">Save</button>}
                 </div>
             </div>
         </div>

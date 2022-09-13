@@ -29,6 +29,9 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
         [DisplayName("Instant URL")]
         public string MiniVersionUrl { get; set; }
 
+        [DisplayName("Mega Keno URL")]
+        public string MegaKenoUrl { get; set; }
+
         [Required]
         [DisplayName("Test Currency URL")]
         public string TestCurrencyUrl { get; set; }

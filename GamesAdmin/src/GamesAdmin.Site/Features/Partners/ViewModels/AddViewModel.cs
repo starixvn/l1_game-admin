@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
     public class AddViewModel : ViewModelBase
     {
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage="Partner Id should only contain characters and numbers.")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Partner Id should only contain characters and numbers.")]
         [DisplayName("Id")]
         public string PartnerId { get; set; }
 
@@ -27,6 +27,9 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
 
         [DisplayName("Instant URL")]
         public string MiniVersionUrl { get; set; }
+
+        [DisplayName("Mega Keno URL")]
+        public string MegaKenoUrl { get; set; }
 
         [Required]
         [DisplayName("Test Currency URL")]

@@ -32,13 +32,13 @@ namespace GamesAdmin.Site.Features.Partners
         }
 
         public async Task<IndexViewModel> Handle(IndexRequest request, CancellationToken cancellationToken)
-            => new IndexViewModel { Partners = (await partnerService.GetAll()).ToList() , UmInfos = (await partnerService.GetAllUMInfo()).ToList()};
+            => new IndexViewModel { Partners = (await partnerService.GetAll()).ToList(), UmInfos = (await partnerService.GetAllUMInfo()).ToList() };
 
         public async Task<ResultBase> Handle(AddPartnerRequest request, CancellationToken cancellationToken)
             => await partnerService.Add(request.PartnerInfo);
 
         public async Task<ResultBase> Handle(UpdateRequest request, CancellationToken cancellationToken)
-            => await partnerService.Update(new Partner(request.PartnerId, request.Name, request.SecretKey, request.ClubVersionUrl, request.MobiVersionUrl, request.MiniVersionUrl, request.TestCurrencyUrl));
+            => await partnerService.Update(new Partner(request.PartnerId, request.Name, request.SecretKey, request.ClubVersionUrl, request.MobiVersionUrl, request.MiniVersionUrl, request.MegaKenoUrl, request.TestCurrencyUrl));
 
         public async Task<PartnerEditViewModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
             => mapper.Map<PartnerEditViewModel>(await partnerService.GetById(request.PartnerId));
