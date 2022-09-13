@@ -73,7 +73,20 @@ namespace GamesAdmin.Api.ChatBot
                 Versions.Mobi => $"{systemPrefix}M",
                 Versions.Instant => $"{systemPrefix}I{GetModeName(metadata)}",
                 Versions.Cocos => $"{systemPrefix}{GetCocosVersionSuffix()}{GetModeName(metadata)}",
+                Versions.MegaKeno => $"{GetMegaKenoVersionSuffix()}{GetModeName(metadata)}",
                 _ => string.Empty,
+            };
+        }
+
+        private string GetMegaKenoVersionSuffix()
+        {
+            var systemType = systemSettings.System;
+
+            return systemType switch
+            {
+                SystemType.SC1 => "MK",
+                SystemType.VG2 => "VGK",
+                _ => string.Empty
             };
         }
 

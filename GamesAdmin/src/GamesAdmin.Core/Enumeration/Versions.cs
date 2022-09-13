@@ -4,6 +4,7 @@
     {
         Cocos = 1,
         Mobi,
-        Instant
+        Instant,
+        MegaKeno
     }
 }
