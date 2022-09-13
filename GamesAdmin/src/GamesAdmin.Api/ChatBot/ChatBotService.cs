@@ -54,10 +54,10 @@ namespace GamesAdmin.Api.ChatBot
             var game = Enum.Parse<GameId>(request.GameTypeId.ToString());
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
+            var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
-            msgBuilder.Append(string.Format(HighStakeMessageTemplate, systemSettings.System, charName, request.Amount));
+            msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount));
             msgBuilder.Append($"{Separator}{game}");
-            msgBuilder.Append(GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata));
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
@@ -70,10 +70,21 @@ namespace GamesAdmin.Api.ChatBot
 
             return version switch
             {
-                Versions.Mobi => $"{Separator}{systemPrefix}M",
-                Versions.Instant => $"{Separator}{systemPrefix}I{GetModeName(metadata)}",
-                Versions.Cocos => GetModeName(metadata),
+                Versions.Mobi => $"{systemPrefix}M",
+                Versions.Instant => $"{systemPrefix}I{GetModeName(metadata)}",
+                Versions.Cocos => $"{systemPrefix}{GetCocosVersionSuffix()}{GetModeName(metadata)}",
                 _ => string.Empty,
+            };
+        }
+
+        private string GetCocosVersionSuffix()
+        {
+            var systemType = systemSettings.System;
+
+            return systemType switch
+            {
+                SystemType.SC1 => "C",
+                _ => string.Empty
             };
         }
 
