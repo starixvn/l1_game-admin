@@ -68,7 +68,7 @@ namespace GamesAdmin.Api.Report
                     Currency = bet.Currency,
                     PartnerId = bet.OperatorId,
                     Rate = bet.Rate
-                });
+                }).OrderByDescending(bet => bet.Time);
 
             return new KenoBetHistory
             {
