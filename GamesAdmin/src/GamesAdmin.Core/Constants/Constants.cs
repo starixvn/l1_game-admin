@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Core
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core
 {
     public static class Constants
     {
@@ -20,5 +22,11 @@
     public static class CardLabels
     {
         public static readonly string[] DisplayedName = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    }
+
+    public static class SystemType
+    {
+        public const string SC1 = "SC1";
+        public const string VG2 = "VG2";
     }
 }

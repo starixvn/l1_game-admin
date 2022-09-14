@@ -166,6 +166,10 @@ namespace GamesAdmin.Api.GameServers
                 Game.UnbalancedBigSmall2Value => Game.UnbalancedBigSmall2Value,
                 Game.UnbalancedBigSmall3Value => Game.UnbalancedBigSmall3Value,
                 Game.UnbalancedBigSmall4Value => Game.UnbalancedBigSmall4Value,
+                Game.MiniSeDieValue => Game.MiniSeDieValue,
+                Game.MiniSeDie2Value => Game.MiniSeDie2Value,
+                Game.MiniSeDie3Value => Game.MiniSeDie3Value,
+                Game.MiniSeDie4Value => Game.MiniSeDie4Value,
                 _ => string.Empty,
             };
         }

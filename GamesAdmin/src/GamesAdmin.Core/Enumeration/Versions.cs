@@ -1,6 +1,6 @@
 ﻿namespace GamesAdmin.Core.Enumeration
 {
-    public enum Systems
+    public enum Versions
     {
         Cocos = 1,
         Mobi,

@@ -16,6 +16,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.FourGuardiansValue, typeof(IFourGuardiansBoardApi) },
             { Game.HeroesSlotValue, typeof(IHeroesSlotBoardApi) },
             { Game.NightClubValue, typeof(INightClubBoardApi) },
+            { Game.WayToGoalValue, typeof(IWayToGoalBoardApi) },
         };
 
         private readonly Type defaultSlotBoardApi = typeof(ISlotBoardApi);

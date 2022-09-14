@@ -42,9 +42,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
             services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
             services.AddScoped<IUnbalancedBigSmallReportRepository, UnbalancedBigSmallReportRepository>();
+            services.AddScoped<IWayToGoalReportRepository, WayToGoalReportRepository>();
             services.AddScoped<BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>>();
             services.AddScoped<BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>>();
             services.AddScoped<BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
+
+            services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
         }
     }
 }

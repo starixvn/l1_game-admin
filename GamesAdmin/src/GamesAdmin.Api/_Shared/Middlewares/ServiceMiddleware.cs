@@ -55,6 +55,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
             services.AddScoped<NightClubReport>().AddScoped<ISlotGameReport, NightClubReport>(s => s.GetService<NightClubReport>());
+            services.AddScoped<WayToGoalReport>().AddScoped<ISlotGameReport, WayToGoalReport>(s => s.GetService<WayToGoalReport>());
 
             services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
             services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());
@@ -103,6 +104,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<INightClubOnlineUserApi>(appSettings.GameServers.NightClub.Api, refitSettings));
             services.AddSingleton(RestService.For<ITreasureIslandOnlineUserApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
             services.AddSingleton(RestService.For<IBlockchainBaccaratOnlineUserApi>(appSettings.GameServers.BlockchainBaccarat.Api, refitSettings));
+            services.AddSingleton(RestService.For<IWayToGoalOnlineUserApi>(appSettings.GameServers.WayToGoal.Api, refitSettings));
             services.AddSingleton(RestService.For<IMegaKenoOnlineUserApi>(appSettings.GameServers.MegaKeno.Api, refitSettings));
             services.AddSingleton(RestService.For<IUnbalancedBigSmallOnlineUserApi>(appSettings.GameServers.UnbalancedBigSmall1.Api, refitSettings));
             services.AddSingleton(RestService.For<IMegaKeno2OnlineUserApi>(appSettings.GameServers.MegaKeno2.Api, refitSettings));
@@ -149,6 +151,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(UnbalancedBigSmallReportService<,,>));
 
             services.AddScoped<BaccaratReportService>();
+            services.AddScoped(typeof(MiniSeDieMultiplayReportService<,>));
 
             services.InitApiLog();
         }
@@ -159,7 +162,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFourGuardiansBoardApi>(appSettings.GameServers.FourGuardians.Api, refitSettings));
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<INightClubBoardApi>(appSettings.GameServers.NightClub.Api, refitSettings));
-
+            services.AddSingleton(RestService.For<IWayToGoalBoardApi>(appSettings.GameServers.WayToGoal.Api, refitSettings));
+            
             services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();
             services.AddSingleton(RestService.For<ITreasureIslandResultApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
         }

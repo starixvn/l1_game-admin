@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {

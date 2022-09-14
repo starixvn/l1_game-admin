@@ -101,6 +101,15 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.BlockchainBaccaratValue:
                     return Enumeration.GetAll<BlockchainBaccaratBetChoice>();
 
+                case Game.MiniSeDie2Value:
+                    return Enumeration.GetAll<MiniSeDieBetChoice>();
+
+                case Game.MiniSeDie3Value:
+                    return Enumeration.GetAll<MiniSeDieBetChoice>();
+
+                case Game.MiniSeDie4Value:
+                    return Enumeration.GetAll<MiniSeDieBetChoice>();
+
                 default: return default;
             }
         }

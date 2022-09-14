@@ -7,6 +7,7 @@ using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
@@ -49,6 +50,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IPartnerService partnerService;
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
+        private readonly ISystemSettings systemSettings;
 
         public GamesHandler(
             IMapper mapper,
@@ -56,7 +58,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             IGameUserService accountService,
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
-            ICurrencyGroupGameService currencyGroupGameService)
+            ICurrencyGroupGameService currencyGroupGameService,
+            ISystemSettings systemSettings)
         {
             this.mapper = mapper;
             this.gameService = gameService;
@@ -64,6 +67,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.partnerService = partnerService;
             this.currencyGroupService = currencyGroupService;
             this.currencyGroupGameService = currencyGroupGameService;
+            this.systemSettings = systemSettings;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -117,6 +121,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.SlotViewModel.ModeItems = difficultyItems;
                         viewModel.PayoutViewModel.IconOdds = GenerateIconOdds(game.SlotsConfig.Icons);
                         viewModel.JackpotViewModel = mapper.Map<JackpotViewModel>(game.SlotsConfig);
+                        viewModel.SystemType = systemSettings.System;
                         break;
                     case GameType.CascadingSlots:
                         viewModel.SlotViewModel = mapper.Map<SlotViewModel>(game.CascadingSlotsConfig);

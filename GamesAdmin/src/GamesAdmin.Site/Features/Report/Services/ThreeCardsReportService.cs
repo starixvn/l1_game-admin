@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.ViewModels;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {

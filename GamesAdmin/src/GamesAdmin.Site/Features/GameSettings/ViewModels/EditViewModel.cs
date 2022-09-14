@@ -74,6 +74,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public byte RandomMode { get; set; }
 
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
+
+        public string SystemType { get; set; }
     }
 
     public class BotRatioItemViewModel

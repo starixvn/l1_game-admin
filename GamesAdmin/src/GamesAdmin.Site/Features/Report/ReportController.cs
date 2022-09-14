@@ -1,14 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -16,10 +17,12 @@ namespace GamesAdmin.Site.Features.Report
     public class ReportController : Controller
     {
         private readonly IMediator mediator;
+        private readonly ISystemSettings systemSettings;
 
-        public ReportController(IMediator mediator)
+        public ReportController(IMediator mediator, ISystemSettings systemSettings)
         {
             this.mediator = mediator;
+            this.systemSettings = systemSettings;
         }
 
         [HttpGet]
@@ -27,6 +30,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var viewModel = await GetReportViewModel();
             viewModel.Game = game;
+            viewModel.BaseCurrency = this.systemSettings.BaseCurrency;
 
             return View("Index", viewModel);
         }
@@ -227,7 +231,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
-            return View(new BlackjackReportViewModel { ExcludeUUS = true, Selections = selections });
+            return View(new BlackjackReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
@@ -258,7 +262,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
@@ -376,7 +381,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
@@ -486,7 +492,12 @@ namespace GamesAdmin.Site.Features.Report
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
-            return View(new HiLoReportViewModel { ExcludeUUS = true, Selections = selections });
+            return View(new HiLoReportViewModel
+            {
+                BaseCurrency = systemSettings.BaseCurrency,
+                ExcludeUUS = true,
+                Selections = selections
+            });
         }
 
         [HttpGet]
@@ -513,7 +524,8 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View(viewModel);
@@ -527,7 +539,8 @@ namespace GamesAdmin.Site.Features.Report
             {
                 Game = GameId.TreasureIsland,
                 ExcludeUUS = true,
-                Selections = selections
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
             };
 
             return View("CascadingSlot", viewModel);
@@ -572,21 +585,40 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_CascadingSlotBetHistory", await mediator.Send(request));
         }
 
+        [HttpGet]
+        public IActionResult MiniSeDie2() => RedirectToAction("Index", new { game = GameId.MiniSeDie2 });
+
+        [HttpGet]
+        public IActionResult MiniSeDie3() => RedirectToAction("Index", new { game = GameId.MiniSeDie3 });
+
+        [HttpGet]
+        public IActionResult MiniSeDie4() => RedirectToAction("Index", new { game = GameId.MiniSeDie4 });
 
         [HttpGet]
         public IActionResult LasVegas() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall1 });
 
-
         [HttpGet]
         public IActionResult MarinaBay() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall2 });
-
 
         [HttpGet]
         public IActionResult Macau() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall3 });
 
-
         [HttpGet]
         public IActionResult MonteCarlo() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall4 });
+
+        [HttpGet]
+        public async Task<IActionResult> WayToGoal()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
+            };
+
+            return View(viewModel);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetUnbalancedBigSmallBetHistory(BetHistoryFilter filter, bool convertToUSD)

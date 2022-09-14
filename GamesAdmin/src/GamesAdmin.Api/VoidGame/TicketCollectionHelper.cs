@@ -48,11 +48,14 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.BlockchainBaccarat, new GameTicketCollection( string.Empty, "blockchainbaccarat_bets") },
             { GameId.MegaKeno, new GameTicketCollection( "megakeno_ones", "megakeno_bets") },
             { GameId.MegaKeno2, new GameTicketCollection( "megakeno2_ones", "megakeno2_bets") },
+            { GameId.MiniSeDie2, new GameTicketCollection( string.Empty, "minisedie2_bets") },
+            { GameId.MiniSeDie3, new GameTicketCollection( string.Empty, "minisedie3_bets") },
+            { GameId.MiniSeDie4, new GameTicketCollection( string.Empty, "minisedie4_bets") },
             { GameId.UnbalancedBigSmall1, new GameTicketCollection("unbalancedbigsmall1_bets", "unbalancedbigsmall1_betlogs") },
             { GameId.UnbalancedBigSmall2, new GameTicketCollection("unbalancedbigsmall2_bets", "unbalancedbigsmall2_betlogs") },
             { GameId.UnbalancedBigSmall3, new GameTicketCollection("unbalancedbigsmall3_bets", "unbalancedbigsmall3_betlogs") },
             { GameId.UnbalancedBigSmall4, new GameTicketCollection("unbalancedbigsmall4_bets", "unbalancedbigsmall4_betlogs") },
-        };
+           };
 
         public static GameTicketCollection GetCollections(byte gameTypeId)
         {

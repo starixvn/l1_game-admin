@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
@@ -11,6 +9,8 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -270,7 +270,7 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<SlotGameBetReportEntity, SlotGameBetRecord>()
                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number))
-               .ForMember(x => x.Partner, opt => opt.MapFrom((source) => source.PartnerId))
+               .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId))
                .ForMember(x => x.ExchangRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));
             CreateMap<SlotGameSettlementResultEntity, SlotGameSettlementResult>();
             CreateMap<SlotGameFreeSpinEntity, SlotGameFreeSpin>();
@@ -312,6 +312,21 @@ namespace GamesAdmin.Api._Shared
                    source.SecondRedChip ?? source.Result.SecondRedChip,
                    source.ThirdRedChip ?? source.Result.ThirdRedChip,
                    source.FourthRedChip ?? source.Result.FourthRedChip
+               }))
+               .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
+               .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even))
+               .ForMember(x => x.ThreeRed, opt => opt.MapFrom((source) => source.SettlementResult.ThreeRed))
+               .ForMember(x => x.FourRed, opt => opt.MapFrom((source) => source.SettlementResult.FourRed))
+               .ForMember(x => x.ThreeWhite, opt => opt.MapFrom((source) => source.SettlementResult.ThreeWhite))
+               .ForMember(x => x.FourWhite, opt => opt.MapFrom((source) => source.SettlementResult.FourWhite));
+
+            CreateMap<MiniSeDieMultiplayRoundEntity, SeDieRoundResult>()
+               .ForMember(x => x.Chips, opt => opt.MapFrom((source) => new[]
+               {
+                       source.FirstRedChip ?? source.Result.FirstRedChip,
+                       source.SecondRedChip ?? source.Result.SecondRedChip,
+                       source.ThirdRedChip ?? source.Result.ThirdRedChip,
+                       source.FourthRedChip ?? source.Result.FourthRedChip
                }))
                .ForMember(x => x.Odd, opt => opt.MapFrom((source) => source.SettlementResult.Odd))
                .ForMember(x => x.Even, opt => opt.MapFrom((source) => source.SettlementResult.Even))
@@ -410,10 +425,18 @@ namespace GamesAdmin.Api._Shared
                         new ChoiceHistory("ANTE", source.AnteOdds, source.Time, source.Ante, source.SettlementResult?.Ante ?? 0)
                     };
 
-                    if (source.Ended && !source.IsFold)
+                    if (source.Call > 0)
                     {
                         choiceHistories.Add(new ChoiceHistory("CALL", source.CallOdds, source.CallTime, source.Call, source.SettlementResult?.Call ?? 0));
+                    }
+
+                    if (source.Turn > 0)
+                    {
                         choiceHistories.Add(new ChoiceHistory("TURN", source.TurnOdds, source.TurnTime, source.Turn, source.SettlementResult?.Turn ?? 0));
+                    }
+
+                    if (source.River > 0)
+                    {
                         choiceHistories.Add(new ChoiceHistory("RIVER", source.RiverOdds, source.RiverTime, source.River, source.SettlementResult?.River ?? 0));
                     }
 

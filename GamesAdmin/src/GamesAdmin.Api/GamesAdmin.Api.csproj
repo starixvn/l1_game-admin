@@ -10,12 +10,8 @@
     <Content Remove="appsettings - Copy.LOCAL.json" />
     <Content Remove="appsettings.Debug.json" />
     <Content Remove="appsettings.Dev.json" />
-    <Content Remove="appsettings.LOCAL.json" />
-    <Content Remove="appsettings.PROD.json" />
     <Content Remove="appsettings.Release.json" />
-    <Content Remove="appsettings.SIT.json" />
     <Content Remove="appsettings.Test.json" />
-    <Content Remove="appsettings.UAT.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,22 +24,6 @@
       <DependentUpon>appsettings.json</DependentUpon>
     </None>
     <None Include="appsettings.Dev.json">
-      <IsTransformFile>true</IsTransformFile>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
-    <None Include="appsettings.LOCAL.json">
-      <IsTransformFile>true</IsTransformFile>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
-    <None Include="appsettings.PROD.json">
-      <IsTransformFile>true</IsTransformFile>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
-    <None Include="appsettings.SIT.json">
-      <IsTransformFile>true</IsTransformFile>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
-    <None Include="appsettings.UAT.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
     </None>

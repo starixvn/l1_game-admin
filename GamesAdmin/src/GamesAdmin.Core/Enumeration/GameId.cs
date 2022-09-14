@@ -42,6 +42,8 @@
         HiLo = 45,
         NightClub = 46,
         TreasureIsland = 47,
+
+        WayToGoal = 49,
         BlockchainBaccarat = 48,
         UnbalancedBigSmall1 = 50,
         UnbalancedBigSmall2 = 51,
@@ -49,5 +51,8 @@
         MegaKeno2 = 53,
         UnbalancedBigSmall3 = 54,
         UnbalancedBigSmall4 = 55,
+        MiniSeDie2 = 56,
+        MiniSeDie3 = 57,
+        MiniSeDie4 = 58,
     }
 }

@@ -110,7 +110,7 @@
                 else if (Model.ConvertToUSD)
                 {
                     <tr class="total">
-                        <td colspan="5">Total in USD</td>
+                        <td colspan="5">Total in @Model.BaseCurrency</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Big.Value])))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Small.Value])))</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.BetTickets.Sum(x => x.ConvertToBase(x.Amounts[@KenoBetChoice.Even.Value])))</td>

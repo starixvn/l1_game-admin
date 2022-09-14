@@ -46,8 +46,12 @@ namespace GamesAdmin.Core.Enumeration
         public const string NightClubValue = "nightclub";
         public const string TreasureIslandValue = "treasureisland";
         public const string BlockchainBaccaratValue = "blockchainbaccarat";
+        public const string WayToGoalValue = "waytogoal";
         public const string MegaKenoValue = "megakeno";
         public const string MegaKeno2Value = "megakeno2";
+        public const string MiniSeDie2Value = "minisedie2";
+        public const string MiniSeDie3Value = "minisedie3";
+        public const string MiniSeDie4Value = "minisedie4";
         public const string UnbalancedBigSmall1Value = "unbalancedbigsmall1";
         public const string UnbalancedBigSmall2Value = "unbalancedbigsmall2";
         public const string UnbalancedBigSmall3Value = "unbalancedbigsmall3";
@@ -94,10 +98,14 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Hold'em", GameId.TexasHoldemPoker);
         public static readonly Game NightClub = new Game(NightClubValue, "Night Club", GameId.NightClub);
         public static readonly Game TreasureIsland = new Game(TreasureIslandValue, "Treasure Island", GameId.TreasureIsland);
+        public static readonly Game WayToGoal = new Game(WayToGoalValue, "Way To Goal", GameId.WayToGoal);
         public static readonly Game BlockchainBaccarat = new Game(BlockchainBaccaratValue, "Blockchain Baccarat", GameId.BlockchainBaccarat);
         public static readonly Game MegaKeno = new Game(MegaKenoValue, "Mega Keno", GameId.MegaKeno);
         public static readonly Game UnbalancedBigSmall1 = new Game(UnbalancedBigSmall1Value, "Las Vegas", GameId.UnbalancedBigSmall1);
         public static readonly Game MegaKeno2 = new Game(MegaKeno2Value, "Mega Keno 2", GameId.MegaKeno2);
+        public static readonly Game MiniSeDie2 = new Game(MiniSeDie2Value, "Mini Sedie 2", GameId.MiniSeDie2);
+        public static readonly Game MiniSeDie3 = new Game(MiniSeDie3Value, "Mini Sedie 3", GameId.MiniSeDie3);
+        public static readonly Game MiniSeDie4 = new Game(MiniSeDie4Value, "Mini Sedie 4", GameId.MiniSeDie4);
         public static readonly Game UnbalancedBigSmall2 = new Game(UnbalancedBigSmall2Value, "Marina Bay", GameId.UnbalancedBigSmall2);
         public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Macau", GameId.UnbalancedBigSmall3);
         public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Monte Carlo", GameId.UnbalancedBigSmall4);
@@ -152,11 +160,13 @@ namespace GamesAdmin.Core.Enumeration
             BlockchainBaccarat,
             MegaKeno,
             MegaKeno2,
+            MiniSeDie2,
+            MiniSeDie3,
+            MiniSeDie4,
             UnbalancedBigSmall1,
             UnbalancedBigSmall2,
             UnbalancedBigSmall3,
             UnbalancedBigSmall4,
         };
-
     }
 }

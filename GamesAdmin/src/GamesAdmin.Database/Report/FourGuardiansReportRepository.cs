@@ -46,7 +46,7 @@ namespace GamesAdmin.Database
                     UserId = x.Uid,
                     Paid = x.Paid,
                     Currency = x.Currency,
-                    PartnerId = x.PartnerId,
+                    OperatorId = x.OperatorId,
                     Rate = x.Rate,
                     ExchangeRateId = x.ExchangeRateId
                 });
@@ -101,7 +101,7 @@ namespace GamesAdmin.Database
 
             if (!string.IsNullOrWhiteSpace(filter.PartnerId))
             {
-                expression = expression.And(x => x.PartnerId == filter.PartnerId);
+                expression = expression.And(x => x.OperatorId == filter.PartnerId);
             }
 
             if (!string.IsNullOrWhiteSpace(filter.Nickname))

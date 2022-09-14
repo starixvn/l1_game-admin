@@ -1,15 +1,17 @@
-﻿using System;
+﻿using GamesAdmin.Api._Shared.Extensions;
+using GamesAdmin.Api.GameUser.Results;
+using GamesAdmin.Core;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Site._Shared.Configurations;
+using MongoDB.Driver;
+using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GamesAdmin.Api._Shared.Extensions;
-using GamesAdmin.Api.GameUser.Results;
-using GamesAdmin.Database;
-using GamesAdmin.Database.Entities;
-using MongoDB.Driver;
-using Sentry;
 
 namespace GamesAdmin.Api.GameUser
 {
@@ -26,18 +28,41 @@ namespace GamesAdmin.Api.GameUser
         Task<int> Deactivate();
     }
 
+    internal class SystemBotSetting
+    {
+        public int minBalance { get; set; }
+        public int maxBalance { get; set; }
+        public int minAmount { get; set; }
+        public int maxAmount { get; set; }
+        public int minAddAmount { get; set; }
+        public int maxAddAmount { get; set; }
+    }
+
     public class BotService : IBotService
     {
+        private readonly Dictionary<string, SystemBotSetting> systemBotSettings = new Dictionary<string, SystemBotSetting>() {
+            {SystemType.SC1, new SystemBotSetting {
+                minBalance = 500,
+                maxBalance = 3_000,
+                minAmount = 500,
+                maxAmount = 12_000,
+                minAddAmount = 1_000,
+                maxAddAmount = 8_000,
+                }
+            },
+            {SystemType.VG2, new SystemBotSetting {
+                minBalance = 500_000,
+                maxBalance = 3_000_000,
+                minAmount = 500_000,
+                maxAmount = 12_000_000,
+                minAddAmount = 1_000_000,
+                maxAddAmount = 8_000_000,
+                }
+            }
+        };
+
         private const int DisabledBotRatio = 1;
         private const int InactiveBotsNumber = 500;
-
-        private const int minBalance = 500;
-        private const int maxBalance = 3_000;
-        private const int minAmount = 500;
-        private const int maxAmount = 12_000;
-        private const int minAddAmount = 1_000;
-        private const int maxAddAmount = 8_000;
-
         private const int minAmountScale = 1;
         private const int maxAmountScale = 8;
         private const int minCharNameLength = 3;
@@ -53,31 +78,35 @@ namespace GamesAdmin.Api.GameUser
         private readonly ISentryClient sentryClient;
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
         private readonly IGenericRepository<AccountEntity> accountRepository;
+        private readonly SystemBotSetting botSetting;
 
         public BotService(
             IGenericRepository<AccountInfoEntity> accountInfoRepository,
             ISentryClient sentryClient,
-            IGenericRepository<AccountEntity> accountRepository)
+            IGenericRepository<AccountEntity> accountRepository,
+            ISystemSettings systemSettings
+            )
         {
             this.accountInfoRepository = accountInfoRepository;
             this.sentryClient = sentryClient;
             this.accountRepository = accountRepository;
+            botSetting = systemBotSettings[systemSettings.System];
         }
 
         public async Task<int> ReviseBalance()
         {
-            sentryClient.CaptureMessage($"Start task ReviseBalance {DateTime.Now} with minInitAmount {minBalance}");
+            sentryClient.CaptureMessage($"Start task ReviseBalance {DateTime.Now} with minInitAmount {botSetting.minBalance}");
 
             return await AddBalance() + await ResetBalance();
         }
 
         public async Task<int> AddBalance()
         {
-            var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red < minAmount)).ToList();
+            var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red < botSetting.minAmount)).ToList();
 
             foreach (var bot in botList)
             {
-                var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Red), bot.Red + new Random().Next(minAddAmount, maxAddAmount));
+                var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Red), bot.Red + new Random().Next(botSetting.minAddAmount, botSetting.maxAddAmount));
                 await accountInfoRepository.UpdateAsync(entity => entity.Id == bot.Id, update);
             }
 
@@ -88,12 +117,12 @@ namespace GamesAdmin.Api.GameUser
 
         public async Task<int> ResetBalance()
         {
-            var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= maxAmount && entity.PatternId == 0)).ToList();
+            var botList = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && entity.Red >= botSetting.maxAmount && entity.PatternId == 0)).ToList();
             var strBuilder = new StringBuilder($"ResetBalance for {botList.Count}");
 
             foreach (var bot in botList)
             {
-                var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Red), new Random().Next(minBalance, maxBalance));
+                var update = Builders<AccountInfoEntity>.Update.Set(nameof(AccountInfoEntity.Red), new Random().Next(botSetting.minBalance, botSetting.maxBalance));
                 await accountInfoRepository.UpdateAsync(entity => entity.Id == bot.Id, update);
 
                 strBuilder.Append($" {bot.Name} : new balance {bot.Red};");
