@@ -21,7 +21,7 @@
                         <td class="text-center">@Model.RoundResult.Number</td>
                         <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td class="text-center">
-                            @foreach (var chip in Model.RoundResult.Chips)
+                            @foreach (var chip in Model.RoundResult.Chips.OrderByDescending(x => x))
                             {
                                 if (chip)
                                 {
