@@ -10,7 +10,6 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -269,7 +268,7 @@ namespace GamesAdmin.Api.Games
                 }
 
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot, ratios);
+                var changedSettings = SettingHelper.GetBotRatiosChangedModel(gameEntity.HoursMaxBot.Any() ? gameEntity.HoursMaxBot : new double[24], ratios);
                 sentryClient.CaptureChangedSettings(name, "Bot Ratios", " (GMT-4)", changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.HoursMaxBot, ratios);
