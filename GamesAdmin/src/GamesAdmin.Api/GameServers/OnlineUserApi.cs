@@ -82,7 +82,7 @@ namespace GamesAdmin.Api.GameServers
 
     public interface IMiniSeDieOnlineUserApi : IOnlineUserApi
     {
-        [Get("/api/onlineusers")]
+        [Get("/api/{name}/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
