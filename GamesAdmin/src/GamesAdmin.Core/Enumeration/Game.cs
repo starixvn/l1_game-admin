@@ -90,10 +90,10 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game HeroesSlot = new Game(HeroesSlotValue, "Heroes Slot", GameId.HeroesSlot);
         public static readonly Game CasinoHoldemPoker = new Game(CasinoHoldemPokerValue, "Casino Hold'em", GameId.CasinoHoldemPoker);
         public static readonly Game BitcoinMaster = new Game(BitcoinMasterValue, "Bitcoin Master", GameId.BitcoinMaster);
-        public static readonly Game KenoMatch1 = new Game(KenoMatch1Value, "Keno Match", GameId.KenoMatch1);
-        public static readonly Game KenoMatch2 = new Game(KenoMatch2Value, "Keno Match MD5", GameId.KenoMatch2);
+        public static readonly Game KenoMatch1 = new Game(KenoMatch1Value, "Keno Soccer", GameId.KenoMatch1);
+        public static readonly Game KenoMatch2 = new Game(KenoMatch2Value, "Keno Soccer 2", GameId.KenoMatch2);
         public static readonly Game KenoPower1 = new Game(KenoPower1Value, "Keno Power", GameId.KenoPower1);
-        public static readonly Game KenoPower2 = new Game(KenoPower2Value, "Keno Power MD5", GameId.KenoPower2);
+        public static readonly Game KenoPower2 = new Game(KenoPower2Value, "Keno Power 2", GameId.KenoPower2);
         public static readonly Game HiLo = new Game(HiLoValue, "Hi-Lo", GameId.HiLo);
         public static readonly Game TexasHoldemPoker = new Game(TexasHoldemPokerValue, "Texas Hold'em", GameId.TexasHoldemPoker);
         public static readonly Game NightClub = new Game(NightClubValue, "Night Club", GameId.NightClub);

@@ -1,4 +1,7 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -7,9 +10,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -170,14 +170,14 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        [ActionName("kenomatch")]
+        [ActionName("kenosoccer")]
         public IActionResult KenoMatch1()
         {
             return RedirectToAction("Index", new { game = GameId.KenoMatch1 });
         }
 
         [HttpGet]
-        [ActionName("kenomatchmd5")]
+        [ActionName("kenosoccer2")]
         public IActionResult KenoMatch2()
         {
             return RedirectToAction("Index", new { game = GameId.KenoMatch2 });
@@ -191,7 +191,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        [ActionName("kenopowermd5")]
+        [ActionName("kenopower2")]
         public IActionResult KenoPower2()
         {
             return RedirectToAction("Index", new { game = GameId.KenoPower2 });
