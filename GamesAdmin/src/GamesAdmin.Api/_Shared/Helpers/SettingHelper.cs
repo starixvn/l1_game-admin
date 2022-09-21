@@ -66,12 +66,15 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Maxbet", oldConfig.Minbet.ToString(), newConfig.MaxBet.ToString()),
             };
 
-            foreach (var c in newConfig.MaxBetChoices)
+            if(newConfig.MaxBetChoices != null)
             {
-                var oldText = oldConfig.MaxBetChoices == null ? string.Empty : oldConfig.MaxBetChoices[c.Key].ToString();
-                var setting = new SettingChangedModel($"MaxBetPerChoices {c.Key}", oldText, c.Value.ToString());
+                foreach (var c in newConfig.MaxBetChoices)
+                {
+                    var oldText = oldConfig.MaxBetChoices == null ? string.Empty : oldConfig.MaxBetChoices[c.Key].ToString();
+                    var setting = new SettingChangedModel($"MaxBetPerChoices {c.Key}", oldText, c.Value.ToString());
 
-                changedSettings.Add(setting);
+                    changedSettings.Add(setting);
+                }
             }
 
             return changedSettings;
