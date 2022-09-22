@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("specialsedie_ones")]
-    public class SpecialSeDieOnesEntity : BaseBetEntity
+    public class SpecialSeDieOnesEntity : BasePoolBetEntity
     {
         public string Choice { get; set; }
 

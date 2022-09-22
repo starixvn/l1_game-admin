@@ -11,7 +11,7 @@ namespace GamesAdmin.Database.Report
     {
         Task<(TRoundEntity, IEnumerable<StakeBalancedBetReportEntity>)> GetAsync<TRoundEntity, TBetEntity>(long roundId, string nickname, bool excludeBot, string partnerId, string username, string defaultChoice)
             where TRoundEntity : BaseRoundEntity, new()
-            where TBetEntity : BaseBetEntity;
+            where TBetEntity : BasePoolBetEntity;
     }
 
     public class StakeBalancedReportRepository : BaseBetReportRepository, IStakeBalancedReportRepository
@@ -23,7 +23,7 @@ namespace GamesAdmin.Database.Report
         public async Task<(TRoundEntity, IEnumerable<StakeBalancedBetReportEntity>)> GetAsync<TRoundEntity, TBetEntity>(
             long roundId, string nickname, bool excludeBot, string partnerId, string username, string defaultChoice)
             where TRoundEntity : BaseRoundEntity, new()
-            where TBetEntity : BaseBetEntity
+            where TBetEntity : BasePoolBetEntity
         {
             var roundResult = await database.GetCollection<TRoundEntity>(Document.GetCollectionName(typeof(TRoundEntity)))
                 .Find(x => x.Number == roundId)

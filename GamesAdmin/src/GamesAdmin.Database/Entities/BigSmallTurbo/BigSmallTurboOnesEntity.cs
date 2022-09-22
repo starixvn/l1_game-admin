@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("txturbo_ones")]
-    public class BigSmallTurboOnesEntity : BaseBetEntity
+    public class BigSmallTurboOnesEntity : BasePoolBetEntity
     {
         [BsonElement("tralai")]
         public decimal? Back { get; set; }

@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("bitcoinmaster_betlogs")]
-    public class BitcoinMasterBetEntity : BaseBetEntity
+    public class BitcoinMasterBetEntity : BasePoolBetEntity
     {
         public string Choice { get; set; }
 

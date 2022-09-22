@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("taixiu_cuocs")]
-    public class BigSmallBetEntity : BaseBetEntity
+    public class BigSmallBetEntity : BasePoolBetEntity
     {
         [BsonElement("taixiu")]
         public bool BigSmall { get; set; }

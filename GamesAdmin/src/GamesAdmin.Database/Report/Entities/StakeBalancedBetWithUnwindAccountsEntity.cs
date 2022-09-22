@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class StakeBalancedBetWithUnwindAccountsEntity : BaseBetEntity
+    public class StakeBalancedBetWithUnwindAccountsEntity : BasePoolBetEntity
     {
         public decimal? Back { get; set; }
 

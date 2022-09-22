@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("bitcoinmaster_bets")]
-    public class BitcoinMasterOnesEntity : BaseBetEntity
+    public class BitcoinMasterOnesEntity : BasePoolBetEntity
     {
         public decimal Refund { get; set; }
 
