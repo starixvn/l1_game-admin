@@ -322,6 +322,10 @@ namespace GamesAdmin.Api.Games
                     throw new InvalidOperationException($"Odds of game {name} are empty.");
                 }
 
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetCascadingSlotOddsChangedModel(gameEntity.CascadingSlotsConfig, cascadingSlotsConfig);
+                sentryClient.CaptureChangedSettings(name, "Cascading Slot Odds Config", string.Empty, changedSettings);
+
                 var update = Builders<GameConfigEntity>.Update
                     .Set(field => field.CascadingSlotsConfig.OddsByCounts, cascadingSlotsConfig.OddsByCounts)
                     .Set(field => field.CascadingSlotsConfig.FreeSpins, cascadingSlotsConfig.FreeSpins);
@@ -411,6 +415,10 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, gameEntity.CascadingSlotsConfig);
+                sentryClient.CaptureChangedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
+
                 var update = Builders<GameConfigEntity>.Update
                        .Set(field => field.Botenabled, botEnabled)
                        .Set(field => field.CascadingSlotsConfig.MultiplierBonus, cascadingSlotsConfig.MultiplierBonus)

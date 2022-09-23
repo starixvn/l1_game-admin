@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GamesAdmin.Api.SentryClient;
+﻿using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GamesAdmin.Api._Shared.Helpers
 {
@@ -83,7 +83,6 @@ namespace GamesAdmin.Api._Shared.Helpers
         public static List<SettingChangedModel> GetSlotConfigChangedModel(
             GameConfigEntity oldConfig, bool botEnabled, SlotsConfig newConfig)
         {
-
             var changedSettings = new List<SettingChangedModel>
             {
                 new SettingChangedModel("Bonus", GetValue(oldConfig.SlotsConfig.Bonus), GetValue(newConfig.Bonus)),
@@ -128,7 +127,6 @@ namespace GamesAdmin.Api._Shared.Helpers
 
             for (var i = 0; i < stakeLevels.Count; i++)
             {
-
                 var setting = new SettingChangedModel($"Stake level {i + 1}", GetValue(oldConfig.SlotsConfig.StakeLevels[i]), GetValue(stakeLevels[i]));
 
                 changedSettings.Add(setting);
@@ -173,6 +171,68 @@ namespace GamesAdmin.Api._Shared.Helpers
             }
 
             return changedSettings;
+        }
+
+        public static List<SettingChangedModel> GetCascadingSlotOddsChangedModel(CascadingSlotsConfig oldConfig, CascadingSlotsConfig newConfig)
+        {
+            var oldOddsByCount = oldConfig.OddsByCounts;
+            var newOddsByCount = newConfig.OddsByCounts;
+            var oldInitialFreeSpinOdds = oldConfig.FreeSpins.InitialOdds;
+            var newInitialFreespinOdds = newConfig.FreeSpins.InitialOdds;
+
+            var changedSettings = new List<SettingChangedModel>
+            {
+               new SettingChangedModel("Additional Free Spins Bonus", oldConfig.FreeSpins.AdditionalOdds.Count.ToString(), newConfig.FreeSpins.AdditionalOdds.Count.ToString()),
+            };
+
+            for(int i = 0; i < newInitialFreespinOdds.Count; i++)
+            {
+                var oldSettingsString = $"[{oldInitialFreeSpinOdds[i].Count}] : {oldInitialFreeSpinOdds[i].Odds}";
+                var newSettingsString = $"[{newInitialFreespinOdds[i].Count}] : {newInitialFreespinOdds[i].Odds}";
+                var settingChanged = new SettingChangedModel("Initial FreeSpin Odds", oldSettingsString, newSettingsString);
+
+                changedSettings.Add(settingChanged);
+            }
+
+            foreach (var iconSettings in newOddsByCount)
+            {
+                var oldValue = GetOddsByCountConfigString(iconSettings.Value);
+                var newValue = GetOddsByCountConfigString(oldOddsByCount[iconSettings.Key]);
+                var settingChanged = new SettingChangedModel($"Odds Icon {iconSettings.Key + 1}", oldValue, newValue);
+
+                changedSettings.Add(settingChanged);
+            }
+
+            return changedSettings;
+        }
+
+        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig,bool newBotEnabled, CascadingSlotsConfig newConfig)
+        {
+            var oldConfig = gameConfig.CascadingSlotsConfig;
+
+            var settingChanged = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("Bot Enable", gameConfig.Botenabled.ToString(), newBotEnabled.ToString()),
+                new SettingChangedModel("Multiplier Bonus", newConfig.MultiplierBonus.ToString(), oldConfig.MultiplierBonus.ToString()),
+                new SettingChangedModel("Big Win Ratio", newConfig.BigWinRatio.ToString(), oldConfig.BigWinRatio.ToString()),
+                new SettingChangedModel("Mode", newConfig.Mode.ToString(), oldConfig.Mode.ToString()),
+                new SettingChangedModel("Bet Multiplier", newConfig.BetMultiplier.ToString(), oldConfig.BetMultiplier.ToString()),
+                new SettingChangedModel("Bet Level", newConfig.BetLevels.ToString(), oldConfig.BetLevels.ToString()),
+            };
+
+            return settingChanged;
+        }
+
+        private static string GetOddsByCountConfigString(IList<OddsByCount> oddsByCount)
+        {
+            string configString = "";
+
+            for (int i = 0; i < oddsByCount.Count; i++)
+            {
+                configString += $"[{oddsByCount[i].From} - {oddsByCount[i].To}] : {oddsByCount[i].Odds}; ";
+            }
+
+            return configString;
         }
 
         private static string GetValue(Bonus bonus) => $"Min: {bonus.Min} - Max: {bonus.Max}";
