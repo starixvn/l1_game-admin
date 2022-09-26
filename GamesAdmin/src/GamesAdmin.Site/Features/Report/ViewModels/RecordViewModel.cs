@@ -218,17 +218,17 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string IconsFolder => Game?.ToLowerInvariant();
         public string SystemType { get; set; }
 
-        public void ConvertToUSD(bool isConvert)
+        public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (isConvert)
             {
-                TotalAmount *= (decimal)Rate;
-                BetWin *= (decimal)Rate;
-                Bet *= (decimal)Rate;
+                TotalAmount *= (decimal)Rate / baseCurrencyMultiplier;
+                BetWin *= (decimal)Rate / baseCurrencyMultiplier;
+                Bet *= (decimal)Rate / baseCurrencyMultiplier;
 
                 if (SettlementResult.Jackpot != null)
                 {
-                    SettlementResult.Jackpot.WinningAmount *= (decimal)Rate;
+                    SettlementResult.Jackpot.WinningAmount *= (decimal)Rate / baseCurrencyMultiplier;
                 }
             }
         }
@@ -389,28 +389,28 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool ReachMaxWin { get; set; }
 
-        public void ConvertToUSD(bool isConvert)
+        public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (!isConvert)
             {
                 return;
             }
 
-            TotalAmount *= Rate;
-            BetWin *= Rate;
-            CoinValue *= Rate;
-            TotalTumbleWin *= Rate;
+            TotalAmount *= Rate / baseCurrencyMultiplier;
+            BetWin *= Rate / baseCurrencyMultiplier;
+            CoinValue *= Rate / baseCurrencyMultiplier;
+            TotalTumbleWin *= Rate / baseCurrencyMultiplier;
 
             if(SettlementResult != null && SettlementResult.Tumbles.Any())
             {
                 foreach(var tumble in SettlementResult.Tumbles)
                 {
-                    tumble.Win *= Rate;
+                    tumble.Win *= Rate / baseCurrencyMultiplier;
                     if(tumble.Icons != null)
                     {
                         foreach (var (key, _) in tumble.Icons)
                         {
-                            tumble.Icons[key].Win *= Rate;
+                            tumble.Icons[key].Win *= Rate / baseCurrencyMultiplier;
                         }
                     }
                 }

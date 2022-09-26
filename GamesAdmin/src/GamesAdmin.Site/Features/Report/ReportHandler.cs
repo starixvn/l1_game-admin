@@ -414,7 +414,7 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Game = request.Game.Value;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
-                    betViewModel.ConvertToUSD(request.ConvertToUSD);
+                    betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
 
                     return betViewModel;
                 })
@@ -644,7 +644,7 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Game = request.Game.Value;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
-                    betViewModel.ConvertToUSD(request.ConvertToUSD);
+                    betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
 
                     return betViewModel;
                 })
@@ -671,7 +671,7 @@ namespace GamesAdmin.Site.Features.Report
                 Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplierViewModel>(x))
             };
 
-            viewModel.Round.ConvertToUSD(request.ConvertToUSD);
+            viewModel.Round.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
 
             return viewModel;
         }
