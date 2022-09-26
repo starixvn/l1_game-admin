@@ -46,7 +46,7 @@
                     <td class="text-right">
                         @if (bet.Paid)
                         {
-                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin : bet.BetWin)
+                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin / Model.BaseCurrencyMultiplier : bet.BetWin)
                         }
                         else
                         {

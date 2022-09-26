@@ -96,7 +96,7 @@
                         <td class="text-right">
                             @if (bigRecord != null)
                             {
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bigRecord.BaseBetWin : bigRecord.BetWin)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bigRecord.BaseBetWin  / Model.BaseCurrencyMultiplier: bigRecord.BetWin)
                             }
                         </td>
                         <td class="line-cell"></td>
@@ -124,7 +124,7 @@
                         <td class="text-right">
                             @if (smallRecord != null)
                             {
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? smallRecord.BaseBetWin : smallRecord.BetWin)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? smallRecord.BaseBetWin / Model.BaseCurrencyMultiplier : smallRecord.BetWin)
                             }
                         </td>
                     </tr>

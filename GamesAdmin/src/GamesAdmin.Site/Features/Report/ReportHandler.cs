@@ -387,6 +387,7 @@ namespace GamesAdmin.Site.Features.Report
             return new BlackjackReportResultViewModel
             {
                 ConvertToUSD = request.Filter.ConvertToUSD,
+                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
@@ -572,6 +573,7 @@ namespace GamesAdmin.Site.Features.Report
             return new HiLoReportResultViewModel
             {
                 ConvertToUSD = request.Filter.ConvertToUSD,
+                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<HiLoRecordViewModel>(x);
