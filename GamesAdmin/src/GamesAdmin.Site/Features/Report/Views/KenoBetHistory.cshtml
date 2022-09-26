@@ -26,7 +26,7 @@
                             @bet.Choice
                         </td>
                         <td class="text-right">
-                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
+                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)
                         </td>
                     </tr>
                 }

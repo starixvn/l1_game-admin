@@ -13,7 +13,7 @@
         @foreach (var bet in Model.Bets)
         {
             <tbody>
-                @await Html.PartialAsync("_RouletteBetHistoryRow", new RouletteBetHistoryRowViewModel { Bet = bet, SettlementResult = Model.RoundResult.SettlementResult, ConvertToUSD = Model.ConvertToUSD })
+                @await Html.PartialAsync("_RouletteBetHistoryRow", new RouletteBetHistoryRowViewModel { Bet = bet, SettlementResult = Model.RoundResult.SettlementResult, ConvertToUSD = Model.ConvertToUSD, BaseCurrencyMultiplier = Model.BaseCurrencyMultiplier })
             </tbody>
         }
     </table>

@@ -146,10 +146,10 @@
                     </td>
 
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.FourSets * occurence)
+                        @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.FourSets * occurence)
                     </td>
                 </tr>
             }
@@ -176,12 +176,12 @@
                         @Model.Odds.Special
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (settlementResult.Special == betChoice.Key)
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Special)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Special)
                         }
                         else
                         {
@@ -213,12 +213,12 @@
                         @Model.Odds.Head
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (settlementResult.Head == betChoice.Key)
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Head)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Head)
                         }
                         else
                         {
@@ -251,12 +251,12 @@
                         @Model.Odds.Tail
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (settlementResult.Tail == betChoice.Key)
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Tail)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Tail)
                         }
                         else
                         {
@@ -296,10 +296,10 @@
                     </td>
 
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.TwentySevenSets * occurence)
+                        @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.TwentySevenSets * occurence)
                     </td>
                 </tr>
             }
@@ -327,12 +327,12 @@
                         @Model.Odds.Parlay2
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (betChoice.Key.Split("-").All(number => settlementResult.TwentySevenSets.Contains(number)))
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Parlay2)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Parlay2)
                         }
                         else
                         {
@@ -365,12 +365,12 @@
                         @Model.Odds.Parlay3
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (betChoice.Key.Split("-").All(number => settlementResult.TwentySevenSets.Contains(number)))
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Parlay3)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Parlay3)
                         }
                         else
                         {
@@ -403,12 +403,12 @@
                         @Model.Odds.Parlay4
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (betChoice.Key.Split("-").All(number => settlementResult.TwentySevenSets.Contains(number)))
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Parlay4)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Parlay4)
                         }
                         else
                         {
@@ -440,12 +440,12 @@
                         @Model.Odds.Others
                     </td>
                     <td class="text-right">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
                     </td>
                     <td class="text-right">
                         @if (settlementResult.Others[betChoice.Key])
                         {
-                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) : betChoice.Value) * Model.Odds.Others)
+                            @HtmlHelpers.formatNumber((Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value) * Model.Odds.Others)
                         }
                         else
                         {

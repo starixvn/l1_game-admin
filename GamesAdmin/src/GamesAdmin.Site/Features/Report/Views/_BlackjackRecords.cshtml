@@ -115,8 +115,8 @@
 
                         }
                     </td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Bet) : bet.Bet)</td>
-                    <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) : bet.BetWin) : "Running")</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Bet) / Model.BaseCurrencyMultiplier : bet.Bet)</td>
+                    <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier : bet.BetWin) : "Running")</td>
                 </tr>
                 }
             </tbody>

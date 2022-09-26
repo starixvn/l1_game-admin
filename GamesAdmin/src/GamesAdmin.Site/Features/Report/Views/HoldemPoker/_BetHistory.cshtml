@@ -157,7 +157,7 @@
 {
     private string FormatCurrency(HoldemPokerBetHistory record, decimal value)
     {
-        return @HtmlHelpers.formatNumber(record.ConvertToUSD ? record.ConvertToBase(value) : value);
+        return @HtmlHelpers.formatNumber(record.ConvertToUSD ? record.ConvertToBase(value) / Model.BaseCurrencyMultiplier : value);
     }
 
     private async Task RenderCards(IEnumerable<PokerCard> cards)

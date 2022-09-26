@@ -7,5 +7,7 @@
         public RouletteBetHistoryRecordViewModel Bet { get; set; }
 
         public bool ConvertToUSD { get; set; }
+
+        public int BaseCurrencyMultiplier { get; set; }
     }
 }

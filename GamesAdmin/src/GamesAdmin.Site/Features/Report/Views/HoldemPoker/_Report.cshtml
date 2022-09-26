@@ -37,10 +37,10 @@
                         <td class="text-center bold">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="HoldemPokerBetHistory" asp-route-gameId="@Model.GameId" asp-route-roundId="@record.RoundId" asp-route-nickname="@record.Nickname" asp-route-convertToUSD="@Model.ConvertToUSD">
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.Stake) : record.Stake)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.Stake) / Model.BaseCurrencyMultiplier : record.Stake)
                             </a>
                         </td>
-                        <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.TotalWin) : record.TotalWin) : "Unfinished Game")</td>
+                        <td class="text-center">@(record.Ended ? @HtmlHelpers.formatNumber(Model.ConvertToUSD ? record.ConvertToBase(record.TotalWin) / Model.BaseCurrencyMultiplier : record.TotalWin) : "Unfinished Game")</td>
                     </tr>
                 }
             </tbody>

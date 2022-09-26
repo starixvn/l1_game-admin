@@ -42,7 +42,7 @@
                         </a>
                     </td>
                     <td class="text-center">@bet.ExchangeRateId</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
                     <td class="text-right">
                         @if (bet.Paid)
                         {

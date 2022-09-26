@@ -74,13 +74,13 @@
                 </td>
                 <td class="text-right @winCssClass">@Model.Odds[bet.Choice]</td>
                 <td class="text-right @winCssClass">
-                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)
                 </td>
                 <td class="text-right @winCssClass">
                     @{
                         var refund = bet.GetRefund(settlementResult);
                     }
-                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(refund) : refund)
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(refund) / Model.BaseCurrencyMultiplier : refund)
                 </td>
             </tr>
 

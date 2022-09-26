@@ -5,12 +5,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class HoldemPokerReportResultViewModel
     {
-        public HoldemPokerReportResultViewModel(bool convertToUSD, GameId gameId, IEnumerable<HoldemPokerRecordViewModel> records)
+        public HoldemPokerReportResultViewModel(bool convertToUSD, GameId gameId, IEnumerable<HoldemPokerRecordViewModel> records, int baseCurrencyMultiplier)
         {
             GameId = gameId;
             ConvertToUSD = convertToUSD;
             Records = records;
+            BaseCurrencyMultiplier = baseCurrencyMultiplier;
         }
+
+        public int BaseCurrencyMultiplier { get; }
 
         public GameId GameId { get; }
 

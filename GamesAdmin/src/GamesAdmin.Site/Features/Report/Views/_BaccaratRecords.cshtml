@@ -119,14 +119,14 @@
                         @bet.Nickname
                     </td>
                     <td class="text-center">@bet.Currency</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Player) : bet.Player)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Banker) : bet.Banker)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Tie) : bet.Tie)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.PlayerPair) : bet.PlayerPair)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BankerPair) : bet.BankerPair)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Big) : bet.Big)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Small) : bet.Small)</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) : bet.BetWin)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Player) / Model.BaseCurrencyMultiplier : bet.Player)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Banker) / Model.BaseCurrencyMultiplier: bet.Banker)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Tie) / Model.BaseCurrencyMultiplier: bet.Tie)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.PlayerPair)/ Model.BaseCurrencyMultiplier : bet.PlayerPair)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BankerPair)/ Model.BaseCurrencyMultiplier : bet.BankerPair)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Big) / Model.BaseCurrencyMultiplier: bet.Big)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Small) / Model.BaseCurrencyMultiplier: bet.Small)</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier: bet.BetWin)</td>
                 </tr>
                 }
             </tbody>
@@ -145,14 +145,14 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Player)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Banker)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Tie)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.PlayerPair)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.BankerPair)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Big)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Small)))</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Player) / Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Banker)/ Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Tie)/ Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.PlayerPair)/ Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.BankerPair)/ Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Big) / Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.Small)/ Model.BaseCurrencyMultiplier))</td>
+                    <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin)/ Model.BaseCurrencyMultiplier)</td>
                 </tr>
                 }
             </tfoot>

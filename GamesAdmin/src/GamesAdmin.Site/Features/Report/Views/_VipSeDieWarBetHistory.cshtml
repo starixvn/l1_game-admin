@@ -26,7 +26,7 @@
             <tr>
                 <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                 <td class="@(isWin? "text-primary": string.Empty)">@betChoice?.DisplayName</td>
-                <td class="@(isWin? "text-primary": string.Empty)">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
+                <td class="@(isWin? "text-primary": string.Empty)">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
             </tr>
         }
     </tbody>

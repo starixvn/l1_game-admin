@@ -50,10 +50,10 @@
                     </td>
                 }
                 <td class="text-right bold">
-                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)
                 </td>
                 <td class="text-right bold">
-                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Betwin) : bet.Betwin)
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Betwin) / Model.BaseCurrencyMultiplier : bet.Betwin)
                 </td>
             </tr>
         }

@@ -5,6 +5,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class BetHistoryViewModel
     {
         public bool ConvertToUSD { get; set; }
+
+        public int BaseCurrencyMultiplier { get; set; }
     }
 
     public class BetHistoryRecordViewModel

@@ -109,13 +109,13 @@
                 </td>
                 <td class="@winCssClass">@Model.RoundResult.Odds[bet.Choice]</td>
                 <td class="text-right @winCssClass">
-                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)
+                    @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)
                 </td>
                 <td class="text-right @winCssClass">
                     @if (settlmentResultRefund.ContainsKey(bet.Choice))
                     {
                         var refund = bet.GetRefund(settlmentResultRefund[bet.Choice]);
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(refund) : refund)
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(refund) / Model.BaseCurrencyMultiplier : refund)
                     }
                     else
                     {

@@ -19,7 +19,7 @@
                 <td>@bet.Round</td>
                 <td>@(bet.Choice == "big" ? "Big" : "Small")</td>
                 <td>@Model.RoundResult.Dice1-@Model.RoundResult.Dice2-@Model.RoundResult.Dice3 @Model.RoundResult.Total</td>
-                <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
+                <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
             </tr>
         }
     </tbody>

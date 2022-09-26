@@ -6,5 +6,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public bool ConvertToUSD { get; set; }
         public string BaseCurrency { get; set; }
+
+        public int BaseCurrencyMultiplier { get; set; }
     }
 }

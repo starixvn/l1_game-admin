@@ -8,6 +8,8 @@ namespace GamesAdmin.Site._Shared.Configurations
     {
         string System { get; }
         string BaseCurrency { get; }
+
+        int BaseCurrencyMultiplier { get; }
     }
 
     public class SystemSettings : ISystemSettings
@@ -16,6 +18,7 @@ namespace GamesAdmin.Site._Shared.Configurations
         {
             System = systemType;
             BaseCurrency = BaseCurrencyMapper[System];
+            BaseCurrencyMultiplier = BaseCurrencyMultiplierMapper[System];
         }
 
         private readonly Dictionary<string, string> BaseCurrencyMapper = new Dictionary<string, string>
@@ -24,7 +27,15 @@ namespace GamesAdmin.Site._Shared.Configurations
             [SystemType.VG2] = "INH",
         };
 
+        private readonly Dictionary<string, int> BaseCurrencyMultiplierMapper = new Dictionary<string, int>
+        {
+            [SystemType.SC1] = 1,
+            [SystemType.VG2] = 1000,
+        };
+
         public string System { get; }
         public string BaseCurrency { get; }
+        public int BaseCurrencyMultiplier { get; }
+
     }
 }

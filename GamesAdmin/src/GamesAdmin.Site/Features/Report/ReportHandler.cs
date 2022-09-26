@@ -532,6 +532,7 @@ namespace GamesAdmin.Site.Features.Report
             var result = await service.Get(request.Filter);
 
             result.BaseCurrency = systemSettings.BaseCurrency;
+            result.BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier;
 
             return result;
         }
@@ -541,6 +542,7 @@ namespace GamesAdmin.Site.Features.Report
             var service = reportServiceFactory.GetBetHistoryService(request.Filter.Game);
             var viewModel = await service.Get(request.Filter);
             viewModel.ConvertToUSD = request.ConvertToUSD;
+            viewModel.BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier;
 
             return viewModel;
         }
@@ -606,11 +608,11 @@ namespace GamesAdmin.Site.Features.Report
                 return recordViewModel;
             });
 
-            return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, request.Filter.GameId, records);
+            return new HoldemPokerReportResultViewModel(request.Filter.ConvertToUSD, request.Filter.GameId, records, systemSettings.BaseCurrencyMultiplier);
         }
 
         public async Task<HoldemPokerBetHistoryViewModel> Handle(GetHoldemPokerBetHistoryRequest request, CancellationToken cancellationToken)
-            => new HoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetHoldemPokerBetHistory(request.Filter));
+            => new HoldemPokerBetHistoryViewModel(appSettings.DefaultTimeZone, await reportService.GetHoldemPokerBetHistory(request.Filter), systemSettings.BaseCurrencyMultiplier);
 
         private static string GetPartnerName(IEnumerable<SelectListItem> partners, string partnerId)
         => partners.FirstOrDefault(option => string.Equals(option.Value, partnerId))?.Text ?? string.Empty;
