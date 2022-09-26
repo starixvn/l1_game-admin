@@ -6,9 +6,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     public class KenoBetHistoryViewModel : BetHistoryViewModel
     {
         public IEnumerable<KenoBetHistoryRecordViewModel> Bets { get; set; }
-
-        public int BaseCurrencyMultiplier { get; set; }
-
     }
 
     public class KenoBetHistoryRecordViewModel : BetHistoryRecordViewModel
