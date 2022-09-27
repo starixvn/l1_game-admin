@@ -168,7 +168,7 @@
                         <td class="text-right">
                             @if (smallRecords.Any())
                             {
-                                @HtmlHelpers.formatNumber(smallRecords.FirstOrDefault().ConvertToBase(smallRecords.Sum(x => x.Big)) / Model.BaseCurrencyMultiplier)
+                                @HtmlHelpers.formatNumber(smallRecords.FirstOrDefault().ConvertToBase(smallRecords.Sum(x => x.Small)) / Model.BaseCurrencyMultiplier)
 
                             }
                         </td>
