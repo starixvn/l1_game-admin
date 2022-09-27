@@ -141,7 +141,7 @@
                 else if (Model.ConvertToUSD)
                 {
                     <tr class="total">
-                        <td>Total in USD</td>
+                        <td>Total in @Model.BaseCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -149,18 +149,18 @@
                         <td class="text-right">
                             @if (bigRecords.Any())
                             {
-                                @HtmlHelpers.formatNumber(bigRecords.FirstOrDefault().ConvertToBase(bigRecords.Sum(x => x.Big)) / Model.BaseCurrencyMultiplier)
+                                @HtmlHelpers.formatNumber(bigRecords.Sum(x => x.ConvertToBase(x.Big)) / Model.BaseCurrencyMultiplier)
 
                             }
                         </td>
                         <td class="text-right">
                             @if (bigRecords.Any())
                             {
-                                @HtmlHelpers.formatNumber(bigRecords.FirstOrDefault().ConvertToBase(bigRecords.Sum(x => x.BetWin)) / Model.BaseCurrencyMultiplier)
+                                @HtmlHelpers.formatNumber(bigRecords.Sum(x => x.ConvertToBase(x.BetWin))/ Model.BaseCurrencyMultiplier)
                             }
                         </td>
                         <td class="line-cell"></td>
-                        <td>Total in USD</td>
+                        <td>Total in @Model.BaseCurrency</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -168,14 +168,14 @@
                         <td class="text-right">
                             @if (smallRecords.Any())
                             {
-                                @HtmlHelpers.formatNumber(smallRecords.FirstOrDefault().ConvertToBase(smallRecords.Sum(x => x.Small)) / Model.BaseCurrencyMultiplier)
+                                @HtmlHelpers.formatNumber(smallRecords.Sum(x => x.ConvertToBase(x.Small)) / Model.BaseCurrencyMultiplier)
 
                             }
                         </td>
                         <td class="text-right">
                             @if (smallRecords.Any())
                             {
-                                @HtmlHelpers.formatNumber(smallRecords.FirstOrDefault().ConvertToBase(smallRecords.Sum(x => x.BetWin)) / Model.BaseCurrencyMultiplier)
+                                @HtmlHelpers.formatNumber(smallRecords.Sum(x => x.ConvertToBase(x.BetWin)) / Model.BaseCurrencyMultiplier)
                             }
                         </td>
                     </tr>
