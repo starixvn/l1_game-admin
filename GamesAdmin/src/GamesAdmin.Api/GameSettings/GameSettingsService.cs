@@ -416,7 +416,7 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, gameEntity.CascadingSlotsConfig);
+                var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
                 sentryClient.CaptureChangedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
