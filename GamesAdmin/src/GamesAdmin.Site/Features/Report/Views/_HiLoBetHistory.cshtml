@@ -25,7 +25,7 @@
                 @Model.RoundResult.Number
             </td>
             <td colspan="4" class="text-center">Start Round</td>
-            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.RoundResult.BaseAmount : Model.RoundResult.Amount)</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.RoundResult.BaseAmount / Model.BaseCurrencyMultiplier : Model.RoundResult.Amount)</td>
             <td></td>
         </tr>
         @foreach (var bet in Model.Bets)
