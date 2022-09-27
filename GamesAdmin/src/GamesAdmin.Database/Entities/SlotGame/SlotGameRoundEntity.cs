@@ -60,6 +60,8 @@ namespace GamesAdmin.Database.Entities
         public SlotGameBonusEntity Bonus { get; set; }
 
         public SlotGameFreeSpinEntity FreeSpins { get; set; }
+
+        public SlotGameJackpotEntity Jackpot { get; set; }
     }
 
     public class SlotGameJackpotEntity
