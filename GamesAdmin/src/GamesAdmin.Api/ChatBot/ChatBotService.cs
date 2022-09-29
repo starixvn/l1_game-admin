@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.ChatBot
             }
 
             var msgBuilder = new StringBuilder();
-            var game = Enum.Parse<GameId>(request.GameTypeId.ToString());
+            var game = GetGameName(request.GameTypeId);
             var conversationSetting = appSettings.ChatBotApiSettings.HighStake;
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
@@ -62,6 +62,24 @@ namespace GamesAdmin.Api.ChatBot
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, conversationSetting.ConversationId, msgBuilder.ToString()));
 
             return await Task.FromResult(new ChatBotResult());
+        }
+
+        private string GetGameName(byte gameId)
+        {
+            switch (gameId)
+            {
+                case (byte)GameId.KenoMatch1:
+                    return "KenoSoccer";
+
+                case (byte)GameId.KenoMatch2:
+                    return "KenoSoccer2";
+
+                case (byte)GameId.KenoPower1:
+                    return "KenoPower";
+
+                default:
+                    return Enum.Parse<GameId>(gameId.ToString()).ToString();
+            }
         }
 
         private string GetVersionName(Versions version, Dictionary<string, string> metadata)
