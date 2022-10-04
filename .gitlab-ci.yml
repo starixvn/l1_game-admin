@@ -3,7 +3,7 @@ include:
     ref: master
     file: "gitlab-ci.yml"
 
-  - project: "ci/repos-ci/pentagon_l2_vg2_admin_api"
+  - project: "ci/repos-ci/pentagon_l2_admin_api"
     ref: master
     file: "gitlab-ci-mixing.yml"
     
@@ -11,6 +11,6 @@ include:
     ref: master
     file: "gitlab-ci-mixing.yml"
 
-  - project: "ci/repos-ci/pentagon_l2_vg2_admin_site"
+  - project: "ci/repos-ci/pentagon_l2_admin_site"
     ref: master
     file: "gitlab-ci-mixing.yml"
