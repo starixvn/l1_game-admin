@@ -77,7 +77,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.SGApiUrl));
             services.AddScoped<IRetrieveEndRoundService, RetrieveEndRoundService>();
 
-            services.AddSingleton(RestService.For<IDailySummaryApi>(appSettings.GameApiUrl));
+            services.AddSingleton(RestService.For<IDailySummaryApi>(appSettings.SGApiUrl));
             services.AddScoped<IDailySummaryService, DailySummaryService>();
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.ApiHost, refitSettings));
