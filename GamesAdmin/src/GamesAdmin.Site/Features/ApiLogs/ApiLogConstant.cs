@@ -10,12 +10,12 @@ namespace GamesAdmin.Site.Features.ApiLogs
         private static readonly ApiLogViewConfigs gameTypeIdForPartnerLogConfigs = new ApiLogViewConfigs("Game", "Call.GameTypeId", GetGameName);
         private static readonly ApiLogViewConfigs gameRoundForPartnerLogIdConfigs = new ApiLogViewConfigs("Game Round", "Call.GameRoundId");
         private static readonly ApiLogViewConfigs requestTypeForPartnerLogIdConfigs = new ApiLogViewConfigs("Request Type", "Call.RequestType");
-        private static readonly ApiLogViewConfigs obCustIdForPartnerLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Call.ObCustId");
+        private static readonly ApiLogViewConfigs obCustIdForPartnerLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Call.PlayerId");
 
         private static readonly ApiLogViewConfigs siteIdForSBLogConfigs = new ApiLogViewConfigs("Site ID", "Request.SiteId");
         private static readonly ApiLogViewConfigs gameTypeIdForSBLogConfigs = new ApiLogViewConfigs("Game", "Request.GameTypeId", GetGameName);
         private static readonly ApiLogViewConfigs gameRoundForSBLogIdConfigs = new ApiLogViewConfigs("Game Round", "Request.GameRoundId");
-        private static readonly ApiLogViewConfigs obCustIdForSBLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Request.ObCustId");
+        private static readonly ApiLogViewConfigs obCustIdForSBLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Request.PlayerId");
 
         private static readonly IEnumerable<ApiLogViewConfigs> commonPartnerLogView = new List<ApiLogViewConfigs>
         {
