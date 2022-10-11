@@ -113,6 +113,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.FruitSlotValue:
                     return Enumeration.GetAll<FruitSlotOdds>();
 
+                case Game.FanTanValue:
+                    return Enumeration.GetAll<FanTanBetChoice>();
+
                 default: return default;
             }
         }

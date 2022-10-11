@@ -54,6 +54,7 @@
         MiniSeDie2 = 56,
         MiniSeDie3 = 57,
         MiniSeDie4 = 58,
-        FruitSlot = 59
+        FruitSlot = 59,
+        FanTan=60
     }
 }
