@@ -49,6 +49,7 @@ namespace GamesAdmin.Site.Features.Report
                 ExcludeBot = viewModel.ExcludeBot,
                 ExcludeUUS = viewModel.ExcludeUUS
             };
+
             return PartialView(reportView.GetView(viewModel.Game), await mediator.Send(new ReportRequest(filter)));
         }
 
@@ -636,6 +637,17 @@ namespace GamesAdmin.Site.Features.Report
             return PartialView("_SlotRNGBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
+        [HttpGet]
+        public IActionResult FanTan()
+        {
+            return RedirectToAction("Index", new { game = GameId.FanTan });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFanTanBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_FanTanBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

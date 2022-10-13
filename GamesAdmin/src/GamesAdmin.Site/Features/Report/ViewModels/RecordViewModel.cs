@@ -468,6 +468,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Small { get; set; }
     }
 
+    public class FanTanRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalBet { get; set; }
+    }
+
     public class SlotRNGRecordViewModel : BetRecordViewModel
     {
         public decimal TotalAmount { get; set; }

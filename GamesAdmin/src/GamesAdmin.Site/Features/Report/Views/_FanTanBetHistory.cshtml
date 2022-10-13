@@ -1,0 +1,48 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Core
+@model FanTanBetHistoryViewModel
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Date (GMT+7)</th>
+            <th>Bet Choice</th>
+            <th>Odds</th>
+            <th>Stake</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Bets.Count() > 0)
+        {
+            @foreach (var bet in Model.Bets)
+            {
+                var winningCssClass = bet.BetWin > 0 ? "text-primary" : string.Empty;
+                var betAmout = bet.GetBetAmount();
+                var betChoice = bet.GetBetChoice();
+
+                <tr>
+                    <td>
+                        @bet.Time.ToString(Constants.DateTimeFormat)
+                    </td>
+                    <td>@betChoice</td>
+                    <td>@bet.Odds[betChoice]</td>
+                    <td class="text-center">
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betAmout) / Model.BaseCurrencyMultiplier : betAmout)
+                    </td>
+                    <td class="text-right @winningCssClass">
+                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier : bet.BetWin)
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">
+                    No Data Available
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

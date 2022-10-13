@@ -127,7 +127,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
-            services.AddScoped<RouletteReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<BlackjackReportService>();
             services.AddScoped<SicBoReportService>();
@@ -156,6 +155,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             services.AddScoped<BaccaratReportService>();
             services.AddScoped(typeof(MiniSeDieMultiplayReportService<,>));
+            services.AddScoped<FanTanReportService>();
 
             services.InitApiLog();
         }
@@ -167,7 +167,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IHeroesSlotBoardApi>(appSettings.GameServers.HeroesSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<INightClubBoardApi>(appSettings.GameServers.NightClub.Api, refitSettings));
             services.AddSingleton(RestService.For<IWayToGoalBoardApi>(appSettings.GameServers.WayToGoal.Api, refitSettings));
-            
+
             services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();
             services.AddSingleton(RestService.For<ITreasureIslandResultApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
         }

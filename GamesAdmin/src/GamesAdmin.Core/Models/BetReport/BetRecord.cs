@@ -450,4 +450,9 @@ namespace GamesAdmin.Core.Models
     {
         public decimal TotalAmount { get; set; }
     }
+    
+    public class FanTanBetRecord : BetRecord
+    {
+        public decimal TotalBet { get; set; }
+    }
 }

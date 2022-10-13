@@ -462,6 +462,11 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
             CreateMap<FruitSlotBetLogEntity, SlotRNGBetHistoryRecord>();
+            
+            CreateMap<FanTanBetReportEntity, FanTanBetRecord>();
+            CreateMap<FanTanRoundEntity, FanTanRoundResult>();
+            CreateMap<FanTanSettlementResultEntity, FanTanSettlementResult>();
+            CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
         }
     }
 }

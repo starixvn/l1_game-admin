@@ -28,6 +28,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<MiniSedieReportService>();
             services.AddScoped<UnbalancedBigSmallReportService>();
             services.AddScoped<SlotRNGReportService>();
+            services.AddScoped<FanTanReportService>();
         }
     }
 }

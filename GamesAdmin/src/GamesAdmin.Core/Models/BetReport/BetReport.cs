@@ -103,4 +103,8 @@ namespace GamesAdmin.Core.Models
     public class SlotRNGBetReport : BetReport<SlotRNGRoundResult, SlotRNGBetRecord>
     {
     }
+    
+    public class FanTanBetReport : BetReport<FanTanRoundResult, FanTanBetRecord>
+    {
+    }
 }

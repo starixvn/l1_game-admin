@@ -172,7 +172,8 @@ namespace GamesAdmin.Core.Enumeration
             UnbalancedBigSmall2,
             UnbalancedBigSmall3,
             UnbalancedBigSmall4,
-            FruitSlot
+            FruitSlot,
+            FanTan
         };
     }
 }

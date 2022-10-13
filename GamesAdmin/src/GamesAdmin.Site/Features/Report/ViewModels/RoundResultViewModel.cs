@@ -361,4 +361,32 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public byte ResultNumber { get; set; }
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
+
+    public class FanTanRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public byte Result { get; set; }
+
+        public FanTanSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class FanTanSettlementResultViewModel
+    {
+        public bool Odd { get; set; }
+        public bool Even { get; set; }
+
+        public bool Fan1 { get; set; }
+        public bool Fan2 { get; set; }
+        public bool Fan3 { get; set; }
+        public bool Fan4 { get; set; }
+
+        public bool Kwok1 { get; set; }
+        public bool Kwok2 { get; set; }
+        public bool Kwok3 { get; set; }
+        public bool Kwok4 { get; set; }
+
+        public bool Chun1 { get; set; }
+        public bool Chun2 { get; set; }
+        public bool Chun3 { get; set; }
+        public bool Chun4 { get; set; }
+    }
 }

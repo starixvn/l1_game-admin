@@ -135,6 +135,11 @@ namespace GamesAdmin.Site._Shared
             CreateMap<SlotRNGBetRecord, SlotRNGRecordViewModel>();
             CreateMap<SlotRNGRoundResult, SlotRNGRoundResultViewModel>();
             CreateMap<SlotRNGBetHistoryRecord, SlotRNGBetHistoryRecordViewModel>();
+            
+            CreateMap<FanTanRoundResult, FanTanRoundResultViewModel>();
+            CreateMap<FanTanSettlementResult, FanTanSettlementResultViewModel>();
+            CreateMap<FanTanBetRecord, FanTanRecordViewModel>();
+            CreateMap<FanTanBetHistoryRecord, FanTanBetHistoryRecordViewModel>();
         }
     }
 }

@@ -42,6 +42,8 @@ namespace GamesAdmin.Database
         Task<(TRoundEntity, IEnumerable<TBetLogEntity>)> GetUnbalancedBigSmallAsync<TRoundEntity, TBetLogEntity>(long roundId, string userId, string partnerId)
             where TRoundEntity : UnbalancedBigSmallRoundEntity
             where TBetLogEntity : UnbalancedBigSmallBetLogEntity;
+
+        Task<(FanTanRoundEntity, IEnumerable<FanTanBetEntity>)> GetFanTanAsync(long roundId, string userId, string partnerId);
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository
@@ -350,6 +352,17 @@ namespace GamesAdmin.Database
             var betLogs = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
 
             return (roundResult, betLogs);
+        }
+
+        public async Task<(FanTanRoundEntity, IEnumerable<FanTanBetEntity>)> GetFanTanAsync(long roundId, string userId, string partnerId)
+        {
+            var roundCollection = database.GetCollection<FanTanRoundEntity>(Document.GetCollectionName(typeof(FanTanRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == roundId).FirstOrDefaultAsync();
+
+            var betCollection = database.GetCollection<FanTanBetEntity>(Document.GetCollectionName(typeof(FanTanBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == roundId && x.Uid == userId && x.OperatorId == partnerId).SortByDescending(x => x.Id).ToListAsync();
+
+            return (roundResult, bets);
         }
     }
 }
