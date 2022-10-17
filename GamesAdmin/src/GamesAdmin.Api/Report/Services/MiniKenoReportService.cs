@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Enumeration.BetChoices;
@@ -17,11 +18,13 @@ namespace GamesAdmin.Api.Report
     {
         private readonly IMiniKenoReportRepository repository;
         private readonly IGenericRepository<TMiniKenoBetLog> betLogRepository;
+        private readonly IGenericRepository<TMiniKenoBet> betRepository;
 
-        public MiniKenoReportService(IMiniKenoReportRepository repository, IGenericRepository<TMiniKenoBetLog> betLogRepository)
+        public MiniKenoReportService(IMiniKenoReportRepository repository, IGenericRepository<TMiniKenoBetLog> betLogRepository, IGenericRepository<TMiniKenoBet> betRepository)
         {
             this.repository = repository;
             this.betLogRepository = betLogRepository;
+            this.betRepository = betRepository;
         }
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
@@ -54,26 +57,72 @@ namespace GamesAdmin.Api.Report
 
         public async Task<BetHistory> Get(BetHistoryFilter filter)
         {
-            var bets = await betLogRepository.FilterByAsync(
+            var bet = await betRepository.FindOneAsync(
                 bet => bet.Round == filter.RoundId && bet.Uid == filter.UserId && bet.OperatorId == filter.PartnerId);
 
-            var betLogs = bets
-                .Select(bet => new KenoBetHistoryRecord
+            var betLogs = new List<KenoBetHistoryRecord>();
+
+            foreach (var choice in Enumeration.GetAll<KenoBetChoice>())
+            {
+                var betAmount = GetBetAmount(choice.Value, bet);
+
+                if (betAmount > 0)
                 {
-                    Round = bet.Round,
-                    Name = bet.Name,
-                    Choice = Enumeration.FromValue<KenoBetChoice>(bet.Choice),
-                    Amount = bet.Amount,
-                    Time = bet.Time,
-                    Currency = bet.Currency,
-                    PartnerId = bet.OperatorId,
-                    Rate = bet.Rate
-                }).OrderByDescending(bet => bet.Time);
+                    betLogs.Add(new KenoBetHistoryRecord
+                    {
+                        Round = bet.Round,
+                        Name = bet.Name,
+                        Choice = choice,
+                        Amount = betAmount,
+                        Time = bet.Time,
+                        Currency = bet.Currency,
+                        PartnerId = bet.OperatorId,
+                        Rate = bet.Rate
+                    });
+                }
+            }
 
             return new KenoBetHistory
             {
                 Bets = betLogs
             };
+        }
+        private decimal GetBetAmount(string betChoice, TMiniKenoBet entity)
+        {
+            switch (betChoice)
+            {
+                case KenoBetChoice.BigValue:
+                    return entity.Big;
+
+                case KenoBetChoice.SmallValue:
+                    return entity.Small;
+
+                case KenoBetChoice.OddValue:
+                    return entity.Odd;
+
+                case KenoBetChoice.EvenValue:
+                    return entity.Even;
+
+                case KenoBetChoice.GoldValue:
+                    return entity.Gold;
+
+                case KenoBetChoice.WoodValue:
+                    return entity.Wood;
+
+                case KenoBetChoice.WaterValue:
+                    return entity.Water;
+
+                case KenoBetChoice.FireValue:
+                    return entity.Fire;
+
+                case KenoBetChoice.EarthValue:
+                    return entity.Earth;
+                default:
+                    return 0;
+                    break;
+            }
+
+            return 0;
         }
     }
 }
