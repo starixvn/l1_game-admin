@@ -43,7 +43,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.UnbalancedBigSmall2, "_UnbalancedBigSmallRecords" },
             { GameId.UnbalancedBigSmall3, "_UnbalancedBigSmallRecords" },
             { GameId.UnbalancedBigSmall4, "_UnbalancedBigSmallRecords" },
-            { GameId.FruitSlot, "_FruitSlotRecords" },
+            { GameId.FruitSlot, "_SlotRNGRecords" },
         };
 
         public string GetView(GameId game) => views[game];

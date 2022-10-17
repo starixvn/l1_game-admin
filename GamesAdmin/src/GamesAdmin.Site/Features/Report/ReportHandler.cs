@@ -534,6 +534,7 @@ namespace GamesAdmin.Site.Features.Report
 
             result.BaseCurrency = systemSettings.BaseCurrency;
             result.BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier;
+            result.GameName = Game.FromGameId(request.Filter.Game).Value;
 
             return result;
         }
@@ -665,7 +666,7 @@ namespace GamesAdmin.Site.Features.Report
             };
 
             var result = await reportService.GetCascadingSlotBetHistory(filter);
-            var viewModel =  new CascadingSlotBetHistoryViewModel
+            var viewModel = new CascadingSlotBetHistoryViewModel
             {
                 Game = request.Game.Value,
                 ConvertToUSD = request.ConvertToUSD,

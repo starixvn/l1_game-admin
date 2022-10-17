@@ -312,7 +312,7 @@ namespace GamesAdmin.Core.Models
         public decimal Rate { get; set; }
     }
 
-    public class FruitSlotRoundResult : RoundResult
+    public class SlotRNGRoundResult : RoundResult
     {
         public IEnumerable<string> Symbols { get; set; }
         public byte ResultNumber { get; set; }

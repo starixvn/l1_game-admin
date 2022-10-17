@@ -8,6 +8,7 @@ namespace GamesAdmin.Site.Features.Report
     public interface IReportServiceFactory
     {
         IGameReportService GetService(GameId game);
+
         IBetHistoryReportService GetBetHistoryService(GameId game);
     }
 
@@ -52,7 +53,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.UnbalancedBigSmall2, typeof(UnbalancedBigSmallReportService) },
             { GameId.UnbalancedBigSmall3, typeof(UnbalancedBigSmallReportService) },
             { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService) },
-            { GameId.FruitSlot, typeof(FruitSlotReportService) },
+            { GameId.FruitSlot, typeof(SlotRNGReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

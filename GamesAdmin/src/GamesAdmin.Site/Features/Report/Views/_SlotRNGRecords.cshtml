@@ -2,15 +2,19 @@
 @using GamesAdmin.Core.Enumeration;
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model FruitSlotReportResultViewModel
+@model SlotRNGReportResultViewModel
 
 @functions{
     private void RenderResultSymBol(string symbol)
     {
-        const string bar = "bar";
-        const string bar100 = "bar100";
-        var src = $"/images/fruitslot/{(symbol.Equals(bar) ? bar100 : symbol)}.png";
-        <span><img src="@src" alt="#" /></span>
+        var src = $"{symbol}.png";
+        if (Model.GameName == "fruitslot")
+        {
+            const string bar = "bar";
+            const string bar100 = "bar100";
+            src = $"{(symbol.Equals(bar) ? bar100 : symbol)}.png";
+        }
+        <span><img src="@($"/images/{Model.GameName}/{src}")" alt="#" /></span>
     }
 }
 
@@ -88,7 +92,7 @@
 
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetFruitSlotBetHistory"
+                               asp-action="GetSlotRNGBetHistory"
                                asp-route-game="@GameId.FruitSlot"
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-userId="@bet.UserId"

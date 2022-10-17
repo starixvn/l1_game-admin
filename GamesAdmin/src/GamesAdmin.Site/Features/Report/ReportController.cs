@@ -629,13 +629,13 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult FruitSlot() => RedirectToAction("Index", new { game = GameId.FruitSlot });
-        
+
         [HttpGet]
-        public async Task<IActionResult> GetFruitSlotBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetSlotRNGBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
-            return PartialView("_FruitSlotBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_SlotRNGBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
-        
+
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());

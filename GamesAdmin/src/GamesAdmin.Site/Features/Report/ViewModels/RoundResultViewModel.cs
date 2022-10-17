@@ -355,7 +355,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Small { get; set; }
     }
 
-    public class FruitSlotRoundResultViewModel : BaseRoundResultViewModel
+    public class SlotRNGRoundResultViewModel : BaseRoundResultViewModel
     {
         public IEnumerable<string> Symbols { get; set; }
         public byte ResultNumber { get; set; }

@@ -22,10 +22,10 @@ namespace GamesAdmin.Api.Report
         {
             var result = await repository.GetRecordAsync(filter);
 
-            return new FruitSlotBetReport
+            return new SlotRNGBetReport
             {
-                RoundResult = mapper.Map<FruitSlotRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<FruitSlotBetRecord>(x))
+                RoundResult = mapper.Map<SlotRNGRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<SlotRNGBetRecord>(x))
             };
         }
 
@@ -33,10 +33,10 @@ namespace GamesAdmin.Api.Report
         {
             var result = await repository.GetBetHistoryAsync(filter);
 
-            return new FruitSlotBetHistory
+            return new SlotRNGBetHistory
             {
-                RoundResult = mapper.Map<FruitSlotRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<FruitSlotBetHistoryRecord>(x)),
+                RoundResult = mapper.Map<SlotRNGRoundResult>(result.Item1),
+                Bets = result.Item2.Select(x => mapper.Map<SlotRNGBetHistoryRecord>(x)),
                 Odds = result.Item3
             };
         }

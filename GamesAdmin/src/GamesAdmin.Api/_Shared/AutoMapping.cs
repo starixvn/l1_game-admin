@@ -455,13 +455,13 @@ namespace GamesAdmin.Api._Shared
             CreateMap<UnbalancedBigSmallBetReportEntity, UnbalancedBigSmallBetRecord>();
             CreateMap<UnbalancedBigSmallBetLogEntity, UnbalancedBigSmallBetHistoryRecord>();
 
-            CreateMap<FruitSlotRoundEntity, FruitSlotRoundResult>()
+            CreateMap<FruitSlotRoundEntity, SlotRNGRoundResult>()
                  .ForMember(x => x.ResultNumber, opt => opt.MapFrom((source) => source.Result.Number))
                  .ForMember(x => x.Symbols, opt => opt.MapFrom((source) => source.Result.Symbols));
-            CreateMap<FruitSlotBetReportEntity, FruitSlotBetRecord>()
+            CreateMap<FruitSlotBetReportEntity, SlotRNGBetRecord>()
                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
-            CreateMap<FruitSlotBetLogEntity, FruitSlotBetHistoryRecord>();
+            CreateMap<FruitSlotBetLogEntity, SlotRNGBetHistoryRecord>();
         }
     }
 }

@@ -10,23 +10,23 @@ using GamesAdmin.Site.Features.Report.ViewModels;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    public class FruitSlotReportService : GameReportService, IBetHistoryReportService
+    public class SlotRNGReportService : GameReportService, IBetHistoryReportService
     {
-        public FruitSlotReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
+        public SlotRNGReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
         {
         }
 
         public override async Task<ReportResultViewModel> Get(BetReportFilter filter)
         {
-            var result = await reportApi.Get<FruitSlotBetReport>(filter);
+            var result = await reportApi.Get<SlotRNGBetReport>(filter);
             var partners = await partnerService.GetAll();
 
-            return new FruitSlotReportResultViewModel
+            return new SlotRNGReportResultViewModel
             {
-                RoundResult = mapper.Map<FruitSlotRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<SlotRNGRoundResultViewModel>(result.RoundResult),
                 Records = result.Records.Select(x =>
                 {
-                    var recordViewModel = mapper.Map<FruitSlotRecordViewModel>(x);
+                    var recordViewModel = mapper.Map<SlotRNGRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
@@ -38,14 +38,14 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)
         {
-            var result = await reportApi.GetBetHistory<FruitSlotBetHistory>(filter);
+            var result = await reportApi.GetBetHistory<SlotRNGBetHistory>(filter);
 
-            return new FruitSlotBetHistoryViewModel
+            return new SlotRNGBetHistoryViewModel
             {
-                RoundResult = mapper.Map<FruitSlotRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<SlotRNGRoundResultViewModel>(result.RoundResult),
                 Bets = result.Bets.Select(x =>
                 {
-                    var betViewModel = mapper.Map<FruitSlotBetHistoryRecordViewModel>(x);
+                    var betViewModel = mapper.Map<SlotRNGBetHistoryRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;

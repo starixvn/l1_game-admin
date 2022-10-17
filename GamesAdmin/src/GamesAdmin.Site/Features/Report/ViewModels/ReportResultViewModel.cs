@@ -1,6 +1,4 @@
-﻿using GamesAdmin.Site._Shared.Configurations;
-
-namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class ReportResultViewModel
     {
@@ -8,5 +6,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string BaseCurrency { get; set; }
 
         public int BaseCurrencyMultiplier { get; set; }
+
+        public string GameName { get; set; }
     }
 }

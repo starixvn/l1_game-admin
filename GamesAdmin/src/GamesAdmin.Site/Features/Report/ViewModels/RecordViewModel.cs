@@ -313,6 +313,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string Choice { get; set; }
         public decimal GrossWin => Win ? BetWin + Bet - Back : 0;
     }
+
     public class KenoMatchRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
@@ -401,12 +402,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             CoinValue *= Rate / baseCurrencyMultiplier;
             TotalTumbleWin *= Rate / baseCurrencyMultiplier;
 
-            if(SettlementResult != null && SettlementResult.Tumbles.Any())
+            if (SettlementResult != null && SettlementResult.Tumbles.Any())
             {
-                foreach(var tumble in SettlementResult.Tumbles)
+                foreach (var tumble in SettlementResult.Tumbles)
                 {
                     tumble.Win *= Rate / baseCurrencyMultiplier;
-                    if(tumble.Icons != null)
+                    if (tumble.Icons != null)
                     {
                         foreach (var (key, _) in tumble.Icons)
                         {
@@ -460,14 +461,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Win { get; set; }
     }
 
-    public class UnbalancedBigSmallRecordViewModel: BetRecordViewModel
+    public class UnbalancedBigSmallRecordViewModel : BetRecordViewModel
     {
         public decimal Big { get; set; }
 
         public decimal Small { get; set; }
     }
-    
-    public class FruitSlotRecordViewModel : BetRecordViewModel
+
+    public class SlotRNGRecordViewModel : BetRecordViewModel
     {
         public decimal TotalAmount { get; set; }
     }

@@ -95,12 +95,12 @@ namespace GamesAdmin.Core.Models
     {
         public IEnumerable<HiLoBetRecord> Records { get; set; }
     }
-    
+
     public class UnbalancedBigSmallBetReport : BetReport<BigSmallRoundResult, UnbalancedBigSmallBetRecord>
     {
     }
-    
-    public class FruitSlotBetReport : BetReport<FruitSlotRoundResult, FruitSlotBetRecord>
+
+    public class SlotRNGBetReport : BetReport<SlotRNGRoundResult, SlotRNGBetRecord>
     {
     }
 }

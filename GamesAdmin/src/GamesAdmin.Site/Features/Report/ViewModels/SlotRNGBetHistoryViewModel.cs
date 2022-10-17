@@ -2,10 +2,10 @@
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class FruitSlotBetHistoryViewModel : BetHistoryViewModel
+    public class SlotRNGBetHistoryViewModel : BetHistoryViewModel
     {
-        public FruitSlotRoundResultViewModel RoundResult { get; set; }
-        public IEnumerable<FruitSlotBetHistoryRecordViewModel> Bets { get; set; }
+        public SlotRNGRoundResultViewModel RoundResult { get; set; }
+        public IEnumerable<SlotRNGBetHistoryRecordViewModel> Bets { get; set; }
         public Dictionary<string, decimal> Odds { get; set; }
 
         public decimal GetOdds(IEnumerable<string> subChoices, string mainChoice)
@@ -38,7 +38,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
     }
 
-    public class FruitSlotBetHistoryRecordViewModel : BetHistoryRecordViewModel
+    public class SlotRNGBetHistoryRecordViewModel : BetHistoryRecordViewModel
     {
         public string Choice { get; set; }
         public IEnumerable<string> SubChoices { get; set; }

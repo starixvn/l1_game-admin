@@ -2,14 +2,15 @@
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class FruitSlotBetHistory : BetHistory
+    public class SlotRNGBetHistory : BetHistory
     {
-        public FruitSlotRoundResult RoundResult { get; set; }
-        public IEnumerable<FruitSlotBetHistoryRecord> Bets { get; set; }
+        public SlotRNGRoundResult RoundResult { get; set; }
+        public IEnumerable<SlotRNGBetHistoryRecord> Bets { get; set; }
 
         public Dictionary<string, decimal> Odds { get; set; }
     }
-    public class FruitSlotBetHistoryRecord : BetHistoryRecord
+
+    public class SlotRNGBetHistoryRecord : BetHistoryRecord
     {
         public string Choice { get; set; }
 
