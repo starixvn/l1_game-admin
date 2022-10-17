@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Keno;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace GamesAdmin.Api.Report
+{
+    public interface IReportServiceFactory
+    {
+        IGameReportService GetService(GameId game);
+
+        IBetHistoryReportService GetBetHistoryService(GameId game);
+    }
+
+    public class ReportServiceFactory : IReportServiceFactory
+    {
+        private readonly Dictionary<GameId, Type> services = new Dictionary<GameId, Type>
+        {
+            { GameId.FishPrawnCrab, typeof(FishPrawnCrabReportService) },
+            { GameId.SeDie, typeof(SeDieReportService) },
+            { GameId.MiniSeDie, typeof(MiniSeDieReportService) },
+            { GameId.Baccarat, typeof(BaccaratReportService) },
+            { GameId.DragonTiger, typeof(DragonTigerReportService) },
+            { GameId.KenoProMax, typeof(KenoProMaxReportService) },
+            { GameId.KenoMax, typeof(MiniKenoReportService<KenoMaxRoundEntity, KenoMaxOnesEntity, KenoMaxBetEntity>) },
+            { GameId.KenoMax2, typeof(MiniKenoReportService<KenoMax2RoundEntity, KenoMax2OnesEntity, KenoMax2BetEntity>) },
+            { GameId.KenoMini, typeof(MiniKenoReportService<KenoMiniRoundEntity, KenoMiniOnesEntity, KenoMiniBetEntity>) },
+            { GameId.KenoMini2, typeof(MiniKenoReportService<KenoMini2RoundEntity, KenoMini2OnesEntity, KenoMini2BetEntity>) },
+            { GameId.KenoEast, typeof(MiniKenoReportService<KenoEastRoundEntity, KenoEastOnesEntity, KenoEastBetEntity>) },
+            { GameId.KenoWest, typeof(MiniKenoReportService<KenoWestRoundEntity, KenoWestOnesEntity, KenoWestBetEntity>) },
+            { GameId.KenoSouth, typeof(MiniKenoReportService<KenoSouthRoundEntity, KenoSouthOnesEntity, KenoSouthBetEntity>) },
+            { GameId.KenoNorth, typeof(MiniKenoReportService<KenoNorthRoundEntity, KenoNorthOnesEntity, KenoNorthBetEntity>) },
+            { GameId.Roulette, typeof(RouletteReportService) },
+            { GameId.VipSeDie, typeof(VipSeDieReportService) },
+            { GameId.VipFishPrawnCrab, typeof(VipFishPrawnCrabReportService) },
+            { GameId.SicBo, typeof(SicBoReportService) },
+            { GameId.VipBaccarat, typeof(BaccaratReportService) },
+            { GameId.VipSeDieWar, typeof(VipSeDieWarReportService) },
+            { GameId.Lottery, typeof(LotteryReportService) },
+            { GameId.ThreeCards, typeof(ThreeCardsReportService) },
+            { GameId.KenoMatch1, typeof(KenoMatchReportService<KenoMatch1RoundEntity, KenoMatch1OneEntity, KenoMatch1BetEntity>) },
+            { GameId.KenoMatch2, typeof(KenoMatchReportService<KenoMatch2RoundEntity, KenoMatch2OneEntity, KenoMatch2BetEntity>) },
+            { GameId.KenoPower1, typeof(KenoPowerReportService<KenoPower1RoundEntity, KenoPower1OneEntity, KenoPower1BetEntity>) },
+            { GameId.KenoPower2, typeof(KenoPowerReportService<KenoPower2RoundEntity, KenoPower2OneEntity, KenoPower2BetEntity>) },
+            { GameId.HiLo, typeof(HiLoReportService) },
+            { GameId.BlockchainBaccarat,  typeof(BaccaratReportService) },
+            { GameId.MegaKeno, typeof(MiniKenoReportService<MegaKenoRoundEntity, MegaKenoOnesEntity, MegaKenoBetEntity>) },
+            { GameId.MegaKeno2, typeof(MiniKenoReportService<MegaKeno2RoundEntity, MegaKeno2OnesEntity, MegaKeno2BetEntity>) },
+            { GameId.MiniSeDie2, typeof(MiniSeDieMultiplayReportService<MiniSeDie2RoundEntity, MiniSeDie2BetEntity>) },
+            { GameId.MiniSeDie3, typeof(MiniSeDieMultiplayReportService<MiniSeDie3RoundEntity, MiniSeDie3BetEntity>) },
+            { GameId.MiniSeDie4, typeof(MiniSeDieMultiplayReportService<MiniSeDie4RoundEntity, MiniSeDie4BetEntity>) },
+            { GameId.UnbalancedBigSmall1, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall1RoundEntity, UnbalancedBigSmall1BetEntity, UnbalancedBigSmall1BetLogEntity>) },
+            { GameId.UnbalancedBigSmall2, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall2RoundEntity, UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>) },
+            { GameId.UnbalancedBigSmall3, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall3RoundEntity, UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>) },
+            { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall4RoundEntity, UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>) },
+<<<<<<< HEAD
+            { GameId.FruitSlot, typeof(FruitSlotReportService) },
+=======
+            { GameId.FanTan, typeof(FanTanReportService) },
+>>>>>>> dad8834e (fix: fan tan round history)
+        };
+
+        private readonly IServiceProvider serviceProvider;
+
+        public ReportServiceFactory(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+
+        public IGameReportService GetService(GameId game)
+            => (IGameReportService)serviceProvider.GetRequiredService(services[game]);
+
+        public IBetHistoryReportService GetBetHistoryService(GameId game)
+            => (IBetHistoryReportService)serviceProvider.GetRequiredService(services[game]);
+    }
+}
