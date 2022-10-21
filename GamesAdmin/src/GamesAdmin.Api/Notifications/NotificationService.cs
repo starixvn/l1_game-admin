@@ -47,16 +47,13 @@ namespace GamesAdmin.Api.Notifications
     {
         private readonly IMapper mapper;
         private readonly IGenericRepository<NotificationEntity> notificationRepository;
-        private readonly ISentryClient sentryClient;
 
         public NotificationService(
             IMapper mapper,
-            IGenericRepository<NotificationEntity> notificationRepository,
-            ISentryClient sentryClient)
+            IGenericRepository<NotificationEntity> notificationRepository)
         {
             this.notificationRepository = notificationRepository;
             this.mapper = mapper;
-            this.sentryClient = sentryClient;
         }
 
         public async Task<bool> Create(AddRequest request)

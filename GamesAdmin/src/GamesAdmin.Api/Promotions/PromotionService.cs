@@ -17,31 +17,31 @@ namespace GamesAdmin.Api.Promotions
     public interface IPromotionService
     {
         Task<IEnumerable<PromotionModel>> GetByStatus(string status);
+
         Task<IEnumerable<PromotionModel>> GetByGameId(GameId gameId);
+
         Task<bool> Create(PromotionModel model);
+
         Task<PromotionModel> GetById(string id);
+
         Task<bool> Update(PromotionModel model);
+
         Task<bool> Delete(string id);
     }
+
     public class PromotionService : IPromotionService
     {
         private readonly IGenericRepository<PromotionEntity> promotionRepository;
-        private readonly IGenericRepository<NotificationEntity> notificationRepository;
         private readonly IMapper mapper;
-        private readonly ISentryClient sentryClient;
         private readonly IChatBotService chatBotService;
         private readonly INotificationService notificationService;
 
-        public PromotionService(ISentryClient sentryClient, 
-            IGenericRepository<PromotionEntity> promotionRepository, 
-            IGenericRepository<NotificationEntity> notificationRepository, 
+        public PromotionService(IGenericRepository<PromotionEntity> promotionRepository,
             IChatBotService chatBotService,
             INotificationService notificationService,
             IMapper mapper)
         {
-            this.sentryClient = sentryClient;
             this.promotionRepository = promotionRepository;
-            this.notificationRepository = notificationRepository;
             this.chatBotService = chatBotService;
             this.notificationService = notificationService;
             this.mapper = mapper;
@@ -100,7 +100,6 @@ namespace GamesAdmin.Api.Promotions
                 .Set(field => field.StartDateTime, model.StartDateTime)
                 .Set(field => field.EndDateTime, model.EndDateTime)
                 .Set(field => field.IsDaily, model.IsDaily);
-
 
                 await promotionRepository.UpdateAsync(promotion => promotion.Id.Equals(ObjectId.Parse(model.PromotionId)), update);
 
