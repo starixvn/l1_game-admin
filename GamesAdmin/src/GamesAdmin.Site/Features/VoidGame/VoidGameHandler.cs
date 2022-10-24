@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace GamesAdmin.Site.Features.VoidGame
 {
     public class VoidGameHandler : IRequestHandler<VoidTicketRequest, VoidGameResultViewModel>
-        ,IRequestHandler<IndexViewRequest, IndexViewModel>
+        , IRequestHandler<IndexViewRequest, IndexViewModel>
     {
         private readonly IVoidGameService voidGameService;
         private readonly IPartnerService partnerService;
@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.VoidGame
             var partners = await partnerService.GetAll();
             var viewModel = new IndexViewModel();
 
-            viewModel.Partners = partners.Select(partner => new SelectListItem { Text= partner.Name, Value = partner.PartnerId}).ToList();
+            viewModel.Partners = partners.Select(partner => new SelectListItem { Text = partner.Name, Value = partner.PartnerId }).ToList();
 
             return viewModel;
         }

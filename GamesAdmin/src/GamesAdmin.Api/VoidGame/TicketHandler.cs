@@ -167,6 +167,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.UnbalancedBigSmall3 => await Find<UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.UnbalancedBigSmall4 => await Find<UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.FruitSlot => await Find<FruitSlotBetEntity, FruitSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.FanTan => await Find<FanTanBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 
