@@ -66,6 +66,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.FruitSlotValue, typeof(IFruitSlotOnlineUserApi) },
             { Game.FanTanValue, typeof(IFanTanOnlineUserApi) },
             { Game.FortuneCatValue, typeof(IFortuneCatOnlineUserApi) },
+            { Game.Win3CardsValue, typeof(IWin3CardsOnlineUserApi) },
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

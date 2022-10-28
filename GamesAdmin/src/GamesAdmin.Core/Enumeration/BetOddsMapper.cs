@@ -115,6 +115,8 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.FanTanValue:
                     return Enumeration.GetAll<FanTanBetChoice>();
+                case Game.Win3CardsValue:
+                    return Enumeration.GetAll<Win3CardsBetChoice>();
 
                 default: return default;
             }
