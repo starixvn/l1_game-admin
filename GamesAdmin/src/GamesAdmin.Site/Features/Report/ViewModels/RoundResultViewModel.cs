@@ -395,4 +395,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Chun134 { get; set; }
         public bool Chun234 { get; set; }
     }
+    
+    public class Win3CardsRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public IEnumerable<DragonTigerCardViewModel> DragonCards { get; set; }
+
+        public IEnumerable<DragonTigerCardViewModel> PhoenixCards { get; set; }
+    }
 }

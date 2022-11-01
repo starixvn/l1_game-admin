@@ -29,6 +29,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<UnbalancedBigSmallReportService>();
             services.AddScoped<SlotRNGReportService>();
             services.AddScoped<FanTanReportService>();
+            services.AddScoped<Win3CardsReportService>();
         }
     }
 }

@@ -107,4 +107,8 @@ namespace GamesAdmin.Core.Models
     public class FanTanBetReport : BetReport<FanTanRoundResult, FanTanBetRecord>
     {
     }
+    
+    public class Win3CardsBetReport : BetReport<Win3CardsRoundResult, Win3CardsBetRecord>
+    {
+    }
 }

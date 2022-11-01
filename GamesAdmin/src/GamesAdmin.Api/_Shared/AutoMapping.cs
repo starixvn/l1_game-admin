@@ -468,6 +468,9 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FanTanSettlementResultEntity, FanTanSettlementResult>();
             CreateMap<FanTanResultEntity, FanTanResult>();
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
+            
+            CreateMap<Win3CardsBetReportEntity, Win3CardsBetRecord>();
+            CreateMap<Win3CardsRoundEntity, Win3CardsRoundResult>();
         }
     }
 }

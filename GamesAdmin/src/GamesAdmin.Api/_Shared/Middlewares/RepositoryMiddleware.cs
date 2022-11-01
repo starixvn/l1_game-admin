@@ -50,6 +50,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
             services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
             services.AddScoped<IFortuneCatReportRepository, FortuneCatReportRepository>();
+            services.AddScoped<IWin3CardsReportRepository, Win3CardsReportRepository>();
         }
     }
 }

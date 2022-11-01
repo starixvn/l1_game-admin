@@ -4,7 +4,7 @@ namespace GamesAdmin.Core.Enumeration.BetChoices
     {
         public const string DragonValue = "dragon";
         public const string PhoenixValue = "phoenix";
-        public const string PairEightPlusValue = "pair8Plus";
+        public const string Pair8PlusValue = "pair8Plus";
         public const string StraightValue = "straight";
         public const string FlushValue = "flush";
         public const string StraightFlushValue = "straightFlush";
@@ -12,7 +12,7 @@ namespace GamesAdmin.Core.Enumeration.BetChoices
 
         public static readonly Win3CardsBetChoice Dragon = new Win3CardsBetChoice(DragonValue, "Dragon");
         public static readonly Win3CardsBetChoice Phoenix = new Win3CardsBetChoice(PhoenixValue, "Phoenix");
-        public static readonly Win3CardsBetChoice PairEightPlus = new Win3CardsBetChoice(PairEightPlusValue, "Pair 8 Plus");
+        public static readonly Win3CardsBetChoice Pair8Plus = new Win3CardsBetChoice(Pair8PlusValue, "Pair 8 Plus");
         public static readonly Win3CardsBetChoice Straight = new Win3CardsBetChoice(StraightValue, "Straight");
         public static readonly Win3CardsBetChoice Flush = new Win3CardsBetChoice(FlushValue, "Flush");
         public static readonly Win3CardsBetChoice StraightFlush = new Win3CardsBetChoice(StraightFlushValue, "Straight Flush");
