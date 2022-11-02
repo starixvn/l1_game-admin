@@ -401,5 +401,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<DragonTigerCardViewModel> DragonCards { get; set; }
 
         public IEnumerable<DragonTigerCardViewModel> PhoenixCards { get; set; }
+
+        public Dictionary<string, bool> SettlementResult { get; set; }
     }
 }

@@ -10,7 +10,9 @@ namespace GamesAdmin.Database
 {
     public interface IWin3CardsReportRepository
     {
-        Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetReportEntity>)> GetAsync(BetReportFilter filter);
+        Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter);
+
+        Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter);
     }
     public class Win3CardsReportRepository : BaseBetReportRepository, IWin3CardsReportRepository
     {
@@ -18,7 +20,7 @@ namespace GamesAdmin.Database
         {
         }
 
-        public async Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetReportEntity>)> GetAsync(BetReportFilter filter)
+        public async Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter)
         {
             var roundResult = await database.GetCollection<Win3CardsRoundEntity>(Document.GetCollectionName(typeof(Win3CardsRoundEntity)))
                 .Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
@@ -44,6 +46,18 @@ namespace GamesAdmin.Database
             }
 
             return (new Win3CardsRoundEntity(), Enumerable.Empty<Win3CardsBetReportEntity>());
+        }
+
+        public async Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter)
+        {
+            var roundCollection = database.GetCollection<Win3CardsRoundEntity>(Document.GetCollectionName(typeof(Win3CardsRoundEntity)));
+            var roundResult = await roundCollection.Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
+          
+            var betCollection = database.GetCollection<Win3CardsBetEntity>(Document.GetCollectionName(typeof(Win3CardsBetEntity)));
+            var bets = await betCollection.Find(x => x.Round == filter.RoundId && x.Uid == filter.UserId && x.OperatorId == filter.PartnerId).SortByDescending(x => x.Id).ToListAsync();
+            var bet = await betCollection.Find(x => x.Round == filter.RoundId && x.Uid == filter.UserId && x.OperatorId == filter.PartnerId).FirstOrDefaultAsync();
+
+            return (roundResult, bets, bet.Odds);
         }
     }
 }

@@ -1,10 +1,35 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Core.Enumeration
+@using GamesAdmin.Core.Enumeration.BetChoices
+@model Win3CardsBetHistoryViewModel
 
-</body>
-</html>
+@{
+    var betChoices = Enumeration.GetAll<Win3CardsBetChoice>();
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Bet Choice</th>
+            <th>Odds</th>
+            <th>Stake</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bet in Model.Bets)
+        {
+            var betChoice = betChoices.FirstOrDefault(x => x.Value == bet.Choice);
+            var isWin = Model.RoundResult.SettlementResult[bet.Choice];
+            var betWin = Model.GetBetWin(bet.Choice, bet.Amount);
+        <tr>
+            <td class="text-center">@bet.Time.ToString(Constants.DateTimeFormat)</td>
+            <td class="@(isWin? "text-primary": string.Empty)">@betChoice?.DisplayName</td>
+            <td class="text-center">@Model.Odds[bet.Choice]</td>
+            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
+            <td class="@(isWin? "text-primary": string.Empty)">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betWin) : betWin)</td>
+        </tr>
+        }
+    </tbody>
+</table>
