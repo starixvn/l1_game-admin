@@ -138,6 +138,7 @@ namespace GamesAdmin.Site._Shared
             
             CreateMap<FanTanRoundResult, FanTanRoundResultViewModel>();
             CreateMap<FanTanSettlementResult, FanTanSettlementResultViewModel>();
+            CreateMap<FanTanResult, FanTanResultViewModel>();
             CreateMap<FanTanBetRecord, FanTanRecordViewModel>();
             CreateMap<FanTanBetHistoryRecord, FanTanBetHistoryRecordViewModel>();
         }

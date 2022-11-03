@@ -364,9 +364,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class FanTanRoundResultViewModel : BaseRoundResultViewModel
     {
-        public byte Result { get; set; }
+        public FanTanResultViewModel Result { get; set; }
 
         public FanTanSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class FanTanResultViewModel
+    {
+        public byte TotalBeads { get; set; }
+        public byte FinalBeads { get; set; }
     }
 
     public class FanTanSettlementResultViewModel

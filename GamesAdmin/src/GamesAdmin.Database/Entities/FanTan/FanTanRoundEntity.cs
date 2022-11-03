@@ -5,9 +5,15 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("fantan_rounds")]
     public class FanTanRoundEntity : BaseRoundEntity
     {
-        public byte Result { get; set; }
+        public FanTanResultEntity Result { get; set; }
 
         public FanTanSettlementResultEntity SettlementResult { get; set; }
+    }
+
+    public class FanTanResultEntity
+    {
+        public byte TotalBeads { get; set; }
+        public byte FinalBeads { get; set; }
     }
 
     public class FanTanSettlementResultEntity

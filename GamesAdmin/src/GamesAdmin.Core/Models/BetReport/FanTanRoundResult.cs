@@ -2,9 +2,15 @@
 {
     public class FanTanRoundResult : RoundResult
     {
-        public byte Result { get; set; }
+        public FanTanResult Result { get; set; }
 
         public FanTanSettlementResult SettlementResult { get; set; }
+    }
+
+    public class FanTanResult
+    {
+        public byte TotalBeads { get; set; }
+        public byte FinalBeads { get; set; }
     }
 
     public class FanTanSettlementResult
