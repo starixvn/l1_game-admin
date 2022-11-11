@@ -14,7 +14,7 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label asp-for="PartnerId">Partner</label>
+                <label asp-for="PartnerId">Operator</label>
                 <select disabled asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
                 <span class="text-danger" asp-validation-for="PartnerId"></span>
             </div>
@@ -53,15 +53,15 @@
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <input type="checkbox" asp-for="IsTest"  onclick="currency.onClickIsTestCurrency(event)" />
-                <label asp-for="IsTest" class="control-label" >Testing Currency</label>
+                <input type="checkbox" asp-for="IsTest" onclick="currency.onClickIsTestCurrency(event)" />
+                <label asp-for="IsTest" class="control-label">Testing Currency</label>
             </div>
         </div>
 
         <div class="form-group row" style="display: @(Model.IsTest ? "block" : "none") " id="isUncountOnTotalSetting">
             <div class="col-sm-12">
-                <input type="checkbox" asp-for="IsUncountOnTotal"/>
-                <label asp-for="IsUncountOnTotal" class="control-label" >Is Uncount</label>
+                <input type="checkbox" asp-for="IsUncountOnTotal" />
+                <label asp-for="IsUncountOnTotal" class="control-label">Is Uncount</label>
             </div>
         </div>
 

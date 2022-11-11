@@ -12,7 +12,7 @@
         <input class="form-control" type="text" asp-for="Id" hidden>
         <div class="form-group row">
             <div class="col-sm-12">
-                <label class="required-field-label" asp-for="PartnerId">Partner</label>
+                <label class="required-field-label" asp-for="PartnerId">Operator</label>
                 <select class="form-control" asp-for="PartnerId" asp-items="@Model.PartnerItems"></select>
                 <span class="text-danger" asp-validation-for="PartnerId"></span>
             </div>
@@ -38,6 +38,13 @@
             <div class="col-sm-12">
                 <input type="checkbox" asp-for="Enabled" />
                 <label asp-for="Enabled" class="control-label"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="checkbox" asp-for="FractionalOddsFormat" />
+                <label asp-for="FractionalOddsFormat" class="control-label">Apply Fractional Odds Format</label>
             </div>
         </div>
 

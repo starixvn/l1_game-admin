@@ -158,7 +158,7 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
-                    <th>Partner</th>
+                    <th>Operator</th>
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th>Currency</th>
@@ -186,7 +186,7 @@
                                asp-route-userId="@bet.UserId"
                                asp-route-partnerId="@bet.PartnerId"
                                asp-route-convertToUSD="@Model.ConvertToUSD">
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet)  / Model.BaseCurrencyMultiplier: bet.TotalBet)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalBet) / Model.BaseCurrencyMultiplier : bet.TotalBet)
                             </a>
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Refund) / Model.BaseCurrencyMultiplier : bet.Refund)</td>

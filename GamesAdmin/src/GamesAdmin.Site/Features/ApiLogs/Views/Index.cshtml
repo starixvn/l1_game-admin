@@ -19,7 +19,7 @@
       id="api-log-form">
     <div class="form-row align-items-center">
         <div class="col-auto">
-            <label asp-for="PartnerId" class="control-label">Partner</label>
+            <label asp-for="PartnerId" class="control-label">Operator</label>
             <select asp-items="@Model.Partners" asp-for="PartnerId" class="form-control"></select>
         </div>
         <div class="col-auto">
@@ -36,7 +36,7 @@
         </div>
         <div class="col-auto">
             <label asp-for="ObCustId" class="control-label">Customer ID</label>
-            <input class="form-control" asp-for="ObCustId" value=''/>
+            <input class="form-control" asp-for="ObCustId" value='' />
         </div>
         <div class="col-auto">
             <label asp-for="GameTypeId" class="control-label">Game</label>
@@ -46,7 +46,7 @@
         </div>
         <div class="col-auto">
             <label asp-for="GameRoundId" class="control-label">Game Round</label>
-            <input class="form-control" asp-for="GameRoundId" value=''/>
+            <input class="form-control" asp-for="GameRoundId" value='' />
         </div>
         <div class="col-auto list-buttons">
             <button type="submit" class="btn-submit" formnovalidate="formnovalidate">Submit</button>

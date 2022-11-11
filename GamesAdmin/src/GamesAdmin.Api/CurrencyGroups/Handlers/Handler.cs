@@ -31,7 +31,7 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
         {
             var currenciesInGroup = currencies.Where(currency => string.Equals(currency.GroupId, entity.Id.ToString()));
 
-            return new CurrencyGroupModel(entity.Id.ToString(), entity.Name, entity.Enabled, entity.PartnerId, currenciesInGroup);
+            return new CurrencyGroupModel(entity.Id.ToString(), entity.Name, entity.Enabled, entity.PartnerId, entity.FractionalOddsFormat, currenciesInGroup);
         }
     }
 }

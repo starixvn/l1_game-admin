@@ -9,7 +9,7 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
-                    <th>Partner</th>
+                    <th>Operator</th>
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
                     <th>Currency</th>
@@ -22,38 +22,38 @@
             <tbody>
                 @foreach (var bet in Model.Records)
                 {
-                <tr>
-                    <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                    <td class="text-center">@bet.Partner</td>
-                    <td>@bet.Username</td>
-                    <td>
-                        @bet.Nickname
-                    </td>
-                    <td class="text-center">@bet.Currency</td>
-                    <td class="text-center">
-                        <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                           asp-action="GetHiLoBetHistory"
-                           asp-route-game="@GameId.HiLo"
-                           asp-route-roundId="@bet.RoundId"
-                           asp-route-userId="@bet.UserId"
-                           asp-route-partnerId="@bet.PartnerId"
-                           asp-route-convertToUSD="@Model.ConvertToUSD">
-                            @bet.RoundId
-                        </a>
-                    </td>
-                    <td class="text-center">@bet.ExchangeRateId</td>
-                    <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
-                    <td class="text-right">
-                        @if (bet.Paid)
-                        {
-                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin / Model.BaseCurrencyMultiplier : bet.BetWin)
-                        }
-                        else
-                        {
-                            @("Running")
-                        }
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-center">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                               asp-action="GetHiLoBetHistory"
+                               asp-route-game="@GameId.HiLo"
+                               asp-route-roundId="@bet.RoundId"
+                               asp-route-userId="@bet.UserId"
+                               asp-route-partnerId="@bet.PartnerId"
+                               asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @bet.RoundId
+                            </a>
+                        </td>
+                        <td class="text-center">@bet.ExchangeRateId</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
+                        <td class="text-right">
+                            @if (bet.Paid)
+                            {
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin / Model.BaseCurrencyMultiplier : bet.BetWin)
+                            }
+                            else
+                            {
+                                @("Running")
+                            }
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

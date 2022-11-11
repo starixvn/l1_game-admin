@@ -4,11 +4,12 @@
 <table id="currency-group-table" class="table table-bordered table-hover stripe sticky-table">
     <thead>
         <tr>
-            <th>Partner</th>
+            <th>Operator</th>
             <th>Currency Group</th>
             <th>Currency</th>
             <th>Game</th>
             <th>Enabled</th>
+            <th>Fractional Odds Format</th>
             @if (Context.HasAdminPermission())
             {
                 <th>Edit</th>
@@ -25,6 +26,16 @@
                 <td class="text-center">@item.GetGamesSeperatedByComma()</td>
                 <td class="text-center">
                     @if (item.Enabled)
+                    {
+                        <i class="icon-check"></i>
+                    }
+                    else
+                    {
+                        <i class="icon-cancel"></i>
+                    }
+                </td>
+                <td class="text-center">
+                    @if (item.FractionalOddsFormat)
                     {
                         <i class="icon-check"></i>
                     }

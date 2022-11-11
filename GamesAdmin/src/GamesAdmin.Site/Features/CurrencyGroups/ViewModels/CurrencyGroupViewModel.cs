@@ -15,6 +15,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 
         public string PartnerId { get; set; }
 
+        public bool FractionalOddsFormat { get; set; }
+
         public IEnumerable<CurrencyModel> Currencies { get; set; }
 
         public IEnumerable<string> Games { get; set; }

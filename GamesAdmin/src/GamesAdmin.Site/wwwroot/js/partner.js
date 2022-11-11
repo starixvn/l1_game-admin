@@ -66,7 +66,7 @@
             var partnerNames = this.getSelectedPartners().names;
 
             if (!partnerNames.length) {
-                alert("You should select at least one partner.")
+                alert("You should select at least one operator.")
                 return
             }
 
@@ -103,7 +103,7 @@
             var isPartnerUM = $('#partner-info').css('display') !== 'none';
             var selectedPartners = this.getSelectedPartners();
             var message = isPartnerUM
-                ? ("Are you sure you want to TURN " + status + " UM for parnters ? \n" + selectedPartners.names.join('; '))
+                ? ("Are you sure you want to TURN " + status + " UM for operators ? \n" + selectedPartners.names.join('; '))
                 : ("You are going to set Under Maintenance to " + status + ". Are you sure?");
             var data = $('#umForm').serializeArray();
 
@@ -196,7 +196,6 @@
                 names: partnerNames
             };
         },
-
     }
 }(jQuery));
 

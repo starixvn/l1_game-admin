@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
     public class AddViewModel : ViewModelBase
     {
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Partner Id should only contain characters and numbers.")]
+        [RegularExpression(@"^[a-zA-Z0-9_-]+$", ErrorMessage = "Operator Id should only contain characters, numbers, underscore and dash.")]
         [DisplayName("Id")]
         public string PartnerId { get; set; }
 

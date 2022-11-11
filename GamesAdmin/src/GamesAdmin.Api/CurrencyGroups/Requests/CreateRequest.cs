@@ -11,6 +11,8 @@ namespace GamesAdmin.Api.CurrencyGroups.Requests
 
         public bool Enabled { get; set; }
 
+        public bool FractionalOddsFormat { get; set; }
+
         public IEnumerable<string> Currencies { get; set; }
     }
 

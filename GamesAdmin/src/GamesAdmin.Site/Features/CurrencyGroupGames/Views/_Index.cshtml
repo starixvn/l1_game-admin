@@ -10,7 +10,7 @@
 }
 
 @section Styles {
-<link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
 <div>
@@ -35,7 +35,7 @@
     <input readonly hidden asp-for="@Model.GameId" />
 
     <div class="row">
-        <label class="control-label" for="PartnerIds">Partner : <b>@Model.PartnerName</b></label>
+        <label class="control-label" for="PartnerIds">Operator : <b>@Model.PartnerName</b></label>
     </div>
     <div id="setting">
         <div class="row">
@@ -67,12 +67,11 @@
     </div>
 </form>
 
-
 @section Scripts{
-<environment include="Development">
-    <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
-</environment>
-<environment exclude="Development">
-    <script src="~/js/currency-group-game.min.js" asp-append-version="true"></script>
-</environment>
+    <environment include="Development">
+        <script src="~/js/currency-group-game.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/currency-group-game.min.js" asp-append-version="true"></script>
+    </environment>
 }

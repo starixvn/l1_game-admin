@@ -29,6 +29,7 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
                 var update = Builders<CurrencyGroupEntity>.Update
                     .Set(field => field.Name, model.Name)
                     .Set(field => field.Enabled, model.Enabled)
+                    .Set(field => field.FractionalOddsFormat, model.FractionalOddsFormat)
                     .Set(field => field.PartnerId, model.PartnerId);
 
                 await Repository.UpdateAsync(entity => entity.Id.Equals(ObjectId.Parse(model.Id)), update);

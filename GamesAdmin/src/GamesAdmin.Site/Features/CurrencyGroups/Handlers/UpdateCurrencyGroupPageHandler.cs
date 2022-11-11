@@ -39,7 +39,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.Handlers
                 PartnerItems = parterItems,
                 Id = group.Id,
                 Enabled = group.Enabled,
-                Name = group.Name
+                Name = group.Name,
+                FractionalOddsFormat = group.FractionalOddsFormat
             };
         }
     }

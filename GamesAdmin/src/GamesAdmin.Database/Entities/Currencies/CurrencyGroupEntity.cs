@@ -9,6 +9,8 @@ namespace GamesAdmin.Database.Entities.Currencies
 
         public bool Enabled { get; set; }
 
+        public bool FractionalOddsFormat { get; set; }
+
         public string PartnerId { get; set; }
     }
 }

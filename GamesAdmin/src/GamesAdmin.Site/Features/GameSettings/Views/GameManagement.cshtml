@@ -21,7 +21,6 @@
         <input type="button" onclick="gameStatus.showEnableDisable(false)" value="DISABLE" class="btn-gray btn-enable" />
         <input type="button" onclick="gameStatus.showReload()" value="RELOAD" class="btn-submit btn-enable" />
     }
-
 </div>
 <div class="col-md-12 col-lg-12 game-status">
     @if (!string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
@@ -36,7 +35,7 @@
                 <th class="col-check"><input type="checkbox" id="status-all" value="all" onclick="gameStatus.checkAll();" /></th>
                 <th class="col-game-name">Name</th>
                 <th>Enabled</th>
-                <th class="col-game-name">Partner</th>
+                <th class="col-game-name">Operator</th>
                 <th class="col-bet-limit">Bet Limit (Min - Max)</th>
                 <th>Setting</th>
                 <th>Odds</th>
@@ -168,7 +167,6 @@
                                         }
                                     }
                                 }
-
                             </td>
                             <td class="text-center">
                                 <button class="btn-edit" onclick='gameStatus.showPartnerSetting("@Model.Partners[j].PartnerId", "@Model.Partners[j].Name", "@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "@((int)Model.GameList[index].GameConfig.Info.Type)")'><i class="icon-edit"></i></button>
@@ -469,7 +467,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 @section Scripts{
