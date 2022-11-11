@@ -138,12 +138,22 @@
                     <legend>Jackpot(initial value)</legend>
                     @for (var i = 0; i < Model.JackpotViewModel.StakeLevels.Count; i++)
                     {
-                        <div class="form-group">
-                            <label class="control-label">Stake level @Model.JackpotViewModel.StakeLevels[i].Stake</label>
-                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
-                            <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].BotRatio" class="form-control" />
-                            <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
-                        </div>
+                        <fieldset class="slots-stake-level">
+                            <legend>Stake level <b>@Model.JackpotViewModel.StakeLevels[i].Stake</b></legend>
+                            <div class="form-group row">
+                             
+                                <div class="col-lg-6">
+                                    <label class="control-label">Initial Amount</label>
+                                    <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label">Bot Ratio (%)</label>
+                                    <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].BotRatio" class="form-control" />
+                                </div>
+                                <input type="hidden" asp-for="@Model.JackpotViewModel.StakeLevels[i].Stake" class="form-control" />
+                            </div>
+                        </fieldset>
+                        <br />
                     }
                 </fieldset>
                 <br />
