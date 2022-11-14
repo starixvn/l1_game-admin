@@ -439,7 +439,7 @@ namespace GamesAdmin.Site.Features.Report
                 betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                 return betViewModel;
-            });
+            }).OrderByDescending(x => x.Time);
         }
 
         public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)
