@@ -57,7 +57,11 @@ namespace GamesAdmin.Core.Enumeration
         public const string UnbalancedBigSmall3Value = "unbalancedbigsmall3";
         public const string UnbalancedBigSmall4Value = "unbalancedbigsmall4";
         public const string FruitSlotValue = "fruitslot";
+<<<<<<< HEAD
         public const string FanTanValue = "fantan";
+=======
+        public const string FortuneCatValue = "fortunecat";
+>>>>>>> 48f02ce5 (fix: fortune cat settings)
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -112,7 +116,11 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game UnbalancedBigSmall3 = new Game(UnbalancedBigSmall3Value, "Macau", GameId.UnbalancedBigSmall3);
         public static readonly Game UnbalancedBigSmall4 = new Game(UnbalancedBigSmall4Value, "Monte Carlo", GameId.UnbalancedBigSmall4);
         public static readonly Game FruitSlot = new Game(FruitSlotValue, "Fruit Slot", GameId.FruitSlot);
+<<<<<<< HEAD
         public static readonly Game FanTan = new Game(FanTanValue, "Fan Tan", GameId.FanTan);
+=======
+        public static readonly Game FortuneCat = new Game(FortuneCatValue, "Fortune Cat", GameId.FortuneCat);
+>>>>>>> 48f02ce5 (fix: fortune cat settings)
 
         public Game()
         {
@@ -172,11 +180,8 @@ namespace GamesAdmin.Core.Enumeration
             UnbalancedBigSmall2,
             UnbalancedBigSmall3,
             UnbalancedBigSmall4,
-<<<<<<< HEAD
-            FruitSlot
-=======
+            FruitSlot,
             FanTan
->>>>>>> dad8834e (fix: fan tan round history)
         };
     }
 }

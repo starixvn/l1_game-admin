@@ -54,11 +54,11 @@
         MiniSeDie2 = 56,
         MiniSeDie3 = 57,
         MiniSeDie4 = 58,
-<<<<<<< HEAD
         FruitSlot = 59,
+<<<<<<< HEAD
         FanTan=60
 =======
-        FanTan = 60,
->>>>>>> dad8834e (fix: fan tan round history)
+        FortuneCat = 62
+>>>>>>> 48f02ce5 (fix: fortune cat settings)
     }
 }

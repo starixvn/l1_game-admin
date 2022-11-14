@@ -11,7 +11,11 @@
   "HostingPort": "7778",
   "AllowedHosts": "*",
   "DatabaseSettings": {
+<<<<<<< HEAD
     "ConnectionString": "mongodb://127.0.0.1:27017",
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.14:17101/?replicaSet=L1pLocal",
+>>>>>>> 48f02ce5 (fix: fortune cat settings)
     "DatabaseName": "minigame"
   },
   "ArchiveDatabaseSettings": {
@@ -311,7 +315,7 @@
       "SocketRoute": "/unbalancedbigsmall/socket.io"
     },
     "FruitSlot": {
-      "Api": "http://l1-proxy.lumigame.com/fruitslot",
+      "Api": "https://l1-proxy.lumigame.com/fruitslot",
       "Socket": "l1-proxy.lumigame.com/admin/fruitslot",
       "SocketRoute": "/fruitslot/socket.io"
     },
