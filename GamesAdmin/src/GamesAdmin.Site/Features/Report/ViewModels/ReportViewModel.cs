@@ -46,6 +46,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public bool ConvertToUSD { get; set; }
 
+        public string SystemType { get; set; }
+
         public string BaseCurrency { get; set; }
 
         public IEnumerable<SelectListItem> Games { get; set; }

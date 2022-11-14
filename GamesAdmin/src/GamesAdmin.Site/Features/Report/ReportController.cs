@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var viewModel = await GetReportViewModel();
             viewModel.Game = game;
-            viewModel.BaseCurrency = this.systemSettings.BaseCurrency;
+            viewModel.BaseCurrency = systemSettings.BaseCurrency;
 
             return View("Index", viewModel);
         }
@@ -263,8 +263,9 @@ namespace GamesAdmin.Site.Features.Report
             {
                 ExcludeUUS = true,
                 Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency
-            };
+                BaseCurrency = systemSettings.BaseCurrency,
+                SystemType = systemSettings.System
+        };
 
             return View(viewModel);
         }
