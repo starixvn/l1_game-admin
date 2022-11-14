@@ -17,6 +17,7 @@
         },
         initResult: function () {
             $('#tbl-slot-game').DataTable({
+                "order": [[0, "desc"]],
                 "lengthMenu": [[100, 200, 500], [100, 200, 500]],
                 "pageLength": 100
             });
