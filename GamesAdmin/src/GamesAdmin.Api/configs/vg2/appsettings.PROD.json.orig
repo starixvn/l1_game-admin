@@ -1,0 +1,350 @@
+{
+  "SystemType": "VG2",
+  "Env": "PRO",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "HostingPort": "5000",
+  "AllowedHosts": "*",
+  "DatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_backend:%21%23x97%25uYZv%2A%5E%25%3E%7C%2Aqg%40E7FHi%3F9l%7B9r%3CK@10.99.99.53:37101,10.99.99.54:37102/?replicaSet=L2_SabaMain",
+    "DatabaseName": "minigame"
+  },
+  "ArchiveDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_archive:e%7BhLfhDx%3F%7E%2B%3E8p86%24%29%3D%26qeY1J%7Bg%2AspJ%2A@10.99.99.54:37151/?replicaSet=L2_SabaArc",
+    "DatabaseName": "minigame_arc"
+  },
+  "RemovedDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_archive:e%7BhLfhDx%3F%7E%2B%3E8p86%24%29%3D%26qeY1J%7Bg%2AspJ%2A@10.99.99.54:37151/?replicaSet=L2_SabaArc",
+    "DatabaseName": "minigame_rm"
+  },
+  "ApiLogDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_backend:%21%23x97%25uYZv%2A%5E%25%3E%7C%2Aqg%40E7FHi%3F9l%7B9r%3CK@10.99.99.53:37101,10.99.99.54:37102/?replicaSet=L2_SabaMain",
+    "DatabaseName": "log"
+  },
+  "Sentry": {
+    "Dsn": "http://2f36c5a8da36455d82663413173f2f08@10.2.189.50:9009/64",
+    "IncludeRequestPayload": true,
+    "SendDefaultPii": true,
+    "MinimumBreadcrumbLevel": "Debug",
+    "MinimumEventLevel": "Warning",
+    "AttachStackTrace": true,
+    "Debug": true,
+    "DiagnosticsLevel": "Error"
+  },
+  "IdentityServer": {
+    "Issuer": "http://l2_auth_api_prod:5000",
+    "Audiences": [
+      "admin-api",
+      "api"
+    ]
+  },
+  "IdentityServerAuth": {
+    "Url": "http://l2_auth_api_prod:5000",
+    "ClientId": "admin-api",
+    "ClientSecret": "adminapi@20luminet&",
+    "SiteId": "admin-api"
+  },
+  "GameServers": {
+    "Main": {
+      "Api": "http://l2_game_server_prod:5000",
+      "Socket": "proxy.v-gaming.net/main"
+    },
+    "UserService": {
+      "Api": "http://l2_user_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/user"
+    },
+    "NotificationService": {
+      "Api": "http://l2_notification_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/notification"
+    },
+    "SeDie": {
+      "Api": "http://l2_sedie_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/sedie",
+      "SocketRoute": "/sedie/socket.io"
+    },
+    "VipSeDie": {
+      "Api": "http://l2_vip_sedie_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/vipsedie",
+      "SocketRoute": "/vsedie/socket.io"
+    },
+    "SpecialSeDie": {
+      "Api": "http://l2_special_sedie_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/specialsedie",
+      "SocketRoute": "/specialsedie/socket.io"
+    },
+    "Blackjack": {
+      "Api": "http://l2_blackjack_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/blackjack",
+      "SocketRoute": "/blackjack/socket.io"
+    },
+    "VipFishPrawnCrab": {
+      "Api": "http://l2_vip_fish_prawn_crab_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/vipfishprawncrab",
+      "SocketRoute": "/vipfishprawncrab/socket.io"
+    },
+    "SicBo": {
+      "Api": "http://l2_sicbo_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/sicbo",
+      "SocketRoute": "/sicbo/socket.io"
+    },
+    "VipSeDieWar": {
+      "Api": "http://l2_vip_sedie_war_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/vipsediewar",
+      "SocketRoute": "/vipsediewar/socket.io"
+    },
+    "VipBaccarat": {
+      "Api": "http://l2_vip_baccarat_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/vipbaccarat",
+      "SocketRoute": "/vipbaccarat/socket.io"
+    },
+    "FourGuardians": {
+      "Api": "http://l2_four_guardians_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/fourguardians",
+      "SocketRoute": "/fourguardians/socket.io"
+    },
+    "KenoProMax": {
+      "Api": "http://l2_keno_pro_max_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenopromax",
+      "SocketRoute": "/kenopromax/socket.io"
+    },
+    "MiniSeDie": {
+      "Api": "http://l2_sedie_multiplay_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/minisedie",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "FishPrawnCrab": {
+      "Api": "http://l2_fish_prawn_crab_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/baucua",
+      "SocketRoute": "/fishprawncrab/socket.io"
+    },
+    "BigSmall": {
+      "Api": "http://l2_big_small_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/bigsmall",
+      "SocketRoute": "/bigsmall/socket.io"
+    },
+    "TurboBigSmall": {
+      "Api": "http://l2_turbo_big_small_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/txturbo",
+      "SocketRoute": "/turbobigsmall/socket.io"
+    },
+    "DragonTiger": {
+      "Api": "http://l2_dragon_tiger_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/dragontiger",
+      "SocketRoute": "/dragontiger/socket.io"
+    },
+    "TurboOddEven": {
+      "Api": "http://l2_turbo_odd_even_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/oeturbo",
+      "SocketRoute": "/turbooddeven/socket.io"
+    },
+    "Roulette": {
+      "Api": "http://l2_roulette_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/roulette",
+      "SocketRoute": "/roulette/socket.io"
+    },
+    "Baccarat": {
+      "Api": "http://l2_baccarat_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/baccarat",
+      "SocketRoute": "/baccarat/socket.io"
+    },
+    "Lottery": {
+      "Api": "http://l2_lottery_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/lottery",
+      "SocketRoute": "/lottery/socket.io"
+    },
+    "ThreeCards": {
+      "Api": "http://l2_three_cards_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/threecards",
+      "SocketRoute": "/threecards/socket.io"
+    },
+    "KenoMax": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenomax",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoMax2": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenomax2",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoMini": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenomini",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoMini2": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenomini2",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoEast": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenoeast",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoWest": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenowest",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoSouth": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenosouth",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoNorth": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenonorth",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "HeroesSlot": {
+      "Api": "http://l2_heroes_slot_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/heroesslot",
+      "SocketRoute": "/heroesslot/socket.io"
+    },
+    "BitcoinMaster": {
+      "Api": "http://l2_bitcoin_master_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/bitcoinmaster",
+      "SocketRoute": "/bitcoinmaster/socket.io"
+    },
+    "KenoMatch1": {
+      "Api": "http://l2_keno_match_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenomatch1",
+      "SocketRoute": "/kenomatch/socket.io"
+    },
+    "KenoMatch2": {
+      "Api": "http://l2_keno_match_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenomatch2",
+      "SocketRoute": "/kenomatch/socket.io"
+    },
+    "KenoPower1": {
+      "Api": "http://l2_keno_power_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenopower1",
+      "SocketRoute": "/kenopower/socket.io"
+    },
+    "KenoPower2": {
+      "Api": "http://l2_keno_power_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/kenopower2",
+      "SocketRoute": "/kenopower/socket.io"
+    },
+    "CasinoHoldemPoker": {
+      "Api": "http://l2_casino_holdem_poker_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/casinoholdempoker",
+      "SocketRoute": "/casinoholdempoker/socket.io"
+    },
+    "HiLo": {
+      "Api": "http://l2_hilo_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/hilo",
+      "SocketRoute": "/hilo/socket.io"
+    },
+    "TexasHoldemPoker": {
+      "Api": "http://l2_texas_holdem_poker_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/texasholdempoker",
+      "SocketRoute": "/texasholdempoker/socket.io"
+    },
+    "NightClub": {
+      "Api": "http://l2_night_club_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/nightclub",
+      "SocketRoute": "/nightclub/socket.io"
+    },
+    "TreasureIsland": {
+      "Api": "http://l2_treasure_island_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/treasureisland",
+      "SocketRoute": "/treasureisland/socket.io"
+    },
+    "WayToGoal": {
+      "Api": "http://l2_way_to_goal_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/waytogoal",
+      "SocketRoute": "/waytogoal/socket.io"
+    },
+    "BlockchainBaccarat": {
+      "Api": "http://l2_blockchain_baccarat_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/blockchainbaccarat",
+      "SocketRoute": "/blockchainbaccarat/socket.io"
+    },
+    "MegaKeno": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/megakeno",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "MegaKeno2": {
+      "Api": "http://l2_mini_keno_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/megakeno2",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "MiniSeDie2": {
+      "Api": "http://l2_sedie_multiplay_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/minisedie2",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "MiniSeDie3": {
+      "Api": "http://l2_sedie_multiplay_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/minisedie3",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "MiniSeDie4": {
+      "Api": "http://l2_sedie_multiplay_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/minisedie4",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "UnbalancedBigSmall1": {
+      "Api": "http://l2_unbalanced_bigsmall_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/unbalancedbigsmall1",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "UnbalancedBigSmall2": {
+      "Api": "http://l2_unbalanced_bigsmall_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/unbalancedbigsmall2",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "UnbalancedBigSmall3": {
+      "Api": "http://l2_unbalanced_bigsmall_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/unbalancedbigsmall3",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "UnbalancedBigSmall4": {
+      "Api": "http://l2_unbalanced_bigsmall_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/unbalancedbigsmall4",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "FruitSlot": {
+      "Api": "http://l2_fruit_slot_service_pro:5000",
+      "Socket": "proxy.v-gaming.com/admin/fruitslot",
+      "SocketRoute": "/fruitslot/socket.io"
+    },
+<<<<<<< HEAD
+    "FanTan": {
+      "Api": "http://l1_fantan_service_prod:5000",
+      "Socket": "proxy.v-gaming.com/admin/fantan",
+      "SocketRoute": "/fantan/socket.io"
+=======
+    "FortuneCat": {
+      "Api": "http://l2_fortune_cat_service_prod:5000",
+      "Socket": "proxy.v-gaming.net/admin/fortunecat",
+      "SocketRoute": "/fortunecat/socket.io"
+>>>>>>> 370a6778 (fix: fortune cat online users)
+    }
+  },
+  "SabaApiSettings": {
+    "Url": "http://l2_game_api_prod:5000"
+  },
+  "ChatbotApiSettings": {
+    "Token": "0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9",
+    "Url": "https://bot.nexdev.net/skynex/api/messages/",
+    "TimeoutInSeconds": 5,
+    "ConversationIds": {
+      "HighStake": "-1001623286696",
+      "Promotion": "-1001650118408"
+    }
+  },
+  "AdminMonitoringSettings": {
+    "Url": "https://proxy.v-gaming.net/monitoring",
+    "JwtSecretKey": "4f7bdb0f-b59f-4954-9c80-50e180118834",
+    "ExpiredTokenByMinutes": 1440
+  }
+}

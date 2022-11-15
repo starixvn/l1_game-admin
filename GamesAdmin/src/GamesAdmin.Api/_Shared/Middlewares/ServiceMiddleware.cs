@@ -112,6 +112,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IMegaKeno2OnlineUserApi>(appSettings.GameServers.MegaKeno2.Api, refitSettings));
             services.AddSingleton(RestService.For<IFruitSlotOnlineUserApi>(appSettings.GameServers.FruitSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<IFanTanOnlineUserApi>(appSettings.GameServers.FanTan.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFortuneCatOnlineUserApi>(appSettings.GameServers.FortuneCat.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 

@@ -309,17 +309,22 @@
       "Socket": "l1uatproxy.sgamesuat.com/admin/unbalancedbigsmall4",
       "SocketRoute": "/uat/unbalancedbigsmall/socket.io"
     },
-<<<<<<< HEAD
     "FruitSlot": {
       "Api": "http://l1_fruit_slot_service_uat:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/fruitslot",
       "SocketRoute": "/uat/fruitslot/socket.io"
-=======
+    },
+<<<<<<< HEAD
     "FanTan": {
       "Api": "http://l1_fantan_service_uat:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/fantan",
       "SocketRoute": "/uat/fantan/socket.io"
->>>>>>> ee2bad8d (feat: fan tan - online users)
+=======
+    "FortuneCat": {
+      "Api": "http://l1_fortune_cat_service_uat:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/fortunecat",
+      "SocketRoute": "/uat/fortunecat/socket.io"
+>>>>>>> 370a6778 (fix: fortune cat online users)
     }
   },
   "SabaApiSettings": {

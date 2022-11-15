@@ -106,11 +106,11 @@
 
         public GameServerConfigs UnbalancedBigSmall4 { get; set; }
 
-<<<<<<< HEAD
         public GameServerConfigs FruitSlot { get; set; }
-=======
+        
         public GameServerConfigs FanTan { get; set; }
->>>>>>> ee2bad8d (feat: fan tan - online users)
+
+        public GameServerConfigs FortuneCat { get; set; }
     }
 
     public class GameServerConfigs

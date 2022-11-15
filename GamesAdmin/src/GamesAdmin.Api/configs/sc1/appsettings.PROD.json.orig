@@ -309,17 +309,22 @@
       "Socket": "proxy.sabagame.com/admin/unbalancedbigsmall4",
       "SocketRoute": "/unbalancedbigsmall/socket.io"
     },
-<<<<<<< HEAD
     "FruitSlot": {
       "Api": "http://l1_fruit_slot_service_prod:5000",
       "Socket": "proxy.sabagame.com/admin/fruitslot",
       "SocketRoute": "/fruitslot/socket.io"
-=======
+    },
+<<<<<<< HEAD
     "FanTan": {
       "Api": "http://l1_fantan_service_prod:5000",
       "Socket": "proxy.sabagame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
->>>>>>> ee2bad8d (feat: fan tan - online users)
+=======
+    "FortuneCat": {
+      "Api": "http://l1_fortune_cat_service_prod:5000",
+      "Socket": "proxy.sabagame.com/admin/fortunecat",
+      "SocketRoute": "/fortunecat/socket.io"
+>>>>>>> 370a6778 (fix: fortune cat online users)
     }
   },
   "SabaApiSettings": {

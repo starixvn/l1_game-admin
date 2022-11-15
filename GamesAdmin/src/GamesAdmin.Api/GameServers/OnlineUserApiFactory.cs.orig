@@ -63,11 +63,12 @@ namespace GamesAdmin.Api.GameServers
             { Game.UnbalancedBigSmall2Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
             { Game.UnbalancedBigSmall3Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
             { Game.UnbalancedBigSmall4Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
-<<<<<<< HEAD
             { Game.FruitSlotValue, typeof(IFruitSlotOnlineUserApi) },
-=======
+<<<<<<< HEAD
             { Game.FanTanValue, typeof(IFanTanOnlineUserApi) },
->>>>>>> ee2bad8d (feat: fan tan - online users)
+=======
+            { Game.FortuneCatValue, typeof(IFortuneCatOnlineUserApi) },
+>>>>>>> 370a6778 (fix: fortune cat online users)
         };
 
         private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);

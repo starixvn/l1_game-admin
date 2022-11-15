@@ -11,11 +11,7 @@
   "HostingPort": "7778",
   "AllowedHosts": "*",
   "DatabaseSettings": {
-<<<<<<< HEAD
     "ConnectionString": "mongodb://127.0.0.1:27017",
-=======
-    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.14:17101/?replicaSet=L1pLocal",
->>>>>>> 48f02ce5 (fix: fortune cat settings)
     "DatabaseName": "minigame"
   },
   "ArchiveDatabaseSettings": {
@@ -323,6 +319,11 @@
       "Api": "http://l1-proxy.lumigame.com/fantan",
       "Socket": "l1-proxy.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
+    },
+    "FortuneCat": {
+      "Api": "http://l1-proxy.lumigame.com/fortunecat",
+      "Socket": "l1-proxy.lumigame.com/admin/fortunecat",
+      "SocketRoute": "/fortunecat/socket.io"
     }
   },
   "SabaApiSettings": {

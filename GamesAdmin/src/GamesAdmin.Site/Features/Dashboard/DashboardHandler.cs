@@ -141,11 +141,12 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.MiniSeDie3.DisplayName, Game.MiniSeDie3.Value),
                 new SelectListItem(Game.MiniSeDie4.DisplayName, Game.MiniSeDie4.Value),
                 new SelectListItem(Game.UnbalancedBigSmall1.DisplayName, Game.UnbalancedBigSmall1.Value),
-                new SelectListItem(Game.UnbalancedBigSmall2.DisplayName, Game.UnbalancedBigSmall2.Value),  
-                new SelectListItem(Game.UnbalancedBigSmall3.DisplayName, Game.UnbalancedBigSmall3.Value),  
+                new SelectListItem(Game.UnbalancedBigSmall2.DisplayName, Game.UnbalancedBigSmall2.Value),
+                new SelectListItem(Game.UnbalancedBigSmall3.DisplayName, Game.UnbalancedBigSmall3.Value),
                 new SelectListItem(Game.UnbalancedBigSmall4.DisplayName, Game.UnbalancedBigSmall4.Value),
                 new SelectListItem(Game.FruitSlot.DisplayName, Game.FruitSlot.Value),
                 new SelectListItem(Game.FanTan.DisplayName, Game.FanTan.Value),
+                new SelectListItem(Game.FortuneCat.DisplayName, Game.FortuneCat.Value),
             };
     }
 }

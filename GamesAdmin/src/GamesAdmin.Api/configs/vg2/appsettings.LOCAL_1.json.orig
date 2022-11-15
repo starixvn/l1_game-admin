@@ -320,14 +320,17 @@
       "Socket": "l2-proxy1.lumigame.com/admin/fruitslot",
       "SocketRoute": "/fruitslot/socket.io"
     },
-    "FanTan": {
 <<<<<<< HEAD
+    "FanTan": {
       "Api": "https://l2-proxy1.lumigame.com/fantan",
-=======
-      "Api": "http://l2-proxy1.lumigame.com/fantan",
->>>>>>> c41c4d9a (feat: fan tan - online users)
       "Socket": "l2-proxy1.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
+=======
+    "FortuneCat": {
+      "Api": "https://l2-proxy1.lumigame.com/fortunecat",
+      "Socket": "l2-proxy1.lumigame.com/admin/fortunecat",
+      "SocketRoute": "/fortunecat/socket.io"
+>>>>>>> 370a6778 (fix: fortune cat online users)
     }
   },
   "SabaApiSettings": {
