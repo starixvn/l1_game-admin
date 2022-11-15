@@ -25,7 +25,7 @@
                         <td>
                             <div class="baccarat-result">
                                 <div class="cards">
-                                    @foreach (var card in Model.RoundResult.DragonCards)
+                                    @foreach (var card in Model.RoundResult.Dragon)
                                     {
                                         <div class="card card-type-@card.Type">
                                             <span>@cardLabels[card.Number]</span>
@@ -35,7 +35,7 @@
                                     }
                                 </div>
                                 <div class="cards">
-                                    @foreach (var card in Model.RoundResult.PhoenixCards)
+                                    @foreach (var card in Model.RoundResult.Phoenix)
                                     {
                                         <div class="card card-type-@card.Type">
                                             <span>@cardLabels[card.Number]</span>

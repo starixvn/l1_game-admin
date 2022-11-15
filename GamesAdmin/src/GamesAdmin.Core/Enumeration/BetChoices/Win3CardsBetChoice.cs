@@ -8,7 +8,7 @@ namespace GamesAdmin.Core.Enumeration.BetChoices
         public const string StraightValue = "straight";
         public const string FlushValue = "flush";
         public const string StraightFlushValue = "straightFlush";
-        public const string ThreeKindValue = "threeKindFlush";
+        public const string ThreeKindValue = "threeOfAKind";
 
         public static readonly Win3CardsBetChoice Dragon = new Win3CardsBetChoice(DragonValue, "Dragon");
         public static readonly Win3CardsBetChoice Phoenix = new Win3CardsBetChoice(PhoenixValue, "Phoenix");

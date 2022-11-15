@@ -470,7 +470,31 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
             
             CreateMap<Win3CardsBetReportEntity, Win3CardsBetRecord>();
-            CreateMap<Win3CardsRoundEntity, Win3CardsRoundResult>();
+            CreateMap<Win3CardsRoundEntity, Win3CardsRoundResult>()
+              .ForMember(x => x.Dragon, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                    if (source.Result.Dragon != null)
+                    {
+                        var mapper = context.Mapper;
+                        var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Dragon.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Dragon.SecondCard), mapper.Map<DragonTigerCardResult>(source.Result.Dragon.ThirdCard) };              
+
+                        return result;
+                    }
+
+                    return Enumerable.Empty<DragonTigerCardResult>();
+              }))
+              .ForMember(x => x.Phoenix, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+                  if (source.Result.Phoenix != null)
+                  {
+                      var mapper = context.Mapper;
+                      var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.SecondCard), mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.ThirdCard) };
+
+                      return result;
+                  }
+
+                  return Enumerable.Empty<DragonTigerCardResult>();
+              }));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GamesAdmin.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Core.Models;
@@ -398,10 +399,29 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     
     public class Win3CardsRoundResultViewModel : BaseRoundResultViewModel
     {
-        public IEnumerable<DragonTigerCardViewModel> DragonCards { get; set; }
+        public IEnumerable<DragonTigerCardViewModel> Dragon { get; set; }
 
-        public IEnumerable<DragonTigerCardViewModel> PhoenixCards { get; set; }
+        public IEnumerable<DragonTigerCardViewModel> Phoenix { get; set; }
 
-        public Dictionary<string, bool> SettlementResult { get; set; }
+        public Win3CardsSettlementResultViewModel SettlementResult { get; set; }
+    }
+
+    public class Win3CardsSettlementResultViewModel
+    {
+        public bool Dragon { get; set; }
+
+        public bool Phoenix { get; set; }
+
+        public bool Pair8Plus { get; set; }
+
+        public bool Straight { get; set; }
+
+        public bool FLush { get; set; }
+
+        public bool StraightFlush { get; set; }
+
+        public bool ThreeKind { get; set; }
+
+        public bool HighCard { get; set; }
     }
 }
