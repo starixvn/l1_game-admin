@@ -636,6 +636,20 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_SlotRNGBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> FortuneCat()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency
+            };
+
+            return View(viewModel);
+        }
 
         [HttpGet]
         public IActionResult FanTan()

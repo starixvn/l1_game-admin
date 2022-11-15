@@ -58,6 +58,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HeroesSlotReport>().AddScoped<ISlotGameReport, HeroesSlotReport>(s => s.GetService<HeroesSlotReport>());
             services.AddScoped<NightClubReport>().AddScoped<ISlotGameReport, NightClubReport>(s => s.GetService<NightClubReport>());
             services.AddScoped<WayToGoalReport>().AddScoped<ISlotGameReport, WayToGoalReport>(s => s.GetService<WayToGoalReport>());
+            services.AddScoped<FortuneCatReport>().AddScoped<ISlotGameReport, FortuneCatReport>(s => s.GetService<FortuneCatReport>());
 
             services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
             services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());

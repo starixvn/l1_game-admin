@@ -49,6 +49,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IFruitSlotReportRepository, FruitSlotReportRepository>();
             services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
             services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
+            services.AddScoped<IFortuneCatReportRepository, FortuneCatReportRepository>();
         }
     }
 }
