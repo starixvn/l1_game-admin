@@ -522,7 +522,7 @@ namespace GamesAdmin.Api.Games
         public async Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig)
         {
             var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
-            var changedSettings = SettingHelper.GetGeneralConfigChangedModel(gameEntity, gameInfo, botSetting, enableSetting);
+            var changedSettings = SettingHelper.GetSlotRNGConfigsChangeModel(gameEntity, gameInfo, botSetting, enableSetting, slotRNGConfig);
             sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
 
             var update = Builders<GameConfigEntity>.Update

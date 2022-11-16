@@ -66,7 +66,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Maxbet", oldConfig.Minbet.ToString(), newConfig.MaxBet.ToString()),
             };
 
-            if(newConfig.MaxBetChoices != null)
+            if (newConfig.MaxBetChoices != null)
             {
                 foreach (var c in newConfig.MaxBetChoices)
                 {
@@ -185,7 +185,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                new SettingChangedModel("Additional Free Spins Bonus", oldConfig.FreeSpins.AdditionalOdds.Count.ToString(), newConfig.FreeSpins.AdditionalOdds.Count.ToString()),
             };
 
-            for(int i = 0; i < newInitialFreespinOdds.Count; i++)
+            for (int i = 0; i < newInitialFreespinOdds.Count; i++)
             {
                 var oldSettingsString = $"[{oldInitialFreeSpinOdds[i].Count}] : {oldInitialFreeSpinOdds[i].Odds}";
                 var newSettingsString = $"[{newInitialFreespinOdds[i].Count}] : {newInitialFreespinOdds[i].Odds}";
@@ -206,7 +206,7 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
-        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig,bool newBotEnabled, CascadingSlotsConfig newConfig)
+        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig, bool newBotEnabled, CascadingSlotsConfig newConfig)
         {
             var oldConfig = gameConfig.CascadingSlotsConfig;
 
@@ -221,6 +221,29 @@ namespace GamesAdmin.Api._Shared.Helpers
             };
 
             return settingChanged;
+        }
+
+        public static List<SettingChangedModel> GetSlotRNGConfigsChangeModel(
+             GameConfigEntity oldConfig,
+            GameInfo gameInfo,
+            BotSetting botSetting,
+            EnableSetting enableSetting,
+            SlotRNGConfig slotRNGConfig)
+        {
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("EnableFreeBet", oldConfig.EnableFreeBet.ToString(), gameInfo.EnableFreeBet.ToString()),
+                new SettingChangedModel("DelayStartTime", oldConfig.DelayStartTime.ToString(), enableSetting.DelayStartTime.ToString()),
+                new SettingChangedModel("Botenabled", oldConfig.Botenabled.ToString(), botSetting.BotEnabled.ToString()),
+                new SettingChangedModel("BotMaxBet", oldConfig.BotMaxBet.ToString(), botSetting.BotMaxBet.ToString()),
+                new SettingChangedModel("SmartBotEnabled", oldConfig.SmartBotEnabled.ToString(), botSetting.SmartBotEnabled.ToString()),
+                new SettingChangedModel("SmartBotGroupRatio", oldConfig.SmartBotGroupRatio.ToString(), botSetting.SmartBotGroupRatio.ToString()),
+                new SettingChangedModel("RandomMode", oldConfig.RandomMode.ToString(), gameInfo.RandomMode.ToString()),
+                new SettingChangedModel("Mode", oldConfig.SlotRNGConfig.Mode.ToString(), slotRNGConfig.Mode.ToString()),
+                new SettingChangedModel("Lucky", $"({oldConfig.SlotRNGConfig.LuckySpinFrom}-{oldConfig.SlotRNGConfig.LuckySpinTo})", $"({slotRNGConfig.LuckySpinFrom}-{slotRNGConfig.LuckySpinTo})"),
+            };
+
+            return changedSettings;
         }
 
         private static string GetOddsByCountConfigString(IList<OddsByCount> oddsByCount)
