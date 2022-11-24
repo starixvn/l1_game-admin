@@ -139,8 +139,7 @@
                 data[key] = $(elementId).is(":checked");
             } else {
                 if (key === 'startTime' || key === 'endTime') {
-                    let time = $(elementId).val();
-                    data[key] = new Date(time + "+07")
+                    data[key] = $(elementId).datetimepicker('getValue');
                 } else {
                     data[key] = $(elementId).val();
                 }
