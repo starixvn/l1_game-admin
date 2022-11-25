@@ -1,5 +1,6 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Site.Extensions
 @model KenoMatchBetHistoryViewModel
 
 @{
@@ -107,7 +108,7 @@
                 <td class="@winCssClass text-center">
                     @betChoiceMapper[bet.Choice]
                 </td>
-                <td class="@winCssClass">@Model.RoundResult.Odds[bet.Choice]</td>
+                <td class="@winCssClass">@(Model.FractionalOddsFormat ? Model.RoundResult.Odds[bet.Choice] - 1 : Model.RoundResult.Odds[bet.Choice])</td>
                 <td class="text-right @winCssClass">
                     @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)
                 </td>

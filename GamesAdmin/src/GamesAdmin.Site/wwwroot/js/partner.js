@@ -75,7 +75,7 @@
                 url: "/status/um"
             }).done(function (content) {
                 if (content) {
-                    $('#umTitle').html("Partner Under Maintainance");
+                    $('#umTitle').html("Operator Under Maintainance");
                     $('#um').html(content);
                     $('#umModal').modal('show');
                     $('#partner-info').show();

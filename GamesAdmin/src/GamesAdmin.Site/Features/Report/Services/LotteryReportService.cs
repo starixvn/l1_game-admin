@@ -51,6 +51,7 @@ namespace GamesAdmin.Site.Features.Report
                     return betViewModel;
                 }),
                 Odds = mapper.Map<LotteryOddsViewModel>(result.Odds),
+                FractionalOddsFormat = result.FractionalOddsFormat
             };
         }
     }

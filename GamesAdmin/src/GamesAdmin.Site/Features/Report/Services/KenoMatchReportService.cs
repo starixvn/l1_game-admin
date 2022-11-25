@@ -57,6 +57,7 @@ namespace GamesAdmin.Site.Features.Report
 
                     return betViewModel;
                 }),
+                FractionalOddsFormat = result.FractionalOddsFormat
             };
         }
     }

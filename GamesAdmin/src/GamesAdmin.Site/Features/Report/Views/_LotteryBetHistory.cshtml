@@ -135,7 +135,7 @@
                         @betChoice.Key
                     </td>
                     <td class="text-center">
-                        @Model.Odds.FourSets
+                        @(Model.FractionalOddsFormat ? Model.Odds.FourSets - 1 : Model.Odds.FourSets)
                         @{
                             byte occurence = settlementResult.Occurrences.Seventh.ContainsKey(betChoice.Key) ? settlementResult.Occurrences.Seventh[betChoice.Key] : (byte)0;
                             if (occurence > 1)
@@ -173,7 +173,7 @@
                         @betChoice.Key
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Special
+                        @(Model.FractionalOddsFormat ? Model.Odds.Special - 1 : Model.Odds.Special)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
@@ -210,7 +210,7 @@
                         @betChoice.Key
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Head
+                        @(Model.FractionalOddsFormat ? Model.Odds.Head - 1 : Model.Odds.Head)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
@@ -248,7 +248,7 @@
                         @betChoice.Key
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Tail
+                        @(Model.FractionalOddsFormat ? Model.Odds.Tail - 1 : Model.Odds.Tail)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
@@ -285,7 +285,7 @@
                         @betChoice.Key
                     </td>
                     <td class="text-center">
-                        @Model.Odds.TwentySevenSets
+                        @(Model.FractionalOddsFormat ? Model.Odds.TwentySevenSets - 1 : Model.Odds.TwentySevenSets)
                         @{
                             byte occurence = settlementResult.Occurrences.All.ContainsKey(betChoice.Key) ? settlementResult.Occurrences.All[betChoice.Key] : (byte)0;
                             if (occurence > 1)
@@ -324,7 +324,7 @@
                         @betChoice.Key.Replace("-", ", ")
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Parlay2
+                        @(Model.FractionalOddsFormat ? Model.Odds.Parlay2 - 1 : Model.Odds.Parlay2)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
@@ -362,7 +362,7 @@
                         @betChoice.Key.Replace("-", ", ")
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Parlay3
+                        @(Model.FractionalOddsFormat ? Model.Odds.Parlay3 - 1 : Model.Odds.Parlay3)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
@@ -400,7 +400,7 @@
                         @betChoice.Key.Replace("-", ", ")
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Parlay4
+                        @(Model.FractionalOddsFormat ? Model.Odds.Parlay4 - 1 : Model.Odds.Parlay4)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)
@@ -437,7 +437,7 @@
                         @betChoice.Key
                     </td>
                     <td class="text-center">
-                        @Model.Odds.Others
+                        @(Model.FractionalOddsFormat ? Model.Odds.Others - 1 : Model.Odds.Others)
                     </td>
                     <td class="text-right">
                         @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betChoice.Value) / Model.BaseCurrencyMultiplier : betChoice.Value)

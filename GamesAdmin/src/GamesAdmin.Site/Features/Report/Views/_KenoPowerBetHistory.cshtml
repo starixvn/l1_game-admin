@@ -72,7 +72,7 @@
                 <td class="@winCssClass text-center">
                     @betChoiceMapper[bet.Choice]
                 </td>
-                <td class="text-right @winCssClass">@Model.Odds[bet.Choice]</td>
+                <td class="text-right @winCssClass">@(Model.FractionalOddsFormat ? Model.Odds[bet.Choice] - 1 : Model.Odds[bet.Choice])</td>
                 <td class="text-right @winCssClass">
                     @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)
                 </td>

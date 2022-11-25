@@ -9,6 +9,8 @@ namespace GamesAdmin.Core.Models.BetReport
         public IEnumerable<LotteryBetHistoryRecord> Bets { get; set; }
 
         public LotteryOdds Odds { get; set; }
+
+        public bool FractionalOddsFormat { get; set; }
     }
 
     public class LotteryBetHistoryRecord : BetHistoryRecord

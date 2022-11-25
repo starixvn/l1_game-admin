@@ -134,7 +134,28 @@
                         <tr class="@(choice.Win > 0 ? "text-blue bold" : string.Empty)">
                             <td class="text-center">@TimeZoneInfo.ConvertTimeFromUtc(choice.Time, Model.TimeZone)</td>
                             <td class="text-center">@choice.Choice</td>
-                            <td class="text-center">@choice.Odd</td>
+                            @if (Model.Record.FractionalOddsFormat)
+                            {
+                                double oddsValue = 0;
+                                if (double.TryParse(choice.Odd, out oddsValue))
+                                {
+                                    <td class="text-center">
+                                        @(oddsValue-1)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">
+                                        @choice.Odd
+                                    </td>
+                                }
+                            }
+                            else
+                            {
+                                <td class="text-center">
+                                    @choice.Odd
+                                </td>
+                            }
                             <td class="text-center">@FormatCurrency(record, choice.Stake)</td>
                             <td class="text-center">@(record.Ended ? FormatCurrency(record, choice.Win) : "Unfinished Game")</td>
                         </tr>

@@ -10,6 +10,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public KenoMatchRoundResultViewModel RoundResult { get; set; }
 
         public IEnumerable<KenoMatchBetHistoryRecordViewModel> Bets { get; set; }
+
+        public bool FractionalOddsFormat { get; set; }
     }
 
     public class KenoMatchBetHistoryRecordViewModel : BetHistoryRecordViewModel

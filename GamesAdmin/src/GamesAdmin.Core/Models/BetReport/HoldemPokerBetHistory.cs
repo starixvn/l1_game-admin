@@ -57,6 +57,8 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public decimal Rate { get; set; }
 
+        public bool FractionalOddsFormat { get; set; }
+
         public decimal ConvertToBase(decimal value) => value * Rate;
     }
 

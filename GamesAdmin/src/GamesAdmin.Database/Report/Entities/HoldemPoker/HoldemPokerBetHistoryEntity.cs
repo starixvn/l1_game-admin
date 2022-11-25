@@ -50,6 +50,7 @@
             Currency = bet.Currency;
             Rate = bet.Rate;
             ConvertToUSD = convertToUSD;
+            OperatorId = bet.OperatorId;
         }
 
         public decimal Ante { get; }
@@ -91,5 +92,7 @@
         public decimal Rate { get; }
 
         public bool ConvertToUSD { get; }
+
+        public string OperatorId { get; }
     }
 }
