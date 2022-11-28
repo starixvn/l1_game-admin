@@ -145,6 +145,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.UnbalancedBigSmall3.DisplayName, Game.UnbalancedBigSmall3.Value),  
                 new SelectListItem(Game.UnbalancedBigSmall4.DisplayName, Game.UnbalancedBigSmall4.Value),
                 new SelectListItem(Game.FruitSlot.DisplayName, Game.FruitSlot.Value),
+                new SelectListItem(Game.FanTan.DisplayName, Game.FanTan.Value),
             };
     }
 }
