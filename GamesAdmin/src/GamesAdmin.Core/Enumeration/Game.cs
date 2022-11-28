@@ -59,7 +59,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string FruitSlotValue = "fruitslot";
         public const string FanTanValue = "fantan";
         public const string FortuneCatValue = "fortunecat";
-        public const string Win3CardsValue = "win3cards";
+        public const string Win3CardsValue = "winthreecards";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
