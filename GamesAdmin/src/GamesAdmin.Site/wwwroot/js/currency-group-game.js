@@ -15,7 +15,7 @@
                 if (content) {
                     $('#currency-group-game-setting').html(content);
                     $.validator.unobtrusive.parse('#currency-group-game-edit-form');
-                    
+
                 }
                 for (var i = 0; i < 4; i++) {
                     if ($('#coin-value-' + i).is('[disabled=disabled]') || $('#stake-level-' + i++).is('[disabled=disabled]')) {
@@ -36,6 +36,7 @@
         },
 
         toggleTab: function (tabName) {
+            console.log("ok");
             $('#setting').hide();
             $('#site-exclusion').hide();
 
