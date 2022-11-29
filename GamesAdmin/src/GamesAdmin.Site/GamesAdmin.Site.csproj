@@ -59,6 +59,7 @@
     <Folder Include="wwwroot\game-admin\_next\static\development\pages\next\dist\pages\" />
     <Folder Include="wwwroot\lib\data-tables\DataTables-1.10.20\" />
     <Folder Include="wwwroot\images\slot-icons\nightclub\" />
+	<Folder Include="wwwroot\js\lobby\bundles\" />
   </ItemGroup>
 
 
@@ -151,5 +152,4 @@
       <DependentUpon>themel2.css</DependentUpon>
     </Content>
   </ItemGroup>
-
 </Project>
