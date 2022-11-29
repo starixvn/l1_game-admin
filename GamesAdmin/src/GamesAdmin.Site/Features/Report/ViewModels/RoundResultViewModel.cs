@@ -397,31 +397,16 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Chun234 { get; set; }
     }
     
-    public class Win3CardsRoundResultViewModel : BaseRoundResultViewModel
+    public class WinThreeCardsRoundResultViewModel : BaseRoundResultViewModel
     {
         public IEnumerable<DragonTigerCardViewModel> Dragon { get; set; }
 
         public IEnumerable<DragonTigerCardViewModel> Phoenix { get; set; }
 
-        public Win3CardsSettlementResultViewModel SettlementResult { get; set; }
-    }
+        public Dictionary<string, bool> SettlementResult { get; set; }
 
-    public class Win3CardsSettlementResultViewModel
-    {
-        public bool Dragon { get; set; }
+        public int DragonHandRankId { get; set; }
 
-        public bool Phoenix { get; set; }
-
-        public bool Pair8Plus { get; set; }
-
-        public bool Straight { get; set; }
-
-        public bool FLush { get; set; }
-
-        public bool StraightFlush { get; set; }
-
-        public bool ThreeKind { get; set; }
-
-        public bool HighCard { get; set; }
+        public int PhoenixHandRankId { get; set; }
     }
 }

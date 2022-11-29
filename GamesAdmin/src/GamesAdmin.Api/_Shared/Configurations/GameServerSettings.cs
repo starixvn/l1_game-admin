@@ -109,10 +109,9 @@
         public GameServerConfigs FruitSlot { get; set; }
         
         public GameServerConfigs FanTan { get; set; }
-
         public GameServerConfigs FortuneCat { get; set; }
+        public GameServerConfigs WinThreeCards { get; set; }
         
-        public GameServerConfigs Win3Cards { get; set; }
 
     }
 

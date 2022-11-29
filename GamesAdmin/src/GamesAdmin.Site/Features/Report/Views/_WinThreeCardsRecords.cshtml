@@ -1,10 +1,11 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
 @using GamesAdmin.Core.Enumeration;
-@model Win3CardsReportResultViewModel
+@model WinThreeCardsReportResultViewModel
 
 @{
     var cardLabels = new[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    var handRankLabels = new[] { "High Card", "One Pair", "Straight", "Flush", "Straight Flush", "Three of a Kind", "Killer 235"};
 }
 <div class="row row-table">
     <div class="col-sm-12">
@@ -31,8 +32,8 @@
                                             <span>@cardLabels[card.Number]</span>
                                             <img class="img" src="~/images/card_@(card.Type).png" />
                                         </div>
-
                                     }
+                                    <span>@handRankLabels[Model.RoundResult.DragonHandRankId - 1]</span>
                                 </div>
                                 <div class="cards">
                                     @foreach (var card in Model.RoundResult.Phoenix)
@@ -41,8 +42,8 @@
                                             <span>@cardLabels[card.Number]</span>
                                             <img class="img" src="~/images/card_@(card.Type).png" />
                                         </div>
-
                                     }
+                                    <span>@handRankLabels[Model.RoundResult.PhoenixHandRankId - 1]</span>
                                 </div>
                             </div>
                         </td>
@@ -75,8 +76,8 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetWin3CardsBetHistory"
-                               asp-route-game="@GameId.Win3Cards"
+                               asp-action="GetWinThreeCardsBetHistory"
+                               asp-route-game="@GameId.WinThreeCards"
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-userId="@bet.UserId"
                                asp-route-partnerId="@bet.PartnerId"

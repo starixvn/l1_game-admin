@@ -56,7 +56,7 @@
         MiniSeDie4 = 58,
         FruitSlot = 59,
         FanTan=60,
-        Win3Cards = 61,
+        WinThreeCards = 61,
         FortuneCat = 62
     }
 }

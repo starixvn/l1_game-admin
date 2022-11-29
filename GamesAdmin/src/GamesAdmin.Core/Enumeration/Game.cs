@@ -59,7 +59,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string FruitSlotValue = "fruitslot";
         public const string FanTanValue = "fantan";
         public const string FortuneCatValue = "fortunecat";
-        public const string Win3CardsValue = "winthreecards";
+        public const string WinThreeCardsValue = "winthreecards";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -116,7 +116,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game FruitSlot = new Game(FruitSlotValue, "Fruit Slot", GameId.FruitSlot);
         public static readonly Game FanTan = new Game(FanTanValue, "Fan Tan", GameId.FanTan);
         public static readonly Game FortuneCat = new Game(FortuneCatValue, "Fortune Cat", GameId.FortuneCat);
-        public static readonly Game Win3Cards = new Game(Win3CardsValue, "Win 3 Cards", GameId.Win3Cards);
+        public static readonly Game WinThreeCards = new Game(WinThreeCardsValue, "Win Three Cards", GameId.WinThreeCards);
 
         public Game()
         {
@@ -177,7 +177,8 @@ namespace GamesAdmin.Core.Enumeration
             UnbalancedBigSmall3,
             UnbalancedBigSmall4,
             FruitSlot,
-            FanTan
+            FanTan,
+            WinThreeCards
         };
     }
 }

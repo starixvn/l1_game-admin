@@ -114,7 +114,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFruitSlotOnlineUserApi>(appSettings.GameServers.FruitSlot.Api, refitSettings));
             services.AddSingleton(RestService.For<IFanTanOnlineUserApi>(appSettings.GameServers.FanTan.Api, refitSettings));
             services.AddSingleton(RestService.For<IFortuneCatOnlineUserApi>(appSettings.GameServers.FortuneCat.Api, refitSettings));
-            services.AddSingleton(RestService.For<IWin3CardsOnlineUserApi>(appSettings.GameServers.Win3Cards.Api, refitSettings));
+            services.AddSingleton(RestService.For<IWinThreeCardsOnlineUserApi>(appSettings.GameServers.WinThreeCards.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -145,6 +145,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HiLoReportService>();
             services.AddScoped<TreasureIslandReportService>();
             services.AddScoped<FruitSlotReportService>();
+            services.AddScoped<WinThreeCardsReportService>();
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();

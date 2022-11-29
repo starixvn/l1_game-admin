@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class Win3CardsBetHistoryViewModel : BetHistoryViewModel
+    public class WinThreeCardsBetHistoryViewModel : BetHistoryViewModel
     {
-        public Win3CardsRoundResultViewModel RoundResult { get; set; }
+        public WinThreeCardsRoundResultViewModel RoundResult { get; set; }
 
-        public IEnumerable<Win3CardsBetHistoryRecordViewModel> Bets { get; set; }
+        public IEnumerable<WinThreeCardsBetHistoryRecordViewModel> Bets { get; set; }
 
         public Dictionary<string, decimal> Odds { get; set; }
 
@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         }
     }
 
-    public class Win3CardsBetHistoryRecordViewModel : BetHistoryRecordViewModel
+    public class WinThreeCardsBetHistoryRecordViewModel : BetHistoryRecordViewModel
     {
         public string Choice { get; set; }
 

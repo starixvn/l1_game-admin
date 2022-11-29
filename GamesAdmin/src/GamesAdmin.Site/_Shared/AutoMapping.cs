@@ -142,9 +142,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<FanTanBetRecord, FanTanRecordViewModel>();
             CreateMap<FanTanBetHistoryRecord, FanTanBetHistoryRecordViewModel>();
             
-            CreateMap<Win3CardsRoundResult, Win3CardsReportResultViewModel>();
-            CreateMap<Win3CardsBetRecord, Win3CardsRecordViewModel>();
-            CreateMap<Win3CardsBetHistoryRecord, Win3CardsBetHistoryRecordViewModel>();
+            CreateMap<WinThreeCardsRoundResult, WinThreeCardsRoundResultViewModel>();
+            CreateMap<WinThreeCardsBetRecord, WinThreeCardsRecordViewModel>();
+            CreateMap<WinThreeCardsBetHistoryRecord, WinThreeCardsBetHistoryRecordViewModel>();
+
 
         }
     }

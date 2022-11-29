@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GamesAdmin.Site.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using GamesAdmin.Site.Extensions;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -495,7 +495,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalAmount { get; set; }
     }
         
-    public class Win3CardsRecordViewModel : BetRecordViewModel
+    public class WinThreeCardsRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }
     }

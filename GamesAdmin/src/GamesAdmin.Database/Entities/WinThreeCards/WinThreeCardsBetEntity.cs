@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("winthreecards_bets")]
-    public class Win3CardsBetEntity : BaseBetEntity
+    public class WinThreeCardsBetEntity : BaseBetEntity
     {
         public Dictionary<string, decimal> Odds { get; set; }
 

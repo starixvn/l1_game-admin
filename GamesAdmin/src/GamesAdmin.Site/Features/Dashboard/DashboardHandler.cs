@@ -147,7 +147,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.FruitSlot.DisplayName, Game.FruitSlot.Value),
                 new SelectListItem(Game.FanTan.DisplayName, Game.FanTan.Value),
                 new SelectListItem(Game.FortuneCat.DisplayName, Game.FortuneCat.Value),
-                new SelectListItem(Game.Win3Cards.DisplayName, Game.Win3Cards.Value),
+                new SelectListItem(Game.WinThreeCards.DisplayName, Game.WinThreeCards.Value),
             };
     }
 }

@@ -8,28 +8,28 @@ using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
-    public interface IWin3CardsReportRepository
+    public interface IWinThreeCardsReportRepository
     {
-        Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter);
+        Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter);
 
-        Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter);
+        Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter);
     }
-    public class Win3CardsReportRepository : BaseBetReportRepository, IWin3CardsReportRepository
+    public class WinThreeCardsReportRepository : BaseBetReportRepository, IWinThreeCardsReportRepository
     {
-        public Win3CardsReportRepository(IMongoDatabase database) : base(database)
+        public WinThreeCardsReportRepository(IMongoDatabase database) : base(database)
         {
         }
 
-        public async Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter)
+        public async Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter)
         {
-            var roundResult = await database.GetCollection<Win3CardsRoundEntity>(Document.GetCollectionName(typeof(Win3CardsRoundEntity)))
+            var roundResult = await database.GetCollection<WinThreeCardsRoundEntity>(Document.GetCollectionName(typeof(WinThreeCardsRoundEntity)))
                 .Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             if (roundResult != null)
             {
-                var project = GetBaseAggregateBuilder<Win3CardsBetEntity, Win3CardsBetWithUnWindAccountsEntity>(
+                var project = GetBaseAggregateBuilder<WinThreeCardsBetEntity, WinThreeCardsBetWithUnWindAccountsEntity>(
                     filter.RoundId, filter.Nickname, filter.ExcludeBot, filter.ExcludeUUS, filter.PartnerId, filter.Username)
-                    .Project(x => new Win3CardsBetReportEntity
+                    .Project(x => new WinThreeCardsBetReportEntity
                     {
                         Time = x.Time,
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -45,15 +45,15 @@ namespace GamesAdmin.Database
                 return (roundResult, records);
             }
 
-            return (new Win3CardsRoundEntity(), Enumerable.Empty<Win3CardsBetReportEntity>());
+            return (new WinThreeCardsRoundEntity(), Enumerable.Empty<WinThreeCardsBetReportEntity>());
         }
 
-        public async Task<(Win3CardsRoundEntity, IEnumerable<Win3CardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter)
+        public async Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter)
         {
-            var roundCollection = database.GetCollection<Win3CardsRoundEntity>(Document.GetCollectionName(typeof(Win3CardsRoundEntity)));
+            var roundCollection = database.GetCollection<WinThreeCardsRoundEntity>(Document.GetCollectionName(typeof(WinThreeCardsRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
           
-            var betCollection = database.GetCollection<Win3CardsBetEntity>(Document.GetCollectionName(typeof(Win3CardsBetEntity)));
+            var betCollection = database.GetCollection<WinThreeCardsBetEntity>(Document.GetCollectionName(typeof(WinThreeCardsBetEntity)));
             var bets = await betCollection.Find(x => x.Round == filter.RoundId && x.Uid == filter.UserId && x.OperatorId == filter.PartnerId).SortByDescending(x => x.Id).ToListAsync();
             var bet = await betCollection.Find(x => x.Round == filter.RoundId && x.Uid == filter.UserId && x.OperatorId == filter.PartnerId).FirstOrDefaultAsync();
 

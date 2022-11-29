@@ -10,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
-    public class Win3CardsReportService : GameReportService, IBetHistoryReportService
+    public class WinThreeCardsReportService : GameReportService, IBetHistoryReportService
     {
-        public Win3CardsReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
+        public WinThreeCardsReportService(IReportApi reportApi, IPartnerService partnerService, IMapper mapper, IAppSettings appSettings) : base(reportApi, partnerService, mapper, appSettings)
         {
         }
 
         public override async Task<ReportResultViewModel> Get(BetReportFilter filter)
         {
-            var result = await reportApi.Get<Win3CardsBetReport>(filter);
+            var result = await reportApi.Get<WinThreeCardsBetReport>(filter);
             var partners = await partnerService.GetAll();
 
-            return new Win3CardsReportResultViewModel
+            return new WinThreeCardsReportResultViewModel
             {
-                RoundResult = mapper.Map<Win3CardsRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<WinThreeCardsRoundResultViewModel>(result.RoundResult),
                 Records = result.Records.Select(x =>
                 {
-                    var recordViewModel = mapper.Map<Win3CardsRecordViewModel>(x);
+                    var recordViewModel = mapper.Map<WinThreeCardsRecordViewModel>(x);
                     recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     recordViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
@@ -38,14 +38,14 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)
         {
-            var result = await reportApi.GetBetHistory<Win3CardsBetHistory>(filter);
+            var result = await reportApi.GetBetHistory<WinThreeCardsBetHistory>(filter);
 
-            return new Win3CardsBetHistoryViewModel
+            return new WinThreeCardsBetHistoryViewModel
             {
-                RoundResult = mapper.Map<Win3CardsRoundResultViewModel>(result.RoundResult),
+                RoundResult = mapper.Map<WinThreeCardsRoundResultViewModel>(result.RoundResult),
                 Bets = result.Bets.Select(x =>
                 {
-                    var betViewModel = mapper.Map<Win3CardsBetHistoryRecordViewModel>(x);
+                    var betViewModel = mapper.Map<WinThreeCardsBetHistoryRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
 
                     return betViewModel;

@@ -108,7 +108,7 @@ namespace GamesAdmin.Core.Models
     {
     }
     
-    public class Win3CardsBetReport : BetReport<Win3CardsRoundResult, Win3CardsBetRecord>
+    public class WinThreeCardsBetReport : BetReport<WinThreeCardsRoundResult, WinThreeCardsBetRecord>
     {
     }
 }

@@ -609,7 +609,7 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult MonteCarlo() => RedirectToAction("Index", new { game = GameId.UnbalancedBigSmall4 });
 
         [HttpGet]
-        public IActionResult Win3Cards() => RedirectToAction("Index", new { game = GameId.Win3Cards });
+        public IActionResult WinThreeCards() => RedirectToAction("Index", new { game = GameId.WinThreeCards });
 
         [HttpGet]
         public async Task<IActionResult> WayToGoal()
@@ -633,9 +633,9 @@ namespace GamesAdmin.Site.Features.Report
 
 
         [HttpGet]
-        public async Task<IActionResult> GetWin3CardsBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        public async Task<IActionResult> GetWinThreeCardsBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
-            return PartialView("_Win3CardsBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+            return PartialView("_WinThreeCardsBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
 
         [HttpGet]

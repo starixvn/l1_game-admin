@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GamesAdmin.Api.Report.Services;
+using GamesAdmin.Api.Report;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Keno;
@@ -58,7 +58,7 @@ namespace GamesAdmin.Api.Report
             { GameId.UnbalancedBigSmall4, typeof(UnbalancedBigSmallReportService<UnbalancedBigSmall4RoundEntity, UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>) },
             { GameId.FruitSlot, typeof(FruitSlotReportService) },
             { GameId.FanTan, typeof(FanTanReportService) },
-            { GameId.Win3Cards, typeof(Win3CardsReportService) },
+            { GameId.WinThreeCards, typeof(WinThreeCardsReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

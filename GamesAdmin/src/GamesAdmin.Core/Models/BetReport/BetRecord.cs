@@ -456,7 +456,7 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
     
-    public class Win3CardsBetRecord : BetRecord
+    public class WinThreeCardsBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
     }

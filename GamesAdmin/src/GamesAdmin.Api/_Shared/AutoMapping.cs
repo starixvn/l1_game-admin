@@ -462,21 +462,29 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
             CreateMap<FruitSlotBetLogEntity, SlotRNGBetHistoryRecord>();
-            
+
             CreateMap<FanTanBetReportEntity, FanTanBetRecord>();
             CreateMap<FanTanRoundEntity, FanTanRoundResult>();
             CreateMap<FanTanSettlementResultEntity, FanTanSettlementResult>();
-            CreateMap<FanTanResultEntity, FanTanResult>();
+            CreateMap<FanTanResultEntity, FanTanResult>();            
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
             
-            CreateMap<Win3CardsBetReportEntity, Win3CardsBetRecord>();
-            CreateMap<Win3CardsRoundEntity, Win3CardsRoundResult>()
+            CreateMap<WinThreeCardsCardEntity, DragonTigerCardResult>();
+            CreateMap<WinThreeCardsRoundEntity, WinThreeCardsRoundResult>()
+              .ForMember(x => x.DragonHandRankId, opt => opt.MapFrom((source) => source.Result.Dragon.HandRankId))
+              .ForMember(x => x.PhoenixHandRankId, opt => opt.MapFrom((source) => source.Result.Phoenix.HandRankId))
+            
               .ForMember(x => x.Dragon, opt => opt.MapFrom((source, destination, i, context) =>
               {
-                    if (source.Result.Dragon != null)
+                    if (source != null &&  source.Result.Dragon != null)
                     {
                         var mapper = context.Mapper;
-                        var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Dragon.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Dragon.SecondCard), mapper.Map<DragonTigerCardResult>(source.Result.Dragon.ThirdCard) };              
+                        var result = new List<DragonTigerCardResult> 
+                        { 
+                            mapper.Map<DragonTigerCardResult>(source.Result.Dragon.Cards.FirstCard), 
+                            mapper.Map<DragonTigerCardResult>(source.Result.Dragon.Cards.SecondCard), 
+                            mapper.Map<DragonTigerCardResult>(source.Result.Dragon.Cards.ThirdCard) 
+                        };              
 
                         return result;
                     }
@@ -485,16 +493,22 @@ namespace GamesAdmin.Api._Shared
               }))
               .ForMember(x => x.Phoenix, opt => opt.MapFrom((source, destination, i, context) =>
               {
-                  if (source.Result.Phoenix != null)
+                  if (source != null && source.Result.Phoenix != null)
                   {
                       var mapper = context.Mapper;
-                      var result = new List<DragonTigerCardResult> { mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.FirstCard), mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.SecondCard), mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.ThirdCard) };
+                      var result = new List<DragonTigerCardResult> 
+                      { 
+                          mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.Cards.FirstCard), 
+                          mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.Cards.SecondCard), 
+                          mapper.Map<DragonTigerCardResult>(source.Result.Phoenix.Cards.ThirdCard) 
+                      };
 
                       return result;
                   }
 
                   return Enumerable.Empty<DragonTigerCardResult>();
               }));
+            CreateMap<WinThreeCardsBetReportEntity, WinThreeCardsBetRecord>();
         }
     }
 }
