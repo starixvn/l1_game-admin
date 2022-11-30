@@ -6,7 +6,7 @@ namespace GamesAdmin.Core.Models.BetReport
     {
         public FanTanRoundResult RoundResult { get; set; }
 
-        public IEnumerable<FanTanBetHistoryRecord> Bets { get; set; }
+        public FanTanBetHistoryRecord Bet { get; set; }
     }
 
     public class FanTanBetHistoryRecord : BetHistoryRecord

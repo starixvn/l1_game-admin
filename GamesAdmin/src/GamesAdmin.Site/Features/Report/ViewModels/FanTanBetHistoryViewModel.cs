@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -6,7 +7,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public FanTanRoundResultViewModel RoundResult { get; set; }
 
-        public IEnumerable<FanTanBetHistoryRecordViewModel> Bets { get; set; }
+        public FanTanBetHistoryRecordViewModel Bet { get; set; }
+    }
+    public class FanTanBetDetailViewModel
+    {
+        public string BetChoice { get; set; }
+        public string BetAmount { get; set; }
+        public decimal Odds { get; set; }
+        public decimal BetWin { get; set; }
     }
 
     public class FanTanBetHistoryRecordViewModel : BetHistoryRecordViewModel
@@ -31,83 +39,5 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal Chun124 { get; set; }
         public decimal Chun134 { get; set; }
         public decimal Chun234 { get; set; }
-
-        public string GetBetChoice()
-        {
-            if (Odd > 0)
-            {
-                return "Odd";
-            }
-
-            if (Even > 0)
-            {
-                return "Even";
-            }
-
-            if (Fan1 > 0)
-            {
-                return "Fan1";
-            }
-
-            if (Fan2 > 0)
-            {
-                return "Fan2";
-            }
-
-            if (Fan3 > 0)
-            {
-                return "Fan3";
-            }
-
-            if (Fan4 > 0)
-            {
-                return "Fan4";
-            }
-
-            if (Kwok12 > 0)
-            {
-                return "Kwok12";
-            }
-
-            if (Kwok23 > 0)
-            {
-                return "Kwok23";
-            }
-
-            if (Kwok34 > 0)
-            {
-                return "Kwok34";
-            }
-
-            if (Kwok41 > 0)
-            {
-                return "Kwok41";
-            }
-
-            if (Chun123 > 0)
-            {
-                return "Chun123";
-            }
-
-            if (Chun124 > 0)
-            {
-                return "Chun124";
-            }
-
-            if (Chun134 > 0)
-            {
-                return "Chun134";
-            }
-
-            if (Chun234 > 0)
-            {
-                return "Chun234";
-            }
-
-            return string.Empty;
-        }
-
-        public decimal GetBetAmount()
-            => Odd + Even + Fan1 + Fan2 + Fan3 + Fan4 + Kwok12 + Kwok23 + Kwok34 + Kwok41 + Chun123 + Chun124 + Chun134 + Chun234;
     }
 }

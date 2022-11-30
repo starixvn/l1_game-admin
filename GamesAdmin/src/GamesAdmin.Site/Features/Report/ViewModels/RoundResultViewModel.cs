@@ -385,14 +385,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Fan3 { get; set; }
         public bool Fan4 { get; set; }
 
-        public bool Kwok1 { get; set; }
-        public bool Kwok2 { get; set; }
-        public bool Kwok3 { get; set; }
-        public bool Kwok4 { get; set; }
+        public bool Kwok12 { get; set; }
+        public bool Kwok23 { get; set; }
+        public bool Kwok34 { get; set; }
+        public bool Kwok41 { get; set; }
 
-        public bool Chun1 { get; set; }
-        public bool Chun2 { get; set; }
-        public bool Chun3 { get; set; }
-        public bool Chun4 { get; set; }
+        public bool Chun123 { get; set; }
+        public bool Chun124 { get; set; }
+        public bool Chun134 { get; set; }
+        public bool Chun234 { get; set; }
     }
 }

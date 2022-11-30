@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.Report
             return new FanTanBetHistory
             {
                 RoundResult = mapper.Map<FanTanRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<FanTanBetHistoryRecord>(x))
+                Bet = mapper.Map<FanTanBetHistoryRecord>(result.Item2)
             };
         }
     }

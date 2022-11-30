@@ -47,13 +47,7 @@ namespace GamesAdmin.Site.Features.Report
             return new FanTanBetHistoryViewModel
             {
                 RoundResult = mapper.Map<FanTanRoundResultViewModel>(result.RoundResult),
-                Bets = result.Bets.Select(x =>
-                {
-                    var betViewModel = mapper.Map<FanTanBetHistoryRecordViewModel>(x);
-                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
-                    return betViewModel;
-                })
+                Bet = mapper.Map<FanTanBetHistoryRecordViewModel>(result.Bet),
             };
         }
     }
