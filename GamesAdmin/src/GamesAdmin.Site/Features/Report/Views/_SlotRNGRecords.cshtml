@@ -98,10 +98,10 @@
                                asp-route-userId="@bet.UserId"
                                asp-route-partnerId="@bet.PartnerId"
                                asp-route-convertToUSD="@Model.ConvertToUSD">
-                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalAmount) : bet.TotalAmount)
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalAmount) / Model.BaseCurrencyMultiplier : bet.TotalAmount)
                             </a>
                         </td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) : bet.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier : bet.BetWin)</td>
                     </tr>
                 }
             </tbody>

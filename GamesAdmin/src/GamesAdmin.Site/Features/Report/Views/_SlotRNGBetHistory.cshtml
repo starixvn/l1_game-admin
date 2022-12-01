@@ -22,8 +22,8 @@
                     <img src="/images/fruitslot/@(bet.Choice).png" alt="#" />
                 </td>
                 <td class="text-center">@Model.GetOdds(bet.SubChoices, bet.Choice)</td>
-                <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
-                <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betWin) : betWin)</td>
+                <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
+                <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betWin) / Model.BaseCurrencyMultiplier : betWin)</td>
             </tr>
         }
     </tbody>
