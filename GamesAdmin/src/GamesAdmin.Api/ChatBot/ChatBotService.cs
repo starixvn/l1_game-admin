@@ -13,6 +13,11 @@ using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site._Shared.Configurations;
 using Refit;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using UAParser;
+using Sentry;
+using System.Linq;
 
 namespace GamesAdmin.Api.ChatBot
 {
@@ -33,8 +38,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
-        private const string Separator = " - ";
-        private const string HighStakeMessageTemplate = "**{0}** - {1} - {2}";
+        private const string HighStakeMessageTemplate = "**{0}** - {1} - {2} - {3} - {4}";
         private const int MinBetAmount = 2000;
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
@@ -44,17 +48,24 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IChatBotApi chatBotApi;
         private readonly IGameUserService gameUserService;
         private readonly ISystemSettings systemSettings;
+        private readonly IGenericRepository<UserSessionEntity> usersessionRepository;
+        private readonly ISentryClient sentry;
+        private readonly Parser uaParser;
 
-        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService, ISystemSettings systemSettings)
+        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService, ISystemSettings systemSettings, IGenericRepository<UserSessionEntity> usersessionRepository, ISentryClient sentry)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
             this.gameUserService = gameUserService;
             this.systemSettings = systemSettings;
+            this.usersessionRepository = usersessionRepository;
+            this.sentry = sentry;
+            uaParser = Parser.GetDefault();
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
+            var devicePlatform = await GetDevicePlatform(request.ObCustId);
             if (request.Currency == "UUS" || request.Amount < MinBetAmount)
             {
                 return await Task.FromResult<ChatBotResult>(default);
@@ -65,8 +76,7 @@ namespace GamesAdmin.Api.ChatBot
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
-            msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount));
-            msgBuilder.Append($"{Separator}{game}");
+            msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, game, devicePlatform));
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
 
@@ -175,6 +185,25 @@ namespace GamesAdmin.Api.ChatBot
                 promotion.StartDateTime.ToStringAtGMT7(),
                 promotion.EndDateTime.ToStringAtGMT7());
             return string.Format(template, gameName, promotionMessage);
+        }
+
+
+        private async Task<string> GetDevicePlatform(int playerId)
+        {
+            var devicePlatform = "Unknown";
+            try
+            {
+                var userSession = (await usersessionRepository.FilterByAsync(userSession => userSession.PlayerId == playerId)).OrderByDescending(userSession => userSession.RecheckInTime).FirstOrDefault();
+                var browserInfo = uaParser.Parse(userSession?.BrowserUserAgent);
+                devicePlatform = browserInfo.OS.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                sentry.CaptureMessage($"{ex} - {playerId}" , Sentry.Protocol.SentryLevel.Warning);
+            }
+
+            return devicePlatform;
         }
     }
 }

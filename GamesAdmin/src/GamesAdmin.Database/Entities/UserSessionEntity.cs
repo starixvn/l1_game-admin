@@ -12,5 +12,11 @@ namespace GamesAdmin.Database.Entities
 
         [BsonElement("partnerId")]
         public string ParnerId { get; set; }
+
+        [BsonElement("browserUserAgent")]
+        public string BrowserUserAgent { get; set; }
+
+        [BsonElement("playerId")]
+        public int PlayerId { get; set; }
     }
 }
