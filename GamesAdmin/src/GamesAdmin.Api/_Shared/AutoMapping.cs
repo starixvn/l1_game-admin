@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Lobby;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
@@ -466,10 +468,10 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FanTanBetReportEntity, FanTanBetRecord>();
             CreateMap<FanTanRoundEntity, FanTanRoundResult>();
             CreateMap<FanTanSettlementResultEntity, FanTanSettlementResult>();
-            CreateMap<FanTanResultEntity, FanTanResult>();            
+            CreateMap<FanTanResultEntity, FanTanResult>();
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
-            
-            
+
+
             CreateMap<WinThreeCardsCardEntity, PokerCard>();
             CreateMap<WinThreeCardsHandResultEntity, WinThreeCardsHandResult>()
                 .ForMember(x => x.Cards,
@@ -489,6 +491,56 @@ namespace GamesAdmin.Api._Shared
             CreateMap<WinThreeCardsBetReportEntity, WinThreeCardsBetRecord>()
                 .ForMember(x => x.BetWin, opt => opt.MapFrom(source => source.BetWin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom(source => source.OperatorId));
+
+            CreateMap<LobbyEntity, LobbyModel>()
+             .ForMember(x => x.Id, opt => opt.MapFrom((source) => source.Id.ToString()))
+             .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+
+                 var result = source.Categories.Select(category =>
+                 {
+                     return new LobbyCategory
+                     {
+                         Name = new CategoryName
+                         {
+                             EN_US = category.Name.EN_US,
+                             ID_ID = category.Name.ID_ID,
+                             TH_TH = category.Name.TH_TH,
+                             VI_VN = category.Name.VI_VN,
+                             ZH_CN = category.Name.ZH_CN,
+                             ZH_TW = category.Name.ZH_TW
+                         },
+                         GameSettings = category.GameSettings.Select(gameSetting => new GameSetting { GameId = gameSetting.GameId, BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag }).ToArray()
+                     };
+                 }).ToArray();
+
+                 return result;
+             }));
+            CreateMap<LobbyModel, LobbyEntity>()
+              .ForMember(x => x.Id, opt => opt.MapFrom((source) => ObjectId.Parse(source.Id)))
+              .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+
+                  var result = source.Categories.Select(category =>
+                  {
+                      return new LobbyCategoryEntity
+                      {
+                          Name = new CategoryNameEntity
+                          {
+                              EN_US = category.Name.EN_US,
+                              ID_ID = category.Name.ID_ID,
+                              TH_TH = category.Name.TH_TH,
+                              VI_VN = category.Name.VI_VN,
+                              ZH_CN = category.Name.ZH_CN,
+                              ZH_TW = category.Name.ZH_TW
+                          },
+                          GameSettings = category.GameSettings.Select(gameSetting => new GameSettingEntity { GameId = gameSetting.GameId, BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag }).ToArray()
+                      };
+                  }).ToArray();
+
+                  return result;
+              }));
+            //CreateMap<Database.Entities.Lobby.LobbyCategory, Core.Models.Lobby.LobbyCategory>();
         }
     }
 }

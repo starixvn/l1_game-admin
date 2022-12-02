@@ -12,6 +12,7 @@ using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.GlobalConfigs;
+using GamesAdmin.Api.Lobby;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions;
@@ -52,6 +53,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IChipService, ChipService>();
             services.AddScoped<IHoldemPokerReportService, HoldemPokerReportService>();
             services.AddScoped<IPromotionService, PromotionService>();
+            services.AddScoped<ILobbyService, LobbyService>();
 
             services.AddScoped<ISlotGameReportFactory, SlotGameReportFactory>();
             services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());

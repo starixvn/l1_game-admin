@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.CurrencyGroupGames.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Database.Entities.Lobby;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,13 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         [HttpPost("update")]
         public Task<bool> Update(CurrencyGroupGame gameConfig)
            => mediator.Send(new UpdateCurrencyGroupGameRequest(gameConfig));
+
+        [HttpPost("update1")]
+        public async Task<bool> Update1([FromBody] LobbyEntity lobbyEntity)
+        {
+            return true;
+        }
+
 
         [HttpGet("get")]
         public Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId)
