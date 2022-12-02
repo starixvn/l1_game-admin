@@ -44,11 +44,15 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportApi.GetBetHistory<FanTanBetHistory>(filter);
 
-            return new FanTanBetHistoryViewModel
+            var viewModel = new FanTanBetHistoryViewModel
             {
                 RoundResult = mapper.Map<FanTanRoundResultViewModel>(result.RoundResult),
                 Bet = mapper.Map<FanTanBetHistoryRecordViewModel>(result.Bet),
             };
+        
+            viewModel.Bet.Time = TimeZoneInfo.ConvertTimeFromUtc(viewModel.Bet.Time, appSettings.DefaultTimeZone);
+
+            return viewModel;
         }
     }
 }
