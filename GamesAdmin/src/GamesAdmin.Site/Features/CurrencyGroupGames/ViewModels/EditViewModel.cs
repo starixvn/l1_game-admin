@@ -40,6 +40,19 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public bool DisplayMaxBetPerChoice => MaxBetChoiceSetting != null && MaxBetChoiceSetting.Count > 2;
 
         public double[] CoinValues { get; set; }
+
         public double MaxWinPerRound { get; set; }
+
+        public bool CopySettingGame { get; set; }
+
+        public bool DisabledStakeLevel(int indexLevel)
+        {
+           return StakeLevels[indexLevel].Stake != 0 && !CopySettingGame;
+        }
+
+        public bool DisabledCoinValue(int index)
+        {
+            return CoinValues[index] != 0 && !CopySettingGame;
+        }
     }
 }

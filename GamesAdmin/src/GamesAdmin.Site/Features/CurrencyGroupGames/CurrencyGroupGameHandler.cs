@@ -43,11 +43,12 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             var currencyGroupGame = await currencyGroupGameService.Get(request.GroupId, gameId);
             var result = mapper.Map<EditViewModel>(currencyGroupGame) ?? new EditViewModel();
             var chipConfigs = await chipService.GetAll();
-
+          
             result.GameId = gameId;
             result.GroupId = request.GroupId;
             result.AllChips = chipConfigs.OrderBy(chip => chip.Value).ToList();
             result.MaxBetChoiceSetting = GenerateMaxBetPerChoices(request.GameName, currencyGroupGame?.MaxBetPerChoices);
+            result.CopySettingGame = request.IsCopySetting;
 
             if (currencyGroupGame?.StakeLevels == null)
             {
@@ -57,7 +58,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
                     new StakeLevel(0, 0, 0)
                 };
             }
-
+ 
             if (currencyGroupGame?.CoinValues == null)
             {
                 result.CoinValues = new double[] { 0, 0, 0 };
@@ -74,8 +75,10 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             var result = new IndexViewModel();
             var currencyGroups = (await currencyGroupService.GetByPartner(request.PartnerId, group => group.Enabled)).ToList();
             var partners = await partnerService.GetAll();
-            result.AllCurrencyGroupList = new List<SelectListItem>();
-            result.AllCurrencyGroupList.Add(new SelectListItem("None", string.Empty));
+            result.AllCurrencyGroupList = new List<SelectListItem>
+            {
+                new SelectListItem("None", string.Empty)
+            };
             foreach (var partner in partners)
             {
                 var currencyGroupsByPartner = (await currencyGroupService.GetByPartner(partner.PartnerId, group => group.Enabled)).ToList();

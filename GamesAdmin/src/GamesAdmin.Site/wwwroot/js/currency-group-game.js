@@ -1,26 +1,38 @@
 ﻿var currencyGroupGame = (function ($) {
     return {
-        loadConfig: function (gameName, groupId, gameType) {
+        loadConfig: function (gameName, groupId, isCopySetting, gameType) {
             $.ajax({
                 method: "GET",
                 url: "/currencyGroupGame/Edit",
                 data: {
                     gameName,
                     groupId,
+                    isCopySetting,
                     gameType
                 }
             }).done(function (content) {
+                var isDisable = false;
                 if (content) {
                     $('#currency-group-game-setting').html(content);
                     $.validator.unobtrusive.parse('#currency-group-game-edit-form');
+                    
                 }
+                for (var i = 0; i < 4; i++) {
+                    if ($('#coin-value-' + i).is('[disabled=disabled]') || $('#stake-level-' + i++).is('[disabled=disabled]')) {
+                        isDisable = true;
+                        $('#GroupIdCopy').prop("disabled", true);
+                        $("#copy-checkbox").prop('checked', false);
+                        break;
+                    }
+                }
+                $("#copy-checkbox").prop("disabled", isDisable);
             });
         },
 
         onChangeGroup: function (gameName, gameType, isCopy) {
             const isNoneValue = $('#GroupIdCopy').val() == '';
             const groupId = !isCopy || isNoneValue ? ('#GroupId') : ('#GroupIdCopy');
-            this.loadConfig(gameName, $(groupId)[0].value, gameType);
+            this.loadConfig(gameName, $(groupId)[0].value, isCopy, gameType);
         },
 
         toggleTab: function (tabName) {
@@ -60,7 +72,7 @@
         },
 
         loadDefaultSetting: function () {
-            this.loadConfig($('#GameName')[0].value, $('#firstGroup')[0].value, $('#GameType')[0].value);
+            this.loadConfig($('#GameName')[0].value, $('#firstGroup')[0].value, false, $('#GameType')[0].value);
         },
 
         getListSelectedChips: function () {

@@ -35,9 +35,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
 
         [HttpGet]
         [Route("currencyGroupGame/Edit")]
-        public async Task<IActionResult> Edit(string gameName, string groupId, GameType gameType)
+        public async Task<IActionResult> Edit(string gameName, string groupId, bool isCopySetting, GameType gameType)
         {
-            var viewModel = await mediator.Send(new GetOneRequest(groupId, gameName));
+            var viewModel = await mediator.Send(new GetOneRequest(groupId, gameName, isCopySetting));
             viewModel.GameType = gameType;
 
             return PartialView("_Edit", viewModel);
