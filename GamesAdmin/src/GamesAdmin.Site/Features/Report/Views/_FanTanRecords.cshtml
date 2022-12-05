@@ -24,8 +24,8 @@
                     <tr>
                         <td class="text-center">@Model.RoundResult.Number</td>
                         <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
-                        <td class="text-center font-weight-bold @resultCSSClass">
-                            @Model.RoundResult.Result.FinalBeads
+                        <td class="text-center font-weight-bold @resultCSSClass fan-tan-result">
+                            <img src="~/images/fan_tan_@(Model.RoundResult.Result.FinalBeads).png" />
                         </td>
                     </tr>
                 </tbody>
