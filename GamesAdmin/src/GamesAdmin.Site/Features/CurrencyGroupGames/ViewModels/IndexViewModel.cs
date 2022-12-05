@@ -21,5 +21,9 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public List<SelectListItem> GroupSelectList { get; set; }
 
         public int GameId => (int)Enumeration.FromValue<Game>(GameName).GameId;
+
+        public string GroupIdCopy { get; set; }
+
+        public List<SelectListItem> AllCurrencyGroupList { get; set; }
     }
 }

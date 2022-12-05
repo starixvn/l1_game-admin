@@ -45,9 +45,24 @@
                 <select class="form-control"
                         asp-items="Model.GroupSelectList"
                         asp-for="GroupId"
-                        onchange="currencyGroupGame.onChangeGroup('@Model.GameName','@Model.GameType')">
+                        onchange="currencyGroupGame.onChangeGroup('@Model.GameName','@Model.GameType',false)">
                 </select>
             </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-4">
+                <input class="form-check-input" type="checkbox" onclick="currencyGroupGame.enableDropDownList(event)" />
+                <label class="control-label">Copy Setting from Currency Group:</label>
+            </div>
+            <div class="col-lg-4">
+                <select class="form-control" disabled
+                        asp-items="Model.AllCurrencyGroupList"
+                        asp-for="GroupIdCopy"
+                        onchange="currencyGroupGame.onChangeGroup('@Model.GameName','@Model.GameType',true)">
+                </select>
+            </div>
+
         </div>
         <br />
 

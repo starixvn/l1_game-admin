@@ -17,8 +17,10 @@
             });
         },
 
-        onChangeGroup: function (gameName, gameType) {
-            this.loadConfig(gameName, $('#GroupId')[0].value, gameType);
+        onChangeGroup: function (gameName, gameType, isCopy) {
+            const isNoneValue = $('#GroupIdCopy').val() == '';
+            const groupId = !isCopy || isNoneValue ? ('#GroupId') : ('#GroupIdCopy');
+            this.loadConfig(gameName, $(groupId)[0].value, gameType);
         },
 
         toggleTab: function (tabName) {
@@ -173,6 +175,10 @@
             </div>`).insertBefore($('.icon-add-container'));
 
             txtCoinLength.val(len + 1);
+        },
+
+        enableDropDownList: function (event) {
+            event.target.checked ? $("#GroupIdCopy").prop("disabled", false) : $("#GroupIdCopy").prop("disabled", true);
         }
     }
 }(jQuery));
