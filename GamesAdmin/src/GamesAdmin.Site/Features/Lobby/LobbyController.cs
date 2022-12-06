@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Core.Models.Lobby;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Lobby
 {
@@ -16,9 +17,27 @@ namespace GamesAdmin.Site.Features.Lobby
 
         public IActionResult Index()
         {
-            var result = this.lobbyService.GetAll();
-            return View("Management");
+            return View();
         }
+
+        [HttpGet]
+        [Route("/lobby/GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await this.lobbyService.GetAll();
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("/lobby/GetCurrencyGroups")]
+        public async Task<IActionResult> GetCurrencyGroups()
+        {
+            var result = await this.lobbyService.GetCurrencyGroups();
+
+            return Json(result);
+        }
+
 
         public IActionResult Create()
         {

@@ -1,6 +1,7 @@
 ﻿var currencyGroup = (function ($) {
     var $modal = $('#modal');
 
+
     function onUpsertCurrencyGroup(data) {
         if (data.success) {
             setTimeout(function () {
@@ -23,6 +24,8 @@
         var selections = filterCurrencies(supportedCurrencies, partnerId).map(
             convertCurrencyToItem(false)
         );
+
+        console.log("selections", selections);
 
         $("#currencies-add").fanexMultiSelect({
             listData: selections,
@@ -119,6 +122,7 @@ $(document).ready(function () {
     $("#currency-group-form").submit();
 
     var selections = currencyGroup.getFanexSelectData(true);
+    console.log("selections", selections);
 
     $("#groups").fanexMultiSelect({
         listData: selections,
