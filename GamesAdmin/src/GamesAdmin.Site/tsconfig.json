@@ -1,14 +1,13 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "moduleResolution": "node",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
     "outDir": "wwwroot/js",
-    "typeRoots": [ "wwwroot/lib/types", "node_modules" ]
+    "typeRoots": [ "wwwroot/lib/types" ]
   },
   "exclude": [
     "node_modules",

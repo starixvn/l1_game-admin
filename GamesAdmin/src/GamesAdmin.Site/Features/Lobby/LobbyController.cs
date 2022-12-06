@@ -30,10 +30,10 @@ namespace GamesAdmin.Site.Features.Lobby
         }
 
         [HttpGet]
-        [Route("/lobby/GetCurrencyGroups")]
-        public async Task<IActionResult> GetCurrencyGroups()
+        [Route("/lobby/GetLobbyConfig")]
+        public async Task<IActionResult> GetLobbyConfig()
         {
-            var result = await this.lobbyService.GetCurrencyGroups();
+            var result = await this.lobbyService.GetLobbyConfig(string.Empty);
 
             return Json(result);
         }

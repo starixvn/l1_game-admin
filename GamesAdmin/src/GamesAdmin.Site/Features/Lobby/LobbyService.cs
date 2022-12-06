@@ -1,11 +1,9 @@
 ﻿using GamesAdmin.Core.Models.Lobby;
-using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.Lobby.ViewModels;
 using GamesAdmin.Site.Features.Partners;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +17,7 @@ namespace GamesAdmin.Site.Features.Lobby
 
         Task<LobbyModel> Get(ObjectId Id);
 
-        Task<CurrencyGroupViewModel> GetCurrencyGroups();
+        Task<CreateOrUpdateViewModel> GetLobbyConfig(string id);
     }
 
     public class LobbyService : ILobbyService
@@ -57,14 +55,13 @@ namespace GamesAdmin.Site.Features.Lobby
             return viewModel;
         }
 
-        public async Task<CurrencyGroupViewModel> GetCurrencyGroups()
+        public async Task<CreateOrUpdateViewModel> GetLobbyConfig(string id)
         {
-            var viewModel = new CurrencyGroupViewModel
+            var viewModel = new CreateOrUpdateViewModel
             {
                 Partners = await partnerService.GetAll(),
                 CurrencyGroupModels = await this.currencyGroupApi.GetAll()
             };
-
 
             return viewModel;
         }

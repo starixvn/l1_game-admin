@@ -16,12 +16,13 @@ const isCreatePage = lobbyId === "";
 
 const EditLobby: React.FC = () => {
     const [name, setName] = useState("INH Lobby");
+    const [isCreatePage, setIsCreatePage] = useState(true);
 
     useEffect(() => {
-        initCurrencyGroupsSelect();
+        initLobbyConfig();
     }, []);
 
-    const initCurrencyGroupsSelect = async () => {
+    const initLobbyConfig = async () => {
 
         const filterGroups = (partnerId, currencyGroupModels) =>
             currencyGroupModels.filter((group) => group.partnerId === partnerId);
@@ -46,7 +47,8 @@ const EditLobby: React.FC = () => {
                 }),
         });
 
-        const res = await axios('/lobby/GetCurrencyGroups');
+        const res = await axios('/lobby/GetLobbyConfig');
+        setIsCreatePage(!res.data.lobbyConfig);
         const data = res.data.partners
             .map(convertPartnerToItem(true, res.data.currencyGroupModels))
             .filter((partner) => partner.items.length);
