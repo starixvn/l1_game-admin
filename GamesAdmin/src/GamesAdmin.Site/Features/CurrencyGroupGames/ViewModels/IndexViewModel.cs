@@ -25,5 +25,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public string GroupIdCopy { get; set; }
 
         public List<SelectListItem> AllCurrencyGroupList { get; set; }
+
+        public bool IsCopySetting { get; set; } = false;
     }
 }

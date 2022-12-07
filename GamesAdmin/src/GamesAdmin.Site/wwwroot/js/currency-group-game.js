@@ -21,11 +21,11 @@
                     if ($('#coin-value-' + i).is('[disabled=disabled]') || $('#stake-level-' + i++).is('[disabled=disabled]')) {
                         isDisable = true;
                         $('#GroupIdCopy').prop("disabled", true);
-                        $("#copy-checkbox").prop('checked', false);
+                        $("#IsCopySetting").prop('checked', false);
                         break;
                     }
                 }
-                $("#copy-checkbox").prop("disabled", isDisable);
+                $("#IsCopySetting").prop("disabled", isDisable);
             });
         },
 
