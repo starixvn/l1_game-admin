@@ -1,5 +1,7 @@
 import React, { useState, createContext, useEffect, } from "react";
+import LobbyContent from "./lobby-content";
 import LobbyHeader from "./lobby-header";
+
 
 type Props = {};
 
@@ -33,16 +35,44 @@ const getItems = (count): GameCategory[] =>
 
 const LobbyLayout: React.FC<Props> = () => {
     const [items, setItems] = useState(getItems(6));
-    const [categories, setCategories] = useState([{ id: "all games", content: "All Games" }, { id: "se die", content: "Se Die" }]);
+    const [categories, setCategories] = useState([{ id: null, EN_US: "All Games" }, { id: null, EN_US: "Se Die" }]);
+    const [gameSettings, setGameSettings] = useState([{ gameId: 1 }, { gameId: 3 }]);
+    const [lobbyCategories, setLobbyCategories] = useState([
+        {
+            name: { id: null, EN_US: "All Games" }, gameSettings: [{ gameId: 1 }, { gameId: 2 }]
+        },
+        {
+            name: { id: null, EN_US: "Se Die" }, gameSettings: [{ gameId: 3 }, { gameId: 4 }]
+        }
+    ]);
+    const [editingIndex, setEditingIndex] = useState(0);
+    const [editingLobbyCategory, setEditingLobbyCategory] = useState(lobbyCategories[editingIndex]);
 
-    const onChangeCategory = (categories) => {
-        console.log("on changed ", categories);
+    const onChangeLobbyCategories = (lobbyCategories) => {
+        console.log("on changed lobbyCategories", lobbyCategories);
+        setLobbyCategories(lobbyCategories);
+    }
+
+    const onChangeLobbyCategory = (lobbyCategory) => {
+        lobbyCategories[editingIndex] = lobbyCategory;
+        console.log("change lobbyCategory ", lobbyCategory);
+        setLobbyCategories(lobbyCategories);
+    }
+
+    const switchCategory = (index) => {
+
+
+        setEditingIndex(index);
+        setEditingLobbyCategory(lobbyCategories[index]);
+
+        console.log("switch tab", index, editingLobbyCategory);
     }
 
     return (
         <div>
 
-            <LobbyHeader onChange={onChangeCategory} categories={categories} />
+            <LobbyHeader onChange={onChangeLobbyCategories} lobbyCategories={lobbyCategories} switchCategory={switchCategory} editingIndex={editingIndex} />
+            <LobbyContent onChange={onChangeLobbyCategory} lobbyCategory={lobbyCategories[editingIndex]} />
         </div>
     );
 };
