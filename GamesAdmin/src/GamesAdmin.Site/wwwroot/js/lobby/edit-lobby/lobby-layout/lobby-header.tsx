@@ -140,7 +140,6 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
 
     return (
         <div>
-            <div className="bold">Lobby Layout:</div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable" direction="horizontal">
                     {(provided, snapshot) => (

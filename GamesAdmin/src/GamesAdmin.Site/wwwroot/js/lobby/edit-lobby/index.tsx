@@ -18,6 +18,8 @@ const EditLobby: React.FC = () => {
     const [name, setName] = useState("INH Lobby");
     const [isCreatePage, setIsCreatePage] = useState(true);
 
+    let [miniPanelGameIds, setMiniPanelGameIds] = useState([1, 2, 3]);
+
     useEffect(() => {
         initLobbyConfig();
     }, []);
@@ -63,6 +65,11 @@ const EditLobby: React.FC = () => {
         });
     }
 
+    const onChangeMiniPanel = (miniPanelGameIds) => {
+        console.log("onChangeMiniPanel ", miniPanelGameIds);
+        setMiniPanelGameIds(miniPanelGameIds);
+    }
+
     return (
         <LobbyContext.Provider value={{}}>
             <div className="container-fluid form">
@@ -77,14 +84,17 @@ const EditLobby: React.FC = () => {
                         />
                     </div>
                 </div>
+                <br />
                 <div className="row">
                     <div className="col-1 bold pt-3">Groups</div>
                     <div className="col-2">
                         <select id="currency-groups"></select>
                     </div>
                 </div>
+                <br />
                 <LobbyLayout />
-                <MiniPanel />
+                <br />
+                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} />
             </div>
         </LobbyContext.Provider>
     );

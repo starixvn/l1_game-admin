@@ -2,6 +2,7 @@ import React, { useState, createContext, useEffect, } from "react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { FormControl } from "react-bootstrap";
 import Modal from 'react-modal';
+import LobbyMenu from "./lobby-menu";
 
 
 type Props = {};
@@ -11,27 +12,6 @@ type GameCategory = {
     content: string
 }
 
-type GameSetting = {
-    id: number;
-    bigSize: boolean;
-    newTag: boolean;
-}
-
-const getGameCategorySetting = (categoryId): GameSetting[] => {
-    const count = 4;
-    return Array.from({ length: count }, (v, k) => k).map((k, index) => ({
-        id: index + 1,
-        bigSize: true,
-        newTag: false
-    }));
-}
-
-// fake data generator
-const getItems = (count): GameCategory[] =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k}`,
-        content: `item ${k}`,
-    }));
 
 // a little function to help us with reordering the result
 const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => {
@@ -75,14 +55,31 @@ const customStyles = {
     },
 };
 
+const getStyleNew = (isNew) => ({
+    display: isNew ? `` : `none`
+})
+
+const getGameIconStyle = (gameSetting) => ({
+    width: `70px`,
+    height: gameSetting.bigSize ? `140px` : `70px`,
+    border: `solid 1px`,
+    display: `block`,
+
+})
+
+const getBlockStyle = () => ({
+    height: `140px`,
+    marginRight: `10px`,
+    display: 'table-cell'
+}
+)
+
+
 Modal.setAppElement('#root');
 
 const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
     console.log("lobbyCategory ", lobbyCategory);
-    const [items, setItems] = useState(getItems(6));
-    const [category, setCategory] = useState("");
-    const [lobbyCategoryState, setLobbyCategoryState] = useState(lobbyCategory);
-    const [editedGameSetting, setEditedGameSetting] = useState({ gameId: 5, bigSize: true, newTag: true });
+    let [editedGameSetting, setEditedGameSetting] = useState({ gameId: 5, bigSize: true, newTag: true });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -107,15 +104,21 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
             return;
         }
 
+        console.log("before ", lobbyCategory.gameSettings);
         const itemToSet = reorder(
             lobbyCategory.gameSettings,
             result.source.index,
             result.destination.index
         );
-        lobbyCategory.gameSettings = itemToSet;
-        // setLobbyCategoryState(lobbyCategoryState);
+        lobbyCategory.gameSettings = [...itemToSet];
+        console.log("after ", lobbyCategory.gameSettings);
         onChange(lobbyCategory);
-        //setItems(itemToSet);
+
+        setTimeout(() => {
+            console.log("setEditedGameSetting");
+            setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+        }, 2000);
+
     }
 
     const addHandler = (e) => {
@@ -129,13 +132,13 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
             lobbyCategory.gameSettings.push(editedGameSetting);
         }
         onChange(lobbyCategory);
-        console.log("save game settings ", editedGameSetting);
+        //console.log("save game settings ", editedGameSetting);
         closeModal();
     }
 
     const setGameId = (value) => {
         console.log("set game id", value);
-        editedGameSetting.gameId = value;
+        editedGameSetting.gameId = +value;
         setEditedGameSetting(editedGameSetting);
     }
 
@@ -145,8 +148,84 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
         console.log("set editedGameSetting ", editedGameSetting);
     }
 
+    const clickEditGameSetting = (e, gameSetting) => {
+        setEditedGameSetting(gameSetting);
+        openModal();
+    }
+
+    const getListToRender = () => {
+        const lobbyMenu = new LobbyMenu(lobbyCategory.gameSettings);
+        return lobbyMenu.getListToRender();
+    }
+
+    const getGameSettingById = (id) => {
+        return lobbyCategory.gameSettings.find(gameSetting => gameSetting.gameId === id);
+    }
+
+    const RenderIcons = (props) => {
+        const { item, index } = props;
+        if (item.bigSize) {
+            const gameSetting = getGameSettingById(item.ids[0]);
+            return <span style={getBlockStyle()} >
+                <span style={getGameIconStyle(gameSetting)} key={index} >
+                    <span>{gameSetting.gameId}</span>
+                    <span style={getStyleNew(gameSetting.newTag)} >[new]</span>
+                    &nbsp;
+                    <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting)} >edit</a>
+                    &nbsp;
+                    &nbsp;
+                </span>
+            </span>;
+        }
+        else {
+            const gameSetting1 = getGameSettingById(item.ids[0]);
+            const gameSetting2 = getGameSettingById(item.ids[1]);
+
+            if (gameSetting2) {
+                return <span style={getBlockStyle()} key={index}>
+                    <span style={getGameIconStyle(gameSetting1)} key={0} >
+                        <span>{gameSetting1.gameId}</span>
+                        <span style={getStyleNew(gameSetting1.newTag)} >[new]</span>
+                        &nbsp;
+                        <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} >edit</a>
+                        &nbsp;
+                        &nbsp;
+                    </span>
+                    <span style={getGameIconStyle(gameSetting2)} key={1} >
+                        <span>{gameSetting2.gameId}</span>
+                        <span style={getStyleNew(gameSetting2.newTag)} >[new]</span>
+                        &nbsp;
+                        <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting2)} >edit</a>
+                        &nbsp;
+                        &nbsp;
+                    </span>
+                </span>
+            }
+            else {
+                return <span style={getBlockStyle()} key={index}>
+                    <span style={getGameIconStyle(gameSetting1)} key={0} >
+                        <span>{gameSetting1.gameId}</span>
+                        <span style={getStyleNew(gameSetting1.newTag)} >[new]</span>
+                        &nbsp;
+                        <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} >edit</a>
+                        &nbsp;
+                        &nbsp;
+                    </span>
+                </span>
+            }
+        }
+    }
+
     return (
         <div>
+            <br />
+
+            <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
+                <RenderIcons item={item} index={index} />
+            ))}</div>
+
+            <br />
+
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable" direction="horizontal">
                     {(provided, snapshot) => (
@@ -201,7 +280,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={`${editedGameSetting.gameId} 1`}
+                                defaultValue={`${editedGameSetting.gameId}`}
                                 onChange={(e) => setGameId(e.target.value)}
                             />
                         </div>
@@ -210,7 +289,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
                         <div className="col-4">
                             <input
                                 type="checkbox"
-                                defaultChecked={false}
+                                defaultChecked={editedGameSetting.bigSize}
                                 onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
                             />
                         </div>

@@ -39,7 +39,11 @@ const LobbyLayout: React.FC<Props> = () => {
     const [gameSettings, setGameSettings] = useState([{ gameId: 1 }, { gameId: 3 }]);
     const [lobbyCategories, setLobbyCategories] = useState([
         {
-            name: { id: null, EN_US: "All Games" }, gameSettings: [{ gameId: 1 }, { gameId: 2 }]
+            name: { id: null, EN_US: "All Games" }, gameSettings: [
+                { gameId: 1, bigSize: false }, { gameId: 2, bigSize: true },
+                { gameId: 3, bigSize: true }, { gameId: 4, bigSize: false },
+                { gameId: 5, bigSize: false }, { gameId: 6, bigSize: true }
+            ]
         },
         {
             name: { id: null, EN_US: "Se Die" }, gameSettings: [{ gameId: 3 }, { gameId: 4 }]
@@ -57,6 +61,7 @@ const LobbyLayout: React.FC<Props> = () => {
         lobbyCategories[editingIndex] = lobbyCategory;
         console.log("change lobbyCategory ", lobbyCategory);
         setLobbyCategories(lobbyCategories);
+        setEditingLobbyCategory(lobbyCategory);
     }
 
     const switchCategory = (index) => {
@@ -70,9 +75,10 @@ const LobbyLayout: React.FC<Props> = () => {
 
     return (
         <div>
+            <div className="bold">Lobby Layout:</div>
 
             <LobbyHeader onChange={onChangeLobbyCategories} lobbyCategories={lobbyCategories} switchCategory={switchCategory} editingIndex={editingIndex} />
-            <LobbyContent onChange={onChangeLobbyCategory} lobbyCategory={lobbyCategories[editingIndex]} />
+            <LobbyContent onChange={onChangeLobbyCategory} lobbyCategory={editingLobbyCategory} />
         </div>
     );
 };
