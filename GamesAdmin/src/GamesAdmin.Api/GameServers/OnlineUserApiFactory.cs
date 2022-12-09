@@ -68,8 +68,6 @@ namespace GamesAdmin.Api.GameServers
             { Game.WinThreeCardsValue, typeof(IWinThreeCardsOnlineUserApi) },
         };
 
-        private readonly Type defaultOnlineUserApi = typeof(IMainOnlineUserApi);
-
         private readonly IServiceProvider serviceProvider;
 
         private readonly IAppSettings appSettings;
@@ -100,7 +98,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 return onlineUserServices.ContainsKey(game.Value)
                     ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[game.Value])
-                    : (IOnlineUserApi)serviceProvider.GetService(defaultOnlineUserApi);
+                    : (IOnlineUserApi)serviceProvider.GetService(typeof(IMainOnlineUserApi));
             }
         }
     }

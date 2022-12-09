@@ -2,20 +2,21 @@
 {
     public class SlotGame : Enumeration
     {
-        public static readonly SlotGame NightClub = new SlotGame("nightclub", "Night Club", GameId.NightClub, "night_club");
-        public static readonly SlotGame TreasureIsland = new SlotGame("treasureisland", "Treasure Island", GameId.TreasureIsland, "treasue_island");
-        public static readonly SlotGame WayToGoal = new SlotGame("waytogoal", "Way To Goal", GameId.WayToGoal, "way_to_goal");
-        public static readonly SlotGame FortuneCat = new SlotGame("fortunecat", "Fortune Cat", GameId.FortuneCat, "fortune_cat");
+        public static readonly SlotGame NightClub = new SlotGame( "Night Club", GameId.NightClub);
+        public static readonly SlotGame TreasureIsland = new SlotGame( "Treasure Island", GameId.TreasureIsland);
+        public static readonly SlotGame WayToGoal = new SlotGame("Way To Goal", GameId.WayToGoal);
+        public static readonly SlotGame FortuneCat = new SlotGame("Fortune Cat", GameId.FortuneCat);
 
         public SlotGame()
         {
         }
 
-        public SlotGame(string value, string displayName, GameId id, string serviceName)
-            : base(value, displayName)
+        public SlotGame(string displayName, GameId id)
         {
             GameId = id;
-            ServiceName = serviceName;
+            DisplayName = displayName;
+            ServiceName = displayName.Replace(" ", "_").ToLower();
+            Value = ServiceName.Replace("_", string.Empty);
         }
 
         public GameId GameId { get; }
