@@ -19,7 +19,9 @@ namespace GamesAdmin.Api.Lobby
 
         Task<IEnumerable<LobbyModel>> GetAll();
 
-        Task<LobbyModel> Get(ObjectId Id);
+        Task<LobbyModel> Get(string id);
+
+        Task<bool> Delete(string id);
     }
 
     public class LobbyService : ILobbyService
@@ -75,12 +77,28 @@ namespace GamesAdmin.Api.Lobby
             return false;
         }
 
-        public async Task<LobbyModel> Get(ObjectId Id)
+        public async Task<bool> Delete(string id)
+        {
+            try
+            {
+                await lobbyRepository.DeleteOneAsync(entity => entity.Id == ObjectId.Parse(id));
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<LobbyModel> Get(string id)
         {
 
             try
             {
-                var lobbyEntity = await lobbyRepository.FindOneAsync(entity => entity.Id == Id);
+                var lobbyEntity = await lobbyRepository.FindOneAsync(entity => entity.Id == ObjectId.Parse(id));
                 var lobbyModel = mapper.Map<LobbyModel>(lobbyEntity);
                 return lobbyModel;
             }

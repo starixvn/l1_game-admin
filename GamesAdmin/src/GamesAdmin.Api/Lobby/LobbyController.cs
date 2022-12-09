@@ -25,10 +25,16 @@ namespace GamesAdmin.Api.Lobby
             return this.lobbyService.CreateOrUpdate(lobbyModel);
         }
 
-        [HttpGet("get")]
-        public Task<LobbyModel> Get(ObjectId Id)
+        [HttpPost("delete")]
+        public Task<bool> Delete(string id)
         {
-            return this.lobbyService.Get(Id);
+            return this.lobbyService.Delete(id);
+        }
+
+        [HttpGet("get")]
+        public Task<LobbyModel> Get(string id)
+        {
+            return this.lobbyService.Get(id);
         }
 
         [HttpGet("getAll")]

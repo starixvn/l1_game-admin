@@ -20,7 +20,8 @@ const Lobby: React.FC = () => {
             <div className="container-fluid form">
                 <Router>
                     <Route path="/lobby" exact component={LobbyManagement} />
-                    <Route path="/lobby/edit" component={EditLobby} />
+                    <Route path="/lobby/edit/:id" component={EditLobby} />
+                    <Route path="/lobby/add" component={EditLobby} />
                 </Router>
             </div>
         </LobbyContext.Provider>

@@ -10,13 +10,16 @@ namespace GamesAdmin.Site.Features.Lobby
     public interface ILobbyApi : IBaseAuthorizationApi
     {
         [Get("/lobby/get")]
-        Task<LobbyModel> Get(ObjectId Id);
+        Task<LobbyModel> Get(string id);
 
         [Get("/lobby/getAll")]
         Task<IEnumerable<LobbyModel>> GetAll();
 
         [Post("/lobby/update")]
         Task<bool> Update([Body] LobbyModel lobbyModel);
+
+        [Post("/lobby/delete")]
+        Task<bool> Delete(string id);
     }
 
 

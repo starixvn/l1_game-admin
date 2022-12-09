@@ -19,6 +19,8 @@ namespace GamesAdmin.Site.Features.Lobby
         Task<LobbyModel> Get(ObjectId Id);
 
         Task<CreateOrUpdateViewModel> GetLobbyConfig(string id);
+
+        Task<bool> Delete(string id);
     }
 
     public class LobbyService : ILobbyService
@@ -58,6 +60,7 @@ namespace GamesAdmin.Site.Features.Lobby
 
         public async Task<CreateOrUpdateViewModel> GetLobbyConfig(string id)
         {
+            var lobbyConfig = string.IsNullOrEmpty(id) ? null : await this.lobbyApi.Get(id);
             var viewModel = new CreateOrUpdateViewModel
             {
                 Partners = await partnerService.GetAll(),
@@ -65,7 +68,8 @@ namespace GamesAdmin.Site.Features.Lobby
                 GameIds = Enumeration.GetAll<Game>()
                 .Where(x => (byte)x.GameId != 0)
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = ((int)x.GameId).ToString() })
-                .ToList()
+                .ToList(),
+                LobbyConfig = lobbyConfig
             };
 
             return viewModel;
@@ -75,6 +79,11 @@ namespace GamesAdmin.Site.Features.Lobby
         {
             // return this.lobbyApi.Update(lobbyEntity);
             return this.lobbyApi.Update(lobbyModel);
+        }
+
+        public Task<bool> Delete(string id)
+        {
+            return this.lobbyApi.Delete(id);
         }
     }
 }

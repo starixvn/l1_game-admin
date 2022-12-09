@@ -31,80 +31,28 @@ namespace GamesAdmin.Site.Features.Lobby
 
         [HttpGet]
         [Route("/lobby/GetLobbyConfig")]
-        public async Task<IActionResult> GetLobbyConfig()
+        public async Task<IActionResult> GetLobbyConfig(string id)
         {
-            var result = await this.lobbyService.GetLobbyConfig(string.Empty);
+            var result = await this.lobbyService.GetLobbyConfig(id);
 
             return Json(result);
         }
 
-
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> CreateOrUpdate([FromBody] LobbyModel lobbyModel)
         {
-            var lobbyEntity = new LobbyModel
-            {
-                Name = "INH Lobby",
-                CurrencyGroupIds = new string[] { "group1", "group2" },
-                MiniPanelGameIds = new int[] { 1, 3, 5 },
-                Categories = new LobbyCategory[]
-                {
-                    new LobbyCategory
-                    {
-                        Name = new CategoryName
-                        {
-                            EN_US = "All games"
-                        },
-                        GameSettings = new GameSetting[]
-                        {
-                            new GameSetting
-                            {
-                                GameId = 1,
-                                BigSize = true,
-                                NewTag = false
-                            },
-                            new GameSetting
-                            {
-                                GameId = 2,
-                                BigSize = true,
-                                NewTag = true
-                            }
-                        }
-                    },
-                    new LobbyCategory
-                    {
-                        Name = new CategoryName
-                        {
-                            EN_US = "Sedie"
-                        },
-                        GameSettings = new GameSetting[]
-                        {
-                            new GameSetting
-                            {
-                                GameId = 2,
-                                BigSize = true,
-                                NewTag = false
-                            },
-                            new GameSetting
-                            {
-                                GameId = 3,
-                                BigSize = true,
-                                NewTag = true
-                            }
-                        }
-                    }
-                }
+            var result = await this.lobbyService.Update(lobbyModel);
 
-
-            };
-            this.lobbyService.Update(lobbyEntity);
-
-            return View("Lobby");
+            return Json(result);
         }
 
-        [Route("[controller]/[action]/{id}")]
-        public IActionResult Update([FromRoute] string id)
+        [HttpPost]
+        [Route("/lobby/delete")]
+        public async Task<IActionResult> Delete(string id)
         {
-            return View("Lobby", id);
+            var result = await this.lobbyService.Delete(id);
+
+            return Json(result);
         }
     }
 }
