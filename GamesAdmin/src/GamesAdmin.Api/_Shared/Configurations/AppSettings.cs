@@ -1,7 +1,7 @@
-﻿using GamesAdmin.Core.IdentityServer;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.ComponentModel;
+using GamesAdmin.Core.IdentityServer;
+using Microsoft.Extensions.Configuration;
 
 namespace GamesAdmin.Api._Shared.Configurations
 {
@@ -53,8 +53,9 @@ namespace GamesAdmin.Api._Shared.Configurations
             ChatBotApiSettings = configuration.GetSection(nameof(ChatBotApiSettings)).Get<ChatBotApiSettings>();
             ApiLogDatabaseSettings = configuration.GetSection(nameof(ApiLogDatabaseSettings)).Get<ApiLogDatabaseSettings>();
             AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
-            ServiceApiTemplate = SystemType == Core.SystemType.SC1 ? $"http://l1_{{0}}_service_{Env}:5000" : $"http://l2_{{0}}_service_{Env}:5000";
             ProxyUrl = configuration[nameof(ProxyUrl)] ?? GetValue<string>(nameof(ProxyUrl));
+            ServiceApiTemplate = BuildSeviceApiTemplate();
+
         }
 
         public string SystemType { get; }
@@ -96,6 +97,20 @@ namespace GamesAdmin.Api._Shared.Configurations
             catch (Exception ex)
             {
                 throw new InvalidCastException($"Key: {key}", ex);
+            }
+        }
+
+        private string BuildSeviceApiTemplate()
+        {
+            if (Env == "DEV")
+            {
+                return $"{ProxyUrl}{{0}}";
+            }
+            else
+            {
+                return SystemType == Core.SystemType.SC1 
+                    ? $"http://l1_{{0}}_service_{Env}:5000" 
+                    : $"http://l2_{{0}}_service_{Env}:5000";
             }
         }
     }

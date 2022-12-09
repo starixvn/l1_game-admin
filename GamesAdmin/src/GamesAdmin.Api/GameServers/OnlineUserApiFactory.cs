@@ -91,9 +91,7 @@ namespace GamesAdmin.Api.GameServers
 
                 var slotGame = SlotGame.FromGameName(game.Value);
 
-                var api = appSettings.Env == "DEV" 
-                    ? appSettings.ProxyUrl + slotGame.Value 
-                    : string.Format(appSettings.ServiceApiTemplate, slotGame.ServiceName);
+                var api = string.Format(appSettings.ServiceApiTemplate, slotGame.ServiceName);
 
 
                 return RestService.For<ISlotGameOnlineUserApi>(api, refitSettings);
