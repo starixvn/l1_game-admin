@@ -9,6 +9,10 @@ namespace GamesAdmin.Api._Shared.Configurations
     {
         string SystemType { get; }
 
+        string Env { get; }
+
+        public string ServiceApiTemplate { get; }
+
         IdentityServerAuth IdentityServerAuth { get; }
 
         GameServerSettings GameServers { get; }
@@ -26,6 +30,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         ApiLogDatabaseSettings ApiLogDatabaseSettings { get; }
 
         AdminMonitoringSettings AdminMonitoringSettings { get; }
+
+        string ProxyUrl { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -37,6 +43,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             this.configuration = configuration;
 
             SystemType = GetValue<string>(nameof(SystemType));
+            Env = GetValue<string>(nameof(Env));
             GameServers = configuration.GetSection(nameof(GameServers)).Get<GameServerSettings>();
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             SabaApiSettings = configuration.GetSection(nameof(SabaApiSettings)).Get<SabaApiSettings>();
@@ -46,9 +53,17 @@ namespace GamesAdmin.Api._Shared.Configurations
             ChatBotApiSettings = configuration.GetSection(nameof(ChatBotApiSettings)).Get<ChatBotApiSettings>();
             ApiLogDatabaseSettings = configuration.GetSection(nameof(ApiLogDatabaseSettings)).Get<ApiLogDatabaseSettings>();
             AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
+            ServiceApiTemplate = SystemType == Core.SystemType.SC1 ? $"http://l1_{{0}}_service_{Env}:5000" : $"http://l2_{{0}}_service_{Env}:5000";
+            ProxyUrl = configuration[nameof(ProxyUrl)] ?? GetValue<string>(nameof(ProxyUrl));
         }
 
         public string SystemType { get; }
+
+        public string Env { get; }
+
+        public string ServiceApiTemplate { get; }
+
+        public string ProxyUrl { get; }
 
         public IdentityServerAuth IdentityServerAuth { get; }
 

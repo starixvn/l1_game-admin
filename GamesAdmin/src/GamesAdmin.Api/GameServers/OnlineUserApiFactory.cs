@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.IdentityServer;
+using Refit;
 
 namespace GamesAdmin.Api.GameServers
 {
@@ -21,7 +24,6 @@ namespace GamesAdmin.Api.GameServers
             { Game.SicBoValue, typeof(ISicBoOnlineUserApi) },
             { Game.VipBaccaratValue, typeof(IVipBaccaratOnlineUserApi) },
             { Game.VipSeDieWarValue, typeof(IVipSedieWarOnlineUserApi) },
-            { Game.FourGuardiansValue, typeof(IFourGuardiansOnlineUserApi) },
             { Game.KenoProMaxValue, typeof(IKenoProMaxOnlineUserApi) },
             { Game.MiniSeDieValue, typeof(IMiniSeDieOnlineUserApi) },
             { Game.RouletteValue, typeof(IRouletteOnlineUserApi) },
@@ -50,10 +52,8 @@ namespace GamesAdmin.Api.GameServers
             { Game.CasinoHoldemPokerValue, typeof(ICasinoHoldemPokerOnlineUserApi) },
             { Game.HiLoValue, typeof(IHiLoApi) },
             { Game.TexasHoldemPokerValue, typeof(ITexasHoldemPokerOnlineUserApi) },
-            { Game.NightClubValue, typeof(INightClubOnlineUserApi) },
             { Game.TreasureIslandValue, typeof(ITreasureIslandOnlineUserApi) },
             { Game.BlockchainBaccaratValue, typeof(IBlockchainBaccaratOnlineUserApi) },
-            { Game.WayToGoalValue, typeof(IWayToGoalOnlineUserApi) },
             { Game.MegaKenoValue, typeof(IMegaKenoOnlineUserApi) },
             { Game.MegaKeno2Value, typeof(IMegaKeno2OnlineUserApi) },
             { Game.MiniSeDie2Value, typeof(IMiniSeDieOnlineUserApi) },
@@ -65,7 +65,6 @@ namespace GamesAdmin.Api.GameServers
             { Game.UnbalancedBigSmall4Value, typeof(IUnbalancedBigSmallOnlineUserApi) },
             { Game.FruitSlotValue, typeof(IFruitSlotOnlineUserApi) },
             { Game.FanTanValue, typeof(IFanTanOnlineUserApi) },
-            { Game.FortuneCatValue, typeof(IFortuneCatOnlineUserApi) },
             { Game.WinThreeCardsValue, typeof(IWinThreeCardsOnlineUserApi) },
         };
 
@@ -73,14 +72,38 @@ namespace GamesAdmin.Api.GameServers
 
         private readonly IServiceProvider serviceProvider;
 
-        public OnlineUserApiFactory(IServiceProvider serviceProvider)
+        private readonly IAppSettings appSettings;
+
+        public OnlineUserApiFactory(IServiceProvider serviceProvider, IAppSettings appSettings)
         {
             this.serviceProvider = serviceProvider;
+            this.appSettings = appSettings;
         }
 
         IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(Game game)
-        => onlineUserServices.ContainsKey(game.Value)
-            ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[game.Value])
-            : (IOnlineUserApi)serviceProvider.GetService(defaultOnlineUserApi);
+        {
+            if (Enumeration.Contains<SlotGame>(game.Value))
+            {
+                var refitSettings = new RefitSettings
+                {
+                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+                };
+
+                var slotGame = SlotGame.FromGameName(game.Value);
+
+                var api = appSettings.Env == "DEV" 
+                    ? appSettings.ProxyUrl + slotGame.Value 
+                    : string.Format(appSettings.ServiceApiTemplate, slotGame.ServiceName);
+
+
+                return RestService.For<ISlotGameOnlineUserApi>(api, refitSettings);
+            }
+            else
+            {
+                return onlineUserServices.ContainsKey(game.Value)
+                    ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[game.Value])
+                    : (IOnlineUserApi)serviceProvider.GetService(defaultOnlineUserApi);
+            }
+        }
     }
 }
