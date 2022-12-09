@@ -33,7 +33,7 @@ const getItems = (count): GameCategory[] =>
     }));
 
 
-const LobbyLayout: React.FC<Props> = () => {
+const LobbyLayout: React.FC<Props> = ({ gameIds }) => {
     const [items, setItems] = useState(getItems(6));
     const [categories, setCategories] = useState([{ id: null, EN_US: "All Games" }, { id: null, EN_US: "Se Die" }]);
     const [gameSettings, setGameSettings] = useState([{ gameId: 1 }, { gameId: 3 }]);
@@ -75,10 +75,10 @@ const LobbyLayout: React.FC<Props> = () => {
 
     return (
         <div>
-            <div className="bold">Lobby Layout:</div>
-
+            <div className="bold">Lobby Layout</div>
+            <br />
             <LobbyHeader onChange={onChangeLobbyCategories} lobbyCategories={lobbyCategories} switchCategory={switchCategory} editingIndex={editingIndex} />
-            <LobbyContent onChange={onChangeLobbyCategory} lobbyCategory={editingLobbyCategory} />
+            <LobbyContent onChange={onChangeLobbyCategory} lobbyCategory={editingLobbyCategory} gameIds={gameIds} />
         </div>
     );
 };

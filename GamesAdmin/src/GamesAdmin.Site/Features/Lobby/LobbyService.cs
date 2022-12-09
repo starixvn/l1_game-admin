@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Models.Lobby;
+﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.Lobby.ViewModels;
 using GamesAdmin.Site.Features.Partners;
@@ -60,7 +61,11 @@ namespace GamesAdmin.Site.Features.Lobby
             var viewModel = new CreateOrUpdateViewModel
             {
                 Partners = await partnerService.GetAll(),
-                CurrencyGroupModels = await this.currencyGroupApi.GetAll()
+                CurrencyGroupModels = await this.currencyGroupApi.GetAll(),
+                GameIds = Enumeration.GetAll<Game>()
+                .Where(x => (byte)x.GameId != 0)
+                .Select(x => new SelectListItem { Text = x.DisplayName, Value = ((int)x.GameId).ToString() })
+                .ToList()
             };
 
             return viewModel;

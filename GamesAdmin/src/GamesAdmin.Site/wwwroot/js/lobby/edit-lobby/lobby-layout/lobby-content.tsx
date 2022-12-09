@@ -27,8 +27,10 @@ const grid = 8;
 const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     //userSelect: 'none',
-    padding: grid * 2,
+    padding: `3px`,
     margin: `0 ${grid}px 0 0`,
+    fontSize: `8`,
+    width: `60px`,
 
     // change background colour if dragging
     background: isDragging ? 'lightgreen' : 'grey',
@@ -56,19 +58,20 @@ const customStyles = {
 };
 
 const getStyleNew = (isNew) => ({
-    display: isNew ? `` : `none`
+    display: isNew ? `` : `none`,
+    color: `red`
 })
 
 const getGameIconStyle = (gameSetting) => ({
-    width: `70px`,
-    height: gameSetting.bigSize ? `140px` : `70px`,
+    width: `80px`,
+    height: gameSetting.bigSize ? `160px` : `80px`,
     border: `solid 1px`,
     display: `block`,
 
 })
 
 const getBlockStyle = () => ({
-    height: `140px`,
+    height: `160px`,
     marginRight: `10px`,
     display: 'table-cell'
 }
@@ -77,8 +80,8 @@ const getBlockStyle = () => ({
 
 Modal.setAppElement('#root');
 
-const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
-    console.log("lobbyCategory ", lobbyCategory);
+const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => {
+    console.log("lobbyCategory ", lobbyCategory, gameIds);
     let [editedGameSetting, setEditedGameSetting] = useState({ gameId: 5, bigSize: true, newTag: true });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -114,11 +117,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
         console.log("after ", lobbyCategory.gameSettings);
         onChange(lobbyCategory);
 
-        setTimeout(() => {
-            console.log("setEditedGameSetting");
-            setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
-        }, 2000);
-
+        setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
     }
 
     const addHandler = (e) => {
@@ -162,6 +161,10 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
         return lobbyCategory.gameSettings.find(gameSetting => gameSetting.gameId === id);
     }
 
+    const getGameName = (id) => {
+        return gameIds.find(gameId => gameId.value == id)?.text
+    }
+
     const RenderIcons = (props) => {
         const { item, index } = props;
         if (item.bigSize) {
@@ -170,7 +173,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
                 <span style={getGameIconStyle(gameSetting)} key={index} >
                     <span>{gameSetting.gameId}</span>
                     <span style={getStyleNew(gameSetting.newTag)} >[new]</span>
-                    &nbsp;
+                    <br />
                     <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting)} >edit</a>
                     &nbsp;
                     &nbsp;
@@ -184,17 +187,17 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
             if (gameSetting2) {
                 return <span style={getBlockStyle()} key={index}>
                     <span style={getGameIconStyle(gameSetting1)} key={0} >
-                        <span>{gameSetting1.gameId}</span>
+                        <span>{getGameName(gameSetting1.gameId)}</span>
                         <span style={getStyleNew(gameSetting1.newTag)} >[new]</span>
-                        &nbsp;
+                        <br />
                         <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} >edit</a>
                         &nbsp;
                         &nbsp;
                     </span>
                     <span style={getGameIconStyle(gameSetting2)} key={1} >
-                        <span>{gameSetting2.gameId}</span>
+                        <span>{getGameName(gameSetting2.gameId)}</span>
                         <span style={getStyleNew(gameSetting2.newTag)} >[new]</span>
-                        &nbsp;
+                        <br />
                         <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting2)} >edit</a>
                         &nbsp;
                         &nbsp;
@@ -204,9 +207,9 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
             else {
                 return <span style={getBlockStyle()} key={index}>
                     <span style={getGameIconStyle(gameSetting1)} key={0} >
-                        <span>{gameSetting1.gameId}</span>
+                        <span>{getGameName(gameSetting1.gameId)}</span>
                         <span style={getStyleNew(gameSetting1.newTag)} >[new]</span>
-                        &nbsp;
+                        <br />
                         <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} >edit</a>
                         &nbsp;
                         &nbsp;
@@ -217,7 +220,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
     }
 
     return (
-        <div>
+        <div style={{ border: `solid 1px gray`, padding: `10px` }} >
             <br />
 
             <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
@@ -248,7 +251,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
 
                                         >
                                             <span>
-                                                <span>{item.gameId}</span>
+                                                <span>{getGameName(item.gameId)}</span>
                                             </span>
                                         </div>
                                     )}
@@ -278,11 +281,13 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange }) => {
                     <div className="row">
                         <div className="col-4 bold pt-3">Game Id: </div>
                         <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={`${editedGameSetting.gameId}`}
-                                onChange={(e) => setGameId(e.target.value)}
-                            />
+                            <select defaultValue={editedGameSetting.gameId} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
+                                {gameIds.map((gameId, index) => (
+                                    <option key={index} value={gameId.value} >{gameId.text}</option>
+                                )
+                                )}
+
+                            </select>
                         </div>
                     </div>
                     <div className="row">

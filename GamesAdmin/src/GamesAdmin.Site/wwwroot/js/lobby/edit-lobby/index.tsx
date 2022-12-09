@@ -4,6 +4,8 @@ import { FormControl } from "react-bootstrap";
 import LobbyLayout from "./lobby-layout";
 import MiniPanel from "./minipanel";
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Link, NavLink, useHistory } from "react-router-dom";
+
 
 declare global {
     var jQuery: any;
@@ -15,10 +17,12 @@ const lobbyId = (document.getElementById("lobbyId") as HTMLInputElement)?.value;
 const isCreatePage = lobbyId === "";
 
 const EditLobby: React.FC = () => {
+    const history = useHistory();
     const [name, setName] = useState("INH Lobby");
     const [isCreatePage, setIsCreatePage] = useState(true);
 
-    let [miniPanelGameIds, setMiniPanelGameIds] = useState([1, 2, 3]);
+    let [miniPanelGameIds, setMiniPanelGameIds] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+    let [gameIds, setGameIds] = useState([]);
 
     useEffect(() => {
         initLobbyConfig();
@@ -55,6 +59,8 @@ const EditLobby: React.FC = () => {
             .map(convertPartnerToItem(true, res.data.currencyGroupModels))
             .filter((partner) => partner.items.length);
 
+        setGameIds(res.data.gameIds);
+
         window.jQuery("#currency-groups").fanexMultiSelect({
             listData: data,
             showFilter: true,
@@ -70,11 +76,19 @@ const EditLobby: React.FC = () => {
         setMiniPanelGameIds(miniPanelGameIds);
     }
 
+    const saveLobbyConfig = () => {
+
+    }
+
+    const cancelLobbyConfig = () => {
+        history.push("/lobby");
+    }
+
     return (
         <LobbyContext.Provider value={{}}>
             <div className="container-fluid form">
                 <div className="row">
-                    <div className="col-1 bold pt-3">Name: </div>
+                    <div className="col-1 bold pt-3">Name </div>
                     <div className="col-2">
                         <FormControl
                             type="text"
@@ -92,9 +106,18 @@ const EditLobby: React.FC = () => {
                     </div>
                 </div>
                 <br />
-                <LobbyLayout />
+                <LobbyLayout gameIds={gameIds} />
                 <br />
-                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} />
+                <br />
+                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
+                <br />
+                <br />
+                <div>
+                    <button onClick={saveLobbyConfig}>Save</button>
+                    &nbsp;&nbsp;
+                    <button onClick={cancelLobbyConfig}>Cancel</button>
+                </div>
+                <br />
             </div>
         </LobbyContext.Provider>
     );

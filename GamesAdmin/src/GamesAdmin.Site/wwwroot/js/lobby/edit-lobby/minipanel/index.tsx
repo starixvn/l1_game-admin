@@ -26,8 +26,10 @@ const grid = 8;
 const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     //userSelect: 'none',
-    padding: grid * 2,
+    padding: `3px`,
     margin: `0 ${grid}px 0 0`,
+    fontSize: `8`,
+    width: `60px`,
 
     // change background colour if dragging
     background: isDragging ? 'lightgreen' : 'grey',
@@ -49,9 +51,23 @@ const getCircleStyle = () => ({
 const getItemInCircleStyle = (total, index) => {
     const delta = 360 / total;
     return {
-        transform: `rotate(${delta * index}deg) translateX(200px)`,
+        transform: `rotate(${delta * index - 90}deg) translateX(150px)`,
         position: `absolute`,
+        marginTop: `-30px`,
+        marginLeft: `-40px`
 
+    }
+}
+
+const getInnerItemInCircleStyle = (total, index) => {
+    const delta = 360 / total;
+    return {
+        transform: `rotate(${360 - delta * index + 90}deg)`,
+        width: `70px`,
+        height: `70px`,
+        display: `block`,
+        padding: `4px`,
+        border: `solid 1px gray`
     }
 }
 
@@ -75,7 +91,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange }) => {
+const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => {
     console.log("miniPanelGameIds ", miniPanelGameIds);
     let [editedGameSetting, setEditedGameSetting] = useState({ index: null, value: 1 });
 
@@ -142,16 +158,20 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange }) => {
         openModal();
     }
 
+    const getGameName = (id) => {
+        return gameIds.find(gameId => gameId.value == id)?.text
+    }
+
     return (
         <div>
-            <div className="bold">MiniPanel Layout:</div>
+            <div className="bold">MiniPanel Layout</div>
 
             <div style={getCircleStyle()} className="circle" >
                 {
                     miniPanelGameIds.map((item, index) => (
                         <div className="item" style={getItemInCircleStyle(miniPanelGameIds.length, index)} >
-                            <span>
-                                <span>{item}</span> &nbsp;
+                            <span style={getInnerItemInCircleStyle(miniPanelGameIds.length, index)} >
+                                <span>{getGameName(item)}</span> &nbsp;
                                 <a href="#" onClick={(e) => clickEditMiniPanel(e, index)} >edit</a>
                             </span>
                         </div>
@@ -182,7 +202,7 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange }) => {
 
                                         >
                                             <span>
-                                                <span>{item}</span>
+                                                <span>{getGameName(item)}</span>
                                             </span>
                                         </div>
                                     )}
@@ -212,11 +232,13 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange }) => {
                     <div className="row">
                         <div className="col-4 bold pt-3">Game Id: </div>
                         <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={`${editedGameSetting.value}`}
-                                onChange={(e) => setGameId(e.target.value)}
-                            />
+                            <select defaultValue={editedGameSetting.value} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
+                                {gameIds.map((gameId, index) => (
+                                    <option key={index} value={gameId.value} >{gameId.text}</option>
+                                )
+                                )}
+
+                            </select>
                         </div>
                     </div>
 

@@ -12,5 +12,6 @@ namespace GamesAdmin.Site.Features.Lobby.ViewModels
         public IEnumerable<CurrencyGroupModel> CurrencyGroupModels { get; set; }
         public IEnumerable<SelectListItem> CurrencyGroupItems { get; set; }
         public IEnumerable<Partner> Partners { get; set; }
+
     }
 }
