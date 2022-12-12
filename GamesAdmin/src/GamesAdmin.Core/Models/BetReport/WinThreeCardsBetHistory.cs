@@ -8,7 +8,7 @@ namespace GamesAdmin.Core.Models.BetReport
 
         public WinThreeCardsRoundResult RoundResult { get; set; }
 
-        public WinThreeCardsBetRecord Bet { get; set; }
+        public IEnumerable<WinThreeCardsBetHistoryRecord> Bets { get; set; }
     }
 
     public class WinThreeCardsRoundResult : RoundResult
@@ -40,5 +40,11 @@ namespace GamesAdmin.Core.Models.BetReport
         public IEnumerable<PokerCard> Cards { get; set; }
         public byte HandRankId { get; set; }
         public int CardRankId { get; set; }
+    }
+
+    public class WinThreeCardsBetHistoryRecord : BetHistoryRecord
+    {
+        public string Choice { get; set; }
+        public decimal Amount { get; set; }
     }
 }

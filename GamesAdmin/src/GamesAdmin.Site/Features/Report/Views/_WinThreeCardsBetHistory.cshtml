@@ -2,33 +2,6 @@
 @using GamesAdmin.Site.Features.Report.ViewModels
 @model WinThreeCardsBetHistoryViewModel
 
-@{
-    void RenderBet(string choice)
-    {
-        var stake = Model.Bet.GetValueBet(choice);
-        if (stake == 0)
-        {
-            return;
-        }
-        var oddsName = choice.Substring(0, 1).ToLower() + choice.Substring(1);
-        <tr>
-            <td>@Model.Bet.Time.ToString(Constants.DateTimeFormat)</td>
-            <td>@choice</td>
-            <td>@Model.Odds[oddsName]</td>
-            <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(stake) / Model.BaseCurrencyMultiplier : stake)</td>
-            <td>
-                @if (Model.RoundResult.SettlementResult[oddsName])
-                {
-                    <span>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(Model.Odds[oddsName] * stake) / Model.BaseCurrencyMultiplier : Model.Odds[oddsName] * stake)</span>
-                }
-                else
-                {
-                    <span>0</span>
-                }
-            </td>
-        </tr>
-    }
-}
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -40,14 +13,19 @@
         </tr>
     </thead>
     <tbody>
-        @{
-            RenderBet("Dragon");
-            RenderBet("Phoenix");
-            RenderBet("Pair8Plus");
-            RenderBet("Straight");
-            RenderBet("Flush");
-            RenderBet("StraightFlush");
-            RenderBet("ThreeOfAKind");
+        @foreach (var bet in Model.Bets)
+        {
+            <tr>
+                <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                <td>@bet.Choice</td>
+                <td>@Model.Odds[bet.Choice]</td>
+                <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
+                <td>
+                    <span>
+                        @(Model.RoundResult.SettlementResult[bet.Choice] ? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(Model.Odds[bet.Choice] * bet.Amount) / Model.BaseCurrencyMultiplier : Model.Odds[bet.Choice] * bet.Amount) : "0")
+                    </span>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -40,13 +40,16 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportApi.GetBetHistory<WinThreeCardsBetHistory>(filter);
 
-            var betViewModel = mapper.Map<WinThreeCardsBetHistoryRecordViewModel>(result.Bet);
-            betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(result.Bet.Time, appSettings.DefaultTimeZone);
-
             return new WinThreeCardsBetHistoryViewModel
             {
                 RoundResult = mapper.Map<WinThreeCardsRoundResultViewModel>(result.RoundResult),
-                Bet = betViewModel,
+                Bets = result.Bets.Select(bet =>
+                {
+                    var recordViewModel = mapper.Map<WinThreeCardsBetHistoryRecordViewModel>(bet);
+                    recordViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(bet.Time, appSettings.DefaultTimeZone);
+
+                    return recordViewModel;
+                }),
                 Odds = result.Odds
             };
         }

@@ -36,7 +36,7 @@ namespace GamesAdmin.Api.Report
             return new WinThreeCardsBetHistory
             {
                 RoundResult = mapper.Map<WinThreeCardsRoundResult>(result.Item1),
-                Bet = mapper.Map<WinThreeCardsBetRecord>(result.Item2),
+                Bets = result.Item2.Select(bet => mapper.Map<WinThreeCardsBetHistoryRecord>(bet)),
                 Odds = result.Item3
             };
         }

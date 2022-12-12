@@ -150,8 +150,7 @@ namespace GamesAdmin.Site._Shared
                 .ForMember(x => x.Dragon, opt => opt.MapFrom(source => source.Result.Dragon))
                 .ForMember(x => x.Phoenix, opt => opt.MapFrom(source => source.Result.Phoenix));
             CreateMap<WinThreeCardsBetRecord, WinThreeCardsRecordViewModel>();
-            CreateMap<WinThreeCardsBetRecord, WinThreeCardsBetHistoryRecordViewModel>()
-                .ForMember(x => x.ThreeOfAKind, opt => opt.MapFrom(source => source.ThreeKind));
+            CreateMap<WinThreeCardsBetHistoryRecord, WinThreeCardsBetHistoryRecordViewModel>();
 
         }
     }

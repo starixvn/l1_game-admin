@@ -485,6 +485,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<WinThreeCardsResultEntity, WinThreeCardsResult>();
             CreateMap<WinThreeCardsRoundEntity, WinThreeCardsRoundResult>();
             CreateMap<WinThreeCardsBetEntity, WinThreeCardsBetRecord>();
+            CreateMap<WinThreeCardsBetLogEntity, WinThreeCardsBetHistoryRecord>();
             CreateMap<WinThreeCardsBetReportEntity, WinThreeCardsBetRecord>()
                 .ForMember(x => x.BetWin, opt => opt.MapFrom(source => source.BetWin))
                 .ForMember(x => x.PartnerId, opt => opt.MapFrom(source => source.OperatorId));
