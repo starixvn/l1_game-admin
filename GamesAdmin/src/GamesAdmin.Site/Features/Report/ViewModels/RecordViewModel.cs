@@ -232,6 +232,16 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
                 }
             }
         }
+
+        public decimal GetTotalBetWin()
+        {
+            var jackpotWinAmount = SettlementResult.Jackpot?.WinningAmount ?? 0;
+            var bonusWinAmount = SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
+            var paylineWinningAmount = SettlementResult.WinningPaylines.Sum(payline => payline.Odds) * Bet;
+            var betWin = Paid ? BetWin : bonusWinAmount + paylineWinningAmount; 
+
+            return jackpotWinAmount + betWin;
+        }
     }
 
     public class SlotGameBonusChestViewModel

@@ -127,7 +127,7 @@
             <td></td>
             <td class="bold text-right">Total</td>
             <td class="bold text-right">@HtmlHelpers.formatNumber(Model.FreeSpin ? 0m : Model.TotalAmount)</td>
-            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.TotalBetWin)</td>
+            <td class="bold text-right">@HtmlHelpers.formatNumber(Model.GetTotalBetWin())</td>
         </tr>
         <tr class="total">
             <td></td>
