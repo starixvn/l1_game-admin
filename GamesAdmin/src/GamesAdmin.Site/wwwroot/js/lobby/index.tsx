@@ -9,22 +9,16 @@ import EditLobby from "./edit-lobby/index";
 const e = React.createElement;
 
 export const LobbyContext = createContext({});
-const lobbyId = (document.getElementById("lobbyId") as HTMLInputElement)?.value;
-
-const isCreatePage = lobbyId === "";
-
 const Lobby: React.FC = () => {
 
     return (
-        <LobbyContext.Provider value={{}}>
-            <div className="container-fluid form">
-                <Router>
-                    <Route path="/lobby" exact component={LobbyManagement} />
-                    <Route path="/lobby/edit/:id" component={EditLobby} />
-                    <Route path="/lobby/add" component={EditLobby} />
-                </Router>
-            </div>
-        </LobbyContext.Provider>
+        <div className="container-fluid form">
+            <Router>
+                <Route path="/lobby" exact component={LobbyManagement} />
+                <Route path="/lobby/edit/:id" component={EditLobby} />
+                <Route path="/lobby/add" component={EditLobby} />
+            </Router>
+        </div>
     );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, } from "react";
+import React, { useState, useEffect, } from "react";
 import { FormControl } from "react-bootstrap";
 import LobbyLayout from "./lobby-layout";
 import MiniPanel from "./minipanel";
@@ -9,32 +9,17 @@ declare global {
     var jQuery: any;
 }
 
-export const LobbyContext = createContext({});
-
 const EditLobby: React.FC = () => {
     const history = useHistory();
     let { id } = useParams();
-    console.log("id ", id);
 
     const [name, setName] = useState("INH Lobby");
     const [isCreatePage, setIsCreatePage] = useState(true);
 
-    let [miniPanelGameIds, setMiniPanelGameIds] = useState([1, 2, 3, 4, 5, 6]);
+    let [miniPanelGameIds, setMiniPanelGameIds] = useState([]);
     let [gameIds, setGameIds] = useState([]);
     let [currencyGroupIds, setCurrencyGroupIds] = useState([]);
-
-    const [lobbyCategories, setLobbyCategories] = useState([
-        {
-            name: { id: null, EN_US: "All Games" }, gameSettings: [
-                { gameId: 1, bigSize: false }, { gameId: 2, bigSize: true },
-                { gameId: 3, bigSize: true }, { gameId: 4, bigSize: false },
-                { gameId: 5, bigSize: false }, { gameId: 6, bigSize: true }
-            ]
-        },
-        {
-            name: { id: null, EN_US: "Se Die" }, gameSettings: [{ gameId: 3 }, { gameId: 4 }]
-        }
-    ]);
+    let [lobbyCategories, setLobbyCategories] = useState([]);
 
     useEffect(() => {
         initLobbyConfig();
@@ -99,7 +84,6 @@ const EditLobby: React.FC = () => {
             showFilter: true,
             onLeave: function () {
                 var value = window.jQuery("#currency-groups").fanexMultiSelect('getItems', true);
-                console.log("select value", value);
                 setCurrencyGroupIds(value);
             },
         });
@@ -131,47 +115,47 @@ const EditLobby: React.FC = () => {
         history.push("/lobby");
     }
 
-    const onChangeLobbyCategories = (lobbyCategories) => {
-        setLobbyCategories(lobbyCategories);
+    const onChangeLobbyCategories = (lobbyCategories1) => {
+        console.log("onChangeLobbyCategories ", lobbyCategories1);
+        setLobbyCategories(lobbyCategories1);
+        console.log("onChangeLobbyCategories 1", lobbyCategories);
     }
 
     return (
-        <LobbyContext.Provider value={{}}>
-            <div className="container-fluid form">
-                <div className="row">
-                    <div className="col-1 bold pt-3">Name </div>
-                    <div className="col-2">
-                        <FormControl
-                            type="text"
-                            defaultValue={name}
-                            value={name}
-                            onChange={(e) => isCreatePage && setName(e.target.value)}
-                            disabled={!isCreatePage}
-                        />
-                    </div>
+        <div className="container-fluid form">
+            <div className="row">
+                <div className="col-1 bold pt-3">Name </div>
+                <div className="col-2">
+                    <FormControl
+                        type="text"
+                        defaultValue={name}
+                        value={name}
+                        onChange={(e) => isCreatePage && setName(e.target.value)}
+                        disabled={!isCreatePage}
+                    />
                 </div>
-                <br />
-                <div className="row">
-                    <div className="col-1 bold pt-3">Groups</div>
-                    <div className="col-2">
-                        <select id="currency-groups"></select>
-                    </div>
-                </div>
-                <br />
-                <LobbyLayout gameIds={gameIds} lobbyCategories={lobbyCategories} onChange={onChangeLobbyCategories} />
-                <br />
-                <br />
-                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
-                <br />
-                <br />
-                <div>
-                    <button onClick={saveLobbyConfig}>Save</button>
-                    &nbsp;&nbsp;
-                    <button onClick={cancelLobbyConfig}>Cancel</button>
-                </div>
-                <br />
             </div>
-        </LobbyContext.Provider>
+            <br />
+            <div className="row">
+                <div className="col-1 bold pt-3">Groups</div>
+                <div className="col-2">
+                    <select id="currency-groups"></select>
+                </div>
+            </div>
+            <br />
+            <LobbyLayout gameIds={gameIds} lobbyCategories={lobbyCategories} onChange={onChangeLobbyCategories} />
+            <br />
+            <br />
+            <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
+            <br />
+            <br />
+            <div>
+                <button onClick={saveLobbyConfig}>Save</button>
+                &nbsp;&nbsp;
+                <button onClick={cancelLobbyConfig}>Cancel</button>
+            </div>
+            <br />
+        </div>
     );
 };
 

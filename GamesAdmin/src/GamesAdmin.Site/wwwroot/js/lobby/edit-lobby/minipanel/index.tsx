@@ -92,8 +92,7 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => {
-    console.log("miniPanelGameIds ", miniPanelGameIds);
-    let [editedGameSetting, setEditedGameSetting] = useState({ index: null, value: 1 });
+    let [editedGameSetting, setEditedGameSetting] = useState({ index: -1, value: 1 });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -109,7 +108,7 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
 
     const closeModal = () => {
         setModalIsOpen(false);
-        setEditedGameSetting({ index: null, value: 1 });
+        //setEditedGameSetting({ index: null, value: 1 });
     }
 
     const onDragEnd = (result) => {
@@ -128,26 +127,40 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
     }
 
     const addHandler = (e) => {
-        console.log("add game id", e);
         openModal();
     }
 
     const saveGameSetting = () => {
-        if (editedGameSetting.index == null) {
-            miniPanelGameIds.push(editedGameSetting.value);
+        console.log("save ", editedGameSetting, editedGameSetting.value, miniPanelGameIds);
+
+        if (!miniPanelGameIds.includes(editedGameSetting.value)) {
+            if (editedGameSetting.index >= 0) {
+                miniPanelGameIds[editedGameSetting.index] = editedGameSetting.value;
+            }
+            else {
+                miniPanelGameIds.push(editedGameSetting.value);
+            }
+            console.log("change", miniPanelGameIds);
+            onChange(miniPanelGameIds);
         }
-        else {
-            miniPanelGameIds[editedGameSetting.index] = editedGameSetting.value;
+
+        closeModal();
+    }
+
+    const deleteGame = () => {
+        const index = miniPanelGameIds.findIndex(id => id == editedGameSetting.value);
+        if (index >= 0) {
+            miniPanelGameIds.splice(index, 1);
+            onChange(miniPanelGameIds);
         }
-        onChange(miniPanelGameIds);
-        console.log("save game settings ", editedGameSetting);
         closeModal();
     }
 
     const setGameId = (value) => {
-        console.log("set game id", value);
-        editedGameSetting.value = value;
-        setEditedGameSetting(editedGameSetting);
+        if (!miniPanelGameIds.includes(+value)) {
+            editedGameSetting.value = +value;
+            setEditedGameSetting(editedGameSetting);
+        }
     }
 
     const clickEditMiniPanel = (e, index) => {
@@ -247,7 +260,7 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
                 <br />
                 <button onClick={saveGameSetting}>Save</button>
                 &nbsp;&nbsp;
-                <button onClick={closeModal}>Remove</button>
+                <button onClick={deleteGame}>Remove</button>
             </Modal>
         </div>
     );

@@ -35,7 +35,13 @@ const getItems = (count): GameCategory[] =>
 
 const LobbyLayout: React.FC<Props> = ({ gameIds, lobbyCategories, onChange }) => {
     const [editingIndex, setEditingIndex] = useState(0);
+    console.log("lobbyCategories xx", lobbyCategories, editingIndex);
     const [editingLobbyCategory, setEditingLobbyCategory] = useState(lobbyCategories[editingIndex]);
+
+    useEffect(() => {
+        console.log("update editingLobbyCategory ", lobbyCategories);
+        setEditingLobbyCategory(lobbyCategories[editingIndex]);
+    }, [lobbyCategories])
 
     const onChangeLobbyCategories = (lobbyCategories) => {
         console.log("on changed lobbyCategories", lobbyCategories);

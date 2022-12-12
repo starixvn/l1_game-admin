@@ -81,7 +81,8 @@ const getBlockStyle = () => ({
 Modal.setAppElement('#root');
 
 const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => {
-    console.log("lobbyCategory ", lobbyCategory, gameIds);
+    console.log("lobbyCategory ", lobbyCategory);
+
     let [editedGameSetting, setEditedGameSetting] = useState({ gameId: 5, bigSize: true, newTag: true });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -107,21 +108,18 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
             return;
         }
 
-        console.log("before ", lobbyCategory.gameSettings);
         const itemToSet = reorder(
             lobbyCategory.gameSettings,
             result.source.index,
             result.destination.index
         );
         lobbyCategory.gameSettings = [...itemToSet];
-        console.log("after ", lobbyCategory.gameSettings);
         onChange(lobbyCategory);
 
         setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
     }
 
     const addHandler = (e) => {
-        console.log("add category", e);
         openModal();
     }
 
@@ -131,20 +129,29 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
             lobbyCategory.gameSettings.push(editedGameSetting);
         }
         onChange(lobbyCategory);
-        //console.log("save game settings ", editedGameSetting);
+        closeModal();
+    }
+
+    const deleteGameSetting = () => {
+        const index = lobbyCategory.gameSettings.findIndex(s => s.gameId === editedGameSetting.gameId);
+        if (index >= 0) {
+            lobbyCategory.gameSettings.splice(index, 1);
+            onChange(lobbyCategory);
+        }
         closeModal();
     }
 
     const setGameId = (value) => {
-        console.log("set game id", value);
-        editedGameSetting.gameId = +value;
-        setEditedGameSetting(editedGameSetting);
+        const existing = lobbyCategory.gameSettings.find(s => s.gameId == value);
+        if (!existing) {
+            editedGameSetting.gameId = +value;
+            setEditedGameSetting(editedGameSetting);
+        }
     }
 
     const setBooleanValue = (value, name) => {
         editedGameSetting[name] = value;
         setEditedGameSetting(editedGameSetting);
-        console.log("set editedGameSetting ", editedGameSetting);
     }
 
     const clickEditGameSetting = (e, gameSetting) => {
@@ -153,6 +160,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
     }
 
     const getListToRender = () => {
+        console.log("getListToRender ", lobbyCategory);
         const lobbyMenu = new LobbyMenu(lobbyCategory.gameSettings);
         return lobbyMenu.getListToRender();
     }
@@ -219,105 +227,111 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
         }
     }
 
-    return (
-        <div style={{ border: `solid 1px gray`, padding: `10px` }} >
-            <br />
+    const Empty = () => <div></div>;
+    const RenderData = () => <div style={{ border: `solid 1px gray`, padding: `10px` }} >
+        <br />
 
-            <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
-                <RenderIcons item={item} index={index} />
-            ))}</div>
+        <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
+            <RenderIcons item={item} index={index} />
+        ))}</div>
 
-            <br />
+        <br />
 
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable" direction="horizontal">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                            {...provided.droppableProps}
-                        >
-                            {lobbyCategory.gameSettings.map((item, index) => (
-                                <Draggable key={item.gameId.toString()} draggableId={item.gameId.toString()} index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable" direction="horizontal">
+                {(provided, snapshot) => (
+                    <div
+                        ref={provided.innerRef}
+                        style={getListStyle(snapshot.isDraggingOver)}
+                        {...provided.droppableProps}
+                    >
+                        {lobbyCategory.gameSettings.map((item, index) => (
+                            <Draggable key={item.gameId.toString()} draggableId={item.gameId.toString()} index={index}>
+                                {(provided, snapshot) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        style={getItemStyle(
+                                            snapshot.isDragging,
+                                            provided.draggableProps.style
+                                        )}
 
-                                        >
-                                            <span>
-                                                <span>{getGameName(item.gameId)}</span>
-                                            </span>
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            <div>
-                                <span>
-                                    <a href="#" onClick={(e) => addHandler(e)} >Add</a>
-                                </span>
-                            </div>
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-
-            <Modal
-                isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={closeModal}
-                style={customStyles}
-                contentLabel="Example Modal"
-            >
-                <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Game</h2>
-
-                <form>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Game Id: </div>
-                        <div className="col-8">
-                            <select defaultValue={editedGameSetting.gameId} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
-                                {gameIds.map((gameId, index) => (
-                                    <option key={index} value={gameId.value} >{gameId.text}</option>
-                                )
+                                    >
+                                        <span>
+                                            <span>{getGameName(item.gameId)}</span>
+                                        </span>
+                                    </div>
                                 )}
-
-                            </select>
+                            </Draggable>
+                        ))}
+                        <div>
+                            <span>
+                                <a href="#" onClick={(e) => addHandler(e)} >Add</a>
+                            </span>
                         </div>
+                        {provided.placeholder}
                     </div>
-                    <div className="row">
-                        <div className="col-4">
-                            <input
-                                type="checkbox"
-                                defaultChecked={editedGameSetting.bigSize}
-                                onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
-                            />
-                        </div>
-                        <div className="col-8 bold pt-3">Big Size </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4">
-                            <input
-                                type="checkbox"
-                                defaultChecked={editedGameSetting.newTag}
-                                onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
-                            />
-                        </div>
-                        <div className="col-8 bold pt-3">New Tag </div>
-                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
 
-                </form>
+        <Modal
+            isOpen={modalIsOpen}
+            onAfterOpen={afterOpenModal}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+        >
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Game</h2>
 
-                <br />
-                <button onClick={saveGameSetting}>Save</button>
-                &nbsp;&nbsp;
-                <button onClick={closeModal}>Remove</button>
-            </Modal>
+            <form>
+                <div className="row">
+                    <div className="col-4 bold pt-3">Game Id: </div>
+                    <div className="col-8">
+                        <select defaultValue={editedGameSetting.gameId} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
+                            {gameIds.map((gameId, index) => (
+                                <option key={index} value={gameId.value} >{gameId.text}</option>
+                            )
+                            )}
+
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <input
+                            type="checkbox"
+                            defaultChecked={editedGameSetting.bigSize}
+                            onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
+                        />
+                    </div>
+                    <div className="col-8 bold pt-3">Big Size </div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <input
+                            type="checkbox"
+                            defaultChecked={editedGameSetting.newTag}
+                            onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
+                        />
+                    </div>
+                    <div className="col-8 bold pt-3">New Tag </div>
+                </div>
+
+            </form>
+
+            <br />
+            <button onClick={saveGameSetting}>Save</button>
+            &nbsp;&nbsp;
+            <button onClick={deleteGameSetting}>Remove</button>
+        </Modal>
+    </div>;
+
+    return (
+        <div>
+            {lobbyCategory ? <RenderData /> : <Empty />}
+
         </div>
     );
 };

@@ -11,13 +11,6 @@ type GameCategory = {
     content: string
 }
 
-// fake data generator
-const getItems = (count): GameCategory[] =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k}`,
-        content: `item ${k}`,
-    }));
-
 // a little function to help us with reordering the result
 const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => {
     const result = Array.from(list);
@@ -65,10 +58,15 @@ Modal.setAppElement('#root');
 
 
 const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategory, editingIndex }) => {
-    console.log("lobbyCategories ", lobbyCategories);
-    const [items, setItems] = useState(getItems(6));
+    //console.log("lobbyCategories xx", lobbyCategories);
+
     const [lobbyCategoriesState, setLobbyCategoriesState] = useState(lobbyCategories);
     const [editedCategory, setEditedCategory] = useState({ name: {}, gameSettings: [] });
+
+    useEffect(() => {
+        setLobbyCategoriesState(lobbyCategories);
+    }, [lobbyCategories])
+
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -130,12 +128,26 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
 
     const saveCategory = () => {
         console.log("save category ", editedCategory);
-        if (!editedCategory["index"]) {
-            lobbyCategoriesState.push(editedCategory);
+        if (editedCategory.name["eN_US"]) {
+            if (!editedCategory["index"]) {
+                lobbyCategoriesState.push(editedCategory);
+                setLobbyCategoriesState(lobbyCategoriesState);
+            }
+            closeModal();
+            onChange(lobbyCategoriesState);
+        }
+    }
+
+    const removeCategory = () => {
+        if (editedCategory["index"] >= 0) {
+
+            lobbyCategoriesState.splice(editedCategory["index"], 1);
             setLobbyCategoriesState(lobbyCategoriesState);
+            //onChange(lobbyCategoriesState);
+            console.log("remove ",)
         }
         closeModal();
-        onChange(lobbyCategoriesState);
+
     }
 
     return (
@@ -149,7 +161,7 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                             {...provided.droppableProps}
                         >
                             {lobbyCategoriesState.map(l => l.name).map((item, index) => (
-                                <Draggable key={`${item.EN_US}-${index}`} draggableId={item.EN_US} index={index}>
+                                <Draggable key={`${item.eN_US}-${index}`} draggableId={item.eN_US} index={index}>
                                     {(provided, snapshot) => (
                                         <div
                                             ref={provided.innerRef}
@@ -163,7 +175,7 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                                             onClick={() => switchTab(index)}
                                         >
                                             <span>
-                                                <span>{item.EN_US}</span> &nbsp;
+                                                <span>{item.eN_US}</span> &nbsp;
                                                 <a href="#" onClick={(e) => clickEditCategory(e, index)} >edit</a>
                                             </span>
                                         </div>
@@ -196,8 +208,8 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={editedCategory.name["EN_US"]}
-                                onChange={(e) => setCategoryName(e.target.value, "EN_US")}
+                                defaultValue={editedCategory.name["eN_US"]}
+                                onChange={(e) => setCategoryName(e.target.value, "eN_US")}
                             />
                         </div>
                     </div>
@@ -257,7 +269,7 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                 <br />
                 <button onClick={saveCategory}>Save</button>
                 &nbsp;&nbsp;
-                <button onClick={closeModal}>Remove</button>
+                <button onClick={removeCategory}>Remove</button>
             </Modal>
         </div>
     );
