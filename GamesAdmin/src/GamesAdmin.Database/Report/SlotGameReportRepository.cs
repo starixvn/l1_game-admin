@@ -12,16 +12,16 @@ using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
-    public interface IFourGuardiansReportRepository
+    public interface ISlotGameReportRepository
     {
         Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(SlotGameBetReportFilter filter);
     }
 
-    public class FourGuardiansReportRepository : IFourGuardiansReportRepository
+    public class SlotGameReportRepository : ISlotGameReportRepository
     {
         private readonly IMongoDatabase database;
 
-        public FourGuardiansReportRepository(IMongoDatabase database)
+        public SlotGameReportRepository(IMongoDatabase database)
         {
             this.database = database;
         }
@@ -56,7 +56,7 @@ namespace GamesAdmin.Database
 
         private IAggregateFluent<SlotGameBetWithUnWindAccountsEntity> GetAggregateBuilder(SlotGameBetReportFilter filter)
         {
-            var betCollection = database.GetCollection<FourGuardiansRoundEntity>(Document.GetCollectionName(typeof(FourGuardiansRoundEntity)));
+            var betCollection = database.GetCollection<SlotGameRoundEntity>($"{filter.Game.Value}_rounds");
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var expression = GetFilterExpression(filter);
@@ -65,7 +65,7 @@ namespace GamesAdmin.Database
             var aggregateBuilder = betCollection.Aggregate()
                 .Match(expression)
                 .SortByDescending(x => x.Id)
-                .Lookup<FourGuardiansRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
+                .Lookup<SlotGameRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
                        localField: x => x.Uid,
                        foreignField: x => x.UserId,
@@ -85,9 +85,9 @@ namespace GamesAdmin.Database
             return aggregateBuilder;
         }
 
-        private Expression<Func<FourGuardiansRoundEntity, bool>> GetFilterExpression(SlotGameBetReportFilter filter)
+        private Expression<Func<SlotGameRoundEntity, bool>> GetFilterExpression(SlotGameBetReportFilter filter)
         {
-            Expression<Func<FourGuardiansRoundEntity, bool>> expression;
+            Expression<Func<SlotGameRoundEntity, bool>> expression;
             if (filter.RoundId > 0)
             {
                 expression = x => x.Number == filter.RoundId;

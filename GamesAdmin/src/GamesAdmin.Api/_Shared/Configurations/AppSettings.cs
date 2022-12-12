@@ -102,15 +102,15 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         private string BuildSeviceApiTemplate()
         {
-            if (Env == "DEV")
+            if (ProxyUrl != String.Empty)
             {
                 return $"{ProxyUrl}{{0}}";
             }
             else
             {
-                return SystemType == Core.SystemType.SC1 
-                    ? $"http://l1_{{0}}_service_{Env}:5000" 
-                    : $"http://l2_{{0}}_service_{Env}:5000";
+                var servicePrefix = SystemType == Core.SystemType.SC1 ? "l1" : "l2";
+
+                return $"http://{servicePrefix}_{{0}}_service_{Env}:5000";
             }
         }
     }

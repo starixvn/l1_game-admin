@@ -2,8 +2,9 @@
 {
     public class SlotGame : Enumeration
     {
+        public static readonly SlotGame FourGuardians = new SlotGame("Four Guardians", GameId.FourGuardians);
         public static readonly SlotGame NightClub = new SlotGame( "Night Club", GameId.NightClub);
-        public static readonly SlotGame TreasureIsland = new SlotGame( "Treasure Island", GameId.TreasureIsland);
+        public static readonly SlotGame HeroesSlot = new SlotGame( "Heroes Slot", GameId.HeroesSlot);
         public static readonly SlotGame WayToGoal = new SlotGame("Way To Goal", GameId.WayToGoal);
         public static readonly SlotGame FortuneCat = new SlotGame("Fortune Cat", GameId.FortuneCat);
 

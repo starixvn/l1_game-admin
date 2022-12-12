@@ -68,7 +68,14 @@
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledHistory)
                         {
-                            <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
+                            if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                            {
+                                <a class="icon-action" href="~/Report/SlotGameReport?game=  @Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
+                            }
+                            else
+                            {
+                                <a class="icon-action" href="~/Report/@Model.GameList[index].GameHistoryUrl"><i class="icon-history"></i></a>
+                            }
                         }
                     </td>
                 </tr>

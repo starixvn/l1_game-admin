@@ -1,6 +1,6 @@
-﻿using GamesAdmin.Site._Shared.Configurations;
+﻿using System;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Validators;
-using System;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -18,5 +18,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         [SlotGameReportValidation]
         public new string Username { get; set; }
+
+        public SlotGame GameInfo { get; set; }
     }
 }

@@ -272,6 +272,24 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> SlotGameReport(GameId game)
+        {
+            var slotGameInfo = SlotGame.FromGameId(game);
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var viewModel = new SlotGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency,
+                SystemType = systemSettings.System,
+                GameInfo = slotGameInfo,
+                Game = game
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetSlotGameReport(
             string partnerId,
             DateTime fromDate,

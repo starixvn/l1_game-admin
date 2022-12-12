@@ -54,21 +54,21 @@ namespace GamesAdmin.Api.Report
         private readonly IServiceProvider serviceProvider;
         private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
-        private readonly ISlotGameReportFactory slotGameReportFactory;
         private readonly ICascadingSlotReportFactory cascadingSlotReportFactory;
+        private readonly ISlotGameReportRepository slotGameReportRepository;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IMapper mapper,
             IGenericRepository<SpinResultEntity> spinResultRepository,
-            ISlotGameReportFactory slotGameReportFactory,
-            ICascadingSlotReportFactory cascadingSlotReportFactory)
+            ICascadingSlotReportFactory cascadingSlotReportFactory,
+            ISlotGameReportRepository slotGameReportRepository)
         {
             this.serviceProvider = serviceProvider;
             this.mapper = mapper;
             this.spinResultRepository = spinResultRepository;
-            this.slotGameReportFactory = slotGameReportFactory;
             this.cascadingSlotReportFactory = cascadingSlotReportFactory;
+            this.slotGameReportRepository = slotGameReportRepository;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
@@ -315,8 +315,7 @@ namespace GamesAdmin.Api.Report
 
         public async Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter)
         {
-            var service = slotGameReportFactory.GetReportService(filter.Game);
-            var result = service == default ? default : await service.GetReportAsync(filter);
+            var result = await slotGameReportRepository.GetAsync(filter);
 
             return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }

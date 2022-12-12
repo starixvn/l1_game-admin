@@ -2,13 +2,24 @@
 @using GamesAdmin.Core.Enumeration;
 @model SlotGameReportViewModel
 @{
-    ViewData["Title"] = "Fortune Cat";
+    ViewData["Title"] = Model.GameInfo.DisplayName;
 }
 
 @section Styles {
     <link href="~/css/slot-game-report.min.css" rel="stylesheet" asp-append-version="true" />
 }
-
+    @if(Model.SystemType == "VG2" && Model.Game == GameId.FourGuardians)
+    {
+        
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#normal" role="tab" aria-controls="normal" aria-selected="true">Normal Tickets</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#jackpot" role="tab" aria-controls="profile" aria-selected="false">Jackpot tickets</a>
+        </li>
+    </ul>
+    }
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="normal" role="tabpanel" aria-labelledby="home-tab">
         <form class="form filter" data-ajax="true" data-ajax-method="GET"
@@ -20,7 +31,7 @@
               method="get">
             <div class="form-row align-items-center">
                 <div class="col-auto">
-                    <label class="required" asp-for="PartnerId"></label>
+                    <label class="required" asp-for="PartnerId">Operator</label>
                     <select asp-items="@Model.Selections.Partners" asp-for="PartnerId" class="form-control">
                         <option selected="selected" value="">All</option>
                     </select>
@@ -60,7 +71,7 @@
                         </label>
                     </div>
                 </div>
-                <input type="hidden" class="form-control" asp-for="Game" value="fortunecat">
+                <input type="hidden" class="form-control" asp-for="Game" value=@Model.GameInfo.Value>
                 <div class="col-auto mt-5">
                     <button type="submit" class="btn-submit">Submit</button>
                     <div id="spinner" class="spinner-border" style="display: none">
@@ -75,10 +86,9 @@
             <div id="report-result" class="col-sm-12 report-container card-body">
             </div>
         </div>
-
     </div>
     <div class="tab-pane fade" id="jackpot" role="tabpanel" aria-labelledby="jackpot-tab">
-        <partial name="Jackpot" model="new JackpotReportViewModel() { GameId = (byte) GameId.FortuneCat }" />
+        <partial name="Jackpot" model="new JackpotReportViewModel() { GameId = (byte) Model.Game }" />
     </div>
 </div>
 

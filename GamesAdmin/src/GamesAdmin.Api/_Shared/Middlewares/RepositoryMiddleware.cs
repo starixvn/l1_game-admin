@@ -28,7 +28,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVipSeDieWarReportRepository, VipSeDieWarReportRepository>();
 
             services.AddScoped<IVoidLogRepository, VoidLogRepository>();
-            services.AddScoped<IFourGuardiansReportRepository, FourGuardiansReportRepository>();
             services.AddScoped<ILotteryReportRepository, LotteryReportRepository>();
             services.AddScoped<IJackpotRepository, JackpotRepository>();
             services.AddScoped<IThreeCardsReportRepository, ThreeCardsReportRepository>();
@@ -37,19 +36,16 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
             services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
-            services.AddScoped<INightClubReportRepository, NightClubReportRepository>();
             services.AddScoped<ITreasureIslandReportRepository, TreasureIslandReportRepository>();
             services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
             services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
             services.AddScoped<IUnbalancedBigSmallReportRepository, UnbalancedBigSmallReportRepository>();
-            services.AddScoped<IWayToGoalReportRepository, WayToGoalReportRepository>();
             services.AddScoped<BaccaratReportRepository<BaccaratRoundEntity, BaccaratBetEntity>>();
             services.AddScoped<BaccaratReportRepository<VipBaccaratRoundEntity, VipBaccaratBetEntity>>();
             services.AddScoped<BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
             services.AddScoped<IFruitSlotReportRepository, FruitSlotReportRepository>();
             services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
             services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
-            services.AddScoped<IFortuneCatReportRepository, FortuneCatReportRepository>();
             services.AddScoped<IWinThreeCardsReportRepository, WinThreeCardsReportRepository>();
         }
     }
