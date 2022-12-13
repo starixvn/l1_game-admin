@@ -6,7 +6,6 @@
             string username,
             int memberId,
             string memberName,
-            int siteId,
             string language,
             bool isBot,
             string currency,
@@ -16,7 +15,6 @@
             Username = username;
             MemberId = memberId;
             MemberName = memberName;
-            SiteId = siteId;
             Language = language;
             IsBot = isBot;
             Currency = currency;
@@ -29,8 +27,6 @@
         public int MemberId { get; }
 
         public string MemberName { get; }
-
-        public int SiteId { get; }
 
         public string Language { get; }
 

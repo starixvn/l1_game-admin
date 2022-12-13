@@ -68,12 +68,6 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
-    public interface IFourGuardiansOnlineUserApi : IOnlineUserApi
-    {
-        [Get("/api/onlineusers")]
-        new Task<OnlineUsers> GetOnlineUsers(string name = "");
-    }
-
     public interface IKenoProMaxOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
@@ -135,12 +129,6 @@ namespace GamesAdmin.Api.GameServers
     }
 
     public interface IThreeCardsOnlineUserApi : IOnlineUserApi
-    {
-        [Get("/api/onlineusers")]
-        new Task<OnlineUsers> GetOnlineUsers(string name = "");
-    }
-
-    public interface IHeroesSlotOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
@@ -233,12 +221,6 @@ namespace GamesAdmin.Api.GameServers
         Task<IEnumerable<HiloCard>> SetResult([Body] SetHiLoResultRequest request);
     }
 
-    public interface INightClubOnlineUserApi : IOnlineUserApi
-    {
-        [Get("/api/onlineusers")]
-        new Task<OnlineUsers> GetOnlineUsers(string name = "");
-    }
-
     public interface ITreasureIslandOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
@@ -246,12 +228,6 @@ namespace GamesAdmin.Api.GameServers
     }
 
     public interface IBlockchainBaccaratOnlineUserApi : IOnlineUserApi
-    {
-        [Get("/api/onlineusers")]
-        new Task<OnlineUsers> GetOnlineUsers(string name = "");
-    }
-
-    public interface IWayToGoalOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
@@ -280,25 +256,29 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
+
     public interface IFanTanOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
     
+<<<<<<< HEAD
     public interface IFortuneCatOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-<<<<<<< HEAD
     
     public interface IWinThreeCardsOnlineUserApi : IOnlineUserApi
-=======
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
 
+=======
+>>>>>>> 44d4656e (feat: slotgame - remove redundant)
     public interface ISlotGameOnlineUserApi : IOnlineUserApi
->>>>>>> 8da80645 (feat: build service api for user online request)
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");

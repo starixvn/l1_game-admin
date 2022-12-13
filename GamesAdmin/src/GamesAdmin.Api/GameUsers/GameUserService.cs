@@ -68,7 +68,6 @@ namespace GamesAdmin.Api.GameUser
                 account.Local.Username,
                 account.Local.MemberId,
                 account.Local.MemberName,
-                account.Local.SiteId,
                 account.Local.Language,
                 accountInfo.IsBot,
                 accountInfo.Currency,

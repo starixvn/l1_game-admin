@@ -20,4 +20,8 @@
     <ProjectReference Include="..\GamesAdmin.Core\GamesAdmin.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\HeroesSlot\" />
+  </ItemGroup>
+
 </Project>

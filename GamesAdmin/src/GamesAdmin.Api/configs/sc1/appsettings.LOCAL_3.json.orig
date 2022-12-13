@@ -1,0 +1,332 @@
+﻿{
+  "SystemType": "SC1",
+  "Env": "LOCAL_3",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "HostingPort": "5000",
+  "AllowedHosts": "*",
+  "DatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.12:39103,10.10.50.13:39103,10.10.50.14:39103/?replicaSet=L1pppLocal",
+    "DatabaseName": "minigame"
+  },
+  "ArchiveDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_archive:LmnArchive@10.10.50.12:39103,10.10.50.13:39103,10.10.50.14:39103/?replicaSet=L1pppLocal",
+    "DatabaseName": "minigame_arc"
+  },
+  "RemovedDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_archive:LmnArchive@10.10.50.12:39103,10.10.50.13:39103,10.10.50.14:39103/?replicaSet=L1pppLocal",
+    "DatabaseName": "minigame_rm"
+  },
+  "ApiLogDatabaseSettings": {
+    "ConnectionString": "mongodb://lmn_archive:LmnArchive@10.10.50.12:39103,10.10.50.13:39103,10.10.50.14:39103/?replicaSet=L1pppLocal",
+    "DatabaseName": "log"
+  },
+  "Sentry": {
+    "Dsn": "https://ae59a4b6ade443d695e2411938cf3ead@sentry.lumigame.com/36",
+    "IncludeRequestPayload": true,
+    "SendDefaultPii": true,
+    "MinimumBreadcrumbLevel": "Debug",
+    "MinimumEventLevel": "Warning",
+    "AttachStackTrace": true,
+    "Debug": true,
+    "DiagnosticsLevel": "Error"
+  },
+  "IdentityServer": {
+    "Issuer": "http://l1_auth_api_local_3:5000",
+    "Audiences": [ "admin-api", "api" ]
+  },
+  "IdentityServerAuth": {
+    "Url": "http://l1_auth_api_local_3:5000",
+    "ClientId": "admin-api",
+    "ClientSecret": "adminapi@20luminet&",
+    "SiteId": "admin-api"
+  },
+  "GameServers": {
+    "Main": {
+      "Api": "https://l1-proxy3.lumigame.com/main",
+      "Socket": "l1-proxy3.lumigame.com/main"
+    },
+    "UserService": {
+      "Api": "https://l1-proxy3.lumigame.com/user",
+      "Socket": "l1-proxy3.lumigame.com/user"
+    },
+    "NotificationService": {
+      "Api": "https://l1-proxy3.lumigame.com/notification",
+      "Socket": "l1-proxy3.lumigame.com/notification"
+    },
+    "SeDie": {
+      "Api": "https://l1-proxy3.lumigame.com/sedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/sedie",
+      "SocketRoute": "/sedie/socket.io"
+    },
+    "VipSeDie": {
+      "Api": "https://l1-proxy3.lumigame.com/vipsedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/vipsedie",
+      "SocketRoute": "/vipsedie/socket.io"
+    },
+    "SpecialSeDie": {
+      "Api": "https://l1-proxy3.lumigame.com/specialsedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/specialsedie",
+      "SocketRoute": "/specialsedie/socket.io"
+    },
+    "Blackjack": {
+      "Api": "https://l1-proxy3.lumigame.com/blackjack",
+      "Socket": "l1-proxy3.lumigame.com/admin/blackjack",
+      "SocketRoute": "/blackjack/socket.io"
+    },
+    "VipFishPrawnCrab": {
+      "Api": "https://l1-proxy3.lumigame.com/vipfishprawncrab",
+      "Socket": "l1-proxy3.lumigame.com/admin/vipfishprawncrab",
+      "SocketRoute": "/vipfishprawncrab/socket.io"
+    },
+    "SicBo": {
+      "Api": "https://l1-proxy3.lumigame.com/sicbo",
+      "Socket": "l1-proxy3.lumigame.com/admin/sicbo",
+      "SocketRoute": "/sicbo/socket.io"
+    },
+    "VipSeDieWar": {
+      "Api": "https://l1-proxy3.lumigame.com/vipsediewar",
+      "Socket": "l1-proxy3.lumigame.com/admin/vipsediewar",
+      "SocketRoute": "/vipsediewar/socket.io"
+    },
+    "VipBaccarat": {
+      "Api": "https://l1-proxy3.lumigame.com/vipbaccarat",
+      "Socket": "l1-proxy3.lumigame.com/admin/vipbaccarat",
+      "SocketRoute": "/vipbaccarat/socket.io"
+    },
+    "KenoProMax": {
+      "Api": "https://l1-proxy3.lumigame.com/kenopromax",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenopromax",
+      "SocketRoute": "/kenopromax/socket.io"
+    },
+    "MiniSeDie": {
+      "Api": "https://l1-proxy3.lumigame.com/minisedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/minisedie",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "FishPrawnCrab": {
+      "Api": "https://l1-proxy3.lumigame.com/fishprawncrab",
+      "Socket": "l1-proxy3.lumigame.com/admin/fishprawncrab",
+      "SocketRoute": "/fishprawncrab/socket.io"
+    },
+    "BigSmall": {
+      "Api": "https://l1-proxy3.lumigame.com/bigsmall",
+      "Socket": "l1-proxy3.lumigame.com/admin/bigsmall",
+      "SocketRoute": "/bigsmall/socket.io"
+    },
+    "TurboBigSmall": {
+      "Api": "https://l1-proxy3.lumigame.com/turbobigsmall",
+      "Socket": "l1-proxy3.lumigame.com/admin/txturbo",
+      "SocketRoute": "/turbobigsmall/socket.io"
+    },
+    "DragonTiger": {
+      "Api": "https://l1-proxy3.lumigame.com/dragontiger",
+      "Socket": "l1-proxy3.lumigame.com/admin/dragontiger",
+      "SocketRoute": "/dragontiger/socket.io"
+    },
+    "TurboOddEven": {
+      "Api": "https://l1-proxy3.lumigame.com/turbooddeven",
+      "Socket": "l1-proxy3.lumigame.com/admin/oeturbo",
+      "SocketRoute": "/turbooddeven/socket.io"
+    },
+    "Roulette": {
+      "Api": "https://l1-proxy3.lumigame.com/roulette",
+      "Socket": "l1-proxy3.lumigame.com/admin/roulette",
+      "SocketRoute": "/roulette/socket.io"
+    },
+    "Baccarat": {
+      "Api": "https://l1-proxy3.lumigame.com/baccarat",
+      "Socket": "l1-proxy3.lumigame.com/admin/baccarat",
+      "SocketRoute": "/baccarat/socket.io"
+    },
+    "Lottery": {
+      "Api": "https://l1-proxy3.lumigame.com/lottery",
+      "Socket": "l1-proxy3.lumigame.com/admin/lottery",
+      "SocketRoute": "/lottery/socket.io"
+    },
+    "ThreeCards": {
+      "Api": "https://l1-proxy3.lumigame.com/threecards",
+      "Socket": "l1-proxy3.lumigame.com/admin/threecards",
+      "SocketRoute": "/threecards/socket.io"
+    },
+    "KenoMax": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenomax",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoMax2": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenomax2",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoMini": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenomini",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoMini2": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenomini2",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoEast": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenoeast",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoWest": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy.lumigame.com/admin/kenowest",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoSouth": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy.lumigame.com/admin/kenosouth",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "KenoNorth": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenonorth",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "BitcoinMaster": {
+      "Api": "https://l1-proxy3.lumigame.com/bitcoinmaster",
+      "Socket": "l1-proxy3.lumigame.com/admin/bitcoinmaster",
+      "SocketRoute": "/bitcoinmaster/socket.io"
+    },
+    "KenoMatch1": {
+      "Api": "https://l1-proxy3.lumigame.com/kenomatch",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenomatch1",
+      "SocketRoute": "/kenomatch/socket.io"
+    },
+    "KenoMatch2": {
+      "Api": "https://l1-proxy3.lumigame.com/kenomatch",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenomatch2",
+      "SocketRoute": "/kenomatch/socket.io"
+    },
+    "KenoPower1": {
+      "Api": "https://l1-proxy3.lumigame.com/kenopower",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenopower1",
+      "SocketRoute": "/kenopower/socket.io"
+    },
+    "KenoPower2": {
+      "Api": "https://l1-proxy3.lumigame.com/kenopower",
+      "Socket": "l1-proxy3.lumigame.com/admin/kenopower2",
+      "SocketRoute": "/kenopower/socket.io"
+    },
+    "CasinoHoldemPoker": {
+      "Api": "https://l1-proxy3.lumigame.com/casinoholdempoker",
+      "Socket": "l1-proxy3.lumigame.com/admin/casinoholdempoker",
+      "SocketRoute": "/casinoholdempoker/socket.io"
+    },
+    "HiLo": {
+      "Api": "https://l1-proxy3.lumigame.com/hilo",
+      "Socket": "l1-proxy3.lumigame.com/admin/hilo",
+      "SocketRoute": "/hilo/socket.io"
+    },
+    "TexasHoldemPoker": {
+      "Api": "https://l1-proxy3.lumigame.com/texasholdempoker",
+      "Socket": "l1-proxy3.lumigame.com/admin/texasholdempoker",
+      "SocketRoute": "/texasholdempoker/socket.io"
+    },
+    "TreasureIsland": {
+      "Api": "https://l1-proxy3.lumigame.com/treasureisland",
+      "Socket": "l1-proxy3.lumigame.com/admin/treasureisland",
+      "SocketRoute": "/treasureisland/socket.io"
+    },
+    "BlockchainBaccarat": {
+      "Api": "https://l1-proxy3.lumigame.com/blockchainbaccarat",
+      "Socket": "l1-proxy3.lumigame.com/admin/blockchainbaccarat",
+      "SocketRoute": "/blockchainbaccarat/socket.io"
+    },
+    "MegaKeno": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/megakeno",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "MegaKeno2": {
+      "Api": "https://l1-proxy3.lumigame.com/minikeno",
+      "Socket": "l1-proxy3.lumigame.com/admin/megakeno2",
+      "SocketRoute": "/minikeno/socket.io"
+    },
+    "MiniSeDie2": {
+      "Api": "https://l1-proxy3.lumigame.com/minisedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/minisedie2",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "MiniSeDie3": {
+      "Api": "https://l1-proxy3.lumigame.com/minisedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/minisedie3",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "MiniSeDie4": {
+      "Api": "https://l1-proxy3.lumigame.com/minisedie",
+      "Socket": "l1-proxy3.lumigame.com/admin/minisedie4",
+      "SocketRoute": "/minisedie/socket.io"
+    },
+    "UnbalancedBigSmall1": {
+      "Api": "https://l1-proxy3.lumigame.com/unbalancedbigsmall",
+      "Socket": "l1-proxy3.lumigame.com/admin/unbalancedbigsmall1",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "UnbalancedBigSmall2": {
+      "Api": "https://l1-proxy3.lumigame.com/unbalancedbigsmall",
+      "Socket": "l1-proxy3.lumigame.com/admin/unbalancedbigsmall2",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "UnbalancedBigSmall3": {
+      "Api": "https://l1-proxy3.lumigame.com/unbalancedbigsmall",
+      "Socket": "l1-proxy3.lumigame.com/admin/unbalancedbigsmall3",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "UnbalancedBigSmall4": {
+      "Api": "https://l1-proxy3.lumigame.com/unbalancedbigsmall",
+      "Socket": "l1-proxy3.lumigame.com/admin/unbalancedbigsmall4",
+      "SocketRoute": "/unbalancedbigsmall/socket.io"
+    },
+    "FruitSlot": {
+      "Api": "https://l1-proxy3.lumigame.com/fruitslot",
+      "Socket": "l1-proxy3.lumigame.com/admin/fruitslot",
+      "SocketRoute": "/fruitslot/socket.io"
+    "FanTan": {
+      "Api": "https://l1-proxy3.lumigame.com/fantan",
+      "Socket": "l1-proxy3.lumigame.com/admin/fantan",
+      "SocketRoute": "/fantan/socket.io"
+    },
+<<<<<<< HEAD
+    "FortuneCat": {
+      "Api": "https://l1-proxy3.lumigame.com/fortunecat",
+      "Socket": "l1-proxy3.lumigame.com/admin/fortunecat",
+      "SocketRoute": "/fortunecat/socket.io"
+    },
+    "WinThreeCards": {
+      "Api": "https://l1-proxy3.lumigame.com/winthreecards",
+      "Socket": "l1-proxy3.lumigame.com/admin/winthreecards",
+      "SocketRoute": "/winthreecards/socket.io"
+=======
+>>>>>>> 44d4656e (feat: slotgame - remove redundant)
+    }
+  },
+  "SabaApiSettings": {
+    "Url": "http://l1_game_api_local_3:5000"
+  },
+  "ChatbotApiSettings": {
+    "Token": "0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9",
+    "Url": "https://bot.nexdev.net/skynex/api/messages/",
+    "TimeoutInSeconds": 5,
+    "ConversationIds": {
+      "HighStake": "-1001437835976",
+      "Promotion": "-1001516573929"
+    }
+  },
+  "AdminMonitoringSettings": {
+    "Url": "https://l1-proxy3.lumigame.com/monitoring",
+    "JwtSecretKey": "c798132c-f964-4d53-aa41-b377ebe7065c",
+    "ExpiredTokenByMinutes": 1440
+  }
+}

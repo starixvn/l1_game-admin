@@ -24,8 +24,6 @@
 
         public GameServerConfigs VipSedieWar { get; set; }
 
-        public GameServerConfigs FourGuardians { get; set; }
-
         public GameServerConfigs KenoProMax { get; set; }
 
         public GameServerConfigs MiniSeDie { get; set; }
@@ -47,8 +45,6 @@
         public GameServerConfigs Lottery { get; set; }
 
         public GameServerConfigs ThreeCards { get; set; }
-
-        public GameServerConfigs HeroesSlot { get; set; }
 
         public GameServerConfigs KenoMax { get; set; }
 
@@ -84,9 +80,6 @@
 
         public GameServerConfigs TexasHoldemPoker { get; set; }
 
-        public GameServerConfigs NightClub { get; set; }
-        public GameServerConfigs WayToGoal { get; set; }
-
         public GameServerConfigs MegaKeno { get; set; }
 
         public GameServerConfigs MegaKeno2 { get; set; }
@@ -107,12 +100,8 @@
         public GameServerConfigs UnbalancedBigSmall4 { get; set; }
 
         public GameServerConfigs FruitSlot { get; set; }
-        
         public GameServerConfigs FanTan { get; set; }
-        public GameServerConfigs FortuneCat { get; set; }
         public GameServerConfigs WinThreeCards { get; set; }
-        
-
     }
 
     public class GameServerConfigs

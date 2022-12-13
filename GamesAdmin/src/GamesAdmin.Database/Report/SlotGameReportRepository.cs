@@ -4,10 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
@@ -28,61 +30,49 @@ namespace GamesAdmin.Database
 
         public async Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(SlotGameBetReportFilter filter)
         {
-            var project = GetAggregateBuilder(filter)
-                .Project(x => new SlotGameBetReportEntity
-                {
-                    Time = x.Time,
-                    Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
-                    Nickname = x.AccountInfos.Name,
-                    Bet = x.Bet,
-                    BetWin = x.BetWin,
-                    TotalAmount = x.TotalAmount,
-                    BonusChests = x.BonusChests,
-                    FreeSpin = x.FreeSpin,
-                    Number = x.Number,
-                    Paylines = x.Paylines,
-                    SettlementResult = x.SettlementResult,
-                    Result = x.Result,
-                    UserId = x.Uid,
-                    Paid = x.Paid,
-                    Currency = x.Currency,
-                    OperatorId = x.OperatorId,
-                    Rate = x.Rate,
-                    ExchangeRateId = x.ExchangeRateId
-                });
+            var userNameRegex = new Regex($"^(?i){filter.Username}$");
+            var slotGame = SlotGame.FromGameId(filter.Game);
 
-            return await project.ToListAsync();
-        }
-
-        private IAggregateFluent<SlotGameBetWithUnWindAccountsEntity> GetAggregateBuilder(SlotGameBetReportFilter filter)
-        {
-            var betCollection = database.GetCollection<SlotGameRoundEntity>($"{filter.Game.Value}_rounds");
+            var betCollection = database.GetCollection<SlotGameRoundEntity>($"{slotGame.Value}_rounds");
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-            var expression = GetFilterExpression(filter);
-            var userNameRegex = new Regex($"^(?i){filter.Username}$");
 
-            var aggregateBuilder = betCollection.Aggregate()
-                .Match(expression)
-                .SortByDescending(x => x.Id)
-                .Lookup<SlotGameRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
-                       foreignCollection: accountInfoCollection,
-                       localField: x => x.Uid,
-                       foreignField: x => x.UserId,
-                       @as: r => r.AccountInfos)
-                 .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => !filter.ExcludeUUS || x.AccountInfos.Currency != "UUS")
-                 .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                 .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
-                       foreignCollection: accountCollection,
-                       localField: x => x.UserId,
-                       foreignField: x => x.Id,
-                       @as: r => r.Accounts
-                 )
-                .Unwind<BetEntityWithAccountInfoUnwind, SlotGameBetWithUnWindAccountsEntity>(x => x.Accounts)
-                .Match(x => (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(x.Accounts.Local.MemberName)));
+            var bets = await betCollection.Find(GetFilterExpression(filter)).ToListAsync();
+            var accounts = await accountCollection.AsQueryable().ToListAsync();
 
-            return aggregateBuilder;
+            var result = new List<SlotGameBetReportEntity>();
+
+            bets.ForEach(bet =>
+            {
+                var betUser = accounts.Find(acount => acount.Id == ObjectId.Parse(bet.Uid));
+
+                if (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(betUser.Local.MemberName))
+                {
+                    result.Add(new SlotGameBetReportEntity
+                    {
+                        Time = bet.Time,
+                        Username = betUser.Local.MemberName ?? betUser.Local.Username,
+                        Nickname = bet.Name,
+                        Bet = bet.Bet,
+                        BetWin = bet.BetWin,
+                        TotalAmount = bet.TotalAmount,
+                        BonusChests = bet.BonusChests,
+                        FreeSpin = bet.FreeSpin,
+                        Number = bet.Number,
+                        Paylines = bet.Paylines,
+                        SettlementResult = bet.SettlementResult,
+                        Result = bet.Result,
+                        UserId = bet.Uid,
+                        Paid = bet.Paid,
+                        Currency = bet.Currency,
+                        OperatorId = bet.OperatorId,
+                        Rate = bet.Rate,
+                        ExchangeRateId = bet.ExchangeRateId
+                    });
+                }
+            });
+
+            return result;
         }
 
         private Expression<Func<SlotGameRoundEntity, bool>> GetFilterExpression(SlotGameBetReportFilter filter)
@@ -108,6 +98,11 @@ namespace GamesAdmin.Database
             {
                 var nickNameRegex = new Regex($"^(?i){filter.Nickname}$");
                 expression = expression.And(x => nickNameRegex.IsMatch(x.Name));
+            }
+
+            if (filter.ExcludeUUS)
+            {
+                expression = expression.And(x => x.Currency != "UUS");
             }
 
             return expression;

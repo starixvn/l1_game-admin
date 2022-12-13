@@ -92,7 +92,8 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         private static List<SelectListItem> GenerateGameItems()
-            => new List<SelectListItem> {
+        {
+            var result = new List<SelectListItem> {
                 new SelectListItem("All", string.Empty),
                 new SelectListItem(Game.SeDie.DisplayName, Game.SeDie.Value),
                 new SelectListItem(Game.VipSeDie.DisplayName, Game.VipSeDie.Value),
@@ -105,7 +106,6 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.SicBo.DisplayName, Game.SicBo.Value),
                 new SelectListItem(Game.VipBaccarat.DisplayName, Game.VipBaccarat.Value),
                 new SelectListItem(Game.VipSeDieWar.DisplayName, Game.VipSeDieWar.Value),
-                new SelectListItem(Game.FourGuardians.DisplayName, Game.FourGuardians.Value),
                 new SelectListItem(Game.Lottery.DisplayName, Game.Lottery.Value),
                 new SelectListItem(Game.FishPrawnCrab.DisplayName, Game.FishPrawnCrab.Value),
                 new SelectListItem(Game.DragonTiger.DisplayName, Game.DragonTiger.Value),
@@ -118,7 +118,6 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.KenoMatch2.DisplayName, Game.KenoMatch2.Value),
                 new SelectListItem(Game.KenoPower1.DisplayName, Game.KenoPower1.Value),
                 new SelectListItem(Game.KenoPower2.DisplayName, Game.KenoPower2.Value),
-                new SelectListItem(Game.HeroesSlot.DisplayName, Game.HeroesSlot.Value),
                 new SelectListItem(Game.KenoMax.DisplayName, Game.KenoMax.Value),
                 new SelectListItem(Game.KenoMax2.DisplayName, Game.KenoMax2.Value),
                 new SelectListItem(Game.KenoMini.DisplayName, Game.KenoMini.Value),
@@ -131,9 +130,7 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.BitcoinMaster.DisplayName, Game.BitcoinMaster.Value),
                 new SelectListItem(Game.HiLo.DisplayName, Game.HiLo.Value),
                 new SelectListItem(Game.TexasHoldemPoker.DisplayName, Game.TexasHoldemPoker.Value),
-                new SelectListItem(Game.NightClub.DisplayName, Game.NightClub.Value),
                 new SelectListItem(Game.TreasureIsland.DisplayName, Game.TreasureIsland.Value),
-                new SelectListItem(Game.WayToGoal.DisplayName, Game.WayToGoal.Value),
                 new SelectListItem(Game.BlockchainBaccarat.DisplayName, Game.BlockchainBaccarat.Value),
                 new SelectListItem(Game.MegaKeno.DisplayName, Game.MegaKeno.Value),
                 new SelectListItem(Game.MegaKeno2.DisplayName, Game.MegaKeno2.Value),
@@ -144,10 +141,13 @@ namespace GamesAdmin.Site.Features.Dashboard
                 new SelectListItem(Game.UnbalancedBigSmall2.DisplayName, Game.UnbalancedBigSmall2.Value),
                 new SelectListItem(Game.UnbalancedBigSmall3.DisplayName, Game.UnbalancedBigSmall3.Value),
                 new SelectListItem(Game.UnbalancedBigSmall4.DisplayName, Game.UnbalancedBigSmall4.Value),
-                new SelectListItem(Game.FruitSlot.DisplayName, Game.FruitSlot.Value),
                 new SelectListItem(Game.FanTan.DisplayName, Game.FanTan.Value),
-                new SelectListItem(Game.FortuneCat.DisplayName, Game.FortuneCat.Value),
                 new SelectListItem(Game.WinThreeCards.DisplayName, Game.WinThreeCards.Value),
             };
+
+            result.AddRange(SlotGame.AllGames.Select(game => new SelectListItem(game.DisplayName, game.Value)));
+
+            return result;
+        }
     }
 }

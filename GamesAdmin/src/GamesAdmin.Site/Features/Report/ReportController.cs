@@ -257,21 +257,6 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> FourGuardians()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var viewModel = new SlotGameReportViewModel
-            {
-                ExcludeUUS = true,
-                Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency,
-                SystemType = systemSettings.System
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> SlotGameReport(GameId game)
         {
             var slotGameInfo = SlotGame.FromGameId(game);
@@ -392,20 +377,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetHiLoBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_HiLoBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> HeroesSlot()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var viewModel = new SlotGameReportViewModel
-            {
-                ExcludeUUS = true,
-                Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency
-            };
-
-            return View(viewModel);
         }
 
         [HttpGet]
@@ -538,20 +509,6 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
 
         [HttpGet]
-        public async Task<IActionResult> NightClub()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var viewModel = new SlotGameReportViewModel
-            {
-                ExcludeUUS = true,
-                Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> TreasureIsland()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
@@ -630,20 +587,6 @@ namespace GamesAdmin.Site.Features.Report
         public IActionResult WinThreeCards() => RedirectToAction("Index", new { game = GameId.WinThreeCards });
 
         [HttpGet]
-        public async Task<IActionResult> WayToGoal()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var viewModel = new SlotGameReportViewModel
-            {
-                ExcludeUUS = true,
-                Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetUnbalancedBigSmallBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_UnbalancedBigSmallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
@@ -662,20 +605,6 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> GetSlotRNGBetHistory(BetHistoryFilter filter, bool convertToUSD)
         {
             return PartialView("_SlotRNGBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
-        }
-        
-        [HttpGet]
-        public async Task<IActionResult> FortuneCat()
-        {
-            var selections = await mediator.Send(new GetSelectionsRequest());
-            var viewModel = new SlotGameReportViewModel
-            {
-                ExcludeUUS = true,
-                Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency
-            };
-
-            return View(viewModel);
         }
 
         [HttpGet]

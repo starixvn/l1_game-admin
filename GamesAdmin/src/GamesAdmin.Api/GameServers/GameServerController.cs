@@ -33,9 +33,6 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> OnlineUsers(string game)
            => mediator.Send(new OnlineUserRequest(game));
 
-        [HttpPost("slot/set_board")]
-        public Task<SettlementBoard> SetSlotResult([FromBody] SetSlotBoardRequest request)
-           => mediator.Send(request);
 
         [HttpPost("holdempoker/set_result")]
         public Task<HoldemPokerResultControl> SetHoldemPokerResult([FromBody] SetHoldemPokerResultRequest request)

@@ -28,33 +28,34 @@ namespace GamesAdmin.Database
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
-            var aggregateBuilder = jackpotCollection.Aggregate().Match(x => x.HitTime >= fromDate && x.HitTime <= toDate && x.GameId == gameId && x.HitAt.HasValue)
-                .SortByDescending(x => x.Id)
-                .Lookup<JackpotEntity, AccountInfoEntity, JackpotEntityWithAccountInfos>(
-                       foreignCollection: accountInfoCollection,
-                       localField: x => x.WinnerName,
-                       foreignField: x => x.Name,
-                       @as: r => r.AccountInfos)
-             .Unwind<JackpotEntityWithAccountInfos, JackpotEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-             .Match(x => (!excludeUUS || x.AccountInfos.Currency != "UUS") && (!excludeBot || !x.AccountInfos.IsBot))
-             .AppendStage<JackpotEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$accountInfos.id'}}}")
-             .Lookup<JackpotEntityWithAccountInfoUnwind, AccountEntity, JackpotEntityWithAccountInfoUnwind>(
-                   foreignCollection: accountCollection,
-                   localField: x => x.UserId,
-                   foreignField: x => x.Id,
-                   @as: r => r.Accounts
-             )
-            .Unwind<JackpotEntityWithAccountInfoUnwind, JackpotBetWithUnWindAccountsEntity>(x => x.Accounts);
+            var jackpots = await jackpotCollection
+                .Find(jackPot => jackPot.HitTime >= fromDate && jackPot.HitTime <= toDate && jackPot.GameId == gameId && jackPot.HitAt.HasValue)
+                .ToListAsync();
+            var accounts = await accountCollection.AsQueryable().ToListAsync();
+            var acountInfos = await accountInfoCollection.AsQueryable().ToListAsync();
 
-            return await aggregateBuilder.Project(x => new JackpotReportEntity
+            var result = new List<JackpotReportEntity>();
+
+            foreach (var jackpot in jackpots)
             {
-                Time = x.HitTime.Value,
-                Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
-                Nickname = x.WinnerName,
-                RoundId = x.HitAt.Value,
-                Pool = x.Pool,
-                WinningAmount = x.Amount * x.WinningRatio.Value
-            }).ToListAsync();
+                var accountInfo = acountInfos.Find(x => x.Name == jackpot.WinnerName);
+                if ((!excludeUUS || accountInfo.Currency != "UUS") && (!excludeBot || !accountInfo.IsBot))
+                {
+                    var account = accounts.Find(x => x.Id == ObjectId.Parse(accountInfo.UserId));
+
+                    result.Add(new JackpotReportEntity
+                    {
+                        Time = jackpot.HitTime.Value,
+                        Username = account.Local.MemberName ?? account.Local.Username,
+                        Nickname = jackpot.WinnerName,
+                        RoundId = jackpot.HitAt.Value,
+                        Pool = jackpot.Pool,
+                        WinningAmount = jackpot.Amount * jackpot.WinningRatio.Value
+                    });
+                }
+            }
+
+            return result;
         }
     }
 
@@ -72,28 +73,5 @@ namespace GamesAdmin.Database
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal WinningAmount { get; set; }
-    }
-
-    internal class JackpotEntityWithAccountInfos : JackpotEntity
-    {
-        public IEnumerable<AccountInfoEntity> AccountInfos { get; set; }
-    }
-
-    internal class JackpotEntityWithAccountInfoUnwind : JackpotEntity
-    {
-        public ObjectId UserId { get; set; }
-
-        public AccountInfoEntity AccountInfos { get; set; }
-
-        public IEnumerable<AccountEntity> Accounts { get; set; }
-    }
-
-    internal class JackpotBetWithUnWindAccountsEntity : JackpotEntity
-    {
-        public ObjectId UserId { get; set; }
-
-        public AccountInfoEntity AccountInfos { get; set; }
-
-        public AccountEntity Accounts { get; set; }
     }
 }

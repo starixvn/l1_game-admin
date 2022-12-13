@@ -27,8 +27,6 @@ namespace GamesAdmin.Database.Entities
 
         public string MemberName { get; set; }
 
-        public int SiteId { get; set; }
-
         public string Language { get; set; }
     }
 }

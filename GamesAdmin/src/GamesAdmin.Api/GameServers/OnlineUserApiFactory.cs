@@ -39,7 +39,6 @@ namespace GamesAdmin.Api.GameServers
             { Game.KenoMatch2Value, typeof(IKenoMatchOnlineUserApi) },
             { Game.KenoPower1Value, typeof(IKenoPowerOnlineUserApi) },
             { Game.KenoPower2Value, typeof(IKenoPowerOnlineUserApi) },
-            { Game.HeroesSlotValue, typeof(IHeroesSlotOnlineUserApi) },
             { Game.KenoMaxValue, typeof(IKenoMaxOnlineUserApi) },
             { Game.KenoMax2Value, typeof(IKenoMax2OnlineUserApi) },
             { Game.KenoMiniValue, typeof(IKenoMiniOnlineUserApi) },
@@ -80,7 +79,7 @@ namespace GamesAdmin.Api.GameServers
 
         IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(Game game)
         {
-            if (Enumeration.Contains<SlotGame>(game.Value))
+            if (SlotGame.IsSlotGame(game.Value))
             {
                 var refitSettings = new RefitSettings
                 {

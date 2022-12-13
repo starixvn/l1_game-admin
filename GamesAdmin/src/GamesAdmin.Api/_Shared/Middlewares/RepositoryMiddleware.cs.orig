@@ -45,12 +45,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
             services.AddScoped<IFruitSlotReportRepository, FruitSlotReportRepository>();
             services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
-            services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
 <<<<<<< HEAD
+            services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
             services.AddScoped<IFortuneCatReportRepository, FortuneCatReportRepository>();
-            services.AddScoped<IWinThreeCardsReportRepository, WinThreeCardsReportRepository>();
 =======
->>>>>>> d10dd398 (feat: refactor report for all slot game)
+            services.AddScoped<ISlotGameReportRepository, SlotGameReportRepository>();
+>>>>>>> 4257f3b6 (feat: refactor report for all slot game)
         }
     }
 }
