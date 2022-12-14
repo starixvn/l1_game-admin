@@ -1,7 +1,8 @@
-import React, { useState, createContext, useEffect, } from "react";
+import React, { useState, useContext } from "react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Modal from 'react-modal';
 import { FormControl } from "react-bootstrap";
+import LobbyConfigContext from '../LobbyConfigContext';
 
 
 type Props = {};
@@ -11,7 +12,6 @@ type GameCategory = {
     content: string
 }
 
-// a little function to help us with reordering the result
 const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -23,15 +23,11 @@ const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => 
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle, isEditing) => ({
-    // some basic styles to make the items look a bit nicer
-    //userSelect: 'none',
     padding: grid * 2,
     margin: `0 ${grid}px 0 0`,
 
-    // change background colour if dragging
     background: isEditing ? "yellow" : isDragging ? 'lightgreen' : 'grey',
 
-    // styles we need to apply on draggables
     ...draggableStyle,
 });
 
@@ -39,7 +35,6 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     display: 'flex',
     padding: grid,
-    //overflow: 'auto',
 });
 
 
@@ -57,16 +52,10 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 
-const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategory, editingIndex }) => {
-    //console.log("lobbyCategories xx", lobbyCategories);
-
-    const [lobbyCategoriesState, setLobbyCategoriesState] = useState(lobbyCategories);
+const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
+    const lobbyConfigContext = useContext(LobbyConfigContext);
     const [editedCategory, setEditedCategory] = useState({ name: {}, gameSettings: [] });
-
-    useEffect(() => {
-        setLobbyCategoriesState(lobbyCategories);
-    }, [lobbyCategories])
-
+    const categories = lobbyConfigContext.lobbyConfig.categories;
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -76,7 +65,6 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
 
     let subtitle;
     const afterOpenModal = () => {
-        // references are now sync'd and can be accessed.
         subtitle.style.color = '#f00';
     }
 
@@ -85,27 +73,23 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
         setEditedCategory({ name: {}, gameSettings: [] });
     }
 
-
     const onDragEnd = (result) => {
-        // dropped outside the list
         if (!result.destination) {
             return;
         }
 
         const itemToSet = reorder(
-            lobbyCategoriesState,
+            categories,
             result.source.index,
             result.destination.index
         );
-        //setItems(itemToSet);
-        onChange(itemToSet);
-        setLobbyCategoriesState(itemToSet);
+
+        lobbyConfigContext.onChangeCategories(itemToSet);
     }
 
     const clickEditCategory = (e, index) => {
         e.stopPropagation();
-        console.log("edit", index, lobbyCategoriesState[index]);
-        const category = lobbyCategoriesState[index];
+        const category = categories[index];
         category["index"] = index;
         setEditedCategory(category);
         openModal();
@@ -116,34 +100,30 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
     }
 
     const addHandler = (e) => {
-        console.log("add category", e);
         openModal();
     }
 
     const setCategoryName = (value, name) => {
-        console.log("update category name ", name, value);
         editedCategory.name[name] = value;
         setEditedCategory(editedCategory);
     }
 
     const saveCategory = () => {
-        console.log("save category ", editedCategory);
         if (editedCategory.name["eN_US"]) {
-            if (!editedCategory["index"]) {
-                lobbyCategoriesState.push(editedCategory);
-                setLobbyCategoriesState(lobbyCategoriesState);
+            if (!(editedCategory["index"] >= 0)) {
+                categories.push(editedCategory);
             }
             closeModal();
-            onChange(lobbyCategoriesState);
+            console.log("saveCategory ", editedCategory);
+            lobbyConfigContext.onChangeCategories(categories);
         }
     }
 
     const removeCategory = () => {
         if (editedCategory["index"] >= 0) {
 
-            lobbyCategoriesState.splice(editedCategory["index"], 1);
-            setLobbyCategoriesState(lobbyCategoriesState);
-            //onChange(lobbyCategoriesState);
+            categories.splice(editedCategory["index"], 1);
+            lobbyConfigContext.onChangeCategories(categories);
             console.log("remove ",)
         }
         closeModal();
@@ -160,7 +140,7 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                             style={getListStyle(snapshot.isDraggingOver)}
                             {...provided.droppableProps}
                         >
-                            {lobbyCategoriesState.map(l => l.name).map((item, index) => (
+                            {categories.map(l => l.name).map((item, index) => (
                                 <Draggable key={`${item.eN_US}-${index}`} draggableId={item.eN_US} index={index}>
                                     {(provided, snapshot) => (
                                         <div
@@ -218,8 +198,8 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={editedCategory.name["VI_VI"]}
-                                onChange={(e) => setCategoryName(e.target.value, "VI_VI")}
+                                defaultValue={editedCategory.name["vI_VN"]}
+                                onChange={(e) => setCategoryName(e.target.value, "vI_VN")}
                             />
                         </div>
                     </div>
@@ -228,8 +208,8 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={name}
-                                onChange={(e) => setCategoryName(e.target.value, "TH_TH")}
+                                defaultValue={editedCategory.name["tH_TH"]}
+                                onChange={(e) => setCategoryName(e.target.value, "tH_TH")}
                             />
                         </div>
                     </div>
@@ -238,8 +218,8 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={name}
-                                onChange={(e) => setCategoryName(e.target.value, "ID_ID")}
+                                defaultValue={editedCategory.name["iD_ID"]}
+                                onChange={(e) => setCategoryName(e.target.value, "iD_ID")}
                             />
                         </div>
                     </div>
@@ -248,8 +228,8 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={name}
-                                onChange={(e) => setCategoryName(e.target.value, "ZH_CN")}
+                                defaultValue={editedCategory.name["zH_CN"]}
+                                onChange={(e) => setCategoryName(e.target.value, "zH_CN")}
                             />
                         </div>
                     </div>
@@ -258,8 +238,8 @@ const LobbyHeader: React.FC<Props> = ({ lobbyCategories, onChange, switchCategor
                         <div className="col-8">
                             <FormControl
                                 type="text"
-                                defaultValue={name}
-                                onChange={(e) => setCategoryName(e.target.value, "ZH_TW")}
+                                defaultValue={editedCategory.name["zH_TW"]}
+                                onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
                             />
                         </div>
                     </div>

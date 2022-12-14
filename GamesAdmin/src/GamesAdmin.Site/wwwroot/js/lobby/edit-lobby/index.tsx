@@ -4,6 +4,7 @@ import LobbyLayout from "./lobby-layout";
 import MiniPanel from "./minipanel";
 import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
+import { LobbyConfigProvider } from "./LobbyConfigContext";
 
 declare global {
     var jQuery: any;
@@ -16,10 +17,13 @@ const EditLobby: React.FC = () => {
     const [name, setName] = useState("INH Lobby");
     const [isCreatePage, setIsCreatePage] = useState(true);
 
+    let [lobbyConfig, setLobbyConfig] = useState({
+        categories: []
+    });
+
     let [miniPanelGameIds, setMiniPanelGameIds] = useState([]);
     let [gameIds, setGameIds] = useState([]);
     let [currencyGroupIds, setCurrencyGroupIds] = useState([]);
-    let [lobbyCategories, setLobbyCategories] = useState([]);
 
     useEffect(() => {
         initLobbyConfig();
@@ -35,8 +39,11 @@ const EditLobby: React.FC = () => {
         if (res.data.lobbyConfig) {
             setName(res.data.lobbyConfig.name);
             setCurrencyGroupIds(res.data.lobbyConfig.currencyGroupIds);
-            setLobbyCategories(res.data.lobbyConfig.categories);
             setMiniPanelGameIds(res.data.lobbyConfig.miniPanelGameIds);
+
+            // update context categories
+            lobbyConfig.categories = res.data.lobbyConfig.categories;
+            setLobbyConfig({ ...lobbyConfig });
         }
 
         initCurrencyGroupMultipleSelect(res.data.partners, res.data.currencyGroupModels, res.data.lobbyConfig?.currencyGroupIds);
@@ -90,7 +97,6 @@ const EditLobby: React.FC = () => {
     }
 
     const onChangeMiniPanel = (miniPanelGameIds) => {
-        console.log("onChangeMiniPanel ", miniPanelGameIds);
         setMiniPanelGameIds(miniPanelGameIds);
     }
 
@@ -99,15 +105,12 @@ const EditLobby: React.FC = () => {
             id,
             name,
             currencyGroupIds,
-            categories: lobbyCategories,
+            categories: lobbyConfig.categories,
             miniPanelGameIds
         }
 
-        console.log("save ", name, currencyGroupIds, lobbyCategories, miniPanelGameIds);
+        await axios.post("/lobby/createorupdate", lobbyModel);
 
-        const result = await axios.post("/lobby/createorupdate", lobbyModel);
-
-        console.log("result ", result);
         history.push("/lobby");
     }
 
@@ -115,47 +118,49 @@ const EditLobby: React.FC = () => {
         history.push("/lobby");
     }
 
-    const onChangeLobbyCategories = (lobbyCategories1) => {
-        console.log("onChangeLobbyCategories ", lobbyCategories1);
-        setLobbyCategories(lobbyCategories1);
-        console.log("onChangeLobbyCategories 1", lobbyCategories);
+    const onChangeCategories = (categories) => {
+        console.log("onChangeCategories ", categories);
+
+        lobbyConfig.categories = categories;
+        setLobbyConfig({ ...lobbyConfig });
     }
 
     return (
-        <div className="container-fluid form">
-            <div className="row">
-                <div className="col-1 bold pt-3">Name </div>
-                <div className="col-2">
-                    <FormControl
-                        type="text"
-                        defaultValue={name}
-                        value={name}
-                        onChange={(e) => isCreatePage && setName(e.target.value)}
-                        disabled={!isCreatePage}
-                    />
+        <LobbyConfigProvider value={{ lobbyConfig, onChangeCategories }} >
+            <div className="container-fluid form">
+                <div className="row">
+                    <div className="col-1 bold pt-3">Name </div>
+                    <div className="col-2">
+                        <FormControl
+                            type="text"
+                            value={name}
+                            onChange={(e) => isCreatePage && setName(e.target.value)}
+                            disabled={!isCreatePage}
+                        />
+                    </div>
                 </div>
-            </div>
-            <br />
-            <div className="row">
-                <div className="col-1 bold pt-3">Groups</div>
-                <div className="col-2">
-                    <select id="currency-groups"></select>
+                <br />
+                <div className="row">
+                    <div className="col-1 bold pt-3">Groups</div>
+                    <div className="col-2">
+                        <select id="currency-groups"></select>
+                    </div>
                 </div>
+                <br />
+                <LobbyLayout gameIds={gameIds} />
+                <br />
+                <br />
+                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
+                <br />
+                <br />
+                <div>
+                    <button onClick={saveLobbyConfig}>Save</button>
+                    &nbsp;&nbsp;
+                    <button onClick={cancelLobbyConfig}>Cancel</button>
+                </div>
+                <br />
             </div>
-            <br />
-            <LobbyLayout gameIds={gameIds} lobbyCategories={lobbyCategories} onChange={onChangeLobbyCategories} />
-            <br />
-            <br />
-            <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
-            <br />
-            <br />
-            <div>
-                <button onClick={saveLobbyConfig}>Save</button>
-                &nbsp;&nbsp;
-                <button onClick={cancelLobbyConfig}>Cancel</button>
-            </div>
-            <br />
-        </div>
+        </LobbyConfigProvider >
     );
 };
 

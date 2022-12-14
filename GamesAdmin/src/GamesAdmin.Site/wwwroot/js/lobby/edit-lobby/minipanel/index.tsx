@@ -1,6 +1,5 @@
 import React, { useState, createContext, useEffect, } from "react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { FormControl } from "react-bootstrap";
 import Modal from 'react-modal';
 import './index.css';
 
@@ -182,7 +181,7 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
             <div style={getCircleStyle()} className="circle" >
                 {
                     miniPanelGameIds.map((item, index) => (
-                        <div className="item" style={getItemInCircleStyle(miniPanelGameIds.length, index)} >
+                        <div className="item" style={getItemInCircleStyle(miniPanelGameIds.length, index)} key={index} >
                             <span style={getInnerItemInCircleStyle(miniPanelGameIds.length, index)} >
                                 <span>{getGameName(item)}</span> &nbsp;
                                 <a href="#" onClick={(e) => clickEditMiniPanel(e, index)} >edit</a>

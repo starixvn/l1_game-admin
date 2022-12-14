@@ -1,9 +1,7 @@
-import React, { useState, createContext, useEffect, } from "react";
+import React, { useState, } from "react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { FormControl } from "react-bootstrap";
 import Modal from 'react-modal';
 import LobbyMenu from "./lobby-menu";
-
 
 type Props = {};
 
@@ -12,8 +10,6 @@ type GameCategory = {
     content: string
 }
 
-
-// a little function to help us with reordering the result
 const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -25,17 +21,11 @@ const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => 
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    //userSelect: 'none',
     padding: `3px`,
     margin: `0 ${grid}px 0 0`,
     fontSize: `8`,
     width: `60px`,
-
-    // change background colour if dragging
     background: isDragging ? 'lightgreen' : 'grey',
-
-    // styles we need to apply on draggables
     ...draggableStyle,
 });
 
@@ -43,7 +33,6 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     display: 'flex',
     padding: grid,
-    //overflow: 'auto',
 });
 
 const customStyles = {
@@ -81,6 +70,7 @@ const getBlockStyle = () => ({
 Modal.setAppElement('#root');
 
 const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => {
+
     console.log("lobbyCategory ", lobbyCategory);
 
     let [editedGameSetting, setEditedGameSetting] = useState({ gameId: 5, bigSize: true, newTag: true });
@@ -93,7 +83,6 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
 
     let subtitle;
     const afterOpenModal = () => {
-        // references are now sync'd and can be accessed.
         subtitle.style.color = '#f00';
     }
 
@@ -103,7 +92,6 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
     }
 
     const onDragEnd = (result) => {
-        // dropped outside the list
         if (!result.destination) {
             return;
         }
@@ -232,7 +220,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
         <br />
 
         <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
-            <RenderIcons item={item} index={index} />
+            <RenderIcons item={item} index={index} key={index} />
         ))}</div>
 
         <br />
