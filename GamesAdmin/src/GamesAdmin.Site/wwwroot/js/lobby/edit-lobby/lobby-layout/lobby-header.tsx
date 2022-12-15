@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Modal from 'react-modal';
 import { FormControl } from "react-bootstrap";
-import LobbyConfigContext from '../LobbyConfigContext';
+import LobbyConfigContext from '../lobby-config-context';
 
 
 type Props = {};

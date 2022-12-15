@@ -4,7 +4,7 @@ import LobbyLayout from "./lobby-layout";
 import MiniPanel from "./minipanel";
 import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
-import { LobbyConfigProvider } from "./LobbyConfigContext";
+import { LobbyConfigProvider } from "./lobby-config-context";
 
 declare global {
     var jQuery: any;

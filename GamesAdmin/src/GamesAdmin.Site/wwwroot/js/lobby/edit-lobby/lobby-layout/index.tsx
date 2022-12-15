@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import LobbyContent from "./lobby-content";
 import LobbyHeader from "./lobby-header";
-import LobbyConfigContext from '../LobbyConfigContext';
+import LobbyConfigContext from '../lobby-config-context';
 
 
 type Props = {};

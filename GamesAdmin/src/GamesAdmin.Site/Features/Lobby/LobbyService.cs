@@ -16,8 +16,6 @@ namespace GamesAdmin.Site.Features.Lobby
 
         Task<bool> Update(LobbyModel lobbyModel);
 
-        Task<LobbyModel> Get(ObjectId Id);
-
         Task<CreateOrUpdateViewModel> GetLobbyConfig(string id);
 
         Task<bool> Delete(string id);
@@ -37,12 +35,6 @@ namespace GamesAdmin.Site.Features.Lobby
             this.partnerService = partnerService;
         }
 
-        public async Task<LobbyModel> Get(ObjectId Id)
-        {
-            return null;
-            //return this.lobbyApi.Get(Id);
-        }
-
         public async Task<ViewModels.IndexViewModel> GetAll()
         {
             var currencyGroups = await currencyGroupApi.GetAll();
@@ -60,11 +52,16 @@ namespace GamesAdmin.Site.Features.Lobby
 
         public async Task<CreateOrUpdateViewModel> GetLobbyConfig(string id)
         {
+            var allLobbyConfigs = await this.lobbyApi.GetAll();
             var lobbyConfig = string.IsNullOrEmpty(id) ? null : await this.lobbyApi.Get(id);
+            var otherLobbyConfigCurrencyGroups = allLobbyConfigs.Where(config => config.Id != lobbyConfig?.Id)
+                .Select(config => config.CurrencyGroupIds).ToArray()
+                .SelectMany(currencygroup => currencygroup).Distinct();
+
             var viewModel = new CreateOrUpdateViewModel
             {
                 Partners = await partnerService.GetAll(),
-                CurrencyGroupModels = await this.currencyGroupApi.GetAll(),
+                CurrencyGroupModels = (await this.currencyGroupApi.GetAll()).Where(currencyGroup => !otherLobbyConfigCurrencyGroups.Contains(currencyGroup.Id)),
                 GameIds = Enumeration.GetAll<Game>()
                 .Where(x => (byte)x.GameId != 0)
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = ((int)x.GameId).ToString() })
@@ -77,7 +74,6 @@ namespace GamesAdmin.Site.Features.Lobby
 
         public Task<bool> Update(LobbyModel lobbyModel)
         {
-            // return this.lobbyApi.Update(lobbyEntity);
             return this.lobbyApi.Update(lobbyModel);
         }
 
