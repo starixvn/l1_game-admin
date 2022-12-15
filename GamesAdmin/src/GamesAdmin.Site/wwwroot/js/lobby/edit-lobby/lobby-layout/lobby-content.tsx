@@ -33,6 +33,7 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     display: 'flex',
     padding: grid,
+    overflowX: 'auto'
 });
 
 const customStyles = {
@@ -73,7 +74,41 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
 
     console.log("lobbyCategory ", lobbyCategory);
 
-    let [editedGameSetting, setEditedGameSetting] = useState({ gameId: 5, bigSize: true, newTag: true });
+    const getAvailableGames = (editingId = null) => {
+        let result = [];
+        if (lobbyCategory && lobbyCategory.gameSettings) {
+            const filter = (gameId) => {
+                return editingId === +gameId.value || !lobbyCategory.gameSettings.map(game => game.gameId).includes(+gameId.value);
+            }
+
+            console.log("lobbyCategory.gameSettings ", lobbyCategory.gameSettings);
+            console.log("gameIds ", gameIds);
+
+            result = gameIds.filter(filter);
+            console.log("result ", result);
+        }
+
+        return result;
+    }
+
+    const getDefaultGameIdToAdd = () => {
+        const availableGameIds = getAvailableGames();
+        return availableGameIds.length > 0 ? +availableGameIds[0].value : 0;
+    }
+
+
+
+    let [availableGameIds, setAvailableGameIds] = useState(getAvailableGames());
+    let [editedGameSetting, setEditedGameSetting] = useState({ gameId: getDefaultGameIdToAdd(), bigSize: true, newTag: true });
+
+    const idEditing = () => {
+        let editing = false;
+        if (lobbyCategory && lobbyCategory.gameSettings) {
+            editing = lobbyCategory.gameSettings.map(game => game.gameId).includes(editedGameSetting.gameId);
+        }
+
+        return editing;
+    }
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -88,7 +123,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
 
     const closeModal = () => {
         setModalIsOpen(false);
-        setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+        //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
     }
 
     const onDragEnd = (result) => {
@@ -104,10 +139,12 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
         lobbyCategory.gameSettings = [...itemToSet];
         onChange(lobbyCategory);
 
-        setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+        //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
     }
 
     const addHandler = (e) => {
+        setAvailableGameIds(getAvailableGames());
+        setEditedGameSetting({ gameId: getDefaultGameIdToAdd(), bigSize: true, newTag: true });
         openModal();
     }
 
@@ -143,6 +180,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
     }
 
     const clickEditGameSetting = (e, gameSetting) => {
+        setAvailableGameIds(getAvailableGames(gameSetting.gameId));
         setEditedGameSetting(gameSetting);
         openModal();
     }
@@ -160,6 +198,11 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
     const getGameName = (id) => {
         return gameIds.find(gameId => gameId.value == id)?.text
     }
+
+    const cancel = () => {
+        closeModal();
+    }
+
 
     const RenderIcons = (props) => {
         const { item, index } = props;
@@ -219,9 +262,11 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
     const RenderData = () => <div style={{ border: `solid 1px gray`, padding: `10px` }} >
         <br />
 
-        <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
-            <RenderIcons item={item} index={index} key={index} />
-        ))}</div>
+        <div style={{ overflowX: "auto" }} >
+            <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
+                <RenderIcons item={item} index={index} key={index} />
+            ))}</div>
+        </div>
 
         <br />
 
@@ -255,7 +300,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
                         ))}
                         <div>
                             <span>
-                                <a href="#" onClick={(e) => addHandler(e)} >Add</a>
+                                {getAvailableGames().length > 0 && <a href="#" onClick={(e) => addHandler(e)} >Add</a>}
                             </span>
                         </div>
                         {provided.placeholder}
@@ -278,7 +323,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
                     <div className="col-4 bold pt-3">Game Id: </div>
                     <div className="col-8">
                         <select defaultValue={editedGameSetting.gameId} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
-                            {gameIds.map((gameId, index) => (
+                            {availableGameIds.map((gameId, index) => (
                                 <option key={index} value={gameId.value} >{gameId.text}</option>
                             )
                             )}
@@ -312,7 +357,8 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
             <br />
             <button onClick={saveGameSetting}>Save</button>
             &nbsp;&nbsp;
-            <button onClick={deleteGameSetting}>Remove</button>
+            {idEditing() && <button onClick={deleteGameSetting}>Remove</button>}
+            {!idEditing() && <button onClick={cancel}>Cancel</button>}
         </Modal>
     </div>;
 

@@ -100,6 +100,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
     }
 
     const addHandler = (e) => {
+        setEditedCategory({ name: {}, gameSettings: [] });
         openModal();
     }
 
@@ -128,6 +129,10 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
         }
         closeModal();
 
+    }
+
+    const cancel = () => {
+        closeModal();
     }
 
     return (
@@ -248,8 +253,9 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
 
                 <br />
                 <button onClick={saveCategory}>Save</button>
-                &nbsp;&nbsp;
-                <button onClick={removeCategory}>Remove</button>
+                &nbsp; &nbsp;
+                {editedCategory["index"] >= 0 && <button onClick={removeCategory}>Remove</button>}
+                {!(editedCategory["index"] >= 0) && < button onClick={cancel}>Cancel</button>}
             </Modal>
         </div>
     );
