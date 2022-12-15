@@ -91,9 +91,37 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => {
-    let [editedGameSetting, setEditedGameSetting] = useState({ index: -1, value: 1 });
+    const getAvailableGames = (editingId = null) => {
+        let result = [];
+        if (miniPanelGameIds) {
+            const filter = (gameId) => {
+                return editingId === +gameId.value || !miniPanelGameIds.includes(+gameId.value);
+            }
+
+            console.log("miniPanelGameIds ", miniPanelGameIds);
+            console.log("gameIds ", gameIds);
+
+            result = gameIds.filter(filter);
+            console.log("result ", result);
+        }
+
+        return result;
+    }
+
+    const getDefaultGameIdToAdd = () => {
+        const availableGameIds = getAvailableGames();
+        return availableGameIds.length > 0 ? +availableGameIds[0].value : 0;
+    }
+
+    let [availableGameIds, setAvailableGameIds] = useState(getAvailableGames());
+
+    let [editedGameSetting, setEditedGameSetting] = useState({ index: -1, value: getDefaultGameIdToAdd() });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const isEditing = () => {
+        return miniPanelGameIds.includes(editedGameSetting.value);
+    }
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -126,6 +154,8 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
     }
 
     const addHandler = (e) => {
+        setAvailableGameIds(getAvailableGames());
+        setEditedGameSetting({ index: -1, value: getDefaultGameIdToAdd() });
         openModal();
     }
 
@@ -165,14 +195,15 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
     const clickEditMiniPanel = (e, index) => {
         e.stopPropagation();
 
-        editedGameSetting = { index, value: miniPanelGameIds[index] };
-        setEditedGameSetting(editedGameSetting);
+        setAvailableGameIds(getAvailableGames(miniPanelGameIds[index]));
+        setEditedGameSetting({ index, value: miniPanelGameIds[index] });
         openModal();
     }
 
     const getGameName = (id) => {
         return gameIds.find(gameId => gameId.value == id)?.text
     }
+
 
     return (
         <div>
@@ -245,7 +276,7 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
                         <div className="col-4 bold pt-3">Game Id: </div>
                         <div className="col-8">
                             <select defaultValue={editedGameSetting.value} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
-                                {gameIds.map((gameId, index) => (
+                                {availableGameIds.map((gameId, index) => (
                                     <option key={index} value={gameId.value} >{gameId.text}</option>
                                 )
                                 )}
@@ -259,7 +290,8 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
                 <br />
                 <button onClick={saveGameSetting}>Save</button>
                 &nbsp;&nbsp;
-                <button onClick={deleteGame}>Remove</button>
+                {isEditing() && <button onClick={deleteGame}>Remove</button>}
+                {!isEditing() && <button onClick={closeModal}>Cancel</button>}
             </Modal>
         </div>
     );

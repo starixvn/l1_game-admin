@@ -131,10 +131,6 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
 
     }
 
-    const cancel = () => {
-        closeModal();
-    }
-
     return (
         <div>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -255,7 +251,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                 <button onClick={saveCategory}>Save</button>
                 &nbsp; &nbsp;
                 {editedCategory["index"] >= 0 && <button onClick={removeCategory}>Remove</button>}
-                {!(editedCategory["index"] >= 0) && < button onClick={cancel}>Cancel</button>}
+                {!(editedCategory["index"] >= 0) && < button onClick={closeModal}>Cancel</button>}
             </Modal>
         </div>
     );

@@ -199,11 +199,6 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
         return gameIds.find(gameId => gameId.value == id)?.text
     }
 
-    const cancel = () => {
-        closeModal();
-    }
-
-
     const RenderIcons = (props) => {
         const { item, index } = props;
         if (item.bigSize) {
@@ -358,7 +353,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
             <button onClick={saveGameSetting}>Save</button>
             &nbsp;&nbsp;
             {idEditing() && <button onClick={deleteGameSetting}>Remove</button>}
-            {!idEditing() && <button onClick={cancel}>Cancel</button>}
+            {!idEditing() && <button onClick={closeModal}>Cancel</button>}
         </Modal>
     </div>;
 
