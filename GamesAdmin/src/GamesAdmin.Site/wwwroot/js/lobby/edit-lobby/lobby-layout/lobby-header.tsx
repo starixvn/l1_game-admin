@@ -25,8 +25,9 @@ const grid = 8;
 const getItemStyle = (isDragging, draggableStyle, isEditing) => ({
     padding: grid * 2,
     margin: `0 ${grid}px 0 0`,
+    border: `1px solid #4dacee`,    
 
-    background: isEditing ? "yellow" : isDragging ? 'lightgreen' : 'grey',
+    background: isEditing ? "#afd7f3" : isDragging ? 'white' : 'white',
 
     ...draggableStyle,
 });
@@ -132,7 +133,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
     }
 
     return (
-        <div>
+        <>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable" direction="horizontal">
                     {(provided, snapshot) => (
@@ -153,20 +154,20 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                                                 provided.draggableProps.style,
                                                 editingIndex === index
                                             )}
+
                                             onClick={() => switchTab(index)}
                                         >
                                             <span>
                                                 <span>{item.eN_US}</span> &nbsp;
-                                                <a href="#" onClick={(e) => clickEditCategory(e, index)} >edit</a>
+                                                <a className="edit-button" href="#" onClick={(e) => clickEditCategory(e, index)} ><i className="icon-edit"></i></a>
                                             </span>
                                         </div>
                                     )}
                                 </Draggable>
                             ))}
-                            <div>
-                                <span>
-                                    <a href="#" onClick={(e) => addHandler(e)} >Add</a>
-                                </span>
+                            <div>                               
+                                <a className="add-button" href="#" onClick={(e) => addHandler(e)}>Add Category</a>
+                                
                             </div>
                             {provided.placeholder}
                         </div>
@@ -253,7 +254,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                 {editedCategory["index"] >= 0 && <button onClick={removeCategory}>Remove</button>}
                 {!(editedCategory["index"] >= 0) && < button onClick={closeModal}>Cancel</button>}
             </Modal>
-        </div>
+        </>
     );
 };
 

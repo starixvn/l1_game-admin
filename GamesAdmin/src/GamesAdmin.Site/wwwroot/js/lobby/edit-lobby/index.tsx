@@ -145,16 +145,21 @@ const EditLobby: React.FC = () => {
                     </div>                    
                 </div>               
             </form> 
-              
-            <LobbyLayout gameIds={gameIds} />            
+
+            <div className="card">
+                <div className="card-body">
+                <LobbyLayout gameIds={gameIds} />            
             
-            <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
+                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
             
-            <div>
-                <button onClick={saveLobbyConfig}>Save</button>
-                &nbsp;&nbsp;
-                <button onClick={cancelLobbyConfig}>Cancel</button>
+                <div className="btn-group">
+                    <button className="btn-submit" onClick={saveLobbyConfig}>Save</button>                   
+                    <button className="btn-gray" onClick={cancelLobbyConfig}>Cancel</button>
+                </div>
+                </div>
             </div>
+              
+            
                
             
         </LobbyConfigProvider >

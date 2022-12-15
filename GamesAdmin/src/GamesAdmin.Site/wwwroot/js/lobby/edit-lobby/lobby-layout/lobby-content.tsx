@@ -53,17 +53,14 @@ const getStyleNew = (isNew) => ({
 })
 
 const getGameIconStyle = (gameSetting) => ({
-    width: `80px`,
-    height: gameSetting.bigSize ? `160px` : `80px`,
-    border: `solid 1px`,
+    width: `100px`,
+    height: gameSetting.bigSize ? `205px` : `100px`,   
     display: `block`,
 
 })
 
 const getBlockStyle = () => ({
-    height: `160px`,
-    marginRight: `10px`,
-    display: 'table-cell'
+    height: `205px`,
 }
 )
 
@@ -203,14 +200,11 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
         const { item, index } = props;
         if (item.bigSize) {
             const gameSetting = getGameSettingById(item.ids[0]);
-            return <span style={getBlockStyle()} >
+            return <span className="icon-style" style={getBlockStyle()} >
                 <span style={getGameIconStyle(gameSetting)} key={index} >
                     <span>{gameSetting.gameId}</span>
-                    <span style={getStyleNew(gameSetting.newTag)} >[new]</span>
-                    <br />
-                    <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting)} >edit</a>
-                    &nbsp;
-                    &nbsp;
+                    <span className="tag-new" style={getStyleNew(gameSetting.newTag)} >[new]</span>                   
+                    <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting)}><i className="icon-edit"></i></a>                    
                 </span>
             </span>;
         }
@@ -220,33 +214,25 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
 
             if (gameSetting2) {
                 return <span style={getBlockStyle()} key={index}>
-                    <span style={getGameIconStyle(gameSetting1)} key={0} >
+                    <span className="icon-style" style={getGameIconStyle(gameSetting1)} key={0} >
                         <span>{getGameName(gameSetting1.gameId)}</span>
-                        <span style={getStyleNew(gameSetting1.newTag)} >[new]</span>
-                        <br />
-                        <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} >edit</a>
-                        &nbsp;
-                        &nbsp;
+                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)} >[new]</span>                     
+                        <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} ><i className="icon-edit"></i></a>                       
                     </span>
-                    <span style={getGameIconStyle(gameSetting2)} key={1} >
+
+                    <span className="icon-style icon-bottom" style={getGameIconStyle(gameSetting2)} key={1} >
                         <span>{getGameName(gameSetting2.gameId)}</span>
-                        <span style={getStyleNew(gameSetting2.newTag)} >[new]</span>
-                        <br />
-                        <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting2)} >edit</a>
-                        &nbsp;
-                        &nbsp;
+                        <span className="tag-new" style={getStyleNew(gameSetting2.newTag)} >[new]</span>                       
+                        <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting2)} ><i className="icon-edit"></i></a>                        
                     </span>
                 </span>
             }
             else {
                 return <span style={getBlockStyle()} key={index}>
-                    <span style={getGameIconStyle(gameSetting1)} key={0} >
+                    <span className="icon-style" style={getGameIconStyle(gameSetting1)} key={0} >
                         <span>{getGameName(gameSetting1.gameId)}</span>
-                        <span style={getStyleNew(gameSetting1.newTag)} >[new]</span>
-                        <br />
-                        <a href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} >edit</a>
-                        &nbsp;
-                        &nbsp;
+                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)} >[new]</span>                       
+                        <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} ><i className="icon-edit"></i></a>                       
                     </span>
                 </span>
             }
@@ -254,16 +240,16 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
     }
 
     const Empty = () => <div></div>;
-    const RenderData = () => <div style={{ border: `solid 1px gray`, padding: `10px` }} >
-        <br />
-
-        <div style={{ overflowX: "auto" }} >
-            <div style={{ display: "table" }} >{getListToRender().map((item, index) => (
-                <RenderIcons item={item} index={index} key={index} />
-            ))}</div>
-        </div>
-
-        <br />
+    const RenderData = () => <div className="layout-icon">  
+        <div className="preview-icon">           
+            <div><strong>Preview Layout</strong></div>
+            <div className="group-icon">
+                {getListToRender().map((item, index) => (
+                    <RenderIcons item={item} index={index} key={index} />
+                ))} 
+            </div>
+                      
+        </div>      
 
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable" direction="horizontal">
@@ -294,9 +280,8 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
                             </Draggable>
                         ))}
                         <div>
-                            <span>
-                                {getAvailableGames().length > 0 && <a href="#" onClick={(e) => addHandler(e)} >Add</a>}
-                            </span>
+                            {getAvailableGames().length > 0 && <a className="add-button" href="#" onClick={(e) => addHandler(e)}>Add Icon</a>}
+                           
                         </div>
                         {provided.placeholder}
                     </div>

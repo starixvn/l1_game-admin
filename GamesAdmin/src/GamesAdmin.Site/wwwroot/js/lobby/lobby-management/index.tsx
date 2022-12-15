@@ -124,6 +124,7 @@ const LobbyManagement: React.FC<Props> = () => {
                 &nbsp;&nbsp;
                 <button onClick={closeModal}>Cancel</button>
             </Modal>
+        </>
     );
 };
 

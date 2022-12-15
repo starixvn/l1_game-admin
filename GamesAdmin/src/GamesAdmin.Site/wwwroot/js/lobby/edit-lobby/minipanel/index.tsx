@@ -206,8 +206,8 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
 
 
     return (
-        <div>
-            <div className="bold">MiniPanel Layout</div>
+        <div className="lobby-panel">
+            <div className="title">MiniPanel Layout</div>
 
             <div style={getCircleStyle()} className="circle" >
                 {
