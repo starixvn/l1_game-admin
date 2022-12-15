@@ -295,5 +295,11 @@
       "wwwroot/lib/data-tables/datatables.min.css",
       "wwwroot/scss/pages/promotion-announcement.min.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/lobby-management.min.css",
+    "inputFiles": [      
+      "wwwroot/scss/pages/lobby-management.min.css"
+    ]
   }
 ]

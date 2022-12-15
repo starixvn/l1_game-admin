@@ -1,7 +1,5 @@
 import axios from 'axios';
 import React, { useState, useEffect } from "react";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { Link, useHistory } from "react-router-dom";
 import Modal from 'react-modal';
 
@@ -9,25 +7,6 @@ Modal.setAppElement('#root');
 
 
 type Props = {};
-
-const getHeaderStyle = () => ({
-    background: `gray`,
-    fontWeight: `bold`
-}
-)
-
-const getColStyle = () => ({
-    padding: `5px`,
-    border: `solid 1px gray`
-
-}
-)
-
-const getHeaderColStyle = () => ({
-    textAlign: `center`,
-    padding: `5px`,
-}
-)
 
 const customStyles = {
     content: {
@@ -88,7 +67,6 @@ const LobbyManagement: React.FC<Props> = () => {
         }
         closeModal();
     }
-
     const openConfirmPopup = (id) => {
         setIdToDelete(id);
         setModalIsOpen(true);
@@ -99,31 +77,31 @@ const LobbyManagement: React.FC<Props> = () => {
     }
 
     return (
-        <div className="container-fluid form">
-            <br />
-            <Link to="/lobby/add" style={{ marginLeft: `-14px` }} >Add New Lobby</Link>
-            <br />
-            <br />
+        <>           
+            <Link to="/lobby/add" style={{ marginLeft: `0` }} className="btn-add add-item">Add New Lobby</Link>          
 
-            <div>
-                <Row style={getHeaderStyle()} >
-                    <Col md="3" style={getHeaderColStyle()}>Name</Col>
-                    <Col md="6" style={getHeaderColStyle()}>Group Currency</Col>
-                    <Col md="3" style={getHeaderColStyle()}>Action</Col>
-                </Row>
+            <table className='table table-bordered has-background'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Group Currency</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {
-                    lobbyConfigs.map((lobbyConfig, index) => <Row key={index} >
-                        <Col md="3" style={getColStyle()} >{lobbyConfig.name}</Col>
-                        <Col md="6" style={getColStyle()}>{getCurrencyGroupNames(lobbyConfig.currencyGroupIds)}</Col>
-                        <Col md="3" style={{ ...getColStyle(), textAlign: `center` }}>
+                    lobbyConfigs.map((lobbyConfig, index) => <tr key={index} >
+                        <td>{lobbyConfig.name}</td>
+                        <td>{getCurrencyGroupNames(lobbyConfig.currencyGroupIds)}</td>
+                        <td>
                             <a href="#" onClick={() => editLobbyConfig(lobbyConfig.id)} >Edit</a>
                             &nbsp;
                             <a style={{ color: `red` }} href="#" onClick={() => openConfirmPopup(lobbyConfig.id)} >Delete</a>
-                        </Col>
-                    </Row>)
+                        </td>
+                    </tr>)
                 }
-
-            </div>
+                </tbody>
+            </table> 
 
             <Modal
                 isOpen={modalIsOpen}
@@ -146,7 +124,6 @@ const LobbyManagement: React.FC<Props> = () => {
                 &nbsp;&nbsp;
                 <button onClick={closeModal}>Cancel</button>
             </Modal>
-        </div>
     );
 };
 

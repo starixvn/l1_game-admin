@@ -127,10 +127,10 @@ const EditLobby: React.FC = () => {
 
     return (
         <LobbyConfigProvider value={{ lobbyConfig, onChangeCategories }} >
-            <div className="container-fluid form">
-                <div className="row">
-                    <div className="col-1 bold pt-3">Name </div>
-                    <div className="col-2">
+            <form className="form filter">
+                <div className="form-row align-items-center">
+                    <div className="col-auto">
+                        <label className="control-label">Name</label>
                         <FormControl
                             type="text"
                             value={name}
@@ -138,28 +138,25 @@ const EditLobby: React.FC = () => {
                             disabled={!isCreatePage}
                         />
                     </div>
-                </div>
-                <br />
-                <div className="row">
-                    <div className="col-1 bold pt-3">Groups</div>
-                    <div className="col-2">
-                        <select id="currency-groups"></select>
-                    </div>
-                </div>
-                <br />
-                <LobbyLayout gameIds={gameIds} />
-                <br />
-                <br />
-                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
-                <br />
-                <br />
-                <div>
-                    <button onClick={saveLobbyConfig}>Save</button>
-                    &nbsp;&nbsp;
-                    <button onClick={cancelLobbyConfig}>Cancel</button>
-                </div>
-                <br />
+
+                    <div className="col-auto">
+                        <label className="control-label">Group</label>
+                        <select className="form-control" id="currency-groups"></select>
+                    </div>                    
+                </div>               
+            </form> 
+              
+            <LobbyLayout gameIds={gameIds} />            
+            
+            <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
+            
+            <div>
+                <button onClick={saveLobbyConfig}>Save</button>
+                &nbsp;&nbsp;
+                <button onClick={cancelLobbyConfig}>Cancel</button>
             </div>
+               
+            
         </LobbyConfigProvider >
     );
 };

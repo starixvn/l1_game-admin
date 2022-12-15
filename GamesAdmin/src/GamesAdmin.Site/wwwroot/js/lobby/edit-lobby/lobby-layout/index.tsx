@@ -21,9 +21,9 @@ const LobbyLayout: React.FC<Props> = ({ gameIds }) => {
     }
 
     return (
-        <div>
-            <div className="bold">Lobby Layout</div>
-            <br />
+        <div className="lobby-panel">
+            <div className="title">Lobby Layout</div>
+         
             <LobbyHeader switchCategory={switchCategory} editingIndex={editingIndex} />
             <LobbyContent onChange={onChangeLobbyCategory} lobbyCategory={lobbyCategories[editingIndex]} gameIds={gameIds} />
         </div>

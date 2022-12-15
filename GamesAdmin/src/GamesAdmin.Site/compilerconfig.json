@@ -86,5 +86,9 @@
   {
     "outputFile": "wwwroot/scss/pages/promotion-announcement.css",
     "inputFile": "wwwroot/scss/pages/promotion-announcement.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/pages/lobby-management.css",
+    "inputFile": "wwwroot/scss/pages/lobby-management.scss"
   }
 ]
