@@ -15,6 +15,9 @@ namespace GamesAdmin.Site.Features.Lobby
             this.lobbyService = lobbyService;
         }
 
+        [Route("lobby")]
+        [Route("lobby/add")]
+        [Route("lobby/edit/{id}")]
         public IActionResult Index()
         {
             return View();
