@@ -21,11 +21,7 @@ const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => 
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-    padding: `3px`,
-    margin: `0 ${grid}px 0 0`,
-    fontSize: `8`,
-    width: `60px`,
-    background: isDragging ? 'lightgreen' : 'grey',
+    background: isDragging ? 'lightgreen' : '#f3f7fa',
     ...draggableStyle,
 });
 
@@ -48,14 +44,13 @@ const customStyles = {
 };
 
 const getStyleNew = (isNew) => ({
-    display: isNew ? `` : `none`,
-    color: `red`
+    display: isNew ? `` : `none`,    
 })
 
 const getGameIconStyle = (gameSetting) => ({
     width: `100px`,
     height: gameSetting.bigSize ? `205px` : `100px`,   
-    display: `block`,
+    display: `flex`,
 
 })
 
@@ -200,10 +195,12 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
         const { item, index } = props;
         if (item.bigSize) {
             const gameSetting = getGameSettingById(item.ids[0]);
-            return <span className="icon-style" style={getBlockStyle()} >
+            return <span className="lobby-icon" style={getBlockStyle()} >
                 <span style={getGameIconStyle(gameSetting)} key={index} >
-                    <span>{gameSetting.gameId}</span>
-                    <span className="tag-new" style={getStyleNew(gameSetting.newTag)} >[new]</span>                   
+                    <span className="game-name">{gameSetting.gameId}</span>
+                    <span className="tag-new" style={getStyleNew(gameSetting.newTag)}>
+                        <span className="tag-new-inner">New</span>
+                    </span>                   
                     <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting)}><i className="icon-edit"></i></a>                    
                 </span>
             </span>;
@@ -214,24 +211,30 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
 
             if (gameSetting2) {
                 return <span style={getBlockStyle()} key={index}>
-                    <span className="icon-style" style={getGameIconStyle(gameSetting1)} key={0} >
-                        <span>{getGameName(gameSetting1.gameId)}</span>
-                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)} >[new]</span>                     
+                    <span className="lobby-icon" style={getGameIconStyle(gameSetting1)} key={0} >
+                        <span className="game-name">{getGameName(gameSetting1.gameId)}</span>
+                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)} > 
+                            <span className="tag-new-inner">New</span>
+                        </span>                     
                         <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} ><i className="icon-edit"></i></a>                       
                     </span>
 
-                    <span className="icon-style icon-bottom" style={getGameIconStyle(gameSetting2)} key={1} >
-                        <span>{getGameName(gameSetting2.gameId)}</span>
-                        <span className="tag-new" style={getStyleNew(gameSetting2.newTag)} >[new]</span>                       
+                    <span className="lobby-icon bottom-icon" style={getGameIconStyle(gameSetting2)} key={1} >
+                        <span className="game-name">{getGameName(gameSetting2.gameId)}</span>
+                        <span className="tag-new" style={getStyleNew(gameSetting2.newTag)}>
+                            <span className="tag-new-inner">New</span>
+                        </span>                       
                         <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting2)} ><i className="icon-edit"></i></a>                        
                     </span>
                 </span>
             }
             else {
                 return <span style={getBlockStyle()} key={index}>
-                    <span className="icon-style" style={getGameIconStyle(gameSetting1)} key={0} >
-                        <span>{getGameName(gameSetting1.gameId)}</span>
-                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)} >[new]</span>                       
+                    <span className="lobby-icon" style={getGameIconStyle(gameSetting1)} key={0} >
+                        <span className="game-name">{getGameName(gameSetting1.gameId)}</span>
+                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)}>
+                            <span className="tag-new-inner">New</span>
+                        </span>                       
                         <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} ><i className="icon-edit"></i></a>                       
                     </span>
                 </span>
@@ -270,7 +273,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
                                             snapshot.isDragging,
                                             provided.draggableProps.style
                                         )}
-
+                                        className="droppable-icon"
                                     >
                                         <span>
                                             <span>{getGameName(item.gameId)}</span>

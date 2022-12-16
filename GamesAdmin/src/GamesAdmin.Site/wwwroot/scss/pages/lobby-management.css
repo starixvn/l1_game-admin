@@ -83,10 +83,62 @@
   display: flex;
   column-gap: 5px; }
 
-.icon-style {
+.lobby-icon {
+  position: relative;
   background-color: #f3f7fa;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid #dee2e6;
-  padding: 1rem; }
-  .icon-style.icon-bottom {
+  padding: 1rem;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem; }
+  .lobby-icon.bottom-icon {
     margin-top: 5px; }
+  .lobby-icon .edit-button {
+    margin-left: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0; }
+  .lobby-icon .game-name {
+    align-self: center;
+    text-align: center; }
+
+.tag-new {
+  position: absolute;
+  top: -2px;
+  bottom: auto;
+  right: -2px;
+  left: auto;
+  width: 100px;
+  height: 50px;
+  background-color: transparent;
+  overflow: hidden; }
+  .tag-new .tag-new-inner {
+    position: absolute;
+    display: inline-block;
+    height: 33px;
+    padding-right: 20px;
+    padding-left: 20px;
+    color: #fff;
+    white-space: nowrap;
+    width: 100%;
+    background-color: #ff9800;
+    right: -42px;
+    left: auto;
+    top: auto;
+    bottom: 23px;
+    transform: rotate(45deg);
+    text-align: center;
+    line-height: 49px; }
+
+.droppable-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100px;
+  height: 50px;
+  margin-right: 5px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6; }
