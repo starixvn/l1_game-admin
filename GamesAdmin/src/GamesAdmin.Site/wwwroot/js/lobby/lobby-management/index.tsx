@@ -80,7 +80,7 @@ const LobbyManagement: React.FC<Props> = () => {
         <>           
             <Link to="/lobby/add" style={{ marginLeft: `0` }} className="btn-add add-item">Add New Lobby</Link>          
 
-            <table className='table table-bordered has-background'>
+            <table className='table table-bordered has-background table-medium'>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -93,10 +93,9 @@ const LobbyManagement: React.FC<Props> = () => {
                     lobbyConfigs.map((lobbyConfig, index) => <tr key={index} >
                         <td>{lobbyConfig.name}</td>
                         <td>{getCurrencyGroupNames(lobbyConfig.currencyGroupIds)}</td>
-                        <td>
-                            <a href="#" onClick={() => editLobbyConfig(lobbyConfig.id)} >Edit</a>
-                            &nbsp;
-                            <a style={{ color: `red` }} href="#" onClick={() => openConfirmPopup(lobbyConfig.id)} >Delete</a>
+                        <td className='text-center'>
+                            <a className='btn btn-success btn-lg' href="#" onClick={() => editLobbyConfig(lobbyConfig.id)}>Edit</a>                           
+                            <a className='btn btn-danger btn-lg' href="#" onClick={() => openConfirmPopup(lobbyConfig.id)}>Delete</a>
                         </td>
                     </tr>)
                 }

@@ -22,37 +22,17 @@ const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => 
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    //userSelect: 'none',
-    padding: `3px`,
-    margin: `0 ${grid}px 0 0`,
-    fontSize: `8`,
-    width: `60px`,
-
-    // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
-
-    // styles we need to apply on draggables
+const getItemStyle = (isDragging, draggableStyle) => ({  
+    background: isDragging ? 'lightgreen' : '#f3f7fa',    
     ...draggableStyle,
 });
-
-const getCircleStyle = () => ({
-    // background: `#f00`,
-    width: `400px`,
-    height: `400px`,
-    borderRadius: `50%`,
-    border: `solid 1px gray`,
-    margin: `15px 0`,
-    position: 'relative'
-})
 
 const getItemInCircleStyle = (total, index) => {
     const delta = 360 / total;
     return {
-        transform: `rotate(${delta * index - 90}deg) translateX(150px)`,
+        transform: `rotate(${delta * index - 90}deg) translateX(170px)`,
         position: `absolute`,
-        marginTop: `-30px`,
+        marginTop: `-40px`,
         marginLeft: `-40px`
 
     }
@@ -61,12 +41,7 @@ const getItemInCircleStyle = (total, index) => {
 const getInnerItemInCircleStyle = (total, index) => {
     const delta = 360 / total;
     return {
-        transform: `rotate(${360 - delta * index + 90}deg)`,
-        width: `70px`,
-        height: `70px`,
-        display: `block`,
-        padding: `4px`,
-        border: `solid 1px gray`
+        transform: `rotate(${360 - delta * index + 90}deg)`,              
     }
 }
 
@@ -74,7 +49,6 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     display: 'flex',
     padding: grid,
-    //overflow: 'auto',
 });
 
 const customStyles = {
@@ -209,13 +183,14 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
         <div className="lobby-panel">
             <div className="title">MiniPanel Layout</div>
 
-            <div style={getCircleStyle()} className="circle" >
+            <div className="circle-layout" >
+                <div><strong>Preview Layout</strong></div>
                 {
                     miniPanelGameIds.map((item, index) => (
                         <div className="item" style={getItemInCircleStyle(miniPanelGameIds.length, index)} key={index} >
-                            <span style={getInnerItemInCircleStyle(miniPanelGameIds.length, index)} >
-                                <span>{getGameName(item)}</span> &nbsp;
-                                <a href="#" onClick={(e) => clickEditMiniPanel(e, index)} >edit</a>
+                            <span className="item-inner" style={getInnerItemInCircleStyle(miniPanelGameIds.length, index)} >
+                                <span>{getGameName(item)}</span>
+                                <a className="edit-button" href="#" onClick={(e) => clickEditMiniPanel(e, index)}><i className="icon-edit"></i></a>
                             </span>
                         </div>
                     ))
@@ -242,19 +217,15 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
                                                 snapshot.isDragging,
                                                 provided.draggableProps.style
                                             )}
-
+                                            className="droppable-icon"
                                         >
-                                            <span>
-                                                <span>{getGameName(item)}</span>
-                                            </span>
+                                            <span className="game-name">{getGameName(item)}</span>                                            
                                         </div>
                                     )}
                                 </Draggable>
                             ))}
                             <div>
-                                <span>
-                                    <a href="#" onClick={(e) => addHandler(e)} >Add</a>
-                                </span>
+                                <a className="add-button" href="#" onClick={(e) => addHandler(e)}>Add Icon</a>                               
                             </div>
                             {provided.placeholder}
                         </div>

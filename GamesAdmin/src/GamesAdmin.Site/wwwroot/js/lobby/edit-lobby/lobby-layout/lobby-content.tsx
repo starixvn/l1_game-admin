@@ -27,7 +27,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    display: 'flex',
+    display: 'block',
     padding: grid,
     overflowX: 'auto'
 });
@@ -275,9 +275,7 @@ const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => 
                                         )}
                                         className="droppable-icon"
                                     >
-                                        <span>
-                                            <span>{getGameName(item.gameId)}</span>
-                                        </span>
+                                        <span className="game-name">{getGameName(item.gameId)}</span>
                                     </div>
                                 )}
                             </Draggable>
