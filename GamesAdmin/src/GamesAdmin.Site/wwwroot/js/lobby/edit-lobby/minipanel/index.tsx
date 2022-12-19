@@ -53,12 +53,10 @@ const getListStyle = isDraggingOver => ({
 
 const customStyles = {
     content: {
-        top: '50%',
+        top: '40%',
         left: '50%',
         right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
+        bottom: 'auto',        
     },
 };
 
@@ -240,29 +238,28 @@ const MiniPanel: React.FC<Props> = ({ miniPanelGameIds, onChange, gameIds }) => 
                 style={customStyles}
                 contentLabel="Example Modal"
             >
-                <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Game</h2>
+                <h2 className="popup-title" ref={(_subtitle) => (subtitle = _subtitle)}>Game Icon
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </h2>
 
-                <form>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Game Id: </div>
-                        <div className="col-8">
-                            <select defaultValue={editedGameSetting.value} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
-                                {availableGameIds.map((gameId, index) => (
-                                    <option key={index} value={gameId.value} >{gameId.text}</option>
-                                )
-                                )}
-
-                            </select>
-                        </div>
+                <form className="popup-body form">
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="GameID">Game Id</label>
+                        <select className="form-control" defaultValue={editedGameSetting.value} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
+                            {availableGameIds.map((gameId, index) => (
+                                <option key={index} value={gameId.value} >{gameId.text}</option>
+                            )
+                            )}
+                        </select>
                     </div>
-
+                    <div className="form-group text-right">
+                        {isEditing() && <button className="btn-gray m-1" onClick={deleteGame}>Remove</button>}
+                        {!isEditing() && <button className="btn-gray m-1" onClick={closeModal}>Cancel</button>}
+                        <button className="btn-submit m-1" onClick={saveGameSetting}>Save</button>
+                    </div>
                 </form>
-
-                <br />
-                <button onClick={saveGameSetting}>Save</button>
-                &nbsp;&nbsp;
-                {isEditing() && <button onClick={deleteGame}>Remove</button>}
-                {!isEditing() && <button onClick={closeModal}>Cancel</button>}
             </Modal>
         </div>
     );

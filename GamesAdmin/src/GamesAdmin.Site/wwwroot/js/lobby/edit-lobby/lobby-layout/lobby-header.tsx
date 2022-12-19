@@ -41,12 +41,10 @@ const getListStyle = isDraggingOver => ({
 
 const customStyles = {
     content: {
-        top: '50%',
+        top: '40%',
         left: '50%',
         right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
+        bottom: 'auto',       
     },
 };
 
@@ -182,77 +180,75 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                 style={customStyles}
                 contentLabel="Example Modal"
             >
-                <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Category</h2>
+                <h2 className="popup-title" ref={(_subtitle) => (subtitle = _subtitle)}>
+                    Category
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </h2>
 
-                <form>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">English: </div>
-                        <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={editedCategory.name["eN_US"]}
-                                onChange={(e) => setCategoryName(e.target.value, "eN_US")}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Vietnamese: </div>
-                        <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={editedCategory.name["vI_VN"]}
-                                onChange={(e) => setCategoryName(e.target.value, "vI_VN")}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Thai: </div>
-                        <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={editedCategory.name["tH_TH"]}
-                                onChange={(e) => setCategoryName(e.target.value, "tH_TH")}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Indo: </div>
-                        <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={editedCategory.name["iD_ID"]}
-                                onChange={(e) => setCategoryName(e.target.value, "iD_ID")}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Chinese Simplified: </div>
-                        <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={editedCategory.name["zH_CN"]}
-                                onChange={(e) => setCategoryName(e.target.value, "zH_CN")}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4 bold pt-3">Chinese Classical: </div>
-                        <div className="col-8">
-                            <FormControl
-                                type="text"
-                                defaultValue={editedCategory.name["zH_TW"]}
-                                onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
-                            />
-                        </div>
+                <form className="popup-body form">
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="English">English</label>                        
+                        <FormControl
+                            type="text"
+                            defaultValue={editedCategory.name["eN_US"]}
+                            onChange={(e) => setCategoryName(e.target.value, "eN_US")}
+                            className="form-control"
+                        />
                     </div>
 
-                </form>
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="Vietnamese">Vietnamese</label>                        
+                        <FormControl
+                            type="text"
+                            defaultValue={editedCategory.name["vI_VN"]}
+                            onChange={(e) => setCategoryName(e.target.value, "vI_VN")}
+                        />
+                    </div> 
 
-                <br />
-                <button onClick={saveCategory}>Save</button>
-                &nbsp; &nbsp;
-                {editedCategory["index"] >= 0 && <button onClick={removeCategory}>Remove</button>}
-                {!(editedCategory["index"] >= 0) && < button onClick={closeModal}>Cancel</button>}
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="Thai">Thai</label>                        
+                        <FormControl
+                            type="text"
+                            defaultValue={editedCategory.name["tH_TH"]}
+                            onChange={(e) => setCategoryName(e.target.value, "tH_TH")}
+                        />
+                    </div>   
+
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="Indo">Indo</label>                        
+                        <FormControl
+                            type="text"
+                            defaultValue={editedCategory.name["iD_ID"]}
+                            onChange={(e) => setCategoryName(e.target.value, "iD_ID")}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="CN">Chinese Simplified</label>                        
+                        <FormControl
+                            type="text"
+                            defaultValue={editedCategory.name["zH_CN"]}
+                            onChange={(e) => setCategoryName(e.target.value, "zH_CN")}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="required-field-label" htmlFor="TW">Chinese Original</label>                        
+                        <FormControl
+                            type="text"
+                            defaultValue={editedCategory.name["zH_TW"]}
+                            onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
+                        />
+                    </div>  
+
+                    <div className="form-group text-right">                                     
+                        {editedCategory["index"] >= 0 && <button className="btn-gray m-1" onClick={removeCategory}>Remove</button>}
+                        {!(editedCategory["index"] >= 0) && < button className="btn-gray m-1" onClick={closeModal}>Cancel</button>}
+                        <button className="btn-submit m-1" onClick={saveCategory}>Save</button>   
+                    </div>
+                </form>    
             </Modal>
         </>
     );
