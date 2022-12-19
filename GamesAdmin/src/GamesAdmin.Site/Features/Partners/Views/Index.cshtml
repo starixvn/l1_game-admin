@@ -9,7 +9,7 @@
     <link href="~/css/partner.min.css" rel="stylesheet" asp-append-version="true" />
 }
 
-<div class="col-md-12 col-lg-12 p-0">
+<div class="col-md-12 col-lg-12">
     @if (Model.EditPermission)
     {
         <div class="row align-items-center list-actions">
@@ -37,6 +37,7 @@
                 <th>Saba.mobi URL</th>
                 <th>Mega Keno URL</th>
                 <th>Test Currency URL</th>
+                <th>Display Player Currency</th>
                 @if (Model.EditPermission)
                 {
                     <th></th>
@@ -84,6 +85,16 @@
                         <td>@firstRowData.MobiVersionUrl</td>
                         <td>@firstRowData.MegaKenoUrl</td>
                         <td>@firstRowData.TestCurrencyUrl</td>
+                        <td class="text-center">
+                            @if (firstRowData.IsDisplayPlayerCurrency)
+                            {
+                                <i class="icon-check"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-cancel"></i>
+                            }
+                        </td>
                         @if (Model.EditPermission)
                         {
                             <td class="text-center">
@@ -128,6 +139,16 @@
                         <td>@item.MobiVersionUrl</td>
                         <td>@item.MegaKenoUrl</td>
                         <td>@item.TestCurrencyUrl</td>
+                        <td class="text-center">
+                            @if (item.IsDisplayPlayerCurrency)
+                            {
+                                <i class="icon-check"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-cancel"></i>
+                            }
+                        </td>
                         @if (Model.EditPermission)
                         {
                             <td class="text-center">

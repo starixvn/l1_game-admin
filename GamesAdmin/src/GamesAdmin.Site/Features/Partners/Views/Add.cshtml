@@ -1,11 +1,10 @@
 ﻿@using GamesAdmin.Site.Features.Partners.ViewModels;
 @model AddViewModel;
 
-
 <div class="col-md-12 col-lg-12 card">
     @if (!string.IsNullOrWhiteSpace(Model?.ErrorMessage))
     {
-<div class="message-error"><i class="icon-cancel"></i> @Model.ErrorMessage</div>}
+        <div class="message-error"><i class="icon-cancel"></i> @Model.ErrorMessage</div>}
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
     <form class="card-body form-add form" data-ajax="true" data-ajax-success="partner.upsertResultHandle" asp-controller="Partner" asp-action="Add" method="post" id="addForm">
@@ -60,10 +59,14 @@
             <span asp-validation-for="TestCurrencyUrl" class="text-danger"></span>
         </div>
 
+        <div class="form-group">
+            <input type="checkbox" asp-for="IsDisplayPlayerCurrency" />
+            <label asp-for="IsDisplayPlayerCurrency" class="control-label"></label>
+        </div>
+
         <div class="form-group text-right">
             <button type="button" class="btn-gray m-1" data-dismiss="modal">Close</button>
             <input type="submit" id="submitBtn" value="Add" class="btn-submit m-1" />
         </div>
     </form>
 </div>
-

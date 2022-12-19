@@ -21,5 +21,7 @@ namespace GamesAdmin.Database.Entities
         public string MegaKenoUrl { get; set; }
 
         public string TestCurrencyUrl { get; set; }
+
+        public bool IsDisplayPlayerCurrency { get; set; }
     }
 }

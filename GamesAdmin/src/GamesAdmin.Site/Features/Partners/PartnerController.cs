@@ -48,7 +48,8 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.MobiVersionUrl,
                     addViewModel.MiniVersionUrl,
                     addViewModel.MegaKenoUrl,
-                    addViewModel.TestCurrencyUrl)));
+                    addViewModel.TestCurrencyUrl,
+                    addViewModel.IsDisplayPlayerCurrency)));
 
             return Json(addedResult);
         }
@@ -72,7 +73,8 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.MobiVersionUrl,
                    viewModel.MiniVersionUrl,
                    viewModel.MegaKenoUrl,
-                   viewModel.TestCurrencyUrl));
+                   viewModel.TestCurrencyUrl,
+                   viewModel.IsDisplayPlayerCurrency));
 
                 return Json(result);
             }
@@ -97,7 +99,6 @@ namespace GamesAdmin.Site.Features.Partners
         [Route("partner/super_players")]
         public async Task<IActionResult> GetSuperPlayers(string partnerId)
             => Json(await mediator.Send(new GetSuperPlayerRequest(partnerId)));
-
 
         [HttpPost, Audit]
         [Route("partner/site_exclusion")]

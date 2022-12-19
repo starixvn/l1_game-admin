@@ -121,8 +121,8 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.ClubVersionUrl, partner.ClubVersionUrl)
                     .Set(field => field.MiniVersionUrl, partner.MiniVersionUrl)
                     .Set(field => field.MegaKenoUrl, partner.MegaKenoUrl)
-                    .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl);
-
+                    .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl)
+                    .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency);
 
                 await partnerRepository.UpdateAsync(user => user.PartnerId == partner.PartnerId, update);
 
@@ -130,7 +130,6 @@ namespace GamesAdmin.Api.Partners
             }
 
             return false;
-
         }
 
         public async Task<Partner> GetById(string partnerId)

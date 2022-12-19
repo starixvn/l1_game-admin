@@ -23,13 +23,14 @@ namespace GamesAdmin.Api.Currencies.Handlers
             {
                 var model = request.Model;
                 var currency = await Repository.FindOneAsync(entity
-                    => string.Equals(entity.PartnerId, model.PartnerId) && string.Equals(entity.Name, model.Name));
+                    => string.Equals(entity.PartnerId, model.PartnerId) && entity.Name.ToUpper() == model.Name.ToUpper());
 
                 if (currency == null)
                 {
                     var entity = Mapper.Map<CurrencyEntity>(request.Model);
 
                     entity.IsUncountOnTotal = entity.IsTest && entity.IsUncountOnTotal;
+                    entity.Name = entity.Name.ToUpper();
 
                     await Repository.InsertOneAsync(entity);
                 }
