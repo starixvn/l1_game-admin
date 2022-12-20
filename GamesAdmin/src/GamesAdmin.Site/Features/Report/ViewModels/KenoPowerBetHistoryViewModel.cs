@@ -10,8 +10,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<KenoPowerBetHistoryRecordViewModel> Bets { get; set; }
 
         public Dictionary<string, decimal> Odds { get; set; }
-
-        public bool FractionalOddsFormat { get; set; }
     }
 
     public class KenoPowerBetHistoryRecordViewModel : BetHistoryRecordViewModel

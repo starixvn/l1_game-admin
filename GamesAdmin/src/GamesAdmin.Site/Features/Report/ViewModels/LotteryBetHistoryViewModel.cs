@@ -9,8 +9,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<LotteryBetHistoryRecordViewModel> Bets { get; set; }
 
         public LotteryOddsViewModel Odds { get; set; }
-
-        public bool FractionalOddsFormat { get; set; }
     }
 
     public class LotteryBetHistoryRecordViewModel : BetHistoryRecordViewModel

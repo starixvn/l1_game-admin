@@ -7,6 +7,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ConvertToUSD { get; set; }
 
         public int BaseCurrencyMultiplier { get; set; }
+
+        public bool FractionalOddsFormat { get; set; }
     }
 
     public class BetHistoryRecordViewModel

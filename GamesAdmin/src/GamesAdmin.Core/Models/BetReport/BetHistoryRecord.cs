@@ -4,7 +4,7 @@ namespace GamesAdmin.Core.Models.BetReport
 {
     public class BetHistory
     {
-
+        public bool FractionalOddsFormat { get; set; }
     }
 
     public class BetHistoryRecord

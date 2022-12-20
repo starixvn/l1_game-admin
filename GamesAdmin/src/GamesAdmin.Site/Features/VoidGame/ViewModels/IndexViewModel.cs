@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
                 .ToList();
         }
 
-        [DisplayName("Partner")]
+        [DisplayName("Operator")]
         [Required]
         public string PartnerId { get; set; }
 

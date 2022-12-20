@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 
         public IEnumerable<BotUserViewModel> Bots { get; set; }
 
-        [DisplayName("Partner")]
+        [DisplayName("Operator")]
         public IEnumerable<string> PartnerIds { get; set; }
 
         public IEnumerable<SelectListItem> PartnerItems { get; set; }

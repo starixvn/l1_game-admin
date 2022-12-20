@@ -18,31 +18,30 @@
             string[] betChoices = { "Even", "Odd", "Fan1", "Fan2", "Fan3", "Fan4", "Kwok12", "Kwok23", "Kwok34", "Kwok41", "Chun123", "Chun124", "Chun134", "Chun234" };
             var betChoiceMapper = BetOddsMapper.Map(Game.FanTan);
 
-            foreach(var choice in betChoices)
+            foreach (var choice in betChoices)
             {
-                
+
                 var betAmount = (decimal)Model.Bet.GetType().GetProperty(choice).GetValue(Model.Bet, null);
-                if(betAmount > 0)
+                if (betAmount > 0)
                 {
                     var displayName = betChoiceMapper.Single(x => x.Value == choice.ToLower()).DisplayName;
                     var isWin = (bool)Model.RoundResult.SettlementResult.GetType().GetProperty(choice).GetValue(Model.RoundResult.SettlementResult, null);
                     var betWin = isWin ? betAmount * Model.Bet.Odds[choice.ToLower()] : 0;
                     var winningCssClass = betWin > 0 ? "text-primary" : string.Empty;
 
-                
-                <tr>
-                    <td>
-                        @Model.Bet.Time.ToString(Constants.DateTimeFormat)
-                    </td>
-                    <td>@displayName</td>
-                    <td>@Model.Bet.Odds[choice.ToLower()]</td>
-                    <td class="text-center">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(betAmount) / Model.BaseCurrencyMultiplier : betAmount)
-                    </td>
-                    <td class="text-right @winningCssClass">
-                        @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(betWin) / Model.BaseCurrencyMultiplier : betWin)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Model.Bet.Time.ToString(Constants.DateTimeFormat)
+                        </td>
+                        <td>@displayName</td>
+                        <td>@(Model.FractionalOddsFormat ? Model.Bet.Odds[choice.ToLower()] - 1 : Model.Bet.Odds[choice.ToLower()])</td>
+                        <td class="text-center">
+                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(betAmount) / Model.BaseCurrencyMultiplier : betAmount)
+                        </td>
+                        <td class="text-right @winningCssClass">
+                            @HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(betWin) / Model.BaseCurrencyMultiplier : betWin)
+                        </td>
+                    </tr>
 
                 }
             }

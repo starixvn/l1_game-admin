@@ -8,8 +8,6 @@ namespace GamesAdmin.Core.Models.BetReport
         public KenoMatchRoundResult RoundResult { get; set; }
 
         public IEnumerable<KenoMatchBetHistoryRecord> Bets { get; set; }
-
-        public bool FractionalOddsFormat { get; set; }
     }
 
     public class KenoMatchBetHistoryRecord : BetHistoryRecord

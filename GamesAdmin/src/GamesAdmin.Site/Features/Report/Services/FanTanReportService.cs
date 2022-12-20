@@ -48,8 +48,9 @@ namespace GamesAdmin.Site.Features.Report
             {
                 RoundResult = mapper.Map<FanTanRoundResultViewModel>(result.RoundResult),
                 Bet = mapper.Map<FanTanBetHistoryRecordViewModel>(result.Bet),
+                FractionalOddsFormat = result.FractionalOddsFormat
             };
-        
+
             viewModel.Bet.Time = TimeZoneInfo.ConvertTimeFromUtc(viewModel.Bet.Time, appSettings.DefaultTimeZone);
 
             return viewModel;
