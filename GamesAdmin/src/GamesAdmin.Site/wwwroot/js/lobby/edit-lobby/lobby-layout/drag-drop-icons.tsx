@@ -11,8 +11,6 @@ export default class DragDropIconsMemo extends React.Component<any, any> {
   }
 
   render() {
-    console.log("DragDropIconsMemo render ");
-
     const getItemStyle = (isDragging, draggableStyle) => ({
       background: isDragging ? "lightgreen" : "#f3f7fa",
       ...draggableStyle,
@@ -33,6 +31,7 @@ export default class DragDropIconsMemo extends React.Component<any, any> {
       <DragDropContext
         onDragEnd={this.props.onDragEnd}
         onDragUpdate={this.props.onDragUpdate}
+        onDragStart={this.props.onDragStart}
       >
         <Droppable droppableId="droppable" direction="horizontal">
           {(provided, snapshot) => (

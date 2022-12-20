@@ -38,8 +38,6 @@ const LobbyContent: React.FC<Props> = ({
   onChange,
   gameIds,
 }) => {
-  console.log("lobbyCategory ", lobbyCategory);
-
   const getAvailableGames = (editingId = null) => {
     let result = [];
     if (lobbyCategory && lobbyCategory.gameSettings) {
@@ -70,6 +68,7 @@ const LobbyContent: React.FC<Props> = ({
     newTag: true,
   });
   let [reOrder, setReOrder] = useState({});
+  let [activeGameId, setActiveGameId] = useState(0);
 
   const idEditing = () => {
     let editing = false;
@@ -109,9 +108,15 @@ const LobbyContent: React.FC<Props> = ({
       result.destination.index
     );
     lobbyCategory.gameSettings = [...itemToSet];
+    setActiveGameId(0);
     onChange(lobbyCategory);
 
     //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+  };
+
+  const onDragStart = (result) => {
+    console.log("onDragStart ", result);
+    setActiveGameId(getActiveGameId(result.source.index));
   };
 
   const onDragUpdate = (result) => {
@@ -119,11 +124,15 @@ const LobbyContent: React.FC<Props> = ({
       return;
     }
 
+    setActiveGameId(getActiveGameId(result.source.index));
+
+    /*
     const itemToSet = reorder(
       lobbyCategory.gameSettings,
       result.source.index,
       result.destination.index
     );
+    */
     //lobbyCategory.gameSettings = [...itemToSet];
     //onChange(lobbyCategory);
 
@@ -135,8 +144,22 @@ const LobbyContent: React.FC<Props> = ({
       destinationIndex: result.destination.index,
     });
     */
+  };
 
-    console.log("update ", result.source.index, result.destination.index);
+  const getActiveGameId = (sourceIndex) => {
+    let result = 0;
+
+    if (lobbyCategory.gameSettings && lobbyCategory.gameSettings[sourceIndex]) {
+      result = lobbyCategory.gameSettings[sourceIndex].gameId;
+    }
+
+    console.log(
+      "sourceIndex ",
+      sourceIndex,
+      lobbyCategory.gameSettings[sourceIndex],
+      result
+    );
+    return result;
   };
 
   const addHandler = (e) => {
@@ -194,117 +217,7 @@ const LobbyContent: React.FC<Props> = ({
   };
 
   const onEdit = (gameId) => {
-    console.log("on Edit ", gameId);
     clickEditGameSetting(gameId);
-  };
-
-  const Empty = () => <div></div>;
-  const RenderData = () => {
-    console.log("RenderData ");
-
-    return (
-      <div className="layout-icon">
-        <LobbyPreview
-          gameSettings={lobbyCategory?.gameSettings}
-          gameIds={gameIds}
-          onEdit={onEdit}
-          reOrder={reOrder}
-        />
-        <DragDropIconsMemo
-          gameSettings={lobbyCategory.gameSettings}
-          onDragEnd={onDragEnd}
-          onDragUpdate={onDragUpdate}
-          gameIds={gameIds}
-          addHandler={addHandler}
-        />
-
-        <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <h2
-            className="popup-title"
-            ref={(_subtitle) => (subtitle = _subtitle)}
-          >
-            Game Icon
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              onClick={closeModal}
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </h2>
-
-          <form className="popup-body form">
-            <div className="form-group">
-              <label className="required-field-label" htmlFor="CN">
-                Game Id
-              </label>
-              <select
-                className="form-control"
-                defaultValue={editedGameSetting.gameId}
-                aria-label="Default select example"
-                onChange={(e) => setGameId(e.target.value)}
-              >
-                {availableGameIds.map((gameId, index) => (
-                  <option key={index} value={gameId.value}>
-                    {gameId.text}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="checkbox"
-                defaultChecked={editedGameSetting.bigSize}
-                onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
-                name="bigSize"
-                id="bigSize"
-              />
-              <label className="control-label" htmlFor="bigSize">
-                Big Size
-              </label>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="checkbox"
-                defaultChecked={editedGameSetting.newTag}
-                onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
-                name="newTag"
-                id="newTag"
-              />
-              <label className="control-label" htmlFor="newTag">
-                New Tag
-              </label>
-            </div>
-
-            <div className="form-group text-right">
-              {idEditing() && (
-                <button className="btn-gray m-1" onClick={deleteGameSetting}>
-                  Remove
-                </button>
-              )}
-              {!idEditing() && (
-                <button className="btn-gray m-1" onClick={closeModal}>
-                  Cancel
-                </button>
-              )}
-              <button className="btn-submit m-1" onClick={saveGameSetting}>
-                Save
-              </button>
-            </div>
-          </form>
-        </Modal>
-      </div>
-    );
   };
 
   //return <div>{lobbyCategory ? <RenderData /> : <Empty />}</div>;
@@ -316,6 +229,7 @@ const LobbyContent: React.FC<Props> = ({
           gameIds={gameIds}
           onEdit={onEdit}
           reOrder={reOrder}
+          activeGameId={activeGameId}
         />
         <DragDropIconsMemo
           gameSettings={lobbyCategory?.gameSettings}
@@ -323,6 +237,7 @@ const LobbyContent: React.FC<Props> = ({
           onDragUpdate={onDragUpdate}
           gameIds={gameIds}
           addHandler={addHandler}
+          onDragStart={onDragStart}
         />
 
         <Modal
