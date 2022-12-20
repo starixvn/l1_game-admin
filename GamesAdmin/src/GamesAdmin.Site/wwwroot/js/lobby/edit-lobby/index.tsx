@@ -119,7 +119,6 @@ const EditLobby: React.FC = () => {
     }
 
     const onChangeCategories = (categories) => {
-        console.log("onChangeCategories ", categories);
 
         lobbyConfig.categories = categories;
         setLobbyConfig({ ...lobbyConfig });
@@ -142,26 +141,26 @@ const EditLobby: React.FC = () => {
                     <div className="col-auto">
                         <label className="control-label">Group</label>
                         <select className="form-control" id="currency-groups"></select>
-                    </div>                    
-                </div>               
-            </form> 
+                    </div>
+                </div>
+            </form>
 
             <div className="card">
                 <div className="card-body">
-                <LobbyLayout gameIds={gameIds} />            
-            
-                <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
-            
-                <div className="btn-group">
-                    <button className="btn-submit" onClick={saveLobbyConfig}>Save</button>                   
-                    <button className="btn-gray" onClick={cancelLobbyConfig}>Cancel</button>
-                </div>
+                    <LobbyLayout gameIds={gameIds} />
+
+                    <MiniPanel miniPanelGameIds={miniPanelGameIds} onChange={onChangeMiniPanel} gameIds={gameIds} />
+
+                    <div className="btn-group">
+                        <button className="btn-submit" onClick={saveLobbyConfig}>Save</button>
+                        <button className="btn-gray" onClick={cancelLobbyConfig}>Cancel</button>
+                    </div>
                 </div>
             </div>
-              
-            
-               
-            
+
+
+
+
         </LobbyConfigProvider >
     );
 };

@@ -1,356 +1,385 @@
-import React, { useState, } from "react";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Modal from 'react-modal';
-import LobbyMenu from "./lobby-menu";
+import React, { useState } from "react";
+import Modal from "react-modal";
+import DragDropIconsMemo from "./drag-drop-icons";
+import LobbyPreview from "./lobby-preview";
 
 type Props = {};
 
 type GameCategory = {
-    id: string,
-    content: string
-}
-
-const reorder = (list: GameCategory[], startIndex, endIndex): GameCategory[] => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
+  id: string;
+  content: string;
 };
 
-const grid = 8;
+const reorder = (
+  list: GameCategory[],
+  startIndex,
+  endIndex
+): GameCategory[] => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-    background: isDragging ? 'lightgreen' : '#f3f7fa',
-    ...draggableStyle,
-});
-
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    display: 'block',
-    padding: grid,
-    overflowX: 'auto'
-});
+  return result;
+};
 
 const customStyles = {
-    content: {
-        top: '40%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-    },
+  content: {
+    top: "40%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+  },
 };
 
-const getStyleNew = (isNew) => ({
-    display: isNew ? `` : `none`,    
-})
+Modal.setAppElement("#root");
 
-const getGameIconStyle = (gameSetting) => ({
-    width: `100px`,
-    height: gameSetting.bigSize ? `205px` : `100px`,   
-    display: `flex`,
+const LobbyContent: React.FC<Props> = ({
+  lobbyCategory,
+  onChange,
+  gameIds,
+}) => {
+  console.log("lobbyCategory ", lobbyCategory);
 
-})
-
-const getBlockStyle = () => ({
-    height: `205px`,
-}
-)
-
-
-Modal.setAppElement('#root');
-
-const LobbyContent: React.FC<Props> = ({ lobbyCategory, onChange, gameIds }) => {
-
-    console.log("lobbyCategory ", lobbyCategory);
-
-    const getAvailableGames = (editingId = null) => {
-        let result = [];
-        if (lobbyCategory && lobbyCategory.gameSettings) {
-            const filter = (gameId) => {
-                return editingId === +gameId.value || !lobbyCategory.gameSettings.map(game => game.gameId).includes(+gameId.value);
-            }
-
-            console.log("lobbyCategory.gameSettings ", lobbyCategory.gameSettings);
-            console.log("gameIds ", gameIds);
-
-            result = gameIds.filter(filter);
-            console.log("result ", result);
-        }
-
-        return result;
-    }
-
-    const getDefaultGameIdToAdd = () => {
-        const availableGameIds = getAvailableGames();
-        return availableGameIds.length > 0 ? +availableGameIds[0].value : 0;
-    }
-
-
-
-    let [availableGameIds, setAvailableGameIds] = useState(getAvailableGames());
-    let [editedGameSetting, setEditedGameSetting] = useState({ gameId: getDefaultGameIdToAdd(), bigSize: true, newTag: true });
-
-    const idEditing = () => {
-        let editing = false;
-        if (lobbyCategory && lobbyCategory.gameSettings) {
-            editing = lobbyCategory.gameSettings.map(game => game.gameId).includes(editedGameSetting.gameId);
-        }
-
-        return editing;
-    }
-
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-
-    const openModal = () => {
-        setModalIsOpen(true);
-    }
-
-    let subtitle;
-    const afterOpenModal = () => {
-        subtitle.style.color = '#f00';
-    }
-
-    const closeModal = () => {
-        setModalIsOpen(false);
-        //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
-    }
-
-    const onDragEnd = (result) => {
-        if (!result.destination) {
-            return;
-        }
-
-        const itemToSet = reorder(
-            lobbyCategory.gameSettings,
-            result.source.index,
-            result.destination.index
+  const getAvailableGames = (editingId = null) => {
+    let result = [];
+    if (lobbyCategory && lobbyCategory.gameSettings) {
+      const filter = (gameId) => {
+        return (
+          editingId === +gameId.value ||
+          !lobbyCategory.gameSettings
+            .map((game) => game.gameId)
+            .includes(+gameId.value)
         );
-        lobbyCategory.gameSettings = [...itemToSet];
-        onChange(lobbyCategory);
+      };
 
-        //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+      result = gameIds.filter(filter);
     }
 
-    const addHandler = (e) => {
-        setAvailableGameIds(getAvailableGames());
-        setEditedGameSetting({ gameId: getDefaultGameIdToAdd(), bigSize: true, newTag: true });
-        openModal();
+    return result;
+  };
+
+  const getDefaultGameIdToAdd = () => {
+    const availableGameIds = getAvailableGames();
+    return availableGameIds.length > 0 ? +availableGameIds[0].value : 0;
+  };
+
+  let [availableGameIds, setAvailableGameIds] = useState(getAvailableGames());
+  let [editedGameSetting, setEditedGameSetting] = useState({
+    gameId: getDefaultGameIdToAdd(),
+    bigSize: true,
+    newTag: true,
+  });
+  let [reOrder, setReOrder] = useState({});
+
+  const idEditing = () => {
+    let editing = false;
+    if (lobbyCategory && lobbyCategory.gameSettings) {
+      editing = lobbyCategory.gameSettings
+        .map((game) => game.gameId)
+        .includes(editedGameSetting.gameId);
     }
 
-    const saveGameSetting = () => {
-        const existing = lobbyCategory.gameSettings.find(s => s.gameId === editedGameSetting.gameId);
-        if (!existing) {
-            lobbyCategory.gameSettings.push(editedGameSetting);
-        }
-        onChange(lobbyCategory);
-        closeModal();
+    return editing;
+  };
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  let subtitle;
+  const afterOpenModal = () => {
+    subtitle.style.color = "#f00";
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+  };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
     }
 
-    const deleteGameSetting = () => {
-        const index = lobbyCategory.gameSettings.findIndex(s => s.gameId === editedGameSetting.gameId);
-        if (index >= 0) {
-            lobbyCategory.gameSettings.splice(index, 1);
-            onChange(lobbyCategory);
-        }
-        closeModal();
+    const itemToSet = reorder(
+      lobbyCategory.gameSettings,
+      result.source.index,
+      result.destination.index
+    );
+    lobbyCategory.gameSettings = [...itemToSet];
+    onChange(lobbyCategory);
+
+    //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
+  };
+
+  const onDragUpdate = (result) => {
+    if (!result.destination) {
+      return;
     }
 
-    const setGameId = (value) => {
-        const existing = lobbyCategory.gameSettings.find(s => s.gameId == value);
-        if (!existing) {
-            editedGameSetting.gameId = +value;
-            setEditedGameSetting(editedGameSetting);
-        }
+    const itemToSet = reorder(
+      lobbyCategory.gameSettings,
+      result.source.index,
+      result.destination.index
+    );
+    //lobbyCategory.gameSettings = [...itemToSet];
+    //onChange(lobbyCategory);
+
+    setReOrder(result);
+
+    /*
+    {
+      sourceIndex: result.source.index,
+      destinationIndex: result.destination.index,
+    });
+    */
+
+    console.log("update ", result.source.index, result.destination.index);
+  };
+
+  const addHandler = (e) => {
+    setAvailableGameIds(getAvailableGames());
+    setEditedGameSetting({
+      gameId: getDefaultGameIdToAdd(),
+      bigSize: true,
+      newTag: true,
+    });
+    openModal();
+  };
+
+  const saveGameSetting = () => {
+    const existing = lobbyCategory.gameSettings.find(
+      (s) => s.gameId === editedGameSetting.gameId
+    );
+    if (!existing) {
+      lobbyCategory.gameSettings.push(editedGameSetting);
     }
+    onChange(lobbyCategory);
+    closeModal();
+  };
 
-    const setBooleanValue = (value, name) => {
-        editedGameSetting[name] = value;
-        setEditedGameSetting(editedGameSetting);
+  const deleteGameSetting = () => {
+    const index = lobbyCategory.gameSettings.findIndex(
+      (s) => s.gameId === editedGameSetting.gameId
+    );
+    if (index >= 0) {
+      lobbyCategory.gameSettings.splice(index, 1);
+      onChange(lobbyCategory);
     }
+    closeModal();
+  };
 
-    const clickEditGameSetting = (e, gameSetting) => {
-        setAvailableGameIds(getAvailableGames(gameSetting.gameId));
-        setEditedGameSetting(gameSetting);
-        openModal();
+  const setGameId = (value) => {
+    const existing = lobbyCategory.gameSettings.find((s) => s.gameId == value);
+    if (!existing) {
+      editedGameSetting.gameId = +value;
+      setEditedGameSetting(editedGameSetting);
     }
+  };
 
-    const getListToRender = () => {
-        console.log("getListToRender ", lobbyCategory);
-        const lobbyMenu = new LobbyMenu(lobbyCategory.gameSettings);
-        return lobbyMenu.getListToRender();
-    }
+  const setBooleanValue = (value, name) => {
+    editedGameSetting[name] = value;
+    setEditedGameSetting(editedGameSetting);
+  };
 
-    const getGameSettingById = (id) => {
-        return lobbyCategory.gameSettings.find(gameSetting => gameSetting.gameId === id);
-    }
+  const clickEditGameSetting = (gameId) => {
+    const gameSetting = lobbyCategory.gameSettings.find(
+      (gameSetting) => gameSetting.gameId == gameId
+    );
+    setAvailableGameIds(getAvailableGames(gameSetting.gameId));
+    setEditedGameSetting(gameSetting);
+    openModal();
+  };
 
-    const getGameName = (id) => {
-        return gameIds.find(gameId => gameId.value == id)?.text
-    }
+  const onEdit = (gameId) => {
+    console.log("on Edit ", gameId);
+    clickEditGameSetting(gameId);
+  };
 
-    const RenderIcons = (props) => {
-        const { item, index } = props;
-        if (item.bigSize) {
-            const gameSetting = getGameSettingById(item.ids[0]);
-            return <span className="lobby-icon" style={getBlockStyle()} >
-                <span style={getGameIconStyle(gameSetting)} key={index} >
-                    <span className="game-name">{gameSetting.gameId}</span>
-                    <span className="tag-new" style={getStyleNew(gameSetting.newTag)}>
-                        <span className="tag-new-inner">New</span>
-                    </span>                   
-                    <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting)}><i className="icon-edit"></i></a>                    
-                </span>
-            </span>;
-        }
-        else {
-            const gameSetting1 = getGameSettingById(item.ids[0]);
-            const gameSetting2 = getGameSettingById(item.ids[1]);
-
-            if (gameSetting2) {
-                return <span style={getBlockStyle()} key={index}>
-                    <span className="lobby-icon" style={getGameIconStyle(gameSetting1)} key={0} >
-                        <span className="game-name">{getGameName(gameSetting1.gameId)}</span>
-                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)} > 
-                            <span className="tag-new-inner">New</span>
-                        </span>                     
-                        <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} ><i className="icon-edit"></i></a>                       
-                    </span>
-
-                    <span className="lobby-icon bottom-icon" style={getGameIconStyle(gameSetting2)} key={1} >
-                        <span className="game-name">{getGameName(gameSetting2.gameId)}</span>
-                        <span className="tag-new" style={getStyleNew(gameSetting2.newTag)}>
-                            <span className="tag-new-inner">New</span>
-                        </span>                       
-                        <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting2)} ><i className="icon-edit"></i></a>                        
-                    </span>
-                </span>
-            }
-            else {
-                return <span style={getBlockStyle()} key={index}>
-                    <span className="lobby-icon" style={getGameIconStyle(gameSetting1)} key={0} >
-                        <span className="game-name">{getGameName(gameSetting1.gameId)}</span>
-                        <span className="tag-new" style={getStyleNew(gameSetting1.newTag)}>
-                            <span className="tag-new-inner">New</span>
-                        </span>                       
-                        <a className="edit-button" href="#" onClick={(e) => clickEditGameSetting(e, gameSetting1)} ><i className="icon-edit"></i></a>                       
-                    </span>
-                </span>
-            }
-        }
-    }
-
-    const Empty = () => <div></div>;
-    const RenderData = () => <div className="layout-icon">  
-        <div className="preview-icon">           
-            <div><strong>Preview Layout</strong></div>
-            <div className="group-icon">
-                {getListToRender().map((item, index) => (
-                    <RenderIcons item={item} index={index} key={index} />
-                ))} 
-            </div>
-                      
-        </div>      
-
-        <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable" direction="horizontal">
-                {(provided, snapshot) => (
-                    <div
-                        ref={provided.innerRef}
-                        style={getListStyle(snapshot.isDraggingOver)}
-                        {...provided.droppableProps}
-                    >
-                        {lobbyCategory.gameSettings.map((item, index) => (
-                            <Draggable key={item.gameId.toString()} draggableId={item.gameId.toString()} index={index}>
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style
-                                        )}
-                                        className="droppable-icon"
-                                    >
-                                        <span className="game-name">{getGameName(item.gameId)}</span>
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        <div>
-                            {getAvailableGames().length > 0 && <a className="add-button" href="#" onClick={(e) => addHandler(e)}>Add Icon</a>}
-                           
-                        </div>
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
-
-        <Modal
-            isOpen={modalIsOpen}
-            onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-        >
-            <h2 className="popup-title" ref={(_subtitle) => (subtitle = _subtitle)}>Game Icon
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
-                    <span aria-hidden="true">×</span>
-                </button>
-            </h2>
-
-            <form className="popup-body form">
-                <div className="form-group">
-                    <label className="required-field-label" htmlFor="CN">Game Id</label>
-                    <select className="form-control" defaultValue={editedGameSetting.gameId} aria-label="Default select example" onChange={(e) => setGameId(e.target.value)}>
-                            {availableGameIds.map((gameId, index) => (
-                                <option key={index} value={gameId.value} >{gameId.text}</option>
-                            )
-                            )}
-
-                    </select>
-                </div>
-
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                        defaultChecked={editedGameSetting.bigSize}
-                        onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
-                        name="bigSize"
-                        id="bigSize"
-                    />
-                    <label className="control-label" htmlFor="bigSize">Big Size</label>
-                </div>
-
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                        defaultChecked={editedGameSetting.newTag}
-                        onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
-                        name="newTag"
-                        id="newTag"
-                    />
-                    <label className="control-label" htmlFor="newTag">New Tag</label>
-                </div>  
-
-                <div className="form-group text-right">
-                    {idEditing() && <button className="btn-gray m-1" onClick={deleteGameSetting}>Remove</button>}
-                    {!idEditing() && <button className="btn-gray m-1" onClick={closeModal}>Cancel</button>}
-                    <button className="btn-submit m-1" onClick={saveGameSetting}>Save</button>
-                </div>
-
-            </form>            
-        </Modal>
-    </div>;
+  const Empty = () => <div></div>;
+  const RenderData = () => {
+    console.log("RenderData ");
 
     return (
-        <div>
-            {lobbyCategory ? <RenderData /> : <Empty />}
+      <div className="layout-icon">
+        <LobbyPreview
+          gameSettings={lobbyCategory?.gameSettings}
+          gameIds={gameIds}
+          onEdit={onEdit}
+          reOrder={reOrder}
+        />
+        <DragDropIconsMemo
+          gameSettings={lobbyCategory.gameSettings}
+          onDragEnd={onDragEnd}
+          onDragUpdate={onDragUpdate}
+          gameIds={gameIds}
+          addHandler={addHandler}
+        />
 
-        </div>
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <h2
+            className="popup-title"
+            ref={(_subtitle) => (subtitle = _subtitle)}
+          >
+            Game Icon
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={closeModal}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </h2>
+
+          <form className="popup-body form">
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="CN">
+                Game Id
+              </label>
+              <select
+                className="form-control"
+                defaultValue={editedGameSetting.gameId}
+                aria-label="Default select example"
+                onChange={(e) => setGameId(e.target.value)}
+              >
+                {availableGameIds.map((gameId, index) => (
+                  <option key={index} value={gameId.value}>
+                    {gameId.text}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <input
+                type="checkbox"
+                defaultChecked={editedGameSetting.bigSize}
+                onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
+                name="bigSize"
+                id="bigSize"
+              />
+              <label className="control-label" htmlFor="bigSize">
+                Big Size
+              </label>
+            </div>
+
+            <div className="form-group">
+              <input
+                type="checkbox"
+                defaultChecked={editedGameSetting.newTag}
+                onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
+                name="newTag"
+                id="newTag"
+              />
+              <label className="control-label" htmlFor="newTag">
+                New Tag
+              </label>
+            </div>
+
+            <div className="form-group text-right">
+              {idEditing() && (
+                <button className="btn-gray m-1" onClick={deleteGameSetting}>
+                  Remove
+                </button>
+              )}
+              {!idEditing() && (
+                <button className="btn-gray m-1" onClick={closeModal}>
+                  Cancel
+                </button>
+              )}
+              <button className="btn-submit m-1" onClick={saveGameSetting}>
+                Save
+              </button>
+            </div>
+          </form>
+        </Modal>
+      </div>
     );
+  };
+
+  //return <div>{lobbyCategory ? <RenderData /> : <Empty />}</div>;
+  return (
+    <div>
+      <div className="layout-icon">
+        <LobbyPreview
+          gameSettings={lobbyCategory?.gameSettings}
+          gameIds={gameIds}
+          onEdit={onEdit}
+          reOrder={reOrder}
+        />
+        <DragDropIconsMemo
+          gameSettings={lobbyCategory?.gameSettings}
+          onDragEnd={onDragEnd}
+          onDragUpdate={onDragUpdate}
+          gameIds={gameIds}
+          addHandler={addHandler}
+        />
+
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Game</h2>
+          <form>
+            <div className="row">
+              <div className="col-4 bold pt-3">Game Id: </div>
+              <div className="col-8">
+                <select
+                  defaultValue={editedGameSetting.gameId}
+                  aria-label="Default select example"
+                  onChange={(e) => setGameId(e.target.value)}
+                >
+                  {availableGameIds.map((gameId, index) => (
+                    <option key={index} value={gameId.value}>
+                      {gameId.text}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-4">
+                <input
+                  type="checkbox"
+                  defaultChecked={editedGameSetting.bigSize}
+                  onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
+                />
+              </div>
+              <div className="col-8 bold pt-3">Big Size </div>
+            </div>
+            <div className="row">
+              <div className="col-4">
+                <input
+                  type="checkbox"
+                  defaultChecked={editedGameSetting.newTag}
+                  onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
+                />
+              </div>
+              <div className="col-8 bold pt-3">New Tag </div>
+            </div>
+          </form>
+          <br />
+          <button onClick={saveGameSetting}>Save</button>
+          &nbsp;&nbsp;
+          {idEditing() && <button onClick={deleteGameSetting}>Remove</button>}
+          {!idEditing() && <button onClick={closeModal}>Cancel</button>}
+        </Modal>
+      </div>
+    </div>
+  );
 };
 
 export default LobbyContent;
