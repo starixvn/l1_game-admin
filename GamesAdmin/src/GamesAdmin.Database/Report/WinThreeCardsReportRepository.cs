@@ -12,8 +12,9 @@ namespace GamesAdmin.Database
     {
         Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetReportEntity>)> GetRecordAsync(BetReportFilter filter);
 
-        Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter);
+        Task<(WinThreeCardsRoundEntity, WinThreeCardsBetEntity, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter);
     }
+
     public class WinThreeCardsReportRepository : BaseBetReportRepository, IWinThreeCardsReportRepository
     {
         public WinThreeCardsReportRepository(IMongoDatabase database) : base(database)
@@ -33,12 +34,13 @@ namespace GamesAdmin.Database
                     {
                         Time = x.Time,
                         Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
+                        UserId = x.Uid,
                         Nickname = x.AccountInfos.Name,
                         BetWin = x.Betwin,
-                        TotalBet = x.Dragon + x.Phoenix + x.ThreeKind + x.StraightFlush + x.FLush + x.Pair8Plus + x.Straight,
+                        TotalBet = x.Dragon + x.Phoenix + x.ThreeKind + x.StraightFlush + x.Flush + x.Pair8Plus + x.Straight,
                         Currency = x.Currency,
                         Rate = x.Rate,
-                        PartnerId = x.OperatorId
+                        OperatorId = x.OperatorId,
                     });
                 var records = await project.ToListAsync();
 
@@ -48,16 +50,15 @@ namespace GamesAdmin.Database
             return (new WinThreeCardsRoundEntity(), Enumerable.Empty<WinThreeCardsBetReportEntity>());
         }
 
-        public async Task<(WinThreeCardsRoundEntity, IEnumerable<WinThreeCardsBetEntity>, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter)
+        public async Task<(WinThreeCardsRoundEntity, WinThreeCardsBetEntity, Dictionary<string, decimal> Odds)> GetBetHistoryAsync(BetHistoryFilter filter)
         {
             var roundCollection = database.GetCollection<WinThreeCardsRoundEntity>(Document.GetCollectionName(typeof(WinThreeCardsRoundEntity)));
             var roundResult = await roundCollection.Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
-          
+
             var betCollection = database.GetCollection<WinThreeCardsBetEntity>(Document.GetCollectionName(typeof(WinThreeCardsBetEntity)));
-            var bets = await betCollection.Find(x => x.Round == filter.RoundId && x.Uid == filter.UserId && x.OperatorId == filter.PartnerId).SortByDescending(x => x.Id).ToListAsync();
             var bet = await betCollection.Find(x => x.Round == filter.RoundId && x.Uid == filter.UserId && x.OperatorId == filter.PartnerId).FirstOrDefaultAsync();
 
-            return (roundResult, bets, bet.Odds);
+            return (roundResult, bet, bet.Odds);
         }
     }
 }

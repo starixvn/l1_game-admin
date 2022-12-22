@@ -7,27 +7,28 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("winthreecards_rounds")]
     public class WinThreeCardsRoundEntity : BaseRoundEntity
     {
-        public WinThreeCardsResult Result { get; set; }
+        public WinThreeCardsResultEntity Result { get; set; }
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
 
-    public class WinThreeCardsResult
+    public class WinThreeCardsResultEntity
     {
+        public WinThreeCardsHandResultEntity Dragon { get; set; }
 
-        public WinThreeCardsHandResult Dragon { get; set; }
-
-        public WinThreeCardsHandResult Phoenix { get; set; }
+        public WinThreeCardsHandResultEntity Phoenix { get; set; }
     }
 
-    public class WinThreeCardsHandResult
+    public class WinThreeCardsHandResultEntity
     {
-        public WinThreeCardsHand Cards { get; set; }
+        public WinThreeCardsHandEntity Cards { get; set; }
 
         public int HandRankId { get; set; }
+
+        public int CardRankId { get; set; }
     }
 
-    public class WinThreeCardsHand
+    public class WinThreeCardsHandEntity
     {
         [BsonElement("card1")]
         public WinThreeCardsCardEntity FirstCard { get; set; }
@@ -41,10 +42,8 @@ namespace GamesAdmin.Database.Entities
 
     public class WinThreeCardsCardEntity
     {
-        [BsonElement("rank")]
-        public byte Number { get; set; }
+        public byte Rank { get; set; }
 
-        [BsonElement("suit")]
-        public byte Type { get; set; }
+        public byte Suit { get; set; }
     }
 }

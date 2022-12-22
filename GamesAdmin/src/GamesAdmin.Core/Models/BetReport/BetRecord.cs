@@ -450,7 +450,7 @@ namespace GamesAdmin.Core.Models
     {
         public decimal TotalAmount { get; set; }
     }
-    
+
     public class FanTanBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }
@@ -458,6 +458,13 @@ namespace GamesAdmin.Core.Models
     
     public class WinThreeCardsBetRecord : BetRecord
     {
+        public decimal Dragon { get; set; }
+        public decimal Phoenix { get; set; }
+        public decimal Pair8Plus { get; set; }
+        public decimal Straight { get; set; }
+        public decimal Flush { get; set; }
+        public decimal StraightFlush { get; set; }
+        public decimal ThreeKind { get; set; }
         public decimal TotalBet { get; set; }
     }
 }

@@ -14,7 +14,6 @@
     <Content Remove="appsettings.Dev.json" />
     <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
-    <Content Remove="Features\Report\Views\_WinThreeCardsBetHistory.cshtml" />
     <Content Remove="wwwroot\js\hilo-report.min.js" />
     <Content Remove="wwwroot\images\slot-icons\nightclub\" />
   </ItemGroup>
@@ -76,7 +75,6 @@
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\game-admin\**" />
     <AdditionalFiles Include="..\..\.sonarlint\l1-game-admin\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <None Include="Features\Report\Views\_WinThreeCardsBetHistory.cshtml" />
     <None Include="wwwroot\js\hilo-report.min.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\af.js" />
     <None Include="wwwroot\lib\select2\dist\js\i18n\ar.js" />

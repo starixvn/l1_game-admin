@@ -1,11 +1,33 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels
-@using GamesAdmin.Core.Enumeration
-@using GamesAdmin.Core.Enumeration.BetChoices
 @model WinThreeCardsBetHistoryViewModel
 
 @{
-    var betChoices = Enumeration.GetAll<WinThreeCardsBetChoice>();
+    void RenderBet(string choice)
+    {
+        var stake = Model.Bet.GetValueBet(choice);
+        if (stake == 0)
+        {
+            return;
+        }
+        var oddsName = choice.Substring(0, 1).ToLower() + choice.Substring(1);
+        <tr>
+            <td>@Model.Bet.Time.ToString(Constants.DateTimeFormat)</td>
+            <td>@choice</td>
+            <td>@Model.Odds[oddsName]</td>
+            <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(stake) / Model.BaseCurrencyMultiplier : stake)</td>
+            <td>
+                @if (Model.RoundResult.SettlementResult[oddsName])
+                {
+                    <span>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? Model.Bet.ConvertToBase(Model.Odds[oddsName] * stake) / Model.BaseCurrencyMultiplier : Model.Odds[oddsName] * stake)</span>
+                }
+                else
+                {
+                    <span>0</span>
+                }
+            </td>
+        </tr>
+    }
 }
 <table class="table table-bordered">
     <thead>
@@ -18,18 +40,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var bet in Model.Bets)
-        {
-            var betChoice = betChoices.FirstOrDefault(x => x.Value == bet.Choice);
-            var isWin = Model.RoundResult.SettlementResult[bet.Choice];
-            var betWin = Model.GetBetWin(bet.Choice, bet.Amount);
-        <tr>
-            <td class="text-center">@bet.Time.ToString(Constants.DateTimeFormat)</td>
-            <td class="@(isWin? "text-primary": string.Empty)">@betChoice?.DisplayName</td>
-            <td class="text-center">@Model.Odds[bet.Choice]</td>
-            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) : bet.Amount)</td>
-            <td class="@(isWin? "text-primary": string.Empty)">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(betWin) : betWin)</td>
-        </tr>
+        @{
+            RenderBet("Dragon");
+            RenderBet("Phoenix");
+            RenderBet("Pair8Plus");
+            RenderBet("Straight");
+            RenderBet("Flush");
+            RenderBet("StraightFlush");
+            RenderBet("ThreeOfAKind");
         }
     </tbody>
 </table>

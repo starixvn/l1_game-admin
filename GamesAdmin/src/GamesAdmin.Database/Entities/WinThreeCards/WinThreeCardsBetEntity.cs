@@ -19,7 +19,7 @@ namespace GamesAdmin.Database.Entities
 
         public decimal Straight { get; set; }
 
-        public decimal FLush { get; set; }
+        public decimal Flush { get; set; }
 
         public decimal StraightFlush { get; set; }
 

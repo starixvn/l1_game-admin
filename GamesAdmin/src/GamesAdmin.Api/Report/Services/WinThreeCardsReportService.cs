@@ -28,6 +28,7 @@ namespace GamesAdmin.Api.Report
                 Records = result.Item2.Select(x => mapper.Map<WinThreeCardsBetRecord>(x))
             };
         }
+
         public async Task<BetHistory> Get(BetHistoryFilter filter)
         {
             var result = await repository.GetBetHistoryAsync(filter);
@@ -35,10 +36,9 @@ namespace GamesAdmin.Api.Report
             return new WinThreeCardsBetHistory
             {
                 RoundResult = mapper.Map<WinThreeCardsRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<WinThreeCardsBetHistoryRecord>(x)),
+                Bet = mapper.Map<WinThreeCardsBetRecord>(result.Item2),
                 Odds = result.Item3
             };
         }
-
     }
 }

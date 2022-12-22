@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
@@ -399,14 +400,17 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     
     public class WinThreeCardsRoundResultViewModel : BaseRoundResultViewModel
     {
-        public IEnumerable<DragonTigerCardViewModel> Dragon { get; set; }
+        public WinThreeCardsResultViewModel Dragon { get; set; }
 
-        public IEnumerable<DragonTigerCardViewModel> Phoenix { get; set; }
+        public WinThreeCardsResultViewModel Phoenix { get; set; }
 
         public Dictionary<string, bool> SettlementResult { get; set; }
+    }
 
-        public int DragonHandRankId { get; set; }
-
-        public int PhoenixHandRankId { get; set; }
+    public class WinThreeCardsResultViewModel
+    {
+        public IEnumerable<DragonTigerCardViewModel> Cards { get; set; }
+        public string HandRank { get; set; }
+        public int CardRankId { get; set; }
     }
 }

@@ -5,7 +5,6 @@
 
 @{
     var cardLabels = new[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-    var handRankLabels = new[] { "High Card", "One Pair", "Straight", "Flush", "Straight Flush", "Three of a Kind", "Killer 235"};
 }
 <div class="row row-table">
     <div class="col-sm-12">
@@ -24,26 +23,26 @@
                         <td class="text-center">@Model.RoundResult.Number</td>
                         <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
                         <td>
-                            <div class="baccarat-result">
+                            <div class="win3cards-result">
                                 <div class="cards">
-                                    @foreach (var card in Model.RoundResult.Dragon)
+                                    @foreach (var card in Model.RoundResult.Dragon.Cards)
                                     {
                                         <div class="card card-type-@card.Type">
                                             <span>@cardLabels[card.Number]</span>
                                             <img class="img" src="~/images/card_@(card.Type).png" />
                                         </div>
                                     }
-                                    <span>@handRankLabels[Model.RoundResult.DragonHandRankId - 1]</span>
+                                    <span>@Model.RoundResult.Dragon.HandRank @(Model.RoundResult.Dragon.CardRankId >=0 ? cardLabels[Model.RoundResult.Dragon.CardRankId]: string.Empty)</span>
                                 </div>
                                 <div class="cards">
-                                    @foreach (var card in Model.RoundResult.Phoenix)
+                                    @foreach (var card in Model.RoundResult.Phoenix.Cards)
                                     {
                                         <div class="card card-type-@card.Type">
                                             <span>@cardLabels[card.Number]</span>
                                             <img class="img" src="~/images/card_@(card.Type).png" />
                                         </div>
                                     }
-                                    <span>@handRankLabels[Model.RoundResult.PhoenixHandRankId - 1]</span>
+                                    <span>@Model.RoundResult.Phoenix.HandRank @(Model.RoundResult.Phoenix.CardRankId >=0 ? cardLabels[Model.RoundResult.Phoenix.CardRankId]: string.Empty)</span>
                                 </div>
                             </div>
                         </td>
@@ -93,18 +92,6 @@
                 {
                     <tr>
                         <td class="text-center" colspan="7">No data</td>
-                    </tr>
-                }
-                else if (Model.ConvertToUSD)
-                {
-                    <tr class="total">
-                        <td>Total in @Model.BaseCurrency</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalBet)) / Model.BaseCurrencyMultiplier)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin) / Model.BaseCurrencyMultiplier)</td>
                     </tr>
                 }
             </tbody>

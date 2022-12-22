@@ -494,7 +494,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalAmount { get; set; }
     }
-        
+
     public class WinThreeCardsRecordViewModel : BetRecordViewModel
     {
         public decimal TotalBet { get; set; }

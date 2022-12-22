@@ -135,17 +135,23 @@ namespace GamesAdmin.Site._Shared
             CreateMap<SlotRNGBetRecord, SlotRNGRecordViewModel>();
             CreateMap<SlotRNGRoundResult, SlotRNGRoundResultViewModel>();
             CreateMap<SlotRNGBetHistoryRecord, SlotRNGBetHistoryRecordViewModel>();
-            
+
             CreateMap<FanTanRoundResult, FanTanRoundResultViewModel>();
             CreateMap<FanTanSettlementResult, FanTanSettlementResultViewModel>();
             CreateMap<FanTanResult, FanTanResultViewModel>();
             CreateMap<FanTanBetRecord, FanTanRecordViewModel>();
             CreateMap<FanTanBetHistoryRecord, FanTanBetHistoryRecordViewModel>();
             
-            CreateMap<WinThreeCardsRoundResult, WinThreeCardsRoundResultViewModel>();
+            CreateMap<PokerCard, DragonTigerCardViewModel>()
+                .ForMember(x => x.Number, opt => opt.MapFrom(source => source.rank))
+                .ForMember(x => x.Type, opt => opt.MapFrom(source => source.suit));
+            CreateMap<WinThreeCardsHandResult, WinThreeCardsResultViewModel>();
+            CreateMap<WinThreeCardsRoundResult, WinThreeCardsRoundResultViewModel>()
+                .ForMember(x => x.Dragon, opt => opt.MapFrom(source => source.Result.Dragon))
+                .ForMember(x => x.Phoenix, opt => opt.MapFrom(source => source.Result.Phoenix));
             CreateMap<WinThreeCardsBetRecord, WinThreeCardsRecordViewModel>();
-            CreateMap<WinThreeCardsBetHistoryRecord, WinThreeCardsBetHistoryRecordViewModel>();
-
+            CreateMap<WinThreeCardsBetRecord, WinThreeCardsBetHistoryRecordViewModel>()
+                .ForMember(x => x.ThreeOfAKind, opt => opt.MapFrom(source => source.ThreeKind));
 
         }
     }

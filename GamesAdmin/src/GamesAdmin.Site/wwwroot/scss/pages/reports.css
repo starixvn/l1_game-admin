@@ -291,3 +291,29 @@
 
 .small-symbol {
   width: 9rem; }
+
+.win3cards-result {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+  .win3cards-result .cards .card {
+    margin-left: 0.1rem;
+    margin-right: 0.1rem; }
+  .win3cards-result .cards .card:last-child:before {
+    display: none; }
+  .win3cards-result .cards:first-child {
+    display: flex;
+    justify-content: flex-end; }
+  .win3cards-result .cards:last-child {
+    display: flex;
+    justify-content: flex-start; }
+  .win3cards-result .cards:last-child:before {
+    position: relative;
+    top: 0.8rem;
+    display: inline-block;
+    height: 1.8rem;
+    width: 0.1rem;
+    margin: 0 0.6rem;
+    background-color: #222;
+    content: ""; }
+  .win3cards-result .cards span {
+    padding-top: 7px; }

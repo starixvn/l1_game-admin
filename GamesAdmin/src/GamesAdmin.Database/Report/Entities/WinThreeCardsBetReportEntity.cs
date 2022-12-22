@@ -1,8 +1,14 @@
-﻿namespace GamesAdmin.Database.Report.Entities
+﻿using GamesAdmin.Database.Entities;
+
+namespace GamesAdmin.Database.Report.Entities
 {
-    public class WinThreeCardsBetReportEntity : BetReportEntity
+    public class WinThreeCardsBetReportEntity : WinThreeCardsBetEntity
     {
-        public decimal BetWin { get; set; }
+        public string UserId { get; set; }
+
+        public string Username { get; set; }
+
+        public string Nickname { get; set; }
 
         public decimal TotalBet { get; set; }
     }

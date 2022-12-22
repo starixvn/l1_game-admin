@@ -266,7 +266,7 @@ namespace GamesAdmin.Site.Features.Report
                 Selections = selections,
                 BaseCurrency = systemSettings.BaseCurrency,
                 SystemType = systemSettings.System
-        };
+            };
 
             return View(viewModel);
         }
@@ -630,7 +630,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_UnbalancedBigSmallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetWinThreeCardsBetHistory(BetHistoryFilter filter, bool convertToUSD)
