@@ -33,7 +33,7 @@ namespace GamesAdmin.Core.Models.BetReport
                         "Flush",
                         "Straight Flush",
                         "Three of a Kind",
-                        "Killer 235",
+                        "235",
                     };
 
         public string HandRank => HandRankId > 0 ? RankHandName[HandRankId - 1] : string.Empty;

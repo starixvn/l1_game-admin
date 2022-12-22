@@ -17,7 +17,7 @@
         {
             <tr>
                 <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
-                <td>@bet.Choice</td>
+                <td>@bet.DisplayChoice</td>
                 <td>@Model.Odds[bet.Choice]</td>
                 <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
                 <td>
