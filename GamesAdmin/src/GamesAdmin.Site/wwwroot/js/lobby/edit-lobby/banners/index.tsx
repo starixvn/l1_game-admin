@@ -1,21 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import { FormControl } from "react-bootstrap";
-import LobbyConfigContext from "../lobby-config-context";
+import { Game, Banner } from "../lobby-data-types";
 
-type Props = {};
-
-type GameCategory = {
-  id: string;
-  content: string;
+type Props = {
+  onChange: (gameCategory: Banner[]) => void;
+  gameIds: Game[];
+  banners: Banner[];
 };
 
 const reorder = (
-  list: GameCategory[],
-  startIndex,
-  endIndex
-): GameCategory[] => {
+  list: Banner[],
+  startIndex: number,
+  endIndex: number
+): Banner[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -25,7 +24,7 @@ const reorder = (
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (draggableStyle) => ({
   padding: grid * 2,
   margin: `0 ${grid}px 0 0`,
   border: `1px solid #4dacee`,
@@ -35,7 +34,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-const getListStyle = (isDraggingOver) => ({
+const getListStyle = (isDraggingOver: boolean) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   display: "flex",
   padding: grid,
@@ -53,8 +52,8 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
-  const getAvailableGames = (editingId = null) => {
-    let result = [];
+  const getAvailableGames = (editingId = 0): Game[] => {
+    let result: Game[] = [];
     if (banners) {
       const filter = (gameId) => {
         return (
@@ -66,7 +65,6 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
       result = gameIds.filter(filter);
     }
 
-    console.log("result ", result);
     return result;
   };
 
@@ -75,14 +73,12 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
     return availableGameIds.length > 0 ? +availableGameIds[0].value : 0;
   };
 
-  let [availableGameIds, setAvailableGameIds] = useState([]);
+  let [availableGameIds, setAvailableGameIds] = useState<Game[]>([]);
 
   const [editedCategory, setEditedCategory] = useState({
     gameId: getDefaultGameIdToAdd(),
     displayTime: 0,
   });
-
-  console.log("availableGameIds ", availableGameIds, editedCategory);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -112,7 +108,6 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
     );
 
     onChange(itemToSet);
-    //lobbyConfigContext.onChangeCategories(itemToSet);
   };
 
   const clickEditCategory = (e, index) => {
@@ -131,12 +126,12 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
     openModal();
   };
 
-  const setDisplayTime = (value) => {
+  const setDisplayTime = (value: string) => {
     editedCategory.displayTime = +value;
     setEditedCategory(editedCategory);
   };
 
-  const setGameId = (value) => {
+  const setGameId = (value: string) => {
     if (!banners.map((banner) => banner.gameId).includes(+value)) {
       editedCategory.gameId = +value;
       setEditedCategory(editedCategory);
@@ -148,14 +143,11 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
       banners.push(editedCategory);
     }
     closeModal();
-
-    //lobbyConfigContext.onChangeCategories(categories);
   };
 
   const removeCategory = () => {
     if (editedCategory["index"] >= 0) {
       banners.splice(editedCategory["index"], 1);
-      //lobbyConfigContext.onChangeCategories(categories);
     }
     closeModal();
   };
@@ -167,8 +159,8 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
     );
   };
 
-  const getGameName = (id) => {
-    return gameIds.find((gameId) => gameId.value == id)?.text;
+  const getGameName = (id: number) => {
+    return gameIds.find((gameId) => +gameId.value === id)?.text;
   };
 
   return (
@@ -194,10 +186,7 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
+                      style={getItemStyle(provided.draggableProps.style)}
                     >
                       <span>
                         <span>{getGameName(item.gameId)}</span> &nbsp;

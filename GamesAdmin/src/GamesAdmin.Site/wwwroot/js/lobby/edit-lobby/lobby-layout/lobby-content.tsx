@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import DragDropIconsMemo from "./drag-drop-icons";
 import LobbyPreview from "./lobby-preview";
+import { ReorderConfig } from "../lobby-data-types";
+import { Game, Category, GameSetting } from "../lobby-data-types";
 
-type Props = {};
-
-type GameCategory = {
-  id: string;
-  content: string;
+type Props = {
+  gameIds: Game[];
+  lobbyCategory: Category;
+  onChange: (lobbyCategory: Category) => void;
 };
 
-const reorder = (
-  list: GameCategory[],
-  startIndex,
-  endIndex
-): GameCategory[] => {
+const reorder = (list: GameSetting[], startIndex, endIndex): GameSetting[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -38,8 +35,8 @@ const LobbyContent: React.FC<Props> = ({
   onChange,
   gameIds,
 }) => {
-  const getAvailableGames = (editingId = null) => {
-    let result = [];
+  const getAvailableGames = (editingId = 0) => {
+    let result: Game[] = [];
     if (lobbyCategory && lobbyCategory.gameSettings) {
       const filter = (gameId) => {
         return (
@@ -67,7 +64,10 @@ const LobbyContent: React.FC<Props> = ({
     bigSize: true,
     newTag: true,
   });
-  let [reOrder, setReOrder] = useState({});
+  let [reOrderConfig, setReOrderConfig] = useState<ReorderConfig>({
+    sourceIndex: -1,
+    destinationIndex: -1,
+  });
   let [activeGameId, setActiveGameId] = useState(0);
 
   const idEditing = () => {
@@ -94,7 +94,6 @@ const LobbyContent: React.FC<Props> = ({
 
   const closeModal = () => {
     setModalIsOpen(false);
-    //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
   };
 
   const onDragEnd = (result) => {
@@ -110,12 +109,9 @@ const LobbyContent: React.FC<Props> = ({
     lobbyCategory.gameSettings = [...itemToSet];
     setActiveGameId(0);
     onChange(lobbyCategory);
-
-    //setEditedGameSetting({ gameId: 5, bigSize: true, newTag: true });
   };
 
   const onDragStart = (result) => {
-    console.log("onDragStart ", result);
     setActiveGameId(getActiveGameId(result.source.index));
   };
 
@@ -126,24 +122,10 @@ const LobbyContent: React.FC<Props> = ({
 
     setActiveGameId(getActiveGameId(result.source.index));
 
-    /*
-    const itemToSet = reorder(
-      lobbyCategory.gameSettings,
-      result.source.index,
-      result.destination.index
-    );
-    */
-    //lobbyCategory.gameSettings = [...itemToSet];
-    //onChange(lobbyCategory);
-
-    setReOrder(result);
-
-    /*
-    {
+    setReOrderConfig({
       sourceIndex: result.source.index,
       destinationIndex: result.destination.index,
     });
-    */
   };
 
   const getActiveGameId = (sourceIndex) => {
@@ -153,16 +135,10 @@ const LobbyContent: React.FC<Props> = ({
       result = lobbyCategory.gameSettings[sourceIndex].gameId;
     }
 
-    console.log(
-      "sourceIndex ",
-      sourceIndex,
-      lobbyCategory.gameSettings[sourceIndex],
-      result
-    );
     return result;
   };
 
-  const addHandler = (e) => {
+  const addHandler = () => {
     setAvailableGameIds(getAvailableGames());
     setEditedGameSetting({
       gameId: getDefaultGameIdToAdd(),
@@ -207,20 +183,21 @@ const LobbyContent: React.FC<Props> = ({
     setEditedGameSetting(editedGameSetting);
   };
 
-  const clickEditGameSetting = (gameId) => {
+  const clickEditGameSetting = (gameId: number) => {
     const gameSetting = lobbyCategory.gameSettings.find(
-      (gameSetting) => gameSetting.gameId == gameId
+      (gameSetting) => gameSetting.gameId === gameId
     );
-    setAvailableGameIds(getAvailableGames(gameSetting.gameId));
-    setEditedGameSetting(gameSetting);
-    openModal();
+    if (gameSetting) {
+      setAvailableGameIds(getAvailableGames(gameSetting.gameId));
+      setEditedGameSetting(gameSetting);
+      openModal();
+    }
   };
 
-  const onEdit = (gameId) => {
+  const onEdit = (gameId: number) => {
     clickEditGameSetting(gameId);
   };
 
-  //return <div>{lobbyCategory ? <RenderData /> : <Empty />}</div>;
   return (
     <div>
       <div className="layout-icon">
@@ -228,7 +205,7 @@ const LobbyContent: React.FC<Props> = ({
           gameSettings={lobbyCategory?.gameSettings}
           gameIds={gameIds}
           onEdit={onEdit}
-          reOrder={reOrder}
+          reOrderConfig={reOrderConfig}
           activeGameId={activeGameId}
         />
         <DragDropIconsMemo

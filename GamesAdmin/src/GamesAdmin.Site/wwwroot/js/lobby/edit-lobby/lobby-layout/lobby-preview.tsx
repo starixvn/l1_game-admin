@@ -1,13 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import LobbyMenu from "./lobby-menu";
+import { Game, GameSetting, ReorderConfig } from "../lobby-data-types";
+import { LobbyMenuColumn } from "./lobby-menu";
 
-type Props = {};
+type Props = {
+  gameSettings: GameSetting[];
+  gameIds: Game[];
+  reOrderConfig: ReorderConfig;
+  activeGameId: number;
+  onEdit: (gameId: number) => void;
+};
 
 declare global {
   var jQuery: any;
 }
 
-const getStyleNew = (isNew) => ({
+const getStyleNew = (isNew: boolean) => ({
   display: isNew ? `` : `none`,
 });
 
@@ -34,10 +42,10 @@ const LobbyPreview: React.FC<Props> = ({
   gameSettings,
   onEdit,
   gameIds,
-  reOrder,
+  reOrderConfig,
   activeGameId,
 }) => {
-  const clickEditGameSetting = (e, gameSetting) => {
+  const clickEditGameSetting = (e, gameSetting: GameSetting) => {
     onEdit(gameSetting.gameId);
   };
 
@@ -46,11 +54,11 @@ const LobbyPreview: React.FC<Props> = ({
       let itemToSet = gameSettings.map((gameSetting) =>
         Object.assign({}, gameSetting)
       );
-      if (reOrder && reOrder.source) {
+      if (reOrderConfig && reOrderConfig.sourceIndex >= 0) {
         itemToSet = reorder(
           gameSettings,
-          reOrder.source.index,
-          reOrder.destination.index
+          reOrderConfig.sourceIndex,
+          reOrderConfig.destinationIndex
         );
       }
 
@@ -76,9 +84,12 @@ const LobbyPreview: React.FC<Props> = ({
       const element = window.jQuery(`.icon-${activeGameId}`);
       element.parent().parent()[0].scrollLeft = element.offset().left - 400;
     }
-  }, [reOrder, activeGameId]);
+  }, [reOrderConfig, activeGameId]);
 
-  const Icon = ({ gameSetting, isBottom }) => {
+  const Icon: React.FC<{
+    gameSetting: GameSetting;
+    isBottom: boolean;
+  }> = ({ gameSetting, isBottom }) => {
     return (
       <span
         className={
@@ -103,25 +114,28 @@ const LobbyPreview: React.FC<Props> = ({
     );
   };
 
-  const RenderIcons = (props) => {
-    const { item, index } = props;
-
+  const RenderIcons: React.FC<{ item: LobbyMenuColumn; index: number }> = ({
+    item,
+    index,
+  }) => {
     const gameSetting1 = getGameSettingById(item.ids[0]);
     const gameSetting2 = getGameSettingById(item.ids[1]);
 
-    if (gameSetting2) {
+    if (gameSetting1 && gameSetting2) {
       return (
         <span style={getBlockStyle()} key={index}>
           <Icon gameSetting={gameSetting1} isBottom={false} />
           <Icon gameSetting={gameSetting2} isBottom={true} />
         </span>
       );
-    } else {
+    } else if (gameSetting1) {
       return (
         <span style={getBlockStyle()} key={index}>
           <Icon gameSetting={gameSetting1} isBottom={false} />
         </span>
       );
+    } else {
+      return <span></span>;
     }
   };
 

@@ -25,10 +25,7 @@ const EditLobby: React.FC = () => {
   let [miniPanelGameIds, setMiniPanelGameIds] = useState([]);
   let [gameIds, setGameIds] = useState([]);
   let [currencyGroupIds, setCurrencyGroupIds] = useState([]);
-  let [banners, setBanners] = useState([
-    { gameId: 1, displayTime: 2 },
-    { gameId: 2, displayTime: 3 },
-  ]);
+  let [banners, setBanners] = useState([]);
 
   useEffect(() => {
     initLobbyConfig();
@@ -151,7 +148,6 @@ const EditLobby: React.FC = () => {
   };
 
   const onChangeBanner = (banners) => {
-    console.log("change banner", banners);
     setBanners(banners);
   };
 

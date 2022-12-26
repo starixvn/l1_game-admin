@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Game, GameSetting } from "../lobby-data-types";
 
 const grid = 8;
 
-export default class DragDropIconsMemo extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
+type Props = {
+  gameSettings: GameSetting[];
+  gameIds: Game[];
+  addHandler: () => void;
+  onDragEnd: (result: any) => void;
+  onDragUpdate: (result: any) => void;
+  onDragStart: (result: any) => void;
+};
 
-    console.log("DragDropIconsMemo constructor ", props);
+export default class DragDropIconsMemo extends React.Component<Props, any> {
+  constructor(props: Props) {
+    super(props);
   }
 
   render() {
@@ -69,7 +77,7 @@ export default class DragDropIconsMemo extends React.Component<any, any> {
                   <a
                     className="add-button"
                     href="#"
-                    onClick={(e) => this.props.addHandler(e)}
+                    onClick={(e) => this.props.addHandler()}
                   >
                     Add Icon
                   </a>

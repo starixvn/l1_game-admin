@@ -2,20 +2,15 @@ import React, { useState, createContext, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import "./index.css";
+import { Game } from "../lobby-data-types";
 
-type Props = {};
-
-type GameCategory = {
-  id: string;
-  content: string;
+type Props = {
+  miniPanelGameIds: number[];
+  gameIds: Game[];
+  onChange: (gameIds: number[]) => void;
 };
 
-// a little function to help us with reordering the result
-const reorder = (
-  list: GameCategory[],
-  startIndex,
-  endIndex
-): GameCategory[] => {
+const reorder = (list: number[], startIndex, endIndex): number[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -69,8 +64,8 @@ const MiniPanel: React.FC<Props> = ({
   onChange,
   gameIds,
 }) => {
-  const getAvailableGames = (editingId = null) => {
-    let result = [];
+  const getAvailableGames = (editingId = 0) => {
+    let result: Game[] = [];
     if (miniPanelGameIds) {
       const filter = (gameId) => {
         return (

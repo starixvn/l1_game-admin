@@ -3,19 +3,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import { FormControl } from "react-bootstrap";
 import LobbyConfigContext from "../lobby-config-context";
+import { Category } from "../lobby-data-types";
 
-type Props = {};
-
-type GameCategory = {
-  id: string;
-  content: string;
+type Props = {
+  switchCategory: (index: number) => void;
+  editingIndex: number;
 };
 
-const reorder = (
-  list: GameCategory[],
-  startIndex,
-  endIndex
-): GameCategory[] => {
+const reorder = (list: Category[], startIndex, endIndex): Category[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -54,8 +49,8 @@ Modal.setAppElement("#root");
 
 const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
   const lobbyConfigContext = useContext(LobbyConfigContext);
-  const [editedCategory, setEditedCategory] = useState({
-    name: {},
+  const [editedCategory, setEditedCategory] = useState<Category>({
+    name: { eN_US: "", vI_VN: "", tH_TH: "", iD_ID: "", zH_CN: "", zH_TW: "" },
     gameSettings: [],
   });
   const categories = lobbyConfigContext.lobbyConfig.categories;
@@ -73,7 +68,17 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
 
   const closeModal = () => {
     setModalIsOpen(false);
-    setEditedCategory({ name: {}, gameSettings: [] });
+    setEditedCategory({
+      name: {
+        eN_US: "",
+        vI_VN: "",
+        tH_TH: "",
+        iD_ID: "",
+        zH_CN: "",
+        zH_TW: "",
+      },
+      gameSettings: [],
+    });
   };
 
   const onDragEnd = (result) => {
@@ -103,7 +108,17 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
   };
 
   const addHandler = (e) => {
-    setEditedCategory({ name: {}, gameSettings: [] });
+    setEditedCategory({
+      name: {
+        eN_US: "",
+        vI_VN: "",
+        tH_TH: "",
+        iD_ID: "",
+        zH_CN: "",
+        zH_TW: "",
+      },
+      gameSettings: [],
+    });
     openModal();
   };
 
