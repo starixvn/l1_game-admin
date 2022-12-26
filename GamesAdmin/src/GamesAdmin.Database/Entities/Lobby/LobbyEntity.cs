@@ -10,6 +10,7 @@ namespace GamesAdmin.Database.Entities.Lobby
         public string[] CurrencyGroupIds { get; set; }
         public int[] MiniPanelGameIds { get; set; }
         public LobbyCategoryEntity[] Categories { get; set; }
+        public BannerEntity[] Banners { get; set; }
     }
 
     public class LobbyCategoryEntity
@@ -47,5 +48,12 @@ namespace GamesAdmin.Database.Entities.Lobby
         public bool BigSize { get; set; }
 
         public bool NewTag { get; set; }
+    }
+
+    public class BannerEntity
+    {
+        public int GameId { get; set; }
+
+        public int DisplayTime { get; set; }
     }
 }

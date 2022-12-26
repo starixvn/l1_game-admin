@@ -7,6 +7,7 @@
         public string[] CurrencyGroupIds { get; set; }
         public int[] MiniPanelGameIds { get; set; }
         public LobbyCategory[] Categories { get; set; }
+        public Banner[] Banners { get; set; }
     }
 
     public class LobbyCategory
@@ -38,5 +39,12 @@
         public bool BigSize { get; set; }
 
         public bool NewTag { get; set; }
+    }
+
+    public class Banner
+    {
+        public int GameId { get; set; }
+
+        public int DisplayTime { get; set; }
     }
 }

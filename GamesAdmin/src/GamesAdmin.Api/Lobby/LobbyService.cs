@@ -52,17 +52,12 @@ namespace GamesAdmin.Api.Lobby
                 }
                 else
                 {
-
-                    //sentryClient.CaptureChangedSettings(game.Value, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
-                    // TODO log changed settings
-
                     var update = Builders<LobbyEntity>.Update
                         .Set(field => field.Name, lobbyEntity.Name)
                         .Set(field => field.CurrencyGroupIds, lobbyEntity.CurrencyGroupIds)
                         .Set(field => field.Categories, lobbyEntity.Categories)
-                        .Set(field => field.MiniPanelGameIds, lobbyEntity.MiniPanelGameIds);
-
-
+                        .Set(field => field.MiniPanelGameIds, lobbyEntity.MiniPanelGameIds)
+                        .Set(field => field.Banners, lobbyEntity.Banners);
 
                     await lobbyRepository.UpdateAsync(entity => entity.Id == lobbyEntity.Id, update);
                 }

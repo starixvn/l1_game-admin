@@ -510,12 +510,27 @@ namespace GamesAdmin.Api._Shared
                              ZH_CN = category.Name.ZH_CN,
                              ZH_TW = category.Name.ZH_TW
                          },
-                         GameSettings = category.GameSettings.Select(gameSetting => new GameSetting { GameId = gameSetting.GameId, BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag }).ToArray()
+                         GameSettings = category.GameSettings.Select(gameSetting => new GameSetting { GameId = gameSetting.GameId, BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag }).ToArray(),
+                     };
+                 }).ToArray();
+
+                 return result;
+             }))
+             .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
+             {
+
+                 var result = source.Banners.Select(banner =>
+                 {
+                     return new Banner
+                     {
+                         GameId = banner.GameId,
+                         DisplayTime = banner.DisplayTime
                      };
                  }).ToArray();
 
                  return result;
              }));
+
             CreateMap<LobbyModel, LobbyEntity>()
               .ForMember(x => x.Id, opt => opt.MapFrom((source) => ObjectId.Parse(source.Id)))
               .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
@@ -539,7 +554,22 @@ namespace GamesAdmin.Api._Shared
                   }).ToArray();
 
                   return result;
-              }));
+              }))
+              .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
+              {
+
+                  var result = source.Banners.Select(banner =>
+                  {
+                      return new BannerEntity
+                      {
+                          GameId = banner.GameId,
+                          DisplayTime = banner.DisplayTime
+                      };
+                  }).ToArray();
+
+                  return result;
+              }))
+              ;
             //CreateMap<Database.Entities.Lobby.LobbyCategory, Core.Models.Lobby.LobbyCategory>();
         }
     }
