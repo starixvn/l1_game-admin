@@ -26,7 +26,6 @@ export default class DragDropIconsMemo extends React.Component<Props, any> {
 
     const getListStyle = (isDraggingOver) => ({
       background: isDraggingOver ? "lightblue" : "lightgrey",
-      display: "flex",
       padding: grid,
       overflowX: "auto",
     });

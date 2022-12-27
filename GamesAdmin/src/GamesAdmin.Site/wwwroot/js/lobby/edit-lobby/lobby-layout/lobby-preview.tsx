@@ -81,7 +81,7 @@ const LobbyPreview: React.FC<Props> = ({
 
   useEffect(() => {
     if (activeGameId) {
-      const element = window.jQuery(`.icon-${activeGameId}`);
+      const element = window.jQuery(`.i-${activeGameId}`);
       element.parent().parent()[0].scrollLeft = element.offset().left - 400;
     }
   }, [reOrderConfig, activeGameId]);
@@ -94,8 +94,8 @@ const LobbyPreview: React.FC<Props> = ({
       <span
         className={
           isBottom
-            ? `lobby-icon bottom-icon icon-${gameSetting.gameId}`
-            : `lobby-icon icon-${gameSetting.gameId}`
+            ? `lobby-icon bottom-icon i-${gameSetting.gameId}`
+            : `lobby-icon i-${gameSetting.gameId}`
         }
         style={getGameIconStyle(gameSetting, activeGameId)}
         key={isBottom ? 1 : 0}
@@ -104,12 +104,13 @@ const LobbyPreview: React.FC<Props> = ({
         <span className="tag-new" style={getStyleNew(gameSetting.newTag)}>
           <span className="tag-new-inner">New</span>
         </span>
-        <span
+        <a
           className="edit-button"
+          href="#"
           onClick={(e) => clickEditGameSetting(e, gameSetting)}
         >
           <i className="icon-edit"></i>
-        </span>
+        </a>
       </span>
     );
   };

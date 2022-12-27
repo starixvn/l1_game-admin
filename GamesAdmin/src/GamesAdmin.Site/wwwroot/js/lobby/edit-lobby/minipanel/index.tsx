@@ -44,7 +44,6 @@ const getInnerItemInCircleStyle = (total, index) => {
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
-  display: "flex",
   padding: grid,
 });
 

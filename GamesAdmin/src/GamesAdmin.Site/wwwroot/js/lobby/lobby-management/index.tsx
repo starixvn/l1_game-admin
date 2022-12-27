@@ -143,18 +143,18 @@ const LobbyManagement: React.FC<Props> = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Confirm</h2>
-        <form>
-          <div className="row">
-            <div className="col-12 bold pt-3">
-              Delete {getLobbyConfigName(idToDelete)} ?
+        <h2 className="popup-title" ref={(_subtitle) => (subtitle = _subtitle)}>Confirm
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+              <span aria-hidden="true">×</span>
+          </button>
+        </h2>
+        <form className="p-3">          
+            <div className="text-center p-3">Delete<strong> {getLobbyConfigName(idToDelete)}</strong> ?</div>
+            <div className="form-group text-right">
+              <button className="btn-submit m-1" onClick={deleteLobbyConfig}>OK</button>        
+              <button className="btn-gray m-1" onClick={closeModal}>Cancel</button>
             </div>
-          </div>
-        </form>
-        <br />
-        <button onClick={deleteLobbyConfig}>Ok</button>
-        &nbsp;&nbsp;
-        <button onClick={closeModal}>Cancel</button>
+        </form>  
       </Modal>
     </>
   );

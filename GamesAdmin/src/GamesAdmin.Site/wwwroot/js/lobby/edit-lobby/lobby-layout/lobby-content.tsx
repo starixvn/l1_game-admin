@@ -224,12 +224,24 @@ const LobbyContent: React.FC<Props> = ({
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Game</h2>
-          <form>
-            <div className="row">
-              <div className="col-4 bold pt-3">Game Id: </div>
-              <div className="col-8">
-                <select
+          <h2 className="popup-title" ref={(_subtitle) => (subtitle = _subtitle)}>Game
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            onClick={closeModal}
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          </h2>
+          <form className="popup-body form">
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="GameID">
+                Game Id
+              </label>
+              <select
+                className="form-control"
                   defaultValue={editedGameSetting.gameId}
                   aria-label="Default select example"
                   onChange={(e) => setGameId(e.target.value)}
@@ -239,35 +251,35 @@ const LobbyContent: React.FC<Props> = ({
                       {gameId.text}
                     </option>
                   ))}
-                </select>
-              </div>
+              </select>
             </div>
-            <div className="row">
-              <div className="col-4">
-                <input
-                  type="checkbox"
-                  defaultChecked={editedGameSetting.bigSize}
-                  onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
-                />
-              </div>
-              <div className="col-8 bold pt-3">Big Size </div>
+            
+            <div className="form-group">
+              <input
+                type="checkbox"
+                defaultChecked={editedGameSetting.bigSize}
+                onChange={(e) => setBooleanValue(e.target.checked, "bigSize")}
+                name="bigSize"
+                id="bigSize"
+              />
+              <label className="control-label" htmlFor="bigSize">Big Size</label>
             </div>
-            <div className="row">
-              <div className="col-4">
-                <input
-                  type="checkbox"
-                  defaultChecked={editedGameSetting.newTag}
-                  onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
-                />
-              </div>
-              <div className="col-8 bold pt-3">New Tag </div>
+            <div className="form-group">              
+              <input
+                type="checkbox"
+                defaultChecked={editedGameSetting.newTag}
+                onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
+                name="newTag"
+                id="newTag"
+              />              
+              <label className="control-label" htmlFor="newTag">New Tag</label>
             </div>
-          </form>
-          <br />
-          <button onClick={saveGameSetting}>Save</button>
-          &nbsp;&nbsp;
-          {idEditing() && <button onClick={deleteGameSetting}>Remove</button>}
-          {!idEditing() && <button onClick={closeModal}>Cancel</button>}
+            <div className="form-group text-right">
+                {idEditing() && <button className="btn-gray m-1" onClick={deleteGameSetting}>Remove</button>}
+                {!idEditing() && <button className="btn-gray m-1" onClick={closeModal}>Cancel</button>}
+                <button className="btn-submit m-1" onClick={saveGameSetting}>Save</button>
+            </div>
+          </form>          
         </Modal>
       </div>
     </div>
