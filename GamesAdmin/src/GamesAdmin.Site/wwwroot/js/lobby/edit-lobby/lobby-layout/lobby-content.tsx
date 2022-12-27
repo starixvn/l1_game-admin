@@ -108,6 +108,10 @@ const LobbyContent: React.FC<Props> = ({
     );
     lobbyCategory.gameSettings = [...itemToSet];
     setActiveGameId(0);
+    setReOrderConfig({
+      sourceIndex: -1,
+      destinationIndex: -1,
+    });
     onChange(lobbyCategory);
   };
 
@@ -224,16 +228,20 @@ const LobbyContent: React.FC<Props> = ({
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <h2 className="popup-title" ref={(_subtitle) => (subtitle = _subtitle)}>Game
-          <button
-            type="button"
-            className="close"
-            data-dismiss="modal"
-            aria-label="Close"
-            onClick={closeModal}
+          <h2
+            className="popup-title"
+            ref={(_subtitle) => (subtitle = _subtitle)}
           >
-            <span aria-hidden="true">×</span>
-          </button>
+            Game
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={closeModal}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
           </h2>
           <form className="popup-body form">
             <div className="form-group">
@@ -242,18 +250,18 @@ const LobbyContent: React.FC<Props> = ({
               </label>
               <select
                 className="form-control"
-                  defaultValue={editedGameSetting.gameId}
-                  aria-label="Default select example"
-                  onChange={(e) => setGameId(e.target.value)}
-                >
-                  {availableGameIds.map((gameId, index) => (
-                    <option key={index} value={gameId.value}>
-                      {gameId.text}
-                    </option>
-                  ))}
+                defaultValue={editedGameSetting.gameId}
+                aria-label="Default select example"
+                onChange={(e) => setGameId(e.target.value)}
+              >
+                {availableGameIds.map((gameId, index) => (
+                  <option key={index} value={gameId.value}>
+                    {gameId.text}
+                  </option>
+                ))}
               </select>
             </div>
-            
+
             <div className="form-group">
               <input
                 type="checkbox"
@@ -262,24 +270,38 @@ const LobbyContent: React.FC<Props> = ({
                 name="bigSize"
                 id="bigSize"
               />
-              <label className="control-label" htmlFor="bigSize">Big Size</label>
+              <label className="control-label" htmlFor="bigSize">
+                Big Size
+              </label>
             </div>
-            <div className="form-group">              
+            <div className="form-group">
               <input
                 type="checkbox"
                 defaultChecked={editedGameSetting.newTag}
                 onChange={(e) => setBooleanValue(e.target.checked, "newTag")}
                 name="newTag"
                 id="newTag"
-              />              
-              <label className="control-label" htmlFor="newTag">New Tag</label>
+              />
+              <label className="control-label" htmlFor="newTag">
+                New Tag
+              </label>
             </div>
             <div className="form-group text-right">
-                {idEditing() && <button className="btn-gray m-1" onClick={deleteGameSetting}>Remove</button>}
-                {!idEditing() && <button className="btn-gray m-1" onClick={closeModal}>Cancel</button>}
-                <button className="btn-submit m-1" onClick={saveGameSetting}>Save</button>
+              {idEditing() && (
+                <button className="btn-gray m-1" onClick={deleteGameSetting}>
+                  Remove
+                </button>
+              )}
+              {!idEditing() && (
+                <button className="btn-gray m-1" onClick={closeModal}>
+                  Cancel
+                </button>
+              )}
+              <button className="btn-submit m-1" onClick={saveGameSetting}>
+                Save
+              </button>
             </div>
-          </form>          
+          </form>
         </Modal>
       </div>
     </div>

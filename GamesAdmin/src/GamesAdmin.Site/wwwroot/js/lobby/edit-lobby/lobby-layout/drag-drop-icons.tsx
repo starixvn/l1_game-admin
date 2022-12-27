@@ -21,11 +21,13 @@ export default class DragDropIconsMemo extends React.Component<Props, any> {
   render() {
     const getItemStyle = (isDragging, draggableStyle) => ({
       background: isDragging ? "lightgreen" : "#f3f7fa",
+      minHeight: "100px",
       ...draggableStyle,
     });
 
     const getListStyle = (isDraggingOver) => ({
       background: isDraggingOver ? "lightblue" : "lightgrey",
+      display: "flex",
       padding: grid,
       overflowX: "auto",
     });
