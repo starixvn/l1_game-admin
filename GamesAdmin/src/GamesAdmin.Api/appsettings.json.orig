@@ -11,7 +11,11 @@
   "HostingPort": "7778",
   "AllowedHosts": "*",
   "DatabaseSettings": {
+<<<<<<< HEAD
     "ConnectionString": "mongodb://lmn_archive:LmnArchive@10.10.50.13:37101/?replicaSet=L2Local",
+=======
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.14:17101/?replicaSet=L1pLocal",
+>>>>>>> b15c5c77 (feat: clone slot game)
     "DatabaseName": "minigame"
   },
   "ArchiveDatabaseSettings": {
@@ -299,19 +303,11 @@
       "Api": "http://l1-proxy.lumigame.com/fantan",
       "Socket": "l1-proxy.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
-<<<<<<< HEAD
-    },
-    "FortuneCat": {
-      "Api": "http://l1-proxy.lumigame.com/fortunecat",
-      "Socket": "l1-proxy.lumigame.com/admin/fortunecat",
-      "SocketRoute": "/fortunecat/socket.io"
     },
     "WinThreeCards": {
       "Api": "http://l1-proxy.lumigame.com/winthreecards",
       "Socket": "l1-proxy.lumigame.com/admin/winthreecards",
       "SocketRoute": "/winthreecards/socket.io"
-=======
->>>>>>> 44d4656e (feat: slotgame - remove redundant)
     }
   },
   "SabaApiSettings": {

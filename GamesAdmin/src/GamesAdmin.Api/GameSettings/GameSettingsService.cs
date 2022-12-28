@@ -54,6 +54,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
 
         Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
+
+        Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -538,6 +540,31 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.RandomMode, gameInfo.RandomMode);
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
+
+            return true;
+        }
+
+        public async Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
+        {
+            try
+            {
+                var cloneGame = SlotGame.FromGameId(fromGameId);
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == cloneGame.Value);
+
+                gameEntity.GameId = gameId;
+                gameEntity.Enabled = false;
+                gameEntity.Name = displayName.Replace(" ", string.Empty).ToLower();
+
+                await repository.InsertOneAsync(gameEntity);
+
+                SlotGame.AddSlotGame(new SlotGame(displayName, gameId));
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
 
             return true;
         }

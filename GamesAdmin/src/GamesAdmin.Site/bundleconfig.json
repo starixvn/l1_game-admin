@@ -307,5 +307,11 @@
     "inputFiles": [
       "wwwroot/js/domain.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/add-slot-game.min.js",
+    "inputFiles": [
+      "wwwroot/js/add-slot-game.js"
+    ]
   }
 ]

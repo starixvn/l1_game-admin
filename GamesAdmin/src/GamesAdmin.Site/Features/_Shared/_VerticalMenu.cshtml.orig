@@ -1,0 +1,209 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+
+<ul class="vertical-nav-menu">
+    <li class="menu-item">
+        <a asp-action="GameMonitor" asp-controller="GameSettings" class="add-new-game">
+            <i class="icon-poker-chip menu-icon"></i>
+            <span class="menu-name">Game Monitoring</span>
+        </a>
+    </li>
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="GameSettings" class="add-new-game">
+            <i class="icon-card-game menu-icon"></i>
+            <span class="menu-name">Game Management</span>
+        </a>
+    </li>
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Dashboard">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Online User</span>
+        </a>
+    </li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Notification" class="add-new-game">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Notification</span>
+        </a>
+    </li>
+
+    @if (Context.HasAdminPermission())
+    {
+<<<<<<< HEAD
+<li class="menu-item">
+    <a asp-action="Index" asp-controller="VoidGame">
+        <i class="icon-account-pin menu-icon"></i>
+        <span class="menu-name">Void Game Ticket</span>
+    </a>
+</li>
+
+                <li class="menu-item">
+                    <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                        <i class="icon-note-add menu-icon"></i>
+                        <span class="menu-name">Add new game</span>
+                    </a>
+                </li>}
+=======
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="VoidGame">
+                <i class="icon-account-pin menu-icon"></i>
+                <span class="menu-name">Void Game Ticket</span>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a asp-action="Add" asp-controller="GameSettings" class="add-new-game">
+                <i class="icon-note-add menu-icon"></i>
+                <span class="menu-name">Add new game</span>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a asp-action="AddSlotGame" asp-controller="GameSettings" class="add-new-slot-game">
+                <i class="icon-note-add menu-icon"></i>
+                <span class="menu-name">Add new slot game</span>
+            </a>
+        </li>
+    }
+>>>>>>> b15c5c77 (feat: clone slot game)
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="ExchangeRate">
+            <i class="icon-account-group menu-icon"></i>
+            <span class="menu-name">OANDA Exchange Rate</span>
+        </a>
+    </li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="DailySummary">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Daily Summary</span>
+        </a>
+    </li>
+
+    <li class="nav-heading">Game history</li>
+
+    <li class="menu-item">
+        <a href="/GameRoundResult"
+           onclick="window.open('/GameRoundResult', '_blank', 'width=1020,height=765'); return false;">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Game Result</span>
+        </a>
+    </li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="BetDetails">
+            <i class="icon-account-pin menu-icon"></i>
+            <span class="menu-name">Bet Details</span>
+        </a>
+    </li>
+
+    <li class="nav-heading">ADMINISTRATION</li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Partner">
+            <i class="icon-note-add menu-icon"></i>
+            <span class="menu-name">Operator</span>
+        </a>
+    </li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Currency">
+            <i class="icon-account-group menu-icon"></i>
+            <span class="menu-name">Currency</span>
+        </a>
+    </li>
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="CurrencyGroup">
+            <i class="icon-account-group menu-icon"></i>
+            <span class="menu-name">Currency Group</span>
+        </a>
+    </li>
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Chip">
+            <i class="icon-account-group menu-icon"></i>
+            <span class="menu-name">Chip</span>
+        </a>
+    </li>
+
+    <li class="nav-heading">Lobby</li>
+
+    <li class="menu-item">
+        <a asp-action="" asp-controller="Lobby">
+            <i class="icon-card-game menu-icon"></i>
+            <span class="menu-name">Lobby Management</span>
+        </a>
+    </li>
+
+    <li class="nav-heading">Logs</li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="ApiLog">
+            <i class="icon-note-add menu-icon"></i>
+            <span class="menu-name">Event Logs</span>
+        </a>
+    </li>
+
+    <li class="nav-heading">Promotions</li>
+
+    <li class="menu-item">
+        <a asp-action="Index" asp-controller="Promotion">
+            <i class="icon-link menu-icon"></i>
+            <span class="menu-name">Promotion Management</span>
+        </a>
+        <a asp-action="Announcement" asp-controller="Promotion">
+            <i class="icon-link menu-icon"></i>
+            <span class="menu-name">Promotion Announcement</span>
+        </a>
+    </li>
+
+    @if (Context.HasAdminPermission())
+    {
+<li class="nav-heading">Bots</li>
+                <li class="menu-item">
+                    <a asp-action="Add" asp-controller="Bot">
+                        <i class="icon-bot menu-icon"></i>
+                        <span class="menu-name">Add New</span>
+                    </a>
+                </li>
+
+                                <li class="menu-item">
+                                    <a asp-action="Deactivate" asp-controller="Bot">
+                                        <i class="icon-cancel menu-icon"></i>
+                                        <span class="menu-name">Deactivate</span>
+                                    </a>
+                                </li>
+
+                                                <li class="nav-heading">Users</li>
+                                                                <li class="menu-item">
+                                                                    <a asp-action="Index" asp-controller="User">
+                                                                        <i class="icon-account-group menu-icon"></i>
+                                                                        <span class="menu-name">Management</span>
+                                                                    </a>
+                                                                </li>
+                                                                                <li class="menu-item">
+                                                                                    <a asp-action="Add" asp-controller="User">
+                                                                                        <i class="icon-account-add menu-icon"></i>
+                                                                                        <span class="menu-name">Add New User</span>
+                                                                                    </a>
+                                                                                </li>
+
+                                                                                                <li class="menu-item">
+                                                                                                    <a asp-action="Index" asp-controller="ClientSite">
+                                                                                                        <i class="icon-link menu-icon"></i>
+                                                                                                        <span class="menu-name">Client Sites</span>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                                                <li class="menu-item">
+                                                                                                                    <a asp-action="Spins" asp-controller="GameUser">
+                                                                                                                        <i class="icon-account-group menu-icon"></i>
+                                                                                                                        <span class="menu-name">Spins</span>
+                                                                                                                    </a>
+                                                                                                                </li>
+                                                                                                                                <li class="menu-item">
+                                                                                                                                    <a asp-action="Index" asp-controller="UmSchedule">
+                                                                                                                                        <i class="icon-account-group menu-icon"></i>
+                                                                                                                                        <span class="menu-name">UM Info</span>
+                                                                                                                                    </a>
+                                                                                                                                </li>}
+</ul>

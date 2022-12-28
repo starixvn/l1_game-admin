@@ -62,6 +62,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 
         Task<int> GetConnectedUsers();
+
+        Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
     }
 
     public class GameSettingService : IGameSettingService
@@ -207,8 +209,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
             => gameApi.GetAdminMonitoringSettings(username);
-            
+
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
+
+        public Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
+            => gameApi.CloneNewSlotGame(gameId, fromGameId, displayName);
     }
 }

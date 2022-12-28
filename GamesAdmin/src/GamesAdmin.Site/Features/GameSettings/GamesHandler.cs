@@ -42,6 +42,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateBetaVersionRequest, bool>
         , IRequestHandler<GetOddsByGameRequest, IEnumerable<OddsViewModel>>
         , IRequestHandler<GetGamesIdByTypeRequest, IEnumerable<Game>>
+        , IRequestHandler<AddSlotGameRequest, AddSlotGameViewModel>
+        , IRequestHandler<CloneSlotGameRequest, bool>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -90,6 +92,15 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
 
             return new AddViewModel(names, types, difficultyItems);
+        }
+
+        public async Task<AddSlotGameViewModel> Handle(AddSlotGameRequest request, CancellationToken cancellationToken)
+        {
+            var existingGames = (await gameService.GetAll())
+                .Where(game => game.Info.Type == GameType.Slots)
+                .Select(game => SlotGame.FromGameName(game.Info.Name));
+
+            return new AddSlotGameViewModel(existingGames);
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)
@@ -433,6 +444,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         => gameService.GetDisabledMessage(request.Name);
 
         public async Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
-            => await gameService.UpdateBetaVersion(request.Names, request.IsBeta);
+        => await gameService.UpdateBetaVersion(request.Names, request.IsBeta);
+
+        public async Task<bool> Handle(CloneSlotGameRequest request, CancellationToken cancellationToken)
+        => await gameService.CloneNewSlotGame(request.GameId, request.ClonedFrom, request.DisplayName);
     }
 }

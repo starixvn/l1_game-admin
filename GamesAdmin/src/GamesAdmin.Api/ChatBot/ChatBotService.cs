@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
+using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
@@ -11,13 +12,12 @@ using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
-using GamesAdmin.Site._Shared.Configurations;
-using Refit;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
-using UAParser;
+using GamesAdmin.Site._Shared.Configurations;
+using Refit;
 using Sentry;
-using System.Linq;
+using UAParser;
 
 namespace GamesAdmin.Api.ChatBot
 {
@@ -187,7 +187,6 @@ namespace GamesAdmin.Api.ChatBot
             return string.Format(template, gameName, promotionMessage);
         }
 
-
         private async Task<string> GetDevicePlatform(int playerId)
         {
             var devicePlatform = "Unknown";
@@ -196,11 +195,10 @@ namespace GamesAdmin.Api.ChatBot
                 var userSession = (await usersessionRepository.FilterByAsync(userSession => userSession.PlayerId == playerId)).OrderByDescending(userSession => userSession.RecheckInTime).FirstOrDefault();
                 var browserInfo = uaParser.Parse(userSession?.BrowserUserAgent);
                 devicePlatform = browserInfo.OS.ToString();
-
             }
             catch (Exception ex)
             {
-                sentry.CaptureMessage($"{ex} - {playerId}" , Sentry.Protocol.SentryLevel.Warning);
+                sentry.CaptureMessage($"{ex} - {playerId}", Sentry.Protocol.SentryLevel.Warning);
             }
 
             return devicePlatform;

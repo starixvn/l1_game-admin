@@ -26,6 +26,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<UpdateBetaVersionRequest, bool>
         , IRequestHandler<UpdateSlotRNGConfigRequest, bool>
+        , IRequestHandler<CloneNewSlotGameRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly IGlobalConfigService globalConfigService;
@@ -91,5 +92,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateSlotRNGConfigRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotRNGConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig);
+
+        public Task<bool> Handle(CloneNewSlotGameRequest request, CancellationToken cancellationToken)
+        => gameService.CloneNewSlotGame(request.GameId, request.FromGameId, request.DisplayName);
     }
 }

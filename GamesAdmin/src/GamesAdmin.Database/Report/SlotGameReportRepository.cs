@@ -31,7 +31,7 @@ namespace GamesAdmin.Database
         public async Task<IEnumerable<SlotGameBetReportEntity>> GetAsync(SlotGameBetReportFilter filter)
         {
             var userNameRegex = new Regex($"^(?i){filter.Username}$");
-            var slotGame = SlotGame.FromGameId(filter.Game);
+            var slotGame = SlotGame.FromGameId((byte)filter.Game);
 
             var betCollection = database.GetCollection<SlotGameRoundEntity>($"{slotGame.Value}_rounds");
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));

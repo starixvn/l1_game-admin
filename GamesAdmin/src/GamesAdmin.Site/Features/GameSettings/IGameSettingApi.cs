@@ -73,6 +73,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Put("/game_settings/update_beta_version")]
         Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
 
+
+        [Post("/game_settings/clone_new_slot_game")]
+        Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
+
+
         [Post("/game_server/get_admin_monitoring_settings")]
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
 

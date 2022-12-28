@@ -39,6 +39,38 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IActionResult> Add()
         => View(await mediator.Send(new AddRequest()));
 
+        [HttpGet]
+        public async Task<IActionResult> AddSlotGame()
+        => View(await mediator.Send(new AddSlotGameRequest()));
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSlotGame([Bind] AddSlotGameViewModel addViewModel)
+        {
+            if (addViewModel.CloneSettings)
+            {
+                var request = new CloneSlotGameRequest(addViewModel.DisplayName,
+                    addViewModel.GameId,
+                    addViewModel.SelectedGame);
+
+                await mediator.Send(request);
+            }
+            else
+            {
+                var request = new CreateRequest(
+                mapper.Map<GameInfo>(addViewModel),
+                mapper.Map<EnableSetting>(addViewModel),
+                mapper.Map<BotSetting>(addViewModel),
+                mapper.Map<BetLimit>(addViewModel),
+                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
+                null,
+                null);
+
+                await mediator.Send(request);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
         {
@@ -263,15 +295,18 @@ namespace GamesAdmin.Site.Features.GameSettings
                            viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue(),
                            new Bonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus));
                         break;
+
                     case GameType.CascadingSlots:
                         cascadingSlotsConfig = new CascadingSlotsConfig(viewModel.CascadingSlotsConfig);
                         cascadingSlotsConfig.Mode = (byte)viewModel.SlotViewModel.Mode;
                         cascadingSlotsConfig.BigWinRatio = viewModel.SlotViewModel.BigWinRatio.ConvertPercentValue();
                         cascadingSlotsConfig.MultiplierBonus = new MultiplierBonus(viewModel.SlotViewModel.MinBonus, viewModel.SlotViewModel.MaxBonus);
                         break;
+
                     case GameType.SlotRNG:
                         slotRNGConfig = viewModel.SlotRNGConfig;
                         break;
+
                     default: break;
                 }
 
