@@ -50,7 +50,8 @@ namespace GamesAdmin.Site.Features.Report
 
                     return recordViewModel;
                 }),
-                Odds = result.Odds
+                Odds = result.Odds,
+                FractionalOddsFormat = result.FractionalOddsFormat
             };
         }
     }

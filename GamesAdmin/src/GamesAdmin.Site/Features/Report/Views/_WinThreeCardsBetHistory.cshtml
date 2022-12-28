@@ -18,12 +18,19 @@
             <tr>
                 <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
                 <td>@bet.DisplayChoice</td>
-                <td>@Model.Odds[bet.Choice]</td>
+                <td>@HtmlHelpers.formatOdds(Model.Odds[bet.Choice], Model.FractionalOddsFormat)</td>
                 <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
                 <td>
-                    <span>
-                        @(Model.RoundResult.SettlementResult[bet.Choice] ? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(Model.Odds[bet.Choice] * bet.Amount) / Model.BaseCurrencyMultiplier : Model.Odds[bet.Choice] * bet.Amount) : "0")
-                    </span>
+                    @if (Model.RoundResult.SettlementResult["tie"])
+                    {
+                        <span>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</span>
+                    }
+                    else
+                    {
+                        <span>
+                            @(Model.RoundResult.SettlementResult[bet.Choice] ? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(Model.Odds[bet.Choice] * bet.Amount) / Model.BaseCurrencyMultiplier : Model.Odds[bet.Choice] * bet.Amount) : "0")
+                        </span>
+                    }
                 </td>
             </tr>
         }
