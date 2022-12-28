@@ -17,7 +17,7 @@ namespace GamesAdmin.Core.Enumeration
         {
         }
 
-        public SlotGame(string displayName, byte id)
+        public SlotGame(string displayName, int id)
         {
             Id = id;
             DisplayName = displayName;
@@ -29,7 +29,7 @@ namespace GamesAdmin.Core.Enumeration
 
         public string Value { get; }
 
-        public byte Id { get; }
+        public int Id { get; }
 
         public string ServiceName { get; }
 
@@ -40,7 +40,5 @@ namespace GamesAdmin.Core.Enumeration
         public static bool IsSlotGame(string gameName) => Games.Exists(game => game.Value == gameName);
 
         public static IEnumerable<SlotGame> AllGames => Games;
-
-        public static void AddSlotGame(SlotGame slotGame) => Games.Add(slotGame);
     }
 }

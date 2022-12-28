@@ -29,7 +29,7 @@ namespace GamesAdmin.Site.Features.VoidGame
                 viewModel.PartnerId,
                 viewModel.SiteId,
                 viewModel.GameRoundId,
-                (byte)viewModel.GameId,
+                viewModel.GameId,
                 viewModel.Reason,
                 viewModel.FreeBet));
 

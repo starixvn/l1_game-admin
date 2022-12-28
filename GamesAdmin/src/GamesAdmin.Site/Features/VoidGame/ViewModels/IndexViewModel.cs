@@ -13,10 +13,6 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
     {
         public IndexViewModel()
         {
-            GameIds = Enumeration.GetAll<Game>()
-                .Where(x => (byte)x.GameId != 0)
-                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.GameId.ToString() })
-                .ToList();
         }
 
         [DisplayName("Operator")]
@@ -39,7 +35,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [DisplayName("Game")]
         [Required]
-        public GameId GameId { get; set; }
+        public byte GameId { get; set; }
 
         public List<SelectListItem> GameIds { get; set; }
 

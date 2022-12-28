@@ -121,6 +121,7 @@ namespace GamesAdmin.Api.Games
                     SiteExclusions = new string[] { },
                     Time = DateTime.Now,
                     GameId = (int)gameEnum.GameId,
+                    DisplayName = game.Info.DisplayName,
                     IsBeta = true
                 };
 
@@ -551,13 +552,12 @@ namespace GamesAdmin.Api.Games
                 var cloneGame = SlotGame.FromGameId(fromGameId);
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == cloneGame.Value);
 
+                gameEntity.DisplayName = displayName;
                 gameEntity.GameId = gameId;
                 gameEntity.Enabled = false;
                 gameEntity.Name = displayName.Replace(" ", string.Empty).ToLower();
 
                 await repository.InsertOneAsync(gameEntity);
-
-                SlotGame.AddSlotGame(new SlotGame(displayName, gameId));
             }
             catch (Exception ex)
             {

@@ -96,9 +96,12 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<AddSlotGameViewModel> Handle(AddSlotGameRequest request, CancellationToken cancellationToken)
         {
-            var existingGames = (await gameService.GetAll())
-                .Where(game => game.Info.Type == GameType.Slots)
-                .Select(game => SlotGame.FromGameName(game.Info.Name));
+            var allSlotGames = (await gameService.GetAll()).Where(game => game.Info.Type == GameType.Slots);
+            var existingGames = allSlotGames
+                .Select(game => 
+                SlotGame.IsSlotGame(game.Info.Name) 
+                ? SlotGame.FromGameName(game.Info.Name) 
+                : new SlotGame(game.Info.DisplayName, game.Info.GameId));
 
             return new AddSlotGameViewModel(existingGames);
         }

@@ -13,10 +13,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public AddSlotGameViewModel(IEnumerable<SlotGame> existingGames)
         {
             Mode = GameMode.Medium;
-            BetLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            BetLevels = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             ExistingGames = existingGames.Select(game => new SelectListItem(game.DisplayName, game.Id.ToString()));
             Stakes = new double[] { 0, 0, 0 };
-            BetLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            BetLevels = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             CloneSettings = true;
             Type = GameType.Slots;
             ModeItems = Enum.GetValues(typeof(GameMode))
