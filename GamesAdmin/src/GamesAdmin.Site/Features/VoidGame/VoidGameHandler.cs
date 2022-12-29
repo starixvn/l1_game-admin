@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
+using GamesAdmin.Site._Shared.Services;
 using GamesAdmin.Site.Features.GameSettings;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.VoidGame.Requests;
@@ -17,15 +18,15 @@ namespace GamesAdmin.Site.Features.VoidGame
     {
         private readonly IVoidGameService voidGameService;
         private readonly IPartnerService partnerService;
-        private readonly IGameSettingService gameSettingService;
+        private readonly IGeneralGameSettingService generalSettingService;
 
         public VoidGameHandler(IVoidGameService voidGameService, 
             IPartnerService partnerService,
-            IGameSettingService gameSettingService)
+            IGeneralGameSettingService generalSettingService)
         {
             this.voidGameService = voidGameService;
             this.partnerService = partnerService;
-            this.gameSettingService = gameSettingService;
+            this.generalSettingService = generalSettingService;
         }
 
         public async Task<VoidGameResultViewModel> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
@@ -40,23 +41,12 @@ namespace GamesAdmin.Site.Features.VoidGame
         public async Task<IndexViewModel> Handle(IndexViewRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetAll();
-            var games = await gameSettingService.GetAll();
-            var gameIds = Enumeration.GetAll<Game>()
-                .Where(x => (byte)x.GameId != 0)
-                .Select(x => new SelectListItem { Text = x.DisplayName, Value = ((int)(x.GameId)).ToString() })
-                .ToList();
-
-            var newGameIds = games
-                .Where(newGame => newGame.Info.GameId != 0 && !gameIds.Exists(x => x.Value == newGame.Info.GameId.ToString()))
-                .Select(newGame => new SelectListItem { Text = newGame.Info.DisplayName, Value = newGame.Info.GameId.ToString() })
-                .ToList();
-
-            gameIds.AddRange(newGameIds);
+            var games = await generalSettingService.GetAllGames();
 
             var viewModel = new IndexViewModel();
 
             viewModel.Partners = partners.Select(partner => new SelectListItem { Text = partner.Name, Value = partner.PartnerId }).ToList();
-            viewModel.GameIds = gameIds;
+            viewModel.GameIds = games.Select(game => new SelectListItem { Text = game.DisplayName, Value = game.GameId.ToString() }).ToList();
 
             return viewModel;
         }

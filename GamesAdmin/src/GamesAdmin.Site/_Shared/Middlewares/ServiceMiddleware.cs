@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.Services;
 using GamesAdmin.Site.Features;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.BetDetails;
@@ -39,6 +40,8 @@ namespace GamesAdmin.Site._Shared.Middlewares
             {
                 AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
             };
+
+            services.AddScoped<IGeneralGameSettingService, GeneralGameSettingService>();
 
             services.AddSingleton(RestService.For<IGameSettingApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<ICascadingSlotsConfigValidator, CascadingSlotsConfigValidator>();
