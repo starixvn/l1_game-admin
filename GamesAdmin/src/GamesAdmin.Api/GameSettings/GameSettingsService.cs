@@ -555,7 +555,7 @@ namespace GamesAdmin.Api.Games
                 gameEntity.DisplayName = displayName;
                 gameEntity.GameId = gameId;
                 gameEntity.Enabled = false;
-                gameEntity.Name = displayName.Replace(" ", string.Empty).ToLower();
+                gameEntity.Name = displayName.Replace(" ", string.Empty).ToLowerInvariant();
 
                 await repository.InsertOneAsync(gameEntity);
             }

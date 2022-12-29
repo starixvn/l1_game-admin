@@ -11,6 +11,7 @@ using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameUser;
+using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Api.Lobby;
 using GamesAdmin.Api.Notifications;
@@ -38,6 +39,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
+            services.AddScoped<IGeneralGameSettingService, GeneralGameSettingService>();
             services.AddScoped<ICurrencyGroupGameService, CurrencyGroupGameService>();
             services.AddScoped<IUMService, UMService>();
             services.AddScoped<IUserService, UserService>();

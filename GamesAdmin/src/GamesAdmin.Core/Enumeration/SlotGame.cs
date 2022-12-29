@@ -21,7 +21,7 @@ namespace GamesAdmin.Core.Enumeration
         {
             Id = id;
             DisplayName = displayName;
-            ServiceName = displayName.Replace(" ", "_").ToLower();
+            ServiceName = displayName.Replace(" ", "_").ToLowerInvariant();
             Value = ServiceName.Replace("_", string.Empty);
         }
 

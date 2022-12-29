@@ -1,4 +1,5 @@
 ﻿@using GamesAdmin.Site.Features.VoidGame.ViewModels;
+@using GamesAdmin.Site._Shared.ViewComponents
 @model IndexViewModel;
 
 @{
@@ -51,9 +52,7 @@
 
         <div class="form-group">
             <label asp-for="GameId" class="control-label"></label>
-            <select asp-items="@Model.GameIds" asp-for="GameId" class="form-control">
-                <option value="" disabled selected></option>
-            </select>
+            @await Component.InvokeAsync(nameof(SelectGame), new { name="GameId" })
             <span asp-validation-for="GameId" class="text-danger"></span>
         </div>
 

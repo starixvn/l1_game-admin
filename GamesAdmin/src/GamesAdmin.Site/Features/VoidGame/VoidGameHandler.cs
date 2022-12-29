@@ -1,10 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.OWResults;
-using GamesAdmin.Site._Shared.Services;
-using GamesAdmin.Site.Features.GameSettings;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.VoidGame.Requests;
 using GamesAdmin.Site.Features.VoidGame.ViewModels;
@@ -20,7 +17,7 @@ namespace GamesAdmin.Site.Features.VoidGame
         private readonly IPartnerService partnerService;
         private readonly IGeneralGameSettingService generalSettingService;
 
-        public VoidGameHandler(IVoidGameService voidGameService, 
+        public VoidGameHandler(IVoidGameService voidGameService,
             IPartnerService partnerService,
             IGeneralGameSettingService generalSettingService)
         {

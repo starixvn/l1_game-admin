@@ -1,0 +1,9 @@
+﻿@using GamesAdmin.Site.Features._Shared.Components.SelectGame
+
+@model SelectGameModel
+
+<select asp-items="@Model.Items" data-val="true" data-val-required="The Game field is required." name="@Model.Name" id="@Model.Name" class="form-control">
+    <option value="" disabled selected></option>
+</select>
+
+
