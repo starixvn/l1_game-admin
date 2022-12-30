@@ -57,16 +57,11 @@
                         Value = "zh-TW"
                     }
                 };
-            var gameTypeItems = Enumeration.GetAll<Game>()
-                                   .Where(game => game.GameId != 0)
-                                   .Select(game => new SelectListItem(game.DisplayName, $"{(byte)game.GameId}"))
-                                   .ToList();
             
             return new BetDetailsViewModel
             {
                 LanguageItem = languageItems,
                 Operators = operators,
-                GameTypeItem = gameTypeItems
             };
         }
    

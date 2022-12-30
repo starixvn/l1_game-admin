@@ -5,14 +5,17 @@ namespace GamesAdmin.Site.Features._Shared.Components.SelectGame
 {
     public class SelectGameModel
     {
-        public SelectGameModel(string name, IEnumerable<SelectListItem> items)
+        public SelectGameModel(string name, IEnumerable<SelectListItem> items, bool selectAll)
         {
             Name = name;
             Items = items;
+            SelectAll = selectAll;
         }
 
         public string Name { get; }
 
         public IEnumerable<SelectListItem> Items { get; }
+    
+        public bool SelectAll { get; }
     }
 }

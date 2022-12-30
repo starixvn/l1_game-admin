@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.GameSettings.Requests;
 using Sentry;
 
@@ -29,7 +30,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UnderMaintenance(UnderMaintenanceRequest request);
 
-        Task<OnlineUsers> GetOnlineUsers(string game = null);
+        Task<OnlineUsers> GetOnlineUsers(int game = 0);
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
@@ -73,17 +74,20 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly IGlobalConfigApi globalConfigApi;
         private readonly ISentryClient sentryClient;
         private readonly ICascadingSlotsConfigValidator cascadingSlotsConfigValidator;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public GameSettingService(
             ISentryClient sentryClient,
             IGameSettingApi gameApi,
             IGlobalConfigApi globalConfigApi,
-            ICascadingSlotsConfigValidator cascadingSlotsConfigValidator)
+            ICascadingSlotsConfigValidator cascadingSlotsConfigValidator,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.sentryClient = sentryClient;
             this.gameApi = gameApi;
             this.globalConfigApi = globalConfigApi;
             this.cascadingSlotsConfigValidator = cascadingSlotsConfigValidator;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<bool> Add(GameConfig game)
@@ -141,8 +145,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<bool> UnderMaintenance(UnderMaintenanceRequest request)
         => gameApi.UnderMaintenance(request);
 
-        public Task<OnlineUsers> GetOnlineUsers(string game = null)
-        => gameApi.GetOnlineUsers(game);
+        public async Task<OnlineUsers> GetOnlineUsers(int game = 0)
+        {
+            var games = await generalGameSettingService.GetAllGames();
+
+            var selectGame = game == 0 ? null : games.FirstOrDefault(gameInfo => gameInfo.GameId == game).Name;
+
+            return await gameApi.GetOnlineUsers(selectGame);
+        }
 
         public Task<bool> UpdateBotRatios(string name, double[] ratios)
        => gameApi.UpdateBotRatios(name, ratios);

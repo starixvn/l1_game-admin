@@ -5,11 +5,11 @@ namespace GamesAdmin.Site.Features.Dashboard.Requests
 {
     public class GetOnlineUsersByGameRequest : IRequest<OnlineUsersViewModel>
     {
-        public GetOnlineUsersByGameRequest(string game)
+        public GetOnlineUsersByGameRequest(int game)
         {
             Game = game;
         }
 
-        public string Game { get; }
+        public int Game { get; }
     }
 }

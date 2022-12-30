@@ -42,7 +42,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOnlineUsers(bool includeTestAccount, string game, IEnumerable<string> partnerIds)
+        public async Task<IActionResult> GetOnlineUsers(bool includeTestAccount, int game, IEnumerable<string> partnerIds)
         {
             var result = await mediator.Send(new GetOnlineUsersByGameRequest(game));
             var users = FilterOnlineUser(partnerIds.AsEnumerable(), result.RealUsers.AsEnumerable());
@@ -66,7 +66,7 @@ namespace GamesAdmin.Site.Features.Dashboard
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBotUsers(string game)
+        public async Task<IActionResult> GetBotUsers(int game = 0)
         {
             var result = await mediator.Send(new GetOnlineUsersByGameRequest(game));
 

@@ -7,8 +7,6 @@ namespace GamesAdmin.Site.Features.Dashboard.ViewModels
 {
     public class OnlineUsersViewModel
     {
-        public List<SelectListItem> GameTypeItems { get; set; }
-
         public string Game { get; set; }
 
         public bool IncludeTestAccount { get; set; }

@@ -15,8 +15,6 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
 
         public IEnumerable<SelectListItem> LanguageItem { get; set; }
 
-        public IEnumerable<SelectListItem> GameTypeItem { get; set; }
-
         public int RoundId { get; set; }
 
         public int PlayerId { get; set; }

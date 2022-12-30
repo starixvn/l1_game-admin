@@ -16,13 +16,13 @@ namespace GamesAdmin.Site._Shared.ViewComponents
             this.generalGameSettingService = generalGameSettingService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string name)
+        public async Task<IViewComponentResult> InvokeAsync(string name, bool selectAll = false)
         {
             var games = await generalGameSettingService.GetAllGames();
 
             var items = games.Select(game => new SelectListItem { Text = game.DisplayName, Value = game.GameId.ToString() });
 
-            return View(new SelectGameModel(name, items));
+            return View(new SelectGameModel(name, items, selectAll));
         }
     }
 }

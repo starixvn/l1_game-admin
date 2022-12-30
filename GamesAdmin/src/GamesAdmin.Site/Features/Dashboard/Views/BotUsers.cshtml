@@ -1,4 +1,5 @@
-﻿@model GamesAdmin.Site.Features.Dashboard.ViewModels.OnlineUsersViewModel
+﻿@using GamesAdmin.Site._Shared.ViewComponents
+@model GamesAdmin.Site.Features.Dashboard.ViewModels.OnlineUsersViewModel
 
 @section Styles {
     <link rel="stylesheet" type="text/css" href="~/lib/data-tables/datatables.min.css">
@@ -18,7 +19,7 @@
     <div class="form-row align-items-center">
         <div class="col-auto">
             <div class="form-check">
-                <select class="form-control" asp-items="@Model.GameTypeItems" asp-for="Game"></select>
+                @await Component.InvokeAsync(nameof(SelectGame), new {Name = "Game", SelectAll = true})
             </div>
         </div>        
         <div class="col-auto">
