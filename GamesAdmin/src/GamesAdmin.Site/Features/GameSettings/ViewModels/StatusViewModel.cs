@@ -10,22 +10,17 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
     public class StatusViewModel
     {
         public StatusViewModel(IList<StatusItemViewModel> gameList,
-            Dictionary<string,
-            IList<string>> siteExclusions = null,
             IList<Partner> partners = null,
             IList<CurrencyGroupModel> currencyGroups = null,
             IList<CurrencyGroupGame> currencyGroupGames = null)
         {
             GameList = gameList;
-            SiteExclusions = siteExclusions;
             Partners = partners;
             CurrencyGroups = currencyGroups;
             CurrencyGroupGames = currencyGroupGames;
         }
 
         public IList<StatusItemViewModel> GameList { get; }
-
-        public Dictionary<string, IList<string>> SiteExclusions { get; }
 
         public IList<Partner> Partners { get; }
 

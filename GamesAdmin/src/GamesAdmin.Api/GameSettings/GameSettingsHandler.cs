@@ -10,7 +10,6 @@ namespace GamesAdmin.Api.Games
 {
     public class GameSettingsHandler
         : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
-        , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
@@ -38,14 +37,6 @@ namespace GamesAdmin.Api.Games
 
         public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
-
-        public async Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
-        {
-            var createResult = await gameService.Create(request.Game);
-            await globalConfigService.UpdateSiteExclusions(request.Game.Info.Name, new string[] { });
-
-            return createResult;
-        }
 
         public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);

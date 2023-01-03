@@ -52,10 +52,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateSlotRNGConfig(UpdateSlotRNGConfigRequest request);
 
-        Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request);
-
-        Task<GlobalConfig> GetSiteExclusion();
-
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
@@ -189,18 +185,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateSlotRNGConfig(UpdateSlotRNGConfigRequest request)
         => gameApi.UpdateSlotRNGConfig(request);
-
-        public Task<bool> UpdateSiteExclusions(UpdateSiteExclusionRequest request)
-        {
-            var formattedExlusions = string.IsNullOrWhiteSpace(request.SiteExclusions)
-                ? new string[] { }
-                : request.SiteExclusions.Trim().Split(";").Select(exclusion => exclusion.Trim()).ToArray();
-
-            return globalConfigApi.UpdateSiteExclusions(request.ConfigName, formattedExlusions);
-        }
-
-        public Task<GlobalConfig> GetSiteExclusion()
-            => globalConfigApi.GetSiteExclusions();
 
         public Task<Dictionary<string, string>> GetDisabledMessage(string name)
             => gameApi.GetDisableMessage(name);

@@ -27,7 +27,6 @@ namespace GamesAdmin.Site.Features.Currencies.Handlers
             var isExisted = entities.Any(entity => entity.PartnerId.Equals(model.PartnerId) && entity.Name.Equals(model.Name));
             var message = string.Empty;
             var success = false;
-            var global = await globalConfigApi.GetExchangeCodes();
             var codeExisted = await IsExchangeCodeExisted(model.Code);
 
             if (isExisted)
