@@ -35,10 +35,11 @@ const getItemInCircleStyle = (total, index) => {
   };
 };
 
-const getInnerItemInCircleStyle = (total, index) => {
+const getInnerItemInCircleStyle = (total, index, gameId, activeGameId) => {
   const delta = 360 / total;
   return {
     transform: `rotate(${360 - delta * index + 90}deg)`,
+    background: gameId === activeGameId ? `yellow` : `#f3f7fa`,
   };
 };
 
@@ -93,6 +94,12 @@ const MiniPanel: React.FC<Props> = ({
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  let [activeGameId, setActiveGameId] = useState(0);
+  let [reOrderConfig, setReOrderConfig] = useState({
+    sourceIndex: -1,
+    destinationIndex: -1,
+  });
+
   const isEditing = () => {
     return miniPanelGameIds.includes(editedGameSetting.value);
   };
@@ -112,6 +119,48 @@ const MiniPanel: React.FC<Props> = ({
     //setEditedGameSetting({ index: null, value: 1 });
   };
 
+  const getActiveGameId = (sourceIndex) => {
+    let result = 0;
+
+    if (miniPanelGameIds && miniPanelGameIds[sourceIndex]) {
+      result = miniPanelGameIds[sourceIndex];
+    }
+
+    return result;
+  };
+
+  const reOrderToRender = () => {
+    const clonedMiniPanelGameIds = miniPanelGameIds
+      ? miniPanelGameIds.slice()
+      : [];
+    if (reOrderConfig && reOrderConfig.sourceIndex >= 0) {
+      return reorder(
+        clonedMiniPanelGameIds,
+        reOrderConfig.sourceIndex,
+        reOrderConfig.destinationIndex
+      );
+    } else {
+      return clonedMiniPanelGameIds;
+    }
+  };
+
+  const onDragStart = (result) => {
+    setActiveGameId(getActiveGameId(result.source.index));
+  };
+
+  const onDragUpdate = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    setActiveGameId(getActiveGameId(result.source.index));
+
+    setReOrderConfig({
+      sourceIndex: result.source.index,
+      destinationIndex: result.destination.index,
+    });
+  };
+
   const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
@@ -124,6 +173,11 @@ const MiniPanel: React.FC<Props> = ({
       result.destination.index
     );
     miniPanelGameIds = itemToSet;
+    setReOrderConfig({
+      sourceIndex: -1,
+      destinationIndex: -1,
+    });
+    setActiveGameId(0);
     onChange(miniPanelGameIds);
   };
 
@@ -134,20 +188,12 @@ const MiniPanel: React.FC<Props> = ({
   };
 
   const saveGameSetting = () => {
-    console.log(
-      "save ",
-      editedGameSetting,
-      editedGameSetting.value,
-      miniPanelGameIds
-    );
-
     if (!miniPanelGameIds.includes(editedGameSetting.value)) {
       if (editedGameSetting.index >= 0) {
         miniPanelGameIds[editedGameSetting.index] = editedGameSetting.value;
       } else {
         miniPanelGameIds.push(editedGameSetting.value);
       }
-      console.log("change", miniPanelGameIds);
       onChange(miniPanelGameIds);
     }
 
@@ -192,7 +238,7 @@ const MiniPanel: React.FC<Props> = ({
         <div>
           <strong>Preview Layout</strong>
         </div>
-        {miniPanelGameIds.map((item, index) => (
+        {reOrderToRender().map((item, index) => (
           <div
             className="item"
             style={getItemInCircleStyle(miniPanelGameIds.length, index)}
@@ -200,7 +246,12 @@ const MiniPanel: React.FC<Props> = ({
           >
             <span
               className="item-inner"
-              style={getInnerItemInCircleStyle(miniPanelGameIds.length, index)}
+              style={getInnerItemInCircleStyle(
+                miniPanelGameIds.length,
+                index,
+                item,
+                activeGameId
+              )}
             >
               <span>{getGameName(item)}</span>
               <a
@@ -215,7 +266,11 @@ const MiniPanel: React.FC<Props> = ({
         ))}
       </div>
 
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext
+        onDragEnd={onDragEnd}
+        onDragStart={onDragStart}
+        onDragUpdate={onDragUpdate}
+      >
         <Droppable droppableId="droppable" direction="horizontal">
           {(provided, snapshot) => (
             <div

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FormControl } from "react-bootstrap";
 import LobbyLayout from "./lobby-layout";
 import MiniPanel from "./minipanel";
@@ -14,10 +14,7 @@ declare global {
 const EditLobby: React.FC = () => {
   const history = useHistory();
   let { id } = useParams();
-
-  const [name, setName] = useState("INH Lobby");
-  const [isCreatePage, setIsCreatePage] = useState(true);
-
+  const [name, setName] = useState("");
   let [lobbyConfig, setLobbyConfig] = useState({
     categories: [],
   });
@@ -26,14 +23,24 @@ const EditLobby: React.FC = () => {
   let [gameIds, setGameIds] = useState([]);
   let [currencyGroupIds, setCurrencyGroupIds] = useState([]);
   let [banners, setBanners] = useState([]);
+  let [currentLobbyConfigs, setCurrentLobbyConfigs] = useState<any>({});
+  let [message, setMessage] = useState({ msg: "", success: true });
+  const timeout = useRef<number>();
 
   useEffect(() => {
     initLobbyConfig();
+
+    return () => {
+      // run when unmount
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+        timeout.current = 0;
+      }
+    };
   }, []);
 
   const initLobbyConfig = async () => {
     const res = await axios(`/lobby/GetLobbyConfig?id=${id}`);
-    setIsCreatePage(!res.data.lobbyConfig);
     setGameIds(res.data.gameIds);
     const defaultCurrencyGroupIds = res.data.currencyGroupModels.map(
       (currencyGroup) => currencyGroup.id
@@ -49,6 +56,7 @@ const EditLobby: React.FC = () => {
       // update context categories
       lobbyConfig.categories = res.data.lobbyConfig.categories;
       setLobbyConfig({ ...lobbyConfig });
+      cloneAndSetLobbyConfig(res.data.lobbyConfig);
     }
 
     initCurrencyGroupMultipleSelect(
@@ -123,6 +131,86 @@ const EditLobby: React.FC = () => {
     setMiniPanelGameIds(miniPanelGameIds);
   };
 
+  const cloneCategories = (categories) => {
+    return categories.map((category) => {
+      return {
+        name: Object.assign({}, category.name),
+        gameSettings: category.gameSettings.map((gameSetting) =>
+          Object.assign({}, gameSetting)
+        ),
+      };
+    });
+  };
+
+  const cloneLobbyConfigs = (lobbyConfigs) => {
+    const clonedLobbyConfigs: any = {};
+    clonedLobbyConfigs.currencyGroupIds = lobbyConfigs.currencyGroupIds.slice();
+    clonedLobbyConfigs.miniPanelGameIds = lobbyConfigs.miniPanelGameIds.slice();
+    clonedLobbyConfigs.name = lobbyConfigs.name;
+    clonedLobbyConfigs.banners = lobbyConfigs.banners.map((banner) =>
+      Object.assign({}, banner)
+    );
+    clonedLobbyConfigs.categories = cloneCategories(lobbyConfigs.categories);
+
+    return clonedLobbyConfigs;
+  };
+
+  const cloneAndSetLobbyConfig = (lobbyConfigs) => {
+    setCurrentLobbyConfigs(cloneLobbyConfigs(lobbyConfigs));
+  };
+
+  const setMsg = (msg, success = false) => {
+    setMessage({ msg: msg, success: success });
+    timeout.current = setTimeout(() => {
+      setMessage({ msg: "", success: true });
+    }, 3000);
+  };
+
+  const checkDifference = (obj1, obj2) => {
+    return JSON.stringify(obj1) !== JSON.stringify(obj2);
+  };
+
+  const hasChange = () => {
+    let result = false;
+    if (currentLobbyConfigs.name !== name) {
+      result = true;
+    } else if (
+      checkDifference(currencyGroupIds, currentLobbyConfigs.currencyGroupIds) ||
+      checkDifference(
+        cloneCategories(lobbyConfig.categories),
+        currentLobbyConfigs.categories
+      ) ||
+      checkDifference(miniPanelGameIds, currentLobbyConfigs.miniPanelGameIds) ||
+      checkDifference(banners, currentLobbyConfigs.banners)
+    ) {
+      result = true;
+    }
+
+    return result;
+  };
+
+  const validateLobbyConfig = () => {
+    let result = true;
+    if (!name) {
+      setMsg("Name cannot be empty!");
+      result = false;
+    } else if (!currencyGroupIds || currencyGroupIds.length === 0) {
+      setMsg("Currency Group cannot be empty!");
+      result = false;
+    } else if (!lobbyConfig.categories || lobbyConfig.categories.length === 0) {
+      setMsg("Lobby Layout cannot be empty!");
+      result = false;
+    } else if (!miniPanelGameIds || miniPanelGameIds.length === 0) {
+      setMsg("MiniPanel Layout cannot be empty!");
+      result = false;
+    } else if (!hasChange()) {
+      setMsg("Nothing changed!");
+      result = false;
+    }
+
+    return result;
+  };
+
   const saveLobbyConfig = async () => {
     const lobbyModel = {
       id,
@@ -133,9 +221,20 @@ const EditLobby: React.FC = () => {
       banners,
     };
 
-    await axios.post("/lobby/createorupdate", lobbyModel);
+    const valid = validateLobbyConfig();
 
-    history.push("/lobby");
+    if (valid) {
+      await axios.post("/lobby/createorupdate", lobbyModel);
+      cloneAndSetLobbyConfig({
+        currencyGroupIds,
+        miniPanelGameIds,
+        banners,
+        categories: lobbyConfig.categories,
+        name,
+      });
+      setMsg("Updated successfully!", true);
+      // history.push("/lobby");
+    }
   };
 
   const cancelLobbyConfig = () => {
@@ -153,15 +252,14 @@ const EditLobby: React.FC = () => {
 
   return (
     <LobbyConfigProvider value={{ lobbyConfig, onChangeCategories }}>
-      <form className="form filter">
+      <div className="form filter">
         <div className="form-row align-items-center">
           <div className="col-auto">
             <label className="control-label">Name</label>
             <FormControl
               type="text"
               value={name}
-              onChange={(e) => isCreatePage && setName(e.target.value)}
-              disabled={!isCreatePage}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -170,7 +268,27 @@ const EditLobby: React.FC = () => {
             <select className="form-control" id="currency-groups"></select>
           </div>
         </div>
-      </form>
+
+        <div className="btn-group" style={{ marginTop: "10px" }}>
+          <button className="btn-submit" onClick={saveLobbyConfig}>
+            Save
+          </button>
+          <button className="btn-gray" onClick={cancelLobbyConfig}>
+            Cancel
+          </button>
+        </div>
+        <div
+          className="btn-group"
+          style={{
+            marginTop: "10px",
+            color: message.success ? "green" : "red",
+          }}
+        >
+          <div className="col-auto">
+            <span>{message.msg}</span>
+          </div>
+        </div>
+      </div>
 
       <div className="card">
         <div className="card-body">
@@ -195,6 +313,17 @@ const EditLobby: React.FC = () => {
             <button className="btn-gray" onClick={cancelLobbyConfig}>
               Cancel
             </button>
+          </div>
+          <div
+            className="btn-group"
+            style={{
+              marginTop: "10px",
+              color: message.success ? "green" : "red",
+            }}
+          >
+            <div className="col-auto">
+              <span>{message.msg}</span>
+            </div>
           </div>
         </div>
       </div>

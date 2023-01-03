@@ -53,9 +53,18 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
     name: { eN_US: "", vI_VN: "", tH_TH: "", iD_ID: "", zH_CN: "", zH_TW: "" },
     gameSettings: [],
   });
+  const [editedNames, setEditedNames] = useState({
+    eN_US: "",
+    vI_VN: "",
+    tH_TH: "",
+    iD_ID: "",
+    zH_CN: "",
+    zH_TW: "",
+  });
   const categories = lobbyConfigContext.lobbyConfig.categories;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  let [message, setMessage] = useState("");
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -79,6 +88,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
       },
       gameSettings: [],
     });
+    setMessage("");
   };
 
   const onDragEnd = (result) => {
@@ -95,10 +105,20 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
     lobbyConfigContext.onChangeCategories(itemToSet);
   };
 
+  const cancel = () => {
+    if (JSON.stringify(editedNames) !== JSON.stringify(editedCategory.name)) {
+      editedCategory.name = editedNames;
+      setEditedCategory(editedCategory);
+    }
+
+    closeModal();
+  };
+
   const clickEditCategory = (e, index) => {
     e.stopPropagation();
     const category = categories[index];
     category["index"] = index;
+    setEditedNames(Object.assign({}, category.name));
     setEditedCategory(category);
     openModal();
   };
@@ -135,6 +155,9 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
       closeModal();
 
       lobbyConfigContext.onChangeCategories(categories);
+      setMessage("");
+    } else {
+      setMessage("English Name cannot be empty!");
     }
   };
 
@@ -219,16 +242,16 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={closeModal}
+            onClick={cancel}
           >
             <span aria-hidden="true">×</span>
           </button>
         </h2>
 
-        <form className="popup-body form">
+        <div className="popup-body form">
           <div className="form-group">
             <label className="required-field-label" htmlFor="English">
-              English
+              English <span style={{ color: "red" }}>(*)</span>
             </label>
             <FormControl
               type="text"
@@ -292,6 +315,17 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
               onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
             />
           </div>
+          <div
+            className="btn-group"
+            style={{
+              marginTop: "10px",
+              color: "red",
+            }}
+          >
+            <div className="col-auto">
+              <span>{message}</span>
+            </div>
+          </div>
 
           <div className="form-group text-right">
             {editedCategory["index"] >= 0 && (
@@ -300,7 +334,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
               </button>
             )}
             {!(editedCategory["index"] >= 0) && (
-              <button className="btn-gray m-1" onClick={closeModal}>
+              <button className="btn-gray m-1" onClick={cancel}>
                 Cancel
               </button>
             )}
@@ -308,7 +342,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
               Save
             </button>
           </div>
-        </form>
+        </div>
       </Modal>
     </>
   );
