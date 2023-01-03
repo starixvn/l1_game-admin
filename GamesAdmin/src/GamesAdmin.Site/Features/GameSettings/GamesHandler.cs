@@ -39,7 +39,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSiteExclusionRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
-        , IRequestHandler<UpdateBetaVersionRequest, bool>
         , IRequestHandler<GetOddsByGameRequest, IEnumerable<OddsViewModel>>
         , IRequestHandler<GetGamesIdByTypeRequest, IEnumerable<Game>>
         , IRequestHandler<AddSlotGameRequest, AddSlotGameViewModel>
@@ -445,9 +444,6 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
-
-        public async Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
-        => await gameService.UpdateBetaVersion(request.Names, request.IsBeta);
 
         public async Task<bool> Handle(CloneSlotGameRequest request, CancellationToken cancellationToken)
         => await gameService.CloneNewSlotGame(request.GameId, request.ClonedFrom, request.DisplayName);

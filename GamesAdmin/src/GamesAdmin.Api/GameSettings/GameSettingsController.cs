@@ -100,9 +100,5 @@ namespace GamesAdmin.Api.Games
         [HttpGet("{name}/disabled_message")]
         public Task<Dictionary<string, string>> GetDisableMessage(string name)
             => mediator.Send(new GetDisabledMessageRequest(name));
-
-        [HttpPut("update_beta_version")]
-        public Task<bool> UpdateBetaVersion(string[] names, bool isBeta)
-           => mediator.Send(new UpdateBetaVersionRequest(names, isBeta));
     }
 }

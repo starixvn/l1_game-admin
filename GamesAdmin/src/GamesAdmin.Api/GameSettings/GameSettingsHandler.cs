@@ -24,7 +24,6 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateSlotIconOddsRequest, bool>
         , IRequestHandler<UpdateOddsByCountsRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
-        , IRequestHandler<UpdateBetaVersionRequest, bool>
         , IRequestHandler<UpdateSlotRNGConfigRequest, bool>
         , IRequestHandler<CloneNewSlotGameRequest, bool>
     {
@@ -86,9 +85,6 @@ namespace GamesAdmin.Api.Games
 
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
-
-        public Task<bool> Handle(UpdateBetaVersionRequest request, CancellationToken cancellationToken)
-            => gameService.UpdateBetaVersion(request.Names, request.IsBeta);
 
         public Task<bool> Handle(UpdateSlotRNGConfigRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotRNGConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig);

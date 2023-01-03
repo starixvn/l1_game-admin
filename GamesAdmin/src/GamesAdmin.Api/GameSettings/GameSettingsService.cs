@@ -51,8 +51,6 @@ namespace GamesAdmin.Api.Games
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
-        Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
-
         Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
 
         Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
@@ -122,7 +120,6 @@ namespace GamesAdmin.Api.Games
                     Time = DateTime.Now,
                     GameId = (int)gameEnum.GameId,
                     DisplayName = game.Info.DisplayName,
-                    IsBeta = true
                 };
 
                 await repository.InsertOneAsync(entity);
@@ -495,31 +492,6 @@ namespace GamesAdmin.Api.Games
             var gameConfig = await GetByName(name);
 
             return new Dictionary<string, string> { { Language.DefaultLanguageValue, gameConfig.EnableSetting.DisabledMessage } };
-        }
-
-        public async Task<bool> UpdateBetaVersion(string[] names, bool isBeta)
-        {
-            try
-            {
-                sentryClient.CaptureMessage($"Game {string.Join(", ", names)} is beta: {isBeta}");
-
-                foreach (var n in names)
-                {
-                    var update = Builders<GameConfigEntity>.Update
-                        .Set(field => field.IsBeta, isBeta)
-                        .Set(field => field.GameId, (int)Enumeration.FromValue<Game>(n).GameId);
-
-                    await repository.UpdateAsync(config => n.ToLowerInvariant() == config.Name, update);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
         }
 
         public async Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig)

@@ -70,10 +70,6 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Get("/game_settings/{name}/disabled_message")]
         Task<Dictionary<string, string>> GetDisableMessage(string name);
 
-        [Put("/game_settings/update_beta_version")]
-        Task<bool> UpdateBetaVersion(string[] names, bool isBeta);
-
-
         [Post("/game_settings/clone_new_slot_game")]
         Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
 

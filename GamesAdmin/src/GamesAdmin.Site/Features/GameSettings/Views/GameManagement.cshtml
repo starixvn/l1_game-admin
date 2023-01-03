@@ -441,32 +441,6 @@
         </div>
     </div>
 
-    <div class="modal fade beta-version-modal" id="betaVersionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmation<span id="betaVersionTitle"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body reload-content-body">
-                    <div class="message-success hidden-cls" id="updateMsgSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
-                    <div class="message-error hidden-cls" id="updateMsgFailed"><i class="icon-cancel"></i><span>Error</span></div>
-                    <div class="beta-version-checkbox">
-                        <input type="checkbox" id="betaVersionCheckbox" name="betaVersionCheckbox" onclick="gameStatus.changeBetaVersionFlag()" />
-                        <label id="betaVersionLabel" for="betaVersionCheckbox">Is Beta</label>
-                    </div>
-                    <div id="betaVersionContent" class="content-body"></div>
-                    <input type="hidden" id="betaVersionFlag" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-gray" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-submit" id="confirmBtn" onclick="gameStatus.submitBetaVersion()">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @section Scripts{

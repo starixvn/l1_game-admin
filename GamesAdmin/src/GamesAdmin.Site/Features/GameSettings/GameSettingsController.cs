@@ -347,14 +347,5 @@ namespace GamesAdmin.Site.Features.GameSettings
 
             return Json(false);
         }
-
-        [HttpPost]
-        [Route("status/update_beta_version")]
-        public async Task<IActionResult> BetaVersion(string[] games, bool isBeta)
-        {
-            var result = await mediator.Send(new UpdateBetaVersionRequest(games, isBeta));
-
-            return Json(result);
-        }
     }
 }
