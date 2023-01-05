@@ -58,7 +58,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<int> GetConnectedUsers();
 
-        Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
+        Task<bool> CloneNewSlotGame(int gameId, byte fromGameId, string displayName);
     }
 
     public class GameSettingService : IGameSettingService
@@ -195,7 +195,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
 
-        public Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
+        public Task<bool> CloneNewSlotGame(int gameId, byte fromGameId, string displayName)
             => gameApi.CloneNewSlotGame(gameId, fromGameId, displayName);
     }
 }

@@ -96,10 +96,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             var allSlotGames = (await gameService.GetAll()).Where(game => game.Info.Type == GameType.Slots);
             var existingGames = allSlotGames
-                .Select(game => 
-                SlotGame.IsSlotGame(game.Info.Name) 
-                ? SlotGame.FromGameName(game.Info.Name) 
-                : new SlotGame(game.Info.DisplayName, game.Info.GameId));
+                .Select(game =>
+                SlotGame.IsSlotGame(game.Info.Name)
+                ? SlotGame.FromGameName(game.Info.Name)
+                : new SlotGame(game.Info.GameId, game.Info.DisplayName));
 
             return new AddSlotGameViewModel(existingGames);
         }

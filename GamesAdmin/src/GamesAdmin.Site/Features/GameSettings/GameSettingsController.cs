@@ -56,14 +56,16 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
             else
             {
+                addViewModel.Name = SlotConfigExtensions.GetGameName(addViewModel.DisplayName);
+
                 var request = new CreateRequest(
                 mapper.Map<GameInfo>(addViewModel),
                 mapper.Map<EnableSetting>(addViewModel),
                 mapper.Map<BotSetting>(addViewModel),
                 mapper.Map<BetLimit>(addViewModel),
                 mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
-                null,
-                null);
+                new CascadingSlotsConfig(),
+                new SlotRNGConfig());
 
                 await mediator.Send(request);
             }

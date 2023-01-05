@@ -30,6 +30,17 @@ namespace GamesAdmin.Api.Games
             return Ok(gameConfigs);
         }
 
+        [HttpPost]
+        public async Task<bool> Create(GameConfig game)
+        {
+            if (string.IsNullOrWhiteSpace(game.Info.Name))
+            {
+                return false;
+            }
+
+            return await mediator.Send(new CreateRequest(game));
+        }
+
         [HttpPost("clone_new_slot_game")]
         public Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
             => mediator.Send(new CloneNewSlotGameRequest(gameId, fromGameId, displayName));

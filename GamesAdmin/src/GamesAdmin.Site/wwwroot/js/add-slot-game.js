@@ -16,7 +16,7 @@
             }
         },
         onUpdateDisplayName: function (value) {
-            $('#Name')[0].value = value.replace(' ','').toLowerCase();
+            $('#Name')[0].value = value.replaceAll(' ','').toLowerCase();
         }
     }
 }(jQuery))

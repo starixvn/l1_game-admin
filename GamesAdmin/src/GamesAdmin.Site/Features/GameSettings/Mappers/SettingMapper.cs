@@ -73,6 +73,19 @@ namespace GamesAdmin.Site.Features.GameSettings
                     false,
                     src.AllowedCurrency)));
 
+            CreateMap<AddSlotGameViewModel, SlotsConfig>()
+               .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
+               .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
+               .ForMember(dest => dest.StakeLevels, opt => opt.MapFrom(src => ConvertStakeLevels(src.Stakes, src.Jackpots, src.BotRatios)))
+               .ForMember(dest => dest.Bonus, opt => opt.MapFrom(src => new Bonus(src.MinBonus, src.MaxBonus)))
+               .ForMember(dest => dest.Jackpot, opt => new Jackpot(
+                false,
+                0,
+                0,
+                0,
+                false,
+                ""));
+
             CreateMap<AddViewModel, CascadingSlotsConfig>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (byte)src.Mode))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ConvertPercentValue()))
@@ -88,6 +101,11 @@ namespace GamesAdmin.Site.Features.GameSettings
             CreateMap<AddViewModel, EnableSetting>();
             CreateMap<AddViewModel, BotSetting>();
             CreateMap<AddViewModel, BetLimit>();
+
+            CreateMap<AddSlotGameViewModel, GameInfo>();
+            CreateMap<AddSlotGameViewModel, EnableSetting>();
+            CreateMap<AddSlotGameViewModel, BotSetting>();
+            CreateMap<AddSlotGameViewModel, BetLimit>();
 
             CreateMap<AddViewModel, Bonus>();
         }

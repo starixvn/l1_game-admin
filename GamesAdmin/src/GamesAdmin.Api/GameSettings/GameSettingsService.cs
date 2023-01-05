@@ -8,6 +8,7 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -50,8 +51,6 @@ namespace GamesAdmin.Api.Games
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
-
-        Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -96,7 +95,9 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                var gameEnum = Enumeration.FromValue<Game>(game.Info.Name);
+                var gameId = game.Info.Type == GameType.Slots 
+                    ? game.Info.GameId 
+                    : (int)Enumeration.FromValue<Game>(game.Info.Name).GameId;
 
                 var entity = new GameConfigEntity
                 {
@@ -116,7 +117,7 @@ namespace GamesAdmin.Api.Games
                     SlotRNGConfig = game.SlotRNGConfig,
                     SiteExclusions = new string[] { },
                     Time = DateTime.Now,
-                    GameId = (int)gameEnum.GameId,
+                    GameId = gameId,
                     DisplayName = game.Info.DisplayName,
                 };
 
@@ -493,30 +494,6 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.RandomMode, gameInfo.RandomMode);
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
-
-            return true;
-        }
-
-        public async Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
-        {
-            try
-            {
-                var cloneGame = SlotGame.FromGameId(fromGameId);
-                var gameEntity = await repository.FindOneAsync(entity => entity.Name == cloneGame.Value);
-
-                gameEntity.DisplayName = displayName;
-                gameEntity.GameId = gameId;
-                gameEntity.Enabled = false;
-                gameEntity.Name = displayName.Replace(" ", string.Empty).ToLowerInvariant();
-
-                await repository.InsertOneAsync(gameEntity);
-            }
-            catch (Exception ex)
-            {
-                sentryClient.CaptureException(ex);
-
-                return false;
-            }
 
             return true;
         }

@@ -1,35 +1,32 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Extensions;
 
 namespace GamesAdmin.Core.Enumeration
 {
     public class SlotGame
     {
-        private static readonly List<SlotGame> Games = new List<SlotGame>()
+        private static readonly List<SlotGame> Games = new List<SlotGame>
         {
-            new SlotGame("Four Guardians", (byte)GameId.FourGuardians),
-            new SlotGame("Night Club", (byte)GameId.NightClub),
-            new SlotGame("Way To Goal", (byte)GameId.WayToGoal),
-            new SlotGame("Fortune Cat", (byte)GameId.FortuneCat),
-            new SlotGame("Heroes Slot", (byte)GameId.HeroesSlot)
+            new SlotGame((byte)GameId.FourGuardians,"Four Guardians"),
+            new SlotGame((byte)GameId.NightClub,"Night Club") ,
+            new SlotGame((byte)GameId.WayToGoal,"Way To Goal"),
+            new SlotGame((byte)GameId.FortuneCat,"Fortune Cat" ),
+            new SlotGame((byte)GameId.HeroesSlot,"Heroes Slot" )
         };
 
-        public SlotGame()
-        {
-        }
-
-        public SlotGame(string displayName, int id)
+        public SlotGame(int id, string displayName)
         {
             Id = id;
             DisplayName = displayName;
-            ServiceName = displayName.Replace(" ", "_").ToLowerInvariant();
-            Value = ServiceName.Replace("_", string.Empty);
+            ServiceName = SlotConfigExtensions.GetServiceName(displayName);
+            Value = SlotConfigExtensions.GetGameName(displayName);
         }
+
+        public int Id { get; }
 
         public string DisplayName { get; }
 
         public string Value { get; }
-
-        public int Id { get; }
 
         public string ServiceName { get; }
 
@@ -38,7 +35,5 @@ namespace GamesAdmin.Core.Enumeration
         public static SlotGame FromGameName(string gameName) => Games.Find(game => game.Value == gameName);
 
         public static bool IsSlotGame(string gameName) => Games.Exists(game => game.Value == gameName);
-
-        public static IEnumerable<SlotGame> AllGames => Games;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Api.GameSettings;
 using GamesAdmin.Api.GameSettings.Requests;
 using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Core.Models;
@@ -10,6 +11,7 @@ namespace GamesAdmin.Api.Games
 {
     public class GameSettingsHandler
         : IRequestHandler<GetAllRequest, IEnumerable<GameConfig>>
+        , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<GetByNameRequest, GameConfig>
         , IRequestHandler<UpdateStatusRequest, bool>
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
@@ -27,16 +29,23 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<CloneNewSlotGameRequest, bool>
     {
         private readonly IGameSettingsService gameService;
-        private readonly IGlobalConfigService globalConfigService;
+        private readonly ISlotSettingService slotSettingService;
 
-        public GameSettingsHandler(IGameSettingsService gamesService, IGlobalConfigService globalConfigService)
+        public GameSettingsHandler(IGameSettingsService gameService, ISlotSettingService slotSettingService)
         {
-            this.gameService = gamesService;
-            this.globalConfigService = globalConfigService;
+            this.gameService = gameService;
+            this.slotSettingService = slotSettingService;
         }
 
         public Task<IEnumerable<GameConfig>> Handle(GetAllRequest request, CancellationToken cancellationToken)
          => gameService.Get();
+
+        public async Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
+        {
+            var createResult = await gameService.Create(request.Game);
+
+            return createResult;
+        }
 
         public Task<GameConfig> Handle(GetByNameRequest request, CancellationToken cancellationToken)
         => gameService.GetByName(request.Name);
@@ -81,6 +90,6 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateSlotRNGConfig(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig);
 
         public Task<bool> Handle(CloneNewSlotGameRequest request, CancellationToken cancellationToken)
-        => gameService.CloneNewSlotGame(request.GameId, request.FromGameId, request.DisplayName);
+        => slotSettingService.CloneNewSlotGame(request.GameId, request.FromGameId, request.DisplayName);
     }
 }

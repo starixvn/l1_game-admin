@@ -12,6 +12,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
     public interface IGeneralGameSettingService
     {
         Task<IEnumerable<GeneralGameSetting>> GetAll();
+
+        Task<string> GetGameName(int gameId);
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -50,7 +52,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
                 var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
 
-                return gameInfo.Name;
+                return gameInfo?.Name;
             }
         }
     }

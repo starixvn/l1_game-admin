@@ -4,6 +4,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class BetLimit
     {
+        public BetLimit()
+        {
+
+        }
+
         public BetLimit(double minBet, double maxBet, Dictionary<string, double> maxBetChoices = null)
         {
             MinBet = minBet;

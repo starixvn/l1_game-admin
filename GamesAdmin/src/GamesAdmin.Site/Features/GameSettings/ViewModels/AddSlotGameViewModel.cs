@@ -16,7 +16,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             BetLevels = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             ExistingGames = existingGames.Select(game => new SelectListItem(game.DisplayName, game.Id.ToString()));
             Stakes = new double[] { 0, 0, 0 };
-            BetLevels = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             CloneSettings = true;
             Type = GameType.Slots;
             ModeItems = Enum.GetValues(typeof(GameMode))
@@ -30,7 +29,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             BetLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             ExistingGames = new List<SelectListItem>();
             Stakes = new double[] { 0, 0, 0 };
-            BetLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             CloneSettings = true;
             Type = GameType.Slots;
             ModeItems = Enum.GetValues(typeof(GameMode))
@@ -44,7 +42,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string DisplayName { get; set; }
 
         [DisplayName("Game Id")]
-        public byte GameId { get; set; }
+        public int GameId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -92,5 +90,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double BigWinRatio { get; set; }
 
         public int[] BetLevels { get; set; }
+
+
+        public double[] Jackpots => new double[] { 0, 0, 0 };
+
+        public double[] BotRatios => new double[] { 40, 40, 20 };
+
     }
 }

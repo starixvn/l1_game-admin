@@ -1,21 +1,20 @@
-﻿using GamesAdmin.Core.Enumeration;
-using MediatR;
+﻿using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class CloneSlotGameRequest : IRequest<bool>
     {
-        public CloneSlotGameRequest(string displayName, byte gameId, byte cloneFrom)
+        public CloneSlotGameRequest(string displayName, int gameId, byte cloneFrom)
         {
             DisplayName = displayName;
             GameId = gameId;
             ClonedFrom = cloneFrom;
         }
 
-        public string DisplayName { get; set; }
+        public string DisplayName { get; }
 
-        public byte GameId { get; set; }
+        public int GameId { get; }
 
-        public byte ClonedFrom { get; set; }
+        public byte ClonedFrom { get; }
     }
 }
