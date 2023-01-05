@@ -18,8 +18,8 @@ namespace GamesAdmin.Core.Enumeration
         {
             Id = id;
             DisplayName = displayName;
-            ServiceName = SlotConfigExtensions.GetServiceName(displayName);
-            Value = SlotConfigExtensions.GetGameName(displayName);
+            ServiceName = NamingConverter.ServiceName(displayName);
+            Value = NamingConverter.GameConfigName(displayName);
         }
 
         public int Id { get; }

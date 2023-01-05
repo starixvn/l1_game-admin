@@ -33,7 +33,7 @@ namespace GamesAdmin.Database
             var userNameRegex = new Regex($"^(?i){filter.Username}$");
             var slotGame = SlotGame.FromGameId((byte)filter.Game);
 
-            var betCollection = database.GetCollection<SlotGameRoundEntity>($"{slotGame.Value}_rounds");
+            var betCollection = database.GetCollection<SlotGameRoundEntity>(NamingConverter.RoundCollection(slotGame.DisplayName));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 

@@ -24,11 +24,5 @@ namespace GamesAdmin.Core.Extensions
 
             return config;
         }
-
-        public static string GetServiceName(string displayName)
-            => displayName.Replace(" ", "_").ToLowerInvariant();
-
-        public static string GetGameName(string displayName)
-            => displayName.Replace(" ", string.Empty).ToLowerInvariant();
     }
 }

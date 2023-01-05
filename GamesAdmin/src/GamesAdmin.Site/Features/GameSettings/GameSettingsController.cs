@@ -56,7 +56,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
             else
             {
-                addViewModel.Name = SlotConfigExtensions.GetGameName(addViewModel.DisplayName);
+                addViewModel.Name = NamingConverter.GameConfigName(addViewModel.DisplayName);
 
                 var request = new CreateRequest(
                 mapper.Map<GameInfo>(addViewModel),

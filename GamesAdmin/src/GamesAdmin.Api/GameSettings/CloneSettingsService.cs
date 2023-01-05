@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.GameSettings
                     gameEntity.DisplayName = displayName;
                     gameEntity.GameId = gameId;
                     gameEntity.Enabled = false;
-                    gameEntity.Name = SlotConfigExtensions.GetGameName(displayName);
+                    gameEntity.Name = NamingConverter.GameConfigName(displayName);
 
                     await repository.InsertOneAsync(gameEntity);
 
