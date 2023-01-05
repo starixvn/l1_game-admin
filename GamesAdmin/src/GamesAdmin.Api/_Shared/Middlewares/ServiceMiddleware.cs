@@ -40,7 +40,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
-            services.AddScoped<ISlotSettingService, SlotSettingsService>();
+            services.AddScoped<ICloneSettingService, CloneSettingsService>();
             services.AddScoped<IGeneralGameSettingService, GeneralGameSettingService>();
             services.AddScoped<ICurrencyGroupGameService, CurrencyGroupGameService>();
             services.AddScoped<IUMService, UMService>();

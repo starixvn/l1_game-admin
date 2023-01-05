@@ -8,18 +8,18 @@ using Sentry;
 
 namespace GamesAdmin.Api.GameSettings
 {
-    public interface ISlotSettingService
+    public interface ICloneSettingService
     {
-        Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName);
+        Task<bool> CloneNewGame(byte gameId, byte fromGameId, string displayName);
     }
 
-    public class SlotSettingsService : ISlotSettingService
+    public class CloneSettingsService : ICloneSettingService
     {
         private readonly IGenericRepository<GameConfigEntity> repository;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ISentryClient sentryClient;
 
-        public SlotSettingsService(IGenericRepository<GameConfigEntity> repository,
+        public CloneSettingsService(IGenericRepository<GameConfigEntity> repository,
             IGeneralGameSettingService generalGameSettingService,
             ISentryClient sentryClient)
         {
@@ -28,7 +28,7 @@ namespace GamesAdmin.Api.GameSettings
             this.sentryClient = sentryClient;
         }
 
-        public async Task<bool> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
+        public async Task<bool> CloneNewGame(byte gameId, byte fromGameId, string displayName)
         {
             try
             {
