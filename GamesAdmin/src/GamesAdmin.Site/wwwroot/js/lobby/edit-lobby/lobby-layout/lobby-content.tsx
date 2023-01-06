@@ -203,7 +203,13 @@ const LobbyContent: React.FC<Props> = ({
   };
 
   return (
-    <div>
+    <div
+      style={{
+        border: "solid 1px #0d81e1",
+        borderTop: "solid 8px #0d81e1",
+        borderRadius: "5px",
+      }}
+    >
       <div className="layout-icon">
         <LobbyPreview
           gameSettings={lobbyCategory?.gameSettings}

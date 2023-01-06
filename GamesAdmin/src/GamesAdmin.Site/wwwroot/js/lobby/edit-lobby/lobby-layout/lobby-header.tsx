@@ -21,19 +21,27 @@ const reorder = (list: Category[], startIndex, endIndex): Category[] => {
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle, isEditing) => ({
-  padding: grid * 2,
+  padding: "1px 16px",
   margin: `0 ${grid}px 0 0`,
-  border: `1px solid #4dacee`,
+  border: `1px solid gray`,
 
-  background: isEditing ? "#afd7f3" : isDragging ? "white" : "white",
+  background: isEditing ? "#0d81e1" : isDragging ? "white" : "white",
+  color: isEditing ? "white" : "black",
+
+  borderBottom: "none",
 
   ...draggableStyle,
+});
+
+const getStyleEdit = (isEditing) => ({
+  color: isEditing ? "#262424" : "#007bff",
 });
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   display: "flex",
   padding: grid,
+  marginBottom: "-8px",
 });
 
 const customStyles = {
@@ -205,6 +213,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                             className="edit-button"
                             href="#"
                             onClick={(e) => clickEditCategory(e, index)}
+                            style={getStyleEdit(editingIndex === index)}
                           >
                             <i className="icon-edit"></i>
                           </a>
@@ -218,6 +227,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                   className="add-button"
                   href="#"
                   onClick={(e) => addHandler(e)}
+                  style={{ height: "30px", marginBottom: "2px" }}
                 >
                   Add Category
                 </a>

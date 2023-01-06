@@ -74,6 +74,8 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
   };
 
   let [availableGameIds, setAvailableGameIds] = useState<Game[]>([]);
+  const [message, setMessage] = useState("");
+  let [editingDisplayTime, setEditingDisplayTime] = useState(-1);
 
   const [editedCategory, setEditedCategory] = useState({
     gameId: getDefaultGameIdToAdd(),
@@ -116,6 +118,7 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
 
     const category = banners[index];
     category["index"] = index;
+    setEditingDisplayTime(category.displayTime);
     setEditedCategory(category);
     openModal();
   };
@@ -139,9 +142,25 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
   };
 
   const saveCategory = () => {
-    if (!(editedCategory["index"] >= 0)) {
-      banners.push(editedCategory);
+    if (editedCategory && editedCategory.displayTime > 0) {
+      if (!(editedCategory["index"] >= 0)) {
+        banners.push(editedCategory);
+      }
+      closeModal();
+    } else if (editedCategory && editedCategory.displayTime === 0) {
+      setMessage("Display Time must be greater than 0");
     }
+  };
+
+  const cancel = () => {
+    if (
+      JSON.stringify(editingDisplayTime) !==
+      JSON.stringify(editedCategory.displayTime)
+    ) {
+      editedCategory.displayTime = editingDisplayTime;
+      setEditedCategory(editedCategory);
+    }
+
     closeModal();
   };
 
@@ -232,13 +251,13 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={closeModal}
+            onClick={cancel}
           >
             <span aria-hidden="true">×</span>
           </button>
         </h2>
 
-        <form className="popup-body form">
+        <div className="popup-body form">
           <div className="form-group">
             <label className="required-field-label" htmlFor="GameID">
               Game Id
@@ -266,6 +285,9 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
               onChange={(e) => setDisplayTime(e.target.value)}
             />
           </div>
+          <div style={{ color: "red" }}>
+            <span>{message}</span>
+          </div>
           <div className="form-group text-right">
             {isEditing() && (
               <button className="btn-gray m-1" onClick={removeCategory}>
@@ -281,7 +303,7 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
               Save
             </button>
           </div>
-        </form>
+        </div>
       </Modal>
     </div>
   );
