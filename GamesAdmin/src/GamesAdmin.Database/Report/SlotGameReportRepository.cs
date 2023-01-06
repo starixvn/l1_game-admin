@@ -35,16 +35,14 @@ namespace GamesAdmin.Database
 
             var betCollection = database.GetCollection<SlotGameRoundEntity>(NamingConverter.RoundCollection(slotGame.DisplayName));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
-            var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
 
             var bets = await betCollection.Find(GetFilterExpression(filter)).ToListAsync();
-            var accounts = await accountCollection.AsQueryable().ToListAsync();
 
             var result = new List<SlotGameBetReportEntity>();
 
-            bets.ForEach(bet =>
+            foreach (var bet in bets)
             {
-                var betUser = accounts.Find(acount => acount.Id == ObjectId.Parse(bet.Uid));
+                var betUser = await accountCollection.Find(acount => acount.Id == ObjectId.Parse(bet.Uid)).FirstOrDefaultAsync();
 
                 if (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(betUser.Local.MemberName))
                 {
@@ -70,7 +68,7 @@ namespace GamesAdmin.Database
                         ExchangeRateId = bet.ExchangeRateId
                     });
                 }
-            });
+            }
 
             return result;
         }
