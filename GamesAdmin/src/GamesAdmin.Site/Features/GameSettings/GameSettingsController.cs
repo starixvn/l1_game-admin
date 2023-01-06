@@ -44,31 +44,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new AddSlotGameRequest()));
 
         [HttpPost]
-        public async Task<IActionResult> CreateSlotGame([Bind] AddSlotGameViewModel addViewModel)
+        public async Task<IActionResult> CloneSlotGame([Bind] AddSlotGameViewModel addViewModel)
         {
-            if (addViewModel.CloneSettings)
-            {
-                var request = new CloneSlotGameRequest(addViewModel.DisplayName,
-                    addViewModel.GameId,
-                    addViewModel.SelectedGame);
+            var request = new CloneSlotGameRequest(addViewModel.DisplayName,
+                addViewModel.GameId,
+                addViewModel.SelectedGame);
 
-                await mediator.Send(request);
-            }
-            else
-            {
-                addViewModel.Name = NamingConverter.GameConfigName(addViewModel.DisplayName);
-
-                var request = new CreateRequest(
-                mapper.Map<GameInfo>(addViewModel),
-                mapper.Map<EnableSetting>(addViewModel),
-                mapper.Map<BotSetting>(addViewModel),
-                mapper.Map<BetLimit>(addViewModel),
-                mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
-                new CascadingSlotsConfig(),
-                new SlotRNGConfig());
-
-                await mediator.Send(request);
-            }
+            await mediator.Send(request);
 
             return RedirectToAction(nameof(Index));
         }

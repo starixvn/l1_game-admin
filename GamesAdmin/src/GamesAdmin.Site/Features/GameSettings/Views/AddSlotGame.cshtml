@@ -6,7 +6,7 @@
 }
 
 <div class="col-md-12 col-lg-5 card">
-    <form class="card-body form" asp-action="CreateSlotGame" asp-controller="GameSettings" method="post">
+    <form class="card-body form" asp-action="CloneSlotGame" asp-controller="GameSettings" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -18,7 +18,7 @@
         <div class="form-group row">
             <div class="col-6">
                 <label asp-for="DisplayName" class="control-label"></label>
-                <input asp-for="DisplayName" onchange="addSlotGame.onUpdateDisplayName(this.value)" class="form-control"></input>
+                <input asp-for="DisplayName" onchange="addSlotGame.onUpdateDisplayName(this.value)" class="form-control" />
             </div>
             <div class="col-6">
                 <label asp-for="Name" class="control-label"></label>
@@ -26,97 +26,10 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class="col-lg-4">
-                <input type="checkbox" onchange="addSlotGame.onChangeSettingOption()" asp-for="CloneSettings" />
-                <label asp-for="CloneSettings" class="control-label"></label>
-            </div>
-        </div>
 
         <div id="selectgame" class="form-group">
             <label asp-for="SelectedGame" class="control-label"></label>
             <select asp-items="@Model.ExistingGames" asp-for="SelectedGame" class="form-control common-field"></select>
-        </div>
-
-        <div id="settings" class="slots-game" style="display:none;">
-            
-        <div class="form-group row">
-            <div class="col-lg-4">
-                <input type="checkbox" asp-for="Enabled" />
-                <label asp-for="Enabled" class="control-label"></label>
-            </div>
-            <div class="col-lg-4">
-                <input type="checkbox" asp-for="BotEnabled" />
-                <label asp-for="BotEnabled" class="control-label"></label>
-            </div>
-            <div class="col-lg-4">
-                <input type="checkbox" asp-for="EnableFreeBet" />
-                <label asp-for="EnableFreeBet" class="control-label"></label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="DelayStartTime" class="control-label"></label>
-            <input type="number" asp-for="DelayStartTime" class="form-control" />
-        </div>
-
-            <div class="form-group">
-                <label asp-for="Mode" class="control-label"></label>
-                <select asp-items="@Model.ModeItems" asp-for="Mode" class="form-control common-field"></select>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-lg-6">
-                    <label asp-for="NumberOfIcons" class="control-label"></label>
-                    <input type="number" asp-for="NumberOfIcons" class="form-control common-field" />
-                </div>
-                <div class="col-lg-6">
-                    <label asp-for="OddsPerIcon" class="control-label"></label>
-                    <input type="number" asp-for="OddsPerIcon" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label" asp-for="BigWinRatio"></label>
-                <input type="number" asp-for="BigWinRatio" class="form-control common-field" />
-            </div>
-
-            <fieldset>
-                <legend>Stake Levels</legend>
-                <div class="form-group row">
-                    @for (var i = 0; i < Model.Stakes.Length; i++)
-                    {
-                        <div class="col-lg-4">
-                            <label class="control-label">@($"Level {i + 1}")</label>
-                            <input type="number" asp-for="@Model.Stakes[i]" class="form-control" />
-                        </div>
-                    }
-                </div>
-            </fieldset>
-            <br />
-
-            <fieldset>
-                <legend>Bonus</legend>
-                <div class="form-group row">
-                    <div class="col-lg-8">
-                        Note: Bonus = (random (from &nbsp; <b>Min</b> &nbsp; to &nbsp; <b>Max</b>) * Stake Level)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <label class="control-label">Min</label>
-                        <input type="number" asp-for="MinBonus" class="form-control common-field" />
-                        <span asp-validation-for="MinBonus" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label class="control-label">Max</label>
-                        <input type="number" asp-for="MaxBonus" class="form-control common-field" />
-                        <span asp-validation-for="MaxBonus" class="text-danger"></span>
-                    </div>
-                </div>
-            </fieldset>
-            <br />
         </div>
 
         <div class="form-group">

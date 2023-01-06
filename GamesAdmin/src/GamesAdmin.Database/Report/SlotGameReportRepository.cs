@@ -73,7 +73,7 @@ namespace GamesAdmin.Database
             return result;
         }
 
-        private Expression<Func<SlotGameRoundEntity, bool>> GetFilterExpression(SlotGameBetReportFilter filter)
+        private static Expression<Func<SlotGameRoundEntity, bool>> GetFilterExpression(SlotGameBetReportFilter filter)
         {
             Expression<Func<SlotGameRoundEntity, bool>> expression;
             if (filter.RoundId > 0)

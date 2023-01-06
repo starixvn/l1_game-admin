@@ -8,7 +8,6 @@ using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Database;
@@ -95,8 +94,8 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                var gameId = game.Info.Type == GameType.Slots 
-                    ? game.Info.GameId 
+                var gameId = game.Info.Type == GameType.Slots
+                    ? game.Info.GameId
                     : (int)Enumeration.FromValue<Game>(game.Info.Name).GameId;
 
                 var entity = new GameConfigEntity
