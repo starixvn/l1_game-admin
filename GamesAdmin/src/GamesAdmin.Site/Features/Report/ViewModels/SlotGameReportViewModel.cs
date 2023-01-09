@@ -19,6 +19,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [SlotGameReportValidation]
         public new string Username { get; set; }
 
-        public SlotGame GameInfo { get; set; }
+        public string GameConfigName { get; set; }
     }
 }

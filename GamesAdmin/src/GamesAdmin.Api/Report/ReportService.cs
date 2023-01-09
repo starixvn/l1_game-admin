@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -56,19 +57,22 @@ namespace GamesAdmin.Api.Report
         private readonly IMapper mapper;
         private readonly ICascadingSlotReportFactory cascadingSlotReportFactory;
         private readonly ISlotGameReportRepository slotGameReportRepository;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public ReportService(
             IServiceProvider serviceProvider,
             IMapper mapper,
             IGenericRepository<SpinResultEntity> spinResultRepository,
             ICascadingSlotReportFactory cascadingSlotReportFactory,
-            ISlotGameReportRepository slotGameReportRepository)
+            ISlotGameReportRepository slotGameReportRepository,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.serviceProvider = serviceProvider;
             this.mapper = mapper;
             this.spinResultRepository = spinResultRepository;
             this.cascadingSlotReportFactory = cascadingSlotReportFactory;
             this.slotGameReportRepository = slotGameReportRepository;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
@@ -315,6 +319,10 @@ namespace GamesAdmin.Api.Report
 
         public async Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter)
         {
+            var games = await generalGameSettingService.GetAll();
+
+            filter.GameInfo = games.FirstOrDefault(game => game.Name == filter.Game);
+
             var result = await slotGameReportRepository.GetAsync(filter);
 
             return result.Select(x => mapper.Map<SlotGameBetRecord>(x));

@@ -31,7 +31,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ILotteryReportRepository, LotteryReportRepository>();
             services.AddScoped<IJackpotRepository, JackpotRepository>();
             services.AddScoped<IThreeCardsReportRepository, ThreeCardsReportRepository>();
-            services.AddScoped<IHeroesSlotReportRepository, HeroesSlotReportRepository>();
             services.AddScoped<IKenoMatchReportRepository, KenoMatchReportRepository>();
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
@@ -45,12 +44,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BaccaratReportRepository<BlockchainBaccaratRoundEntity, BlockchainBaccaratBetEntity>>();
             services.AddScoped<IFruitSlotReportRepository, FruitSlotReportRepository>();
             services.AddScoped<IMiniSeDieMultiplayReportRepository, MiniSeDieMultiplayReportRepository>();
-<<<<<<< HEAD
             services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
-            services.AddScoped<IFortuneCatReportRepository, FortuneCatReportRepository>();
+<<<<<<< HEAD
+            services.AddScoped<IWinThreeCardsReportRepository, WinThreeCardsReportRepository>();
 =======
             services.AddScoped<ISlotGameReportRepository, SlotGameReportRepository>();
->>>>>>> 4257f3b6 (feat: refactor report for all slot game)
+>>>>>>> 016e79b3 (fix: remove SlotGame.cs)
         }
     }
 }

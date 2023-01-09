@@ -412,7 +412,7 @@ namespace GamesAdmin.Site.Features.Report
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
                     betViewModel.SystemType = systemSettings.System;
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                    betViewModel.Game = request.Game.Value;
+                    betViewModel.Game = request.Game;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);

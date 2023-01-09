@@ -88,27 +88,35 @@ namespace GamesAdmin.Api.Report
         public async Task<IEnumerable<SlotGameBetRecord>> SlotGame(long roundId,
             string nickname,
             bool excludeUUS,
-            GameId game,
+            string game,
             string partnerId,
             DateTime fromDate,
             DateTime toDate,
             string username,
             bool convertToUSD)
         {
-            var filter = new SlotGameBetReportFilter
+            try
             {
-                RoundId = roundId,
-                Nickname = nickname,
-                ExcludeUUS = excludeUUS,
-                Game = game,
-                PartnerId = partnerId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                Username = username,
-                ConvertToUSD = convertToUSD,
-            };
+                var filter = new SlotGameBetReportFilter
+                {
+                    RoundId = roundId,
+                    Nickname = nickname,
+                    ExcludeUUS = excludeUUS,
+                    Game = game,
+                    PartnerId = partnerId,
+                    FromDate = fromDate,
+                    ToDate = toDate,
+                    Username = username,
+                    ConvertToUSD = convertToUSD,
+                };
 
-            return await mediator.Send(new SlotGameReportRequest(filter));
+                return await mediator.Send(new SlotGameReportRequest(filter));
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+         
         }
 
         [HttpGet]

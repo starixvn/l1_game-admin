@@ -32,7 +32,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<JsonWebToken> GetJWT(JWTRequest request);
 
-        Task<OnlineUsers> GetOnlineUsers(Game gameType = null);
+        Task<OnlineUsers> GetOnlineUsers(string gameConfigName = null);
 
         Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request);
 
@@ -122,18 +122,18 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task<OnlineUsers> GetOnlineUsers(Game gameType = null)
+        public async Task<OnlineUsers> GetOnlineUsers(string gameConfigName)
         {
             try
             {
-                if (gameType == null)
+                if (gameConfigName == null)
                 {
                     return await userServiceApi.GetAllOnlineUsers();
                 }
 
-                var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameType);
+                var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameConfigName);
 
-                return await onlineUserService.GetOnlineUsers(ConvertTypeToGameServerName(gameType));
+                return await onlineUserService.GetOnlineUsers(ConvertTypeToGameServerName(gameConfigName));
             }
             catch (Exception ex)
             {
@@ -143,9 +143,9 @@ namespace GamesAdmin.Api.GameServers
             return new OnlineUsers();
         }
 
-        private static string ConvertTypeToGameServerName(Game gameType)
+        private static string ConvertTypeToGameServerName(string gameType)
         {
-            return gameType.Value switch
+            return gameType switch
             {
                 Game.KenoProMaxValue => "keno",
                 Game.BaccaratValue => "baccarat",

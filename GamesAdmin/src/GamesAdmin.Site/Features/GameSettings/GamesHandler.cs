@@ -8,6 +8,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
@@ -53,6 +54,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly ICurrencyGroupService currencyGroupService;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
         private readonly ISystemSettings systemSettings;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public GamesHandler(
             IMapper mapper,
@@ -61,7 +63,8 @@ namespace GamesAdmin.Site.Features.GameSettings
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService,
-            ISystemSettings systemSettings)
+            ISystemSettings systemSettings, 
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.mapper = mapper;
             this.gameService = gameService;
@@ -70,6 +73,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.currencyGroupService = currencyGroupService;
             this.currencyGroupGameService = currencyGroupGameService;
             this.systemSettings = systemSettings;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
@@ -94,14 +98,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<AddSlotGameViewModel> Handle(AddSlotGameRequest request, CancellationToken cancellationToken)
         {
-            var allSlotGames = (await gameService.GetAll()).Where(game => game.Info.Type == GameType.Slots);
-            var existingGames = allSlotGames
-                .Select(game =>
-                SlotGame.IsSlotGame(game.Info.Name)
-                ? SlotGame.FromGameName(game.Info.Name)
-                : new SlotGame(game.Info.GameId, game.Info.DisplayName));
-
-            return new AddSlotGameViewModel(existingGames);
+            var allSlotGames =  (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.Slots);
+           
+            return new AddSlotGameViewModel(allSlotGames);
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)

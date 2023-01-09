@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
             RoundId = roundId;
             Nickname = nickname;
             ExcludeUUS = excludeUUS;
-            Game = Enumeration.FromValue<Game>(game);
+            Game = game;
             ConvertToUSD = convertToUSD;
         }
 
@@ -54,6 +54,6 @@ namespace GamesAdmin.Site.Features.Report.Requests
 
         public bool ExcludeUUS { get; }
 
-        public Game Game { get; }
+        public string Game { get; }
     }
 }

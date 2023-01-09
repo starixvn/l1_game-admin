@@ -9,7 +9,7 @@ namespace GamesAdmin.Api.GameServers
 {
     public interface IOnlineUserApiFactory
     {
-        IOnlineUserApi GetOnlineUserApi(Game game);
+        IOnlineUserApi GetOnlineUserApi(string gameConfigName);
     }
 
     public class OnlineUserApiFactory : IOnlineUserApiFactory
@@ -77,27 +77,24 @@ namespace GamesAdmin.Api.GameServers
             this.appSettings = appSettings;
         }
 
-        IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(Game game)
+        IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(string gameConfigName)
         {
-            if (SlotGame.IsSlotGame(game.Value))
+            if(Enumeration.Contains<Game>(gameConfigName))
+            {
+                return onlineUserServices.ContainsKey(gameConfigName)
+                    ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[gameConfigName])
+                    : (IOnlineUserApi)serviceProvider.GetService(typeof(IMainOnlineUserApi));
+            }
+            else
             {
                 var refitSettings = new RefitSettings
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
                 };
 
-                var slotGame = SlotGame.FromGameName(game.Value);
-
-                var api = string.Format(appSettings.ServiceApiTemplate, slotGame.ServiceName);
-
+                var api = string.Format(appSettings.ServiceApiTemplate, gameConfigName);
 
                 return RestService.For<ISlotGameOnlineUserApi>(api, refitSettings);
-            }
-            else
-            {
-                return onlineUserServices.ContainsKey(game.Value)
-                    ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[game.Value])
-                    : (IOnlineUserApi)serviceProvider.GetService(typeof(IMainOnlineUserApi));
             }
         }
     }

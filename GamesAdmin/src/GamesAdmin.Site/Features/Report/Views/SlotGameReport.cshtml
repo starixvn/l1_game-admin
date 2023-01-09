@@ -2,7 +2,7 @@
 @using GamesAdmin.Core.Enumeration;
 @model SlotGameReportViewModel
 @{
-    ViewData["Title"] = Model.GameInfo.DisplayName;
+    ViewData["Title"] = Model.GameConfigName;
 }
 
 @section Styles {
@@ -71,7 +71,7 @@
                         </label>
                     </div>
                 </div>
-                <input type="hidden" class="form-control" asp-for="Game" value=@Model.GameInfo.Value>
+                <input type="hidden" class="form-control" asp-for="Game" value=@Model.GameConfigName>
                 <div class="col-auto mt-5">
                     <button type="submit" class="btn-submit">Submit</button>
                     <div id="spinner" class="spinner-border" style="display: none">

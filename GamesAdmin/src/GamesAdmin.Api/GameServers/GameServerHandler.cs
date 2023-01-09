@@ -42,7 +42,7 @@ namespace GamesAdmin.Api.GameServers
         public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
             => string.IsNullOrWhiteSpace(request.Game)
                 ? gameServerService.GetOnlineUsers()
-                : gameServerService.GetOnlineUsers(Enumeration.FromValue<Game>(request.Game));
+                : gameServerService.GetOnlineUsers(request.Game);
 
         public Task<HoldemPokerResultControl> Handle(SetHoldemPokerResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetHoldemPokerResult(request);

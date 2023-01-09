@@ -105,7 +105,7 @@ namespace GamesAdmin.Site.Features.Report
                 request.RoundId,
                 request.Nickname,
                 request.ExcludeUUS,
-                request.Game.Value,
+                request.Game,
                 request.PartnerId,
                 request.FromDate,
                 request.ToDate,

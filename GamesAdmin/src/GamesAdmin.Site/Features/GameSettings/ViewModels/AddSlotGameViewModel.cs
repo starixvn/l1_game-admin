@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings.ViewModels
@@ -15,9 +16,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         {
         }
 
-        public AddSlotGameViewModel(IEnumerable<SlotGame> existingGames)
+        public AddSlotGameViewModel(IEnumerable<GeneralGameSetting> existingGames)
         {
-            ExistingGames = existingGames.Select(game => new SelectListItem(game.DisplayName, game.Id.ToString()));
+            ExistingGames = existingGames.Select(game => new SelectListItem(game.DisplayName, game.GameId.ToString()));
         }
 
         public IEnumerable<SelectListItem> ExistingGames { get; }
