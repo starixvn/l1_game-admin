@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GamesAdmin.Core.Models.GameConfigs;
 
 namespace GamesAdmin.Api.Public.Models
 {
@@ -13,5 +14,7 @@ namespace GamesAdmin.Api.Public.Models
         public bool Enabled { get; set; }
 
         public Dictionary<string, double> Odds { get; set; }
+
+        public SlotsConfig SlotsConfig { get; set; }
     }
 }
