@@ -7,6 +7,8 @@ namespace GamesAdmin.Api.Public.Models
     {
         public int GameId { get; set; }
 
+        public byte Type { get; set; }
+
         public string Name { get; set; }
 
         public string DisplayName { get; set; }
