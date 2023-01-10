@@ -18,6 +18,7 @@ using GamesAdmin.Api.Lobby;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions;
+using GamesAdmin.Api.Public;
 using GamesAdmin.Api.Report;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
@@ -157,6 +158,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped(typeof(MiniSeDieMultiplayReportService<,>));
             services.AddScoped<FanTanReportService>();
 
+            services.AddPublicService();
+
             services.InitApiLog();
         }
 
@@ -182,6 +185,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
             }));
 
             services.AddScoped<IChatBotService, ChatBotService>();
+        }
+
+        private static void AddPublicService(this IServiceCollection services)
+        {
+            services.AddScoped<IGameConfigService, GameConfigService>();
         }
     }
 }
