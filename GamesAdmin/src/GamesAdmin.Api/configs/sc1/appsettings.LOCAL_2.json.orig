@@ -293,23 +293,20 @@
       "Api": "https://l1-proxy2.lumigame.com/fruitslot",
       "Socket": "l1-proxy2.lumigame.com/admin/fruitslot",
       "SocketRoute": "/fruitslot/socket.io"
+
+    },
     "FanTan": {
       "Api": "https://l1-proxy2.lumigame.com/fantan",
       "Socket": "l1-proxy2.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
-    },
 <<<<<<< HEAD
-    "FortuneCat": {
-      "Api": "https://l1-proxy2.lumigame.com/fortunecat",
-      "Socket": "l1-proxy2.lumigame.com/admin/fortunecat",
-      "SocketRoute": "/fortunecat/socket.io"
     },
     "WinThreeCards": {
       "Api": "https://l1-proxy2.lumigame.com/winthreecards",
       "Socket": "l1-proxy2.lumigame.com/admin/winthreecards",
       "SocketRoute": "/winthreecards/socket.io"
 =======
->>>>>>> 44d4656e (feat: slotgame - remove redundant)
+>>>>>>> 647f57ac (fix: rebase conflict - appsettings)
     }
   },
   "SabaApiSettings": {

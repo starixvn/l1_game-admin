@@ -293,23 +293,20 @@
       "Api": "http://l1_fruit_slot_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/fruitslot",
       "SocketRoute": "/sit/fruitslot/socket.io"
+    },
     "FanTan": {
       "Api": "http://l1_fantan_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/fantan",
       "SocketRoute": "/sit/fantan/socket.io"
-    },
 <<<<<<< HEAD
-    "FortuneCat": {
-      "Api": "http://l1_fortune_cat_service_sit:5000",
-      "Socket": "l1uatproxy.sgamesuat.com/admin/fortunecat",
-      "SocketRoute": "/sit/fortunecat/socket.io"
     },
+
     "WinThreeCards": {
       "Api": "http://l1_win_three_cards_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/winthreecards",
       "SocketRoute": "/sit/winthreecards/socket.io"
 =======
->>>>>>> 44d4656e (feat: slotgame - remove redundant)
+>>>>>>> 647f57ac (fix: rebase conflict - appsettings)
     }
   },
   "SabaApiSettings": {

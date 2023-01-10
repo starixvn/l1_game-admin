@@ -239,23 +239,19 @@
       "Api": "http://l2-proxy.lumigame.com/treasureisland",
       "Socket": "l2-proxy.lumigame.com/admin/treasureisland",
       "SocketRoute": "/treasureisland/socket.io"
+    },
     "FanTan": {
       "Api": "http://l2-proxy.lumigame.com/fantan",
       "Socket": "l2-proxy.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
-    },
 <<<<<<< HEAD
-    "FortuneCat": {
-      "Api": "http://haproxy.lumigame.com:7100/fortunecat",
-      "Socket": "haproxy.lumigame.com:7100/admin/fortunecat",
-      "SocketRoute": "/fortunecat/socket.io"
     },
     "WinThreeCards": {
       "Api": "http://l2-proxy.lumigame.com/winthreecards",
       "Socket": "l2-proxy.lumigame.com/admin/winthreecards",
       "SocketRoute": "/winthreecards/socket.io"
 =======
->>>>>>> 44d4656e (feat: slotgame - remove redundant)
+>>>>>>> 647f57ac (fix: rebase conflict - appsettings)
     }
   },
   "SabaApiSettings": {

@@ -294,15 +294,39 @@
       "Socket": "l1-proxy1.lumigame.com/admin/fruitslot",
       "SocketRoute": "/fruitslot/socket.io"
 <<<<<<< HEAD
-    "FanTan": {
-      "Api": "https://l1-proxy1.lumigame.com/fantan",
-      "Socket": "l1-proxy1.lumigame.com/admin/fantan",
-      "SocketRoute": "/fantan/socket.io"
-    },
+      "FanTan": {
+        "Api": "https://l1-proxy1.lumigame.com/fantan",
+        "Socket": "l1-proxy1.lumigame.com/admin/fantan",
+        "SocketRoute": "/fantan/socket.io"
+      },
     "WinThreeCards": {
       "Api": "https://l1-proxy1.lumigame.com/winthreecards",
       "Socket": "l1-proxy1.lumigame.com/admin/winthreecards",
       "SocketRoute": "/winthreecards/socket.io"
+    },
+    "SabaApiSettings": {
+      "Url": "http://l1_game_api_local_1:5000"
+    },
+    "ChatbotApiSettings": {
+      "Token": "0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9",
+      "Url": "https://bot.nexdev.net/skynex/api/messages/",
+      "TimeoutInSeconds": 5,
+      "ConversationIds": {
+        "HighStake": "-1001437835976",
+        "Promotion": "-1001516573929"
+      }
+    },
+    "AdminMonitoringSettings": {
+      "Url": "https://l1-proxy1.lumigame.com/monitoring",
+      "JwtSecretKey": "c798132c-f964-4d53-aa41-b377ebe7065c",
+      "ExpiredTokenByMinutes": 1440
+=======
+    },
+    "FanTan": {
+      "Api": "https://l1-proxy1.lumigame.com/fantan",
+      "Socket": "l1-proxy1.lumigame.com/admin/fantan",
+      "SocketRoute": "/fantan/socket.io"
+>>>>>>> 647f57ac (fix: rebase conflict - appsettings)
     }
   },
   "SabaApiSettings": {
@@ -323,29 +347,3 @@
     "ExpiredTokenByMinutes": 1440
   }
 }
-=======
-      "FanTan": {
-        "Api": "https://l1-proxy1.lumigame.com/fantan",
-        "Socket": "l1-proxy1.lumigame.com/admin/fantan",
-        "SocketRoute": "/fantan/socket.io"
-      },
-    },
-    "SabaApiSettings": {
-      "Url": "http://l1_game_api_local_1:5000"
-    },
-    "ChatbotApiSettings": {
-      "Token": "0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9",
-      "Url": "https://bot.nexdev.net/skynex/api/messages/",
-      "TimeoutInSeconds": 5,
-      "ConversationIds": {
-        "HighStake": "-1001437835976",
-        "Promotion": "-1001516573929"
-      }
-    },
-    "AdminMonitoringSettings": {
-      "Url": "https://l1-proxy1.lumigame.com/monitoring",
-      "JwtSecretKey": "c798132c-f964-4d53-aa41-b377ebe7065c",
-      "ExpiredTokenByMinutes": 1440
-    }
-  }
->>>>>>> dd8ecefb (fix: admin api LOCAL1 config)
