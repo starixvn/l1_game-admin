@@ -45,6 +45,8 @@ namespace GamesAdmin.Api.GameServers
         Task<bool> VerifyAdminMonitoringToken(string token);
 
         Task<int> GetConnectedUsers();
+
+        Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -53,7 +55,9 @@ namespace GamesAdmin.Api.GameServers
         private readonly INotificationServiceApi notificationServiceApi;
         private readonly ISentryClient sentryClient;
         private readonly IOnlineUserApiFactory onlineUserApiFactory;
+        private readonly ISlotBoardApiFactory slotBoardApiFactory;
         private readonly IGameUserService gameUserService;
+        private readonly IGameSettingsService gameSettingService;
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
         private readonly IHiLoApi hiloApi;
         private readonly IGenericRepository<AdminUserEntity> userRepository;
@@ -63,7 +67,9 @@ namespace GamesAdmin.Api.GameServers
         public GameServerService(
             ISentryClient sentryClient,
             IOnlineUserApiFactory onlineUserApiFactory,
+            ISlotBoardApiFactory slotBoardApiFactory,
             IGameUserService gameUserService,
+            IGameSettingsService gameSettingService,
             IHoldemPokerApiFactory holdemPokerApiFactory,
             IHiLoApi hiloApi,
             IAppSettings appSettings,
@@ -74,7 +80,9 @@ namespace GamesAdmin.Api.GameServers
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
+            this.slotBoardApiFactory = slotBoardApiFactory;
             this.gameUserService = gameUserService;
+            this.gameSettingService = gameSettingService;
             this.holdemPokerApiFactory = holdemPokerApiFactory;
             this.hiloApi = hiloApi;
             this.appSettings = appSettings;
@@ -181,6 +189,28 @@ namespace GamesAdmin.Api.GameServers
             sentryClient.CaptureException(ex);
         }
 
+        public async Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request)
+        {
+            try
+            {
+                var config = await gameSettingService.GetByName(request.GameConfigName);
+                var isExcludeTestCurrency = (config?.SlotsConfig?.Jackpot) != null && config.SlotsConfig.Jackpot.ExcludeTestCurrency;
+
+                if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
+                {
+                    var result = await slotBoardApiFactory.SetBoardApi(request.GameConfigName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
+                    result.Result = request.Results.ToList();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return null;
+        }
 
         public async Task<HoldemPokerResultControl> SetHoldemPokerResult(SetHoldemPokerResultRequest request)
         {

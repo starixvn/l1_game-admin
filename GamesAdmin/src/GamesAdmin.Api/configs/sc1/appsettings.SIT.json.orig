@@ -149,6 +149,11 @@
       "Socket": "l1uatproxy.sgamesuat.com/admin/roulette",
       "SocketRoute": "/sit/roulette/socket.io"
     },
+    "FourGuardians": {
+      "Api": "http://l1_four_guardians_service_sit:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/fourguardians",
+      "SocketRoute": "/sit/fourguardians/socket.io"
+    },
     "ThreeCards": {
       "Api": "http://l1_three_cards_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/threecards",
@@ -194,6 +199,11 @@
       "Socket": "l1uatproxy.sgamesuat.com/admin/kenonorth",
       "SocketRoute": "/sit/minikeno/socket.io"
     },
+    "HeroesSlot": {
+      "Api": "http://l1_heroes_slot_service_sit:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/heroesslot",
+      "SocketRoute": "/sit/heroesslot/socket.io"
+    },
     "BitcoinMaster": {
       "Api": "http://l1_bitcoin_master_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/bitcoinmaster",
@@ -234,10 +244,20 @@
       "Socket": "l1uatproxy.sgamesuat.com/admin/texasholdempoker",
       "SocketRoute": "/sit/texasholdempoker/socket.io"
     },
+    "NightClub": {
+      "Api": "http://l1_night_club_service_sit:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/nightclub",
+      "SocketRoute": "/sit/nightclub/socket.io"
+    },
     "TreasureIsland": {
       "Api": "http://l1_treasure_island_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/treasureisland",
       "SocketRoute": "/sit/treasureisland/socket.io"
+    },
+    "WayToGoal": {
+      "Api": "http://l1_way_to_goal_service_sit:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/waytogoal",
+      "SocketRoute": "/sit/waytogoal/socket.io"
     },
     "BlockchainBaccarat": {
       "Api": "http://l1_blockchain_baccarat_service_sit:5000",
@@ -298,15 +318,19 @@
       "Api": "http://l1_fantan_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/fantan",
       "SocketRoute": "/sit/fantan/socket.io"
-<<<<<<< HEAD
     },
+<<<<<<< HEAD
 
     "WinThreeCards": {
       "Api": "http://l1_win_three_cards_service_sit:5000",
       "Socket": "l1uatproxy.sgamesuat.com/admin/winthreecards",
       "SocketRoute": "/sit/winthreecards/socket.io"
 =======
->>>>>>> 647f57ac (fix: rebase conflict - appsettings)
+    "FortuneCat": {
+      "Api": "http://l1_fortune_cat_service_sit:5000",
+      "Socket": "l1uatproxy.sgamesuat.com/admin/fortunecat",
+      "SocketRoute": "/sit/fortunecat/socket.io"
+>>>>>>> ade15f3a (feat: slot game result control)
     }
   },
   "SabaApiSettings": {

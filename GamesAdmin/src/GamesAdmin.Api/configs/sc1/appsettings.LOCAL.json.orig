@@ -99,6 +99,11 @@
       "Socket": "l1-proxy.lumigame.com/admin/vipbaccarat",
       "SocketRoute": "/vipbaccarat/socket.io"
     },
+    "FourGuardians": {
+      "Api": "https://l1-proxy.lumigame.com/fourguardians",
+      "Socket": "l1-proxy.lumigame.com/admin/fourguardians",
+      "SocketRoute": "/fourguardians/socket.io"
+    },
     "KenoProMax": {
       "Api": "https://l1-proxy.lumigame.com/kenopromax",
       "Socket": "l1-proxy.lumigame.com/admin/kenopromax",
@@ -153,6 +158,11 @@
       "Api": "https://l1-proxy.lumigame.com/threecards",
       "Socket": "l1-proxy.lumigame.com/admin/threecards",
       "SocketRoute": "/threecards/socket.io"
+    },
+    "HeroesSlot": {
+      "Api": "https://l1-proxy.lumigame.com/heroesslot",
+      "Socket": "l1-proxy.lumigame.com/admin/heroesslot",
+      "SocketRoute": "/heroesslot/socket.io"
     },
     "KenoMax": {
       "Api": "https://l1-proxy.lumigame.com/minikeno",
@@ -234,10 +244,20 @@
       "Socket": "l1-proxy.lumigame.com/admin/texasholdempoker",
       "SocketRoute": "/texasholdempoker/socket.io"
     },
+    "NightClub": {
+      "Api": "https://l1-proxy.lumigame.com/nightclub",
+      "Socket": "l1-proxy.lumigame.com/admin/nightclub",
+      "SocketRoute": "/nightclub/socket.io"
+    },
     "TreasureIsland": {
       "Api": "https://l1-proxy.lumigame.com/treasureisland",
       "Socket": "l1-proxy.lumigame.com/admin/treasureisland",
       "SocketRoute": "/treasureisland/socket.io"
+    },
+    "WayToGoal": {
+      "Api": "https://l1-proxy.lumigame.com/waytogoal",
+      "Socket": "l1-proxy.lumigame.com/admin/waytogoal",
+      "SocketRoute": "/waytogoal/socket.io"
     },
     "BlockchainBaccarat": {
       "Api": "https://l1-proxy.lumigame.com/blockchainbaccarat",
@@ -293,16 +313,23 @@
       "Api": "https://l1-proxy.lumigame.com/fruitslot",
       "Socket": "l1-proxy.lumigame.com/admin/fruitslot",
       "SocketRoute": "/fruitslot/socket.io"
-
     },
     "FanTan": {
       "Api": "https://l1-proxy.lumigame.com/fantan",
       "Socket": "l1-proxy.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
+<<<<<<< HEAD
     "WinThreeCards": {
       "Api": "https://l1-proxy.lumigame.com/winthreecards",
       "Socket": "l1-proxy.lumigame.com/admin/winthreecards",
       "SocketRoute": "/winthreecards/socket.io"
+=======
+    },
+    "FortuneCat": {
+      "Api": "https://l1-proxy.lumigame.com/fortunecat",
+      "Socket": "l1-proxy.lumigame.com/admin/fortunecat",
+      "SocketRoute": "/fortunecat/socket.io"
+>>>>>>> ade15f3a (feat: slot game result control)
     }
   },
   "SabaApiSettings": {
