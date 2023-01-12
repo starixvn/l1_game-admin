@@ -17,7 +17,7 @@ namespace GamesAdmin.Api.Public
         }
 
         [HttpGet("game_configs/{gameId}")]
-        public Task<GameConfig> GetByName(byte gameId)
+        public Task<GameConfig> GetById(byte gameId)
         => mediator.Send(new GetGameConfigRequest(gameId));
     }
 }
