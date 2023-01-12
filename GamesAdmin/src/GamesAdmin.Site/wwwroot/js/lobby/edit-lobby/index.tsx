@@ -25,6 +25,8 @@ const EditLobby: React.FC = () => {
   let [banners, setBanners] = useState([]);
   let [currentLobbyConfigs, setCurrentLobbyConfigs] = useState<any>({});
   let [message, setMessage] = useState({ msg: "", success: true });
+  let [createId, setCreateId] = useState(null);
+
   const timeout = useRef<number>();
 
   useEffect(() => {
@@ -227,7 +229,7 @@ const EditLobby: React.FC = () => {
 
   const saveLobbyConfig = async () => {
     const lobbyModel = {
-      id,
+      id: createId || id,
       name,
       currencyGroupIds,
       categories: lobbyConfig.categories,
@@ -237,7 +239,8 @@ const EditLobby: React.FC = () => {
     const valid = validateLobbyConfig();
 
     if (valid) {
-      await axios.post("/lobby/createorupdate", lobbyModel);
+      const lobbyEntity = await axios.post("/lobby/createorupdate", lobbyModel);
+      setCreateId(lobbyEntity.data);
       cloneAndSetLobbyConfig({
         currencyGroupIds,
         miniPanelGameIds,

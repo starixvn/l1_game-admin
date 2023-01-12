@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.Lobby
     {
         Task<ViewModels.IndexViewModel> GetAll();
 
-        Task<bool> Update(LobbyModel lobbyModel);
+        Task<string> Update(LobbyModel lobbyModel);
 
         Task<CreateOrUpdateViewModel> GetLobbyConfig(string id);
 
@@ -72,7 +72,7 @@ namespace GamesAdmin.Site.Features.Lobby
             return viewModel;
         }
 
-        public Task<bool> Update(LobbyModel lobbyModel)
+        public Task<string> Update(LobbyModel lobbyModel)
         {
             return this.lobbyApi.Update(lobbyModel);
         }

@@ -15,7 +15,7 @@ namespace GamesAdmin.Api.Lobby
     public interface ILobbyService
     {
 
-        Task<bool> CreateOrUpdate(LobbyModel lobbyModel);
+        Task<string> CreateOrUpdate(LobbyModel lobbyModel);
 
         Task<IEnumerable<LobbyModel>> GetAll();
 
@@ -38,7 +38,7 @@ namespace GamesAdmin.Api.Lobby
             this.mapper = mapper;
         }
 
-        public async Task<bool> CreateOrUpdate(LobbyModel lobbyModel)
+        public async Task<string> CreateOrUpdate(LobbyModel lobbyModel)
         {
             try
             {
@@ -62,14 +62,14 @@ namespace GamesAdmin.Api.Lobby
                     await lobbyRepository.UpdateAsync(entity => entity.Id == lobbyEntity.Id, update);
                 }
 
-                return true;
+                return lobbyEntity.Id.ToString();
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
             }
 
-            return false;
+            return null;
         }
 
         public async Task<bool> Delete(string id)

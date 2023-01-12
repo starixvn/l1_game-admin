@@ -20,7 +20,7 @@ namespace GamesAdmin.Api.Lobby
         }
 
         [HttpPost("update")]
-        public Task<bool> Update([FromBody] LobbyModel lobbyModel)
+        public Task<string> Update([FromBody] LobbyModel lobbyModel)
         {
             return this.lobbyService.CreateOrUpdate(lobbyModel);
         }

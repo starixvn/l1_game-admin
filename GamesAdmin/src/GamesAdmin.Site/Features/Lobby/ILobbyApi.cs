@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.Lobby
         Task<IEnumerable<LobbyModel>> GetAll();
 
         [Post("/lobby/update")]
-        Task<bool> Update([Body] LobbyModel lobbyModel);
+        Task<string> Update([Body] LobbyModel lobbyModel);
 
         [Post("/lobby/delete")]
         Task<bool> Delete(string id);
