@@ -207,3 +207,7 @@
     padding: 1.4rem; }
   .ReactModal__Content .control-label {
     margin-left: 5px; }
+  .ReactModal__Content .category-name {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem; }

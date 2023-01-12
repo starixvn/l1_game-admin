@@ -259,6 +259,7 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
         </h2>
 
         <div className="popup-body form">
+          <div className="category-name">
           <div className="form-group">
             <label className="required-field-label" htmlFor="English">
               English <span style={{ color: "red" }}>(*)</span>
@@ -325,6 +326,8 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
               onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
             />
           </div>
+          </div>
+          
           <div
             className="btn-group"
             style={{
