@@ -32,6 +32,7 @@ namespace GamesAdmin.Site
             var systemSettings = new SystemSettings(appSettings.SystemType);
             services.AddSingleton<IAppSettings>(appSettings);
             services.AddSingleton<ISystemSettings>(systemSettings);
+            services.Configure<ResourceSiteConfiguration>(Configuration.GetSection("ResourceSite"));
 
             services.AddServices(appSettings);
             services.AddAuthentication(Configuration);

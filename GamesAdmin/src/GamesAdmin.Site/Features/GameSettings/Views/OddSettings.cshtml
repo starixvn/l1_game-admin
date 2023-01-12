@@ -1,4 +1,7 @@
+@using Microsoft.Extensions.Options
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site._Shared.Configurations
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 @model EditViewModel;
 
 @{
@@ -37,7 +40,7 @@
                                     <div class="form-group row mb-0">
                                         <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
                                         <div class="col-lg-4 d-flex align-items-center">
-                                            <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{Model.SystemType}/{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
+                                            <img src="@(resourceSiteConfig.Value.BaseUrl)@($"{Model.Name.ToLowerInvariant()}/symbol-{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
                                         </div>
 
                                         <div class="col-lg-8">

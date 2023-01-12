@@ -1,4 +1,7 @@
 ﻿@using GamesAdmin.Core
+@using Microsoft.Extensions.Options
+@using GamesAdmin.Site._Shared.Configurations
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
 @model SlotGameReportResultViewModel
@@ -40,7 +43,7 @@
                                 @bet.RoundId
                                 @if (bet.SettlementResult.Jackpot != null)
                                 {
-                                    <img src="~/images/slot-icons/@bet.IconsFolder/@bet.SystemType/10.png" />
+                                    <img src="@(resourceSiteConfig.Value.BaseUrl)@bet.IconsFolder/symbol-10.png" />
                                 }
                             </a>
                         </td>

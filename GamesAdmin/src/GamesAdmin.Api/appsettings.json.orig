@@ -14,8 +14,8 @@
 <<<<<<< HEAD
     "ConnectionString": "mongodb://lmn_archive:LmnArchive@10.10.50.13:37101/?replicaSet=L2Local",
 =======
-    "ConnectionString": "mongodb://127.0.0.1:27017",
->>>>>>> ade15f3a (feat: slot game result control)
+    "ConnectionString": "mongodb://lmn_backend:LmnBackend@10.10.50.14:17101/?replicaSet=L1pLocal",
+>>>>>>> 2dfc860d (feat: load new slot game img from resource site)
     "DatabaseName": "minigame"
   },
   "ArchiveDatabaseSettings": {
@@ -324,17 +324,15 @@
       "Socket": "l1-proxy.lumigame.com/admin/fantan",
       "SocketRoute": "/fantan/socket.io"
     },
-<<<<<<< HEAD
     "WinThreeCards": {
       "Api": "http://l1-proxy.lumigame.com/winthreecards",
       "Socket": "l1-proxy.lumigame.com/admin/winthreecards",
       "SocketRoute": "/winthreecards/socket.io"
-=======
+    },
     "FortuneCat": {
       "Api": "http://l1-proxy.lumigame.com/fortunecat",
       "Socket": "l1-proxy.lumigame.com/admin/fortunecat",
       "SocketRoute": "/fortunecat/socket.io"
->>>>>>> ade15f3a (feat: slot game result control)
     }
   },
   "SabaApiSettings": {

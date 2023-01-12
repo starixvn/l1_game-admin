@@ -36,9 +36,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string Id { get; set; }
 
+        public string DBDisplayName { get; set; }
+
         public string DisplayName => Enumeration.Contains<Game>(Name)
                                         ? Enumeration.FromValue<Game>(Name).DisplayName
-                                        : Name;
+                                        : DBDisplayName;
 
         public GameType Type { get; set; }
 
