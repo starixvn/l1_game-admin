@@ -43,10 +43,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => ParseGameConfigName();
 
-        public int GameId => Enumeration.Contains<Game>(Name) ? (int)Enumeration.FromValue<Game>(Name).GameId : 0;
+        public int GameId => Enumeration.Contains<Game>(Name) ? (int)Enumeration.FromValue<Game>(Name).GameId : GameConfig.Info.GameId;
 
         private string ParseGameConfigName()
-            => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.Name;
+            => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.DisplayName;
 
         public bool Enabled => GameConfig.EnableSetting.Enabled;
 

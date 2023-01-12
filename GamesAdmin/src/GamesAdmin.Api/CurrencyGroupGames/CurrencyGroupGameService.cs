@@ -106,10 +106,9 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                 }
                 else
                 {
-                    var game = Game.FromGameId((GameId)currencyGroupGame.GameId);
                     var group = await currencyGroupRepository.FindByIdAsync(currencyGroupGame.GroupId);
                     var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(gameConfig, currencyGroupGame);
-                    sentryClient.CaptureChangedSettings(game.Value, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
+                    sentryClient.CaptureChangedSettings(currencyGroupGame.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
 
                     var update = Builders<CurrencyGroupGameEntity>.Update
                         .Set(field => field.Enabled, currencyGroupGame.Enabled)

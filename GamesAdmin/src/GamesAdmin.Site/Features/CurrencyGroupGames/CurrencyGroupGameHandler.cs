@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.GameConfigs;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Chips;
 using GamesAdmin.Site.Features.CurrencyGroupGames.Requests;
@@ -26,20 +27,23 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
         private readonly IChipService chipService;
         private readonly IMapper mapper;
         private readonly IPartnerService partnerService;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public CurrencyGroupGameHandler(ICurrencyGroupGameService currencyGroupGameService, ICurrencyGroupService currencyGroupService, IChipService chipService,
-            IMapper mapper, IPartnerService partnerService)
+            IMapper mapper, IPartnerService partnerService, IGeneralGameSettingService generalGameSettingService)
         {
             this.currencyGroupGameService = currencyGroupGameService;
             this.currencyGroupService = currencyGroupService;
             this.chipService = chipService;
             this.mapper = mapper;
             this.partnerService = partnerService;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<EditViewModel> Handle(GetOneRequest request, CancellationToken cancellationToken)
         {
-            var gameId = (int)Enumeration.FromValue<Game>(request.GameName).GameId;
+            var games = await generalGameSettingService.GetAllGames();
+            var gameId = games.FirstOrDefault(game => game.Name == request.GameName).GameId;
             var currencyGroupGame = await currencyGroupGameService.Get(request.GroupId, gameId);
             var result = mapper.Map<EditViewModel>(currencyGroupGame) ?? new EditViewModel();
             var chipConfigs = await chipService.GetAll();
