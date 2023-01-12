@@ -115,6 +115,16 @@ const EditLobby: React.FC = () => {
       .map(convertPartnerToItem(currencyGroupModels))
       .filter((partner) => partner.items.length);
 
+    const isUncheckedCurrencyGroup = data.every(
+      (currencyGroup) =>
+        currencyGroup.checked === false &&
+        isUnCheckedCurrencies(currencyGroup.items)
+    );
+
+    if (isUncheckedCurrencyGroup) {
+      setCurrencyGroupIds([]);
+    }
+
     window.jQuery("#currency-groups").fanexMultiSelect({
       listData: data,
       showFilter: true,
@@ -126,7 +136,11 @@ const EditLobby: React.FC = () => {
       },
     });
   };
-
+  const isUnCheckedCurrencies = (currencies) => {
+    return currencies.every(
+      (currency) => currency.checked === false || currency.checked === undefined
+    );
+  };
   const onChangeMiniPanel = (miniPanelGameIds) => {
     setMiniPanelGameIds(miniPanelGameIds);
   };
@@ -220,7 +234,6 @@ const EditLobby: React.FC = () => {
       miniPanelGameIds,
       banners,
     };
-
     const valid = validateLobbyConfig();
 
     if (valid) {
@@ -232,6 +245,7 @@ const EditLobby: React.FC = () => {
         categories: lobbyConfig.categories,
         name,
       });
+
       setMsg("Updated successfully!", true);
       // history.push("/lobby");
     }
