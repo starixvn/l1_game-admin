@@ -94,7 +94,7 @@ const MiniPanel: React.FC<Props> = ({
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  let [activeGameId, setActiveGameId] = useState(0);
+  let [activeGameId, setActiveGameId] = useState(-1);
   let [reOrderConfig, setReOrderConfig] = useState({
     sourceIndex: -1,
     destinationIndex: -1,
@@ -133,6 +133,9 @@ const MiniPanel: React.FC<Props> = ({
     const clonedMiniPanelGameIds = miniPanelGameIds
       ? miniPanelGameIds.slice()
       : [];
+
+    const middle = Math.round(clonedMiniPanelGameIds?.length / 2);
+    clonedMiniPanelGameIds?.splice(middle, 0, 0);
     if (reOrderConfig && reOrderConfig.sourceIndex >= 0) {
       return reorder(
         clonedMiniPanelGameIds,
@@ -177,7 +180,7 @@ const MiniPanel: React.FC<Props> = ({
       sourceIndex: -1,
       destinationIndex: -1,
     });
-    setActiveGameId(0);
+    setActiveGameId(-1);
     onChange(miniPanelGameIds);
   };
 
@@ -218,16 +221,17 @@ const MiniPanel: React.FC<Props> = ({
     }
   };
 
-  const clickEditMiniPanel = (e, index) => {
+  const clickEditMiniPanel = (e, index, item) => {
     e.stopPropagation();
 
-    setAvailableGameIds(getAvailableGames(miniPanelGameIds[index]));
-    setEditedGameSetting({ index, value: miniPanelGameIds[index] });
+    setAvailableGameIds(getAvailableGames(item));
+    setEditedGameSetting({ index, value: item });
     openModal();
   };
 
   const getGameName = (id) => {
-    return gameIds.find((gameId) => gameId.value == id)?.text;
+    const gameName = gameIds.find((gameId) => gameId.value == id)?.text;
+    return !gameName ? "Home" : gameName;
   };
 
   return (
@@ -241,26 +245,28 @@ const MiniPanel: React.FC<Props> = ({
         {reOrderToRender().map((item, index) => (
           <div
             className="item"
-            style={getItemInCircleStyle(miniPanelGameIds.length, index)}
+            style={getItemInCircleStyle(miniPanelGameIds.length + 1, index)}
             key={index}
           >
             <span
               className="item-inner"
               style={getInnerItemInCircleStyle(
-                miniPanelGameIds.length,
+                miniPanelGameIds.length + 1,
                 index,
                 item,
                 activeGameId
               )}
             >
               <span>{getGameName(item)}</span>
-              <a
-                className="edit-button"
-                href="#"
-                onClick={(e) => clickEditMiniPanel(e, index)}
-              >
-                <i className="icon-edit"></i>
-              </a>
+              {item != 0 && (
+                <a
+                  className="edit-button"
+                  href="#"
+                  onClick={(e) => clickEditMiniPanel(e, index, item)}
+                >
+                  <i className="icon-edit"></i>
+                </a>
+              )}
             </span>
           </div>
         ))}
