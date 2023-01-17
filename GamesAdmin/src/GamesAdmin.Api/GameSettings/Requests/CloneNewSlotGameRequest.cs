@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Api.GameSettings.Requests
 {
-    public class CloneNewSlotGameRequest : IRequest<bool>
+    public class CloneNewSlotGameRequest : IRequest<string>
     {
         public CloneNewSlotGameRequest(byte gameId, byte fromGameId, string displayName)
         {

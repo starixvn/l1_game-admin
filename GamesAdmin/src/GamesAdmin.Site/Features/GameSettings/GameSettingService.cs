@@ -58,7 +58,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<int> GetConnectedUsers();
 
-        Task<bool> CloneNewSlotGame(int gameId, byte fromGameId, string displayName);
+        Task<string> CloneNewSlotGame(int gameId, byte fromGameId, string displayName);
     }
 
     public class GameSettingService : IGameSettingService
@@ -195,16 +195,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<int> GetConnectedUsers()
             => gameApi.GetConnectedUsers();
 
-        public async Task<bool> CloneNewSlotGame(int gameId, byte fromGameId, string displayName)
-        {
-            try
-            {
-                return await gameApi.CloneNewSlotGame(gameId, fromGameId, displayName);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+        public async Task<string> CloneNewSlotGame(int gameId, byte fromGameId, string displayName)
+        =>await gameApi.CloneNewSlotGame(gameId, fromGameId, displayName);
+        
     }
 }

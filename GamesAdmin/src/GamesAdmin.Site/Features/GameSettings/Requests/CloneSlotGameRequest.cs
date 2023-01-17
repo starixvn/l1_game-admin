@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
-    public class CloneSlotGameRequest : IRequest<bool>
+    public class CloneSlotGameRequest : IRequest<string>
     {
         public CloneSlotGameRequest(string displayName, int gameId, byte cloneFrom)
         {

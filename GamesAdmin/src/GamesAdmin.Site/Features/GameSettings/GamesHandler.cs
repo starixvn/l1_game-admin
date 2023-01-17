@@ -42,7 +42,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetOddsByGameRequest, IEnumerable<OddsViewModel>>
         , IRequestHandler<GetGamesIdByTypeRequest, IEnumerable<Game>>
         , IRequestHandler<AddSlotGameRequest, AddSlotGameViewModel>
-        , IRequestHandler<CloneSlotGameRequest, bool>
+        , IRequestHandler<CloneSlotGameRequest, string>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -417,7 +417,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public Task<Dictionary<string, string>> Handle(GetDisabledMessageRequest request, CancellationToken cancellationToken)
         => gameService.GetDisabledMessage(request.Name);
 
-        public async Task<bool> Handle(CloneSlotGameRequest request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CloneSlotGameRequest request, CancellationToken cancellationToken)
         => await gameService.CloneNewSlotGame(request.GameId, request.ClonedFrom, request.DisplayName);
     }
 }

@@ -10,7 +10,7 @@ namespace GamesAdmin.Api.GameSettings
 {
     public interface ICloneSettingService
     {
-        Task<bool> CloneNewGame(byte gameId, byte fromGameId, string displayName);
+        Task<string> CloneNewGame(byte gameId, byte fromGameId, string displayName);
     }
 
     public class CloneSettingsService : ICloneSettingService
@@ -28,7 +28,7 @@ namespace GamesAdmin.Api.GameSettings
             this.sentryClient = sentryClient;
         }
 
-        public async Task<bool> CloneNewGame(byte gameId, byte fromGameId, string displayName)
+        public async Task<string> CloneNewGame(byte gameId, byte fromGameId, string displayName)
         {
             try
             {
@@ -45,15 +45,19 @@ namespace GamesAdmin.Api.GameSettings
 
                     await repository.InsertOneAsync(gameEntity);
 
-                    return true;
+                    return String.Empty;
+                }
+                else
+                {
+                    return "Cloned Game is not existed !";
                 }
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
-            }
 
-            return false;
+                return ex.Message;
+            }
         }
     }
 }

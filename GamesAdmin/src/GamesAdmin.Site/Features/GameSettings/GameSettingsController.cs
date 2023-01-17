@@ -44,15 +44,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new AddSlotGameRequest()));
 
         [HttpPost]
-        public async Task<IActionResult> CloneSlotGame([Bind] AddSlotGameViewModel addViewModel)
+        public async Task<string> CloneSlotGame([Bind] AddSlotGameViewModel addViewModel)
         {
             var request = new CloneSlotGameRequest(addViewModel.DisplayName,
                 addViewModel.GameId,
                 addViewModel.SelectedGame);
 
-            await mediator.Send(request);
-
-            return RedirectToAction(nameof(Index));
+            return await mediator.Send(request);
         }
 
         [HttpPost]
