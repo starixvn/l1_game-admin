@@ -5,6 +5,7 @@ using GamesAdmin.Database.Entities.Lobby;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
+using Sentry.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace GamesAdmin.Api.Lobby
         {
             try
             {
+                sentryClient.CaptureMessage(string.Format("Update Lobby {0}", lobbyModel.Name), SentryLevel.Error);
                 var lobbyEntity = mapper.Map<LobbyEntity>(lobbyModel);
 
                 var gameConfig = await lobbyRepository.FindOneAsync(entity => entity.Id == lobbyEntity.Id);
@@ -76,6 +78,8 @@ namespace GamesAdmin.Api.Lobby
         {
             try
             {
+                var lobbyConfig = await lobbyRepository.FindOneAsync(entity => entity.Id == ObjectId.Parse(id));
+                sentryClient.CaptureMessage(string.Format("Delete Lobby {0}", lobbyConfig.Name), SentryLevel.Error);
                 await lobbyRepository.DeleteOneAsync(entity => entity.Id == ObjectId.Parse(id));
 
                 return true;
