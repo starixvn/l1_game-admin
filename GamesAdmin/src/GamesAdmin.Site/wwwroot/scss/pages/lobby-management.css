@@ -59,7 +59,6 @@
   background: linear-gradient(90deg, rgba(34, 193, 195, 0.3) 10%, #22c1c3 50%, rgba(34, 193, 195, 0.3) 90%); }
 
 .add-button {
-  height: 3.6rem;
   background: #3ac47d;
   display: inline-block;
   line-height: 3.6rem;

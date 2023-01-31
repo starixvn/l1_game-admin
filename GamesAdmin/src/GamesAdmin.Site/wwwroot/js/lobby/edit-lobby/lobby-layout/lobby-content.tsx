@@ -61,7 +61,7 @@ const LobbyContent: React.FC<Props> = ({
   let [availableGameIds, setAvailableGameIds] = useState(getAvailableGames());
   let [editedGameSetting, setEditedGameSetting] = useState({
     gameId: getDefaultGameIdToAdd(),
-    bigSize: true,
+    bigSize: false,
     newTag: true,
   });
   let [reOrderConfig, setReOrderConfig] = useState<ReorderConfig>({
@@ -146,7 +146,7 @@ const LobbyContent: React.FC<Props> = ({
     setAvailableGameIds(getAvailableGames());
     setEditedGameSetting({
       gameId: getDefaultGameIdToAdd(),
-      bigSize: true,
+      bigSize: false,
       newTag: true,
     });
     openModal();
