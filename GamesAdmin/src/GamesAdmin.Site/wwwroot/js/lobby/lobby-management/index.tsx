@@ -160,7 +160,7 @@ const LobbyManagement: React.FC<Props> = () => {
     lobbyConfigId: string;
     isSuperAdmin: boolean;
   }) => {
-    if (params.displayDeleteButton && isSuperAdmin) {
+    if (params.displayDeleteButton && params.isSuperAdmin) {
       return (
         <a
           className="btn btn-danger btn-lg"
