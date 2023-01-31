@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.Models.Lobby;
+﻿using Audit.Mvc;
+using GamesAdmin.Core.Models.Lobby;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -41,7 +42,8 @@ namespace GamesAdmin.Site.Features.Lobby
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateOrUpdate([FromBody] LobbyModel lobbyModel)
         {
             var result = await this.lobbyService.Update(lobbyModel);
@@ -49,7 +51,8 @@ namespace GamesAdmin.Site.Features.Lobby
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
+        [Authorize(Roles = "admin")]
         [Route("/lobby/delete")]
         public async Task<IActionResult> Delete(string id)
         {
