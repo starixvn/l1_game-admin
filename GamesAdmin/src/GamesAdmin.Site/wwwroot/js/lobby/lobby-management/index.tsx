@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Modal from "react-modal";
+import { bool } from "prop-types";
 
 Modal.setAppElement("#root");
 
@@ -11,6 +12,11 @@ type LobbyConfig = {
   name: string;
   id: string;
   currencyGroupIds: string[];
+};
+
+type LobbyManagement = {
+  lobbyConfigs: LobbyConfig[];
+  displayDeleteButton: boolean;
 };
 
 type CurrencyGroup = {
@@ -31,7 +37,10 @@ const customStyles = {
 
 const LobbyManagement: React.FC<Props> = () => {
   const history = useHistory();
-  const [lobbyConfigs, setLobbyConfigs] = useState<LobbyConfig[]>([]);
+  const [lobbyManagement, setLobbyManagement] = useState<LobbyManagement>({
+    lobbyConfigs: [],
+    displayDeleteButton: true,
+  });
   const [currencyGroups, setCurrencyGroups] = useState<CurrencyGroup[]>([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState("");
@@ -70,7 +79,10 @@ const LobbyManagement: React.FC<Props> = () => {
 
   const getAllLobbyConfigs = async () => {
     const res = await axios("/lobby/getAll");
-    setLobbyConfigs(res.data.lobbyConfigs);
+    setLobbyManagement({
+      lobbyConfigs: res.data.lobbyConfigs,
+      displayDeleteButton: res.data.displayDeleteButton,
+    });
     setCurrencyGroups(res.data.currencyGroupItems);
     setIsSuperAdmin(res.data.isSuperAdmin);
   };
@@ -116,11 +128,12 @@ const LobbyManagement: React.FC<Props> = () => {
   };
 
   const getLobbyConfigName = (id) => {
-    return lobbyConfigs.find((config) => config.id === id)?.name;
+    return lobbyManagement.lobbyConfigs.find((config) => config.id === id)
+      ?.name;
   };
 
   const addNewLobby = () => {
-    const usedCurrencyGroups = lobbyConfigs.reduce<string[]>(
+    const usedCurrencyGroups = lobbyManagement.lobbyConfigs.reduce<string[]>(
       (accumulator, lobbyConfig) => {
         accumulator.push(...lobbyConfig.currencyGroupIds);
         return accumulator;
@@ -140,6 +153,26 @@ const LobbyManagement: React.FC<Props> = () => {
     } else {
       openAddConfirm();
     }
+  };
+
+  const renderDeleteButton = (params: {
+    displayDeleteButton: boolean;
+    lobbyConfigId: string;
+    isSuperAdmin: boolean;
+  }) => {
+    if (params.displayDeleteButton && isSuperAdmin) {
+      return (
+        <a
+          className="btn btn-danger btn-lg"
+          href="#"
+          onClick={() => openDeleteConfirm(params.lobbyConfigId)}
+        >
+          Delete
+        </a>
+      );
+    }
+
+    return <></>;
   };
 
   return (
@@ -167,7 +200,7 @@ const LobbyManagement: React.FC<Props> = () => {
           </tr>
         </thead>
         <tbody>
-          {lobbyConfigs.map((lobbyConfig, index) => (
+          {lobbyManagement.lobbyConfigs.map((lobbyConfig, index) => (
             <tr key={index}>
               <td style={{ minWidth: "120px" }}>{lobbyConfig.name}</td>
               <td>{getCurrencyGroupNames(lobbyConfig.currencyGroupIds)}</td>
@@ -179,15 +212,12 @@ const LobbyManagement: React.FC<Props> = () => {
                 >
                   Edit
                 </a>
-                {isSuperAdmin && (
-                  <a
-                    className="btn btn-danger btn-lg"
-                    href="#"
-                    onClick={() => openDeleteConfirm(lobbyConfig.id)}
-                  >
-                    Delete
-                  </a>
-                )}
+
+                {renderDeleteButton({
+                  displayDeleteButton: lobbyManagement.displayDeleteButton,
+                  lobbyConfigId: lobbyConfig.id,
+                  isSuperAdmin: isSuperAdmin,
+                })}
               </td>
             </tr>
           ))}

@@ -28,6 +28,8 @@ namespace GamesAdmin.Site._Shared.Configurations
         string GameApiUrl { get; }
 
         string SGApiUrl { get; }
+
+        bool IsUatOrProEnvironment(); 
     }
 
     public class ResultPageConfiguration
@@ -96,5 +98,8 @@ namespace GamesAdmin.Site._Shared.Configurations
                 throw new InvalidCastException($"Key: {key}", ex);
             }
         }
+
+        public bool IsUatOrProEnvironment()
+            => Env == "PRO" || Env == "UAT";
     }
 }

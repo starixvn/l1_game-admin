@@ -9,10 +9,14 @@ namespace GamesAdmin.Site.Features.Lobby.ViewModels
     public class IndexViewModel
     {
         public IEnumerable<LobbyModel> LobbyConfigs { get; set; }
+
         public IEnumerable<CurrencyGroupModel> CurrencyGroupModels { get; set; }
+
         public IEnumerable<SelectListItem> CurrencyGroupItems { get; set; }
+
         public IEnumerable<Partner> Partners { get; set; }
         public bool IsSuperAdmin { get; set; }
 
+        public bool DisplayDeleteButton { get; set; } = true;
     }
 }

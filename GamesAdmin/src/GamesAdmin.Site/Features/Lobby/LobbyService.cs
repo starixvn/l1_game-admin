@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Lobby;
+using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.Lobby.ViewModels;
 using GamesAdmin.Site.Features.Partners;
@@ -26,13 +27,18 @@ namespace GamesAdmin.Site.Features.Lobby
         private readonly ILobbyApi lobbyApi;
         private readonly ICurrencyGroupApi currencyGroupApi;
         private readonly IPartnerService partnerService;
+        private readonly IAppSettings appSettings;
 
-
-        public LobbyService(ILobbyApi lobbyApi, ICurrencyGroupApi currencyGroupApi, IPartnerService partnerService)
+        public LobbyService(
+            ILobbyApi lobbyApi, 
+            ICurrencyGroupApi currencyGroupApi, 
+            IPartnerService partnerService,
+            IAppSettings appSettings)
         {
             this.lobbyApi = lobbyApi;
             this.currencyGroupApi = currencyGroupApi;
             this.partnerService = partnerService;
+            this.appSettings = appSettings;
         }
 
         public async Task<ViewModels.IndexViewModel> GetAll()
@@ -44,7 +50,7 @@ namespace GamesAdmin.Site.Features.Lobby
             {
                 LobbyConfigs = await this.lobbyApi.GetAll(),
                 CurrencyGroupItems = new MultiSelectList(currencyGroups, "Id", "Name", groupIds),
-
+                DisplayDeleteButton = !appSettings.IsUatOrProEnvironment()
             };
 
             return viewModel;
@@ -79,6 +85,11 @@ namespace GamesAdmin.Site.Features.Lobby
 
         public Task<bool> Delete(string id)
         {
+            if (this.appSettings.IsUatOrProEnvironment())
+            {
+                return Task.FromResult(false);
+            }
+
             return this.lobbyApi.Delete(id);
         }
     }
