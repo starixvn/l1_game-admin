@@ -210,7 +210,7 @@ const LobbyManagement: React.FC<Props> = () => {
                   href="#"
                   onClick={() => editLobbyConfig(lobbyConfig.id)}
                 >
-                  Edit
+                  {isSuperAdmin ? <span>Edit</span> : <span>View</span>}
                 </a>
 
                 {renderDeleteButton({
