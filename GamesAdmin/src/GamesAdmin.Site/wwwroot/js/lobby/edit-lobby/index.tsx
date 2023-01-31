@@ -270,7 +270,9 @@ const EditLobby: React.FC = () => {
   };
 
   return (
-    <LobbyConfigProvider value={{ lobbyConfig, onChangeCategories }}>
+    <LobbyConfigProvider
+      value={{ lobbyConfig, onChangeCategories, isSuperAdmin }}
+    >
       <div className="form filter">
         <div className="form-row align-items-center">
           <div className="col-auto">
@@ -320,12 +322,14 @@ const EditLobby: React.FC = () => {
             miniPanelGameIds={miniPanelGameIds}
             onChange={onChangeMiniPanel}
             gameIds={gameIds}
+            isSuperAdmin={isSuperAdmin}
           />
 
           <Banners
             banners={banners}
             onChange={onChangeBanner}
             gameIds={gameIds}
+            isSuperAdmin={isSuperAdmin}
           />
 
           <div className="btn-group">

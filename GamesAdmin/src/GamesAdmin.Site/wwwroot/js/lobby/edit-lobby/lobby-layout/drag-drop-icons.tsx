@@ -11,6 +11,7 @@ type Props = {
   onDragEnd: (result: any) => void;
   onDragUpdate: (result: any) => void;
   onDragStart: (result: any) => void;
+  isSuperAdmin: boolean;
 };
 
 export default class DragDropIconsMemo extends React.Component<Props, any> {
@@ -73,17 +74,20 @@ export default class DragDropIconsMemo extends React.Component<Props, any> {
                   )}
                 </Draggable>
               ))}
-              <div>
-                {
-                  <a
-                    className="add-button"
-                    href="#"
-                    onClick={(e) => this.props.addHandler()}
-                  >
-                    Add Icon
-                  </a>
-                }
-              </div>
+              {this.props.isSuperAdmin && (
+                <div>
+                  {
+                    <a
+                      className="add-button"
+                      href="#"
+                      onClick={(e) => this.props.addHandler()}
+                    >
+                      Add Icon
+                    </a>
+                  }
+                </div>
+              )}
+
               {provided.placeholder}
             </div>
           )}

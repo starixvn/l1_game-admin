@@ -8,6 +8,7 @@ type Props = {
   miniPanelGameIds: number[];
   gameIds: Game[];
   onChange: (gameIds: number[]) => void;
+  isSuperAdmin: boolean;
 };
 
 const reorder = (list: number[], startIndex, endIndex): number[] => {
@@ -63,6 +64,7 @@ const MiniPanel: React.FC<Props> = ({
   miniPanelGameIds,
   onChange,
   gameIds,
+  isSuperAdmin,
 }) => {
   const getAvailableGames = (editingId = 0) => {
     let result: Game[] = [];
@@ -258,7 +260,7 @@ const MiniPanel: React.FC<Props> = ({
               )}
             >
               <span>{getGameName(item)}</span>
-              {item != 0 && (
+              {item != 0 && isSuperAdmin && (
                 <a
                   className="edit-button"
                   href="#"
@@ -306,15 +308,18 @@ const MiniPanel: React.FC<Props> = ({
                   )}
                 </Draggable>
               ))}
-              <div>
-                <a
-                  className="add-button"
-                  href="#"
-                  onClick={(e) => addHandler(e)}
-                >
-                  Add Icon
-                </a>
-              </div>
+              {isSuperAdmin && (
+                <div>
+                  <a
+                    className="add-button"
+                    href="#"
+                    onClick={(e) => addHandler(e)}
+                  >
+                    Add Icon
+                  </a>
+                </div>
+              )}
+
               {provided.placeholder}
             </div>
           )}

@@ -9,6 +9,7 @@ type Props = {
   reOrderConfig: ReorderConfig;
   activeGameId: number;
   onEdit: (gameId: number) => void;
+  isSuperAdmin: boolean;
 };
 
 declare global {
@@ -44,6 +45,7 @@ const LobbyPreview: React.FC<Props> = ({
   gameIds,
   reOrderConfig,
   activeGameId,
+  isSuperAdmin,
 }) => {
   const clickEditGameSetting = (e, gameSetting: GameSetting) => {
     onEdit(gameSetting.gameId);
@@ -104,13 +106,15 @@ const LobbyPreview: React.FC<Props> = ({
         <span className="tag-new" style={getStyleNew(gameSetting.newTag)}>
           <span className="tag-new-inner">New</span>
         </span>
-        <a
-          className="edit-button"
-          href="#"
-          onClick={(e) => clickEditGameSetting(e, gameSetting)}
-        >
-          <i className="icon-edit"></i>
-        </a>
+        {isSuperAdmin && (
+          <a
+            className="edit-button"
+            href="#"
+            onClick={(e) => clickEditGameSetting(e, gameSetting)}
+          >
+            <i className="icon-edit"></i>
+          </a>
+        )}
       </span>
     );
   };

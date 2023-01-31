@@ -28,11 +28,13 @@ const LobbyLayout: React.FC<Props> = ({ gameIds }) => {
       <LobbyHeader
         switchCategory={switchCategory}
         editingIndex={editingIndex}
+        isSuperAdmin={lobbyConfigContext.isSuperAdmin}
       />
       <LobbyContent
         onChange={onChangeLobbyCategory}
         lobbyCategory={lobbyCategories[editingIndex]}
         gameIds={gameIds}
+        isSuperAdmin={lobbyConfigContext.isSuperAdmin}
       />
     </div>
   );

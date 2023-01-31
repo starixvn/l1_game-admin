@@ -8,6 +8,7 @@ import { Category } from "../lobby-data-types";
 type Props = {
   switchCategory: (index: number) => void;
   editingIndex: number;
+  isSuperAdmin: boolean;
 };
 
 const reorder = (list: Category[], startIndex, endIndex): Category[] => {
@@ -55,7 +56,11 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
+const LobbyHeader: React.FC<Props> = ({
+  switchCategory,
+  editingIndex,
+  isSuperAdmin,
+}) => {
   const lobbyConfigContext = useContext(LobbyConfigContext);
   const [editedCategory, setEditedCategory] = useState<Category>({
     name: { eN_US: "", vI_VN: "", tH_TH: "", iD_ID: "", zH_CN: "", zH_TW: "" },
@@ -209,29 +214,34 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
                       >
                         <span>
                           <span>{item.eN_US}</span> &nbsp;
-                          <a
-                            className="edit-button"
-                            href="#"
-                            onClick={(e) => clickEditCategory(e, index)}
-                            style={getStyleEdit(editingIndex === index)}
-                          >
-                            <i className="icon-edit"></i>
-                          </a>
+                          {isSuperAdmin && (
+                            <a
+                              className="edit-button"
+                              href="#"
+                              onClick={(e) => clickEditCategory(e, index)}
+                              style={getStyleEdit(editingIndex === index)}
+                            >
+                              <i className="icon-edit"></i>
+                            </a>
+                          )}
                         </span>
                       </div>
                     )}
                   </Draggable>
                 ))}
-              <div>
-                <a
-                  className="add-button"
-                  href="#"
-                  onClick={(e) => addHandler(e)}
-                  style={{ height: "30px", marginBottom: "2px" }}
-                >
-                  Add Category
-                </a>
-              </div>
+              {isSuperAdmin && (
+                <div>
+                  <a
+                    className="add-button"
+                    href="#"
+                    onClick={(e) => addHandler(e)}
+                    style={{ height: "30px", marginBottom: "2px" }}
+                  >
+                    Add Category
+                  </a>
+                </div>
+              )}
+
               {provided.placeholder}
             </div>
           )}
@@ -260,74 +270,74 @@ const LobbyHeader: React.FC<Props> = ({ switchCategory, editingIndex }) => {
 
         <div className="popup-body form">
           <div className="category-name">
-          <div className="form-group">
-            <label className="required-field-label" htmlFor="English">
-              English <span style={{ color: "red" }}>(*)</span>
-            </label>
-            <FormControl
-              type="text"
-              defaultValue={editedCategory.name["eN_US"]}
-              onChange={(e) => setCategoryName(e.target.value, "eN_US")}
-              className="form-control"
-            />
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="English">
+                English <span style={{ color: "red" }}>(*)</span>
+              </label>
+              <FormControl
+                type="text"
+                defaultValue={editedCategory.name["eN_US"]}
+                onChange={(e) => setCategoryName(e.target.value, "eN_US")}
+                className="form-control"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="Vietnamese">
+                Vietnamese
+              </label>
+              <FormControl
+                type="text"
+                defaultValue={editedCategory.name["vI_VN"]}
+                onChange={(e) => setCategoryName(e.target.value, "vI_VN")}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="Thai">
+                Thai
+              </label>
+              <FormControl
+                type="text"
+                defaultValue={editedCategory.name["tH_TH"]}
+                onChange={(e) => setCategoryName(e.target.value, "tH_TH")}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="Indo">
+                Indo
+              </label>
+              <FormControl
+                type="text"
+                defaultValue={editedCategory.name["iD_ID"]}
+                onChange={(e) => setCategoryName(e.target.value, "iD_ID")}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="CN">
+                Chinese Simplified
+              </label>
+              <FormControl
+                type="text"
+                defaultValue={editedCategory.name["zH_CN"]}
+                onChange={(e) => setCategoryName(e.target.value, "zH_CN")}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="required-field-label" htmlFor="TW">
+                Chinese Original
+              </label>
+              <FormControl
+                type="text"
+                defaultValue={editedCategory.name["zH_TW"]}
+                onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label className="required-field-label" htmlFor="Vietnamese">
-              Vietnamese
-            </label>
-            <FormControl
-              type="text"
-              defaultValue={editedCategory.name["vI_VN"]}
-              onChange={(e) => setCategoryName(e.target.value, "vI_VN")}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="required-field-label" htmlFor="Thai">
-              Thai
-            </label>
-            <FormControl
-              type="text"
-              defaultValue={editedCategory.name["tH_TH"]}
-              onChange={(e) => setCategoryName(e.target.value, "tH_TH")}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="required-field-label" htmlFor="Indo">
-              Indo
-            </label>
-            <FormControl
-              type="text"
-              defaultValue={editedCategory.name["iD_ID"]}
-              onChange={(e) => setCategoryName(e.target.value, "iD_ID")}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="required-field-label" htmlFor="CN">
-              Chinese Simplified
-            </label>
-            <FormControl
-              type="text"
-              defaultValue={editedCategory.name["zH_CN"]}
-              onChange={(e) => setCategoryName(e.target.value, "zH_CN")}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="required-field-label" htmlFor="TW">
-              Chinese Original
-            </label>
-            <FormControl
-              type="text"
-              defaultValue={editedCategory.name["zH_TW"]}
-              onChange={(e) => setCategoryName(e.target.value, "zH_TW")}
-            />
-          </div>
-          </div>
-          
           <div
             className="btn-group"
             style={{

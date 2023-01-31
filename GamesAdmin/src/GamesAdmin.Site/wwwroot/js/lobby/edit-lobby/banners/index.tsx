@@ -8,6 +8,7 @@ type Props = {
   onChange: (gameCategory: Banner[]) => void;
   gameIds: Game[];
   banners: Banner[];
+  isSuperAdmin: boolean;
 };
 
 const reorder = (
@@ -51,7 +52,12 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
+const Banners: React.FC<Props> = ({
+  banners,
+  onChange,
+  gameIds,
+  isSuperAdmin,
+}) => {
   const getAvailableGames = (editingId = 0): Game[] => {
     let result: Game[] = [];
     if (banners) {
@@ -210,27 +216,32 @@ const Banners: React.FC<Props> = ({ banners, onChange, gameIds }) => {
                       <span>
                         <span>{getGameName(item.gameId)}</span> &nbsp;
                         <span>{`(${item.displayTime}s)`}</span> &nbsp;
-                        <a
-                          className="edit-button"
-                          href="#"
-                          onClick={(e) => clickEditCategory(e, index)}
-                        >
-                          <i className="icon-edit"></i>
-                        </a>
+                        {isSuperAdmin && (
+                          <a
+                            className="edit-button"
+                            href="#"
+                            onClick={(e) => clickEditCategory(e, index)}
+                          >
+                            <i className="icon-edit"></i>
+                          </a>
+                        )}
                       </span>
                     </div>
                   )}
                 </Draggable>
               ))}
-              <div>
-                <a
-                  className="add-button"
-                  href="#"
-                  onClick={(e) => addHandler(e)}
-                >
-                  Add Banner
-                </a>
-              </div>
+              {isSuperAdmin && (
+                <div>
+                  <a
+                    className="add-button"
+                    href="#"
+                    onClick={(e) => addHandler(e)}
+                  >
+                    Add Banner
+                  </a>
+                </div>
+              )}
+
               {provided.placeholder}
             </div>
           )}

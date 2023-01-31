@@ -9,6 +9,7 @@ type Props = {
   gameIds: Game[];
   lobbyCategory: Category;
   onChange: (lobbyCategory: Category) => void;
+  isSuperAdmin: boolean;
 };
 
 const reorder = (list: GameSetting[], startIndex, endIndex): GameSetting[] => {
@@ -34,6 +35,7 @@ const LobbyContent: React.FC<Props> = ({
   lobbyCategory,
   onChange,
   gameIds,
+  isSuperAdmin,
 }) => {
   const getAvailableGames = (editingId = 0) => {
     let result: Game[] = [];
@@ -217,6 +219,7 @@ const LobbyContent: React.FC<Props> = ({
           onEdit={onEdit}
           reOrderConfig={reOrderConfig}
           activeGameId={activeGameId}
+          isSuperAdmin={isSuperAdmin}
         />
         <DragDropIconsMemo
           gameSettings={lobbyCategory?.gameSettings}
@@ -225,6 +228,7 @@ const LobbyContent: React.FC<Props> = ({
           gameIds={gameIds}
           addHandler={addHandler}
           onDragStart={onDragStart}
+          isSuperAdmin={isSuperAdmin}
         />
 
         <Modal
