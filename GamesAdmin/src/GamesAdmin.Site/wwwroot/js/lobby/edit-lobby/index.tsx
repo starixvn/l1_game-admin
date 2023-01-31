@@ -26,6 +26,7 @@ const EditLobby: React.FC = () => {
   let [currentLobbyConfigs, setCurrentLobbyConfigs] = useState<any>({});
   let [message, setMessage] = useState({ msg: "", success: true });
   let [createId, setCreateId] = useState(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const timeout = useRef<number>();
 
@@ -48,6 +49,7 @@ const EditLobby: React.FC = () => {
       (currencyGroup) => currencyGroup.id
     );
     setCurrencyGroupIds(defaultCurrencyGroupIds);
+    setIsSuperAdmin(res.data.isSuperAdmin);
 
     if (res.data.lobbyConfig) {
       setName(res.data.lobbyConfig.name);
@@ -287,9 +289,12 @@ const EditLobby: React.FC = () => {
         </div>
 
         <div className="btn-group" style={{ marginTop: "10px" }}>
-          <button className="btn-submit" onClick={saveLobbyConfig}>
-            Save
-          </button>
+          {isSuperAdmin && (
+            <button className="btn-submit" onClick={saveLobbyConfig}>
+              Save
+            </button>
+          )}
+
           <button className="btn-gray" onClick={cancelLobbyConfig}>
             Cancel
           </button>
@@ -324,9 +329,12 @@ const EditLobby: React.FC = () => {
           />
 
           <div className="btn-group">
-            <button className="btn-submit" onClick={saveLobbyConfig}>
-              Save
-            </button>
+            {isSuperAdmin && (
+              <button className="btn-submit" onClick={saveLobbyConfig}>
+                Save
+              </button>
+            )}
+
             <button className="btn-gray" onClick={cancelLobbyConfig}>
               Cancel
             </button>

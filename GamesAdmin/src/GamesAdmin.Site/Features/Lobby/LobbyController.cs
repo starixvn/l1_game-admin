@@ -1,5 +1,6 @@
 ﻿using Audit.Mvc;
 using GamesAdmin.Core.Models.Lobby;
+using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace GamesAdmin.Site.Features.Lobby
         public async Task<IActionResult> GetAll()
         {
             var result = await this.lobbyService.GetAll();
+            result.IsSuperAdmin = HttpContext.HasAdminPermission();
 
             return Json(result);
         }
@@ -38,6 +40,7 @@ namespace GamesAdmin.Site.Features.Lobby
         public async Task<IActionResult> GetLobbyConfig(string id)
         {
             var result = await this.lobbyService.GetLobbyConfig(id);
+            result.IsSuperAdmin = HttpContext.HasAdminPermission();
 
             return Json(result);
         }

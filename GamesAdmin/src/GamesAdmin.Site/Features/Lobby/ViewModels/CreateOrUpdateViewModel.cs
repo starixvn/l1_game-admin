@@ -16,5 +16,7 @@ namespace GamesAdmin.Site.Features.Lobby.ViewModels
 
         public List<SelectListItem> GameIds { get; set; }
 
+        public bool IsSuperAdmin { get; set; }
+
     }
 }

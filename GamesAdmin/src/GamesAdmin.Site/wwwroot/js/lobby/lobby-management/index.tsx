@@ -40,6 +40,7 @@ const LobbyManagement: React.FC<Props> = () => {
     content: "",
     confirmHandler: () => {},
   });
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   let subtitle;
   const afterOpenModal = () => {
@@ -71,6 +72,7 @@ const LobbyManagement: React.FC<Props> = () => {
     const res = await axios("/lobby/getAll");
     setLobbyConfigs(res.data.lobbyConfigs);
     setCurrencyGroups(res.data.currencyGroupItems);
+    setIsSuperAdmin(res.data.isSuperAdmin);
   };
 
   const getCurrencyGroupNames = (currencyGroupIds: string[]) => {
@@ -142,14 +144,16 @@ const LobbyManagement: React.FC<Props> = () => {
 
   return (
     <>
-      <a
-        className="btn-add add-item"
-        href="#"
-        style={{ marginLeft: `0` }}
-        onClick={() => addNewLobby()}
-      >
-        Add New Lobby
-      </a>
+      {isSuperAdmin && (
+        <a
+          className="btn-add add-item"
+          href="#"
+          style={{ marginLeft: `0` }}
+          onClick={() => addNewLobby()}
+        >
+          Add New Lobby
+        </a>
+      )}
 
       <table
         className="table table-bordered has-background table-medium"
@@ -175,13 +179,15 @@ const LobbyManagement: React.FC<Props> = () => {
                 >
                   Edit
                 </a>
-                <a
-                  className="btn btn-danger btn-lg"
-                  href="#"
-                  onClick={() => openDeleteConfirm(lobbyConfig.id)}
-                >
-                  Delete
-                </a>
+                {isSuperAdmin && (
+                  <a
+                    className="btn btn-danger btn-lg"
+                    href="#"
+                    onClick={() => openDeleteConfirm(lobbyConfig.id)}
+                  >
+                    Delete
+                  </a>
+                )}
               </td>
             </tr>
           ))}
