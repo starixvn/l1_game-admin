@@ -129,14 +129,21 @@ const EditLobby: React.FC = () => {
       setCurrencyGroupIds([]);
     }
 
+    const getAndSetSelectedCurrencyGroup = () => {
+      var value = window
+        .jQuery("#currency-groups")
+        .fanexMultiSelect("getItems", true);
+      setCurrencyGroupIds(value);
+    };
+
     window.jQuery("#currency-groups").fanexMultiSelect({
       listData: data,
       showFilter: true,
       onLeave: function () {
-        var value = window
-          .jQuery("#currency-groups")
-          .fanexMultiSelect("getItems", true);
-        setCurrencyGroupIds(value);
+        getAndSetSelectedCurrencyGroup();
+      },
+      onCheck: function () {
+        getAndSetSelectedCurrencyGroup();
       },
     });
   };
