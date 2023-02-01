@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
+using GamesAdmin.Database.Entities.Currencies;
 using GamesAdmin.Database.Entities.Lobby;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,30 +31,35 @@ namespace GamesAdmin.Api.Lobby
         private readonly IGenericRepository<LobbyEntity> lobbyRepository;
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
+        private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
 
-
-        public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository, ISentryClient sentryClient, IMapper mapper)
+        public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository, ISentryClient sentryClient, IMapper mapper, IGenericRepository<CurrencyGroupEntity> currencyGroupRepository)
         {
             this.lobbyRepository = lobbyRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
+            this.currencyGroupRepository = currencyGroupRepository;
         }
 
         public async Task<string> CreateOrUpdate(LobbyModel lobbyModel)
         {
             try
             {
-                sentryClient.CaptureMessage(string.Format("Update Lobby {0}", lobbyModel.Name), SentryLevel.Error);
                 var lobbyEntity = mapper.Map<LobbyEntity>(lobbyModel);
 
-                var gameConfig = await lobbyRepository.FindOneAsync(entity => entity.Id == lobbyEntity.Id);
+                var existingLobbyEntity = await lobbyRepository.FindOneAsync(entity => entity.Id == lobbyEntity.Id);
 
-                if (gameConfig == null)
+                if (existingLobbyEntity == null)
                 {
+                    sentryClient.CaptureMessage(string.Format("Added Lobby \"{0}\"", lobbyModel.Name), SentryLevel.Error);
                     await lobbyRepository.InsertOneAsync(lobbyEntity);
                 }
                 else
                 {
+                    var currencyGroups = (await currencyGroupRepository.FilterByAsync(entity => true)).ToList();
+                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups);
+
+                    sentryClient.CaptureMessage(string.Format("Updated Lobby \"{0}\": \n\n{1}", lobbyModel.Name, log), SentryLevel.Error);
                     var update = Builders<LobbyEntity>.Update
                         .Set(field => field.Name, lobbyEntity.Name)
                         .Set(field => field.CurrencyGroupIds, lobbyEntity.CurrencyGroupIds)
@@ -79,7 +85,7 @@ namespace GamesAdmin.Api.Lobby
             try
             {
                 var lobbyConfig = await lobbyRepository.FindOneAsync(entity => entity.Id == ObjectId.Parse(id));
-                sentryClient.CaptureMessage(string.Format("Delete Lobby {0}", lobbyConfig.Name), SentryLevel.Error);
+                sentryClient.CaptureMessage(string.Format("Deleted Lobby \"{0}\"", lobbyConfig.Name), SentryLevel.Error);
                 await lobbyRepository.DeleteOneAsync(entity => entity.Id == ObjectId.Parse(id));
 
                 return true;
