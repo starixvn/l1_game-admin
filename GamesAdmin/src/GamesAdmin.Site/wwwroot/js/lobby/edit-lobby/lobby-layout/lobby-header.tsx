@@ -235,7 +235,11 @@ const LobbyHeader: React.FC<Props> = ({
                     className="add-button"
                     href="#"
                     onClick={(e) => addHandler(e)}
-                    style={{ height: "30px", marginBottom: "2px" }}
+                    style={{
+                      height: "30px",
+                      marginBottom: "2px",
+                      width: "110px",
+                    }}
                   >
                     Add Category
                   </a>
