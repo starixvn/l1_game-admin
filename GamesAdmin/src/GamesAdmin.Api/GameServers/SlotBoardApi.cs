@@ -11,34 +11,4 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/set-board")]
         Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
     }
-
-    public interface IFourGuardiansBoardApi : ISlotBoardApi
-    {
-        [Post("/api/set-board")]
-        new Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
-    }
-
-    public interface IHeroesSlotBoardApi : ISlotBoardApi
-    {
-        [Post("/api/set-board")]
-        new Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
-    }
-
-    public interface INightClubBoardApi : ISlotBoardApi
-    {
-        [Post("/api/set-board")]
-        new Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
-    }
-
-    public interface IWayToGoalBoardApi : ISlotBoardApi
-    {
-        [Post("/api/set-board")]
-        new Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
-    }
-
-    public interface IFortuneCatApi : ISlotBoardApi
-    {
-        [Post("/api/set-board")]
-        new Task<SettlementBoard> SetBoard([Body] SetSlotBoardServerRequest request);
-    }
 }
