@@ -11,6 +11,7 @@ using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -130,7 +131,7 @@ namespace GamesAdmin.Api.GameServers
             }
         }
 
-        public async Task<OnlineUsers> GetOnlineUsers(string gameConfigName)
+        public async Task<OnlineUsers> GetOnlineUsers(string gameConfigName = null)
         {
             try
             {
@@ -198,7 +199,8 @@ namespace GamesAdmin.Api.GameServers
 
                 if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
                 {
-                    var result = await slotBoardApiFactory.SetBoardApi(request.GameConfigName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
+                    var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
+                    var result = await slotBoardApiFactory.SetBoardApi(serviceName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
                     result.Result = request.Results.ToList();
 
                     return result;

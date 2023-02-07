@@ -139,6 +139,11 @@ namespace GamesAdmin.Api.Games
         {
             var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
 
+            if (gameEntity != null && gameEntity.DisplayName == null)
+            {
+                gameEntity.DisplayName = Game.FromGameName(name).DisplayName;
+            }
+
             return gameEntity != null ? mapper.Map<GameConfig>(gameEntity) : default;
         }
 
