@@ -30,8 +30,8 @@ namespace GamesAdmin.Site.Features.Lobby
         private readonly IAppSettings appSettings;
 
         public LobbyService(
-            ILobbyApi lobbyApi, 
-            ICurrencyGroupApi currencyGroupApi, 
+            ILobbyApi lobbyApi,
+            ICurrencyGroupApi currencyGroupApi,
             IPartnerService partnerService,
             IAppSettings appSettings)
         {
@@ -59,7 +59,7 @@ namespace GamesAdmin.Site.Features.Lobby
         public async Task<CreateOrUpdateViewModel> GetLobbyConfig(string id)
         {
             var allLobbyConfigs = await this.lobbyApi.GetAll();
-            var lobbyConfig = string.IsNullOrEmpty(id) ? null : await this.lobbyApi.Get(id);
+            var lobbyConfig = string.IsNullOrEmpty(id) || id == "undefined" ? null : await this.lobbyApi.Get(id);
             var otherLobbyConfigCurrencyGroups = allLobbyConfigs.Where(config => config.Id != lobbyConfig?.Id)
                 .Select(config => config.CurrencyGroupIds).ToArray()
                 .SelectMany(currencygroup => currencygroup).Distinct();
