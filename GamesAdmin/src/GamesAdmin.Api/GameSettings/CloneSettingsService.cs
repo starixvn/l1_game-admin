@@ -33,6 +33,12 @@ namespace GamesAdmin.Api.GameSettings
             try
             {
                 var gameName = await generalGameSettingService.GetGameName(fromGameId);
+                var existingGame = repository.FindOneAsync(entity => entity.Name ==  NamingConverter.GameConfigName(displayName) || entity.GameId == gameId);
+
+                if(existingGame != null)
+                {
+                    return "GameId or GameName is existed !";
+                }
 
                 if (gameName != null)
                 {
