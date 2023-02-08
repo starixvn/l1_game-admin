@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.IdentityServer;
+using GamesAdmin.Core.Models;
 using Refit;
 
 namespace GamesAdmin.Api.GameServers
 {
     public interface IOnlineUserApiFactory
     {
-        IOnlineUserApi GetOnlineUserApi(string gameConfigName);
+        IOnlineUserApi GetOnlineUserApi(GameConfig gameConfig);
     }
 
     public class OnlineUserApiFactory : IOnlineUserApiFactory
@@ -77,9 +79,10 @@ namespace GamesAdmin.Api.GameServers
             this.appSettings = appSettings;
         }
 
-        IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(string gameConfigName)
+        IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(GameConfig gameConfig)
         {
-            if(Enumeration.Contains<Game>(gameConfigName))
+            var gameConfigName = gameConfig.Info.Name;
+            if (Enumeration.Contains<Game>(gameConfigName))
             {
                 return onlineUserServices.ContainsKey(gameConfigName)
                     ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[gameConfigName])
@@ -91,8 +94,8 @@ namespace GamesAdmin.Api.GameServers
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
                 };
-
-                var api = string.Format(appSettings.ServiceApiTemplate, gameConfigName);
+                var serviceName = NamingConverter.ServiceName(gameConfig.Info.DisplayName);
+                var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
 
                 return RestService.For<ISlotGameOnlineUserApi>(api, refitSettings);
             }

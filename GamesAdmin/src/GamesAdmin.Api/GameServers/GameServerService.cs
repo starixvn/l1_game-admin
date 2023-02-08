@@ -140,7 +140,9 @@ namespace GamesAdmin.Api.GameServers
                     return await userServiceApi.GetAllOnlineUsers();
                 }
 
-                var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameConfigName);
+                var gameConfig = await gameSettingService.GetByName(gameConfigName);
+
+                var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameConfig);
 
                 return await onlineUserService.GetOnlineUsers(ConvertTypeToGameServerName(gameConfigName));
             }
