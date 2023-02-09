@@ -41,8 +41,8 @@ namespace GamesAdmin.Api.Games
             return await mediator.Send(new CreateRequest(game));
         }
 
-        [HttpPost("clone_new_slot_game")]
-        public Task<string> CloneNewSlotGame(byte gameId, byte fromGameId, string displayName)
+        [HttpPost("clone_slot_game")]
+        public Task<string> ClonelotGame(byte gameId, byte fromGameId, string displayName)
             => mediator.Send(new CloneNewSlotGameRequest(gameId, fromGameId, displayName));
 
         [HttpGet("{name}")]

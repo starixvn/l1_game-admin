@@ -70,8 +70,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Get("/game_settings/{name}/disabled_message")]
         Task<Dictionary<string, string>> GetDisableMessage(string name);
 
-        [Post("/game_settings/clone_new_slot_game")]
-        Task<string> CloneNewSlotGame(int gameId, byte fromGameId, string displayName);
+        [Post("/game_settings/clone_slot_game")]
+        Task<string> CloneSlotGame(int gameId, byte fromGameId, string displayName);
 
 
         [Post("/game_server/get_admin_monitoring_settings")]

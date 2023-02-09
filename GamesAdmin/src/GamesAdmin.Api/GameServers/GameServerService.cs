@@ -202,7 +202,7 @@ namespace GamesAdmin.Api.GameServers
                 if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
                 {
                     var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
-                    var result = await slotBoardApiFactory.SetBoardApi(serviceName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
+                    var result = await slotBoardApiFactory.GetBoardApi(serviceName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
                     result.Result = request.Results.ToList();
 
                     return result;

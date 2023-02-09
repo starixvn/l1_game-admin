@@ -41,9 +41,7 @@ namespace GamesAdmin.Api.GameServers
             => gameServerService.GetJWT(request);
 
         public Task<OnlineUsers> Handle(OnlineUserRequest request, CancellationToken cancellationToken)
-            => string.IsNullOrWhiteSpace(request.Game)
-                ? gameServerService.GetOnlineUsers()
-                : gameServerService.GetOnlineUsers(request.Game);
+            => gameServerService.GetOnlineUsers(request.Game);
 
         public Task<SettlementBoard> Handle(SetSlotBoardRequest request, CancellationToken cancellationToken)
             => gameServerService.SetSlotBoard(request);

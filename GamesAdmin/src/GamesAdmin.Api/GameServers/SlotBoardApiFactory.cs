@@ -6,7 +6,7 @@ namespace GamesAdmin.Api.GameServers
 {
     public interface ISlotBoardApiFactory
     {
-        ISlotBoardApi SetBoardApi(string serviceName);
+        ISlotBoardApi GetBoardApi(string serviceName);
     }
 
     public class SlotBoardApiFactory : ISlotBoardApiFactory
@@ -18,7 +18,7 @@ namespace GamesAdmin.Api.GameServers
             this.appSettings = appSettings;
         }
 
-        public ISlotBoardApi SetBoardApi(string serviceName)
+        public ISlotBoardApi GetBoardApi(string serviceName)
         {
             var refitSettings = new RefitSettings
             {

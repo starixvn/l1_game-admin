@@ -82,11 +82,9 @@ namespace GamesAdmin.Api.GameServers
         IOnlineUserApi IOnlineUserApiFactory.GetOnlineUserApi(GameConfig gameConfig)
         {
             var gameConfigName = gameConfig.Info.Name;
-            if (Enumeration.Contains<Game>(gameConfigName))
+            if (onlineUserServices.ContainsKey(gameConfigName))
             {
-                return onlineUserServices.ContainsKey(gameConfigName)
-                    ? (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[gameConfigName])
-                    : (IOnlineUserApi)serviceProvider.GetService(typeof(IMainOnlineUserApi));
+                return (IOnlineUserApi)serviceProvider.GetService(onlineUserServices[gameConfigName]);
             }
             else
             {

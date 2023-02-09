@@ -11,10 +11,6 @@ namespace GamesAdmin.Api.Public.Models
 
         public string Name { get; set; }
 
-        public string DisplayName { get; set; }
-
-        public bool Enabled { get; set; }
-
         public Dictionary<string, double> Odds { get; set; }
 
         public SlotsConfig SlotsConfig { get; set; }

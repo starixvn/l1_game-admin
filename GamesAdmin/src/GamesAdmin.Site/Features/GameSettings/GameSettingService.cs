@@ -196,7 +196,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             => gameApi.GetConnectedUsers();
 
         public async Task<string> CloneNewSlotGame(int gameId, byte fromGameId, string displayName)
-        =>await gameApi.CloneNewSlotGame(gameId, fromGameId, displayName);
+        =>await gameApi.CloneSlotGame(gameId, fromGameId, displayName);
         
     }
 }
