@@ -317,8 +317,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 if (await gameUserService.IsAbleToSetSlotResult(request.name, false))
                 {
-                    var gameEnum = Enumeration.FromValue<Game>(request.gameConfigName);
-                    var result = await cascadingResultApiFactory.SetResultApi(gameEnum).SetResult(request);
+                    var result = await cascadingResultApiFactory.SetResultApi(request.gameConfigName).SetResult(request);
 
                     return result;
                 }

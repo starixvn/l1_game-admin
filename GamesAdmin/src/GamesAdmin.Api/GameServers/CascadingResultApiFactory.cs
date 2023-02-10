@@ -6,7 +6,7 @@ namespace GamesAdmin.Api.GameServers
 {
     public interface ICascadingResultApiFactory
     {
-        ICascadingSlotResultApi SetResultApi(Game game);
+        ICascadingSlotResultApi SetResultApi(string gameConfigName);
     }
 
     public class CascadingResultApiFactory : ICascadingResultApiFactory
@@ -25,9 +25,9 @@ namespace GamesAdmin.Api.GameServers
             this.serviceProvider = serviceProvider;
         }
 
-        public ICascadingSlotResultApi SetResultApi(Game game)
-        => slotServices.ContainsKey(game.Value)
-            ? (ICascadingSlotResultApi)serviceProvider.GetService(slotServices[game.Value])
+        public ICascadingSlotResultApi SetResultApi(string gameConfigName)
+        => slotServices.ContainsKey(gameConfigName)
+            ? (ICascadingSlotResultApi)serviceProvider.GetService(slotServices[gameConfigName])
             : (ICascadingSlotResultApi)serviceProvider.GetService(defaultSlotResultApi);
     }
 }
