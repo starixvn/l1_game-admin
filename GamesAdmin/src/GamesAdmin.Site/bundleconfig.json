@@ -298,8 +298,14 @@
   },
   {
     "outputFileName": "wwwroot/css/lobby-management.min.css",
-    "inputFiles": [      
+    "inputFiles": [
       "wwwroot/scss/pages/lobby-management.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/domain.min.js",
+    "inputFiles": [
+      "wwwroot/js/domain.js"
     ]
   }
 ]

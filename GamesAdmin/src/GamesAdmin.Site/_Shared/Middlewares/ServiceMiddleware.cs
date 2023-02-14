@@ -10,6 +10,7 @@ using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.DailySummary;
+using GamesAdmin.Site.Features.Domain;
 using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.GameRoundResult;
 using GamesAdmin.Site.Features.GameSettings;
@@ -109,6 +110,9 @@ namespace GamesAdmin.Site._Shared.Middlewares
 
             services.AddSingleton(RestService.For<ILobbyApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<ILobbyService, LobbyService>();
+
+            services.AddSingleton(RestService.For<IDomainApi>(appSettings.ApiHost, refitSettings));
+            services.AddScoped<IDomainService, DomainService>();
 
             services.AddReportServices();
         }

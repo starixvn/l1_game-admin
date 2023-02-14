@@ -1,0 +1,41 @@
+﻿@using GamesAdmin.Site.Features._Shared;
+
+@model GamesAdmin.Site.Features.Domain.ViewModels.IndexViewModel
+
+@section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+}
+@{
+    ViewData["Title"] = "Domain Management";
+}
+<form>
+    <div id="domain">
+        <input readonly hidden asp-for="@Model.DomainId" />
+        <br />
+
+        <div class="message-error hidden-cls" id="invalidDomainMsg"><i class="icon-check"></i><span>Invalid domain name: </span></div>
+        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+
+        <div class="text-message ml-4">
+            <label class="font-weight-bold">Allowed Root Domains </label>
+            <label>(Names are separated by ';' ):</label>
+            <br />
+            <textarea rows="3" cols="50" id="domain-value">@Model.Value</textarea>
+        </div>
+        <div class="col-auto list-buttons">
+            @if (Context.HasAdminPermission())
+            {
+                <button type="button" class="btn-submit" id="domain-submit">Save</button>
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <environment include="Development">
+        <script src="~/js/domain.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/domain.min.js" asp-append-version="true"></script>
+    </environment>
+}

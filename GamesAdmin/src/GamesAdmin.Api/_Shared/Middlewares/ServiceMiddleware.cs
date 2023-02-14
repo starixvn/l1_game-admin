@@ -54,6 +54,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IHoldemPokerReportService, HoldemPokerReportService>();
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<ILobbyService, LobbyService>();
+            services.AddScoped<IDomainService, DomainService>();
 
             services.AddScoped<ISlotGameReportFactory, SlotGameReportFactory>();
             services.AddScoped<FourGuardiansReport>().AddScoped<ISlotGameReport, FourGuardiansReport>(s => s.GetService<FourGuardiansReport>());
