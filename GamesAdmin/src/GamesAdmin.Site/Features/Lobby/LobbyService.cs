@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.CurrencyGroups;
 using GamesAdmin.Site.Features.Lobby.ViewModels;
 using GamesAdmin.Site.Features.Partners;
@@ -28,17 +29,20 @@ namespace GamesAdmin.Site.Features.Lobby
         private readonly ICurrencyGroupApi currencyGroupApi;
         private readonly IPartnerService partnerService;
         private readonly IAppSettings appSettings;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public LobbyService(
             ILobbyApi lobbyApi,
             ICurrencyGroupApi currencyGroupApi,
             IPartnerService partnerService,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.lobbyApi = lobbyApi;
             this.currencyGroupApi = currencyGroupApi;
             this.partnerService = partnerService;
             this.appSettings = appSettings;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<ViewModels.IndexViewModel> GetAll()
@@ -68,7 +72,7 @@ namespace GamesAdmin.Site.Features.Lobby
             {
                 Partners = await partnerService.GetAll(),
                 CurrencyGroupModels = (await this.currencyGroupApi.GetAll()).Where(currencyGroup => !otherLobbyConfigCurrencyGroups.Contains(currencyGroup.Id)),
-                GameIds = Enumeration.GetAll<Game>()
+                GameIds = (await generalGameSettingService.GetAllGames())
                 .Where(x => (byte)x.GameId != 0)
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = ((int)x.GameId).ToString() })
                 .ToList(),
