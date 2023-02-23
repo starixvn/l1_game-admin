@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
@@ -32,13 +33,19 @@ namespace GamesAdmin.Api.Lobby
         private readonly ISentryClient sentryClient;
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
-        public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository, ISentryClient sentryClient, IMapper mapper, IGenericRepository<CurrencyGroupEntity> currencyGroupRepository)
+        public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository,
+            ISentryClient sentryClient,
+            IMapper mapper,
+            IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.lobbyRepository = lobbyRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<string> CreateOrUpdate(LobbyModel lobbyModel)
@@ -57,7 +64,8 @@ namespace GamesAdmin.Api.Lobby
                 else
                 {
                     var currencyGroups = (await currencyGroupRepository.FilterByAsync(entity => true)).ToList();
-                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups);
+                    var gameSettings = await generalGameSettingService.GetAll();
+                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups, gameSettings.ToList());
 
                     sentryClient.CaptureMessage(string.Format("Updated Lobby \"{0}\": \n\n{1}", lobbyModel.Name, log), SentryLevel.Error);
                     var update = Builders<LobbyEntity>.Update

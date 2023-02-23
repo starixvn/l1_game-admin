@@ -1,4 +1,4 @@
-﻿using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database.Entities.Currencies;
 using GamesAdmin.Database.Entities.Lobby;
@@ -10,7 +10,7 @@ namespace GamesAdmin.Api.Lobby
 {
     public static class LobbyLog
     {
-        public static string BuildChangedLog(LobbyEntity oldEntity, LobbyEntity newEntity, List<CurrencyGroupEntity> currencyGroups)
+        public static string BuildChangedLog(LobbyEntity oldEntity, LobbyEntity newEntity, List<CurrencyGroupEntity> currencyGroups, List<GeneralGameSetting> gameSettings)
         {
             var changedSettings = new List<string>();
 
@@ -28,19 +28,19 @@ namespace GamesAdmin.Api.Lobby
 
             if (HasChange(newEntity.MiniPanelGameIds, oldEntity.MiniPanelGameIds))
             {
-                var oldMiniPanelGames = oldEntity.MiniPanelGameIds.Select(gameId => Game.FromGameId((GameId)gameId).DisplayName);
-                var newMiniPanelGames = newEntity.MiniPanelGameIds.Select(gameId => Game.FromGameId((GameId)gameId).DisplayName);
+                var oldMiniPanelGames = oldEntity.MiniPanelGameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
+                var newMiniPanelGames = newEntity.MiniPanelGameIds.Select(gameId => GetGameDisplayName(gameId, gameSettings));
                 changedSettings.Add($"{"MiniPanelGameIds"}: {JsonConvert.SerializeObject(oldMiniPanelGames)} -> {JsonConvert.SerializeObject(newMiniPanelGames)}\r\n");
             }
 
             if (HasChange(newEntity.Banners, oldEntity.Banners))
             {
-                var oldBanners = oldEntity.Banners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = Game.FromGameId((GameId)banner.GameId).DisplayName });
-                var newBanners = newEntity.Banners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = Game.FromGameId((GameId)banner.GameId).DisplayName });
+                var oldBanners = oldEntity.Banners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) });
+                var newBanners = newEntity.Banners.Select(banner => new BannerLog { DisplayTime = banner.DisplayTime, GameName = GetGameDisplayName(banner.GameId, gameSettings) });
                 changedSettings.Add($"{"Banners"}: {JsonConvert.SerializeObject(oldBanners)} -> {JsonConvert.SerializeObject(newBanners)}\r\n");
             }
 
-            var changedCategory = BuildCategoryChangedLog(oldEntity, newEntity);
+            var changedCategory = BuildCategoryChangedLog(oldEntity, newEntity, gameSettings);
             changedSettings.Add(changedCategory);
 
             return string.Join("\r\n", changedSettings);
@@ -48,7 +48,7 @@ namespace GamesAdmin.Api.Lobby
 
 
 
-        private static string BuildCategoryChangedLog(LobbyEntity oldEntity, LobbyEntity newEntity)
+        private static string BuildCategoryChangedLog(LobbyEntity oldEntity, LobbyEntity newEntity, List<GeneralGameSetting> gameSettings)
         {
             var changedSettings = new List<string>();
             var maxSize = oldEntity.Categories.Length > newEntity.Categories.Length ? oldEntity.Categories.Length : newEntity.Categories.Length;
@@ -73,8 +73,8 @@ namespace GamesAdmin.Api.Lobby
                     }
                     if (HasChange(newCategory.GameSettings, oldCategory.GameSettings))
                     {
-                        var oldGameSettings = oldCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = Game.FromGameId((GameId)gameSetting.GameId).DisplayName });
-                        var newGameSettings = newCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = Game.FromGameId((GameId)gameSetting.GameId).DisplayName });
+                        var oldGameSettings = oldCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = GetGameDisplayName(gameSetting.GameId, gameSettings)});
+                        var newGameSettings = newCategory.GameSettings.Select(gameSetting => new GameSettingLog { BigSize = gameSetting.BigSize, NewTag = gameSetting.NewTag, GameName = GetGameDisplayName(gameSetting.GameId, gameSettings) });
                         changedCategory.Add($"{" - GameSettings"}: {JsonConvert.SerializeObject(oldGameSettings)} -> {JsonConvert.SerializeObject(newGameSettings)}");
                     }
                     if (changedCategory.Count > 0)
@@ -101,6 +101,13 @@ namespace GamesAdmin.Api.Lobby
             var obj1Str = JsonConvert.SerializeObject(obj1);
             var obj2Str = JsonConvert.SerializeObject(obj2);
             return !obj1Str.Equals(obj2Str);
+        }
+
+        private static string GetGameDisplayName(int gameId, List<GeneralGameSetting> gameSettings)
+        {
+            var gameSetting = gameSettings.FirstOrDefault(game => game.GameId == gameId);
+
+            return gameSetting.DisplayName;
         }
     }
 }
