@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Partners;
@@ -38,17 +39,20 @@ namespace GamesAdmin.Api.Partners
         private readonly IGenericRepository<PartnerConfigEntity> partnerConfigRepository;
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public PartnerService(
             ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<PartnerEntity> partnerRepository,
-            IGenericRepository<PartnerConfigEntity> partnerConfigRepository)
+            IGenericRepository<PartnerConfigEntity> partnerConfigRepository,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.sentryClient = sentryClient;
             this.partnerRepository = partnerRepository;
             this.mapper = mapper;
             this.partnerConfigRepository = partnerConfigRepository;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<bool> Create(Partner partner)
@@ -168,7 +172,7 @@ namespace GamesAdmin.Api.Partners
             {
                 var configType = PartnerConfigType.SiteExclusion.Value;
                 var oldConfig = await GetConfig(partnerId, configType);
-                var game = Game.FromGameId((GameId)gameId);
+                var gameSettings = await generalGameSettingService.GetGameName(gameId);
                 var configKey = gameId.ToString();
 
                 if (oldConfig == null)
@@ -180,7 +184,7 @@ namespace GamesAdmin.Api.Partners
                 else
                 {
                     sentryClient.CaptureChangedSetting(
-                        game.Value,
+                        gameSettings,
                         "Site Exclusion",
                         string.Empty,
                         new SettingChangedModel(string.Join(", ", oldConfig.Value.ContainsKey(configKey) ? oldConfig.Value[configKey] : new List<string>()), string.Join(", ", exclusionSites)));
