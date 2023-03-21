@@ -1,4 +1,4 @@
-FROM registry.nexdev.net:5050/docker/dotnet/core/sdk:3.1 AS builder
+FROM hub.lumigame.com/base/dotnet/core/sdk:3.1 AS builder
 WORKDIR /src
 
 COPY ./GamesAdmin/src/GamesAdmin.Core ./GamesAdmin.Core
@@ -12,7 +12,7 @@ COPY ./GamesAdmin/src/GamesAdmin.Api .
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app 
 
-FROM registry.nexdev.net:5050/docker/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM hub.lumigame.com/base/dotnet/core/aspnet:3.1-buster-slim AS base
 
 WORKDIR /app
 COPY --from=builder /app .
