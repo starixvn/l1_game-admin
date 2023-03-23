@@ -23,13 +23,6 @@ namespace GamesAdmin.Api.CurrencyGroupGames
         public Task<bool> Update(CurrencyGroupGame gameConfig)
            => mediator.Send(new UpdateCurrencyGroupGameRequest(gameConfig));
 
-        [HttpPost("update1")]
-        public async Task<bool> Update1([FromBody] LobbyEntity lobbyEntity)
-        {
-            return true;
-        }
-
-
         [HttpGet("get")]
         public Task<CurrencyGroupGame> Get(int gameId, string currencyGroupId)
             => mediator.Send(new GetCurrenctGroupGameRequest(currencyGroupId, gameId));
