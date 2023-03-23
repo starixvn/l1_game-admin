@@ -13,7 +13,9 @@ namespace GamesAdmin.Api.ApiLogs
         private const string VoidGamesCollectionName = "void_games";
         private const string SignInCollectionName = "signin_requests";
         private const string RetrieveEndGameCollectionName = "retrieve_requests";
-        private const string TicketDetaulCollectionName = "ticket_detail_requests";
+        private const string TicketDetailCollectionName = "ticket_detail_requests";
+        private const string MemberSigninCollectionName = "membersignin_requests";
+        private const string OperatorSigninCollectionName = "owsignin_requests";
 
         private const string PlaceBetCall = "PartnerPlaceBetCall";
         private const string PlaceBetResult = "PartnerPlaceBetResult";
@@ -47,7 +49,9 @@ namespace GamesAdmin.Api.ApiLogs
             { ApiLogType.VoidGames, VoidGamesCollectionName },
             { ApiLogType.SignInRequest, SignInCollectionName },
             { ApiLogType.RetrieveRequests, RetrieveEndGameCollectionName },
-            { ApiLogType.TicketDetailRequests, TicketDetaulCollectionName }
+            { ApiLogType.TicketDetailRequests, TicketDetailCollectionName },
+            { ApiLogType.MemberSiteSignInRequest, MemberSigninCollectionName },
+            { ApiLogType.OperatorSignInRequest, OperatorSigninCollectionName },
         };
 
         private static readonly Dictionary<string, Type> callOrRequestTypeMapping = new Dictionary<string, Type>

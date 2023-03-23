@@ -11,7 +11,8 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
             DateTimeOffset toDate,
             int obCustId,
             int gameRoundId,
-            byte gameTypeId)
+            byte gameTypeId,
+            string username)
         {
             LogType = logType;
             PartnerId = partnerId;
@@ -20,6 +21,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
             ObCustId = obCustId;
             GameRoundId = gameRoundId;
             GameTypeId = gameTypeId;
+            Username = username;
         }
 
         public byte LogType { get; }
@@ -35,5 +37,6 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
         public int GameRoundId { get; }
 
         public byte GameTypeId { get; }
+        public string Username { get; }
     }
 }

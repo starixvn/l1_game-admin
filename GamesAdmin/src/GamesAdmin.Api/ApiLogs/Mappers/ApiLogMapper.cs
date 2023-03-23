@@ -19,7 +19,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     model.ToDate,
                     model.ObCustId,
                     model.GameRoundId,
-                    model.GameTypeId));
+                    model.GameTypeId,
+                    model.Username));
 
             CreateMap<SBLogEntity, SBLog>()
                 .ConstructUsing((entity, context) => new SBLog(
@@ -76,6 +77,18 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
 
             CreateMap<ApiLogArchiveEntity, ApiLogArchive>();
             CreateMap<ApiLogArchiveEntity, BetLogArchive>();
+
+            CreateMap<MemberSignInLogEntity, MemberSignInLog>();
+            CreateMap<MemberSignInRequestEntity, MemberSignInRequest>();
+            CreateMap<MemberSignInResultEntity, MemberSignInResult>();
+            CreateMap<PublicUserInfoEntity, PublicUserInfo>();
+            CreateMap<UserInfoEntity, UserInfo>();
+
+            CreateMap<OWSignInLogEntity, OWSignInLog>();
+            CreateMap<OWSignInRequestEntity, OWSignInRequest>();
+            CreateMap<OWSignInResultEntity, OWSignInResult>();
+            CreateMap<OWAuthEntity, OWAuth>();
+            CreateMap<OWSignInCallEntity, OWSignInCall>();
         }
 
         private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)

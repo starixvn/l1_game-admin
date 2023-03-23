@@ -25,17 +25,19 @@ namespace GamesAdmin.Api.ApiLogs.Handlers
                 ApiLogType.TicketDetailRequests => QueryTicketDetailLog(request),
                 ApiLogType.RetrieveRequests => QuerySBLog(request),
                 ApiLogType.SignInRequest => QuerySBLog(request),
+                ApiLogType.MemberSiteSignInRequest => QueryMemberSignInLog(request),
+                ApiLogType.OperatorSignInRequest => QueryOWSignInLog(request),
                 _ => QueryPartnerLog(request)
             };
 
         private async Task<IEnumerable<IApiLog>> QuerySBLog(QueryLogRequest request)
         {
-            var repository = GetRepository<SBLogEntity>(request.LogType);
-            var expression = ApiLogQueryExpression.GetSBExpression(request);
+                var repository = GetRepository<SBLogEntity>(request.LogType);
+                var expression = ApiLogQueryExpression.GetSBExpression(request);
 
-            var entities = await repository.FilterByAsync(expression);
+                var entities = await repository.FilterByAsync(expression);
 
-            return Mapper.Map<IEnumerable<SBLog>>(entities.AsEnumerable());
+                return Mapper.Map<IEnumerable<SBLog>>(entities.AsEnumerable());
         }
 
         private async Task<IEnumerable<IApiLog>> QueryPartnerLog(QueryLogRequest request)
@@ -46,6 +48,26 @@ namespace GamesAdmin.Api.ApiLogs.Handlers
             var entities = await repository.FilterByAsync(expression);
 
             return Mapper.Map<IEnumerable<PartnerLog>>(entities.AsEnumerable());
+        }
+
+        private async Task<IEnumerable<IApiLog>> QueryMemberSignInLog(QueryLogRequest request)
+        {
+            var repository = GetRepository<MemberSignInLogEntity>(request.LogType);
+            var expression = ApiLogQueryExpression.GetMemberSignInExpression(request);
+
+            var entities = await repository.FilterByAsync(expression);
+
+            return Mapper.Map<IEnumerable<MemberSignInLog>>(entities.AsEnumerable());
+        }
+
+        private async Task<IEnumerable<IApiLog>> QueryOWSignInLog(QueryLogRequest request)
+        {
+            var repository = GetRepository<OWSignInLogEntity>(request.LogType);
+            var expression = ApiLogQueryExpression.GetOWSignInExpression(request);
+
+            var entities = await repository.FilterByAsync(expression);
+
+            return Mapper.Map<IEnumerable<OWSignInLog>>(entities.AsEnumerable());
         }
 
         private async Task<IEnumerable<IApiLog>> QueryTicketDetailLog(QueryLogRequest request)

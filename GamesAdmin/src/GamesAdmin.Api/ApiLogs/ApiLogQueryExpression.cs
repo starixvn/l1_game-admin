@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using GamesAdmin.Api.ApiLogs.Requests;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Database.ApiLogs.Entities;
@@ -48,6 +49,14 @@ namespace GamesAdmin.Api.ApiLogs
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailPartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.Call.Auth.OperatorId);
 
+        private static Expression<Func<MemberSignInLogEntity, bool>> UsernameExpression(QueryLogRequest request)
+        {
+            var regex = new Regex($"(?i){request.Username}");
+            return entity => regex.IsMatch(entity.Request.Username);
+        }
+
+
+
         public static Expression<Func<PartnerLogEntity, bool>> GetPartnerExpression(QueryLogRequest request)
         {
             var dateRangeExpression = DateRangeExpression<PartnerLogEntity>(request);
@@ -91,6 +100,30 @@ namespace GamesAdmin.Api.ApiLogs
                 .And(partnerIdExpession);
 
             return finalExpression;
+        }
+
+        public static Expression<Func<MemberSignInLogEntity, bool>> GetMemberSignInExpression(QueryLogRequest request)
+        {
+            var dateRangeExpression = DateRangeExpression<MemberSignInLogEntity>(request);
+            if (string.IsNullOrWhiteSpace(request.Username))
+            {
+                return dateRangeExpression;
+            }
+
+            return dateRangeExpression.And(UsernameExpression(request));
+        }
+
+        public static Expression<Func<OWSignInLogEntity, bool>> GetOWSignInExpression(QueryLogRequest request)
+        {
+            var expression = DateRangeExpression<OWSignInLogEntity>(request);
+            expression = expression.And(x => request.ObCustId == 0 || request.ObCustId == x.Request.Call.ObCustId);
+            if (!string.IsNullOrWhiteSpace(request.Username))
+            {
+                var regex = new Regex($"(?i){request.Username}");
+                return expression =  expression.And(x => regex.IsMatch(x.Request.Call.ObCustName));
+            }
+
+            return expression;
         }
     }
 }

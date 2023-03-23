@@ -9,6 +9,8 @@
         SignInRequest,
         TicketDetailRequests,
         VoidGames,
+        MemberSiteSignInRequest,
+        OperatorSignInRequest
     }
 
     public class ApiLogEnumeration : Enumeration
@@ -20,6 +22,8 @@
         public static readonly ApiLogEnumeration SignInRequest = new ApiLogEnumeration("Sign In Request", ApiLogType.SignInRequest);
         public static readonly ApiLogEnumeration TicketDetailRequests = new ApiLogEnumeration("Ticket Detail Requests", ApiLogType.TicketDetailRequests);
         public static readonly ApiLogEnumeration VoidGames = new ApiLogEnumeration("Void Games", ApiLogType.VoidGames);
+        public static readonly ApiLogEnumeration MemberSiteSignInRequest = new ApiLogEnumeration("Member Site Sign In Request", ApiLogType.MemberSiteSignInRequest);
+        public static readonly ApiLogEnumeration OperatorSignInRequest = new ApiLogEnumeration("Operator Sign In Request", ApiLogType.OperatorSignInRequest);
 
         public ApiLogEnumeration()
         { }

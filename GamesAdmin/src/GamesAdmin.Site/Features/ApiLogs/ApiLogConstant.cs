@@ -17,6 +17,9 @@ namespace GamesAdmin.Site.Features.ApiLogs
         private static readonly ApiLogViewConfigs gameRoundForSBLogIdConfigs = new ApiLogViewConfigs("Game Round", "Request.GameRoundId");
         private static readonly ApiLogViewConfigs obCustIdForSBLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Request.PlayerId");
 
+        private static readonly ApiLogViewConfigs siteIdForOWSignInLogConfigs = new ApiLogViewConfigs("Site ID", "Request.Call.SiteId");
+        private static readonly ApiLogViewConfigs obCustIdForOWSignInLogIdConfigs = new ApiLogViewConfigs("Customer ID", "Request.Call.ObCustId");
+
         private static readonly IEnumerable<ApiLogViewConfigs> commonPartnerLogView = new List<ApiLogViewConfigs>
         {
             siteIdForPartnerLogConfigs, gameTypeIdForPartnerLogConfigs, gameRoundForPartnerLogIdConfigs
@@ -42,6 +45,16 @@ namespace GamesAdmin.Site.Features.ApiLogs
             obCustIdForPartnerLogIdConfigs, gameTypeIdForPartnerLogConfigs, gameRoundForPartnerLogIdConfigs
         };
 
+        private static readonly IEnumerable<ApiLogViewConfigs> memberSignInView = new List<ApiLogViewConfigs>
+        {
+             siteIdForSBLogConfigs
+        };
+
+        private static readonly IEnumerable<ApiLogViewConfigs> owSignInView = new List<ApiLogViewConfigs>
+        {
+             obCustIdForOWSignInLogIdConfigs, siteIdForOWSignInLogConfigs
+        };
+
         private static readonly Dictionary<ApiLogType, IEnumerable<ApiLogViewConfigs>> viewConfigsMappings = new Dictionary<ApiLogType, IEnumerable<ApiLogViewConfigs>>
         {
             { ApiLogType.Bets, commonPartnerLogView },
@@ -50,7 +63,9 @@ namespace GamesAdmin.Site.Features.ApiLogs
             { ApiLogType.SignInRequest, signInView },
             { ApiLogType.FailedRequests, failRequestsView },
             { ApiLogType.VoidGames, voidGameAndTicketDetailView },
-            { ApiLogType.TicketDetailRequests, voidGameAndTicketDetailView }
+            { ApiLogType.TicketDetailRequests, voidGameAndTicketDetailView },
+            { ApiLogType.MemberSiteSignInRequest, memberSignInView },
+            { ApiLogType.OperatorSignInRequest, owSignInView },
         };
 
         private static string GetGameName(string gameId)

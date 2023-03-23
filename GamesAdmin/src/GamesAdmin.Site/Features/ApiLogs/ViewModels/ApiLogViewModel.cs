@@ -20,6 +20,8 @@ namespace GamesAdmin.Site.Features.ApiLogs.ViewModels
 
         public byte GameTypeId { get; set; }
 
+        public string Username { get; set; }
+
         public IEnumerable<SelectListItem> Partners { get; set; }
 
         public IEnumerable<SelectListItem> Games { get; set; }

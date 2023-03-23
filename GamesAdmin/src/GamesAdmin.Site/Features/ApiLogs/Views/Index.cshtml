@@ -39,6 +39,10 @@
             <input class="form-control" asp-for="ObCustId" value='' />
         </div>
         <div class="col-auto">
+            <label asp-for="Username" class="control-label">Username</label>
+            <input class="form-control" asp-for="Username" value='' />
+        </div>
+        <div class="col-1">
             <label asp-for="GameTypeId" class="control-label">Game</label>
             <select asp-items="@Model.Games" asp-for="GameTypeId" class="form-control">
                 <option selected="selected" value="0">All</option>
