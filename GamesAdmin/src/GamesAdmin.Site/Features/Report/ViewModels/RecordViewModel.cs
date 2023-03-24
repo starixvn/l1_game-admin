@@ -218,6 +218,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string IconsFolder => Game?.ToLowerInvariant();
         public string SystemType { get; set; }
 
+        public bool IsEnbaledJackpot { get; set; }
+
         public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (isConvert)

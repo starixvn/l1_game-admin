@@ -3,6 +3,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.Partners;
@@ -53,6 +54,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly IExchangeRateService exchangeRateService;
         private readonly IReportServiceFactory reportServiceFactory;
         private readonly ISystemSettings systemSettings;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public ReportHandler(
             IReportService reportService,
@@ -62,7 +64,8 @@ namespace GamesAdmin.Site.Features.Report
             ICurrencyService currencyService,
             IExchangeRateService exchangeRateService,
             IReportServiceFactory reportServiceFactory,
-            ISystemSettings systemSettings)
+            ISystemSettings systemSettings,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -72,6 +75,7 @@ namespace GamesAdmin.Site.Features.Report
             this.exchangeRateService = exchangeRateService;
             this.reportServiceFactory = reportServiceFactory;
             this.systemSettings = systemSettings;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -403,10 +407,13 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportService.GetSlotGameReport(request);
             var partners = await partnerService.GetPartnersForSelection(model => true);
+            var games = await generalGameSettingService.GetAllGames();
+            var gameInfo = games.FirstOrDefault(game => game.Name == request.Game);
 
             return new SlotGameReportResultViewModel
             {
                 ConvertToUSD = request.ConvertToUSD,
+                IsEnabledJackpot = gameInfo.IsEnabledJackpot,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
@@ -416,6 +423,7 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
+                    betViewModel.IsEnbaledJackpot = gameInfo.IsEnabledJackpot;
 
                     return betViewModel;
                 })

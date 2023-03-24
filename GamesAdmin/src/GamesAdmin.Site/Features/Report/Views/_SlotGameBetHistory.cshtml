@@ -33,9 +33,21 @@
                                 <tr>
                                     @for (var column = 0; column < array[row].Length; column++)
                                     {
-                                        <td>
-                                            <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(array[row][column]).png" />
-                                        </td>
+                                        var symbolIndex = array[row][column];
+                                        if(Model.IsEnbaledJackpot && symbolIndex == 10)
+                                        {
+                                            <td>
+                                                <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(array[row][column]).jackpot.png" />
+                                            </td>
+
+                                        }
+                                        else
+                                        {
+                                             <td>
+                                                <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(array[row][column]).png" />
+                                            </td>
+                                        }
+
                                     }
                                 </tr>
                             }
@@ -65,7 +77,7 @@
             <tr>
                 <td class="text-center"><img class="payline" src="@resourceSiteConfig.Value.BaseUrl/_shared/classicslot/payline-@(Model.SettlementResult.Jackpot.WinningLine + 1).png" /></td>
                 <td class="text-center">
-                    <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl@Model.IconsFolder/symbol-10.png" />
+                    <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl@Model.IconsFolder/symbol-10.jackpot.png" />
                 </td>
                 <td class="text-center">5</td>
                 <td class="text-center">Jackpot</td>
@@ -77,9 +89,17 @@
         {
             var winningPayline = Model.SettlementResult.WinningPaylines.FirstOrDefault(x => x.Payline == payline);
 
+
             <tr>
                 <td class="text-center"><img class="payline" src="@resourceSiteConfig.Value.BaseUrl/_shared/classicslot/payline-@(payline + 1).png" /></td>
-                <td class="text-center"><img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(winningPayline.Symbol).png" /></td>
+                @if(Model.IsEnbaledJackpot && winningPayline.Symbol == "10")
+                {
+                    <td class="text-center"><img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(winningPayline.Symbol).jackpot.png" /></td>
+                }
+                else
+                {
+                    <td class="text-center"><img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(winningPayline.Symbol).png" /></td>
+                }
                 <td class="text-center">@winningPayline.Count</td>
                 <td class="text-center">x@(winningPayline.Odds)</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>

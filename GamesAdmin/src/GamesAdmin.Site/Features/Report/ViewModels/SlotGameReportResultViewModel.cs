@@ -6,6 +6,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public bool ConvertToUSD { get; set; }
 
+        public bool IsEnabledJackpot { get; set; }
+
         public IEnumerable<SlotGameRecordViewModel> Records { get; set; }
     }
 }

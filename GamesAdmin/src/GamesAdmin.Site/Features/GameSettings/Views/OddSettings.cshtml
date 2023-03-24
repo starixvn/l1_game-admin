@@ -40,7 +40,17 @@
                                     <div class="form-group row mb-0">
                                         <input type="hidden" asp-for="@Model.PayoutViewModel.IconOdds[i].Index" class="form-control" />
                                         <div class="col-lg-4 d-flex align-items-center">
-                                            <img src="@(resourceSiteConfig.Value.BaseUrl)@($"{Model.Name.ToLowerInvariant()}/symbol-{Model.PayoutViewModel.IconOdds[i].Index}").png" alt="icons" />
+                                            @{
+                                                var imgIndex = Model.PayoutViewModel.IconOdds[i].Index;
+                                                if(imgIndex == "10" && Model.SlotsConfig.Jackpot.Enabled)
+                                                {
+                                                    <img src="@(resourceSiteConfig.Value.BaseUrl)@($"{Model.Name.ToLowerInvariant()}/symbol-{imgIndex}.jackpot").png" alt="icons" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@(resourceSiteConfig.Value.BaseUrl)@($"{Model.Name.ToLowerInvariant()}/symbol-{imgIndex}").png" alt="icons" />
+                                                }
+                                            }
                                         </div>
 
                                         <div class="col-lg-8">

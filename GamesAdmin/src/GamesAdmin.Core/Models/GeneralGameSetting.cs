@@ -4,12 +4,13 @@ namespace GamesAdmin.Core.Models
 {
     public class GeneralGameSetting
     {
-        public GeneralGameSetting(int gameId, string name, string displayName, GameType type)
+        public GeneralGameSetting(int gameId, string name, string displayName, GameType type, bool isEnabledJackpot)
         {
             GameId = gameId;
             Name = name;
             DisplayName = displayName;
             Type = type;
+            IsEnabledJackpot = isEnabledJackpot;
         }
 
         public int GameId { get; }
@@ -19,5 +20,7 @@ namespace GamesAdmin.Core.Models
         public string DisplayName { get; }
 
         public GameType Type { get; }
+
+        public bool IsEnabledJackpot { get; }
     }
 }
