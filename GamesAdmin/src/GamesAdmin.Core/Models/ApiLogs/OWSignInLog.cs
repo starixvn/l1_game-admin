@@ -16,19 +16,11 @@ namespace GamesAdmin.Core.Models.ApiLogs
     public class OWSignInRequest
     {
         public DateTimeOffset TimeStamp { get; set; } = DateTimeOffset.UtcNow;
-        public OWAuth Auth { get; set; }
         public OWSignInCall Call { get; set; }
     }
 
-    public class OWAuth
+    public class OWSignInCall : PartnerCall
     {
-        public string Login { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class OWSignInCall
-    {
-        public int ObCustId { get; set; }
         public string ObCustName { get; set; }
         public int GameId { get; set; }
         public string Currency { get; set; }
@@ -36,16 +28,11 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string BrowserUserAgent { get; set; }
         public string BetFrom { get; set; }
         public string Language { get; set; }
-        public string SiteId { get; set; }
         public string SiteName { get; set; }
-        public string Seq { get; set; }
     }
 
-    public class OWSignInResult
+    public class OWSignInResult : PartnerResult
     {
-        public int ErrorCode { get; set; }
-        public string ErrorDescription { get; set; }
-        public string Seq { get; set; }
         public string RedirectUri { get; set; }
     }
 }

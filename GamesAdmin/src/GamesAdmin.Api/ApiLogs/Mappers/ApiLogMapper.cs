@@ -87,7 +87,6 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<OWSignInLogEntity, OWSignInLog>();
             CreateMap<OWSignInRequestEntity, OWSignInRequest>();
             CreateMap<OWSignInResultEntity, OWSignInResult>();
-            CreateMap<OWAuthEntity, OWAuth>();
             CreateMap<OWSignInCallEntity, OWSignInCall>();
         }
 

@@ -59,6 +59,25 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string Reason { get; set; }
 
         public string OperatorToken { get; set; }
+
+        public string VendorId { get; set; }
+
+        public string Username { get; set; }
+
+        public string Platform { get; set; } = "A";
+
+        public string ObCustName { get; set; }
+        public int GameId { get; set; }
+
+        public string IP { get; set; }
+
+        public string BrowserUserAgent { get; set; }
+
+        public string BetFrom { get; set; } = "{";
+
+        public string Language { get; set; }
+
+        public string SiteName { get; set; }
     }
 
     public class PartnerResultEntity : ApiLogResultEntity
@@ -82,5 +101,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public long? ObTransId { get; set; }
 
         public decimal Balance { get; set; }
+
+        public string ErrorMsg { get; set; }
     }
 }

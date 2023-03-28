@@ -13,27 +13,18 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public MemberSignInResult Result { get; set; }
     }
 
-    public class MemberSignInRequest
+    public class MemberSignInRequest : PartnerCall
     {
         public string VendorId { get; set; }
 
-        public string SiteId { get; set; }
-
         public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string PasswordEncodeKey { get; set; }
-
-        public string Seq { get; set; }
 
         public string Platform { get; set; }
     }
 
-    public class MemberSignInResult
+    public class MemberSignInResult : PartnerResult
     {
         public string ErrorMsg { get; set; }
-        public int ErrorCode { get; set; }
         public PublicUserInfo PublicUserInfo { get; set; }
     }
 

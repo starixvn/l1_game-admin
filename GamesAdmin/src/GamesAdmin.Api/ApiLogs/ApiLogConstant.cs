@@ -41,6 +41,11 @@ namespace GamesAdmin.Api.ApiLogs
         private const string TicketDetailCall = nameof(TicketDetailRequest);
         private const string TicketDetailResultName = nameof(TicketDetailResult);
 
+        public const string MemberSignInCall = nameof(MemberSignInCall);
+        public const string MemberSignInResult = nameof(MemberSignInResult);
+        public const string OWSignInCall = nameof(OWSignInCall);
+        public const string OWSignInResult = nameof(OWSignInResult);
+
         private static readonly Dictionary<ApiLogType, string> collectionMappings = new Dictionary<ApiLogType, string>
         {
             { ApiLogType.Bets, BetsCollectionName },
@@ -77,7 +82,13 @@ namespace GamesAdmin.Api.ApiLogs
             { EnterPortalResult, typeof(PartnerEnterPortalResult) },
 
             { TicketDetailCall, typeof(TicketDetailRequest) },
-            { TicketDetailResultName, typeof(TicketDetailResult) }
+            { TicketDetailResultName, typeof(TicketDetailResult) },
+
+            { MemberSignInCall, typeof(MemberSignInRequest) },
+            { MemberSignInResult, typeof(MemberSignInResult) },
+
+            { OWSignInCall, typeof(OWSignInCall) },
+            { OWSignInResult, typeof(OWSignInResult) },
         };
 
         public static Dictionary<ApiLogType, string> CollectionMappings => collectionMappings;

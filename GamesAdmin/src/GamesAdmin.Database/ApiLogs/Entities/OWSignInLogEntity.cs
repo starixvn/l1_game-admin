@@ -11,14 +11,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
     public class OWSignInRequestEntity
     {
         public DateTimeOffset TimeStamp { get; set; } = DateTimeOffset.UtcNow;
-        public OWAuthEntity Auth { get; set; }
         public OWSignInCallEntity Call { get; set; }
-    }
-
-    public class OWAuthEntity
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
     }
 
     public class OWSignInCallEntity
