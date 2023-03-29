@@ -13,19 +13,43 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public MemberSignInResult Result { get; set; }
     }
 
-    public class MemberSignInRequest : PartnerCall
+    public class MemberSignInRequest
     {
         public string VendorId { get; set; }
 
         public string Username { get; set; }
 
         public string Platform { get; set; }
+
+        public string SiteId { get; set; }
+
+        public string Seq { get; set; }
     }
 
-    public class MemberSignInResult : PartnerResult
+    public class MemberFailedSignInRequest : MemberSignInRequest, IApiLogRequest
     {
+        public int? ObCustId { get; set; }
+
+        public int? PlayerId { get; set; }
+
+        public int? GameRoundId { get; set; }
+
+        public byte? GameTypeId { get; set; }
+
+        public string RequestType { get; set; }
+    }
+
+    public class MemberSignInResult
+    {
+        public int ErrorCode { get; set; }
         public string ErrorMsg { get; set; }
+        public string Seq { get; set; }
         public PublicUserInfo PublicUserInfo { get; set; }
+    }
+
+    public class MemberFailedSignInResult : MemberSignInResult, IApiLogResult
+    {
+        public string ResultType { get; set; }
     }
 
     public class PublicUserInfo

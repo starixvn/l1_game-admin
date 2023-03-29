@@ -83,12 +83,12 @@ namespace GamesAdmin.Api.ApiLogs
 
             { TicketDetailCall, typeof(TicketDetailRequest) },
             { TicketDetailResultName, typeof(TicketDetailResult) },
+            
+            { MemberSignInCall, typeof(MemberFailedSignInRequest) },
+            { MemberSignInResult, typeof(MemberFailedSignInResult) },
 
-            { MemberSignInCall, typeof(MemberSignInRequest) },
-            { MemberSignInResult, typeof(MemberSignInResult) },
-
-            { OWSignInCall, typeof(OWSignInCall) },
-            { OWSignInResult, typeof(OWSignInResult) },
+            { OWSignInCall, typeof(OWFailedSignInCall) },
+            { OWSignInResult, typeof(OWFailedSignInResult) },
         };
 
         public static Dictionary<ApiLogType, string> CollectionMappings => collectionMappings;

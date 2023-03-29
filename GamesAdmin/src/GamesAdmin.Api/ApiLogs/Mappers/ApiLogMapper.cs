@@ -83,15 +83,15 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<MemberSignInResultEntity, MemberSignInResult>();
             CreateMap<PublicUserInfoEntity, PublicUserInfo>();
             CreateMap<UserInfoEntity, UserInfo>();
-            CreateMap<PartnerCallEntity, MemberSignInRequest>();
-            CreateMap<PartnerResultEntity, MemberSignInResult>();
+            CreateMap<PartnerCallEntity, MemberFailedSignInRequest>();
+            CreateMap<PartnerResultEntity, MemberFailedSignInResult>();
 
             CreateMap<OWSignInLogEntity, OWSignInLog>();
             CreateMap<OWSignInRequestEntity, OWSignInRequest>();
             CreateMap<OWSignInResultEntity, OWSignInResult>();
             CreateMap<OWSignInCallEntity, OWSignInCall>();
-            CreateMap<PartnerCallEntity, OWSignInCall>();
-            CreateMap<PartnerResultEntity, OWSignInResult>();
+            CreateMap<PartnerCallEntity, OWFailedSignInCall>();
+            CreateMap<PartnerResultEntity, OWFailedSignInResult>();
         }
 
         private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)
