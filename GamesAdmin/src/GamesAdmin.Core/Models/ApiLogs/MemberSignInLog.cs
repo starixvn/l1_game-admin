@@ -47,9 +47,17 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public PublicUserInfo PublicUserInfo { get; set; }
     }
 
-    public class MemberFailedSignInResult : MemberSignInResult, IApiLogResult
+    public class MemberFailedSignInResult : MemberSignInResult, IPartnerResult
     {
         public string ResultType { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public string ErrorDescription { get; set; }
+
+        public int? ObCustId { get; set; }
+
+        public int? PlayerId { get; set; }
     }
 
     public class PublicUserInfo

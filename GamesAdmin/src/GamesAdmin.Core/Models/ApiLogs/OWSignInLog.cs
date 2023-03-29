@@ -51,8 +51,14 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string Seq { get; set; }
     }
 
-    public class OWFailedSignInResult : OWSignInResult, IApiLogResult
+    public class OWFailedSignInResult : OWSignInResult, IPartnerResult
     {
         public string ResultType { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public int? ObCustId { get; set; }
+
+        public int? PlayerId { get; set; }
     }
 }
