@@ -64,7 +64,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string Username { get; set; }
 
-        public string Platform { get; set; } = "A";
+        public string Platform { get; set; }
 
         public string ObCustName { get; set; }
         public int GameId { get; set; }
@@ -73,7 +73,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public string BrowserUserAgent { get; set; }
 
-        public string BetFrom { get; set; } = "{";
+        public string BetFrom { get; set; }
 
         public string Language { get; set; }
 
