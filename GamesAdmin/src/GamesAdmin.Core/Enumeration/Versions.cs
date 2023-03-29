@@ -5,6 +5,7 @@
         Cocos = 1,
         Mobi,
         Instant,
-        MegaKeno
+        MegaKeno,
+        App
     }
 }
