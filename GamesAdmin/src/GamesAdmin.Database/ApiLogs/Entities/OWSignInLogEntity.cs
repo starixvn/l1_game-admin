@@ -27,6 +27,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string SiteId { get; set; }
         public string SiteName { get; set; }
         public string Seq { get; set; }
+        public string Platform { get; set; }
     }
 
     public class OWSignInResultEntity

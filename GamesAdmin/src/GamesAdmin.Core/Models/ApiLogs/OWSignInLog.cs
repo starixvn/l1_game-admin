@@ -32,6 +32,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public string SiteId { get; set; }
         public string SiteName { get; set; }
         public string Seq { get; set; }
+        public string Platform { get; set; }
     }
 
     public class OWFailedSignInCall : OWSignInCall, IApiLogRequest
