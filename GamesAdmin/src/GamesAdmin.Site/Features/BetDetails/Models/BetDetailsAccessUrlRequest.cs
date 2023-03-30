@@ -16,6 +16,7 @@
             GameRoundId = model.RoundId;
             GameTypeId = model.GameType;
             PlayerId = model.PlayerId;
+            FreeBet = model.FreeBet;
         }
         public long GameRoundId { get; set; }
 
@@ -26,5 +27,7 @@
         public Auth Auth { get; set; }
 
         public string Language { get; set; }
+
+        public bool FreeBet { get; set; }
     }
 }
