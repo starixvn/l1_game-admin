@@ -14,6 +14,8 @@ namespace GamesAdmin.Api.Public.Models
         public Dictionary<string, double> Odds { get; set; }
 
         public SlotsConfigModel SlotsConfig { get; set; }
+
+        public CascadingSlotsConfig CascadingSlotsConfig { get; set;}
     }
 
     public class SlotsConfigModel
