@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,10 +14,14 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         {
         }
 
-        public AddSlotGameViewModel(IEnumerable<GeneralGameSetting> existingGames)
+        public AddSlotGameViewModel(IEnumerable<GeneralGameSetting> existingGames, GameType type)
         {
-            ExistingGames = existingGames.Select(game => new SelectListItem(game.DisplayName, game.GameId.ToString()));
+            Type = type;
+            ExistingGames = existingGames.Select(game => new SelectListItem($"{game.DisplayName}{GetJackpotText(game.IsEnabledJackpot)}", game.GameId.ToString()));
         }
+
+        public string GetJackpotText(bool isEnableJackpot)
+           => isEnableJackpot ? " (Jackpot)" : "";
 
         public IEnumerable<SelectListItem> ExistingGames { get; }
 
@@ -30,5 +35,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Clone From")]
         public byte SelectedGame { get; set; }
+
+        public GameType Type { get; set; }
     }
 }

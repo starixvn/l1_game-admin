@@ -97,10 +97,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         public async Task<AddSlotGameViewModel> Handle(AddSlotGameRequest request, CancellationToken cancellationToken)
-        {
-            var allSlotGames =  (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.Slots);
-           
-            return new AddSlotGameViewModel(allSlotGames);
+        {       
+            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == request.Type);
+
+            return new AddSlotGameViewModel(allSlotGames, request.Type);
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)

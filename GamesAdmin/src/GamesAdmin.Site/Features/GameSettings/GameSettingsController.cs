@@ -40,8 +40,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         => View(await mediator.Send(new AddRequest()));
 
         [HttpGet]
-        public async Task<IActionResult> AddSlotGame()
-        => View(await mediator.Send(new AddSlotGameRequest()));
+        public async Task<IActionResult> AddSlotGame(GameType type)
+        => View(await mediator.Send(new AddSlotGameRequest(type)));
 
         [HttpPost]
         public async Task<string> CloneSlotGame([Bind] AddSlotGameViewModel addViewModel)

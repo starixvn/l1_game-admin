@@ -1,8 +1,9 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Core.Enumeration;
 @model AddSlotGameViewModel;
 
 @{
-    ViewData["Title"] = "Add Slot Game";
+    ViewData["Title"] = Model.Type == GameType.Slots ?  "Add Slot Game" : "Add Cascading Slot Game";
 }
 
 <div class="col-md-12 col-lg-5 card">
