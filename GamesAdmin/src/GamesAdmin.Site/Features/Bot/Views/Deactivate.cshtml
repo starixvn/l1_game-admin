@@ -15,8 +15,14 @@
 
         @if (Model?.Total > 0)
         {
-            <div class="form-group">
-                <label class="control-label">Deactivate @Model.Total bot(s)</label>
+            <div class="form-group alert alert-success">
+                <label class="control-label">Deactivate @Model.Total bot(s).</label>
+            </div>
+        }
+        else if (Model?.Total == 0)
+        {
+            <div class="form-group alert alert-danger">
+                <label class="control-label">There are no effective bots.</label>
             </div>
         }
 

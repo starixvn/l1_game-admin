@@ -16,10 +16,10 @@ namespace GamesAdmin.Core.Models.GameConfigs
             MaxBetChoices = maxBetChoices;
         }
 
-        public double MinBet { get; }
+        public double MinBet { get; set; }
 
-        public double MaxBet { get; }
+        public double MaxBet { get; set; }
 
-        public Dictionary<string, double> MaxBetChoices { get; }
+        public Dictionary<string, double> MaxBetChoices { get; set; }
     }
 }

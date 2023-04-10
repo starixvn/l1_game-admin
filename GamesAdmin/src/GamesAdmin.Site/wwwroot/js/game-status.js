@@ -533,6 +533,12 @@
         formatNumber: function (id) {
             var elm = $(`#${id}`);
             var val = elm.val().replace(/,/g, '');
+
+            if (val === '') {
+                elm.val(0);
+                return;
+            }
+
             var parts = val.split(".");
             parts[0] = parseInt(parts[0]).toLocaleString('en');
             elm.val(parts.join("."));

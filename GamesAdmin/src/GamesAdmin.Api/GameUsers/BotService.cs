@@ -1,4 +1,10 @@
-﻿using GamesAdmin.Api._Shared.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Extensions;
 using GamesAdmin.Api.GameUser.Results;
 using GamesAdmin.Core;
 using GamesAdmin.Database;
@@ -6,12 +12,6 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Site._Shared.Configurations;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.GameUser
 {
@@ -62,7 +62,7 @@ namespace GamesAdmin.Api.GameUser
         };
 
         private const int DisabledBotRatio = 1;
-        private const int InactiveBotsNumber = 500;
+        private const int defaultInactiveBotsNumber = 500;
         private const int minAmountScale = 1;
         private const int maxAmountScale = 8;
         private const int minCharNameLength = 3;
@@ -285,23 +285,28 @@ namespace GamesAdmin.Api.GameUser
         public async Task<int> Deactivate()
         {
             var activeBots = (await accountInfoRepository.FilterByAsync(entity => entity.IsBot && !entity.Banned)).ToList();
-            activeBots.Shuffle();
-            var strBuilder = new StringBuilder($"Banned {InactiveBotsNumber} bots.");
-
-            for (var i = 0; i < InactiveBotsNumber; i++)
+            if (activeBots?.Count > 0)
             {
-                strBuilder.Append($" {activeBots[i]?.Name};");
+                activeBots.Shuffle();
+                var strBuilder = new StringBuilder($"Banned {defaultInactiveBotsNumber} bots.");
+                var currentInactiveBotsCount = Math.Min(defaultInactiveBotsNumber, activeBots.Count);
+                for (var i = 0; i < currentInactiveBotsCount; i++)
+                {
+                    strBuilder.Append($" {activeBots[i]?.Name};");
 
-                var update = Builders<AccountInfoEntity>.Update
-                    .Set(nameof(AccountInfoEntity.Banned), true)
-                    .Set(nameof(AccountInfoEntity.Disabled), true);
+                    var update = Builders<AccountInfoEntity>.Update
+                        .Set(nameof(AccountInfoEntity.Banned), true)
+                        .Set(nameof(AccountInfoEntity.Disabled), true);
 
-                await accountInfoRepository.UpdateAsync(entity => entity.Id == activeBots[i].Id, update);
+                    await accountInfoRepository.UpdateAsync(entity => entity.Id == activeBots[i].Id, update);
+                }
+
+                sentryClient.CaptureMessage(strBuilder.ToString());
+
+                return currentInactiveBotsCount;
             }
 
-            sentryClient.CaptureMessage(strBuilder.ToString());
-
-            return InactiveBotsNumber;
+            return 0;
         }
     }
 }
