@@ -51,6 +51,10 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public bool DisableJackpotGames { get; set; }
 
         public string OperatorToken { get; set; }
+
+        public string Ref { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 
     public class EndGameInfoRequest : SBRequest

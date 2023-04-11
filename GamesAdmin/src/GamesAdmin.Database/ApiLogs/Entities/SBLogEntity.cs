@@ -45,6 +45,10 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public bool DisableJackpotGames { get; set; }
 
         public string OperatorToken { get; set; }
+
+        public string Ref { get; set; } = string.Empty;
+
+        public string ReturnUrl { get; set; } = string.Empty;
     }
 
     public class SBResultEntity : ApiLogResultEntity
