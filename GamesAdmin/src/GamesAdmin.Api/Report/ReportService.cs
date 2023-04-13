@@ -55,7 +55,7 @@ namespace GamesAdmin.Api.Report
         private readonly IServiceProvider serviceProvider;
         private readonly IGenericRepository<SpinResultEntity> spinResultRepository;
         private readonly IMapper mapper;
-        private readonly ICascadingSlotReportFactory cascadingSlotReportFactory;
+        private readonly ICascadingSlotGameReportRepository cascadingSlotGameReportRepository;
         private readonly ISlotGameReportRepository slotGameReportRepository;
         private readonly IGeneralGameSettingService generalGameSettingService;
 
@@ -63,14 +63,14 @@ namespace GamesAdmin.Api.Report
             IServiceProvider serviceProvider,
             IMapper mapper,
             IGenericRepository<SpinResultEntity> spinResultRepository,
-            ICascadingSlotReportFactory cascadingSlotReportFactory,
+            ICascadingSlotGameReportRepository cascadingSlotGameReportRepository,
             ISlotGameReportRepository slotGameReportRepository,
             IGeneralGameSettingService generalGameSettingService)
         {
             this.serviceProvider = serviceProvider;
             this.mapper = mapper;
             this.spinResultRepository = spinResultRepository;
-            this.cascadingSlotReportFactory = cascadingSlotReportFactory;
+            this.cascadingSlotGameReportRepository = cascadingSlotGameReportRepository;
             this.slotGameReportRepository = slotGameReportRepository;
             this.generalGameSettingService = generalGameSettingService;
         }
@@ -386,18 +386,25 @@ namespace GamesAdmin.Api.Report
 
         public async Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReportAsync(CascadingSlotReportFilter filter)
         {
-            var service = cascadingSlotReportFactory.GetReportService(filter.Game);
-            var result = service == default ? default : await service.GetReportAsync(filter);
+            var games = await generalGameSettingService.GetAll();
 
+            filter.GameInfo = games.FirstOrDefault(game => game.Name == filter.Game);
+
+            var result = await cascadingSlotGameReportRepository.GetRecordAsync(filter);
             return result.Select(x => mapper.Map<CascadingSlotBetRecord>(x));
         }
 
         public async Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter)
         {
-            var service = cascadingSlotReportFactory.GetReportService(filter.Game);
-            var result = service == default ? default : await service.GetBetHistoryAsync(filter);
+            var games = await generalGameSettingService.GetAll();
 
-            return result;
+            filter.GameInfo = games.FirstOrDefault(game => game.Name == filter.Game);
+            var result = await cascadingSlotGameReportRepository.GetBetHistoryAsync(filter);
+            return new CascadingSlotBetHistory
+            {
+                Round = mapper.Map<CascadingSlotBetRecord>(result.Round),
+                Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplier>(x))
+            };
         }
     }
 }

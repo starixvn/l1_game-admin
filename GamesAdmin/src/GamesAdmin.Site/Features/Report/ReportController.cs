@@ -516,18 +516,19 @@ namespace GamesAdmin.Site.Features.Report
             => PartialView("HoldemPoker/_BetHistory", await mediator.Send(new GetHoldemPokerBetHistoryRequest(filter)));
 
         [HttpGet]
-        public async Task<IActionResult> TreasureIsland()
+        public async Task<IActionResult> CascadingSlotGameReport(string game)
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
             var viewModel = new SlotGameReportViewModel
             {
-                Game = GameId.TreasureIsland,
                 ExcludeUUS = true,
                 Selections = selections,
-                BaseCurrency = systemSettings.BaseCurrency
+                BaseCurrency = systemSettings.BaseCurrency,
+                SystemType = systemSettings.System,
+                GameConfigName = game,
             };
 
-            return View("CascadingSlot", viewModel);
+            return View(viewModel);
         }
 
         [HttpGet]

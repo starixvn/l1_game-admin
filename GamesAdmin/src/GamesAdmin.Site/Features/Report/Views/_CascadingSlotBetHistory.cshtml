@@ -1,10 +1,14 @@
 ﻿@using System.Text;
 @using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Site._Shared.Configurations
+@using Microsoft.Extensions.Options
 @model CascadingSlotBetHistoryViewModel
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 @{
     var imageFolder = Model.Game.ToLowerInvariant();
     var roundResult = Model.Round;
+    var imageUrl = resourceSiteConfig.Value.BaseUrl + "/" + Model.FolderGame;
 }
 
 @functions {
@@ -14,7 +18,7 @@
         var iconPerCol = 5;
         var indexMultiplier = 0;
         var tempMultiplier = multipliers.ToList();
-        var rows = new string[] { "<tr>","<tr>","<tr>","<tr>","<tr>"};
+        var rows = new string[] { "<tr>", "<tr>", "<tr>", "<tr>", "<tr>" };
 
         foreach (var item in board.Select((value, index) => new { index, value }))
         {
@@ -28,7 +32,7 @@
                 rows[item.index % iconPerCol] += "<td>" + RenderSymbol(item.value, folder) + "</td>";
             }
         }
-        foreach(var row in rows)
+        foreach (var row in rows)
         {
             sb.Append(row);
             sb.Append("</tr>");
@@ -40,29 +44,30 @@
 
     public string RenderSymbol(byte value, string folder)
     {
-        return "<img class='symbol' src='/images/slot-icons/" + folder + "/" + value + ".png?v=2' />";
+        return "<img class='symbol' src='" + folder + "/symbol-" + value + ".png?v=2' />";
     }
+
 
     public string GetImageMultiplier(byte value, string folder)
     {
-        var sb = new StringBuilder("<img class='symbol' src='/images/slot-icons/");
-        sb.Append(folder);
-        var imgae = "/10";
+        var sb = new StringBuilder("<img class='symbol' src='");
+        sb.Append(folder + "/symbol-");
+        var imgae = "10";
         if (value <= 10)
         {
-            imgae = "/13";
+            imgae = "13";
         }
         else
         {
             if (value <= 20)
             {
-                imgae = "/11";
+                imgae = "11";
             }
             else
             {
                 if (value <= 30)
                 {
-                    imgae = "/12";
+                    imgae = "12";
                 }
             }
         }
@@ -86,27 +91,27 @@
         <tr>
             <td>
                 @roundResult.RoundId
-            <div>@(roundResult.FreeSpin ? "(Free Spin)": string.Empty)</div>
-        </td>
-        <td>
-            @roundResult.Time.ToString(Constants.DateTimeFormat)
-        </td>
-        <td>@roundResult.BetLevel</td>
-        <td>@HtmlHelpers.formatNumber(roundResult.CoinValue)</td>
-        <td>@HtmlHelpers.formatNumber(roundResult.TotalAmount)</td>
-        <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
-    </tr>
-    <tr>
-        <td colspan="4" class="text-right">Total</td>
-        <td>@HtmlHelpers.formatNumber(roundResult.FreeSpin ? 0 : roundResult.TotalAmount)</td>
-        <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
-    </tr>
-    <tr class="total">
-        <td colspan="4" class="text-right">Win Loss</td>
-        <td></td>
-        <td>@HtmlHelpers.formatNumber(roundResult.WinLoss)</td>
-    </tr>
-</tbody>
+                <div>@(roundResult.FreeSpin ? "(Free Spin)": string.Empty)</div>
+            </td>
+            <td>
+                @roundResult.Time.ToString(Constants.DateTimeFormat)
+            </td>
+            <td>@roundResult.BetLevel</td>
+            <td>@HtmlHelpers.formatNumber(roundResult.CoinValue)</td>
+            <td>@HtmlHelpers.formatNumber(roundResult.TotalAmount)</td>
+            <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right">Total</td>
+            <td>@HtmlHelpers.formatNumber(roundResult.FreeSpin ? 0 : roundResult.TotalAmount)</td>
+            <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+        </tr>
+        <tr class="total">
+            <td colspan="4" class="text-right">Win Loss</td>
+            <td></td>
+            <td>@HtmlHelpers.formatNumber(roundResult.WinLoss)</td>
+        </tr>
+    </tbody>
 </table>
 
 <table class="table table-bordered table-cascading-slot">
@@ -135,8 +140,9 @@
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
-                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td>@Html.Raw(RenderSymbol(item.key, imageFolder))</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageUrl, tumbles[index].Multipliers))</td>
+
+
                                 <td>@tumbles[index].Icons[item.key].Count</td>
                                 <td>@HtmlHelpers.formatNumber(tumbles[index].Icons[item.key].Win)</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
@@ -145,7 +151,7 @@
                         else
                         {
                             <tr>
-                                <td>@Html.Raw(RenderSymbol(item.key, imageFolder))</td>
+                                <td>@Html.Raw(RenderSymbol(item.key, imageUrl))</td>
                                 <td>@tumbles[index].Icons[item.key].Count</td>
                                 <td>@HtmlHelpers.formatNumber(tumbles[index].Icons[item.key].Win)</td>
                             </tr>
@@ -162,8 +168,8 @@
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
-                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td>@Html.Raw(RenderSymbol(9, imageFolder))</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageUrl, tumbles[index].Multipliers))</td>
+                                <td>@Html.Raw(RenderSymbol(9, imageUrl))</td>
                                 <td>@additionalFreeSpins.Count</td>
                                 <td>@additionalFreeSpins.Odds Extra Free Spins</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
@@ -173,8 +179,8 @@
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
-                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td colspan="2" >-</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageUrl, tumbles[index].Multipliers))</td>
+                                <td colspan="2">-</td>
                                 <td>0</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
                             </tr>
@@ -187,8 +193,8 @@
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
-                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td>@Html.Raw(RenderSymbol(9, imageFolder))</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageUrl, tumbles[index].Multipliers))</td>
+                                <td>@Html.Raw(RenderSymbol(9, imageUrl))</td>
                                 <td>@freeSpins.Count</td>
                                 <td>@freeSpins.Odds Free Spins</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
@@ -198,8 +204,8 @@
                         {
                             <tr>
                                 <td rowspan="@rowspan">@(index+1)</td>
-                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageFolder, tumbles[index].Multipliers))</td>
-                                <td colspan="2" >-</td>
+                                <td rowspan="@rowspan">@Html.Raw(RenderBoard(tumbles[index].Board, imageUrl, tumbles[index].Multipliers))</td>
+                                <td colspan="2">-</td>
                                 <td>0</td>
                                 <td rowspan="@rowspan">@HtmlHelpers.formatNumber(tumbleWin)</td>
                             </tr>

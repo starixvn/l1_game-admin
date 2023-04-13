@@ -35,7 +35,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IKenoPowerReportRepository, KenoPowerReportRepository>();
             services.AddScoped<IMiniKenoReportRepository, MiniKenoReportRepository>();
             services.AddScoped<IHiLoReportRepository, HiLoReportRepository>();
-            services.AddScoped<ITreasureIslandReportRepository, TreasureIslandReportRepository>();
             services.AddScoped<HoldemPokerReportRepository<CasinoHoldemPokerRoundEntity, CasinoHoldemPokerBetEntity, CasinoHoldemPokerBetReportEntity, CasinoHoldemPokerBetHistoryEntity>>();
             services.AddScoped<HoldemPokerReportRepository<TexasHoldemPokerRoundEntity, TexasHoldemPokerBetEntity, TexasHoldemPokerBetReportEntity, TexasHoldemPokerBetHistoryEntity>>();
             services.AddScoped<IUnbalancedBigSmallReportRepository, UnbalancedBigSmallReportRepository>();
@@ -47,6 +46,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IFanTanReportRepository, FanTanReportRepository>();
             services.AddScoped<IWinThreeCardsReportRepository, WinThreeCardsReportRepository>();
             services.AddScoped<ISlotGameReportRepository, SlotGameReportRepository>();
+            services.AddScoped<ICascadingSlotGameReportRepository, CascadingSlotGameReportRepository>();
         }
     }
 }

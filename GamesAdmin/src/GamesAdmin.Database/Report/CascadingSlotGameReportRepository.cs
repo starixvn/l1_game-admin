@@ -12,18 +12,18 @@ using MongoDB.Driver;
 
 namespace GamesAdmin.Database
 {
-    public interface ITreasureIslandReportRepository
+    public interface ICascadingSlotGameReportRepository
     {
         Task<IEnumerable<CascadingSlotBetReportEntity>> GetRecordAsync(CascadingSlotReportFilter filter);
 
         Task<CascadingSlotBetHistoryEntity> GetBetHistoryAsync(CascadingSlotReportFilter filter);
     }
 
-    public class TreasureIslandReportRepository : ITreasureIslandReportRepository
+    public class CascadingSlotGameReportRepository : ICascadingSlotGameReportRepository
     {
         private readonly IMongoDatabase database;
 
-        public TreasureIslandReportRepository(IMongoDatabase database)
+        public CascadingSlotGameReportRepository(IMongoDatabase database)
         {
             this.database = database;
         }
@@ -31,15 +31,15 @@ namespace GamesAdmin.Database
         public async Task<CascadingSlotBetHistoryEntity> GetBetHistoryAsync(CascadingSlotReportFilter filter)
         {
             var round = await database
-                .GetCollection<TreasureIslandRoundEntity>(Document.GetCollectionName(typeof(TreasureIslandRoundEntity))).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
+                .GetCollection<CascadingSlotRoundEntity>(NamingConverter.RoundCollection(filter.GameInfo.DisplayName)).Find(x => x.Number == filter.RoundId).FirstOrDefaultAsync();
 
             var totalMultiplier = await database
-                .GetCollection<TreasureIslandTotalMultiplierEntity>(Document.GetCollectionName(typeof(TreasureIslandTotalMultiplierEntity))).Find(x => x.Name == filter.Nickname).ToListAsync();
+                .GetCollection<CascadingSlotTotalMultiplierEntity>(NamingConverter.MultipliersCollection(filter.GameInfo.DisplayName)).Find(x => x.Name == filter.Nickname).ToListAsync();
 
-            if(totalMultiplier.Count > 0)
+            if (totalMultiplier.Count > 0)
             {
                 var multiplier = totalMultiplier.FirstOrDefault(e => e.Rounds.Any(x => x.RoundId == filter.RoundId));
-                if(multiplier != null)
+                if (multiplier != null)
                 {
                     return new CascadingSlotBetHistoryEntity(round, multiplier.Rounds);
                 }
@@ -74,7 +74,8 @@ namespace GamesAdmin.Database
 
         private IAggregateFluent<CascadingSlotBetWithUnWindAccountsEntity> GetAggregateBuilder(CascadingSlotReportFilter filter)
         {
-            var betCollection = database.GetCollection<TreasureIslandRoundEntity>(Document.GetCollectionName(typeof(TreasureIslandRoundEntity)));
+ 
+            var betCollection = database.GetCollection<CascadingSlotRoundEntity>(NamingConverter.RoundCollection(filter.GameInfo.DisplayName));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
             var expression = GetFilterExpression(filter);
@@ -83,7 +84,7 @@ namespace GamesAdmin.Database
             var aggregateBuilder = betCollection.Aggregate()
                 .Match(expression)
                 .SortByDescending(x => x.Id)
-                .Lookup<TreasureIslandRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
+                .Lookup<CascadingSlotRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
                        foreignCollection: accountInfoCollection,
                        localField: x => x.Uid,
                        foreignField: x => x.UserId,
@@ -104,9 +105,9 @@ namespace GamesAdmin.Database
             return aggregateBuilder;
         }
 
-        private Expression<Func<TreasureIslandRoundEntity, bool>> GetFilterExpression(CascadingSlotReportFilter filter)
+        private Expression<Func<CascadingSlotRoundEntity, bool>> GetFilterExpression(CascadingSlotReportFilter filter)
         {
-            Expression<Func<TreasureIslandRoundEntity, bool>> expression;
+            Expression<Func<CascadingSlotRoundEntity, bool>> expression;
             if (filter.RoundId > 0)
             {
                 expression = x => x.Number == filter.RoundId;

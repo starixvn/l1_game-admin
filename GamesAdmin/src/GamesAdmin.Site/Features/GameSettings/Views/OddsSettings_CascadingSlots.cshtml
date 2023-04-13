@@ -1,5 +1,8 @@
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site._Shared.Configurations
+@using Microsoft.Extensions.Options
 @model EditViewModel;
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 
 @if (Model.CascadingSlotsConfig.OddsByCounts.Count > 0)
 {
@@ -11,7 +14,7 @@
                     <legend>Icon @i</legend>
                     <div class="form-group row mb-0">
                         <div class="col-lg-2 d-flex align-items-center">
-                            <img src="~/images/slot-icons/@($"{Model.Name.ToLowerInvariant()}/{i}").png" alt="icons" />
+                            <img src="@(resourceSiteConfig.Value.BaseUrl)@($"{Model.Name.ToLowerInvariant()}/symbol-{i}").png" alt="icons" />                          
                         </div>
 
                         <div class="col-lg-10">

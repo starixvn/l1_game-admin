@@ -11,5 +11,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ConvertToUSD { get; set; }
 
         public string Game { get; set; }
+
+        public string FolderGame => Game?.ToLowerInvariant();
     }
 }

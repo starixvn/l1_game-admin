@@ -61,9 +61,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IDomainService, DomainService>();
-
-            services.AddScoped<ICascadingSlotReportFactory, CascadingSlotReportServiceFactory>();
-            services.AddScoped<TreasureIslandReportService>().AddScoped<ICascadingSlotReportService, TreasureIslandReportService>(s => s.GetService<TreasureIslandReportService>());
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -141,7 +138,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<VipSeDieWarReportService>();
             services.AddScoped<KenoProMaxReportService>();
             services.AddScoped<HiLoReportService>();
-            services.AddScoped<TreasureIslandReportService>();
             services.AddScoped<FruitSlotReportService>();
             services.AddScoped<WinThreeCardsReportService>();
 

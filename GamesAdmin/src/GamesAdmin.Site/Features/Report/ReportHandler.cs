@@ -653,7 +653,7 @@ namespace GamesAdmin.Site.Features.Report
                 {
                     var betViewModel = mapper.Map<CascadingSlotRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                    betViewModel.Game = request.Game.Value;
+                    betViewModel.Game = request.Game;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
 
@@ -676,7 +676,7 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetCascadingSlotBetHistory(filter);
             var viewModel = new CascadingSlotBetHistoryViewModel
             {
-                Game = request.Game.Value,
+                Game = request.Game,
                 ConvertToUSD = request.ConvertToUSD,
                 Round = mapper.Map<CascadingSlotRecordViewModel>(result.Round),
                 Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplierViewModel>(x))

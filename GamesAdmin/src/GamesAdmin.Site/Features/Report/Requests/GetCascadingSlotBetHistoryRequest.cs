@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Features.Report.ViewModels;
+using System.Collections.Generic;using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
@@ -15,7 +11,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
             RoundId = roundId;
             Nickname = nickname;
             ExcludeUUS = excludeUUS;
-            Game = Enumeration.FromValue<Game>(game.ToLowerInvariant());
+            Game = game;
             ConvertToUSD = convertToUSD;
         }
 
@@ -28,6 +24,6 @@ namespace GamesAdmin.Site.Features.Report.Requests
 
         public bool ExcludeUUS { get; }
 
-        public Game Game { get; }
+        public string Game { get; }
     }
 }
