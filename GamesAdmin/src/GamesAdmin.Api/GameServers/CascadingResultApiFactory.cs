@@ -1,33 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Core.IdentityServer;
+using Refit;
 
 namespace GamesAdmin.Api.GameServers
 {
     public interface ICascadingResultApiFactory
     {
-        ICascadingSlotResultApi SetResultApi(string gameConfigName);
+        ICascadingSlotResultApi SetResultApi(string serviceName);
     }
 
     public class CascadingResultApiFactory : ICascadingResultApiFactory
     {
-        private readonly Dictionary<string, Type> slotServices = new Dictionary<string, Type>
+        private readonly IAppSettings appSettings;
+
+        public CascadingResultApiFactory(IAppSettings appSettings)
         {
-            { Game.TreasureIslandValue, typeof(ITreasureIslandResultApi) },
-        };
-
-        private readonly Type defaultSlotResultApi = typeof(ICascadingSlotResultApi);
-
-        private readonly IServiceProvider serviceProvider;
-
-        public CascadingResultApiFactory(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
+            this.appSettings = appSettings;
         }
 
-        public ICascadingSlotResultApi SetResultApi(string gameConfigName)
-        => slotServices.ContainsKey(gameConfigName)
-            ? (ICascadingSlotResultApi)serviceProvider.GetService(slotServices[gameConfigName])
-            : (ICascadingSlotResultApi)serviceProvider.GetService(defaultSlotResultApi);
+        public ICascadingSlotResultApi SetResultApi(string serviceName)
+        {
+            var refitSettings = new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+            };
+
+            var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
+
+            return RestService.For<ICascadingSlotResultApi>(api, refitSettings);
+        }
+      
     }
 }

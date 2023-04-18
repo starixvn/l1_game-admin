@@ -554,7 +554,7 @@ namespace GamesAdmin.Site.Features.Report
                 username,
                 convertToUSD);
 
-            return PartialView("_CascadingSlotRecords", await mediator.Send(request));
+            return PartialView("CascadingSlots/_CascadingSlotRecords", await mediator.Send(request));
         }
 
         [HttpGet]
@@ -567,7 +567,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var request = new GetCascadingSlotBetHistoryRequest(roundId, nickname, excludeUUS, game, convertToUSD);
 
-            return PartialView("_CascadingSlotBetHistory", await mediator.Send(request));
+            return PartialView("CascadingSlots/_CascadingSlotBetHistory", await mediator.Send(request));
         }
 
         [HttpGet]

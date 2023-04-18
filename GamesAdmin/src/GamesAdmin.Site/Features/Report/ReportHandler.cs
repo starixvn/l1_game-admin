@@ -11,6 +11,7 @@ using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly IReportServiceFactory reportServiceFactory;
         private readonly ISystemSettings systemSettings;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly ResourceSiteConfiguration resourceSiteConfig;
 
         public ReportHandler(
             IReportService reportService,
@@ -65,7 +67,8 @@ namespace GamesAdmin.Site.Features.Report
             IExchangeRateService exchangeRateService,
             IReportServiceFactory reportServiceFactory,
             ISystemSettings systemSettings,
-            IGeneralGameSettingService generalGameSettingService)
+            IGeneralGameSettingService generalGameSettingService,
+            IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -76,6 +79,7 @@ namespace GamesAdmin.Site.Features.Report
             this.reportServiceFactory = reportServiceFactory;
             this.systemSettings = systemSettings;
             this.generalGameSettingService = generalGameSettingService;
+            this.resourceSiteConfig = resourceSiteConfig.Value;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -677,6 +681,7 @@ namespace GamesAdmin.Site.Features.Report
             var viewModel = new CascadingSlotBetHistoryViewModel
             {
                 Game = request.Game,
+                StaticResourceUrl = resourceSiteConfig.BaseUrl.ToString(),
                 ConvertToUSD = request.ConvertToUSD,
                 Round = mapper.Map<CascadingSlotRecordViewModel>(result.Round),
                 Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplierViewModel>(x))

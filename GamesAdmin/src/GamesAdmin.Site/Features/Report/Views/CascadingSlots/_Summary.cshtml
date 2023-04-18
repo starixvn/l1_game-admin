@@ -1,0 +1,55 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model CascadingSlotBetHistoryViewModel
+
+@{
+    var roundResult = Model.Round;
+}
+<table class="table table-bordered table-cascading-slot">
+    <thead>
+        <tr>
+            <th class="col-round-id">Round Id</th>
+            <th class="col-date">Time</th>
+            <th>Bet Level</th>
+            <th>Coin Value</th>
+            <th>Stake</th>
+            <th>Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (roundResult != null)
+        {
+            <tr>
+                <td>
+                    @roundResult.RoundId
+                    <div>@Model.FreeSpinsLabel</div>
+                </td>
+                <td>
+                    @roundResult.Time.ToString(Constants.DateTimeFormat)
+                </td>
+                <td>@roundResult.BetLevel</td>
+                <td>@HtmlHelpers.formatNumber(roundResult.CoinValue)</td>
+                <td>@HtmlHelpers.formatNumber(roundResult.TotalAmount)</td>
+                <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-right">Total</td>
+                <td>@HtmlHelpers.formatNumber(@Model.TotalAmount)</td>
+                <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+            </tr>
+            <tr class="total">
+                <td colspan="4" class="text-right">Win Loss</td>
+                <td></td>
+                <td>@HtmlHelpers.formatNumber(roundResult.WinLoss)</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">
+                    NoDataAvailable
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

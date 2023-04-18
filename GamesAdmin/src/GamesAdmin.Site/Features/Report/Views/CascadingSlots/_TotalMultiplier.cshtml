@@ -1,0 +1,36 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model CascadingSlotBetHistoryViewModel
+
+@{
+    var multipliers = Model.Multipliers.ToList();
+}
+@if (Model.IsMultipliers)
+{
+    <strong>Total Multiplier</strong>
+    <table class="table table-bordered table-cascading-slot">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Time</th>
+                <th>Round id</th>
+                <th>Multiplier</th>
+                <th>Total Multiplier</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{               
+                for (byte i = 0; i < multipliers.Count; i++)
+                {
+                    <tr>
+                        <td>@(i+1)</td>
+                        <td>@multipliers[i].Time.ToString(Constants.DateTimeFormat)</td>
+                        <td>@multipliers[i].RoundId</td>
+                        <td>@multipliers[i].Multiplier</td>
+                        <td>@multipliers[i].TotalMultiplier</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

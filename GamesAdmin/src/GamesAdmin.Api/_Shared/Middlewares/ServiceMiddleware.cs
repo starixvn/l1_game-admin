@@ -164,8 +164,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
-            services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();
-            services.AddSingleton(RestService.For<ITreasureIslandResultApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
+            services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();         
         }
 
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

@@ -315,9 +315,11 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
+                var config = await gameSettingService.GetByName(request.gameConfigName);
                 if (await gameUserService.IsAbleToSetSlotResult(request.name, false))
                 {
-                    var result = await cascadingResultApiFactory.SetResultApi(request.gameConfigName).SetResult(request);
+                    var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
+                    var result = await cascadingResultApiFactory.SetResultApi(serviceName).SetResult(request);
 
                     return result;
                 }

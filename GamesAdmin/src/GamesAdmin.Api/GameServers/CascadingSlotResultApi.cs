@@ -12,10 +12,4 @@ namespace GamesAdmin.Api.GameServers
         [Post("/api/set-result")]
         Task<IEnumerable<SettlementCascadingSlotResult>> SetResult([Body] SetCascadingSlotResultRequest request);
     }
-
-    public interface ITreasureIslandResultApi : ICascadingSlotResultApi
-    {
-        [Post("/api/set-result")]
-        new Task<IEnumerable<SettlementCascadingSlotResult>> SetResult([Body] SetCascadingSlotResultRequest request);
-    }
 }

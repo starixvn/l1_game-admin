@@ -1,0 +1,7 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@model CascadingSlotBetHistoryViewModel
+
+
+@await Html.PartialAsync("CascadingSlots/_Summary", Model)
+@await Html.PartialAsync("CascadingSlots/_Tumbles", Model)
+@await Html.PartialAsync("CascadingSlots/_TotalMultiplier", Model)
