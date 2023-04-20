@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GeneralGameSettings;
+using GamesAdmin.Api.Notifications;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -18,14 +20,17 @@ namespace GamesAdmin.Api.GameSettings
         private readonly IGenericRepository<GameConfigEntity> repository;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ISentryClient sentryClient;
+        private readonly INotificationService notificationService;
 
         public CloneSettingsService(IGenericRepository<GameConfigEntity> repository,
             IGeneralGameSettingService generalGameSettingService,
-            ISentryClient sentryClient)
+            ISentryClient sentryClient,
+            INotificationService notificationService)
         {
             this.repository = repository;
             this.generalGameSettingService = generalGameSettingService;
             this.sentryClient = sentryClient;
+            this.notificationService = notificationService;
         }
 
         public async Task<string> CloneNewGame(byte gameId, byte fromGameId, string displayName)
@@ -34,23 +39,29 @@ namespace GamesAdmin.Api.GameSettings
             {
                 var gameName = await generalGameSettingService.GetGameName(fromGameId);
                 var existingGame = await repository.FindOneAsync(entity => entity.Name ==  NamingConverter.GameConfigName(displayName) || entity.GameId == gameId);
-
-                if(existingGame != null)
+                var notification = await notificationService.GetByGameName(gameName, NotificationDisplayKind.DisabledGame);
+                
+                if (existingGame != null)
                 {
                     return "GameId or GameName is existed !";
+                }
+
+                if(notification != null)
+                {
+                    await notificationService.AddDisableMessage(NamingConverter.GameConfigName(displayName), notification.Messages);
                 }
 
                 if (gameName != null)
                 {
                     var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameName);
-
+                   
                     gameEntity.DisplayName = displayName;
                     gameEntity.GameId = gameId;
                     gameEntity.Enabled = false;
                     gameEntity.Name = NamingConverter.GameConfigName(displayName);
-
+                  
                     await repository.InsertOneAsync(gameEntity);
-
+                    
                     return String.Empty;
                 }
                 else
