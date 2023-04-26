@@ -136,8 +136,7 @@ const MiniPanel: React.FC<Props> = ({
       ? miniPanelGameIds.slice()
       : [];
 
-    const middle = Math.round(clonedMiniPanelGameIds?.length / 2);
-    clonedMiniPanelGameIds?.splice(middle, 0, 0);
+    clonedMiniPanelGameIds?.splice(0, 0, 0);
     if (reOrderConfig && reOrderConfig.sourceIndex >= 0) {
       return reorder(
         clonedMiniPanelGameIds,
