@@ -72,6 +72,7 @@ namespace GamesAdmin.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "GamesAdmin APIs", Version = "v1" });
+                c.CustomSchemaIds(type => type.ToString());
             });
 
             services.AddMvc();
