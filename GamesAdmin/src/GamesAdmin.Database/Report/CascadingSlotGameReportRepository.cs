@@ -8,6 +8,7 @@ using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Report.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GamesAdmin.Database
@@ -50,59 +51,40 @@ namespace GamesAdmin.Database
 
         public async Task<IEnumerable<CascadingSlotBetReportEntity>> GetRecordAsync(CascadingSlotReportFilter filter)
         {
-
-            var project = GetAggregateBuilder(filter)
-                .Project(x => new CascadingSlotBetReportEntity
-                {
-                    Time = x.Time,
-                    Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
-                    Nickname = x.AccountInfos.Name,
-                    Betwin = x.Betwin,
-                    TotalAmount = x.TotalAmount,
-                    Number = x.Number,
-                    UserId = x.Uid,
-                    Paid = x.Paid,
-                    Currency = x.Currency,
-                    OperatorId = x.OperatorId,
-                    Rate = x.Rate,
-                    ExchangeRateId = x.ExchangeRateId,
-                    FreeSpin = x.FreeSpin
-                });
-
-            return await project.ToListAsync();
-        }
-
-        private IAggregateFluent<CascadingSlotBetWithUnWindAccountsEntity> GetAggregateBuilder(CascadingSlotReportFilter filter)
-        {
- 
             var betCollection = database.GetCollection<CascadingSlotRoundEntity>(NamingConverter.RoundCollection(filter.GameInfo.DisplayName));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-            var expression = GetFilterExpression(filter);
+
+            var bets = await betCollection.Find(GetFilterExpression(filter)).ToListAsync();
+
+            var result = new List<CascadingSlotBetReportEntity>();
             var userNameRegex = new Regex($"^(?i){filter.Username}$");
 
-            var aggregateBuilder = betCollection.Aggregate()
-                .Match(expression)
-                .SortByDescending(x => x.Id)
-                .Lookup<CascadingSlotRoundEntity, AccountInfoEntity, BetEntityWithAccountInfos>(
-                       foreignCollection: accountInfoCollection,
-                       localField: x => x.Uid,
-                       foreignField: x => x.UserId,
-                       @as: r => r.AccountInfos)
-                 .Unwind<BetEntityWithAccountInfos, BetEntityWithAccountInfoUnwind>(x => x.AccountInfos)
-                 .Match(x => !filter.ExcludeUUS || x.AccountInfos.Currency != "UUS")
-                 .AppendStage<BetEntityWithAccountInfoUnwind>("{$addFields: {userId: {$toObjectId: '$uid'}}}")
-                 .Lookup<BetEntityWithAccountInfoUnwind, AccountEntity, BetEntityWithAccountInfoUnwind>(
-                       foreignCollection: accountCollection,
-                       localField: x => x.UserId,
-                       foreignField: x => x.Id,
-                       @as: r => r.Accounts
-                 )
-                .Unwind<BetEntityWithAccountInfoUnwind, CascadingSlotBetWithUnWindAccountsEntity>(x => x.Accounts)
-                .Match(x => (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(x.Accounts.Local.MemberName)));
+            foreach (var bet in bets)
+            {
+                var betUser = await accountCollection.Find(acount => acount.Id == ObjectId.Parse(bet.Uid)).FirstOrDefaultAsync();
 
-
-            return aggregateBuilder;
+                if (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(betUser.Local.MemberName))
+                {
+                    result.Add(new CascadingSlotBetReportEntity
+                    {
+                        Time = bet.Time,
+                        Username = betUser.Local.MemberName ?? betUser.Local.Username,
+                        Nickname = bet.Name,    
+                        Betwin = bet.Betwin,
+                        TotalAmount = bet.TotalAmount,
+                        FreeSpin = bet.FreeSpin,
+                        Number = bet.Number,
+                        UserId = bet.Uid,
+                        Paid = bet.Paid,
+                        Currency = bet.Currency,
+                        OperatorId = bet.OperatorId,
+                        Rate = bet.Rate,
+                        ExchangeRateId = bet.ExchangeRateId
+                    });
+                }
+            }
+            return result;
         }
 
         private Expression<Func<CascadingSlotRoundEntity, bool>> GetFilterExpression(CascadingSlotReportFilter filter)
@@ -128,6 +110,11 @@ namespace GamesAdmin.Database
             {
                 var nickNameRegex = new Regex($"^(?i){filter.Nickname}$");
                 expression = expression.And(x => nickNameRegex.IsMatch(x.Name));
+            }
+
+            if (filter.ExcludeUUS)
+            {
+                expression = expression.And(x => x.Currency != "UUS");
             }
 
             return expression;
