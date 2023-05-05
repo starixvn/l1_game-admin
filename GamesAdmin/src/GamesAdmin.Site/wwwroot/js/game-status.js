@@ -546,7 +546,21 @@
             var parts = val.split(".");
             parts[0] = parseInt(parts[0]).toLocaleString('en');
             elm.val(parts.join("."));
-        }
+        },
+
+        toggleAddNewGameTabs: function (tabName) {
+            $('#addnew').hide();
+            $('#clonegame').hide();
+
+            $('#addnew-tab-header').removeClass("active");
+            $('#clonegame-tab-header').removeClass("active");
+
+            const id = '#' + tabName;
+            const headerId = '#' + tabName + '-tab-header';
+  
+            $(id).show();
+            $(headerId).addClass("active");
+        },     
     }
 }(jQuery));
 

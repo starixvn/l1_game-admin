@@ -1,0 +1,41 @@
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@model CreateNewGameViewModel;
+@{
+    ViewData["Title"] = "Create new game";
+}
+@{
+    var addNewModel = Model.AddViewModel;
+    var addSlotGameModel = Model.AddSlotGameViewModel;
+}
+@section Styles {
+    <link href="~/lib/data-tables/datatables.min.css" rel="stylesheet" />
+    <link href="~/css/game-management.min.css" rel="stylesheet" asp-append-version="true" />
+}
+<div>
+    <ul class="nav nav-custom" id="setting-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="addnew-tab-header" href="#" onclick="gameStatus.toggleAddNewGameTabs('addnew')">Add New Game</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" id="clonegame-tab-header" href="#" onclick="gameStatus.toggleAddNewGameTabs('clonegame')">Clone Game</a>
+        </li>
+    </ul>
+
+    <div id="addnew">
+        @await Html.PartialAsync("AddGameSettings", addNewModel)
+
+    </div>
+
+    <div id="clonegame" style="display:none">
+        @await Html.PartialAsync("AddSlotGame", addSlotGameModel)
+
+        <br />
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/js/game-status.min.js" asp-append-version="true"></script>
+    <script src="~/js/add-slot-game.js" asp-append-version="true"></script>
+}

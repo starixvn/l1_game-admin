@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
-    public class AddRequest : IRequest<AddViewModel>
+    public class CreateNewGameRequest : IRequest<CreateNewGameViewModel>
     {
     }
 }

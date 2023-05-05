@@ -14,6 +14,7 @@ using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Sentry;
 
@@ -36,12 +37,13 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
-        => View(await mediator.Send(new AddRequest()));
+        public async Task<IActionResult> CreateNewGame()
+       => View(await mediator.Send(new CreateNewGameRequest()));
 
         [HttpGet]
-        public async Task<IActionResult> AddSlotGame(GameType type)
-        => View(await mediator.Send(new AddSlotGameRequest(type)));
+        [Route("games")]
+        public async Task<IEnumerable<SelectListItem>> GetGamesByType(GameType type)
+        => (await mediator.Send(new GetGamesByTypeRequest(type)));
 
         [HttpPost]
         public async Task<string> CloneSlotGame([Bind] AddSlotGameViewModel addViewModel)
@@ -54,7 +56,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([Bind] AddViewModel addViewModel)
+        public async Task<IActionResult> AddGameSettings([Bind] AddViewModel addViewModel)
         {
             var request = new CreateRequest(
                 mapper.Map<GameInfo>(addViewModel),
@@ -64,7 +66,6 @@ namespace GamesAdmin.Site.Features.GameSettings
                 mapper.Map<SlotsConfig>(addViewModel).GenerateDefaultSlotInfo(addViewModel.NumberOfIcons, addViewModel.OddsPerIcon),
                 mapper.Map<CascadingSlotsConfig>(addViewModel).GenerateDefaultCascadingSlotsConfig(addViewModel.NumberOfIcons),
                 mapper.Map<SlotRNGConfig>(addViewModel));
-
             await mediator.Send(request);
 
             return RedirectToAction(nameof(Index));

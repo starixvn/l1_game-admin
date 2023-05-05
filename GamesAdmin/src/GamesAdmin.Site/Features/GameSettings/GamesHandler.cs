@@ -24,7 +24,6 @@ namespace GamesAdmin.Site.Features.GameSettings
     public class GamesHandler
         : IRequestHandler<EditRequest, EditViewModel>
         , IRequestHandler<UpdateRequest, bool>
-        , IRequestHandler<AddRequest, AddViewModel>
         , IRequestHandler<CreateRequest, bool>
         , IRequestHandler<IsExistRequest, bool>
         , IRequestHandler<UpdateBotRatioRequest, bool>
@@ -41,8 +40,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<GetOddsByGameRequest, IEnumerable<OddsViewModel>>
         , IRequestHandler<GetGamesIdByTypeRequest, IEnumerable<Game>>
-        , IRequestHandler<AddSlotGameRequest, AddSlotGameViewModel>
+        , IRequestHandler<GetGamesByTypeRequest, IEnumerable<SelectListItem>>
         , IRequestHandler<CloneSlotGameRequest, string>
+        , IRequestHandler<CreateNewGameRequest, CreateNewGameViewModel>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -76,8 +76,16 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.generalGameSettingService = generalGameSettingService;
         }
 
-        public async Task<AddViewModel> Handle(AddRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<SelectListItem>> Handle(GetGamesByTypeRequest request, CancellationToken cancellationToken)
         {
+            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == request.Type);
+            var types = allSlotGames.Select(game => new SelectListItem($"{game.DisplayName}{""}", game.GameId.ToString()));
+            return types;
+        }
+
+        public async Task<CreateNewGameViewModel> Handle(CreateNewGameRequest request, CancellationToken cancellationToken)
+        {
+       
             var existingGames = (await gameService.GetAll()).Select(game => game.Info.Name);
 
             var names = Enumeration.GetAll<Game>()
@@ -92,15 +100,12 @@ namespace GamesAdmin.Site.Features.GameSettings
             var difficultyItems = Enum.GetValues(typeof(GameMode))
                 .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
-
-            return new AddViewModel(names, types, difficultyItems);
-        }
-
-        public async Task<AddSlotGameViewModel> Handle(AddSlotGameRequest request, CancellationToken cancellationToken)
-        {       
-            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == request.Type);
-
-            return new AddSlotGameViewModel(allSlotGames, request.Type);
+            var addViewModel = new AddViewModel(names, types, difficultyItems);
+            
+            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.Slots);
+            var addSlotGameViewModel = new AddSlotGameViewModel(allSlotGames, types);
+            
+            return new CreateNewGameViewModel(addViewModel, addSlotGameViewModel);
         }
 
         public async Task<EditViewModel> Handle(EditRequest request, CancellationToken cancellationToken)

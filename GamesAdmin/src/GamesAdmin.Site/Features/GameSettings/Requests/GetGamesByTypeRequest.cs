@@ -1,12 +1,13 @@
 ﻿using GamesAdmin.Core.Enumeration;
-using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
-    public class AddSlotGameRequest : IRequest<AddSlotGameViewModel>
+    public class GetGamesByTypeRequest : IRequest<IEnumerable<SelectListItem>>
     {
-        public AddSlotGameRequest(GameType type)
+        public GetGamesByTypeRequest(GameType type)
         {
             Type = type;
         }
