@@ -2,13 +2,13 @@
 @using GamesAdmin.Core.Enumeration;
 @model SlotGameReportViewModel
 @{
-    ViewData["Title"] = Model.GameConfigName;
+    ViewData["Title"] = Model.GameDisplayName;
 }
 
 @section Styles {
     <link href="~/css/slot-game-report.min.css" rel="stylesheet" asp-append-version="true" />
 }
-    @if(Model.SystemType == "VG2" && Model.Game == GameId.FourGuardians)
+    @if(Model.IsEnabledJackpot)
     {
         
     <ul class="nav nav-tabs" id="myTab" role="tablist">

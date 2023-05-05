@@ -20,5 +20,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public new string Username { get; set; }
 
         public string GameConfigName { get; set; }
+
+        public string GameDisplayName { get; set; }
+
+        public bool IsEnabledJackpot { get; set; }
     }
 }

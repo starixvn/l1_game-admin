@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
+using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
@@ -18,11 +19,13 @@ namespace GamesAdmin.Site.Features.Report
     {
         private readonly IMediator mediator;
         private readonly ISystemSettings systemSettings;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
-        public ReportController(IMediator mediator, ISystemSettings systemSettings)
+        public ReportController(IMediator mediator, ISystemSettings systemSettings, IGeneralGameSettingService generalGameSettingService)
         {
             this.mediator = mediator;
             this.systemSettings = systemSettings;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         [HttpGet]
@@ -260,6 +263,9 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> SlotGameReport(string game)
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
+            var games = await generalGameSettingService.GetAllGames();
+            var gameSetting = games.FirstOrDefault(gameInfo => gameInfo.Name == game);
+
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
@@ -267,6 +273,8 @@ namespace GamesAdmin.Site.Features.Report
                 BaseCurrency = systemSettings.BaseCurrency,
                 SystemType = systemSettings.System,
                 GameConfigName = game,
+                GameDisplayName = gameSetting?.DisplayName,
+                IsEnabledJackpot = gameSetting.IsEnabledJackpot
             };
 
             return View(viewModel);
