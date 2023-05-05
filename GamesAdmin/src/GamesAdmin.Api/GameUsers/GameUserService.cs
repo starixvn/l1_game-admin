@@ -66,7 +66,7 @@ namespace GamesAdmin.Api.GameUser
             ? default
             : new GameAccount(
                 account.Local.Username,
-                account.Local.MemberId,
+                account.Local.MemberId ?? 0,
                 account.Local.MemberName,
                 account.Local.Language,
                 accountInfo.IsBot,

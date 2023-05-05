@@ -23,7 +23,7 @@ namespace GamesAdmin.Database.Entities
 
         public DateTime regDate { get; set; }
 
-        public int MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         public string MemberName { get; set; }
 

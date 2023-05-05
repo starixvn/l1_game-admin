@@ -1,5 +1,4 @@
 ﻿using System;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Site.Features.Report.Validators;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
