@@ -274,7 +274,8 @@ namespace GamesAdmin.Site.Features.Report
                 SystemType = systemSettings.System,
                 GameConfigName = game,
                 GameDisplayName = gameSetting?.DisplayName,
-                IsEnabledJackpot = gameSetting.IsEnabledJackpot
+                IsEnabledJackpot = gameSetting.IsEnabledJackpot,
+                GameId = gameSetting.GameId
             };
 
             return View(viewModel);

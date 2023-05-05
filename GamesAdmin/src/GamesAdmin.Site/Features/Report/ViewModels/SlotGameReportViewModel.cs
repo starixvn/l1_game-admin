@@ -24,5 +24,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string GameDisplayName { get; set; }
 
         public bool IsEnabledJackpot { get; set; }
+
+        public int GameId { get; set; }
     }
 }
