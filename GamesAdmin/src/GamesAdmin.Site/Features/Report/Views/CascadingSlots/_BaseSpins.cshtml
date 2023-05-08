@@ -1,0 +1,42 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Site._Shared.Configurations
+@using Microsoft.Extensions.Options
+
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
+
+@model BaseSpinsViewModel
+@{
+    var tumble = Model.Tumble;
+    var multipliers = Model.Tumble.Multipliers.ToList();
+    var symbolUrl = resourceSiteConfig.Value.BaseUrl + "/" + Model.GameName;
+}
+
+@{
+    foreach (var item in tumble.Icons.Keys.Select((key, i) => new { index = i, key }))
+    {
+        if (item.index == 0)
+        {
+            <tr>
+                <td rowspan="@Model.Rowspan">@(Model.RowIndex+1)</td>
+                <td rowspan="@Model.Rowspan">@await Html.PartialAsync("CascadingSlots/_Board", new GenerateBoardViewModel(tumble, Model.GameName))</td>
+                <td>
+                    <img class="symbol" src="@symbolUrl/symbol-@(item.key).png" />
+                </td>
+                <td>@tumble.Icons[item.key].Count</td>
+                <td>@HtmlHelpers.formatNumber(tumble.Icons[item.key].Win)</td>
+                <td rowspan="@Model.Rowspan">@HtmlHelpers.formatNumber(Model.TumbleWin)</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>
+                    <img class="symbol" src="@symbolUrl/symbol-@(item.key).png" />
+                </td>
+                <td>@tumble.Icons[item.key].Count</td>
+                <td>@HtmlHelpers.formatNumber(tumble.Icons[item.key].Win)</td>
+            </tr>
+        }
+
+    }
+}

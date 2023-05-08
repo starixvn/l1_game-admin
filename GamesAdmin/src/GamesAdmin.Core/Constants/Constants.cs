@@ -40,6 +40,8 @@ namespace GamesAdmin.Core
         public const byte NumberOfRows = 5;
         public const byte NumberOfColumns = 6;
         public const byte MinMultiplierSymbol = 10;
+        public const byte Multiplier20xSymbol = 20;
+        public const byte Multiplier30xSymbol = 30;
         public const byte FreeSpinSymbol = 9;
     }
 }

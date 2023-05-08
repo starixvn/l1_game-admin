@@ -1,0 +1,43 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@using GamesAdmin.Core;
+@using GamesAdmin.Site._Shared.Configurations
+@using Microsoft.Extensions.Options
+
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
+
+@model GenerateBoardViewModel
+@{
+    var renderedBoard = Model.Board;
+    var multipliers = Model.Multipliers.ToList();
+    var multiplierIndex = 0;
+    var symbolUrl = resourceSiteConfig.Value.BaseUrl + "/" + Model.GameName;
+}
+<table class="table-result-board">
+    <tbody>
+
+        @for (var row = 0; row < renderedBoard.GetLength(0); row++)
+        {
+            <tr>
+                @for (var column = 0; column < renderedBoard[row].Length; column++)
+                {
+                    var symbol = renderedBoard[row][column];
+                    @if (symbol >= CascadingSlotGameConstant.MinMultiplierSymbol)
+                    {
+                        <td class="result-board">
+                            <img class="symbol" src="@symbolUrl/symbol-@(GenerateBoardViewModel.GetMultiplierImageName(multipliers[multiplierIndex])).png" />
+                            <div class="multiplier @Model.GameName">@($"x{multipliers[multiplierIndex]}")</div>
+                        </td>
+                        multiplierIndex++;
+                    }
+                    else
+                    {
+                        <td>
+                            <img class="symbol" src="@symbolUrl/symbol-@(symbol.ToString()).png" />
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+
+</table>

@@ -1,0 +1,51 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@model CascadingSlotBetHistoryViewModel
+@{
+    var imageFolder = Model.Game.ToLowerInvariant();
+    var roundResult = Model.Round;
+    var freeSpins = Model.Round.SettlementResult.FreeSpins;
+}
+<table class="table table-bordered table-cascading-slot">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Result Board</th>
+            <th colspan="2">Win Symbols</th>
+            <th>Win amount</th>
+            <th>Tumble Win</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var tumbles = Model.Tumbles.ToList();
+            decimal tumbleWin = 0;
+            for (byte index = 0; index < tumbles.Count; index++)
+            {
+                tumbleWin += tumbles[index].Win;
+                if (tumbles[index].Icons.Any())
+                {
+                    @await Html.PartialAsync("CascadingSlots/_BaseSpins", new BaseSpinsViewModel(tumbles[index], tumbleWin, index, Model.GameName));
+                }
+                else
+                {
+
+                    @await Html.PartialAsync("CascadingSlots/_FreeSpins", new FreeSpinsViewModel(tumbles[index], freeSpins, index, tumbleWin, Model.GameName, roundResult.FreeSpin))
+
+                }
+            }
+            @if (Model.HasTotalMultiplier)
+            {
+                <tr>
+                    <td colspan="5" class="text-right">Total Multiplier</td>
+                    <td>@(roundResult.FreeSpin ? roundResult.TotalMultiplier : roundResult.Multiplier)</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="5" class="text-right">@Model.WinLabel</td>
+                <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+            </tr>
+        }
+    </tbody>
+    
+
+</table>

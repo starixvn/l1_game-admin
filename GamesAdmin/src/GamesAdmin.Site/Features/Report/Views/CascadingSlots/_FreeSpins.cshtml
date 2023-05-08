@@ -1,0 +1,35 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core;
+@using GamesAdmin.Site._Shared.Configurations
+@using Microsoft.Extensions.Options
+
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
+
+@model FreeSpinsViewModel
+@{
+    var tumble = Model.Tumble;
+    var freeSpins = Model.FreeSpins;
+    var symbolUrl = resourceSiteConfig.Value.BaseUrl + "/" + Model.GameName;
+}
+
+@{   
+    <tr>
+        <td rowspan="1">@(Model.RowIndex+1)</td>
+        <td rowspan="1"> @await Html.PartialAsync("CascadingSlots/_Board", new GenerateBoardViewModel(tumble, Model.GameName))</td>
+        @if (freeSpins != null && freeSpins.Odds > 0)
+        {
+            <td>
+                <img class="symbol" src="@symbolUrl/symbol-@(CascadingSlotGameConstant.FreeSpinSymbol.ToString()).png" />
+            </td>
+            <td>@freeSpins.Count</td>
+            <td>@freeSpins.Odds @Model.FreeSpinsText</td>
+        }
+        else
+        {
+            <td colspan="2">-</td>
+            <td>0</td>
+        }
+
+        <td rowspan=1>@HtmlHelpers.formatNumber(Model.TumbleWin)</td>
+    </tr>   
+}
