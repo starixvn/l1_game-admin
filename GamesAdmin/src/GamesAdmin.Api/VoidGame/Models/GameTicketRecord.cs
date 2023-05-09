@@ -43,4 +43,21 @@ namespace GamesAdmin.Api.VoidGame.Models
 
         public bool Exist() => BetRecords.Count > 0;
     }
+
+    public class BlackJackRecord : IGameTicket
+    {
+        public BlackJackRecord(BlackjackBetEntity betRecord, bool isFromArchive)
+        {
+            BetRecord = betRecord;
+            IsFromArchive = isFromArchive;
+        }
+
+        public BlackjackBetEntity BetRecord { get; }
+
+        public long RoundId => BetRecord !=null ? BetRecord.Round : 0;
+
+        public bool IsFromArchive { get; }
+
+        public bool Exist() => BetRecord != null;
+    }
 }
