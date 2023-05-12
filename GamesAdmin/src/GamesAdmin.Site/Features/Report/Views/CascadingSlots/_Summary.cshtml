@@ -1,6 +1,5 @@
-﻿@using GamesAdmin.Core
-@using GamesAdmin.Site.Features.Report.ViewModels
-@model CascadingSlotBetHistoryViewModel
+﻿@using GamesAdmin.Site.Features.Report.ViewModels
+@model SummaryViewModel
 
 @{
     var roundResult = Model.Round;
@@ -25,22 +24,22 @@
                     <div>@Model.FreeSpinsLabel</div>
                 </td>
                 <td>
-                    @roundResult.Time.ToString(Constants.DateTimeFormat)
+                    @Model.DisplayTime
                 </td>
                 <td>@roundResult.BetLevel</td>
-                <td>@HtmlHelpers.formatNumber(roundResult.CoinValue)</td>
-                <td>@HtmlHelpers.formatNumber(roundResult.TotalAmount)</td>
-                <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+                <td>@Model.DisplayCoinValue</td>
+                <td>@Model.DisplayTotalAmount</td>
+                <td>@Model.DisplayBetWin</td>
             </tr>
             <tr>
                 <td colspan="4" class="text-right">Total</td>
-                <td>@HtmlHelpers.formatNumber(@Model.TotalAmount)</td>
-                <td>@HtmlHelpers.formatNumber(roundResult.BetWin)</td>
+                <td>@Model.DisplayTotalAmountWithFreeSpin</td>
+                <td>@Model.DisplayBetWin</td>
             </tr>
             <tr class="total">
                 <td colspan="4" class="text-right">Win Loss</td>
                 <td></td>
-                <td>@HtmlHelpers.formatNumber(roundResult.WinLoss)</td>
+                <td>@Model.DisplayWinLoss</td>
             </tr>
         }
         else

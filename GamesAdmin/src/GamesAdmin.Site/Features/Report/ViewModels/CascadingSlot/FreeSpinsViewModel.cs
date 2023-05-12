@@ -1,35 +1,39 @@
-﻿
+﻿using GamesAdmin.Site.Features._Shared.Helpers;
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class FreeSpinsViewModel
     {
-        public CascadingSlotTumbleViewModel Tumble { get; set; }
-
-        public SlotGameFreeSpinViewModel FreeSpins { get; set; }
-
-        public string GameName { get; set; }
-
-        public decimal TumbleWin { get; set; }
-
-        public byte RowIndex { get; set; }
-
-        public bool HasFreeSpins { get; set; }
-
-        public string FreeSpinsText => HasFreeSpins ? "Extra Free Spins" : "Free Spins";
-
-        public FreeSpinsViewModel(CascadingSlotTumbleViewModel tumble, 
-            SlotGameFreeSpinViewModel freeSpins, 
-            byte rowIndex, 
-            decimal tumbleWin, 
-            string gameName,
-            bool hasFreeSpins)
+        public FreeSpinsViewModel(CascadingSlotTumbleViewModel tumble,
+           SlotGameFreeSpinViewModel freeSpins,
+           byte rowIndex,
+           decimal tumbleWin,
+           bool hasFreeSpins,
+           string symbolUrl)
         {
-            GameName = gameName;
             Tumble = tumble;
             FreeSpins = freeSpins;
             RowIndex = rowIndex;
             TumbleWin = tumbleWin;
             HasFreeSpins = hasFreeSpins;
+            SymbolUrl = symbolUrl;
         }
+
+        public CascadingSlotTumbleViewModel Tumble { get; }
+
+        public SlotGameFreeSpinViewModel FreeSpins { get; }
+
+        public decimal TumbleWin { get; }
+
+        public byte RowIndex { get; }
+
+        public bool HasFreeSpins { get; }
+
+        public string FreeSpinsText => HasFreeSpins ? "Extra Free Spins" : "Free Spins";
+
+        public bool HasOdds => FreeSpins != null && FreeSpins.Odds > 0;
+
+        public string SymbolUrl { get; }
+
+        public string DisplayTumbleWin => HtmlHelpers.formatNumber(TumbleWin);
     }
 }

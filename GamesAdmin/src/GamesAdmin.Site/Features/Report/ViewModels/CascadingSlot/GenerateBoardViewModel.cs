@@ -1,40 +1,19 @@
 ﻿using GamesAdmin.Core;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class GenerateBoardViewModel
     {
-        public CascadingSlotTumbleViewModel Tumble { get; set; }
-
-        public IEnumerable<byte> Multipliers => Tumble.Multipliers;
-
-        public byte[][] Board => RenderedBoard(Tumble.Board);
-
-        public string GameName  {get;set;}
-
-        public static byte[][] RenderedBoard(IEnumerable<byte> board)
-        {
-            var boardArray = board.ToArray();
-            byte[][] result = new byte[CascadingSlotGameConstant.NumberOfRows][];         
-            for (var row = 0; row < result.Length; row++)
-            {
-                result[row] = new byte[CascadingSlotGameConstant.NumberOfColumns];
-                for (var column = 0; column < CascadingSlotGameConstant.NumberOfColumns; column++)
-                {
-                    result[row][column] = boardArray[row + column * CascadingSlotGameConstant.NumberOfRows];
-                }
-            }
-
-            return result;
-        }
-
-        public GenerateBoardViewModel(CascadingSlotTumbleViewModel tumble, string gameName)
+        public GenerateBoardViewModel(CascadingSlotTumbleViewModel tumble, string symbolUrl)
         {
             Tumble = tumble;
-            GameName = gameName;
+            SymbolUrl = symbolUrl;
         }
+
+        public CascadingSlotTumbleViewModel Tumble { get; }
+
+        public string SymbolUrl { get; }      
 
         public static string GetMultiplierImageName(byte value)
         {
@@ -58,5 +37,35 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             return "10";
         }
 
-    }
+        public  MultiplierSymbolViewModel[][] GetFormatBoard()
+        {
+            const byte numberOfRows = CascadingSlotGameConstant.NumberOfRows;
+            const byte numberOfCols = CascadingSlotGameConstant.NumberOfColumns;
+            MultiplierSymbolViewModel[][] formatResult = new MultiplierSymbolViewModel[numberOfRows][];
+            var symbols = Tumble.Board.ToArray();
+            var multipliers = Tumble.Multipliers.ToList();
+            var multiplierIndex = 0;
+            for (var row = 0; row < numberOfRows; row++)
+            {
+                formatResult[row] = new MultiplierSymbolViewModel[numberOfCols];
+                for (var column = 0; column < numberOfCols; column++)
+                {
+                    var symbol = symbols[row + column * numberOfRows];
+                    var multiplier = string.Empty;
+                    if (symbol >= CascadingSlotGameConstant.MinMultiplierSymbol)
+                    {
+                        multiplier =  $"x{multipliers[multiplierIndex]}";
+                        multiplierIndex++;
+                    }
+                    formatResult[row][column] = new MultiplierSymbolViewModel
+                    {
+                        Symbol = symbols[row + column * numberOfRows],
+                        Multiplier = multiplier
+                    };                                
+                }
+            }
+
+            return formatResult;
+        }
+    }  
 }

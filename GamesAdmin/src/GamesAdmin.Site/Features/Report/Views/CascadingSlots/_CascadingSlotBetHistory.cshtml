@@ -2,6 +2,6 @@
 @model CascadingSlotBetHistoryViewModel
 
 
-@await Html.PartialAsync("CascadingSlots/_Summary", Model)
+@await Html.PartialAsync("CascadingSlots/_Summary", new SummaryViewModel(Model.Round))
 @await Html.PartialAsync("CascadingSlots/_RoundResult", Model)
 @await Html.PartialAsync("CascadingSlots/_TotalMultiplier", Model)

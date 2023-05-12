@@ -1,7 +1,6 @@
 ﻿@using GamesAdmin.Site.Features.Report.ViewModels
 @model CascadingSlotBetHistoryViewModel
 @{
-    var imageFolder = Model.Game.ToLowerInvariant();
     var roundResult = Model.Round;
     var freeSpins = Model.Round.SettlementResult.FreeSpins;
 }
@@ -24,12 +23,12 @@
                 tumbleWin += tumbles[index].Win;
                 if (tumbles[index].Icons.Any())
                 {
-                    @await Html.PartialAsync("CascadingSlots/_BaseSpins", new BaseSpinsViewModel(tumbles[index], tumbleWin, index, Model.GameName));
+                    @await Html.PartialAsync("CascadingSlots/_BaseSpins", new BaseSpinsViewModel(tumbles[index], tumbleWin, index, Model.SymbolUrl));
                 }
                 else
                 {
 
-                    @await Html.PartialAsync("CascadingSlots/_FreeSpins", new FreeSpinsViewModel(tumbles[index], freeSpins, index, tumbleWin, Model.GameName, roundResult.FreeSpin))
+                    @await Html.PartialAsync("CascadingSlots/_FreeSpins", new FreeSpinsViewModel(tumbles[index], freeSpins, index, tumbleWin, roundResult.FreeSpin, Model.SymbolUrl))
 
                 }
             }
@@ -37,7 +36,7 @@
             {
                 <tr>
                     <td colspan="5" class="text-right">Total Multiplier</td>
-                    <td>@(roundResult.FreeSpin ? roundResult.TotalMultiplier : roundResult.Multiplier)</td>
+                    <td>@Model.MultiplierValue</td>
                 </tr>
             }
             <tr>
