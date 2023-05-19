@@ -43,6 +43,8 @@ namespace GamesAdmin.Database.Entities
         public string OperatorId { get; set; }
 
         public decimal Rate { get; set; }
+
+        public SlotJackpotContributionEntity JackpotContribution { get; set; }
     }
 
     public class SlotGameBonusChestEntity
@@ -51,6 +53,13 @@ namespace GamesAdmin.Database.Entities
         public decimal Amount { get; set; }
 
         public bool Picked { get; set; }
+    }
+
+    public class SlotJackpotContributionEntity
+    {
+        public double ContributionRate { get; set; }
+
+        public int BaseContributionAmount { get; set; }
     }
 
     public class SlotGameSettlementResultEntity

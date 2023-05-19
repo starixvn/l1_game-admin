@@ -38,7 +38,7 @@
                                asp-action="GetSlotGameBetHistory"
                                asp-route-roundId="@bet.RoundId"
                                asp-route-nickname="@bet.Nickname"
-                               asp-route-game="@bet.Game"
+                               asp-route-game="@bet.GameName"
                                asp-route-convertToUSD="@Model.ConvertToUSD">
                                 @bet.RoundId
                                 @if (bet.SettlementResult.Jackpot != null)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Enumeration;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -205,6 +206,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<SlotGameBonusChestViewModel> BonusChests { get; set; }
 
+        public SlotJackpotContributionViewModel JackpotContribution { get; set; }
+
+        public bool IsFourGuardiansEnabledJackpot { get; set; }
+
         public bool Paid { get; set; }
 
         public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
@@ -213,12 +218,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
 
-        public string Game { get; set; }
+        public string GameName { get; set; }
         public int ExchangeRateId { get; set; }
-        public string IconsFolder => Game?.ToLowerInvariant();
+        public string IconsFolder => GameName?.ToLowerInvariant();
         public string SystemType { get; set; }
 
-        public bool IsEnbaledJackpot { get; set; }
+        public bool IsEnabledJackpot => IconsFolder == Game.FourGuardiansValue ? IsFourGuardiansEnabledJackpot : JackpotContribution != null;
 
         public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
@@ -251,6 +256,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
             return FreeSpin ? totalBetWin : totalBetWin - TotalAmount;
         }
+    }
+
+    public class SlotJackpotContributionViewModel
+    {
+        public double ContributionRate { get; set; }
+
+        public int BaseContributionAmount { get; set; }
     }
 
     public class SlotGameBonusChestViewModel

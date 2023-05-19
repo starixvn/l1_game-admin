@@ -411,29 +411,37 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportService.GetSlotGameReport(request);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var games = await generalGameSettingService.GetAllGames();
-            var gameInfo = games.FirstOrDefault(game => game.Name == request.Game);
-
+            var isFourGuardiansEnabledJackpot = await IsFourGuardiansJackpot(request.Game);
+  
             return new SlotGameReportResultViewModel
             {
                 ConvertToUSD = request.ConvertToUSD,
-                IsEnabledJackpot = gameInfo.IsEnabledJackpot,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<SlotGameRecordViewModel>(x);
                     betViewModel.SystemType = systemSettings.System;
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                    betViewModel.Game = request.Game;
+                    betViewModel.GameName = request.Game;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
-                    betViewModel.IsEnbaledJackpot = gameInfo.IsEnabledJackpot;
-
+                    betViewModel.IsFourGuardiansEnabledJackpot = isFourGuardiansEnabledJackpot;
                     return betViewModel;
                 })
             };
         }
 
+        private async Task<bool> IsFourGuardiansJackpot(string game)
+        {
+            if (Game.FourGuardians.Value == game)
+            {
+                var games = await generalGameSettingService.GetAllGames();
+                var gameInfo = games.FirstOrDefault(game => game.Name == Game.FourGuardians.Value);
+                return gameInfo.IsEnabledJackpot;
+            }
+
+            return false;
+        }
         public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);

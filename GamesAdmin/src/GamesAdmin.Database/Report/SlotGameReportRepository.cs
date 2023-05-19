@@ -64,7 +64,8 @@ namespace GamesAdmin.Database
                         Currency = bet.Currency,
                         OperatorId = bet.OperatorId,
                         Rate = bet.Rate,
-                        ExchangeRateId = bet.ExchangeRateId
+                        ExchangeRateId = bet.ExchangeRateId,
+                        JackpotContribution = bet.JackpotContribution
                     });
                 }
             }

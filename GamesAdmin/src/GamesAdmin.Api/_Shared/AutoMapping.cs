@@ -280,6 +280,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<SlotGameWinningLineEntity, SlotGameWinningLine>();
             CreateMap<SlotGameBonusChestEntity, SlotGameBonusChest>();
             CreateMap<SlotGameJackpotEntity, SlotGameJackpot>();
+            CreateMap<SlotJackpotContributionEntity, SlotJackpotContribution>();
 
             CreateMap<CascadingSlotBetReportEntity, CascadingSlotBetRecord>()
                 .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Number))

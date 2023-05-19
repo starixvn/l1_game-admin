@@ -219,6 +219,15 @@ namespace GamesAdmin.Core.Models
         public string Partner { get; set; }
 
         public int ExchangRateId { get; set; }
+
+        public SlotJackpotContribution JackpotContribution { get; set; }
+    }
+
+    public class SlotJackpotContribution
+    {
+        public double ContributionRate { get; set; }
+
+        public int BaseContributionAmount { get; set; }
     }
 
     public class SlotGameBonusChest

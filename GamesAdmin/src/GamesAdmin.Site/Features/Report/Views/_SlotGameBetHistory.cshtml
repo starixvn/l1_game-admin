@@ -7,7 +7,6 @@
 
 @model SlotGameRecordViewModel
 
-
 <table class="table table-bordered table-four-guardians">
     <thead>
         <tr>
@@ -33,7 +32,7 @@
                                     @for (var column = 0; column < array[row].Length; column++)
                                     {
                                         var symbolIndex = array[row][column];
-                                        if(Model.IsEnbaledJackpot && symbolIndex == 10)
+                                        if(Model.IsEnabledJackpot && symbolIndex == 10)
                                         {
                                             <td>
                                                 <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(array[row][column]).jackpot.png" />
@@ -91,7 +90,7 @@
 
             <tr>
                 <td class="text-center"><img class="payline" src="@resourceSiteConfig.Value.BaseUrl/_shared/classicslot/payline-@(payline + 1).png" /></td>
-                @if(Model.IsEnbaledJackpot && winningPayline.Symbol == "10")
+                @if(Model.IsEnabledJackpot && winningPayline.Symbol == "10")
                 {
                     <td class="text-center"><img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(winningPayline.Symbol).jackpot.png" /></td>
                 }
