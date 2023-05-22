@@ -36,6 +36,6 @@ namespace GamesAdmin.Api.Notifications.Models
 
         public bool Enabled { get; }
 
-        public byte? GameId { get; }
+        public int? GameId { get; }
     }
 }

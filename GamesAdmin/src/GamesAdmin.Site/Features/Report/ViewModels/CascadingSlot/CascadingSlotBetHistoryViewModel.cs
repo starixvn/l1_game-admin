@@ -29,6 +29,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string SymbolUrl => $"{StaticResourceUrl}/{GameName}/{SymbolPrefix}";
 
-        public byte MultiplierValue => Round.FreeSpin? Round.TotalMultiplier : Round.Multiplier;
+        public int MultiplierValue => Round.FreeSpin? Round.TotalMultiplier : Round.Multiplier;
     }
 }

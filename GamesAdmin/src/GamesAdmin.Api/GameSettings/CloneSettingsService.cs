@@ -12,7 +12,7 @@ namespace GamesAdmin.Api.GameSettings
 {
     public interface ICloneSettingService
     {
-        Task<string> CloneNewGame(byte gameId, byte fromGameId, string displayName);
+        Task<string> CloneNewGame(int gameId, int fromGameId, string displayName);
     }
 
     public class CloneSettingsService : ICloneSettingService
@@ -33,7 +33,7 @@ namespace GamesAdmin.Api.GameSettings
             this.notificationService = notificationService;
         }
 
-        public async Task<string> CloneNewGame(byte gameId, byte fromGameId, string displayName)
+        public async Task<string> CloneNewGame(int gameId, int fromGameId, string displayName)
         {
             try
             {

@@ -20,13 +20,13 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             GameTypes = gameTypes.Where(type => IsSlotGameType(type.Value));
             ExistingGames = existingGames.Select(game => new SelectListItem($"{game.DisplayName}{GetJackpotText(game.IsEnabledJackpot)}", game.GameId.ToString()));
         }
-        private bool IsSlotGameType(string type)
+        private static bool IsSlotGameType(string type)
         {
-            var gameType = Enum.Parse<GameType>(type.ToString());
+            var gameType = Enum.Parse<GameType>(type);
             return gameType == GameType.Slots || gameType == GameType.CascadingSlots ;
         }
 
-        public string GetJackpotText(bool isEnableJackpot)
+        public static string GetJackpotText(bool isEnableJackpot)
            => isEnableJackpot ? " (Jackpot)" : "";
 
         public IEnumerable<SelectListItem> ExistingGames { get; }
@@ -41,7 +41,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public string GameName { get; set; }
 
         [DisplayName("Clone From")]
-        public byte SelectedGame { get; set; }
+        public int SelectedGame { get; set; }
 
         [DisplayName("Type")]
         public GameType GameType { get; set; }

@@ -31,7 +31,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
         [InlineData(10,0, false)]
         [InlineData(0, 0, false)]
         [InlineData(10, 10, true)]
-        public void HasTotalMultiplier_ReturnExpected(decimal betwin, byte multiplier, bool expected)
+        public void HasTotalMultiplier_ReturnExpected(decimal betwin, int multiplier, bool expected)
         {
             // arrange
             var round = new CascadingSlotRecordViewModel

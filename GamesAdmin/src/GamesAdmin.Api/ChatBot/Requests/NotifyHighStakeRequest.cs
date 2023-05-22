@@ -6,7 +6,7 @@ namespace GamesAdmin.Api.ChatBot.Requests
 {
     public class NotifyHighStakeRequest : IRequest<ChatBotResult>
     {
-        public NotifyHighStakeRequest(int obCustId, byte gameTypeId, double amount, string currency, int choiceId, byte system)
+        public NotifyHighStakeRequest(int obCustId, int gameTypeId, double amount, string currency, int choiceId, byte system)
         {
             ObCustId = obCustId;
             GameTypeId = gameTypeId;
@@ -18,7 +18,7 @@ namespace GamesAdmin.Api.ChatBot.Requests
 
         public int ObCustId { get; set; }
 
-        public byte GameTypeId { get; set; }
+        public int GameTypeId { get; set; }
 
         public double Amount { get; set; }
 

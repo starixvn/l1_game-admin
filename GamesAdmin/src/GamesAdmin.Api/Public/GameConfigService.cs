@@ -8,7 +8,7 @@ namespace GamesAdmin.Api.Public
 {
     public interface IGameConfigService
     {
-        Task<GameConfig> GetById(byte gameId);
+        Task<GameConfig> GetById(int gameId);
     }
 
     public class GameConfigService : IGameConfigService
@@ -25,7 +25,7 @@ namespace GamesAdmin.Api.Public
             this.mapper = mapper;
         }
 
-        public async Task<GameConfig> GetById(byte gameId)
+        public async Task<GameConfig> GetById(int gameId)
         {
             var gameEntity = await repository.FindOneAsync(entity => entity.GameId == gameId);
 

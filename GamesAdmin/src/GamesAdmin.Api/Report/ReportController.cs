@@ -40,7 +40,7 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
-        public async Task<IEnumerable<BaseBetHistory>> BetHistory(string nickname, long roundId, byte gameTypeId)
+        public async Task<IEnumerable<BaseBetHistory>> BetHistory(string nickname, long roundId, int gameTypeId)
             => (await mediator.Send(new GameReportRequest(nickname, roundId, gameTypeId)));
 
         [HttpGet]
@@ -121,7 +121,7 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("jackpot/game/{gameId}")]
-        public async Task<IEnumerable<JackpotRecord>> JackpotReport(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public async Task<IEnumerable<JackpotRecord>> JackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
        => (await mediator.Send(new JackpotReportRequest(gameId, fromDate, toDate, excludeUUS, excludeBot)));
 
         [HttpGet]

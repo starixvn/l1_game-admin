@@ -22,7 +22,7 @@
 
         public int PlayerId { get; set; }
 
-        public byte GameTypeId { get; set; }
+        public int GameTypeId { get; set; }
 
         public Auth Auth { get; set; }
 

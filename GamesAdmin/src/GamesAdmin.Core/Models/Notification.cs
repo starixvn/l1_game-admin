@@ -37,7 +37,7 @@ namespace GamesAdmin.Core.Models
            DateTime? endTime,
            string promotionId,
            bool? enabled,
-           byte? gameId,
+           int? gameId,
            string gameName = ""
            )
         {
@@ -74,6 +74,6 @@ namespace GamesAdmin.Core.Models
 
         public bool? Enabled { get; set; }
 
-        public byte? GameId { get; set; }
+        public int? GameId { get; set; }
     }
 }

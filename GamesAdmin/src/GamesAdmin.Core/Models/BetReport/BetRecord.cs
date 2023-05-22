@@ -366,9 +366,9 @@ namespace GamesAdmin.Core.Models
 
         public string Result { get; set; }
 
-        public byte TotalMultiplier { get; set; }
+        public int TotalMultiplier { get; set; }
 
-        public byte Multiplier { get; set; }
+        public int Multiplier { get; set; }
 
         public decimal TotalTumbleWin { get; set; }
 
@@ -408,7 +408,7 @@ namespace GamesAdmin.Core.Models
 
         public string OriginalBoard { get; set; }
 
-        public IEnumerable<byte> Multipliers { get; set; }
+        public IEnumerable<int> Multipliers { get; set; }
     }
 
     public class CascadingSlotWinningSymbol

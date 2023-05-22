@@ -190,7 +190,7 @@ namespace GamesAdmin.Site.Features.Promotions
                 {
                     var promotion = await promotionService.GetById(models[index].PromotionId);
                     models[index].GameName = Game.FromGameId(promotion.GameId).Value;
-                    models[index].GameId = (byte)promotion.GameId;
+                    models[index].GameId = (int)promotion.GameId;
                 }
             }
             return await this.promotionService.CreateAnnouncements(models);
@@ -209,7 +209,7 @@ namespace GamesAdmin.Site.Features.Promotions
             {
                 var promotion = await promotionService.GetById(model.PromotionId);
                 model.GameName = Game.FromGameId(promotion.GameId).Value;
-                model.GameId = (byte)promotion.GameId;
+                model.GameId = (int)promotion.GameId;
             }
             return await promotionService.UpdateAnnouncement(model);
         }

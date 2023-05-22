@@ -11,7 +11,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
         [InlineData(16, "11")]
         [InlineData(25, "12")]
         [InlineData(5, "13")]
-        public void GetMultiplierImageName_Always_Return_ImageName(byte multiplier, string expected)
+        public void GetMultiplierImageName_Always_Return_ImageName(int multiplier, string expected)
         {
             // act
             var actual = GenerateBoardViewModel.GetMultiplierImageName(multiplier);
@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
         [Fact]
         public void GetFormatBoard_ReturnExpected()
         {
-            var multiplier = new List<byte> { 25, 10, 40 };
+            var multiplier = new List<int> { 25, 10, 40 };
             var tumble = new CascadingSlotTumbleViewModel
             {
                 Multipliers = multiplier,

@@ -10,7 +10,7 @@ namespace GamesAdmin.Database.Entities
     [BsonCollection("jackpots")]
     public class JackpotEntity : Document
     {
-        public byte GameId { get; set; }
+        public int GameId { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Pool { get; set; }

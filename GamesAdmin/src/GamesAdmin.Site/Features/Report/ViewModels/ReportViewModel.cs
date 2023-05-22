@@ -55,7 +55,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
     public class JackpotReportViewModel
     {
-        public byte GameId { get; set; }
+        public int GameId { get; set; }
 
         public DateTime FromDate { get; set; } = DateTime.Now;
 

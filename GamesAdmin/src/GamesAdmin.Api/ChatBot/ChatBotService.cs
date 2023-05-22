@@ -89,22 +89,15 @@ namespace GamesAdmin.Api.ChatBot
             return await Task.FromResult(new ChatBotResult());
         }
 
-        private string GetGameName(byte gameId)
+        private string GetGameName(int gameId)
         {
-            switch (gameId)
+            return gameId switch
             {
-                case (byte)GameId.KenoMatch1:
-                    return "KenoSoccer";
-
-                case (byte)GameId.KenoMatch2:
-                    return "KenoSoccer2";
-
-                case (byte)GameId.KenoPower1:
-                    return "KenoPower";
-
-                default:
-                    return Enum.Parse<GameId>(gameId.ToString()).ToString();
-            }
+                (int)GameId.KenoMatch1 => "KenoSoccer",
+                (int)GameId.KenoMatch2 => "KenoSoccer2",
+                (int)GameId.KenoPower1 => "KenoPower",
+                _ => Enum.Parse<GameId>(gameId.ToString()).ToString(),
+            };
         }
 
         private string GetVersionName(Versions version, Dictionary<string, string> metadata)

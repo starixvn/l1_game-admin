@@ -20,9 +20,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal CoinValue { get; set; }
 
-        public byte TotalMultiplier { get; set; }
+        public int TotalMultiplier { get; set; }
 
-        public byte Multiplier { get; set; }
+        public int Multiplier { get; set; }
 
         public decimal TotalTumbleWin { get; set; }
 
@@ -73,9 +73,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public long RoundId { get; set; }
 
-        public byte Multiplier { get; set; }
+        public int Multiplier { get; set; }
 
-        public byte TotalMultiplier { get; set; }
+        public int TotalMultiplier { get; set; }
     }
 
     public class CascadingSlotSettlementResultViewModel
@@ -93,7 +93,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string OriginalBoard { get; set; }
 
-        public IEnumerable<byte> Multipliers { get; set; }
+        public IEnumerable<int> Multipliers { get; set; }
 
         public IEnumerable<byte> Board => OriginalBoard.Split(',').Select(value => byte.Parse(value));
     }

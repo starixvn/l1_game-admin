@@ -21,7 +21,7 @@
             TimeStamp = DateTimeOffset.Now;
             Seq = Guid.NewGuid().ToString();
         }
-        public byte GameTypeId { get; set; }
+        public int GameTypeId { get; set; }
 
         public Auth Auth { get; set; }
 

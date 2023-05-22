@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetJackpotReportRequest : IRequest<IEnumerable<JackpotRecordViewModel>>
     {
-        public GetJackpotReportRequest(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public GetJackpotReportRequest(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
             GameId = gameId;
             FromDate = fromDate;
@@ -16,7 +16,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
             ExcludeBot = excludeBot;
         }
 
-        public byte GameId { get; }
+        public int GameId { get; }
 
         public DateTime FromDate { get; }
 

@@ -23,9 +23,9 @@ namespace GamesAdmin.Database.Entities
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Betwin { get; set; }
 
-        public byte TotalMultiplier { get; set; }
+        public int TotalMultiplier { get; set; }
 
-        public byte Multiplier { get; set; }
+        public int Multiplier { get; set; }
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal TotalTumbleWin { get; set; }
@@ -70,7 +70,7 @@ namespace GamesAdmin.Database.Entities
 
         public string OriginalBoard { get; set; }
 
-        public IEnumerable<byte> Multipliers { get; set; }
+        public IEnumerable<int> Multipliers { get; set; }
     }
 
     public class CascadingSlotWinningSymbolEntity

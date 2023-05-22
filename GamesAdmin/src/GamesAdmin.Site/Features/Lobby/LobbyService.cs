@@ -73,8 +73,8 @@ namespace GamesAdmin.Site.Features.Lobby
                 Partners = await partnerService.GetAll(),
                 CurrencyGroupModels = (await this.currencyGroupApi.GetAll()).Where(currencyGroup => !otherLobbyConfigCurrencyGroups.Contains(currencyGroup.Id)),
                 GameIds = (await generalGameSettingService.GetAllGames())
-                .Where(x => (byte)x.GameId != 0)
-                .Select(x => new SelectListItem { Text = x.DisplayName, Value = ((int)x.GameId).ToString() })
+                .Where(x => x.GameId != 0)
+                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.GameId.ToString() })
                 .ToList(),
                 LobbyConfig = lobbyConfig
             };

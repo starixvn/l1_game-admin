@@ -5,11 +5,11 @@ namespace GamesAdmin.Api.Public.Requests
 {
     public class GetGameConfigRequest : IRequest<GameConfig>
     {
-        public GetGameConfigRequest(byte gameId)
+        public GetGameConfigRequest(int gameId)
         {
             GameId = gameId;
         }
 
-        public byte GameId { get; }
+        public int GameId { get; }
     }
 }

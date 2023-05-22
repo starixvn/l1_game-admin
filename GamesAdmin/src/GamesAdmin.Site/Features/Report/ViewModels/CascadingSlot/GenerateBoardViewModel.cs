@@ -15,7 +15,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string SymbolUrl { get; }      
 
-        public static string GetMultiplierImageName(byte value)
+        public static string GetMultiplierImageName(int value)
         {
             if (value <= CascadingSlotGameConstant.MinMultiplierSymbol)
             {

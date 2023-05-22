@@ -4,7 +4,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 {
     public class CloneSlotGameRequest : IRequest<string>
     {
-        public CloneSlotGameRequest(string displayName, int gameId, byte cloneFrom)
+        public CloneSlotGameRequest(string displayName, int gameId, int cloneFrom)
         {
             DisplayName = displayName;
             GameId = gameId;
@@ -15,6 +15,6 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 
         public int GameId { get; }
 
-        public byte ClonedFrom { get; }
+        public int ClonedFrom { get; }
     }
 }

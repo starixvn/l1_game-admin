@@ -7,7 +7,7 @@ namespace GamesAdmin.Api.Report.Requests
 {
     public class JackpotReportRequest : IRequest<IEnumerable<JackpotRecord>>
     {
-        public JackpotReportRequest(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public JackpotReportRequest(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
             GameId = gameId;
             FromDate = fromDate;
@@ -16,7 +16,7 @@ namespace GamesAdmin.Api.Report.Requests
             ExcludeBot = excludeBot;
         }
 
-        public byte GameId { get; }
+        public int GameId { get; }
 
         public DateTime FromDate { get; }
 

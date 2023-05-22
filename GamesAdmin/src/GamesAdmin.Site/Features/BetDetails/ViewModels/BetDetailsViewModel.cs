@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
 
         public string Language { get; set; }
 
-        public byte GameType { get; set; }
+        public int GameType { get; set; }
 
         public string OperatorId { get; set; }
 

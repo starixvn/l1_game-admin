@@ -34,7 +34,7 @@ namespace GamesAdmin.Database.Entities
 
     public class VoidCall
     {
-        public VoidCall(int obCustId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, string reason, bool freeBet)
+        public VoidCall(int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, string reason, bool freeBet)
         {
             ObCustId = obCustId;
             PartnerId = partnerId;
@@ -53,7 +53,7 @@ namespace GamesAdmin.Database.Entities
 
         public long GameRoundId { get; }
 
-        public byte GameTypeId { get; }
+        public int GameTypeId { get; }
 
         public string Reason { get; }
 

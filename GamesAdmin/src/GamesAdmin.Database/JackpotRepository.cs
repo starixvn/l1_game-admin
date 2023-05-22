@@ -10,7 +10,7 @@ namespace GamesAdmin.Database
 {
     public interface IJackpotRepository
     {
-        Task<IEnumerable<JackpotReportEntity>> GetAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
     }
 
     public class JackpotRepository : IJackpotRepository
@@ -22,7 +22,7 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IEnumerable<JackpotReportEntity>> GetAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public async Task<IEnumerable<JackpotReportEntity>> GetAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
             var jackpotCollection = database.GetCollection<JackpotEntity>(Document.GetCollectionName(typeof(JackpotEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));

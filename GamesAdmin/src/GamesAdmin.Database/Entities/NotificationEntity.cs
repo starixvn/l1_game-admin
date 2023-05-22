@@ -30,6 +30,6 @@ namespace GamesAdmin.Database.Entities
 
         public bool? Enabled { get; set; }
 
-        public byte? GameId { get; set; }
+        public int? GameId { get; set; }
     }
 }

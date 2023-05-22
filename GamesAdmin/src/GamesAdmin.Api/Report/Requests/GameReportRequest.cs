@@ -9,11 +9,11 @@ namespace GamesAdmin.Api.Report.Requests
     {
         public long RoundId { get; }
 
-        public byte GameType { get; }
+        public int GameType { get; }
 
         public string Name { get; }
 
-        public GameReportRequest(string name, long roundId, byte gameType)
+        public GameReportRequest(string name, long roundId, int gameType)
         {
             Name = name;
             RoundId = roundId;

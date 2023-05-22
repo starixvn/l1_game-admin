@@ -21,7 +21,7 @@ namespace GamesAdmin.Api.Report
     {
         Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
-        Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, byte gameType);
+        Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, int gameType);
 
         Task<BigSmallBetReport> GetBigSmallTurboReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
@@ -39,7 +39,7 @@ namespace GamesAdmin.Api.Report
 
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
-        Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
+        Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
 
         Task<BitcoinMasterBetReport> GetBitcoinMasterReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
@@ -199,20 +199,20 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, byte gameType)
+        public async Task<IEnumerable<BaseBetHistory>> GetBetHistoryReport(string name, long roundId, int gameType)
         {
             switch (gameType)
             {
-                case (byte)GameId.BigSmall:
+                case (int)GameId.BigSmall:
                     return await GetBigSmallBetHistoryAsync(name, roundId);
 
-                case (byte)GameId.BigSmallTurbo:
+                case (int)GameId.BigSmallTurbo:
                     return await GetBigSmallTurboBetHistoryAsync(name, roundId);
 
-                case (byte)GameId.OddEven:
+                case (int)GameId.OddEven:
                     return await GetOddEvenBetHistoryAsync(name, roundId);
 
-                case (byte)GameId.OddEvenTurbo:
+                case (int)GameId.OddEvenTurbo:
                     return await GetOddEvenTurboBetHistoryAsync(name, roundId);
 
                 default:
@@ -328,7 +328,7 @@ namespace GamesAdmin.Api.Report
             return result.Select(x => mapper.Map<SlotGameBetRecord>(x));
         }
 
-        public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(byte gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public async Task<IEnumerable<JackpotRecord>> GetJackpotReportAsync(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
         {
             var repository = serviceProvider.GetService<IJackpotRepository>();
             var result = await repository.GetAsync(gameId, fromDate, toDate, excludeUUS, excludeBot);

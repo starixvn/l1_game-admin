@@ -4,16 +4,16 @@ namespace GamesAdmin.Api.GameSettings.Requests
 {
     public class CloneNewSlotGameRequest : IRequest<string>
     {
-        public CloneNewSlotGameRequest(byte gameId, byte fromGameId, string displayName)
+        public CloneNewSlotGameRequest(int gameId, int fromGameId, string displayName)
         {
             GameId = gameId;
             FromGameId = fromGameId;
             DisplayName = displayName;
         }
 
-        public byte GameId { get; }
+        public int GameId { get; }
 
-        public byte FromGameId { get; }
+        public int FromGameId { get; }
 
         public string DisplayName { get; }
     }
