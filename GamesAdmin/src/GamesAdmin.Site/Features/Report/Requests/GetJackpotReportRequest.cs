@@ -7,13 +7,14 @@ namespace GamesAdmin.Site.Features.Report.Requests
 {
     public class GetJackpotReportRequest : IRequest<IEnumerable<JackpotRecordViewModel>>
     {
-        public GetJackpotReportRequest(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot)
+        public GetJackpotReportRequest(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, bool convertToINH)
         {
             GameId = gameId;
             FromDate = fromDate;
             ToDate = toDate;
             ExcludeUUS = excludeUUS;
             ExcludeBot = excludeBot;
+            ConvertToINH = convertToINH;
         }
 
         public int GameId { get; }
@@ -25,5 +26,7 @@ namespace GamesAdmin.Site.Features.Report.Requests
         public bool ExcludeUUS { get; }
 
         public bool ExcludeBot { get; }
+
+        public bool ConvertToINH { get; }
     }
 }

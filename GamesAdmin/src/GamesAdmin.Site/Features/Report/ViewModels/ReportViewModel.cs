@@ -53,19 +53,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<SelectListItem> Games { get; set; }
     }
 
-    public class JackpotReportViewModel
-    {
-        public int GameId { get; set; }
-
-        public DateTime FromDate { get; set; } = DateTime.Now;
-
-        public DateTime ToDate { get; set; } = DateTime.Now;
-
-        public bool ExcludeBot { get; set; } = true;
-
-        public bool ExcludeUUS { get; set; } = true;
-    }
-
     public class KenoMatchReportViewModel : ReportViewModel
     {
     }

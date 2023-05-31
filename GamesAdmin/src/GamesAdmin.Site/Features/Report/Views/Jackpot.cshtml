@@ -30,6 +30,14 @@
             </div>
         </div>
         <div class="col-auto mt-5">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="ConvertToINH">
+                <label class="form-check-label" asp-for="ConvertToINH">
+                    Convert to @Model.BaseCurrency
+                </label>
+            </div>
+        </div>
+        <div class="col-auto mt-5">
             <button type="submit" class="btn-submit">Submit</button>
             <div id="spinner" class="spinner-border" style="display: none">
                 <span class="sr-only">Loading...</span>

@@ -457,7 +457,7 @@ namespace GamesAdmin.Site.Features.Report
             {
                 var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
                 betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-
+                betViewModel.ConvertToUserCurrency(request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
                 return betViewModel;
             }).OrderByDescending(x => x.Time);
         }

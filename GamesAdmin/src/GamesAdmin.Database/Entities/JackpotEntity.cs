@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GamesAdmin.Database.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -39,5 +37,13 @@ namespace GamesAdmin.Database.Entities
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime? HitTime { get; set; }
+
+        public int ExchangeRateId { get; set; } = 1;
+
+        public string Currency { get; set; }
+
+        public string OperatorId { get; set; }
+
+        public decimal Rate { get; set; } = 1;
     }
 }

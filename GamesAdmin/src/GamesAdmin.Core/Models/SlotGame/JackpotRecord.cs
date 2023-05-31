@@ -15,5 +15,13 @@ namespace GamesAdmin.Core.Models.SlotGame
         public long RoundId { get; set; }
 
         public decimal WinningAmount { get; set; }
+
+        public int ExchangeRateId { get; set; }
+
+        public string Currency { get; set; }
+
+        public string OperatorId { get; set; }
+
+        public decimal Rate { get; set; }
     }
 }
