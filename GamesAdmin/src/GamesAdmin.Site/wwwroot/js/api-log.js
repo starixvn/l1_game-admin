@@ -15,7 +15,20 @@ $(document).ready(function () {
         var gameType = $('#GameTypeId').val() >> 0;
         var gameRound = $('#GameRoundId').val() >> 0;
         var memberId = $('#ObCustId').val() >> 0;
-        var isInvalid = logType <= 2 && (!gameType || !gameRound || !memberId);
+        var username = $('#Username').val();
+        var isInvalid = false;
+
+        switch (logType) {
+            case 1:
+            case 2:
+                isInvalid = (!gameType || !gameRound || !memberId);
+            case 5:
+            case 9:
+                isInvalid = !memberId || !username
+            case 8:
+                isInvalid = !username
+            default:
+        }
 
         if (isInvalid) {
             $('#error-message').removeAttr('hidden');
