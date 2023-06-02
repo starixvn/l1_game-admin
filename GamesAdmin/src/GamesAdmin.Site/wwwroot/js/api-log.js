@@ -23,21 +23,24 @@ $(document).ready(function () {
             case 1:
             case 2:
                 isInvalid = (!gameType || !gameRound || !memberId);
-                $errorMessage.val("Please input Customer ID, Game and Game Round");
+                $errorMessage.text("Please input Customer ID, Game and Game Round");
+                break;
             case 5:
             case 9:
                 isInvalid = !memberId || !username;
-                $errorMessage.val("Please input Customer ID or Username");
+                $errorMessage.text("Please input Customer ID or Username");
+                break;
             case 8:
                 isInvalid = !username;
-                $errorMessage.val("Please input Username");
+                $errorMessage.text("Please input Username");
+                break;
             default:
         }
 
         if (isInvalid) {
-            $('#error-message').removeAttr('hidden');
+            $errorMessage.removeAttr('hidden');
         } else {
-            $('#error-message').attr('hidden', 'hidden');
+            $errorMessage.attr('hidden', 'hidden');
         }
 
         return !isInvalid;
