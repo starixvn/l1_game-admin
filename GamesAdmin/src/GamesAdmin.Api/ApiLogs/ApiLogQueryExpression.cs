@@ -52,10 +52,8 @@ namespace GamesAdmin.Api.ApiLogs
         private static Expression<Func<MemberSignInLogEntity, bool>> UsernameExpression(QueryLogRequest request)
         {
             var regex = new Regex($"(?i){request.Username}");
-            return entity => regex.IsMatch(entity.Request.Username);
+            return entity => regex.IsMatch(entity.Request.Username) || regex.IsMatch(entity.Result.PublicUserInfo.UserName);
         }
-
-
 
         public static Expression<Func<PartnerLogEntity, bool>> GetPartnerExpression(QueryLogRequest request)
         {
@@ -120,7 +118,7 @@ namespace GamesAdmin.Api.ApiLogs
             if (!string.IsNullOrWhiteSpace(request.Username))
             {
                 var regex = new Regex($"(?i){request.Username}");
-                return expression =  expression.And(x => regex.IsMatch(x.Request.Call.ObCustName));
+                return expression = expression.And(x => regex.IsMatch(x.Request.Call.ObCustName));
             }
 
             return expression;
