@@ -16,17 +16,21 @@ $(document).ready(function () {
         var gameRound = $('#GameRoundId').val() >> 0;
         var memberId = $('#ObCustId').val() >> 0;
         var username = $('#Username').val();
+        var $errorMessage = $("#error-message");
         var isInvalid = false;
 
         switch (logType) {
             case 1:
             case 2:
                 isInvalid = (!gameType || !gameRound || !memberId);
+                $errorMessage.val("Please input Customer ID, Game and Game Round");
             case 5:
             case 9:
                 isInvalid = !memberId || !username
+                $errorMessage.val("Please input Customer ID or Username");
             case 8:
                 isInvalid = !username
+                $errorMessage.val("Please input Username");
             default:
         }
 
