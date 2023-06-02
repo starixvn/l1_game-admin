@@ -26,10 +26,10 @@ $(document).ready(function () {
                 $errorMessage.val("Please input Customer ID, Game and Game Round");
             case 5:
             case 9:
-                isInvalid = !memberId || !username
+                isInvalid = !memberId || !username;
                 $errorMessage.val("Please input Customer ID or Username");
             case 8:
-                isInvalid = !username
+                isInvalid = !username;
                 $errorMessage.val("Please input Username");
             default:
         }
