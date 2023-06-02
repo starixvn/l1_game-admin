@@ -26,7 +26,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public void ConvertToUserCurrency(bool isConvert, int baseCurrencyMultiplier = 1)
         {
-            if (!isConvert)
+            if (isConvert)
             {
                 WinningAmount /= (decimal)Rate / baseCurrencyMultiplier;            
             }
