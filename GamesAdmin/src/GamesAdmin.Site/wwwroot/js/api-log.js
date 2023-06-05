@@ -26,6 +26,9 @@ $(document).ready(function () {
                 $errorMessage.text("Please input Customer ID, Game and Game Round");
                 break;
             case 5:
+                isInvalid = !memberId;
+                $errorMessage.text("Please input Customer ID");
+                break;
             case 9:
                 isInvalid = !memberId && !username;
                 $errorMessage.text("Please input Customer ID or Username");
