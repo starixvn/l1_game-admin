@@ -27,7 +27,7 @@ $(document).ready(function () {
                 break;
             case 5:
             case 9:
-                isInvalid = !memberId || !username;
+                isInvalid = !memberId && !username;
                 $errorMessage.text("Please input Customer ID or Username");
                 break;
             case 8:
