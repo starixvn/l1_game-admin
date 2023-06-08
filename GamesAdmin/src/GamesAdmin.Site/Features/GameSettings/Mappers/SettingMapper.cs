@@ -24,7 +24,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.BotEnabled, opt => opt.MapFrom(src => src.BotSetting.BotEnabled))
                 .ForMember(dest => dest.HoursMaxBot, opt => opt.MapFrom(src => src.BotSetting.HoursMaxBot))
                 .ForMember(dest => dest.SmartBotEnabled, opt => opt.MapFrom(src => src.BotSetting.SmartBotEnabled))
-                .ForMember(dest => dest.SmartBotGroupRatio, opt => opt.MapFrom(src => src.BotSetting.SmartBotGroupRatio.ToPercentage()));
+                .ForMember(dest => dest.SmartBotGroupRatio, opt => opt.MapFrom(src => src.BotSetting.SmartBotGroupRatio.ToPercentage()))
+                .ForMember(dest => dest.IsMicrosite, opt => opt.MapFrom((src => src.Info.IsMicrosite)));
 
             CreateMap<GameConfig, PayoutViewModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))

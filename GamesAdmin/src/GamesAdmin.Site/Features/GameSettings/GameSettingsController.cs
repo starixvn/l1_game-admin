@@ -296,7 +296,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 }
 
                 var request = new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, viewModel.IsMicrosite),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     slotsConfig,

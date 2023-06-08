@@ -76,9 +76,15 @@
                 <input type="number" asp-for="@Model.SlotViewModel.BigWinRatio" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <input type="checkbox" asp-for="BotEnabled" />
-                <label asp-for="BotEnabled" class="control-label"></label>
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <input type="checkbox" asp-for="BotEnabled" />
+                    <label asp-for="BotEnabled" class="control-label"></label>
+                </div>
+                <div class="col-lg-6">
+                    <input type="checkbox" asp-for="IsMicrosite" />
+                    <label asp-for="IsMicrosite" class="control-label"></label>
+                </div>
             </div>
         </div>
 

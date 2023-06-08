@@ -41,9 +41,9 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateJackpot(string name, Jackpot jackpot, List<StakeLevel> stakeLevels);
 
-        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig);
+        Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig, bool isMicrosite);
 
-        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
+        Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig, bool isMicrosite);
 
         Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
 
@@ -123,6 +123,7 @@ namespace GamesAdmin.Api.Games
                     Time = DateTime.Now,
                     GameId = gameId,
                     DisplayName = game.Info.DisplayName,
+                    IsMicrosite = game.Info.IsMicrosite
                 };
 
                 await repository.InsertOneAsync(entity);
@@ -388,19 +389,20 @@ namespace GamesAdmin.Api.Games
             return diffs.Any();
         }
 
-        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig)
+        public async Task<bool> UpdateSlotConfig(string name, bool botEnabled, SlotsConfig slotsConfig, bool isMicrosite)
         {
             try
             {
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig);
+                var changedSettings = SettingHelper.GetSlotConfigChangedModel(gameEntity, botEnabled, slotsConfig, isMicrosite);
                 sentryClient.CaptureChangedSettings(name, "Slot Config", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
                             .Set(field => field.Botenabled, botEnabled)
                             .Set(field => field.SlotsConfig.Bonus, slotsConfig.Bonus)
                             .Set(field => field.SlotsConfig.BigWinRatio, slotsConfig.BigWinRatio)
-                            .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode);
+                            .Set(field => field.SlotsConfig.Mode, slotsConfig.Mode)
+                            .Set(field => field.IsMicrosite, isMicrosite);
                 await repository.UpdateAsync(config => config.Name == name, update);
 
                 return true;
@@ -413,12 +415,12 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig)
+        public async Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig, bool isMicrosite)
         {
             try
             {
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig);
+                var changedSettings = SettingHelper.GetCascadingSlotConfigsChangeModel(gameEntity, botEnabled, cascadingSlotsConfig, isMicrosite);
                 sentryClient.CaptureChangedSettings(name, "Cascading Slot Config", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update
@@ -427,7 +429,8 @@ namespace GamesAdmin.Api.Games
                        .Set(field => field.CascadingSlotsConfig.BigWinRatio, cascadingSlotsConfig.BigWinRatio)
                        .Set(field => field.CascadingSlotsConfig.Mode, cascadingSlotsConfig.Mode)
                        .Set(field => field.CascadingSlotsConfig.BetMultiplier, cascadingSlotsConfig.BetMultiplier)
-                       .Set(field => field.CascadingSlotsConfig.BetLevels, cascadingSlotsConfig.BetLevels);
+                       .Set(field => field.CascadingSlotsConfig.BetLevels, cascadingSlotsConfig.BetLevels)
+                       .Set(field => field.IsMicrosite, isMicrosite);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
 
@@ -456,7 +459,8 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
                     .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                     .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
-                    .Set(field => field.RandomMode, gameInfo.RandomMode);
+                    .Set(field => field.RandomMode, gameInfo.RandomMode)
+                    .Set(field => field.IsMicrosite, gameInfo.IsMicrosite);
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
@@ -500,7 +504,8 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
                 .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                 .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
-                .Set(field => field.RandomMode, gameInfo.RandomMode);
+                .Set(field => field.RandomMode, gameInfo.RandomMode)
+                .Set(field => field.IsMicrosite, gameInfo.IsMicrosite);
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 

@@ -66,7 +66,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService,
-            ISystemSettings systemSettings, 
+            ISystemSettings systemSettings,
             IGeneralGameSettingService generalGameSettingService)
         {
             this.mapper = mapper;
@@ -287,11 +287,11 @@ namespace GamesAdmin.Site.Features.GameSettings
             switch (request.GameInfo.Type)
             {
                 case GameType.Slots:
-                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type));
+                    return gameService.UpdateSlotConfig(new UpdateSlotConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.SlotsConfig, request.GameInfo.Type, request.GameInfo.IsMicrosite));
 
                 case GameType.CascadingSlots:
                     return gameService
-                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type));
+                        .UpdateCascadingSlotsConfig(new UpdateCascadingSlotsConfigRequest(request.GameInfo.Name, request.BotSetting.BotEnabled, request.CascadingSlotsConfig, request.GameInfo.Type, request.GameInfo.IsMicrosite));
 
                 case GameType.SlotRNG:
                     return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig));

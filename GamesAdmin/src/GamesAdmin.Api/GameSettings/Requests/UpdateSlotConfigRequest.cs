@@ -11,13 +11,15 @@ namespace GamesAdmin.Api.GameSettings.Requests
             string displayName,
             bool botEnabled,
             SlotsConfig slotsConfig,
-            GameType type)
+            GameType type,
+            bool isMicrosite)
         {
             Name = name;
             DisplayName = displayName;
             BotEnabled = botEnabled;
             SlotsConfig = slotsConfig;
             Type = type;
+            IsMicrosite = isMicrosite;
         }
 
         public string Name { get; }
@@ -29,5 +31,7 @@ namespace GamesAdmin.Api.GameSettings.Requests
         public SlotsConfig SlotsConfig { get; }
 
         public GameType Type { get; set; }
+
+        public bool IsMicrosite { get; }
     }
 }

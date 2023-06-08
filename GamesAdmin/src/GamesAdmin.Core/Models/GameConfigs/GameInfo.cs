@@ -9,9 +9,11 @@ namespace GamesAdmin.Core.Models.GameConfigs
             bool enableFreeBet,
             GameType type = GameType.AutoRNG,
             byte randomMode = 1,
+            bool isMicrosite = false,
             string displayName = "",
             int gameId = 0,
-            string[] siteExclusions = null)
+            string[] siteExclusions = null
+            )
         {
             Name = name;
             EnableFreeBet = enableFreeBet;
@@ -20,6 +22,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             RandomMode = randomMode;
             GameId = gameId;
             DisplayName = displayName;
+            IsMicrosite = isMicrosite;
         }
 
         public int GameId { get; }
@@ -35,5 +38,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public string[] SiteExclusions { get; }
 
         public byte RandomMode { get; }
+
+        public bool IsMicrosite { get; }
     }
 }
