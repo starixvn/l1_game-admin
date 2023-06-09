@@ -42,9 +42,9 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.KenoPower1, new GameTicketCollection( "kenopower1_ones", "kenopower1_cuocs") },
             { GameId.KenoPower2, new GameTicketCollection( "kenopower2_ones", "kenopower2_cuocs") },
             { GameId.BitcoinMaster, new GameTicketCollection( "bitcoinmaster_bets", "bitcoinmaster_betlogs") },
-            { GameId.CasinoHoldemPoker, new GameTicketCollection( string.Empty, "casinoholdempoker_cuocs") },
+            { GameId.CasinoHoldemPoker, new GameTicketCollection( "casinoholdempoker_phiens", "casinoholdempoker_cuocs") },
             { GameId.HiLo, new GameTicketCollection( string.Empty, "hilo_betlogs") },
-            { GameId.TexasHoldemPoker, new GameTicketCollection( string.Empty, "texasholdempoker_cuocs") },
+            { GameId.TexasHoldemPoker, new GameTicketCollection( "texasholdempoker_phiens", "texasholdempoker_cuocs") },
             { GameId.BlockchainBaccarat, new GameTicketCollection( string.Empty, "blockchainbaccarat_bets") },
             { GameId.MegaKeno, new GameTicketCollection( "megakeno_ones", "megakeno_bets") },
             { GameId.MegaKeno2, new GameTicketCollection( "megakeno2_ones", "megakeno2_bets") },
@@ -60,7 +60,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.WinThreeCards, new GameTicketCollection("winthreecards_bets", "winthreecards_betlogs") },
            };
 
-        public static GameTicketCollection GetCollections(byte gameTypeId)
+        public static GameTicketCollection GetCollections(int gameTypeId)
         {
             var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
 

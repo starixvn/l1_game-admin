@@ -121,6 +121,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddSlotServices(services, appSettings, refitSettings);
             AddHoldemPokerServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
+            AddVoidRunningTicketServices(services);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();
@@ -191,6 +192,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddPublicService(this IServiceCollection services)
         {
             services.AddScoped<IGameConfigService, GameConfigService>();
+        }
+
+        private static void AddVoidRunningTicketServices(this IServiceCollection services)
+        {
+            services.AddScoped<IVoidRunningTicketApiFactory, VoidRunningTicketApiFactory>();
         }
     }
 }

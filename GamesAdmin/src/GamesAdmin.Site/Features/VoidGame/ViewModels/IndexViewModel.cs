@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -47,5 +45,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
         public bool FreeBet { get; set; }
 
         public VoidGameResult Result { get; set; }
+
+        public string MessageSuccessful => Result?.IsRunningTicket == true ? $"Voided successfully the running hands: {Result.HandIds}" : "Voided successfully";
     }
 }

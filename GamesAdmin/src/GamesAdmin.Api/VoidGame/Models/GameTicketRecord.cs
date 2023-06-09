@@ -37,19 +37,20 @@ namespace GamesAdmin.Api.VoidGame.Models
             IsFromArchive = isFromArchive;
         }
 
-        public IList<T1> BetRecords { get; }
+        public IList<T1> BetRecords { get; set; }
 
-        public bool IsFromArchive { get; }
+        public bool IsFromArchive { get; set; }
 
         public bool Exist() => BetRecords.Count > 0;
     }
 
-    public class BlackJackRecord : IGameTicket
+    public class BlackjackRecord : IGameTicket
     {
-        public BlackJackRecord(BlackjackBetEntity betRecord, bool isFromArchive)
+        public BlackjackRecord(BlackjackBetEntity betRecord, bool isFromArchive, List<long> handIds)
         {
             BetRecord = betRecord;
             IsFromArchive = isFromArchive;
+            HandIds = handIds;
         }
 
         public BlackjackBetEntity BetRecord { get; }
@@ -57,6 +58,10 @@ namespace GamesAdmin.Api.VoidGame.Models
         public long RoundId => BetRecord !=null ? BetRecord.Round : 0;
 
         public bool IsFromArchive { get; }
+
+        public List<long> HandIds { get; set; }
+
+        public bool IsRunningTicket => BetRecord != null && !BetRecord.Paid;
 
         public bool Exist() => BetRecord != null;
     }

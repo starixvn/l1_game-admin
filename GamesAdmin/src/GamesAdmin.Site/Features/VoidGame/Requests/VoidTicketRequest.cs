@@ -6,7 +6,7 @@ namespace GamesAdmin.Site.Features.VoidGame.Requests
 {
     public class VoidTicketRequest : IRequest<VoidGameResultViewModel>
     {
-        public VoidTicketRequest(int memberId, string partnerId, string siteId, long gameRoundId, byte gameTypeId, string reason, bool freeBet)
+        public VoidTicketRequest(int memberId, string partnerId, string siteId, long gameRoundId, int gameTypeId, string reason, bool freeBet)
         {
             PlayerId = memberId;
             OperatorId = partnerId;
@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.VoidGame.Requests
 
         public long GameRoundId { get; }
 
-        public byte GameTypeId { get; }
+        public int GameTypeId { get; }
 
         public string Reason { get; }
 

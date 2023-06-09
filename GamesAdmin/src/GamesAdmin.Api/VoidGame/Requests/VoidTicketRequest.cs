@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.VoidGame.Requests
 
         public string SiteId { get; }
 
-        public long GameRoundId { get; }
+        public long GameRoundId { get; set; }
 
         public byte GameTypeId { get; }
 

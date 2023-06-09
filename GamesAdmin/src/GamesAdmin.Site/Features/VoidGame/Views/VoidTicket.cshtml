@@ -8,7 +8,7 @@
 <div class="col-md-12 col-lg-5 card">
     @if (Model.Result != null && Model.Result.IsSuccessful() == true)
     {
-        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Voided successfully</span></div>
+        <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>@Model.MessageSuccessful</span></div>
     }
 
     @if (Model.Result != null && Model.Result.IsSuccessful() == false)

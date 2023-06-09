@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
 using MediatR;
 
@@ -17,6 +19,17 @@ namespace GamesAdmin.Api.VoidGame
         }
 
         public Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
-        => voidGameService.VoidGameTicket(request);
+        {
+            var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
+            switch (gameId)
+            {
+                case GameId.Blackjack: return voidGameService.VoidBlackjackTicket(request);
+                case GameId.CasinoHoldemPoker:
+                case GameId.TexasHoldemPoker: return voidGameService.VoidHoldemPokerTicket(request);
+                default:
+                    return voidGameService.VoidGameTicket(request);
+            }          
+        }
+
     }
 }

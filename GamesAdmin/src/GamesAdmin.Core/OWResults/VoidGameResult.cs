@@ -1,10 +1,13 @@
 ﻿using System;
-
 namespace GamesAdmin.Core.OWResults
 {
     public class VoidGameResult : OWResult
     {
         public int? ObCustId { get; set; }
+
+        public string HandIds {get; set;}
+
+        public bool IsRunningTicket { get; set; }
     }
 
     public class VoidGameApiResult
