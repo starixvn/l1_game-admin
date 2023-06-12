@@ -117,6 +117,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFanTanOnlineUserApi>(appSettings.GameServers.FanTan.Api, refitSettings));
             services.AddSingleton(RestService.For<IWinThreeCardsOnlineUserApi>(appSettings.GameServers.WinThreeCards.Api, refitSettings));
             services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IDragonTigerFightOnlineUserApi>(appSettings.GameServers.DragonTigerFight.Api, refitSettings));
             services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
 

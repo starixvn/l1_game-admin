@@ -114,6 +114,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.FanTan => await Move<FanTanBetEntity, FanTanBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.FruitSlot => await Move<FruitSlotBetEntity, FruitSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.WinThreeCards => await Move<WinThreeCardsBetEntity, WinThreeCardsBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.DragonTigerFight => await Move<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => false,
                 };
             }
@@ -190,6 +191,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.FruitSlot => await Find<FruitSlotBetEntity, FruitSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.FanTan => await Find<FanTanBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.WinThreeCards => await Find<WinThreeCardsBetEntity, WinThreeCardsBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.DragonTigerFight => await Find<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     _ => default,
                 };
 

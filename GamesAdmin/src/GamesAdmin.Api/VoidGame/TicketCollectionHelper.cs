@@ -58,6 +58,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.FruitSlot, new GameTicketCollection("fruitslot_bets", "fruitslot_betlogs") },
             { GameId.FanTan, new GameTicketCollection("fantan_bets", "fantan_betlogs") },
             { GameId.WinThreeCards, new GameTicketCollection("winthreecards_bets", "winthreecards_betlogs") },
+            { GameId.DragonTigerFight, new GameTicketCollection("dragontigerfight_bets", "dragontigerfight_betlogs") },
            };
 
         public static GameTicketCollection GetCollections(int gameTypeId)

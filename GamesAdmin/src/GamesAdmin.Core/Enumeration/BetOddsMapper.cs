@@ -109,14 +109,18 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.MiniSeDie4Value:
                     return Enumeration.GetAll<MiniSeDieBetChoice>();
-                    
+
                 case Game.FruitSlotValue:
                     return Enumeration.GetAll<FruitSlotOdds>();
 
                 case Game.FanTanValue:
                     return Enumeration.GetAll<FanTanBetChoice>();
+
                 case Game.WinThreeCardsValue:
                     return Enumeration.GetAll<WinThreeCardsBetChoice>();
+
+                case Game.DragonTigerFightValue:
+                    return Enumeration.GetAll<DragonTigerFightBetChoice>();
 
                 default: return default;
             }

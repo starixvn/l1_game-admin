@@ -36,7 +36,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
             return gameEntities.Select(game =>
             {
                 var gameId = game.GameId > 0 ? game.GameId : (int)Game.FromGameName(game.Name).GameId;
-                var displayName = game.DisplayName != null ? game.DisplayName : Game.FromGameName(game.Name).DisplayName;
+                var displayName = !string.IsNullOrEmpty(game.DisplayName) ? game.DisplayName : Game.FromGameName(game.Name).DisplayName;
                 var isEnabledJackpot = game.SlotsConfig?.Jackpot?.Enabled ?? false;
 
                 return new GeneralGameSetting(gameId, game.Name, displayName, (GameType)game.Type, isEnabledJackpot);

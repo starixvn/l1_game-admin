@@ -60,6 +60,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string FanTanValue = "fantan";
         public const string FortuneCatValue = "fortunecat";
         public const string WinThreeCardsValue = "winthreecards";
+        public const string DragonTigerFightValue = "dragontigerfight";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -117,6 +118,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game FanTan = new Game(FanTanValue, "Fan Tan", GameId.FanTan);
         public static readonly Game FortuneCat = new Game(FortuneCatValue, "Fortune Cat", GameId.FortuneCat);
         public static readonly Game WinThreeCards = new Game(WinThreeCardsValue, "Win Three Cards", GameId.WinThreeCards);
+        public static readonly Game DragonTigerFight = new Game(DragonTigerFightValue, "Dragon Tiger Fight", GameId.DragonTigerFight);
 
         public Game()
         {
@@ -136,6 +138,7 @@ namespace GamesAdmin.Core.Enumeration
         public GameId GameId { get; }
 
         public static Game FromGameId(GameId id) => Parse<Game, GameId>(id, "game id", item => item.GameId == id);
+
         public static Game FromGameName(string gameName) => Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
 
         public static IEnumerable<Game> GetNormalGames() => new List<Game>
@@ -178,7 +181,8 @@ namespace GamesAdmin.Core.Enumeration
             UnbalancedBigSmall4,
             FruitSlot,
             FanTan,
-            WinThreeCards
+            WinThreeCards,
+            DragonTigerFight
         };
     }
 }

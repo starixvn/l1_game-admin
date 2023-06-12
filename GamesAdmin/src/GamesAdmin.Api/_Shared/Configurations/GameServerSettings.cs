@@ -100,9 +100,10 @@
         public GameServerConfigs UnbalancedBigSmall4 { get; set; }
 
         public GameServerConfigs FruitSlot { get; set; }
-        
+
         public GameServerConfigs FanTan { get; set; }
         public GameServerConfigs WinThreeCards { get; set; }
+        public GameServerConfigs DragonTigerFight { get; set; }
     }
 
     public class GameServerConfigs

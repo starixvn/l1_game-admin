@@ -42,6 +42,7 @@ namespace GamesAdmin.Core.Enumeration
             {Game.FruitSlotValue, Enumeration.GetAll<FruitSlotBetChoice>() },
             {Game.FanTanValue, Enumeration.GetAll<FanTanBetChoice>() },
             {Game.WinThreeCardsValue, Enumeration.GetAll<WinThreeCardsBetChoice>()},
+            {Game.DragonTigerFightValue, Enumeration.GetAll<DragonTigerFightBetChoice>()},
         };
 
         private static List<string> KenoTypes = new List<string>

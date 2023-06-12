@@ -262,9 +262,14 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
-    
-    
+
     public interface IWinThreeCardsOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface IDragonTigerFightOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
