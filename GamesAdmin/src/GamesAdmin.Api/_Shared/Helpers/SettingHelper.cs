@@ -102,7 +102,7 @@ namespace GamesAdmin.Api._Shared.Helpers
         }
 
         public static List<SettingChangedModel> GetSlotConfigChangedModel(
-            GameConfigEntity oldConfig, bool botEnabled, SlotsConfig newConfig, bool isMicrosite)
+            GameConfigEntity oldConfig, bool botEnabled, SlotsConfig newConfig)
         {
             var changedSettings = new List<SettingChangedModel>
             {
@@ -110,7 +110,6 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("BigWinRatio", oldConfig.SlotsConfig.BigWinRatio.ToString(), newConfig.BigWinRatio.ToString()),
                 new SettingChangedModel("Mode", ((GameMode)oldConfig.SlotsConfig.Mode).ToString(), ((GameMode)newConfig.Mode).ToString()),
                 new SettingChangedModel("Botenabled", oldConfig.Botenabled.ToString(), botEnabled.ToString()),
-                new SettingChangedModel("IsMicrosite", oldConfig.IsMicrosite.ToString(), isMicrosite.ToString()),
             };
 
             return changedSettings;
@@ -131,7 +130,6 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("SmartBotEnabled", oldConfig.SmartBotEnabled.ToString(), botSetting.SmartBotEnabled.ToString()),
                 new SettingChangedModel("SmartBotGroupRatio", oldConfig.SmartBotGroupRatio.ToString(), botSetting.SmartBotGroupRatio.ToString()),
                 new SettingChangedModel("RandomMode", oldConfig.RandomMode.ToString(), gameInfo.RandomMode.ToString()),
-                new SettingChangedModel("IsMicrosite", oldConfig.IsMicrosite.ToString(), gameInfo.IsMicrosite.ToString()),
             };
 
             return changedSettings;
@@ -229,7 +227,7 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
-        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig, bool newBotEnabled, CascadingSlotsConfig newConfig, bool isMicrosite)
+        public static List<SettingChangedModel> GetCascadingSlotConfigsChangeModel(GameConfigEntity gameConfig, bool newBotEnabled, CascadingSlotsConfig newConfig)
         {
             var oldConfig = gameConfig.CascadingSlotsConfig;
 
@@ -241,7 +239,6 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("Mode", newConfig.Mode.ToString(), oldConfig.Mode.ToString()),
                 new SettingChangedModel("Bet Multiplier", newConfig.BetMultiplier.ToString(), oldConfig.BetMultiplier.ToString()),
                 new SettingChangedModel("Bet Level", newConfig.BetLevels.ToString(), oldConfig.BetLevels.ToString()),
-                new SettingChangedModel("Is Microsite", gameConfig.IsMicrosite.ToString(), isMicrosite.ToString()),
             };
 
             return settingChanged;

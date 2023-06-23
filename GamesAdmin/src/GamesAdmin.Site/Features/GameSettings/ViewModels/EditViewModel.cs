@@ -76,13 +76,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
 
         public string SystemType { get; set; }
-
+        
         public SlotRNGConfig SlotRNGConfig { get; set; }
 
         public string DetailsView { get; set; }
-
-        [DisplayName("Is Microsite")]
-        public bool IsMicrosite { get; set; }
     }
 
     public class BotRatioItemViewModel

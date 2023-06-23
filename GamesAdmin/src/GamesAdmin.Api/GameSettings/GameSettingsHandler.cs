@@ -73,10 +73,10 @@ namespace GamesAdmin.Api.Games
         => gameService.UpdateJackpot(request.Name, request.Jackpot, request.StakeLevels);
 
         public Task<bool> Handle(UpdateSlotConfigRequest request, CancellationToken cancellationToken)
-            => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig, request.IsMicrosite);
+            => gameService.UpdateSlotConfig(request.Name, request.BotEnabled, request.SlotsConfig);
 
         public Task<bool> Handle(UpdateCascadingSlotsConfigRequest request, CancellationToken cancellationToken)
-            => gameService.UpdateCascadingSlotsConfig(request.Name, request.BotEnabled, request.CascadingSlotsConfig, request.IsMicrosite);
+            => gameService.UpdateCascadingSlotsConfig(request.Name, request.BotEnabled, request.CascadingSlotsConfig);
 
         public Task<bool> Handle(UpdateSlotIconOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateSlotIconOdds(request.Name, request.IconOdds);

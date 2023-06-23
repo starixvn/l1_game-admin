@@ -10,14 +10,12 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
             string name,
             bool botEnabled,
             CascadingSlotsConfig cascadingSlotsConfig,
-            GameType type,
-            bool isMicrosite)
+            GameType type)
         {
             Name = name;
             BotEnabled = botEnabled;
             CascadingSlotsConfig = cascadingSlotsConfig;
             Type = type;
-            IsMicrosite = isMicrosite;
         }
 
         public string Name { get; }
@@ -27,7 +25,5 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public GameType Type { get; }
 
         public CascadingSlotsConfig CascadingSlotsConfig { get; }
-
-        public bool IsMicrosite { get; }
     }
 }

@@ -60,7 +60,5 @@ namespace GamesAdmin.Database.Entities
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
 
         public SlotRNGConfig SlotRNGConfig { get; set; }
-
-        public bool IsMicrosite { get; set; }
     }
 }
