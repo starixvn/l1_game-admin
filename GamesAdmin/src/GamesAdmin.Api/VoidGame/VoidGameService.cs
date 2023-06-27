@@ -2,6 +2,8 @@
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
 using Refit;
 using Sentry;
 using System;
@@ -37,6 +39,8 @@ namespace GamesAdmin.Api.VoidGame
 
         private readonly IVoidRunningTicketApiFactory voidRunningTicketApiFactory;
 
+        private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
+
         private readonly Dictionary<GameId, string> gameRound24h = new Dictionary<GameId, string>
         {
             { GameId.Blackjack, "blackjack"},
@@ -45,12 +49,13 @@ namespace GamesAdmin.Api.VoidGame
         };
 
         public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler,
-            IVoidRunningTicketApiFactory voidRunningTicketApiFactory)
+            IVoidRunningTicketApiFactory voidRunningTicketApiFactory, IGenericRepository<AccountInfoEntity> accountInfoRepository)
         {
             this.sentryClient = sentryClient;
             this.voidGameApi = voidGameApi;
             this.ticketHandler = ticketHandler;
             this.voidRunningTicketApiFactory = voidRunningTicketApiFactory;
+            this.accountInfoRepository = accountInfoRepository;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
@@ -252,11 +257,12 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
+                var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 if (gameRound24h.TryGetValue(gameId, out var serviceName))
                 {
                     var voidRunningTicketApi = voidRunningTicketApiFactory.GetVoidRunningTicketApi(serviceName);
-                    var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify));
+                    var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify, accountInfoEntity?.Name));
                     return result;
                 }             
             }

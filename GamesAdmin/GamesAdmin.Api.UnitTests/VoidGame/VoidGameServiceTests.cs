@@ -1,16 +1,21 @@
-﻿namespace GamesAdmin.Api.UnitTests.VoidGame
+﻿using AutoFixture.Xunit2;
+using GamesAdmin.Api.VoidGame;
+using GamesAdmin.Api.VoidGame.Models;
+using GamesAdmin.Api.VoidGame.Requests;
+using GamesAdmin.Core.OWResults;
+using GamesAdmin.Database;
+using GamesAdmin.Database.Entities;
+using Moq;
+using NSubstitute;
+using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace GamesAdmin.Api.UnitTests.VoidGame
 {
-    using AutoFixture.Xunit2;
-    using GamesAdmin.Api.VoidGame;
-    using GamesAdmin.Api.VoidGame.Models;
-    using GamesAdmin.Api.VoidGame.Requests;
-    using GamesAdmin.Core.OWResults;
-    using GamesAdmin.Database.Entities;
-    using NSubstitute;
-    using Sentry;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Xunit;
 
     public class VoidGameServiceTests
     {
@@ -22,15 +27,18 @@
 
         private readonly IVoidGameService voidGameService;
 
-        private readonly IVoidRunningTicketApiFactory voidRunningTicketApiFactory;
+        private readonly Mock<IVoidRunningTicketApiFactory> voidRunningTicketApiFactory;
+
+        private readonly Mock<IGenericRepository<AccountInfoEntity>> accountInfoRepository;
 
         public VoidGameServiceTests()
         {
             sentryClient = Substitute.For<ISentryClient>();
             voidGameApi = Substitute.For<IVoidGameApi>();
             ticketHandler = Substitute.For<ITicketHandler>();
-            voidRunningTicketApiFactory = Substitute.For<IVoidRunningTicketApiFactory>();
-            voidGameService = new VoidGameService(sentryClient, voidGameApi, ticketHandler, voidRunningTicketApiFactory);
+            voidRunningTicketApiFactory = new Mock<IVoidRunningTicketApiFactory>();
+            accountInfoRepository = new Mock<IGenericRepository<AccountInfoEntity>>();
+            voidGameService = new VoidGameService(sentryClient, voidGameApi, ticketHandler, voidRunningTicketApiFactory.Object, accountInfoRepository.Object);
         }
 
         [Theory, AutoData]
@@ -256,7 +264,13 @@
                     request.GameTypeId,
                     request.FreeBet).Returns(true);
             ticketHandler.MoveRoundBlackjack(blackJackEntity.Round).Returns(true);
-            voidRunningTicketApiFactory.GetVoidRunningTicketApi("blackjack").VoidTicket(new VoidRunningTicketRequest("111")).Returns(true);
+            voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
+                .Returns(Mock.Of<IVoidRunningTicketApi>());
+            var voidRunningTicketApi = new Mock<IVoidRunningTicketApi>();
+            voidRunningTicketApi.Setup(api => api.VoidTicket(It.IsAny<VoidRunningTicketRequest>()))
+                .ReturnsAsync(true);
+            voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
+                .Returns(voidRunningTicketApi.Object);
             //Act
             var result = await voidGameService.VoidBlackjackTicket(request);
 
@@ -297,7 +311,15 @@
                     request.GameTypeId,
                     request.FreeBet).Returns(true);
             ticketHandler.MoveRoundBlackjack(blackJackEntity.Round).Returns(true);
-            voidRunningTicketApiFactory.GetVoidRunningTicketApi("casino").VoidTicket(new VoidRunningTicketRequest("111")).Returns(false);
+            accountInfoRepository.Setup(repo => repo.FindOneAsync(It.IsAny<Expression<Func<AccountInfoEntity, bool>>>()))
+                .ReturnsAsync(new AccountInfoEntity { Name = "a" });
+            voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
+                .Returns(Mock.Of<IVoidRunningTicketApi>());
+            var voidRunningTicketApi = new Mock<IVoidRunningTicketApi>();
+            voidRunningTicketApi.Setup(api => api.VoidTicket(It.IsAny<VoidRunningTicketRequest>()))
+                .ReturnsAsync(false);
+            voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
+                .Returns(voidRunningTicketApi.Object);
             //Act
             var result = await voidGameService.VoidBlackjackTicket(request);
 
@@ -319,7 +341,7 @@
                      Round = 34,
                      Paid = false,
                      Uid = "111"
-                 } 
+                 }
             };
             var pokerRecord = new GameTicketRecord<HoldemPokerBetEntity>(pokerEntity, false);
             ticketHandler.ExistHoldemPoker(request.PlayerId,
@@ -335,6 +357,7 @@
                     ErrorCode = 0,
                 }
             };
+
             voidGameApi.VoidGameTicket(request).Returns(apiResult);
             ticketHandler.Void(request.PlayerId,
             request.OperatorId,
@@ -342,7 +365,15 @@
                     request.GameRoundId,
                     request.GameTypeId,
                     request.FreeBet).Returns(true);
-            voidRunningTicketApiFactory.GetVoidRunningTicketApi("casino_holdem_poker").VoidTicket(new VoidRunningTicketRequest("111")).Returns(true);
+            accountInfoRepository.Setup(repo => repo.FindOneAsync(It.IsAny<Expression<Func<AccountInfoEntity, bool>>>()))
+                .ReturnsAsync(new AccountInfoEntity { Name = "a" });
+            voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
+                .Returns(Mock.Of<IVoidRunningTicketApi>());
+            var voidRunningTicketApi = new Mock<IVoidRunningTicketApi>();
+            voidRunningTicketApi.Setup(api => api.VoidTicket(It.IsAny<VoidRunningTicketRequest>()))
+                .ReturnsAsync(true);
+            voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
+                .Returns(voidRunningTicketApi.Object);
             //Act
             var result = await voidGameService.VoidHoldemPokerTicket(request);
 
