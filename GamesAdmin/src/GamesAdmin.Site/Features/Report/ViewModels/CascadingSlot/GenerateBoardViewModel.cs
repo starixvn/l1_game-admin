@@ -1,8 +1,10 @@
 ﻿using GamesAdmin.Core;
+using GamesAdmin.Core.Enumeration;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
+
     public class GenerateBoardViewModel
     {
         public GenerateBoardViewModel(CascadingSlotTumbleViewModel tumble, string symbolUrl)
@@ -13,22 +15,53 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public CascadingSlotTumbleViewModel Tumble { get; }
 
-        public string SymbolUrl { get; }      
+        public string SymbolUrl { get; }
 
-        public static string GetMultiplierImageName(int value)
+        public string GetMultiplierSymbolCascadingSlot(int value)
+        {
+            if(IsTreasureIslandGame())
+            {
+                return GetMultiplierSymbolTreasureIsland(value);
+            }
+            return GetMultiplierSymbol(value);
+        }
+
+        private static string GetMultiplierSymbol(int value)
         {
             if (value <= CascadingSlotGameConstant.MinMultiplierSymbol)
+            {
+                return "10";
+            }
+            else
+            {
+                if (value <= CascadingSlotGameConstant.Multiplier10xSymbol)
+                {
+                    return "11";
+                }
+
+                if (value <= CascadingSlotGameConstant.Multiplier15xSymbol)
+                {
+                    return "12";
+                }
+
+            }
+            return "13";
+        }
+
+        private static string GetMultiplierSymbolTreasureIsland(int value)
+        {
+            if (value <= TreasureIslandGameConstant.MinMultiplierSymbol)
             {
                 return "13";
             }
             else
             {
-                if (value <= CascadingSlotGameConstant.Multiplier20xSymbol)
+                if (value <= TreasureIslandGameConstant.Multiplier20xSymbol)
                 {
                     return "11";
                 }
 
-                if (value <= CascadingSlotGameConstant.Multiplier30xSymbol)
+                if (value <= TreasureIslandGameConstant.Multiplier30xSymbol)
                 {
                     return "12";
                 }
@@ -37,7 +70,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             return "10";
         }
 
-        public  MultiplierSymbolViewModel[][] GetFormatBoard()
+        private bool IsTreasureIslandGame()
+        {
+            var parts = SymbolUrl.Split("/").Reverse().ToList();
+            var gameName = parts[1].Trim();
+            return Game.TreasureIslandValue == gameName;
+        }
+
+        public MultiplierSymbolViewModel[][] GetFormatBoard()
         {
             const byte numberOfRows = CascadingSlotGameConstant.NumberOfRows;
             const byte numberOfCols = CascadingSlotGameConstant.NumberOfColumns;
@@ -51,21 +91,24 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
                 for (var column = 0; column < numberOfCols; column++)
                 {
                     var symbol = symbols[row + column * numberOfRows];
-                    var multiplier = string.Empty;
-                    if (symbol >= CascadingSlotGameConstant.MinMultiplierSymbol)
+                    var xMultiplier = string.Empty;
+                    var multiplier = 0;
+                    if (symbol >= CascadingSlotGameConstant.MinMultiplierValue)
                     {
-                        multiplier =  $"x{multipliers[multiplierIndex]}";
+                        multiplier = multipliers[multiplierIndex];
+                        xMultiplier = $"x{multiplier}";
                         multiplierIndex++;
                     }
                     formatResult[row][column] = new MultiplierSymbolViewModel
                     {
                         Symbol = symbols[row + column * numberOfRows],
+                        XMultiplier = xMultiplier,
                         Multiplier = multiplier
-                    };                                
+                    };
                 }
             }
 
             return formatResult;
         }
-    }  
+    }
 }

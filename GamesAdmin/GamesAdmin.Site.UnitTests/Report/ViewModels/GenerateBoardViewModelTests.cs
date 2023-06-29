@@ -7,14 +7,19 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
     public class GenerateBoardViewModelTests
     {
         [Theory]
-        [InlineData(40, "10")]
-        [InlineData(16, "11")]
-        [InlineData(25, "12")]
-        [InlineData(5, "13")]
-        public void GetMultiplierImageName_Always_Return_ImageName(int multiplier, string expected)
+        [InlineData(40, "candyland", "13")]
+        [InlineData(15, "candyland", "12")]
+        [InlineData(10, "candyland", "11")]
+        [InlineData(5, "candyland", "10")]
+        [InlineData(40, "treasureisland", "10")]
+        [InlineData(16, "treasureisland", "11")]
+        [InlineData(25, "treasureisland", "12")]
+        [InlineData(5, "treasureisland", "13")]
+        public void GetMultiplierImageName_Always_Return_ImageName(int multiplier, string gameName, string expected)
         {
             // act
-            var actual = GenerateBoardViewModel.GetMultiplierImageName(multiplier);
+            var viewModel = new GenerateBoardViewModel(null, $"http://{gameName}/symbol");
+            var actual = viewModel.GetMultiplierSymbolCascadingSlot(multiplier);
 
             // assert
             Assert.Equal(expected, actual);
@@ -88,7 +93,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
             return new MultiplierSymbolViewModel
             {
                 Symbol = symbol,
-                Multiplier = multiplier
+                XMultiplier = multiplier
             };
         }
     }

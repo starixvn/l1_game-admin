@@ -519,6 +519,9 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IActionResult> CascadingSlotGameReport(string game)
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
+            var games = await generalGameSettingService.GetAllGames();
+            var gameSetting = games.FirstOrDefault(gameInfo => gameInfo.Name == game);
+
             var viewModel = new SlotGameReportViewModel
             {
                 ExcludeUUS = true,
@@ -526,6 +529,7 @@ namespace GamesAdmin.Site.Features.Report
                 BaseCurrency = systemSettings.BaseCurrency,
                 SystemType = systemSettings.System,
                 GameConfigName = game,
+                GameDisplayName = gameSetting?.DisplayName,
             };
 
             return View(viewModel);

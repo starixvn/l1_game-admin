@@ -39,9 +39,17 @@ namespace GamesAdmin.Core
     {
         public const byte NumberOfRows = 5;
         public const byte NumberOfColumns = 6;
+        public const byte MinMultiplierValue = 10;
+        public const byte MinMultiplierSymbol = 5;
+        public const byte Multiplier10xSymbol = 10;
+        public const byte Multiplier15xSymbol = 15;
+        public const byte FreeSpinSymbol = 9;
+    }
+
+    public static class TreasureIslandGameConstant
+    {
         public const byte MinMultiplierSymbol = 10;
         public const byte Multiplier20xSymbol = 20;
         public const byte Multiplier30xSymbol = 30;
-        public const byte FreeSpinSymbol = 9;
     }
 }

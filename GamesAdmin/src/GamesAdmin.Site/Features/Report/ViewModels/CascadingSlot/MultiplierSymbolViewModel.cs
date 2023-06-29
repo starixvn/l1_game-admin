@@ -3,7 +3,8 @@
     public class MultiplierSymbolViewModel
     {
         public byte Symbol { get; set; }
-        public string Multiplier { get; set; }
-        public bool IsMultiplierSymbol => Multiplier != string.Empty;
+        public string XMultiplier { get; set; }
+        public int Multiplier { get; set; }
+        public bool IsMultiplierSymbol => XMultiplier != string.Empty;
     }
 }

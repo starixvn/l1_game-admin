@@ -16,8 +16,8 @@
                     @if (multiplierSymbol.IsMultiplierSymbol)
                     {
                         <td class="result-board">
-                            <img class="symbol" src="@Model.SymbolUrl-@(GenerateBoardViewModel.GetMultiplierImageName(multiplierSymbol.Symbol)).png" />
-                            <div class="multiplier">@multiplierSymbol.Multiplier</div>
+                            <img class="symbol" src="@Model.SymbolUrl-@(Model.GetMultiplierSymbolCascadingSlot(multiplierSymbol.Multiplier)).png" />
+                            <div class="multiplier">@multiplierSymbol.XMultiplier</div>
                         </td>
                     }
                     else

@@ -360,7 +360,7 @@ namespace GamesAdmin.Core.Models
 
         public decimal CoinValue { get; set; }
 
-        public byte BetMultiplier { get; set; }
+        public double BetMultiplier { get; set; }
 
         public bool FreeSpin { get; set; }
 
