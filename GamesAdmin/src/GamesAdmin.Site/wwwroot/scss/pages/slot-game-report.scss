@@ -40,6 +40,8 @@
                     transform: translate(-50%, -50%);
                     font-weight: bold;
                     font-size: 17px;
+                    text-shadow: 2px 0 0 #2f0500, -2px 0 0 #2f0500, 0 2px 0 #2f0500, 0 -2px 0 #2f0500, 1px 1px #2f0500, -1px -1px 0 #2f0500, 1px -1px 0 #2f0500, -1px 1px 0 #2f0500;
+                    color: #fffc00;
 
                     &.treasureisland {
                         text-shadow: 2px 0 0 #2f0500, -2px 0 0 #2f0500, 0 2px 0 #2f0500, 0 -2px 0 #2f0500, 1px 1px #2f0500, -1px -1px 0 #2f0500, 1px -1px 0 #2f0500, -1px 1px 0 #2f0500;
