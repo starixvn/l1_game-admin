@@ -13,6 +13,7 @@ using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Database.Entities.DragonTigerFight;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -472,7 +473,6 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FanTanResultEntity, FanTanResult>();
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
 
-
             CreateMap<WinThreeCardsCardEntity, PokerCard>();
             CreateMap<WinThreeCardsHandResultEntity, WinThreeCardsHandResult>()
                 .ForMember(x => x.Cards,
@@ -497,7 +497,6 @@ namespace GamesAdmin.Api._Shared
              .ForMember(x => x.Id, opt => opt.MapFrom((source) => source.Id.ToString()))
              .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
              {
-
                  var result = source.Categories.Select(category =>
                  {
                      return new LobbyCategory
@@ -524,7 +523,6 @@ namespace GamesAdmin.Api._Shared
               }))
              .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
              {
-
                  var result = source.Banners.Select(banner =>
                  {
                      return new Banner
@@ -546,7 +544,6 @@ namespace GamesAdmin.Api._Shared
                 }))
               .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
               {
-
                   var result = source.Categories.Select(category =>
                   {
                       return new LobbyCategoryEntity
@@ -568,7 +565,6 @@ namespace GamesAdmin.Api._Shared
               }))
               .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
               {
-
                   var result = source.Banners.Select(banner =>
                   {
                       return new BannerEntity
@@ -582,6 +578,14 @@ namespace GamesAdmin.Api._Shared
               }))
               ;
             //CreateMap<Database.Entities.Lobby.LobbyCategory, Core.Models.Lobby.LobbyCategory>();
+
+            CreateMap<DragonTigerFightRoundEntity, DragonTigerFightRoundResult>()
+                .ForMember(dest => dest.Dragon, opt => opt.MapFrom(src => src.Result.Dragon))
+                .ForMember(dest => dest.Tiger, opt => opt.MapFrom(src => src.Result.Tiger))
+                .ForMember(dest => dest.SettlementResult, opt => opt.MapFrom(src => src.SettlementResult));
+            CreateMap<DragonTigerFightBetReportEntity, DragonTigerFightBetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
+            CreateMap<DragonTigerFightBetLogEntity, DragonTigerFightBetHistoryRecord>();
         }
     }
 }

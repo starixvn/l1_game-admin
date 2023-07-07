@@ -166,6 +166,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BaccaratReportService>();
             services.AddScoped(typeof(MiniSeDieMultiplayReportService<,>));
             services.AddScoped<FanTanReportService>();
+            services.AddScoped<DragonTigerFightReportService>();
 
             services.AddPublicService();
 

@@ -142,7 +142,7 @@ namespace GamesAdmin.Site._Shared
             CreateMap<FanTanResult, FanTanResultViewModel>();
             CreateMap<FanTanBetRecord, FanTanRecordViewModel>();
             CreateMap<FanTanBetHistoryRecord, FanTanBetHistoryRecordViewModel>();
-            
+
             CreateMap<PokerCard, DragonTigerCardViewModel>()
                 .ForMember(x => x.Number, opt => opt.MapFrom(source => source.rank))
                 .ForMember(x => x.Type, opt => opt.MapFrom(source => source.suit));
@@ -153,6 +153,9 @@ namespace GamesAdmin.Site._Shared
             CreateMap<WinThreeCardsBetRecord, WinThreeCardsRecordViewModel>();
             CreateMap<WinThreeCardsBetHistoryRecord, WinThreeCardsBetHistoryRecordViewModel>();
 
+            CreateMap<DragonTigerFightRoundResult, DragonTigerFightRoundResultViewModel>();
+            CreateMap<DragonTigerFightBetRecord, DragonTigerFightRecordViewModel>();
+            CreateMap<DragonTigerFightBetHistoryRecord, DragonTigerFightBetHistoryRecordViewModel>();
         }
     }
 }

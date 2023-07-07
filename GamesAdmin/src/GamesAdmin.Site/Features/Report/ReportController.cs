@@ -630,11 +630,24 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_FanTanBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
+
         private async Task<ReportViewModel> GetReportViewModel()
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
             var games = Game.GetNormalGames().Select(x => new SelectListItem(x.DisplayName, x.GameId.ToString()));
             return new ReportViewModel { ExcludeUUS = true, Selections = selections, Games = games };
+        }
+
+        [HttpGet]
+        public IActionResult DragonTigerFight()
+        {
+            return RedirectToAction("Index", new { game = GameId.DragonTigerFight });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDragonTigerFightBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_DragonTigerFightBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
     }
 }

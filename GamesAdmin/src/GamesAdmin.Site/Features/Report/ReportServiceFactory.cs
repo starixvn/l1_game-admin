@@ -56,6 +56,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.FruitSlot, typeof(SlotRNGReportService) },
             { GameId.FanTan, typeof(FanTanReportService) },
             { GameId.WinThreeCards, typeof(WinThreeCardsReportService) },
+            { GameId.DragonTigerFight, typeof(DragonTigerFightReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

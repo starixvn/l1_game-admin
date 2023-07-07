@@ -319,4 +319,9 @@ namespace GamesAdmin.Core.Models
 
         public Dictionary<string, bool> SettlementResult { get; set; }
     }
+
+    public class DragonTigerFightRoundResult : DragonTigerRoundResult
+    {
+        public Dictionary<string, bool> SettlementResult { get; set; }
+    }
 }

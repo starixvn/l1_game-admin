@@ -397,7 +397,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool Chun134 { get; set; }
         public bool Chun234 { get; set; }
     }
-    
+
     public class WinThreeCardsRoundResultViewModel : BaseRoundResultViewModel
     {
         public WinThreeCardsResultViewModel Dragon { get; set; }
@@ -412,5 +412,24 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<DragonTigerCardViewModel> Cards { get; set; }
         public string HandRank { get; set; }
         public int CardRankId { get; set; }
+    }
+
+    public class DragonTigerFightRoundResultViewModel : DragonTigerRoundResultViewModel
+    {
+        public Dictionary<string, bool> SettlementResult { get; set; }
+
+        public string GetWinningOptions()
+        {
+            var result = SettlementResult.Where(s => s.Value)
+                .Select(s => FormatString(s.Key));
+
+            return string.Join(", ", result);
+        }
+
+        private static string FormatString(string input)
+        {
+            var result = string.Concat(input.Select((x, i) => i > 0 && char.IsUpper(x) ? $" {x}" : x.ToString()));
+            return char.ToUpper(result[0]) + result.Substring(1).Trim();
+        }
     }
 }

@@ -46,6 +46,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.FruitSlot, "_SlotRNGRecords" },
             { GameId.FanTan, "_FanTanRecords" },
             { GameId.WinThreeCards, "_WinThreeCardsRecords" },
+            { GameId.DragonTigerFight, "_DragonTigerFightRecords" },
         };
 
         public string GetView(GameId game) => views[game];

@@ -103,12 +103,16 @@ namespace GamesAdmin.Core.Models
     public class SlotRNGBetReport : BetReport<SlotRNGRoundResult, SlotRNGBetRecord>
     {
     }
-    
+
     public class FanTanBetReport : BetReport<FanTanRoundResult, FanTanBetRecord>
     {
     }
-    
+
     public class WinThreeCardsBetReport : BetReport<WinThreeCardsRoundResult, WinThreeCardsBetRecord>
+    {
+    }
+
+    public class DragonTigerFightBetReport : BetReport<DragonTigerFightRoundResult, DragonTigerFightBetRecord>
     {
     }
 }

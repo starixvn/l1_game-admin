@@ -464,7 +464,7 @@ namespace GamesAdmin.Core.Models
     {
         public decimal TotalBet { get; set; }
     }
-    
+
     public class WinThreeCardsBetRecord : BetRecord
     {
         public decimal Dragon { get; set; }
@@ -475,5 +475,14 @@ namespace GamesAdmin.Core.Models
         public decimal StraightFlush { get; set; }
         public decimal ThreeKind { get; set; }
         public decimal TotalBet { get; set; }
+    }
+
+    public class DragonTigerFightBetRecord : DragonTigerBetRecord
+    {
+        public decimal BlackDragon { get; set; }
+        public decimal RedDragon { get; set; }
+        public decimal BlackTiger { get; set; }
+        public decimal RedTiger { get; set; }
+        public double TotalAmount { get; set; }
     }
 }

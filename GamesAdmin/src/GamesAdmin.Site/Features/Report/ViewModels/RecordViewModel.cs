@@ -434,4 +434,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalBet { get; set; }
     }
+
+    public class DragonTigerFightRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalAmount { get; set; }
+    }
 }
