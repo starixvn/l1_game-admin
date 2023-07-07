@@ -1,7 +1,7 @@
 ﻿using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
+using System;
 using System.Linq;
-
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
 
@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string GetMultiplierSymbolCascadingSlot(int value)
         {
-            if(IsTreasureIslandGame())
+            if (IsTreasureIslandGame())
             {
                 return GetMultiplierSymbolTreasureIsland(value);
             }
@@ -84,7 +84,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             MultiplierSymbolViewModel[][] formatResult = new MultiplierSymbolViewModel[numberOfRows][];
             var symbols = Tumble.Board.ToArray();
             var multipliers = Tumble.Multipliers.ToList();
-            var multiplierIndex = 0;
+
             for (var row = 0; row < numberOfRows; row++)
             {
                 formatResult[row] = new MultiplierSymbolViewModel[numberOfCols];
@@ -93,11 +93,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
                     var symbol = symbols[row + column * numberOfRows];
                     var xMultiplier = string.Empty;
                     var multiplier = 0;
+
                     if (symbol >= CascadingSlotGameConstant.MinMultiplierValue)
                     {
+                        var multiplierIndex = GetMultiplierIndex(row, column);
                         multiplier = multipliers[multiplierIndex];
                         xMultiplier = $"x{multiplier}";
-                        multiplierIndex++;
                     }
                     formatResult[row][column] = new MultiplierSymbolViewModel
                     {
@@ -109,6 +110,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             }
 
             return formatResult;
+        }
+
+        private int GetMultiplierIndex(int row, int column)
+        {
+            return Tumble.Board.Take(column * CascadingSlotGameConstant.NumberOfRows + row).Count(x => x == CascadingSlotGameConstant.MinMultiplierValue);
         }
     }
 }
