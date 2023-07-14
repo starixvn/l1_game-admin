@@ -9,6 +9,8 @@
         public ConversationIds ConversationIds { get; set; }
 
         public int TimeoutInSeconds { get; set; }
+
+        public string Proxy { get; set; }
     }
 
     public class ConversationIds

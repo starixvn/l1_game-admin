@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
@@ -17,6 +11,12 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Site._Shared.Configurations;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using UAParser;
 
 namespace GamesAdmin.Api.ChatBot
@@ -52,7 +52,13 @@ namespace GamesAdmin.Api.ChatBot
         private readonly ISentryClient sentry;
         private readonly Parser uaParser;
 
-        public ChatBotService(IAppSettings appSettings, IChatBotApi chatBotApi, IGameUserService gameUserService, ISystemSettings systemSettings, IGenericRepository<UserSessionEntity> usersessionRepository, ISentryClient sentry)
+        public ChatBotService(
+            IAppSettings appSettings,
+            IChatBotApi chatBotApi,
+            IGameUserService gameUserService,
+            ISystemSettings systemSettings,
+            IGenericRepository<UserSessionEntity> usersessionRepository,
+            ISentryClient sentry)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
@@ -193,7 +199,11 @@ namespace GamesAdmin.Api.ChatBot
             var devicePlatform = "Unknown";
             try
             {
-                var userSession = (await usersessionRepository.FilterByAsync(userSession => userSession.PlayerId == playerId)).OrderByDescending(userSession => userSession.RecheckInTime).FirstOrDefault();
+                var userSession = (await usersessionRepository
+                    .FilterByAsync(userSession => userSession.PlayerId == playerId))
+                    .OrderByDescending(userSession => userSession.RecheckInTime)
+                    .FirstOrDefault();
+
                 var browserInfo = uaParser.Parse(userSession?.BrowserUserAgent);
                 devicePlatform = browserInfo.OS.ToString();
             }

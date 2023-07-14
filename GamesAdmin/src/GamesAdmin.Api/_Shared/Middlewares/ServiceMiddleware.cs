@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
@@ -26,6 +24,9 @@ using GamesAdmin.Api.VoidGame;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -180,13 +181,30 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
         {
-            services.AddSingleton(RestService.For<IChatBotApi>(new HttpClient
-            {
-                BaseAddress = new Uri(appSettings.ChatBotApiSettings.Url),
-                Timeout = TimeSpan.FromSeconds(appSettings.ChatBotApiSettings.TimeoutInSeconds)
-            }));
+            HttpClient client = InitChatBotHttpClient(appSettings);
 
+            services.AddSingleton(RestService.For<IChatBotApi>(client));
             services.AddScoped<IChatBotService, ChatBotService>();
+        }
+
+        private static HttpClient InitChatBotHttpClient(IAppSettings appSettings)
+        {
+            HttpClientHandler handler = null;
+
+            if (!string.IsNullOrEmpty(appSettings.ChatBotApiSettings.Proxy))
+            {
+                handler = new HttpClientHandler
+                {
+                    Proxy = new WebProxy(appSettings.ChatBotApiSettings.Proxy),
+                    UseProxy = true,
+                };
+            }
+
+            var client = (handler == null) ? new HttpClient() : new HttpClient(handler);
+            client.BaseAddress = new Uri(appSettings.ChatBotApiSettings.Url);
+            client.Timeout = TimeSpan.FromSeconds(appSettings.ChatBotApiSettings.TimeoutInSeconds);
+
+            return client;
         }
 
         private static void AddPublicService(this IServiceCollection services)
