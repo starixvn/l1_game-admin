@@ -250,19 +250,23 @@
             this.setResultControl("HoldemPokderResult", gameName);
         },
 
-        setControlResultSlotGame: function (event, gameName) {
+        setControlResultSlotGame: function (event, gameName, displayName) {
             event.preventDefault();
-            this.setResultControl("SlotResult", gameName);
+            this.setSlotResultControl("SlotResult", gameName, displayName);
         },
 
-        setControlResultCascadingSlotGame: function (event, gameName) {
+        setControlResultCascadingSlotGame: function (event, gameName, displayName) {
             event.preventDefault();
-            this.setResultControl("CascadingSlotResult", gameName);
+            this.setSlotResultControl("CascadingSlotResult", gameName, displayName);
         },
 
         setControlResultHiLo: function (event) {
             event.preventDefault();
             this.setResultControl("HiLoResult");
+        },
+
+        setSlotResultControl: function (action, gameName, displayName) {
+            window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
         },
 
         setResultControl: function (action, gameName) {

@@ -34,14 +34,14 @@
                             {
                                 if (role == Role.Admin.Value)
                                 {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultSlotGame(event, '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-chart"></i></a>
                                 }
                             }
                             else if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
                             {
                                 if (role == Role.Admin.Value)
                                 {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultCascadingSlotGame(event, '@Model.GameList[index].Name')"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultCascadingSlotGame(event, '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-chart"></i></a>
                                 }
                             }
                             else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value ||
