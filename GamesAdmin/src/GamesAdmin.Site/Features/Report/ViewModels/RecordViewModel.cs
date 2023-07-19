@@ -223,29 +223,38 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string IconsFolder => GameName?.ToLowerInvariant();
         public string SystemType { get; set; }
 
+        public decimal BonusWinAmount { get; set; } 
+
+        public decimal TotalBonusChests => SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
+
         public bool IsEnabledJackpot => IconsFolder == Game.FourGuardiansValue ? IsFourGuardiansEnabledJackpot : JackpotContribution != null;
 
         public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (isConvert)
             {
+                
                 TotalAmount *= (decimal)Rate / baseCurrencyMultiplier;
                 BetWin *= (decimal)Rate / baseCurrencyMultiplier;
                 Bet *= (decimal)Rate / baseCurrencyMultiplier;
+                BonusWinAmount = TotalBonusChests * (decimal)Rate / baseCurrencyMultiplier;
 
                 if (SettlementResult.Jackpot != null)
                 {
                     SettlementResult.Jackpot.WinningAmount *= (decimal)Rate / baseCurrencyMultiplier;
                 }
             }
+            else
+            {
+                BonusWinAmount = TotalBonusChests;
+            }
         }
 
         public decimal GetTotalBetWin()
         {
             var jackpotWinAmount = SettlementResult.Jackpot?.WinningAmount ?? 0;
-            var bonusWinAmount = SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
             var paylineWinningAmount = SettlementResult.WinningPaylines.Sum(payline => payline.Odds) * Bet;
-            var betWin = Paid ? BetWin : bonusWinAmount + paylineWinningAmount;
+            var betWin = Paid ? BetWin : BonusWinAmount + paylineWinningAmount;
 
             return jackpotWinAmount + betWin;
         }
