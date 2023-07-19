@@ -262,7 +262,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public double ContributionRate { get; set; }
 
-        public int BaseContributionAmount { get; set; }
+        public double BaseContributionAmount { get; set; }
     }
 
     public class SlotGameBonusChestViewModel
