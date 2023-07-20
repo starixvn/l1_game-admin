@@ -96,7 +96,7 @@ namespace GamesAdmin.Api.UM
 
                     foreach (var partner in partners)
                     {
-                        await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUm == true && um.PartnerId == partner,
+                        await umRepository.UpdateAsync(um => um.Start == startTime.UtcDateTime && um.IsPartnerUm == true && um.PartnerId == partner,
                             update,
                             new UpdateOptions { IsUpsert = true });
 
@@ -136,7 +136,7 @@ namespace GamesAdmin.Api.UM
                     .Set(field => field.Time, DateTime.UtcNow)
                     .Set(field => field.IsPartnerUm, false);
 
-                await umRepository.UpdateAsync(um => um.Start == startTime && um.IsPartnerUm == false, update, new UpdateOptions { IsUpsert = true });
+                await umRepository.UpdateAsync(um => um.Start == startTime.UtcDateTime && um.IsPartnerUm == false, update, new UpdateOptions { IsUpsert = true });
 
                 return true;
             }
