@@ -1,16 +1,4 @@
 include:
-  - project: "ci/repos-ci/pentagon_l1_admin_api"
-    ref: master
-    file: "gitlab-ci.yml"
-
-  - project: "ci/repos-ci/pentagon_l2_admin_api"
-    ref: master
-    file: "gitlab-ci-mixing.yml"
-    
-  - project: "ci/repos-ci/pentagon_l1_admin_site"
-    ref: master
-    file: "gitlab-ci-mixing.yml"
-
-  - project: "ci/repos-ci/pentagon_l2_admin_site"
-    ref: master
-    file: "gitlab-ci-mixing.yml"
+  - project: "ci/core-cicd"
+    ref: main
+    file: luminet.gitlab-ci.yml
