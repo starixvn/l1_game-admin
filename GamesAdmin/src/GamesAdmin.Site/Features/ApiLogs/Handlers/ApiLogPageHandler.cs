@@ -23,17 +23,12 @@ namespace GamesAdmin.Site.Features.ApiLogs.Handlers
         public async Task<ApiLogViewModel> Handle(ApiLogPageRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(partner => true);
-            var games = Enumeration.GetAll<Game>()
-                                   .Where(game => game.GameId != 0)
-                                   .Select(game => new SelectListItem(game.DisplayName, $"{(byte)game.GameId}"))
-                                   .ToList();
             var logTypes = Enumeration.GetAll<ApiLogEnumeration>()
                                       .Select(log => new SelectListItem(log.DisplayName, $"{(byte)log.Type}"));
 
             return new ApiLogViewModel
             {
                 Partners = partners,
-                Games = games,
                 GameTypeId = 0,
                 LogTypes = logTypes
             };

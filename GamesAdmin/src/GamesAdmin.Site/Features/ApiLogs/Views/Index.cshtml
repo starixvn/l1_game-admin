@@ -1,4 +1,5 @@
 ﻿@model GamesAdmin.Site.Features.ApiLogs.ViewModels.ApiLogViewModel
+@using GamesAdmin.Site._Shared.ViewComponents
 
 @section Styles {
     <link href="~/css/api-log.min.css" rel="stylesheet" asp-append-version="true" />
@@ -44,9 +45,8 @@
         </div>
         <div class="col-1">
             <label asp-for="GameTypeId" class="control-label">Game</label>
-            <select asp-items="@Model.Games" asp-for="GameTypeId" class="form-control">
-                <option selected="selected" value="0">All</option>
-            </select>
+            @await Component.InvokeAsync(nameof(SelectGame), new { name = "GameTypeId", SelectAll = true })
+            
         </div>
         <div class="col-auto">
             <label asp-for="GameRoundId" class="control-label">Game Round</label>
