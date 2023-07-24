@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Site.Features.ApiLogs.Models;
 
 namespace GamesAdmin.Site.Features.ApiLogs
@@ -70,12 +72,12 @@ namespace GamesAdmin.Site.Features.ApiLogs
 
         private static string GetGameName(string gameId)
         {
-            var game = (GameId)byte.Parse(gameId);
-            var gameName = Game.FromGameId(game)?.DisplayName ?? gameId;
-
-            return gameName;
+            var gameInfo = GameInfos.FirstOrDefault((game) => game.GameId.ToString() == gameId);
+            return gameInfo?.DisplayName;
         }
 
         public static Dictionary<ApiLogType, IEnumerable<ApiLogViewConfigs>> ViewConfigsMappings => viewConfigsMappings;
+
+        public static IEnumerable<GeneralGameSetting> GameInfos { get; set; }
     }
 }
