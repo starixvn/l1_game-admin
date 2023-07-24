@@ -27,6 +27,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<UpdateSlotRNGConfigRequest, bool>
         , IRequestHandler<CloneNewSlotGameRequest, string>
+        , IRequestHandler<UpdateSymbolWeightRequest, bool>
     {
         private readonly IGameSettingsService gameService;
         private readonly ICloneSettingService slotSettingService;
@@ -91,5 +92,8 @@ namespace GamesAdmin.Api.Games
 
         public Task<string> Handle(CloneNewSlotGameRequest request, CancellationToken cancellationToken)
         => slotSettingService.CloneNewGame(request.GameId, request.FromGameId, request.DisplayName);
+
+        public Task<bool> Handle(UpdateSymbolWeightRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateSymbolWeight(request.Name, request.SymbolWeight);
     }
 }

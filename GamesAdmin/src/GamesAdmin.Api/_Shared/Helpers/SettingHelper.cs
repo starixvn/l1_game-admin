@@ -13,6 +13,23 @@ namespace GamesAdmin.Api._Shared.Helpers
     {
         private static string BotRatioFormat = "#,##0.####";
 
+        public static List<SettingChangedModel> GetSymbolWeightChangedModel(GameConfigEntity oldConfig, SymbolWeight newConfig)
+        {
+            var symbolWeight = oldConfig.SlotsConfig.SymbolWeight;
+            var weight = symbolWeight?.ContainsKey(newConfig.Mode.ToString()) == true ? ConvertMatrixToString(symbolWeight[newConfig.Mode.ToString()]) : string.Empty;
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("Weight", weight, ConvertMatrixToString(newConfig.Weight)),
+            };
+
+            return changedSettings;
+        }
+
+        private static string  ConvertMatrixToString (int[][] weights)
+        {
+            return string.Join("\r\n", weights.Select(row => string.Join(",", row)));
+        }
+
         public static List<SettingChangedModel> GetCurrencyGroupGameChangedModel(CurrencyGroupGameEntity oldConfig, CurrencyGroupGame newConfig)
         {
             var changedSettings = new List<SettingChangedModel> {

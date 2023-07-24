@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
+using Newtonsoft.Json;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -304,6 +305,46 @@ namespace GamesAdmin.Site.Features.GameSettings
                 await mediator.Send(request);
 
                 return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("/symbolweight/update")]
+        public async Task<IActionResult> UpdateSymbolWeight(string gameName, byte mode, string weights)
+        {
+            try
+            {
+                await mediator.Send(new UpdateSymbolWeightByModeRequest(
+                    gameName,
+                    mode,
+                    weights));
+
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("/symbolWeight/checkRtp")]
+        public async Task<IActionResult> GetSlotRtp(string odds, int[][] weight, int numOfRounds)
+        {
+            try
+            {
+                var deserializeOdds = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, double>>>(odds);
+                var result = await mediator.Send(new GetSlotRtpRequest(deserializeOdds, weight, numOfRounds));
+
+                return Json(result);
             }
             catch (Exception ex)
             {

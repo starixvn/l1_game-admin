@@ -45,6 +45,10 @@ namespace GamesAdmin.Api.Games
         public Task<string> ClonelotGame(int gameId, int fromGameId, string displayName)
             => mediator.Send(new CloneNewSlotGameRequest(gameId, fromGameId, displayName));
 
+        [HttpPost("update_symbol_weight")]
+        public Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request)
+            => mediator.Send(request);
+
         [HttpGet("{name}")]
         public Task<GameConfig> GetByName(string name)
             => mediator.Send(new GetByNameRequest(name));

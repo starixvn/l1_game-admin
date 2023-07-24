@@ -291,11 +291,78 @@
                 requestUrl = "/jackpot/update";
             }
 
+            if ($('#adjustweight').css('display') && $('#adjustweight').css('display') !== 'none') {
+                this.updateSymbolWeight();
+                return;                         
+            }
+
             $.ajax({
                 method: "POST",
                 url: requestUrl,
                 dataType: 'json',
                 data: $('#gameForm').serialize(),
+            }).done(function (result) {
+                if (result) {
+                    $('#successMsg').show();
+                }
+                else {
+                    $('#failedMsg').show();
+                }
+
+                setTimeout(function () {
+                    $('#updateBtn').prop('disabled', false);
+                    $('#successMsg').hide();
+                    $('#failedMsg').hide();
+                    $('#gameModal').modal('hide');
+                    location.reload();
+                }, 1000);
+            });
+        },
+        updateSymbolWeight: function () {
+            const weights = document.getElementById('adjustWeight').value;
+            const lines = weights.split(/\r?\n/);
+            console.log('value lines', lines, weights);
+            $('#invalidSymbolWeight').hide();
+            $('#notEnoughSymbolWeight').hide();
+
+            for (let line in lines) {
+                const symbols = lines[line].split(',');
+                if (symbols.length > 11 || symbols.length < 11) {
+                    $('#notEnoughSymbolWeight').append('<span id="length">' + symbols.length + '</span>').show();
+                    setTimeout(function () {
+                        $('#invalidSymbolWeight').hide();
+                        $('#notEnoughSymbolWeight').hide();
+                        $('#updateBtn').prop('disabled', false);
+                    }, 1000);
+                    return;
+                }
+                for (let i in symbols) {
+                    if (!Number.isInteger(parseInt(symbols[i])) && symbols[i] !== "") {
+                        const element = $('#adjustweight-id');
+                        if (element.length > 0) {
+                            $('#adjustweight-id').remove();
+                        }
+                        $('#invalidSymbolWeight').append('<span id="adjustweight-id">' + symbols[i] + '</span>').show();
+                        setTimeout(function () {
+                            $('#invalidSymbolWeight').hide();
+                            $('#notEnoughSymbolWeight').hide();
+                            $('#updateBtn').prop('disabled', false);
+                        }, 1000);
+                        return;
+                    }
+                }
+            }
+            const gameName = $('#slotGameName').val();
+            const mode = $('#modeItem').val();
+
+            $.ajax({
+                method: "POST",
+                url: "/symbolweight/update",
+                data: {
+                    gameName,
+                    mode,
+                    weights
+                },
             }).done(function (result) {
                 if (result) {
                     $('#successMsg').show();
@@ -522,10 +589,12 @@
             $('#general').hide();
             $('#jackpots').hide();
             $('#botsetting').hide();
+            $('#adjustweight').hide();
 
             $('#general-tab-header').removeClass("active");
             $('#jackpots-tab-header').removeClass("active");
             $('#botsetting-tab-header').removeClass("active");
+            $('#adjustweight-tab-header').removeClass("active");
 
             const id = '#' + name;
             const headerId = '#' + name + '-tab-header';
@@ -560,7 +629,78 @@
   
             $(id).show();
             $(headerId).addClass("active");
-        },     
+        },   
+        toggleMode: function () {
+            const mode = $('#modeItem').val();
+            const easyMode = document.getElementById('easyWeight').value;
+            const mediumMode = document.getElementById('mediumWeight').value;
+            const hardMode = document.getElementById('hardWeight').value;
+            const textarea = document.getElementById('adjustWeight');
+
+            switch (mode) {
+                case "1": textarea.value = easyMode; break;
+                case "2": textarea.value = mediumMode; break;
+                case "3": textarea.value = hardMode; break;
+            }
+        },  
+
+        openCheckRTP: function () {
+            $('#check-rtp-modal').modal('show');
+            console.log('giá trị trước', $('#numberOfRounds').val());
+            document.getElementById('numberOfRounds').value = "";
+            $("#rtp").text("");
+            for (let i = 0; i < 11; i++) {
+                const setting = $('#check-rtp-modal').find(`#rtp_item_${i}`);
+                setting.find('#symbol_ratio').html("");
+            }
+        },
+
+        closeCheckRTP: function () {
+            $('#check-rtp-modal').modal('hide');
+        },
+
+        checkRTP: function () {
+            const weights = document.getElementById('adjustWeight').value;
+            const odds = document.getElementById('symbol-odds').value;
+            const lines = weights.split(/\r?\n/);
+            const weight = lines.map(line => line.split(','));
+            const numOfRounds = document.getElementById('numberOfRounds').value;
+            if (numOfRounds === "") {
+                $('#checkEmptyNumOfRounds').show();
+                setTimeout(function () {
+                    $('#checkEmptyNumOfRounds').hide();
+                }, 1000);
+                return;
+            }
+            $.ajax({
+                method: "POST",
+                url: `symbolWeight/checkRtp`,
+                data: {
+                    odds,
+                    weight,
+                    numOfRounds
+                }
+            }).done(function (data) {      
+                debugger
+                const result = data?.result;
+                if (result) {
+                    $('#checkedSuccessMsg').show();
+                }
+                else {
+                    $('#checkedFailedMsg').show();
+                }
+
+                setTimeout(function () {
+                    $('#checkedSuccessMsg').hide();
+                    $('#checkedFailedMsg').hide();
+                }, 1000);
+                const { rtp, symbolFrequency } = result[0][0];
+                for (const symbol in symbolFrequency) {
+                    const setting = $('#check-rtp-modal').find(`#rtp_item_${symbol}`);
+                    setting.find('#symbol_ratio').html(symbolFrequency[symbol]);
+                }
+                $("#rtp").text(rtp);
+            });
     }
 }(jQuery));
 

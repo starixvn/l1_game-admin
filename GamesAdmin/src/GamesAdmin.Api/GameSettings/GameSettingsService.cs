@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Notifications.Requests;
@@ -14,9 +10,13 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using MongoDB.Driver;
 using Sentry;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 namespace GamesAdmin.Api.Games
 {
+
     public interface IGameSettingsService
     {
         Task<IEnumerable<GameConfig>> Get();
@@ -50,6 +50,8 @@ namespace GamesAdmin.Api.Games
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
+
+        Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -57,8 +59,11 @@ namespace GamesAdmin.Api.Games
         private const byte HoursOfDay = 24;
 
         private readonly IMapper mapper;
+
         private readonly ISentryClient sentryClient;
+
         private readonly IGenericRepository<GameConfigEntity> repository;
+
         private readonly INotificationService notificationService;
 
         public GameSettingsService(
@@ -500,6 +505,48 @@ namespace GamesAdmin.Api.Games
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
             return true;
+        }
+
+        public async Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight)
+        {
+            try
+            {
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetSymbolWeightChangedModel(gameEntity, symbolWeight);
+                sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, changedSettings);
+
+                var keyMode = symbolWeight.Mode.ToString();
+                int[][] weights = symbolWeight.Weight;
+
+                var slotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight;
+                UpdateDefinition<GameConfigEntity> update;
+                if (slotSymbolWeight == null)
+                {
+                    var newSymbolWeight = new Dictionary<string, int[][]> { { keyMode, weights } };
+                    update = Builders<GameConfigEntity>.Update
+                   .Set(field => field.SlotsConfig.SymbolWeight, newSymbolWeight);
+                }
+                else if (!slotSymbolWeight.ContainsKey(keyMode))
+                {
+                    slotSymbolWeight.Add(keyMode, weights);
+                    update = Builders<GameConfigEntity>.Update
+                   .Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
+                }
+                else
+                {
+                    slotSymbolWeight[keyMode] = weights;
+                    update = Builders<GameConfigEntity>.Update
+                    .Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
+                }
+                await repository.UpdateAsync(config => config.Name == name, update);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public List<StakeLevel> StakeLevels { get; set; }
         public Dictionary<string, Dictionary<string, double>> Icons { get; set; }
         public Jackpot Jackpot { get; set; }
+        public Dictionary<string, int[][]> SymbolWeight { get; set; }
     }
 
     public class Bonus

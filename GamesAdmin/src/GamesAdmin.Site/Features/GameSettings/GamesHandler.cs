@@ -17,6 +17,7 @@ using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Partners;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -37,12 +38,14 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UpdateBetLimitRequest, bool>
         , IRequestHandler<UpdateOddsRequest, string>
         , IRequestHandler<UpdateJackpotRequest, bool>
+        , IRequestHandler<UpdateSymbolWeightByModeRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
         , IRequestHandler<GetOddsByGameRequest, IEnumerable<OddsViewModel>>
         , IRequestHandler<GetGamesIdByTypeRequest, IEnumerable<Game>>
         , IRequestHandler<GetGamesByTypeRequest, IEnumerable<SelectListItem>>
         , IRequestHandler<CloneSlotGameRequest, string>
         , IRequestHandler<CreateNewGameRequest, CreateNewGameViewModel>
+        , IRequestHandler<GetSlotRtpRequest, RtpResult>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -424,5 +427,21 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<string> Handle(CloneSlotGameRequest request, CancellationToken cancellationToken)
         => await gameService.CloneNewSlotGame(request.GameId, request.ClonedFrom, request.DisplayName);
+
+        public Task<bool> Handle(UpdateSymbolWeightByModeRequest request, CancellationToken cancellationToken)
+        {
+            string[] rows = request.Weights.Split("\n");
+            int[][] weights = rows.Select(row => row.Split(',')
+                                                   .Select(int.Parse)
+                                                   .ToArray())
+                                .ToArray();
+            var updateSymbolWeightRequest = new UpdateSymbolWeightRequest(
+                    request.Name,
+                    new SymbolWeight(request.Mode, weights));
+            return gameService.UpdateSymbolWeight(updateSymbolWeightRequest);
+        }
+
+        public Task<RtpResult> Handle(GetSlotRtpRequest request, CancellationToken cancellationToken)
+        => gameService.GetSlotRtp(request);
     }
 }

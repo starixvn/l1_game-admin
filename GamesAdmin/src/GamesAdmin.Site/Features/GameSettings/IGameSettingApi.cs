@@ -4,6 +4,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings.Requests;
+using Microsoft.AspNetCore.Mvc;
 using Refit;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -73,6 +74,11 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/clone_slot_game")]
         Task<string> CloneSlotGame(int gameId, int fromGameId, string displayName);
 
+        [Post("/game_settings/update_symbol_weight")]
+        Task<bool> UpdateSymbolWeight([Body] UpdateSymbolWeightRequest request);
+
+        [Post("/rtp_verify/getSlotRtp")]
+        Task<RtpResult> GetSlotRtp([Body] GetSlotRtpRequest request);
 
         [Post("/game_server/get_admin_monitoring_settings")]
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);

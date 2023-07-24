@@ -27,6 +27,19 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public bool JackpotEnabled { get; set; }
 
+        public Dictionary<string, int[][]> SymbolWeight { get; set; }
+
+        public byte DisplayMode { get; set; } = 1;
+
+        public string WeightsByEasyMode => SymbolWeight?.ContainsKey("1") == true ?
+            string.Join("\r\n", SymbolWeight["1"].Select(row => string.Join(",", row))) : string.Empty;
+
+        public string WeightsByMediumMode => SymbolWeight?.ContainsKey("2") == true ?
+            string.Join("\r\n", SymbolWeight["2"].Select(row => string.Join(",", row))) : string.Empty;
+
+        public string WeightsByHardMode => SymbolWeight?.ContainsKey("3") == true ?
+            string.Join("\r\n", SymbolWeight["3"].Select(row => string.Join(",", row))) : string.Empty;
+
         [DisplayName("Jackpot Winning Amount (%)")]
         public double JackpotWinningAmount { get; set; }
 

@@ -1,4 +1,6 @@
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site.Features._Shared;
+@using Newtonsoft.Json;
 @model EditViewModel;
 
 <div>
@@ -7,16 +9,24 @@
             <a class="nav-link active" id="general-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('general')">General</a>
         </li>
 
-        @if (Model.SlotsConfig.Jackpot.Enabled)
+        @if (Context.HasAdminPermission())
         {
             <li class="nav-item">
-                <a class="nav-link" id="jackpots-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('jackpots')">Jackpot</a>
+                <a class="nav-link" id="adjustweight-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('adjustweight')">Adjust symbol weights by mode</a>
             </li>
         }
-    </ul>
+
+        @if (Model.SlotsConfig.Jackpot.Enabled)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="jackpots-tab-header" href="#" onclick="gameStatus.toggleSettingTabs('jackpots')">Jackpot</a>
+                </li>
+            }
+        </ul>
 
     <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
     <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+    <input value="@JsonConvert.SerializeObject(Model.SlotsConfig.Icons)" id="symbol-odds" hidden />
 
     <form class="card-body form" asp-action="Update" asp-controller="GameSettings" method="post" id="gameForm">
 
@@ -141,7 +151,7 @@
                         <fieldset class="slots-stake-level">
                             <legend>Stake level <b>@Model.JackpotViewModel.StakeLevels[i].Stake</b></legend>
                             <div class="form-group row">
-                             
+
                                 <div class="col-lg-6">
                                     <label class="control-label">Initial Amount</label>
                                     <input type="number" asp-for="@Model.JackpotViewModel.StakeLevels[i].Jackpot" class="form-control" />
@@ -190,5 +200,100 @@
                 </div>
             }
         </div>
+   
+
+        <div id="adjustweight" style="display:none;">
+            <input readonly hidden asp-for="@Model.Name" id="slotGameName" />
+            <br />
+            <div class="message-success hidden-cls" id="updateExclusionsSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
+            <div class="message-error hidden-cls" id="invalidSymbolWeight"><i class="icon-cancel"></i><span>Value isn't an integer of the datatype Number: </span></div>
+            <div class="message-error hidden-cls" id="notEnoughSymbolWeight"><i class="icon-cancel"></i><span>Please enter enough weight for 11 symbols</span></div>
+            <div class="form-group">
+                <label asp-for="@Model.SlotViewModel.DisplayMode" class="control-label"></label>
+                <select asp-items="@Model.SlotViewModel.ModeItems" asp-for="@Model.SlotViewModel.DisplayMode" class="form-control" id="modeItem" onchange="gameStatus.toggleMode()"></select>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-10 mt-3">
+                    <label class="font-weight-bold">Input Symbol weights</label>
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="btn-submit" onclick="gameStatus.openCheckRTP()">Check RTP</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <textarea rows="3" cols="100" id="adjustWeight" placeholder="weight are separated by ',' ">@Model.SlotViewModel.WeightsByEasyMode</textarea>
+                <textarea hidden rows="3" cols="100" id="easyWeight" placeholder="weight are separated by ',' ">@Model.SlotViewModel.WeightsByEasyMode</textarea>
+                <textarea hidden rows="3" cols="100" id="mediumWeight" placeholder="weight are separated by ',' ">@Model.SlotViewModel.WeightsByMediumMode</textarea>
+                <textarea hidden rows="3" cols="100" id="hardWeight" placeholder="weight are separated by ',' ">@Model.SlotViewModel.WeightsByHardMode</textarea>
+            </div>
+
+        </div>
+        
     </form>
+
+    <div class="modal fade game-modal" id="check-rtp-modal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">RTP Result</h5>
+                </div>
+                <div class="modal-body game-details" id="check-rtp">
+                    <div class="message-success hidden-cls" id="checkedSuccessMsg"><i class="icon-check"></i><span>Checked successfully</span></div>
+                    <div class="message-error hidden-cls" id="checkedFailedMsg"><i class="icon-cancel"></i><span>Error: Please double check symbol weights and number of rounds</span></div>
+                    <div class="message-error hidden-cls" id="checkEmptyNumOfRounds"><i class="icon-cancel"></i><span>Please input Number of Rounds</span></div>
+                    <div class="form-group row">
+                        <div class="col-lg-3 mt-2 ml-3">
+                            <label class="font-weight-bold">Input Number Of Rounds</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="number" id="numberOfRounds" class="form-control-lg" />
+                        </div>
+                    </div>
+                    <div class="card-body form">
+                        <fieldset class="form-group">
+                            <legend>Output</legend>
+                            <div class="form-group row">
+                                <div class="col-lg-2 mt-3 ml-2">
+                                    <label class="font-weight-bold">Rtp:</label>
+                                </div>
+                                <div class="col-lg-8 mt-3">
+                                    <span id="rtp" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="col-gmt">Symbol</th>
+                                        <th class="col-gmt">Frequency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < 11; i++)
+                                    {
+                                        <tr id="@("rtp_item_" + i)">
+                                            <td class="text-center">
+                                                <div>
+                                                    <span class="text-center" id="symbol_number">Symbol @i</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div>
+                                                    <span class="text-center" id="symbol_ratio"></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-submit" onclick="gameStatus.checkRTP()">Check</button>
+                    <button type="button" class="btn-gray" onclick="gameStatus.closeCheckRTP()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

@@ -6,6 +6,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.GameSettings.Requests;
+using Microsoft.AspNetCore.Mvc;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -59,6 +60,10 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<int> GetConnectedUsers();
 
         Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName);
+
+        Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request);
+
+        Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request);
     }
 
     public class GameSettingService : IGameSettingService
@@ -197,6 +202,11 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName)
         =>await gameApi.CloneSlotGame(gameId, fromGameId, displayName);
-        
+
+        public Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request)
+        => gameApi.UpdateSymbolWeight(request);
+
+        public Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request)
+        => gameApi.GetSlotRtp(request);
     }
 }

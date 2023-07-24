@@ -31,6 +31,8 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         AdminMonitoringSettings AdminMonitoringSettings { get; }
 
+        RtpCheckerServiceSettings RtpCheckerServiceSettings { get; }
+
         string ProxyUrl { get; }
     }
 
@@ -55,7 +57,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
             ProxyUrl = configuration[nameof(ProxyUrl)] ?? GetValue<string>(nameof(ProxyUrl));
             ServiceApiTemplate = BuildSeviceApiTemplate();
-
+            RtpCheckerServiceSettings = configuration.GetSection(nameof(RtpCheckerServiceSettings)).Get<RtpCheckerServiceSettings>();
         }
 
         public string SystemType { get; }
@@ -83,6 +85,9 @@ namespace GamesAdmin.Api._Shared.Configurations
         public ApiLogDatabaseSettings ApiLogDatabaseSettings { get; }
 
         public AdminMonitoringSettings AdminMonitoringSettings { get; }
+
+        public RtpCheckerServiceSettings RtpCheckerServiceSettings { get; }
+
 
         public T GetValue<T>(string key)
         {

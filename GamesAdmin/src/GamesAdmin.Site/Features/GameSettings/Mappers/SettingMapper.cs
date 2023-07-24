@@ -49,6 +49,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.BotJackpotContribution, opt => opt.MapFrom(src => src.Jackpot.BotContributionRatio.ToPercentage()))
                 .ForMember(dest => dest.BigWinRatio, opt => opt.MapFrom(src => src.BigWinRatio.ToPercentage()));
 
+
             CreateMap<CascadingSlotsConfig, SlotViewModel>()
                 .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => (GameMode)src.Mode))
                 .ForMember(dest => dest.MinBonus, opt => opt.MapFrom(src => src.MultiplierBonus.Min))
