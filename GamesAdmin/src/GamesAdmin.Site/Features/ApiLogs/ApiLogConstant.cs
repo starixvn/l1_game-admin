@@ -57,6 +57,11 @@ namespace GamesAdmin.Site.Features.ApiLogs
              obCustIdForOWSignInLogIdConfigs, siteIdForOWSignInLogConfigs
         };
 
+        private static readonly IEnumerable<ApiLogViewConfigs> hitjackpotView = new List<ApiLogViewConfigs>
+        {
+             obCustIdForPartnerLogIdConfigs, siteIdForPartnerLogConfigs
+        };
+
         private static readonly Dictionary<ApiLogType, IEnumerable<ApiLogViewConfigs>> viewConfigsMappings = new Dictionary<ApiLogType, IEnumerable<ApiLogViewConfigs>>
         {
             { ApiLogType.Bets, commonPartnerLogView },
@@ -68,6 +73,7 @@ namespace GamesAdmin.Site.Features.ApiLogs
             { ApiLogType.TicketDetailRequests, voidGameAndTicketDetailView },
             { ApiLogType.MemberSiteSignInRequest, memberSignInView },
             { ApiLogType.OperatorSignInRequest, owSignInView },
+            { ApiLogType.HitJackpot, hitjackpotView },
         };
 
         private static string GetGameName(string gameId)

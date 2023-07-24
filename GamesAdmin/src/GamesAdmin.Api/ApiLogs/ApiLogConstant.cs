@@ -16,6 +16,7 @@ namespace GamesAdmin.Api.ApiLogs
         private const string TicketDetailCollectionName = "ticket_detail_requests";
         private const string MemberSigninCollectionName = "membersignin_requests";
         private const string OperatorSigninCollectionName = "owsignin_requests";
+        private const string HitJackpotCollectionName = "hit_jackpots";
 
         private const string PlaceBetCall = "PartnerPlaceBetCall";
         private const string PlaceBetResult = "PartnerPlaceBetResult";
@@ -57,6 +58,7 @@ namespace GamesAdmin.Api.ApiLogs
             { ApiLogType.TicketDetailRequests, TicketDetailCollectionName },
             { ApiLogType.MemberSiteSignInRequest, MemberSigninCollectionName },
             { ApiLogType.OperatorSignInRequest, OperatorSigninCollectionName },
+            { ApiLogType.HitJackpot, HitJackpotCollectionName },
         };
 
         private static readonly Dictionary<string, Type> callOrRequestTypeMapping = new Dictionary<string, Type>
