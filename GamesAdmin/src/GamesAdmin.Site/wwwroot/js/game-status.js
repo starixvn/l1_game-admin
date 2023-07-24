@@ -646,7 +646,6 @@
 
         openCheckRTP: function () {
             $('#check-rtp-modal').modal('show');
-            console.log('giá trị trước', $('#numberOfRounds').val());
             document.getElementById('numberOfRounds').value = "";
             $("#rtp").text("");
             for (let i = 0; i < 11; i++) {
@@ -680,11 +679,16 @@
                     weight,
                     numOfRounds
                 }
-            }).done(function (data) {      
-                debugger
-                const result = data?.result;
-                if (result) {
+            }).done(function (data) {
+                if (data) {
                     $('#checkedSuccessMsg').show();
+                    const result = data.result;
+                    const { rtp, symbolFrequency } = result[0][0];
+                    for (const symbol in symbolFrequency) {
+                        const setting = $('#check-rtp-modal').find(`#rtp_item_${symbol}`);
+                        setting.find('#symbol_ratio').html(symbolFrequency[symbol]);
+                    }
+                    $("#rtp").text(rtp);
                 }
                 else {
                     $('#checkedFailedMsg').show();
@@ -694,12 +698,6 @@
                     $('#checkedSuccessMsg').hide();
                     $('#checkedFailedMsg').hide();
                 }, 1000);
-                const { rtp, symbolFrequency } = result[0][0];
-                for (const symbol in symbolFrequency) {
-                    const setting = $('#check-rtp-modal').find(`#rtp_item_${symbol}`);
-                    setting.find('#symbol_ratio').html(symbolFrequency[symbol]);
-                }
-                $("#rtp").text(rtp);
             });
     }
 }(jQuery));
@@ -736,3 +734,4 @@ $(document).ready(function () {
         gameStatus.startMonitor(gameName);
     });
 })
+
