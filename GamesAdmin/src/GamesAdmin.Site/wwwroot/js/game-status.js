@@ -671,6 +671,7 @@
                 }, 1000);
                 return;
             }
+            $("#loading-check-rtp").show();
             $.ajax({
                 method: "POST",
                 url: `symbolWeight/checkRtp`,
@@ -680,6 +681,7 @@
                     numOfRounds
                 }
             }).done(function (data) {
+                $("#loading-check-rtp").hide();
                 if (data) {
                     $('#checkedSuccessMsg').show();
                     const result = data.result;
