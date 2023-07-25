@@ -18,7 +18,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.ViewModels
 
         public int GameRoundId { get; set; }
 
-        public byte GameTypeId { get; set; }
+        public int GameTypeId { get; set; }
 
         public string Username { get; set; }
 

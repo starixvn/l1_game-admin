@@ -25,7 +25,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         int? GameRoundId { get; }
 
-        byte? GameTypeId { get; }
+        int? GameTypeId { get; }
 
         string RequestType { get; }
     }
