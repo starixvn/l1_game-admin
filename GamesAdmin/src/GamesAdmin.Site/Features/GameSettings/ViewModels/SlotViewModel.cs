@@ -29,16 +29,11 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public Dictionary<string, int[][]> SymbolWeight { get; set; }
 
-        public byte DisplayMode { get; set; } = 1;
+        public byte BoardMode { get; set; } = 1;
 
-        public string WeightsByEasyMode => SymbolWeight?.ContainsKey("1") == true ?
-            string.Join("\r\n", SymbolWeight["1"].Select(row => string.Join(",", row))) : string.Empty;
-
-        public string WeightsByMediumMode => SymbolWeight?.ContainsKey("2") == true ?
-            string.Join("\r\n", SymbolWeight["2"].Select(row => string.Join(",", row))) : string.Empty;
-
-        public string WeightsByHardMode => SymbolWeight?.ContainsKey("3") == true ?
-            string.Join("\r\n", SymbolWeight["3"].Select(row => string.Join(",", row))) : string.Empty;
+        public int[][] WeightsByEasyMode => GetSymbolWeight("1");
+        public int[][] WeightsByMediumMode => GetSymbolWeight("2");
+        public int[][] WeightsByHardMode  => GetSymbolWeight("3");
 
         [DisplayName("Jackpot Winning Amount (%)")]
         public double JackpotWinningAmount { get; set; }
@@ -54,5 +49,15 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         [DisplayName("Big Win Ratio (%)")]
         public double BigWinRatio { get; set; }
+
+        public int[][] GetSymbolWeight(string key)
+        {
+            if (SymbolWeight.TryGetValue(key, out int[][] symbolWeight))
+            {
+                return symbolWeight;
+            }
+
+            return default;
+        }
     }
 }

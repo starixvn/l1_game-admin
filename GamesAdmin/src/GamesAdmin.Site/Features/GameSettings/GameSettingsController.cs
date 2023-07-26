@@ -316,7 +316,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [HttpPost]
         [Route("/symbolweight/update")]
-        public async Task<IActionResult> UpdateSymbolWeight(string gameName, byte mode, string weights)
+        public async Task<IActionResult> UpdateSymbolWeight(string gameName, byte mode, int[][] weights)
         {
             try
             {

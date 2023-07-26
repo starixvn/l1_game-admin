@@ -7,7 +7,7 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
         public UpdateSymbolWeightByModeRequest(
             string name,
             byte mode,
-            string weights)
+            int[][] weights)
         {
             Name = name;
             Mode = mode;
@@ -18,6 +18,6 @@ namespace GamesAdmin.Site.Features.GameSettings.Requests
 
         public byte Mode { get; set; }
 
-        public string Weights { get; set; }
+        public int[][] Weights { get; set; }
     }
 }

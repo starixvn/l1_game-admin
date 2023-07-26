@@ -319,42 +319,20 @@
             });
         },
         updateSymbolWeight: function () {
-            const weights = document.getElementById('adjustWeight').value;
-            const lines = weights.split(/\r?\n/);
-            console.log('value lines', lines, weights);
-            $('#invalidSymbolWeight').hide();
-            $('#notEnoughSymbolWeight').hide();
-
-            for (let line in lines) {
-                const symbols = lines[line].split(',');
-                if (symbols.length > 11 || symbols.length < 11) {
-                    $('#notEnoughSymbolWeight').append('<span id="length">' + symbols.length + '</span>').show();
-                    setTimeout(function () {
-                        $('#invalidSymbolWeight').hide();
-                        $('#notEnoughSymbolWeight').hide();
-                        $('#updateBtn').prop('disabled', false);
-                    }, 1000);
-                    return;
-                }
-                for (let i in symbols) {
-                    if (!Number.isInteger(parseInt(symbols[i])) && symbols[i] !== "") {
-                        const element = $('#adjustweight-id');
-                        if (element.length > 0) {
-                            $('#adjustweight-id').remove();
-                        }
-                        $('#invalidSymbolWeight').append('<span id="adjustweight-id">' + symbols[i] + '</span>').show();
-                        setTimeout(function () {
-                            $('#invalidSymbolWeight').hide();
-                            $('#notEnoughSymbolWeight').hide();
-                            $('#updateBtn').prop('disabled', false);
-                        }, 1000);
-                        return;
-                    }
-                }
+            const weights = this.getSymbolWeight();
+            console.log('value easyMode medium hard', weights);
+            const validate = this.validationSymbolWeights(weights);
+            if (!validate) {
+                setTimeout(function () {
+                    $('#checkEmptySymbolWeights').hide();
+                    $('#invalidSymbolWeight').hide();
+                    $('#notEnoughSymbolWeight').hide();
+                    $('#updateBtn').prop('disabled', false);
+                }, 1000);
+                return;
             }
             const gameName = $('#slotGameName').val();
             const mode = $('#modeItem').val();
-
             $.ajax({
                 method: "POST",
                 url: "/symbolweight/update",
@@ -379,6 +357,39 @@
                     location.reload();
                 }, 1000);
             });
+        },
+
+        validationSymbolWeights: function (lines) {
+            $('#invalidSymbolWeight').hide();
+            $('#notEnoughSymbolWeight').hide();
+            $('#checkEmptySymbolWeights').hide();
+
+            for (const line in lines) {
+                const symbols = lines[line];
+                if (symbols[0] === "") {
+                    $('#checkEmptySymbolWeights').show();
+                    if ($('#empty').length > 0) {
+                        $('#empty').remove();
+                    }
+                    $('#checkEmptySymbolWeights').append(`<span id="empty">${parseInt(line) + 1}</span>`).show();
+                    return false;
+                }
+                if (symbols.length > 11 || symbols.length < 11) {
+                    $('#notEnoughSymbolWeight').show();
+                    return false;
+                }
+                for (let i in symbols) {
+                    if (!Number.isInteger(parseInt(symbols[i])) && symbols[i] !== "") {
+                        const element = $('#adjustweight-id');
+                        if (element.length > 0) {
+                            $('#adjustweight-id').remove();
+                        }
+                        $('#invalidSymbolWeight').append(`<span id="adjustweight-id">${symbols[i]}</span>`).show();
+                        return false;
+                    }
+                }
+            }
+            return true;
         },
 
         updateOdds: function () {
@@ -601,6 +612,28 @@
 
             $(id).show();
             $(headerId).addClass("active");
+
+            if (name === "adjustweight") {
+                this.showSymbolWeight();
+            }
+        },
+
+        showSymbolWeight: function () {
+            const easyMode = $("#weight-easy-mode").val();
+            const weight = JSON.parse(easyMode);
+            this.setRows(weight);
+        },
+
+        setRows: function (weight) {
+            if (weight) {
+                $("#row1").val(weight[0]);
+                $("#row2").val(weight[1]);
+                $("#row3").val(weight[2]);
+            } else {
+                $("#row1").val("");
+                $("#row2").val("");
+                $("#row3").val("");
+            }
         },
 
         formatNumber: function (id) {
@@ -632,37 +665,32 @@
         },   
         toggleMode: function () {
             const mode = $('#modeItem').val();
-            const easyMode = document.getElementById('easyWeight').value;
-            const mediumMode = document.getElementById('mediumWeight').value;
-            const hardMode = document.getElementById('hardWeight').value;
-            const textarea = document.getElementById('adjustWeight');
+            const easyMode = document.getElementById('weight-easy-mode').value;
+            const mediumMode = document.getElementById('weight-medium-mode').value;
+            const hardMode = document.getElementById('weight-hard-mode').value;
+            let symbolWeight;
 
             switch (mode) {
-                case "1": textarea.value = easyMode; break;
-                case "2": textarea.value = mediumMode; break;
-                case "3": textarea.value = hardMode; break;
+                case "1": {
+                    symbolWeight = JSON.parse(easyMode);
+                    break;
+                }
+                case "2": {
+                    symbolWeight = JSON.parse(mediumMode);
+                    break;
+                }
+                case "3": {
+                    symbolWeight = JSON.parse(hardMode);
+                    break;
+                }
             }
-        },  
-
-        openCheckRTP: function () {
-            $('#check-rtp-modal').modal('show');
-            document.getElementById('numberOfRounds').value = "";
-            $("#rtp").text("");
-            for (let i = 0; i < 11; i++) {
-                const setting = $('#check-rtp-modal').find(`#rtp_item_${i}`);
-                setting.find('#symbol_ratio').html("");
-            }
-        },
-
-        closeCheckRTP: function () {
-            $('#check-rtp-modal').modal('hide');
+            this.setRows(symbolWeight);
         },
 
         checkRTP: function () {
-            const weights = document.getElementById('adjustWeight').value;
+            const weight = this.getSymbolWeight();
+            this.validationSymbolWeights(weight);
             const odds = document.getElementById('symbol-odds').value;
-            const lines = weights.split(/\r?\n/);
-            const weight = lines.map(line => line.split(','));
             const numOfRounds = document.getElementById('numberOfRounds').value;
             if (numOfRounds === "") {
                 $('#checkEmptyNumOfRounds').show();
@@ -685,12 +713,9 @@
                 if (data) {
                     $('#checkedSuccessMsg').show();
                     const result = data.result;
-                    const { rtp, symbolFrequency } = result[0][0];
-                    for (const symbol in symbolFrequency) {
-                        const setting = $('#check-rtp-modal').find(`#rtp_item_${symbol}`);
-                        setting.find('#symbol_ratio').html(symbolFrequency[symbol]);
-                    }
+                    const { rtp, symbolFrequency } = result[0][0];                   
                     $("#rtp").text(rtp);
+                    $("#symbol-frequency").text(symbolFrequency);
                 }
                 else {
                     $('#checkedFailedMsg').show();
@@ -701,6 +726,17 @@
                     $('#checkedFailedMsg').hide();
                 }, 1000);
             });
+        },
+
+        getSymbolWeight: function () {
+            const row1 = document.getElementById('row1').value;
+            const row2 = document.getElementById('row2').value;
+            const row3 = document.getElementById('row3').value;
+            let lines = [];
+            lines.push(row1);
+            lines.push(row2);
+            lines.push(row3);
+            return lines.map(line => line.split(','));
     }
 }(jQuery));
 

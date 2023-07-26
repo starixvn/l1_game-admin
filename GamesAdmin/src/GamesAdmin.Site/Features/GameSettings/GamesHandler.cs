@@ -430,14 +430,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> Handle(UpdateSymbolWeightByModeRequest request, CancellationToken cancellationToken)
         {
-            string[] rows = request.Weights.Split("\n");
-            int[][] weights = rows.Select(row => row.Split(',')
-                                                   .Select(int.Parse)
-                                                   .ToArray())
-                                .ToArray();
             var updateSymbolWeightRequest = new UpdateSymbolWeightRequest(
                     request.Name,
-                    new SymbolWeight(request.Mode, weights));
+                    new SymbolWeight(request.Mode, request.Weights));
             return gameService.UpdateSymbolWeight(updateSymbolWeightRequest);
         }
 
