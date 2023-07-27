@@ -209,10 +209,8 @@
             <input value="@JsonConvert.SerializeObject(@Model.SlotViewModel.WeightsByHardMode)" id="weight-hard-mode" hidden />
             <br />
             <div class="message-success hidden-cls" id="updateExclusionsSuccess"><i class="icon-check"></i><span>Updated successfully</span></div>
-            <div class="message-error hidden-cls" id="invalidSymbolWeight"><i class="icon-cancel"></i><span>Value isn't an integer of the datatype Number: </span></div>
-            <div class="message-error hidden-cls" id="notEnoughSymbolWeight"><i class="icon-cancel"></i><span>Please enter enough weight for 11 symbols in row</span></div>
-            <div class="message-success hidden-cls" id="checkedSuccessMsg"><i class="icon-check"></i><span>Checked successfully</span></div>
-            <div class="message-error hidden-cls" id="checkedFailedMsg"><i class="icon-cancel"></i><span>Error: Checked Unsuccessfully</span></div>
+            <div class="message-error hidden-cls" id="invalidSymbolWeight"><i class="icon-cancel"></i><span>Value isn't an integer of Row </span></div>
+            <div class="message-error hidden-cls" id="notEnoughSymbolWeight"><i class="icon-cancel"></i><span>Please enter enough weight for 11 symbols in Row </span></div>
             <div class="message-error hidden-cls" id="checkEmptyNumOfRounds"><i class="icon-cancel"></i><span>Please input Number of Rounds</span></div>
             <div class="message-error hidden-cls" id="checkEmptySymbolWeights"><i class="icon-cancel"></i><span>Please input Symbol Weights of Row </span></div>
             <fieldset>
@@ -259,7 +257,7 @@
                         </div>
                     </div>
                 </div>
-              
+
                 <div class="form-group row">
                     <div class="col-lg-3 mt-3 ml-2">
                         <label class="font-weight-bold">Rtp:</label>
@@ -268,14 +266,7 @@
                         <span id="rtp" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-lg-3 mt-3 ml-2">
-                        <label class="font-weight-bold">Symbol Frequency:</label>
-                    </div>
-                    <div class="col-lg-8 mt-3">
-                        <span id="symbol-frequency" class="text-danger"></span>
-                    </div>
-                </div>
+                <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
             </fieldset>
         </div>
     </form>

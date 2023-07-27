@@ -1,5 +1,6 @@
 ﻿var gameStatus = (function ($) {
     var currentGameName = '';
+    var myChart = null;
 
     return {
         checkAll: function () {
@@ -293,7 +294,7 @@
 
             if ($('#adjustweight').css('display') && $('#adjustweight').css('display') !== 'none') {
                 this.updateSymbolWeight();
-                return;                         
+                return;
             }
 
             $.ajax({
@@ -320,7 +321,6 @@
         },
         updateSymbolWeight: function () {
             const weights = this.getSymbolWeight();
-            console.log('value easyMode medium hard', weights);
             const validate = this.validationSymbolWeights(weights);
             if (!validate) {
                 setTimeout(function () {
@@ -367,24 +367,26 @@
             for (const line in lines) {
                 const symbols = lines[line];
                 if (symbols[0] === "") {
-                    $('#checkEmptySymbolWeights').show();
                     if ($('#empty').length > 0) {
                         $('#empty').remove();
                     }
-                    $('#checkEmptySymbolWeights').append(`<span id="empty">${parseInt(line) + 1}</span>`).show();
+                    $('#checkEmptySymbolWeights').append(`<span id="empty">${+line + 1}</span>`).show();
                     return false;
                 }
                 if (symbols.length > 11 || symbols.length < 11) {
-                    $('#notEnoughSymbolWeight').show();
+                    if ($('#notEnough').length > 0) {
+                        $('#notEnough').remove();
+                    }
+                    $('#notEnoughSymbolWeight').append(`<span id="notEnough">${+line + 1}</span>`).show();
                     return false;
                 }
                 for (let i in symbols) {
-                    if (!Number.isInteger(parseInt(symbols[i])) && symbols[i] !== "") {
+                    if (!Number.isInteger(+symbols[i])) {
                         const element = $('#adjustweight-id');
                         if (element.length > 0) {
                             $('#adjustweight-id').remove();
                         }
-                        $('#invalidSymbolWeight').append(`<span id="adjustweight-id">${symbols[i]}</span>`).show();
+                        $('#invalidSymbolWeight').append(`<span id="adjustweight-id">${+line + 1}: ${symbols[i]}</span>`).show();
                         return false;
                     }
                 }
@@ -689,7 +691,15 @@
 
         checkRTP: function () {
             const weight = this.getSymbolWeight();
-            this.validationSymbolWeights(weight);
+            const validate = this.validationSymbolWeights(weight);
+            if (!validate) {
+                setTimeout(function () {
+                    $('#checkEmptySymbolWeights').hide();
+                    $('#invalidSymbolWeight').hide();
+                    $('#notEnoughSymbolWeight').hide();
+                }, 1000);
+                return;
+            }
             const odds = document.getElementById('symbol-odds').value;
             const numOfRounds = document.getElementById('numberOfRounds').value;
             if (numOfRounds === "") {
@@ -711,20 +721,34 @@
             }).done(function (data) {
                 $("#loading-check-rtp").hide();
                 if (data) {
-                    $('#checkedSuccessMsg').show();
                     const result = data.result;
-                    const { rtp, symbolFrequency } = result[0][0];                   
+                    const { rtp, symbolFrequency } = result[0][0];
                     $("#rtp").text(rtp);
-                    $("#symbol-frequency").text(symbolFrequency);
+                    var xValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                    var barColors = ["red", "green", "blue", "orange", "brown", "red", "green", "blue", "orange", "brown"];
+                    if (myChart === null) {
+                        myChart = new Chart("myChart", {
+                            type: "bar",
+                            data: {
+                                labels: xValues,
+                                datasets: [{
+                                    backgroundColor: barColors,
+                                    data: symbolFrequency
+                                }]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: "Symbol Frequency"
+                                }
+                            }
+                        });
+                    } else {
+                        myChart.data.datasets[0].data = symbolFrequency;
+                        myChart.update();
+                    }
                 }
-                else {
-                    $('#checkedFailedMsg').show();
-                }
-
-                setTimeout(function () {
-                    $('#checkedSuccessMsg').hide();
-                    $('#checkedFailedMsg').hide();
-                }, 1000);
             });
         },
 
@@ -732,44 +756,45 @@
             const row1 = document.getElementById('row1').value;
             const row2 = document.getElementById('row2').value;
             const row3 = document.getElementById('row3').value;
-            let lines = [];
+            const lines = [];
             lines.push(row1);
             lines.push(row2);
             lines.push(row3);
             return lines.map(line => line.split(','));
+        },
     }
 }(jQuery));
 
-$(document).ready(function () {
-    if ($("#status-tbl")) {
-        $("#status-tbl").DataTable({
-            "ordering": false,
-            "paging": false,
-            "info": false,
-            "stateSave": true,
-            "columns": [
-                { "width": "3%" },
-                { "width": "10%" },
-                { "width": "5%" },
-                { "width": "10%" },
-                { "width": "20%" },
-                { "width": "5%" },
-                { "width": "5%" },
-                { "width": "5%" },
-                { "width": "5%" },
-                { "width": "5%" },
-                { "width": "5%" },
-            ],
-            "columnDefs": [
-                { "targets": [3, 4, 5, 6, 7, 8, 9, 10], "searchable": false }
-            ]
-        });
-    }
+    $(document).ready(function () {
+        if ($("#status-tbl")) {
+            $("#status-tbl").DataTable({
+                "ordering": false,
+                "paging": false,
+                "info": false,
+                "stateSave": true,
+                "columns": [
+                    { "width": "3%" },
+                    { "width": "10%" },
+                    { "width": "5%" },
+                    { "width": "10%" },
+                    { "width": "20%" },
+                    { "width": "5%" },
+                    { "width": "5%" },
+                    { "width": "5%" },
+                    { "width": "5%" },
+                    { "width": "5%" },
+                    { "width": "5%" },
+                ],
+                "columnDefs": [
+                    { "targets": [3, 4, 5, 6, 7, 8, 9, 10], "searchable": false }
+                ]
+            });
+        }
 
-    $(".bet-monitor").on("click", function (event) {
-        var $this = $(this);
-        const gameName = $this.data("game-name");
-        gameStatus.startMonitor(gameName);
-    });
-})
+        $(".bet-monitor").on("click", function (event) {
+            var $this = $(this);
+            const gameName = $this.data("game-name");
+            gameStatus.startMonitor(gameName);
+        });
+    })
 
