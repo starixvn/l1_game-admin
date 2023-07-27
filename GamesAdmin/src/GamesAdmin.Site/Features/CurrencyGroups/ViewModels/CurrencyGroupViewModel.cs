@@ -21,13 +21,20 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
 
         public IEnumerable<string> Games { get; set; }
 
+        public Dictionary<string, string> DisplayNames { get; set; }
+
         public string GetCurrenciesSeperatedByComma()
             => string.Join(", ", Currencies.Select(currency => currency.Name));
 
         public string GetGamesSeperatedByComma()
             => string.Join(", ", Games.Select(GetGameName));
 
-        private static string GetGameName(string key)
-            => Enumeration.Contains<Game>(key) ? Enumeration.FromValue<Game>(key).DisplayName : key;
+        private string GetGameName(string key)
+            => Enumeration.Contains<Game>(key) ? Enumeration.FromValue<Game>(key).DisplayName : TryGetDisplayName(key);
+
+        private string TryGetDisplayName(string key)
+        {
+            return DisplayNames.TryGetValue(key, out string value) ? value : key;
+        }
     }
 }
