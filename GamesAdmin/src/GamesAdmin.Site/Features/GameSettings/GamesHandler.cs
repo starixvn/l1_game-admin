@@ -126,7 +126,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
                 viewModel.DisplayName = Enumeration.Contains<Game>(game.Info.Name)
                                         ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
-                                        : game.Info.Name;
+                                        : game.Info.DisplayName;
                 viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
                 viewModel.SlotRNGConfig = game.SlotRNGConfig;
 
