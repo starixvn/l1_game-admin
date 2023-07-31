@@ -517,6 +517,11 @@ namespace GamesAdmin.Api._Shared
 
                  return result;
              }))
+              .ForMember(x => x.RoundTimerGame, opt => opt.MapFrom((source) => new RoundTimerGame
+              {
+                  GameIds = source.RoundTimerGame.GameIds,
+                  Main = source.RoundTimerGame.Main
+              }))
              .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
              {
 
@@ -534,6 +539,11 @@ namespace GamesAdmin.Api._Shared
 
             CreateMap<LobbyModel, LobbyEntity>()
               .ForMember(x => x.Id, opt => opt.MapFrom((source) => ObjectId.Parse(source.Id)))
+              .ForMember(x => x.RoundTimerGame, opt => opt.MapFrom((source) => new RoundTimerGameEntity
+               {
+                   GameIds = source.RoundTimerGame.GameIds,
+                   Main = source.RoundTimerGame.Main
+                }))
               .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
               {
 

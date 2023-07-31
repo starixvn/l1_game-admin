@@ -40,6 +40,11 @@ namespace GamesAdmin.Api.Lobby
                 changedSettings.Add($"{"Banners"}: {JsonConvert.SerializeObject(oldBanners)} -> {JsonConvert.SerializeObject(newBanners)}\r\n");
             }
 
+            if (HasChange(newEntity.RoundTimerGame, oldEntity.RoundTimerGame))
+            {
+                changedSettings.Add($"{"RoundTimerGame"}: {JsonConvert.SerializeObject(oldEntity.RoundTimerGame)} -> {JsonConvert.SerializeObject(newEntity.RoundTimerGame)}\r\n");
+            }
+
             var changedCategory = BuildCategoryChangedLog(oldEntity, newEntity, gameSettings);
             changedSettings.Add(changedCategory);
 

@@ -8,6 +8,7 @@
         public int[] MiniPanelGameIds { get; set; }
         public LobbyCategory[] Categories { get; set; }
         public Banner[] Banners { get; set; }
+        public RoundTimerGame RoundTimerGame { get; set; }
     }
 
     public class LobbyCategory
@@ -46,5 +47,12 @@
         public int GameId { get; set; }
 
         public int DisplayTime { get; set; }
+    }
+
+    public class RoundTimerGame
+    {
+        public int[] GameIds { get; set; }
+
+        public int Main { get; set; }
     }
 }

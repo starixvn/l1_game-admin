@@ -2,13 +2,14 @@ import React, { useState, createContext, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import "./index.css";
-import { Game } from "../lobby-data-types";
+import { Game, RoundTimerGame } from "../lobby-data-types";
 
 type Props = {
   miniPanelGameIds: number[];
   gameIds: Game[];
-  onChange: (gameIds: number[]) => void;
+  onChange: (gameIds: number[], roundTimerGame: RoundTimerGame) => void;
   isSuperAdmin: boolean;
+  roundTimerGame: RoundTimerGame;
 };
 
 const reorder = (list: number[], startIndex, endIndex): number[] => {
@@ -36,11 +37,29 @@ const getItemInCircleStyle = (total, index) => {
   };
 };
 
-const getInnerItemInCircleStyle = (total, index, gameId, activeGameId) => {
+const getInnerItemInCircleStyle = (
+  total,
+  index,
+  gameId,
+  activeGameId,
+  roundTimerGame
+) => {
   const delta = 360 / total;
+  const enable = roundTimerGame?.gameIds?.includes(gameId);
+  const isMain = roundTimerGame?.main === gameId;
+
+  const background =
+    activeGameId === gameId
+      ? "yellow"
+      : enable && isMain
+      ? "pink"
+      : enable
+      ? "aqua"
+      : "#f3f7fa";
+
   return {
     transform: `rotate(${360 - delta * index + 90}deg)`,
-    background: gameId === activeGameId ? `yellow` : `#f3f7fa`,
+    background: background,
   };
 };
 
@@ -65,6 +84,7 @@ const MiniPanel: React.FC<Props> = ({
   onChange,
   gameIds,
   isSuperAdmin,
+  roundTimerGame,
 }) => {
   const getAvailableGames = (editingId = 0) => {
     let result: Game[] = [];
@@ -92,6 +112,8 @@ const MiniPanel: React.FC<Props> = ({
   let [editedGameSetting, setEditedGameSetting] = useState({
     index: -1,
     value: getDefaultGameIdToAdd(),
+    default: false,
+    enableRoundTimer: false,
   });
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -182,12 +204,17 @@ const MiniPanel: React.FC<Props> = ({
       destinationIndex: -1,
     });
     setActiveGameId(-1);
-    onChange(miniPanelGameIds);
+    onChange(miniPanelGameIds, roundTimerGame);
   };
 
   const addHandler = (e) => {
     setAvailableGameIds(getAvailableGames());
-    setEditedGameSetting({ index: -1, value: getDefaultGameIdToAdd() });
+    setEditedGameSetting({
+      index: -1,
+      value: getDefaultGameIdToAdd(),
+      default: false,
+      enableRoundTimer: false,
+    });
     openModal();
   };
 
@@ -198,10 +225,27 @@ const MiniPanel: React.FC<Props> = ({
       } else {
         miniPanelGameIds.push(editedGameSetting.value);
       }
-      onChange(miniPanelGameIds);
     }
-
+    saveRoundTimerGame();
+    onChange(miniPanelGameIds, roundTimerGame);
     closeModal();
+  };
+
+  const saveRoundTimerGame = () => {
+    if (editedGameSetting.enableRoundTimer) {
+      if (!roundTimerGame?.gameIds?.includes(editedGameSetting.value)) {
+        roundTimerGame?.gameIds.push(editedGameSetting.value);
+      }
+
+      if (editedGameSetting.default) {
+        roundTimerGame.main = editedGameSetting.value;
+      }
+    } else {
+      const index = roundTimerGame.gameIds.indexOf(editedGameSetting.value);
+      if (index !== -1) {
+        roundTimerGame.gameIds.splice(index, 1);
+      }
+    }
   };
 
   const deleteGame = () => {
@@ -210,7 +254,7 @@ const MiniPanel: React.FC<Props> = ({
     );
     if (index >= 0) {
       miniPanelGameIds.splice(index, 1);
-      onChange(miniPanelGameIds);
+      onChange(miniPanelGameIds, roundTimerGame);
     }
     closeModal();
   };
@@ -224,15 +268,32 @@ const MiniPanel: React.FC<Props> = ({
 
   const clickEditMiniPanel = (e, index, item) => {
     e.stopPropagation();
-
+    const enableDisplayRoundTimer = isRoundTimerGame(item);
+    const defaultMain = isDefaultMainCollapsed(item);
     setAvailableGameIds(getAvailableGames(item));
-    setEditedGameSetting({ index, value: item });
+    setEditedGameSetting({
+      index,
+      value: item,
+      default: defaultMain,
+      enableRoundTimer: enableDisplayRoundTimer,
+    });
     openModal();
   };
 
   const getGameName = (id) => {
     const gameName = gameIds.find((gameId) => gameId.value == id)?.text;
     return !gameName ? "Home" : gameName;
+  };
+
+  const isRoundTimerGame = (item) => {
+    return roundTimerGame?.gameIds?.includes(item) ?? false;
+  };
+
+  const isDefaultMainCollapsed = (item) => roundTimerGame?.main === item;
+
+  const setRoundTimerGame = (value, name) => {
+    editedGameSetting[name] = value;
+    setEditedGameSetting(editedGameSetting);
   };
 
   return (
@@ -255,7 +316,8 @@ const MiniPanel: React.FC<Props> = ({
                 miniPanelGameIds.length + 1,
                 index,
                 item,
-                activeGameId
+                activeGameId,
+                roundTimerGame
               )}
             >
               <span>{getGameName(item)}</span>
@@ -362,6 +424,30 @@ const MiniPanel: React.FC<Props> = ({
                 </option>
               ))}
             </select>
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
+              defaultChecked={editedGameSetting.default}
+              onChange={(e) => setRoundTimerGame(e.target.checked, "default")}
+              name="default"
+              id="default"
+            />
+            <label className="control-label" htmlFor="default">
+              Default
+            </label>
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
+              defaultChecked={editedGameSetting.enableRoundTimer}
+              onChange={(e) => setRoundTimerGame(e.target.checked, "enableRoundTimer")}
+              name="enableDisplayRoundTimer"
+              id="enableDisplayRoundTimer"
+            />
+            <label className="control-label" htmlFor="enableDisplayRoundTimer">
+              Enable Display Round Timer
+            </label>
           </div>
           <div className="form-group text-right">
             {isEditing() && (

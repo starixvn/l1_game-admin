@@ -1,6 +1,8 @@
 export type Game = {
   value: string;
   text: string;
+  isMain: boolean;
+  enableRoundTimer: boolean;
 };
 
 export type Banner = {
@@ -35,4 +37,9 @@ export type Category = {
 
 export type LobbyConfig = {
   categories: Category[];
+};
+
+export type RoundTimerGame  = {
+  gameIds: number[];
+  main: number;
 };
