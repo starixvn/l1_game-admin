@@ -27,6 +27,7 @@ using Refit;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -38,7 +39,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
             var refitSettings = new RefitSettings
             {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
