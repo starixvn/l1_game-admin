@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GamesAdmin.Api.GeneralGameSettings;
+using GamesAdmin.Api.RoundWatcher;
 using GamesAdmin.Core.Models.Lobby;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities.Currencies;
@@ -34,18 +35,21 @@ namespace GamesAdmin.Api.Lobby
         private readonly IMapper mapper;
         private readonly IGenericRepository<CurrencyGroupEntity> currencyGroupRepository;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly IRoundWatcherService roundWatcherService;
 
         public LobbyService(IGenericRepository<LobbyEntity> lobbyRepository,
             ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<CurrencyGroupEntity> currencyGroupRepository,
-            IGeneralGameSettingService generalGameSettingService)
+            IGeneralGameSettingService generalGameSettingService,
+            IRoundWatcherService roundWatcherService)
         {
             this.lobbyRepository = lobbyRepository;
             this.sentryClient = sentryClient;
             this.mapper = mapper;
             this.currencyGroupRepository = currencyGroupRepository;
             this.generalGameSettingService = generalGameSettingService;
+            this.roundWatcherService = roundWatcherService;
         }
 
         public async Task<string> CreateOrUpdate(LobbyModel lobbyModel)
@@ -65,8 +69,7 @@ namespace GamesAdmin.Api.Lobby
                 {
                     var currencyGroups = (await currencyGroupRepository.FilterByAsync(entity => true)).ToList();
                     var gameSettings = await generalGameSettingService.GetAll();
-                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups, gameSettings.ToList());
-
+                    var log = LobbyLog.BuildChangedLog(existingLobbyEntity, lobbyEntity, currencyGroups, gameSettings.ToList());        
                     sentryClient.CaptureMessage(string.Format("Updated Lobby \"{0}\": \n\n{1}", lobbyModel.Name, log), SentryLevel.Error);
                     var update = Builders<LobbyEntity>.Update
                         .Set(field => field.Name, lobbyEntity.Name)
@@ -78,7 +81,11 @@ namespace GamesAdmin.Api.Lobby
 
                     await lobbyRepository.UpdateAsync(entity => entity.Id == lobbyEntity.Id, update);
                 }
-
+                bool hasChangeRoundTimer = LobbyLog.HasChange(existingLobbyEntity?.RoundTimerGame, lobbyEntity.RoundTimerGame);
+                if (hasChangeRoundTimer)
+                {
+                    await roundWatcherService.NotifyToWatcher(new RoundWatcherRequest(lobbyEntity.CurrencyGroupIds, lobbyEntity.RoundTimerGame));
+                }
                 return lobbyEntity.Id.ToString();
             }
             catch (Exception ex)

@@ -65,6 +65,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IDomainService, DomainService>();
             services.AddScoped<IRTPVerifyService, RTPVeirfyService>();
+            services.AddScoped<IRoundWatcherService, RoundWatcherService>();
             services.AddScoped<IGameServerService, GameServerService>();
 
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
@@ -114,6 +115,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IFanTanOnlineUserApi>(appSettings.GameServers.FanTan.Api, refitSettings));
             services.AddSingleton(RestService.For<IWinThreeCardsOnlineUserApi>(appSettings.GameServers.WinThreeCards.Api, refitSettings));
             services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
