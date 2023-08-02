@@ -22,6 +22,7 @@ const EditLobby: React.FC = () => {
 
   let [miniPanelGameIds, setMiniPanelGameIds] = useState([]);
   let [gameIds, setGameIds] = useState([]);
+  let [gameSettings, setGameSettings] = useState<any>({});
   let [currencyGroupIds, setCurrencyGroupIds] = useState([]);
   let [banners, setBanners] = useState([]);
   let [currentLobbyConfigs, setCurrentLobbyConfigs] = useState<any>({});
@@ -45,32 +46,32 @@ const EditLobby: React.FC = () => {
   }, []);
 
   const initLobbyConfig = async () => {
+   
     const res = await axios(`/lobby/GetLobbyConfig?id=${id}`);
-    setGameIds(res.data.gameIds);
-    const defaultCurrencyGroupIds = res.data.currencyGroupModels.map(
+    const { gameIds, currencyGroupModels, isSuperAdmin, gameSettings, partners } = res.data;
+    setGameIds(gameIds);
+    const defaultCurrencyGroupIds = currencyGroupModels.map(
       (currencyGroup) => currencyGroup.id
     );
     setCurrencyGroupIds(defaultCurrencyGroupIds);
-    setIsSuperAdmin(res.data.isSuperAdmin);
-
-    if (res.data.lobbyConfig) {
+    setIsSuperAdmin(isSuperAdmin);
+    setGameSettings(gameSettings);
+    if (res.data.lobbyConfig) { 
+      debugger
       setName(res.data.lobbyConfig.name);
       setCurrencyGroupIds(res.data.lobbyConfig.currencyGroupIds);
       setMiniPanelGameIds(res.data.lobbyConfig.miniPanelGameIds);
       setBanners(res.data.lobbyConfig.banners);
-      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame);
+      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame ?? {games:[], main: -1});
 
       // update context categories
       lobbyConfig.categories = res.data.lobbyConfig.categories;
       setLobbyConfig({ ...lobbyConfig });
       cloneAndSetLobbyConfig(res.data.lobbyConfig);
     }
-    else{
-      setRoundTimerGame({gameIds:[], main: -1});
-    }
     initCurrencyGroupMultipleSelect(
-      res.data.partners,
-      res.data.currencyGroupModels,
+      partners,
+      currencyGroupModels,
       res.data.lobbyConfig?.currencyGroupIds
     );
   };
@@ -342,6 +343,7 @@ const EditLobby: React.FC = () => {
             gameIds={gameIds}
             isSuperAdmin={isSuperAdmin}
             roundTimerGame={roundTimerGame}
+            gameSettings={gameSettings}
           />
 
           <Banners

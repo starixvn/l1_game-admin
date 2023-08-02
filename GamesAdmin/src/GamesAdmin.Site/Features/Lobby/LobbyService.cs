@@ -65,14 +65,17 @@ namespace GamesAdmin.Site.Features.Lobby
             var allLobbyConfigs = await this.lobbyApi.GetAll();
             var lobbyConfig = string.IsNullOrEmpty(id) || id == "undefined" ? null : await this.lobbyApi.Get(id);
             var otherLobbyConfigCurrencyGroups = allLobbyConfigs.Where(config => config.Id != lobbyConfig?.Id)
-                .Select(config => config.CurrencyGroupIds).ToArray()
+                .Select(config => config.CurrencyGroupIds)
                 .SelectMany(currencygroup => currencygroup).Distinct();
+
+            var generalGameSettings = await generalGameSettingService.GetAllGames();
 
             var viewModel = new CreateOrUpdateViewModel
             {
                 Partners = await partnerService.GetAll(),
                 CurrencyGroupModels = (await this.currencyGroupApi.GetAll()).Where(currencyGroup => !otherLobbyConfigCurrencyGroups.Contains(currencyGroup.Id)),
-                GameIds = (await generalGameSettingService.GetAllGames())
+                GameSettings = generalGameSettings,
+                GameIds = generalGameSettings
                 .Where(x => x.GameId != 0)
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.GameId.ToString() })
                 .ToList(),

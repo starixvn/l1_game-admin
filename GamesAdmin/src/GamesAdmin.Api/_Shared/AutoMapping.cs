@@ -519,7 +519,7 @@ namespace GamesAdmin.Api._Shared
              }))
               .ForMember(x => x.RoundTimerGame, opt => opt.MapFrom((source) => new RoundTimerGame
               {
-                  GameIds = source.RoundTimerGame.GameIds,
+                  Games = source.RoundTimerGame.Games.Select(game => new Game { Id = game.GameId, Name = game.Name }).ToArray(),
                   Main = source.RoundTimerGame.Main
               }))
              .ForMember(x => x.Banners, opt => opt.MapFrom((source, destination, i, context) =>
@@ -541,7 +541,7 @@ namespace GamesAdmin.Api._Shared
               .ForMember(x => x.Id, opt => opt.MapFrom((source) => ObjectId.Parse(source.Id)))
               .ForMember(x => x.RoundTimerGame, opt => opt.MapFrom((source) => new RoundTimerGameEntity
                {
-                   GameIds = source.RoundTimerGame.GameIds,
+                   Games = source.RoundTimerGame.Games.Select(game=> new GameEnitity { GameId = game.Id, Name = game.Name }).ToArray(),
                    Main = source.RoundTimerGame.Main
                 }))
               .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>

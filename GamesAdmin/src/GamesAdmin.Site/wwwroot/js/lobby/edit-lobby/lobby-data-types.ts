@@ -40,6 +40,11 @@ export type LobbyConfig = {
 };
 
 export type RoundTimerGame  = {
-  gameIds: number[];
+  games: GameInfo[];
   main: number;
+};
+
+export type GameInfo = {
+  id: number;
+  name: string;
 };

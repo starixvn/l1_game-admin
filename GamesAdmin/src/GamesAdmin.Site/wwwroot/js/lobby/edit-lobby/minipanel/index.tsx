@@ -10,6 +10,7 @@ type Props = {
   onChange: (gameIds: number[], roundTimerGame: RoundTimerGame) => void;
   isSuperAdmin: boolean;
   roundTimerGame: RoundTimerGame;
+  gameSettings: any;
 };
 
 const reorder = (list: number[], startIndex, endIndex): number[] => {
@@ -45,7 +46,7 @@ const getInnerItemInCircleStyle = (
   roundTimerGame
 ) => {
   const delta = 360 / total;
-  const enable = roundTimerGame?.gameIds?.includes(gameId);
+  const enable = roundTimerGame?.games?.some(game=>game.id === gameId);
   const isMain = roundTimerGame?.main === gameId;
 
   const background =
@@ -85,6 +86,7 @@ const MiniPanel: React.FC<Props> = ({
   gameIds,
   isSuperAdmin,
   roundTimerGame,
+  gameSettings
 }) => {
   const getAvailableGames = (editingId = 0) => {
     let result: Game[] = [];
@@ -233,18 +235,20 @@ const MiniPanel: React.FC<Props> = ({
 
   const saveRoundTimerGame = () => {
     if (editedGameSetting.enableRoundTimer) {
-      if (!roundTimerGame?.gameIds?.includes(editedGameSetting.value)) {
-        roundTimerGame?.gameIds.push(editedGameSetting.value);
+      const gameId = editedGameSetting.value;
+      const gameExists = roundTimerGame?.games.some(game => game.id === gameId);
+      
+      if (!gameExists) {
+        const gameName = gameSettings.find(setting => setting.gameId === gameId);
+        const gameInfo = { id: gameId, name: gameName.name };
+        roundTimerGame?.games.push(gameInfo);
       }
-
+  
       if (editedGameSetting.default) {
-        roundTimerGame.main = editedGameSetting.value;
+        roundTimerGame.main = gameId;
       }
     } else {
-      const index = roundTimerGame.gameIds.indexOf(editedGameSetting.value);
-      if (index !== -1) {
-        roundTimerGame.gameIds.splice(index, 1);
-      }
+      roundTimerGame.games = roundTimerGame.games.filter(game => game.id !== editedGameSetting.value);
     }
   };
 
@@ -254,8 +258,11 @@ const MiniPanel: React.FC<Props> = ({
     );
     if (index >= 0) {
       miniPanelGameIds.splice(index, 1);
-      onChange(miniPanelGameIds, roundTimerGame);
     }
+    if(roundTimerGame?.games){
+      roundTimerGame.games = roundTimerGame.games.filter(game => game.id !== editedGameSetting.value);
+    }
+    onChange(miniPanelGameIds, roundTimerGame);
     closeModal();
   };
 
@@ -286,7 +293,7 @@ const MiniPanel: React.FC<Props> = ({
   };
 
   const isRoundTimerGame = (item) => {
-    return roundTimerGame?.gameIds?.includes(item) ?? false;
+    return roundTimerGame?.games?.some(game => game.id === item) ?? false;
   };
 
   const isDefaultMainCollapsed = (item) => roundTimerGame?.main === item;

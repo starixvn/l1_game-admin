@@ -60,8 +60,16 @@ namespace GamesAdmin.Database.Entities.Lobby
 
     public class RoundTimerGameEntity
     {
-        public int[] GameIds { get; set; }
+        public GameEnitity[] Games { get; set; }
 
         public int Main { get; set; }
+    }
+
+    public class GameEnitity
+    {
+        [BsonElement("id")]
+        public int GameId { get; set; }
+
+        public string Name { get; set; }
     }
 }

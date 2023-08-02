@@ -51,8 +51,15 @@
 
     public class RoundTimerGame
     {
-        public int[] GameIds { get; set; }
+        public Game[] Games { get; set; }
 
         public int Main { get; set; }
+    }
+
+    public class Game
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
     }
 }
