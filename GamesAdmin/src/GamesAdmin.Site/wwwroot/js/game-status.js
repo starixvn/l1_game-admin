@@ -664,7 +664,8 @@
   
             $(id).show();
             $(headerId).addClass("active");
-        },   
+        },
+
         toggleMode: function () {
             const mode = $('#modeItem').val();
             const easyMode = document.getElementById('weight-easy-mode').value;
