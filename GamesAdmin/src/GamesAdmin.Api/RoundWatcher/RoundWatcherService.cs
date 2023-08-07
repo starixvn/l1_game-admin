@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Api.RoundWatcher;
+﻿using GamesAdmin.Api.Lobby;
+using GamesAdmin.Api.RoundWatcher;
 using Refit;
 using Sentry;
 using System;
@@ -9,12 +10,12 @@ namespace GamesAdmin.Api
     public interface IRoundWatcherServiceApi
     {
         [Post("/api/lobby")]
-        Task<bool> NotifyToWatcher([Body] RoundWatcherRequest request);
+        Task<RoundWatcherResult> NotifyToWatcher([Body] RoundWatcherRequest request);
     }
 
     public interface IRoundWatcherService
     {
-        Task<bool> NotifyToWatcher(RoundWatcherRequest request);
+        Task<RoundWatcherResult> NotifyToWatcher(RoundWatcherRequest request);
     }
 
     public class RoundWatcherService : IRoundWatcherService
@@ -28,17 +29,18 @@ namespace GamesAdmin.Api
             this.roundWatcherServiceApi = roundWatcherServiceApi;
         }
 
-        public async Task<bool> NotifyToWatcher(RoundWatcherRequest request)
+        public async Task<RoundWatcherResult> NotifyToWatcher(RoundWatcherRequest request)
         {
             try
             {
-                return await roundWatcherServiceApi.NotifyToWatcher(request);
+                var result = await roundWatcherServiceApi.NotifyToWatcher(request);
+                return result;
             }
             catch (Exception ex)
             {
                 sentryClient.CaptureException(ex);
+                return new RoundWatcherResult();
             }
-            return false;
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using GamesAdmin.Api._Shared;
 using GamesAdmin.Core.Models.Lobby;
-using GamesAdmin.Database.Entities.Lobby;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,6 +39,12 @@ namespace GamesAdmin.Api.Lobby
         public Task<IEnumerable<LobbyModel>> GetAll()
         {
             return this.lobbyService.GetAll();
+        }
+
+        [HttpGet("getRoundTimerGame")]
+        public Task<Game[]> GetRoundTimerGame()
+        {
+            return this.lobbyService.UniqueRoundTimerGameAllMarket();
         }
     }
 }

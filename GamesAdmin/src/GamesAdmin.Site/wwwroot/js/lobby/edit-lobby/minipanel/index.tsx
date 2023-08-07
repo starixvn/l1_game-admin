@@ -236,7 +236,7 @@ const MiniPanel: React.FC<Props> = ({
   const saveRoundTimerGame = () => {
     if (editedGameSetting.enableRoundTimer) {
       const gameId = editedGameSetting.value;
-      const gameExists = roundTimerGame?.games.some(game => game.id === gameId);
+      const gameExists = roundTimerGame?.games?.some(game => game.id === gameId);
       
       if (!gameExists) {
         const gameName = gameSettings.find(setting => setting.gameId === gameId);

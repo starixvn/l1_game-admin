@@ -6,7 +6,7 @@ import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import { LobbyConfigProvider } from "./lobby-config-context";
 import Banners from "./banners";
-const _ = require('lodash'); 
+const _ = require("lodash");
 
 declare global {
   var jQuery: any;
@@ -29,7 +29,7 @@ const EditLobby: React.FC = () => {
   let [message, setMessage] = useState({ msg: "", success: true });
   let [createId, setCreateId] = useState(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  let [roundTimerGame, setRoundTimerGame] = useState<any>({});
+  let [roundTimerGame, setRoundTimerGame] = useState<any>({games: [], main: 0});
 
   const timeout = useRef<number>();
 
@@ -46,9 +46,14 @@ const EditLobby: React.FC = () => {
   }, []);
 
   const initLobbyConfig = async () => {
-   
     const res = await axios(`/lobby/GetLobbyConfig?id=${id}`);
-    const { gameIds, currencyGroupModels, isSuperAdmin, gameSettings, partners } = res.data;
+    const {
+      gameIds,
+      currencyGroupModels,
+      isSuperAdmin,
+      gameSettings,
+      partners,
+    } = res.data;
     setGameIds(gameIds);
     const defaultCurrencyGroupIds = currencyGroupModels.map(
       (currencyGroup) => currencyGroup.id
@@ -56,13 +61,13 @@ const EditLobby: React.FC = () => {
     setCurrencyGroupIds(defaultCurrencyGroupIds);
     setIsSuperAdmin(isSuperAdmin);
     setGameSettings(gameSettings);
-    if (res.data.lobbyConfig) { 
-      debugger
+
+    if (res.data.lobbyConfig) {
       setName(res.data.lobbyConfig.name);
       setCurrencyGroupIds(res.data.lobbyConfig.currencyGroupIds);
       setMiniPanelGameIds(res.data.lobbyConfig.miniPanelGameIds);
       setBanners(res.data.lobbyConfig.banners);
-      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame ?? {games:[], main: -1});
+      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame);
 
       // update context categories
       lobbyConfig.categories = res.data.lobbyConfig.categories;
@@ -158,7 +163,7 @@ const EditLobby: React.FC = () => {
       (currency) => currency.checked === false || currency.checked === undefined
     );
   };
-  const onChangeMiniPanel = (miniPanelGameIds, roundTimerGame) => {    
+  const onChangeMiniPanel = (miniPanelGameIds, roundTimerGame) => {
     setMiniPanelGameIds(miniPanelGameIds);
     setRoundTimerGame(roundTimerGame);
   };
@@ -179,7 +184,9 @@ const EditLobby: React.FC = () => {
     clonedLobbyConfigs.currencyGroupIds = lobbyConfigs.currencyGroupIds.slice();
     clonedLobbyConfigs.miniPanelGameIds = lobbyConfigs.miniPanelGameIds.slice();
     clonedLobbyConfigs.name = lobbyConfigs.name;
-    clonedLobbyConfigs.roundTimerGame = _.cloneDeep(lobbyConfigs.roundTimerGame);
+    clonedLobbyConfigs.roundTimerGame = _.cloneDeep(
+      lobbyConfigs.roundTimerGame
+    );
     clonedLobbyConfigs.banners = lobbyConfigs.banners.map((banner) =>
       Object.assign({}, banner)
     );
@@ -204,7 +211,11 @@ const EditLobby: React.FC = () => {
   };
 
   const hasChange = () => {
-    console.log("difference", roundTimerGame, currentLobbyConfigs.roundTimerGame);
+    console.log(
+      "difference",
+      roundTimerGame,
+      currentLobbyConfigs.roundTimerGame
+    );
     let result = false;
     if (currentLobbyConfigs.name !== name) {
       result = true;
@@ -254,7 +265,7 @@ const EditLobby: React.FC = () => {
       categories: lobbyConfig.categories,
       miniPanelGameIds,
       banners,
-      roundTimerGame
+      roundTimerGame,
     };
     const valid = validateLobbyConfig();
 
@@ -267,7 +278,7 @@ const EditLobby: React.FC = () => {
         banners,
         categories: lobbyConfig.categories,
         name,
-        roundTimerGame
+        roundTimerGame,
       });
 
       setMsg("Updated successfully!", true);

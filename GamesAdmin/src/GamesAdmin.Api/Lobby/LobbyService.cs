@@ -26,6 +26,8 @@ namespace GamesAdmin.Api.Lobby
         Task<LobbyModel> Get(string id);
 
         Task<bool> Delete(string id);
+
+        Task<Game[]> UniqueRoundTimerGameAllMarket();
     }
 
     public class LobbyService : ILobbyService
@@ -84,7 +86,8 @@ namespace GamesAdmin.Api.Lobby
                 bool hasChangeRoundTimer = LobbyLog.HasChange(existingLobbyEntity?.RoundTimerGame, lobbyEntity.RoundTimerGame);
                 if (hasChangeRoundTimer)
                 {
-                    await roundWatcherService.NotifyToWatcher(new RoundWatcherRequest(lobbyEntity.CurrencyGroupIds, lobbyEntity.RoundTimerGame));
+                    var games = await UniqueRoundTimerGameAllMarket();
+                    await roundWatcherService.NotifyToWatcher(new RoundWatcherRequest(games));
                 }
                 return lobbyEntity.Id.ToString();
             }
@@ -146,5 +149,25 @@ namespace GamesAdmin.Api.Lobby
                 return Enumerable.Empty<LobbyModel>();
             }
         }
+
+        public async Task<Game[]> UniqueRoundTimerGameAllMarket()
+        {
+            try
+            {
+                var games = Array.Empty<Game>();
+                var lobbies = await GetAll();
+                foreach(var lobby in lobbies)
+                {
+                    games = games.Concat(lobby.RoundTimerGame?.Games).ToArray();
+                }
+                return games.Distinct(new GetUniqueGameId()).ToArray();
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return Array.Empty<Game>();
+            }
+        } 
     }
 }

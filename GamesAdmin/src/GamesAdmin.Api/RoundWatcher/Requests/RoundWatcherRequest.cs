@@ -1,17 +1,14 @@
-﻿using GamesAdmin.Database.Entities.Lobby;
+﻿using GamesAdmin.Core.Models.Lobby;
 using MediatR;
 
 namespace GamesAdmin.Api.RoundWatcher
 {
-    public class RoundWatcherRequest : IRequest<bool>
+    public class RoundWatcherRequest : IRequest<RoundWatcherResult>
     {
-        public RoundWatcherRequest(string[] currencyGroupIds, RoundTimerGameEntity roundTimerGame)
+        public RoundWatcherRequest(Game[] games)
         {
-            this.currencyGroupIds = currencyGroupIds;
-            this.roundTimerGame = roundTimerGame;
+            Games = games;
         }
-        public string[] currencyGroupIds { get; }
-
-        public RoundTimerGameEntity roundTimerGame { get; set; }
+        public Game[] Games { get; }
     }
 }
