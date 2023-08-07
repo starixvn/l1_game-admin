@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
+using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.Currencies;
+using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.ExchangeRates;
 using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
@@ -57,6 +60,7 @@ namespace GamesAdmin.Site.Features.Report
         private readonly ISystemSettings systemSettings;
         private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ResourceSiteConfiguration resourceSiteConfig;
+        private readonly ICurrencyGroupGameService currencyGroupGameService;
 
         public ReportHandler(
             IReportService reportService,
@@ -68,7 +72,8 @@ namespace GamesAdmin.Site.Features.Report
             IReportServiceFactory reportServiceFactory,
             ISystemSettings systemSettings,
             IGeneralGameSettingService generalGameSettingService,
-            IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig)
+            IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig,
+            ICurrencyGroupGameService currencyGroupGameService)
         {
             this.reportService = reportService;
             this.appSettings = appSettings;
@@ -80,6 +85,7 @@ namespace GamesAdmin.Site.Features.Report
             this.systemSettings = systemSettings;
             this.generalGameSettingService = generalGameSettingService;
             this.resourceSiteConfig = resourceSiteConfig.Value;
+            this.currencyGroupGameService = currencyGroupGameService;
         }
 
         public async Task<BigSmallReportResultViewModel> Handle(GetBigSmallReportRequest request, CancellationToken cancellationToken)
@@ -452,14 +458,25 @@ namespace GamesAdmin.Site.Features.Report
         public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
-
+            var currencies = await currencyService.GetAll();
+            var currencyGroupGame = await currencyGroupGameService.GetAll();
+            var stakeLevelBase = GetBaseStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
             return result.Select(x =>
-            {
+            {            
                 var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
+                betViewModel.BaseStakeLevel = stakeLevelBase;
+                betViewModel.StakeLevelByCurrency = GetBaseStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);             
                 betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                 betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
                 return betViewModel;
             }).OrderByDescending(x => x.Time);
+        }
+
+        private static StakeLevel[] GetBaseStakeLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)
+        {
+            var currency = currencies.FirstOrDefault(x => x.Name == name);
+            var currencyGame = currencyGroupGame.FirstOrDefault(currencyGroup => currencyGroup.GameId == gameId && currencyGroup.GroupId == currency.GroupId);
+            return currencyGame?.StakeLevels;
         }
 
         public async Task<BitcoinMasterReportResultViewModel> Handle(GetBitcoinMasterReportRequest request, CancellationToken cancellationToken)

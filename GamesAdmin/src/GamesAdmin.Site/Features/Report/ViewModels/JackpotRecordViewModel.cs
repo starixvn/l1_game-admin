@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GamesAdmin.Core.Models.GameConfigs;
+using System;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -24,12 +25,29 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal Rate { get; set; }
 
+        public StakeLevel[] BaseStakeLevel { get; set; }
+
+        public StakeLevel[] StakeLevelByCurrency { get; set; }
+
         public void ConvertToUserCurrency(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (isConvert)
             {
-                WinningAmount /= (decimal)Rate / baseCurrencyMultiplier;            
+                WinningAmount /= (decimal)Rate / baseCurrencyMultiplier;
+                Pool = ConvertPool();
             }
+        }
+
+        private decimal ConvertPool()
+        {
+            var indexToGetValue = Array.FindIndex(BaseStakeLevel, stakeLevel => (decimal)stakeLevel.Stake == Pool);
+            if (indexToGetValue >= 0 && indexToGetValue < StakeLevelByCurrency.Length)
+            {
+                var value = StakeLevelByCurrency[indexToGetValue];
+                return (decimal)value.Stake;
+            }
+
+            return Pool;
         }
     }
 }
