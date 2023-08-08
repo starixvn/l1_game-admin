@@ -460,19 +460,19 @@ namespace GamesAdmin.Site.Features.Report
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
-            var stakeLevelBase = GetBaseStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
+            var stakeLevelBase = GetStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
             return result.Select(x =>
             {            
                 var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
                 betViewModel.BaseStakeLevel = stakeLevelBase;
-                betViewModel.StakeLevelByCurrency = GetBaseStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);             
+                betViewModel.StakeLevelByCurrency = GetStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);             
                 betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                 betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
                 return betViewModel;
             }).OrderByDescending(x => x.Time);
         }
 
-        private static StakeLevel[] GetBaseStakeLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)
+        private static StakeLevel[] GetStakeLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)
         {
             var currency = currencies.FirstOrDefault(x => x.Name == name);
             var currencyGame = currencyGroupGame.FirstOrDefault(currencyGroup => currencyGroup.GameId == gameId && currencyGroup.GroupId == currency.GroupId);

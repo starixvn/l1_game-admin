@@ -38,12 +38,12 @@ namespace GamesAdmin.Database.Entities
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime? HitTime { get; set; }
 
-        public int ExchangeRateId { get; set; } = 1;
+        public int ExchangeRateId { get; set; } = 4308;
 
-        public string Currency { get; set; }
+        public string Currency { get; set; } = "INH";
 
-        public string OperatorId { get; set; }
+        public string OperatorId { get; set; } = "ONEworksVGCash";
 
-        public decimal Rate { get; set; } = 1;
+        public decimal Rate { get; set; } = 1000;
     }
 }
