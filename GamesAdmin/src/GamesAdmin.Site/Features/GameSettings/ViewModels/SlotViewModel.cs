@@ -52,7 +52,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public int[][] GetSymbolWeight(string key)
         {
-            if (SymbolWeight.TryGetValue(key, out int[][] symbolWeight))
+            if (SymbolWeight != null && SymbolWeight.TryGetValue(key, out int[][] symbolWeight))
             {
                 return symbolWeight;
             }
