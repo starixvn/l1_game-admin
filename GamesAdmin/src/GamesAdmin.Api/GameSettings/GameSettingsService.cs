@@ -518,26 +518,19 @@ namespace GamesAdmin.Api.Games
                 var keyMode = symbolWeight.Mode.ToString();
                 int[][] weights = symbolWeight.Weight;
 
-                var slotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight;
-                UpdateDefinition<GameConfigEntity> update;
-                if (slotSymbolWeight == null)
-                {
-                    var newSymbolWeight = new Dictionary<string, int[][]> { { keyMode, weights } };
-                    update = Builders<GameConfigEntity>.Update
-                   .Set(field => field.SlotsConfig.SymbolWeight, newSymbolWeight);
-                }
-                else if (!slotSymbolWeight.ContainsKey(keyMode))
+                var slotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
+                if (!slotSymbolWeight.ContainsKey(keyMode))
                 {
                     slotSymbolWeight.Add(keyMode, weights);
-                    update = Builders<GameConfigEntity>.Update
-                   .Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
                 }
                 else
                 {
                     slotSymbolWeight[keyMode] = weights;
-                    update = Builders<GameConfigEntity>.Update
-                    .Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
                 }
+
+                var update = Builders<GameConfigEntity>.Update
+               .Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
+
                 await repository.UpdateAsync(config => config.Name == name, update);
                 return true;
             }
