@@ -512,26 +512,16 @@ namespace GamesAdmin.Api.Games
             try
             {
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
-                var changedSettings = SettingHelper.GetSymbolWeightChangedModel(gameEntity, symbolWeight);
-                sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, changedSettings);
-
                 var keyMode = symbolWeight.Mode.ToString();
-                int[][] weights = symbolWeight.Weight;
 
-                var slotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
-                if (!slotSymbolWeight.ContainsKey(keyMode))
-                {
-                    slotSymbolWeight.Add(keyMode, weights);
-                }
-                else
-                {
-                    slotSymbolWeight[keyMode] = weights;
-                }
+                var slotSymbolWeight = GetUpdatedSlotSymbolWeight(gameEntity.SlotsConfig.SymbolWeight, keyMode, symbolWeight.Weight);
 
-                var update = Builders<GameConfigEntity>.Update
-               .Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
 
                 await repository.UpdateAsync(config => config.Name == name, update);
+
+                sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(gameEntity, symbolWeight));
+
                 return true;
             }
             catch (Exception ex)
@@ -540,6 +530,22 @@ namespace GamesAdmin.Api.Games
 
                 return false;
             }
+        }
+
+        private static Dictionary<string, int[][]> GetUpdatedSlotSymbolWeight(Dictionary<string, int[][]> existingSlotSymbolWeight, string keyMode, int[][] weights)
+        {
+            var slotSymbolWeight = existingSlotSymbolWeight ?? new Dictionary<string, int[][]>();
+
+            if (!slotSymbolWeight.ContainsKey(keyMode))
+            {
+                slotSymbolWeight.Add(keyMode, weights);
+            }
+            else
+            {
+                slotSymbolWeight[keyMode] = weights;
+            }
+
+            return slotSymbolWeight;
         }
     }
 }

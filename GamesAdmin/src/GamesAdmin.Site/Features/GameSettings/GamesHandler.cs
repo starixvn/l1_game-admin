@@ -17,7 +17,6 @@ using GamesAdmin.Site.Features.GameSettings.ViewModels;
 using GamesAdmin.Site.Features.GameUsers;
 using GamesAdmin.Site.Features.Partners;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GamesAdmin.Site.Features.GameSettings

@@ -2,10 +2,6 @@
 {
     public class SymbolWeight
     {
-        public SymbolWeight()
-        {
-
-        }
         public SymbolWeight(byte mode, int[][] weight)
         {
             Mode = mode;

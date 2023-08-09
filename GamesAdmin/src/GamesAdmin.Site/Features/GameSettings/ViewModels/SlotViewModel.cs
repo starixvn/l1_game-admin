@@ -57,7 +57,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
                 return symbolWeight;
             }
 
-            return default;
+            return Array.Empty<int[]>();
         }
     }
 }

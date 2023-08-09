@@ -441,13 +441,19 @@ namespace GamesAdmin.Site.Features.Report
         {
             if (Game.FourGuardians.Value == game)
             {
-                var games = await generalGameSettingService.GetAllGames();
-                var gameInfo = games.FirstOrDefault(game => game.Name == Game.FourGuardians.Value);
-                return gameInfo.IsEnabledJackpot;
+                var gameInfo = await GetGameInfoByName(Game.FourGuardians.Value);
+                return gameInfo?.IsEnabledJackpot ?? false;
             }
 
             return false;
         }
+
+        private async Task<GeneralGameSetting> GetGameInfoByName(string gameName)
+        {
+            var games = await generalGameSettingService.GetAllGames();
+            return games.FirstOrDefault(game => game.Name == gameName);
+        }
+
         public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetLuckyWheelBetHistory(request.Nickname);
