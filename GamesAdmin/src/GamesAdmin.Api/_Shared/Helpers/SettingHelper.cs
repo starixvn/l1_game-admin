@@ -13,21 +13,25 @@ namespace GamesAdmin.Api._Shared.Helpers
     {
         private static string BotRatioFormat = "#,##0.####";
 
-        public static List<SettingChangedModel> GetSymbolWeightChangedModel(GameConfigEntity oldConfig, SymbolWeight newConfig)
+        public static List<SettingChangedModel> GetSymbolWeightChangedModel(Dictionary<string, int[][]> oldSymbolWeight, SymbolWeight newConfig)
         {
-            var symbolWeight = oldConfig.SlotsConfig.SymbolWeight;
-            var weight = symbolWeight?.ContainsKey(newConfig.Mode.ToString()) == true ? ConvertMatrixToString(symbolWeight[newConfig.Mode.ToString()]) : string.Empty;
-            var changedSettings = new List<SettingChangedModel>
+            var weight = oldSymbolWeight?.ContainsKey(newConfig.Mode.ToString()) == true ? oldSymbolWeight[newConfig.Mode.ToString()] : null;
+            var changedSettings = new List<SettingChangedModel>();
+         
+            for (var i = 0; i < newConfig.Weight.Length; i++)
             {
-                new SettingChangedModel("Weight", weight, ConvertMatrixToString(newConfig.Weight)),
-            };
-
+                var oldText = weight == null ? string.Empty : ConvertMatrixToString(weight[i]);
+                var newText = ConvertMatrixToString(newConfig.Weight[i]);
+                var setting = new SettingChangedModel($"Weight Row {i + 1}", oldText, newText);
+                changedSettings.Add(setting);               
+            }
+            
             return changedSettings;
         }
 
-        private static string  ConvertMatrixToString (int[][] weights)
+        private static string  ConvertMatrixToString (int[] row)
         {
-            return string.Join("\r\n", weights.Select(row => string.Join(",", row)));
+            return string.Join(", ", row);
         }
 
         public static List<SettingChangedModel> GetCurrencyGroupGameChangedModel(CurrencyGroupGameEntity oldConfig, CurrencyGroupGame newConfig)

@@ -208,8 +208,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public SlotJackpotContributionViewModel JackpotContribution { get; set; }
 
-        public bool IsFourGuardiansEnabledJackpot { get; set; }
-
         public bool Paid { get; set; }
 
         public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
@@ -227,21 +225,21 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal TotalBonusChests => SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
 
-        public bool IsEnabledJackpot => IconsFolder == Game.FourGuardiansValue ? IsFourGuardiansEnabledJackpot : JackpotContribution != null;
+        public bool IsEnabledJackpot { get; set; }
 
         public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (isConvert)
             {
-                
-                TotalAmount *= (decimal)Rate / baseCurrencyMultiplier;
-                BetWin *= (decimal)Rate / baseCurrencyMultiplier;
-                Bet *= (decimal)Rate / baseCurrencyMultiplier;
-                BonusWinAmount = TotalBonusChests * (decimal)Rate / baseCurrencyMultiplier;
+                var exchangeRate = Rate / baseCurrencyMultiplier;
+                TotalAmount *= exchangeRate;
+                BetWin *= exchangeRate;
+                Bet *= exchangeRate;
+                BonusWinAmount = TotalBonusChests * exchangeRate;
 
                 if (SettlementResult.Jackpot != null)
                 {
-                    SettlementResult.Jackpot.WinningAmount *= (decimal)Rate / baseCurrencyMultiplier;
+                    SettlementResult.Jackpot.WinningAmount *= exchangeRate;
                 }
             }
             else
@@ -264,6 +262,12 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             var totalBetWin = GetTotalBetWin();
 
             return FreeSpin ? totalBetWin : totalBetWin - TotalAmount;
+        }
+
+        public void IsEnableJackpot(bool isVGSystem)
+        {
+            var isFourGuardiansGame = IconsFolder == Game.FourGuardiansValue;
+            IsEnabledJackpot = isFourGuardiansGame ? isVGSystem : JackpotContribution != null;
         }
     }
 

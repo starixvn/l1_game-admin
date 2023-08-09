@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
@@ -58,7 +59,6 @@ namespace GamesAdmin.Site.Features.Report
         private readonly IExchangeRateService exchangeRateService;
         private readonly IReportServiceFactory reportServiceFactory;
         private readonly ISystemSettings systemSettings;
-        private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly ResourceSiteConfiguration resourceSiteConfig;
         private readonly ICurrencyGroupGameService currencyGroupGameService;
 
@@ -71,7 +71,6 @@ namespace GamesAdmin.Site.Features.Report
             IExchangeRateService exchangeRateService,
             IReportServiceFactory reportServiceFactory,
             ISystemSettings systemSettings,
-            IGeneralGameSettingService generalGameSettingService,
             IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig,
             ICurrencyGroupGameService currencyGroupGameService)
         {
@@ -83,7 +82,6 @@ namespace GamesAdmin.Site.Features.Report
             this.exchangeRateService = exchangeRateService;
             this.reportServiceFactory = reportServiceFactory;
             this.systemSettings = systemSettings;
-            this.generalGameSettingService = generalGameSettingService;
             this.resourceSiteConfig = resourceSiteConfig.Value;
             this.currencyGroupGameService = currencyGroupGameService;
         }
@@ -417,7 +415,6 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportService.GetSlotGameReport(request);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-            var isFourGuardiansEnabledJackpot = await IsFourGuardiansJackpot(request.Game);
   
             return new SlotGameReportResultViewModel
             {
@@ -431,27 +428,10 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
-                    betViewModel.IsFourGuardiansEnabledJackpot = isFourGuardiansEnabledJackpot;
+                    betViewModel.IsEnableJackpot(systemSettings.System == SystemType.VG2);
                     return betViewModel;
                 })
             };
-        }
-
-        private async Task<bool> IsFourGuardiansJackpot(string game)
-        {
-            if (Game.FourGuardians.Value == game)
-            {
-                var gameInfo = await GetGameInfoByName(Game.FourGuardians.Value);
-                return gameInfo?.IsEnabledJackpot ?? false;
-            }
-
-            return false;
-        }
-
-        private async Task<GeneralGameSetting> GetGameInfoByName(string gameName)
-        {
-            var games = await generalGameSettingService.GetAllGames();
-            return games.FirstOrDefault(game => game.Name == gameName);
         }
 
         public async Task<LuckyWheelHistoryViewModel> Handle(GetLuckyWheelHistoryRequest request, CancellationToken cancellationToken)

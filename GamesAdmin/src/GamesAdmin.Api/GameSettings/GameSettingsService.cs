@@ -509,18 +509,25 @@ namespace GamesAdmin.Api.Games
 
         public async Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight)
         {
+            if (string.IsNullOrEmpty(name) || symbolWeight.Weight == null || symbolWeight.Weight.Length < 3)
+            {
+                return false;
+            }
+
             try
             {
                 var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var existingSlotSymbolWeight = gameEntity.SlotsConfig.SymbolWeight ?? new Dictionary<string, int[][]>();
+
+                sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(existingSlotSymbolWeight, symbolWeight));
+
                 var keyMode = symbolWeight.Mode.ToString();
 
-                var slotSymbolWeight = GetUpdatedSlotSymbolWeight(gameEntity.SlotsConfig.SymbolWeight, keyMode, symbolWeight.Weight);
+                var slotSymbolWeight = GetUpdatedSlotSymbolWeight(existingSlotSymbolWeight, keyMode, symbolWeight.Weight);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
 
-                await repository.UpdateAsync(config => config.Name == name, update);
-
-                sentryClient.CaptureChangedSettings(name, "Symbol Weight", string.Empty, SettingHelper.GetSymbolWeightChangedModel(gameEntity, symbolWeight));
+                await repository.UpdateAsync(config => config.Name == name, update);              
 
                 return true;
             }
@@ -532,10 +539,8 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        private static Dictionary<string, int[][]> GetUpdatedSlotSymbolWeight(Dictionary<string, int[][]> existingSlotSymbolWeight, string keyMode, int[][] weights)
+        private static Dictionary<string, int[][]> GetUpdatedSlotSymbolWeight(Dictionary<string, int[][]> slotSymbolWeight, string keyMode, int[][] weights)
         {
-            var slotSymbolWeight = existingSlotSymbolWeight ?? new Dictionary<string, int[][]>();
-
             if (!slotSymbolWeight.ContainsKey(keyMode))
             {
                 slotSymbolWeight.Add(keyMode, weights);
