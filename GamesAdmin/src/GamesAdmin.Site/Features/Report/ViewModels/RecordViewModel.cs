@@ -1,5 +1,5 @@
 ﻿using GamesAdmin.Site.Extensions;
-using System;
+using GamesAdmin.Core;
 using System.Collections.Generic;
 using System.Linq;
 using GamesAdmin.Core.Enumeration;
@@ -219,27 +219,27 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public string GameName { get; set; }
         public int ExchangeRateId { get; set; }
         public string IconsFolder => GameName?.ToLowerInvariant();
+
         public string SystemType { get; set; }
 
         public decimal BonusWinAmount { get; set; } 
 
         public decimal TotalBonusChests => SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
 
-        public bool IsEnabledJackpot { get; set; }
+        public bool IsEnabledJackpot => IconsFolder == Game.FourGuardiansValue ? SystemType == "VG2" : JackpotContribution != null;
 
         public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
         {
             if (isConvert)
             {
-                var exchangeRate = Rate / baseCurrencyMultiplier;
-                TotalAmount *= exchangeRate;
-                BetWin *= exchangeRate;
-                Bet *= exchangeRate;
-                BonusWinAmount = TotalBonusChests * exchangeRate;
+                TotalAmount = ConvertCurrency(TotalAmount, baseCurrencyMultiplier);
+                BetWin = ConvertCurrency(BetWin, baseCurrencyMultiplier);
+                Bet = ConvertCurrency(Bet, baseCurrencyMultiplier);
+                BonusWinAmount = ConvertCurrency(TotalBonusChests, baseCurrencyMultiplier);
 
                 if (SettlementResult.Jackpot != null)
                 {
-                    SettlementResult.Jackpot.WinningAmount *= exchangeRate;
+                    SettlementResult.Jackpot.WinningAmount = ConvertCurrency(SettlementResult.Jackpot.WinningAmount, baseCurrencyMultiplier); 
                 }
             }
             else
@@ -247,6 +247,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
                 BonusWinAmount = TotalBonusChests;
             }
         }
+
+        private decimal ConvertCurrency(decimal amount, int baseCurrencyMultiplier) =>
+            amount * Rate / baseCurrencyMultiplier;
 
         public decimal GetTotalBetWin()
         {
@@ -262,12 +265,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             var totalBetWin = GetTotalBetWin();
 
             return FreeSpin ? totalBetWin : totalBetWin - TotalAmount;
-        }
-
-        public void IsEnableJackpot(bool isVGSystem)
-        {
-            var isFourGuardiansGame = IconsFolder == Game.FourGuardiansValue;
-            IsEnabledJackpot = isFourGuardiansGame ? isVGSystem : JackpotContribution != null;
         }
     }
 

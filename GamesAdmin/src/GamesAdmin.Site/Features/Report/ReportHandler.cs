@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Currencies;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
-using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.Currencies;
 using GamesAdmin.Site.Features.CurrencyGroupGames;
 using GamesAdmin.Site.Features.ExchangeRates;
@@ -428,7 +426,6 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
                     betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
-                    betViewModel.IsEnableJackpot(systemSettings.System == SystemType.VG2);
                     return betViewModel;
                 })
             };
