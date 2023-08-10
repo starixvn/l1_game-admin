@@ -46,7 +46,7 @@ const getInnerItemInCircleStyle = (
   roundTimerGame
 ) => {
   const delta = 360 / total;
-  const enable = roundTimerGame?.games?.some(game=>game.id === gameId);
+  const enable = roundTimerGame?.games?.some((game) => game.id === gameId);
   const isMain = roundTimerGame?.main === gameId;
 
   const background =
@@ -86,7 +86,7 @@ const MiniPanel: React.FC<Props> = ({
   gameIds,
   isSuperAdmin,
   roundTimerGame,
-  gameSettings
+  gameSettings,
 }) => {
   const getAvailableGames = (editingId = 0) => {
     let result: Game[] = [];
@@ -236,19 +236,25 @@ const MiniPanel: React.FC<Props> = ({
   const saveRoundTimerGame = () => {
     if (editedGameSetting.enableRoundTimer) {
       const gameId = editedGameSetting.value;
-      const gameExists = roundTimerGame?.games?.some(game => game.id === gameId);
-      
+      const gameExists = roundTimerGame?.games?.some(
+        (game) => game.id === gameId
+      );
+
       if (!gameExists) {
-        const gameName = gameSettings.find(setting => setting.gameId === gameId);
+        const gameName = gameSettings.find(
+          (setting) => setting.gameId === gameId
+        );
         const gameInfo = { id: gameId, name: gameName.name };
         roundTimerGame?.games.push(gameInfo);
       }
-  
+
       if (editedGameSetting.default) {
         roundTimerGame.main = gameId;
       }
     } else {
-      roundTimerGame.games = roundTimerGame.games.filter(game => game.id !== editedGameSetting.value);
+      roundTimerGame.games = roundTimerGame.games.filter(
+        (game) => game.id !== editedGameSetting.value
+      );
     }
   };
 
@@ -259,8 +265,10 @@ const MiniPanel: React.FC<Props> = ({
     if (index >= 0) {
       miniPanelGameIds.splice(index, 1);
     }
-    if(roundTimerGame?.games){
-      roundTimerGame.games = roundTimerGame.games.filter(game => game.id !== editedGameSetting.value);
+    if (roundTimerGame?.games) {
+      roundTimerGame.games = roundTimerGame.games.filter(
+        (game) => game.id !== editedGameSetting.value
+      );
     }
     onChange(miniPanelGameIds, roundTimerGame);
     closeModal();
@@ -293,7 +301,7 @@ const MiniPanel: React.FC<Props> = ({
   };
 
   const isRoundTimerGame = (item) => {
-    return roundTimerGame?.games?.some(game => game.id === item) ?? false;
+    return roundTimerGame?.games?.some((game) => game.id === item) ?? false;
   };
 
   const isDefaultMainCollapsed = (item) => roundTimerGame?.main === item;
@@ -435,25 +443,27 @@ const MiniPanel: React.FC<Props> = ({
           <div className="form-group">
             <input
               type="checkbox"
+              defaultChecked={editedGameSetting.enableRoundTimer}
+              onChange={(e) =>
+                setRoundTimerGame(e.target.checked, "enableRoundTimer")
+              }
+              name="enableDisplayRoundTimer"
+              id="enableDisplayRoundTimer"
+            />
+            <label className="control-label" htmlFor="enableDisplayRoundTimer">
+              Display round timer on Mini game
+            </label>
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
               defaultChecked={editedGameSetting.default}
               onChange={(e) => setRoundTimerGame(e.target.checked, "default")}
               name="default"
               id="default"
             />
             <label className="control-label" htmlFor="default">
-              Default
-            </label>
-          </div>
-          <div className="form-group">
-            <input
-              type="checkbox"
-              defaultChecked={editedGameSetting.enableRoundTimer}
-              onChange={(e) => setRoundTimerGame(e.target.checked, "enableRoundTimer")}
-              name="enableDisplayRoundTimer"
-              id="enableDisplayRoundTimer"
-            />
-            <label className="control-label" htmlFor="enableDisplayRoundTimer">
-              Enable Display Round Timer
+              Default round timer
             </label>
           </div>
           <div className="form-group text-right">
