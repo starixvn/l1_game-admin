@@ -2,6 +2,7 @@
 using GamesAdmin.Core.Models.Lobby;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Lobby
@@ -41,10 +42,18 @@ namespace GamesAdmin.Api.Lobby
             return this.lobbyService.GetAll();
         }
 
+
         [HttpGet("getRoundTimerGame")]
-        public Task<Game[]> GetRoundTimerGame()
+        public async Task<string> GetRoundTimerGame()
         {
-            return this.lobbyService.UniqueRoundTimerGameAllMarket();
+            var games = await this.lobbyService.UniqueRoundTimerGameAllMarket();
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return JsonSerializer.Serialize(games, options);
         }
     }
 }
