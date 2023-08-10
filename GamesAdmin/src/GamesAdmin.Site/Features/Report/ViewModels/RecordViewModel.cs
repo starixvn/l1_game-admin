@@ -192,9 +192,38 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public long RoundId { get; set; }
 
-        public decimal Bet { get; set; }
+        private decimal baseBetWin { get; set; }
 
-        public decimal TotalAmount { get; set; }
+        public new decimal BetWin
+        {
+            get => baseBetWin * CurrencyMultiplier;
+            set
+            {
+                baseBetWin = value;
+            }
+        }
+
+        private decimal baseBet { get; set; }
+
+        public decimal Bet
+        {
+            get => baseBet * CurrencyMultiplier;
+            set
+            {
+                baseBet = value;
+            }
+        }
+
+        private decimal baseTotalAmount { get; set; }
+
+        public decimal TotalAmount
+        {
+            get => baseTotalAmount * CurrencyMultiplier;
+            set
+            {
+                baseTotalAmount = value;
+            }
+        }
 
         public IEnumerable<byte> Paylines { get; set; }
 
@@ -208,11 +237,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public SlotJackpotContributionViewModel JackpotContribution { get; set; }
 
+        private decimal baseJackpotWinningAmount => SettlementResult.Jackpot?.WinningAmount ?? 0;
+
+        public decimal JackpotWinningAmount
+        {
+            get => baseJackpotWinningAmount * CurrencyMultiplier;
+        }
+
         public bool Paid { get; set; }
 
         public byte[][] GetFormatResults() => Result.ToArray().FormatBoard();
 
-        public decimal TotalBetWin => BetWin + (SettlementResult.Jackpot?.WinningAmount ?? 0);
+        public decimal TotalBetWin => BetWin + JackpotWinningAmount;
 
         public decimal WinLoss => FreeSpin ? TotalBetWin : TotalBetWin - TotalAmount;
 
@@ -222,42 +258,20 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string SystemType { get; set; }
 
-        public decimal BonusWinAmount { get; set; } 
+        public decimal BonusWinAmount => TotalBonusChests * CurrencyMultiplier;
+
+        public decimal CurrencyMultiplier { get; set; }
 
         public decimal TotalBonusChests => SettlementResult.Bonus.Odds > 0 ? BonusChests.Where(x => x.Picked).Sum(x => x.Amount) : 0;
 
         public bool IsEnabledJackpot => IconsFolder == Game.FourGuardiansValue ? SystemType == "VG2" : JackpotContribution != null;
 
-        public void ConvertToUSD(bool isConvert, int baseCurrencyMultiplier = 1)
-        {
-            if (isConvert)
-            {
-                TotalAmount = ConvertCurrency(TotalAmount, baseCurrencyMultiplier);
-                BetWin = ConvertCurrency(BetWin, baseCurrencyMultiplier);
-                Bet = ConvertCurrency(Bet, baseCurrencyMultiplier);
-                BonusWinAmount = ConvertCurrency(TotalBonusChests, baseCurrencyMultiplier);
-
-                if (SettlementResult.Jackpot != null)
-                {
-                    SettlementResult.Jackpot.WinningAmount = ConvertCurrency(SettlementResult.Jackpot.WinningAmount, baseCurrencyMultiplier); 
-                }
-            }
-            else
-            {
-                BonusWinAmount = TotalBonusChests;
-            }
-        }
-
-        private decimal ConvertCurrency(decimal amount, int baseCurrencyMultiplier) =>
-            amount * Rate / baseCurrencyMultiplier;
-
         public decimal GetTotalBetWin()
         {
-            var jackpotWinAmount = SettlementResult.Jackpot?.WinningAmount ?? 0;
             var paylineWinningAmount = SettlementResult.WinningPaylines.Sum(payline => payline.Odds) * Bet;
             var betWin = Paid ? BetWin : BonusWinAmount + paylineWinningAmount;
 
-            return jackpotWinAmount + betWin;
+            return JackpotWinningAmount + betWin;
         }
 
         public decimal GetWinLoss()

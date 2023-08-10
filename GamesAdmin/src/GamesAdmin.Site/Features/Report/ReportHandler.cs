@@ -413,7 +413,8 @@ namespace GamesAdmin.Site.Features.Report
         {
             var result = await reportService.GetSlotGameReport(request);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-  
+            
+
             return new SlotGameReportResultViewModel
             {
                 ConvertToUSD = request.ConvertToUSD,
@@ -423,9 +424,9 @@ namespace GamesAdmin.Site.Features.Report
                     betViewModel.SystemType = systemSettings.System;
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.GameName = request.Game;
+                    betViewModel.CurrencyMultiplier = request.ConvertToUSD ? x.Rate / systemSettings.BaseCurrencyMultiplier : 1;
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
                     betViewModel.ExchangeRateId = x.ExchangRateId;
-                    betViewModel.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
                     return betViewModel;
                 })
             };

@@ -6,7 +6,6 @@
 
 
 @model SlotGameRecordViewModel
-
 <table class="table table-bordered table-four-guardians">
     <thead>
         <tr>
@@ -32,7 +31,7 @@
                                     @for (var column = 0; column < array[row].Length; column++)
                                     {
                                         var symbolIndex = array[row][column];
-                                        if(Model.IsEnabledJackpot && symbolIndex == 10)
+                                        if (Model.IsEnabledJackpot && symbolIndex == 10)
                                         {
                                             <td>
                                                 <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(array[row][column]).jackpot.png" />
@@ -41,7 +40,7 @@
                                         }
                                         else
                                         {
-                                             <td>
+                                            <td>
                                                 <img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(array[row][column]).png" />
                                             </td>
                                         }
@@ -80,7 +79,7 @@
                 <td class="text-center">5</td>
                 <td class="text-center">Jackpot</td>
                 <td class="text-right">@HtmlHelpers.formatNumber(Model.Bet)</td>
-                <td class="text-right">@HtmlHelpers.formatNumber(Model.SettlementResult.Jackpot.WinningAmount)</td>
+                <td class="text-right">@HtmlHelpers.formatNumber(Model.JackpotWinningAmount)</td>
             </tr>
         }
         @foreach (var payline in Model.Paylines.Where(x => Model.SettlementResult.WinningPaylines.Any(y => y.Payline == x)))
@@ -90,7 +89,7 @@
 
             <tr>
                 <td class="text-center"><img class="payline" src="@resourceSiteConfig.Value.BaseUrl/_shared/classicslot/payline-@(payline + 1).png" /></td>
-                @if(Model.IsEnabledJackpot && winningPayline.Symbol == "10")
+                @if (Model.IsEnabledJackpot && winningPayline.Symbol == "10")
                 {
                     <td class="text-center"><img class="symbol" src="@resourceSiteConfig.Value.BaseUrl/@Model.IconsFolder/symbol-@(winningPayline.Symbol).jackpot.png" /></td>
                 }
