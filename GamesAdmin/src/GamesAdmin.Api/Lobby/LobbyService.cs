@@ -83,11 +83,10 @@ namespace GamesAdmin.Api.Lobby
 
                     await lobbyRepository.UpdateAsync(entity => entity.Id == lobbyEntity.Id, update);
                 }
-                bool hasChangeRoundTimer = LobbyLog.HasChange(existingLobbyEntity?.RoundTimerGame, lobbyEntity.RoundTimerGame);
-                if (hasChangeRoundTimer)
+              
+                if (HasRoundTimerChanged(existingLobbyEntity?.RoundTimerGame, lobbyEntity.RoundTimerGame))
                 {
-                    var games = await UniqueRoundTimerGameAllMarket();
-                    await roundWatcherService.NotifyToWatcher(new RoundWatcherRequest(games));
+                    await NotifyRoundTimerWatcher();
                 }
                 return lobbyEntity.Id.ToString();
             }
@@ -98,6 +97,19 @@ namespace GamesAdmin.Api.Lobby
 
             return null;
         }
+
+        private static bool HasRoundTimerChanged(RoundTimerGameEntity oldRoundTimer, RoundTimerGameEntity newRoundTimer)
+        {
+            return !EqualityComparer<RoundTimerGameEntity>.Default.Equals(oldRoundTimer, newRoundTimer);
+        }
+
+        private async Task<RoundWatcherResult> NotifyRoundTimerWatcher()
+        {
+            var games = await UniqueRoundTimerGameAllMarket();
+            var roundWatcherRequest = new RoundWatcherRequest(games);
+            return await roundWatcherService.NotifyToWatcher(roundWatcherRequest);
+        }
+ 
 
         public async Task<bool> Delete(string id)
         {
@@ -154,13 +166,13 @@ namespace GamesAdmin.Api.Lobby
         {
             try
             {
-                var games = Array.Empty<Game>();
                 var lobbies = await GetAll();
-                foreach(var lobby in lobbies)
-                {
-                    games = games.Concat(lobby.RoundTimerGame?.Games).ToArray();
-                }
-                return games.Distinct(new GetUniqueGameId()).ToArray();
+                var uniqueGames = lobbies
+                                  .SelectMany(lobby => lobby.RoundTimerGame?.Games ?? Enumerable.Empty<Game>())
+                                  .GroupBy(game => game.Id)
+                                  .Select(group => group.First())
+                                  .ToArray();
+                return uniqueGames;
             }
             catch (Exception ex)
             {

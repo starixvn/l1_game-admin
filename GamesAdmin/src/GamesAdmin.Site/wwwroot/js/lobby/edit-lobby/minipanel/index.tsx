@@ -255,6 +255,7 @@ const MiniPanel: React.FC<Props> = ({
       roundTimerGame.games = roundTimerGame.games.filter(
         (game) => game.id !== editedGameSetting.value
       );
+      roundTimerGame.main = -1;
     }
   };
 

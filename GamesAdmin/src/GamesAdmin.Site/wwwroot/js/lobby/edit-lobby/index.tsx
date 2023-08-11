@@ -29,7 +29,7 @@ const EditLobby: React.FC = () => {
   let [message, setMessage] = useState({ msg: "", success: true });
   let [createId, setCreateId] = useState(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  let [roundTimerGame, setRoundTimerGame] = useState<any>({games: [], main: 0});
+  let [roundTimerGame, setRoundTimerGame] = useState<any>({games: []});
 
   const timeout = useRef<number>();
 

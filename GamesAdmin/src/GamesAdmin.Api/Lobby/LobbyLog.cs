@@ -101,7 +101,7 @@ namespace GamesAdmin.Api.Lobby
             return string.Join("\r\n", changedSettings);
         }
 
-        public static bool HasChange(object obj1, object obj2)
+        private static bool HasChange(object obj1, object obj2)
         {
             var obj1Str = JsonConvert.SerializeObject(obj1);
             var obj2Str = JsonConvert.SerializeObject(obj2);
