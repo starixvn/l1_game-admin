@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
         IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
-        IRequestHandler<GetJackpotReportRequest, IEnumerable<JackpotRecordViewModel>>,
+        IRequestHandler<GetJackpotReportRequest, JackpotReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterBetHistoryRequest, BitcoinMasterBetHistoryViewModel>,
         IRequestHandler<GetSelectionsRequest, ReportSeletionsViewModel>,
@@ -439,21 +439,25 @@ namespace GamesAdmin.Site.Features.Report
             return new LuckyWheelHistoryViewModel(result, appSettings.DefaultTimeZone);
         }
 
-        public async Task<IEnumerable<JackpotRecordViewModel>> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
+        public async Task<JackpotReportResultViewModel> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
             var stakeLevelBase = GetStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
-            return result.Select(x =>
-            {            
-                var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
-                betViewModel.BaseStakeLevel = stakeLevelBase;
-                betViewModel.StakeLevelByCurrency = GetStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);             
-                betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
-                return betViewModel;
-            }).OrderByDescending(x => x.Time);
+            return new JackpotReportResultViewModel
+            {
+                EnableConvertBase = request.GameId != (int)GameId.FourGuardians,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
+                    betViewModel.BaseStakeLevel = stakeLevelBase;
+                    betViewModel.StakeLevelByCurrency = GetStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
+                    return betViewModel;
+                }).OrderByDescending(x => x.Time)
+            };
         }
 
         private static StakeLevel[] GetStakeLevel(IEnumerable<CurrencyModel> currencies, IEnumerable<CurrencyGroupGame> currencyGroupGame, int gameId, string name)

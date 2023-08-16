@@ -4,7 +4,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class JackpotReportViewModel
     {
-        public byte GameId { get; set; }
+        public int GameId { get; set; }
 
         public DateTime FromDate { get; set; } = DateTime.Now;
 
@@ -17,5 +17,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public bool ConvertToINH { get; set; } = true;
 
         public string BaseCurrency { get; set; }
+
+        public bool EnableConvertBase { get; set; }
     }
 }

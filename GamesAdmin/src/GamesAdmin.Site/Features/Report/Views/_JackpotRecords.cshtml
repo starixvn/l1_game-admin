@@ -1,7 +1,7 @@
 ﻿@using GamesAdmin.Core
 @using GamesAdmin.Site.Features.Report.ViewModels;
 
-@model IEnumerable<JackpotRecordViewModel>
+@model JackpotReportResultViewModel
 
 <div class="row row-table">
     <div class="col-sm-12">
@@ -9,37 +9,56 @@
             <thead>
                 <tr>
                     <th class="col-date">Date (GMT+7)</th>
-                    <th class="col-nickname">OperatorId</th>
+                    @if (Model.EnableConvertBase)
+                    {
+                        <th class="col-nickname">OperatorId</th>
+                    }
                     <th class="col-nickname">Username</th>
                     <th class="col-nickname">Nickname</th>
-                    <th class="col-currency">Currency</th>
+                    @if (Model.EnableConvertBase)
+                    {
+                        <th class="col-currency">Currency</th>
+                    }
                     <th class="col-number">Round</th>
-                    <th class="col-exchange-id">Exchange Id</th>
+                    @if (Model.EnableConvertBase)
+                    {
+                        <th class="col-exchange-id">Exchange Id</th>
+                    }
                     <th class="col-number">Stake Level</th>
                     <th class="col-number">Jackpot Win</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Records)
                 {
 
                     <tr>
                         <td>@item.Time.ToString(Constants.DateTimeFormat)</td>
-                        <td class="text-center">@item.OperatorId</td>
+                        @if (Model.EnableConvertBase)
+                        {
+                            <td class="text-center">@item.OperatorId</td>
+                        }
                         <td class="text-center">@item.Username</td>
                         <td class="text-center">@item.Nickname</td>
-                        <td class="text-center">@item.Currency</td>
+                        @if (Model.EnableConvertBase)
+                        {
+                            <td class="text-center">@item.Currency</td>
+                        }
+
                         <td class="text-center">
                             @item.RoundId
                         </td>
-                        <td class="text-center">@item.ExchangeRateId</td>
+                        @if (Model.EnableConvertBase)
+                        {
+                            <td class="text-center">@item.ExchangeRateId</td>
+                        }
                         <td class="text-right">@HtmlHelpers.formatNumber(item.Pool)</td>
                         <td class="text-right">@HtmlHelpers.formatNumber(item.WinningAmount)</td>
                     </tr>
                 }
             </tbody>
             <tfoot>
-                @if (!Model.Any())
+                @if (!Model.Records.Any())
                 {
                     <tr>
                         <td class="text-center" colspan="10">No data</td>

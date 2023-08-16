@@ -5,7 +5,7 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetJackpotReportRequest : IRequest<IEnumerable<JackpotRecordViewModel>>
+    public class GetJackpotReportRequest : IRequest<JackpotReportResultViewModel>
     {
         public GetJackpotReportRequest(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot, bool convertToINH, string baseCurrency)
         {
