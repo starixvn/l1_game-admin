@@ -441,20 +441,24 @@ namespace GamesAdmin.Site.Features.Report
 
         public async Task<JackpotReportResultViewModel> Handle(GetJackpotReportRequest request, CancellationToken cancellationToken)
         {
+            var isFourGuardians = request.GameId == (int)GameId.FourGuardians;
             var result = await reportService.GetJackpotReport(request.GameId, request.FromDate, request.ToDate, request.ExcludeUUS, request.ExcludeBot);
             var currencies = await currencyService.GetAll();
             var currencyGroupGame = await currencyGroupGameService.GetAll();
-            var stakeLevelBase = GetStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
+           
             return new JackpotReportResultViewModel
             {
-                EnableConvertBase = request.GameId != (int)GameId.FourGuardians,
+                EnableConvertBase = !isFourGuardians,
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<JackpotRecordViewModel>(x);
-                    betViewModel.BaseStakeLevel = stakeLevelBase;
-                    betViewModel.StakeLevelByCurrency = GetStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
-                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
-                    betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
+                    if (!isFourGuardians)
+                    {
+                        betViewModel.BaseStakeLevel = GetStakeLevel(currencies, currencyGroupGame, request.GameId, request.BaseCurrency);
+                        betViewModel.StakeLevelByCurrency = GetStakeLevel(currencies, currencyGroupGame, request.GameId, x.Currency);
+                        betViewModel.ConvertToUserCurrency(!request.ConvertToINH, systemSettings.BaseCurrencyMultiplier);
+                    }                
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);                  
                     return betViewModel;
                 }).OrderByDescending(x => x.Time)
             };

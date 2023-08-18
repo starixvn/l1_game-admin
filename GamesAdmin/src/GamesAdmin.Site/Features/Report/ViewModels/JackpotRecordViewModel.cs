@@ -41,13 +41,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         private decimal ConvertPool()
         {
             var indexToGetValue = Array.FindIndex(BaseStakeLevel, stakeLevel => (decimal)stakeLevel.Stake == Pool);
-            if (IsIndexValid(indexToGetValue, StakeLevelByCurrency.Length))
-            {
-                var value = StakeLevelByCurrency[indexToGetValue];
-                return (decimal)value.Stake;
-            }
-
-            return Pool;
+            return IsIndexValid(indexToGetValue, StakeLevelByCurrency.Length)
+                   ? (decimal)StakeLevelByCurrency[indexToGetValue].Stake
+                   : Pool;
         }
 
         private static bool IsIndexValid(int index, int arrayLength)
