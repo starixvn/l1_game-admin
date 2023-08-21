@@ -383,3 +383,14 @@ input[type=checkbox] {
 
 .row-table .table.sticky-table thead tr:nth-child(2) th {
   top: 50px; }
+
+.icon-status-check {
+  font-size: 1.8rem;
+  display: flex;
+  justify-content: center; }
+
+.icon-status-checked {
+  font-size: 1.8rem; }
+
+.icon-status-failed {
+  font-size: 1.8rem; }

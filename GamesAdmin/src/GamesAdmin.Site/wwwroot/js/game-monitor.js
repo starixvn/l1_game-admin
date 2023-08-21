@@ -24,18 +24,23 @@
                 data: { username, password, name }
             }).done(function (data) {
                 loadingIcon.hide();
-                const { error, roundId } = data;
-                const isError = error !== "";
-                if (roundId) {
-                    roundIdText.text('RoundId: ' + roundId);
-                }
-
-                if (isError) {
+                if (!data) {
                     $('#checkFail').show();
-                    $('#roundId').text(error);
                 } else {
-                    $('#checkSuccess').show();
+                    const { error, roundId } = data;
+                    const isError = error !== "";
+                    if (roundId) {
+                        roundIdText.text('Current Round Id: ' + roundId);
+                    }
+
+                    if (isError) {
+                        $('#checkFail').show();
+                        $('#roundId').text(error);
+                    } else {
+                        $('#checkSuccess').show();
+                    }
                 }
+               
             })
         },
     }

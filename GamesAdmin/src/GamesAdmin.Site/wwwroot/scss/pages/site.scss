@@ -94,3 +94,17 @@ input[type=checkbox] {
         }
     }
 }
+
+.icon-status-check {
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: center;
+}
+
+.icon-status-checked {
+    font-size: 1.8rem;
+}
+
+.icon-status-failed {
+    font-size: 1.8rem;
+}
