@@ -45,6 +45,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<CloneSlotGameRequest, string>
         , IRequestHandler<CreateNewGameRequest, CreateNewGameViewModel>
         , IRequestHandler<GetSlotRtpRequest, RtpResult>
+        , IRequestHandler<CheckServiceStatusRequest, StatusGameResult>
     {
         private const int MaxLengthOfMessage = 1000;
 
@@ -437,5 +438,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<RtpResult> Handle(GetSlotRtpRequest request, CancellationToken cancellationToken)
         => gameService.GetSlotRtp(request);
+        
+        public async Task<StatusGameResult> Handle(CheckServiceStatusRequest request, CancellationToken cancellationToken)
+        => await gameService.CheckServiceStatus(request);
     }
 }

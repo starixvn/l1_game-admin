@@ -313,5 +313,17 @@
     "inputFiles": [
       "wwwroot/js/add-slot-game.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/game-monitor.min.js",
+    "inputFiles": [
+      "wwwroot/js/game-monitor.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/scss/pages/site.min.css",
+    "inputFiles": [
+      "wwwroot/scss/pages/site.css"
+    ]
   }
 ]

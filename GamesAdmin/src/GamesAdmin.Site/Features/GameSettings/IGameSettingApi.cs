@@ -85,5 +85,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         [Get("/game_server/connected_users")]
         Task<int> GetConnectedUsers();
+
+        [Post("/status_checker/check")]
+        Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
     }
 }

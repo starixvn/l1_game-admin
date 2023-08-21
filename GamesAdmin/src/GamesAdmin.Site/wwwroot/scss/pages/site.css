@@ -369,6 +369,12 @@ input[type=checkbox] {
 .text-blue {
   color: blue; }
 
+.text-success {
+  color: #3ac47d; }
+
+.text-error {
+  color: red; }
+
 .bold {
   font-weight: bold; }
 

@@ -34,6 +34,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         RtpCheckerServiceSettings RtpCheckerServiceSettings { get; }
         
         RoundWatcherServiceSettings RoundWatcherServiceSettings { get; }
+        
+        StatusCheckerServiceSettings StatusCheckerServiceSettings { get; }
 
         string ProxyUrl { get; }
     }
@@ -61,6 +63,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             RoundWatcherServiceSettings = configuration.GetSection(nameof(RoundWatcherServiceSettings)).Get<RoundWatcherServiceSettings>();
             ServiceApiTemplate = BuildSeviceApiTemplate();
             RtpCheckerServiceSettings = configuration.GetSection(nameof(RtpCheckerServiceSettings)).Get<RtpCheckerServiceSettings>();
+            StatusCheckerServiceSettings = configuration.GetSection(nameof(StatusCheckerServiceSettings)).Get<StatusCheckerServiceSettings>();
         }
 
         public string SystemType { get; }
@@ -93,6 +96,7 @@ namespace GamesAdmin.Api._Shared.Configurations
         
         public RoundWatcherServiceSettings RoundWatcherServiceSettings { get; }
 
+        public StatusCheckerServiceSettings StatusCheckerServiceSettings { get; }
 
         public T GetValue<T>(string key)
         {

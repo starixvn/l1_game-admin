@@ -14,6 +14,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
         Task<IEnumerable<GeneralGameSetting>> GetAll();
 
         Task<string> GetGameName(int gameId);
+
+        Task<int> GetGameId(string name);
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -54,6 +56,22 @@ namespace GamesAdmin.Api.GeneralGameSettings
                 var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
 
                 return gameInfo?.Name;
+            }
+        }
+
+        public async Task<int> GetGameId(string name)
+        {
+            if (Enumeration.Contains<Game>(name))
+            {
+                return (int)Game.FromGameName(name).GameId;
+            }
+            else
+            {
+                var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
+
+                var gameInfo = gameEntities.Find(game => game.Name == name);
+
+                return gameInfo?.GameId ?? default;
             }
         }
     }

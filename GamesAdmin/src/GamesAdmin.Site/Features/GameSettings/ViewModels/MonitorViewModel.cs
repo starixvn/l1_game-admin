@@ -32,6 +32,10 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
             Game.BlackJackValue
         };
 
+        private static readonly string[] disableServiceStatus = new string[]
+        {
+        };
+
         public string Name { get; set; }
 
         public string Id { get; set; }
@@ -47,6 +51,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public bool EnabledMonitoring => !disableMonitoring.Contains(Name);
 
         public bool EnabledHistory => !disableHistory.Contains(Name);
+
+        public bool EnabledServiceStatus => !disableServiceStatus.Contains(Name);
 
         public string GameHistoryUrl => string.IsNullOrWhiteSpace(DisplayName)
             ? Name.Replace(" ", string.Empty).Trim().ToLowerInvariant()

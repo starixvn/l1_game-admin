@@ -62,6 +62,8 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName);
 
         Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request);
+        
+        Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
 
         Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request);
     }
@@ -205,6 +207,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request)
         => gameApi.UpdateSymbolWeight(request);
+        
+        public async Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request)
+        => await gameApi.CheckServiceStatus(request);
 
         public Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request)
         => gameApi.GetSlotRtp(request);

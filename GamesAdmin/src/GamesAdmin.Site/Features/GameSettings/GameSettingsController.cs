@@ -6,6 +6,7 @@ using Audit.Mvc;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Extensions;
@@ -305,6 +306,24 @@ namespace GamesAdmin.Site.Features.GameSettings
                 await mediator.Send(request);
 
                 return Json(true);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        [Route("serviceStatus/check")]
+        public async Task<IActionResult> CheckServiceStatus(string username, string password, string name)
+        {
+            try
+            {
+                var result = await mediator.Send(new CheckServiceStatusRequest(new Player(username, password),  name));
+
+                return Json(result);
             }
             catch (Exception ex)
             {
