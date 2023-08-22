@@ -62,6 +62,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string WinThreeCardsValue = "winthreecards";
         public const string DragonTigerFightValue = "dragontigerfight";
         public const string PontoonValue = "pontoon";
+        public const string ColorGameValue = "colorgame";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -121,6 +122,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game WinThreeCards = new Game(WinThreeCardsValue, "Win Three Cards", GameId.WinThreeCards);
         public static readonly Game DragonTigerFight = new Game(DragonTigerFightValue, "Dragon Tiger Fight", GameId.DragonTigerFight);
         public static readonly Game Pontoon = new Game(PontoonValue, "Pontoon", GameId.Pontoon);
+        public static readonly Game ColorGame = new Game(ColorGameValue, "Color Game", GameId.ColorGame);
 
         public Game()
         {
@@ -184,7 +186,8 @@ namespace GamesAdmin.Core.Enumeration
             FruitSlot,
             FanTan,
             WinThreeCards,
-            DragonTigerFight
+            DragonTigerFight,
+            ColorGame
         };
     }
 }

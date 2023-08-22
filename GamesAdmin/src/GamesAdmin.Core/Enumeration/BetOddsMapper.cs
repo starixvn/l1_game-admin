@@ -122,6 +122,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.DragonTigerFightValue:
                     return Enumeration.GetAll<DragonTigerFightBetChoice>();
 
+                case Game.ColorGameValue:
+                    return Enumeration.GetAll<ColorGameBetOdds>();
+
                 case Game.PontoonValue:
                     return Enumeration.GetAll<PontoonBetChoice>();
 
