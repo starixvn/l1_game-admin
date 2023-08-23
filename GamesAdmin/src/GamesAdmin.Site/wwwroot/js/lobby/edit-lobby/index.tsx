@@ -29,7 +29,7 @@ const EditLobby: React.FC = () => {
   let [message, setMessage] = useState({ msg: "", success: true });
   let [createId, setCreateId] = useState(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  let [roundTimerGame, setRoundTimerGame] = useState<any>({games: []});
+  let [roundTimerGame, setRoundTimerGame] = useState<any>({games: [], main: 0});
 
   const timeout = useRef<number>();
 
@@ -61,13 +61,12 @@ const EditLobby: React.FC = () => {
     setCurrencyGroupIds(defaultCurrencyGroupIds);
     setIsSuperAdmin(isSuperAdmin);
     setGameSettings(gameSettings);
-
     if (res.data.lobbyConfig) {
       setName(res.data.lobbyConfig.name);
       setCurrencyGroupIds(res.data.lobbyConfig.currencyGroupIds);
       setMiniPanelGameIds(res.data.lobbyConfig.miniPanelGameIds);
       setBanners(res.data.lobbyConfig.banners);
-      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame);
+      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame ?? {games: [], main: 0});
 
       // update context categories
       lobbyConfig.categories = res.data.lobbyConfig.categories;
