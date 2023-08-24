@@ -1,8 +1,8 @@
-﻿using GamesAdmin.Site.Features.Report.ViewModels;
-using Xunit;
-
-namespace GamesAdmin.Site.UnitTests.Report.ViewModels
+﻿namespace GamesAdmin.Site.UnitTests.Report.ViewModels
 {
+    using GamesAdmin.Site.Features.Report.ViewModels;
+    using Xunit;
+
     public class SummaryViewModelTests
     {
         [Theory]
@@ -20,7 +20,6 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
             // assert
             Assert.Equal(expected, viewModel.FreeSpinsLabel);
         }
-
 
         [Theory]
         [InlineData(true, 20, 0)]
@@ -47,9 +46,9 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
             // arrange
             var round = new CascadingSlotRecordViewModel
             {
-               FreeSpin = isFreeSpin,
-               BetWin = 50,
-               TotalAmount = 20
+                FreeSpin = isFreeSpin,
+                BetWin = 50,
+                TotalAmount = 20
             };
             var viewModel = new SummaryViewModel(round);
 

@@ -1,8 +1,8 @@
-﻿using GamesAdmin.Site.Features.Report.ViewModels;
-using Xunit;
-
-namespace GamesAdmin.Site.UnitTests.Report.ViewModels
+﻿namespace GamesAdmin.Site.UnitTests.Report.ViewModels
 {
+    using GamesAdmin.Site.Features.Report.ViewModels;
+    using Xunit;
+
     public class FreeSpinsViewModelTests
     {
         [Theory]
@@ -11,7 +11,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
         public void FreeSpinsText_ReturnExpected(bool hasFreeSpins, string expected)
         {
             // arrange
-            var viewModel = new FreeSpinsViewModel(null, null, 1, 1, hasFreeSpins,"");
+            var viewModel = new FreeSpinsViewModel(null, null, 1, 1, hasFreeSpins, "");
 
             // assert
             Assert.Equal(expected, viewModel.FreeSpinsText);

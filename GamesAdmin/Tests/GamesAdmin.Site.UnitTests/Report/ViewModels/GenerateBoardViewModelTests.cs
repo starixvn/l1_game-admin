@@ -1,9 +1,9 @@
-﻿using GamesAdmin.Site.Features.Report.ViewModels;
-using System.Collections.Generic;
-using Xunit;
-
-namespace GamesAdmin.Site.UnitTests.Report.ViewModels
+﻿namespace GamesAdmin.Site.UnitTests.Report.ViewModels
 {
+    using System.Collections.Generic;
+    using GamesAdmin.Site.Features.Report.ViewModels;
+    using Xunit;
+
     public class GenerateBoardViewModelTests
     {
         [Theory]
@@ -35,14 +35,14 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
                 OriginalBoard = "3,0,2,6,6,2,10,1,4,4,10,1,5,2,9,5,5,3,1,1,25,3,7,4,3,8,2,2,4,4"
             };
             var expected = new MultiplierSymbolViewModel[5][];
-            expected[0] = new MultiplierSymbolViewModel[6] 
+            expected[0] = new MultiplierSymbolViewModel[6]
             {
                 GetMultiplierSymbol(3),
                 GetMultiplierSymbol(2),
                 GetMultiplierSymbol(10, "x25"),
                 GetMultiplierSymbol(5),
                 GetMultiplierSymbol(25, "x10"),
-                GetMultiplierSymbol(8) 
+                GetMultiplierSymbol(8)
             };
             expected[1] = new MultiplierSymbolViewModel[6]
             {
@@ -87,8 +87,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
             Assert.Equal(expected.ToString(), actual.ToString());
         }
 
-
-        private static MultiplierSymbolViewModel GetMultiplierSymbol(byte symbol, string multiplier="")
+        private static MultiplierSymbolViewModel GetMultiplierSymbol(byte symbol, string multiplier = "")
         {
             return new MultiplierSymbolViewModel
             {

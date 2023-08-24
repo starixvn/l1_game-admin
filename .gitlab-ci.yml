@@ -2,3 +2,35 @@ include:
   - project: "ci/core-cicd"
     ref: main
     file: luminet.gitlab-ci.yml
+
+unit_test_dotnet: &unit_test_dotnet
+  variables:
+    LOG_TEST_PATH: GamesAdmin/TestResults/unit-tests
+    TESTS_PATH: "GamesAdmin/Tests/*/bin/debug/*/*UnitTests.dll"
+    TESTS_DLL: "*UnitTests.dll"
+  script:
+    - dotnet build GamesAdmin
+    - dotnet test $TESTS_PATH --logger:"junit;LogFilePath=$LOG_TEST_PATH/{assembly}-tests.xml;MethodFormat=Class;FailureBodyFormat=Verbose" || true
+    - ls -R $LOG_TEST_PATH
+    - for path in $(find ./ -name $TESTS_DLL);
+      do
+      if echo $path | grep 'bin';
+      then
+      coverlet $path --target "dotnet" --targetargs "test $TESTS_PATH --no-build" --format opencover --output "$LOG_TEST_PATH/${##*/}-$(date +%s).coverage.opencover.xml";
+      fi
+      done
+  artifacts:
+    paths:
+      - $LOG_TEST_PATH
+    reports:
+      junit:
+        - $LOG_TEST_PATH/*tests.xml
+
+sonar_dotnet: &sonar_dotnet
+  script:
+    - cd GamesAdmin
+    - ls
+    - dotnet sonarscanner begin /k:$PROJECT_NAME /n:"$SONAR_PROJECT_NAME" /v:"${CI_COMMIT_REF_NAME} ($CI_COMMIT_SHORT_SHA) [${CI_JOB_ID}]" /d:sonar.login=$SONAR_TOKEN /d:sonar.host.url=$SONAR_HOST_URL /d:sonar.qualitygate.wait=true /d:sonar.cs.opencover.reportsPaths=**/**/**/*.coverage.opencover.xml /d:sonar.cs.vstest.reportsPaths=GamesAdmin/**/*.trx
+    - echo $SOLUTION_NAME
+    - dotnet build $SOLUTION_NAME
+    - dotnet sonarscanner end /d:sonar.login=$SONAR_TOKEN

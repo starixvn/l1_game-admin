@@ -22,7 +22,7 @@ namespace GamesAdmin.Site.UnitTests.Extensions
             expected[4] = new byte[6] { 6, 4, 9, 1, 3, 4 };
 
             // act
-            var actual = BoardExtensions.FormatBoard(board.ToArray(),5, 6);
+            var actual = BoardExtensions.FormatBoard(board.ToArray(), 5, 6);
 
             // assert
 

@@ -1,8 +1,10 @@
 ﻿namespace GamesAdmin.Site.UnitTests.Report.ViewModels
 {
+    using GamesAdmin.Core.Models.GameConfigs;
     using GamesAdmin.Site.Features._Shared.Helpers;
     using GamesAdmin.Site.Features.Report.ViewModels;
     using Xunit;
+
     public class JackpotRecordViewModelTests
     {
         [Theory]
@@ -18,7 +20,7 @@
         [InlineData(5000.00, 5102.4731, "979.92")]
         [InlineData(5000.00, 26074.8389, "191.76")]
         [InlineData(5000.00, 1, "5,000,000.00")]
-        
+
         [InlineData(25000.00, 1000, "25,000.00")]
         [InlineData(25000.00, 699.888, "35,720.00")]
         [InlineData(25000.00, 17.8228, "1,402,697.67")]
@@ -31,7 +33,7 @@
         [InlineData(25000.00, 5102.4731, "4,899.58")]
         [InlineData(25000.00, 26074.8389, "958.78")]
         [InlineData(25000.00, 1, "25,000,000.00")]
-        
+
         [InlineData(50000.00, 1000, "50,000.00")]
         [InlineData(50000.00, 699.888, "71,440.00")]
         [InlineData(50000.00, 17.8228, "2,805,395.34")]
@@ -44,7 +46,7 @@
         [InlineData(50000.00, 5102.4731, "9,799.17")]
         [InlineData(50000.00, 26074.8389, "1,917.56")]
         [InlineData(50000.00, 1, "50,000,000.00")]
-        
+
         [InlineData(125000.00, 1000, "125,000.00")]
         [InlineData(125000.00, 699.888, "178,600.00")]
         [InlineData(125000.00, 17.8228, "7,013,488.34")]
@@ -55,9 +57,9 @@
         [InlineData(125000.00, 169.4249, "737,790.02")]
         [InlineData(125000.00, 2153.8875, "58,034.60")]
         [InlineData(125000.00, 5102.4731, "24,497.92")]
-        [InlineData(125000.00, 26074.8389, "4,793.89")]           
+        [InlineData(125000.00, 26074.8389, "4,793.89")]
         [InlineData(125000.00, 1, "125,000,000.00")]
-        
+
         [InlineData(1350000.00, 1000, "1,350,000.00")]
         [InlineData(1350000.00, 699.888, "1,928,880.05")]
         [InlineData(1350000.00, 17.8228, "75,745,674.08")]
@@ -99,11 +101,24 @@
         public void ConvertToUserCurrency_WithINHBase_ReturnExpected(decimal amount, decimal rate, string expected)
         {
             // arrange
+            var baseStakeLevel = new StakeLevel[] {
+                    new StakeLevel(0.1, 0, 0.4),
+                    new StakeLevel(0.2, 0, 0.4),
+                    new StakeLevel(1, 0, 0.2)
+            };
+            var stakeLevelsByCurrency = new StakeLevel[] {
+                    new StakeLevel(0.2, 0, 0.5),
+                    new StakeLevel(0.3, 0, 0.6),
+                    new StakeLevel(1, 0, 0.2)
+            };
             var viewModel = new JackpotRecordViewModel()
             {
                 WinningAmount = amount,
                 Rate = rate,
+                BaseStakeLevel = baseStakeLevel,
+                StakeLevelByCurrency = stakeLevelsByCurrency
             };
+
             // act
             viewModel.ConvertToUserCurrency(true, 1000);
 

@@ -1,10 +1,9 @@
-﻿using GamesAdmin.Site.Features.Report.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
-
-namespace GamesAdmin.Site.UnitTests.Report.ViewModels
+﻿namespace GamesAdmin.Site.UnitTests.Report.ViewModels
 {
+    using System.Collections.Generic;
+    using GamesAdmin.Site.Features.Report.ViewModels;
+    using Xunit;
+
     public class CascadingSlotBetHistoryViewModelTests
     {
         [Theory]
@@ -16,19 +15,19 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
             var round = new CascadingSlotRecordViewModel
             {
                 ReachMaxWin = isReachMax,
-            }; 
+            };
             var viewModel = new CascadingSlotBetHistoryViewModel
             {
                 Round = round,
             };
- 
+
             // assert
             Assert.Equal(expected, viewModel.WinLabel);
         }
 
         [Theory]
         [InlineData(0, 20, false)]
-        [InlineData(10,0, false)]
+        [InlineData(10, 0, false)]
         [InlineData(0, 0, false)]
         [InlineData(10, 10, true)]
         public void HasTotalMultiplier_ReturnExpected(decimal betwin, int multiplier, bool expected)
@@ -81,7 +80,7 @@ namespace GamesAdmin.Site.UnitTests.Report.ViewModels
         public void SymbolUrl_ReturnExpected()
         {
             // arrange
-            
+
             var viewModel = new CascadingSlotBetHistoryViewModel
             {
                 Game = "Cascading-slot",
