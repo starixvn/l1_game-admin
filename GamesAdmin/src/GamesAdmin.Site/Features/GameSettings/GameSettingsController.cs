@@ -47,7 +47,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<IEnumerable<SelectListItem>> GetGamesByType(GameType type)
         => (await mediator.Send(new GetGamesByTypeRequest(type)));
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<string> CloneSlotGame([Bind] AddSlotGameViewModel addViewModel)
         {
             var request = new CloneSlotGameRequest(addViewModel.DisplayName,
@@ -73,7 +73,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("{name}")]
         public async Task<IActionResult> UpdateBotRatio(string name, [Bind] List<BotRatioItemViewModel> botRatioItems)
         {
@@ -135,7 +135,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status")]
         public async Task<IActionResult> UpdateDisabledMessage(string name, Dictionary<string, string> messages)
         {
@@ -161,7 +161,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(disabledMessages);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status/reload")]
         public async Task<IActionResult> ReloadGameClients()
         {
@@ -174,7 +174,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public IActionResult UnderMaintenance()
         => View(new UnderMaintenanceViewModel(appSettings));
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("status/um")]
         public async Task<IActionResult> UnderMaintenance([Bind] UnderMaintenanceRequest request)
         {
@@ -333,7 +333,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return Json(false);
         }
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Route("/symbolweight/update")]
         public async Task<IActionResult> UpdateSymbolWeight(string gameName, byte mode, int[][] weights)
         {

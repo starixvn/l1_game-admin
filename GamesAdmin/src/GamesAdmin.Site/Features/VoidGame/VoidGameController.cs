@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Audit.Mvc;
 using GamesAdmin.Site.Features.VoidGame.Requests;
 using GamesAdmin.Site.Features.VoidGame.ViewModels;
 using MediatR;
@@ -20,7 +21,7 @@ namespace GamesAdmin.Site.Features.VoidGame
         [HttpGet]
         public async Task<IActionResult> Index() => View( await mediator.Send(new IndexViewRequest()));
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> VoidTicket([Bind] IndexViewModel viewModel)
         {

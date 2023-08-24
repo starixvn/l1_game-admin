@@ -1,5 +1,6 @@
 ﻿namespace GamesAdmin.Site.Features.Domain
 {
+    using Audit.Mvc;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@
         public async Task<IActionResult> Index()
          => View(await mediator.Send(new GetDomainRequest()));
 
-        [HttpPost]
+        [HttpPost, Audit]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update(string id, string value)
         {

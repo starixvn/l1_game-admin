@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Audit.Mvc;
 using GamesAdmin.Site.Features.Notifications.Requests;
 using GamesAdmin.Site.Features.Notifications.ViewModels;
 using MediatR;
@@ -42,7 +43,7 @@ namespace GamesAdmin.Site.Features.Notifications
         public async Task<IActionResult> Edit(string id)
         => View(await mediator.Send(new GetByIdRequest(id)));
 
-        [HttpPost]
+        [HttpPost, Audit]
         public async Task<IActionResult> Edit([Bind] UpdateRequest request)
         {
             var result = await mediator.Send(request);
