@@ -234,8 +234,8 @@ const MiniPanel: React.FC<Props> = ({
   };
 
   const saveRoundTimerGame = () => {
+    const gameId = editedGameSetting.value;
     if (editedGameSetting.enableRoundTimer) {
-      const gameId = editedGameSetting.value;
       const gameExists = roundTimerGame?.games?.some(
         (game) => game.id === gameId
       );
@@ -248,14 +248,21 @@ const MiniPanel: React.FC<Props> = ({
         roundTimerGame?.games.push(gameInfo);
       }
 
-      if (editedGameSetting.default) {
-        roundTimerGame.main = gameId;
-      }
+      roundTimerGame.main = editedGameSetting.default
+        ? roundTimerGame.main !== gameId
+          ? gameId
+          : -1
+        : roundTimerGame.main === gameId
+        ? -1
+        : roundTimerGame.main;
     } else {
       roundTimerGame.games = roundTimerGame.games.filter(
         (game) => game.id !== editedGameSetting.value
       );
-      roundTimerGame.main = -1;
+      if (editedGameSetting.default) {
+        roundTimerGame.main =
+          roundTimerGame.main !== gameId ? roundTimerGame.main : -1;
+      }
     }
   };
 

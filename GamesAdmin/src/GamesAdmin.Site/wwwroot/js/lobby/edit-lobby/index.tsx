@@ -66,7 +66,7 @@ const EditLobby: React.FC = () => {
       setCurrencyGroupIds(res.data.lobbyConfig.currencyGroupIds);
       setMiniPanelGameIds(res.data.lobbyConfig.miniPanelGameIds);
       setBanners(res.data.lobbyConfig.banners);
-      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame ?? {games: [], main: 0});
+      setRoundTimerGame(res.data.lobbyConfig.roundTimerGame ?? {games: [], main: -1});
 
       // update context categories
       lobbyConfig.categories = res.data.lobbyConfig.categories;
