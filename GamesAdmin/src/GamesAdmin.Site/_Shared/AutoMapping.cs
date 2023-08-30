@@ -156,6 +156,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<DragonTigerFightRoundResult, DragonTigerFightRoundResultViewModel>();
             CreateMap<DragonTigerFightBetRecord, DragonTigerFightRecordViewModel>();
             CreateMap<DragonTigerFightBetHistoryRecord, DragonTigerFightBetHistoryRecordViewModel>();
+
+            CreateMap<ColorGameRoundResult, ColorGameRoundResultViewModel>();
+            CreateMap<ColorGameBetRecord, ColorGameRecordViewModel>();
+            CreateMap<ColorGameBetHistoryRecord, ColorGameBetHistoryRecordViewModel>();
         }
     }
 }

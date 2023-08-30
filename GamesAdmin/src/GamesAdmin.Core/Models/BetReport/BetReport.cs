@@ -54,6 +54,10 @@ namespace GamesAdmin.Core.Models
     {
     }
 
+    public class ColorGameBetReport : BetReport<ColorGameRoundResult, ColorGameBetRecord>
+    {
+    }
+
     public class SicBoBetReport : BetReport<SicBoRoundResult, SicBoBetRecord>
     {
     }

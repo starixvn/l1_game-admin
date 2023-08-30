@@ -186,6 +186,27 @@ namespace GamesAdmin.Core.Models
         public decimal Ocean { get; set; }
     }
 
+    public class ColorGameBetRecord : BetRecord
+    {
+        public decimal Yellow { get; set; }
+
+        public decimal Red { get; set; }
+
+        public decimal Pink { get; set; }
+
+        public decimal White { get; set; }
+
+        public decimal Blue { get; set; }
+
+        public decimal Green { get; set; }
+
+        public decimal Hot { get; set; }
+
+        public decimal Cold { get; set; }
+
+        public double TotalAmount { get; set; }
+    }
+
     public class VipSeDieWarBetRecord : BetRecord
     {
         public decimal TotalBet { get; set; }

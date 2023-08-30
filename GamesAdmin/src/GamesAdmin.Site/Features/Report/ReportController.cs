@@ -663,5 +663,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_DragonTigerFightBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetColorGameBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_ColorGameBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+
+        [HttpGet]
+        public IActionResult ColorGame()
+        {
+            return RedirectToAction("Index", new { game = GameId.ColorGame });
+        }
     }
 }

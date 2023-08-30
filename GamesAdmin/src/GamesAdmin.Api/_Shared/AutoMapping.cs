@@ -586,6 +586,15 @@ namespace GamesAdmin.Api._Shared
             CreateMap<DragonTigerFightBetReportEntity, DragonTigerFightBetRecord>()
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
             CreateMap<DragonTigerFightBetLogEntity, DragonTigerFightBetHistoryRecord>();
+
+            CreateMap<ColorGameRoundEntity, ColorGameRoundResult>()
+                .ForMember(dest => dest.Dice1, opt => opt.MapFrom(src => src.Result.Dice1))
+                .ForMember(dest => dest.Dice2, opt => opt.MapFrom(src => src.Result.Dice2))
+                .ForMember(dest => dest.Dice3, opt => opt.MapFrom(src => src.Result.Dice3))
+                .ForMember(dest => dest.SettlementResult, opt => opt.MapFrom(src => src.SettlementResult));
+            CreateMap<ColorGameBetReportEntity, ColorGameBetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
+            CreateMap<ColorGameBetLogEntity, ColorGameBetHistoryRecord>();
         }
     }
 }

@@ -432,4 +432,32 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             return char.ToUpper(result[0]) + result.Substring(1).Trim();
         }
     }
+
+    public class ColorGameRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public Dictionary<string, bool> SettlementResult { get; set; }
+
+        public int Dice1 { get; set; }
+
+        public int Dice2 { get; set; }
+
+        public int Dice3 { get; set; }
+
+        public List<string> InferableChoices = new List<string> { "hot", "cold" };
+
+        public string GetWinningOptions()
+        {
+            var result = SettlementResult.Where(s => s.Value)
+                .Select(s => FormatString(s.Key));
+
+            return string.Join(", ", result);
+        }
+
+        public static string FormatString(string input)
+        {
+            var result = string.Concat(input.Select((x, i) => i > 0 && char.IsUpper(x) ? $" {x}" : x.ToString()));
+            return char.ToUpper(result[0]) + result.Substring(1).Trim();
+        }
+        
+    }
 }

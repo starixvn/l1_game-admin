@@ -412,4 +412,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalAmount { get; set; }
     }
+
+    public class ColorGameRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalAmount { get; set; }
+    }
 }
