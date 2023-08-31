@@ -8,6 +8,52 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public ColorGameRoundResultViewModel RoundResult { get; set; }
         public IEnumerable<ColorGameBetHistoryRecordViewModel> Bets { get; set; }
         public Dictionary<string, decimal> Odds { get; set; }
+
+        public string GetWinningOddName(string choice)
+        {
+            var isWin = this.RoundResult.SettlementResult.Where(s => s.Value).Select(s => s.Key).Contains(choice);
+            var resultMapper = new Dictionary<string, int>() {{ "yellow", 0}, { "red", 1}, { "pink", 2}, { "white", 3}, { "blue", 4}, { "green", 5}};
+            var oddMapper = new Dictionary<int, string>(){ { 1, "single"}, { 2, "double"}, { 3, "triple"}};
+
+            if(this.RoundResult.InferableChoices.Contains(choice) && isWin)
+            {
+                return choice;
+            }
+            else if (isWin)
+            {
+                var winCount = 0;
+                if(this.RoundResult.Dice1 == resultMapper[choice])
+                {
+                    winCount += 1;
+                }
+                if (this.RoundResult.Dice2 == resultMapper[choice])
+                {
+                    winCount += 1;
+                }
+                if (this.RoundResult.Dice3 == resultMapper[choice])
+                {
+                    winCount += 1;
+                }
+                return oddMapper[winCount];
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public decimal GetWinningOdds(string choice)
+        {
+            var winningOddsName = GetWinningOddName(choice);
+            if (string.IsNullOrEmpty(winningOddsName))
+            {
+                return 0;
+            }
+            else
+            {
+                return Odds[winningOddsName];
+            }
+        }
     }
 
     public class ColorGameBetHistoryRecordViewModel : BetHistoryRecordViewModel
