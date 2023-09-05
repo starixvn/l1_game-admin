@@ -23,23 +23,4 @@ namespace GamesAdmin.Database.Entities
         [BsonElement("dice3")]
         public byte Dice3 { get; set; }
     }
-
-    public class ColorGameSettlementResultEntity
-    {
-        public bool Yellow { get; set; }
-
-        public bool Red { get; set; }
-
-        public bool Pink { get; set; }
-
-        public bool White { get; set; }
-
-        public bool Blue { get; set; }
-
-        public bool Green { get; set; }
-
-        public bool Hot { get; set; }
-
-        public bool Cold { get; set; }
-    }
 }
