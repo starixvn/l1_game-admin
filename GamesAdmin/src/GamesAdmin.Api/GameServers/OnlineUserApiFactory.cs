@@ -68,6 +68,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.FanTanValue, typeof(IFanTanOnlineUserApi) },
             { Game.WinThreeCardsValue, typeof(IWinThreeCardsOnlineUserApi) },
             { Game.DragonTigerFightValue, typeof(IDragonTigerFightOnlineUserApi) },
+            { Game.PontoonValue, typeof(IPontoonOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

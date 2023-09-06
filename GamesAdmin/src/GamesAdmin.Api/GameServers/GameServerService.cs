@@ -66,7 +66,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
-        private readonly IPontoonApi pontoonApi;
+        private readonly IPontoonApiFactory pontoonApiFactory;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -81,7 +81,7 @@ namespace GamesAdmin.Api.GameServers
             ICascadingResultApiFactory cascadingResultApiFactory,
             INotificationServiceApi notificationServiceApi,
             IGenericRepository<AdminUserEntity> userRepository,
-            IPontoonApi pontoonApi)
+            IPontoonApiFactory pontoonApiFactory)
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -95,7 +95,7 @@ namespace GamesAdmin.Api.GameServers
             this.cascadingResultApiFactory = cascadingResultApiFactory;
             this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
-            this.pontoonApi = pontoonApi;
+            this.pontoonApiFactory = pontoonApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -260,6 +260,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
+                var pontoonApi = pontoonApiFactory.SetResultApi();
                 return await pontoonApi.SetResult(request);
             }
             catch (Exception ex)
