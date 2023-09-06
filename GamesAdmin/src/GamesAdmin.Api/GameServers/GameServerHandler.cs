@@ -22,6 +22,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetCascadingSlotResultRequest, IEnumerable<SettlementCascadingSlotResult>>
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
         , IRequestHandler<ConnectedUserRequest, int>
+        , IRequestHandler<SetPontoonResultRequest, bool>
     {
         private readonly IGameServerService gameServerService;
 
@@ -51,6 +52,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<IEnumerable<HiloCard>> Handle(SetHiLoResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetHiLoResult(request);
+
+        public Task<bool> Handle(SetPontoonResultRequest request, CancellationToken cancellationToken)
+           => gameServerService.SetPontoonResult(request);
 
         public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
             => gameServerService.GetAdminMonitoringSettings(request.Username);

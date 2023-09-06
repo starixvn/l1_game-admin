@@ -32,7 +32,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         public async Task<IEnumerable<GeneralGameSetting>> GetAll()
         {
             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
-
+         
             return gameEntities.Select(game =>
             {
                 var gameId = game.GameId > 0 ? game.GameId : (int)Game.FromGameName(game.Name).GameId;

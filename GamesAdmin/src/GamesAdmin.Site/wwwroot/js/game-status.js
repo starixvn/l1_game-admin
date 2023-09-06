@@ -265,6 +265,10 @@
             event.preventDefault();
             this.setResultControl("HiLoResult");
         },
+        setControlResultPontoon: function (event) {
+            event.preventDefault();
+            this.setResultControl("PontoonResult");
+        },
 
         setSlotResultControl: function (action, gameName, displayName) {
             window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");

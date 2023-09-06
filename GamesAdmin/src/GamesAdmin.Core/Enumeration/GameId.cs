@@ -58,5 +58,6 @@
         WinThreeCards = 61,
         FortuneCat = 62,
         DragonTigerFight = 67
+        Pontoon = 72,
     }
 }

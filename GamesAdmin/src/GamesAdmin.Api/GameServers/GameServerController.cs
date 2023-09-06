@@ -45,6 +45,10 @@ namespace GamesAdmin.Api.GameServers
         public Task<IEnumerable<HiloCard>> SetHiLoResult([FromBody] SetHiLoResultRequest request)
             => mediator.Send(request);
 
+        [HttpPost("pontoon/set_result")]
+        public Task<bool> SetPontoonResult([FromBody] SetPontoonResultRequest request)
+          => mediator.Send(request);
+
         [HttpPost("get_admin_monitoring_settings")]
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
             => mediator.Send(new GetAdminMonitoringSettingsRequest(username));

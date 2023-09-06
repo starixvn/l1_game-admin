@@ -61,6 +61,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string FortuneCatValue = "fortunecat";
         public const string WinThreeCardsValue = "winthreecards";
         public const string DragonTigerFightValue = "dragontigerfight";
+        public const string PontoonValue = "pontoon";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -119,6 +120,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game FortuneCat = new Game(FortuneCatValue, "Fortune Cat", GameId.FortuneCat);
         public static readonly Game WinThreeCards = new Game(WinThreeCardsValue, "Win Three Cards", GameId.WinThreeCards);
         public static readonly Game DragonTigerFight = new Game(DragonTigerFightValue, "Dragon Tiger Fight", GameId.DragonTigerFight);
+        public static readonly Game Pontoon = new Game(PontoonValue, "Pontoon", GameId.Pontoon);
 
         public Game()
         {

@@ -104,6 +104,7 @@
         public GameServerConfigs FanTan { get; set; }
         public GameServerConfigs WinThreeCards { get; set; }
         public GameServerConfigs DragonTigerFight { get; set; }
+        public GameServerConfigs Pontoon { get; set; }
     }
 
     public class GameServerConfigs

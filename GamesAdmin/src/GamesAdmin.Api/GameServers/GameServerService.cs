@@ -48,6 +48,8 @@ namespace GamesAdmin.Api.GameServers
         Task<int> GetConnectedUsers();
 
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
+
+        Task<bool> SetPontoonResult(SetPontoonResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -64,6 +66,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
+        private readonly IPontoonApi pontoonApi;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -77,7 +80,8 @@ namespace GamesAdmin.Api.GameServers
             IUserServiceApi userServiceApi,
             ICascadingResultApiFactory cascadingResultApiFactory,
             INotificationServiceApi notificationServiceApi,
-            IGenericRepository<AdminUserEntity> userRepository)
+            IGenericRepository<AdminUserEntity> userRepository,
+            IPontoonApi pontoonApi)
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -91,6 +95,7 @@ namespace GamesAdmin.Api.GameServers
             this.cascadingResultApiFactory = cascadingResultApiFactory;
             this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
+            this.pontoonApi = pontoonApi;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -249,6 +254,19 @@ namespace GamesAdmin.Api.GameServers
                 HandleException(ex);
             }
             return Enumerable.Empty<HiloCard>();
+        }
+
+        public async Task<bool> SetPontoonResult(SetPontoonResultRequest request)
+        {
+            try
+            {
+                return await pontoonApi.SetResult(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+            return false;
         }
 
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
