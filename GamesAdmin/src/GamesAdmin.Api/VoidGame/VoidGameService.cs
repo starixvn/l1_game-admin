@@ -24,7 +24,9 @@ namespace GamesAdmin.Api.VoidGame
     {
         Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request);
 
-        Task<VoidGameResult> VoidBlackjackTicket(VoidTicketRequest request);
+        Task<VoidGameResult> VoidBankingGameTicket<BankingGameRound, BankingGameBet>(VoidTicketRequest request)
+            where BankingGameRound : BankingGameRoundEntity
+            where BankingGameBet : BankingGameBetEntity;
 
         Task<VoidGameResult> VoidHoldemPokerTicket(VoidTicketRequest request);
     }
@@ -45,7 +47,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             { GameId.Blackjack, "blackjack"},
             { GameId.CasinoHoldemPoker, "casino_holdem_poker"},
-            { GameId.TexasHoldemPoker, "texas_holdem_poker"}
+            { GameId.TexasHoldemPoker, "texas_holdem_poker"},
+            { GameId.Pontoon, "pontoon"},
         };
 
         public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler,
@@ -128,20 +131,25 @@ namespace GamesAdmin.Api.VoidGame
             return default;
         }
 
-        public async Task<VoidGameResult> VoidBlackjackTicket(VoidTicketRequest request)
+        public async Task<VoidGameResult> VoidBankingGameTicket<BankingGameRound, BankingGameBet>(VoidTicketRequest request) 
+            where BankingGameRound: BankingGameRoundEntity 
+            where BankingGameBet : BankingGameBetEntity
         {
             try
             {
-                var ticket = await ticketHandler.ExistBlackjackTicket(request.PlayerId,
+                var ticket = await ticketHandler.ExistBankingGameTicket<BankingGameBet>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
                     request.FreeBet);
+
                 var isExistTicket = ticket.Exist();
+
                 if (!isExistTicket)
                 {
                     return NotExistTicket();
                 }
+
                 var uid = ticket.BetRecord.Uid;
                 VoidGameResult apiResult;
                 if (!ticket.IsRunningTicket)
@@ -164,7 +172,7 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (ShouldMoveRound(ticket))
                 {
-                    var movedRound = await ticketHandler.MoveRoundBlackjack(ticket.RoundId);
+                    var movedRound = await ticketHandler.MoveBankingGameRound<BankingGameRound>(ticket.RoundId);
                     if (!movedRound)
                     {
                         return TicketMovedUnsuccessfully();

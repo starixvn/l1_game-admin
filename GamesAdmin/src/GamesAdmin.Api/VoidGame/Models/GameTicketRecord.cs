@@ -46,14 +46,14 @@ namespace GamesAdmin.Api.VoidGame.Models
 
     public class BlackjackRecord : IGameTicket
     {
-        public BlackjackRecord(BlackjackBetEntity betRecord, bool isFromArchive, List<long> handIds)
+        public BlackjackRecord(BankingGameBetEntity betRecord, bool isFromArchive, List<long> handIds)
         {
             BetRecord = betRecord;
             IsFromArchive = isFromArchive;
             HandIds = handIds;
         }
 
-        public BlackjackBetEntity BetRecord { get; }
+        public BankingGameBetEntity BetRecord { get; }
 
         public long RoundId => BetRecord !=null ? BetRecord.Round : 0;
 

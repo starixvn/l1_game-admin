@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
+using GamesAdmin.Database.Entities;
 using MediatR;
 
 namespace GamesAdmin.Api.VoidGame
@@ -23,7 +24,10 @@ namespace GamesAdmin.Api.VoidGame
             var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
             switch (gameId)
             {
-                case GameId.Blackjack: return voidGameService.VoidBlackjackTicket(request);
+                case GameId.Blackjack:
+                    return voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+                case GameId.Pontoon: 
+                    return voidGameService.VoidBankingGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
                 case GameId.CasinoHoldemPoker:
                 case GameId.TexasHoldemPoker: return voidGameService.VoidHoldemPokerTicket(request);
                 default:

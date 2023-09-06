@@ -1,4 +1,8 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database;
@@ -8,14 +12,9 @@ using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
 using MongoDB.Driver;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.VoidGame
 {
-
     public interface ITicketHandler
     {
         Task<bool> Void(int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet);
@@ -24,9 +23,11 @@ namespace GamesAdmin.Api.VoidGame
 
         Task<GameTicketRecord<HoldemPokerBetEntity>> ExistHoldemPoker(int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet);
 
-        Task<BlackjackRecord> ExistBlackjackTicket(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet);
+        Task<BlackjackRecord> ExistBankingGameTicket<BankingGameBet>(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
+            where BankingGameBet : BankingGameBetEntity;
 
-        Task<bool> MoveRoundBlackjack(long roundId);
+        Task<bool> MoveBankingGameRound<BankingGameRound>(long roundId)
+            where BankingGameRound : BankingGameRoundEntity;
     }
 
     public class TicketHandler : ITicketHandler
@@ -85,7 +86,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoNorth => await Move<KenoNorthOnesEntity, KenoNorthBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.Roulette => await Move<RouletteOnesEntity, RouletteBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipSeDie => await Move<VipSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.Blackjack => await MoveBlackjack(obCustId, partnerId, siteId, gameRoundId, freeBet),
+                    GameId.Blackjack => await MoveBankingGame<BlackjackBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
                     GameId.SpecialSeDie => await Move<SpecialSeDieOnesEntity, SpecialSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.SicBo => await Move<SicBoOnesEntity, SicBoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.VipFishPrawnCrab => await Move<VipFishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -115,6 +116,7 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.FruitSlot => await Move<FruitSlotBetEntity, FruitSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.WinThreeCards => await Move<WinThreeCardsBetEntity, WinThreeCardsBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.DragonTigerFight => await Move<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.Pontoon => await MoveBankingGame<PontoonBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
                     _ => false,
                 };
             }
@@ -125,7 +127,8 @@ namespace GamesAdmin.Api.VoidGame
 
             return false;
         }
-        public async Task<GameTicketRecord<HoldemPokerBetEntity>> ExistHoldemPoker (int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
+
+        public async Task<GameTicketRecord<HoldemPokerBetEntity>> ExistHoldemPoker(int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
         {
             try
             {
@@ -137,6 +140,7 @@ namespace GamesAdmin.Api.VoidGame
             }
             return default;
         }
+
         public async Task<bool> Exist(int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
         {
             try
@@ -176,8 +180,8 @@ namespace GamesAdmin.Api.VoidGame
                     GameId.KenoMatch1 => await Find<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoMatch2 => await Find<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.KenoPower1 => await Find<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.KenoPower2 => await Find<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),                 
-                    GameId.HiLo => await Find<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),                  
+                    GameId.KenoPower2 => await Find<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                    GameId.HiLo => await Find<HiLoBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.BlockchainBaccarat => await Find<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.MegaKeno => await Find<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                     GameId.MegaKeno2 => await Find<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
@@ -205,8 +209,9 @@ namespace GamesAdmin.Api.VoidGame
             return false;
         }
 
-        public async Task<BlackjackRecord> ExistBlackjackTicket(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
-        => await FindBlackjack(obCustId, partnerId, siteId, gameRoundId, freeBet);
+        public async Task<BlackjackRecord> ExistBankingGameTicket<BankingGameBet>(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
+            where BankingGameBet : BankingGameBetEntity
+        => await FindBankingGameBet<BankingGameBet>(obCustId, partnerId, siteId, gameRoundId, freeBet);
 
         private async Task<bool> Move<One, Bet>(int obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
             where One : BaseBetEntity
@@ -495,15 +500,16 @@ namespace GamesAdmin.Api.VoidGame
             return false;
         }
 
-        private async Task<BlackjackRecord> FindBlackjack(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
+        private async Task<BlackjackRecord> FindBankingGameBet<BankingGameBet>(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
+            where BankingGameBet : BankingGameBetEntity
         {
             var isArchive = false;
-            var bet = new BlackjackBetEntity();
+            var bet = new BankingGameBetEntity();
             var allTicket = new List<long>();
             try
             {
-                var collectionName = Document.GetCollectionName(typeof(BlackjackBetEntity));
-                var collection = activeDatabase.GetCollection<BlackjackBetEntity>(collectionName);
+                var collectionName = Document.GetCollectionName(typeof(BankingGameBet));
+                var collection = activeDatabase.GetCollection<BankingGameBet>(collectionName);
 
                 bet = await FindBlackjackTicket(collection, obCustId, partnerId, siteId, gameRoundId, freeBet);
 
@@ -514,9 +520,9 @@ namespace GamesAdmin.Api.VoidGame
                     bet = await FindBlackjackTicket(archiveCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
                 }
 
-                if(bet != null)
+                if (bet != null)
                 {
-                   allTicket = await FindAllTicketBlackjack(bet?.Round, isArchive);
+                    allTicket = await FindAllTicketBlackjack(bet?.Round, isArchive);
                 }
             }
             catch (Exception ex)
@@ -527,19 +533,20 @@ namespace GamesAdmin.Api.VoidGame
             return new BlackjackRecord(bet, isArchive, allTicket.ToList());
         }
 
-        private async Task<bool> MoveBetBlackjack(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
+        private async Task<bool> MoveBankingGame<BankingGameBet>(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
+            where BankingGameBet : BankingGameBetEntity
         {
             try
             {
-                var ticket = await FindBlackjack(obCustId, partnerId, siteId, gameRoundId, freeBet);
-                var collectionName = Document.GetCollectionName(typeof(BlackjackBetEntity));
+                var ticket = await FindBankingGameBet<BankingGameBet>(obCustId, partnerId, siteId, gameRoundId, freeBet);
+                var collectionName = Document.GetCollectionName(typeof(BankingGameBet));
                 if (ticket.BetRecord != null)
                 {
-                    var betCollection = removedDatabase.GetCollection<BlackjackBetEntity>($"{collectionName}{RemovePostfix}");
+                    var betCollection = removedDatabase.GetCollection<BankingGameBetEntity>($"{collectionName}{RemovePostfix}");
                     await betCollection.InsertOneAsync(ticket.BetRecord);
                     var database = ticket.IsFromArchive ? archiveDatabase : activeDatabase;
                     var postfix = ticket.IsFromArchive ? ArchivePostfix : string.Empty;
-                    var collection = database.GetCollection<BlackjackBetEntity>($"{collectionName}{postfix}");
+                    var collection = database.GetCollection<BankingGameBetEntity>($"{collectionName}{postfix}");
                     var result = await collection
                     .DeleteOneAsync(record => record.PlayerId == obCustId
                                         && record.SiteId == siteId
@@ -557,11 +564,9 @@ namespace GamesAdmin.Api.VoidGame
             return false;
         }
 
-        private async Task<bool> MoveBlackjack(int obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)
-        => await MoveBetBlackjack(obCustId, partnerId, siteId, gameRoundId, freeBet);
-
-        public async Task<bool> MoveRoundBlackjack(long roundId)
-        => await MoveRound<BlackjackRoundEntity>(roundId);
+        public async Task<bool> MoveBankingGameRound<BankingGameRound>(long roundId)
+            where BankingGameRound: BankingGameRoundEntity
+        => await MoveRound<BankingGameRound>(roundId);
 
         public async Task<List<long>> FindAllTicketBlackjack(long? roundId, bool isArchive)
         {
@@ -573,7 +578,7 @@ namespace GamesAdmin.Api.VoidGame
 
                 var betCollection = database.GetCollection<BlackjackBetEntity>($"{betCollectionName}{postfix}");
                 var bets = (await betCollection.FindAsync(record => record.Round == roundId)).ToList();
-                if(bets.Count > 0)
+                if (bets.Count > 0)
                 {
                     return bets.Select(bet => { return bet.HandId; }).ToList();
                 }
@@ -586,13 +591,14 @@ namespace GamesAdmin.Api.VoidGame
             return new List<long>();
         }
 
-        private static async Task<BlackjackBetEntity> FindBlackjackTicket(
-              IMongoCollection<BlackjackBetEntity> collection,
+        private static async Task<BankingGameBet> FindBlackjackTicket<BankingGameBet>(
+              IMongoCollection<BankingGameBet> collection,
               int obCustId,
               string partnerId,
               string siteId,
               long gameRoundId,
               bool freeBet)
+            where BankingGameBet : BankingGameBetEntity
         {
             var bet = (await collection
                 .FindAsync(record => record.PlayerId == obCustId
