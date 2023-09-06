@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class BlackjackBetReportEntity: BetReportEntity
+    public class BankingGameBetReportEntity: BetReportEntity
     {
         public long HandId { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Core.Models.BetReport
 {
-    public class BlackjackBetReportFilter 
+    public class BankingGameBetReportFilter 
     {
         public long HandId { get; set; }
         public DateTime FromDate { get; set; }

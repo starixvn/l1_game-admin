@@ -5,13 +5,13 @@ using MediatR;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class BlackjackReportRequest : IRequest<IEnumerable<BlackjackBetRecord>>
+    public class BlackjackReportRequest : IRequest<IEnumerable<BankingGameBetRecord>>
     {
-        public BlackjackReportRequest(BlackjackBetReportFilter filter)
+        public BlackjackReportRequest(BankingGameBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public BlackjackBetReportFilter Filter { get; }
+        public BankingGameBetReportFilter Filter { get; }
     }
 }

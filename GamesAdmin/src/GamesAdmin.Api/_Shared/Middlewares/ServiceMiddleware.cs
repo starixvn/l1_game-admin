@@ -18,7 +18,7 @@ using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions;
 using GamesAdmin.Api.Public;
 using GamesAdmin.Api.Report;
-using GamesAdmin.Api.RTPVerify;
+using GamesAdmin.Api.Report.Services;
 using GamesAdmin.Api.ServiceStatus;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
@@ -141,6 +141,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<DragonTigerReportService>();
             services.AddScoped<VipSeDieReportService>();
             services.AddScoped<BlackjackReportService>();
+            services.AddScoped<PontoonReportService>();
             services.AddScoped<SicBoReportService>();
             services.AddScoped<VipFishPrawnCrabReportService>();
             services.AddScoped<LotteryReportService>();

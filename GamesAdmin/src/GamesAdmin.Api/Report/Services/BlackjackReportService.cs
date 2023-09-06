@@ -19,11 +19,11 @@ namespace GamesAdmin.Api.Report
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<BlackjackBetRecord>> Get(BlackjackBetReportFilter filter)
+        public async Task<IEnumerable<BankingGameBetRecord>> Get(BankingGameBetReportFilter filter)
         {
             var result = await repository.GetAsync(filter);
 
-            return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
+            return result.Select(x => mapper.Map<BankingGameBetRecord>(x));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.Report.Requests;
+using GamesAdmin.Api.Report.Services;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
@@ -21,7 +22,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
         IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
         IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
-        IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
+        IRequestHandler<BlackjackReportRequest, IEnumerable<BankingGameBetRecord>>,
+        IRequestHandler<PontoonReportRequest, IEnumerable<BankingGameBetRecord>>,
         IRequestHandler<SlotGameReportRequest, IEnumerable<SlotGameBetRecord>>,
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
         IRequestHandler<BitcoinMasterReportRequest, BitcoinMasterBetReport>,
@@ -75,8 +77,11 @@ namespace GamesAdmin.Api.Report
         public Task<SpecialSeDieBetHistory> Handle(SpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
             => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);
 
-        public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<BankingGameBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
             => serviceProvider.GetRequiredService<BlackjackReportService>().Get(request.Filter);
+
+        public Task<IEnumerable<BankingGameBetRecord>> Handle(PontoonReportRequest request, CancellationToken cancellationToken)
+           => serviceProvider.GetRequiredService<PontoonReportService>().Get(request.Filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)
             => reportService.GetSlotGameReportAsync(request.Filter);

@@ -2,7 +2,7 @@
 
 namespace GamesAdmin.Database.Entities
 {
-    [BsonCollection("blackjack_rounds")]
+    [BsonCollection("pontoon_rounds")]
     public class PontoonRoundEntity : BankingGameRoundEntity
     {
     }

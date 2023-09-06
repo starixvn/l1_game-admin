@@ -116,7 +116,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBet { get; set; }
     }
 
-    public class BlackjackRecordViewModel : BetRecordViewModel
+    public class BankingGameRecordViewModel : BetRecordViewModel
     {
         public long HandId { get; set; }
 

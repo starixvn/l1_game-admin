@@ -34,7 +34,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
-        IRequestHandler<GetBlackjackReportRequest, BlackjackReportResultViewModel>,
+        IRequestHandler<GetBlackjackReportRequest, BankingGameReportResultViewModel>,
+        IRequestHandler<GetPontoonReportRequest, BankingGameReportResultViewModel>,
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, JackpotReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
@@ -387,20 +388,42 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        public async Task<BlackjackReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
+        public async Task<BankingGameReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(model => true);
 
             request.Filter.ToDate.AddDays(1);
             var result = await reportService.GetBlackjackReport(request.Filter);
 
-            return new BlackjackReportResultViewModel
+            return new BankingGameReportResultViewModel
             {
                 ConvertToUSD = request.Filter.ConvertToUSD,
                 BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
                 Records = result.Select(x =>
                 {
-                    var betViewModel = mapper.Map<BlackjackRecordViewModel>(x);
+                    var betViewModel = mapper.Map<BankingGameRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<BankingGameReportResultViewModel> Handle(GetPontoonReportRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            request.Filter.ToDate.AddDays(1);
+            var result = await reportService.GetPontoonReport(request.Filter);
+
+            return new BankingGameReportResultViewModel
+            {
+                ConvertToUSD = request.Filter.ConvertToUSD,
+                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<BankingGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 

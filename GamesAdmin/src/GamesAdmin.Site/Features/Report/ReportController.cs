@@ -239,9 +239,23 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
+        public async Task<IActionResult> Pontoon()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new BlackjackReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBlackjackReport(BankingGameBetReportFilter model)
         {
             return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPontoonReport(BankingGameBetReportFilter model)
+        {
+            return PartialView("_PontoonRecords", await mediator.Send(new GetPontoonReportRequest(model)));
         }
 
         [HttpGet]

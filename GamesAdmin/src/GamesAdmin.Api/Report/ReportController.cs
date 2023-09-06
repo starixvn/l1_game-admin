@@ -79,8 +79,13 @@ namespace GamesAdmin.Api.Report
 
         [HttpGet]
         [Route("blackjack")]
-        public async Task<IEnumerable<BlackjackBetRecord>> Blackjack([FromQuery] BlackjackBetReportFilter filter)
+        public async Task<IEnumerable<BankingGameBetRecord>> Blackjack([FromQuery] BankingGameBetReportFilter filter)
         => (await mediator.Send(new BlackjackReportRequest(filter)));
+
+        [HttpGet]
+        [Route("pontoon")]
+        public async Task<IEnumerable<BankingGameBetRecord>> Pontoon([FromQuery] BankingGameBetReportFilter filter)
+         => (await mediator.Send(new PontoonReportRequest(filter)));
 
         [HttpGet]
         [Route("slot_game/round/{roundId}/nick/{nickname?}")]

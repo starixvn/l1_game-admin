@@ -14,7 +14,7 @@ namespace GamesAdmin.Database
 {
     public interface IBlackjackReportRepository
     {
-        Task<IEnumerable<BlackjackBetReportEntity>> GetAsync(BlackjackBetReportFilter filter);
+        Task<IEnumerable<BankingGameBetReportEntity>> GetAsync(BankingGameBetReportFilter filter);
     }
 
     public class BlackjackReportRepository : IBlackjackReportRepository
@@ -26,10 +26,10 @@ namespace GamesAdmin.Database
             this.database = database;
         }
 
-        public async Task<IEnumerable<BlackjackBetReportEntity>> GetAsync(BlackjackBetReportFilter filter)
+        public async Task<IEnumerable<BankingGameBetReportEntity>> GetAsync(BankingGameBetReportFilter filter)
         {
             var project = GetAggregateBuilder(filter)
-                .Project(x => new BlackjackBetReportEntity
+                .Project(x => new BankingGameBetReportEntity
                 {
                     Time = x.Time,
                     Username = x.AccountInfos.IsBot ? x.Accounts.Local.Username : x.Accounts.Local.MemberName,
@@ -65,7 +65,7 @@ namespace GamesAdmin.Database
             return records;
         }
 
-        private IAggregateFluent<BlackjackBetWithUnWindAccountsEntity> GetAggregateBuilder(BlackjackBetReportFilter filter)
+        private IAggregateFluent<BlackjackBetWithUnWindAccountsEntity> GetAggregateBuilder(BankingGameBetReportFilter filter)
         {
             var betCollection = database.GetCollection<BlackjackBetEntity>(Document.GetCollectionName(typeof(BlackjackBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
