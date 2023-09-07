@@ -128,7 +128,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
 
-            AddSlotServices(services, appSettings, refitSettings);
+            AddSlotServices(services);
             AddHoldemPokerServices(services, appSettings, refitSettings);
             AddChatBotServices(services, appSettings);
             AddVoidRunningTicketServices(services);
@@ -176,7 +176,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.InitApiLog();
         }
 
-        private static void AddSlotServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        private static void AddSlotServices(this IServiceCollection services)
         {
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
             services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();         

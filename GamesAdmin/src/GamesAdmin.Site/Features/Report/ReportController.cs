@@ -235,7 +235,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
-            return View(new BlackjackReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+            return View(new BankingGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
@@ -243,7 +243,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
-            return View(new BlackjackReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+            return View(new BankingGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
