@@ -116,33 +116,6 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public decimal TotalBet { get; set; }
     }
 
-    public class BankingGameRecordViewModel : BetRecordViewModel
-    {
-        public long HandId { get; set; }
-
-        public int ExchangeRateId { get; set; }
-
-        public decimal Bet { get; set; }
-
-        public long? SplitForm { get; set; }
-
-        public long Round { get; set; }
-
-        public IEnumerable<CardViewModel> Cards { get; set; }
-
-        public IEnumerable<string> Actions { get; set; }
-
-        public IEnumerable<CardViewModel> DealerCards { get; set; }
-
-        public bool Ended { get; set; }
-
-        public byte Point { get; set; }
-
-        public byte DealerPoint { get; set; }
-
-        public IEnumerable<byte> SoftPoints { get; set; }
-    }
-
     public class CardViewModel
     {
         public string Rank { get; set; }

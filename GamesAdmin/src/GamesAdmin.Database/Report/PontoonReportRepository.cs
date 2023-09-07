@@ -73,15 +73,33 @@ namespace GamesAdmin.Database.Report
 
         private static Expression<Func<PontoonBetEntity, bool>> GetFilterExpression(BankingGameBetReportFilter filter)
         {
-            var from = filter.FromDate.ToStartDate().ToGMT7();
-            var to = filter.ToDate.ToEndDate().ToGMT7();
+            Expression<Func<PontoonBetEntity, bool>> expression;
+            if (filter.HandId > 0)
+            {
+                expression = x => x.HandId == filter.HandId;
+            }
+            else
+            {
+                var from = filter.FromDate.ToStartDate().ToGMT7();
+                var to = filter.ToDate.ToEndDate().ToGMT7();
+                expression = x => from <= x.Time && x.Time <= to;
+            }
 
-            Expression<Func<PontoonBetEntity, bool>> expression = x =>
-                (filter.HandId > 0 && x.HandId == filter.HandId) ||
-                (x.Time >= from && x.Time <= to) &&
-                (string.IsNullOrWhiteSpace(filter.PartnerId) || x.OperatorId == filter.PartnerId) &&
-                (string.IsNullOrWhiteSpace(filter.Nickname) || new Regex($"^(?i){filter.Nickname}$").IsMatch(x.Name)) &&
-                (!filter.ExcludeUUS || x.Currency != "UUS");
+            if (!string.IsNullOrWhiteSpace(filter.PartnerId))
+            {
+                expression = expression.And(x => x.OperatorId == filter.PartnerId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.Nickname))
+            {
+                var nickNameRegex = new Regex($"^(?i){filter.Nickname}$");
+                expression = expression.And(x => nickNameRegex.IsMatch(x.Name));
+            }
+
+            if (filter.ExcludeUUS)
+            {
+                expression = expression.And(x => x.Currency != "UUS");
+            }
 
             return expression;
         }

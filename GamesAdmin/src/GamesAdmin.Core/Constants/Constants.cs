@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GamesAdmin.Core
+﻿namespace GamesAdmin.Core
 {
     public static class Constants
     {
@@ -8,7 +6,7 @@ namespace GamesAdmin.Core
         public const string TimeFormat = "HH:mm:ss";
     }
 
-    public static class BlackjackAction
+    public static class BankingGameAction
     {
         public const string Split = "split";
 

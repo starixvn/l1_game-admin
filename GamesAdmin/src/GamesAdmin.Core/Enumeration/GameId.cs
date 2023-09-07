@@ -57,7 +57,7 @@
         FanTan = 60,
         WinThreeCards = 61,
         FortuneCat = 62,
-        DragonTigerFight = 67
+        DragonTigerFight = 67,
         Pontoon = 72,
     }
 }
