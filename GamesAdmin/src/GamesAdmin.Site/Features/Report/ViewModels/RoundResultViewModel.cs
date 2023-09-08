@@ -459,5 +459,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             return char.ToUpper(result[0]) + result.Substring(1).Trim();
         }
         
+        public string GetDiceName(int dice)
+        {
+            var resultMapper = new Dictionary<int, string>() { { 0, "yellow" }, { 1, "red" }, { 2, "pink" }, { 3, "white" }, { 4, "blue" }, { 5, "green" } };
+            return resultMapper[dice];
+        }
     }
 }

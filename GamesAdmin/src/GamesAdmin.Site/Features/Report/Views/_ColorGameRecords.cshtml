@@ -30,26 +30,10 @@
                         <td>
                             <div class="text-center">
                                 <span>
-                                    @foreach(KeyValuePair<string, bool> entry in Model.RoundResult.SettlementResult)
-                                    {
-                                        if (!Model.RoundResult.InferableChoices.Contains(entry.Key) && entry.Value)
-                                        {
-                                            <span><img class="img" src="~/images/@(entry.Key).png" alt="#" /></span>
-                                        }
-                                    }
-                                    
-                                </span>     
-                                <span> | </span>
-                                <span>
-                                    @foreach(KeyValuePair<string, bool> entry in Model.RoundResult.SettlementResult)
-                                    {
-                                        if (Model.RoundResult.InferableChoices.Contains(entry.Key) && entry.Value)
-                                        {
-                                            <span>@ColorGameRoundResultViewModel.FormatString(@entry.Key)</span>
-                                        }
-                                    }
-                                    
-                                </span>     
+                                    <span><img class="img" src="~/images/@(Model.RoundResult.GetDiceName(Model.RoundResult.Dice1)).png" alt="#" /></span>
+                                    <span><img class="img" src="~/images/@(Model.RoundResult.GetDiceName(Model.RoundResult.Dice2)).png" alt="#" /></span>
+                                    <span><img class="img" src="~/images/@(Model.RoundResult.GetDiceName(Model.RoundResult.Dice3)).png" alt="#" /></span>                                    
+                                </span>                                      
                             </div>
                         </td>
                         <td class="text-center">@Model.RoundResult.GetWinningOptions()</td>

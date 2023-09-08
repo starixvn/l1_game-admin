@@ -34,4 +34,16 @@
     {
         return fractionalOddsFormat ? value - 1 : value;
     }
+
+    public static string formatOddsWithZero(decimal value, bool fractionalOddsFormat)
+    {
+        if(value == 0)
+        {
+            return "-";
+        }
+        else
+        {
+            return formatOdds(value, fractionalOddsFormat).ToString();
+        }        
+    }
 }
