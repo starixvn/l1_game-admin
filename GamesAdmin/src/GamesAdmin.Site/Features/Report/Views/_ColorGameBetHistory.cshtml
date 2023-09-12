@@ -18,7 +18,7 @@
         <tr>
             <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
             <td>@bet.GetDisplayChoice()</td>
-            <td>@HtmlHelpers.formatOddsWithZero(Model.GetWinningOdds(bet.Choice), Model.FractionalOddsFormat)</td>
+            <td>@HtmlHelpers.formatOddsWithZero(Model.GetOddsToShow(bet.Choice), Model.FractionalOddsFormat)</td>
             <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
             <td>                
                 <span>
