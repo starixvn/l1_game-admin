@@ -516,13 +516,13 @@ namespace GamesAdmin.Api.VoidGame
                 if (bet == null)
                 {
                     isArchive = true;
-                    var archiveCollection = archiveDatabase.GetCollection<BlackjackBetEntity>($"{collectionName}{ArchivePostfix}");
+                    var archiveCollection = archiveDatabase.GetCollection<BankingGameBet>($"{collectionName}{ArchivePostfix}");
                     bet = await FindBlackjackTicket(archiveCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
                 }
 
                 if (bet != null)
                 {
-                    allTicket = await FindAllTicketBlackjack(bet?.Round, isArchive);
+                    allTicket = await FindAllTicketBlackjack<BankingGameBet>(bet?.Round, isArchive);
                 }
             }
             catch (Exception ex)
@@ -568,15 +568,16 @@ namespace GamesAdmin.Api.VoidGame
             where BankingGameRound: BankingGameRoundEntity
         => await MoveRound<BankingGameRound>(roundId);
 
-        public async Task<List<long>> FindAllTicketBlackjack(long? roundId, bool isArchive)
+        public async Task<List<long>> FindAllTicketBlackjack<BankingGameBet>(long? roundId, bool isArchive)
+            where BankingGameBet: BankingGameBetEntity
         {
             try
             {
                 var database = isArchive ? archiveDatabase : activeDatabase;
                 var postfix = isArchive ? ArchivePostfix : string.Empty;
-                var betCollectionName = Document.GetCollectionName(typeof(BlackjackBetEntity));
+                var betCollectionName = Document.GetCollectionName(typeof(BankingGameBet));
 
-                var betCollection = database.GetCollection<BlackjackBetEntity>($"{betCollectionName}{postfix}");
+                var betCollection = database.GetCollection<BankingGameBet>($"{betCollectionName}{postfix}");
                 var bets = (await betCollection.FindAsync(record => record.Round == roundId)).ToList();
                 if (bets.Count > 0)
                 {
