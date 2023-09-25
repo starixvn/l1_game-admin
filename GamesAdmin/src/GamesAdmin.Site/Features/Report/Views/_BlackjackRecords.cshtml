@@ -65,7 +65,7 @@
                         <td class="text-center">
                             @if (bet.Ended)
                             {
-                                bet.GetDealerResult(100, "Blackjack");
+                                @bet.GetDealerResult(100, "Blackjack")
                             }
                             else
                             {
@@ -85,7 +85,7 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            @bet.GetPlayerResult(100, "Blackjack", bet.IsSplittedHand);
+                            @bet.GetPlayerResult(100, "Blackjack", bet.IsSplittedHand)
                         </td>
                         <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Bet) / Model.BaseCurrencyMultiplier : bet.Bet)</td>
                         <td class="text-right">@(bet.Ended? HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier : bet.BetWin) : "Running")</td>

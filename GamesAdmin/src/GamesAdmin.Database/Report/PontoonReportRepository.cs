@@ -33,7 +33,7 @@ namespace GamesAdmin.Database.Report
             var betCollection = database.GetCollection<PontoonBetEntity>(Document.GetCollectionName(typeof(PontoonBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
 
-            var bets = await betCollection.Find(GetFilterExpression(filter)).ToListAsync();
+            var bets = await betCollection.Find(GetFilterExpression(filter)).SortByDescending(x => x.Id).ToListAsync();
             var roundIds = bets.Select(x => x.Round).ToList();
             var rounds = await database.GetCollection<PontoonRoundEntity>(Document.GetCollectionName(typeof(PontoonRoundEntity))).Find(x => roundIds.Contains(x.Number)).ToListAsync();
             var result = new List<BankingGameBetReportEntity>();
