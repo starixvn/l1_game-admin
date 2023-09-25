@@ -62,7 +62,24 @@
                 <label asp-for="@Model.RandomMode" class="control-label"></label>
                 <select asp-items="@Model.RandomModeItems" asp-for="@Model.RandomMode" class="form-control"></select>
             </div>
-
+            @if (Model.Type == GameType.Crash)
+            {
+                <div class="form-group">
+                    <label asp-for="CrashConfig.MaxMultiplier" class="control-label">Max Multiplier</label>
+                    <input type="number" asp-for="CrashConfig.MaxMultiplier" class="form-control col-2" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Max Win per Round</label>
+                    <div class="row mt-2 ml-1">                       
+                        <input type="number" asp-for="CrashConfig.MaxWinPerRound" class="form-control col-2" />
+                        <label asp-for="CrashConfig.MaxWinPerRound" class="control-label col-2 mt-2">x  Max Bet</label>                  
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CrashConfig.CrashAtBase" class="control-label">Crash at Base (%)</label>
+                    <input type="number" asp-for="CrashConfig.CrashAtBase" class="form-control col-2" />
+                </div>
+            }
             <div class="form-group">
                 <input type="checkbox" asp-for="BotEnabled" />
                 <label asp-for="BotEnabled" class="control-label"></label>

@@ -132,6 +132,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                                         : game.Info.DisplayName;
                 viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
                 viewModel.SlotRNGConfig = game.SlotRNGConfig;
+                viewModel.CrashConfig = game.CrashConfig;
 
                 switch (game.Info.Type)
                 {
@@ -153,11 +154,15 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
                         break;
 
+                    case GameType.Crash:
+                        viewModel.SlotViewModel = new SlotViewModel();
+                        viewModel.Type = GameType.Crash;
+                        break;
+
                     default:
                         viewModel.Type = GameType.AutoRNG;
                         var choices = GetBetChoices(game.Info.Name);
                         viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
-                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
                         break;
                 }
                 viewModel.DetailsView = GetDetailsView(viewModel.Type);
@@ -193,6 +198,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             {
                 case GameType.AutoRNG:
                 case GameType.SlotRNG:
+                case GameType.Crash:
                     name += "RNG";
                     break;
 
@@ -295,6 +301,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
                 case GameType.SlotRNG:
                     return gameService.UpdateSlotRNGConfig(new UpdateSlotRNGConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.SlotRNGConfig));
+
+                case GameType.Crash:
+                    return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig));
 
                 default:
                     return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting));

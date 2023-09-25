@@ -267,6 +267,30 @@ namespace GamesAdmin.Api._Shared.Helpers
             return changedSettings;
         }
 
+        public static List<SettingChangedModel> GetCrashConfigChangeModel(
+           GameConfigEntity oldConfig,
+           GameInfo gameInfo,
+           BotSetting botSetting,
+           EnableSetting enableSetting,
+           CrashConfig crashConfig)
+        {
+            var changedSettings = new List<SettingChangedModel>
+            {
+                new SettingChangedModel("EnableFreeBet", oldConfig.EnableFreeBet.ToString(), gameInfo.EnableFreeBet.ToString()),
+                new SettingChangedModel("DelayStartTime", oldConfig.DelayStartTime.ToString(), enableSetting.DelayStartTime.ToString()),
+                new SettingChangedModel("Botenabled", oldConfig.Botenabled.ToString(), botSetting.BotEnabled.ToString()),
+                new SettingChangedModel("BotMaxBet", oldConfig.BotMaxBet.ToString(), botSetting.BotMaxBet.ToString()),
+                new SettingChangedModel("SmartBotEnabled", oldConfig.SmartBotEnabled.ToString(), botSetting.SmartBotEnabled.ToString()),
+                new SettingChangedModel("SmartBotGroupRatio", oldConfig.SmartBotGroupRatio.ToString(), botSetting.SmartBotGroupRatio.ToString()),
+                new SettingChangedModel("RandomMode", oldConfig.RandomMode.ToString(), gameInfo.RandomMode.ToString()),
+                new SettingChangedModel("Max Multiplir", oldConfig.CrashConfig.MaxMultiplier.ToString(), crashConfig.MaxMultiplier.ToString()),
+                new SettingChangedModel("Max Win per Round", oldConfig.CrashConfig.MaxWinPerRound.ToString(), crashConfig.MaxWinPerRound.ToString()),
+                new SettingChangedModel("Crash at Base (%)", oldConfig.CrashConfig.CrashAtBase.ToString(), crashConfig.CrashAtBase.ToString()),
+            };
+
+            return changedSettings;
+        }
+
         private static string GetOddsByCountConfigString(IList<OddsByCount> oddsByCount)
         {
             string configString = "";

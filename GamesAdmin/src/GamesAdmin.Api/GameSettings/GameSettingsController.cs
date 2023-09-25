@@ -93,6 +93,10 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateCascadingSlotsConfig(UpdateSlotRNGConfigRequest request)
           => mediator.Send(request);
 
+        [HttpPost("update_crash_config")]
+        public Task<bool> UpdateCrashConfig(UpdateCrashConfigRequest request)
+          => mediator.Send(request);
+
         [HttpPost("{name}/update_slot_odds")]
         public Task<bool> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
            => mediator.Send(new UpdateSlotIconOddsRequest(name, iconOdds));

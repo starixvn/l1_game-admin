@@ -52,6 +52,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateSlotRNGConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, SlotRNGConfig slotRNGConfig);
 
         Task<bool> UpdateSymbolWeight(string name, SymbolWeight symbolWeight);
+
+        Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig);
     }
 
     public class GameSettingsService : IGameSettingsService
@@ -99,9 +101,7 @@ namespace GamesAdmin.Api.Games
         {
             try
             {
-                var gameId = game.Info.Type == GameType.Slots
-                    ? game.Info.GameId
-                    : (int)Enumeration.FromValue<Game>(game.Info.Name).GameId;
+                var gameId = GetGameId(game.Info);
 
                 var entity = new GameConfigEntity
                 {
@@ -123,6 +123,7 @@ namespace GamesAdmin.Api.Games
                     Time = DateTime.Now,
                     GameId = gameId,
                     DisplayName = game.Info.DisplayName,
+                    CrashConfig = game.CrashConfig
                 };
 
                 await repository.InsertOneAsync(entity);
@@ -138,6 +139,16 @@ namespace GamesAdmin.Api.Games
             }
 
             return true;
+        }
+
+        private int GetGameId(GameInfo gameInfo)
+        {
+            if (gameInfo.Type == GameType.Slots || gameInfo.Type == GameType.Crash)
+            {
+                return gameInfo.GameId;
+            }
+
+            return (int)Enumeration.FromValue<Game>(gameInfo.Name).GameId;
         }
 
         public async Task<GameConfig> GetByName(string name)
@@ -501,6 +512,7 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                 .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                 .Set(field => field.RandomMode, gameInfo.RandomMode);
+      
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
@@ -551,6 +563,30 @@ namespace GamesAdmin.Api.Games
             }
 
             return slotSymbolWeight;
+        }
+
+        public async Task<bool> UpdateCrashConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, CrashConfig crashConfig)
+        {
+            var gameEntity = await repository.FindOneAsync(entity => entity.Name == gameInfo.Name);
+            var changedSettings = SettingHelper.GetCrashConfigChangeModel(gameEntity, gameInfo, botSetting, enableSetting, crashConfig);
+            sentryClient.CaptureChangedSettings(gameInfo.Name, "General Config", string.Empty, changedSettings);
+
+            var update = Builders<GameConfigEntity>.Update
+                .Set(field => field.EnableFreeBet, gameInfo.EnableFreeBet)
+                .Set(field => field.DelayStartTime, enableSetting.DelayStartTime)
+                .Set(field => field.CrashConfig.MaxMultiplier, crashConfig.MaxMultiplier)
+                .Set(field => field.CrashConfig.MaxWinPerRound, crashConfig.MaxWinPerRound)
+                .Set(field => field.CrashConfig.CrashAtBase, crashConfig.CrashAtBase)
+                .Set(field => field.Botenabled, botSetting.BotEnabled)
+                .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
+                .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
+                .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
+                .Set(field => field.RandomMode, gameInfo.RandomMode);
+
+
+            await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
+
+            return true;
         }
     }
 }

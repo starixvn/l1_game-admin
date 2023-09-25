@@ -53,6 +53,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<bool> UpdateSlotRNGConfig(UpdateSlotRNGConfigRequest request);
 
+        Task<bool> UpdateCrashConfig(UpdateCrashConfigRequest request);
+
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
         Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username);
@@ -192,6 +194,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<bool> UpdateSlotRNGConfig(UpdateSlotRNGConfigRequest request)
         => gameApi.UpdateSlotRNGConfig(request);
+
+        public Task<bool> UpdateCrashConfig(UpdateCrashConfigRequest request)
+        => gameApi.UpdateCrashConfig(request);
 
         public Task<Dictionary<string, string>> GetDisabledMessage(string name)
             => gameApi.GetDisableMessage(name);

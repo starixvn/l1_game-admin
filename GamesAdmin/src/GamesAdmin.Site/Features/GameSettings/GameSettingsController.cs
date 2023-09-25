@@ -272,6 +272,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 SlotsConfig slotsConfig = null;
                 CascadingSlotsConfig cascadingSlotsConfig = null;
                 SlotRNGConfig slotRNGConfig = null;
+                CrashConfig crashConfig = null;
                 switch (viewModel.Type)
                 {
                     case GameType.Slots:
@@ -291,6 +292,9 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.SlotRNG:
                         slotRNGConfig = viewModel.SlotRNGConfig;
                         break;
+                    case GameType.Crash:
+                        crashConfig = viewModel.CrashConfig;
+                        break;
 
                     default: break;
                 }
@@ -301,7 +305,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     slotsConfig,
                     cascadingSlotsConfig,
-                    slotRNGConfig);
+                    slotRNGConfig,
+                    crashConfig);
 
                 await mediator.Send(request);
 

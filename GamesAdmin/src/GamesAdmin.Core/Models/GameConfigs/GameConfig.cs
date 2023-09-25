@@ -16,7 +16,8 @@ namespace GamesAdmin.Core.Models
             BetLimit betLimit = null,
             SlotsConfig slotsConfig = null,
             CascadingSlotsConfig cascadingSlotsConfig = null,
-            SlotRNGConfig slotRNGConfig = null)
+            SlotRNGConfig slotRNGConfig = null,
+            CrashConfig crashConfig = null)
         {
             Id = id;
             Odds = odds;
@@ -27,6 +28,7 @@ namespace GamesAdmin.Core.Models
             SlotsConfig = slotsConfig;
             CascadingSlotsConfig = cascadingSlotsConfig;
             SlotRNGConfig = slotRNGConfig;
+            CrashConfig = crashConfig;
         }
 
         public string Id { get; }
@@ -46,5 +48,7 @@ namespace GamesAdmin.Core.Models
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
 
         public SlotRNGConfig SlotRNGConfig { get; set; }
+
+        public CrashConfig CrashConfig { get; set; }
     }
 }

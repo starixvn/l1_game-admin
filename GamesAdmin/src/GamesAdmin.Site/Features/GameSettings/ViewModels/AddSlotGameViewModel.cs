@@ -23,7 +23,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         private static bool IsSlotGameType(string type)
         {
             var gameType = Enum.Parse<GameType>(type);
-            return gameType == GameType.Slots || gameType == GameType.CascadingSlots ;
+            return gameType == GameType.Slots || gameType == GameType.CascadingSlots || gameType == GameType.Crash ;
         }
 
         public static string GetJackpotText(bool isEnableJackpot)

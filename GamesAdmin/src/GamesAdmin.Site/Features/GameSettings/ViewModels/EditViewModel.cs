@@ -80,6 +80,8 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public SlotRNGConfig SlotRNGConfig { get; set; }
 
         public string DetailsView { get; set; }
+
+        public CrashConfig CrashConfig { get; set; }
     }
 
     public class BotRatioItemViewModel

@@ -62,6 +62,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/update_slot_rng_config")]
         Task<bool> UpdateSlotRNGConfig([Body] UpdateSlotRNGConfigRequest request);
 
+        [Post("/game_settings/update_crash_config")]
+        Task<bool> UpdateCrashConfig([Body] UpdateCrashConfigRequest request);
+
         [Post("/game_settings/{name}/update_slot_odds")]
         Task<bool> UpdateSlotOdds(string name, [Body] Dictionary<string, Dictionary<string, double>> iconOdds);
 
