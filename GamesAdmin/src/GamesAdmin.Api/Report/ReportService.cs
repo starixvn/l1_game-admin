@@ -35,9 +35,9 @@ namespace GamesAdmin.Api.Report
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistoryAsync(long roundId, string userId);
 
-        Task<IEnumerable<BankingGameBetRecord>> GetBlackjackReportAsync(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter);
 
-        Task<IEnumerable<BankingGameBetRecord>> GetPontoonReportAsync(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetRecord>> GetPontoonReportAsync(BlackjackBetReportFilter filter);
 
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter);
 
@@ -311,20 +311,20 @@ namespace GamesAdmin.Api.Report
             };
         }
 
-        public async Task<IEnumerable<BankingGameBetRecord>> GetBlackjackReportAsync(BankingGameBetReportFilter filter)
+        public async Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReportAsync(BlackjackBetReportFilter filter)
         {
             var repository = serviceProvider.GetService<IBlackjackReportRepository>();
             var result = await repository.GetAsync(filter);
 
-            return result.Select(x => mapper.Map<BankingGameBetRecord>(x));
+            return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
 
-        public async Task<IEnumerable<BankingGameBetRecord>> GetPontoonReportAsync(BankingGameBetReportFilter filter)
+        public async Task<IEnumerable<BlackjackBetRecord>> GetPontoonReportAsync(BlackjackBetReportFilter filter)
         {
             var repository = serviceProvider.GetService<IPontoonReportRepository>();
             var result = await repository.GetAsync(filter);
 
-            return result.Select(x => mapper.Map<BankingGameBetRecord>(x));
+            return result.Select(x => mapper.Map<BlackjackBetRecord>(x));
         }
 
         public async Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReportAsync(SlotGameBetReportFilter filter)

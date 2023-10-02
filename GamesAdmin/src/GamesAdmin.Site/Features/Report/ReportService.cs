@@ -34,9 +34,9 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
 
-        Task<IEnumerable<BankingGameBetRecord>> GetBlackjackReport(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
 
-        Task<IEnumerable<BankingGameBetRecord>> GetPontoonReport(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetRecord>> GetPontoonReport(BlackjackBetReportFilter filter);
 
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request);
 
@@ -99,10 +99,10 @@ namespace GamesAdmin.Site.Features.Report
         public Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId)
         => reportApi.GetSpecialSeDieBetHistory(roundId, userId);
 
-        public Task<IEnumerable<BankingGameBetRecord>> GetBlackjackReport(BankingGameBetReportFilter filter)
+        public Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter)
         => reportApi.GetBlackjackReport(filter);
 
-        public Task<IEnumerable<BankingGameBetRecord>> GetPontoonReport(BankingGameBetReportFilter filter)
+        public Task<IEnumerable<BlackjackBetRecord>> GetPontoonReport(BlackjackBetReportFilter filter)
        => reportApi.GetPontoonReport(filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request)

@@ -22,8 +22,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<LuckyWheelReportRequest, IEnumerable<SpinResult>>,
         IRequestHandler<SpecialSeDieReportRequest, SpecialSeDieBetReport>,
         IRequestHandler<SpecialSeDieBetHistoryRequest, SpecialSeDieBetHistory>,
-        IRequestHandler<BlackjackReportRequest, IEnumerable<BankingGameBetRecord>>,
-        IRequestHandler<PontoonReportRequest, IEnumerable<BankingGameBetRecord>>,
+        IRequestHandler<BlackjackReportRequest, IEnumerable<BlackjackBetRecord>>,
+        IRequestHandler<PontoonReportRequest, IEnumerable<BlackjackBetRecord>>,
         IRequestHandler<SlotGameReportRequest, IEnumerable<SlotGameBetRecord>>,
         IRequestHandler<JackpotReportRequest, IEnumerable<JackpotRecord>>,
         IRequestHandler<BitcoinMasterReportRequest, BitcoinMasterBetReport>,
@@ -77,10 +77,10 @@ namespace GamesAdmin.Api.Report
         public Task<SpecialSeDieBetHistory> Handle(SpecialSeDieBetHistoryRequest request, CancellationToken cancellationToken)
             => reportService.GetSpecialSeDieBetHistoryAsync(request.RoundId, request.UserId);
 
-        public Task<IEnumerable<BankingGameBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<BlackjackBetRecord>> Handle(BlackjackReportRequest request, CancellationToken cancellationToken)
             => serviceProvider.GetRequiredService<BlackjackReportService>().Get(request.Filter);
 
-        public Task<IEnumerable<BankingGameBetRecord>> Handle(PontoonReportRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<BlackjackBetRecord>> Handle(PontoonReportRequest request, CancellationToken cancellationToken)
            => serviceProvider.GetRequiredService<PontoonReportService>().Get(request.Filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> Handle(SlotGameReportRequest request, CancellationToken cancellationToken)

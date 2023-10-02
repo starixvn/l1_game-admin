@@ -4,7 +4,7 @@ using GamesAdmin.Core;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class BankingGameRecordViewModel : BetRecordViewModel
+    public class BlackjackGameRecordViewModel : BetRecordViewModel
     {
         public const byte maxPoint = 21;
 
@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public IEnumerable<byte> SoftPoints { get; set; }
 
-        public bool IsSplittedHand => SplitForm.HasValue || Actions.Any(x => x == BankingGameAction.Split);
+        public bool IsSplittedHand => SplitForm.HasValue || Actions.Any(x => x == BlackjackGameAction.Split);
 
         public string SplitLabel => IsSplittedHand ? "(Split)" : string.Empty;
 

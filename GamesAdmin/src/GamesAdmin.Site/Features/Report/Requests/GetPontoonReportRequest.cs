@@ -4,13 +4,13 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetPontoonReportRequest : IRequest<BankingGameReportResultViewModel>
+    public class GetPontoonReportRequest : IRequest<BlackjackGameReportResultViewModel>
     {
-        public GetPontoonReportRequest(BankingGameBetReportFilter filter)
+        public GetPontoonReportRequest(BlackjackBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public BankingGameBetReportFilter Filter { get; }
+        public BlackjackBetReportFilter Filter { get; }
     }
 }

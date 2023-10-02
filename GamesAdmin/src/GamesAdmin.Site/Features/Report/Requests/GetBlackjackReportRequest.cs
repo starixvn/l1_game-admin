@@ -4,13 +4,13 @@ using MediatR;
 
 namespace GamesAdmin.Site.Features.Report.Requests
 {
-    public class GetBlackjackReportRequest : IRequest<BankingGameReportResultViewModel>
+    public class GetBlackjackReportRequest : IRequest<BlackjackGameReportResultViewModel>
     {
-        public GetBlackjackReportRequest(BankingGameBetReportFilter filter)
+        public GetBlackjackReportRequest(BlackjackBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public BankingGameBetReportFilter Filter { get; }
+        public BlackjackBetReportFilter Filter { get; }
     }
 }

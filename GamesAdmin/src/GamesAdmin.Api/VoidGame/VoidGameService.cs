@@ -24,9 +24,9 @@ namespace GamesAdmin.Api.VoidGame
     {
         Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request);
 
-        Task<VoidGameResult> VoidBankingGameTicket<BankingGameRound, BankingGameBet>(VoidTicketRequest request)
-            where BankingGameRound : BankingGameRoundEntity
-            where BankingGameBet : BankingGameBetEntity;
+        Task<VoidGameResult> VoidBlackjackGameTicket<BlackjackGameRound, BlackjackGameBet>(VoidTicketRequest request)
+            where BlackjackGameRound : BlackjackGameRoundEntity
+            where BlackjackGameBet : BlackjackGameBetEntity;
 
         Task<VoidGameResult> VoidHoldemPokerTicket(VoidTicketRequest request);
     }
@@ -131,13 +131,13 @@ namespace GamesAdmin.Api.VoidGame
             return default;
         }
 
-        public async Task<VoidGameResult> VoidBankingGameTicket<BankingGameRound, BankingGameBet>(VoidTicketRequest request) 
-            where BankingGameRound: BankingGameRoundEntity 
-            where BankingGameBet : BankingGameBetEntity
+        public async Task<VoidGameResult> VoidBlackjackGameTicket<BlackjackGameRound, BlackjackGameBet>(VoidTicketRequest request) 
+            where BlackjackGameRound : BlackjackGameRoundEntity 
+            where BlackjackGameBet : BlackjackGameBetEntity
         {
             try
             {
-                var ticket = await ticketHandler.ExistBankingGameTicket<BankingGameBet>(request.PlayerId,
+                var ticket = await ticketHandler.ExistBlackjackGameTicket<BlackjackGameBet>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -172,7 +172,7 @@ namespace GamesAdmin.Api.VoidGame
 
                 if (ShouldMoveRound(ticket))
                 {
-                    var movedRound = await ticketHandler.MoveBankingGameRound<BankingGameRound>(ticket.RoundId);
+                    var movedRound = await ticketHandler.MoveBlackjackGameRound<BlackjackGameRound>(ticket.RoundId);
                     if (!movedRound)
                     {
                         return TicketMovedUnsuccessfully();

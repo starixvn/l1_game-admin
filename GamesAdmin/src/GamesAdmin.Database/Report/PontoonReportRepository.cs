@@ -15,7 +15,7 @@ namespace GamesAdmin.Database.Report
 {
     public interface IPontoonReportRepository
     {
-        Task<IEnumerable<BankingGameBetReportEntity>> GetAsync(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetReportEntity>> GetAsync(BlackjackBetReportFilter filter);
     }
     public class PontoonReportRepository : IPontoonReportRepository
     {
@@ -26,7 +26,7 @@ namespace GamesAdmin.Database.Report
             this.database = database;
         }
 
-        public async Task<IEnumerable<BankingGameBetReportEntity>> GetAsync(BankingGameBetReportFilter filter)
+        public async Task<IEnumerable<BlackjackBetReportEntity>> GetAsync(BlackjackBetReportFilter filter)
         {
             var userNameRegex = new Regex($"^(?i){filter.Username}$");
 
@@ -36,14 +36,14 @@ namespace GamesAdmin.Database.Report
             var bets = await betCollection.Find(GetFilterExpression(filter)).SortByDescending(x => x.Id).ToListAsync();
             var roundIds = bets.Select(x => x.Round).ToList();
             var rounds = await database.GetCollection<PontoonRoundEntity>(Document.GetCollectionName(typeof(PontoonRoundEntity))).Find(x => roundIds.Contains(x.Number)).ToListAsync();
-            var result = new List<BankingGameBetReportEntity>();
+            var result = new List<BlackjackBetReportEntity>();
             foreach (var bet in bets)
             {
                 var betUser = await accountCollection.Find(acount => acount.Id == ObjectId.Parse(bet.Uid)).FirstOrDefaultAsync();
                 var round = rounds.FirstOrDefault(x => x.Number == bet.Round);
                 if (string.IsNullOrWhiteSpace(filter.Username) || userNameRegex.IsMatch(betUser.Local.MemberName))
                 {
-                    result.Add(new BankingGameBetReportEntity
+                    result.Add(new BlackjackBetReportEntity
                     {
                         Time = bet.Time,
                         Username = betUser.Local.MemberName ?? betUser.Local.Username,
@@ -71,7 +71,7 @@ namespace GamesAdmin.Database.Report
             return result;
         }
 
-        private static Expression<Func<PontoonBetEntity, bool>> GetFilterExpression(BankingGameBetReportFilter filter)
+        private static Expression<Func<PontoonBetEntity, bool>> GetFilterExpression(BlackjackBetReportFilter filter)
         {
             Expression<Func<PontoonBetEntity, bool>> expression;
             if (filter.HandId > 0)

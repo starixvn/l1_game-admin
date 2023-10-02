@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    public class BankingGameBetEntity : BaseBetEntity
+    public class BlackjackGameBetEntity : BaseBetEntity
     {
         [BsonElement("id")]
         public long HandId { get; set; }
@@ -25,7 +25,7 @@ namespace GamesAdmin.Database.Entities
     }
 
     [BsonCollection("blackjack_cuocs")]
-    public class BlackjackBetEntity : BankingGameBetEntity
+    public class BlackjackBetEntity : BlackjackGameBetEntity
     {
     }
 }

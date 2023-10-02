@@ -34,8 +34,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetLuckyWheelHistoryRequest, LuckyWheelHistoryViewModel>,
         IRequestHandler<GetSpecialSeDieReportRequest, SpecialSeDieReportResultViewModel>,
         IRequestHandler<GetSpecialSeDieBetHistoryRequest, SpecialSeDieBetHistoryViewModel>,
-        IRequestHandler<GetBlackjackReportRequest, BankingGameReportResultViewModel>,
-        IRequestHandler<GetPontoonReportRequest, BankingGameReportResultViewModel>,
+        IRequestHandler<GetBlackjackReportRequest, BlackjackGameReportResultViewModel>,
+        IRequestHandler<GetPontoonReportRequest, BlackjackGameReportResultViewModel>,
         IRequestHandler<GetSlotGameReportRequest, SlotGameReportResultViewModel>,
         IRequestHandler<GetJackpotReportRequest, JackpotReportResultViewModel>,
         IRequestHandler<GetBitcoinMasterReportRequest, BitcoinMasterReportResultViewModel>,
@@ -388,20 +388,20 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        public async Task<BankingGameReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
+        public async Task<BlackjackGameReportResultViewModel> Handle(GetBlackjackReportRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(model => true);
 
             request.Filter.ToDate.AddDays(1);
             var result = await reportService.GetBlackjackReport(request.Filter);
 
-            return new BankingGameReportResultViewModel
+            return new BlackjackGameReportResultViewModel
             {
                 ConvertToUSD = request.Filter.ConvertToUSD,
                 BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
                 Records = result.Select(x =>
                 {
-                    var betViewModel = mapper.Map<BankingGameRecordViewModel>(x);
+                    var betViewModel = mapper.Map<BlackjackGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 
@@ -410,20 +410,20 @@ namespace GamesAdmin.Site.Features.Report
             };
         }
 
-        public async Task<BankingGameReportResultViewModel> Handle(GetPontoonReportRequest request, CancellationToken cancellationToken)
+        public async Task<BlackjackGameReportResultViewModel> Handle(GetPontoonReportRequest request, CancellationToken cancellationToken)
         {
             var partners = await partnerService.GetPartnersForSelection(model => true);
 
             request.Filter.ToDate.AddDays(1);
             var result = await reportService.GetPontoonReport(request.Filter);
 
-            return new BankingGameReportResultViewModel
+            return new BlackjackGameReportResultViewModel
             {
                 ConvertToUSD = request.Filter.ConvertToUSD,
                 BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
                 Records = result.Select(x =>
                 {
-                    var betViewModel = mapper.Map<BankingGameRecordViewModel>(x);
+                    var betViewModel = mapper.Map<BlackjackGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 

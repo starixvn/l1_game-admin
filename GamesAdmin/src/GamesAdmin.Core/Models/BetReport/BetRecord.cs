@@ -124,7 +124,7 @@ namespace GamesAdmin.Core.Models
         public decimal TotalBet { get; set; }
     }
 
-    public class BankingGameBetRecord : BetRecord
+    public class BlackjackBetRecord : BetRecord
     {
         public long HandId { get; set; }
 

@@ -53,14 +53,14 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             var roundIds = new List<long> { 1 };
 
             var blackjackRecord = new BlackjackRecord(null, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
                     request.FreeBet).Returns(blackjackRecord);
 
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.Equal(expected.ErrorCode, result.ErrorCode);
@@ -85,7 +85,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             };
             var roundIds = new List<long> { 1 };
             var blackjackRecord = new BlackjackRecord(blackJackEntity, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -100,7 +100,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             voidGameApi.VoidGameTicket(request).Returns(apiResult);
 
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.Equal(expected.ErrorCode, result.ErrorCode);
@@ -120,7 +120,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             };
             var roundIds = new List<long> { 1, 2 };
             var blackjackRecord = new BlackjackRecord(blackJackEntity, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -141,7 +141,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
                                request.FreeBet).Returns(true);
 
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.True(result.IsSuccessful());
@@ -160,7 +160,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             };
             var roundIds = new List<long> { 1, 2 };
             var blackjackRecord = new BlackjackRecord(blackJackEntity, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -181,7 +181,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
                       request.GameTypeId,
                     request.FreeBet).Returns(false);
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.True(result.IsFailed());
@@ -201,7 +201,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             };
             var roundIds = new List<long> { 1, 2 };
             var blackjackRecord = new BlackjackRecord(blackJackEntity, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -220,9 +220,9 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
                     request.GameRoundId,
                     request.GameTypeId,
                     request.FreeBet).Returns(true);
-            ticketHandler.MoveBankingGameRound<BlackjackRoundEntity>(blackJackEntity.Round).Returns(false);
+            ticketHandler.MoveBlackjackGameRound<BlackjackRoundEntity>(blackJackEntity.Round).Returns(false);
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.True(result.IsFailed());
@@ -244,7 +244,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             };
             var roundIds = new List<long> { 34 };
             var blackjackRecord = new BlackjackRecord(blackJackEntity, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -263,7 +263,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
                     request.GameRoundId,
                     request.GameTypeId,
                     request.FreeBet).Returns(true);
-            ticketHandler.MoveBankingGameRound<BlackjackRoundEntity>(blackJackEntity.Round).Returns(true);
+            ticketHandler.MoveBlackjackGameRound<BlackjackRoundEntity>(blackJackEntity.Round).Returns(true);
             voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
                 .Returns(Mock.Of<IVoidRunningTicketApi>());
             var voidRunningTicketApi = new Mock<IVoidRunningTicketApi>();
@@ -272,7 +272,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
                 .Returns(voidRunningTicketApi.Object);
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.True(result.IsSuccessful());
@@ -291,7 +291,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             };
             var roundIds = new List<long> { 34 };
             var blackjackRecord = new BlackjackRecord(blackJackEntity, false, roundIds);
-            ticketHandler.ExistBankingGameTicket<BlackjackBetEntity>(request.PlayerId,
+            ticketHandler.ExistBlackjackGameTicket<BlackjackBetEntity>(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -310,7 +310,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
                     request.GameRoundId,
                     request.GameTypeId,
                     request.FreeBet).Returns(true);
-            ticketHandler.MoveBankingGameRound<BlackjackRoundEntity>(blackJackEntity.Round).Returns(true);
+            ticketHandler.MoveBlackjackGameRound<BlackjackRoundEntity>(blackJackEntity.Round).Returns(true);
             accountInfoRepository.Setup(repo => repo.FindOneAsync(It.IsAny<Expression<Func<AccountInfoEntity, bool>>>()))
                 .ReturnsAsync(new AccountInfoEntity { Name = "a" });
             voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
@@ -321,7 +321,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
             voidRunningTicketApiFactory.Setup(factory => factory.GetVoidRunningTicketApi(It.IsAny<string>()))
                 .Returns(voidRunningTicketApi.Object);
             //Act
-            var result = await voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+            var result = await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
 
             //Assert
             Assert.True(result.IsFailed());

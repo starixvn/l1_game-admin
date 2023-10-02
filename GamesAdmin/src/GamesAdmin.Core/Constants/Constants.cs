@@ -6,7 +6,7 @@
         public const string TimeFormat = "HH:mm:ss";
     }
 
-    public static class BankingGameAction
+    public static class BlackjackGameAction
     {
         public const string Split = "split";
 

@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
-    public class BankingGameReportViewModel
+    public class BlackjackGameReportViewModel
     {
-        [BankingGameValidation]
+        [BlackjackGameValidation]
         public string Nickname { get; set; }
 
         [DisplayName("Exclude UUS")]
@@ -21,10 +21,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         [DisplayName("Partner")]
         public string PartnerId { get; set; }
 
-        [BankingGameValidation]
+        [BlackjackGameValidation]
         public string Username { get; set; }
 
-        [BankingGameValidation]
+        [BlackjackGameValidation]
         public long? HandId { get; set; }
 
         public DateTime FromDate { get; set; } = DateTime.Today;
@@ -34,7 +34,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     }
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class BankingGameValidationAttribute : ValidationAttribute, IClientModelValidator
+    public class BlackjackGameValidationAttribute : ValidationAttribute, IClientModelValidator
     {
         public void AddValidation(ClientModelValidationContext context)
         {
@@ -47,7 +47,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var model = (BankingGameReportViewModel)validationContext.ObjectInstance;
+            var model = (BlackjackGameReportViewModel)validationContext.ObjectInstance;
 
             if (!model.HandId.HasValue || !string.IsNullOrWhiteSpace(model.Nickname) && !string.IsNullOrWhiteSpace(model.Username))
             {

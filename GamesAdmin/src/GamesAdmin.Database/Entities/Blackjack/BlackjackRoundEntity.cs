@@ -4,7 +4,7 @@ using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
-    public class BankingGameRoundEntity : BaseRoundEntity
+    public class BlackjackGameRoundEntity : BaseRoundEntity
     {
         public IEnumerable<CardEntity> Result { get; set; }
 
@@ -20,7 +20,7 @@ namespace GamesAdmin.Database.Entities
     }
 
     [BsonCollection("blackjack_phiens")]
-    public class BlackjackRoundEntity : BankingGameRoundEntity
+    public class BlackjackRoundEntity : BlackjackGameRoundEntity
     {
     }
 

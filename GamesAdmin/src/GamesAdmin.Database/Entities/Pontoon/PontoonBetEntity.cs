@@ -3,7 +3,7 @@
 namespace GamesAdmin.Database.Entities
 {
     [BsonCollection("pontoon_bets")]
-    public class PontoonBetEntity : BankingGameBetEntity
+    public class PontoonBetEntity : BlackjackGameBetEntity
     {
     }
 }

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Api.Report.Requests
 {
-    public class PontoonReportRequest : IRequest<IEnumerable<BankingGameBetRecord>>
+    public class PontoonReportRequest : IRequest<IEnumerable<BlackjackBetRecord>>
     {
-        public PontoonReportRequest(BankingGameBetReportFilter filter)
+        public PontoonReportRequest(BlackjackBetReportFilter filter)
         {
             Filter = filter;
         }
 
-        public BankingGameBetReportFilter Filter { get; }
+        public BlackjackBetReportFilter Filter { get; }
     }
 }

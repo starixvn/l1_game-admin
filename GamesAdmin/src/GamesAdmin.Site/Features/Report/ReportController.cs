@@ -235,7 +235,7 @@ namespace GamesAdmin.Site.Features.Report
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
-            return View(new BankingGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+            return View(new BlackjackGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
@@ -243,17 +243,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             var selections = await mediator.Send(new GetSelectionsRequest());
 
-            return View(new BankingGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+            return View(new BlackjackGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBlackjackReport(BankingGameBetReportFilter model)
+        public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
         {
             return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPontoonReport(BankingGameBetReportFilter model)
+        public async Task<IActionResult> GetPontoonReport(BlackjackBetReportFilter model)
         {
             return PartialView("_PontoonRecords", await mediator.Send(new GetPontoonReportRequest(model)));
         }

@@ -25,9 +25,9 @@ namespace GamesAdmin.Api.VoidGame
             switch (gameId)
             {
                 case GameId.Blackjack:
-                    return voidGameService.VoidBankingGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+                    return voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
                 case GameId.Pontoon: 
-                    return voidGameService.VoidBankingGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
+                    return voidGameService.VoidBlackjackGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
                 case GameId.CasinoHoldemPoker:
                 case GameId.TexasHoldemPoker: return voidGameService.VoidHoldemPokerTicket(request);
                 default:

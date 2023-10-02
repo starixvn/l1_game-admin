@@ -37,10 +37,10 @@ namespace GamesAdmin.Site.Features.Report
         Task<SpecialSeDieBetHistory> GetSpecialSeDieBetHistory(long roundId, string userId);
 
         [Get("/report/blackjack")]
-        Task<IEnumerable<BankingGameBetRecord>> GetBlackjackReport(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetRecord>> GetBlackjackReport(BlackjackBetReportFilter filter);
 
         [Get("/report/pontoon")]
-        Task<IEnumerable<BankingGameBetRecord>> GetPontoonReport(BankingGameBetReportFilter filter);
+        Task<IEnumerable<BlackjackBetRecord>> GetPontoonReport(BlackjackBetReportFilter filter);
 
         [Get("/report/slot_game/round/{roundId}/nick/{nickname}?excludeUUS={excludeUUS}&game={game}&partnerId={partnerId}&fromDate={fromDate}&toDate={toDate}&username={username}&convertToUSD={convertToUSD}")]
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(

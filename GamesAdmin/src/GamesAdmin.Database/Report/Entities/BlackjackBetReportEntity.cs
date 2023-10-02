@@ -3,7 +3,7 @@ using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Database.Report.Entities
 {
-    public class BankingGameBetReportEntity: BetReportEntity
+    public class BlackjackBetReportEntity: BetReportEntity
     {
         public long HandId { get; set; }
 

@@ -147,7 +147,7 @@ namespace GamesAdmin.Api._Shared
                  .ForMember(x => x.Refund, opt => opt.MapFrom((source) => source.BaseRefund))
                  .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.BaseBetWin));
 
-            CreateMap<BankingGameBetReportEntity, BankingGameBetRecord>();
+            CreateMap<BlackjackBetReportEntity, BlackjackBetRecord>();
             CreateMap<CardEntity, Core.Models.Card>();
             CreateMap<VipFishPrawnCrabRoundEntity, VipFishPrawnCrabRoundResult>()
                 .ForMember(x => x.FirstDice, opt => opt.MapFrom((source) => source.Result.FirstDice))
