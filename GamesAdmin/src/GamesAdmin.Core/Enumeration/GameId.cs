@@ -59,6 +59,7 @@
         FortuneCat = 62,
         DragonTigerFight = 67,
         Pontoon = 72,
-        ColorGame = 71
+        ColorGame = 71,
+        BandarQiuQiu = 75
     }
 }

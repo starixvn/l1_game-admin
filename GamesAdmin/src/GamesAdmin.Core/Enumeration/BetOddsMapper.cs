@@ -128,6 +128,9 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.PontoonValue:
                     return Enumeration.GetAll<PontoonBetChoice>();
 
+                case Game.BandarQiuQiuValue:
+                    return Enumeration.GetAll<BandarQiuQiuOdds>();
+
                 default: return default;
             }
         }
