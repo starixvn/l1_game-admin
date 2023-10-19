@@ -106,6 +106,7 @@
         public GameServerConfigs DragonTigerFight { get; set; }
         public GameServerConfigs Pontoon { get; set; }
         public GameServerConfigs ColorGame { get; set; }
+        public GameServerConfigs BandarQiuQiu { get; set; }
     }
 
     public class GameServerConfigs
