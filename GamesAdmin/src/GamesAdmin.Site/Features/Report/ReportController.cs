@@ -675,5 +675,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             return RedirectToAction("Index", new { game = GameId.ColorGame });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBandarQiuQiuBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_BandarQiuQiuBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+
+        [HttpGet]
+        public IActionResult BandarQiuQiu()
+        {
+            return RedirectToAction("Index", new { game = GameId.ColorGame });
+        }
     }
 }

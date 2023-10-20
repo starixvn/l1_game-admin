@@ -160,6 +160,10 @@ namespace GamesAdmin.Site._Shared
             CreateMap<ColorGameRoundResult, ColorGameRoundResultViewModel>();
             CreateMap<ColorGameBetRecord, ColorGameRecordViewModel>();
             CreateMap<ColorGameBetHistoryRecord, ColorGameBetHistoryRecordViewModel>();
+
+            CreateMap<BandarQiuQiuRoundResult, BandarQiuQiuRoundResultViewModel>();
+            CreateMap<BandarQiuQiuBetRecord, BandarQiuQiuRecordViewModel>();
+            CreateMap<BandarQiuQiuBetHistoryRecord, BandarQiuQiuBetHistoryRecordViewModel>();
         }
     }
 }

@@ -32,6 +32,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<WinThreeCardsReportService>();
             services.AddScoped<DragonTigerFightReportService>();
             services.AddScoped<ColorGameReportService>();
+            services.AddScoped<BandarQiuQiuReportService>();
         }
     }
 }

@@ -119,4 +119,8 @@ namespace GamesAdmin.Core.Models
     public class DragonTigerFightBetReport : BetReport<DragonTigerFightRoundResult, DragonTigerFightBetRecord>
     {
     }
+
+    public class BandarQiuQiuBetReport : BetReport<BandarQiuQiuRoundResult, BandarQiuQiuBetRecord>
+    {
+    }
 }

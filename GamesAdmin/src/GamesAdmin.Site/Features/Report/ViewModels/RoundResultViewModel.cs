@@ -465,4 +465,33 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             return resultMapper[dice];
         }
     }
+
+    public class BandarQiuQiuRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public Dictionary<string, int> SettlementResult { get; set; }
+
+        public BandarQiuQiuResultItem Dealer { get; set; }
+
+        public BandarQiuQiuResultItem Spade { get; set; }
+
+        public BandarQiuQiuResultItem Heart { get; set; }
+
+        public BandarQiuQiuResultItem Club { get; set; }
+
+        public BandarQiuQiuResultItem Diamond { get; set; }
+
+        public string GetWinningOptions()
+        {
+            var result = SettlementResult.Where(s => s.Value > 0)
+                .Select(s => FormatString(s.Key));
+
+            return string.Join(", ", result);
+        }
+
+        public static string FormatString(string input)
+        {
+            var result = string.Concat(input.Select((x, i) => i > 0 && char.IsUpper(x) ? $" {x}" : x.ToString()));
+            return char.ToUpper(result[0]) + result.Substring(1).Trim();
+        }
+    }
 }

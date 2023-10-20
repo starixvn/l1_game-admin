@@ -506,4 +506,17 @@ namespace GamesAdmin.Core.Models
         public decimal RedTiger { get; set; }
         public double TotalAmount { get; set; }
     }
+
+    public class BandarQiuQiuBetRecord : BetRecord
+    {
+        public decimal Spade { get; set; }
+
+        public decimal Heart { get; set; }
+
+        public decimal Club { get; set; }
+
+        public decimal Diamond { get; set; }
+
+        public double TotalAmount { get; set; }
+    }
 }

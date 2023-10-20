@@ -595,6 +595,35 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ColorGameBetReportEntity, ColorGameBetRecord>()
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
             CreateMap<ColorGameBetLogEntity, ColorGameBetHistoryRecord>();
+
+            CreateMap<BandarQiuQiuRoundEntity, BandarQiuQiuRoundResult>()
+                .ForMember(dest => dest.Spade, opt => opt.MapFrom(src => new BandarQiuQiuResultItem() {
+                    Dominoes = src.Result.Spade.Dominoes,
+                    HandRankingId = src.Result.Spade.HandRankingId,
+                    PipsOfSet = src.Result.Spade.PipsOfSet
+                }))
+                .ForMember(dest => dest.Heart, opt => opt.MapFrom(src => new BandarQiuQiuResultItem()
+                {
+                    Dominoes = src.Result.Heart.Dominoes,
+                    HandRankingId = src.Result.Heart.HandRankingId,
+                    PipsOfSet = src.Result.Heart.PipsOfSet
+                }))
+                .ForMember(dest => dest.Club, opt => opt.MapFrom(src => new BandarQiuQiuResultItem()
+                {
+                    Dominoes = src.Result.Club.Dominoes,
+                    HandRankingId = src.Result.Club.HandRankingId,
+                    PipsOfSet = src.Result.Club.PipsOfSet
+                }))
+                .ForMember(dest => dest.Diamond, opt => opt.MapFrom(src => new BandarQiuQiuResultItem()
+                {
+                    Dominoes = src.Result.Diamond.Dominoes,
+                    HandRankingId = src.Result.Diamond.HandRankingId,
+                    PipsOfSet = src.Result.Diamond.PipsOfSet
+                }))
+                .ForMember(dest => dest.SettlementResult, opt => opt.MapFrom(src => src.SettlementResult));
+            CreateMap<BandarQiuQiuBetReportEntity, BandarQiuQiuBetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
+            CreateMap<BandarQiuQiuBetLogEntity, BandarQiuQiuBetHistoryRecord>();
         }
     }
 }

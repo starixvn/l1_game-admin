@@ -417,4 +417,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public decimal TotalAmount { get; set; }
     }
+
+    public class BandarQiuQiuRecordViewModel : BetRecordViewModel
+    {
+        public decimal TotalAmount { get; set; }
+    }
 }

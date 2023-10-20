@@ -48,6 +48,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.WinThreeCards, "_WinThreeCardsRecords" },
             { GameId.DragonTigerFight, "_DragonTigerFightRecords" },
             { GameId.ColorGame, "_ColorGameRecords" },
+            { GameId.BandarQiuQiu, "_BandarQiuQiuRecords" },
         };
 
         public string GetView(GameId game) => views[game];

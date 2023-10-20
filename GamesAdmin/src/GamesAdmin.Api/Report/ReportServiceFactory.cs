@@ -61,6 +61,7 @@ namespace GamesAdmin.Api.Report
             { GameId.WinThreeCards, typeof(WinThreeCardsReportService) },
             { GameId.DragonTigerFight, typeof(DragonTigerFightReportService) },
             { GameId.ColorGame, typeof(ColorGameReportService) },
+            { GameId.BandarQiuQiu, typeof(BandarQiuQiuReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;
