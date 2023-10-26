@@ -19,22 +19,73 @@
                     <tr>
                         <th>Round ID</th>
                         <th>Exchange ID</th>
-                        <th>Result</th>
+                        <th colspan="2">Result</th>
                         <th>Winning Options</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-center">@Model.RoundResult.Number</td>
-                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
+                        <td class="text-center" rowspan="5">@Model.RoundResult.Number</td>
+                        <td class="text-center" rowspan="5">@Model.RoundResult.ExchangeRateId</td>
+                        <td class="text-center">Banker</td>
                         <td>
                             <div class="text-center">
                                 <span>
-                                    
+                                    @foreach (var domino in @Model.RoundResult.Dealer.Dominoes) { 
+                                        <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
+                                    }                                    
                                 </span>                                      
                             </div>
                         </td>
-                        <td class="text-center">@Model.RoundResult.GetWinningOptions()</td>
+                        <td class="text-center" rowspan="5">@Model.RoundResult.GetWinningOptions()</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">Spade</td>
+                        <td>
+                            <div class="text-center">
+                                <span>
+                                    @foreach (var domino in @Model.RoundResult.Spade.Dominoes) { 
+                                        <span><img width="25" height="50"  class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
+                                    }                                    
+                                </span>                                      
+                            </div>
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td class="text-center">Heart</td>
+                        <td>
+                            <div class="text-center">
+                                <span>
+                                    @foreach (var domino in @Model.RoundResult.Heart.Dominoes) { 
+                                        <span><img width="25" height="50"  class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
+                                    }                                    
+                                </span>                                      
+                            </div>
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td class="text-center">Club</td>
+                        <td>
+                            <div class="text-center">
+                                <span>
+                                    @foreach (var domino in @Model.RoundResult.Club.Dominoes) { 
+                                        <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
+                                    }                                    
+                                </span>                                      
+                            </div>
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td class="text-center">Diamond</td>
+                        <td>
+                            <div class="text-center">
+                                <span>
+                                    @foreach (var domino in @Model.RoundResult.Diamond.Dominoes) { 
+                                        <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
+                                    }                                    
+                                </span>                                      
+                            </div>
+                        </td>                        
                     </tr>
                 </tbody>
             </table>
@@ -65,8 +116,8 @@
                         <td class="text-center">@bet.Currency</td>
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
-                               asp-action="GetColorGameBetHistory"
-                               asp-route-game="@GameId.ColorGame"
+                               asp-action="GetBandarQiuQiuBetHistory"
+                               asp-route-game="@GameId.BandarQiuQiu"
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-userId="@bet.UserId"
                                asp-route-partnerId="@bet.PartnerId"

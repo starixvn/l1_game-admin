@@ -597,6 +597,12 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ColorGameBetLogEntity, ColorGameBetHistoryRecord>();
 
             CreateMap<BandarQiuQiuRoundEntity, BandarQiuQiuRoundResult>()
+                .ForMember(dest => dest.Dealer, opt => opt.MapFrom(src => new BandarQiuQiuResultItem()
+                {
+                    Dominoes = src.Result.Dealer.Dominoes,
+                    HandRankingId = src.Result.Dealer.HandRankingId,
+                    PipsOfSet = src.Result.Dealer.PipsOfSet
+                }))
                 .ForMember(dest => dest.Spade, opt => opt.MapFrom(src => new BandarQiuQiuResultItem() {
                     Dominoes = src.Result.Spade.Dominoes,
                     HandRankingId = src.Result.Spade.HandRankingId,

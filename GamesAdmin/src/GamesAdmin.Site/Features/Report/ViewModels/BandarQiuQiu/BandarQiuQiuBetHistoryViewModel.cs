@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GamesAdmin.Core.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
@@ -10,7 +11,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public Dictionary<string, decimal> Odds { get; set; }
 
         public const string Tie = "tie";        
-        public readonly Dictionary<int, string> HandRankingMapper = new Dictionary<int, string>() { { 0, "ordinaryCard" }, { 1, "quiQui" }, { 2, "big" }, { 3, "small" }, { 4, "twin" }, { 5, "sixDevil" } };
+        public readonly Dictionary<int, string> HandRankingMapper = new Dictionary<int, string>() { { 0, "ordinaryCard" }, { 1, "qiuQiu" }, { 2, "big" }, { 3, "small" }, { 4, "twin" }, { 5, "sixDevil" } };
 
         public string GetOddName(string choice)
         {
@@ -31,8 +32,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         private string GetHandRanking(string choice)
         {
             var displayChoice = char.ToUpper(choice[0]) + choice.Substring(1).Trim();
-            var handRankingId = this.RoundResult.GetType().GetProperty(displayChoice).GetValue(this.RoundResult, null);
-            return this.HandRankingMapper[(int)handRankingId];            
+            BandarQiuQiuResultItem item = (BandarQiuQiuResultItem)this.RoundResult.GetType().GetProperty(displayChoice).GetValue(this.RoundResult, null);
+            return this.HandRankingMapper[(int)item.HandRankingId];            
         }
 
         public decimal GetOddsToShow(string choice)

@@ -685,7 +685,7 @@ namespace GamesAdmin.Site.Features.Report
         [HttpGet]
         public IActionResult BandarQiuQiu()
         {
-            return RedirectToAction("Index", new { game = GameId.ColorGame });
+            return RedirectToAction("Index", new { game = GameId.BandarQiuQiu });
         }
     }
 }
