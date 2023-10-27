@@ -60,6 +60,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.WinThreeCards, new GameTicketCollection("winthreecards_bets", "winthreecards_betlogs") },
             { GameId.DragonTigerFight, new GameTicketCollection("dragontigerfight_bets", "dragontigerfight_betlogs") },
             { GameId.ColorGame, new GameTicketCollection("colorgame_bets", "colorgame_betlogs") },
+            { GameId.BandarQiuQiu, new GameTicketCollection("bandarqiuqiu_bets", "bandarqiuqiu_betlogs") },
            };
 
         public static GameTicketCollection GetCollections(int gameTypeId)
