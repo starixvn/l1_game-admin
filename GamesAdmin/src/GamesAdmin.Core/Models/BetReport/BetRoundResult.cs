@@ -338,7 +338,7 @@ namespace GamesAdmin.Core.Models
 
     public class BandarQiuQiuRoundResult : RoundResult
     {
-        public BandarQiuQiuResultItem Dealer { get; set; }
+        public BandarQiuQiuResultItem Banker { get; set; }
 
         public BandarQiuQiuResultItem Spade { get; set; }
 

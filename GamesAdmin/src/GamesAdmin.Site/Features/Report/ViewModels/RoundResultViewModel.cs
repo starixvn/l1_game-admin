@@ -470,7 +470,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
     {
         public Dictionary<string, int> SettlementResult { get; set; }
 
-        public BandarQiuQiuResultItem Dealer { get; set; }
+        public BandarQiuQiuResultItem Banker { get; set; }
 
         public BandarQiuQiuResultItem Spade { get; set; }
 
