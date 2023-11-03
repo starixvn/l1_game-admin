@@ -480,6 +480,8 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public BandarQiuQiuResultItem Diamond { get; set; }
 
+        public Dictionary<int, string> ResultMapper = new Dictionary<int, string>() { { 0, "Ordinary Card" }, { 1, "Qiu Qiu" }, { 2, "Big" }, { 3, "Small" }, { 4, "Twin" }, { 5, "Six Devil" } };
+
         public string GetWinningOptions()
         {
             var result = SettlementResult.Where(s => s.Value > 0)

@@ -6,8 +6,6 @@
 @model BandarQiuQiuReportResultViewModel
 
 @{
-    
-    
 }
 
 <div class="row row-table">
@@ -24,69 +22,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="text-center" rowspan="5">@Model.RoundResult.Number</td>
-                        <td class="text-center" rowspan="5">@Model.RoundResult.ExchangeRateId</td>
-                        <td class="text-center">Banker</td>
-                        <td>
-                            <div class="text-center">
-                                <span>
-                                    @foreach (var domino in @Model.RoundResult.Banker.Dominoes) { 
-                                        <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
-                                    }                                    
-                                </span>                                      
-                            </div>
-                        </td>
-                        <td class="text-center" rowspan="5">@Model.RoundResult.GetWinningOptions()</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">Spade</td>
-                        <td>
-                            <div class="text-center">
-                                <span>
-                                    @foreach (var domino in @Model.RoundResult.Spade.Dominoes) { 
-                                        <span><img width="25" height="50"  class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
-                                    }                                    
-                                </span>                                      
-                            </div>
-                        </td>                        
-                    </tr>
-                    <tr>
-                        <td class="text-center">Heart</td>
-                        <td>
-                            <div class="text-center">
-                                <span>
-                                    @foreach (var domino in @Model.RoundResult.Heart.Dominoes) { 
-                                        <span><img width="25" height="50"  class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
-                                    }                                    
-                                </span>                                      
-                            </div>
-                        </td>                        
-                    </tr>
-                    <tr>
-                        <td class="text-center">Club</td>
-                        <td>
-                            <div class="text-center">
-                                <span>
-                                    @foreach (var domino in @Model.RoundResult.Club.Dominoes) { 
-                                        <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
-                                    }                                    
-                                </span>                                      
-                            </div>
-                        </td>                        
-                    </tr>
-                    <tr>
-                        <td class="text-center">Diamond</td>
-                        <td>
-                            <div class="text-center">
-                                <span>
-                                    @foreach (var domino in @Model.RoundResult.Diamond.Dominoes) { 
-                                        <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
-                                    }                                    
-                                </span>                                      
-                            </div>
-                        </td>                        
-                    </tr>
+                    @{ 
+                        ViewData["betChoice"] = "Banker";
+                        <partial name="_BandarQiuQiuResultByChoice" model="Model" view-data="ViewData" />
+                    }
+                    @{ 
+                        ViewData["betChoice"] = "Spade";
+                        <partial name="_BandarQiuQiuResultByChoice" model="Model" view-data="ViewData" />
+                    }
+                    @{ 
+                        ViewData["betChoice"] = "Heart";
+                        <partial name="_BandarQiuQiuResultByChoice" model="Model" view-data="ViewData" />
+                    }
+                    @{ 
+                        ViewData["betChoice"] = "Club";
+                        <partial name="_BandarQiuQiuResultByChoice" model="Model" view-data="ViewData" />
+                    }
+                    @{ 
+                        ViewData["betChoice"] = "Diamond";
+                        <partial name="_BandarQiuQiuResultByChoice" model="Model" view-data="ViewData" />
+                    }                    
                 </tbody>
             </table>
 

@@ -1,0 +1,45 @@
+﻿@using GamesAdmin.Site.Features.Report.ViewModels;
+@using GamesAdmin.Core.Models; 
+@model BandarQiuQiuReportResultViewModel
+
+@{ 
+  BandarQiuQiuResultItem item = (BandarQiuQiuResultItem)Model.RoundResult.GetType().GetProperty((string)@ViewData["betChoice"]).GetValue(Model.RoundResult, null);
+}
+
+<tr>
+    @if ((string)@ViewData["betChoice"] == "Banker") { 
+        <td class="text-center" rowspan="5">@Model.RoundResult.Number</td>
+        <td class="text-center" rowspan="5">@Model.RoundResult.ExchangeRateId</td>
+    }    
+    <td class="text-center">@(@ViewData["betChoice"])</td>
+    <td style="width: 300px;padding-left: 30px;" >                            
+        <table>
+            <tr>
+                <td style="border: none;">
+                    <div class="text-center">
+                         <span>
+                            @foreach (var domino in item.Dominoes) { 
+                                <span><img width="25" height="50" class="img" src="~/images/bandar-qiuqiu/@(domino).png" alt="#" /></span>
+                            }                                    
+                        </span>                                        
+                    </div>
+                </td>
+                <td style="border: none;">
+                    <span>
+                        @if(item.PipsOfSet != null)
+                        {
+                            <span>@(string.Format("{0}:{1}", item.PipsOfSet.ToList()[0], item.PipsOfSet.ToList()[1]))</span>
+                        }
+                        else
+                        {
+                            <span>@(@Model.RoundResult.ResultMapper[item.HandRankingId])</span>
+                        }
+                    </span>
+                </td>
+            </tr>
+        </table>        
+    </td>   
+    @if ((string)@ViewData["betChoice"] == "Banker") { 
+        <td class="text-center" rowspan="5">@Model.RoundResult.GetWinningOptions()</td>
+    }    
+</tr>
