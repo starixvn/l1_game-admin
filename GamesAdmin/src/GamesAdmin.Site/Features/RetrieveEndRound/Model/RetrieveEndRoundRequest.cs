@@ -16,7 +16,6 @@
             GameRoundId = model.RoundId;
             GameTypeId = model.GameType;
             PlayerId = model.PlayerId;
-            SiteId = model.SiteId;
             FreeBet = model.FreeBet;
             TimeStamp = DateTimeOffset.Now;
             Seq = Guid.NewGuid().ToString();
@@ -28,8 +27,6 @@
         public long GameRoundId { get; set; }
 
         public int PlayerId { get; set; }
-
-        public string SiteId { get; set; }
 
         public DateTimeOffset TimeStamp { get; set; }
 
