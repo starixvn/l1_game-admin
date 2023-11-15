@@ -1,6 +1,6 @@
-﻿using GamesAdmin.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Models;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -10,17 +10,18 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public IEnumerable<BandarQiuQiuBetHistoryRecordViewModel> Bets { get; set; }
         public Dictionary<string, decimal> Odds { get; set; }
 
-        public const string Tie = "tie";        
+        public const string Tie = "tie";
         public readonly Dictionary<int, string> HandRankingMapper = new Dictionary<int, string>() { { 0, "ordinaryCard" }, { 1, "qiuQiu" }, { 2, "big" }, { 3, "small" }, { 4, "twin" }, { 5, "sixDevil" } };
 
         public string GetOddName(string choice)
         {
-            var isWin = this.RoundResult.SettlementResult[choice.ToLower()];            
+            var isWin = this.RoundResult.SettlementResult[choice.ToLower()];
             if (isWin == 0)
             {
                 return string.Empty;
             }
-            else if (isWin == 1) {
+            else if (isWin == 1)
+            {
                 return this.GetHandRanking(choice);
             }
             else
@@ -33,17 +34,28 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         {
             var displayChoice = char.ToUpper(choice[0]) + choice.Substring(1).Trim();
             BandarQiuQiuResultItem item = (BandarQiuQiuResultItem)this.RoundResult.GetType().GetProperty(displayChoice).GetValue(this.RoundResult, null);
-            return this.HandRankingMapper[(int)item.HandRankingId];            
+            return this.HandRankingMapper[(int)item.HandRankingId];
         }
 
         public decimal GetOddsToShow(string choice)
+        {
+            var winningOddsName = GetOddName(choice);
+            if (string.IsNullOrEmpty(winningOddsName) || winningOddsName == Tie)
+            {
+                return 0;
+            }
+
+            return Odds[winningOddsName];
+        }
+
+        public decimal GetOddsToCalculateWinAmount(string choice)
         {
             var winningOddsName = GetOddName(choice);
             if (string.IsNullOrEmpty(winningOddsName))
             {
                 return 0;
             }
-            else if(winningOddsName == Tie)
+            else if (winningOddsName == Tie)
             {
                 return 1;
             }
@@ -53,10 +65,11 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             }
         }
 
+
         public decimal GetWinningOdds(string choice)
         {
             var isWin = this.RoundResult.SettlementResult[choice.ToLower()];
-            return isWin > 0 ? GetOddsToShow(choice) : 0;
+            return isWin > 0 ? GetOddsToCalculateWinAmount(choice) : 0;
         }
     }
 
