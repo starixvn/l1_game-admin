@@ -50,6 +50,8 @@ namespace GamesAdmin.Api.GameServers
         Task<SettlementBoard> SetSlotBoard(SetSlotBoardRequest request);
 
         Task<bool> SetPontoonResult(SetPontoonResultRequest request);
+
+        Task<bool> SetCrashGameResult(SetCrashGameResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -67,6 +69,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
         private readonly IPontoonApiFactory pontoonApiFactory;
+        private readonly ICrashGameApiFactory crashGameApiFactory;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -81,7 +84,8 @@ namespace GamesAdmin.Api.GameServers
             ICascadingResultApiFactory cascadingResultApiFactory,
             INotificationServiceApi notificationServiceApi,
             IGenericRepository<AdminUserEntity> userRepository,
-            IPontoonApiFactory pontoonApiFactory)
+            IPontoonApiFactory pontoonApiFactory,
+            ICrashGameApiFactory crashGameApiFactory)
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -96,6 +100,7 @@ namespace GamesAdmin.Api.GameServers
             this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
             this.pontoonApiFactory = pontoonApiFactory;
+            this.crashGameApiFactory = crashGameApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -349,6 +354,24 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return null;
+        }
+
+        public async Task<bool> SetCrashGameResult(SetCrashGameResultRequest request)
+        {
+            try
+            {
+                var config = await gameSettingService.GetByName(request.gameConfigName);
+            
+                var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
+                return await crashGameApiFactory.SetResultApi(serviceName).SetResult(request);                  
+                
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return false;
         }
     }
 }

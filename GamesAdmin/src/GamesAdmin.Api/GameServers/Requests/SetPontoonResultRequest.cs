@@ -1,5 +1,4 @@
-﻿using GamesAdmin.Core.Models.BetReport;
-using MediatR;
+﻿using MediatR;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {

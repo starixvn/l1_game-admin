@@ -64,5 +64,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("cascadingslot/set_result")]
         public Task<IEnumerable<SettlementCascadingSlotResult>> SetCascadingSlotResult([FromBody] SetCascadingSlotResultRequest request)
            => mediator.Send(request);
+
+        [HttpPost("crashgame/set_result")]
+        public Task<bool> SetCrashGameResult([FromBody] SetCrashGameResultRequest request)
+         => mediator.Send(request);
     }
 }

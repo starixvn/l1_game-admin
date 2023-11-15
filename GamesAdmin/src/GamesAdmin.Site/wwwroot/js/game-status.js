@@ -249,16 +249,20 @@
         setControlResultHoldemPoker: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("HoldemPokderResult", gameName);
+        },    
+
+        setControlResultSpeedUpGame: function (event, gameType, gameName, displayName) {
+            event.preventDefault();
+            const actionName = this.getActionNameByGameType(gameType);
+            this.setSlotResultControl(actionName, gameName, displayName);
         },
 
-        setControlResultSlotGame: function (event, gameName, displayName) {
-            event.preventDefault();
-            this.setSlotResultControl("SlotResult", gameName, displayName);
-        },
-
-        setControlResultCascadingSlotGame: function (event, gameName, displayName) {
-            event.preventDefault();
-            this.setSlotResultControl("CascadingSlotResult", gameName, displayName);
+        getActionNameByGameType: function (gameType) {
+            switch (gameType) {
+                case "Slots": return "SlotResult";
+                case "CascadingSlots": return "CascadingSlotResult";
+                case "Crash": return "CrashGameResult";
+            }
         },
 
         setControlResultHiLo: function (event) {

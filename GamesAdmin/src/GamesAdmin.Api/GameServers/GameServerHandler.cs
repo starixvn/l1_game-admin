@@ -23,6 +23,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
         , IRequestHandler<ConnectedUserRequest, int>
         , IRequestHandler<SetPontoonResultRequest, bool>
+        , IRequestHandler<SetCrashGameResultRequest, bool>
     {
         private readonly IGameServerService gameServerService;
 
@@ -67,5 +68,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<int> Handle(ConnectedUserRequest request, CancellationToken cancellationToken)
             => gameServerService.GetConnectedUsers();
+
+        public Task<bool> Handle(SetCrashGameResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetCrashGameResult(request);
+          
     }
 }

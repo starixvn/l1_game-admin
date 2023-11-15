@@ -31,11 +31,13 @@
                     <td class="text-center">
                         @if (Model.GameList[index].EnabledMonitoring)
                         {
-                            if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots)
+                            if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Slots ||
+                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots ||
+                            @Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.Crash)
                             {
                                 if (role == Role.Admin.Value)
                                 {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultSlotGame(event, '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-chart"></i></a>
+                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultSpeedUpGame(event,'@Model.GameList[index].Type', '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-chart"></i></a>
                                 }
                             }
                             else if (@Model.GameList[index].Name == Game.Pontoon.Value)
@@ -44,14 +46,7 @@
                                 {
                                     <a href="#" class="icon-action" onclick="gameStatus.setControlResultPontoon(event)"><i class="icon-chart"></i></a>
                                 }
-                            }
-                            else if (@Model.GameList[index].Type == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
-                            {
-                                if (role == Role.Admin.Value)
-                                {
-                                    <a href="#" class="icon-action" onclick="gameStatus.setControlResultCascadingSlotGame(event, '@Model.GameList[index].Name', '@Model.GameList[index].DisplayName')"><i class="icon-chart"></i></a>
-                                }
-                            }
+                            }             
                             else if (@Model.GameList[index].Name == Game.CasinoHoldemPoker.Value ||
                                 @Model.GameList[index].Name == Game.TexasHoldemPoker.Value)
                             {

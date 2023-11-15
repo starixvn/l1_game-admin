@@ -135,6 +135,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddChatBotServices(services, appSettings);
             AddVoidRunningTicketServices(services);
             AddPontoonServices(services, appSettings, refitSettings);
+            AddCrashGameServices(services);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();
@@ -197,6 +198,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
         {
             services.AddScoped<IPontoonApiFactory, PontoonApiFactory>();
             services.AddSingleton(RestService.For<IPontoonApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
+        }
+
+        private static void AddCrashGameServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICrashGameApiFactory, CrashGameApiFactory>();        
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
