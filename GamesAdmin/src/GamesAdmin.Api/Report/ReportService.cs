@@ -50,6 +50,8 @@ namespace GamesAdmin.Api.Report
         Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReportAsync(CascadingSlotReportFilter filter);
 
         Task<CascadingSlotBetHistory> GetCascadingSlotBetHistoryAsync(CascadingSlotReportFilter filter);
+
+        Task<CrashGameBetReport> GetCrashGameReportAsync(SpeedUpGameBetReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -60,6 +62,7 @@ namespace GamesAdmin.Api.Report
         private readonly ICascadingSlotGameReportRepository cascadingSlotGameReportRepository;
         private readonly ISlotGameReportRepository slotGameReportRepository;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly ICrashGameReportRepository crashGameReportRepository;
 
         public ReportService(
             IServiceProvider serviceProvider,
@@ -67,7 +70,8 @@ namespace GamesAdmin.Api.Report
             IGenericRepository<SpinResultEntity> spinResultRepository,
             ICascadingSlotGameReportRepository cascadingSlotGameReportRepository,
             ISlotGameReportRepository slotGameReportRepository,
-            IGeneralGameSettingService generalGameSettingService)
+            IGeneralGameSettingService generalGameSettingService,
+            ICrashGameReportRepository crashGameReportRepository)
         {
             this.serviceProvider = serviceProvider;
             this.mapper = mapper;
@@ -75,6 +79,7 @@ namespace GamesAdmin.Api.Report
             this.cascadingSlotGameReportRepository = cascadingSlotGameReportRepository;
             this.slotGameReportRepository = slotGameReportRepository;
             this.generalGameSettingService = generalGameSettingService;
+            this.crashGameReportRepository = crashGameReportRepository;
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReportAsync(long roundId, string nickname, bool excludeBot, string partnerId, string username)
@@ -414,6 +419,21 @@ namespace GamesAdmin.Api.Report
             {
                 Round = mapper.Map<CascadingSlotBetRecord>(result.Round),
                 Multipliers = result.Multipliers.Select(x => mapper.Map<CascadingSlotRoundMultiplier>(x))
+            };
+        }
+
+        public async Task<CrashGameBetReport> GetCrashGameReportAsync(SpeedUpGameBetReportFilter filter)
+        {
+            var games = await generalGameSettingService.GetAll();
+
+            filter.GameInfo = games.FirstOrDefault(game => game.Name == filter.Game);
+
+            var result = await crashGameReportRepository.GetRecordAsync(filter);
+
+            return new CrashGameBetReport
+            {
+                RoundResult = mapper.Map<CrashGameRoundResult>(result.Item1),
+                Records = result.Item2.Select(x => mapper.Map<CrashGameBetRecord>(x))
             };
         }
     }

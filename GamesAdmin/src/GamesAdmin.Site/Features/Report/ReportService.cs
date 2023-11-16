@@ -55,6 +55,8 @@ namespace GamesAdmin.Site.Features.Report
         Task<IEnumerable<CascadingSlotBetRecord>> GetCascadingSlotReport(CascadingSlotReportFilter filter);
 
         Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter);
+
+        Task<CrashGameBetReport> GetCrashGameReport(SpeedUpGameBetReportFilter filter);
     }
 
     public class ReportService : IReportService
@@ -140,5 +142,8 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter)
             => reportApi.GetCascadingSlotBetHistory(filter);
+
+        public Task<CrashGameBetReport> GetCrashGameReport(SpeedUpGameBetReportFilter filter)
+           => reportApi.GetCrashGameReport(filter);
     }
 }

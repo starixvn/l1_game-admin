@@ -687,5 +687,48 @@ namespace GamesAdmin.Site.Features.Report
         {
             return RedirectToAction("Index", new { game = GameId.BandarQiuQiu });
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> CrashGameReport(string game)
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+            var games = await generalGameSettingService.GetAllGames();
+            var gameSetting = games.FirstOrDefault(gameInfo => gameInfo.Name == game);
+
+            var viewModel = new CrashGameReportViewModel
+            {
+                ExcludeUUS = true,
+                Selections = selections,
+                BaseCurrency = systemSettings.BaseCurrency,
+                SystemType = systemSettings.System,
+                GameConfigName = game,
+                GameDisplayName = gameSetting?.DisplayName,
+                GameId = gameSetting.GameId
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCrashGameReport(
+           string partnerId,
+           long roundId,
+           string nickname,
+           string username,
+           bool convertToUSD,
+           bool excludeUUS,
+           string game)
+        {
+            var request = new GetCrashGameReportRequest(
+                roundId,
+                nickname,
+                excludeUUS,
+                game,
+                partnerId,
+                username,
+                convertToUSD);
+
+            return PartialView("CrashGames/_CrashGameRecords", await mediator.Send(request));
+        }
     }
 }

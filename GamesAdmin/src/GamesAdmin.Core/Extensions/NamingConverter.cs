@@ -4,6 +4,10 @@
     {
         private const string roundSuffix = "rounds";
 
+        private const string betSuffix = "bets";
+
+        private const string betLogSuffix = "betlogs";
+
         private const string multipliersSuffix = "multipliers";
 
         private static string FormatName(string name, string character) => name.Replace(" ", character).ToLowerInvariant();
@@ -15,6 +19,10 @@
         public static string ServiceName(string displayName) => FormatName(displayName, "_");
 
         public static string RoundCollection(string displayName) => CollectionName(GameConfigName(displayName), roundSuffix);
+
+        public static string BetCollection(string displayName) => CollectionName(GameConfigName(displayName), betSuffix);
+
+        public static string BetLogCollection(string displayName) => CollectionName(GameConfigName(displayName), betLogSuffix);
 
         public static string MultipliersCollection(string displayName) => CollectionName(GameConfigName(displayName), multipliersSuffix);
     }

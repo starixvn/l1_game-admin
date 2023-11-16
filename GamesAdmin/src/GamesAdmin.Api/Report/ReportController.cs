@@ -161,5 +161,10 @@ namespace GamesAdmin.Api.Report
         [Route("bet_history/cascading_slot")]
         public async Task<CascadingSlotBetHistory> CascadingSlotBetHistory([FromQuery] CascadingSlotReportFilter filter)
             => (await mediator.Send(new CascadingSlotBetHistoryRequest(filter)));
+
+        [HttpGet]
+        [Route("crash_game")]
+        public async Task<CrashGameBetReport> CrashGame([FromQuery] SpeedUpGameBetReportFilter filter)
+         => (await mediator.Send(new CrashGameReportRequest(filter)));
     }
 }

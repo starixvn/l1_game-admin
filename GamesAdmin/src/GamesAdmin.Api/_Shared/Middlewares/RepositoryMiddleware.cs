@@ -51,6 +51,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IDragonTigerFightReportRepository, DragonTigerFightReportRepository>();
             services.AddScoped<IColorGameReportRepository, ColorGameReportRepository>();
             services.AddScoped<IBandarQiuQiuReportRepository, BandarQiuQiuReportRepository>();
+            services.AddScoped<ICrashGameReportRepository, CrashGameReportRepository>();
         }
     }
 }

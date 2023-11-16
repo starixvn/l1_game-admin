@@ -8,6 +8,7 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
+using GamesAdmin.Database;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,7 +35,8 @@ namespace GamesAdmin.Api.Report
         IRequestHandler<HoldemPokerBetHistoryRequest, HoldemPokerBetHistory>,
         IRequestHandler<HiLoReportRequest, IEnumerable<HiLoBetRecord>>,
         IRequestHandler<CascadingSlotReportRequest, IEnumerable<CascadingSlotBetRecord>>,
-        IRequestHandler<CascadingSlotBetHistoryRequest, CascadingSlotBetHistory>
+        IRequestHandler<CascadingSlotBetHistoryRequest, CascadingSlotBetHistory>,
+        IRequestHandler<CrashGameReportRequest, CrashGameBetReport>
     {
         private readonly IReportService reportService;
         private readonly IReportServiceFactory reportServiceFactory;
@@ -121,5 +123,8 @@ namespace GamesAdmin.Api.Report
 
         public Task<CascadingSlotBetHistory> Handle(CascadingSlotBetHistoryRequest request, CancellationToken cancellationToken)
             => reportService.GetCascadingSlotBetHistoryAsync(request.Filter);
+
+        public Task<CrashGameBetReport> Handle(CrashGameReportRequest request, CancellationToken cancellationToken)
+           => reportService.GetCrashGameReportAsync(request.Filter);
     }
 }

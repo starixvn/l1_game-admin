@@ -48,7 +48,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetHoldemPokerReportRequest, HoldemPokerReportResultViewModel>,
         IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>,
-        IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>
+        IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
+        IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -730,6 +731,47 @@ namespace GamesAdmin.Site.Features.Report
             viewModel.Round.ConvertToUSD(request.ConvertToUSD, systemSettings.BaseCurrencyMultiplier);
 
             return viewModel;
+        }
+        public async Task<CrashGameReportResultViewModel> Handle(GetCrashGameReportRequest request, CancellationToken cancellationToken)
+        {
+            var filter = new SpeedUpGameBetReportFilter
+            {
+                RoundId = request.RoundId,             
+                Nickname = request.Nickname,
+                ExcludeUUS = request.ExcludeUUS,
+                PartnerId = request.PartnerId,
+                Username = request.Username,
+                ConvertToUSD = request.ConvertToUSD,
+                Game = request.Game,
+            };
+
+            var result = await reportService.GetCrashGameReport(filter);
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            return new CrashGameReportResultViewModel
+            {
+                RoundResult = new CrashGameRoundResultViewModel
+                {
+                    Number = result.RoundResult.Number,
+                    Result = result.RoundResult.Result,      
+                    ExchangeRateId = result.RoundResult.ExchangeRateId
+                },
+                Records = result.Records.Select(x => new CrashGameRecordViewModel
+                {
+                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                    Username = x.Username,
+                    Nickname = x.Nickname,
+                    BetWin = x.BetWin,
+                    Amount = x.Amount,
+                    Currency = x.Currency,
+                    Partner = GetPartnerName(partners, x.PartnerId),
+                    Rate = x.Rate,
+                    HalfCashOutBetLog = x.HalfCashOutBetLog,
+                    CashOutBetLog = x.CashOutBetLog
+                }),
+                ConvertToUSD = filter.ConvertToUSD,
+                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
+            };
         }
     }
 }
