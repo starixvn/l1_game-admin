@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database.Entities;
+﻿using System.Collections.Generic;
+using GamesAdmin.Database.Entities;
 
 namespace GamesAdmin.Database.Report.Entities
 {
@@ -14,8 +15,6 @@ namespace GamesAdmin.Database.Report.Entities
 
         public string OperatorId { get; set; }
 
-        public CrashGameBetLogEntity HalfCashOutBetLog { get; set; }
-
-        public CrashGameBetLogEntity CashOutBetLog { get; set; }
+        public List<CrashGameBetLogEntity> BetLogs { get; set; }
     }
 }

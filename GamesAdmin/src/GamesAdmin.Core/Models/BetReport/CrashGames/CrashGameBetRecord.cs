@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Core.Models.BetReport
+﻿using System.Collections.Generic;
+
+namespace GamesAdmin.Core.Models.BetReport
 {
     public class CrashGameBetRecord: BetRecord
     {
@@ -8,9 +10,6 @@
 
         public int ExchangeRateId { get; set; }
 
-        public CrashGameBetHistory HalfCashOutBetLog { get; set; }
-
-        public CrashGameBetHistory CashOutBetLog { get; set; }
-
+        public IEnumerable<CrashGameBetHistory> BetLogs { get; set; }
     }
 }

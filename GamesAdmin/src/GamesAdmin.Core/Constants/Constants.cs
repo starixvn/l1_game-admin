@@ -50,4 +50,11 @@
         public const byte Multiplier20xSymbol = 20;
         public const byte Multiplier30xSymbol = 30;
     }
+
+    public static class CrashGameAction
+    {
+        public const string Refund = "refund";
+        public const string CashOut = "cashOut";
+        public const string HalfCashOut = "halfCashOut";
+    }
 }

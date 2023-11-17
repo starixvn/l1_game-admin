@@ -167,7 +167,7 @@ namespace GamesAdmin.Site._Shared
             
             CreateMap<CrashGameRoundResult, CrashGameRoundResultViewModel>();
             CreateMap<CrashGameBetRecord, CrashGameRecordViewModel>();
-
+            CreateMap<CrashGameBetHistory, CrashGameBetHistoryViewModel>();
         }
     }
 }

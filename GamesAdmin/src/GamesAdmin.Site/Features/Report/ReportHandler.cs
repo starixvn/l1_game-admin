@@ -747,7 +747,7 @@ namespace GamesAdmin.Site.Features.Report
 
             var result = await reportService.GetCrashGameReport(filter);
             var partners = await partnerService.GetPartnersForSelection(model => true);
-
+    
             return new CrashGameReportResultViewModel
             {
                 RoundResult = new CrashGameRoundResultViewModel
@@ -759,6 +759,7 @@ namespace GamesAdmin.Site.Features.Report
                 Records = result.Records.Select(x => new CrashGameRecordViewModel
                 {
                     Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
+                    CurrencyMultiplier = filter.ConvertToUSD ? x.Rate / systemSettings.BaseCurrencyMultiplier : 1,
                     Username = x.Username,
                     Nickname = x.Nickname,
                     BetWin = x.BetWin,
@@ -766,11 +767,15 @@ namespace GamesAdmin.Site.Features.Report
                     Currency = x.Currency,
                     Partner = GetPartnerName(partners, x.PartnerId),
                     Rate = x.Rate,
-                    HalfCashOutBetLog = x.HalfCashOutBetLog,
-                    CashOutBetLog = x.CashOutBetLog
+                    BetLogs = x.BetLogs.Select(c=> new CrashGameBetHistoryViewModel
+                    {
+                        Action= c.Action,
+                        WinAmount= c.WinAmount,
+                        Multiplier = c.Multiplier,
+                        Amount = c.Amount,
+                        CurrencyMultiplier = filter.ConvertToUSD ? x.Rate / systemSettings.BaseCurrencyMultiplier : 1
+                    }),         
                 }),
-                ConvertToUSD = filter.ConvertToUSD,
-                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
             };
         }
     }

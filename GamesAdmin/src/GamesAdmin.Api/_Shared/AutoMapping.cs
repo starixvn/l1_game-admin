@@ -636,21 +636,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<CrashGameBetReportEntity, CrashGameBetRecord>()
                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Round))
                .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.PartnerId))
-               .ForMember(x => x.ExchangeRateId, opt => opt.MapFrom((source) => source.ExchangeRateId))
-               .ForMember(x => x.HalfCashOutBetLog, opt => opt.MapFrom((source) => new CrashGameBetHistory
-               {
-                   WinAmount = source.HalfCashOutBetLog.WinAmount,
-                   Amount = source.HalfCashOutBetLog.Amount,
-                   Multiplier = source.HalfCashOutBetLog.Multiplier,
-                   Action = source.HalfCashOutBetLog.Action
-               }))
-               .ForMember(x => x.CashOutBetLog, opt => opt.MapFrom((source) => new CrashGameBetHistory
-               {
-                   WinAmount = source.CashOutBetLog.WinAmount,
-                   Amount = source.CashOutBetLog.Amount,
-                   Multiplier = source.CashOutBetLog.Multiplier,
-                   Action = source.CashOutBetLog.Action
-               }));
+               .ForMember(x => x.ExchangeRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));         
         }
     }
 }

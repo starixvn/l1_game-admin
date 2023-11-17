@@ -66,8 +66,7 @@ namespace GamesAdmin.Database.Report
                             Currency = bet.Currency,
                             Round = bet.Round,
                             PartnerId = bet.OperatorId,
-                            HalfCashOutBetLog = betLogs.FirstOrDefault(x => x.Action.Equals("halfCashOut")),
-                            CashOutBetLog = betLogs.FirstOrDefault(x => x.Action.Equals("cashOut")),
+                            BetLogs = betLogs,
                         });
                     }
                 }                            

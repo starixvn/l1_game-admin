@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GamesAdmin.Core.Models.BetReport
+﻿namespace GamesAdmin.Core.Models.BetReport
 {
 
     public class CrashGameBetHistory

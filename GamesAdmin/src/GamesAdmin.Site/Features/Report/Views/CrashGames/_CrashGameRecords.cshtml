@@ -35,11 +35,15 @@
                     <th rowspan="2">Currency</th>   
                     <th colspan="3" class="col-number">Cashout</th>
                     <th colspan="3" class="col-number">Cashout 50%</th>
+                    <th colspan="3" class="col-number">Refund</th>
                     <th rowspan="2" class="col-number">Total Bet</th>
                     <th rowspan="2" class="col-number">Win</th>
                 </tr>
 
                 <tr>
+                    <th>Multiplier</th>
+                    <th>Bet</th>
+                    <th>Win</th>
                     <th>Multiplier</th>
                     <th>Bet</th>
                     <th>Win</th>
@@ -58,12 +62,12 @@
                         <td class="text-center">
                             @bet.Nickname
                         </td>
-                        <td class="text-center">@bet.Currency</td>
-                        @if(bet.CashOutBetLog != null)
-                        {
-                            <td class="text-center">@HtmlHelpers.formatNumber(bet.CashOutBetLog.Multiplier)</td>
-                            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.CashOutBetLog.Amount) / Model.BaseCurrencyMultiplier : bet.CashOutBetLog.Amount)</td>
-                            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.CashOutBetLog.WinAmount) / Model.BaseCurrencyMultiplier : bet.CashOutBetLog.WinAmount)</td>
+                        <td class="text-center">@bet.Currency</td>                      
+                        @if(bet.HasCashOut)
+                        {                           
+                            <td class="text-center">@bet.CashOutBetLog.DisplayMultiplier</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(bet.CashOutBetLog.Amount)</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(bet.CashOutBetLog.WinAmount)</td>
                         }
                         else
                         {
@@ -71,11 +75,23 @@
                             <td class="text-center">-</td>
                             <td class="text-center">-</td>
                         }
-                        @if (bet.HalfCashOutBetLog != null)
+                        @if (bet.HasHalfCashOut)
                         {
-                            <td class="text-center">@HtmlHelpers.formatNumber(bet.HalfCashOutBetLog.Multiplier)</td>
-                            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.HalfCashOutBetLog.Amount) / Model.BaseCurrencyMultiplier : bet.HalfCashOutBetLog.Amount)</td>
-                            <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.HalfCashOutBetLog.WinAmount) / Model.BaseCurrencyMultiplier : bet.HalfCashOutBetLog.WinAmount)</td>
+                            <td class="text-center">@(bet.HalfCashOutBetLog.DisplayMultiplier)</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(bet.HalfCashOutBetLog.Amount)</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(bet.HalfCashOutBetLog.WinAmount)</td>
+                        }
+                        else
+                        {
+                            <td class="text-center">-</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center">-</td>
+                        }
+                        @if (bet.HasRefund)
+                        {
+                            <td class="text-center">@(bet.RefundBetLog.DisplayMultiplier)</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(bet.RefundBetLog.Amount)</td>
+                            <td class="text-center">@HtmlHelpers.formatNumber(bet.RefundBetLog.WinAmount)</td>
                         }
                         else
                         {
@@ -84,8 +100,8 @@
                             <td class="text-center">-</td>
                         }
                        
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
-                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.BetWin) / Model.BaseCurrencyMultiplier : bet.BetWin)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.Amount)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(bet.BetWin)</td>
                     </tr>
                 }
             </tbody>
