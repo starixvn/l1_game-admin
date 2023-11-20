@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 
 namespace GamesAdmin.Api.VoidGame
 {
@@ -68,6 +69,13 @@ namespace GamesAdmin.Api.VoidGame
             var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
 
             return gameCollections.ContainsKey(gameId) ? gameCollections[gameId] : default;
+        }
+
+        public static GameTicketCollection GetCrashGameCollections(string displayName)
+        {
+            var betCollection = NamingConverter.BetCollection(displayName);
+            var betLogCollection = NamingConverter.BetLogCollection(displayName);    
+            return new GameTicketCollection(betCollection, betLogCollection); ;
         }
     }
 }

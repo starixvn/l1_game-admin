@@ -19,19 +19,19 @@ namespace GamesAdmin.Api.VoidGame
             this.voidGameService = voidGameService;
         }
 
-        public Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
+        public async Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
         {
             var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
             switch (gameId)
             {
                 case GameId.Blackjack:
-                    return voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
+                    return await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
                 case GameId.Pontoon: 
-                    return voidGameService.VoidBlackjackGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
+                    return await voidGameService.VoidBlackjackGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
                 case GameId.CasinoHoldemPoker:
-                case GameId.TexasHoldemPoker: return voidGameService.VoidHoldemPokerTicket(request);
+                case GameId.TexasHoldemPoker: return await voidGameService.VoidHoldemPokerTicket(request);
                 default:
-                    return voidGameService.VoidGameTicket(request);
+                    return  await voidGameService.VoidGameTicket(request);
             }          
         }
 
