@@ -12,8 +12,10 @@ using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 using GamesAdmin.Site.Features.Report.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -732,11 +734,28 @@ namespace GamesAdmin.Site.Features.Report
 
             return viewModel;
         }
+
         public async Task<CrashGameReportResultViewModel> Handle(GetCrashGameReportRequest request, CancellationToken cancellationToken)
         {
-            var filter = new SpeedUpGameBetReportFilter
+            try
             {
-                RoundId = request.RoundId,             
+                var filter = CreateFilterFromRequest(request);
+                var result = await reportService.GetCrashGameReport(filter);
+                var partners = await partnerService.GetPartnersForSelection(model => true);
+
+                return MapToViewModel(result, partners, filter.ConvertToUSD);
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException($"Exceptions", ex);            
+            }
+        }
+
+        private SpeedUpGameBetReportFilter CreateFilterFromRequest(GetCrashGameReportRequest request)
+        {
+            return new SpeedUpGameBetReportFilter
+            {
+                RoundId = request.RoundId,
                 Nickname = request.Nickname,
                 ExcludeUUS = request.ExcludeUUS,
                 PartnerId = request.PartnerId,
@@ -744,37 +763,42 @@ namespace GamesAdmin.Site.Features.Report
                 ConvertToUSD = request.ConvertToUSD,
                 Game = request.Game,
             };
+        }
 
-            var result = await reportService.GetCrashGameReport(filter);
-            var partners = await partnerService.GetPartnersForSelection(model => true);
-    
+        private CrashGameReportResultViewModel MapToViewModel(CrashGameBetReport result, IEnumerable<SelectListItem> partners, bool convertToUSD)
+        {
             return new CrashGameReportResultViewModel
             {
                 RoundResult = new CrashGameRoundResultViewModel
                 {
                     Number = result.RoundResult.Number,
-                    Result = result.RoundResult.Result,      
+                    Result = result.RoundResult.Result,
                     ExchangeRateId = result.RoundResult.ExchangeRateId
                 },
-                Records = result.Records.Select(x => new CrashGameRecordViewModel
+                Records = result.Records.Select(x => MapRecordToViewModel(x, partners, convertToUSD)).ToList(),
+            };
+        }
+
+        private CrashGameRecordViewModel MapRecordToViewModel(CrashGameBetRecord record, IEnumerable<SelectListItem> partners, bool convertToUSD)
+        {
+            return new CrashGameRecordViewModel
+            {
+                Time = TimeZoneInfo.ConvertTimeFromUtc(record.Time, appSettings.DefaultTimeZone),
+                CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1,
+                Username = record.Username,
+                Nickname = record.Nickname,
+                BetWin = record.BetWin,
+                Amount = record.Amount,
+                Currency = record.Currency,
+                Partner = GetPartnerName(partners, record.PartnerId),
+                Rate = record.Rate,
+                BetLogs = record.BetLogs.Select(c => new CrashGameBetHistoryViewModel
                 {
-                    Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone),
-                    CurrencyMultiplier = filter.ConvertToUSD ? x.Rate / systemSettings.BaseCurrencyMultiplier : 1,
-                    Username = x.Username,
-                    Nickname = x.Nickname,
-                    BetWin = x.BetWin,
-                    Amount = x.Amount,
-                    Currency = x.Currency,
-                    Partner = GetPartnerName(partners, x.PartnerId),
-                    Rate = x.Rate,
-                    BetLogs = x.BetLogs.Select(c=> new CrashGameBetHistoryViewModel
-                    {
-                        Action= c.Action,
-                        WinAmount= c.WinAmount,
-                        Multiplier = c.Multiplier,
-                        Amount = c.Amount,
-                        CurrencyMultiplier = filter.ConvertToUSD ? x.Rate / systemSettings.BaseCurrencyMultiplier : 1
-                    }),         
+                    Action = c.Action,
+                    WinAmount = c.WinAmount,
+                    Multiplier = c.Multiplier,
+                    Amount = c.Amount,
+                    CurrencyMultiplier = convertToUSD ? record.Rate / systemSettings.BaseCurrencyMultiplier : 1
                 }),
             };
         }
