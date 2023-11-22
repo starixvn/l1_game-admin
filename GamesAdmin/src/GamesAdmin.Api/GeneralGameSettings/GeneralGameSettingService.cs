@@ -20,6 +20,8 @@ namespace GamesAdmin.Api.GeneralGameSettings
         Task<byte> GetGameType (int gameId);
 
         Task<string> GetDisplayName(int gameId);
+
+        Task<bool> IsCrashGame(int gameId);
     }
 
     public class GeneralGameSettingService : IGeneralGameSettingService
@@ -94,6 +96,15 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
             var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
             return gameInfo?.DisplayName ?? Game.FromGameName(gameInfo.Name).DisplayName;
+        }
+
+        public async Task<bool> IsCrashGame(int gameId)
+        {
+            var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
+
+            var gameInfo = gameEntities.Find(game => game.GameId == gameId);
+
+            return gameInfo?.Type == (byte)GameType.Crash;
         }
     }
 }

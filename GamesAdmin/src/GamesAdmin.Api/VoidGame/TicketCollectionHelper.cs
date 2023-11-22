@@ -64,18 +64,21 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.BandarQiuQiu, new GameTicketCollection("bandarqiuqiu_bets", "bandarqiuqiu_betlogs") },
            };
 
-        public static GameTicketCollection GetCollections(int gameTypeId)
+        public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string displayName = "", bool isCheckBetLog = false)
         {
+            if (GameType.Crash == type)
+            {
+                var betCollection = NamingConverter.BetCollection(displayName);
+                var betLogCollection = NamingConverter.BetLogCollection(displayName);
+                var primaryCollection = isCheckBetLog ? betCollection : string.Empty;
+                var secondaryCollection = isCheckBetLog ? betLogCollection : betCollection; 
+
+                return new GameTicketCollection(primaryCollection, secondaryCollection);
+            }
+
             var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
 
-            return gameCollections.ContainsKey(gameId) ? gameCollections[gameId] : default;
-        }
-
-        public static GameTicketCollection GetCrashGameCollections(string displayName)
-        {
-            var betCollection = NamingConverter.BetCollection(displayName);
-            var betLogCollection = NamingConverter.BetLogCollection(displayName);    
-            return new GameTicketCollection(betCollection, betLogCollection); ;
+            return gameCollections.TryGetValue(gameId, out var collection) ? collection : default;
         }
     }
 }
