@@ -163,6 +163,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                         viewModel.Type = GameType.AutoRNG;
                         var choices = GetBetChoices(game.Info.Name);
                         viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(choices, game.BetLimit);
+                        viewModel.PayoutViewModel.BetChoiceOdds = GenerateOdds(game.Info.Name, game.Odds);
                         break;
                 }
                 viewModel.DetailsView = GetDetailsView(viewModel.Type);
