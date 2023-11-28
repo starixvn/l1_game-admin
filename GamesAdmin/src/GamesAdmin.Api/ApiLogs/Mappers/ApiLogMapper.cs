@@ -77,9 +77,9 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
 
             CreateMap<ApiLogArchiveEntity, ApiLogArchive>();
             CreateMap<ApiLogArchiveEntity, BetLogArchive>();
-            CreateMap<ApiLogArchiveEntity, IApiLogArchive>();
 
-            CreateMap<MemberSignInLogEntity, MemberSignInLog>();
+            CreateMap<MemberSignInLogEntity, MemberSignInLog>()
+                 .ForMember(x => x.Archive, opt => opt.MapFrom((source, dest, member, context) => MapArchive(context, source.Archive)));
             CreateMap<MemberSignInRequestEntity, MemberSignInRequest>();
             CreateMap<MemberSignInResultEntity, MemberSignInResult>();
             CreateMap<PublicUserInfoEntity, PublicUserInfo>();
@@ -87,7 +87,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<PartnerCallEntity, MemberFailedSignInRequest>();
             CreateMap<PartnerResultEntity, MemberFailedSignInResult>();
 
-            CreateMap<OWSignInLogEntity, OWSignInLog>();
+            CreateMap<OWSignInLogEntity, OWSignInLog>()
+                .ForMember(x => x.Archive, opt => opt.MapFrom((source, dest, member, context) => MapArchive(context, source.Archive)));
             CreateMap<OWSignInRequestEntity, OWSignInRequest>();
             CreateMap<OWSignInResultEntity, OWSignInResult>();
             CreateMap<OWSignInCallEntity, OWSignInCall>();
