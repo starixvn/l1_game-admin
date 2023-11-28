@@ -77,6 +77,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
 
             CreateMap<ApiLogArchiveEntity, ApiLogArchive>();
             CreateMap<ApiLogArchiveEntity, BetLogArchive>();
+            CreateMap<ApiLogArchiveEntity, IApiLogArchive>();
 
             CreateMap<MemberSignInLogEntity, MemberSignInLog>();
             CreateMap<MemberSignInRequestEntity, MemberSignInRequest>();
