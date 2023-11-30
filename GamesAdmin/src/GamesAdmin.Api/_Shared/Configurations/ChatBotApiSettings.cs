@@ -11,6 +11,8 @@
         public int TimeoutInSeconds { get; set; }
 
         public string Proxy { get; set; }
+
+        public double HighStakeAmount { get; set; }
     }
 
     public class ConversationIds

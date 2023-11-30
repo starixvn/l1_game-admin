@@ -9,6 +9,8 @@ using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.Currencies;
+using GamesAdmin.Database.Entities.ExchangeRates;
 using GamesAdmin.Site._Shared.Configurations;
 using Refit;
 using Sentry;
@@ -39,7 +41,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
-        private const string HighStakeMessageTemplate = "**{0}** - {1} - {2} - {3} - {4}";
+        private const string HighStakeMessageTemplate = "**{0}** - {1} - {2} - {3} - {4} - {5}";
         private const int MinBetAmount = 2000;
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
@@ -53,6 +55,9 @@ namespace GamesAdmin.Api.ChatBot
         private readonly ISentryClient sentry;
         private readonly Parser uaParser;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly IGenericRepository<ExchangeRateEntity> exchangeRateRepository;
+        private readonly IGenericRepository<CurrencyEntity> currencyRepository;
+        private readonly IGenericRepository<AccountEntity> userRepository;
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -61,7 +66,10 @@ namespace GamesAdmin.Api.ChatBot
             ISystemSettings systemSettings,
             IGenericRepository<UserSessionEntity> usersessionRepository,
             ISentryClient sentry,
-            IGeneralGameSettingService generalGameSettingService)
+            IGeneralGameSettingService generalGameSettingService,
+            IGenericRepository<ExchangeRateEntity> exchangeRateRepository,
+            IGenericRepository<CurrencyEntity> currencyRepository,
+            IGenericRepository<AccountEntity> userRepository)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
@@ -71,12 +79,16 @@ namespace GamesAdmin.Api.ChatBot
             this.sentry = sentry;
             this.generalGameSettingService = generalGameSettingService;
             uaParser = Parser.GetDefault();
+            this.exchangeRateRepository = exchangeRateRepository;
+            this.currencyRepository = currencyRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
+            var amountOnBaseCurrency = await this.CalAmountOnBaseCurrency(request);
             var devicePlatform = await GetDevicePlatform(request.ObCustId);
-            if (request.Currency == "UUS" || request.Amount < MinBetAmount)
+            if (request.Currency == "UUS" || request.Amount < MinBetAmount || amountOnBaseCurrency < this.appSettings.ChatBotApiSettings.HighStakeAmount)
             {
                 return await Task.FromResult<ChatBotResult>(default);
             }
@@ -86,11 +98,27 @@ namespace GamesAdmin.Api.ChatBot
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
-            msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, game, devicePlatform));
+            msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, devicePlatform));
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
 
             return await Task.FromResult(new ChatBotResult());
+        }
+
+        private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request) {
+            try
+            {
+                var exchangeRates = this.exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExId).First();
+                var user = await this.userRepository.FindOneAsync(u => u.PlayerId == request.ObCustId);
+                var currency = await this.currencyRepository.FindOneAsync(c => c.Enabled == true && c.Name == request.Currency && c.PartnerId == user.OperatorId);
+                var rate = (double)exchangeRates.Code[currency.Code] * currency.Multiplier;
+
+                return request.Amount * rate;
+            }
+            catch (Exception e) {
+                sentry.CaptureException(e);
+                return request.Amount;
+            }
         }
 
         private async Task<string> GetGameName(int gameId)

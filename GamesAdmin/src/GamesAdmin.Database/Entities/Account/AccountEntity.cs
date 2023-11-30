@@ -9,6 +9,10 @@ namespace GamesAdmin.Database.Entities
         public LocalAccount Local { get; set; }
 
         public string UserIdStr { get; set; }
+
+        public string OperatorId { get; set; }
+
+        public int PlayerId { get; set; }
     }
 
     public class LocalAccount
