@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
     public class BetHistory
     {
         public bool FractionalOddsFormat { get; set; }
+
+        public string CurrencyName { get; set; }
     }
 
     public class BetHistoryRecord

@@ -11,6 +11,8 @@ namespace GamesAdmin.Api.CurrencyGroups
         Task<IEnumerable<CurrencyGroupModel>> GetAll();
 
         Task<CurrencyGroupModel> GetById(string id);
+
+        Task<CurrencyGroupModel> GetByOperatorAndCurrency(string operatorId, string currencyName);
     }
 
     public class CurrencyGroupService : ICurrencyGroupService
@@ -27,6 +29,9 @@ namespace GamesAdmin.Api.CurrencyGroups
 
         public Task<CurrencyGroupModel> GetById(string id)
             => mediator.Send(new GetByIdRequest(id));
+
+        public Task<CurrencyGroupModel> GetByOperatorAndCurrency(string operatorId, string currencyName)
+            => mediator.Send(new GetByOperatorAndCurrencyRequest(operatorId, currencyName));
 
         public Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId)
             => mediator.Send(new GetByPartnerRequest(partnerId));

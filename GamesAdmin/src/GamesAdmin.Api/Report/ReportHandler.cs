@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.Report.Requests;
 using GamesAdmin.Api.Report.Services;
 using GamesAdmin.Core.Models;
@@ -42,17 +44,26 @@ namespace GamesAdmin.Api.Report
         private readonly IReportServiceFactory reportServiceFactory;
         private readonly IServiceProvider serviceProvider;
         private readonly IHoldemPokerReportService holdemPokerReportService;
+        private readonly ICurrencyGroupService currencyGroupService;
+        private readonly CloudSettings cloudSettings;
+        private readonly IReportApi reportApi;
 
         public ReportHandler(
             IReportService reportService,
             IReportServiceFactory reportServiceFactory,
             IServiceProvider serviceProvider,
-            IHoldemPokerReportService holdemPokerReportService)
+            IHoldemPokerReportService holdemPokerReportService,
+            ICurrencyGroupService currencyGroupService,
+            IAppSettings appSettings,
+            IReportApi reportApi)
         {
             this.reportService = reportService;
             this.reportServiceFactory = reportServiceFactory;
             this.serviceProvider = serviceProvider;
             this.holdemPokerReportService = holdemPokerReportService;
+            this.currencyGroupService = currencyGroupService;
+            this.cloudSettings = appSettings.CloudSettings;
+            this.reportApi = reportApi;
         }
 
         public async Task<BigSmallBetReport> Handle(BigSmallReportRequest request, CancellationToken cancellationToken)
@@ -103,10 +114,24 @@ namespace GamesAdmin.Api.Report
             return service.Get(request.Filter);
         }
 
-        public Task<BetHistory> Handle(BetHistoryRequest request, CancellationToken cancellationToken)
+        public async Task<BetHistory> Handle(BetHistoryRequest request, CancellationToken cancellationToken)
         {
-            var service = reportServiceFactory.GetBetHistoryService(request.Filter.Game);
-            return service.Get(request.Filter);
+            BetHistory betHistory;
+            if (cloudSettings?.ShouldCallCloudService((int)request.Filter.Game) == true)
+            {
+                betHistory = await reportApi.GetBetHistory(request.Filter);
+            }
+            else
+            {
+                var service = reportServiceFactory.GetBetHistoryService(request.Filter.Game);
+                betHistory = await service.Get(request.Filter);
+            }
+            if (!string.IsNullOrEmpty(betHistory.CurrencyName))
+            {
+                var currencyGroup = await currencyGroupService.GetByOperatorAndCurrency(request.Filter.PartnerId, betHistory.CurrencyName);
+                betHistory.FractionalOddsFormat = currencyGroup?.FractionalOddsFormat ?? false;
+            }
+            return betHistory;
         }
 
         public async Task<IEnumerable<HoldemPokerBetRecord>> Handle(HoldemPokerReportRequest request, CancellationToken cancellationToken)

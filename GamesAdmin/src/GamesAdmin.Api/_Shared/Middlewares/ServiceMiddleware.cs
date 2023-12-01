@@ -43,7 +43,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             var refitSettings = new RefitSettings
             {
                 AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
-                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})
+                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
             };
 
             services.AddScoped<IGameSettingsService, GameSettingsService>();
@@ -181,12 +181,14 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddPublicService();
 
             services.InitApiLog();
+
+            services.AddCloudServices(appSettings);
         }
 
         private static void AddSlotServices(this IServiceCollection services)
         {
             services.AddScoped<ISlotBoardApiFactory, SlotBoardApiFactory>();
-            services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();         
+            services.AddScoped<ICascadingResultApiFactory, CascadingResultApiFactory>();
         }
 
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
@@ -243,6 +245,22 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddVoidRunningTicketServices(this IServiceCollection services)
         {
             services.AddScoped<IVoidRunningTicketApiFactory, VoidRunningTicketApiFactory>();
+        }
+
+        private static void AddCloudServices(this IServiceCollection services, IAppSettings appSettings)
+        {
+            IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
+
+            var refitSettings = new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+            };
+
+            if (!string.IsNullOrEmpty(appSettings.CloudSettings?.CloudAdminApiUrl))
+            {
+                services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+            }
         }
     }
 }
