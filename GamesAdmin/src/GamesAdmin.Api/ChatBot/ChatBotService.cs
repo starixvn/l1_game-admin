@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
@@ -46,7 +47,8 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
-
+        private const int CacheExpireInMinutes = 60 * 24;
+        
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
         private readonly IGameUserService gameUserService;
@@ -58,6 +60,7 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IGenericRepository<ExchangeRateEntity> exchangeRateRepository;
         private readonly IGenericRepository<CurrencyEntity> currencyRepository;
         private readonly IGenericRepository<AccountEntity> userRepository;
+        private readonly ICacheManager cache;
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -69,7 +72,8 @@ namespace GamesAdmin.Api.ChatBot
             IGeneralGameSettingService generalGameSettingService,
             IGenericRepository<ExchangeRateEntity> exchangeRateRepository,
             IGenericRepository<CurrencyEntity> currencyRepository,
-            IGenericRepository<AccountEntity> userRepository)
+            IGenericRepository<AccountEntity> userRepository,
+            ICacheManager cache)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
@@ -82,6 +86,7 @@ namespace GamesAdmin.Api.ChatBot
             this.exchangeRateRepository = exchangeRateRepository;
             this.currencyRepository = currencyRepository;
             this.userRepository = userRepository;
+            this.cache = cache;
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
@@ -108,10 +113,28 @@ namespace GamesAdmin.Api.ChatBot
         private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request) {
             try
             {
-                var exchangeRates = this.exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExId).First();
-                var user = await this.userRepository.FindOneAsync(u => u.PlayerId == request.ObCustId);
-                var currency = await this.currencyRepository.FindOneAsync(c => c.Enabled == true && c.Name == request.Currency && c.PartnerId == user.OperatorId);
-                var rate = (double)exchangeRates.Code[currency.Code] * currency.Multiplier;
+                var exchangeRate = cache.GetCache<ExchangeRateEntity>(CachedKeys.ExchangeRate.ToString());
+                if (exchangeRate == default) {
+                    exchangeRate = this.exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExId).First();
+                    cache.SetCache(CachedKeys.ExchangeRate.ToString(), exchangeRate, CacheExpireInMinutes);
+                }
+
+                var currencies = cache.GetCache<IEnumerable<CurrencyEntity>>(CachedKeys.Currencies.ToString());
+                if(currencies == default)
+                {
+                    currencies = currencyRepository.AsQueryable();
+                    cache.SetCache(CachedKeys.Currencies.ToString(), currencies, CacheExpireInMinutes);
+                }
+
+                var userKey = string.Format("{0}{1}", CachedKeys.User, request.ObCustId);
+                var user = cache.GetCache<AccountEntity>(userKey);
+                if (user == default) {
+                    user = await userRepository.FindOneAsync(u => u.PlayerId == request.ObCustId);
+                    cache.SetCache(userKey, user, CacheExpireInMinutes);
+                }
+
+                var currency = currencies.Where(c => c.Enabled == true && c.Name == request.Currency && c.PartnerId == user.OperatorId).FirstOrDefault();
+                var rate = (double)exchangeRate.Code[currency.Code] * currency.Multiplier;
 
                 return request.Amount * rate;
             }

@@ -1,4 +1,5 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
@@ -123,6 +124,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IPontoonOnlineUserApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
             services.AddSingleton(RestService.For<IColorGameOnlineUserApi>(appSettings.GameServers.ColorGame.Api, refitSettings));
             services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
+            services.AddSingleton<ICacheManager, CacheManager>();
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
