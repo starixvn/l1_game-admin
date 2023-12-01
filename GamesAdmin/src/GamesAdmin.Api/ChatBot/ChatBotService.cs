@@ -112,26 +112,9 @@ namespace GamesAdmin.Api.ChatBot
         private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request) {
             try
             {
-                var exchangeRate = cache.GetCache<ExchangeRateEntity>(CachedKeys.ExchangeRate.ToString());
-                if (exchangeRate == default) {
-                    exchangeRate = this.exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExId).First();
-                    cache.SetCache(CachedKeys.ExchangeRate.ToString(), exchangeRate, CacheExpireInMinutes);
-                }
-
-                var currencies = cache.GetCache<IEnumerable<CurrencyEntity>>(CachedKeys.Currencies.ToString());
-                if(currencies == default)
-                {
-                    currencies = currencyRepository.AsQueryable();
-                    cache.SetCache(CachedKeys.Currencies.ToString(), currencies, CacheExpireInMinutes);
-                }
-
-                var userKey = string.Format("{0}{1}", CachedKeys.User, request.ObCustId);
-                var user = cache.GetCache<AccountEntity>(userKey);
-                if (user == default) {
-                    user = await userRepository.FindOneAsync(u => u.PlayerId == request.ObCustId);
-                    cache.SetCache(userKey, user, CacheExpireInMinutes);
-                }
-
+                var exchangeRate = GetExchangeRate();
+                var currencies = GetCurrencies();
+                var user = await GetUser(request.ObCustId);
                 var currency = currencies.Where(c => c.Enabled == true && c.Name == request.Currency && c.PartnerId == user.OperatorId).FirstOrDefault();
                 var rate = (double)exchangeRate.Code[currency.Code] * currency.Multiplier;
 
@@ -141,6 +124,41 @@ namespace GamesAdmin.Api.ChatBot
                 sentry.CaptureException(e);
                 return request.Amount;
             }
+        }
+
+        private ExchangeRateEntity GetExchangeRate() {
+            var exchangeRate = cache.GetCache<ExchangeRateEntity>(CachedKeys.ExchangeRate.ToString());
+            if (exchangeRate == default)
+            {
+                exchangeRate = this.exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExId).First();
+                cache.SetCache(CachedKeys.ExchangeRate.ToString(), exchangeRate, CacheExpireInMinutes);
+            }
+
+            return exchangeRate;
+        }
+
+        private IEnumerable<CurrencyEntity> GetCurrencies() {
+            var currencies = cache.GetCache<IEnumerable<CurrencyEntity>>(CachedKeys.Currencies.ToString());
+            if (currencies == default)
+            {
+                currencies = currencyRepository.AsQueryable();
+                cache.SetCache(CachedKeys.Currencies.ToString(), currencies, CacheExpireInMinutes);
+            }
+
+            return currencies;
+        }
+
+        private async Task<AccountEntity> GetUser(int ObCustId)
+        {
+            var userKey = string.Format("{0}{1}", CachedKeys.User, ObCustId);
+            var user = cache.GetCache<AccountEntity>(userKey);
+            if (user == default)
+            {
+                user = await userRepository.FindOneAsync(u => u.PlayerId == ObCustId);
+                cache.SetCache(userKey, user, CacheExpireInMinutes);
+            }
+
+            return user;
         }
 
         private async Task<string> GetGameName(int gameId)
