@@ -43,7 +43,6 @@ namespace GamesAdmin.Api.ChatBot
     public class ChatBotService : IChatBotService
     {
         private const string HighStakeMessageTemplate = "**{0}** - {1} - {2} - {3} - {4} - {5}";
-        private const int MinBetAmount = 2000;
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
@@ -93,7 +92,7 @@ namespace GamesAdmin.Api.ChatBot
         {
             var amountOnBaseCurrency = await this.CalAmountOnBaseCurrency(request);
             var devicePlatform = await GetDevicePlatform(request.ObCustId);
-            if (request.Currency == "UUS" || request.Amount < MinBetAmount || amountOnBaseCurrency < this.appSettings.ChatBotApiSettings.HighStakeAmount)
+            if (request.Currency == "UUS" || amountOnBaseCurrency < this.appSettings.ChatBotApiSettings.HighStakeAmount)
             {
                 return await Task.FromResult<ChatBotResult>(default);
             }
