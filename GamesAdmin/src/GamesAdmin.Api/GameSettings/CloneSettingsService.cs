@@ -26,6 +26,7 @@ namespace GamesAdmin.Api.GameSettings
         private readonly ISentryClient sentryClient;
         private readonly INotificationService notificationService;
         private readonly IGameSettingsService gameService;
+        private readonly int BOT_MAX_BET_DEFAULT = 10;
 
         public CloneSettingsService(IGenericRepository<GameConfigEntity> repository,
             IGeneralGameSettingService generalGameSettingService,
@@ -96,7 +97,7 @@ namespace GamesAdmin.Api.GameSettings
         {
             var gameInfo = new GameInfo(NamingConverter.GameConfigName(displayName), false, GameType.Crash, 1, displayName, gameId, null);
             var enableSetting = new EnableSetting(false);
-            var botSetting = new BotSetting(false);
+            var botSetting = new BotSetting(false, BOT_MAX_BET_DEFAULT, new double[24]);
             var betLimit = new BetLimit();
             var gameConfig = new GameConfig(
                  string.Empty,
