@@ -1,4 +1,7 @@
-﻿using GamesAdmin.Api.VoidGame.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.OWResults;
@@ -6,9 +9,6 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Refit;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.VoidGame
 {
@@ -18,6 +18,7 @@ namespace GamesAdmin.Api.VoidGame
     {
         [Post("/Player/VoidGame")]
         Task<VoidGameApiResult> VoidGameTicket([Body] VoidTicketRequest request);
+
     }
 
     public interface IVoidGameService
@@ -131,8 +132,8 @@ namespace GamesAdmin.Api.VoidGame
             return default;
         }
 
-        public async Task<VoidGameResult> VoidBlackjackGameTicket<BlackjackGameRound, BlackjackGameBet>(VoidTicketRequest request) 
-            where BlackjackGameRound : BlackjackGameRoundEntity 
+        public async Task<VoidGameResult> VoidBlackjackGameTicket<BlackjackGameRound, BlackjackGameBet>(VoidTicketRequest request)
+            where BlackjackGameRound : BlackjackGameRoundEntity
             where BlackjackGameBet : BlackjackGameBetEntity
         {
             try
@@ -167,7 +168,7 @@ namespace GamesAdmin.Api.VoidGame
                     if (apiResult.IsFailed())
                     {
                         return apiResult;
-                    }               
+                    }
                 }
 
                 if (ShouldMoveRound(ticket))
@@ -176,7 +177,7 @@ namespace GamesAdmin.Api.VoidGame
                     if (!movedRound)
                     {
                         return TicketMovedUnsuccessfully();
-                    }               
+                    }
                 }
 
                 if (ticket.IsRunningTicket)
@@ -186,7 +187,7 @@ namespace GamesAdmin.Api.VoidGame
                     {
                         return new VoidGameResult { ErrorCode = 1002, ErrorMessage = "Request void running ticket unsuccessfully." };
                     }
-                  
+
                 }
 
                 apiResult.HandIds = String.Join(", ", ticket.HandIds);
@@ -239,7 +240,7 @@ namespace GamesAdmin.Api.VoidGame
                     if (!moved)
                     {
                         return TicketMovedUnsuccessfully();
-                    }              
+                    }
                 }
 
                 return apiResult.Result;
@@ -272,11 +273,11 @@ namespace GamesAdmin.Api.VoidGame
                     var voidRunningTicketApi = voidRunningTicketApiFactory.GetVoidRunningTicketApi(serviceName);
                     var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify, accountInfoEntity?.Name));
                     return result;
-                }             
+                }
             }
             catch (ApiException apiEx)
-            {                        
-                sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");                             
+            {
+                sentryClient.CaptureMessage($"Request {apiEx.Uri} error: {apiEx.Message}");
             }
             catch (Exception ex)
             {

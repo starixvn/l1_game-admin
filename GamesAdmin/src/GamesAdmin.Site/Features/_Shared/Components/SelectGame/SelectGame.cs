@@ -20,7 +20,7 @@ namespace GamesAdmin.Site._Shared.ViewComponents
         {
             var games = await generalGameSettingService.GetAllGames();
 
-            var items = games.Select(game => new SelectListItem { Text = game.DisplayName, Value = game.GameId.ToString() });
+            var items = games.Select(game => new SelectListItem { Text = game.DisplayName, Value = game.GameId.ToString(), Selected = game.GameId == 71 });
 
             return View(new SelectGameModel(name, items, selectAll));
         }

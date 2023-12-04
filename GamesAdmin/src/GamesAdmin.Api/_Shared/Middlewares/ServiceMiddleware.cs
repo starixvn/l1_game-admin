@@ -1,4 +1,8 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ApiLogs.Apis;
@@ -25,13 +29,10 @@ using GamesAdmin.Api.ServiceStatus;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
+using GamesAdmin.Api.VoidGameCloud;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Text.Json;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -130,7 +131,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IVoidGameCloudApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
+            services.AddScoped<IVoidGameCloudService, VoidGameCloud.VoidGameCloudService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
 
             AddSlotServices(services);

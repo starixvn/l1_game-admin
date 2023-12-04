@@ -21,7 +21,7 @@ namespace GamesAdmin.Site.Features.VoidGame
     {
         private readonly IVoidGameApi voidGameApi;
 
-        public VoidGameService(IVoidGameApi voidGameApi) 
+        public VoidGameService(IVoidGameApi voidGameApi)
         {
             this.voidGameApi = voidGameApi;
         }

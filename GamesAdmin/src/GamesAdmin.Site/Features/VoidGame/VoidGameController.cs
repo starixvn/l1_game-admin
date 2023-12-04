@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.VoidGame
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View( await mediator.Send(new IndexViewRequest()));
+        public async Task<IActionResult> Index() => View(await mediator.Send(new IndexViewRequest()));
 
         [HttpPost, Audit]
         [Authorize(Roles = "admin")]

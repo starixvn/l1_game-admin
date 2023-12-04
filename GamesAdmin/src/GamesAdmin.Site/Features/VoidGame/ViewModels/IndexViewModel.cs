@@ -15,16 +15,16 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [DisplayName("Operator")]
         [Required]
-        public string PartnerId { get; set; }
+        public string PartnerId { get; set; } = "ONEworks1";
 
         [DisplayName("Member Id")]
         [Required]
         [Range(1, int.MaxValue)]
-        public int MemberId { get; set; }
+        public int MemberId { get; set; } = 1971601;
 
         [DisplayName("Site Id")]
         [Required]
-        public string SiteId { get; set; }
+        public string SiteId { get; set; } = "4100300";
 
         [DisplayName("Game Round Id")]
         [Required]
@@ -33,14 +33,14 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [DisplayName("Game")]
         [Required]
-        public byte GameId { get; set; }
+        public byte GameId { get; set; } = 71;
 
         public List<SelectListItem> GameIds { get; set; }
 
         public List<SelectListItem> Partners { get; set; }
 
         [Required]
-        public string Reason { get; set; }
+        public string Reason { get; set; } = "david test";
 
         public bool FreeBet { get; set; }
 
