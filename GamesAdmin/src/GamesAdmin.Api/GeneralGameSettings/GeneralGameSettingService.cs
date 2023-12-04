@@ -95,7 +95,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
 
             var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
-            return gameInfo?.DisplayName ?? Game.FromGameName(gameInfo.Name).DisplayName;
+            return !string.IsNullOrEmpty(gameInfo.DisplayName) ? gameInfo.DisplayName : Game.FromGameName(gameInfo.Name).DisplayName;
         }
 
         public async Task<bool> IsCrashGame(int gameId)

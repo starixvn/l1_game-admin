@@ -2,6 +2,7 @@
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
+using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -51,6 +52,7 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IGenericRepository<UserSessionEntity> usersessionRepository;
         private readonly ISentryClient sentry;
         private readonly Parser uaParser;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -58,7 +60,8 @@ namespace GamesAdmin.Api.ChatBot
             IGameUserService gameUserService,
             ISystemSettings systemSettings,
             IGenericRepository<UserSessionEntity> usersessionRepository,
-            ISentryClient sentry)
+            ISentryClient sentry,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
@@ -66,6 +69,7 @@ namespace GamesAdmin.Api.ChatBot
             this.systemSettings = systemSettings;
             this.usersessionRepository = usersessionRepository;
             this.sentry = sentry;
+            this.generalGameSettingService = generalGameSettingService;
             uaParser = Parser.GetDefault();
         }
 
@@ -76,9 +80,9 @@ namespace GamesAdmin.Api.ChatBot
             {
                 return await Task.FromResult<ChatBotResult>(default);
             }
-
+          
             var msgBuilder = new StringBuilder();
-            var game = GetGameName(request.GameTypeId);
+            var game = await GetGameName(request.GameTypeId);
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
@@ -89,14 +93,14 @@ namespace GamesAdmin.Api.ChatBot
             return await Task.FromResult(new ChatBotResult());
         }
 
-        private string GetGameName(int gameId)
+        private async Task<string> GetGameName(int gameId)
         {
             return gameId switch
             {
                 (int)GameId.KenoMatch1 => "KenoSoccer",
                 (int)GameId.KenoMatch2 => "KenoSoccer2",
                 (int)GameId.KenoPower1 => "KenoPower",
-                _ => Enum.Parse<GameId>(gameId.ToString()).ToString(),
+                _ => await generalGameSettingService.GetDisplayName(gameId),
             };
         }
 
