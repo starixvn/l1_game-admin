@@ -14,16 +14,6 @@ namespace GamesAdmin.Core.Models.Currencies
             Currencies = currencies;
         }
 
-        public CurrencyGroupModel(string id, string name, bool enabled, string partnerId, bool fractionalOddsFormat)
-        {
-            Id = id;
-            Name = name;
-            Enabled = enabled;
-            PartnerId = partnerId;
-            FractionalOddsFormat = fractionalOddsFormat;
-            Currencies = new List<CurrencyModel>();
-        }
-
         public string Id { get; }
 
         public string Name { get; }

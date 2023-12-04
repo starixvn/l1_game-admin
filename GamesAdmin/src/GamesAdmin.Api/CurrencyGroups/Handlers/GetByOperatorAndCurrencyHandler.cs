@@ -27,7 +27,7 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
                 var currencyGroup = await Repository.FindByIdAsync(currencyModel.GroupId);
                 if (!string.IsNullOrEmpty(currencyGroup?.Id.ToString()))
                 {
-                    return new CurrencyGroupModel(currencyGroup.Id.ToString(), currencyGroup.Name, currencyGroup.Enabled, currencyGroup.PartnerId, currencyGroup.FractionalOddsFormat);
+                    return new CurrencyGroupModel(currencyGroup.Id.ToString(), currencyGroup.Name, currencyGroup.Enabled, currencyGroup.PartnerId, currencyGroup.FractionalOddsFormat, Enumerable.Empty<CurrencyModel>());
                 }
             }
             return null;
