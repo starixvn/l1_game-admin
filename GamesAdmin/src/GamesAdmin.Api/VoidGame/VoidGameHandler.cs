@@ -29,12 +29,12 @@ namespace GamesAdmin.Api.VoidGame
 
         public async Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
         {
-            var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
-
             if (appSettings.CloudSettings.ShouldCallCloudService(request.GameTypeId))
             {
                 return voidGameCloudService.VoidCloudServiceTicket(request);
             }
+
+            var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
 
             switch (gameId)
             {
