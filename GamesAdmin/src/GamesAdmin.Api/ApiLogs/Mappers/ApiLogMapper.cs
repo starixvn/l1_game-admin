@@ -94,6 +94,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<OWSignInCallEntity, OWSignInCall>();
             CreateMap<PartnerCallEntity, OWFailedSignInCall>();
             CreateMap<PartnerResultEntity, OWFailedSignInResult>();
+            CreateMap<QueryLogRequest, QueryLogModel>().ForMember(request => request.LogType, opt => opt.MapFrom(src => (byte)src.LogType));
         }
 
         private static TRequest MapRequest<TRequest>(IRuntimeMapper mapper, ApiLogRequestEntity entity, Type sourceType, Type defaulDestinationType)

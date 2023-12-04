@@ -1,6 +1,7 @@
 ﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ApiLogs;
+using GamesAdmin.Api.ApiLogs.Apis;
 using GamesAdmin.Api.ChatBot;
 using GamesAdmin.Api.Chips;
 using GamesAdmin.Api.ClientSites;
@@ -260,6 +261,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             if (!string.IsNullOrEmpty(appSettings.CloudSettings?.CloudAdminApiUrl))
             {
                 services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+                services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
             }
         }
     }
