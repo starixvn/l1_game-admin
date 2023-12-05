@@ -538,10 +538,10 @@ namespace GamesAdmin.Api._Shared
             CreateMap<LobbyModel, LobbyEntity>()
               .ForMember(x => x.Id, opt => opt.MapFrom((source) => ObjectId.Parse(source.Id)))
               .ForMember(x => x.RoundTimerGame, opt => opt.MapFrom((source) => new RoundTimerGameEntity
-               {
-                   Games = source.RoundTimerGame.Games.Select(game=> new GameEnitity { GameId = game.Id, Name = game.Name }).ToArray(),
-                   Main = source.RoundTimerGame.Main
-                }))
+              {
+                  Games = source.RoundTimerGame.Games.Select(game => new GameEnitity { GameId = game.Id, Name = game.Name }).ToArray(),
+                  Main = source.RoundTimerGame.Main
+              }))
               .ForMember(x => x.Categories, opt => opt.MapFrom((source, destination, i, context) =>
               {
                   var result = source.Categories.Select(category =>
@@ -603,7 +603,8 @@ namespace GamesAdmin.Api._Shared
                     HandRankingId = src.Result.Banker.HandRankingId,
                     PipsOfSet = src.Result.Banker.PipsOfSet
                 }))
-                .ForMember(dest => dest.Spade, opt => opt.MapFrom(src => new BandarQiuQiuResultItem() {
+                .ForMember(dest => dest.Spade, opt => opt.MapFrom(src => new BandarQiuQiuResultItem()
+                {
                     Dominoes = src.Result.Spade.Dominoes,
                     HandRankingId = src.Result.Spade.HandRankingId,
                     PipsOfSet = src.Result.Spade.PipsOfSet
@@ -627,8 +628,9 @@ namespace GamesAdmin.Api._Shared
                     PipsOfSet = src.Result.Diamond.PipsOfSet
                 }))
                 .ForMember(dest => dest.SettlementResult, opt => opt.MapFrom(src => src.SettlementResult));
-            CreateMap<BandarQiuQiuBetReportEntity, BandarQiuQiuBetRecord>()
-                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
+            CreateMap<BandarQiuQiuBetEntity, BandarQiuQiuBetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
             CreateMap<BandarQiuQiuBetLogEntity, BandarQiuQiuBetHistoryRecord>();
             
             CreateMap<CrashGameRoundEntity, CrashGameRoundResult>();

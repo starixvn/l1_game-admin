@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GamesAdmin.Api._Shared.Configurations
@@ -12,6 +13,6 @@ namespace GamesAdmin.Api._Shared.Configurations
         public IEnumerable<int> SeparatedGameIds { get; set; }
 
         public bool ShouldCallCloudService(int gameTypeId)
-            => !IsCloudService && SeparatedGameIds.Contains(gameTypeId);
+            => !IsCloudService && SeparatedGameIds != null && SeparatedGameIds.Contains(gameTypeId);
     }
 }

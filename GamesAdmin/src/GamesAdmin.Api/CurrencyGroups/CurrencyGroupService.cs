@@ -13,6 +13,8 @@ namespace GamesAdmin.Api.CurrencyGroups
         Task<CurrencyGroupModel> GetById(string id);
 
         Task<CurrencyGroupModel> GetByOperatorAndCurrency(string operatorId, string currencyName);
+
+        Task<bool> IsFractionalOddsFormat(string operatorId, string currencyName);
     }
 
     public class CurrencyGroupService : ICurrencyGroupService
@@ -35,5 +37,11 @@ namespace GamesAdmin.Api.CurrencyGroups
 
         public Task<IEnumerable<CurrencyGroupModel>> GetByPartner(string partnerId)
             => mediator.Send(new GetByPartnerRequest(partnerId));
+
+        public async Task<bool> IsFractionalOddsFormat(string operatorId, string currencyName)
+        {
+            var currencyGroup = await mediator.Send(new GetByOperatorAndCurrencyRequest(operatorId, currencyName));
+            return currencyGroup?.FractionalOddsFormat ?? false;
+        }
     }
 }

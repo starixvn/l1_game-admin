@@ -17,7 +17,7 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         public override async Task<ReportResultViewModel> Get(BetReportFilter filter)
-        {           
+        {
             var result = await reportApi.Get<BandarQiuQiuBetReport>(filter);
             var partners = await partnerService.GetAll();
 
@@ -33,7 +33,7 @@ namespace GamesAdmin.Site.Features.Report
                     return recordViewModel;
                 }),
                 ConvertToUSD = filter.ConvertToUSD
-            };            
+            };
         }
 
         public async Task<BetHistoryViewModel> Get(BetHistoryFilter filter)

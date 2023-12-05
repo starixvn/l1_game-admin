@@ -83,7 +83,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
             CreateMap<MemberSignInRequestEntity, MemberSignInRequest>();
             CreateMap<MemberSignInResultEntity, MemberSignInResult>();
             CreateMap<PublicUserInfoEntity, PublicUserInfo>();
-            CreateMap<UserInfoEntity, UserInfo>();
+            CreateMap<UserInfoEntity, Core.Models.ApiLogs.UserInfo>();
             CreateMap<PartnerCallEntity, MemberFailedSignInRequest>();
             CreateMap<PartnerResultEntity, MemberFailedSignInResult>();
 

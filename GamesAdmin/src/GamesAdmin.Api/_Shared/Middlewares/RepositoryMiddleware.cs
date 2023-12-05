@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Database;
+﻿using GamesAdmin.Api.UserInfo;
+using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Report;
@@ -52,6 +53,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IColorGameReportRepository, ColorGameReportRepository>();
             services.AddScoped<IBandarQiuQiuReportRepository, BandarQiuQiuReportRepository>();
             services.AddScoped<ICrashGameReportRepository, CrashGameReportRepository>();
+            services.AddScoped<IUserInfoService, UserInfoService>();
         }
     }
 }

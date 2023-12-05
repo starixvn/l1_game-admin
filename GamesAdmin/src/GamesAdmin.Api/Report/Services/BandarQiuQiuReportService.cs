@@ -1,57 +1,88 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models;
-using System.Threading.Tasks;
 using GamesAdmin.Database.Report;
-using GamesAdmin.Api.Currencies;
+using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.Report.Services;
 using GamesAdmin.Api.CurrencyGroups;
+using GamesAdmin.Api.UserInfo;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report
 {
-    public class BandarQiuQiuReportService : IGameReportService, IBetHistoryReportService
+    public class BandarQiuQiuReportService : BaseReportService, IGameReportService, IBetHistoryReportService
     {
         private readonly IBandarQiuQiuReportRepository repository;
-        private readonly IMapper mapper;
-        private readonly ICurrencyService currencyService;
         private readonly ICurrencyGroupService currencyGroupService;
+        private readonly CloudSettings cloudSettings;
+        private readonly IReportApi reportApi;
+        private readonly IMapper mapper;
 
-        public BandarQiuQiuReportService(IBandarQiuQiuReportRepository repository, IMapper mapper,
-            ICurrencyService currencyService,
-            ICurrencyGroupService currencyGroupService)
+        public BandarQiuQiuReportService(IBandarQiuQiuReportRepository repository,
+            IUserInfoService userInfoService,
+            ICurrencyGroupService currencyGroupService,
+            IServiceProvider serviceProvider,
+            IAppSettings appSettings,
+            IMapper mapper) : base(userInfoService)
         {
             this.repository = repository;
-            this.mapper = mapper;
-            this.currencyService = currencyService;
             this.currencyGroupService = currencyGroupService;
+            this.mapper = mapper;
+            cloudSettings = appSettings.CloudSettings;
+            if (!appSettings.CloudSettings?.IsCloudService == true)
+            {
+                reportApi = serviceProvider.GetService<IReportApi>();
+            }
         }
 
         public async Task<BetReportBase> Get(BetReportFilter filter)
         {
-            var result = await repository.GetRecordAsync(filter);
-
-            return new BandarQiuQiuBetReport
+            BetReport<BandarQiuQiuRoundResult, BandarQiuQiuBetRecord> report;
+            if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
             {
-                RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
-                Records = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetRecord>(x))
-            };
+                report = await reportApi.GetBetReport<BandarQiuQiuRoundResult, BandarQiuQiuBetRecord>(filter);
+            }
+            else
+            {
+                var result = await repository.GetRecordAsync(filter);
+                report = new BandarQiuQiuBetReport
+                {
+                    RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
+                    Records = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetRecord>(x))
+                };
+            }
+            if (report != null && cloudSettings?.IsCloudService != true)
+            {
+                report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
+            }
+            return report;
         }
 
         public async Task<BetHistory> Get(BetHistoryFilter filter)
         {
-            var result = await repository.GetBetHistoryAsync(filter);
+            BetHistory betHistory;
+            if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
+            {
+                betHistory = await reportApi.GetBetHistory(filter);
+            }
+            else
+            {
+                var result = await repository.GetBetHistoryAsync(filter);
 
-            var betHistory = new BandarQiuQiuBetHistory
+                betHistory = new BandarQiuQiuBetHistory
+                {
+                    RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
+                    Bets = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetHistoryRecord>(x)),
+                    Odds = result.Item3,
+                    CurrencyName = result.Item2.FirstOrDefault()?.Currency ?? string.Empty
+                };
+            }
+            if (cloudSettings?.IsCloudService != true && !string.IsNullOrEmpty(betHistory?.CurrencyName))
             {
-                RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
-                Bets = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetHistoryRecord>(x)),
-                Odds = result.Item3
-            };
-            if (result.Item2.Any())
-            {
-                var currency = (await currencyService.GetByPartner(filter.PartnerId)).FirstOrDefault(c => c.Name == result.Item2.FirstOrDefault().Currency);
-                var currencyGroup = await currencyGroupService.GetById(currency.GroupId);
-                betHistory.FractionalOddsFormat = currencyGroup.FractionalOddsFormat;
+                betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
             }
             return betHistory;
         }

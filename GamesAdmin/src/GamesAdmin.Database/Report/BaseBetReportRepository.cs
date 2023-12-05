@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Database.Entities;
 using MongoDB.Bson;
@@ -31,29 +32,8 @@ namespace GamesAdmin.Database
             var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
             var accountCollection = database.GetCollection<AccountEntity>(Document.GetCollectionName(typeof(AccountEntity)));
             var accountInfoCollection = database.GetCollection<AccountInfoEntity>(Document.GetCollectionName(typeof(AccountInfoEntity)));
-            var nickNameRegex = new Regex($"(?i){nickname}");
             var userNameRegex = new Regex($"(?i){username}");
-
-            Expression<Func<TBetEntity, bool>> expression;
-
-            if (string.IsNullOrWhiteSpace(nickname))
-            {
-                expression = x => x.Round == roundId;
-            }
-            else
-            {
-                expression = x => x.Round == roundId && nickNameRegex.IsMatch(x.Name);
-            }
-
-            if (!string.IsNullOrEmpty(partnerId))
-            {
-                expression = expression.And(x => x.OperatorId == partnerId);
-            }
-
-            if (excludeUUS)
-            {
-                expression = expression.And(x => x.Currency != "UUS");
-            }
+            var expression = GetExpression<TBetEntity>(roundId, nickname, excludeUUS, partnerId);
 
             var aggregateBuilder = betCollection.Aggregate().Match(expression)
                 .SortBy(x => x.Id)
@@ -75,6 +55,48 @@ namespace GamesAdmin.Database
                 .Unwind<BetEntityWithAccountInfoUnwind, TResultEntity>(x => x.Accounts);
 
             return aggregateBuilder;
+        }
+
+        protected async Task<IEnumerable<TBetEntity>> GetBets<TBetEntity>(
+            long roundId,
+            string nickname,
+            bool excludeUUS = false,
+            string partnerId = null)
+            where TBetEntity : BaseBetEntity
+        {
+            var betCollection = database.GetCollection<TBetEntity>(Document.GetCollectionName(typeof(TBetEntity)));
+            var expression = GetExpression<TBetEntity>(roundId, nickname, excludeUUS, partnerId);
+
+            return await betCollection.Find(expression).SortBy(x => x.Id).ToListAsync();
+        }
+
+        private Expression<Func<TBetEntity, bool>> GetExpression<TBetEntity>(
+            long roundId,
+            string nickname,
+            bool excludeUUS = false,
+            string partnerId = null) where TBetEntity : BaseBetEntity
+        {
+            Expression<Func<TBetEntity, bool>> expression;
+            var nickNameRegex = new Regex($"(?i){nickname}");
+
+            if (string.IsNullOrWhiteSpace(nickname))
+            {
+                expression = x => x.Round == roundId;
+            }
+            else
+            {
+                expression = x => x.Round == roundId && nickNameRegex.IsMatch(x.Name);
+            }
+            if (!string.IsNullOrEmpty(partnerId))
+            {
+                expression = expression.And(x => x.OperatorId == partnerId);
+            }
+
+            if (excludeUUS)
+            {
+                expression = expression.And(x => x.Currency != "UUS");
+            }
+            return expression;
         }
     }
 
