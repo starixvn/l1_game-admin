@@ -26,7 +26,8 @@ namespace GamesAdmin.Api.ApiLogs.Handlers
 
         public async Task<IEnumerable<IApiLog>> Handle(QueryLogRequest request, CancellationToken cancellationToken)
         {
-            if(AppSettings.CloudSettings?.ShouldCallCloudService(request.GameTypeId) == true)
+            if(AppSettings.CloudSettings?.ShouldCallCloudService(request.GameTypeId) == true
+                && request.LogType != ApiLogType.VoidGames)
             {
                 return await GetLogRemotely(request);
             }
