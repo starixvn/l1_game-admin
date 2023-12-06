@@ -253,18 +253,21 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddCloudServices(this IServiceCollection services, IAppSettings appSettings)
         {
-            IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
-
-            var refitSettings = new RefitSettings
-            {
-                AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
-                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
-            };
-
             if (!string.IsNullOrEmpty(appSettings.CloudSettings?.CloudAdminApiUrl))
             {
+                IdentityServerManager.Initialize(appSettings.IdentityServerAuth);
+
+                var refitSettings = new RefitSettings
+                {
+                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                };
+                var refitSettingsWithJSON = new RefitSettings
+                {
+                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+                };
                 services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
-                services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+                services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettingsWithJSON));
             }
         }
     }
