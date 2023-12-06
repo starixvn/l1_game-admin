@@ -32,15 +32,6 @@ namespace GamesAdmin.Api.Report.Services
             }
         }
 
-        protected async Task<BetReport<TRoundResult, TBetRecord>> GetBetReportOnCloud<TRoundResult, TBetRecord>(BetReportFilter filter)
-            where TRoundResult : RoundResult
-            where TBetRecord : BetRecord
-        {
-            var report = await reportApi.GetBetReport<TRoundResult, TBetRecord>(filter);
-            report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
-            return report;
-        }
-
         protected async Task<IEnumerable<TBetRecord>> GetBetRecordsWithUserInfo<TBetRecord>(IEnumerable<TBetRecord> bets, string username, bool excludeBot)
             where TBetRecord : BetRecord
         {

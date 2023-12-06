@@ -9,8 +9,8 @@ namespace GamesAdmin.Api.Report
     public interface IReportApi
     {
         [Get("/api/report")]
-        Task<BetReport<TRoundResult, TBetRecord>> GetBetReport<TRoundResult, TBetRecord>(BetReportFilter filter)
-            where TRoundResult : RoundResult where TBetRecord : BetRecord;
+        Task<T> GetBetReport<T>(BetReportFilter filter)
+            where T : BetReportBase;
 
         [Get("/api/report/bethistory")]
         Task<BetHistory> GetBetHistory(BetHistoryFilter filter);

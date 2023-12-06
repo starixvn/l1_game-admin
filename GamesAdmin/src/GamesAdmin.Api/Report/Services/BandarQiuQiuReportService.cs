@@ -32,7 +32,9 @@ namespace GamesAdmin.Api.Report
         {
             if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
             {
-                return await GetBetReportOnCloud<BandarQiuQiuRoundResult, BandarQiuQiuBetRecord>(filter);
+                var report = await reportApi.GetBetReport<BandarQiuQiuBetReport>(filter);
+                report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
+                return report;
             }
             else
             {
