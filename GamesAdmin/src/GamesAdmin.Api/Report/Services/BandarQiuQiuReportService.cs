@@ -51,7 +51,7 @@ namespace GamesAdmin.Api.Report
         {
             if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
             {
-                return await GetBetHistoryOnCloud(filter);
+                return await GetBetHistoryOnCloud<BandarQiuQiuBetHistory>(filter);
             }
             else
             {

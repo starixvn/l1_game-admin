@@ -13,6 +13,6 @@ namespace GamesAdmin.Api.Report
             where T : BetReportBase;
 
         [Get("/api/report/bethistory")]
-        Task<BetHistory> GetBetHistory(BetHistoryFilter filter);
+        Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
     }
 }

@@ -49,9 +49,10 @@ namespace GamesAdmin.Api.Report.Services
             return Enumerable.Empty<TBetRecord>();
         }
 
-        protected async Task<BetHistory> GetBetHistoryOnCloud(BetHistoryFilter filter)
+        protected async Task<T> GetBetHistoryOnCloud<T>(BetHistoryFilter filter)
+            where T : BetHistory
         {
-            var betHistory = await reportApi.GetBetHistory(filter);
+            var betHistory = await reportApi.GetBetHistory<T>(filter);
             betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
             return betHistory;
         }
