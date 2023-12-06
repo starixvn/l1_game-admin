@@ -39,6 +39,8 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         CloudSettings CloudSettings { get; }
 
+        IdentityServerAuth CloudIdentityServerAuth { get; }
+
         string ProxyUrl { get; }
     }
 
@@ -67,6 +69,8 @@ namespace GamesAdmin.Api._Shared.Configurations
             RtpCheckerServiceSettings = configuration.GetSection(nameof(RtpCheckerServiceSettings)).Get<RtpCheckerServiceSettings>();
             StatusCheckerServiceSettings = configuration.GetSection(nameof(StatusCheckerServiceSettings)).Get<StatusCheckerServiceSettings>();
             CloudSettings = configuration.GetSection(nameof(CloudSettings)).Get<CloudSettings>();
+            CloudIdentityServerAuth = configuration.GetSection($"{nameof(CloudSettings)}:IdentityServerAuth")
+                                                    .Get<IdentityServerAuth>();
         }
 
         public string SystemType { get; }
@@ -102,6 +106,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         public StatusCheckerServiceSettings StatusCheckerServiceSettings { get; }
 
         public CloudSettings CloudSettings { get; }
+
+        public IdentityServerAuth CloudIdentityServerAuth { get; }
 
         public T GetValue<T>(string key)
         {
