@@ -1,19 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.UserInfo;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesAdmin.Api.Report.Services
 {
     public abstract class BaseReportService
     {
         protected readonly IUserInfoService userInfoService;
+        protected readonly ICurrencyGroupService currencyGroupService;
+        protected readonly CloudSettings cloudSettings;
+        protected readonly IReportApi reportApi;
 
-        public BaseReportService(IUserInfoService userInfoService)
+        public BaseReportService(IUserInfoService userInfoService,
+            ICurrencyGroupService currencyGroupService,
+            IServiceProvider serviceProvider,
+            IAppSettings appSettings)
         {
             this.userInfoService = userInfoService;
+            this.currencyGroupService = currencyGroupService;
+            cloudSettings = appSettings.CloudSettings;
+            if (!appSettings.CloudSettings?.IsCloudService == true)
+            {
+                reportApi = serviceProvider.GetService<IReportApi>();
+            }
+        }
+
+        protected async Task<BetReport<TRoundResult, TBetRecord>> GetBetReportOnCloud<TRoundResult, TBetRecord>(BetReportFilter filter)
+            where TRoundResult : RoundResult
+            where TBetRecord : BetRecord
+        {
+            var report = await reportApi.GetBetReport<TRoundResult, TBetRecord>(filter);
+            report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
+            return report;
         }
 
         protected async Task<IEnumerable<TBetRecord>> GetBetRecordsWithUserInfo<TBetRecord>(IEnumerable<TBetRecord> bets, string username, bool excludeBot)
@@ -31,6 +56,13 @@ namespace GamesAdmin.Api.Report.Services
                 });
             }
             return Enumerable.Empty<TBetRecord>();
+        }
+
+        protected async Task<BetHistory> GetBetHistoryOnCloud(BetHistoryFilter filter)
+        {
+            var betHistory = await reportApi.GetBetHistory(filter);
+            betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
+            return betHistory;
         }
     }
 }

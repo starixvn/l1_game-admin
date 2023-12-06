@@ -40,6 +40,10 @@ namespace GamesAdmin.Api.CurrencyGroups
 
         public async Task<bool> IsFractionalOddsFormat(string operatorId, string currencyName)
         {
+            if (string.IsNullOrEmpty(currencyName))
+            {
+                return false;
+            }
             var currencyGroup = await mediator.Send(new GetByOperatorAndCurrencyRequest(operatorId, currencyName));
             return currencyGroup?.FractionalOddsFormat ?? false;
         }

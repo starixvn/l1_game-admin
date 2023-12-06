@@ -10,9 +10,9 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         public string CloudAdminApiUrl { get; set; }
 
-        public IEnumerable<int> SeparatedGameIds { get; set; }
+        public IEnumerable<int> CloudGameIds { get; set; }
 
         public bool ShouldCallCloudService(int gameTypeId)
-            => !IsCloudService && SeparatedGameIds != null && SeparatedGameIds.Contains(gameTypeId);
+            => !IsCloudService && CloudGameIds != null && CloudGameIds.Contains(gameTypeId);
     }
 }
