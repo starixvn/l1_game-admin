@@ -37,5 +37,12 @@
         }
 
         public ApiLogType Type { get; }
+
+        public static bool IsRelatedToGame(ApiLogType apiLogType)
+            => apiLogType == ApiLogType.Bets
+            || apiLogType == ApiLogType.EndGames
+            || apiLogType == ApiLogType.FailedRequests
+            || apiLogType == ApiLogType.HitJackpot
+            || apiLogType == ApiLogType.TicketDetailRequests;
     }
 }
