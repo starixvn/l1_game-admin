@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
@@ -107,6 +108,8 @@ namespace GamesAdmin.Api
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/");
             });
+
+            Sentry.SentrySdk.CaptureMessage("Admin API started at " + DateTime.Now.ToString());
         }
     }
 }

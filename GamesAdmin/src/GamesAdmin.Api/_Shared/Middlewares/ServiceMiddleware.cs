@@ -261,13 +261,9 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
                 };
-                var refitSettingsWithJSON = new RefitSettings
-                {
-                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
-                    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
-                };
+    
                 services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
-                services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettingsWithJSON));
+                services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
             }
         }
     }

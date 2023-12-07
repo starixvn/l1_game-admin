@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api.ApiLogs.Requests;
-using GamesAdmin.Core.Models.ApiLogs;
 using Refit;
 
 namespace GamesAdmin.Api.ApiLogs.Apis
@@ -10,6 +9,6 @@ namespace GamesAdmin.Api.ApiLogs.Apis
     public interface ILogApi
     {
         [Post("/api/log/query")]
-        Task<IEnumerable<IApiLog>> Query([Body] QueryLogModel query);
+        Task<IEnumerable<dynamic>> Query([Body] QueryLogModel query);
     }
 }
