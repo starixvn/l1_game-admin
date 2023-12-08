@@ -29,7 +29,7 @@ using GamesAdmin.Api.ServiceStatus;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
-using GamesAdmin.Api.VoidGameCloud;
+using GamesAdmin.Api.VoidGameRemote;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -131,9 +131,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
-            services.AddSingleton(RestService.For<IVoidGameCloudApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
-            services.AddScoped<IVoidGameCloudService, VoidGameCloud.VoidGameCloudService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
 
             AddSlotServices(services);
@@ -261,9 +259,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
                 };
-    
+
                 services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+                services.AddSingleton(RestService.For<IVoidGameRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
             }
         }
     }

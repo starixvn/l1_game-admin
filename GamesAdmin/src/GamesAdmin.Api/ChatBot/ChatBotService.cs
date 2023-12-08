@@ -116,18 +116,17 @@ namespace GamesAdmin.Api.ChatBot
         {
             var defaultMinBetAmount = 2000;
             return appSettings.CloudSettings.ShouldCallCloudService(gameTypeId) ?
-                defaultMinBetAmount : appSettings.ChatBotApiSettings.HighStakeAmount;
+                appSettings.ChatBotApiSettings.HighStakeAmount : defaultMinBetAmount;
         }
-
 
         private async Task<double> GetAmount(NotifyHighStakeRequest request)
         {
             if (appSettings.CloudSettings.ShouldCallCloudService(request.GameTypeId))
             {
-                return request.Amount;
+                return await CalAmountOnBaseCurrency(request);
             }
 
-            return await CalAmountOnBaseCurrency(request);
+            return request.Amount;
         }
 
         private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request)
