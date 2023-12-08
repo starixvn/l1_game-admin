@@ -1,4 +1,10 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
@@ -15,12 +21,6 @@ using GamesAdmin.Database.Entities.ExchangeRates;
 using GamesAdmin.Site._Shared.Configurations;
 using Refit;
 using Sentry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using UAParser;
 
 namespace GamesAdmin.Api.ChatBot
@@ -47,7 +47,8 @@ namespace GamesAdmin.Api.ChatBot
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
         private const int CacheExpireInMinutes = 60 * 24;
-        
+
+
         private readonly IAppSettings appSettings;
         private readonly IChatBotApi chatBotApi;
         private readonly IGameUserService gameUserService;
@@ -90,9 +91,10 @@ namespace GamesAdmin.Api.ChatBot
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
-            var amountOnBaseCurrency = await this.CalAmountOnBaseCurrency(request);
-            var devicePlatform = await GetDevicePlatform(request.ObCustId);
-            if (request.Currency == "UUS" || amountOnBaseCurrency < this.appSettings.ChatBotApiSettings.HighStakeAmount)
+            var highStakeAmount = GetHighStakeAmount(request.GameTypeId);
+            var amount = await GetAmount(request);
+
+            if (request.Currency == "UUS" || amount < highStakeAmount)
             {
                 return await Task.FromResult<ChatBotResult>(default);
             }
@@ -102,6 +104,7 @@ namespace GamesAdmin.Api.ChatBot
             var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
             var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
+            var devicePlatform = await GetDevicePlatform(request.ObCustId);
             msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, devicePlatform));
 
             _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
@@ -109,7 +112,26 @@ namespace GamesAdmin.Api.ChatBot
             return await Task.FromResult(new ChatBotResult());
         }
 
-        private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request) {
+        private double GetHighStakeAmount(int gameTypeId)
+        {
+            var defaultMinBetAmount = 2000;
+            return appSettings.CloudSettings.ShouldCallCloudService(gameTypeId) ?
+                defaultMinBetAmount : appSettings.ChatBotApiSettings.HighStakeAmount;
+        }
+
+
+        private async Task<double> GetAmount(NotifyHighStakeRequest request)
+        {
+            if (appSettings.CloudSettings.ShouldCallCloudService(request.GameTypeId))
+            {
+                return request.Amount;
+            }
+
+            return await CalAmountOnBaseCurrency(request);
+        }
+
+        private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request)
+        {
             try
             {
                 var exchangeRate = GetExchangeRate();
@@ -120,13 +142,15 @@ namespace GamesAdmin.Api.ChatBot
 
                 return request.Amount * rate;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 sentry.CaptureException(e);
                 return request.Amount;
             }
         }
 
-        private ExchangeRateEntity GetExchangeRate() {
+        private ExchangeRateEntity GetExchangeRate()
+        {
             var exchangeRate = cache.GetCache<ExchangeRateEntity>(CachedKeys.ExchangeRate.ToString());
             if (exchangeRate == default)
             {
@@ -137,7 +161,8 @@ namespace GamesAdmin.Api.ChatBot
             return exchangeRate;
         }
 
-        private IEnumerable<CurrencyEntity> GetCurrencies() {
+        private IEnumerable<CurrencyEntity> GetCurrencies()
+        {
             var currencies = cache.GetCache<IEnumerable<CurrencyEntity>>(CachedKeys.Currencies.ToString());
             if (currencies == default)
             {
