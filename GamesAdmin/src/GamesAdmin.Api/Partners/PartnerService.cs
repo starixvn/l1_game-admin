@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GeneralGameSettings;
+using GamesAdmin.Api.PartnerRemote;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Partners;
@@ -40,19 +42,25 @@ namespace GamesAdmin.Api.Partners
         private readonly IMapper mapper;
         private readonly ISentryClient sentryClient;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly IAppSettings appSettings;
+        private readonly IServiceProvider serviceProvider;
 
         public PartnerService(
             ISentryClient sentryClient,
             IMapper mapper,
             IGenericRepository<PartnerEntity> partnerRepository,
             IGenericRepository<PartnerConfigEntity> partnerConfigRepository,
-            IGeneralGameSettingService generalGameSettingService)
+            IGeneralGameSettingService generalGameSettingService,
+            IAppSettings appSettings,
+            IServiceProvider serviceProvider)
         {
             this.sentryClient = sentryClient;
             this.partnerRepository = partnerRepository;
             this.mapper = mapper;
             this.partnerConfigRepository = partnerConfigRepository;
             this.generalGameSettingService = generalGameSettingService;
+            this.appSettings = appSettings;
+            this.serviceProvider = serviceProvider;
         }
 
         public async Task<bool> Create(Partner partner)
@@ -75,6 +83,20 @@ namespace GamesAdmin.Api.Partners
                 sentryClient.CaptureException(ex);
 
                 return false;
+            }
+
+            if (appSettings.CloudSettings?.IsCloudService == false)
+            {
+                try
+                {
+                    var partnerRemoteApi = (IPartnerRemoteApi)serviceProvider.GetService(typeof(IPartnerRemoteApi));
+
+                    await partnerRemoteApi.Create(partner);
+                }
+                catch (Exception ex)
+                {
+                    sentryClient.CaptureException(ex);
+                }
             }
 
             return true;
@@ -129,6 +151,20 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency);
 
                 await partnerRepository.UpdateAsync(user => user.PartnerId == partner.PartnerId, update);
+
+                if (appSettings.CloudSettings?.IsCloudService == false)
+                {
+                    try
+                    {
+                        var partnerRemoteApi = (IPartnerRemoteApi)serviceProvider.GetService(typeof(IPartnerRemoteApi));
+
+                        await partnerRemoteApi.Update(partner);
+                    }
+                    catch (Exception ex)
+                    {
+                        sentryClient.CaptureException(ex);
+                    }
+                }
 
                 return true;
             }

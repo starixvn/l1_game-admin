@@ -20,6 +20,7 @@ using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.GlobalConfigs;
 using GamesAdmin.Api.Lobby;
 using GamesAdmin.Api.Notifications;
+using GamesAdmin.Api.PartnerRemote;
 using GamesAdmin.Api.Partners;
 using GamesAdmin.Api.Promotions;
 using GamesAdmin.Api.Public;
@@ -263,6 +264,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<IVoidGameRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+                services.AddSingleton(RestService.For<IPartnerRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
             }
         }
     }
