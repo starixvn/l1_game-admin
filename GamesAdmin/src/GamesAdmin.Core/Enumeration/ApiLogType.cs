@@ -43,6 +43,7 @@
             || apiLogType == ApiLogType.EndGames
             || apiLogType == ApiLogType.FailedRequests
             || apiLogType == ApiLogType.HitJackpot
-            || apiLogType == ApiLogType.TicketDetailRequests;
+            || apiLogType == ApiLogType.TicketDetailRequests
+            || apiLogType == ApiLogType.VoidGames;
     }
 }
