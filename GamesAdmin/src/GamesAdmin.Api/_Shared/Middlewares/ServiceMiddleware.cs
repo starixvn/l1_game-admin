@@ -126,7 +126,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IPontoonOnlineUserApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
             services.AddSingleton(RestService.For<IColorGameOnlineUserApi>(appSettings.GameServers.ColorGame.Api, refitSettings));
-            services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
             services.AddSingleton<ICacheManager, CacheManager>();
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
@@ -265,6 +264,14 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<IVoidGameRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<IPartnerRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+
+                // online user
+                var refitSettingsWithJSON = new RefitSettings
+                {
+                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+                };
+                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettingsWithJSON));
             }
         }
     }
