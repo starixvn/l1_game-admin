@@ -91,25 +91,33 @@ namespace GamesAdmin.Api.ChatBot
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
         {
-            var highStakeAmount = GetHighStakeAmount(request.GameTypeId);
-            var amount = await GetAmount(request);
-
-            if (request.Currency == "UUS" || amount < highStakeAmount)
+            try
             {
-                return await Task.FromResult<ChatBotResult>(default);
-            }
+                var highStakeAmount = GetHighStakeAmount(request.GameTypeId);
+                var amount = await GetAmount(request);
+
+                if (request.Currency == "UUS" || amount < highStakeAmount)
+                {
+                    return await Task.FromResult<ChatBotResult>(default);
+                }
           
-            var msgBuilder = new StringBuilder();
-            var game = await GetGameName(request.GameTypeId);
-            var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
-            var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
+                var msgBuilder = new StringBuilder();
+                var game = GetGameName(request.GameTypeId);
+                var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
+                var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
-            var devicePlatform = await GetDevicePlatform(request.ObCustId);
-            msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, devicePlatform));
+                var devicePlatform = await GetDevicePlatform(request.ObCustId);
+                msgBuilder.Append(string.Format(HighStakeMessageTemplate, version, charName, request.Amount, request.Currency, game, devicePlatform));
 
-            _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
+                _ = Task.Run(() => chatBotApi.ForwardMessage(appSettings.ChatBotApiSettings.Token, appSettings.ChatBotApiSettings.ConversationIds.HighStake, msgBuilder.ToString()));
 
-            return await Task.FromResult(new ChatBotResult());
+                return await Task.FromResult(new ChatBotResult());
+            }
+            catch (Exception e)
+            {
+                sentry.CaptureException(e);
+                return await Task.FromResult(new ChatBotResult());
+            }
         }
 
         private double GetHighStakeAmount(int gameTypeId)
