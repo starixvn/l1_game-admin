@@ -19,8 +19,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [DisplayName("Member Id")]
         [Required]
-        [Range(1, int.MaxValue)]
-        public int MemberId { get; set; }
+        public string MemberId { get; set; }
 
         [DisplayName("Site Id")]
         [Required]

@@ -12,9 +12,9 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public int? GameTypeId { get; set; }
 
-        public int? ObCustId { get; set; }
+        public string ObCustId { get; set; }
 
-        public int? PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public virtual string RequestType { get; set; }
     }

@@ -28,9 +28,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
         public int? GameTypeId { get; set; }
 
-        public int ObCustId { get; set; }
-
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 
     public abstract class ApiLogResultEntity

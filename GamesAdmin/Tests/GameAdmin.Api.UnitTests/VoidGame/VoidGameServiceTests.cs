@@ -234,7 +234,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
         public async Task VoidBlackJackTicket_RunningTicket_CallServiceSuccessfully_ReturnCorrectResult()
         {
             //Arrange
-            var request = new VoidTicketRequest(111, "1W", "234234", 34, 23, "esther test", false);
+            var request = new VoidTicketRequest("111", "1W", "234234", 34, 23, "esther test", false);
             var blackJackEntity = new BlackjackBetEntity
             {
                 SiteId = "4100300",
@@ -282,7 +282,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
         public async Task VoidBlackJackTicket_RunningTicket_CallServiceUnSuccessfully_ReturnErrorCode()
         {
             //Arrange
-            var request = new VoidTicketRequest(111, "1W", "234234", 34, 23, "esther test", false);
+            var request = new VoidTicketRequest("111", "1W", "234234", 34, 23, "esther test", false);
             var blackJackEntity = new BlackjackBetEntity
             {
                 SiteId = "4100300",
@@ -332,7 +332,7 @@ namespace GamesAdmin.Api.UnitTests.VoidGame
         public async Task VoiHoldemPokerTicket_RunningTicket_Successfully_ReturnCorrectResult()
         {
             //Arrange
-            var request = new VoidTicketRequest(111, "1W", "234234", 34, 39, "esther test", false);
+            var request = new VoidTicketRequest("111", "1W", "234234", 34, 39, "esther test", false);
             var pokerEntity = new List<HoldemPokerBetEntity>
             {
                 new HoldemPokerBetEntity

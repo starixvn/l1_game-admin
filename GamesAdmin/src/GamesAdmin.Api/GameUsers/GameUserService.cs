@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.GameUser
 
         Task<bool> IsAbleToSetSlotResult(string nickname, bool excludeTestCurrency);
 
-        Task<string> GetCharacterNameAsync(int memberId);
+        Task<string> GetCharacterNameAsync(string memberId);
     }
 
     public class GameUserService : IGameUserService
@@ -66,7 +66,7 @@ namespace GamesAdmin.Api.GameUser
             ? default
             : new GameAccount(
                 account.Local.Username,
-                account.Local.MemberId ?? 0,
+                account.Local.MemberId,
                 account.Local.MemberName,
                 account.Local.Language,
                 accountInfo.IsBot,
@@ -96,7 +96,7 @@ namespace GamesAdmin.Api.GameUser
             return (!excludeTestCurrency && currencyInfo?.IsTest == true) || (accountInfo?.IsBot == true && accountInfo?.Disabled == false);
         }
 
-        public async Task<string> GetCharacterNameAsync(int memberId)
+        public async Task<string> GetCharacterNameAsync(string memberId)
         {
             var account = await accountRepository.Collection()
                 .Find(user => user.Local.MemberId == memberId)

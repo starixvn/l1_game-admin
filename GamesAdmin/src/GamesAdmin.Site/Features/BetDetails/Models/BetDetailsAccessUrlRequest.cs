@@ -9,6 +9,7 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
         {
             Language = model.Language;
         }
+        public string PlayerId { get; set; }
 
         public string Language { get; set; }
     }

@@ -408,11 +408,11 @@ namespace GamesAdmin.Core.Models
 
         public string Name { get; set; }
 
-        public int? MemberId { get; set; }
+        public string MemberId { get; set; }
 
         public string SiteId { get; set; }
 
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public int ExchangeRateId { get; set; }
 
@@ -452,7 +452,7 @@ namespace GamesAdmin.Core.Models
 
     public class CascadingSlotTotalMultiplier
     {
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public bool Ended { get; set; }
 

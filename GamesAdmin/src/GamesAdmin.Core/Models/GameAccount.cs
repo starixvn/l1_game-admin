@@ -4,7 +4,7 @@
     {
         public GameAccount(
             string username,
-            int memberId,
+            string memberId,
             string memberName,
             string language,
             bool isBot,
@@ -24,7 +24,7 @@
 
         public string Username { get; }
 
-        public int MemberId { get; }
+        public string MemberId { get; }
 
         public string MemberName { get; }
 

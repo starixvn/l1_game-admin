@@ -6,7 +6,7 @@ namespace GamesAdmin.Database.Entities
 {
     public class CascadingSlotTotalMultiplierEntity : MiniGameBaseEntity
     {
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public string Name { get; set; }
 

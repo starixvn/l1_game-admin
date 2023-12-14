@@ -9,7 +9,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
             string partnerId,
             DateTimeOffset fromDate,
             DateTimeOffset toDate,
-            int obCustId,
+            string obCustId,
             int gameRoundId,
             int gameTypeId,
             string username)
@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
 
         public DateTimeOffset ToDate { get; }
 
-        public int ObCustId { get; }
+        public string ObCustId { get; }
 
         public int GameRoundId { get; }
 

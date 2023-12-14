@@ -21,7 +21,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
     public class OWSignInCall
     {
-        public int ObCustId { get; set; }
+        public string ObCustId { get; set; }
         public string ObCustName { get; set; }
         public int GameId { get; set; }
         public string Currency { get; set; }
@@ -37,8 +37,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
     public class OWFailedSignInCall : OWSignInCall, IApiLogRequest
     {
-        public new int? ObCustId { get; set; }
-        public int? PlayerId { get; set; }
+        public string PlayerId { get; set; }
         public int? GameRoundId { get; set; }
         public int? GameTypeId { get; set; }
         public string RequestType { get; set; }
@@ -58,8 +57,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public string ErrorMessage { get; set; }
 
-        public int? ObCustId { get; set; }
+        public string ObCustId { get; set; }
 
-        public int? PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 }

@@ -28,9 +28,8 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
     public class MemberFailedSignInRequest : MemberSignInRequest, IApiLogRequest
     {
-        public int? ObCustId { get; set; }
 
-        public int? PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public int? GameRoundId { get; set; }
 
@@ -55,9 +54,7 @@ namespace GamesAdmin.Core.Models.ApiLogs
 
         public string ErrorDescription { get; set; }
 
-        public int? ObCustId { get; set; }
-
-        public int? PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 
     public class PublicUserInfo

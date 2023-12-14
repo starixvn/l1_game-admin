@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.ViewModels
 
         public DateTimeOffset ToDate { get; set; } = DateTime.UtcNow.AddDays(1);
 
-        public int ObCustId { get; set; }
+        public string ObCustId { get; set; }
 
         public int GameRoundId { get; set; }
 

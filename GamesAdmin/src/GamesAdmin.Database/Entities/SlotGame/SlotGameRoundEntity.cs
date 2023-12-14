@@ -31,7 +31,7 @@ namespace GamesAdmin.Database.Entities
 
         public string Name { get; set; }
 
-        public int? PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public string SiteId { get; set; }
 

@@ -296,7 +296,7 @@ namespace GamesAdmin.Api.ChatBot
             return string.Format(template, gameName, promotionMessage);
         }
 
-        private async Task<string> GetDevicePlatform(int playerId)
+        private async Task<string> GetDevicePlatform(string playerId)
         {
             try
             {

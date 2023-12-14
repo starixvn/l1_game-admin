@@ -20,7 +20,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.GameRoundId == 0 || entity.Call.GameRoundId == 0 || request.GameRoundId == entity.Call.GameRoundId;
 
         private static Expression<Func<PartnerLogEntity, bool>> PartnerObCustIdExpression(QueryLogRequest request)
-            => entity => request.ObCustId == 0 || entity.Call.PlayerId == 0 || request.ObCustId == entity.Call.PlayerId || request.ObCustId == entity.Call.ObCustId;
+            => entity => string.IsNullOrEmpty(request.ObCustId) || string.IsNullOrEmpty(entity.Call.PlayerId) || request.ObCustId == entity.Call.PlayerId;
 
         private static Expression<Func<PartnerLogEntity, bool>> PartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.PartnerId) || string.Equals(request.PartnerId, entity.OperatorId);
@@ -32,7 +32,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.GameRoundId == 0 || entity.Request.GameRoundId == 0 || request.GameRoundId == entity.Request.GameRoundId;
 
         private static Expression<Func<SBLogEntity, bool>> SBObCustIdExpression(QueryLogRequest request)
-            => entity => request.ObCustId == 0 || entity.Request.PlayerId == 0 || request.ObCustId == entity.Request.PlayerId || request.ObCustId == entity.Request.ObCustId;
+            => entity => string.IsNullOrEmpty(request.ObCustId) || string.IsNullOrEmpty(entity.Request.PlayerId) || request.ObCustId == entity.Request.PlayerId;
 
         private static Expression<Func<SBLogEntity, bool>> SBPartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.Request.Auth.OperatorId);
@@ -44,7 +44,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => request.GameRoundId == 0 || entity.Call.GameRoundId == 0 || request.GameRoundId == entity.Call.GameRoundId;
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailObCustIdExpression(QueryLogRequest request)
-            => entity => request.ObCustId == 0 || entity.Call.PlayerId == 0 || request.ObCustId == entity.Call.PlayerId || request.ObCustId == entity.Call.ObCustId;
+            => entity => string.IsNullOrEmpty(request.ObCustId) || string.IsNullOrEmpty(entity.Call.PlayerId) || request.ObCustId == entity.Call.PlayerId;
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailPartnerIdExpression(QueryLogRequest request)
             => entity => string.Equals(request.PartnerId, entity.Call.Auth.OperatorId);
@@ -114,7 +114,7 @@ namespace GamesAdmin.Api.ApiLogs
         public static Expression<Func<OWSignInLogEntity, bool>> GetOWSignInExpression(QueryLogRequest request)
         {
             var expression = DateRangeExpression<OWSignInLogEntity>(request);
-            expression = expression.And(x => request.ObCustId == 0 || request.ObCustId == x.Request.Call.ObCustId);
+            expression = expression.And(x => string.IsNullOrEmpty(request.ObCustId) || request.ObCustId == x.Request.Call.ObCustId);
             if (!string.IsNullOrWhiteSpace(request.Username))
             {
                 var regex = new Regex($"(?i){request.Username}");

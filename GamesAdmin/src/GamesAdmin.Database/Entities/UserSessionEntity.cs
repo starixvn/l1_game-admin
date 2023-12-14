@@ -17,6 +17,6 @@ namespace GamesAdmin.Database.Entities
         public string BrowserUserAgent { get; set; }
 
         [BsonElement("playerId")]
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 }
