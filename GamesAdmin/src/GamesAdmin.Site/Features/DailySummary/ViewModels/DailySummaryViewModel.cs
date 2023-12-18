@@ -17,5 +17,7 @@
         public string OperatorId { get; set; }
 
         public string OperatorSecret { get; set; }
+
+        public string SiteId { get; set; }
     }
 }

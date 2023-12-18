@@ -15,6 +15,7 @@
             };
             SummarizedDate = model.Date;
             Seq = Guid.NewGuid().ToString();
+            SiteId = model.SiteId;
         }
 
         public Auth Auth { get; set; }
@@ -22,5 +23,7 @@
         public DateTimeOffset SummarizedDate { get; set; }
 
         public string Seq { get; set; }
+
+        public string SiteId { get; set; }
     }
 }
