@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.OWResults;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -66,6 +67,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
+                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
                 var isExistTicket = await ticketHandler.Exist(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
@@ -93,7 +95,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var ticket = await ticketHandler.ExistHoldemPoker(request.PlayerId,
+                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
+                var ticket = await ticketHandler.ExistHoldemPoker(playerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -138,7 +141,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var ticket = await ticketHandler.ExistBlackjackGameTicket<BlackjackGameBet>(request.PlayerId,
+                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
+                var ticket = await ticketHandler.ExistBlackjackGameTicket<BlackjackGameBet>(playerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -225,13 +229,14 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
+                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
                 var apiResult = await voidGameApi.VoidGameTicket(request);
                 if (apiResult.Result.IsSuccessful())
                 {
-                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.PlayerId}", Sentry.Protocol.SentryLevel.Fatal);
+                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{playerId}", Sentry.Protocol.SentryLevel.Fatal);
 
                     var moved = await ticketHandler.Void(
-                        request.PlayerId,
+                        playerId,
                         request.OperatorId,
                         request.SiteId,
                         request.GameRoundId,

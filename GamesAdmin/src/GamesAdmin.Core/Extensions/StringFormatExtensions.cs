@@ -1,4 +1,4 @@
-﻿namespace GamesAdmin.Api._Shared.Extensions
+﻿namespace GamesAdmin.Core.Extensions
 {
     public static class StringFormatExtensions
     {

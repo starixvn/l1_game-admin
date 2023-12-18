@@ -31,6 +31,7 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
 
         public bool UseHmacHash { get; set; }
         
-        public string SiteId { get; set; }
+        public string SiteId { get; set; } = "4100300";
+        
     }
 }

@@ -1,7 +1,11 @@
-﻿using GamesAdmin.Core.Models.ApiLogs;
+﻿using System;
+using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
 namespace GamesAdmin.Site.Features.BetDetails.Models
+{
+
 {
     public class BetHistoryApiRequest
     {

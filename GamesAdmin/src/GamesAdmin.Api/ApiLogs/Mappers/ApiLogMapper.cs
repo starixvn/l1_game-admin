@@ -1,8 +1,8 @@
 ﻿using System;
 using AutoMapper;
-using GamesAdmin.Api._Shared.Extensions;
 using GamesAdmin.Api.ApiLogs.Requests;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Database.ApiLogs.Entities;
 
