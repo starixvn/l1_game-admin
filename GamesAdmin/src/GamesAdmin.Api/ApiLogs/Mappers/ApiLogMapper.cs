@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using GamesAdmin.Api._Shared.Extensions;
 using GamesAdmin.Api.ApiLogs.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.ApiLogs;
@@ -17,7 +18,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     model.PartnerId,
                     model.FromDate,
                     model.ToDate,
-                    model.ObCustId,
+                    StringFormatExtensions.FormatPlayerId(model.SiteId, model.ObCustId),
                     model.GameRoundId,
                     model.GameTypeId,
                     model.Username));

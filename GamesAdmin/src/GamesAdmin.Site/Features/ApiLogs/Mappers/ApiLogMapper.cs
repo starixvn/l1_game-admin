@@ -17,7 +17,8 @@ namespace GamesAdmin.Site.Features.ApiLogs.Mappers
                     req.ObCustId,
                     req.GameRoundId,
                     req.GameTypeId,
-                    req.Username));
+                    req.Username,
+                    req.SiteId));
         }
     }
 }

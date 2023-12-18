@@ -16,6 +16,7 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
             GameTypeId = model.GameType;
             PlayerId = model.PlayerId;
             FreeBet = model.FreeBet;
+            SiteId = model.SiteId;
         }
 
         public int GameTypeId { get; set; }
@@ -27,5 +28,7 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
         public string PlayerId { get; set; }
 
         public bool FreeBet { get; set; }
+
+        public string SiteId { get; set; }
     }
 }

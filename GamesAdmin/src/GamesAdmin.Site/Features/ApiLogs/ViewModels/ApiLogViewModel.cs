@@ -25,5 +25,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.ViewModels
         public IEnumerable<SelectListItem> Partners { get; set; }
 
         public IEnumerable<SelectListItem> LogTypes { get; set; }
+
+        public string SiteId { get; set; }
     }
 }

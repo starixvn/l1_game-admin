@@ -30,5 +30,7 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
         public bool FreeBet { get; set; }
 
         public bool UseHmacHash { get; set; }
+        
+        public string SiteId { get; set; }
     }
 }

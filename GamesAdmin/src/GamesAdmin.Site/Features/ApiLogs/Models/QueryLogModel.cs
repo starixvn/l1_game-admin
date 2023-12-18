@@ -12,7 +12,8 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
             string obCustId,
             int gameRoundId,
             int gameTypeId,
-            string username)
+            string username,
+            string siteId)
         {
             LogType = logType;
             PartnerId = partnerId;
@@ -22,6 +23,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
             GameRoundId = gameRoundId;
             GameTypeId = gameTypeId;
             Username = username;
+            SiteId = siteId;
         }
 
         public byte LogType { get; }
@@ -38,5 +40,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Models
 
         public int GameTypeId { get; }
         public string Username { get; }
+
+        public string SiteId { get; }
     }
 }

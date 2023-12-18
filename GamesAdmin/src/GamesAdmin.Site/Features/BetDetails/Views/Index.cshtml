@@ -13,6 +13,12 @@
             </div>
             <div class="form-group">
                 <div>
+                    <label asp-for="SiteId" class="control-label">Site ID</label>
+                    <input type="text" asp-for="SiteId" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div>
                     <label asp-for="GameType" class="control-label">Game Type</label>
                     @await Component.InvokeAsync(nameof(SelectGame), new { Name = "GameType" })
                 </div>

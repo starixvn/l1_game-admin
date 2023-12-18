@@ -21,5 +21,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Requests
         public int GameTypeId { get; set; }
 
         public string Username { get; set; }
+
+        public string SiteId { get; set; }
     }
 }
