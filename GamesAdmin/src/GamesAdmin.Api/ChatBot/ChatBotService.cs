@@ -9,7 +9,6 @@ using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
-using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -42,7 +41,7 @@ namespace GamesAdmin.Api.ChatBot
 
     public class ChatBotService : IChatBotService
     {
-        private const string HighStakeMessageTemplate = "**{0}** - {1} - {2} - {3} - {4} - {5}";
+        private const string HighStakeMessageTemplate = "**{0}** - {1} - {2} - {3} - {4} {5}";
         private const string MessageAddPromotion = "Added new promotion for game **{0}**:\r\n{1}";
         private const string MessageUpdatePromotion = "Edited promotion for game **{0}**:\r\n{1}";
         private const string MessagePromotion = "**Status: **{0}\r\n**Boosted Odds**: {1}\r\n**Type**: {2}\r\n**From**: {3}\r\n**To**: {4}";
@@ -56,7 +55,6 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IGenericRepository<UserSessionEntity> usersessionRepository;
         private readonly ISentryClient sentry;
         private readonly Parser uaParser;
-        private readonly IGeneralGameSettingService generalGameSettingService;
         private readonly IGenericRepository<ExchangeRateEntity> exchangeRateRepository;
         private readonly IGenericRepository<CurrencyEntity> currencyRepository;
         private readonly IGenericRepository<AccountEntity> userRepository;
@@ -69,7 +67,6 @@ namespace GamesAdmin.Api.ChatBot
             ISystemSettings systemSettings,
             IGenericRepository<UserSessionEntity> usersessionRepository,
             ISentryClient sentry,
-            IGeneralGameSettingService generalGameSettingService,
             IGenericRepository<ExchangeRateEntity> exchangeRateRepository,
             IGenericRepository<CurrencyEntity> currencyRepository,
             IGenericRepository<AccountEntity> userRepository,
@@ -81,7 +78,6 @@ namespace GamesAdmin.Api.ChatBot
             this.systemSettings = systemSettings;
             this.usersessionRepository = usersessionRepository;
             this.sentry = sentry;
-            this.generalGameSettingService = generalGameSettingService;
             uaParser = Parser.GetDefault();
             this.exchangeRateRepository = exchangeRateRepository;
             this.currencyRepository = currencyRepository;
@@ -93,17 +89,17 @@ namespace GamesAdmin.Api.ChatBot
         {
             try
             {
-                var highStakeAmount = GetHighStakeAmount(request.GameTypeId);
+                var highStakeAmount = GetHighStakeAmount();
                 var amount = await GetAmount(request);
 
                 if (request.Currency == "UUS" || amount < highStakeAmount)
                 {
                     return await Task.FromResult<ChatBotResult>(default);
                 }
-          
+
                 var msgBuilder = new StringBuilder();
                 var game = GetGameName(request.GameTypeId);
-                var charName = await gameUserService.GetCharacterNameAsync(request.ObCustId);
+                var charName = await GetCharName(request);
                 var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
                 var devicePlatform = await GetDevicePlatform(request.ObCustId);
@@ -120,21 +116,21 @@ namespace GamesAdmin.Api.ChatBot
             }
         }
 
-        private double GetHighStakeAmount(int gameTypeId)
+        private async Task<string> GetCharName(NotifyHighStakeRequest request)
+        {
+            return appSettings.CloudSettings.IsCloudService ?
+               $"playerId: {request.ObCustId}" : await gameUserService.GetCharacterNameAsync(request.ObCustId);
+        }
+
+        private double GetHighStakeAmount()
         {
             var defaultMinBetAmount = 2000;
-            return appSettings.CloudSettings.ShouldCallCloudService(gameTypeId) ?
-                appSettings.ChatBotApiSettings.HighStakeAmount : defaultMinBetAmount;
+            return appSettings.CloudSettings.IsCloudService ? defaultMinBetAmount : appSettings.ChatBotApiSettings.HighStakeAmount;
         }
 
         private async Task<double> GetAmount(NotifyHighStakeRequest request)
         {
-            if (appSettings.CloudSettings.ShouldCallCloudService(request.GameTypeId))
-            {
-                return await CalAmountOnBaseCurrency(request);
-            }
-
-            return request.Amount;
+            return appSettings.CloudSettings.IsCloudService ? request.Amount : await CalAmountOnBaseCurrency(request);
         }
 
         private async Task<double> CalAmountOnBaseCurrency(NotifyHighStakeRequest request)
@@ -193,14 +189,14 @@ namespace GamesAdmin.Api.ChatBot
             return user;
         }
 
-        private async Task<string> GetGameName(int gameId)
+        private string GetGameName(int gameId)
         {
             return gameId switch
             {
                 (int)GameId.KenoMatch1 => "KenoSoccer",
                 (int)GameId.KenoMatch2 => "KenoSoccer2",
                 (int)GameId.KenoPower1 => "KenoPower",
-                _ => await generalGameSettingService.GetDisplayName(gameId),
+                _ => Enum.Parse<GameId>(gameId.ToString()).ToString(),
             };
         }
 
@@ -293,23 +289,25 @@ namespace GamesAdmin.Api.ChatBot
 
         private async Task<string> GetDevicePlatform(int playerId)
         {
-            var devicePlatform = "Unknown";
             try
             {
+                if (appSettings.CloudSettings.IsCloudService)
+                {
+                    return string.Empty;
+                }
+
                 var userSession = (await usersessionRepository
                     .FilterByAsync(userSession => userSession.PlayerId == playerId))
                     .OrderByDescending(userSession => userSession.RecheckInTime)
                     .FirstOrDefault();
 
-                var browserInfo = uaParser.Parse(userSession?.BrowserUserAgent);
-                devicePlatform = browserInfo.OS.ToString();
+                return $"- {uaParser.Parse(userSession?.BrowserUserAgent).OS}";
             }
             catch (Exception ex)
             {
                 sentry.CaptureMessage($"{ex} - {playerId}", Sentry.Protocol.SentryLevel.Warning);
+                return "- Unknown";
             }
-
-            return devicePlatform;
         }
     }
 }

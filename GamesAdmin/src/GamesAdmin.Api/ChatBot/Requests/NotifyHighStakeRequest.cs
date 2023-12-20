@@ -6,7 +6,15 @@ namespace GamesAdmin.Api.ChatBot.Requests
 {
     public class NotifyHighStakeRequest : IRequest<ChatBotResult>
     {
-        public NotifyHighStakeRequest(int obCustId, int gameTypeId, double amount, string currency, int choiceId, byte system)
+        public NotifyHighStakeRequest(
+            int obCustId,
+            int gameTypeId,
+            double amount,
+            string currency,
+            int choiceId,
+            byte system,
+            string operatorId,
+            string userId)
         {
             ObCustId = obCustId;
             GameTypeId = gameTypeId;
@@ -14,6 +22,8 @@ namespace GamesAdmin.Api.ChatBot.Requests
             Currency = currency;
             ChoiceId = choiceId;
             System = system;
+            OperatorId = operatorId;
+            UserId = userId;
         }
 
         public int ObCustId { get; set; }
@@ -27,6 +37,10 @@ namespace GamesAdmin.Api.ChatBot.Requests
         public int ChoiceId { get; set; }
 
         public byte System { get; set; }
+
+        public string OperatorId { get; set; }
+
+        public string UserId { get; set; }
 
         public Dictionary<string, string> Metadata { get; set; } = new Dictionary<string, string>();
     }

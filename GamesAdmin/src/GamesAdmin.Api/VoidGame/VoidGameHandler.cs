@@ -21,7 +21,6 @@ namespace GamesAdmin.Api.VoidGame
 
         public async Task<VoidGameResult> Handle(VoidTicketRequest request, CancellationToken cancellationToken)
         {
-
             var gameId = Enum.Parse<GameId>(request.GameTypeId.ToString());
 
             switch (gameId)
@@ -32,9 +31,9 @@ namespace GamesAdmin.Api.VoidGame
                     return await voidGameService.VoidBlackjackGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
                 case GameId.CasinoHoldemPoker:
                 case GameId.TexasHoldemPoker:
-                    return voidGameService.VoidHoldemPokerTicket(request);
+                    return await voidGameService.VoidHoldemPokerTicket(request);
                 default:
-                    return  await voidGameService.VoidGameTicket(request);
+                    return await voidGameService.VoidGameTicket(request);
             }
         }
 
