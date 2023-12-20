@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
+using GamesAdmin.Api.GameManagementApi;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database;
@@ -17,7 +19,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         Task<int> GetGameId(string name);
 
-        Task<byte> GetGameType (int gameId);
+        Task<byte> GetGameType(int gameId);
 
         Task<string> GetDisplayName(int gameId);
 
@@ -27,18 +29,20 @@ namespace GamesAdmin.Api.GeneralGameSettings
     public class GeneralGameSettingService : IGeneralGameSettingService
     {
         private readonly IGenericRepository<GameConfigEntity> repository;
+        private readonly IServiceProvider serviceProvider;
+        private readonly IAppSettings appSettings;
 
-        public GeneralGameSettingService(
-            IGenericRepository<GameConfigEntity> repository)
-
+        public GeneralGameSettingService(IGenericRepository<GameConfigEntity> repository, IServiceProvider serviceProvider, IAppSettings appSettings)
         {
             this.repository = repository;
+            this.serviceProvider = serviceProvider;
+            this.appSettings = appSettings;
         }
 
         public async Task<IEnumerable<GeneralGameSetting>> GetAll()
         {
             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
-         
+
             return gameEntities.Select(game =>
             {
                 var gameId = game.GameId > 0 ? game.GameId : (int)Game.FromGameName(game.Name).GameId;
@@ -83,28 +87,69 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         public async Task<byte> GetGameType(int gameId)
         {
-             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
+            var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
 
-             var gameInfo = gameEntities.Find(game => game.GameId == gameId);
+            var gameInfo = gameEntities.Find(game => game.GameId == gameId);
 
-             return gameInfo?.Type ?? default;          
+            return gameInfo?.Type ?? default;
         }
 
         public async Task<string> GetDisplayName(int gameId)
         {
-            var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
+            var displayName = appSettings.CloudSettings?.ShouldCallCloudService(gameId) == true ?
+              await GetDisplayNameDierctOnKbtDatabase(gameId) : await GetDisplayNameThroughGameManagementApi(gameId);
 
-            var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
-            return !string.IsNullOrEmpty(gameInfo.DisplayName) ? gameInfo.DisplayName : Game.FromGameName(gameInfo.Name).DisplayName;
+            return !string.IsNullOrEmpty(displayName) ? displayName : Game.FromGameName(displayName).DisplayName;
         }
 
         public async Task<bool> IsCrashGame(int gameId)
+        {
+            return appSettings.CloudSettings?.ShouldCallCloudService(gameId) == true ?
+              await CheckCrashGameDirectOnKbtDatabase(gameId) : await CheckCrashGameThroughGameManagementApi(gameId);
+        }
+
+        private async Task<string> GetDisplayNameDierctOnKbtDatabase(int gameId)
+        {
+            var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
+
+            var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
+            return gameInfo.DisplayName;
+        }
+
+        private async Task<string> GetDisplayNameThroughGameManagementApi(int gameId)
+        {
+            var gameManagementApi = (IGameManagementApi)serviceProvider.GetService(typeof(IGameManagementApi));
+            var response = await gameManagementApi.GetGameConfigById((byte)gameId);
+
+            if (response?.Data == null || string.IsNullOrWhiteSpace(response?.Data.Name))
+            {
+                return string.Empty;
+            }
+
+            return response.Data.DisplayName;
+        }
+
+
+        private async Task<bool> CheckCrashGameDirectOnKbtDatabase(int gameId)
         {
             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
 
             var gameInfo = gameEntities.Find(game => game.GameId == gameId);
 
             return gameInfo?.Type == (byte)GameType.Crash;
+        }
+
+        private async Task<bool> CheckCrashGameThroughGameManagementApi(int gameId)
+        {
+            var gameManagementApi = (IGameManagementApi)serviceProvider.GetService(typeof(IGameManagementApi));
+            var response = await gameManagementApi.GetGameConfigById((byte)gameId);
+
+            if (response?.Data == null || string.IsNullOrWhiteSpace(response?.Data.Name))
+            {
+                return false;
+            }
+
+            return response.Data?.Type == (byte)GameType.Crash;
         }
     }
 }

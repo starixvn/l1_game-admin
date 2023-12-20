@@ -9,6 +9,7 @@ using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ChatBot.Requests;
 using GamesAdmin.Api.ChatBot.Results;
 using GamesAdmin.Api.GameUser;
+using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
@@ -59,6 +60,7 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IGenericRepository<CurrencyEntity> currencyRepository;
         private readonly IGenericRepository<AccountEntity> userRepository;
         private readonly ICacheManager cache;
+        private readonly IGeneralGameSettingService generalGameSettingService;
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -70,7 +72,8 @@ namespace GamesAdmin.Api.ChatBot
             IGenericRepository<ExchangeRateEntity> exchangeRateRepository,
             IGenericRepository<CurrencyEntity> currencyRepository,
             IGenericRepository<AccountEntity> userRepository,
-            ICacheManager cache)
+            ICacheManager cache,
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
@@ -83,6 +86,7 @@ namespace GamesAdmin.Api.ChatBot
             this.currencyRepository = currencyRepository;
             this.userRepository = userRepository;
             this.cache = cache;
+            this.generalGameSettingService = generalGameSettingService;
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
@@ -98,7 +102,7 @@ namespace GamesAdmin.Api.ChatBot
                 }
 
                 var msgBuilder = new StringBuilder();
-                var game = GetGameName(request.GameTypeId);
+                var game = await GetGameName(request.GameTypeId);
                 var charName = await GetCharName(request);
                 var version = GetVersionName(Enum.Parse<Versions>(request.System.ToString()), request.Metadata);
 
@@ -189,14 +193,14 @@ namespace GamesAdmin.Api.ChatBot
             return user;
         }
 
-        private string GetGameName(int gameId)
+        private async Task<string> GetGameName(int gameId)
         {
             return gameId switch
             {
                 (int)GameId.KenoMatch1 => "KenoSoccer",
                 (int)GameId.KenoMatch2 => "KenoSoccer2",
                 (int)GameId.KenoPower1 => "KenoPower",
-                _ => Enum.Parse<GameId>(gameId.ToString()).ToString(),
+                _ => await generalGameSettingService.GetDisplayName(gameId),
             };
         }
 

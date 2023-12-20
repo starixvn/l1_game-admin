@@ -68,65 +68,65 @@ namespace GamesAdmin.Api.VoidGame
             {
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
                 var isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
-                return isCrashGame 
+                return isCrashGame
                        ? await Move<CrashGameBetEntity, CrashGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, GameType.Crash)
                        : gameId switch
-                          {
-                              GameId.BigSmall => await Move<BigSmallOnesEntity, BigSmallBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.SeDie => await Move<SeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.FishPrawnCrab => await Move<FishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.BigSmallTurbo => await Move<BigSmallTurboOnesEntity, BigSmallTurboBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.OddEven => await Move<OddEvenOnesEntity, OddEvenBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.OddEvenTurbo => await Move<OddEvenTurboOnesEntity, OddEvenTurboBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.DragonTiger => await Move<DragonTigerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoProMax => await Move<KenoProMaxBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.Baccarat => await Move<BaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.MiniSeDie => await Move<MiniSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoMax => await Move<KenoMaxOnesEntity, KenoMaxBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoMax2 => await Move<KenoMax2OnesEntity, KenoMax2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoMini => await Move<KenoMiniOnesEntity, KenoMiniBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoMini2 => await Move<KenoMini2OnesEntity, KenoMini2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoEast => await Move<KenoEastOnesEntity, KenoEastBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoWest => await Move<KenoWestOnesEntity, KenoWestBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoSouth => await Move<KenoSouthOnesEntity, KenoSouthBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoNorth => await Move<KenoNorthOnesEntity, KenoNorthBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.Roulette => await Move<RouletteOnesEntity, RouletteBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.VipSeDie => await Move<VipSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.Blackjack => await MoveBlackjackGame<BlackjackBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
-                              GameId.SpecialSeDie => await Move<SpecialSeDieOnesEntity, SpecialSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.SicBo => await Move<SicBoOnesEntity, SicBoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.VipFishPrawnCrab => await Move<VipFishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.VipBaccarat => await Move<VipBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.VipSeDieWar => await Move<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.BitcoinMaster => await Move<BitcoinMasterOnesEntity, BitcoinMasterBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.Lottery => await Move<LotteryOnesEntity, LotteryBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.ThreeCards => await Move<ThreeCardsBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoMatch1 => await Move<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoMatch2 => await Move<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.KenoPower2 => await Move<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.CasinoHoldemPoker => await MoveCasinoHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.HiLo => await MoveHiLo(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.TexasHoldemPoker => await MoveTexasHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.BlockchainBaccarat => await Move<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.MegaKeno => await Move<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.MegaKeno2 => await Move<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.MiniSeDie2 => await Move<MiniSeDie2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.MiniSeDie3 => await Move<MiniSeDie3BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.MiniSeDie4 => await Move<MiniSeDie4BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.UnbalancedBigSmall1 => await Move<UnbalancedBigSmall1BetEntity, UnbalancedBigSmall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.UnbalancedBigSmall2 => await Move<UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.UnbalancedBigSmall3 => await Move<UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.UnbalancedBigSmall4 => await Move<UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.FanTan => await Move<FanTanBetEntity, FanTanBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.FruitSlot => await Move<FruitSlotBetEntity, FruitSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.WinThreeCards => await Move<WinThreeCardsBetEntity, WinThreeCardsBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.DragonTigerFight => await Move<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.Pontoon => await MoveBlackjackGame<PontoonBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
-                              GameId.ColorGame => await Move<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              GameId.BandarQiuQiu => await Move<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                              _ => false,
-                          };             
+                       {
+                           GameId.BigSmall => await Move<BigSmallOnesEntity, BigSmallBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.SeDie => await Move<SeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.FishPrawnCrab => await Move<FishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.BigSmallTurbo => await Move<BigSmallTurboOnesEntity, BigSmallTurboBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.OddEven => await Move<OddEvenOnesEntity, OddEvenBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.OddEvenTurbo => await Move<OddEvenTurboOnesEntity, OddEvenTurboBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.DragonTiger => await Move<DragonTigerBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoProMax => await Move<KenoProMaxBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.Baccarat => await Move<BaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MiniSeDie => await Move<MiniSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoMax => await Move<KenoMaxOnesEntity, KenoMaxBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoMax2 => await Move<KenoMax2OnesEntity, KenoMax2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoMini => await Move<KenoMiniOnesEntity, KenoMiniBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoMini2 => await Move<KenoMini2OnesEntity, KenoMini2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoEast => await Move<KenoEastOnesEntity, KenoEastBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoWest => await Move<KenoWestOnesEntity, KenoWestBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoSouth => await Move<KenoSouthOnesEntity, KenoSouthBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoNorth => await Move<KenoNorthOnesEntity, KenoNorthBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.Roulette => await Move<RouletteOnesEntity, RouletteBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.VipSeDie => await Move<VipSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.Blackjack => await MoveBlackjackGame<BlackjackBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
+                           GameId.SpecialSeDie => await Move<SpecialSeDieOnesEntity, SpecialSeDieBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.SicBo => await Move<SicBoOnesEntity, SicBoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.VipFishPrawnCrab => await Move<VipFishPrawnCrabBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.VipBaccarat => await Move<VipBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.VipSeDieWar => await Move<VipSeDieWarOnesEntity, VipSeDieWarBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.BitcoinMaster => await Move<BitcoinMasterOnesEntity, BitcoinMasterBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.Lottery => await Move<LotteryOnesEntity, LotteryBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.ThreeCards => await Move<ThreeCardsBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoMatch1 => await Move<KenoMatch1OneEntity, KenoMatch1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoMatch2 => await Move<KenoMatch2OneEntity, KenoMatch2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoPower1 => await Move<KenoPower1OneEntity, KenoPower1BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.KenoPower2 => await Move<KenoPower2OneEntity, KenoPower2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.CasinoHoldemPoker => await MoveCasinoHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.HiLo => await MoveHiLo(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.TexasHoldemPoker => await MoveTexasHoldem(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.BlockchainBaccarat => await Move<BlockchainBaccaratBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MegaKeno => await Move<MegaKenoOnesEntity, MegaKenoBetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MegaKeno2 => await Move<MegaKeno2OnesEntity, MegaKeno2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MiniSeDie2 => await Move<MiniSeDie2BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MiniSeDie3 => await Move<MiniSeDie3BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.MiniSeDie4 => await Move<MiniSeDie4BetEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.UnbalancedBigSmall1 => await Move<UnbalancedBigSmall1BetEntity, UnbalancedBigSmall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.UnbalancedBigSmall2 => await Move<UnbalancedBigSmall2BetEntity, UnbalancedBigSmall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.UnbalancedBigSmall3 => await Move<UnbalancedBigSmall3BetEntity, UnbalancedBigSmall3BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.UnbalancedBigSmall4 => await Move<UnbalancedBigSmall4BetEntity, UnbalancedBigSmall4BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.FanTan => await Move<FanTanBetEntity, FanTanBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.FruitSlot => await Move<FruitSlotBetEntity, FruitSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.WinThreeCards => await Move<WinThreeCardsBetEntity, WinThreeCardsBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.DragonTigerFight => await Move<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.Pontoon => await MoveBlackjackGame<PontoonBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
+                           GameId.ColorGame => await Move<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.BandarQiuQiu => await Move<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           _ => false,
+                       };
             }
             catch (Exception ex)
             {
@@ -213,7 +213,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.WinThreeCards => await Find<WinThreeCardsBetEntity, WinThreeCardsBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.DragonTigerFight => await Find<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.ColorGame => await Find<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
-                    GameId.BandarQiuQiu => await Find<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.BandarQiuQiu => await Find<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => default,
                     };
                 }
@@ -591,11 +591,11 @@ namespace GamesAdmin.Api.VoidGame
         }
 
         public async Task<bool> MoveBlackjackGameRound<BlackjackGameRound>(long roundId)
-            where BlackjackGameRound: BlackjackGameRoundEntity
+            where BlackjackGameRound : BlackjackGameRoundEntity
         => await MoveRound<BlackjackGameRound>(roundId);
 
         public async Task<List<long>> FindAllTicketBlackjack<BlackjackGameBet>(long? roundId, bool isArchive)
-            where BlackjackGameBet: BlackjackGameBetEntity
+            where BlackjackGameBet : BlackjackGameBetEntity
         {
             try
             {

@@ -12,6 +12,7 @@ using GamesAdmin.Api.ClientSites;
 using GamesAdmin.Api.Currencies;
 using GamesAdmin.Api.CurrencyGroupGames;
 using GamesAdmin.Api.CurrencyGroups;
+using GamesAdmin.Api.GameManagementApi;
 using GamesAdmin.Api.Games;
 using GamesAdmin.Api.GameServers;
 using GamesAdmin.Api.GameSettings;
@@ -208,7 +209,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddCrashGameServices(this IServiceCollection services)
         {
-            services.AddScoped<ICrashGameApiFactory, CrashGameApiFactory>();        
+            services.AddScoped<ICrashGameApiFactory, CrashGameApiFactory>();
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
@@ -264,6 +265,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<IVoidGameRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
                 services.AddSingleton(RestService.For<IPartnerRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, refitSettings));
 
                 // online user
                 var refitSettingsWithJSON = new RefitSettings
