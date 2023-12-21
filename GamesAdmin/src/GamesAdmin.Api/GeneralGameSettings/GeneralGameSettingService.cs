@@ -96,10 +96,11 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         public async Task<string> GetDisplayName(int gameId)
         {
-            var displayName = appSettings.CloudSettings?.ShouldCallCloudService(gameId) == true ?
+            var gameInfo = appSettings.CloudSettings?.ShouldCallCloudService(gameId) == true ?
               await GetDisplayNameDierctOnKbtDatabase(gameId) : await GetDisplayNameThroughGameManagementApi(gameId);
 
-            return !string.IsNullOrEmpty(displayName) ? displayName : Game.FromGameName(displayName).DisplayName;
+            var displayName = !string.IsNullOrEmpty(gameInfo.DisplayName) ? gameInfo.DisplayName : Game.FromGameName(gameInfo.Name).DisplayName;
+            return displayName;
         }
 
         public async Task<bool> IsCrashGame(int gameId)
@@ -108,25 +109,19 @@ namespace GamesAdmin.Api.GeneralGameSettings
               await CheckCrashGameDirectOnKbtDatabase(gameId) : await CheckCrashGameThroughGameManagementApi(gameId);
         }
 
-        private async Task<string> GetDisplayNameDierctOnKbtDatabase(int gameId)
+        private async Task<GameConfigEntity> GetDisplayNameDierctOnKbtDatabase(int gameId)
         {
             var gameEntities = await Task.Run(() => repository.AsQueryable().ToList());
 
             var gameInfo = gameEntities.FirstOrDefault(game => game.GameId == gameId);
-            return gameInfo.DisplayName;
+            return gameInfo;
         }
 
-        private async Task<string> GetDisplayNameThroughGameManagementApi(int gameId)
+        private async Task<GameConfigEntity> GetDisplayNameThroughGameManagementApi(int gameId)
         {
             var gameManagementApi = (IGameManagementApi)serviceProvider.GetService(typeof(IGameManagementApi));
             var response = await gameManagementApi.GetGameConfigById((byte)gameId);
-
-            if (response?.Data == null || string.IsNullOrWhiteSpace(response?.Data.Name))
-            {
-                return string.Empty;
-            }
-
-            return response.Data.DisplayName;
+            return response?.Data;
         }
 
 
