@@ -145,8 +145,13 @@ namespace GamesAdmin.Api.ChatBot
                 var currencies = GetCurrencies();
                 var user = await GetUser(request.ObCustId);
                 var currency = currencies.Where(c => c.Enabled == true && c.Name == request.Currency && c.PartnerId == user.OperatorId).FirstOrDefault();
-                var rate = (double)exchangeRate.Code[currency.Code] * currency.Multiplier;
 
+                if (currency == null)
+                {
+                    return request.Amount;
+                }
+
+                var rate = (double)exchangeRate.Code[currency.Code] * currency.Multiplier;
                 return request.Amount * rate;
             }
             catch (Exception e)
