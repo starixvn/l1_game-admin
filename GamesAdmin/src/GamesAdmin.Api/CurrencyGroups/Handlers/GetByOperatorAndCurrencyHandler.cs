@@ -22,7 +22,7 @@ namespace GamesAdmin.Api.CurrencyGroups.Handlers
         public async Task<CurrencyGroupModel> Handle(GetByOperatorAndCurrencyRequest request, CancellationToken cancellationToken)
         {
             var currencyModel = (await Currency.GetByPartner(request.OperatorId)).FirstOrDefault(c => c.Name == request.CurrencyName);
-            if (string.IsNullOrEmpty(currencyModel?.GroupId))
+            if (!string.IsNullOrEmpty(currencyModel?.GroupId))
             {
                 var currencyGroup = await Repository.FindByIdAsync(currencyModel.GroupId);
                 if (!string.IsNullOrEmpty(currencyGroup?.Id.ToString()))
