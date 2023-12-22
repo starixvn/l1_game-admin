@@ -29,7 +29,7 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         string SGApiUrl { get; }
 
-        bool IsUatOrProEnvironment(); 
+        bool IsUatOrProEnvironment();
     }
 
     public class ResultPageConfiguration
@@ -38,6 +38,7 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string ClientId { get; set; }
         public string ClientKey { get; set; }
         public string Language { get; set; }
+        public string ProxyUrl { get; set; }
     }
 
     public class AppSettings : IAppSettings
@@ -80,7 +81,7 @@ namespace GamesAdmin.Site._Shared.Configurations
         public string GameApiUrl { get; }
 
         public string SGApiUrl { get; }
-        
+
         public string SystemType { get; }
 
         public T GetValue<T>(string key)

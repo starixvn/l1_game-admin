@@ -1,4 +1,7 @@
-﻿using GamesAdmin.Core.IdentityServer;
+﻿using System.Net.Http;
+using System.Net;
+using System;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features;
@@ -74,12 +77,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IBotApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IBotService, BotService>();
 
-            services.AddSingleton(RestService.For<IGameRoundResultApi>(appSettings.ResultPageConfiguration.BaseUrl));
-            services.AddScoped<IGameRoundResultService, GameRoundResultService>();
-
-            services.AddSingleton(RestService.For<IBetDetailsApi>(appSettings.ResultPageConfiguration.BaseUrl));
-            services.AddScoped<IBetDetailsService, BetDetailsService>();
-
             services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.SGApiUrl));
             services.AddScoped<IRetrieveEndRoundService, RetrieveEndRoundService>();
 
@@ -119,6 +116,36 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IDomainService, DomainService>();
 
             services.AddReportServices();
+            services.AddRoundHistoryServices(appSettings);
+        }
+
+        public static void AddRoundHistoryServices(this IServiceCollection services, IAppSettings appSettings)
+        {
+            var client = InitHttpClient(appSettings.ResultPageConfiguration.BaseUrl, appSettings.ResultPageConfiguration.ProxyUrl);
+            services.AddSingleton(RestService.For<IGameRoundResultApi>(client));
+            services.AddScoped<IGameRoundResultService, GameRoundResultService>();
+
+            services.AddSingleton(RestService.For<IBetDetailsApi>(client));
+            services.AddScoped<IBetDetailsService, BetDetailsService>();
+        }
+
+        private static HttpClient InitHttpClient(string url, string proxy)
+        {
+            HttpClientHandler handler = null;
+
+            if (!string.IsNullOrEmpty(proxy))
+            {
+                handler = new HttpClientHandler
+                {
+                    Proxy = new WebProxy(proxy),
+                    UseProxy = true,
+                };
+            }
+
+            var client = (handler == null) ? new HttpClient() : new HttpClient(handler);
+            client.BaseAddress = new Uri(url);
+
+            return client;
         }
     }
 }

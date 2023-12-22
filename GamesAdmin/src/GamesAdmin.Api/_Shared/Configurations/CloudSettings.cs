@@ -10,6 +10,8 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         public string CloudAdminApiUrl { get; set; }
 
+        public string ProxyUrl { get; set; }
+
         public string GameManagementUrl { get; set; }
 
         public IEnumerable<int> CloudGameIds { get; set; }

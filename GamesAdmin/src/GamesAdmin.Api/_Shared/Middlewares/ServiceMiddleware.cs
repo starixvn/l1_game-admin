@@ -214,30 +214,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
         {
-            HttpClient client = InitChatBotHttpClient(appSettings);
+            HttpClient client = InitHttpClient(appSettings.ChatBotApiSettings.Url, appSettings.ChatBotApiSettings.Proxy);
+            client.Timeout = TimeSpan.FromSeconds(appSettings.ChatBotApiSettings.TimeoutInSeconds);
 
             services.AddSingleton(RestService.For<IChatBotApi>(client));
             services.AddScoped<IChatBotService, ChatBotService>();
-        }
-
-        private static HttpClient InitChatBotHttpClient(IAppSettings appSettings)
-        {
-            HttpClientHandler handler = null;
-
-            if (!string.IsNullOrEmpty(appSettings.ChatBotApiSettings.Proxy))
-            {
-                handler = new HttpClientHandler
-                {
-                    Proxy = new WebProxy(appSettings.ChatBotApiSettings.Proxy),
-                    UseProxy = true,
-                };
-            }
-
-            var client = (handler == null) ? new HttpClient() : new HttpClient(handler);
-            client.BaseAddress = new Uri(appSettings.ChatBotApiSettings.Url);
-            client.Timeout = TimeSpan.FromSeconds(appSettings.ChatBotApiSettings.TimeoutInSeconds);
-
-            return client;
         }
 
         private static void AddPublicService(this IServiceCollection services)
@@ -259,10 +240,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
                 };
 
-                services.AddSingleton(RestService.For<IReportApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
-                services.AddSingleton(RestService.For<ILogApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
-                services.AddSingleton(RestService.For<IVoidGameRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
-                services.AddSingleton(RestService.For<IPartnerRemoteApi>(appSettings.CloudSettings.CloudAdminApiUrl, refitSettings));
+                var cloudClient = InitHttpClient(appSettings.CloudSettings.CloudAdminApiUrl, appSettings.CloudSettings.ProxyUrl);
+
+                services.AddSingleton(RestService.For<IReportApi>(cloudClient, refitSettings));
+                services.AddSingleton(RestService.For<ILogApi>(cloudClient, refitSettings));
+                services.AddSingleton(RestService.For<IVoidGameRemoteApi>(cloudClient, refitSettings));
+                services.AddSingleton(RestService.For<IPartnerRemoteApi>(cloudClient, refitSettings));
                 services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, refitSettings));
 
                 // online user
@@ -271,8 +254,27 @@ namespace GamesAdmin.Api._Shared.Middlewares
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
                     ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
                 };
-                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettingsWithJSON));
+                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(InitHttpClient(appSettings.GameServers.BandarQiuQiu.Api, appSettings.CloudSettings.ProxyUrl), refitSettingsWithJSON));
             }
+        }
+
+        private static HttpClient InitHttpClient(string url, string proxy)
+        {
+            HttpClientHandler handler = null;
+
+            if (!string.IsNullOrEmpty(proxy))
+            {
+                handler = new HttpClientHandler
+                {
+                    Proxy = new WebProxy(proxy),
+                    UseProxy = true,
+                };
+            }
+
+            var client = (handler == null) ? new HttpClient() : new HttpClient(handler);
+            client.BaseAddress = new Uri(url);
+
+            return client;
         }
     }
 }
