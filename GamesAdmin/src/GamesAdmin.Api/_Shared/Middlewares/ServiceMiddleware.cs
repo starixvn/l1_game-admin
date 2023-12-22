@@ -252,10 +252,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
 
         private static void AddCloudServices(this IServiceCollection services, IAppSettings appSettings)
         {
-            if (!string.IsNullOrEmpty(appSettings.CloudSettings?.CloudAdminApiUrl) && appSettings.CloudIdentityServerAuth != null)
+            if (!string.IsNullOrEmpty(appSettings.CloudSettings?.CloudAdminApiUrl))
             {
-                IdentityServerManager.Initialize(appSettings.CloudIdentityServerAuth);
-
                 var refitSettings = new RefitSettings
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
