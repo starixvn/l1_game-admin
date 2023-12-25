@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using GamesAdmin.Api.ApiLogs.Requests;
+using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.ApiLogs;
@@ -18,7 +19,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     model.PartnerId,
                     model.FromDate,
                     model.ToDate,
-                    StringFormatExtensions.FormatPlayerId(model.SiteId, model.ObCustId),
+                    model.PartnerId == Operators.SabaPlay ? StringFormatExtensions.FormatPlayerId(model.SiteId, model.ObCustId) : model.ObCustId,
                     model.GameRoundId,
                     model.GameTypeId,
                     model.Username));

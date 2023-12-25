@@ -1,4 +1,5 @@
-﻿    using GamesAdmin.Core.Extensions;
+﻿    using GamesAdmin.Core;
+    using GamesAdmin.Core.Extensions;
 using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
 namespace GamesAdmin.Site.Features.BetDetails.Models

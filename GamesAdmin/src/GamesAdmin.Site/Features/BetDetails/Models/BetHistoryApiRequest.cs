@@ -1,4 +1,5 @@
 ﻿using System;
+using GamesAdmin.Core;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.Models.ApiLogs;
 using GamesAdmin.Site.Features.BetDetails.ViewModels;

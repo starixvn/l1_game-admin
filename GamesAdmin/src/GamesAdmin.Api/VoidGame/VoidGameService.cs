@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
+using GamesAdmin.Core;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.OWResults;
@@ -67,7 +68,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
+                var playerId = request.OperatorId == Operators.SabaPlay ? 
+                    StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
                 var isExistTicket = await ticketHandler.Exist(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
@@ -95,7 +97,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
+                var playerId = request.OperatorId == Operators.SabaPlay ?
+                   StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
                 var ticket = await ticketHandler.ExistHoldemPoker(playerId,
                     request.OperatorId,
                     request.SiteId,
@@ -141,7 +144,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
+                var playerId = request.OperatorId == Operators.SabaPlay ?
+                   StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
                 var ticket = await ticketHandler.ExistBlackjackGameTicket<BlackjackGameBet>(playerId,
                     request.OperatorId,
                     request.SiteId,
@@ -229,7 +233,8 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId);
+                var playerId = request.OperatorId == Operators.SabaPlay ?
+                   StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
                 var apiResult = await voidGameApi.VoidGameTicket(request);
                 if (apiResult.Result.IsSuccessful())
                 {

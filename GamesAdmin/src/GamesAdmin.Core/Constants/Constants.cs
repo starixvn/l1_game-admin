@@ -57,4 +57,9 @@
         public const string CashOut = "cashOut";
         public const string HalfCashOut = "halfCashOut";
     }
+
+    public static class Operators
+    {
+        public const string SabaPlay = "SabaPlay";
+    }
 }
