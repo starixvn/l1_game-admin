@@ -26,7 +26,7 @@ namespace GamesAdmin.Core.Models
 
     public class OnlineUser 
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
