@@ -7,6 +7,10 @@
     public interface IBetDetailsApi
     {
         [Post("/BetHistory/GetAccessUrl")]
-        Task<BetDetailsAccessUrlResult> GetAccessUrl([Body] BetDetailsAccessUrlRequest model);
+        Task<BetDetailsAccessUrlResult> GetAccessUrl([Body] BetDetailsAccessUrlApiRequest model);
+
+        [Headers("Content-Type: application/json")]
+        [Post("/BetHistory/GetAccessUrl")]
+        Task<BetDetailsAccessUrlResult> GetAccessUrl([Body(BodySerializationMethod.Serialized)] BetDetailsAccessUrlApiRequest request, [Header("Access-Key")] string accessKey);
     }
 }

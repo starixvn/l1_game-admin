@@ -1,33 +1,16 @@
 ﻿namespace GamesAdmin.Site.Features.BetDetails.Models
 {
-    using GamesAdmin.Core.Models.ApiLogs;
+    using GamesAdmin.Site.Features._Shared;
     using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
-    public class BetDetailsAccessUrlRequest
+    public class BetDetailsAccessUrlApiRequest : BetHistoryApiRequest
     {
-        public BetDetailsAccessUrlRequest(BetDetailsViewModel model)
+        public BetDetailsAccessUrlApiRequest(BetDetailsViewModel model)
+            : base(model)
         {
-            Auth = new Auth
-            {
-                OperatorId = model.OperatorId,
-                OperatorSecret = model.OperatorSecret
-            };
             Language = model.Language;
-            GameRoundId = model.RoundId;
-            GameTypeId = model.GameType;
-            PlayerId = model.PlayerId;
-            FreeBet = model.FreeBet;
         }
-        public long GameRoundId { get; set; }
-
-        public int PlayerId { get; set; }
-
-        public int GameTypeId { get; set; }
-
-        public Auth Auth { get; set; }
 
         public string Language { get; set; }
-
-        public bool FreeBet { get; set; }
     }
 }

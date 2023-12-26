@@ -14,7 +14,7 @@
             <div class="form-group">
                 <div>
                     <label asp-for="GameType" class="control-label">Game Type</label>
-                    @await Component.InvokeAsync(nameof(SelectGame), new { Name="GameType"})
+                    @await Component.InvokeAsync(nameof(SelectGame), new { Name = "GameType" })
                 </div>
             </div>
             <div class="form-group">
@@ -36,6 +36,10 @@
             <div class="form-group">
                 <input type="checkbox" asp-for="FreeBet" />
                 <label asp-for="FreeBet" class="control-label">Free Bet</label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" asp-for="UseHmacHash" />
+                <label asp-for="UseHmacHash" class="control-label">Use Hmac Hash</label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Get Bet Details" class="btn-submit" />

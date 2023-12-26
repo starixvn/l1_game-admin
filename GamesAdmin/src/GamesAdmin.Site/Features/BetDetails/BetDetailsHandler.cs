@@ -1,10 +1,8 @@
 ﻿namespace GamesAdmin.Site.Features.BetDetails
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using GamesAdmin.Core.Enumeration;
     using GamesAdmin.Site.Features.BetDetails.Requests;
     using GamesAdmin.Site.Features.BetDetails.ViewModels;
     using GamesAdmin.Site.Features.Partners;
@@ -57,18 +55,18 @@
                         Value = "zh-TW"
                     }
                 };
-            
+
             return new BetDetailsViewModel
             {
                 LanguageItem = languageItems,
                 Operators = operators,
             };
         }
-   
+
         public async Task<string> Handle(GetUrlAccessBetDetailsRequest request, CancellationToken cancellationToken)
         {
             var Operator = await this.operatorService.GetById(request.Model.OperatorId);
-            if(Operator != null)
+            if (Operator != null)
             {
                 request.Model.OperatorSecret = Operator.SecretKey;
             }

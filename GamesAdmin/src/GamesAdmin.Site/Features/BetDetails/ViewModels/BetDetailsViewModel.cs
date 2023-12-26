@@ -28,5 +28,7 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
         public string OperatorSecret { get; set; }
 
         public bool FreeBet { get; set; }
+
+        public bool UseHmacHash { get; set; }
     }
 }
