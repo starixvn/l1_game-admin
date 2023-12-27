@@ -68,8 +68,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = request.OperatorId == Operators.SabaPlay ? 
-                    StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
+                var playerId = StringFormatExtensions.FormatPlayerId(request.OperatorId, request.SiteId, request.PlayerId);
                 var isExistTicket = await ticketHandler.Exist(request.PlayerId,
                     request.OperatorId,
                     request.SiteId,
@@ -97,8 +96,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = request.OperatorId == Operators.SabaPlay ?
-                   StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
+                var playerId = StringFormatExtensions.FormatPlayerId(request.OperatorId, request.SiteId, request.PlayerId);
                 var ticket = await ticketHandler.ExistHoldemPoker(playerId,
                     request.OperatorId,
                     request.SiteId,
@@ -144,8 +142,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = request.OperatorId == Operators.SabaPlay ?
-                   StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
+                var playerId = StringFormatExtensions.FormatPlayerId(request.OperatorId, request.SiteId, request.PlayerId);
                 var ticket = await ticketHandler.ExistBlackjackGameTicket<BlackjackGameBet>(playerId,
                     request.OperatorId,
                     request.SiteId,
@@ -233,8 +230,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var playerId = request.OperatorId == Operators.SabaPlay ?
-                   StringFormatExtensions.FormatPlayerId(request.SiteId, request.PlayerId) : request.PlayerId;
+                var playerId = StringFormatExtensions.FormatPlayerId(request.OperatorId, request.SiteId, request.PlayerId);
                 var apiResult = await voidGameApi.VoidGameTicket(request);
                 if (apiResult.Result.IsSuccessful())
                 {

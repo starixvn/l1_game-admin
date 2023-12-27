@@ -19,7 +19,7 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     model.PartnerId,
                     model.FromDate,
                     model.ToDate,
-                    model.PartnerId == Operators.SabaPlay ? StringFormatExtensions.FormatPlayerId(model.SiteId, model.ObCustId) : model.ObCustId,
+                    StringFormatExtensions.FormatPlayerId(model.PartnerId, model.SiteId, model.ObCustId),
                     model.GameRoundId,
                     model.GameTypeId,
                     model.Username));

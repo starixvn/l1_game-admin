@@ -2,13 +2,14 @@
 {
     public static class StringFormatExtensions
     {
-        public static string FormatPlayerId(string siteId, string operatorId)
+        public static string FormatPlayerId(string operatorId, string siteId, string playerId)
         {
-            if (string.IsNullOrEmpty(siteId))
+            if (operatorId == Operators.SabaPlay)
             {
-                return operatorId;
+                return string.IsNullOrWhiteSpace(siteId) ? playerId : $"{siteId}~{playerId}";
             }
-            return $"{siteId}~{operatorId}";
+
+            return playerId;
         }
     }
 }
