@@ -22,7 +22,8 @@ namespace GamesAdmin.Api.ApiLogs.Mappers
                     model.ObCustId,
                     model.GameRoundId,
                     model.GameTypeId,
-                    model.Username));
+                    model.Username,
+                    model.SiteId));
 
             CreateMap<SBLogEntity, SBLog>()
                 .ConstructUsing((entity, context) => new SBLog(

@@ -18,6 +18,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public bool FreeBet { get; set; }
 
         public Auth Auth { get; set; }
+
+        public string SiteId { get; set; }
     }
 
     public class TicketDetailResultEntity : ApiLogResultEntity

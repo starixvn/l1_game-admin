@@ -29,7 +29,7 @@ namespace GamesAdmin.Api.ApiLogs.Requests
 
     public class QueryLogRequest : IRequest<IEnumerable<IApiLog>>
     {
-        public QueryLogRequest(ApiLogType logType, string partnerId, DateTimeOffset fromDate, DateTimeOffset toDate, string playerId, int gameRoundId, int gameTypeId, string username)
+        public QueryLogRequest(ApiLogType logType, string partnerId, DateTimeOffset fromDate, DateTimeOffset toDate, string playerId, int gameRoundId, int gameTypeId, string username, string siteId)
         {
             LogType = logType;
             PartnerId = partnerId;
@@ -39,6 +39,7 @@ namespace GamesAdmin.Api.ApiLogs.Requests
             GameRoundId = gameRoundId;
             GameTypeId = gameTypeId;
             Username = username;
+            SiteId = siteId;
         }
 
         public ApiLogType LogType { get; }
@@ -56,5 +57,7 @@ namespace GamesAdmin.Api.ApiLogs.Requests
         public int GameTypeId { get; }
 
         public string Username { get; set; }
+
+        public string SiteId { get; }
     }
 }
