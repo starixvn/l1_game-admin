@@ -69,7 +69,7 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var playerId = StringFormatExtensions.FormatPlayerId(request.OperatorId, request.SiteId, request.PlayerId);
-                var isExistTicket = await ticketHandler.Exist(request.PlayerId,
+                var isExistTicket = await ticketHandler.Exist(playerId,
                     request.OperatorId,
                     request.SiteId,
                     request.GameRoundId,
@@ -231,7 +231,14 @@ namespace GamesAdmin.Api.VoidGame
             try
             {
                 var playerId = StringFormatExtensions.FormatPlayerId(request.OperatorId, request.SiteId, request.PlayerId);
-                var apiResult = await voidGameApi.VoidGameTicket(request);
+                var apiResult = await voidGameApi.VoidGameTicket(new VoidTicketRequest(playerId,
+                    request.OperatorId,
+                    request.SiteId,
+                    request.GameRoundId,
+                    request.GameTypeId,
+                    request.Reason,
+                    request.FreeBet));
+
                 if (apiResult.Result.IsSuccessful())
                 {
                     sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{playerId}", Sentry.Protocol.SentryLevel.Fatal);

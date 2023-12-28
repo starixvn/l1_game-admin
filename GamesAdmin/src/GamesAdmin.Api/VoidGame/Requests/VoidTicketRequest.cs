@@ -5,7 +5,7 @@ namespace GamesAdmin.Api.VoidGame.Requests
 {
     public class VoidTicketRequest : IRequest<VoidGameResult>
     {
-        public VoidTicketRequest(string playerId, string operatorId, string siteId, int gameRoundId, int gameTypeId, string reason, bool freeBet)
+        public VoidTicketRequest(string playerId, string operatorId, string siteId, long gameRoundId, int gameTypeId, string reason, bool freeBet)
         {
             PlayerId = playerId;
             OperatorId = operatorId;

@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Site.Features.Report.ViewModels
+﻿using GamesAdmin.Site.Features._Shared.Helpers;
+
+namespace GamesAdmin.Site.Features.Report.ViewModels
 {
     public class CrashGameBetHistoryViewModel : BetHistoryRecordViewModel
     {
@@ -29,6 +31,6 @@
         public decimal Multiplier { get; set; }
         public string Action { get; set; }
 
-        public string DisplayMultiplier => Multiplier > 0 ? $"{Multiplier}x" : "-";
+        public string DisplayMultiplier => Multiplier > 0 ? $"{HtmlHelpers.formatNumber(Multiplier)}x" : "-";
     }
 }
