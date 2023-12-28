@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.Report
 {
-    [Headers("Authorization: Bearer")]
     public interface IReportApi
     {
         [Get("/api/report")]
-        Task<T> GetBetReport<T>(BetReportFilter filter)
+        Task<T> GetBetReport<T>(BetReportFilter filter, [Header("Authorization")] string header = "")
             where T : BetReportBase;
 
         [Get("/api/report/bethistory")]
-        Task<T> GetBetHistory<T>(BetHistoryFilter filter) where T : BetHistory;
+        Task<T> GetBetHistory<T>(BetHistoryFilter filter, [Header("Authorization")] string header = "")
+            where T : BetHistory;
     }
 }

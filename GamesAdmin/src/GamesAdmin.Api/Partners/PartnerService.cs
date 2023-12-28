@@ -8,6 +8,7 @@ using GamesAdmin.Api.GeneralGameSettings;
 using GamesAdmin.Api.PartnerRemote;
 using GamesAdmin.Api.SentryClient;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models.Partners;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -90,8 +91,9 @@ namespace GamesAdmin.Api.Partners
                 try
                 {
                     var partnerRemoteApi = (IPartnerRemoteApi)serviceProvider.GetService(typeof(IPartnerRemoteApi));
+                    var header = await IdentityServerManager.GetAuthorizationHeader();
 
-                    await partnerRemoteApi.Create(partner);
+                    await partnerRemoteApi.Create(partner, header);
                 }
                 catch (Exception ex)
                 {
@@ -157,8 +159,9 @@ namespace GamesAdmin.Api.Partners
                     try
                     {
                         var partnerRemoteApi = (IPartnerRemoteApi)serviceProvider.GetService(typeof(IPartnerRemoteApi));
+                        var header = await IdentityServerManager.GetAuthorizationHeader();
 
-                        await partnerRemoteApi.Update(partner);
+                        await partnerRemoteApi.Update(partner, header);
                     }
                     catch (Exception ex)
                     {

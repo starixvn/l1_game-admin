@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api._Shared.Configurations;
@@ -58,13 +57,8 @@ namespace GamesAdmin.Api
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidAudiences = Configuration.GetSection("IdentityServer:Audiences").Get<string[]>(),
-                        ValidIssuers = Configuration.GetSection("IdentityServer:Issuers").Get<string[]>(),
+                        ValidIssuers = Configuration.GetSection("IdentityServer:ValidIssuers").Get<string[]>(),
                     };
-                    options.SecurityTokenValidators.Clear();
-                    options.SecurityTokenValidators.Add(new JwtSecurityTokenHandler
-                    {
-                        MapInboundClaims = false
-                    });
                 });
 
             services

@@ -9,6 +9,7 @@ using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.Report.Services;
 using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.UserInfo;
+using GamesAdmin.Core.IdentityServer;
 
 namespace GamesAdmin.Api.Report
 {
@@ -32,7 +33,8 @@ namespace GamesAdmin.Api.Report
         {
             if (cloudSettings?.ShouldCallCloudService((int)filter.Game) == true)
             {
-                var report = await reportApi.GetBetReport<BandarQiuQiuBetReport>(filter);
+                var header = await IdentityServerManager.GetAuthorizationHeader();
+                var report = await reportApi.GetBetReport<BandarQiuQiuBetReport>(filter, header);
                 report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
                 return report;
             }

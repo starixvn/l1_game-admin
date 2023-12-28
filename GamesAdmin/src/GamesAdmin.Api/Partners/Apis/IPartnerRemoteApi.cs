@@ -4,13 +4,12 @@ using Refit;
 
 namespace GamesAdmin.Api.PartnerRemote
 {
-    [Headers("Authorization: Bearer")]
     public interface IPartnerRemoteApi
     {
         [Post("/api/partner/add")]
-        Task<bool> Create(Partner partner);
+        Task<bool> Create(Partner partner, [Header("Authorization")] string header = "");
 
         [Post("/api/partner/update")]
-        Task<bool> Update(Partner partner);
+        Task<bool> Update(Partner partner, [Header("Authorization")] string header = "");
     }
 }

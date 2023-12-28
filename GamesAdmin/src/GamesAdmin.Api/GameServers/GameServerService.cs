@@ -12,6 +12,7 @@ using GamesAdmin.Api.GameUser;
 using GamesAdmin.Api.UM.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.RoundResults;
@@ -154,7 +155,8 @@ namespace GamesAdmin.Api.GameServers
 
                 var onlineUserService = onlineUserApiFactory.GetOnlineUserApi(gameConfig);
 
-                return await onlineUserService.GetOnlineUsers(ConvertTypeToGameServerName(gameConfigName));
+                var header = await IdentityServerManager.GetAuthorizationHeader();
+                return await onlineUserService.GetOnlineUsers(ConvertTypeToGameServerName(gameConfigName), header);
             }
             catch (Exception ex)
             {
@@ -361,10 +363,9 @@ namespace GamesAdmin.Api.GameServers
             try
             {
                 var config = await gameSettingService.GetByName(request.gameConfigName);
-            
+
                 var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
-                return await crashGameApiFactory.SetResultApi(serviceName).SetResult(request);                  
-                
+                return await crashGameApiFactory.SetResultApi(serviceName).SetResult(request);
             }
             catch (Exception ex)
             {

@@ -5,10 +5,9 @@ using Refit;
 
 namespace GamesAdmin.Api.VoidGameRemote
 {
-    [Headers("Authorization: Bearer")]
     public interface IVoidGameRemoteApi
     {
         [Post("/api/void")]
-        Task<VoidGameResult> VoidTicket([Body] VoidTicketRequest request);
+        Task<VoidGameResult> VoidTicket([Body] VoidTicketRequest request, [Header("Authorization")] string header = "");
     }
 }

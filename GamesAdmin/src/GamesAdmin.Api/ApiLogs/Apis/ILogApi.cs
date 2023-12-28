@@ -5,10 +5,9 @@ using Refit;
 
 namespace GamesAdmin.Api.ApiLogs.Apis
 {
-    [Headers("Authorization: Bearer")]
     public interface ILogApi
     {
         [Post("/api/log/query")]
-        Task<IEnumerable<dynamic>> Query([Body] QueryLogModel query);
+        Task<IEnumerable<dynamic>> Query([Body] QueryLogModel query, [Header("Authorization")] string header = "");
     }
 }

@@ -235,26 +235,25 @@ namespace GamesAdmin.Api._Shared.Middlewares
         {
             if (!string.IsNullOrEmpty(appSettings.CloudSettings?.CloudAdminApiUrl))
             {
-                var refitSettings = new RefitSettings
-                {
-                    AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
-                };
-
                 var cloudClient = InitHttpClient(appSettings.CloudSettings.CloudAdminApiUrl, appSettings.CloudSettings.ProxyUrl);
 
-                services.AddSingleton(RestService.For<IReportApi>(cloudClient, refitSettings));
-                services.AddSingleton(RestService.For<ILogApi>(cloudClient, refitSettings));
-                services.AddSingleton(RestService.For<IVoidGameRemoteApi>(cloudClient, refitSettings));
-                services.AddSingleton(RestService.For<IPartnerRemoteApi>(cloudClient, refitSettings));
-                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, refitSettings));
+                services.AddSingleton(RestService.For<IReportApi>(cloudClient));
+                services.AddSingleton(RestService.For<ILogApi>(cloudClient));
+                services.AddSingleton(RestService.For<IVoidGameRemoteApi>(cloudClient));
+                services.AddSingleton(RestService.For<IPartnerRemoteApi>(cloudClient));
 
-                // online user
-                var refitSettingsWithJSON = new RefitSettings
+                var authorizationHeaderRefitSettings = new RefitSettings
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken,
+                };
+                services.AddSingleton(RestService.For<IGameManagementApi>(appSettings.CloudSettings.GameManagementUrl, authorizationHeaderRefitSettings));
+
+                // online user
+                var refitSettings = new RefitSettings
+                {
                     ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
                 };
-                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(InitHttpClient(appSettings.GameServers.BandarQiuQiu.Api, appSettings.CloudSettings.ProxyUrl), refitSettingsWithJSON));
+                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(InitHttpClient(appSettings.GameServers.BandarQiuQiu.Api, appSettings.CloudSettings.ProxyUrl), refitSettings));
             }
         }
 

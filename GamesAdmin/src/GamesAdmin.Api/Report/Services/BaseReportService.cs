@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.CurrencyGroups;
 using GamesAdmin.Api.UserInfo;
+using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,7 +53,8 @@ namespace GamesAdmin.Api.Report.Services
         protected async Task<T> GetBetHistoryOnCloud<T>(BetHistoryFilter filter)
             where T : BetHistory
         {
-            var betHistory = await reportApi.GetBetHistory<T>(filter);
+            var header = await IdentityServerManager.GetAuthorizationHeader();
+            var betHistory = await reportApi.GetBetHistory<T>(filter, header);
             betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
             return betHistory;
         }

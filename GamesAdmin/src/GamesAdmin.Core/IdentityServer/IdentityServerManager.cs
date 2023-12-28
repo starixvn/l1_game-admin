@@ -48,7 +48,6 @@ namespace GamesAdmin.Core.IdentityServer
                 lastTokenRequest = DateTime.Now;
             }
 
-            Console.WriteLine(tokenResponse.AccessToken);
             return tokenResponse.AccessToken;
         }
 
@@ -66,6 +65,12 @@ namespace GamesAdmin.Core.IdentityServer
             }
 
             return identityClient;
+        }
+
+        public static async Task<string> GetAuthorizationHeader()
+        {
+            var token = await GetAccessToken();
+            return $"Bearer {token}";
         }
     }
 }

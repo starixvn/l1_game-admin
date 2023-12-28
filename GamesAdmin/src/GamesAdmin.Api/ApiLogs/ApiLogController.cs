@@ -8,6 +8,7 @@ using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.ApiLogs.Apis;
 using GamesAdmin.Api.ApiLogs.Requests;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.IdentityServer;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sentry;
@@ -60,8 +61,9 @@ namespace GamesAdmin.Api.ApiLogs
             try
             {
                 var logApi = (ILogApi)serviceProvider.GetService(typeof(ILogApi));
+                var header = await IdentityServerManager.GetAuthorizationHeader();
 
-                var logs = await logApi.Query(model);
+                var logs = await logApi.Query(model, header);
 
                 return logs;
             }
