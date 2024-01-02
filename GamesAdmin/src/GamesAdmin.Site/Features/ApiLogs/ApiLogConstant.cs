@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.ApiLogs
 
         private static readonly IEnumerable<ApiLogViewConfigs> voidGameAndTicketDetailView = new List<ApiLogViewConfigs>
         {
-            obCustIdForPartnerLogIdConfigs, gameTypeIdForPartnerLogConfigs, gameRoundForPartnerLogIdConfigs
+            siteIdForPartnerLogConfigs, obCustIdForPartnerLogIdConfigs, gameTypeIdForPartnerLogConfigs, gameRoundForPartnerLogIdConfigs
         };
 
         private static readonly IEnumerable<ApiLogViewConfigs> memberSignInView = new List<ApiLogViewConfigs>
