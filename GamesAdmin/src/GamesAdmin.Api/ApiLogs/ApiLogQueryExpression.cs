@@ -56,7 +56,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => string.Equals(request.PartnerId, entity.Call.Auth.OperatorId);
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailSiteIdExpression(QueryLogRequest request)
-           => entity => string.IsNullOrEmpty(request.PlayerId) || string.IsNullOrEmpty(entity.Call.SiteId) || request.SiteId == entity.Call.SiteId;
+           => entity => string.IsNullOrEmpty(request.SiteId) || string.IsNullOrEmpty(entity.Call.SiteId) || request.SiteId == entity.Call.SiteId;
 
         private static Expression<Func<MemberSignInLogEntity, bool>> UsernameExpression(QueryLogRequest request)
         {
