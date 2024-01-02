@@ -1,7 +1,7 @@
 ﻿namespace GamesAdmin.Site.Features.RetrieveEndRound.Model
 {
     using System;
-    using GamesAdmin.Site.Features._Shared;
+    using GamesAdmin.Site.Features.BetDetails.Models;
     using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
     public class RetrieveEndRoundApiRequest : BetHistoryApiRequest

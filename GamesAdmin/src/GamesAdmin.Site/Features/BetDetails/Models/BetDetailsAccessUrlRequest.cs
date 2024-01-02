@@ -1,8 +1,7 @@
-﻿namespace GamesAdmin.Site.Features.BetDetails.Models
-{
-    using GamesAdmin.Site.Features._Shared;
-    using GamesAdmin.Site.Features.BetDetails.ViewModels;
+﻿using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
+namespace GamesAdmin.Site.Features.BetDetails.Models
+{
     public class BetDetailsAccessUrlApiRequest : BetHistoryApiRequest
     {
         public BetDetailsAccessUrlApiRequest(BetDetailsViewModel model)

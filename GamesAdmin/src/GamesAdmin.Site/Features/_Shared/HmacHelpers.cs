@@ -1,46 +1,13 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using GamesAdmin.Core.Models.ApiLogs;
-using GamesAdmin.Site.Features.BetDetails.ViewModels;
 using Newtonsoft.Json;
 
 namespace GamesAdmin.Site.Features._Shared
 {
-    public class BetHistoryApiRequest
+    public static class HmacHelpers
     {
-        public BetHistoryApiRequest(BetDetailsViewModel model)
-        {
-            Auth = new Auth
-            {
-                OperatorId = model.OperatorId,
-                OperatorSecret = model.OperatorSecret
-            };
-            GameRoundId = model.RoundId;
-            GameTypeId = model.GameType;
-            PlayerId = model.PlayerId;
-            FreeBet = model.FreeBet;
-        }
-        public int GameTypeId { get; set; }
-
-        public Auth Auth { get; set; }
-
-        public long GameRoundId { get; set; }
-
-        public int PlayerId { get; set; }
-
-
-        public bool FreeBet { get; set; }
-    }
-
-    public interface IHmacHelpers
-    {
-        string CreateAccessKey(string secretKey, BetHistoryApiRequest request);
-    }
-
-    public class HmacHelpers : IHmacHelpers
-    {
-        public string CreateAccessKey(string secretKey, BetHistoryApiRequest request)
+        public static string CreateAccessKey(string secretKey, object request)
         {
             var data = JsonConvert.SerializeObject(request);
             var hmac = new HMACSHA256(Encoding.ASCII.GetBytes(secretKey));

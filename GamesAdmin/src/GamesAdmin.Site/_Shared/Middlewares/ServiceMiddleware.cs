@@ -122,9 +122,6 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IDomainApi>(appSettings.ApiHost, refitSettings));
             services.AddScoped<IDomainService, DomainService>();
 
-            services.AddSingleton(RestService.For<IDomainApi>(appSettings.ApiHost, refitSettings));
-            services.AddScoped<IHmacHelpers, HmacHelpers>();
-
             services.AddReportServices();
         }
     }
