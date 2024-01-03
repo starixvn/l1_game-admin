@@ -77,7 +77,7 @@ namespace GamesAdmin.Api.ApiLogs
                 .And(gameRoundExpression)
                 .And(obcustIdExpression)
                 .And(partnerIdExpession)
-                .And(siteIdExpression);
+                .And(!string.IsNullOrEmpty(request.SiteId) ? PartnerSiteIdExpression(request) : x => true);
 
             return finalExpression;
         }
@@ -94,7 +94,7 @@ namespace GamesAdmin.Api.ApiLogs
                 .And(gameRoundExpression)
                 .And(obcustIdExpression)
                 .And(partnerIdExpession)
-                .And(siteIdExpression);
+                .And(!string.IsNullOrEmpty(request.SiteId) ? SBSiteIdExpression(request) : x => true);
 
             return finalExpression;
         }
@@ -106,12 +106,12 @@ namespace GamesAdmin.Api.ApiLogs
             var gameRoundExpression = TicketDetailGameRoundIdExpression(request);
             var obcustIdExpression = TicketDetailObCustIdExpression(request);
             var partnerIdExpession = TicketDetailPartnerIdExpression(request);
-            var siteIdExpression = TicketDetailSiteIdExpression(request);
+            var siteIdExpression =  TicketDetailSiteIdExpression(request);
             var finalExpression = dateRangeExpression.And(gameTypeExpression)
                 .And(gameRoundExpression)
                 .And(obcustIdExpression)
                 .And(partnerIdExpession)
-                .And(siteIdExpression);
+                .And(!string.IsNullOrEmpty(request.SiteId) ? TicketDetailSiteIdExpression(request) : x => true);
 
             return finalExpression;
         }
