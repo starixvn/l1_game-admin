@@ -26,7 +26,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => string.Equals(request.PartnerId, entity.PartnerId) || string.Equals(request.PartnerId, entity.OperatorId);
 
         private static Expression<Func<PartnerLogEntity, bool>> PartnerSiteIdExpression(QueryLogRequest request)
-          => entity => string.IsNullOrEmpty(request.SiteId) || string.IsNullOrEmpty(entity.Call.SiteId) || request.SiteId == entity.Call.SiteId;
+          => entity => request.SiteId == entity.Call.SiteId;
 
         private static Expression<Func<SBLogEntity, bool>> SBGameTypeExpression(QueryLogRequest request)
             => entity => request.GameTypeId == 0 || entity.Request.GameTypeId == 0 || request.GameTypeId == entity.Request.GameTypeId;
@@ -41,7 +41,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => string.Equals(request.PartnerId, entity.Request.Auth.OperatorId);
 
         private static Expression<Func<SBLogEntity, bool>> SBSiteIdExpression(QueryLogRequest request)
-           => entity => string.IsNullOrEmpty(request.SiteId) || string.IsNullOrEmpty(entity.Request.SiteId) || request.SiteId == entity.Request.SiteId;
+           => entity => request.SiteId == entity.Request.SiteId;
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailGameTypeExpression(QueryLogRequest request)
             => entity => request.GameTypeId == 0 || entity.Call.GameTypeId == 0 || request.GameTypeId == entity.Call.GameTypeId;
@@ -56,7 +56,7 @@ namespace GamesAdmin.Api.ApiLogs
             => entity => string.Equals(request.PartnerId, entity.Call.Auth.OperatorId);
 
         private static Expression<Func<TicketDetailLogEntitty, bool>> TicketDetailSiteIdExpression(QueryLogRequest request)
-           => entity => string.IsNullOrEmpty(request.SiteId) || string.IsNullOrEmpty(entity.Call.SiteId) || request.SiteId == entity.Call.SiteId;
+           => entity => request.SiteId == entity.Call.SiteId;
 
         private static Expression<Func<MemberSignInLogEntity, bool>> UsernameExpression(QueryLogRequest request)
         {
