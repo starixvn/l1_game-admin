@@ -34,6 +34,7 @@ namespace GamesAdmin.Api.ApiLogs
         private const string RetrieveEndGameResult = "RetrieveEndGameInfoResult";
 
         private const string EndRoundInfoRequest = "EndRoundInfoRequest";
+        private const string RetrieveEndRoundInfoRequest = "RetrieveEndRoundInfoRequest";
         private const string EndRoundInfoResult = "EndRoundInfoResult";
 
         private const string EnterPortalCall = "PartnerEnterPortalCall";
@@ -78,6 +79,7 @@ namespace GamesAdmin.Api.ApiLogs
             { RetrieveEndGameRequest, typeof(EndGameInfoRequest) },
             { RetrieveEndGameResult, typeof(RetrieveEndGameInfoResult) },
             { EndRoundInfoRequest, typeof(EndGameInfoRequest) },
+            { RetrieveEndRoundInfoRequest, typeof(EndGameInfoRequest) },
             { EndRoundInfoResult, typeof(RetrieveEndGameInfoResult) },
 
             { EnterPortalCall, typeof(PartnerEnterPortalCall) },
@@ -85,7 +87,7 @@ namespace GamesAdmin.Api.ApiLogs
 
             { TicketDetailCall, typeof(TicketDetailRequest) },
             { TicketDetailResultName, typeof(TicketDetailResult) },
-            
+
             { MemberSignInCall, typeof(MemberFailedSignInRequest) },
             { MemberSignInResult, typeof(MemberFailedSignInResult) },
 
