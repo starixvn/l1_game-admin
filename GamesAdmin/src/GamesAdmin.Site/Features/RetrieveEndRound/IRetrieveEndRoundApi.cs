@@ -7,7 +7,7 @@
     public interface IRetrieveEndRoundApi
     {
         [Headers("Content-Type: application/json")]
-        [Post("/EndRoundInfo")]
+        [Post("/Player/RetrieveEndRoundInfo")]
         Task<dynamic> RetrieveEndRound([Body(BodySerializationMethod.Serialized)] BetHistoryApiRequest request, [Header("Access-Key")] string accessKey);
     }
 }
