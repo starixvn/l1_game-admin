@@ -131,6 +131,8 @@ namespace GamesAdmin.Core.Enumeration
                 case Game.BandarQiuQiuValue:
                     return Enumeration.GetAll<BandarQiuQiuOdds>();
 
+                case Game.ChineseBlackjackValue:
+                    return Enumeration.GetAll<ChineseBlackjackOdds>();
                 default: return default;
             }
         }

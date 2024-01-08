@@ -63,7 +63,8 @@ namespace GamesAdmin.Core.Enumeration
         public const string DragonTigerFightValue = "dragontigerfight";
         public const string PontoonValue = "pontoon";
         public const string ColorGameValue = "colorgame";
-        public const string BandarQiuQiuValue = "bandarqiuqiu";        
+        public const string BandarQiuQiuValue = "bandarqiuqiu";
+        public const string ChineseBlackjackValue = "chineseblackjack";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -125,6 +126,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game Pontoon = new Game(PontoonValue, "Pontoon", GameId.Pontoon);
         public static readonly Game ColorGame = new Game(ColorGameValue, "Color Game", GameId.ColorGame);
         public static readonly Game BandarQiuQiu = new Game(BandarQiuQiuValue, "Bandar Qiu Qiu", GameId.BandarQiuQiu);
+        public static readonly Game ChineseBlackjack = new Game(ChineseBlackjackValue, "Chinese Blackjack", GameId.ChineseBlackjack);
 
         public Game()
         {

@@ -60,6 +60,7 @@
         DragonTigerFight = 67,
         ColorGame = 71,
         Pontoon = 72,
-        BandarQiuQiu = 75
+        BandarQiuQiu = 75,
+        ChineseBlackjack = 77,
     }
 }
