@@ -21,7 +21,6 @@ using GamesAdmin.Database.Entities.ExchangeRates;
 using GamesAdmin.Site._Shared.Configurations;
 using Refit;
 using Sentry;
-using Sentry.Protocol;
 using UAParser;
 
 namespace GamesAdmin.Api.ChatBot
@@ -62,7 +61,6 @@ namespace GamesAdmin.Api.ChatBot
         private readonly IGenericRepository<AccountEntity> userRepository;
         private readonly ICacheManager cache;
         private readonly IGeneralGameSettingService generalGameSettingService;
-        private readonly ISentryClient sentryClient;
 
         public ChatBotService(
             IAppSettings appSettings,
@@ -75,8 +73,7 @@ namespace GamesAdmin.Api.ChatBot
             IGenericRepository<CurrencyEntity> currencyRepository,
             IGenericRepository<AccountEntity> userRepository,
             ICacheManager cache,
-            IGeneralGameSettingService generalGameSettingService,
-            ISentryClient sentryClient)
+            IGeneralGameSettingService generalGameSettingService)
         {
             this.appSettings = appSettings;
             this.chatBotApi = chatBotApi;
@@ -90,7 +87,6 @@ namespace GamesAdmin.Api.ChatBot
             this.userRepository = userRepository;
             this.cache = cache;
             this.generalGameSettingService = generalGameSettingService;
-            this.sentryClient = sentryClient;
         }
 
         public async Task<ChatBotResult> NotifyHighStake(NotifyHighStakeRequest request)
@@ -99,7 +95,7 @@ namespace GamesAdmin.Api.ChatBot
             {
                 var highStakeAmount = GetHighStakeAmount();
                 var amount = await GetAmount(request);
-                sentryClient.CaptureMessage(string.Format("NotifyHighStake: Currency {0}, amount: {1}, highStakeAmount: {2}", request.Currency, amount, highStakeAmount), SentryLevel.Info);
+
                 if (request.Currency == "UUS" || amount < highStakeAmount)
                 {
                     return await Task.FromResult<ChatBotResult>(default);
@@ -152,10 +148,9 @@ namespace GamesAdmin.Api.ChatBot
 
                 if (currency == null)
                 {
-                    sentryClient.CaptureMessage(string.Format("NotifyHighStake1: currency is not existed"), SentryLevel.Info);
                     return request.Amount;
                 }
-                sentryClient.CaptureMessage(string.Format("NotifyHighStake: currency.Multiplier {0}, exchangeRate.Code[currency.Code]: {1}", currency.Multiplier, (double)exchangeRate.Code[currency.Code]), SentryLevel.Info);
+
                 var rate = (double)exchangeRate.Code[currency.Code] * currency.Multiplier;
                 return request.Amount * rate;
             }
@@ -174,7 +169,7 @@ namespace GamesAdmin.Api.ChatBot
                 exchangeRate = this.exchangeRateRepository.AsQueryable().OrderByDescending(ex => ex.ExId).First();
                 cache.SetCache(CachedKeys.ExchangeRate.ToString(), exchangeRate, CacheExpireInMinutes);
             }
-            sentryClient.CaptureMessage($"NotifyHighStake: exchangeRate {JsonSerializer.Serialize(exchangeRate)}", SentryLevel.Info);
+
             return exchangeRate;
         }
 
@@ -186,7 +181,7 @@ namespace GamesAdmin.Api.ChatBot
                 currencies = currencyRepository.AsQueryable();
                 cache.SetCache(CachedKeys.Currencies.ToString(), currencies, CacheExpireInMinutes);
             }
-            sentryClient.CaptureMessage($"NotifyHighStake: currencies: { JsonSerializer.Serialize(currencies)} ", SentryLevel.Info);
+
             return currencies;
         }
 
@@ -199,7 +194,7 @@ namespace GamesAdmin.Api.ChatBot
                 user = await userRepository.FindOneAsync(u => u.PlayerId == ObCustId && u.OperatorId == operatorId);
                 cache.SetCache(userKey, user, CacheExpireInMinutes);
             }
-            sentryClient.CaptureMessage($"NotifyHighStake: user: { JsonSerializer.Serialize(user)} ", SentryLevel.Info);
+
             return user;
         }
 
