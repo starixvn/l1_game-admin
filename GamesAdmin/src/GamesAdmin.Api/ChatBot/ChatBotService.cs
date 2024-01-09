@@ -147,10 +147,8 @@ namespace GamesAdmin.Api.ChatBot
             {
                 var exchangeRate = GetExchangeRate();
                 var currencies = GetCurrencies();
-                var user = await GetUser(request.ObCustId);
+                var user = await GetUser(request.ObCustId, request.OperatorId);
                 var currency = currencies.Where(c => c.Enabled == true && c.Name == request.Currency && c.PartnerId == user.OperatorId).FirstOrDefault();
-                //sentryClient.CaptureMessage($"NotifyHighStake: exchangeRate {JsonSerializer.Serialize(exchangeRate)}, " +
-                //    $"currencies: { JsonSerializer.Serialize(currencies)} ", SentryLevel.Info);
 
                 if (currency == null)
                 {
@@ -192,13 +190,13 @@ namespace GamesAdmin.Api.ChatBot
             return currencies;
         }
 
-        private async Task<AccountEntity> GetUser(int ObCustId)
+        private async Task<AccountEntity> GetUser(int ObCustId, string operatorId)
         {
             var userKey = string.Format("{0}{1}", CachedKeys.User, ObCustId);
             var user = cache.GetCache<AccountEntity>(userKey);
             if (user == default)
             {
-                user = await userRepository.FindOneAsync(u => u.PlayerId == ObCustId);
+                user = await userRepository.FindOneAsync(u => u.PlayerId == ObCustId && u.OperatorId == operatorId);
                 cache.SetCache(userKey, user, CacheExpireInMinutes);
             }
             sentryClient.CaptureMessage($"NotifyHighStake: user: { JsonSerializer.Serialize(user)} ", SentryLevel.Info);
