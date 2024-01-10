@@ -6,7 +6,7 @@ namespace GamesAdmin.Api.GameServers.Requests
     {
         public string name { get; set; }
 
-        public PontoonCard[] dealer { get; set; }
+        public BlackjackCard[] dealer { get; set; }
 
         public Hands[] hands { get; set; }
     }
@@ -15,10 +15,10 @@ namespace GamesAdmin.Api.GameServers.Requests
     {
         public byte pos { get; set; }
 
-        public PontoonCard[] cards { get; set; }
+        public BlackjackCard[] cards { get; set; }
     }
 
-    public class PontoonCard
+    public class BlackjackCard
     {
         public string rank { get; set; }
 

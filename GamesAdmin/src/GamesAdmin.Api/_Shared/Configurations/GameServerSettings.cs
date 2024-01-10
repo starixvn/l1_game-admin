@@ -107,6 +107,7 @@
         public GameServerConfigs Pontoon { get; set; }
         public GameServerConfigs ColorGame { get; set; }
         public GameServerConfigs BandarQiuQiu { get; set; }
+        public GameServerConfigs ChineseBlackjack{ get; set; }
     }
 
     public class GameServerConfigs

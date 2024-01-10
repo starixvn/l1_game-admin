@@ -49,6 +49,10 @@ namespace GamesAdmin.Api.GameServers
         public Task<bool> SetPontoonResult([FromBody] SetPontoonResultRequest request)
           => mediator.Send(request);
 
+        [HttpPost("chineseblackjack/set_result")]
+        public Task<bool> SetChineseBlackjackResult([FromBody] SetChineseBlackjackResultRequest request)
+            => mediator.Send(request);
+
         [HttpPost("get_admin_monitoring_settings")]
         public Task<AdminMonitoringModel> GetAdminMonitoringSettings(string username)
             => mediator.Send(new GetAdminMonitoringSettingsRequest(username));

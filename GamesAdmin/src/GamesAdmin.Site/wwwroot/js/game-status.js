@@ -274,6 +274,11 @@
             this.setResultControl("PontoonResult");
         },
 
+        setControlResultChineseBlackjack: function (event) {
+            event.preventDefault();
+            this.setResultControl("ChineseBlackjackResult");
+        },
+
         setSlotResultControl: function (action, gameName, displayName) {
             window.open(adminMonitoringUrl + "/ResultMonitor/" + action + "?gameConfigName=" + gameName + "&displayName=" + displayName + "&token=" + jwtAdminUserToken, "_blank", "width=1020,height=765");
         },

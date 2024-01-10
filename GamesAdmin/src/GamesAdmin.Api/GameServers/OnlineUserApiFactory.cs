@@ -71,6 +71,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.PontoonValue, typeof(IPontoonOnlineUserApi) },
             { Game.ColorGameValue, typeof(IColorGameOnlineUserApi) },
             { Game.BandarQiuQiuValue, typeof(IBandarQiuQiuOnlineUserApi) },
+            { Game.ChineseBlackjackValue, typeof(IChineseBlackjackOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

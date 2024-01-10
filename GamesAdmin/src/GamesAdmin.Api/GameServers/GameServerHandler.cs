@@ -23,6 +23,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<VerifyAdminMonitoringTokenRequest, bool>
         , IRequestHandler<ConnectedUserRequest, int>
         , IRequestHandler<SetPontoonResultRequest, bool>
+        , IRequestHandler<SetChineseBlackjackResultRequest, bool>
         , IRequestHandler<SetCrashGameResultRequest, bool>
     {
         private readonly IGameServerService gameServerService;
@@ -56,6 +57,8 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(SetPontoonResultRequest request, CancellationToken cancellationToken)
            => gameServerService.SetPontoonResult(request);
+        public Task<bool> Handle(SetChineseBlackjackResultRequest request, CancellationToken cancellationToken)
+        => gameServerService.SetChineseBlackjackResult(request);
 
         public Task<AdminMonitoringModel> Handle(GetAdminMonitoringSettingsRequest request, CancellationToken cancellationToken)
             => gameServerService.GetAdminMonitoringSettings(request.Username);

@@ -128,6 +128,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IPontoonOnlineUserApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
             services.AddSingleton(RestService.For<IColorGameOnlineUserApi>(appSettings.GameServers.ColorGame.Api, refitSettings));
             services.AddSingleton<ICacheManager, CacheManager>();
+            services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
+            services.AddSingleton(RestService.For<IChineseBlackjackOnlineUserApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
 
@@ -141,6 +143,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddVoidRunningTicketServices(services);
             AddPontoonServices(services, appSettings, refitSettings);
             AddCrashGameServices(services);
+            AddChineseBlackjackServices(services, appSettings, refitSettings);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();
@@ -210,6 +213,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddCrashGameServices(this IServiceCollection services)
         {
             services.AddScoped<ICrashGameApiFactory, CrashGameApiFactory>();
+        }
+
+        private static void AddChineseBlackjackServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddScoped<IChineseBlackjackApiFactory, ChineseBlackjackApiFactory>();
+            services.AddSingleton(RestService.For<IChineseBlackjackApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)

@@ -52,6 +52,8 @@ namespace GamesAdmin.Api.GameServers
 
         Task<bool> SetPontoonResult(SetPontoonResultRequest request);
 
+        Task<bool> SetChineseBlackjackResult(SetChineseBlackjackResultRequest request);
+
         Task<bool> SetCrashGameResult(SetCrashGameResultRequest request);
     }
 
@@ -70,6 +72,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
         private readonly IPontoonApiFactory pontoonApiFactory;
+        private readonly IChineseBlackjackApiFactory chineseBlackjackApiFactory;
         private readonly ICrashGameApiFactory crashGameApiFactory;
 
         public GameServerService(
@@ -86,6 +89,7 @@ namespace GamesAdmin.Api.GameServers
             INotificationServiceApi notificationServiceApi,
             IGenericRepository<AdminUserEntity> userRepository,
             IPontoonApiFactory pontoonApiFactory,
+            IChineseBlackjackApiFactory chineseBlackjackApiFactory,
             ICrashGameApiFactory crashGameApiFactory)
         {
             this.sentryClient = sentryClient;
@@ -101,6 +105,7 @@ namespace GamesAdmin.Api.GameServers
             this.notificationServiceApi = notificationServiceApi;
             this.userRepository = userRepository;
             this.pontoonApiFactory = pontoonApiFactory;
+            this.chineseBlackjackApiFactory = chineseBlackjackApiFactory;
             this.crashGameApiFactory = crashGameApiFactory;
         }
 
@@ -269,6 +274,20 @@ namespace GamesAdmin.Api.GameServers
             {
                 var pontoonApi = pontoonApiFactory.SetResultApi();
                 return await pontoonApi.SetResult(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+            return false;
+        }
+
+        public async Task<bool> SetChineseBlackjackResult(SetChineseBlackjackResultRequest request)
+        {
+            try
+            {
+                var chineseBlackjackApi = chineseBlackjackApiFactory.SetResultApi();
+                return await chineseBlackjackApi.SetResult(request);
             }
             catch (Exception ex)
             {
