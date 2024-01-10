@@ -183,6 +183,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<DragonTigerFightReportService>();
             services.AddScoped<ColorGameReportService>();
             services.AddScoped<BandarQiuQiuReportService>();
+            services.AddScoped<ChineseBlackjackReportService>();
 
             services.AddPublicService();
 

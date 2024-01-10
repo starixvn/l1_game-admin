@@ -36,7 +36,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public string SplitLabel => IsSplittedHand ? "(Split)" : string.Empty;
 
-        public string GetDealerResult(byte maxCardCount, string highestHand)
+        public virtual string GetDealerResult(byte maxCardCount, string highestHand)
         {
             if (DealerPoint == maxPoint && DealerCards.Count() == 2)
             {
@@ -52,7 +52,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             }
         }
 
-        public string GetPlayerResult(byte maxCardCount, string highestHand, bool splitRule = false)
+        public virtual string GetPlayerResult(byte maxCardCount, string highestHand, bool splitRule = false)
         {
             if (Point == maxPoint && Cards.Count() == 2 && !splitRule)
             {
@@ -62,10 +62,10 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             {
                 return "Five Card";
             }
-            else 
+            else
             {
                 var pointValue = Ended ? Point.ToString() : string.Join("/", SoftPoints);
-                return Point > maxPoint ? "Bust" : pointValue;            
+                return Point > maxPoint ? "Bust" : pointValue;
             }
         }
     }

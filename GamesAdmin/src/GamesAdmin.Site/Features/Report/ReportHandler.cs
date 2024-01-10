@@ -51,7 +51,8 @@ namespace GamesAdmin.Site.Features.Report
         IRequestHandler<GetHoldemPokerBetHistoryRequest, HoldemPokerBetHistoryViewModel>,
         IRequestHandler<GetCascadingSlotReportRequest, CascadingSlotReportResultViewModel>,
         IRequestHandler<GetCascadingSlotBetHistoryRequest, CascadingSlotBetHistoryViewModel>,
-        IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>
+        IRequestHandler<GetCrashGameReportRequest, CrashGameReportResultViewModel>,
+        IRequestHandler<GetChineseBlackjackReportRequest, BlackjackGameReportResultViewModel>
     {
         private readonly IReportService reportService;
         private readonly IAppSettings appSettings;
@@ -427,6 +428,28 @@ namespace GamesAdmin.Site.Features.Report
                 Records = result.Select(x =>
                 {
                     var betViewModel = mapper.Map<BlackjackGameRecordViewModel>(x);
+                    betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
+                    betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
+
+                    return betViewModel;
+                })
+            };
+        }
+
+        public async Task<BlackjackGameReportResultViewModel> Handle(GetChineseBlackjackReportRequest request, CancellationToken cancellationToken)
+        {
+            var partners = await partnerService.GetPartnersForSelection(model => true);
+
+            request.Filter.ToDate.AddDays(1);
+            var result = await reportService.GetChineseBlackjackReport(request.Filter);
+
+            return new BlackjackGameReportResultViewModel
+            {
+                ConvertToUSD = request.Filter.ConvertToUSD,
+                BaseCurrencyMultiplier = systemSettings.BaseCurrencyMultiplier,
+                Records = result.Select(x =>
+                {
+                    var betViewModel = mapper.Map<ChineseBlackjackGameRecordViewModel>(x);
                     betViewModel.Time = TimeZoneInfo.ConvertTimeFromUtc(x.Time, appSettings.DefaultTimeZone);
                     betViewModel.Partner = GetPartnerName(partners, x.PartnerId);
 

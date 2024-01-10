@@ -38,6 +38,8 @@ namespace GamesAdmin.Site.Features.Report
 
         Task<IEnumerable<BlackjackBetRecord>> GetPontoonReport(BlackjackBetReportFilter filter);
 
+        Task<IEnumerable<BlackjackBetRecord>> GetChineseBlackjackReport(BlackjackBetReportFilter filter);
+
         Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request);
 
         Task<IEnumerable<JackpotRecord>> GetJackpotReport(int gameId, DateTime fromDate, DateTime toDate, bool excludeUUS, bool excludeBot);
@@ -106,6 +108,9 @@ namespace GamesAdmin.Site.Features.Report
 
         public Task<IEnumerable<BlackjackBetRecord>> GetPontoonReport(BlackjackBetReportFilter filter)
        => reportApi.GetPontoonReport(filter);
+
+        public Task<IEnumerable<BlackjackBetRecord>> GetChineseBlackjackReport(BlackjackBetReportFilter filter)
+            => reportApi.GetChineseBlackjackReport(filter);
 
         public Task<IEnumerable<SlotGameBetRecord>> GetSlotGameReport(GetSlotGameReportRequest request)
             => reportApi.GetSlotGameReport(

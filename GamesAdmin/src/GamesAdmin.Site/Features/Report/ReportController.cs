@@ -247,6 +247,20 @@ namespace GamesAdmin.Site.Features.Report
         }
 
         [HttpGet]
+        public async Task<IActionResult> ChineseBlackjack()
+        {
+            var selections = await mediator.Send(new GetSelectionsRequest());
+
+            return View(new BlackjackGameReportViewModel { BaseCurrency = this.systemSettings.BaseCurrency, ExcludeUUS = true, Selections = selections });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetChineseBlackjackReport(BlackjackBetReportFilter model)
+        {
+            return PartialView("_ChineseBlackjackRecords", await mediator.Send(new GetChineseBlackjackReportRequest(model)));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetBlackjackReport(BlackjackBetReportFilter model)
         {
             return PartialView("_BlackjackRecords", await mediator.Send(new GetBlackjackReportRequest(model)));
