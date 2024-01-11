@@ -1,6 +1,4 @@
-﻿    using GamesAdmin.Core;
-    using GamesAdmin.Core.Extensions;
-using GamesAdmin.Site.Features.BetDetails.ViewModels;
+﻿using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
 namespace GamesAdmin.Site.Features.BetDetails.Models
 {
@@ -10,13 +8,8 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
             : base(model)
         {
             Language = model.Language;
-            PlayerId = model.PlayerId;
-            SiteId = model.SiteId;
         }
-        public string PlayerId { get; set; }
 
         public string Language { get; set; }
-
-        public string SiteId { get; set; }
     }
 }

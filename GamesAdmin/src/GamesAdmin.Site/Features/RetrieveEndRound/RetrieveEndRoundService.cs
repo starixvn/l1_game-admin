@@ -28,6 +28,5 @@
 
             return JsonConvert.SerializeObject(result);
         }
-            var hashResult = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
     }
 }

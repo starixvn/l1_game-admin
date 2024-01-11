@@ -11,7 +11,7 @@ namespace GamesAdmin.Site.Features._Shared
         {
             var data = JsonConvert.SerializeObject(request);
             var hmac = new HMACSHA256(Encoding.ASCII.GetBytes(secretKey));
-            var hashResult = hmac.ComputeHash(Encoding.ASCII.GetBytes(data));
+            var hashResult = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
 
             var result = Convert.ToBase64String(hashResult);
             return result;

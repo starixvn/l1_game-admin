@@ -185,7 +185,7 @@ namespace GamesAdmin.Api.ChatBot
             return currencies;
         }
 
-        private async Task<AccountEntity> GetUser(int ObCustId, string operatorId)
+        private async Task<AccountEntity> GetUser(string ObCustId, string operatorId)
         {
             var userKey = string.Format("{0}{1}", CachedKeys.User, ObCustId);
             var user = cache.GetCache<AccountEntity>(userKey);

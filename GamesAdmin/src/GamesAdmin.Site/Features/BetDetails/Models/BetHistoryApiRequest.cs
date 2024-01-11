@@ -4,8 +4,6 @@ using GamesAdmin.Site.Features.BetDetails.ViewModels;
 
 namespace GamesAdmin.Site.Features.BetDetails.Models
 {
-
-{
     public class BetHistoryApiRequest
     {
         public BetHistoryApiRequest(BetDetailsViewModel model)
