@@ -125,6 +125,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.Pontoon => await MoveBlackjackGame<PontoonBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
                            GameId.ColorGame => await Move<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.BandarQiuQiu => await Move<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.ChineseBlackjack => await MoveBlackjackGame<ChineseBlackjackBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
                            _ => false,
                        };
             }

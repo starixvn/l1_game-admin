@@ -50,6 +50,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.CasinoHoldemPoker, "casino_holdem_poker"},
             { GameId.TexasHoldemPoker, "texas_holdem_poker"},
             { GameId.Pontoon, "pontoon"},
+            { GameId.ChineseBlackjack, "chinese_blackjack"},
         };
 
         public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler,

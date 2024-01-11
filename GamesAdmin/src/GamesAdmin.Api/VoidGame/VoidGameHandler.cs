@@ -29,6 +29,8 @@ namespace GamesAdmin.Api.VoidGame
                     return await voidGameService.VoidBlackjackGameTicket<BlackjackRoundEntity, BlackjackBetEntity>(request);
                 case GameId.Pontoon:
                     return await voidGameService.VoidBlackjackGameTicket<PontoonRoundEntity, PontoonBetEntity>(request);
+                case GameId.ChineseBlackjack:
+                    return await voidGameService.VoidBlackjackGameTicket<ChineseBlackjackRoundEntity, ChineseBlackjackBetEntity>(request);
                 case GameId.CasinoHoldemPoker:
                 case GameId.TexasHoldemPoker:
                     return await voidGameService.VoidHoldemPokerTicket(request);
