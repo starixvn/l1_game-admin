@@ -253,7 +253,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 {
                     ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
                 };
-                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(InitHttpClient(appSettings.GameServers.BandarQiuQiu.Api, appSettings.CloudSettings.ProxyUrl), refitSettings));
+                //services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(InitHttpClient(appSettings.GameServers.BandarQiuQiu.Api, appSettings.CloudSettings.ProxyUrl), refitSettings));
+                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
             }
         }
 
