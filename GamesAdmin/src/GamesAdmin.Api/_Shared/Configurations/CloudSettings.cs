@@ -8,6 +8,8 @@ namespace GamesAdmin.Api._Shared.Configurations
     {
         public bool IsCloudService { get; set; }
 
+        public bool EnableCloud { get; set; }
+
         public string CloudAdminApiUrl { get; set; }
 
         public string ProxyUrl { get; set; }

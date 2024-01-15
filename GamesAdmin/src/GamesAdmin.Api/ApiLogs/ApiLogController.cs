@@ -36,7 +36,7 @@ namespace GamesAdmin.Api.ApiLogs
         {
             var logs = Enumerable.Empty<dynamic>();
 
-            if (ApiLogEnumeration.IsRelatedToGame((ApiLogType)model.LogType))
+            if (ApiLogEnumeration.IsRelatedToGame((ApiLogType)model.LogType) && appSettings.CloudSettings.EnableCloud)
             {
                 if (appSettings.CloudSettings?.ShouldCallCloudService(model.GameTypeId) == true)
                 {
