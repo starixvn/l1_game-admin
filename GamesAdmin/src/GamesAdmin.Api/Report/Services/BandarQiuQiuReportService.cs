@@ -41,11 +41,16 @@ namespace GamesAdmin.Api.Report
             else
             {
                 var result = await repository.GetRecordAsync(filter);
-                return new BandarQiuQiuBetReport
+                var report = new BandarQiuQiuBetReport
                 {
                     RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
                     Records = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetRecord>(x))
                 };
+                if (!cloudSettings.IsCloudGame((int)filter.Game))
+                {
+                    report.Records = await GetBetRecordsWithUserInfo(report.Records, filter.Username, filter.ExcludeBot);
+                }
+                return report;
             }
         }
 
@@ -59,13 +64,18 @@ namespace GamesAdmin.Api.Report
             {
                 var result = await repository.GetBetHistoryAsync(filter);
 
-                return new BandarQiuQiuBetHistory
+                var betHistory = new BandarQiuQiuBetHistory
                 {
                     RoundResult = mapper.Map<BandarQiuQiuRoundResult>(result.Item1),
                     Bets = result.Item2.Select(x => mapper.Map<BandarQiuQiuBetHistoryRecord>(x)),
                     Odds = result.Item3,
                     CurrencyName = result.Item2.FirstOrDefault()?.Currency ?? string.Empty
                 };
+                if (!cloudSettings.IsCloudGame((int)filter.Game))
+                {
+                    betHistory.FractionalOddsFormat = await currencyGroupService.IsFractionalOddsFormat(filter.PartnerId, betHistory.CurrencyName);
+                }
+                return betHistory;
             }
         }
     }

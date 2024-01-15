@@ -16,7 +16,9 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         public IEnumerable<int> CloudGameIds { get; set; }
 
+        public bool IsCloudGame(int gameTypeId) => CloudGameIds != null && CloudGameIds.Contains(gameTypeId);
+
         public bool ShouldCallCloudService(int gameTypeId)
-            => !IsCloudService && CloudGameIds != null && CloudGameIds.Contains(gameTypeId);
+            => !IsCloudService && IsCloudGame(gameTypeId);
     }
 }
