@@ -44,7 +44,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             }
             else if (DealerPoint <= maxPoint && DealerCards.Count() == maxCardCount)
             {
-                return "Five Card";
+                return "Five-Card";
             }
             else
             {
@@ -60,7 +60,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
             }
             else if (Point <= maxPoint && Cards.Count() == maxCardCount)
             {
-                return "Five Card";
+                return "Five-Card";
             }
             else
             {
