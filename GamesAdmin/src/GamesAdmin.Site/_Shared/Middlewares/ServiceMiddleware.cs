@@ -1,11 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using GamesAdmin.Core.IdentityServer;
+﻿using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features;
-using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Authentication;
 using GamesAdmin.Site.Features.BetDetails;
 using GamesAdmin.Site.Features.Bot;
@@ -84,7 +80,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddSingleton(RestService.For<IBetDetailsApi>(appSettings.ResultPageConfiguration.BaseUrl));
             services.AddScoped<IBetDetailsService, BetDetailsService>();
 
-            services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.ResultPageConfiguration.BaseUrl));
+            services.AddSingleton(RestService.For<IRetrieveEndRoundApi>(appSettings.SGApiUrl));
             services.AddScoped<IRetrieveEndRoundService, RetrieveEndRoundService>();
 
             services.AddSingleton(RestService.For<IDailySummaryApi>(appSettings.SGApiUrl));
