@@ -154,7 +154,8 @@ namespace GamesAdmin.Api.Partners
 
                 await partnerRepository.UpdateAsync(user => user.PartnerId == partner.PartnerId, update);
 
-                if (appSettings.CloudSettings?.IsCloudService == false)
+                var isKbtEnv = appSettings.CloudSettings?.IsCloudService == false;
+                if (isKbtEnv && appSettings.CloudSettings?.EnableCloud == true)
                 {
                     try
                     {
