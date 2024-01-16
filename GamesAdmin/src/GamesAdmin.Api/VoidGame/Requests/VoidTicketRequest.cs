@@ -1,4 +1,5 @@
-﻿using GamesAdmin.Core.OWResults;
+﻿using GamesAdmin.Core.Extensions;
+using GamesAdmin.Core.OWResults;
 using MediatR;
 
 namespace GamesAdmin.Api.VoidGame.Requests
@@ -7,7 +8,7 @@ namespace GamesAdmin.Api.VoidGame.Requests
     {
         public VoidTicketRequest(string playerId, string operatorId, string siteId, long gameRoundId, int gameTypeId, string reason, bool freeBet)
         {
-            PlayerId = playerId;
+            PlayerId = StringFormatExtensions.FormatPlayerId(operatorId, siteId, playerId);
             OperatorId = operatorId;
             SiteId = siteId;
             GameRoundId = gameRoundId;
