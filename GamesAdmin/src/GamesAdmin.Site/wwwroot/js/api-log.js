@@ -14,7 +14,7 @@ $(document).ready(function () {
         var logType = $('#LogType').val() >> 0;
         var gameType = $('#GameTypeId').val() >> 0;
         var gameRound = $('#GameRoundId').val() >> 0;
-        var memberId = $('#ObCustId').val();
+        var memberId = $('#ObCustId').val() >> 0;
         var username = $('#Username').val();
         var $errorMessage = $("#error-message");
         var isInvalid = false;

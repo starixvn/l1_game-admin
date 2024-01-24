@@ -14,7 +14,7 @@ namespace GamesAdmin.Site.Features.ApiLogs.Requests
 
         public DateTimeOffset ToDate { get; set; }
 
-        public string ObCustId { get; set; }
+        public int ObCustId { get; set; }
 
         public int GameRoundId { get; set; }
 
