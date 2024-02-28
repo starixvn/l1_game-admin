@@ -66,7 +66,7 @@ namespace GamesAdmin.Database.Report
                             Currency = bet.Currency,
                             Round = bet.Round,
                             PartnerId = bet.OperatorId,
-                            BetLogs = betLogs,
+                            BetLogs = betLogs.Where(x => x.Uid == bet.Uid),
                         });
                     }
                 }                            
