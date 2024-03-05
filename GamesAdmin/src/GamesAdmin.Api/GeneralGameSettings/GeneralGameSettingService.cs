@@ -105,8 +105,9 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         public async Task<bool> IsCrashGame(int gameId)
         {
-            return appSettings.CloudSettings?.ShouldCallCloudService(gameId) == true ?
-              await CheckCrashGameDirectOnKbtDatabase(gameId) : await CheckCrashGameThroughGameManagementApi(gameId);
+            return appSettings.CloudSettings.ShouldCallCloudService(gameId) ?
+                 await CheckCrashGameThroughGameManagementApi(gameId) :
+                 await CheckCrashGameDirectOnKbtDatabase(gameId) ;
         }
 
         private async Task<GameConfigEntity> GetDisplayNameDierctOnKbtDatabase(int gameId)
