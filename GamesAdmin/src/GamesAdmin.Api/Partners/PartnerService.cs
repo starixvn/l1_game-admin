@@ -150,7 +150,8 @@ namespace GamesAdmin.Api.Partners
                     .Set(field => field.MiniVersionUrl, partner.MiniVersionUrl)
                     .Set(field => field.MegaKenoUrl, partner.MegaKenoUrl)
                     .Set(field => field.TestCurrencyUrl, partner.TestCurrencyUrl)
-                    .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency);
+                    .Set(field => field.IsDisplayPlayerCurrency, partner.IsDisplayPlayerCurrency)
+                    .Set(field => field.Alias, partner.Alias);
 
                 await partnerRepository.UpdateAsync(user => user.PartnerId == partner.PartnerId, update);
 

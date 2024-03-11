@@ -5,7 +5,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
 {
     public class UpdateRequest : IRequest<ResultBase>
     {
-        public UpdateRequest(string partnerId, string name, string secretKey, string clubVersionUrl, string mobiVersionUrl, string miniVersionUrl, string megaKenoUrl, string testCurrencyUrl, bool isDisplayPlayerCurrency)
+        public UpdateRequest(string partnerId, string name, string secretKey, string clubVersionUrl, string mobiVersionUrl, string miniVersionUrl, string megaKenoUrl, string testCurrencyUrl, bool isDisplayPlayerCurrency, string alias)
         {
             PartnerId = partnerId;
             Name = name;
@@ -16,6 +16,7 @@ namespace GamesAdmin.Site.Features.Partners.Requests
             MegaKenoUrl = megaKenoUrl;
             TestCurrencyUrl = testCurrencyUrl;
             IsDisplayPlayerCurrency = isDisplayPlayerCurrency;
+            Alias = alias;
         }
 
         public string PartnerId { get; }
@@ -33,6 +34,9 @@ namespace GamesAdmin.Site.Features.Partners.Requests
         public string MegaKenoUrl { get; }
 
         public string TestCurrencyUrl { get; }
+
         public bool IsDisplayPlayerCurrency { get; }
+
+        public string Alias { get; }
     }
 }

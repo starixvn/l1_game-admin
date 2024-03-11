@@ -2,7 +2,7 @@
 {
     public class Partner
     {
-        public Partner(string partnerId, string name, string secretKey, string clubVersionUrl, string mobiVersionUrl, string miniVersionUrl, string megaKenoUrl, string testCurrencyUrl, bool isDisplayPlayerCurrency)
+        public Partner(string partnerId, string name, string secretKey, string clubVersionUrl, string mobiVersionUrl, string miniVersionUrl, string megaKenoUrl, string testCurrencyUrl, bool isDisplayPlayerCurrency, string alias)
         {
             PartnerId = partnerId;
             Name = name;
@@ -13,6 +13,7 @@
             MegaKenoUrl = megaKenoUrl;
             TestCurrencyUrl = testCurrencyUrl;
             IsDisplayPlayerCurrency = isDisplayPlayerCurrency;
+            Alias = alias;
         }
 
         public string PartnerId { get; }
@@ -32,5 +33,7 @@
         public string TestCurrencyUrl { get; }
 
         public bool IsDisplayPlayerCurrency { get; }
+
+        public string Alias { get; }
     }
 }

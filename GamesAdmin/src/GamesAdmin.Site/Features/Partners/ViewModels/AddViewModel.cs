@@ -37,5 +37,8 @@ namespace GamesAdmin.Site.Features.Partners.ViewModels
 
         [DisplayName("Display Player Currency")]
         public bool IsDisplayPlayerCurrency { get; set; }
+
+        [Required]
+        public string Alias { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using GamesAdmin.Database.Attributes;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -23,5 +22,7 @@ namespace GamesAdmin.Database.Entities
         public string TestCurrencyUrl { get; set; }
 
         public bool IsDisplayPlayerCurrency { get; set; }
+
+        public string Alias { get; set; }
     }
 }

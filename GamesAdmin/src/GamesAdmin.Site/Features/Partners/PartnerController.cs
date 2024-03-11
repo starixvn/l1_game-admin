@@ -49,7 +49,8 @@ namespace GamesAdmin.Site.Features.Partners
                     addViewModel.MiniVersionUrl,
                     addViewModel.MegaKenoUrl,
                     addViewModel.TestCurrencyUrl,
-                    addViewModel.IsDisplayPlayerCurrency)));
+                    addViewModel.IsDisplayPlayerCurrency,
+                    addViewModel.Alias)));
 
             return Json(addedResult);
         }
@@ -74,7 +75,8 @@ namespace GamesAdmin.Site.Features.Partners
                    viewModel.MiniVersionUrl,
                    viewModel.MegaKenoUrl,
                    viewModel.TestCurrencyUrl,
-                   viewModel.IsDisplayPlayerCurrency));
+                   viewModel.IsDisplayPlayerCurrency,
+                   viewModel.Alias));
 
                 return Json(result);
             }
