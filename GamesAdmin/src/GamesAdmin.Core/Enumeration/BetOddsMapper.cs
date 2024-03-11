@@ -133,6 +133,9 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.ChineseBlackjackValue:
                     return Enumeration.GetAll<ChineseBlackjackOdds>();
+
+                case Game.FootballDiceValue:
+                    return Enumeration.GetAll<FootballDiceBetOdds>();
                 default: return default;
             }
         }
