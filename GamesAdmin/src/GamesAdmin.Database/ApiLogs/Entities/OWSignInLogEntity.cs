@@ -16,7 +16,7 @@ namespace GamesAdmin.Database.ApiLogs.Entities
 
     public class OWSignInCallEntity
     {
-        public int ObCustId { get; set; }
+        public string ObCustId { get; set; }
         public string ObCustName { get; set; }
         public int GameId { get; set; }
         public string Currency { get; set; }
