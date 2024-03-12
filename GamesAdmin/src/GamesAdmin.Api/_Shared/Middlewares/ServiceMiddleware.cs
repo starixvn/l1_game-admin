@@ -111,6 +111,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddVoidRunningTicketServices(services);
             AddPontoonServices(services, appSettings, refitSettings);
             AddCrashGameServices(services);
+            AddFootballDiceServices(services, appSettings, refitSettings);
             AddChineseBlackjackServices(services, appSettings, refitSettings);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
@@ -258,6 +259,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             {
                 services.AddSingleton(RestService.For<IChineseBlackjackApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
             }
+        }
+
+        private static void AddFootballDiceServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddScoped<IFootballDiceApiFactory, FootballDiceApiFactory>();
+            services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)

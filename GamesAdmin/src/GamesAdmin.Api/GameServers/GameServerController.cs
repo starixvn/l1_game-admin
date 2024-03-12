@@ -72,5 +72,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("crashgame/set_result")]
         public Task<bool> SetCrashGameResult([FromBody] SetCrashGameResultRequest request)
          => mediator.Send(request);
+
+        [HttpPost("footballdice/set_result")]
+        public Task<bool> SetFootballDice([FromBody] SetFootballDiceResultRequest request)
+         => mediator.Send(request);
     }
 }

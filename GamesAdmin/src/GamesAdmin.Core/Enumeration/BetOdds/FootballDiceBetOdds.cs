@@ -2,9 +2,9 @@
 {
     public class FootballDiceBetOdds : Enumeration
     {
-        public const string HomeValue = "high3";
-        public const string AwayValue = "high4";
-        public const string DrawValue = "high5";
+        public const string HomeValue = "home";
+        public const string AwayValue = "away";
+        public const string DrawValue = "draw";
 
         public static readonly FootballDiceBetOdds Home = new FootballDiceBetOdds(HomeValue, "Home");
         public static readonly FootballDiceBetOdds Away = new FootballDiceBetOdds(AwayValue, "Away");

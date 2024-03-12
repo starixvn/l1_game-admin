@@ -55,6 +55,8 @@ namespace GamesAdmin.Api.GameServers
         Task<bool> SetChineseBlackjackResult(SetChineseBlackjackResultRequest request);
 
         Task<bool> SetCrashGameResult(SetCrashGameResultRequest request);
+
+        Task<bool> SetFootballDiceResult(SetFootballDiceResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -74,6 +76,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IPontoonApiFactory pontoonApiFactory;
         private readonly IChineseBlackjackApiFactory chineseBlackjackApiFactory;
         private readonly ICrashGameApiFactory crashGameApiFactory;
+        private readonly IFootballDiceApiFactory footballDiceApiFactory;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -90,7 +93,9 @@ namespace GamesAdmin.Api.GameServers
             IGenericRepository<AdminUserEntity> userRepository,
             IPontoonApiFactory pontoonApiFactory,
             IChineseBlackjackApiFactory chineseBlackjackApiFactory,
-            ICrashGameApiFactory crashGameApiFactory)
+            ICrashGameApiFactory crashGameApiFactory,
+            IFootballDiceApiFactory footballDiceApiFactory
+            )
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -107,6 +112,7 @@ namespace GamesAdmin.Api.GameServers
             this.pontoonApiFactory = pontoonApiFactory;
             this.chineseBlackjackApiFactory = chineseBlackjackApiFactory;
             this.crashGameApiFactory = crashGameApiFactory;
+            this.footballDiceApiFactory = footballDiceApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -386,6 +392,20 @@ namespace GamesAdmin.Api.GameServers
 
                 var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
                 return await crashGameApiFactory.SetResultApi(serviceName).SetResult(request);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> SetFootballDiceResult(SetFootballDiceResultRequest request)
+        {
+            try
+            {
+                return await footballDiceApiFactory.SetResultApi().SetResult(request);
             }
             catch (Exception ex)
             {

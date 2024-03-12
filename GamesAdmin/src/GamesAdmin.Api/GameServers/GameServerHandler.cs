@@ -25,6 +25,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetPontoonResultRequest, bool>
         , IRequestHandler<SetChineseBlackjackResultRequest, bool>
         , IRequestHandler<SetCrashGameResultRequest, bool>
+        , IRequestHandler<SetFootballDiceResultRequest, bool>
     {
         private readonly IGameServerService gameServerService;
 
@@ -74,6 +75,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(SetCrashGameResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetCrashGameResult(request);
-          
+
+        public Task<bool> Handle(SetFootballDiceResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetFootballDiceResult(request);
+
     }
 }

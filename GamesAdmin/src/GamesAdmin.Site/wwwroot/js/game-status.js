@@ -259,7 +259,12 @@
         setControlResultHoldemPoker: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("HoldemPokderResult", gameName);
-        },
+        },  
+
+        setControlResultFootballDice: function (event, gameName) {
+            event.preventDefault();
+            this.setResultControl("FootballDiceResult", gameName);
+        }, 
 
         setControlResultSpeedUpGame: function (event, gameType, gameName, displayName) {
             event.preventDefault();
