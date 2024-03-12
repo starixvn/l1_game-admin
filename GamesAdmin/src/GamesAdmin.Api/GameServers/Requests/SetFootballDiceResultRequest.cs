@@ -14,8 +14,8 @@ namespace GamesAdmin.Api.GameServers.Requests
 
     public class FootballDiceResult
     {
-        public decimal[] home { get; set; }
+        public double[] home { get; set; }
 
-        public decimal[] away { get; set; }
+        public double[] away { get; set; }
     }
 }
