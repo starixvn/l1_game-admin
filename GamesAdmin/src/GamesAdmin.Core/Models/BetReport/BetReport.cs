@@ -133,4 +133,8 @@ namespace GamesAdmin.Core.Models
     public class BacBall2BetReport : BetReport<BacBall2Round, BacBall2BetRecord>
     {
     }
+
+    public class FootballDiceBetReport : BetReport<FootballDiceRoundResult, FootballDiceBetRecord>
+    {
+    }
 }

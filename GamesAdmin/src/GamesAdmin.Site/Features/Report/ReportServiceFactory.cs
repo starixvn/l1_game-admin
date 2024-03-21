@@ -63,6 +63,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.BacBall2, typeof(BacBall2ReportService) },
             { GameId.LuckyNext1, typeof(NextBallReportService) },
             { GameId.LuckyNext2, typeof(NextBallReportService) },
+            { GameId.FootballDice, typeof(FootballDiceReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

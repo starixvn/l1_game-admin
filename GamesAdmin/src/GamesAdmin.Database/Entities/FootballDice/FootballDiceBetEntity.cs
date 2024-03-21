@@ -1,6 +1,5 @@
-﻿using GamesAdmin.Database.Attributes;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Collections.Generic;
+using GamesAdmin.Database.Attributes;
 
 namespace GamesAdmin.Database.Entities
 {
@@ -12,6 +11,9 @@ namespace GamesAdmin.Database.Entities
         public decimal Away { get; set; }
 
         public decimal Draw { get; set; }
-        
+
+        public double TotalAmount { get; set; }
+
+        public Dictionary<string, decimal> Odds { get; set; }
     }
 }

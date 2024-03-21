@@ -36,6 +36,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<BacBall1ReportService>();
             services.AddScoped<BacBall2ReportService>();
             services.AddScoped<NextBallReportService>();
+            services.AddScoped<FootballDiceReportService>();
         }
     }
 }

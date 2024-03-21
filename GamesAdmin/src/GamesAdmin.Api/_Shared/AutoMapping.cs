@@ -472,7 +472,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FanTanSettlementResultEntity, FanTanSettlementResult>();
             CreateMap<FanTanResultEntity, FanTanResult>();
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
-
+            
             CreateMap<WinThreeCardsCardEntity, PokerCard>();
             CreateMap<WinThreeCardsHandResultEntity, WinThreeCardsHandResult>()
                 .ForMember(x => x.Cards,
@@ -595,6 +595,14 @@ namespace GamesAdmin.Api._Shared
             CreateMap<ColorGameBetReportEntity, ColorGameBetRecord>()
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
             CreateMap<ColorGameBetLogEntity, ColorGameBetHistoryRecord>();
+
+
+            CreateMap<FootballDiceBetReportEntity, FootballDiceBetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
+            CreateMap<FootballDiceRoundEntity, FootballDiceRoundResult>();
+            CreateMap<FootballDiceSettlementResultEntity, FootballDiceSettlementResult>();
+            CreateMap<FootballDiceResultEntity, FootballDiceResult>();
+            CreateMap<FootballDiceBetLogEntity, FootballDiceBetHistoryRecord>();
 
             CreateMap<BandarQiuQiuRoundEntity, BandarQiuQiuRoundResult>()
                 .ForMember(dest => dest.Banker, opt => opt.MapFrom(src => new BandarQiuQiuResultItem()

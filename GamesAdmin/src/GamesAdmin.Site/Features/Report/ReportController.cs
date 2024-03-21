@@ -786,5 +786,17 @@ namespace GamesAdmin.Site.Features.Report
         {
             return PartialView("_NextBallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
+
+        [HttpGet]
+        public IActionResult FootballDice()
+        {
+            return RedirectToAction("Index", new { game = GameId.FootballDice });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFootballDiceBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+                return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
     }
 }

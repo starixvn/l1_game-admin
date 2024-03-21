@@ -136,7 +136,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<WinThreeCardsReportService>();
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
-            services.AddScoped<SeDieReportService>();
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
@@ -156,6 +155,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BacBall1ReportService>();
             services.AddScoped<BacBall2ReportService>();
             services.AddScoped(typeof(NextBallReportService<,,>));
+            services.AddScoped<FootballDiceReportService>();
 
             services.AddPublicService();
 

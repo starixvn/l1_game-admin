@@ -1,14 +1,13 @@
-﻿namespace GamesAdmin.Database.Report.Entities
+﻿using GamesAdmin.Database.Entities;
+
+namespace GamesAdmin.Database.Report.Entities
 {
-    public class FootballDiceBetReportEntity : BetReportEntity
+    public class FootballDiceBetReportEntity : FootballDiceBetEntity
     {
-        public decimal Home { get;set; }
-        public decimal Away { get;set; }
-        public decimal Draw { get;set; }
+        public string UserId { get; set; }
 
-        public bool FreeBet { get;set; }
-        public decimal BetWin { get; set; }
+        public string Username { get; set; }
 
-        public decimal TotalBet { get; set; }
+        public string Nickname { get; set; }
     }
 }
