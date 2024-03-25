@@ -11,6 +11,7 @@ using GamesAdmin.Database.Entities;
 using GamesAdmin.Database.Entities.Baccarat;
 using GamesAdmin.Database.Entities.Keno;
 using GamesAdmin.Database.Entities.KenoProMax;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Sentry;
 
@@ -36,6 +37,7 @@ namespace GamesAdmin.Api.VoidGame
         private const string ArchivePostfix = "_bk";
 
         private const string RemovePostfix = "_rm";
+        private const string RoundResultPostfix = "_results";
 
         private readonly ISentryClient sentryClient;
 
@@ -517,6 +519,9 @@ namespace GamesAdmin.Api.VoidGame
                 var removeCollection = removedDatabase.GetCollection<RoundEntity>($"{collectionName}{RemovePostfix}");
                 await removeCollection.InsertOneAsync(round);
 
+                await MoveResult(gameRoundId, collectionName.Split("_").FirstOrDefault());
+
+
                 return true;
             }
             catch (Exception ex)
@@ -525,6 +530,21 @@ namespace GamesAdmin.Api.VoidGame
             }
 
             return false;
+        }
+
+        private async Task MoveResult(long gameRoundId, string gameName)
+        {
+            var resultCollectionName = $"{gameName}{RoundResultPostfix}";
+            var resultCollection = activeDatabase.GetCollection<dynamic>(resultCollectionName);
+            var result = await resultCollection.Find(new BsonDocument("roundId", gameRoundId)).FirstOrDefaultAsync();
+
+            if (result != null)
+            {
+                await resultCollection.DeleteOneAsync(new BsonDocument("roundId", gameRoundId));
+                await removedDatabase
+                    .GetCollection<dynamic>($"{resultCollectionName}{RemovePostfix}")
+                    .InsertOneAsync(result);
+            }
         }
 
         private async Task<BlackjackRecord> FindBlackjackGameBet<BlackjackGameBet>(string obCustId, string partnerId, string siteId, long gameRoundId, bool freeBet)

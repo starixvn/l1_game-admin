@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.OWResults;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
@@ -44,23 +46,27 @@ namespace GamesAdmin.Api.VoidGame
 
         private readonly IGenericRepository<AccountInfoEntity> accountInfoRepository;
 
+        private readonly IAppSettings appSettings;
+
         private readonly Dictionary<GameId, string> gameRound24h = new Dictionary<GameId, string>
         {
             { GameId.Blackjack, "blackjack"},
-            { GameId.CasinoHoldemPoker, "casino_holdem_poker"},
-            { GameId.TexasHoldemPoker, "texas_holdem_poker"},
+            { GameId.CasinoHoldemPoker, "casino holdem poker"},
+            { GameId.TexasHoldemPoker, "texas holdem poker"},
             { GameId.Pontoon, "pontoon"},
-            { GameId.ChineseBlackjack, "chinese_blackjack"},
+            { GameId.ChineseBlackjack, "chinese blackjack"},
         };
 
         public VoidGameService(ISentryClient sentryClient, IVoidGameApi voidGameApi, ITicketHandler ticketHandler,
-            IVoidRunningTicketApiFactory voidRunningTicketApiFactory, IGenericRepository<AccountInfoEntity> accountInfoRepository)
+            IVoidRunningTicketApiFactory voidRunningTicketApiFactory, IGenericRepository<AccountInfoEntity> accountInfoRepository,
+            IAppSettings appSettings)
         {
             this.sentryClient = sentryClient;
             this.voidGameApi = voidGameApi;
             this.ticketHandler = ticketHandler;
             this.voidRunningTicketApiFactory = voidRunningTicketApiFactory;
             this.accountInfoRepository = accountInfoRepository;
+            this.appSettings = appSettings;
         }
 
         public async Task<VoidGameResult> VoidGameTicket(VoidTicketRequest request)
@@ -268,10 +274,13 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
+               
                 var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
-                if (gameRound24h.TryGetValue(gameId, out var serviceName))
+  
+                if (gameRound24h.TryGetValue(gameId, out var gameName))
                 {
+                    var serviceName = NamingConverter.ServiceName(gameName, appSettings.ServiceNameSeparator);
                     var voidRunningTicketApi = voidRunningTicketApiFactory.GetVoidRunningTicketApi(serviceName);
                     var result = await voidRunningTicketApi.VoidTicket(new VoidRunningTicketRequest(userIndentify, accountInfoEntity?.Name));
                     return result;

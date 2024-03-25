@@ -40,6 +40,8 @@ namespace GamesAdmin.Api._Shared.Configurations
         CloudSettings CloudSettings { get; }
 
         string ProxyUrl { get; }
+
+        string ServiceNameSeparator { get; }
     }
 
     public class AppSettings : IAppSettings
@@ -63,10 +65,11 @@ namespace GamesAdmin.Api._Shared.Configurations
             AdminMonitoringSettings = configuration.GetSection(nameof(AdminMonitoringSettings)).Get<AdminMonitoringSettings>();
             ProxyUrl = configuration[nameof(ProxyUrl)] ?? GetValue<string>(nameof(ProxyUrl));
             RoundWatcherServiceSettings = configuration.GetSection(nameof(RoundWatcherServiceSettings)).Get<RoundWatcherServiceSettings>();
-            ServiceApiTemplate = BuildSeviceApiTemplate();
+            ServiceApiTemplate = BuildSeviceApiTemplate(configuration["GameServiceTemplate"]);
             RtpCheckerServiceSettings = configuration.GetSection(nameof(RtpCheckerServiceSettings)).Get<RtpCheckerServiceSettings>();
             StatusCheckerServiceSettings = configuration.GetSection(nameof(StatusCheckerServiceSettings)).Get<StatusCheckerServiceSettings>();
             CloudSettings = configuration.GetSection(nameof(CloudSettings)).Get<CloudSettings>();
+            ServiceNameSeparator = configuration["ServiceNameSeparator"];
         }
 
         public string SystemType { get; }
@@ -103,6 +106,8 @@ namespace GamesAdmin.Api._Shared.Configurations
 
         public CloudSettings CloudSettings { get; }
 
+        public string ServiceNameSeparator { get; }
+
         public T GetValue<T>(string key)
         {
             try
@@ -119,7 +124,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             }
         }
 
-        private string BuildSeviceApiTemplate()
+        private string BuildSeviceApiTemplate(string template)
         {
             if (ProxyUrl != String.Empty)
             {
@@ -129,7 +134,7 @@ namespace GamesAdmin.Api._Shared.Configurations
             {
                 var servicePrefix = SystemType == Core.SystemType.SC1 ? "l1" : "l2";
 
-                return $"http://{servicePrefix}_{{0}}_service_{Env}:5000";
+                return template ?? $"http://{servicePrefix}_{{0}}_service_{Env}:5000";
             }
         }
     }

@@ -97,7 +97,7 @@ namespace GamesAdmin.Api.GameServers
                 {
                     AuthorizationHeaderValueGetter = IdentityServerManager.GetAccessToken
                 };
-                var serviceName = NamingConverter.ServiceName(gameConfig.Info.DisplayName);
+                var serviceName = NamingConverter.ServiceName(gameConfig.Info.DisplayName, appSettings.ServiceNameSeparator);
                 var api = string.Format(appSettings.ServiceApiTemplate, serviceName);
 
                 return RestService.For<ISlotGameOnlineUserApi>(api, refitSettings);

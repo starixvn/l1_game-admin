@@ -16,7 +16,7 @@
 
         public static string GameConfigName(string displayName) => FormatName(displayName, string.Empty);
 
-        public static string ServiceName(string displayName) => FormatName(displayName, "_");
+        public static string ServiceName(string displayName, string separator) => FormatName(displayName, separator ?? "_");
 
         public static string RoundCollection(string displayName) => CollectionName(GameConfigName(displayName), roundSuffix);
 

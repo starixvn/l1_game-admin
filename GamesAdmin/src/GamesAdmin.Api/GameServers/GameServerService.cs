@@ -218,7 +218,7 @@ namespace GamesAdmin.Api.GameServers
 
                 if (await gameUserService.IsAbleToSetSlotResult(request.Nickname, isExcludeTestCurrency))
                 {
-                    var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
+                    var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
                     var result = await slotBoardApiFactory.GetBoardApi(serviceName).SetBoard(new SetSlotBoardServerRequest(request.Nickname, request.Results));
                     result.Result = request.Results.ToList();
 
@@ -363,7 +363,7 @@ namespace GamesAdmin.Api.GameServers
                 var config = await gameSettingService.GetByName(request.gameConfigName);
                 if (await gameUserService.IsAbleToSetSlotResult(request.name, false))
                 {
-                    var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
+                    var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
                     var result = await cascadingResultApiFactory.SetResultApi(serviceName).SetResult(request);
 
                     return result;
@@ -383,7 +383,7 @@ namespace GamesAdmin.Api.GameServers
             {
                 var config = await gameSettingService.GetByName(request.gameConfigName);
 
-                var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName);
+                var serviceName = NamingConverter.ServiceName(config?.Info.DisplayName, appSettings.ServiceNameSeparator);
                 return await crashGameApiFactory.SetResultApi(serviceName).SetResult(request);
             }
             catch (Exception ex)
