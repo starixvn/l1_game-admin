@@ -16,20 +16,25 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal GetWinningOdds(string choice)
         {
+            if(choice != "draw" && RoundResult.SettlementResult.Draw)
+            {
+                return 1;
+            }
+
             var isWin = false;
 
             switch (choice)
             {
                 case "home":
-                    isWin = this.RoundResult.SettlementResult.Home;
+                    isWin = RoundResult.SettlementResult.Home;
                     break;
 
                 case "away":
-                    isWin = this.RoundResult.SettlementResult.Away;
+                    isWin = RoundResult.SettlementResult.Away;
                     break;
 
                 case "draw":
-                    isWin = this.RoundResult.SettlementResult.Draw;
+                    isWin = RoundResult.SettlementResult.Draw;
                     break;
             }
 

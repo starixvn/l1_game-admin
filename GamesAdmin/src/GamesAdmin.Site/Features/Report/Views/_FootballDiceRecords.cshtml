@@ -26,13 +26,26 @@
                         <td>
                             <div class="text-center">
                                 <div class="dice-list" style="font-size:26px">
-                                    <img class="dice" src="~/images/dice_@(Model.RoundResult.Result.Home[0]).png" />
-                                    <img class="dice" src="~/images/dice_@(Model.RoundResult.Result.Home[1]).png" />
-                                    @(Model.RoundResult.Result.Home[0] + Model.RoundResult.Result.Home[1])
+                                    <img class="dice" src="~/images/football-dice/dice-home-@(Model.RoundResult.Result.Home[0]).png" />
+                                    <img class="dice" src="~/images/football-dice/dice-home-@(Model.RoundResult.Result.Home[1]).png" />
+                                    @if(Model.RoundResult.SettlementResult.Home){
+                                        <b>@(Model.RoundResult.Result.Home[0] + Model.RoundResult.Result.Home[1])</b>
+                                    }
+                                    else
+                                    {
+                                        @(Model.RoundResult.Result.Home[0] + Model.RoundResult.Result.Home[1])
+                                    }
                                     |
-                                    <img class="dice" src="~/images/dice_@(Model.RoundResult.Result.Away[0]).png" />
-                                    <img class="dice" src="~/images/dice_@(Model.RoundResult.Result.Away[1]).png" />
-                                    @(Model.RoundResult.Result.Away[0] + Model.RoundResult.Result.Away[1])
+                                    <img class="dice" src="~/images/football-dice/dice-away-@(Model.RoundResult.Result.Away[0]).png" />
+                                    <img class="dice" src="~/images/football-dice/dice-away-@(Model.RoundResult.Result.Away[1]).png" />
+                                    @if (Model.RoundResult.SettlementResult.Away)
+                                    {
+                                        <b>@(Model.RoundResult.Result.Away[0] + Model.RoundResult.Result.Away[1])</b>
+                                    }
+                                    else
+                                    {
+                                        @(Model.RoundResult.Result.Away[0] + Model.RoundResult.Result.Away[1])
+                                    }
                                 </div>
                             </div>
                         </td>
