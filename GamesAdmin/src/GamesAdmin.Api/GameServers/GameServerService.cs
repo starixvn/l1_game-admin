@@ -15,6 +15,7 @@ using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.FootballDice;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Database;
@@ -56,7 +57,7 @@ namespace GamesAdmin.Api.GameServers
 
         Task<bool> SetCrashGameResult(SetCrashGameResultRequest request);
 
-        Task<bool> SetFootballDiceResult(SetFootballDiceResultRequest request);
+        Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -401,7 +402,7 @@ namespace GamesAdmin.Api.GameServers
             return false;
         }
 
-        public async Task<bool> SetFootballDiceResult(SetFootballDiceResultRequest request)
+        public async Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request)
         {
             try
             {
@@ -412,7 +413,7 @@ namespace GamesAdmin.Api.GameServers
                 HandleException(ex);
             }
 
-            return false;
+            return null;
         }
     }
 }

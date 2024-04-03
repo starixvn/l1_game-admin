@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using GamesAdmin.Core.Models.FootballDice;
+using MediatR;
 
 namespace GamesAdmin.Api.GameServers.Requests
 {
-    public class SetFootballDiceResultRequest : IRequest<bool>
+    public class SetFootballDiceResultRequest : IRequest<FootballDiceControlResult>
     {
         public SetFootballDiceResultRequest(FootballDiceResult result)
         {

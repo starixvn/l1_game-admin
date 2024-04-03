@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.FootballDice;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
@@ -74,7 +75,7 @@ namespace GamesAdmin.Api.GameServers
          => mediator.Send(request);
 
         [HttpPost("footballdice/set_result")]
-        public Task<bool> SetFootballDice([FromBody] SetFootballDiceResultRequest request)
+        public Task<FootballDiceControlResult> SetFootballDice([FromBody] SetFootballDiceResultRequest request)
          => mediator.Send(request);
     }
 }
