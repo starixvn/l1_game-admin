@@ -123,7 +123,7 @@ namespace GamesAdmin.Api.ChatBot
         private async Task<string> GetCharName(NotifyHighStakeRequest request)
         {
             return appSettings.CloudSettings.IsCloudService ?
-               $"playerId: {request.ObCustId}" : await gameUserService.GetCharacterNameAsync(request.ObCustId, request.OperatorId);
+               $"playerId: {request.ObCustId}" : await gameUserService.GetCharacterNameAsync(request.ObCustId);
         }
 
         private double GetHighStakeAmount()
