@@ -7,7 +7,7 @@ namespace GamesAdmin.Core.Models.FootballDice
     {
 
         [JsonProperty("roundId")]
-        public byte? RoundId { get; set; }
+        public int RoundId { get; set; }
 
         [JsonProperty("isSuccessful")]
         public bool IsSuccessful { get; set; }

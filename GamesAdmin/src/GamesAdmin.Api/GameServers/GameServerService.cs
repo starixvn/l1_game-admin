@@ -404,16 +404,7 @@ namespace GamesAdmin.Api.GameServers
 
         public async Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request)
         {
-            try
-            {
-                return await footballDiceApiFactory.SetResultApi().SetResult(request);
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-
-            return null;
+            return await footballDiceApiFactory.SetResultApi().SetResult(request);
         }
     }
 }
