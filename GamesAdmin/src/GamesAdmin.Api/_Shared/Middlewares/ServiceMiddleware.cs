@@ -156,6 +156,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BacBall2ReportService>();
             services.AddScoped(typeof(NextBallReportService<,,>));
             services.AddScoped<FootballDiceReportService>();
+            services.AddScoped<FootballSlotReportService>();
 
             services.AddPublicService();
 
@@ -213,6 +214,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
             services.AddSingleton(RestService.For<IChineseBlackjackOnlineUserApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
             services.AddSingleton(RestService.For<IFootballDiceOnlineUserApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFootballSlotOnlineUserApi>(appSettings.GameServers.FootballSlot.Api, refitSettings));
         }
 
         private static void AddOnlineUserApiGN(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)

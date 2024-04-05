@@ -59,7 +59,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IBacBall2ReportRepository, BacBall2ReportRepository>();
             services.AddScoped<IBaseDrawGameReportRepository, BaseDrawGameReportRepository>();
             services.AddScoped<IFootballDiceReportRepository, FootballDiceReportRepository>();
-
+            services.AddScoped<IFootballSlotReportRepository, FootballSlotReportRepository>();
         }
     }
 }

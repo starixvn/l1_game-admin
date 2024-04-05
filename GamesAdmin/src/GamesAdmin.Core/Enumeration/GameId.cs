@@ -67,5 +67,6 @@
         LuckyNext1 = 1003,
         LuckyNext2 = 1004,
         FootballDice = 78,
+        FootballSlot = 79,
     }
 }

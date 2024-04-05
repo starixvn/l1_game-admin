@@ -67,6 +67,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.LuckyNext1, new GameTicketCollection("luckynext1_bets", "luckynext1_betlogs") },
             { GameId.LuckyNext2, new GameTicketCollection("luckynext2_bets", "luckynext2_betlogs") },
             { GameId.FootballDice, new GameTicketCollection("footballdice_bets", "footballdice_betlogs") },
+            { GameId.FootballSlot, new GameTicketCollection("footballslot_bets", "footballslot_betlogs") },
            };
 
         public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string displayName = "", bool isCheckBetLog = false)

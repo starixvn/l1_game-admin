@@ -113,6 +113,8 @@
         public GameServerConfigs LuckyNext1 { get; set; }
         public GameServerConfigs LuckyNext2 { get; set; }
         public GameServerConfigs FootballDice{ get; set; }
+        public GameServerConfigs FootballSlot { get; set; }
+
     }
 
     public class GameServerConfigs

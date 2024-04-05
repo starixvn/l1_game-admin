@@ -72,6 +72,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string LuckyNext1Value = "luckynext1";
         public const string LuckyNext2Value = "luckynext2";
         public const string FootballDiceValue = "footballdice";
+        public const string FootballSlotValue = "footballslot";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -135,6 +136,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game BandarQiuQiu = new Game(BandarQiuQiuValue, "Bandar Qiu Qiu", GameId.BandarQiuQiu);
         public static readonly Game ChineseBlackjack = new Game(ChineseBlackjackValue, "Chinese Blackjack", GameId.ChineseBlackjack);
         public static readonly Game FootballDice = new Game(FootballDiceValue, "Football Dice", GameId.FootballDice);
+        public static readonly Game FootballSlot = new Game(FootballSlotValue, "Football Slot", GameId.FootballSlot);
 
         public Game()
         {

@@ -54,6 +54,7 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.LuckyNext1, "_NextBallRecords" },
             { GameId.LuckyNext2, "_NextBallRecords" },
             { GameId.FootballDice, "_FootballDiceRecords" },
+            { GameId.FootballSlot, "_SlotRNGRecords" },
         };
 
         public string GetView(GameId game) => views[game];
