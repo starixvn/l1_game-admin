@@ -156,6 +156,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BacBall2ReportService>();
             services.AddScoped(typeof(NextBallReportService<,,>));
             services.AddScoped<FootballDiceReportService>();
+            services.AddScoped<FootballSlotReportService>();
 
             services.AddPublicService();
 

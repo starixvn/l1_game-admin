@@ -136,6 +136,10 @@ namespace GamesAdmin.Core.Enumeration
 
                 case Game.FootballDiceValue:
                     return Enumeration.GetAll<FootballDiceBetOdds>();
+
+                case Game.FootballSlotValue:
+                    return Enumeration.GetAll<FootballSlotOdds>();
+
                 default: return default;
             }
         }

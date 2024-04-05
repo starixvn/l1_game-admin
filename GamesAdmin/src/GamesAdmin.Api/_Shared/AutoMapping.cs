@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.Lobby;
@@ -7,13 +9,11 @@ using GamesAdmin.Core.Models.Spins;
 using GamesAdmin.Core.Models.Um;
 using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
+using GamesAdmin.Database.Entities.DragonTigerFight;
 using GamesAdmin.Database.Entities.Lobby;
 using GamesAdmin.Database.Entities.Spins;
 using GamesAdmin.Database.Report.Entities;
 using MongoDB.Bson;
-using System.Collections.Generic;
-using System.Linq;
-using GamesAdmin.Database.Entities.DragonTigerFight;
 
 namespace GamesAdmin.Api._Shared
 {
@@ -472,7 +472,7 @@ namespace GamesAdmin.Api._Shared
             CreateMap<FanTanSettlementResultEntity, FanTanSettlementResult>();
             CreateMap<FanTanResultEntity, FanTanResult>();
             CreateMap<FanTanBetEntity, FanTanBetHistoryRecord>();
-            
+
             CreateMap<WinThreeCardsCardEntity, PokerCard>();
             CreateMap<WinThreeCardsHandResultEntity, WinThreeCardsHandResult>()
                 .ForMember(x => x.Cards,
@@ -596,7 +596,6 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
             CreateMap<ColorGameBetLogEntity, ColorGameBetHistoryRecord>();
 
-
             CreateMap<FootballDiceBetReportEntity, FootballDiceBetRecord>()
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId));
             CreateMap<FootballDiceRoundEntity, FootballDiceRoundResult>();
@@ -665,6 +664,14 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
             CreateMap<LuckyNext1BetLogEntity, NextBallBetHistoryRecord>();
+            
+            CreateMap<FootballSlotRoundEntity, SlotRNGRoundResult>()
+                 .ForMember(x => x.ResultNumber, opt => opt.MapFrom((source) => source.Result.Number))
+                 .ForMember(x => x.Symbols, opt => opt.MapFrom((source) => source.Result.Symbols));
+            CreateMap<FootballSlotBetReportEntity, SlotRNGBetRecord>()
+                .ForMember(x => x.BetWin, opt => opt.MapFrom((source) => source.Betwin))
+                .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.OperatorId));
+            CreateMap<FootballSlotBetLogEntity, SlotRNGBetHistoryRecord>();
         }
     }
 }

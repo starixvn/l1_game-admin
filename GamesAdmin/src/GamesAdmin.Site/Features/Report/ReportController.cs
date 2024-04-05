@@ -798,5 +798,8 @@ namespace GamesAdmin.Site.Features.Report
         {
                 return PartialView("_FootballDiceBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
+
+        [HttpGet]
+        public IActionResult FootballSlot() => RedirectToAction("Index", new { game = GameId.FootballSlot });
     }
 }
