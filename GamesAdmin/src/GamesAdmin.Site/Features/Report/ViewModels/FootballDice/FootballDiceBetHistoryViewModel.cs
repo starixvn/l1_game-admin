@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GamesAdmin.Core.Enumeration.BetChoices;
+using GamesAdmin.Core.Enumeration.BetOdds;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -11,12 +13,17 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal GetOddsToShow(string choice)
         {
+            if(choice == FootballDiceBetChoice.DrawValue && RoundResult.SettlementResult.Draw12)
+            {
+                return Odds[FootballDiceBetOdds.Draw12Value];
+            }
+
             return Odds[choice];
         }
 
         public decimal GetWinningOdds(string choice)
         {
-            if(choice != "draw" && RoundResult.SettlementResult.Draw)
+            if(choice != FootballDiceBetChoice.DrawValue && RoundResult.SettlementResult.Draw)
             {
                 return 1;
             }
@@ -25,15 +32,15 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
             switch (choice)
             {
-                case "home":
+                case FootballDiceBetChoice.HomeValue:
                     isWin = RoundResult.SettlementResult.Home;
                     break;
 
-                case "away":
+                case FootballDiceBetChoice.AwayValue:
                     isWin = RoundResult.SettlementResult.Away;
                     break;
 
-                case "draw":
+                case FootballDiceBetChoice.DrawValue:
                     isWin = RoundResult.SettlementResult.Draw;
                     break;
             }

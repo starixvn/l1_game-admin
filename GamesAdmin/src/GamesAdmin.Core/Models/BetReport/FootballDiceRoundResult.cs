@@ -18,5 +18,6 @@
         public bool Home { get; set; }
         public bool Away { get; set; }
         public bool Draw { get; set; }
+        public bool Draw12 { get; set; }
     }
 }
