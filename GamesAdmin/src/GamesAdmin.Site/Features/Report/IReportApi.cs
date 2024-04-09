@@ -25,7 +25,7 @@ namespace GamesAdmin.Site.Features.Report
         Task<OddEvenBetReport> GetOddEvenTurboReport(long roundId, string nickname, bool excludeBot, string partnerId, string username);
 
         [Get("/report/bet_history/game/{gameTypeId}/round/{roundId}/user/{nickname}")]
-        Task<IEnumerable<T>> GetBetHistory<T>(byte gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
+        Task<IEnumerable<T>> GetBetHistory<T>(int gameTypeId, long roundId, string nickname) where T : BaseBetHistory;
 
         [Get("/report/lucky_wheel/users/{nickname}")]
         Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname);
@@ -71,7 +71,6 @@ namespace GamesAdmin.Site.Features.Report
 
         [Get("/report/holdempoker")]
         Task<IEnumerable<HoldemPokerBetRecord>> GetHoldemPokerBetReport(HoldemPokerBetReportFilter filter);
-
 
         [Get("/report/bet_history/holdempoker")]
         Task<HoldemPokerBetHistory> GetHoldemPokerBetHistory(HoldemPokerBetHistoryFilter filter);

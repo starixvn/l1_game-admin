@@ -31,7 +31,10 @@ using GamesAdmin.Api.ServiceStatus;
 using GamesAdmin.Api.UM;
 using GamesAdmin.Api.Users;
 using GamesAdmin.Api.VoidGame;
+using GamesAdmin.Api.VoidGame.BacBall1;
+using GamesAdmin.Api.VoidGame.BacBall2;
 using GamesAdmin.Api.VoidGameRemote;
+using GamesAdmin.Core;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -50,6 +53,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
             };
 
+            services.AddScoped<IHiLoApiFactory, HiLoApiFactory>();
             services.AddScoped<IGameSettingsService, GameSettingsService>();
             services.AddScoped<ICloneSettingService, CloneSettingsService>();
             services.AddScoped<IGeneralGameSettingService, GeneralGameSettingService>();
@@ -78,64 +82,28 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IGameServerApi>(appSettings.GameServers.Main.Api, refitSettings));
             services.AddSingleton(RestService.For<IUserServiceApi>(appSettings.GameServers.UserService.Api, refitSettings));
             services.AddSingleton(RestService.For<INotificationServiceApi>(appSettings.GameServers.NotificationService.Api, refitSettings));
-
             services.AddSingleton(RestService.For<IMainOnlineUserApi>(appSettings.GameServers.UserService.Api, refitSettings));
-            services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
-            services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
-            services.AddSingleton(RestService.For<ISpecialSedieOnlineUserApi>(appSettings.GameServers.SpecialSedie.Api, refitSettings));
-            services.AddSingleton(RestService.For<IBlackjackOnlineUserApi>(appSettings.GameServers.Blackjack.Api, refitSettings));
-            services.AddSingleton(RestService.For<IVipFishPrawnCrabOnlineUserApi>(appSettings.GameServers.VipFishPrawnCrab.Api, refitSettings));
-            services.AddSingleton(RestService.For<IVipBaccaratOnlineUserApi>(appSettings.GameServers.VipBaccarat.Api, refitSettings));
-            services.AddSingleton(RestService.For<ISicBoOnlineUserApi>(appSettings.GameServers.SicBo.Api, refitSettings));
-            services.AddSingleton(RestService.For<IVipSedieWarOnlineUserApi>(appSettings.GameServers.VipSedieWar.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoProMaxOnlineUserApi>(appSettings.GameServers.KenoProMax.Api, refitSettings));
-            services.AddSingleton(RestService.For<IMiniSeDieOnlineUserApi>(appSettings.GameServers.MiniSeDie.Api, refitSettings));
-            services.AddSingleton(RestService.For<IRouletteOnlineUserApi>(appSettings.GameServers.Roulette.Api, refitSettings));
-            services.AddSingleton(RestService.For<IBaccaratOnlineUserApi>(appSettings.GameServers.Baccarat.Api, refitSettings));
-            services.AddSingleton(RestService.For<IFishPrawnCrabOnlineUserApi>(appSettings.GameServers.FishPrawnCrab.Api, refitSettings));
-            services.AddSingleton(RestService.For<IDragonTigerOnlineUserApi>(appSettings.GameServers.DragonTiger.Api, refitSettings));
-            services.AddSingleton(RestService.For<IBigSmallOnlineUserApi>(appSettings.GameServers.BigSmall.Api, refitSettings));
-            services.AddSingleton(RestService.For<ITurboBigSmallOnlineUserApi>(appSettings.GameServers.TurboBigSmall.Api, refitSettings));
-            services.AddSingleton(RestService.For<ITurboOddEvenOnlineUserApi>(appSettings.GameServers.TurboOddEven.Api, refitSettings));
-            services.AddSingleton(RestService.For<ILotteryOnlineUserApi>(appSettings.GameServers.Lottery.Api, refitSettings));
-            services.AddSingleton(RestService.For<IThreeCardsOnlineUserApi>(appSettings.GameServers.ThreeCards.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoMatchOnlineUserApi>(appSettings.GameServers.KenoMatch1.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoPowerOnlineUserApi>(appSettings.GameServers.KenoPower1.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoMaxOnlineUserApi>(appSettings.GameServers.KenoMax.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoMax2OnlineUserApi>(appSettings.GameServers.KenoMax2.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoMiniOnlineUserApi>(appSettings.GameServers.KenoMini.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoMini2OnlineUserApi>(appSettings.GameServers.KenoMini2.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoEastOnlineUserApi>(appSettings.GameServers.KenoEast.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoWestOnlineUserApi>(appSettings.GameServers.KenoWest.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoSouthOnlineUserApi>(appSettings.GameServers.KenoSouth.Api, refitSettings));
-            services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
-            services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
-            services.AddSingleton(RestService.For<ICasinoHoldemPokerOnlineUserApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
-            services.AddSingleton(RestService.For<IHiLoApi>(appSettings.GameServers.HiLo.Api, refitSettings));
-            services.AddSingleton(RestService.For<ITexasHoldemPokerOnlineUserApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
-            services.AddSingleton(RestService.For<ITreasureIslandOnlineUserApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
-            services.AddSingleton(RestService.For<IBlockchainBaccaratOnlineUserApi>(appSettings.GameServers.BlockchainBaccarat.Api, refitSettings));
-            services.AddSingleton(RestService.For<IMegaKenoOnlineUserApi>(appSettings.GameServers.MegaKeno.Api, refitSettings));
-            services.AddSingleton(RestService.For<IUnbalancedBigSmallOnlineUserApi>(appSettings.GameServers.UnbalancedBigSmall1.Api, refitSettings));
-            services.AddSingleton(RestService.For<IMegaKeno2OnlineUserApi>(appSettings.GameServers.MegaKeno2.Api, refitSettings));
-            services.AddSingleton(RestService.For<IFruitSlotOnlineUserApi>(appSettings.GameServers.FruitSlot.Api, refitSettings));
-            services.AddSingleton(RestService.For<IFanTanOnlineUserApi>(appSettings.GameServers.FanTan.Api, refitSettings));
-            services.AddSingleton(RestService.For<IWinThreeCardsOnlineUserApi>(appSettings.GameServers.WinThreeCards.Api, refitSettings));
-            services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
-            services.AddSingleton(RestService.For<IDragonTigerFightOnlineUserApi>(appSettings.GameServers.DragonTigerFight.Api, refitSettings));
-            services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
-            services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
-            services.AddSingleton(RestService.For<IPontoonOnlineUserApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
-            services.AddSingleton(RestService.For<IColorGameOnlineUserApi>(appSettings.GameServers.ColorGame.Api, refitSettings));
             services.AddSingleton<ICacheManager, CacheManager>();
-            services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
-            services.AddSingleton(RestService.For<IChineseBlackjackOnlineUserApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
+
+            if (appSettings.SystemType == SystemType.GN)
+            {
+                AddOnlineUserApiGN(services, appSettings, refitSettings);
+            }
+            else
+            {
+                AddOnlineUserApiSCVG(services, appSettings, refitSettings);
+            }
 
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
+            services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
             services.AddScoped<ITicketHandler, TicketHandler>();
+            services.AddScoped<IBacBall1VoidGameService, BacBall1VoidGameService>();
+            services.AddScoped<IBacBall2VoidGameService, BacBall2VoidGameService>();
 
             AddSlotServices(services);
             AddHoldemPokerServices(services, appSettings, refitSettings);
@@ -184,12 +152,73 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<ColorGameReportService>();
             services.AddScoped<BandarQiuQiuReportService>();
             services.AddScoped<ChineseBlackjackReportService>();
+            services.AddScoped<BacBall1ReportService>();
+            services.AddScoped<BacBall2ReportService>();
+            services.AddScoped(typeof(NextBallReportService<,,>));
 
             services.AddPublicService();
 
             services.InitApiLog();
 
             services.AddCloudServices(appSettings);
+        }
+
+        private static void AddOnlineUserApiSCVG(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddSingleton(RestService.For<ISedieOnlineUserApi>(appSettings.GameServers.Sedie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipSedieOnlineUserApi>(appSettings.GameServers.VipSedie.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISpecialSedieOnlineUserApi>(appSettings.GameServers.SpecialSedie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBlackjackOnlineUserApi>(appSettings.GameServers.Blackjack.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipFishPrawnCrabOnlineUserApi>(appSettings.GameServers.VipFishPrawnCrab.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipBaccaratOnlineUserApi>(appSettings.GameServers.VipBaccarat.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISicBoOnlineUserApi>(appSettings.GameServers.SicBo.Api, refitSettings));
+            services.AddSingleton(RestService.For<IVipSedieWarOnlineUserApi>(appSettings.GameServers.VipSedieWar.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoProMaxOnlineUserApi>(appSettings.GameServers.KenoProMax.Api, refitSettings));
+            services.AddSingleton(RestService.For<IMiniSeDieOnlineUserApi>(appSettings.GameServers.MiniSeDie.Api, refitSettings));
+            services.AddSingleton(RestService.For<IRouletteOnlineUserApi>(appSettings.GameServers.Roulette.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBaccaratOnlineUserApi>(appSettings.GameServers.Baccarat.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFishPrawnCrabOnlineUserApi>(appSettings.GameServers.FishPrawnCrab.Api, refitSettings));
+            services.AddSingleton(RestService.For<IDragonTigerOnlineUserApi>(appSettings.GameServers.DragonTiger.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBigSmallOnlineUserApi>(appSettings.GameServers.BigSmall.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITurboBigSmallOnlineUserApi>(appSettings.GameServers.TurboBigSmall.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITurboOddEvenOnlineUserApi>(appSettings.GameServers.TurboOddEven.Api, refitSettings));
+            services.AddSingleton(RestService.For<ILotteryOnlineUserApi>(appSettings.GameServers.Lottery.Api, refitSettings));
+            services.AddSingleton(RestService.For<IThreeCardsOnlineUserApi>(appSettings.GameServers.ThreeCards.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMatchOnlineUserApi>(appSettings.GameServers.KenoMatch1.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoPowerOnlineUserApi>(appSettings.GameServers.KenoPower1.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMaxOnlineUserApi>(appSettings.GameServers.KenoMax.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMax2OnlineUserApi>(appSettings.GameServers.KenoMax2.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMiniOnlineUserApi>(appSettings.GameServers.KenoMini.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoMini2OnlineUserApi>(appSettings.GameServers.KenoMini2.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoEastOnlineUserApi>(appSettings.GameServers.KenoEast.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoWestOnlineUserApi>(appSettings.GameServers.KenoWest.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoSouthOnlineUserApi>(appSettings.GameServers.KenoSouth.Api, refitSettings));
+            services.AddSingleton(RestService.For<IKenoNorthOnlineUserApi>(appSettings.GameServers.KenoNorth.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBitcoinMasterOnlineUserApi>(appSettings.GameServers.BitcoinMaster.Api, refitSettings));
+            services.AddSingleton(RestService.For<ICasinoHoldemPokerOnlineUserApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<IHiLoApi>(appSettings.GameServers.HiLo.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITexasHoldemPokerOnlineUserApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
+            services.AddSingleton(RestService.For<ITreasureIslandOnlineUserApi>(appSettings.GameServers.TreasureIsland.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBlockchainBaccaratOnlineUserApi>(appSettings.GameServers.BlockchainBaccarat.Api, refitSettings));
+            services.AddSingleton(RestService.For<IMegaKenoOnlineUserApi>(appSettings.GameServers.MegaKeno.Api, refitSettings));
+            services.AddSingleton(RestService.For<IUnbalancedBigSmallOnlineUserApi>(appSettings.GameServers.UnbalancedBigSmall1.Api, refitSettings));
+            services.AddSingleton(RestService.For<IMegaKeno2OnlineUserApi>(appSettings.GameServers.MegaKeno2.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFruitSlotOnlineUserApi>(appSettings.GameServers.FruitSlot.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFanTanOnlineUserApi>(appSettings.GameServers.FanTan.Api, refitSettings));
+            services.AddSingleton(RestService.For<IWinThreeCardsOnlineUserApi>(appSettings.GameServers.WinThreeCards.Api, refitSettings));
+            services.AddSingleton(RestService.For<IDragonTigerFightOnlineUserApi>(appSettings.GameServers.DragonTigerFight.Api, refitSettings));
+            services.AddSingleton(RestService.For<IPontoonOnlineUserApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
+            services.AddSingleton(RestService.For<IColorGameOnlineUserApi>(appSettings.GameServers.ColorGame.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
+            services.AddSingleton(RestService.For<IChineseBlackjackOnlineUserApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
+        }
+
+        private static void AddOnlineUserApiGN(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddSingleton(RestService.For<IBacBall1OnlineUserApi>(appSettings.GameServers.BacBall1.Api, refitSettings));
+            services.AddSingleton(RestService.For<IBacBall2OnlineUserApi>(appSettings.GameServers.BacBall2.Api, refitSettings));
+            services.AddSingleton(RestService.For<ILuckyNext1OnlineUserApi>(appSettings.GameServers.LuckyNext1.Api, refitSettings));
+            services.AddSingleton(RestService.For<ILuckyNext2OnlineUserApi>(appSettings.GameServers.LuckyNext2.Api, refitSettings));
         }
 
         private static void AddSlotServices(this IServiceCollection services)
@@ -201,14 +230,20 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddHoldemPokerServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IHoldemPokerApiFactory, HoldemPokerApiFactory>();
-            services.AddSingleton(RestService.For<ICasinoHoldemPokerApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
-            services.AddSingleton(RestService.For<ITexasHoldemPokerApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
+            if (appSettings.SystemType != SystemType.GN)
+            {
+                services.AddSingleton(RestService.For<ICasinoHoldemPokerApi>(appSettings.GameServers.CasinoHoldemPoker.Api, refitSettings));
+                services.AddSingleton(RestService.For<ITexasHoldemPokerApi>(appSettings.GameServers.TexasHoldemPoker.Api, refitSettings));
+            }
         }
 
         private static void AddPontoonServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IPontoonApiFactory, PontoonApiFactory>();
-            services.AddSingleton(RestService.For<IPontoonApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
+            if (appSettings.SystemType != SystemType.GN)
+            {
+                services.AddSingleton(RestService.For<IPontoonApi>(appSettings.GameServers.Pontoon.Api, refitSettings));
+            }
         }
 
         private static void AddCrashGameServices(this IServiceCollection services)
@@ -219,7 +254,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddChineseBlackjackServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IChineseBlackjackApiFactory, ChineseBlackjackApiFactory>();
-            services.AddSingleton(RestService.For<IChineseBlackjackApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
+            if (appSettings.SystemType != SystemType.GN)
+            {
+                services.AddSingleton(RestService.For<IChineseBlackjackApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
+            }
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
@@ -263,8 +301,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
                 {
                     ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
                 };
-                //services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(InitHttpClient(appSettings.GameServers.BandarQiuQiu.Api, appSettings.CloudSettings.ProxyUrl), refitSettings));
-                services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
             }
         }
 

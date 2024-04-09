@@ -14,9 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace GamesAdmin.Api.Games
 {
-
     public interface IGameSettingsService
     {
         Task<IEnumerable<GameConfig>> Get();
@@ -32,6 +32,8 @@ namespace GamesAdmin.Api.Games
         Task<bool> UpdateBetLimit(string name, BetLimit betLimit);
 
         Task<bool> UpdateOdds(string name, Dictionary<string, double> odds);
+
+        Task<bool> UpdateMarginSettings(string name, IEnumerable<Dictionary<string, double>> marginSettings);
 
         Task<bool> UpdateBotRatios(string name, double[] ratios);
 
@@ -148,7 +150,7 @@ namespace GamesAdmin.Api.Games
                 return gameInfo.GameId;
             }
 
-            return (int)Enumeration.FromValue<Game>(gameInfo.Name).GameId;
+            return (int)Game.FromGameName(gameInfo.Name).GameId;
         }
 
         public async Task<GameConfig> GetByName(string name)
@@ -260,6 +262,33 @@ namespace GamesAdmin.Api.Games
                 sentryClient.CaptureChangedSettings(name, "Odds", string.Empty, changedSettings);
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.Odds, odds);
+                await repository.UpdateAsync(config => config.Name == name, update);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateMarginSettings(string name, IEnumerable<Dictionary<string, double>> marginSettings)
+        {
+            try
+            {
+                if (marginSettings?.Count() == 0)
+                {
+                    throw new InvalidOperationException($"margins of game {name} are empty.");
+                }
+
+                var sortedMarginSettings = marginSettings.OrderBy(setting => setting["max"]);
+                var gameEntity = await repository.FindOneAsync(entity => entity.Name == name);
+                var changedSettings = SettingHelper.GetMarginSettingsChangedModel(gameEntity.Margin, sortedMarginSettings);
+                sentryClient.CaptureChangedSettings(name, "Margin", string.Empty, changedSettings);
+
+                var update = Builders<GameConfigEntity>.Update.Set(field => field.Margin, sortedMarginSettings);
                 await repository.UpdateAsync(config => config.Name == name, update);
 
                 return true;
@@ -467,7 +496,8 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.BotMaxBet, botSetting.BotMaxBet)
                     .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                     .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
-                    .Set(field => field.RandomMode, gameInfo.RandomMode);
+                    .Set(field => field.RandomMode, gameInfo.RandomMode)
+                    .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound);   
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
@@ -512,7 +542,6 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                 .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                 .Set(field => field.RandomMode, gameInfo.RandomMode);
-      
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 
@@ -539,7 +568,7 @@ namespace GamesAdmin.Api.Games
 
                 var update = Builders<GameConfigEntity>.Update.Set(field => field.SlotsConfig.SymbolWeight, slotSymbolWeight);
 
-                await repository.UpdateAsync(config => config.Name == name, update);              
+                await repository.UpdateAsync(config => config.Name == name, update);
 
                 return true;
             }
@@ -582,7 +611,6 @@ namespace GamesAdmin.Api.Games
                 .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                 .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                 .Set(field => field.RandomMode, gameInfo.RandomMode);
-
 
             await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 

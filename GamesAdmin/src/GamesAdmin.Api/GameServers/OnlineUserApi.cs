@@ -298,9 +298,33 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
     }
 
+    public interface IBacBall1OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
+    }
+
+    public interface IBacBall2OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
+    }
+
     public interface IChineseBlackjackOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
+    public interface ILuckyNext1OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
+    }
+
+    public interface ILuckyNext2OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
     }
 }

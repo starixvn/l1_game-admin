@@ -17,6 +17,7 @@ namespace GamesAdmin.Api.Games
         , IRequestHandler<UpdateDisabledMessageRequest, bool>
         , IRequestHandler<UpdateBetLimitRequest, bool>
         , IRequestHandler<UpdateOddsRequest, bool>
+        , IRequestHandler<UpdateMarginSettingsRequest, bool>
         , IRequestHandler<UpdateBotRatiosRequest, bool>
         , IRequestHandler<UpdateGeneralConfigRequest, bool>
         , IRequestHandler<UpdateJackpotRequest, bool>
@@ -63,6 +64,9 @@ namespace GamesAdmin.Api.Games
 
         public Task<bool> Handle(UpdateOddsRequest request, CancellationToken cancellationToken)
         => gameService.UpdateOdds(request.Name, request.Odds);
+
+        public Task<bool> Handle(UpdateMarginSettingsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateMarginSettings(request.GameName, request.MarginSettings);
 
         public Task<bool> Handle(UpdateBotRatiosRequest request, CancellationToken cancellationToken)
         => gameService.UpdateBotRatios(request.Name, request.Ratios);

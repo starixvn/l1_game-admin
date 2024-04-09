@@ -317,3 +317,19 @@
     content: ""; }
   .win3cards-result .cards span {
     padding-top: 7px; }
+
+.bacball-result {
+  height: 35px;
+  width: 35px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  padding-top: 7px;
+  margin: 10px 5px 10px 5px;
+  font-weight: bold; }
+  .bacball-result.green-ball {
+    background: url(../../images/bacball/green-ball.png) no-repeat;
+    background-size: 35px 35px; }
+  .bacball-result.red-ball {
+    background: url(../../images/bacball/red-ball.png) no-repeat;
+    background-size: 35px 35px; }

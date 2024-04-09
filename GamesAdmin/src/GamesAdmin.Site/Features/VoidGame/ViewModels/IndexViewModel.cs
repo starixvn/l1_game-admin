@@ -32,7 +32,7 @@ namespace GamesAdmin.Site.Features.VoidGame.ViewModels
 
         [DisplayName("Game")]
         [Required]
-        public byte GameId { get; set; }
+        public int GameId { get; set; }
 
         public List<SelectListItem> GameIds { get; set; }
 

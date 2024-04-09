@@ -72,6 +72,10 @@ namespace GamesAdmin.Api.GameServers
             { Game.ColorGameValue, typeof(IColorGameOnlineUserApi) },
             { Game.BandarQiuQiuValue, typeof(IBandarQiuQiuOnlineUserApi) },
             { Game.ChineseBlackjackValue, typeof(IChineseBlackjackOnlineUserApi) },
+            { Game.BacBall1Value, typeof(IBacBall1OnlineUserApi) },
+            { Game.BacBall2Value, typeof(IBacBall2OnlineUserApi) },
+            { Game.LuckyNext1Value, typeof(ILuckyNext1OnlineUserApi) },
+            { Game.LuckyNext2Value, typeof(ILuckyNext2OnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

@@ -8,7 +8,7 @@ namespace GamesAdmin.Api.GameManagementApi
     public interface IGameManagementApi
     {
         [Get("/game-configs/byid")]
-        Task<GameConfigResponse> GetGameConfigById([Query] byte gameId);
+        Task<GameConfigResponse> GetGameConfigById([Query] int gameId);
     }
 
     public class GameConfigResponse

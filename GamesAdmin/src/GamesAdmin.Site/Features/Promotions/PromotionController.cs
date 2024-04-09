@@ -38,7 +38,7 @@ namespace GamesAdmin.Site.Features.Promotions
         {
             var viewModel = new CreatePromotionViewModel();
             viewModel.GameList = (await mediator.Send(new GetGamesIdByTypeRequest(GameType.AutoRNG)))
-                .Select(game => new SelectListItem(game.DisplayName, $"{(byte)game.GameId}"));
+                .Select(game => new SelectListItem(game.DisplayName, $"{(int)game.GameId}"));
             return PartialView("_AddPromotion", viewModel);
         }
 

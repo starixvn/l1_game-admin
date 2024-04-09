@@ -6,6 +6,7 @@
         Slots,
         CascadingSlots,
         SlotRNG,
-        Crash
+        Crash,
+        DynamicOdds
     }
 }

@@ -27,9 +27,11 @@
     {
         public const string SC1 = "SC1";
         public const string VG2 = "VG2";
+        public const string GN = "GN";
     }
 
-    public static class BaseCurrencyMultiplier {
+    public static class BaseCurrencyMultiplier
+    {
         public const int SC1 = 1;
         public const int VG2 = 1000;
     }

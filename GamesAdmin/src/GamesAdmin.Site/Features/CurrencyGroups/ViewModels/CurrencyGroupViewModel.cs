@@ -30,7 +30,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroups.ViewModels
             => string.Join(", ", Games.Select(GetGameName));
 
         private string GetGameName(string key)
-            => Enumeration.Contains<Game>(key) ? Enumeration.FromValue<Game>(key).DisplayName : TryGetDisplayName(key);
+            => Game.ContainsGame(key) ? Game.FromGameName(key).DisplayName : TryGetDisplayName(key);
 
         private string TryGetDisplayName(string key)
         {

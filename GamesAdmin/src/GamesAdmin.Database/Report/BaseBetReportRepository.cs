@@ -70,7 +70,7 @@ namespace GamesAdmin.Database
             return await betCollection.Find(expression).SortBy(x => x.Id).ToListAsync();
         }
 
-        private Expression<Func<TBetEntity, bool>> GetExpression<TBetEntity>(
+        protected virtual Expression<Func<TBetEntity, bool>> GetExpression<TBetEntity>(
             long roundId,
             string nickname,
             bool excludeUUS = false,

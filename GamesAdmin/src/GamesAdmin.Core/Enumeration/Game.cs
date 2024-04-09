@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using GamesAdmin.Core.Games;
 
 namespace GamesAdmin.Core.Enumeration
 {
@@ -65,6 +67,10 @@ namespace GamesAdmin.Core.Enumeration
         public const string ColorGameValue = "colorgame";
         public const string BandarQiuQiuValue = "bandarqiuqiu";
         public const string ChineseBlackjackValue = "chineseblackjack";
+        public const string BacBall1Value = "bacball1";
+        public const string BacBall2Value = "bacball2";
+        public const string LuckyNext1Value = "luckynext1";
+        public const string LuckyNext2Value = "luckynext2";
 
         public static readonly Game BigSmall = new Game(BigSmallValue, "Big Small", GameId.BigSmall);
         public static readonly Game BigSmallTurbo = new Game(BigSmallTurboValue, "Turbo Big Small", GameId.BigSmallTurbo);
@@ -127,7 +133,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game ColorGame = new Game(ColorGameValue, "Color Game", GameId.ColorGame);
         public static readonly Game BandarQiuQiu = new Game(BandarQiuQiuValue, "Bandar Qiu Qiu", GameId.BandarQiuQiu);
         public static readonly Game ChineseBlackjack = new Game(ChineseBlackjackValue, "Chinese Blackjack", GameId.ChineseBlackjack);
-
+        
         public Game()
         {
         }
@@ -145,54 +151,93 @@ namespace GamesAdmin.Core.Enumeration
 
         public GameId GameId { get; }
 
-        public static Game FromGameId(GameId id) => Parse<Game, GameId>(id, "game id", item => item.GameId == id);
-
-        public static Game FromGameName(string gameName) => Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
-
-        public static IEnumerable<Game> GetNormalGames() => new List<Game>
+        public static Game FromGameId(GameId id)
         {
-            SeDie,
-            FishPrawnCrab,
-            DragonTiger,
-            KenoProMax,
-            MiniSeDie,
-            Baccarat,
-            KenoMax,
-            KenoMax2,
-            KenoMini,
-            KenoMini2,
-            KenoEast,
-            KenoWest,
-            KenoSouth,
-            KenoNorth,
-            Roulette,
-            VipSeDie,
-            SicBo,
-            VipFishPrawnCrab,
-            VipBaccarat,
-            VipSeDieWar,
-            Lottery,
-            ThreeCards,
-            KenoMatch1,
-            KenoMatch2,
-            KenoPower1,
-            KenoPower2,
-            BlockchainBaccarat,
-            MegaKeno,
-            MegaKeno2,
-            MiniSeDie2,
-            MiniSeDie3,
-            MiniSeDie4,
-            UnbalancedBigSmall1,
-            UnbalancedBigSmall2,
-            UnbalancedBigSmall3,
-            UnbalancedBigSmall4,
-            FruitSlot,
-            FanTan,
-            WinThreeCards,
-            DragonTigerFight,
-            ColorGame,
-            BandarQiuQiu
-        };
+            var gameSettings = GamesSettings.GetGamesSettings().GetGameFromId((int)id);
+            if (gameSettings?.GameId > 0)
+            {
+                GameId a = (GameId)gameSettings.GameId;
+                return new Game(gameSettings.GameName, gameSettings.DisplayName, a);
+            }
+            return Parse<Game, GameId>(id, "game id", item => item.GameId == id);
+        }
+
+        public static Game FromGameName(string gameName)
+        {
+            var gameSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName);
+            if (gameSettings?.GameId > 0)
+            {
+                GameId a = (GameId)gameSettings.GameId;
+                return new Game(gameSettings.GameName, gameSettings.DisplayName, a);
+            }
+            return Parse<Game, string>(gameName, "game value", item => item.Value == gameName);
+        }
+
+        public static bool ContainsGame(string gameName)
+        {
+            var gameSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName);
+            if (gameSettings?.GameId > 0)
+            {
+                return true;
+            }
+            return Contains<Game>(gameName);
+        }
+
+        public static IEnumerable<Game> GetAllGames()
+        {
+            var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
+            return GetAll<Game>().Concat(gameSettings);
+        }
+
+        public static IEnumerable<Game> GetNormalGames()
+        {
+            var normalGame = new List<Game>
+            {
+                SeDie,
+                FishPrawnCrab,
+                DragonTiger,
+                KenoProMax,
+                MiniSeDie,
+                Baccarat,
+                KenoMax,
+                KenoMax2,
+                KenoMini,
+                KenoMini2,
+                KenoEast,
+                KenoWest,
+                KenoSouth,
+                KenoNorth,
+                Roulette,
+                VipSeDie,
+                SicBo,
+                VipFishPrawnCrab,
+                VipBaccarat,
+                VipSeDieWar,
+                Lottery,
+                ThreeCards,
+                KenoMatch1,
+                KenoMatch2,
+                KenoPower1,
+                KenoPower2,
+                BlockchainBaccarat,
+                MegaKeno,
+                MegaKeno2,
+                MiniSeDie2,
+                MiniSeDie3,
+                MiniSeDie4,
+                UnbalancedBigSmall1,
+                UnbalancedBigSmall2,
+                UnbalancedBigSmall3,
+                UnbalancedBigSmall4,
+                FruitSlot,
+                FanTan,
+                WinThreeCards,
+                DragonTigerFight,
+                ColorGame,
+                BandarQiuQiu
+            };
+            var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
+            return normalGame.Concat(gameSettings);
+        }
     }
 }

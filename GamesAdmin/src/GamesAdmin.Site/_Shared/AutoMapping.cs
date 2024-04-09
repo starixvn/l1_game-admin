@@ -165,10 +165,19 @@ namespace GamesAdmin.Site._Shared
             CreateMap<BandarQiuQiuRoundResult, BandarQiuQiuRoundResultViewModel>();
             CreateMap<BandarQiuQiuBetRecord, BandarQiuQiuRecordViewModel>();
             CreateMap<BandarQiuQiuBetHistoryRecord, BandarQiuQiuBetHistoryRecordViewModel>();
-            
+
             CreateMap<CrashGameRoundResult, CrashGameRoundResultViewModel>();
             CreateMap<CrashGameBetRecord, CrashGameRecordViewModel>();
             CreateMap<CrashGameBetHistory, CrashGameBetHistoryViewModel>();
+
+            CreateMap<BacBall1BetRecord, BacBall1RecordViewModel>();
+            CreateMap<BacBall1BetHistoryRecord, BacBall1BetHistoryRecordViewModel>();
+
+            CreateMap<BacBall2BetRecord, BacBall2RecordViewModel>();
+            CreateMap<BacBall2BetHistoryRecord, BacBall2BetHistoryRecordViewModel>();
+
+            CreateMap<NextBallBetRecord, NextBallRecordViewModel>();
+            CreateMap<NextBallBetHistoryRecord, NextBallBetHistoryRecordViewModel>();
         }
     }
 }

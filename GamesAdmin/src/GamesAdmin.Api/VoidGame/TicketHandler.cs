@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.GeneralGameSettings;
+using GamesAdmin.Api.VoidGame.BacBall1;
+using GamesAdmin.Api.VoidGame.BacBall2;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Database;
@@ -49,7 +51,16 @@ namespace GamesAdmin.Api.VoidGame
 
         private readonly IGeneralGameSettingService generalGameSettingService;
 
-        public TicketHandler(IAppSettings appSettings, ISentryClient sentryClient, IGeneralGameSettingService generalGameSettingService)
+        private readonly IBacBall1VoidGameService bacBall1VoidGameService;
+
+        private readonly IBacBall2VoidGameService bacBall2VoidGameService;
+
+        public TicketHandler(
+            IAppSettings appSettings,
+            ISentryClient sentryClient,
+            IGeneralGameSettingService generalGameSettingService,
+            IBacBall1VoidGameService bacBall1VoidGameService,
+            IBacBall2VoidGameService bacBall2VoidGameService)
         {
             this.sentryClient = sentryClient;
             this.generalGameSettingService = generalGameSettingService;
@@ -62,6 +73,9 @@ namespace GamesAdmin.Api.VoidGame
 
             var removedClient = new MongoClient(appSettings.RemovedDatabaseSettings.ConnectionString);
             removedDatabase = removedClient.GetDatabase(appSettings.RemovedDatabaseSettings.DatabaseName);
+
+            this.bacBall1VoidGameService = bacBall1VoidGameService;
+            this.bacBall2VoidGameService = bacBall2VoidGameService;
         }
 
         public async Task<bool> Void(string obCustId, string partnerId, string siteId, long gameRoundId, int gameTypeId, bool freeBet)
@@ -128,6 +142,10 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.ColorGame => await Move<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.BandarQiuQiu => await Move<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.ChineseBlackjack => await MoveBlackjackGame<ChineseBlackjackBetEntity>(obCustId, partnerId, siteId, gameRoundId, freeBet),
+                           GameId.BacBall1 => await Move<BacBall1BetEntity, BacBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.BacBall2 => await Move<BacBall2BetEntity, BacBall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.LuckyNext1 => await MoveByFieldName<LuckyNext1BetEntity, LuckyNext1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                           GameId.LuckyNext2 => await MoveByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                            _ => false,
                        };
             }
@@ -158,7 +176,7 @@ namespace GamesAdmin.Api.VoidGame
             {
                 IGameTicket gameTicket;
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
-                var isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
+                bool isCrashGame = await generalGameSettingService.IsCrashGame((int)gameId);
 
                 if (isCrashGame)
                 {
@@ -217,12 +235,15 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.DragonTigerFight => await Find<DragonTigerFightBetEntity, DragonTigerFightBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.ColorGame => await Find<ColorGameBetEntity, ColorGameBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.BandarQiuQiu => await Find<BandarQiuQiuBetEntity, BandarQiuQiuBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.BacBall1 => await Find<BacBall1BetEntity, BacBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.BacBall2 => await Find<BacBall2BetEntity, BacBall2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.LuckyNext1 => await FindByFieldName<LuckyNext1BetEntity, LuckyNext1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
+                        GameId.LuckyNext2 => await FindByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                         _ => default,
                     };
                 }
 
                 return gameTicket?.Exist() == true;
-
             }
             catch (Exception ex)
             {
@@ -314,13 +335,13 @@ namespace GamesAdmin.Api.VoidGame
             if (!string.IsNullOrWhiteSpace(gameCollection.One))
             {
                 var oneCollection = database.GetCollection<One>($"{gameCollection.One}{postfix}");
-                await RemoveTicket(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
+                await RemoveTicket(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId);
             }
 
             if (!string.IsNullOrWhiteSpace(gameCollection.Bet))
             {
                 var betCollection = database.GetCollection<Bet>($"{gameCollection.Bet}{postfix}");
-                await RemoveTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
+                await RemoveTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId);
             }
 
             return false;
@@ -343,7 +364,7 @@ namespace GamesAdmin.Api.VoidGame
             if (!string.IsNullOrWhiteSpace(gameCollection.Bet))
             {
                 var betCollection = database.GetCollection<Bet>($"{gameCollection.Bet}{postfix}");
-                await RemoveTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
+                await RemoveTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId);
             }
 
             return false;
@@ -412,10 +433,10 @@ namespace GamesAdmin.Api.VoidGame
             var postfix = isArchive ? ArchivePostfix : string.Empty;
             var isCrashGame = await generalGameSettingService.IsCrashGame(gameTypeId);
             var oneCollection = database.GetCollection<One>($"{collections.One}{postfix}");
-            var oneRecord = (await FindTicket(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet)).FirstOrDefault();
+            var oneRecord = (await FindTicket(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId)).FirstOrDefault();
 
             var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
-            var betRecords = await FindTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet);
+            var betRecords = await FindTicket(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, gameTypeId);
             var hasTicket = isCrashGame ? oneRecord == null : oneRecord == null && betRecords == null;
             return hasTicket ? default : new GameTicketRecord<One, Bet>(oneRecord, betRecords, isArchive);
         }
@@ -438,41 +459,67 @@ namespace GamesAdmin.Api.VoidGame
             return new GameTicketRecord<Bet>(bets, isArchive);
         }
 
-        private static async Task<IList<T>> FindTicket<T>(
+        private async Task<IList<T>> FindTicket<T>(
                 IMongoCollection<T> collection,
                 string obCustId,
                 string partnerId,
                 string siteId,
                 long gameRoundId,
-                bool freeBet)
+                bool freeBet,
+                int gameTypeId = 0)
             where T : BaseBetEntity
         {
-            var record = (await collection
+            List<T> record;
+            if (gameTypeId == (int)GameId.BacBall1)
+            {
+                record = (await bacBall1VoidGameService.FindTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet)).ToList();
+            }
+            else if (gameTypeId == (int)GameId.BacBall2)
+            {
+                record = (await bacBall2VoidGameService.FindTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet)).ToList();
+            }
+            else
+            {
+                record = (await collection
                 .FindAsync(record => record.PlayerId == obCustId
                                     && record.OperatorId == partnerId
                                     && record.SiteId == siteId
                                     && (record.Round == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)))
                 .ToList();
+            }
 
             return record;
         }
 
-        private static async Task<bool> RemoveTicket<T>(
+        private async Task<bool> RemoveTicket<T>(
                 IMongoCollection<T> collection,
                 string obCustId,
                 string partnerId,
                 string siteId,
                 long gameRoundId,
-                bool freeBet)
+                bool freeBet,
+                int gameTypeId)
             where T : BaseBetEntity
         {
-            var result = (await collection
+            DeleteResult result;
+            if (gameTypeId == (int)GameId.BacBall1)
+            {
+                result = await bacBall1VoidGameService.RemoveTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet);
+            }
+            else if (gameTypeId == (int)GameId.BacBall2)
+            {
+                result = await bacBall2VoidGameService.RemoveTicket<T>(collection, obCustId, partnerId, siteId, gameRoundId, freeBet);
+            }
+            else
+            {
+                result = (await collection
                 .DeleteManyAsync(record => record.PlayerId == obCustId
                                     && record.SiteId == siteId
                                     && record.OperatorId == partnerId
                                     && (record.Round == gameRoundId)
                                     && (!freeBet || record.FreeBet == freeBet)));
+            }
 
             return result.DeletedCount > 0;
         }
@@ -657,6 +704,172 @@ namespace GamesAdmin.Api.VoidGame
                 .FirstOrDefault();
 
             return bet;
+        }
+
+        private async Task<IList<T>> FindTicketByFieldName<T>(
+                IMongoCollection<T> collection,
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId,
+                bool freeBet,
+                string findFieldName)
+            where T : BaseBetEntity
+        {
+            var builder = Builders<T>.Filter;
+            var filter = builder.Eq("PlayerId", obCustId)
+                & builder.Eq("OperatorId", partnerId)
+                & builder.Eq("SiteId", siteId)
+                & builder.Eq(findFieldName, gameRoundId);
+            if (freeBet)
+            {
+                filter &= builder.Eq("FreeBet", freeBet);
+            }
+            return (await collection.FindAsync(filter)).ToList();
+        }
+
+        private async Task<GameTicketRecord<One, Bet>> FindInActiveOrArchiveByFieldName<One, Bet>(
+                GameTicketCollection collections,
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId,
+                bool freeBet,
+                string findFieldName,
+                bool isArchive = false)
+            where One : BaseBetEntity
+            where Bet : BaseBetEntity
+        {
+            var database = isArchive ? archiveDatabase : activeDatabase;
+            var postfix = isArchive ? ArchivePostfix : string.Empty;
+            var oneCollection = database.GetCollection<One>($"{collections.One}{postfix}");
+            var oneRecord = (await FindTicketByFieldName(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName)).FirstOrDefault();
+
+            var betCollection = database.GetCollection<Bet>($"{collections.Bet}{postfix}");
+            var betRecords = await FindTicketByFieldName(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName);
+            return new GameTicketRecord<One, Bet>(oneRecord, betRecords, isArchive);
+        }
+
+        private async Task<GameTicketRecord<One, Bet>> FindByFieldName<One, Bet>(
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId,
+                int gameTypeId,
+                bool freeBet,
+                string findFieldName,
+                GameType gameType = GameType.AutoRNG)
+            where One : BaseBetEntity
+            where Bet : BaseBetEntity
+        {
+            var displayName = await this.generalGameSettingService.GetDisplayName(gameTypeId);
+            var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName, true);
+
+            var gameTickets = await FindInActiveOrArchiveByFieldName<One, Bet>(gameCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName);
+
+            if (gameTickets == default)
+            {
+                gameTickets = await FindInActiveOrArchiveByFieldName<One, Bet>(gameCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName, true);
+            }
+
+            return gameTickets;
+        }
+
+        private async Task<bool> RemoveTicketByFieldName<T>(
+                IMongoCollection<T> collection,
+                string obCustId,
+                string partnerId,
+                string siteId,
+                long gameRoundId,
+                bool freeBet,
+                string findFieldName)
+            where T : BaseBetEntity
+        {
+            var builder = Builders<T>.Filter;
+            var filter = builder.Eq("PlayerId", obCustId)
+                & builder.Eq("OperatorId", partnerId)
+                & builder.Eq("SiteId", siteId)
+                & builder.Eq(findFieldName, gameRoundId);
+            if (freeBet)
+            {
+                filter &= builder.Eq("FreeBet", freeBet);
+            }
+            var result = (await collection
+                .DeleteManyAsync(filter));
+
+            return result.DeletedCount > 0;
+        }
+
+        private async Task<bool> RemoveByFieldName<One, Bet>(
+            string obCustId,
+            string partnerId,
+            string siteId,
+            long gameRoundId,
+            bool freeBet,
+            bool isFromArchive,
+            GameTicketCollection gameCollection,
+            string findFieldName)
+                where One : BaseBetEntity
+                where Bet : BaseBetEntity
+        {
+            var database = isFromArchive ? archiveDatabase : activeDatabase;
+            var postfix = isFromArchive ? ArchivePostfix : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.One))
+            {
+                var oneCollection = database.GetCollection<One>($"{gameCollection.One}{postfix}");
+                await RemoveTicketByFieldName(oneCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameCollection.Bet))
+            {
+                var betCollection = database.GetCollection<Bet>($"{gameCollection.Bet}{postfix}");
+                await RemoveTicketByFieldName(betCollection, obCustId, partnerId, siteId, gameRoundId, freeBet, findFieldName);
+            }
+
+            return false;
+        }
+
+        private async Task<bool> MoveByFieldName<One, Bet>(
+            string obCustId,
+            string partnerId,
+            string siteId,
+            long gameRoundId,
+            int gameTypeId,
+            bool freeBet,
+            string findFieldName,
+            GameType gameType = GameType.AutoRNG)
+            where One : BaseBetEntity
+            where Bet : BaseBetEntity
+        {
+            try
+            {
+                var displayName = await generalGameSettingService.GetDisplayName(gameTypeId);
+                var gameCollection = TicketCollectionHelper.GetCollections(gameTypeId, gameType, displayName, true);
+                var gameTickets = await FindByFieldName<One, Bet>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, findFieldName, gameType);
+
+                if (gameTickets.OneRecord != null)
+                {
+                    var oneCollection = removedDatabase.GetCollection<One>($"{gameCollection.One}{RemovePostfix}");
+                    await oneCollection.InsertOneAsync(gameTickets.OneRecord);
+                }
+
+                if (gameTickets?.BetRecords?.Any() == true)
+                {
+                    var betCollection = removedDatabase.GetCollection<Bet>($"{gameCollection.Bet}{RemovePostfix}");
+                    await betCollection.InsertManyAsync(gameTickets.BetRecords);
+                }
+
+                await RemoveByFieldName<One, Bet>(obCustId, partnerId, siteId, gameRoundId, freeBet, gameTickets.IsFromArchive, gameCollection, findFieldName);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return false;
         }
     }
 }

@@ -69,6 +69,10 @@ namespace GamesAdmin.Api.Games
         public Task<bool> UpdateBetLimitAndOdds(UpdateOddsRequest request)
            => mediator.Send(request);
 
+        [HttpPost("update_margin")]
+        public Task<bool> UpdateMargins(UpdateMarginSettingsRequest request)
+            => mediator.Send(request);
+
         [HttpPost("update_bet_limit")]
         public Task<bool> UpdateBetLimit(UpdateBetLimitRequest request)
            => mediator.Send(request);

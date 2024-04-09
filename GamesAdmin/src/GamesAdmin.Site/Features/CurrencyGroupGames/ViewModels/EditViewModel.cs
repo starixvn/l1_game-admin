@@ -32,11 +32,13 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
         public string[] SiteExclusions { get; set; }
 
         public StakeLevel[] StakeLevels { get; set; }
+
         public bool DisplayMinMaxBet => new HashSet<GameType>
         {
             GameType.AutoRNG,
             GameType.SlotRNG,
             GameType.Crash,
+            GameType.DynamicOdds,
             0
         }.Contains(GameType);
 
@@ -52,7 +54,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public bool DisabledStakeLevel(int indexLevel)
         {
-           return StakeLevels[indexLevel].Stake != 0 && !CopySettingGame;
+            return StakeLevels[indexLevel].Stake != 0 && !CopySettingGame;
         }
 
         public bool DisabledCoinValue(int index)

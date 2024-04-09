@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Games;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features._Shared;
@@ -47,7 +48,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             var currencyGroupGame = await currencyGroupGameService.Get(request.GroupId, gameId);
             var result = mapper.Map<EditViewModel>(currencyGroupGame) ?? new EditViewModel();
             var chipConfigs = await chipService.GetAll();
-          
+
             result.GameId = gameId;
             result.GroupId = request.GroupId;
             result.AllChips = chipConfigs.OrderBy(chip => chip.Value).ToList();
@@ -62,7 +63,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
                     new StakeLevel(0, 0, 0)
                 };
             }
- 
+
             if (currencyGroupGame?.CoinValues == null)
             {
                 result.CoinValues = new double[] { 0, 0, 0 };
@@ -93,18 +94,26 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
             result.PartnerId = request.PartnerId;
             result.PartnerName = request.PartnerName;
             result.GroupSelectList = currencyGroups.Select(group => new SelectListItem(group.Name, group.Id)).ToList();
- 
+
             return result;
         }
 
         private static List<GameSettings.ViewModels.MaxBetChoiceViewModel> GenerateMaxBetPerChoices(string gameName, Dictionary<string, double> maxBetPerChoices)
         {
-            if (string.IsNullOrWhiteSpace(gameName) || !Enumeration.Contains<Game>(gameName))
+            var betChoicesSettings = GamesSettings.GetGamesSettings().GetGameFromName(gameName)?.BetChoices;
+            if (betChoicesSettings?.Any() == true)
+            {
+                return betChoicesSettings.Select(choice => new GameSettings.ViewModels.MaxBetChoiceViewModel(
+                choice,
+                maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice) ? maxBetPerChoices[choice] : 0,
+                choice)).ToList();
+            }
+            if (string.IsNullOrWhiteSpace(gameName) || !Game.ContainsGame(gameName))
             {
                 return new List<GameSettings.ViewModels.MaxBetChoiceViewModel>();
             }
 
-            var betChoices = BetChoiceMapper.Map(Enumeration.FromValue<Game>(gameName));
+            var betChoices = BetChoiceMapper.Map(Game.FromGameName(gameName));
 
             return betChoices?.Select(choice => new GameSettings.ViewModels.MaxBetChoiceViewModel(
                 choice.Value,

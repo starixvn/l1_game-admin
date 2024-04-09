@@ -632,13 +632,31 @@ namespace GamesAdmin.Api._Shared
                 .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
             CreateMap<BandarQiuQiuBetLogEntity, BandarQiuQiuBetHistoryRecord>();
-            
+
             CreateMap<CrashGameRoundEntity, CrashGameRoundResult>();
             CreateMap<CrashGameBetLogEntity, CrashGameBetHistory>();
             CreateMap<CrashGameBetReportEntity, CrashGameBetRecord>()
                .ForMember(x => x.RoundId, opt => opt.MapFrom((source) => source.Round))
                .ForMember(x => x.PartnerId, opt => opt.MapFrom((source) => source.PartnerId))
-               .ForMember(x => x.ExchangeRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));         
+               .ForMember(x => x.ExchangeRateId, opt => opt.MapFrom((source) => source.ExchangeRateId));
+
+            CreateMap<BacBall1RoundEntity, BacBall1Round>();
+            CreateMap<BacBall1BetEntity, BacBall1BetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
+            CreateMap<BacBall1BetLogEntity, BacBall1BetHistoryRecord>();
+
+            CreateMap<BacBall2RoundEntity, BacBall2Round>();
+            CreateMap<BacBall2BetEntity, BacBall2BetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
+            CreateMap<BacBall2BetLogEntity, BacBall2BetHistoryRecord>();
+
+            CreateMap<LuckyNext1RoundEntity, NextBallRound>();
+            CreateMap<LuckyNext1BetEntity, NextBallBetRecord>()
+                .ForMember(dest => dest.PartnerId, opt => opt.MapFrom(src => src.OperatorId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Uid));
+            CreateMap<LuckyNext1BetLogEntity, NextBallBetHistoryRecord>();
         }
     }
 }
