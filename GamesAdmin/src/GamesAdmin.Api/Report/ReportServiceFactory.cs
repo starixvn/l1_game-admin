@@ -62,6 +62,10 @@ namespace GamesAdmin.Api.Report
             { GameId.DragonTigerFight, typeof(DragonTigerFightReportService) },
             { GameId.ColorGame, typeof(ColorGameReportService) },
             { GameId.BandarQiuQiu, typeof(BandarQiuQiuReportService) },
+            { GameId.BacBall1, typeof(BacBall1ReportService) },
+            { GameId.BacBall2, typeof(BacBall2ReportService) },
+            { GameId.LuckyNext1, typeof(NextBallReportService<LuckyNext1RoundEntity, LuckyNext1BetEntity, LuckyNext1BetLogEntity>) },
+            { GameId.LuckyNext2, typeof(NextBallReportService<LuckyNext2RoundEntity, LuckyNext2BetEntity, LuckyNext2BetLogEntity>) },
         };
 
         private readonly IServiceProvider serviceProvider;

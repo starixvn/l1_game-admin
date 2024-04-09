@@ -1,0 +1,30 @@
+[
+  {
+    "GameId": 1001,
+    "GameName": "bacball1",
+    "DisplayName": "Bac Ball 1",
+    "BetChoices": [ "player", "banker", "tie" ],
+    "Odds": [ "player", "banker", "tie" ]
+  },
+  {
+    "GameId": 1002,
+    "GameName": "bacball2",
+    "DisplayName": "Bac Ball 2",
+    "BetChoices": [ "player", "banker", "tie" ],
+    "Odds": [ "player", "banker", "tie" ]
+  },
+  {
+    "GameId": 1003,
+    "GameName": "luckynext1",
+    "DisplayName": "Lucky Next 1",
+    "BetChoices": [ "over", "under", "odd", "even" ],
+    "Odds": [ "over", "under", "odd", "even" ]
+  },
+  {
+    "GameId": 1004,
+    "GameName": "luckynext2",
+    "DisplayName": "Lucky Next 2",
+    "BetChoices": [ "over", "under", "odd", "even" ],
+    "Odds": [ "over", "under", "odd", "even" ]
+  }
+]

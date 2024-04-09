@@ -1,0 +1,69 @@
+﻿@using Microsoft.Extensions.Options
+@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site._Shared.Configurations
+@inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
+@model EditViewModel;
+
+@{
+    Layout = null;
+    ViewData["Title"] = Model.DisplayName;
+}
+
+@section Styles {
+    <link href="~/css/adjust-bot.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div>
+    <div class="message-success hidden-cls" id="successMsg"><i class="icon-check"></i><span>Updated successfully</span></div>
+    <div class="message-error hidden-cls" id="failedMsg"><i class="icon-cancel"></i><span>Error</span></div>
+    <div class="message-error hidden-cls" id="update-margin-msg"></div>
+
+    <form class="card-body form" id="marginForm">
+        <input asp-for="Name" type="hidden" class="form-control" />
+        <input asp-for="Type" type="hidden" class="form-control" />
+        <div id="marginSettings">
+            <i>*Note: Max value of Odds Range 1 will be Min value of Odds Range 2, etc.</i>
+            @if (Model.PayoutViewModel.MarginSettings != null && Model.PayoutViewModel.MarginSettings.Any())
+            {
+                <div class="form-group row">
+                    @for (var i = 0; i < Model.PayoutViewModel.MarginSettings.Count; i++)
+                    {
+                        var setting = Model.PayoutViewModel.MarginSettings[i].MarginSetting;
+
+                        <div class="col-lg-12 mb-3">
+                            <fieldset class="odds-range">
+                                <legend>Odds Range @(i + 1)</legend>
+                                <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label class="control-label">Max value</label>
+                                            <input type="number" value="@setting["max"]" class="form-control" name="max" />
+                                        </div>
+                                </div>
+                                <div class="mb-3"><b>Margin per bet choice</b></div>
+                                <div class="form-group row">
+                                    @foreach (var (key, value) in setting)
+                                    {
+                                        @if(key != "max")
+                                        {
+                                            <div class="col-lg-6">
+                                                <label class="control-label">@key</label>
+                                                <input type="number" value="@value" class="form-control mb-3" name="@key" />
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    }
+                </div>
+               
+            }
+        </div>
+        <input type="button"
+               onclick="gameStatus.addMarginOddsRange('@string.Join(',',Model.PayoutViewModel.MarginSettings[0].MarginSetting.Keys.ToList())')"
+               value="New Odds Range"
+               class="btn-add btn-enable" />
+    </form>
+</div>
+

@@ -59,6 +59,10 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.DragonTigerFight, typeof(DragonTigerFightReportService) },
             { GameId.ColorGame, typeof(ColorGameReportService) },
             { GameId.BandarQiuQiu, typeof(BandarQiuQiuReportService) },
+            { GameId.BacBall1, typeof(BacBall1ReportService) },
+            { GameId.BacBall2, typeof(BacBall2ReportService) },
+            { GameId.LuckyNext1, typeof(NextBallReportService) },
+            { GameId.LuckyNext2, typeof(NextBallReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;

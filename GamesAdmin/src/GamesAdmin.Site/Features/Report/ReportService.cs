@@ -83,16 +83,16 @@ namespace GamesAdmin.Site.Features.Report
         => await reportApi.GetOddEvenTurboReport(roundId, nickname, excludeBot, partnerId, username);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmall, roundId, nickname);
+        => await reportApi.GetBetHistory<BigSmallBet>((int)GameId.BigSmall, roundId, nickname);
 
         public async Task<IEnumerable<BigSmallBet>> GetBigSmallTurboBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<BigSmallBet>((byte)GameId.BigSmallTurbo, roundId, nickname);
+        => await reportApi.GetBetHistory<BigSmallBet>((int)GameId.BigSmallTurbo, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEven, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((int)GameId.OddEven, roundId, nickname);
 
         public async Task<IEnumerable<OddEvenBet>> GetOddEvenTurboBetHistory(long roundId, string nickname)
-        => await reportApi.GetBetHistory<OddEvenBet>((byte)GameId.OddEvenTurbo, roundId, nickname);
+        => await reportApi.GetBetHistory<OddEvenBet>((int)GameId.OddEvenTurbo, roundId, nickname);
 
         public Task<IEnumerable<SpinResult>> GetLuckyWheelBetHistory(string nickname)
         => reportApi.GetLuckyWheelBetHistory(nickname);

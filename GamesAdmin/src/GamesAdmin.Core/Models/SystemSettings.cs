@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace GamesAdmin.Site._Shared.Configurations
 {
-
     public interface ISystemSettings
     {
         string System { get; }
@@ -25,17 +24,18 @@ namespace GamesAdmin.Site._Shared.Configurations
         {
             [SystemType.SC1] = "USD",
             [SystemType.VG2] = "INH",
+            [SystemType.GN] = "INH",
         };
 
         private readonly Dictionary<string, int> BaseCurrencyMultiplierMapper = new Dictionary<string, int>
         {
             [SystemType.SC1] = 1,
             [SystemType.VG2] = 1000,
+            [SystemType.GN] = 1000,
         };
 
         public string System { get; }
         public string BaseCurrency { get; }
         public int BaseCurrencyMultiplier { get; }
-
     }
 }

@@ -23,8 +23,6 @@ namespace GamesAdmin.Site._Shared.Configurations
 
         ResultPageConfiguration ResultPageConfiguration { get; }
 
-        GameServerSettings GameServers { get; }
-
         string GameApiUrl { get; }
 
         string SGApiUrl { get; }
@@ -50,7 +48,6 @@ namespace GamesAdmin.Site._Shared.Configurations
             this.configuration = configuration;
 
             ApiHost = GetValue<string>(nameof(ApiHost));
-            GameServers = configuration.GetSection(nameof(GameServers)).Get<GameServerSettings>();
             IdentityServerAuth = configuration.GetSection(nameof(IdentityServerAuth)).Get<IdentityServerAuth>();
             DefaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById(GetValue<string>(nameof(DefaultTimeZone)));
             DefaultUmMessage = GetValue<string>(nameof(DefaultUmMessage));
@@ -75,8 +72,6 @@ namespace GamesAdmin.Site._Shared.Configurations
         public ResultPageConfiguration ResultPageConfiguration { get; }
 
         public int MaxDecreased { get; }
-
-        public GameServerSettings GameServers { get; }
 
         public string GameApiUrl { get; }
 

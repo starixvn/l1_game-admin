@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Games;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site.Features._Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -76,12 +77,15 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public CascadingSlotsConfig CascadingSlotsConfig { get; set; }
 
         public string SystemType { get; set; }
-        
+
         public SlotRNGConfig SlotRNGConfig { get; set; }
 
         public string DetailsView { get; set; }
 
         public CrashConfig CrashConfig { get; set; }
+
+        [DisplayName("Max Win Per (sub) Round")]
+        public int MaxWinPerRound { get; set; }
     }
 
     public class BotRatioItemViewModel

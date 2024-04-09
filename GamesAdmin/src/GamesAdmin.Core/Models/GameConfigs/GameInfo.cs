@@ -11,7 +11,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
             byte randomMode = 1,
             string displayName = "",
             int gameId = 0,
-            string[] siteExclusions = null)
+            string[] siteExclusions = null,
+            int maxWinPerRound = 0)
         {
             Name = name;
             EnableFreeBet = enableFreeBet;
@@ -20,6 +21,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             RandomMode = randomMode;
             GameId = gameId;
             DisplayName = displayName;
+            MaxWinPerRound = maxWinPerRound;
         }
 
         public int GameId { get; }
@@ -35,5 +37,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public string[] SiteExclusions { get; }
 
         public byte RandomMode { get; }
+
+        public int MaxWinPerRound { get; set; }
     }
 }

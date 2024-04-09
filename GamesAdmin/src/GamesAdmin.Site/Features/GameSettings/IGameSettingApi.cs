@@ -47,6 +47,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         [Post("/game_settings/update_odds")]
         Task<bool> UpdateOdds([Body] UpdateOddsRequest request);
 
+        [Post("/game_settings/update_margin")]
+        Task<bool> UpdateMarginSettings([Body] UpdateMarginSettingsRequest request);
+
         [Post("/game_settings/update_general_config")]
         Task<bool> UpdateGeneralConfig([Body] UpdateGeneralConfigRequest request);
 

@@ -30,5 +30,7 @@ namespace GamesAdmin.Database.Entities
 
         [BsonRepresentation(BsonType.Decimal128, AllowTruncation = true)]
         public decimal Rate { get; set; }
+
+        public long DrawId { get; set; }
     }
 }

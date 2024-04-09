@@ -62,6 +62,10 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.DragonTigerFight, new GameTicketCollection("dragontigerfight_bets", "dragontigerfight_betlogs") },
             { GameId.ColorGame, new GameTicketCollection("colorgame_bets", "colorgame_betlogs") },
             { GameId.BandarQiuQiu, new GameTicketCollection("bandarqiuqiu_bets", "bandarqiuqiu_betlogs") },
+            { GameId.BacBall1, new GameTicketCollection("bacball1_bets", "bacball1_betlogs") },
+            { GameId.BacBall2, new GameTicketCollection("bacball2_bets", "bacball2_betlogs") },
+            { GameId.LuckyNext1, new GameTicketCollection("luckynext1_bets", "luckynext1_betlogs") },
+            { GameId.LuckyNext2, new GameTicketCollection("luckynext2_bets", "luckynext2_betlogs") },
            };
 
         public static GameTicketCollection GetCollections(int gameTypeId, GameType type = GameType.AutoRNG, string displayName = "", bool isCheckBetLog = false)
@@ -71,7 +75,7 @@ namespace GamesAdmin.Api.VoidGame
                 var betCollection = NamingConverter.BetCollection(displayName);
                 var betLogCollection = NamingConverter.BetLogCollection(displayName);
                 var primaryCollection = isCheckBetLog ? betCollection : string.Empty;
-                var secondaryCollection = isCheckBetLog ? betLogCollection : betCollection; 
+                var secondaryCollection = isCheckBetLog ? betLogCollection : betCollection;
 
                 return new GameTicketCollection(primaryCollection, secondaryCollection);
             }

@@ -519,4 +519,30 @@ namespace GamesAdmin.Core.Models
 
         public double TotalAmount { get; set; }
     }
+
+    public class BacBall1BetRecord : BetRecord
+    {
+        public decimal Player { get; set; }
+
+        public decimal Banker { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public double TotalAmount { get; set; }
+
+        public long DrawId { get; set; }
+    }
+
+    public class BacBall2BetRecord : BetRecord
+    {
+        public decimal Player { get; set; }
+
+        public decimal Banker { get; set; }
+
+        public decimal Tie { get; set; }
+
+        public double TotalAmount { get; set; }
+
+        public long DrawId { get; set; }
+    }
 }

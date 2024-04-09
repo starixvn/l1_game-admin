@@ -50,5 +50,7 @@ namespace GamesAdmin.Core.Models
         public SlotRNGConfig SlotRNGConfig { get; set; }
 
         public CrashConfig CrashConfig { get; set; }
+
+        public IEnumerable<Dictionary<string, double>> Margin { get; set; }
     }
 }

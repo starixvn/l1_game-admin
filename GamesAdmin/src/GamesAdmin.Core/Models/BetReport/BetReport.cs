@@ -125,4 +125,12 @@ namespace GamesAdmin.Core.Models
     public class BandarQiuQiuBetReport : BetReport<BandarQiuQiuRoundResult, BandarQiuQiuBetRecord>
     {
     }
+
+    public class BacBall1BetReport : BetReport<BacBall1Round, BacBall1BetRecord>
+    {
+    }
+
+    public class BacBall2BetReport : BetReport<BacBall2Round, BacBall2BetRecord>
+    {
+    }
 }

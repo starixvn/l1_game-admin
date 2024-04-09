@@ -17,6 +17,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Info.Type == 0 ? GameType.AutoRNG : src.Info.Type))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Info.Name))
                 .ForMember(dest => dest.RandomMode, opt => opt.MapFrom(src => src.Info.RandomMode))
+                .ForMember(dest => dest.MaxWinPerRound, opt => opt.MapFrom(src => src.Info.MaxWinPerRound))
                 .ForMember(dest => dest.Enabled, opt => opt.MapFrom(src => src.EnableSetting.Enabled))
                 .ForMember(dest => dest.DisabledMessage, opt => opt.MapFrom(src => src.EnableSetting.DisabledMessage))
                 .ForMember(dest => dest.DelayStartTime, opt => opt.MapFrom(src => src.EnableSetting.DelayStartTime))

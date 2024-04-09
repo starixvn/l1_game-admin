@@ -6,7 +6,6 @@ using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
 using GamesAdmin.Site.Features.GameSettings.Requests;
-using Microsoft.AspNetCore.Mvc;
 using Sentry;
 
 namespace GamesAdmin.Site.Features.GameSettings
@@ -39,6 +38,8 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         Task<string> UpdateOdds(UpdateOddsRequest request);
 
+        Task<string> UpdateMarginSettings(UpdateMarginSettingsRequest request);
+
         Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds);
 
         Task<string> UpdateCascadingSlotOdds(string name, CascadingSlotsConfig cascadingSlotsConfig);
@@ -64,7 +65,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName);
 
         Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request);
-        
+
         Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request);
 
         Task<RtpResult> GetSlotRtp(GetSlotRtpRequest request);
@@ -166,6 +167,9 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<string> UpdateOdds(UpdateOddsRequest request)
         => await gameApi.UpdateOdds(request) ? string.Empty : UpdateFailedMessage;
 
+        public async Task<string> UpdateMarginSettings(UpdateMarginSettingsRequest request)
+        => await gameApi.UpdateMarginSettings(request) ? string.Empty : UpdateFailedMessage;
+
         public async Task<string> UpdateSlotIconOdds(string name, Dictionary<string, Dictionary<string, double>> iconOdds)
         => await gameApi.UpdateSlotOdds(name, iconOdds) ? string.Empty : UpdateFailedMessage;
 
@@ -208,11 +212,11 @@ namespace GamesAdmin.Site.Features.GameSettings
             => gameApi.GetConnectedUsers();
 
         public async Task<string> CloneNewSlotGame(int gameId, int fromGameId, string displayName)
-        =>await gameApi.CloneSlotGame(gameId, fromGameId, displayName);
+        => await gameApi.CloneSlotGame(gameId, fromGameId, displayName);
 
         public Task<bool> UpdateSymbolWeight(UpdateSymbolWeightRequest request)
         => gameApi.UpdateSymbolWeight(request);
-        
+
         public async Task<StatusGameResult> CheckServiceStatus(CheckServiceStatusRequest request)
         => await gameApi.CheckServiceStatus(request);
 

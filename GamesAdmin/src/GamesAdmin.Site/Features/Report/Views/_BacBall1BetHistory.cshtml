@@ -1,0 +1,31 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Site.Features.Report.ViewModels
+@model BacBall1BetHistoryViewModel
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Time</th>
+        <th>Bet Choice</th>
+        <th>Odds</th>
+        <th>Stake</th>
+        <th>Win</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var bet in Model.Bets)
+    {
+        <tr>
+            <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+            <td>@bet.GetDisplayChoice()</td>
+            <td>@HtmlHelpers.formatOddsWithZero(Model.Odds[bet.Choice], Model.FractionalOddsFormat)</td>
+            <td>@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>
+            <td>                
+                <span>
+                    @HtmlHelpers.formatNumber(Model.CalculateWinAmount(bet))
+                </span>               
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

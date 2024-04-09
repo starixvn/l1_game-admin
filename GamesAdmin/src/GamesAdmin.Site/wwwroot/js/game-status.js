@@ -106,7 +106,17 @@
         },
 
         showGameForm: function (gameName, gameDisplayName, view) {
-            var settingTitle = view == 'OddSettings' ? 'Odds: ' : 'General Setting: ';
+            var settingTitle = "";
+            switch (view) {
+                case "OddSettings":
+                    settingTitle = "Odds";
+                    break;
+                case "MarginSettings":
+                    settingTitle = "Margin Setting";
+                    break;
+                default:
+                    settingTitle = "General Setting";
+            }
 
             $.ajax({
                 method: "GET",
@@ -114,7 +124,7 @@
             }).done(function (content) {
                 if (content) {
                     $('#gamedetails').html(content);
-                    $('#settingTitle').html(settingTitle + gameDisplayName);
+                    $('#settingTitle').html(`${settingTitle}: ${gameDisplayName}`);
                     $('#gameModal').modal('show');
                 }
             });
@@ -249,7 +259,7 @@
         setControlResultHoldemPoker: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("HoldemPokderResult", gameName);
-        },    
+        },
 
         setControlResultSpeedUpGame: function (event, gameType, gameName, displayName) {
             event.preventDefault();
@@ -291,6 +301,11 @@
             $('#updateBtn').prop('disabled', true);
             if ($('#oddSetting').css('display') && $('#oddSetting').css('display') !== 'none') {
                 this.updateOdds();
+                return;
+            }
+
+            if ($('#marginSettings').css('display') && $('#marginSettings').css('display') !== 'none') {
+                this.updateMarginSettings();
                 return;
             }
 
@@ -674,7 +689,7 @@
 
             const id = '#' + tabName;
             const headerId = '#' + tabName + '-tab-header';
-  
+
             $(id).show();
             $(headerId).addClass("active");
         },
@@ -776,39 +791,100 @@
             lines.push(row3);
             return lines.map(line => line.split(','));
         },
+
+        addMarginOddsRange: function (oddsNames) {
+            $.ajax({
+                method: "GET",
+                url: "/margin/create-setting?oddsNames=" + oddsNames
+            }).done(function (result) {
+                $('#marginSettings').append(result);
+                const oddsRanges = $(".odds-range");
+                $('.range-order:last').text(`Odds Range ${oddsRanges.length}`);
+            });
+        },
+
+        updateMarginSettings: function () {
+            const idMsg = "#update-margin-msg";
+
+            const oddsRanges = $(".odds-range").toArray();
+            const marginSettings = [];
+            const gameName = $("#marginForm").find('input[name="Name"]').val();
+            oddsRanges.forEach(oddsRange => {
+                const setting = {}
+                $(oddsRange).find('input.form-control').toArray().forEach(input => {
+                    setting[input.name] = +input.value;
+                })
+                marginSettings.push(setting);
+            });
+
+            const showMessage = (message) => {
+                $(idMsg).html(message);
+                $(idMsg).show();
+                $('#updateBtn').prop('disabled', false);
+            }
+
+            if (marginSettings.some(setting => setting.max <= 0)) {
+                showMessage("Max value must be > 0");
+                return;
+            } else {
+                if (Object.keys(marginSettings).some(key => key !== 'max' && marginSettings[key] >= 1)) {
+                    showMessage("margin value must be < 1");
+                    return;
+                }
+                $(idMsg).hide();
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "/margin/update",
+                data: { gameName, marginSettings }
+            }).done(function (result) {
+                if (result) {
+                    showMessage(result);
+                } else {
+                    $('#successMsg').show();
+                    setTimeout(function () {
+                        $('#updateBtn').prop('disabled', false);
+                        $('#successMsg').hide();
+                        $(idMsg).hide();
+                        $('#gameModal').modal('hide');
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        }
     }
 }(jQuery));
 
-    $(document).ready(function () {
-        if ($("#status-tbl")) {
-            $("#status-tbl").DataTable({
-                "ordering": false,
-                "paging": false,
-                "info": false,
-                "stateSave": true,
-                "columns": [
-                    { "width": "3%" },
-                    { "width": "10%" },
-                    { "width": "5%" },
-                    { "width": "10%" },
-                    { "width": "20%" },
-                    { "width": "5%" },
-                    { "width": "5%" },
-                    { "width": "5%" },
-                    { "width": "5%" },
-                    { "width": "5%" },
-                    { "width": "5%" },
-                ],
-                "columnDefs": [
-                    { "targets": [3, 4, 5, 6, 7, 8, 9, 10], "searchable": false }
-                ]
-            });
-        }
-
-        $(".bet-monitor").on("click", function (event) {
-            var $this = $(this);
-            const gameName = $this.data("game-name");
-            gameStatus.startMonitor(gameName);
+$(document).ready(function () {
+    if ($("#status-tbl")) {
+        $("#status-tbl").DataTable({
+            "ordering": false,
+            "paging": false,
+            "info": false,
+            "stateSave": true,
+            "columns": [
+                { "width": "3%" },
+                { "width": "10%" },
+                { "width": "5%" },
+                { "width": "10%" },
+                { "width": "20%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+                { "width": "5%" },
+            ],
+            "columnDefs": [
+                { "targets": [3, 4, 5, 6, 7, 8, 9, 10], "searchable": false }
+            ]
         });
-    })
+    }
 
+    $(".bet-monitor").on("click", function (event) {
+        var $this = $(this);
+        const gameName = $this.data("game-name");
+        gameStatus.startMonitor(gameName);
+    });
+})

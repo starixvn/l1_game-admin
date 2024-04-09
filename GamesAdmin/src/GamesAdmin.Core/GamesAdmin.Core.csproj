@@ -16,4 +16,10 @@
     <PackageReference Include="TimeZoneConverter" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="game-settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

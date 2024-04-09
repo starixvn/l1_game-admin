@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Enumeration.BetChoices;
+using GamesAdmin.Core.Games;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Configurations;
@@ -36,6 +38,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         , IRequestHandler<UnderMaintenanceRequest, bool>
         , IRequestHandler<UpdateBetLimitRequest, bool>
         , IRequestHandler<UpdateOddsRequest, string>
+        , IRequestHandler<UpdateMarginSettingsRequest, string>
         , IRequestHandler<UpdateJackpotRequest, bool>
         , IRequestHandler<UpdateSymbolWeightByModeRequest, bool>
         , IRequestHandler<GetDisabledMessageRequest, Dictionary<string, string>>
@@ -58,6 +61,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         private readonly ICurrencyGroupGameService currencyGroupGameService;
         private readonly ISystemSettings systemSettings;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly GamesSettings gamesSettings;
 
         public GamesHandler(
             IMapper mapper,
@@ -66,7 +70,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             IPartnerService partnerService,
             ICurrencyGroupService currencyGroupService,
             ICurrencyGroupGameService currencyGroupGameService,
-            ISystemSettings systemSettings, 
+            ISystemSettings systemSettings,
             IGeneralGameSettingService generalGameSettingService)
         {
             this.mapper = mapper;
@@ -77,6 +81,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             this.currencyGroupGameService = currencyGroupGameService;
             this.systemSettings = systemSettings;
             this.generalGameSettingService = generalGameSettingService;
+            this.gamesSettings = GamesSettings.GetGamesSettings();
         }
 
         public async Task<IEnumerable<SelectListItem>> Handle(GetGamesByTypeRequest request, CancellationToken cancellationToken)
@@ -88,10 +93,9 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public async Task<CreateNewGameViewModel> Handle(CreateNewGameRequest request, CancellationToken cancellationToken)
         {
-       
             var existingGames = (await gameService.GetAll()).Select(game => game.Info.Name);
 
-            var names = Enumeration.GetAll<Game>()
+            var names = Game.GetAllGames()
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Value })
                 .Where(x => !existingGames.Contains(x.Value))
                 .ToList();
@@ -104,10 +108,10 @@ namespace GamesAdmin.Site.Features.GameSettings
                 .Cast<GameMode>()
                 .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }).ToList();
             var addViewModel = new AddViewModel(names, types, difficultyItems);
-            
-            var allSlotGames =  (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.Slots);
+
+            var allSlotGames = (await generalGameSettingService.GetAllGames()).Where(game => game.Type == GameType.Slots);
             var addSlotGameViewModel = new AddSlotGameViewModel(allSlotGames, types);
-            
+
             return new CreateNewGameViewModel(addViewModel, addSlotGameViewModel);
         }
 
@@ -127,8 +131,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.PayoutViewModel = mapper.Map<PayoutViewModel>(game);
                 viewModel.BotCount = await accountService.GetBotCount();
                 viewModel.BotRatioItems = GenerateBotRatioItems(game.BotSetting.HoursMaxBot, viewModel.BotCount);
-                viewModel.DisplayName = Enumeration.Contains<Game>(game.Info.Name)
-                                        ? Enumeration.FromValue<Game>(game.Info.Name).DisplayName
+                viewModel.DisplayName = Game.ContainsGame(game.Info.Name)
+                                        ? Game.FromGameName(game.Info.Name).DisplayName
                                         : game.Info.DisplayName;
                 viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
                 viewModel.SlotRNGConfig = game.SlotRNGConfig;
@@ -157,6 +161,12 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.Crash:
                         viewModel.SlotViewModel = new SlotViewModel();
                         viewModel.Type = GameType.Crash;
+                        break;
+
+                    case GameType.DynamicOdds:
+                        viewModel.Type = GameType.DynamicOdds;
+                        viewModel.PayoutViewModel.BetChoiceBetSettings = GenerateBetSettings(GetBetChoices(game.Info.Name), game.BetLimit);
+                        viewModel.PayoutViewModel.MarginSettings = GenerateMarginSettings(game.Info.Name, game.Margin);
                         break;
 
                     default:
@@ -200,6 +210,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 case GameType.AutoRNG:
                 case GameType.SlotRNG:
                 case GameType.Crash:
+                case GameType.DynamicOdds:
                     name += "RNG";
                     break;
 
@@ -230,7 +241,7 @@ namespace GamesAdmin.Site.Features.GameSettings
             return botRatioItems.OrderBy(item => item.GreenwichHour).ToList();
         }
 
-        private static List<MaxBetChoiceViewModel> GenerateBetSettings(IEnumerable<Enumeration> betChoices, BetLimit betLimit)
+        private List<MaxBetChoiceViewModel> GenerateBetSettings(IEnumerable<Enumeration> betChoices, BetLimit betLimit)
         {
             if (betChoices == default)
             {
@@ -243,7 +254,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 choice.DisplayName)).ToList();
         }
 
-        private static List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
+        private List<OddsViewModel> GenerateOdds(string name, Dictionary<string, double> oddsSettings)
         {
             var items = new List<OddsViewModel>();
 
@@ -252,7 +263,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 return items;
             }
 
-            var gameType = Enumeration.FromValue<Game>(name);
+            var gameType = Game.FromGameName(name);
             var betOdds = BetOddsMapper.Map(gameType);
 
             if (betOdds != default)
@@ -261,6 +272,16 @@ namespace GamesAdmin.Site.Features.GameSettings
                 {
                     var odds = oddsSettings.ContainsKey(odd.Value) ? oddsSettings[odd.Value] : 0;
                     items.Add(new OddsViewModel(odd.Value, odds, odd.DisplayName));
+                }
+            }
+
+            var betOdds2 = gamesSettings.GetGameFromName(name)?.Odds;
+            if (betOdds2?.Any() == true)
+            {
+                foreach (var odds in betOdds2)
+                {
+                    var oddsValue = oddsSettings.ContainsKey(odds) ? oddsSettings[odds] : 0;
+                    items.Add(new OddsViewModel(odds, oddsValue, odds));
                 }
             }
 
@@ -279,14 +300,50 @@ namespace GamesAdmin.Site.Features.GameSettings
                 icon.Value)).ToList();
         }
 
-        private static IEnumerable<Enumeration> GetBetChoices(string name)
+        private IEnumerable<Enumeration> GetBetChoices(string name)
         {
-            if (string.IsNullOrWhiteSpace(name) || !Enumeration.Contains<Game>(name))
+            var betChoices = gamesSettings.GetGameFromName(name)?.BetChoices;
+            if (betChoices?.Any() == true)
+            {
+                var items = new List<BaseBetChoice>();
+                foreach (var betChoice in betChoices)
+                {
+                    items.Add(new BaseBetChoice(betChoice, betChoice));
+                }
+                return items;
+            }
+            if (string.IsNullOrWhiteSpace(name) || !Game.ContainsGame(name))
             {
                 return default;
             }
 
-            return BetChoiceMapper.Map(Enumeration.FromValue<Game>(name));
+            return BetChoiceMapper.Map(Game.FromGameName(name));
+        }
+
+        private List<MarginSettingViewModel> GenerateMarginSettings(string name, IEnumerable<Dictionary<string, double>> marginSettings)
+        {
+            if (marginSettings?.Any() == true)
+            {
+                var viewModel = new List<MarginSettingViewModel>();
+                foreach (var settings in marginSettings)
+                {
+                    viewModel.Add(new MarginSettingViewModel(settings));
+                }
+                return viewModel;
+            }
+            else
+            {
+                var Odds = gamesSettings.GetGameFromName(name)?.Odds;
+                var defaultSetting = new Dictionary<string, double> { { "max", 0 } };
+                if (Odds?.Any() == true)
+                {
+                    foreach (var odds in Odds)
+                    {
+                        defaultSetting.Add(odds, 0);
+                    }
+                }
+                return new List<MarginSettingViewModel> { new MarginSettingViewModel(defaultSetting) };
+            }
         }
 
         public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
@@ -426,6 +483,9 @@ namespace GamesAdmin.Site.Features.GameSettings
             }
         }
 
+        public Task<string> Handle(UpdateMarginSettingsRequest request, CancellationToken cancellationToken)
+        => gameService.UpdateMarginSettings(request);
+
         public Task<bool> Handle(UpdateBetLimitRequest request, CancellationToken cancellationToken)
         => gameService.UpdateBetLimit(request);
 
@@ -448,7 +508,7 @@ namespace GamesAdmin.Site.Features.GameSettings
 
         public Task<RtpResult> Handle(GetSlotRtpRequest request, CancellationToken cancellationToken)
         => gameService.GetSlotRtp(request);
-        
+
         public async Task<StatusGameResult> Handle(CheckServiceStatusRequest request, CancellationToken cancellationToken)
         => await gameService.CheckServiceStatus(request);
     }

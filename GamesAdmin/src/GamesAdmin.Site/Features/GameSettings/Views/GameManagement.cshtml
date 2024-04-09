@@ -110,8 +110,14 @@
                         @{
                             if (Model.GameList[index].Name != "luckywheel")
                             {
-                                <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "OddSettings")'><i class="icon-edit"></i></button>
-
+                                if (Model.GameList[index].GameConfig.Info.Type ==  GamesAdmin.Core.Enumeration.GameType.DynamicOdds)
+                                {
+                                    <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "MarginSettings")'><i class="icon-edit"></i></button>
+                                }
+                                else
+                                {
+                                    <button class="btn-edit" onclick='gameStatus.showGameForm("@Model.GameList[index].Name", "@Model.GameList[index].DisplayName", "OddSettings")'><i class="icon-edit"></i></button>
+                                }
                             }
                         }
                     </td>

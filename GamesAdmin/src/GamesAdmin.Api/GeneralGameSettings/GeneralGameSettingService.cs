@@ -71,7 +71,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
 
         public async Task<int> GetGameId(string name)
         {
-            if (Enumeration.Contains<Game>(name))
+            if (Game.ContainsGame(name))
             {
                 return (int)Game.FromGameName(name).GameId;
             }
@@ -97,7 +97,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         public async Task<string> GetDisplayName(int gameId)
         {
             var gameInfo = appSettings.CloudSettings?.ShouldCallCloudService(gameId) == true ?
-              await GetDisplayNameDierctOnKbtDatabase(gameId) : await GetDisplayNameThroughGameManagementApi(gameId);
+              await GetDisplayNameThroughGameManagementApi(gameId) : await GetDisplayNameDierctOnKbtDatabase(gameId);
 
             var displayName = !string.IsNullOrEmpty(gameInfo.DisplayName) ? gameInfo.DisplayName : Game.FromGameName(gameInfo.Name).DisplayName;
             return displayName;
@@ -107,7 +107,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         {
             return appSettings.CloudSettings.ShouldCallCloudService(gameId) ?
                  await CheckCrashGameThroughGameManagementApi(gameId) :
-                 await CheckCrashGameDirectOnKbtDatabase(gameId) ;
+                 await CheckCrashGameDirectOnKbtDatabase(gameId);
         }
 
         private async Task<GameConfigEntity> GetDisplayNameDierctOnKbtDatabase(int gameId)
@@ -121,10 +121,9 @@ namespace GamesAdmin.Api.GeneralGameSettings
         private async Task<GameConfigEntity> GetDisplayNameThroughGameManagementApi(int gameId)
         {
             var gameManagementApi = (IGameManagementApi)serviceProvider.GetService(typeof(IGameManagementApi));
-            var response = await gameManagementApi.GetGameConfigById((byte)gameId);
+            var response = await gameManagementApi.GetGameConfigById(gameId);
             return response?.Data;
         }
-
 
         private async Task<bool> CheckCrashGameDirectOnKbtDatabase(int gameId)
         {
@@ -138,7 +137,7 @@ namespace GamesAdmin.Api.GeneralGameSettings
         private async Task<bool> CheckCrashGameThroughGameManagementApi(int gameId)
         {
             var gameManagementApi = (IGameManagementApi)serviceProvider.GetService(typeof(IGameManagementApi));
-            var response = await gameManagementApi.GetGameConfigById((byte)gameId);
+            var response = await gameManagementApi.GetGameConfigById(gameId);
 
             if (response?.Data == null || string.IsNullOrWhiteSpace(response?.Data.Name))
             {

@@ -292,6 +292,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     case GameType.SlotRNG:
                         slotRNGConfig = viewModel.SlotRNGConfig;
                         break;
+
                     case GameType.Crash:
                         crashConfig = viewModel.CrashConfig;
                         break;
@@ -300,7 +301,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 }
 
                 var request = new UpdateRequest(
-                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode),
+                    new GameInfo(viewModel.Name, viewModel.EnableFreeBet, viewModel.Type, viewModel.RandomMode, string.Empty, 0, null, viewModel.MaxWinPerRound),
                     new BotSetting(viewModel.BotEnabled, viewModel.BotMaxBet, null, viewModel.SmartBotEnabled, viewModel.SmartBotGroupRatio.ConvertPercentValue()),
                     new EnableSetting(viewModel.Enabled, viewModel.DelayStartTime),
                     slotsConfig,
@@ -326,7 +327,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         {
             try
             {
-                var result = await mediator.Send(new CheckServiceStatusRequest(new Player(username, password),  name));
+                var result = await mediator.Send(new CheckServiceStatusRequest(new Player(username, password), name));
 
                 return Json(result);
             }
@@ -369,6 +370,32 @@ namespace GamesAdmin.Site.Features.GameSettings
                 var result = await mediator.Send(new GetSlotRtpRequest(deserializeOdds, weight, numOfRounds));
 
                 return Json(result);
+            }
+            catch (Exception ex)
+            {
+                sentryClient.CaptureException(ex);
+            }
+
+            return Json(false);
+        }
+
+        [HttpGet]
+        [Route("/margin/create-setting")]
+        public IActionResult CreateMarginSetting(string oddsNames)
+        {
+            var marginSettings = oddsNames.Split(",").ToDictionary(name => name, _ => (double)0);
+            var viewModel = new MarginSettingViewModel(marginSettings);
+            return PartialView("_MarginItem", viewModel);
+        }
+
+        [HttpPost]
+        [Route("/margin/update")]
+        public async Task<IActionResult> UpdateMarginSettings(string gameName, IEnumerable<Dictionary<string, double>> marginSettings)
+        {
+            try
+            {
+                var updateResult = await mediator.Send(new UpdateMarginSettingsRequest(gameName, marginSettings));
+                return Json(updateResult);
             }
             catch (Exception ex)
             {

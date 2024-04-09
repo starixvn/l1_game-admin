@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.Currencies;
@@ -27,7 +26,6 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public IList<CurrencyGroupModel> CurrencyGroups { get; }
 
         public IList<CurrencyGroupGame> CurrencyGroupGames { get; }
-
     }
 
     public class StatusItemViewModel
@@ -43,17 +41,16 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
 
         public string DisplayName => ParseGameConfigName();
 
-        public int GameId => Enumeration.Contains<Game>(Name) ? (int)Enumeration.FromValue<Game>(Name).GameId : GameConfig.Info.GameId;
+        public int GameId => Game.ContainsGame(Name) ? (int)Game.FromGameName(Name).GameId : GameConfig.Info.GameId;
 
         private string ParseGameConfigName()
-            => Enumeration.Contains<Game>(GameConfig.Info.Name) ? Enumeration.FromValue<Game>(GameConfig.Info.Name).DisplayName : GameConfig.Info.DisplayName;
+            => Game.ContainsGame(GameConfig.Info.Name) ? Game.FromGameName(GameConfig.Info.Name).DisplayName : GameConfig.Info.DisplayName;
 
         public bool Enabled => GameConfig.EnableSetting.Enabled;
 
         public bool BotEnabled => GameConfig.BotSetting.BotEnabled;
 
         public string DisabledMessage => GameConfig.EnableSetting.DisabledMessage;
-
     }
 
     public class GameDisableMessage

@@ -359,4 +359,62 @@ namespace GamesAdmin.Core.Models
 
         public IEnumerable<int> PipsOfSet { get; set; }
     }
+
+    public class BacBall1Round : RoundResult
+    {
+        public long DrawId { get; set; }
+
+        public List<BacBall1RoundResult> Result { get; set; }
+
+        public List<BacBall1SettlementResult> SettlementResult { get; set; }
+    }
+
+    public class BacBall1RoundResult
+    {
+        public int Player { get; set; }
+
+        public int Banker { get; set; }
+
+        public long DrawId { get; set; }
+    }
+
+    public class BacBall1SettlementResult
+    {
+        public bool Player { get; set; }
+
+        public bool Banker { get; set; }
+
+        public bool Tie { get; set; }
+
+        public long DrawId { get; set; }
+    }
+
+    public class BacBall2Round : RoundResult
+    {
+        public long DrawId { get; set; }
+
+        public List<BacBall2RoundResult> Result { get; set; }
+
+        public List<BacBall2SettlementResult> SettlementResult { get; set; }
+    }
+
+    public class BacBall2RoundResult
+    {
+        public int Player { get; set; }
+
+        public int Banker { get; set; }
+
+        public long DrawId { get; set; }
+    }
+
+    public class BacBall2SettlementResult
+    {
+        public bool Player { get; set; }
+
+        public bool Banker { get; set; }
+
+        public bool Tie { get; set; }
+
+        public long DrawId { get; set; }
+    }
 }

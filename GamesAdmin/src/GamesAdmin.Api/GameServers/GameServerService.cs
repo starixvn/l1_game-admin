@@ -67,7 +67,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IGameUserService gameUserService;
         private readonly IGameSettingsService gameSettingService;
         private readonly IHoldemPokerApiFactory holdemPokerApiFactory;
-        private readonly IHiLoApi hiloApi;
+        private readonly IHiLoApiFactory hiloApiFactory;
         private readonly IGenericRepository<AdminUserEntity> userRepository;
         private readonly ICascadingResultApiFactory cascadingResultApiFactory;
         private readonly IAppSettings appSettings;
@@ -82,7 +82,7 @@ namespace GamesAdmin.Api.GameServers
             IGameUserService gameUserService,
             IGameSettingsService gameSettingService,
             IHoldemPokerApiFactory holdemPokerApiFactory,
-            IHiLoApi hiloApi,
+            IHiLoApiFactory hiloApiFactory,
             IAppSettings appSettings,
             IUserServiceApi userServiceApi,
             ICascadingResultApiFactory cascadingResultApiFactory,
@@ -98,7 +98,7 @@ namespace GamesAdmin.Api.GameServers
             this.gameUserService = gameUserService;
             this.gameSettingService = gameSettingService;
             this.holdemPokerApiFactory = holdemPokerApiFactory;
-            this.hiloApi = hiloApi;
+            this.hiloApiFactory = hiloApiFactory;
             this.appSettings = appSettings;
             this.userServiceApi = userServiceApi;
             this.cascadingResultApiFactory = cascadingResultApiFactory;
@@ -237,7 +237,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
-                var pokerApi = holdemPokerApiFactory.SetResultApi(Enumeration.FromValue<Game>(request.gameConfigName));
+                var pokerApi = holdemPokerApiFactory.SetResultApi(Game.FromGameName(request.gameConfigName));
                 var model = await pokerApi.SetResult(request);
 
                 return new HoldemPokerResultControl
@@ -259,6 +259,7 @@ namespace GamesAdmin.Api.GameServers
         {
             try
             {
+                var hiloApi = hiloApiFactory.SetResultApi();
                 return await hiloApi.SetResult(request);
             }
             catch (Exception ex)

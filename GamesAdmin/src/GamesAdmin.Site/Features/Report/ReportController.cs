@@ -701,7 +701,31 @@ namespace GamesAdmin.Site.Features.Report
         {
             return RedirectToAction("Index", new { game = GameId.BandarQiuQiu });
         }
-        
+
+        [HttpGet]
+        public IActionResult BacBall1()
+        {
+            return RedirectToAction("Index", new { game = GameId.BacBall1 });
+        }
+
+        [HttpGet]
+        public IActionResult BacBall2()
+        {
+            return RedirectToAction("Index", new { game = GameId.BacBall2 });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBacBall1BetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_BacBall1BetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBacBall2BetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_BacBall2BetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
+        }
+
         [HttpGet]
         public async Task<IActionResult> CrashGameReport(string game)
         {
@@ -743,6 +767,24 @@ namespace GamesAdmin.Site.Features.Report
                 convertToUSD);
 
             return PartialView("CrashGames/_CrashGameRecords", await mediator.Send(request));
+        }
+
+        [HttpGet]
+        public IActionResult LuckyNext1()
+        {
+            return RedirectToAction("Index", new { game = GameId.LuckyNext1 });
+        }
+
+        [HttpGet]
+        public IActionResult LuckyNext2()
+        {
+            return RedirectToAction("Index", new { game = GameId.LuckyNext2 });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetNextBallBetHistory(BetHistoryFilter filter, bool convertToUSD)
+        {
+            return PartialView("_NextBallBetHistory", await mediator.Send(new BetHistoryReportRequest(filter, convertToUSD)));
         }
     }
 }

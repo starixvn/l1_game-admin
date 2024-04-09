@@ -255,6 +255,7 @@ namespace GamesAdmin.Api.ChatBot
             {
                 SystemType.SC1 => "S",
                 SystemType.VG2 => "VG",
+                SystemType.GN => "GN",
                 _ => string.Empty
             };
         }

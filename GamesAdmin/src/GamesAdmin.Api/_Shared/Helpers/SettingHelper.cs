@@ -17,19 +17,19 @@ namespace GamesAdmin.Api._Shared.Helpers
         {
             var weight = oldSymbolWeight?.ContainsKey(newConfig.Mode.ToString()) == true ? oldSymbolWeight[newConfig.Mode.ToString()] : null;
             var changedSettings = new List<SettingChangedModel>();
-         
+
             for (var i = 0; i < newConfig.Weight.Length; i++)
             {
                 var oldText = weight == null ? string.Empty : ConvertMatrixToString(weight[i]);
                 var newText = ConvertMatrixToString(newConfig.Weight[i]);
                 var setting = new SettingChangedModel($"Weight Row {i + 1}", oldText, newText);
-                changedSettings.Add(setting);               
+                changedSettings.Add(setting);
             }
-            
+
             return changedSettings;
         }
 
-        private static string  ConvertMatrixToString (int[] row)
+        private static string ConvertMatrixToString(int[] row)
         {
             return string.Join(", ", row);
         }
@@ -130,6 +130,7 @@ namespace GamesAdmin.Api._Shared.Helpers
                 new SettingChangedModel("SmartBotEnabled", oldConfig.SmartBotEnabled.ToString(), botSetting.SmartBotEnabled.ToString()),
                 new SettingChangedModel("SmartBotGroupRatio", oldConfig.SmartBotGroupRatio.ToString(), botSetting.SmartBotGroupRatio.ToString()),
                 new SettingChangedModel("RandomMode", oldConfig.RandomMode.ToString(), gameInfo.RandomMode.ToString()),
+                new SettingChangedModel("MaxWinPerRound", oldConfig.MaxWinPerRound.ToString(), gameInfo.MaxWinPerRound.ToString()),
             };
 
             return changedSettings;
@@ -165,6 +166,27 @@ namespace GamesAdmin.Api._Shared.Helpers
                 var oldText = oldConfig == null ? string.Empty : oldConfig[n.Key].ToString();
                 var setting = new SettingChangedModel(n.Key, oldText, n.Value.ToString());
                 changedSettings.Add(setting);
+            }
+
+            return changedSettings;
+        }
+
+        public static List<SettingChangedModel> GetMarginSettingsChangedModel(IEnumerable<Dictionary<string, double>> oldSettings, IEnumerable<Dictionary<string, double>> newSettings)
+        {
+            var changedSettings = new List<SettingChangedModel>();
+            var newSettingList = newSettings.ToList();
+            var oldSettingList = oldSettings?.ToList();
+
+            for (var i = 0; i < newSettingList.Count; i++)
+            {
+                foreach (var (key, value) in newSettingList[i])
+                {
+                    var oldText = oldSettingList?.Count <= i || oldSettingList?[i] == null
+                        ? "0"
+                        : oldSettingList[i][key].ToString();
+                    var setting = new SettingChangedModel($"range {i}-{key}", oldText, value.ToString());
+                    changedSettings.Add(setting);
+                }
             }
 
             return changedSettings;
