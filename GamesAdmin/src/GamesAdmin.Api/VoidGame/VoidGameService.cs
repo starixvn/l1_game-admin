@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api.VoidGame.Models;
 using GamesAdmin.Api.VoidGame.Requests;
 using GamesAdmin.Core.Enumeration;
@@ -11,16 +8,17 @@ using GamesAdmin.Database;
 using GamesAdmin.Database.Entities;
 using Refit;
 using Sentry;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Api.VoidGame
 {
-
     [Headers("Authorization: Bearer")]
     public interface IVoidGameApi
     {
         [Post("/Player/VoidGame")]
         Task<VoidGameApiResult> VoidGameTicket([Body] VoidTicketRequest request);
-
     }
 
     public interface IVoidGameService
@@ -167,7 +165,6 @@ namespace GamesAdmin.Api.VoidGame
                     {
                         return apiResult;
                     }
-
                 }
                 else
                 {
@@ -194,7 +191,6 @@ namespace GamesAdmin.Api.VoidGame
                     {
                         return new VoidGameResult { ErrorCode = 1002, ErrorMessage = "Request void running ticket unsuccessfully." };
                     }
-
                 }
 
                 apiResult.HandIds = String.Join(", ", ticket.HandIds);
@@ -232,11 +228,12 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var apiResult = await voidGameApi.VoidGameTicket(request);
+                var apiResult = request.CallApi ? await voidGameApi.VoidGameTicket(request) : new VoidGameApiResult();
 
                 if (apiResult.Result.IsSuccessful())
                 {
-                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.PlayerId}", Sentry.Protocol.SentryLevel.Fatal);
+                    var sentryLevel = request.CallApi ? Sentry.Protocol.SentryLevel.Fatal : Sentry.Protocol.SentryLevel.Warning;
+                    sentryClient.CaptureMessage($"Void Ticket For {request.SiteId}_{request.PlayerId}", sentryLevel);
 
                     var moved = await ticketHandler.Void(
                         request.PlayerId,
@@ -245,6 +242,7 @@ namespace GamesAdmin.Api.VoidGame
                         request.GameRoundId,
                         request.GameTypeId,
                         request.FreeBet);
+
                     if (!moved)
                     {
                         return TicketMovedUnsuccessfully();
@@ -274,10 +272,9 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-               
                 var accountInfoEntity = await accountInfoRepository.FindOneAsync(entity => entity.UserId == userIndentify);
                 var gameId = Enum.Parse<GameId>(gameTypeId.ToString());
-  
+
                 if (gameRound24h.TryGetValue(gameId, out var gameName))
                 {
                     var serviceName = NamingConverter.ServiceName(gameName, appSettings.ServiceNameSeparator);

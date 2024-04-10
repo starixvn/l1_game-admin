@@ -1,12 +1,11 @@
-﻿using GamesAdmin.Core.OWResults;
-using GamesAdmin.Site.Features.VoidGame.ViewModels;
+﻿using GamesAdmin.Site.Features.VoidGame.ViewModels;
 using MediatR;
 
 namespace GamesAdmin.Site.Features.VoidGame.Requests
 {
     public class VoidTicketRequest : IRequest<VoidGameResultViewModel>
     {
-        public VoidTicketRequest(string memberId, string partnerId, string siteId, long gameRoundId, int gameTypeId, string reason, bool freeBet)
+        public VoidTicketRequest(string memberId, string partnerId, string siteId, long gameRoundId, int gameTypeId, string reason, bool freeBet, bool callApi = true)
         {
             PlayerId = memberId;
             OperatorId = partnerId;
@@ -15,6 +14,7 @@ namespace GamesAdmin.Site.Features.VoidGame.Requests
             GameTypeId = gameTypeId;
             Reason = reason;
             FreeBet = freeBet;
+            CallApi = callApi;
         }
 
         public string PlayerId { get; }
@@ -30,5 +30,7 @@ namespace GamesAdmin.Site.Features.VoidGame.Requests
         public string Reason { get; }
 
         public bool FreeBet { get; }
+
+        public bool CallApi { get; }
     }
 }
