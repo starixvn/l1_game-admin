@@ -228,7 +228,7 @@ namespace GamesAdmin.Api.VoidGame
         {
             try
             {
-                var apiResult = request.CallApi ? await voidGameApi.VoidGameTicket(request) : new VoidGameApiResult();
+                var apiResult = request.CallApi ? await voidGameApi.VoidGameTicket(request) : new VoidGameApiResult { Result = new VoidGameResult { ErrorCode = 0 } };
 
                 if (apiResult.Result.IsSuccessful())
                 {
