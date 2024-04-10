@@ -1,5 +1,6 @@
 ﻿using GamesAdmin.Core.OWResults;
 using GamesAdmin.Site.Features.VoidGame.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace GamesAdmin.Site.Features.VoidGame
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")]
     public class InternalController : ControllerBase
     {
         private readonly IVoidGameApi voidGameApi;
@@ -23,7 +25,7 @@ namespace GamesAdmin.Site.Features.VoidGame
         }
 
         [HttpPost("void")]
-        public async Task<VoidGameResult> VoidTicket(string playerId, long gameRoundId, int gameId, string operatorId, string siteId)
+        public async Task<VoidGameResult> VoidTicket(string playerId, string operatorId, string siteId, long gameRoundId, int gameId)
         {
             const string reason = "Void for incident";
             const bool freeBet = false;
