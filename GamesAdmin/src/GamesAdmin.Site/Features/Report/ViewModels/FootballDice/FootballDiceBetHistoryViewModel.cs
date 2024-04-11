@@ -13,9 +13,14 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal GetOddsToShow(string choice)
         {
-            if(choice == FootballDiceBetChoice.DrawValue && RoundResult.SettlementResult.Draw12)
+            if (choice == FootballDiceBetChoice.DrawValue)
             {
-                return Odds[FootballDiceBetOdds.Draw12Value];
+                if (RoundResult.SettlementResult.Draw)
+                {
+                    return RoundResult.SettlementResult.Draw12 ? Odds[FootballDiceBetOdds.Draw12Value] : Odds[FootballDiceBetOdds.DrawValue];
+                }
+
+                return 0;
             }
 
             return Odds[choice];
@@ -23,7 +28,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public decimal GetWinningOdds(string choice)
         {
-            if(choice != FootballDiceBetChoice.DrawValue && RoundResult.SettlementResult.Draw)
+            if (choice != FootballDiceBetChoice.DrawValue && RoundResult.SettlementResult.Draw)
             {
                 return 1;
             }
