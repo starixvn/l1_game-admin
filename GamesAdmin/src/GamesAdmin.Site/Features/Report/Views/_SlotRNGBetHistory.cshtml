@@ -19,7 +19,7 @@
             <tr>
                 <td class="text-center">@bet.Time.ToString(Constants.DateTimeFormat)</td>
                 <td class="text-center">
-                    <img src="/images/fruitslot/@(bet.Choice).png" alt="#" />
+                    <img src="/images/@Model.GameName/@(bet.Choice).png" alt="#" />
                 </td>
                 <td class="text-center">@Model.GetOdds(bet.SubChoices, bet.Choice)</td>
                 <td class="text-center">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.Amount) / Model.BaseCurrencyMultiplier : bet.Amount)</td>

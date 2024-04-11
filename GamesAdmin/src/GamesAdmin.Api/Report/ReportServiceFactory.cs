@@ -67,6 +67,7 @@ namespace GamesAdmin.Api.Report
             { GameId.LuckyNext1, typeof(NextBallReportService<LuckyNext1RoundEntity, LuckyNext1BetEntity, LuckyNext1BetLogEntity>) },
             { GameId.LuckyNext2, typeof(NextBallReportService<LuckyNext2RoundEntity, LuckyNext2BetEntity, LuckyNext2BetLogEntity>) },
             { GameId.FootballDice, typeof(FootballDiceReportService) },
+            { GameId.FootballSlot, typeof(FootballSlotReportService) },
         };
 
         private readonly IServiceProvider serviceProvider;
