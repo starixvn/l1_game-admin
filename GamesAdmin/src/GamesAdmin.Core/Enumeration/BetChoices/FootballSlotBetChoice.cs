@@ -2,25 +2,25 @@
 {
     public class FootballSlotBetChoice : Enumeration
     {
-        public const string BarValue = "bar";
-        public const string TripleSevenValue = "tripleSeven";
-        public const string WatermeloValue = "watermelon";
-        public const string StarValue = "star";
-        public const string BellValue = "bell";
-        public const string OrangeValue = "orange";
-        public const string LemonValue = "lemon";
-        public const string CherryValue = "cherry";
+        public const string CupValue = "cup";
+        public const string MasscotValue = "masscot";
+        public const string HostCountryValue = "hostCountry";
+        public const string FranceShirtValue = "franceShirt";
+        public const string EnglandShirtValue = "englandShirt";
+        public const string BallValue = "ball";
+        public const string TicketsValue = "tickets";
+        public const string ShoesValue = "shoes";
         public const string BigValue = "big";
         public const string SmallValue = "small";
 
-        public static readonly FootballSlotBetChoice Bar = new FootballSlotBetChoice(BarValue, "Bar");
-        public static readonly FootballSlotBetChoice TripleSevent = new FootballSlotBetChoice(TripleSevenValue, "777");
-        public static readonly FootballSlotBetChoice Star = new FootballSlotBetChoice(StarValue, "Star");
-        public static readonly FootballSlotBetChoice Watermelon = new FootballSlotBetChoice(WatermeloValue, "Watermelon");
-        public static readonly FootballSlotBetChoice Bell = new FootballSlotBetChoice(BellValue, "Bell");
-        public static readonly FootballSlotBetChoice Lemon = new FootballSlotBetChoice(LemonValue, "Lemon");
-        public static readonly FootballSlotBetChoice Orange = new FootballSlotBetChoice(OrangeValue, "Orange");
-        public static readonly FootballSlotBetChoice Cherry = new FootballSlotBetChoice(CherryValue, "Cherry");
+        public static readonly FootballSlotBetChoice Cup = new FootballSlotBetChoice(CupValue, "Cup");
+        public static readonly FootballSlotBetChoice Masscot = new FootballSlotBetChoice(MasscotValue, "Masscot");
+        public static readonly FootballSlotBetChoice HostCountry = new FootballSlotBetChoice(HostCountryValue, "Host Country");
+        public static readonly FootballSlotBetChoice FranceShirt = new FootballSlotBetChoice(FranceShirtValue, "France Shirt");
+        public static readonly FootballSlotBetChoice EnglandShirt = new FootballSlotBetChoice(EnglandShirtValue, "England Shirt");
+        public static readonly FootballSlotBetChoice Ball = new FootballSlotBetChoice(BallValue, "Ball");
+        public static readonly FootballSlotBetChoice Tickets = new FootballSlotBetChoice(TicketsValue, "Tickets");
+        public static readonly FootballSlotBetChoice Shoes = new FootballSlotBetChoice(ShoesValue, "shoes");
         public static readonly FootballSlotBetChoice Big = new FootballSlotBetChoice(BigValue, "Big");
         public static readonly FootballSlotBetChoice Small = new FootballSlotBetChoice(SmallValue, "Small");
 
