@@ -15,7 +15,7 @@
             src = $"{(symbol.Equals(bar) ? bar100 : symbol)}.png";
         }
 
-        if (Model.GameName == "footballdice")
+        if (Model.GameName == "footballslot")
         {
             const string cup = "cup";
             const string cup100 = "cup100";
@@ -100,7 +100,7 @@
                         <td class="text-right">
                             <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
                                asp-action="GetSlotRNGBetHistory"
-                               asp-route-game="@GameId.FruitSlot"
+                               asp-route-game="@Game.FromGameName(Model.GameName).GameId"
                                asp-route-roundId="@Model.RoundResult.Number"
                                asp-route-userId="@bet.UserId"
                                asp-route-partnerId="@bet.PartnerId"

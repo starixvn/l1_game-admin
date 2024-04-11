@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
@@ -50,7 +51,8 @@ namespace GamesAdmin.Site.Features.Report
 
                     return betViewModel;
                 }),
-                Odds = result.Odds
+                Odds = result.Odds,
+                GameName = Game.FromGameId(filter.Game).Value
             };
         }
     }

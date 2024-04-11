@@ -7,6 +7,7 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
         public SlotRNGRoundResultViewModel RoundResult { get; set; }
         public IEnumerable<SlotRNGBetHistoryRecordViewModel> Bets { get; set; }
         public Dictionary<string, decimal> Odds { get; set; }
+        public string GameName { get; set; }
 
         public decimal GetOdds(IEnumerable<string> subChoices, string mainChoice)
         {
