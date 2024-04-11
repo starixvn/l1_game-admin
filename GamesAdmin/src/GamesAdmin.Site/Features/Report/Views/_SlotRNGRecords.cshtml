@@ -14,6 +14,13 @@
             const string bar100 = "bar100";
             src = $"{(symbol.Equals(bar) ? bar100 : symbol)}.png";
         }
+
+        if (Model.GameName == "footballdice")
+        {
+            const string cup = "cup";
+            const string cup100 = "cup100";
+            src = $"{(symbol.Equals(cup) ? cup100 : symbol)}.png";
+        }
         <span><img src="@($"/images/{Model.GameName}/{src}")" alt="#" /></span>
     }
 }
