@@ -248,7 +248,8 @@ namespace GamesAdmin.Core.Enumeration
                 DragonTigerFight,
                 ColorGame,
                 BandarQiuQiu,
-                FootballDice
+                FootballDice,
+            	FootballSlot
             };
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
             return normalGame.Concat(gameSettings);
