@@ -94,8 +94,7 @@ namespace GamesAdmin.Site.Features.GameSettings
         public async Task<CreateNewGameViewModel> Handle(CreateNewGameRequest request, CancellationToken cancellationToken)
         {
             var existingGames = (await gameService.GetAll()).Select(game => game.Info.Name);
-
-            var names = Game.GetAllGames()
+            var names = Game.GetAllGamesBySystem(systemSettings.System)
                 .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Value })
                 .Where(x => !existingGames.Contains(x.Value))
                 .ToList();
