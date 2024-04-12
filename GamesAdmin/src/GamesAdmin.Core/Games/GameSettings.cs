@@ -13,6 +13,7 @@ namespace GamesAdmin.Core.Games
         public string DisplayName { get; set; }
         public IEnumerable<string> BetChoices { get; set; }
         public IEnumerable<string> Odds { get; set; }
+        public IEnumerable<string> OfferedSystem { get; set; }
     }
 
     public class GamesSettings

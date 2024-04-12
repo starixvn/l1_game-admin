@@ -133,7 +133,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game ColorGame = new Game(ColorGameValue, "Color Game", GameId.ColorGame);
         public static readonly Game BandarQiuQiu = new Game(BandarQiuQiuValue, "Bandar Qiu Qiu", GameId.BandarQiuQiu);
         public static readonly Game ChineseBlackjack = new Game(ChineseBlackjackValue, "Chinese Blackjack", GameId.ChineseBlackjack);
-        
+
         public Game()
         {
         }
@@ -183,10 +183,19 @@ namespace GamesAdmin.Core.Enumeration
             return Contains<Game>(gameName);
         }
 
-        public static IEnumerable<Game> GetAllGames()
+        public static IEnumerable<Game> GetAllGamesBySystem(string systemType)
         {
-            var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
-            return GetAll<Game>().Concat(gameSettings);
+            var gameSettings = GamesSettings.GetGamesSettings().Games
+                                .Where(game => game.OfferedSystem.Contains(systemType))
+                                .Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
+            if (systemType.Equals(SystemType.SC1) || systemType.Equals(SystemType.VG2))
+            {
+                return GetAll<Game>().Concat(gameSettings);
+            }
+            else
+            {
+                return gameSettings;
+            }
         }
 
         public static IEnumerable<Game> GetNormalGames()
