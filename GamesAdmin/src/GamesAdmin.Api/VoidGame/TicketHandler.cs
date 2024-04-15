@@ -149,6 +149,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.FootballDice => await Move<FootballDiceBetEntity, FootballDiceBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.FootballSlot => await Move<FootballSlotBetEntity, FootballSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.CoinToss => await Move<CoinTossBetEntity, CoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.SeBall1 => await Move<SeBall1BetEntity, SeBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => false,
                        };
             }
@@ -245,6 +246,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.FootballDice => await Find<FootballDiceBetEntity, FootballDiceBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.FootballSlot => await Find<FootballSlotBetEntity, FootballSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.CoinToss => await Find<CoinTossBetEntity, CoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.SeBall1 => await Find<SeBall1BetEntity, SeBall1BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => default,
                     };
                 }
@@ -573,7 +575,6 @@ namespace GamesAdmin.Api.VoidGame
                 await removeCollection.InsertOneAsync(round);
 
                 await MoveResult(gameRoundId, collectionName.Split("_").FirstOrDefault());
-
 
                 return true;
             }

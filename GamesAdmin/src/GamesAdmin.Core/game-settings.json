@@ -38,5 +38,13 @@
     "BetChoices": [ "head", "tail" ],
     "Odds": [ "head", "tail" ],
     "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
+    "GameId": 1005,
+    "GameName": "seball1",
+    "DisplayName": "Se Ball",
+    "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+    "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
+    "OfferedSystem": [ "GN" ]
   }
 ]
