@@ -74,6 +74,8 @@ namespace GamesAdmin.Site.Features.ApiLogs
             { ApiLogType.MemberSiteSignInRequest, memberSignInView },
             { ApiLogType.OperatorSignInRequest, owSignInView },
             { ApiLogType.HitJackpot, hitjackpotView },
+            { ApiLogType.EnterPortal, commonPartnerLogView },
+            { ApiLogType.GetBetLimit, commonPartnerLogView },
         };
 
         private static string GetGameName(string gameId)
