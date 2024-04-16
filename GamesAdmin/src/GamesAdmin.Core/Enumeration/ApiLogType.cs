@@ -11,7 +11,9 @@
         VoidGames,
         MemberSiteSignInRequest,
         OperatorSignInRequest,
-        HitJackpot
+        HitJackpot,
+        EnterPortal,
+        GetBetLimit
     }
 
     public class ApiLogEnumeration : Enumeration
@@ -26,6 +28,8 @@
         public static readonly ApiLogEnumeration MemberSiteSignInRequest = new ApiLogEnumeration("Member Site Sign In Request", ApiLogType.MemberSiteSignInRequest);
         public static readonly ApiLogEnumeration OperatorSignInRequest = new ApiLogEnumeration("Operator Sign In Request", ApiLogType.OperatorSignInRequest);
         public static readonly ApiLogEnumeration HitJackpotRequest = new ApiLogEnumeration("Hit Jackpot", ApiLogType.HitJackpot);
+        public static readonly ApiLogEnumeration EnterPortalRequest = new ApiLogEnumeration("Enter Portal", ApiLogType.EnterPortal);
+        public static readonly ApiLogEnumeration GetBetLimitRequest = new ApiLogEnumeration("Get Bet Limit", ApiLogType.GetBetLimit);
 
         public ApiLogEnumeration()
         { }

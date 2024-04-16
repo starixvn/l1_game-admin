@@ -17,6 +17,8 @@ namespace GamesAdmin.Api.ApiLogs
         private const string MemberSigninCollectionName = "membersignin_requests";
         private const string OperatorSigninCollectionName = "owsignin_requests";
         private const string HitJackpotCollectionName = "hit_jackpots";
+        private const string EnterPortalCollectionName = "enter_portals";
+        private const string GetBetLimitCollectionName = "bet_limits";
 
         private const string PlaceBetCall = "PartnerPlaceBetCall";
         private const string PlaceBetResult = "PartnerPlaceBetResult";
@@ -40,6 +42,9 @@ namespace GamesAdmin.Api.ApiLogs
         private const string EnterPortalCall = "PartnerEnterPortalCall";
         private const string EnterPortalResult = "PartnerEnterPortalResult";
 
+        private const string GetBetLimitCall = "PartnerGetBetLimitCall";
+        private const string GetBetLimitResult = "PartnerGetBetLimitResult";
+
         private const string TicketDetailCall = nameof(TicketDetailRequest);
         private const string TicketDetailResultName = nameof(TicketDetailResult);
 
@@ -60,6 +65,8 @@ namespace GamesAdmin.Api.ApiLogs
             { ApiLogType.MemberSiteSignInRequest, MemberSigninCollectionName },
             { ApiLogType.OperatorSignInRequest, OperatorSigninCollectionName },
             { ApiLogType.HitJackpot, HitJackpotCollectionName },
+            { ApiLogType.EnterPortal, EnterPortalCollectionName },
+            { ApiLogType.GetBetLimit, GetBetLimitCollectionName },
         };
 
         private static readonly Dictionary<string, Type> callOrRequestTypeMapping = new Dictionary<string, Type>
@@ -93,6 +100,9 @@ namespace GamesAdmin.Api.ApiLogs
 
             { OWSignInCall, typeof(OWFailedSignInCall) },
             { OWSignInResult, typeof(OWFailedSignInResult) },
+
+            { GetBetLimitCall, typeof(PartnerGetBetLimitCall) },
+            { GetBetLimitResult, typeof(PartnerGetBetLimitResult) },
         };
 
         public static Dictionary<ApiLogType, string> CollectionMappings => collectionMappings;

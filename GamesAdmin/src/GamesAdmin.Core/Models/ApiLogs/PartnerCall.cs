@@ -56,12 +56,15 @@ namespace GamesAdmin.Core.Models.ApiLogs
         public float ContributionRate { get; set; }
 
         public decimal ContributionAmount { get; set; }
-
-        public string OperatorToken { get; set; }
     }
 
     public class PartnerVoidGameCall : PartnerCall
     {
         public string Reason { get; set; }
+    }
+
+    public class PartnerGetBetLimitCall : PartnerCall
+    {
+
     }
 }
