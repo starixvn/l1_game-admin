@@ -3,7 +3,7 @@
     public class FootballSlotOdds : Enumeration
     {
         public const string CupValue = "cup";
-        public const string Cup50Value = "cup0";
+        public const string Cup50Value = "cup50";
         public const string Cup25Value = "cup25";
         public const string MascotValue = "mascot";
         public const string Mascot3Value = "mascot3";
