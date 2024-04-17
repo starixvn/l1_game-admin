@@ -76,6 +76,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.BacBall2Value, typeof(IBacBall2OnlineUserApi) },
             { Game.LuckyNext1Value, typeof(ILuckyNext1OnlineUserApi) },
             { Game.LuckyNext2Value, typeof(ILuckyNext2OnlineUserApi) },
+            { Game.FootballDiceValue, typeof(IFootballDiceOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

@@ -97,7 +97,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
             services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
-            services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
+            services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));            
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
@@ -111,6 +111,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddVoidRunningTicketServices(services);
             AddPontoonServices(services, appSettings, refitSettings);
             AddCrashGameServices(services);
+            AddFootballDiceServices(services, appSettings, refitSettings);
             AddChineseBlackjackServices(services, appSettings, refitSettings);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
@@ -135,7 +136,6 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<WinThreeCardsReportService>();
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
-            services.AddScoped<SeDieReportService>();
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
             services.AddScoped<DragonTigerReportService>();
@@ -155,6 +155,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<BacBall1ReportService>();
             services.AddScoped<BacBall2ReportService>();
             services.AddScoped(typeof(NextBallReportService<,,>));
+            services.AddScoped<FootballDiceReportService>();
 
             services.AddPublicService();
 
@@ -211,6 +212,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IColorGameOnlineUserApi>(appSettings.GameServers.ColorGame.Api, refitSettings));
             services.AddSingleton(RestService.For<IBandarQiuQiuOnlineUserApi>(appSettings.GameServers.BandarQiuQiu.Api, refitSettings));
             services.AddSingleton(RestService.For<IChineseBlackjackOnlineUserApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
+            services.AddSingleton(RestService.For<IFootballDiceOnlineUserApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
         }
 
         private static void AddOnlineUserApiGN(IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
@@ -258,6 +260,12 @@ namespace GamesAdmin.Api._Shared.Middlewares
             {
                 services.AddSingleton(RestService.For<IChineseBlackjackApi>(appSettings.GameServers.ChineseBlackjack.Api, refitSettings));
             }
+        }
+
+        private static void AddFootballDiceServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            services.AddScoped<IFootballDiceApiFactory, FootballDiceApiFactory>();
+            services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)

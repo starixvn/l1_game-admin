@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.BetReport;
 
 namespace GamesAdmin.Site.Features.Report.ViewModels
 {
@@ -488,6 +489,25 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
                 .Select(s => FormatString(s.Key));
 
             return string.Join(", ", result);
+        }
+
+        public static string FormatString(string input)
+        {
+            var result = string.Concat(input.Select((x, i) => i > 0 && char.IsUpper(x) ? $" {x}" : x.ToString()));
+            return char.ToUpper(result[0]) + result.Substring(1).Trim();
+        }
+    }
+
+    public class FootballDiceRoundResultViewModel : BaseRoundResultViewModel
+    {
+        public FootballDiceResult Result { get; set; }
+
+        public FootballDiceSettlementResult SettlementResult { get; set; }
+
+        public string GetWinningOptions()
+        {
+            return SettlementResult.Away ? "Away" :
+                    SettlementResult.Draw ? "Draw" : "Home";
         }
 
         public static string FormatString(string input)

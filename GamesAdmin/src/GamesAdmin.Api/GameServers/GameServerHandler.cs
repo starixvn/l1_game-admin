@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.FootballDice;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using MediatR;
@@ -25,6 +26,7 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetPontoonResultRequest, bool>
         , IRequestHandler<SetChineseBlackjackResultRequest, bool>
         , IRequestHandler<SetCrashGameResultRequest, bool>
+        , IRequestHandler<SetFootballDiceResultRequest, FootballDiceControlResult>
     {
         private readonly IGameServerService gameServerService;
 
@@ -74,6 +76,9 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(SetCrashGameResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetCrashGameResult(request);
-          
+
+        public Task<FootballDiceControlResult> Handle(SetFootballDiceResultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetFootballDiceResult(request);
+
     }
 }

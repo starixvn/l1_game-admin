@@ -15,6 +15,7 @@ using GamesAdmin.Core.Extensions;
 using GamesAdmin.Core.IdentityServer;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
+using GamesAdmin.Core.Models.FootballDice;
 using GamesAdmin.Core.Models.RoundResults;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Database;
@@ -55,6 +56,8 @@ namespace GamesAdmin.Api.GameServers
         Task<bool> SetChineseBlackjackResult(SetChineseBlackjackResultRequest request);
 
         Task<bool> SetCrashGameResult(SetCrashGameResultRequest request);
+
+        Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -74,6 +77,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IPontoonApiFactory pontoonApiFactory;
         private readonly IChineseBlackjackApiFactory chineseBlackjackApiFactory;
         private readonly ICrashGameApiFactory crashGameApiFactory;
+        private readonly IFootballDiceApiFactory footballDiceApiFactory;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -90,7 +94,9 @@ namespace GamesAdmin.Api.GameServers
             IGenericRepository<AdminUserEntity> userRepository,
             IPontoonApiFactory pontoonApiFactory,
             IChineseBlackjackApiFactory chineseBlackjackApiFactory,
-            ICrashGameApiFactory crashGameApiFactory)
+            ICrashGameApiFactory crashGameApiFactory,
+            IFootballDiceApiFactory footballDiceApiFactory
+            )
         {
             this.sentryClient = sentryClient;
             this.onlineUserApiFactory = onlineUserApiFactory;
@@ -107,6 +113,7 @@ namespace GamesAdmin.Api.GameServers
             this.pontoonApiFactory = pontoonApiFactory;
             this.chineseBlackjackApiFactory = chineseBlackjackApiFactory;
             this.crashGameApiFactory = crashGameApiFactory;
+            this.footballDiceApiFactory = footballDiceApiFactory;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -393,6 +400,11 @@ namespace GamesAdmin.Api.GameServers
             }
 
             return false;
+        }
+
+        public async Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request)
+        {
+            return await footballDiceApiFactory.SetResultApi().SetResult(request);
         }
     }
 }

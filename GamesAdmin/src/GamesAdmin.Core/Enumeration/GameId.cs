@@ -65,6 +65,7 @@
         BacBall1 = 1001,
         BacBall2 = 1002,
         LuckyNext1 = 1003,
-        LuckyNext2 = 1004
+        LuckyNext2 = 1004,
+        FootballDice = 78,
     }
 }

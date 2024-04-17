@@ -44,6 +44,8 @@ namespace GamesAdmin.Database
             where TBetLogEntity : UnbalancedBigSmallBetLogEntity;
 
         Task<(FanTanRoundEntity, FanTanBetEntity)> GetFanTanAsync(long roundId, string userId, string partnerId);
+
+
     }
 
     public class BetHistoryReportRepository : IBetHistoryReportRepository

@@ -1,0 +1,116 @@
+﻿@using GamesAdmin.Core
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Features.Report.ViewModels;
+
+@model FootballDiceReportResultViewModel
+
+
+
+<div class="row row-table">
+    <div class="col-sm-12">
+        @if (Model.RoundResult.Number != 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Round ID</th>
+                        <th>Exchange ID</th>
+                        <th>Result (Home|Away)</th>
+                        <th>Winning Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">@Model.RoundResult.Number</td>
+                        <td class="text-center">@Model.RoundResult.ExchangeRateId</td>
+                        <td>
+                            <div class="text-center">
+                                <div class="dice-list" style="font-size:26px">
+                                    <img class="dice" src="~/images/football-dice/dice-home-@(Model.RoundResult.Result.Home[0]).png" />
+                                    <img class="dice" src="~/images/football-dice/dice-home-@(Model.RoundResult.Result.Home[1]).png" />
+                                    @if(Model.RoundResult.SettlementResult.Home){
+                                        <b>@(Model.RoundResult.Result.Home[0] + Model.RoundResult.Result.Home[1])</b>
+                                    }
+                                    else
+                                    {
+                                        @(Model.RoundResult.Result.Home[0] + Model.RoundResult.Result.Home[1])
+                                    }
+                                    |
+                                    <img class="dice" src="~/images/football-dice/dice-away-@(Model.RoundResult.Result.Away[0]).png" />
+                                    <img class="dice" src="~/images/football-dice/dice-away-@(Model.RoundResult.Result.Away[1]).png" />
+                                    @if (Model.RoundResult.SettlementResult.Away)
+                                    {
+                                        <b>@(Model.RoundResult.Result.Away[0] + Model.RoundResult.Result.Away[1])</b>
+                                    }
+                                    else
+                                    {
+                                        @(Model.RoundResult.Result.Away[0] + Model.RoundResult.Result.Away[1])
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">@Model.RoundResult.GetWinningOptions()</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        }
+        <table class="table table-bordered table-hover sticky-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date (GMT+7)</th>
+                    <th>Operator</th>
+                    <th>Username</th>
+                    <th class="col-nickname">Nickname</th>
+                    <th>Currency</th>
+                    <th class="col-number">Total Bet</th>
+                    <th class="col-number">Win</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bet in Model.Records)
+                {
+                    <tr>
+                        <td>@bet.Time.ToString(Constants.DateTimeFormat)</td>
+                        <td class="text-center">@bet.Partner</td>
+                        <td>@bet.Username</td>
+                        <td>
+                            @bet.Nickname
+                        </td>
+                        <td class="text-center">@bet.Currency</td>
+                        <td class="text-right">
+                            <a data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#modal .modal-body" data-ajax-success="showModal('#modal')"
+                           asp-action="GetFootballDiceBetHistory"
+                           asp-route-game="@GameId.FootballDice"
+                           asp-route-roundId="@Model.RoundResult.Number"
+                           asp-route-userId="@bet.UserId"
+                           asp-route-partnerId="@bet.PartnerId"
+                           asp-route-convertToUSD="@Model.ConvertToUSD">
+                                @HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.ConvertToBase(bet.TotalAmount) / Model.BaseCurrencyMultiplier : bet.TotalAmount)
+                            </a>
+                        </td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.ConvertToUSD ? bet.BaseBetWin / Model.BaseCurrencyMultiplier : bet.BetWin)</td>
+                    </tr>
+                }
+                @if (!Model.Records.Any())
+                {
+                    <tr>
+                        <td class="text-center" colspan="7">No data</td>
+                    </tr>
+                }
+                else if (Model.ConvertToUSD)
+                {
+                    <tr class="total">
+                        <td>Total in @Model.BaseCurrency</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.ConvertToBase(x.TotalAmount)) / Model.BaseCurrencyMultiplier)</td>
+                        <td class="text-right">@HtmlHelpers.formatNumber(Model.Records.Sum(x => x.BaseBetWin) / Model.BaseCurrencyMultiplier)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
