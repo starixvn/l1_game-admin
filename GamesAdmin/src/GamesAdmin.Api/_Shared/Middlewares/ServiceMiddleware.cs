@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Text.Json;
-using GamesAdmin.Api._Shared.Configurations;
+﻿using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ApiLogs.Apis;
@@ -38,6 +34,10 @@ using GamesAdmin.Core;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -134,7 +134,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HiLoReportService>();
             services.AddScoped<FruitSlotReportService>();
             services.AddScoped<WinThreeCardsReportService>();
-
+            
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
@@ -265,7 +265,10 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddFootballDiceServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IFootballDiceApiFactory, FootballDiceApiFactory>();
-            services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
+            if (appSettings.SystemType != SystemType.GN)            
+            {   
+                services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
+            }
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
