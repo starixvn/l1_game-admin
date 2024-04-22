@@ -265,7 +265,11 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddFootballDiceServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IFootballDiceApiFactory, FootballDiceApiFactory>();
-            services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
+
+            if (appSettings.SystemType != SystemType.GN)
+            {
+                services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
+            }
         }
 
         private static void AddChatBotServices(this IServiceCollection services, IAppSettings appSettings)
