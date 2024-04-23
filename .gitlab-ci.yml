@@ -1,6 +1,6 @@
 include:
   - project: "ci/core-cicd"
-    ref: runner_k8s
+    ref: main
     file: luminet.gitlab-ci.yml
 
 unit_test_dotnet: &unit_test_dotnet
