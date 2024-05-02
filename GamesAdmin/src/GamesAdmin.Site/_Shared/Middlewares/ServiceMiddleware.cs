@@ -61,6 +61,7 @@ namespace GamesAdmin.Site._Shared.Middlewares
             services.AddScoped<IClientSiteService, ClientSiteService>();
 
             services.AddSingleton(RestService.For<IReportApi>(appSettings.ApiHost, refitSettings));
+            services.AddSingleton(RestService.For<IRemoteReportApi>(appSettings.ResultPageConfiguration.BaseUrl, refitSettings));
             services.AddScoped<IReportService, ReportService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();

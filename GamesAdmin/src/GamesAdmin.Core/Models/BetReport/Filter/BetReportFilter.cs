@@ -1,9 +1,11 @@
 ﻿using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.ApiLogs;
 
 namespace GamesAdmin.Core.Models.BetReport
 {
     public class BetReportFilter
     {
+        public Auth Auth { get; set; }
         public GameId Game { get; set; }
         public long RoundId { get; set; }
         public string Nickname { get; set; }

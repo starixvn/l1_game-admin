@@ -5,6 +5,8 @@ namespace GamesAdmin.Site.Features.Report
 {
     public class ReportView
     {
+        public string RemoteRecordView = "_RemoteRecords";
+
         private readonly Dictionary<GameId, string> views = new Dictionary<GameId, string>
         {
             { GameId.SeDie, "_SeDieRecords" },
@@ -57,6 +59,9 @@ namespace GamesAdmin.Site.Features.Report
             { GameId.FootballSlot, "_SlotRNGRecords" },
         };
 
-        public string GetView(GameId game) => views[game];
+        public string GetView(GameId game)
+        {
+            return views.ContainsKey(game) ? views[game] : RemoteRecordView;
+        }
     }
 }
