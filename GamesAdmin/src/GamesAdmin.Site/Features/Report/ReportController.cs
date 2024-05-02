@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using GamesAdmin.Core.Enumeration;
+﻿using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
@@ -11,6 +8,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamesAdmin.Site.Features.Report
 {
@@ -20,12 +20,14 @@ namespace GamesAdmin.Site.Features.Report
         private readonly IMediator mediator;
         private readonly ISystemSettings systemSettings;
         private readonly IGeneralGameSettingService generalGameSettingService;
+        private readonly IReportService reportService;
 
-        public ReportController(IMediator mediator, ISystemSettings systemSettings, IGeneralGameSettingService generalGameSettingService)
+        public ReportController(IMediator mediator, ISystemSettings systemSettings, IGeneralGameSettingService generalGameSettingService, IReportService reportService)
         {
             this.mediator = mediator;
             this.systemSettings = systemSettings;
             this.generalGameSettingService = generalGameSettingService;
+            this.reportService = reportService;
         }
 
         [HttpGet]
@@ -52,8 +54,11 @@ namespace GamesAdmin.Site.Features.Report
                 ExcludeBot = viewModel.ExcludeBot,
                 ExcludeUUS = viewModel.ExcludeUUS
             };
-
-            return PartialView(reportView.GetView(viewModel.Game), await mediator.Send(new ReportRequest(filter)));
+            var view = reportView.GetView(viewModel.Game);
+            
+            return view == reportView.RemoteRecordView ?
+                PartialView(view, await reportService.GetRemoteRoundHistoryUrl(filter)) :
+                PartialView(view, await mediator.Send(new ReportRequest(filter)));            
         }
 
         [HttpGet]

@@ -1,0 +1,20 @@
+﻿@model string
+
+@functions {
+    public bool IsValidUrl(string url) { 
+        Uri uriResult;
+        bool result = Uri.TryCreate(url, UriKind.Absolute, out uriResult) 
+            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        return result;
+    }
+}
+
+@if (IsValidUrl(Model))
+{
+    <iframe src='@Model' style="width: 99%; height: 100vh; border: none;"/>
+}
+else
+{
+    <div style="color: red; padding: 10px 0px; font-weight: bold;">@Model</div>    
+}

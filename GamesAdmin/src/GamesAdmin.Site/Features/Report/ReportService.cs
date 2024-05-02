@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.BetReport;
 using GamesAdmin.Core.Models.SlotGame;
 using GamesAdmin.Core.Models.Spins;
+using GamesAdmin.Site.Features.Partners;
 using GamesAdmin.Site.Features.Report.Requests;
 
 namespace GamesAdmin.Site.Features.Report
@@ -59,15 +61,40 @@ namespace GamesAdmin.Site.Features.Report
         Task<CascadingSlotBetHistory> GetCascadingSlotBetHistory(CascadingSlotReportFilter filter);
 
         Task<CrashGameBetReport> GetCrashGameReport(SpeedUpGameBetReportFilter filter);
+
+        Task<string> GetRemoteRoundHistoryUrl(BetReportFilter request);
     }
 
     public class ReportService : IReportService
     {
         private readonly IReportApi reportApi;
+        private readonly IRemoteReportApi remoteReportApi;
+        private readonly IPartnerService operatorService;
 
-        public ReportService(IReportApi reportApi)
+        public ReportService(IReportApi reportApi, IRemoteReportApi remoteReportApi, IPartnerService operatorService)
         {
             this.reportApi = reportApi;
+            this.remoteReportApi = remoteReportApi;
+            this.operatorService = operatorService;
+        }
+
+        public async Task<string> GetRemoteRoundHistoryUrl(BetReportFilter request)
+        {
+            try
+            {
+                var Operators = await operatorService.GetAll();
+                request.Auth = new Core.Models.ApiLogs.Auth
+                {
+                    OperatorId = Operators.FirstOrDefault()?.PartnerId,
+                    OperatorSecret = Operators.FirstOrDefault()?.SecretKey
+                };
+
+                var result = await remoteReportApi.GetAccessUrl(request);
+                return result;
+            }
+            catch (Exception e) {
+                return e.Message;
+            }
         }
 
         public async Task<BigSmallBetReport> GetBigSmallReport(long roundId, string nickname, bool excludeBot, string partnerId, string username)
