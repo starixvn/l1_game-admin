@@ -30,5 +30,13 @@
     "BetChoices": [ "over", "under", "odd", "even" ],
     "Odds": [ "over", "under", "odd", "even" ],
     "OfferedSystem": [ "GN" ]
+  },
+  {
+    "GameId": 80,
+    "GameName": "cointoss",
+    "DisplayName": "Coin Toss",
+    "BetChoices": [ "head", "tail" ],
+    "Odds": [ "head", "tail" ],
+    "OfferedSystem": [ "SC1", "VG2", "GN" ]
   }
 ]
