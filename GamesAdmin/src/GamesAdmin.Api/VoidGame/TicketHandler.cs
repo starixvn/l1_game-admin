@@ -148,6 +148,7 @@ namespace GamesAdmin.Api.VoidGame
                            GameId.LuckyNext2 => await MoveByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                            GameId.FootballDice => await Move<FootballDiceBetEntity, FootballDiceBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            GameId.FootballSlot => await Move<FootballSlotBetEntity, FootballSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                           GameId.CoinToss => await Move<CoinTossBetEntity, CoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                            _ => false,
                        };
             }
@@ -243,6 +244,7 @@ namespace GamesAdmin.Api.VoidGame
                         GameId.LuckyNext2 => await FindByFieldName<LuckyNext2BetEntity, LuckyNext2BetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet, "DrawId"),
                         GameId.FootballDice => await Find<FootballDiceBetEntity, FootballDiceBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         GameId.FootballSlot => await Find<FootballSlotBetEntity, FootballSlotBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
+                        GameId.CoinToss => await Find<CoinTossBetEntity, CoinTossBetLogEntity>(obCustId, partnerId, siteId, gameRoundId, gameTypeId, freeBet),
                         _ => default,
                     };
                 }
