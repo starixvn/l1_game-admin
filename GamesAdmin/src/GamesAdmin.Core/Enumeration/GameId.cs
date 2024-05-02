@@ -68,5 +68,6 @@
         LuckyNext2 = 1004,
         FootballDice = 78,
         FootballSlot = 79,
+        CoinToss = 80
     }
 }
