@@ -334,6 +334,12 @@ namespace GamesAdmin.Api.GameServers
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
 
+    public interface ISeBall1OnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "");
+    }
+
     public interface IFootballSlotOnlineUserApi : IOnlineUserApi
     {
         [Get("/api/onlineusers")]

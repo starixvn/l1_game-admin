@@ -79,6 +79,7 @@ namespace GamesAdmin.Api.GameServers
             { Game.FootballDiceValue, typeof(IFootballDiceOnlineUserApi) },
             { Game.FootballSlotValue, typeof(IFootballSlotOnlineUserApi) },
             { Game.CoinTossValue, typeof(ICoinTossOnlineUserApi) },
+            { Game.SeBall1Value, typeof(IFootballDiceOnlineUserApi) },
         };
 
         private readonly IServiceProvider serviceProvider;

@@ -107,7 +107,7 @@
         public GameServerConfigs Pontoon { get; set; }
         public GameServerConfigs ColorGame { get; set; }
         public GameServerConfigs BandarQiuQiu { get; set; }
-        public GameServerConfigs ChineseBlackjack{ get; set; }
+        public GameServerConfigs ChineseBlackjack { get; set; }
         public GameServerConfigs BacBall1 { get; set; }
         public GameServerConfigs BacBall2 { get; set; }
         public GameServerConfigs LuckyNext1 { get; set; }
@@ -115,6 +115,7 @@
         public GameServerConfigs FootballDice{ get; set; }
         public GameServerConfigs FootballSlot { get; set; }
         public GameServerConfigs CoinToss { get; set; }
+        public GameServerConfigs SeBall1 { get; set; }
     }
 
     public class GameServerConfigs

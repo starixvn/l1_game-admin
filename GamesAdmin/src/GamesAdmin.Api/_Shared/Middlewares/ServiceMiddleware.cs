@@ -97,7 +97,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IOnlineUserApiFactory, OnlineUserApiFactory>();
             services.AddSingleton(RestService.For<IRoundWatcherServiceApi>(appSettings.RoundWatcherServiceSettings.Url, refitSettings));
             services.AddSingleton(RestService.For<IStatusServiceApi>(appSettings.StatusCheckerServiceSettings.Url, refitSettings));
-            services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));            
+            services.AddSingleton(RestService.For<IRTPServiceApi>(appSettings.RtpCheckerServiceSettings.Url, refitSettings));
 
             services.AddSingleton(RestService.For<IVoidGameApi>(appSettings.SabaApiSettings.Url, refitSettings));
             services.AddScoped<IVoidGameService, VoidGameService>();
@@ -134,7 +134,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<HiLoReportService>();
             services.AddScoped<FruitSlotReportService>();
             services.AddScoped<WinThreeCardsReportService>();
-            
+
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<MiniSeDieReportService>();
             services.AddScoped<FishPrawnCrabReportService>();
@@ -224,6 +224,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<IBacBall2OnlineUserApi>(appSettings.GameServers.BacBall2.Api, refitSettings));
             services.AddSingleton(RestService.For<ILuckyNext1OnlineUserApi>(appSettings.GameServers.LuckyNext1.Api, refitSettings));
             services.AddSingleton(RestService.For<ILuckyNext2OnlineUserApi>(appSettings.GameServers.LuckyNext2.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISeBall1OnlineUserApi>(appSettings.GameServers.SeBall1.Api, refitSettings));
         }
 
         private static void AddSlotServices(this IServiceCollection services)
@@ -268,8 +269,8 @@ namespace GamesAdmin.Api._Shared.Middlewares
         private static void AddFootballDiceServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
         {
             services.AddScoped<IFootballDiceApiFactory, FootballDiceApiFactory>();
-            if (appSettings.SystemType != SystemType.GN)            
-            {   
+            if (appSettings.SystemType != SystemType.GN)
+            {
                 services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
             }
         }
