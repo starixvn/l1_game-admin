@@ -15,11 +15,9 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
 
         public List<BacBall1SettlementResult> SettlementResult { get; set; }
 
-        public List<int> GreenBalls = new List<int> { 3, 4, 7, 8, 11, 12, 15, 16, 19, 20, 23, 24, 27, 28, 31, 32, 35, 36, 39, 40, 43, 44, 47, 48, 51, 52, 55, 56, 59, 60, 63, 64, 67, 68, 71, 72, 75 };
-
         public string GetBallColor(int ball)
         {
-            return GreenBalls.Contains(ball) ? "green-ball" : "red-ball";            
+            return ball % 2 == 0 ? "red-ball" : "blue-ball";
         }
 
         public BacBall1RoundResult GetResult()
@@ -48,13 +46,13 @@ namespace GamesAdmin.Site.Features.Report.ViewModels
                 option = "Tie";
             }
 
-            return option;           
+            return option;
         }
     }
 
     public class BacBall1RoundResultViewModel : BaseRoundResultViewModel
     {
-        public Dictionary<string, int> SettlementResult { get; set; }        
+        public Dictionary<string, int> SettlementResult { get; set; }
 
         public Dictionary<int, string> ResultMapper = new Dictionary<int, string>() { { 0, "Ordinary Card" }, { 1, "Qiu Qiu" }, { 2, "Big" }, { 3, "Small" }, { 4, "Twin" }, { 5, "Six Devil" } };
 
