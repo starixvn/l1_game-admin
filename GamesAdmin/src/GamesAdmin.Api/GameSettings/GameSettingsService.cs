@@ -47,7 +47,7 @@ namespace GamesAdmin.Api.Games
 
         Task<bool> UpdateCascadingSlotsConfig(string name, bool botEnabled, CascadingSlotsConfig cascadingSlotsConfig);
 
-        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting);
+        Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null);
 
         Task<Dictionary<string, string>> GetDisabledMessage(string name);
 
@@ -125,8 +125,17 @@ namespace GamesAdmin.Api.Games
                     Time = DateTime.Now,
                     GameId = gameId,
                     DisplayName = game.Info.DisplayName,
-                    CrashConfig = game.CrashConfig
+                    CrashConfig = game.CrashConfig,
+                    ApplyMultiplier = game.Info.ApplyMultiplier
                 };
+
+                if(game.Info.ApplyMultiplier)
+                {
+                    entity.OddsMultipliers = new OddsMultipliersConfig()
+                    {
+                        Values = new List<MultiplierDistribution> { new MultiplierDistribution() }
+                    };
+                }
 
                 await repository.InsertOneAsync(entity);
 
@@ -481,7 +490,7 @@ namespace GamesAdmin.Api.Games
             }
         }
 
-        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting)
+        public async Task<bool> UpdateGeneralConfig(GameInfo gameInfo, BotSetting botSetting, EnableSetting enableSetting, OddsMultipliersConfig oddsMultipliers = null)
         {
             try
             {
@@ -497,7 +506,8 @@ namespace GamesAdmin.Api.Games
                     .Set(field => field.SmartBotEnabled, botSetting.SmartBotEnabled)
                     .Set(field => field.SmartBotGroupRatio, botSetting.SmartBotGroupRatio)
                     .Set(field => field.RandomMode, gameInfo.RandomMode)
-                    .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound);   
+                    .Set(field => field.MaxWinPerRound, gameInfo.MaxWinPerRound)
+                    .Set(field => field.OddsMultipliers, oddsMultipliers);   
 
                 await repository.UpdateAsync(config => config.Name == gameInfo.Name, update);
 

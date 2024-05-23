@@ -17,7 +17,8 @@ namespace GamesAdmin.Core.Models
             SlotsConfig slotsConfig = null,
             CascadingSlotsConfig cascadingSlotsConfig = null,
             SlotRNGConfig slotRNGConfig = null,
-            CrashConfig crashConfig = null)
+            CrashConfig crashConfig = null,
+            OddsMultipliersConfig oddsMultipliers = null)
         {
             Id = id;
             Odds = odds;
@@ -29,6 +30,7 @@ namespace GamesAdmin.Core.Models
             CascadingSlotsConfig = cascadingSlotsConfig;
             SlotRNGConfig = slotRNGConfig;
             CrashConfig = crashConfig;
+            OddsMultipliers = oddsMultipliers;
         }
 
         public string Id { get; }
@@ -50,6 +52,8 @@ namespace GamesAdmin.Core.Models
         public SlotRNGConfig SlotRNGConfig { get; set; }
 
         public CrashConfig CrashConfig { get; set; }
+
+        public OddsMultipliersConfig OddsMultipliers { get; set; }
 
         public IEnumerable<Dictionary<string, double>> Margin { get; set; }
     }

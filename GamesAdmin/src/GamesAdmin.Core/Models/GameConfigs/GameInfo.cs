@@ -12,7 +12,8 @@ namespace GamesAdmin.Core.Models.GameConfigs
             string displayName = "",
             int gameId = 0,
             string[] siteExclusions = null,
-            int maxWinPerRound = 0)
+            int maxWinPerRound = 0,
+            bool applyMultiplier = false)
         {
             Name = name;
             EnableFreeBet = enableFreeBet;
@@ -22,6 +23,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
             GameId = gameId;
             DisplayName = displayName;
             MaxWinPerRound = maxWinPerRound;
+            ApplyMultiplier = applyMultiplier;
         }
 
         public int GameId { get; }
@@ -39,5 +41,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
         public byte RandomMode { get; }
 
         public int MaxWinPerRound { get; set; }
+
+        public bool ApplyMultiplier { get; set; }
     }
 }

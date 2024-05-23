@@ -99,5 +99,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double MaxWinPerRound { get; set; }
         public double MinMultiplierBonus { get; set; }
         public double MaxMultiplierBonus { get; set; }
+
+        public bool ApplyMultiplier { get; set; }
     }
 }

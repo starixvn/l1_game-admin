@@ -66,5 +66,9 @@ namespace GamesAdmin.Database.Entities
         public IEnumerable<Dictionary<string, double>> Margin { get; set; }
 
         public int MaxWinPerRound { get; set; }
+
+        public OddsMultipliersConfig OddsMultipliers { get; set; }
+
+        public bool ApplyMultiplier { get; set; }
     }
 }

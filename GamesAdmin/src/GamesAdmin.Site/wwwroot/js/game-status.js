@@ -1,7 +1,8 @@
 ﻿var gameStatus = (function ($) {
     var currentGameName = '';
     var myChart = null;
-
+    var $oddsMultiplierTemplate;
+    var oddsMultiplierIndex;
     return {
         checkAll: function () {
             var checked = $("#status-all").prop("checked"),
@@ -125,6 +126,10 @@
                 if (content) {
                     $('#gamedetails').html(content);
                     $('#settingTitle').html(`${settingTitle}: ${gameDisplayName}`);
+
+                    $oddsMultiplierTemplate = $("#odds-multipliers .multiplier-item").first();
+                    oddsMultiplierIndex = $("#odds-multipliers .multiplier-item").length;
+
                     $('#gameModal').modal('show');
                 }
             });
@@ -259,12 +264,12 @@
         setControlResultHoldemPoker: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("HoldemPokderResult", gameName);
-        },  
+        },
 
         setControlResultFootballDice: function (event, gameName) {
             event.preventDefault();
             this.setResultControl("FootballDiceResult", gameName);
-        }, 
+        },
 
         setControlResultSpeedUpGame: function (event, gameType, gameName, displayName) {
             event.preventDefault();
@@ -330,10 +335,12 @@
                 return;
             }
 
+            this.updateOddsMultipliersIndex();
+
             $.ajax({
                 method: "POST",
                 url: requestUrl,
-                dataType: 'json',
+                //dataType: 'json',
                 data: $('#gameForm').serialize(),
             }).done(function (result) {
                 if (result) {
@@ -857,6 +864,34 @@
                     }, 1000);
                 }
             });
+        },
+        addMultiplierItem: function () {
+            var $newItem = $oddsMultiplierTemplate.clone();
+
+            var $ratio = $(".ratio", $newItem);
+            $ratio.attr("name", $ratio.attr("name").replace(/\d+/, oddsMultiplierIndex)).val(0);
+
+            var $number = $(".number", $newItem);
+            $number.attr("name", $number.attr("name").replace(/\d+/, oddsMultiplierIndex)).val(0);
+
+            $("#odds-multipliers").append($newItem);
+            oddsMultiplierIndex++;
+        },
+        removeMultiplierItem: function (event) {
+            $(event.target).parent().remove();
+        },
+        updateOddsMultipliersIndex: function(){
+            var $multiplierItems = $(".multiplier-item", "#odds-multipliers");
+
+            for (let index = 0; index < $multiplierItems.length; index++) {
+                var item = $multiplierItems[index];
+                var $ratio = $(".ratio", item);
+                $ratio.attr("name", $ratio.attr("name").replace(/\d+/, index));
+
+                var $number = $(".number", item);
+                $number.attr("name", $number.attr("name").replace(/\d+/, index));
+            }
+
         }
     }
 }(jQuery));

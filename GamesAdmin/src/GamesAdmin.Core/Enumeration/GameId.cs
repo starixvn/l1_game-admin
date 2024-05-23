@@ -69,6 +69,7 @@
         FootballDice = 78,
         FootballSlot = 79,
         CoinToss = 80,
+        Bac81 = 81,
         FootballCoinToss = 93
     }
 }
