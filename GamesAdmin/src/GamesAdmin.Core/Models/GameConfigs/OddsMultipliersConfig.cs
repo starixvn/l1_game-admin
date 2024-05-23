@@ -5,6 +5,7 @@ namespace GamesAdmin.Core.Models.GameConfigs
 {
     public class OddsMultipliersConfig
     {
+        [DisplayName("Extra Fee Ratio")]
         public double ExtraFeeRatio { get; set; }
         public NumberOfCardsRange NumberOfCardsRange { get; set; } = new NumberOfCardsRange();
         public List<MultiplierDistribution> Values { get; set; }

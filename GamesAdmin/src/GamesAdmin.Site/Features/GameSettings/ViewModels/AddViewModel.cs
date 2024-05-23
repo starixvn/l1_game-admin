@@ -100,6 +100,7 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         public double MinMultiplierBonus { get; set; }
         public double MaxMultiplierBonus { get; set; }
 
+        [DisplayName("Apply Multiplier")]
         public bool ApplyMultiplier { get; set; }
     }
 }
