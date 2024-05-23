@@ -72,6 +72,7 @@
         LuckyNext2 = 1004,
         SeBall1 = 1005,
         LuckyThree = 1006,
-        SicBall = 1007
+        SicBall = 1007,
+        Bac81 = 81
     }
 }

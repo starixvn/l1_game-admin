@@ -273,6 +273,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 CascadingSlotsConfig cascadingSlotsConfig = null;
                 SlotRNGConfig slotRNGConfig = null;
                 CrashConfig crashConfig = null;
+                OddsMultipliersConfig oddsMultipliers = viewModel.OddsMultipliers;
                 switch (viewModel.Type)
                 {
                     case GameType.Slots:
@@ -307,7 +308,8 @@ namespace GamesAdmin.Site.Features.GameSettings
                     slotsConfig,
                     cascadingSlotsConfig,
                     slotRNGConfig,
-                    crashConfig);
+                    crashConfig,
+                    oddsMultipliers);
 
                 await mediator.Send(request);
 

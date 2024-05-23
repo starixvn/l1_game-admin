@@ -75,6 +75,7 @@ namespace GamesAdmin.Core.Enumeration
         public const string FootballSlotValue = "footballslot";
         public const string CoinTossValue = "cointoss";
         public const string SeBall1Value = "seball1";
+        public const string Bac81Value = "bac81";
         public const string LuckyThreeValue = "luckythree";
         public const string SicBallValue = "sicball";
 
@@ -141,6 +142,7 @@ namespace GamesAdmin.Core.Enumeration
         public static readonly Game ChineseBlackjack = new Game(ChineseBlackjackValue, "Chinese Blackjack", GameId.ChineseBlackjack);
         public static readonly Game FootballDice = new Game(FootballDiceValue, "Football Dice", GameId.FootballDice);
         public static readonly Game FootballSlot = new Game(FootballSlotValue, "Football Slot", GameId.FootballSlot);
+        public static readonly Game Bac81 = new Game(Bac81Value, "Bac 81", GameId.Bac81);
 
         public Game()
         {
@@ -252,8 +254,8 @@ namespace GamesAdmin.Core.Enumeration
                 DragonTigerFight,
                 ColorGame,
                 BandarQiuQiu,
-            FootballDice,
-            FootballSlot
+                FootballDice,
+            	FootballSlot
             };
             var gameSettings = GamesSettings.GetGamesSettings().Games.Select(game => new Game(game.GameName, game.DisplayName, (GameId)game.GameId));
             return normalGame.Concat(gameSettings);

@@ -1,0 +1,9 @@
+﻿@model GamesAdmin.Core.Models.GameConfigs.MultiplierDistribution
+
+<div class="row mt-2 multiplier-item">
+    <label asp-for="Number" class="control-label col-1 mt-2 mr-2"></label>
+    <input type="number" asp-for="Number" class="form-control col-2 number" />
+    <label asp-for="Ratio" class="control-label col-1 mt-2"></label>
+    <input type="number" asp-for="Ratio" class="form-control col-2 ratio" />
+    <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" onclick="gameStatus.removeMultiplierItem(event)"></i>
+</div>

@@ -136,6 +136,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 viewModel.CascadingSlotsConfig = game.CascadingSlotsConfig;
                 viewModel.SlotRNGConfig = game.SlotRNGConfig;
                 viewModel.CrashConfig = game.CrashConfig;
+                viewModel.OddsMultipliers = game.OddsMultipliers;
 
                 switch (game.Info.Type)
                 {
@@ -363,7 +364,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                     return gameService.UpdateCrashConfig(new UpdateCrashConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.CrashConfig));
 
                 default:
-                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting));
+                    return gameService.UpdateGeneralConfig(new UpdateGeneralConfigRequest(request.GameInfo, request.BotSetting, request.EnableSetting, request.OddsMultipliers));
             }
         }
 

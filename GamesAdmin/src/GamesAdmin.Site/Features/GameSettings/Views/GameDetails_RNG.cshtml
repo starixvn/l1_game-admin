@@ -21,6 +21,7 @@
         <div id="general">
             <div class="form-group row">
                 <div class="col-lg-6">
+                    `
                     Game Status: <strong>@Model.StatusDisplay</strong>
                 </div>
 
@@ -41,6 +42,38 @@
                 <label asp-for="BotMaxBet" class="control-label"></label>
                 <input type="number" asp-for="BotMaxBet" class="form-control" />
             </div>
+
+            @if (Model.ApplyMultiplier)
+            {
+                <div class="form-group">
+                    <label asp-for="OddsMultipliers.ExtraFeeRatio" class="control-label"></label>
+                    <input type="number" asp-for="OddsMultipliers.ExtraFeeRatio" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Number of multiplier cards</label>
+                    <div class="row mt-2">
+                        <label asp-for="OddsMultipliers.NumberOfCardsRange.Min" class="control-label col-1 mt-2">From</label>
+                        <input type="number" asp-for="OddsMultipliers.NumberOfCardsRange.Min" class="form-control col-2" />
+                        <div class="col-2"></div>
+                        <label asp-for="OddsMultipliers.NumberOfCardsRange.Max" class="control-label col-1 mt-2">To</label>
+                        <input type="number" asp-for="OddsMultipliers.NumberOfCardsRange.Max" class="form-control col-2" />
+                    </div>
+                </div>
+
+                <div class="form-group" id="odds-multipliers">
+                    <label class="control-label">Multiplier Values</label>
+                    <label class="icon-add" style="margin-bottom: -10px;" onclick="gameStatus.addMultiplierItem()"></label>
+                    @Html.EditorFor(x => x.OddsMultipliers.Values)
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>
+                    <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
+                    <label> x Max Bet</label>
+                </div>
+            }
+
             @if (Model.Type == GameType.SlotRNG)
             {
                 <div class="form-group">
@@ -70,9 +103,9 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Max Win per Round</label>
-                    <div class="row mt-2 ml-1">                       
+                    <div class="row mt-2 ml-1">
                         <input type="number" asp-for="CrashConfig.MaxWinPerRound" class="form-control col-2" />
-                        <label asp-for="CrashConfig.MaxWinPerRound" class="control-label col-2 mt-2">x  Max Bet</label>                  
+                        <label asp-for="CrashConfig.MaxWinPerRound" class="control-label col-2 mt-2">x  Max Bet</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -84,7 +117,7 @@
             
             <div class="form-group">
                 <label asp-for="MaxWinPerRound" class="control-label max-win-per-round-label"></label>
-                <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round"/>
+                    <input asp-for="MaxWinPerRound" type="number" class="form-control max-win-per-round" />
                 <label> x Max Bet</label>
             </div>
 
