@@ -46,5 +46,13 @@
     "BetChoices": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
     "Odds": [ "odd", "even", "red2", "red3", "red4", "blue3", "blue4" ],
     "OfferedSystem": [ "GN" ]
+  },
+  {
+    "GameId": 1006,
+    "GameName": "luckythree",
+    "DisplayName": "Lucky Three",
+    "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+    "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
+    "OfferedSystem": [ "GN" ]
   }
 ]
