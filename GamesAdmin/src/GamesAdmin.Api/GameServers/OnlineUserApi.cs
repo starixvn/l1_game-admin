@@ -351,4 +351,10 @@ namespace GamesAdmin.Api.GameServers
         [Get("/api/onlineusers")]
         new Task<OnlineUsers> GetOnlineUsers(string name = "");
     }
+    
+    public interface ILuckyThreeOnlineUserApi : IOnlineUserApi
+    {
+        [Get("/api/onlineusers")]
+        new Task<OnlineUsers> GetOnlineUsers(string name = "", [Header("Authorization")] string header = "");
+    }
 }

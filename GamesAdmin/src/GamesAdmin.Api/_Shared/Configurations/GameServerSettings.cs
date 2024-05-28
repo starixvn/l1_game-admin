@@ -112,10 +112,11 @@
         public GameServerConfigs BacBall2 { get; set; }
         public GameServerConfigs LuckyNext1 { get; set; }
         public GameServerConfigs LuckyNext2 { get; set; }
-        public GameServerConfigs FootballDice{ get; set; }
+        public GameServerConfigs FootballDice { get; set; }
         public GameServerConfigs FootballSlot { get; set; }
         public GameServerConfigs CoinToss { get; set; }
         public GameServerConfigs SeBall1 { get; set; }
+        public GameServerConfigs LuckyThree { get; set; }
     }
 
     public class GameServerConfigs
