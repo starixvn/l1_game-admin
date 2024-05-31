@@ -24,7 +24,7 @@ namespace GamesAdmin.Site._Shared.Configurations
         {
             [SystemType.SC1] = "USD",
             [SystemType.VG2] = "INH",
-            [SystemType.GN] = "INH",
+            [SystemType.GN] = "USD",
         };
 
         private readonly Dictionary<string, int> BaseCurrencyMultiplierMapper = new Dictionary<string, int>
