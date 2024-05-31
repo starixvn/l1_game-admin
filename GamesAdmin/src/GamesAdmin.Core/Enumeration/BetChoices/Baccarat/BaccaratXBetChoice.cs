@@ -12,6 +12,7 @@
         public static readonly BaccaratXBetChoice Bank = new BaccaratXBetChoice(BankValue, "Banker");
         public static readonly BaccaratXBetChoice PlayerPair = new BaccaratXBetChoice(PlayerPairValue, "Player Pair");
         public static readonly BaccaratXBetChoice BankerPair = new BaccaratXBetChoice(BankPairValue, "Banker Pair");
+        public static readonly BaccaratXBetChoice Tie = new BaccaratXBetChoice(TieValue, "Tie");
 
         public BaccaratXBetChoice() { }
 

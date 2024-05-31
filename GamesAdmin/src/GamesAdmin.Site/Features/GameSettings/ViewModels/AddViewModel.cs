@@ -31,6 +31,9 @@ namespace GamesAdmin.Site.Features.GameSettings.ViewModels
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string DisplayName { get; set; }
+
         public List<SelectListItem> GameNames { get; set; }
 
         [DisplayName("Type")]

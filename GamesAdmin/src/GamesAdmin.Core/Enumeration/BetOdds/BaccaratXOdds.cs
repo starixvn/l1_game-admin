@@ -14,6 +14,7 @@ namespace GamesAdmin.Core.Enumeration.BetOdds
         public static readonly BaccaratXOdds Bank = new BaccaratXOdds(BankValue, "Banker");
         public static readonly BaccaratXOdds PlayerPair = new BaccaratXOdds(PlayerPairValue, "Player Pair");
         public static readonly BaccaratXOdds BankerPair = new BaccaratXOdds(BankPairValue, "Banker Pair");
+        public static readonly BaccaratXOdds Tie = new BaccaratXOdds(TieValue, "Tie");
 
         public BaccaratXOdds() { }
 
