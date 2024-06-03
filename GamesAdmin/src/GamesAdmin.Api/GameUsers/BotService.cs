@@ -205,7 +205,7 @@ namespace GamesAdmin.Api.GameUser
                 var userName = $"{name}{latestUserInfoUID}";
                 var password = string.Empty;
                 var amount = (new Random()).Next(minInitAmount, maxInitAmount);
-                var avatarId = new Random().Next(1, 40);
+                var avatarId = new Random().Next(1, 171);
                 var postfix = GenerateNumberPostfix(name);
                 var charName = $"{name}{postfix}";
                 var result = new GenerateAccountResult(userName, charName, password);
