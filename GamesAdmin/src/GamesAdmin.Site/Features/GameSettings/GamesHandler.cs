@@ -280,7 +280,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 foreach (var odds in betOdds2)
                 {
                     var oddsValue = oddsSettings.ContainsKey(odds) ? oddsSettings[odds] : 0;
-                    items.Add(new OddsViewModel(odds, oddsValue, odds));
+                    items.Add(new OddsViewModel(odds, oddsValue, odds.ToTitleCase()));
                 }
             }
 

@@ -1,4 +1,6 @@
-﻿namespace GamesAdmin.Site.Extensions
+﻿using System.Globalization;
+
+namespace GamesAdmin.Site.Extensions
 {
     public static class FormatStringExtensions
     {
@@ -10,6 +12,17 @@
             }
 
             return char.ToUpper(s[0]) + s.Substring(1);
+        }
+
+        public static string ToTitleCase(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(s);
         }
     }
 }
