@@ -37,6 +37,6 @@
     "DisplayName": "Coin Toss",
     "BetChoices": [ "head", "tail" ],
     "Odds": [ "head", "tail" ],
-    "OfferedSystem": [ "SC1", "VG2", "GN" ]
+    "OfferedSystem": [ "SC1", "VG2" ]
   }
 ]
