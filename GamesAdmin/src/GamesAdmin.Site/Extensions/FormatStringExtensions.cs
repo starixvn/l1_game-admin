@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace GamesAdmin.Site.Extensions
 {
@@ -20,9 +21,8 @@ namespace GamesAdmin.Site.Extensions
             {
                 return string.Empty;
             }
-
-            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-            return textInfo.ToTitleCase(s);
+            var result = Regex.Replace(s, "[A-Z]", " $0");
+            return result.UppercaseFirst();
         }
     }
 }

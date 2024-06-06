@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Extensions.Options
 @using GamesAdmin.Site.Features.GameSettings.ViewModels;
 @using GamesAdmin.Site._Shared.Configurations
+@using GamesAdmin.Site.Extensions;
 @inject IOptionsSnapshot<ResourceSiteConfiguration> resourceSiteConfig
 @model EditViewModel;
 
@@ -46,7 +47,7 @@
                                         @if(key != "max")
                                         {
                                             <div class="col-lg-6">
-                                                <label class="control-label">@key</label>
+                                                <label class="control-label">@key.ToTitleCase()</label>
                                                 <input type="number" value="@value" class="form-control mb-3" name="@key" />
                                             </div>
                                         }

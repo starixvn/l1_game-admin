@@ -1,4 +1,6 @@
 ﻿@using GamesAdmin.Site.Features.GameSettings.ViewModels;
+@using GamesAdmin.Site.Extensions;
+
 @model MarginSettingViewModel;
 <div class="form-group row">
     <div class="col-lg-12 mb-3">
@@ -17,7 +19,7 @@
                     @if (key != "max")
                     {
                         <div class="col-lg-6">
-                            <label class="control-label">@key</label>
+                            <label class="control-label">@key.ToTitleCase()</label>
                             <input type="number" value="@value" class="form-control mb-3" name="@key" />
                         </div>
                     }

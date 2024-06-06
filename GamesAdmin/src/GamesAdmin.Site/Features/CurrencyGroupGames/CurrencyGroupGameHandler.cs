@@ -7,6 +7,7 @@ using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Games;
 using GamesAdmin.Core.Models.GameConfigs;
 using GamesAdmin.Site._Shared.Services.GeneralGameSettings;
+using GamesAdmin.Site.Extensions;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.Chips;
 using GamesAdmin.Site.Features.CurrencyGroupGames.Requests;
@@ -106,7 +107,7 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames
                 return betChoicesSettings.Select(choice => new GameSettings.ViewModels.MaxBetChoiceViewModel(
                 choice,
                 maxBetPerChoices != null && maxBetPerChoices.ContainsKey(choice) ? maxBetPerChoices[choice] : 0,
-                choice)).ToList();
+                choice.ToTitleCase())).ToList();
             }
             if (string.IsNullOrWhiteSpace(gameName) || !Game.ContainsGame(gameName))
             {

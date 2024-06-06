@@ -307,7 +307,7 @@ namespace GamesAdmin.Site.Features.GameSettings
                 var items = new List<BaseBetChoice>();
                 foreach (var betChoice in betChoices)
                 {
-                    items.Add(new BaseBetChoice(betChoice, betChoice));
+                    items.Add(new BaseBetChoice(betChoice, betChoice.ToTitleCase()));
                 }
                 return items;
             }
