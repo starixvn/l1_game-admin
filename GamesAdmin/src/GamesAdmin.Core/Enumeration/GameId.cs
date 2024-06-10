@@ -62,15 +62,16 @@
         Pontoon = 72,
         BandarQiuQiu = 75,
         ChineseBlackjack = 77,
+        FootballDice = 78,
+        FootballSlot = 79,
+        CoinToss = 80,
+        FootballCoinToss = 93,
         BacBall1 = 1001,
         BacBall2 = 1002,
         LuckyNext1 = 1003,
         LuckyNext2 = 1004,
-        FootballDice = 78,
-        FootballSlot = 79,
-        CoinToss = 80,
         SeBall1 = 1005,
-        FootballCoinToss = 93,
-        LuckyThree = 1006
+        LuckyThree = 1006,
+        SicBall = 1007
     }
 }

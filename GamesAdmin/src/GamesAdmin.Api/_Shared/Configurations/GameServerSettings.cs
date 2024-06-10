@@ -117,6 +117,7 @@
         public GameServerConfigs CoinToss { get; set; }
         public GameServerConfigs SeBall1 { get; set; }
         public GameServerConfigs LuckyThree { get; set; }
+        public GameServerConfigs SicBall { get; set; }
     }
 
     public class GameServerConfigs

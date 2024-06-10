@@ -226,6 +226,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddSingleton(RestService.For<ILuckyNext2OnlineUserApi>(appSettings.GameServers.LuckyNext2.Api, refitSettings));
             services.AddSingleton(RestService.For<ISeBall1OnlineUserApi>(appSettings.GameServers.SeBall1.Api, refitSettings));
             services.AddSingleton(RestService.For<ILuckyThreeOnlineUserApi>(appSettings.GameServers.LuckyThree.Api, refitSettings));
+            services.AddSingleton(RestService.For<ISicBallOnlineUserApi>(appSettings.GameServers.SicBall.Api, refitSettings));
         }
 
         private static void AddSlotServices(this IServiceCollection services)

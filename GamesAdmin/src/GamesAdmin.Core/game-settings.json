@@ -62,5 +62,13 @@
     "BetChoices": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
     "Odds": [ "over", "under", "red2", "red3", "blue2", "blue3" ],
     "OfferedSystem": [ "GN" ]
+  },
+  {
+    "GameId": 1007,
+    "GameName": "sicball",
+    "DisplayName": "Sic Ball",
+    "BetChoices": [ "big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6" ],
+    "Odds": [ "big", "small", "single", "double", "triple" ],
+    "OfferedSystem": [ "GN" ]
   }
 ]
