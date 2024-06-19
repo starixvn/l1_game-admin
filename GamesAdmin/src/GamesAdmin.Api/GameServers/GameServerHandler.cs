@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GamesAdmin.Api.GameServers.Requests;
-using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
 using GamesAdmin.Core.Models.FootballDice;
 using GamesAdmin.Core.Models.RoundResults;
@@ -27,6 +26,8 @@ namespace GamesAdmin.Api.GameServers
         , IRequestHandler<SetChineseBlackjackResultRequest, bool>
         , IRequestHandler<SetCrashGameResultRequest, bool>
         , IRequestHandler<SetFootballDiceResultRequest, FootballDiceControlResult>
+        , IRequestHandler<SetBaccaratXRersultRequest, bool>
+
     {
         private readonly IGameServerService gameServerService;
 
@@ -59,6 +60,7 @@ namespace GamesAdmin.Api.GameServers
 
         public Task<bool> Handle(SetPontoonResultRequest request, CancellationToken cancellationToken)
            => gameServerService.SetPontoonResult(request);
+
         public Task<bool> Handle(SetChineseBlackjackResultRequest request, CancellationToken cancellationToken)
         => gameServerService.SetChineseBlackjackResult(request);
 
@@ -80,5 +82,7 @@ namespace GamesAdmin.Api.GameServers
         public Task<FootballDiceControlResult> Handle(SetFootballDiceResultRequest request, CancellationToken cancellationToken)
             => gameServerService.SetFootballDiceResult(request);
 
+        public Task<bool> Handle(SetBaccaratXRersultRequest request, CancellationToken cancellationToken)
+            => gameServerService.SetBaccaratXRersult(request);
     }
 }

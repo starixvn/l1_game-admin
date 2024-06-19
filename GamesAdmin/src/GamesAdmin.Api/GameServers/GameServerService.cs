@@ -58,6 +58,8 @@ namespace GamesAdmin.Api.GameServers
         Task<bool> SetCrashGameResult(SetCrashGameResultRequest request);
 
         Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request);
+
+        Task<bool> SetBaccaratXRersult(SetBaccaratXRersultRequest request);
     }
 
     public class GameServerService : IGameServerService
@@ -78,6 +80,7 @@ namespace GamesAdmin.Api.GameServers
         private readonly IChineseBlackjackApiFactory chineseBlackjackApiFactory;
         private readonly ICrashGameApiFactory crashGameApiFactory;
         private readonly IFootballDiceApiFactory footballDiceApiFactory;
+        private readonly IBaccaratXApi baccaratXApi;
 
         public GameServerService(
             ISentryClient sentryClient,
@@ -95,7 +98,8 @@ namespace GamesAdmin.Api.GameServers
             IPontoonApiFactory pontoonApiFactory,
             IChineseBlackjackApiFactory chineseBlackjackApiFactory,
             ICrashGameApiFactory crashGameApiFactory,
-            IFootballDiceApiFactory footballDiceApiFactory
+            IFootballDiceApiFactory footballDiceApiFactory,
+            IBaccaratXApi baccaratXApi
             )
         {
             this.sentryClient = sentryClient;
@@ -114,6 +118,7 @@ namespace GamesAdmin.Api.GameServers
             this.chineseBlackjackApiFactory = chineseBlackjackApiFactory;
             this.crashGameApiFactory = crashGameApiFactory;
             this.footballDiceApiFactory = footballDiceApiFactory;
+            this.baccaratXApi = baccaratXApi;
         }
 
         public Task<JsonWebToken> GetJWT(JWTRequest request)
@@ -406,6 +411,19 @@ namespace GamesAdmin.Api.GameServers
         public async Task<FootballDiceControlResult> SetFootballDiceResult(SetFootballDiceResultRequest request)
         {
             return await footballDiceApiFactory.SetResultApi().SetResult(request);
+        }
+
+        public async Task<bool> SetBaccaratXRersult(SetBaccaratXRersultRequest request)
+        {
+            try
+            {
+                return await baccaratXApi.SetResult(request, request.gameConfigName);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+            return false;
         }
     }
 }
