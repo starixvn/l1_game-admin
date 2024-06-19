@@ -77,5 +77,9 @@ namespace GamesAdmin.Api.GameServers
         [HttpPost("footballdice/set_result")]
         public Task<FootballDiceControlResult> SetFootballDice([FromBody] SetFootballDiceResultRequest request)
          => mediator.Send(request);
+
+        [HttpPost("baccaratx/set_result")]
+        public Task<bool> SetBaccaratXResult([FromBody] SetBaccaratXRersultRequest request)
+        => mediator.Send(request);
     }
 }

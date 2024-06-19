@@ -1,4 +1,8 @@
-﻿using GamesAdmin.Api._Shared.Configurations;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json;
+using GamesAdmin.Api._Shared.Configurations;
 using GamesAdmin.Api._Shared.Helpers;
 using GamesAdmin.Api.ApiLogs;
 using GamesAdmin.Api.ApiLogs.Apis;
@@ -34,10 +38,6 @@ using GamesAdmin.Core;
 using GamesAdmin.Core.IdentityServer;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Text.Json;
 
 namespace GamesAdmin.Api._Shared.Middlewares
 {
@@ -113,6 +113,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             AddCrashGameServices(services);
             AddFootballDiceServices(services, appSettings, refitSettings);
             AddChineseBlackjackServices(services, appSettings, refitSettings);
+            AddBaccaratXServices(services,appSettings,refitSettings);
 
             services.AddScoped<IReportServiceFactory, ReportServiceFactory>();
             services.AddScoped<SeDieReportService>();
@@ -274,6 +275,14 @@ namespace GamesAdmin.Api._Shared.Middlewares
             if (appSettings.SystemType != SystemType.GN)
             {
                 services.AddSingleton(RestService.For<IFootballDiceApi>(appSettings.GameServers.FootballDice.Api, refitSettings));
+            }
+        }
+
+        private static void AddBaccaratXServices(this IServiceCollection services, IAppSettings appSettings, RefitSettings refitSettings)
+        {
+            if (appSettings.SystemType != SystemType.GN)
+            {
+                services.AddSingleton(RestService.For<IBaccaratXApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
             }
         }
 

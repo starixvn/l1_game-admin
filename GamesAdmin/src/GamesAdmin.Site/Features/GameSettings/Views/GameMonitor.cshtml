@@ -68,12 +68,17 @@
                                 {
                                     <a href="#" class="icon-action" onclick="gameStatus.setControlResultFootballDice(event)"><i class="icon-chart"></i></a>
                                 }
+
                             }
                             else
                             {
                                 if (role == Role.Admin.Value && Model.GameList[index].Name == Game.HiLoValue)
                                 {
                                     <a href="#" class="icon-action" onclick="gameStatus.setControlResultHiLo(event)"><i class="icon-chart"></i></a>
+                                }
+                                else if (role == Role.Admin.Value && Model.GameList[index].Name == Game.Bac81Value)
+                                {
+                                    <a href="#" class="icon-action" onclick="gameStatus.setResultControlBaccaratX(event,'@(Game.Bac81Value)', '@(Game.Bac81Value)')"><i class="icon-chart"></i></a>
                                 }
                                 else
                                 {
