@@ -1,6 +1,4 @@
-﻿
-
-namespace GamesAdmin.Site.Features.BetDetails.ViewModels
+﻿namespace GamesAdmin.Site.Features.BetDetails.ViewModels
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -14,6 +12,12 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
         public IEnumerable<SelectListItem> OperatorItem => Operators.Select(o => new SelectListItem(o.PartnerId, o.PartnerId));
 
         public IEnumerable<SelectListItem> LanguageItem { get; set; }
+
+        public IEnumerable<SelectListItem> Theme { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Light", Value = "light" },
+            new SelectListItem { Text = "Dark", Value = "dark" },
+        };
 
         public int RoundId { get; set; }
 
@@ -30,8 +34,10 @@ namespace GamesAdmin.Site.Features.BetDetails.ViewModels
         public bool FreeBet { get; set; }
 
         public bool UseHmacHash { get; set; }
-        
+
         public string SiteId { get; set; } = "4100300";
-        
+
+        public string Mode { get; set; }
+        public double? TimeZoneOffset { get; set; }
     }
 }
