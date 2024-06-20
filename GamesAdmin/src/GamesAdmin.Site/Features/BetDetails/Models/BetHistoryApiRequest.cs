@@ -18,6 +18,8 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
             PlayerId = model.PlayerId;
             FreeBet = model.FreeBet;
             SiteId = model.SiteId;
+            Mode = model.Mode;
+            TimeZoneOffset = model.TimeZoneOffset;
         }
 
         public int GameTypeId { get; set; }
@@ -31,5 +33,9 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
         public bool FreeBet { get; set; }
 
         public string SiteId { get; set; }
+
+        public string Mode { get; set; }
+
+        public double? TimeZoneOffset { get; set; }
     }
 }

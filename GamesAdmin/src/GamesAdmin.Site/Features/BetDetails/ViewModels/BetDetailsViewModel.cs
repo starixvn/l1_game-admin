@@ -38,6 +38,7 @@
         public string SiteId { get; set; } = "4100300";
 
         public string Mode { get; set; }
+
         public double? TimeZoneOffset { get; set; }
     }
 }
