@@ -7,7 +7,7 @@ namespace GamesAdmin.Api.GameServers
     [Headers("Authorization: Bearer")]
     public interface IBaccaratXApi
     {
-        [Post("/api/{name}/set-result")]
+        [Post("/api/{name}/set_result")]
         Task<bool> SetResult([Body] SetBaccaratXRersultRequest request, string name = "");
     }
 }
