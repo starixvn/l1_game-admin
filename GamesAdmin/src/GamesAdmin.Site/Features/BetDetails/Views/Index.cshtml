@@ -14,7 +14,7 @@
             <div class="form-group">
                 <div>
                     <label asp-for="SiteId" class="control-label">Site ID</label>
-                    <input type="text" asp-for="SiteId" class="form-control"/>
+                    <input type="text" asp-for="SiteId" class="form-control" />
                 </div>
             </div>
             <div class="form-group">
@@ -40,9 +40,18 @@
                 </div>
             </div>
             <div class="form-group">
+                <label asp-for="TimeZoneOffset" class="control-label">Timezone Offset</label>
+                <input type="number" asp-for="TimeZoneOffset" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Mode" class="control-label">Mode</label>
+                <select asp-items="@Model.Theme" asp-for="Mode" class="form-control"></select>
+            </div>
+            <div class="form-group">
                 <input type="checkbox" asp-for="FreeBet" />
                 <label asp-for="FreeBet" class="control-label">Free Bet</label>
             </div>
+
             <div class="form-group">
                 <input type="checkbox" asp-for="UseHmacHash" />
                 <label asp-for="UseHmacHash" class="control-label">Use Hmac Hash</label>
@@ -59,7 +68,7 @@
 </div>
 
 @section Scripts
-{
+    {
     <environment include="Development">
         <script src="~/js/bet-details.js" asp-append-version="true"></script>
     </environment>
