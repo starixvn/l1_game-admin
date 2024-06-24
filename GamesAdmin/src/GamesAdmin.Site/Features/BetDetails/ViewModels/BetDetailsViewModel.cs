@@ -39,6 +39,6 @@
 
         public string Mode { get; set; }
 
-        public double? TimeZoneOffset { get; set; }
+        public int? TimeZoneOffset { get; set; }
     }
 }
