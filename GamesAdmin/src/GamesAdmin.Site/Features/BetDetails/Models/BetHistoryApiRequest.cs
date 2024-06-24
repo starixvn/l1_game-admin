@@ -36,6 +36,6 @@ namespace GamesAdmin.Site.Features.BetDetails.Models
 
         public string Mode { get; set; }
 
-        public double? TimeZoneOffset { get; set; }
+        public int? TimeZoneOffset { get; set; }
     }
 }
