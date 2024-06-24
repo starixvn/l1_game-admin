@@ -281,6 +281,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             if (appSettings.SystemType != SystemType.GN)
             {
                 services.AddSingleton(RestService.For<IBaccaratXApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
+                services.AddSingleton(RestService.For<IBaccaratXOnlineUserApi>(appSettings.GameServers.BaccaratX.Api, refitSettings));
             }
         }
 
