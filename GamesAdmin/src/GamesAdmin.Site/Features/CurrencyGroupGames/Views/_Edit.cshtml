@@ -65,7 +65,7 @@
                     {
                         <div class="col-lg-2 col-coin">
                             <label class="control-label">@($"Coin {i + 1}")</label>
-                            <input id="coin-value-@i" type="number" asp-for="@Model.CoinValues[i]" class="form-control txt-coin-value @(Model.CoinValues[i] == 0 ? "" : "disabled")" disabled="@Model.DisabledCoinValue(i)" />
+                            <input id="coin-value-@i" type="number" asp-for="@Model.CoinValues[i]" class="form-control txt-coin-value" />
                         </div>
                     }
                     <div class="col-lg-2 icon-add-container">
