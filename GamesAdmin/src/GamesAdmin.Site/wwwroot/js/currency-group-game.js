@@ -132,14 +132,6 @@
             }).done(function (result) {
                 if (result.success) {
                     $('#currency-group-game-successMsg').show();
-
-                    $(".txt-coin-value").each((i, txt) => {
-                        var $txt = $(txt);
-                        if ($txt.val() != '0') {
-                            $txt.addClass('disabled');
-                            $txt.attr('disabled', 'disabled');
-                        }
-                    });
                 }
                 else {
                     $('#currency-group-game-failedMsg').show();
