@@ -48,6 +48,14 @@
     "OfferedSystem": [ "GN" ]
   },
   {
+    "GameId": 93,
+    "GameName": "footballcointoss",
+    "DisplayName": "Football Coin Toss",
+    "BetChoices": [ "home", "away" ],
+    "Odds": [ "home", "away" ],
+    "OfferedSystem": [ "SC1", "VG2" ]
+  },
+  {
     "GameId": 1006,
     "GameName": "luckythree",
     "DisplayName": "Lucky Three",
