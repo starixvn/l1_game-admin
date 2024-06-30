@@ -70,6 +70,7 @@ namespace GamesAdmin.Api.VoidGame
             { GameId.FootballSlot, new GameTicketCollection("footballslot_bets", "footballslot_betlogs") },
             { GameId.CoinToss, new GameTicketCollection("cointoss_bets", "cointoss_betlogs") },
             { GameId.SeBall1, new GameTicketCollection("seball1_bets", "seball1_betlogs") },
+            { GameId.FootballCoinToss, new GameTicketCollection("footballcointoss_bets", "footballcointoss_betlogs") },
             { GameId.LuckyThree, new GameTicketCollection("luckythree_bets", "luckythree_betlogs") },
            };
 
