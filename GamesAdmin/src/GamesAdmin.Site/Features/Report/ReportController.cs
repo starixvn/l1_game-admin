@@ -809,5 +809,9 @@ namespace GamesAdmin.Site.Features.Report
 
         [HttpGet]
         public IActionResult CoinToss() => RedirectToAction("Index", new { game = GameId.CoinToss });
+
+
+        [HttpGet]
+        public IActionResult FootballCoinToss() => RedirectToAction("Index", new { game = GameId.FootballCoinToss });
     }
 }
