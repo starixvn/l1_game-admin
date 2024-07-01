@@ -70,7 +70,7 @@
         FootballSlot = 79,
         CoinToss = 80,
         SeBall1 = 1005,
-        FootballCoinToss = 93
+        FootballCoinToss = 93,
         LuckyThree = 1006
     }
 }
