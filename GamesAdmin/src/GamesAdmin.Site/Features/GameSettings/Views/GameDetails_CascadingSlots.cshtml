@@ -56,8 +56,7 @@
                     {
                         <div class="col-lg-2">
                             <label class="control-label">@($"Level {i + 1}")</label>
-                            <input type="number" asp-for="@Model.CascadingSlotsConfig.BetLevels[i]"
-                                   class="form-control txt-bet-level" />
+                            <input type="number" asp-for="@Model.CascadingSlotsConfig.BetLevels[i]" class="form-control txt-bet-level @(Model.CascadingSlotsConfig.BetLevels[i] == 0 ? "" :"disabled")" disabled="@(Model.CascadingSlotsConfig.BetLevels[i] != 0)" />
                         </div>
                     }
                 </div>

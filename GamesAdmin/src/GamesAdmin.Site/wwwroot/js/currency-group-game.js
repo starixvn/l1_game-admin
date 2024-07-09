@@ -1,6 +1,7 @@
 ﻿var currencyGroupGame = (function ($) {
     return {
         loadConfig: function (gameName, groupId, isCopySetting, gameType) {
+            var context = this;
             $.ajax({
                 method: "GET",
                 url: "/currencyGroupGame/Edit",
@@ -25,6 +26,8 @@
                         break;
                     }
                 }
+
+                $("#coin-values .txt-coin-value").on("change", context.onCoinValueChange);
                 $("#IsCopySetting").prop("disabled", isDisable);
             });
         },
@@ -112,9 +115,8 @@
         },
 
         updateSetting: function (isContinue, modalHandlerOnUpdate) {
-            $(".txt-coin-value.disabled").attr('disabled', null);
+            this.updateCoinValuesIndex();
             var data = $('#currency-group-game-edit-form').serializeArray();
-            $(".txt-coin-value.disabled").attr('disabled', 'disabled');
 
             var chips = this.getListSelectedChips();
 
@@ -171,19 +173,33 @@
         },
 
         addCoin: function () {
-            const txtCoinLength = $("#coins-length");
-            const len = parseInt(txtCoinLength.val(), 0);
+            const length = $(".txt-coin-value", "#coin-values").length;
 
-            $(`<div class="col-lg-2 col-coin">
-                <label class="control-label">Coin ${len + 1}</label>
-                <input type="number" name="CoinValues[${len}]" class="form-control txt-coin-value" value="0" />
-            </div>`).insertBefore($('.icon-add-container'));
-
-            txtCoinLength.val(len + 1);
+            $(`<div class="form-group row">
+                            <input type="radio" class="mr-2" name="DefaultCoinValue" value="0" />
+                            <input id="coin-value-${length}" value="0" type="number" name="CoinValues[${length}]" class="col-2 form-control txt-coin-value" />
+                            <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
+                        </div>`).insertBefore($('.icon-add-container'));
         },
 
         enableDropDownList: function (event) {
             event.target.checked ? $("#GroupIdCopy").prop("disabled", false) : $("#GroupIdCopy").prop("disabled", true);
+        },
+
+        removeCoinValue: function (event) {
+            $(event.target).parent().remove();
+        },
+        onCoinValueChange: function (event) {
+            const $parent = $(event.target).parent();
+            $("#DefaultCoinValue", $parent).val(event.target.value);
+        },
+        updateCoinValuesIndex: function () {
+            var $coinValues = $(".txt-coin-value", "#coin-values");
+
+            for (let index = 0; index < $coinValues.length; index++) {
+                var $coinValue = $($coinValues[index]);
+                $coinValue.attr("name", $coinValue.attr("name").replace(/\d+/, index));
+            }
         }
     }
 }(jQuery));

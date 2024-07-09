@@ -48,6 +48,8 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
 
         public double[] CoinValues { get; set; }
 
+        public double DefaultCoinValue { get; set; }
+
         public double MaxWinPerRound { get; set; }
 
         public bool CopySettingGame { get; set; }
