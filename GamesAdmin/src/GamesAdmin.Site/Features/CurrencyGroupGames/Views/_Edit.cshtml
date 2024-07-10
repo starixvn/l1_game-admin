@@ -58,7 +58,7 @@
         @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
         {
             <fieldset>
-                <legend>Coin Values (Set the default value by selecting the radio-button on each Coin Value)</legend>
+                <legend>Coin Values <span class="note">(Set the default value by selecting the radio-button on each Coin Value)</span></legend>
                 <div class="form-group" id="coin-values">
                     <input type="hidden" id="coins-length" value="@Model.CoinValues.Length" class="form-control" />
                     @for (var i = 0; i < Model.CoinValues.Length; i++)

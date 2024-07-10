@@ -49,6 +49,10 @@
         width: auto;
         padding: 0 8px;
         font-weight: bold;
+
+        .note {
+            font-weight: normal;
+        }
     }
 
     fieldset {
