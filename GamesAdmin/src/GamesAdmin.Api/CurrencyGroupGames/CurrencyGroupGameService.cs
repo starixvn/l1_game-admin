@@ -110,14 +110,16 @@ namespace GamesAdmin.Api.CurrencyGroupGames
                     var changedSettings = SettingHelper.GetCurrencyGroupGameChangedModel(gameConfig, currencyGroupGame);
                     sentryClient.CaptureChangedSettings(currencyGroupGame.GameName, "Partner's game setting", $" ({group.PartnerId} - {group.Name})", changedSettings);
 
+                    var sortedCoinValues = currencyGroupGame.CoinValues.OrderBy(x => x).ToArray();
+
                     var update = Builders<CurrencyGroupGameEntity>.Update
                         .Set(field => field.Enabled, currencyGroupGame.Enabled)
                         .Set(field => field.MinBet, currencyGroupGame.MinBet)
                         .Set(field => field.MaxBet, currencyGroupGame.MaxBet)
                         .Set(field => field.MaxBetPerChoices, currencyGroupGame.MaxBetPerChoices)
                         .Set(field => field.Chips, currencyGroupGame.Chips)
-                        .Set(field => field.CoinValues, currencyGroupGame.CoinValues)
-                        .Set(field => field.DefaultCoinValue, currencyGroupGame.DefaultCoinValue)
+                        .Set(field => field.CoinValues, sortedCoinValues)
+                        .Set(field => field.DefaultCoinValue, currencyGroupGame.DefaultCoinValue ?? sortedCoinValues.FirstOrDefault())
                         .Set(field => field.MaxWinPerRound, currencyGroupGame.MaxWinPerRound);
 
                     if (gameConfig.StakeLevels == null)

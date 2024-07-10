@@ -27,7 +27,7 @@
                     }
                 }
 
-                $("#coin-values .txt-coin-value").on("change", context.onCoinValueChange);
+                $("#coin-values").on("change", ".txt-coin-value", context.onCoinValueChange);
                 $("#IsCopySetting").prop("disabled", isDisable);
             });
         },
@@ -176,10 +176,10 @@
             const length = $(".txt-coin-value", "#coin-values").length;
 
             $(`<div class="form-group row">
-                            <input type="radio" class="mr-2" name="DefaultCoinValue" value="0" />
+                            <input type="radio" class="mr-2" name="DefaultCoinValue" id="DefaultCoinValue" value="0" />
                             <input id="coin-value-${length}" value="0" type="number" name="CoinValues[${length}]" class="col-2 form-control txt-coin-value" />
                             <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
-                        </div>`).insertBefore($('.icon-add-container'));
+                        </div>`).insertBefore($('.add-container'));
         },
 
         enableDropDownList: function (event) {

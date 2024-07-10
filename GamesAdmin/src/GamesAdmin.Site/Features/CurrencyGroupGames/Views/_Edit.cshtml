@@ -58,19 +58,19 @@
         @if (Model.GameType == GamesAdmin.Core.Enumeration.GameType.CascadingSlots)
         {
             <fieldset>
-                <legend>Coin Values</legend>
+                <legend>Coin Values (Set the default value by selecting the radio-button on each Coin Value)</legend>
                 <div class="form-group" id="coin-values">
                     <input type="hidden" id="coins-length" value="@Model.CoinValues.Length" class="form-control" />
                     @for (var i = 0; i < Model.CoinValues.Length; i++)
                     {
                         <div class="form-group row">
-                            <input type="radio" class="mr-2" asp-for="DefaultCoinValue" value="@Model.CoinValues[i]" />
+                            <input type="radio" class="mr-3" asp-for="DefaultCoinValue" value="@Model.CoinValues[i]" />
                             <input id="coin-value-@i" type="number" asp-for="@Model.CoinValues[i]" class="col-2 form-control txt-coin-value" />
-                            <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
+                            <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
                         </div>
                     }
-                    <div class="icon-add-container">
-                        <div class="icon-add" onclick="currencyGroupGame.addCoin()"></div>
+                    <div class="add-container">
+                        <button type="button" class="btn btn-add" id="addCoinValueBtn" onclick="currencyGroupGame.addCoin()">Add new Coin value</button>
                     </div>
                 </div>
             </fieldset>
