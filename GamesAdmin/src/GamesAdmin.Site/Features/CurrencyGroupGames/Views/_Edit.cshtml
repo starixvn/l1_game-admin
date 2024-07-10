@@ -64,7 +64,7 @@
                     @for (var i = 0; i < Model.CoinValues.Length; i++)
                     {
                         <div class="form-group row">
-                            <input type="radio" class="mr-3" asp-for="DefaultCoinValue" value="@Model.CoinValues[i]" />
+                            <input type="radio" class="mr-3 ml-3" asp-for="DefaultCoinValue" value="@Model.CoinValues[i]" />
                             <input id="coin-value-@i" type="number" asp-for="@Model.CoinValues[i]" class="col-2 form-control txt-coin-value" />
                             <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
                         </div>
