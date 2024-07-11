@@ -13,8 +13,18 @@
                 }
             }).done(function (content) {
                 var isDisable = false;
+
                 if (content) {
                     $('#currency-group-game-setting').html(content);
+                    $.validator.addMethod("unique", function (value, element, params) {
+                        for (const coinElement of $(".txt-coin-value", "#coin-values")) {
+                            if (coinElement.value === value && coinElement !== element) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                    $.validator.unobtrusive.adapters.addBool("unique");
                     $.validator.unobtrusive.parse('#currency-group-game-edit-form');
 
                 }
@@ -186,7 +196,9 @@
                                   data-val-range-min="5E-324"
                                   data-val="true"
                                   data-val-number="The field must be a number."
-                                  data-val-required="The Double field is required."  />
+                                  data-val-required="The Double field is required."
+                                  data-val-unique="Value should be unique"
+                                  />
                             <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
                         </div>`).insertBefore($('.add-container'));
             this.reparseFormValidation();
