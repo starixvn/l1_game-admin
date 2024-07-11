@@ -210,7 +210,7 @@
 
         removeCoinValue: function (event) {
             $(event.target).parent().remove();
-            this.reparseFormValidation();
+            this.updateCoinValuesIndex();
         },
         onCoinValueChange: function (event) {
             const $parent = $(event.target).parent();
