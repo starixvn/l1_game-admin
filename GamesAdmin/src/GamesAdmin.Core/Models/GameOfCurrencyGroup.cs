@@ -17,7 +17,8 @@ namespace GamesAdmin.Core.Models
             StakeLevel[] stakeLevels = null,
             double[] coinValues = null,
             int multiplier = 0,
-            double maxWinPerRound = 0)
+            double maxWinPerRound = 0,
+            double? defaultCoinValue = null)
         {
             GroupId = groupId;
             GameId = gameId;
@@ -31,6 +32,7 @@ namespace GamesAdmin.Core.Models
             CoinValues = coinValues;
             Multiplier = multiplier;
             MaxWinPerRound = maxWinPerRound;
+            DefaultCoinValue = defaultCoinValue;
         }
 
         public string GroupId { get; }
@@ -52,6 +54,7 @@ namespace GamesAdmin.Core.Models
         public StakeLevel[] StakeLevels { get; }
 
         public double[] CoinValues { get; }
+        public double? DefaultCoinValue { get; set; }
         public int Multiplier { get; }
         public double MaxWinPerRound { get; }
     }
