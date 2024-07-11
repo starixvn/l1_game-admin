@@ -115,32 +115,35 @@
         },
 
         updateSetting: function (isContinue, modalHandlerOnUpdate) {
-            this.updateCoinValuesIndex();
-            var data = $('#currency-group-game-edit-form').serializeArray();
+            var $form = $('#currency-group-game-edit-form');
+            if ($form.valid()) {
+                this.updateCoinValuesIndex();
+                var data = $('#currency-group-game-edit-form').serializeArray();
 
-            var chips = this.getListSelectedChips();
+                var chips = this.getListSelectedChips();
 
-            for (var i = 0; i < chips.length; i++) {
-                data.push({
-                    name: ['Chips[' + i + ']'], value: chips[i]
+                for (var i = 0; i < chips.length; i++) {
+                    data.push({
+                        name: ['Chips[' + i + ']'], value: chips[i]
+                    });
+                }
+
+                $.ajax({
+                    method: "POST",
+                    url: 'currencyGroupGame/Edit',
+                    dataType: 'json',
+                    data,
+                }).done(function (result) {
+                    if (result.success) {
+                        $('#currency-group-game-successMsg').show();
+                    }
+                    else {
+                        $('#currency-group-game-failedMsg').show();
+                    }
+
+                    modalHandlerOnUpdate(isContinue);
                 });
             }
-
-            $.ajax({
-                method: "POST",
-                url: 'currencyGroupGame/Edit',
-                dataType: 'json',
-                data,
-            }).done(function (result) {
-                if (result.success) {
-                    $('#currency-group-game-successMsg').show();
-                }
-                else {
-                    $('#currency-group-game-failedMsg').show();
-                }
-
-                modalHandlerOnUpdate(isContinue);
-            });
         },
 
         modalHandlerOnUpdate: function (isContinue) {
@@ -176,10 +179,17 @@
             const length = $(".txt-coin-value", "#coin-values").length;
 
             $(`<div class="form-group row">
-                            <input type="radio" class="mr-2" name="DefaultCoinValue" id="DefaultCoinValue" value="0" />
-                            <input id="coin-value-${length}" value="0" type="number" name="CoinValues[${length}]" class="col-2 form-control txt-coin-value" />
-                            <i class="icon-cancel text-error mt-3 ml-2" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
+                            <input type="radio" class="mr-3 ml-3" name="DefaultCoinValue" id="DefaultCoinValue" value="0" />
+                            <input id="coin-value-${length}" value="0" type="number" name="CoinValues[${length}]" class="col-2 form-control txt-coin-value"
+                                  data-val-range="The field MaxWinPerRound must be between 5E-324 and 1.7976931348623157E+308."
+                                  data-val-range-max="1.7976931348623157E+308"
+                                  data-val-range-min="5E-324"
+                                  data-val="true"
+                                  data-val-number="The field must be a number."
+                                  data-val-required="The Double field is required."  />
+                            <i class="icon-cancel text-error mt-3 ml-4" style="cursor: pointer" onclick="currencyGroupGame.removeCoinValue(event)"></i>
                         </div>`).insertBefore($('.add-container'));
+            this.reparseFormValidation();
         },
 
         enableDropDownList: function (event) {
@@ -188,6 +198,7 @@
 
         removeCoinValue: function (event) {
             $(event.target).parent().remove();
+            this.reparseFormValidation();
         },
         onCoinValueChange: function (event) {
             const $parent = $(event.target).parent();
@@ -200,6 +211,14 @@
                 var $coinValue = $($coinValues[index]);
                 $coinValue.attr("name", $coinValue.attr("name").replace(/\d+/, index));
             }
+            this.reparseFormValidation();
+        },
+        reparseFormValidation: function () {
+            var form = $("#currency-group-game-edit-form")
+                .removeData("validator")
+                .removeData("unobtrusiveValidation"); 
+
+            $.validator.unobtrusive.parse(form);
         }
     }
 }(jQuery));

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models.Chips;
 using GamesAdmin.Core.Models.GameConfigs;
@@ -64,4 +65,5 @@ namespace GamesAdmin.Site.Features.CurrencyGroupGames.ViewModels
             return CoinValues[index] != 0 && !CopySettingGame;
         }
     }
+
 }

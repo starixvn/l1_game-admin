@@ -296,6 +296,9 @@
 .form .back-button {
   margin-right: 1.4rem;
 }
+.form .input-validation-error {
+  border-color: #dc3545;
+}
 
 .filter .list-buttons {
   display: flex;
