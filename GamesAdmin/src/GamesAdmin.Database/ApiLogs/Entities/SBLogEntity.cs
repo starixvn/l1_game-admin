@@ -49,6 +49,8 @@ namespace GamesAdmin.Database.ApiLogs.Entities
         public string Ref { get; set; } = string.Empty;
 
         public string ReturnUrl { get; set; } = string.Empty;
+
+        public bool DisableAward { get; set; }
     }
 
     public class SBResultEntity : ApiLogResultEntity
