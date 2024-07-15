@@ -29,9 +29,19 @@ namespace GamesAdmin.Site.Features.Promotions
             return View(viewModel);
         }
 
+        public IActionResult Tournament()
+        {
+            var viewModel = new TournamentViewModel();
+            return View(viewModel);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetPromotions(string status)
         => PartialView("_Promotions", await mediator.Send(new GetPromotionByStatusRequest(status)));
+
+        [HttpGet]
+        public async Task<IActionResult> GetTournamentPromotions(string status)
+        => PartialView("_TournamentPromotions", await mediator.Send(new GetTournamentPromotionsByStatusRequest(status)));
 
         [HttpGet]
         public async Task<IActionResult> Create()

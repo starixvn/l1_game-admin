@@ -4,6 +4,7 @@ using GamesAdmin.Api._Shared;
 using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,5 +63,9 @@ namespace GamesAdmin.Api.Promotions
         [HttpPost("deleteAnnouncement")]
         public Task<bool> DeleteAnnouncement(string id)
            => mediator.Send(new DeleteAnnouncementRequest(id));
+
+        [HttpGet("getCampaignByStatus")]
+        public Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status)
+           => mediator.Send(new GetPromotionCampaignByStatusRequest(status));
     }
 }

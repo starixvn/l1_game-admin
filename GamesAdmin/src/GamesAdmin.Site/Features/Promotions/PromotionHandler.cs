@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site._Shared.Configurations;
 using GamesAdmin.Site.Features._Shared;
 using GamesAdmin.Site.Features.GameSettings;
@@ -25,16 +26,20 @@ namespace GamesAdmin.Site.Features.Promotions
         , IRequestHandler<GetAnnouncementByIdRequest, CreateAnnouncementItemViewModel>
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
+        , IRequestHandler<GetTournamentPromotionsByStatusRequest, IEnumerable<PromotionConfigModel>>
     {
         private readonly IPromotionService promotionService;
+        private readonly IPromotionCampaignService promotionCampaignService;
         private readonly IMapper mapper;
         private readonly IAppSettings appSettings;
 
-        public PromotionHandler(IPromotionService promotionService, IGameSettingService gameService, IMapper mapper, IAppSettings appSettings)
+        public PromotionHandler(IPromotionService promotionService, IGameSettingService gameService, IMapper mapper, IAppSettings appSettings,
+            IPromotionCampaignService promotionCampaignService)
         {
             this.promotionService = promotionService;
             this.mapper = mapper;
             this.appSettings = appSettings;
+            this.promotionCampaignService = promotionCampaignService;
         }
 
         public async Task<IEnumerable<PromotionModel>> Handle(GetPromotionByStatusRequest request, CancellationToken cancellationToken)
@@ -216,5 +221,16 @@ namespace GamesAdmin.Site.Features.Promotions
 
         public Task<bool> Handle(DeleteAnnouncementRequest request, CancellationToken cancellationToken)
         => promotionService.DeleteAnnouncement(request.Id);
+
+        public async Task<IEnumerable<PromotionConfigModel>> Handle(GetTournamentPromotionsByStatusRequest request, CancellationToken cancellationToken)
+        {
+            var promotions = (await promotionCampaignService.GetCampaignByStatus(request.Status)).ToList();
+            foreach (var promotion in promotions)
+            {
+                promotion.StartDateTime = TimeZoneInfo.ConvertTimeFromUtc(promotion.StartDateTime, appSettings.DefaultTimeZone);
+                promotion.EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(promotion.EndDateTime, appSettings.DefaultTimeZone);
+            }
+            return promotions;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GamesAdmin.Api.Notifications;
 using GamesAdmin.Api.Promotions.Requests;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using MediatR;
 
 namespace GamesAdmin.Api.Promotions
@@ -20,14 +21,17 @@ namespace GamesAdmin.Api.Promotions
         , IRequestHandler<GetAnnouncementByIdRequest, Notification>
         , IRequestHandler<UpdateAnnouncementRequest, bool>
         , IRequestHandler<DeleteAnnouncementRequest, bool>
+        , IRequestHandler<GetPromotionCampaignByStatusRequest, IEnumerable<PromotionConfigModel>>
     {
         private readonly IPromotionService promotionService;
         private readonly INotificationService notificationService;
+        private readonly IPromotionCampaignService promotionCampaignService;
 
-        public PromotionHandler(IPromotionService promotionService, INotificationService notificationService)
+        public PromotionHandler(IPromotionService promotionService, INotificationService notificationService, IPromotionCampaignService promotionCampaignService)
         {
             this.promotionService = promotionService;
             this.notificationService = notificationService;
+            this.promotionCampaignService = promotionCampaignService;
         }
 
         public Task<IEnumerable<PromotionModel>> Handle(GetPromotionByStatusRequest request, CancellationToken cancellationToken)
@@ -62,5 +66,8 @@ namespace GamesAdmin.Api.Promotions
 
         public Task<bool> Handle(DeleteAnnouncementRequest request, CancellationToken cancellationToken)
         => notificationService.Delete(request.Id);
+
+        public Task<IEnumerable<PromotionConfigModel>> Handle(GetPromotionCampaignByStatusRequest request, CancellationToken cancellationToken)
+        => promotionCampaignService.GetByStatus(request.Status);
     }
 }

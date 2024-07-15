@@ -72,6 +72,7 @@ namespace GamesAdmin.Api._Shared.Middlewares
             services.AddScoped<IChipService, ChipService>();
             services.AddScoped<IHoldemPokerReportService, HoldemPokerReportService>();
             services.AddScoped<IPromotionService, PromotionService>();
+            services.AddScoped<IPromotionCampaignService, PromotionCampaignService>();
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IDomainService, DomainService>();
             services.AddScoped<IRTPVerifyService, RTPVeirfyService>();

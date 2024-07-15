@@ -1,0 +1,111 @@
+﻿@using GamesAdmin.Core.Models.Promotion;
+@using GamesAdmin.Site.Features._Shared;
+@using GamesAdmin.Core.Enumeration;
+@using GamesAdmin.Site.Extensions;
+@model IEnumerable<PromotionConfigModel>
+
+<table class="table table-bordered sticky-table">
+    <thead>
+        <tr>
+            <th>Promotion name</th>
+            <th>Promotion Id</th>
+            <th>Prize</th>
+            <th>Operators</th>
+            <th>Valid min bet</th>
+            <th>Status</th>
+            <th>Settings</th>
+            <th>Start date (GMT+7)</th>
+            <th>End date (GMT+7)</th>
+            <th>Leaderboard</th>
+            <th>Announcement</th>
+            @if (Context.HasAdminPermission())
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var promotion in Model)
+            {
+                var operatorGroups = promotion.Operators.SelectMany(o => o.CurrencyGroups.Select(c => new { o.OperatorId, c.CurrencyGroupId, c.SlotGameMinBet, c.OtherGameMinBet, c.Enabled, c.CurrencyName }))
+                .GroupBy(oc => oc.OperatorId);
+
+                bool firstPromotionRow = true;
+                foreach (var operatorGroup in operatorGroups)
+                {
+                    bool firstOperatorRow = true;
+                    var rowspan = operatorGroup.Count();
+
+                    foreach (var currencyGroup in operatorGroup)
+                    {
+                        <tr>
+                            @if (firstPromotionRow)
+                            {
+                                <td rowspan="@operatorGroups.Sum(g => g.Count())" class="text-center">@promotion.Name</td>
+                                <td rowspan="@operatorGroups.Sum(g => g.Count())" class="text-center">@promotion.PromotionId</td>
+                                <td rowspan="@operatorGroups.Sum(g => g.Count())" width="200px">
+                                    @foreach (var prize in promotion.WinningPrizes)
+                                    {
+                                        <div>@prize.Name: @prize.Value</div>
+                                    }
+                                </td>
+                                firstPromotionRow = false;
+                            }
+                            @if (firstOperatorRow)
+                            {
+                                <td rowspan="@rowspan">@operatorGroup.Key</td>
+                                firstOperatorRow = false;
+                            }
+                            <td width="150px">
+                                <div>@currencyGroup.CurrencyName</div>
+                                <div>Slot games: @currencyGroup.SlotGameMinBet</div>
+                                <div>Other games: @currencyGroup.OtherGameMinBet</div>
+                            </td>
+                            <td class="text-center">
+                                @if (currencyGroup.Enabled)
+                                {
+                                    <i class="icon-check"></i>
+                                }
+                                else
+                                {
+                                    <i class="icon-cancel"></i>
+                                }
+                            </td>
+                            <td class="text-center"><i class="icon-edit"></i></td>
+                            <td class="text-center">@promotion.StartDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
+                            <td class="text-center">@promotion.EndDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
+                            <td class="text-center text-success"><a href="#">View</a></td>
+                            <td class="text-center text-success">Linked</td>
+                            @if (Context.HasAdminPermission())
+                            {
+                                <td class="text-center">
+                                    <a type="button" class="btn btn-success btn-lg"
+                                       data-ajax="true"
+                                       data-ajax-mode="replace"
+                                       data-ajax-update="#promotion-modal .modal-content"
+                                       data-ajax-success="promotion.openUpdatePromotionForm"
+                                       asp-route-id=@promotion.PromotionId
+                                       asp-action="Update">
+                                        Edit
+                                    </a>
+                                    <button type="button" class="btn btn-danger btn-lg" onclick="promotion.openDeleteModal('@promotion.PromotionId')">
+                                        Delete
+                                    </button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            }
+        }
+        else
+        {
+            var col = Context.HasAdminPermission() ? 12 : 11;
+            <tr>
+                <td class="text-center" colspan="@col">There is no data</td>
+            </tr>
+        }
+    </tbody>
+</table>

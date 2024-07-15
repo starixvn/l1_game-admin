@@ -2,6 +2,8 @@
 using GamesAdmin.Core.Models;
 using GamesAdmin.Database.Entities;
 using GamesAdmin.Core.Enumeration;
+using GamesAdmin.Core.Models.Promotion;
+using GamesAdmin.Database.Entities.Promotion;
 
 namespace GamesAdmin.Api.Promotions.Mappers
 {
@@ -15,6 +17,11 @@ namespace GamesAdmin.Api.Promotions.Mappers
 
             CreateMap<PromotionModel, PromotionEntity>()
                 .ForMember(dest => dest.GameId, opt => opt.MapFrom(src => (int)src.GameId));
+
+            CreateMap<PromotionConfigEntity, PromotionConfigModel>();
+            CreateMap<Operator, OperatorModel>();
+            CreateMap<CurrencyGroup, CurrencyGroupsModel>();
+            CreateMap<WinningPrize, WinningPrizeModel>();
         }
     }
 }

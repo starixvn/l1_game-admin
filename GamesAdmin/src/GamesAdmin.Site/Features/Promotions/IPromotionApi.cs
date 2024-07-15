@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GamesAdmin.Core.Enumeration;
 using GamesAdmin.Core.Models;
+using GamesAdmin.Core.Models.Promotion;
 using GamesAdmin.Site.Features._Shared;
 using Refit;
 
@@ -41,5 +42,8 @@ namespace GamesAdmin.Site.Features.Promotions
 
         [Post("/promotion/deleteAnnouncement")]
         Task<bool> DeleteAnnouncement(string id);
+
+        [Get("/promotion/getCampaignByStatus")]
+        Task<IEnumerable<PromotionConfigModel>> GetCampaignByStatus(string status);
     }
 }
