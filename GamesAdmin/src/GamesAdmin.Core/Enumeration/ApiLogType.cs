@@ -13,7 +13,8 @@
         OperatorSignInRequest,
         HitJackpot,
         EnterPortal,
-        GetBetLimit
+        GetBetLimit,
+        Awards
     }
 
     public class ApiLogEnumeration : Enumeration
@@ -30,6 +31,7 @@
         public static readonly ApiLogEnumeration HitJackpotRequest = new ApiLogEnumeration("Hit Jackpot", ApiLogType.HitJackpot);
         public static readonly ApiLogEnumeration EnterPortalRequest = new ApiLogEnumeration("Enter Portal", ApiLogType.EnterPortal);
         public static readonly ApiLogEnumeration GetBetLimitRequest = new ApiLogEnumeration("Get Bet Limit", ApiLogType.GetBetLimit);
+        public static readonly ApiLogEnumeration AwardRequest = new ApiLogEnumeration("Awards", ApiLogType.Awards);
 
         public ApiLogEnumeration()
         { }
@@ -48,6 +50,7 @@
             || apiLogType == ApiLogType.FailedRequests
             || apiLogType == ApiLogType.HitJackpot
             || apiLogType == ApiLogType.TicketDetailRequests
-            || apiLogType == ApiLogType.VoidGames;
+            || apiLogType == ApiLogType.VoidGames
+            || apiLogType == ApiLogType.Awards;
     }
 }

@@ -19,6 +19,7 @@ namespace GamesAdmin.Api.ApiLogs
         private const string HitJackpotCollectionName = "hit_jackpots";
         private const string EnterPortalCollectionName = "enter_portals";
         private const string GetBetLimitCollectionName = "bet_limits";
+        private const string AwardCollectionName = "awards";
 
         private const string PlaceBetCall = "PartnerPlaceBetCall";
         private const string PlaceBetResult = "PartnerPlaceBetResult";
@@ -67,6 +68,7 @@ namespace GamesAdmin.Api.ApiLogs
             { ApiLogType.HitJackpot, HitJackpotCollectionName },
             { ApiLogType.EnterPortal, EnterPortalCollectionName },
             { ApiLogType.GetBetLimit, GetBetLimitCollectionName },
+            { ApiLogType.Awards, AwardCollectionName },
         };
 
         private static readonly Dictionary<string, Type> callOrRequestTypeMapping = new Dictionary<string, Type>

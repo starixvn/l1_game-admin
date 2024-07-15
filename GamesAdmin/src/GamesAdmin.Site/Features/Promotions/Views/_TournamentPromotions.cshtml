@@ -29,37 +29,29 @@
         {
             foreach (var promotion in Model)
             {
-                var operatorGroups = promotion.Operators.SelectMany(o => o.CurrencyGroups.Select(c => new { o.OperatorId, c.CurrencyGroupId, c.SlotGameMinBet, c.OtherGameMinBet, c.Enabled, c.CurrencyName }))
-                .GroupBy(oc => oc.OperatorId);
+                var rowSpan = promotion.Operators.Sum(o => o.CurrencyGroups.Count);
+                bool isFirstRow = true;
 
-                bool firstPromotionRow = true;
-                foreach (var operatorGroup in operatorGroups)
+                foreach (var operatorModel in promotion.Operators)
                 {
-                    bool firstOperatorRow = true;
-                    var rowspan = operatorGroup.Count();
-
-                    foreach (var currencyGroup in operatorGroup)
+                    foreach (var currencyGroup in operatorModel.CurrencyGroups)
                     {
                         <tr>
-                            @if (firstPromotionRow)
+                            @if (isFirstRow)
                             {
-                                <td rowspan="@operatorGroups.Sum(g => g.Count())" class="text-center">@promotion.Name</td>
-                                <td rowspan="@operatorGroups.Sum(g => g.Count())" class="text-center">@promotion.PromotionId</td>
-                                <td rowspan="@operatorGroups.Sum(g => g.Count())" width="200px">
+                                <td rowspan="@rowSpan" class="text-center">@promotion.Name</td>
+                                <td rowspan="@rowSpan" class="text-center">@promotion.PromotionId</td>
+                                <td rowspan="@rowSpan" width="150px">
                                     @foreach (var prize in promotion.WinningPrizes)
                                     {
                                         <div>@prize.Name: @prize.Value</div>
                                     }
                                 </td>
-                                firstPromotionRow = false;
                             }
-                            @if (firstOperatorRow)
-                            {
-                                <td rowspan="@rowspan">@operatorGroup.Key</td>
-                                firstOperatorRow = false;
-                            }
-                            <td width="150px">
-                                <div>@currencyGroup.CurrencyName</div>
+                           
+                            <td>@operatorModel.OperatorId</td>
+                            <td width="200px">
+                                <div><strong>@currencyGroup.CurrencyName</strong></div>
                                 <div>Slot games: @currencyGroup.SlotGameMinBet</div>
                                 <div>Other games: @currencyGroup.OtherGameMinBet</div>
                             </td>
@@ -74,26 +66,30 @@
                                 }
                             </td>
                             <td class="text-center"><i class="icon-edit"></i></td>
-                            <td class="text-center">@promotion.StartDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
-                            <td class="text-center">@promotion.EndDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
-                            <td class="text-center text-success"><a href="#">View</a></td>
-                            <td class="text-center text-success">Linked</td>
-                            @if (Context.HasAdminPermission())
+                            @if (isFirstRow)
                             {
-                                <td class="text-center">
-                                    <a type="button" class="btn btn-success btn-lg"
-                                       data-ajax="true"
-                                       data-ajax-mode="replace"
-                                       data-ajax-update="#promotion-modal .modal-content"
-                                       data-ajax-success="promotion.openUpdatePromotionForm"
-                                       asp-route-id=@promotion.PromotionId
-                                       asp-action="Update">
-                                        Edit
-                                    </a>
-                                    <button type="button" class="btn btn-danger btn-lg" onclick="promotion.openDeleteModal('@promotion.PromotionId')">
-                                        Delete
-                                    </button>
-                                </td>
+                                <td rowspan="@rowSpan" class="text-center" width="200px">@promotion.StartDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
+                                <td rowspan="@rowSpan" class="text-center" width="200px">@promotion.EndDateTime.ToString("MM/dd/yyyy hh:mm tt")</td>
+                                <td rowspan="@rowSpan" class="text-center text-success"><a href="#">View</a></td>
+                                <td rowspan="@rowSpan" class="text-center text-success">Linked</td>
+                                @if (Context.HasAdminPermission())
+                                {
+                                    <td rowspan="@rowSpan" class="text-center">
+                                        <a type="button" class="btn btn-success btn-lg"
+                                           data-ajax="true"
+                                           data-ajax-mode="replace"
+                                           data-ajax-update="#promotion-modal .modal-content"
+                                           data-ajax-success="promotion.openUpdatePromotionForm"
+                                           asp-route-id="@promotion.PromotionId"
+                                           asp-action="Update">
+                                            Edit
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-lg" onclick="promotion.openDeleteModal('@promotion.PromotionId')">
+                                            Delete
+                                        </button>
+                                    </td>
+                                }
+                                isFirstRow = false;
                             }
                         </tr>
                     }
