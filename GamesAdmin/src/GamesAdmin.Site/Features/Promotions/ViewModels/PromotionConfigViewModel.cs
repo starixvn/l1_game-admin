@@ -19,7 +19,7 @@ namespace GamesAdmin.Site.Features.Promotions.ViewModels
 
         public string GetPrizesHtml()
         {
-            var html = string.Join("", WinningPrizes.Select(p => $"<div>{p.Ranking}: {p.DisplayValue}</div>"));
+            var html = string.Join("", WinningPrizes.Select(p => $"<div>Ranking {p.Ranking}: {p.DisplayValue}</div>"));
             return html;
         }
 
